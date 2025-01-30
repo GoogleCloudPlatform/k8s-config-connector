@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -155,8 +155,8 @@ spec:
                 type: object
               format:
                 description: |-
-                  Immutable. The format of packages that are stored in the repository. See
-                  [Supported formats](https://cloud.google.com/artifact-registry/docs/supported-formats).
+                  Immutable. The format of packages that are stored in the repository. Supported formats
+                  can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
                   You can only create alpha formats if you are a member of the
                   [alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access).
                 type: string

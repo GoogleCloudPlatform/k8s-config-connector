@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -165,7 +165,7 @@ spec:
                           type: string
                         osVersion:
                           description: Targets VM instances with OS Inventory enabled
-                            and having the following OS version.
+                            and having the following following OS version.
                           type: string
                       type: object
                     type: array
@@ -373,7 +373,7 @@ spec:
                                 type: string
                             type: object
                           id:
-                            description: Required. ID of the artifact, which the installation
+                            description: Required. Id of the artifact, which the installation
                               and update steps of this recipe can reference. Artifacts
                               in a recipe cannot have the same id.
                             type: string

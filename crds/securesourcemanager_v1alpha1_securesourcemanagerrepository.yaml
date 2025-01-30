@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -236,7 +236,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed SecureSourceManagerInstance
-                      resource. Should be in the format "projects/<projectID>/locations/<location>/instances/<instanceID>".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
                     type: string
                   name:
                     description: The name of a SecureSourceManagerInstance resource.
@@ -281,12 +281,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The SecureSourceManagerRepository name. If
-                  not given, the metadata.name will be used.
+                description: The SecureSourceManagerRepository name. If not given,
+                  the metadata.name will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             required:
             - instanceRef
             - location
@@ -338,6 +335,15 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  etag:
+                    description: Output only. This checksum is computed by the server
+                      based on the value of other fields, and may be sent on update
+                      and delete requests to ensure the client has an up-to-date value
+                      before proceeding.
+                    type: string
+                  uid:
+                    description: Output only. Unique identifier of the repository.
+                    type: string
                   uris:
                     description: Output only. URIs for the repository.
                     properties:

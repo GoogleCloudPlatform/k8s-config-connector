@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30,6 +30,9 @@ spec:
     kind: WorkstationCluster
     listKind: WorkstationClusterList
     plural: workstationclusters
+    shortNames:
+    - gcpworkstationcluster
+    - gcpworkstationclusters
     singular: workstationcluster
   scope: Namespaced
   versions:
@@ -91,10 +94,10 @@ spec:
                 items:
                   properties:
                     key:
-                      description: Key for the annotation.
+                      description: Key for the label.
                       type: string
                     value:
-                      description: Value for the annotation.
+                      description: Value for the label.
                       type: string
                   type: object
                 type: array
@@ -122,7 +125,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed Compute Network
-                      resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
+                      resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                     type: string
                   name:
                     description: The `name` field of a `ComputeNetwork` resource.
@@ -215,12 +218,9 @@ spec:
                 - message: ResourceID field is immutable
                   rule: self == oldSelf
               resourceID:
-                description: Immutable. The WorkstationCluster name. If not given,
-                  the metadata.name will be used.
+                description: The WorkstationCluster name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               subnetworkRef:
                 description: Immutable. Reference to the Compute Engine subnetwork
                   in which instances associated with this workstation cluster will
@@ -437,10 +437,10 @@ spec:
                 items:
                   properties:
                     key:
-                      description: Key for the annotation.
+                      description: Key for the label.
                       type: string
                     value:
-                      description: Value for the annotation.
+                      description: Value for the label.
                       type: string
                   type: object
                 type: array
@@ -468,7 +468,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed Compute Network
-                      resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
+                      resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                     type: string
                   name:
                     description: The `name` field of a `ComputeNetwork` resource.
@@ -561,12 +561,9 @@ spec:
                 - message: ResourceID field is immutable
                   rule: self == oldSelf
               resourceID:
-                description: Immutable. The WorkstationCluster name. If not given,
-                  the metadata.name will be used.
+                description: The WorkstationCluster name. If not given, the metadata.name
+                  will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               subnetworkRef:
                 description: Immutable. Reference to the Compute Engine subnetwork
                   in which instances associated with this workstation cluster will

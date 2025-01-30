@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -115,14 +114,14 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed ComputeFirewallPolicy
-                      resource. Should be in the format `locations/global/firewallPolicies/<firewallPolicy>`.
+                      resource. Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.
                     type: string
                   name:
-                    description: The `name` field of a `ComputeFirewall olicy ` resource.
+                    description: The `name` field of a `ComputeFirewallPolicy` resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeFirewallPolicy
-                      ` resource.
+                    description: The `namespace` field of a `ComputeFirewallPolicy`
+                      resource.
                     type: string
                 type: object
               match:
@@ -249,7 +248,7 @@ spec:
                   properties:
                     external:
                       description: A reference to an externally managed Compute Network
-                        resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
+                        resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                       type: string
                     name:
                       description: The `name` field of a `ComputeNetwork` resource.

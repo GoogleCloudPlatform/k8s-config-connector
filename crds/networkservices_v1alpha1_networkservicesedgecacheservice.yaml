@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -350,7 +350,7 @@ spec:
                                       type: array
                                     ignoreCase:
                                       description: Specifies that prefixMatch and
-                                        fullPathMatch matches are case-sensitive.
+                                        fullPathMatch matches are case sensitive.
                                       type: boolean
                                     pathTemplateMatch:
                                       description: |-
@@ -537,8 +537,8 @@ spec:
 
                                               Cookie names:
                                                 - must be valid RFC 6265 "cookie-name" tokens
-                                                - are case-sensitive
-                                                - cannot start with "Edge-Cache-" (case-insensitive)
+                                                - are case sensitive
+                                                - cannot start with "Edge-Cache-" (case insensitive)
 
                                                 Note that specifying several cookies, and/or cookies that have a large range of values (e.g., per-user) will dramatically impact the cache hit rate, and may result in a higher eviction rate and reduced performance.
 
@@ -551,7 +551,7 @@ spec:
                                               Names of HTTP request headers to include in cache keys. The value of the header field will be used as part of the cache key.
 
                                               - Header names must be valid HTTP RFC 7230 header field values.
-                                              - Header field names are case-insensitive
+                                              - Header field names are case insensitive
                                               - To include the HTTP method, use ":method"
 
                                               Note that specifying several headers, and/or headers that have a large range of values (e.g. per-user) will dramatically impact the cache hit rate, and may result in a higher eviction rate and reduced performance.
@@ -610,7 +610,7 @@ spec:
 
                                           Defaults to 86400s (1 day).
 
-                                          Cache directives that attempt to set a max-age or s-maxage greater than this, or an Expires header more than maxTtl seconds in the future will be capped at the value of maxTTL, as if it were the value of an s-maxage Cache-Control directive.
+                                          Cache directives that attempt to set a max-age or s-maxage higher than this, or an Expires header more than maxTtl seconds in the future will be capped at the value of maxTTL, as if it were the value of an s-maxage Cache-Control directive.
 
                                           - The TTL must be >= 0 and <= 31,536,000 seconds (1 year)
                                           - Setting a TTL of "0" means "always revalidate"
