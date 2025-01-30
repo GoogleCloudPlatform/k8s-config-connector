@@ -45,6 +45,10 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
+func (m *gcpClient) instancesClient() *api.OrganizationsInstancesService {
+	return api.NewOrganizationsInstancesService(m.service)
+}
+
 func (m *gcpClient) envgroupsClient() *api.OrganizationsEnvgroupsService {
 	return api.NewOrganizationsEnvgroupsService(m.service)
 }
