@@ -41,6 +41,11 @@ if [[ -z "${VERSION:-}" ]]; then
   exit 1
 fi
 
+if [[ -z "${STALE_VERSION:-}" ]]; then
+  echo "STALE_VERSION must be set"
+  exit 1
+fi
+
 # Update our version marker file (used for user agent etc)
 cat <<EOF > version/VERSION
 ${VERSION}
@@ -105,3 +110,11 @@ done
 
 # Generate operator/config/gke-addon/image_configmap.yaml
 make -C ${REPO_ROOT}/operator manifests
+
+# Remove the STALE_VERSION package for standard and autopilot
+rm -rf operator/autopilot-channels/packages/configconnector/${STALE_VERSION}
+rm -rf operator/channels/packages/configconnector/${STALE_VERSION}
+
+# Format
+GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache operator/autopilot-channels/packages/configconnector
+GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache operator/channels/packages/configconnector
