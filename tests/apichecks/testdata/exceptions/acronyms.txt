@@ -20,8 +20,6 @@
 [acronyms] crd=apigeeendpointattachments.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.orgId" should be ".spec.orgID"
 [acronyms] crd=apigeeenvgroupattachments.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.envgroupId" should be ".spec.envgroupID"
 [acronyms] crd=apigeeinstanceattachments.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceId" should be ".spec.instanceID"
-[acronyms] crd=apigeeinstances.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.orgId" should be ".spec.orgID"
-[acronyms] crd=apigeeinstances.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.peeringCidrRange" should be ".spec.peeringCIDRRange"
 [acronyms] crd=apigeenataddresses.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceId" should be ".spec.instanceID"
 [acronyms] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.addonsConfig.advancedApiOpsConfig" should be ".spec.addonsConfig.advancedAPIOpsConfig"
 [acronyms] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.addonsConfig.advancedApiOpsConfig.enabled" should be ".spec.addonsConfig.advancedAPIOpsConfig.enabled"

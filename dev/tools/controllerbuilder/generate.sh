@@ -203,5 +203,11 @@ go run . generate-mapper \
     --service google.cloud.privilegedaccessmanager.v1 \
     --api-version privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
 
+# Apigee
+go run . generate-types \
+    --service mockgcp.cloud.apigee.v1 \
+    --api-version apigee.cnrm.cloud.google.com/v1alpha1 \
+    --resource ApigeeInstance:GoogleCloudApigeeV1Instance
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
