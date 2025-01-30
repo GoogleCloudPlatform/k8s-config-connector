@@ -115,7 +115,7 @@ func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader
 			}
 			return ref, nil
 		}
-		if len(tokens) == 4 && tokens[0] == "project" && tokens[2] == "alertPolicies" {
+		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "alertPolicies" {
 			ref = &refs.MonitoringAlertPolicyRef{
 				External: fmt.Sprintf("projects/%s/alertPolicies/%s", tokens[1], tokens[3]),
 			}
