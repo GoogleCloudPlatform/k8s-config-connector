@@ -48,11 +48,11 @@ func TestIDTemplateCanBeUsedToMatchResourceNameShouldHaveValue(t *testing.T) {
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
 	for _, sm := range serviceMappings {
 		for _, rc := range sm.Spec.Resources {
-			// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
-			// The 'Direct' indicator won't be needed after we finish all the migrations.
+			// TODO: Remove the test file after all the resources are migrated to direct.
 			// The 'Direct' indicator is necessary during the migration so
 			// that Config Connector uses direct approach to generate CRDs
 			// but still allow TF-based controller to reconcile the resource.
+			// After the migration is completed, no service mapping should be left.
 			if rc.Direct {
 				continue
 			}
@@ -155,11 +155,11 @@ func TestIAMPolicyMappings(t *testing.T) {
 			if rc.Kind == "ComputeBackendService" {
 				continue
 			}
-			// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
-			// The 'Direct' indicator won't be needed after we finish all the migrations.
+			// TODO: Remove the test file after all the resources are migrated to direct.
 			// The 'Direct' indicator is necessary during the migration so
 			// that Config Connector uses direct approach to generate CRDs
 			// but still allow TF-based controller to reconcile the resource.
+			// After the migration is completed, no service mapping should be left.
 			if rc.Direct { // Do not check for direct resource
 				continue
 			}
@@ -662,11 +662,11 @@ func TestMustHaveIDTemplateOrServerGeneratedId(t *testing.T) {
 }
 
 func assertIDTemplateOrServerGeneratedID(t *testing.T, rc v1alpha1.ResourceConfig) {
-	// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
-	// The 'Direct' indicator won't be needed after we finish all the migrations.
+	// TODO: Remove the test file after all the resources are migrated to direct.
 	// The 'Direct' indicator is necessary during the migration so
 	// that Config Connector uses direct approach to generate CRDs
 	// but still allow TF-based controller to reconcile the resource.
+	// After the migration is completed, no service mapping should be left.
 	if !rc.Direct && rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
 		t.Fatalf("resource kind '%v' with name '%v' has neither id template or server generated ID defined: at least one must be present", rc.Kind, rc.Name)
 	}
@@ -1328,11 +1328,11 @@ func TestStorageVersionIsSetAndValidIFFV1alpha1ToV1beta1IsSet(t *testing.T) {
 				// If this is a direct resource, the storage version is defined
 				// in the kubebuilder tooling.
 				//
-				// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
-				// The 'Direct' indicator won't be needed after we finish all the migrations.
+				// TODO: Remove the test file after all the resources are migrated to direct.
 				// The 'Direct' indicator is necessary during the migration so
 				// that Config Connector uses direct approach to generate CRDs
 				// but still allow TF-based controller to reconcile the resource.
+				// After the migration is completed, no service mapping should be left.
 				if r.Direct {
 					continue
 				}

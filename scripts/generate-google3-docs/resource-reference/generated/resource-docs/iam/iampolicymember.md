@@ -1091,7 +1091,7 @@ metadata:
   name: iampolicymember-dep-orgrole
 ```
 
-### Policy Member With Bigqueryconnection Reference
+### Policy Member With BigQueryConnectionConnection Reference
 ```yaml
 # Copyright 2024 Google LLC
 #
