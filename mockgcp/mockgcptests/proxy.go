@@ -121,6 +121,8 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 		"storage.googleapis.com",
 		"cloudresourcemanager.googleapis.com",
 		"serviceusage.googleapis.com",
+		"workflows.googleapis.com",
+		"workflowexecutions.googleapis.com",
 	}
 	for _, service := range services {
 		if strings.HasSuffix(service, ".googleapis.com") {
