@@ -27,10 +27,10 @@ for f in $(find ./pkg/test/resourcefixture/testdata -name "create.yaml"); do
   echo "TestAllInSeries/fixtures/^${testname}$"
 done
 
-for f in $(find ./config/samples/resources -name "*.yaml"); do
+for f in $(find ./tests/e2e/testdata/scenarios -name "script.yaml"); do
   dir=$(dirname $f)
-  testname=$(basename ${dir})
+  testname=$(echo ${dir} | sed -e 's@./tests/e2e/testdata/scenarios/@@g')
 
-  echo "TestAllInSeries/samples/^${testname}$"
+  echo "TestE2EScript/scenarios/^${testname}$"
 done
 
