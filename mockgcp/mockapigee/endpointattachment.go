@@ -22,23 +22,64 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/apigee/v1"
-	lro "google.golang.org/genproto/googleapis/longrunning"
+	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-type organizationsEndpointAttachments struct {
+type organizationsEndpointAttachmentsServer struct {
 	*MockService
-	pb.UnimplementedOrganizationsEndpointAttachmentsServer
+	pb.UnimplementedOrganizationsEndpointAttachmentsServerServer
 }
 
-func (s *organizationsEndpointAttachments) GetOrganizationsEndpointAttachment(ctx context.Context, req *pb.GetOrganizationsEndpointAttachmentRequest) (*pb.GoogleCloudApigeeV1EndpointAttachment, error) {
+func (s *organizationsEndpointAttachmentsServer) CreateOrganizationsEndpointAttachment(ctx context.Context, req *pb.CreateOrganizationsEndpointAttachmentRequest) (*longrunningpb.Operation, error) {
+	reqName := fmt.Sprintf("%s/endpointAttachments/%s", req.GetParent(), req.GetOrganizationsEndpointAttachmentId())
+	name, err := s.parseOrganizationsEndpointAttachmentName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := proto.Clone(req.GetOrganizationsEndpointAttachment()).(*pb.GoogleCloudApigeeV1EndpointAttachment)
+	obj.Name = fqn
+	obj.State = "ACTIVE"
+	obj.ConnectionState = "CONNECTED"
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.operations.StartLRO(ctx, name.String(), nil, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *organizationsEndpointAttachmentsServer) DeleteOrganizationsEndpointAttachment(ctx context.Context, req *pb.DeleteOrganizationsEndpointAttachmentRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseOrganizationsEndpointAttachmentName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	deleted := &pb.GoogleCloudApigeeV1EndpointAttachment{}
+
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+	return s.operations.StartLRO(ctx, name.String(), nil, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
+	})
+
+}
+
+func (s *organizationsEndpointAttachmentsServer) GetOrganizationsEndpointAttachment(ctx context.Context, req *pb.GetOrganizationsEndpointAttachmentRequest) (*pb.GoogleCloudApigeeV1EndpointAttachment, error) {
 	name, err := s.parseOrganizationsEndpointAttachmentName(req.Name)
 	if err != nil {
 		return nil, err
@@ -57,109 +98,73 @@ func (s *organizationsEndpointAttachments) GetOrganizationsEndpointAttachment(ct
 	return obj, nil
 }
 
-func (s *organizationsEndpointAttachments) CreateOrganizationsEndpointAttachment(ctx context.Context, req *pb.CreateOrganizationsEndpointAttachmentRequest) (*lro.Operation, error) {
-	reqName := req.GetParent() + "/endpointAttachments/" + req.GetOrganizationsEndpointAttachmentId()
-	name, err := s.parseOrganizationsEndpointAttachmentName(reqName)
+func (s *organizationsEndpointAttachmentsServer) ListOrganizationsEndpointAttachments(ctx context.Context, req *pb.ListOrganizationsEndpointAttachmentsRequest) (*pb.GoogleCloudApigeeV1ListEndpointAttachmentsResponse, error) {
+	name, err := s.parseOrganizationsEndpointAttachmentParentName(req.Parent)
 	if err != nil {
 		return nil, err
 	}
-	fqn := name.String()
-
-	obj := proto.Clone(req.GetOrganizationsEndpointAttachment()).(*pb.GoogleCloudApigeeV1EndpointAttachment)
-	obj.Name = fqn
-	obj.State = "ACTIVE"
-	obj.ConnectionState = "CONNECTED"
-	obj.Host = "mock-host"
-
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-	return s.operations.StartLRO(ctx, name.String(), nil, func() (proto.Message, error) {
-		return obj, nil
-	})
-}
-
-func (s *organizationsEndpointAttachments) DeleteOrganizationsEndpointAttachment(ctx context.Context, req *pb.DeleteOrganizationsEndpointAttachmentRequest) (*lro.Operation, error) {
-	name, err := s.parseOrganizationsEndpointAttachmentName(req.Name)
-	if err != nil {
-		return nil, err
-	}
-	fqn := name.String()
-
-	deleted := &pb.GoogleCloudApigeeV1EndpointAttachment{}
-	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		return nil, err
-	}
-	return s.operations.StartLRO(ctx, name.String(), nil, func() (proto.Message, error) {
-		return &emptypb.Empty{}, nil
-	})
-}
-
-func (s *organizationsEndpointAttachments) ListOrganizationsEndpointAttachments(ctx context.Context, req *pb.ListOrganizationsEndpointAttachmentsRequest) (*pb.GoogleCloudApigeeV1ListEndpointAttachmentsResponse, error) {
-	parent, err := s.parseOrganizationsEndpointAttachmentParentName(req.GetParent())
-	if err != nil {
-		return nil, err
-	}
-
-	namePrefix := parent.String() + "/endpointAttachments/"
+	prefix := name.String() + "/endpointAttachments/"
 	response := &pb.GoogleCloudApigeeV1ListEndpointAttachmentsResponse{}
 
 	err = s.storage.List(ctx, (&pb.GoogleCloudApigeeV1EndpointAttachment{}).ProtoReflect().Descriptor(), func(obj proto.Message) error {
-		ep := obj.(*pb.GoogleCloudApigeeV1EndpointAttachment)
-		if strings.HasPrefix(ep.GetName(), namePrefix) {
-			response.EndpointAttachments = append(response.EndpointAttachments, ep)
+		ea := obj.(*pb.GoogleCloudApigeeV1EndpointAttachment)
+		if strings.HasPrefix(ea.Name, prefix) {
+			response.EndpointAttachments = append(response.EndpointAttachments, ea)
 		}
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
+
 	return response, nil
 }
 
 type organizationsEndpointAttachmentName struct {
-	Organization         *projects.ProjectData
-	EndpointAttachmentID string
+	org                 string
+	endpointAttachment string
 }
 
-func (a *organizationsEndpointAttachmentName) String() string {
-	return fmt.Sprintf("organizations/%d/endpointAttachments/%s", a.Organization.Number, a.EndpointAttachmentID)
+func (n *organizationsEndpointAttachmentName) String() string {
+	return fmt.Sprintf("organizations/%s/endpointAttachments/%s", n.org, n.endpointAttachment)
 }
 
-func (s *organizationsEndpointAttachments) parseOrganizationsEndpointAttachmentName(name string) (*organizationsEndpointAttachmentName, error) {
+func (s *organizationsEndpointAttachmentsServer) parseOrganizationsEndpointAttachmentName(name string) (*organizationsEndpointAttachmentName, error) {
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 4 && tokens[0] == "organizations" && tokens[2] == "endpointAttachments" {
-		org, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		return &organizationsEndpointAttachmentName{
-			Organization:         org,
-			EndpointAttachmentID: tokens[3],
-		}, nil
+	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "endpointAttachments" {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid endpoint attachment name %q", name)
 	}
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	return &organizationsEndpointAttachmentName{
+		org:                 tokens[1],
+		endpointAttachment: tokens[3],
+	}, nil
 }
 
 type organizationsEndpointAttachmentParentName struct {
-	Organization *projects.ProjectData
+	org string
 }
 
-func (a *organizationsEndpointAttachmentParentName) String() string {
-	return fmt.Sprintf("organizations/%d", a.Organization.Number)
+func (n *organizationsEndpointAttachmentParentName) String() string {
+	return fmt.Sprintf("organizations/%s", n.org)
 }
 
-func (s *organizationsEndpointAttachments) parseOrganizationsEndpointAttachmentParentName(name string) (*organizationsEndpointAttachmentParentName, error) {
+func (s *organizationsEndpointAttachmentsServer) parseOrganizationsEndpointAttachmentParentName(name string) (*organizationsEndpointAttachmentParentName, error) {
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 2 && tokens[0] == "organizations" {
-		org, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-		return &organizationsEndpointAttachmentParentName{
-			Organization: org,
-		}, nil
+	if len(tokens) != 2 || tokens[0] != "organizations" {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid endpoint attachment parent name %q", name)
 	}
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	return &organizationsEndpointAttachmentParentName{
+		org: tokens[1],
+	}, nil
+}
+
+func (s *MockService) DoneLRO(ctx context.Context, name string, metadata proto.Message, response proto.Message) (*longrunningpb.Operation, error) {
+	return &longrunningpb.Operation{
+		Name:     fmt.Sprintf("%s/operations/%d", name, time.Now().Unix()),
+		Done:     true,
+		Metadata: operations.MarshalAny(metadata),
+		Result: &longrunningpb.Operation_Response{
+			Response: operations.MarshalAny(response),
+		},
+	}, nil
 }
