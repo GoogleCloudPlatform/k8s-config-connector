@@ -188,11 +188,15 @@ go run . generate-mapper \
     --service google.cloud.iap.v1 \
     --api-version iap.cnrm.cloud.google.com/v1alpha1
 
-# $ go run . generate-controller \
-# --service google.cloud.iap.v1 \
-# --api-version iap.cnrm.cloud.google.com/v1alpha1 \
-# --kind IAPSettings \
-# --proto-resource IapSettings
+# ManagedKafka
+go run . generate-types \
+    --service google.cloud.managedkafka.v1 \
+    --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+    --resource ManagedKafkaCluster:Cluster
+
+go run . generate-mapper \
+    --service google.cloud.managedkafka.v1 \
+    --api-version managedkafka.cnrm.cloud.google.com/v1alpha1
 
 # PrivilegedAccessManager
 go run . generate-mapper \

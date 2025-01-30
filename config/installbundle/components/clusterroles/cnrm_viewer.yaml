@@ -519,6 +519,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - managedkafka.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - memcache.cnrm.cloud.google.com
   resources:
   - '*'

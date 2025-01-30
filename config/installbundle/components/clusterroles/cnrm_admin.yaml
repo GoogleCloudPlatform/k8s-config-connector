@@ -776,6 +776,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - managedkafka.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - memcache.cnrm.cloud.google.com
   resources:
   - '*'
