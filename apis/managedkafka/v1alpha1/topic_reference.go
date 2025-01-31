@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &TopicRef{}
 // holds the GCP identifier for the KRM object.
 type TopicRef struct {
 	// A reference to an externally managed ManagedKafkaTopic resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/topics/{{topicID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/topics/{{topicID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ManagedKafkaTopic resource.

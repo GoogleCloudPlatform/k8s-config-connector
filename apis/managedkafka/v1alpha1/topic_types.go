@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,8 +25,34 @@ var ManagedKafkaTopicGVK = GroupVersion.WithKind("ManagedKafkaTopic")
 // ManagedKafkaTopicSpec defines the desired state of ManagedKafkaTopic
 // +kcc:proto=google.cloud.managedkafka.v1.Topic
 type ManagedKafkaTopicSpec struct {
+	commonv1alpha1.CommonSpec `json:",inline"`
+
+	// +required
+	Location string `json:"location"`
+
+	// +required
+	ClusterRef *ClusterRef `json:"clusterRef"`
+
 	// The ManagedKafkaTopic name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Required. The number of partitions this topic has. The partition count can
+	//  only be increased, not decreased. Please note that if partitions are
+	//  increased for a topic that has a key, the partitioning logic or the
+	//  ordering of the messages will be affected.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.partition_count
+	PartitionCount *int32 `json:"partitionCount,omitempty"`
+
+	// Required. Immutable. The number of replicas of each partition. A
+	//  replication factor of 3 is recommended for high availability.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.replication_factor
+	ReplicationFactor *int32 `json:"replicationFactor,omitempty"`
+
+	// Optional. Configurations for the topic that are overridden from the cluster
+	//  defaults. The key of the map is a Kafka topic property name, for example:
+	//  `cleanup.policy`, `compression.type`.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.configs
+	Configs map[string]string `json:"configs,omitempty"`
 }
 
 // ManagedKafkaTopicStatus defines the config connector machine state of ManagedKafkaTopic
@@ -48,6 +75,11 @@ type ManagedKafkaTopicStatus struct {
 // +kcc:proto=google.cloud.managedkafka.v1.Topic
 // ManagedKafkaTopicObservedState is the state of the ManagedKafkaTopic resource as most recently observed in GCP.
 type ManagedKafkaTopicObservedState struct {
+	// Identifier. The name of the topic. The `topic` segment is used when
+	//  connecting directly to the cluster. Structured like:
+	//  projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.name
+	Name *string `json:"name,omitempty"`
 }
 
 // +genclient

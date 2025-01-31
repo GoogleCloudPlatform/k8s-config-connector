@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type TopicIdentity struct {
 	parent *TopicParent
-	id string
+	id     string
 }
 
 func (i *TopicIdentity) String() string {
-	return  i.parent.String() + "/topics/" + i.id
+	return i.parent.String() + "/topics/" + i.id
 }
 
 func (i *TopicIdentity) ID() string {
@@ -40,22 +40,21 @@ func (i *TopicIdentity) ID() string {
 }
 
 func (i *TopicIdentity) Parent() *TopicParent {
-	return  i.parent
+	return i.parent
 }
 
 type TopicParent struct {
 	ProjectID string
 	Location  string
+	Cluster   string
 }
 
 func (p *TopicParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/clusters/" + p.Cluster
 }
-
 
 // New builds a TopicIdentity from the Config Connector Topic object.
 func NewTopicIdentity(ctx context.Context, reader client.Reader, obj *ManagedKafkaTopic) (*TopicIdentity, error) {
-
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
@@ -66,7 +65,14 @@ func NewTopicIdentity(ctx context.Context, reader client.Reader, obj *ManagedKaf
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
-
+	clusterExternalRef, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, err
+	}
+	_, cluster, err := ParseClusterExternal(clusterExternalRef)
+	if err != nil {
+		return nil, err
+	}
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
@@ -90,6 +96,9 @@ func NewTopicIdentity(ctx context.Context, reader client.Reader, obj *ManagedKaf
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
+		if actualParent.Cluster != cluster {
+			return nil, fmt.Errorf("spec.cluster changed, expect %s, got %s", actualParent.Cluster, cluster)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -99,6 +108,7 @@ func NewTopicIdentity(ctx context.Context, reader client.Reader, obj *ManagedKaf
 		parent: &TopicParent{
 			ProjectID: projectID,
 			Location:  location,
+			Cluster:   cluster,
 		},
 		id: resourceID,
 	}, nil
@@ -106,13 +116,14 @@ func NewTopicIdentity(ctx context.Context, reader client.Reader, obj *ManagedKaf
 
 func ParseTopicExternal(external string) (parent *TopicParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "topics" {
-		return nil, "", fmt.Errorf("format of ManagedKafkaTopic external=%q was not known (use projects/{{projectID}}/locations/{{location}}/topics/{{topicID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "clusters" || tokens[6] != "topics" {
+		return nil, "", fmt.Errorf("format of ManagedKafkaTopic external=%q was not known (use projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/topics/{{topicID}})", external)
 	}
 	parent = &TopicParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
+		Cluster:   tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
