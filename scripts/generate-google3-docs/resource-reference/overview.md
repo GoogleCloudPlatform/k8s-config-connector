@@ -276,10 +276,6 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicyrule.md">ComputeNetworkFirewallPolicyRule</a></td>
-</tr>
-<tr>
-  <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkpeering.md">ComputeNetworkPeering</a></td>
 </tr>
 <tr>
