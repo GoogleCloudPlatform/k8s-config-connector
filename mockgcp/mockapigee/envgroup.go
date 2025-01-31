@@ -105,7 +105,7 @@ func (s *EnvgroupV1) PatchOrganizationsEnvgroup(ctx context.Context, req *pb.Pat
 
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask()
-	fieldMask, err := field_mask.New(obj, paths)
+	fieldMask, err := field_mask.New(obj, strings.Split(paths, ",")...)
 	if err != nil {
 		return nil, err
 	}

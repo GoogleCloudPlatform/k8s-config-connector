@@ -175,11 +175,11 @@ func (a *ApigeeInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 
 	if resource.AccessLoggingConfig != nil && !reflect.DeepEqual(resource.AccessLoggingConfig, a.actual.AccessLoggingConfig) {
 		log.V(2).Info("change detected: accessLoggingConfig")
-		updateMask.Paths = append(updateMask.Paths, "accessLoggingConfig")
+		updateMask.Paths = append(updateMask.Paths, "access_logging_config")
 	}
 	if resource.ConsumerAcceptList != nil && !reflect.DeepEqual(asSortedCopy(resource.ConsumerAcceptList), asSortedCopy(a.actual.ConsumerAcceptList)) {
 		log.V(2).Info("change detected: consumerAcceptList")
-		updateMask.Paths = append(updateMask.Paths, "consumerAcceptList")
+		updateMask.Paths = append(updateMask.Paths, "consumer_accept_list")
 	}
 
 	if len(updateMask.Paths) == 0 {

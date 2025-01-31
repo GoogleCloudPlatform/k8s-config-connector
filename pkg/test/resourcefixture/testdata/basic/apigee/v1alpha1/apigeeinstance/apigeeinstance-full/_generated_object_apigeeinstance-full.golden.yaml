@@ -40,5 +40,5 @@ status:
     lastModifiedAt: 1711974896
     port: "443"
     runtimeVersion: 1-14-0-apigee-4
-    serviceAttachment: projects/eef779b38d9fb4b50p-tp/regions/us-central1/serviceAttachments/apigee-us-central1-i9mj
+    serviceAttachment: projects/${projectId}/regions/us-central1/serviceAttachments/apigee-us-central1-abcd
     state: ACTIVE
