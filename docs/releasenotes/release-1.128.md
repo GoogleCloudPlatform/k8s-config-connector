@@ -1,49 +1,34 @@
-# Follow `SAMPLE_XXX` format to write the content.
-# Delete `SAMPLE_` and its content before publishing the release note.
-# Delete the entire header if no updates.
-
-** This version is not yet released; this document is gathering release notes for the future release **
-
-* ...
-
-* Special shout-outs to ... for their contributions to this release.
-TODO: list contributors with `git log v1.127.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`.
+* Special shout-outs to @600lyy, @acpana, @anhdle-sso, @barney-s, @Camila-B, @cheftako, @ericpang777, @gemmahou, @haiyanmeng, @jasonvigil, @jingyih, @justinsb, @maqiuyujoyce, @nb-goog, @tarynlucas, @xiaoweim, @yuwenma, @ziyue-101 for their contributions to this release. 
 
 ## Announcement
 
-### SAMPLE_Simplified and More Reliable Resource Development
-
-* We launched a major improvement to the Config Connector resource development!  Our new approach significantly enhances reliability and provides a more native Kubernetes experience. Learn more in our [guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/develop-resources)
+* `ComputeFirewallPolicyRule` is switched to the direct approach by default. Previously this direct approach is introduced as a opt-in since release 1.125. 
 
 ## New Beta Resources (Direct Reconciler):
 
-* [`SAMPLE_BigQueryConnectionConnection`](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection)
-
-     * Manage [connections](https://cloud.google.com/bigquery/docs/working-with-connections) to connect to Google services and external data sources
-
-* [`SAMPLE_ApigeeEnvgroup`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apigee/apigeeenvgroup)
+* [`ApigeeEnvgroup`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apigee/apigeeenvgroup)
 
      * Define [environment groups](https://cloud.google.com/apigee/docs/api-platform/fundamentals/environments/envgroups) to specify the hostnames for routing traffic to Apigee environments.
 
-## New Alpha Resources (Direct Reconciler):
-
-* `SAMPLE_KMSAutokeyConfig`
+* [`KMSAutokeyConfig`](https://cloud.google.com/config-connector/docs/reference/resource-docs/kms/kmsautokeyconfig)
 
     * Manage the [KMS auto key](https://cloud.google.com/kms/docs/autokey-overview) which simplifies the CMEKs provisioning and assignment.
+
+## New Alpha Resources (Direct Reconciler):
+
 * `IAPSettings`
     * Customize the [Identity-Aware Proxy (IAP)](https://cloud.google.com/iap/docs/customizing) settings for applications and services running on Google Cloud Platform.
     
-* [`SAMPLE_SecureSourceManangerInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/securesourcemanager/securesourcemanagerinstance/securesourcemanagerinstancebasic)
-* [`SAMPLE_SecureSourceManangerRepository`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/securesourcemanager/securesourcemanagerinstance/securesourcemanagerrepositorybasic)
+* `SecureSourceManangerInstance`
+
+* `SecureSourceManangerRepository`
 
 ## New Fields:
 
-* [`SAMPLE_AlloyDBInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/alloydb/alloydbinstance) (Beta)
-  * Added `spec.networkConfig.enableOutboundPublicIp` field.
-  * Added `status.outboundPublicIpAddresses` field.
+* [`SpannerInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/spanner/spannerinstance)
 
-* [`SAMPLE_SpannerInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/spanner/spannerinstance)
-    * You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on `SpannerInstance` resource to opt-in the Direct Reconciler. The direct controller supports new fields:
+    * You need to use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on `SpannerInstance` resource to opt-in these features.
+
         * `spec.autoscalingConfig`
         * `spec.edition`
 
@@ -53,26 +38,12 @@ We have added support for direct reconciliation to more resources, with opt-in b
 
 * [`AlloyDBInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/alloydb/alloydbinstance)
 
-* [`SAMPLE_SQLInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance)
-
-    * Fix the upgrade and downgrade issue between ENTERPRISE and ENTERPRISE_PLUS.
-    * Supports "creating from clone" via `spec.cloneSource`
-
-* `ComputeFirewallPolicyRule`
-
-  * Direct reconciliation for this resource was introduced as a manual opt-in in release 1.125, is now the default.
-
-## New features:
-
-* SAMPLE_Add cluster mode ...
-
-    *  User can configure the ControllerReconciler object (Alpha) to set the rate-limit for all their cnrm manager controllers in the cluster. This example shows how to set up the configuration.
+* [`SpannerInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/spanner/spannerinstance)
 
 ## Bug Fixes:
 
-* [SAMPLE_Issue 3007](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3007) ComputeBackendService cannot refer clientTLSPolicy due to invalid format
-
 * [Fixed](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3521) the incorrect format validation for the following fields in resource [`DataformRepository`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dataform/dataformrepository).
+
     * `spec.gitRemoteSettings.authenticationTokenSecretVersionRef`
     * `spec.gitRemoteSettings.sshAuthenticationConfig.userPrivateKeySecretVersionRef`
     * `spec.npmrcEnvironmentVariablesSecretVersionRef`
