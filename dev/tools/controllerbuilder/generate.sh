@@ -192,7 +192,8 @@ go run . generate-mapper \
 go run . generate-types \
     --service google.cloud.managedkafka.v1 \
     --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
-    --resource ManagedKafkaCluster:Cluster
+    --resource ManagedKafkaCluster:Cluster \
+    --resource ManagedKafkaTopic:Topic
 
 go run . generate-mapper \
     --service google.cloud.managedkafka.v1 \
