@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -334,7 +334,7 @@ spec:
                       and finally retries at intervals of max_backoff_duration up
                       to retry_count times. For example, if min_backoff_duration is
                       10s, max_backoff_duration is 300s, and `max_doublings` is 3,
-                      then the job will first be retried in 10s. The retry interval
+                      then the a job will first be retried in 10s. The retry interval
                       will double three times, and then increase linearly by 2^3 *
                       10s. Finally, the job will retry at intervals of max_backoff_duration
                       until the job has been attempted retry_count times. Thus, the
@@ -402,8 +402,9 @@ spec:
                     properties:
                       host:
                         description: 'Output only. The host that the job is sent to.
-                          Read information about [how App Engine requests are
-                          routed](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).                          The host is constructed as: * `host = [application_domain_name]`
+                          For more information about how App Engine requests are routed,
+                          see [here](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).
+                          The host is constructed as: * `host = [application_domain_name]`
                           `| [service] + ''.'' + [application_domain_name]` `| [version]
                           + ''.'' + [application_domain_name]` `| [version_dot_service]+
                           ''.'' + [application_domain_name]` `| [instance] + ''.''
