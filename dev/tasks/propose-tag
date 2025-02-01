@@ -41,11 +41,6 @@ if [[ -z "${VERSION:-}" ]]; then
   exit 1
 fi
 
-if [[ -z "${STALE_VERSION:-}" ]]; then
-  echo "STALE_VERSION must be set"
-  exit 1
-fi
-
 # Update our version marker file (used for user agent etc)
 cat <<EOF > version/VERSION
 ${VERSION}
@@ -110,6 +105,27 @@ done
 
 # Generate operator/config/gke-addon/image_configmap.yaml
 make -C ${REPO_ROOT}/operator manifests
+
+# find the STALE_VERSION
+folder_path="operator/channels/packages/configconnector"
+if [ ! -d "$folder_path" ]; then
+    echo "Error: Directory $folder_path does not exist"
+    exit 1
+fi
+
+# List all directories in the specified path and store them in an array
+versions=($(ls -d "$folder_path"/*/ 2>/dev/null | xargs -n 1 basename))
+
+if [ ${#versions[@]} -eq 0 ]; then
+    echo "Error: No version directories found in $folder_path"
+    exit 1
+fi
+
+echo "Found versions:"
+printf '%s\n' "${versions[@]}"
+
+STALE_VERSION=$(printf "%s\n" "${versions[@]}" | sort -V | tail -n 4 | head -n 1)
+echo "stale version: ${STALE_VERSION}"
 
 # Remove the STALE_VERSION package for standard and autopilot
 rm -rf operator/autopilot-channels/packages/configconnector/${STALE_VERSION}
