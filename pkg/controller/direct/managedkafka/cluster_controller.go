@@ -141,7 +141,6 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		return mapCtx.Err()
 	}
 
-	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &pb.CreateClusterRequest{
 		Parent:    a.id.Parent().String(),
 		ClusterId: a.id.ID(), // Note: this is not the fully qualified name for this resource, it is just the resource ID
@@ -162,7 +161,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &created.Name // populate externalRef
+	status.ExternalRef = direct.LazyPtr(created.Name)
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -214,7 +213,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log.V(2).Info("successfully updated Cluster", "name", a.id.String())
 
 	status := &krm.ManagedKafkaClusterStatus{}
-	status.ExternalRef = &updated.Name // populate externalRef
+	status.ExternalRef = direct.LazyPtr(updated.Name)
 	status.ObservedState = ManagedKafkaClusterObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
