@@ -1,0 +1,10 @@
+apiVersion: idp.mycompany.com/v1
+kind: DataflowFlexTemplateConfig
+metadata:
+  name: dataflowflextemplate-job
+  namespace: config-control
+spec:
+  projectName: test-gcp-tse #Or your desired project name
+  region: us-central1 #Or your desired region
+  yamlPipelineFilePath: gs://test-gcp-tse/beam-batch-sql.yaml #Or your path to Beam YAML file
+  pathToTemplate: gs://dataflow-templates-us-central1/latest/flex/Yaml_Template # DO NOT CHANGE if deploying Beam YAML.
