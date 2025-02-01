@@ -35,8 +35,6 @@ type operationBase struct {
 
 	object *unstructured.Unstructured
 
-	lifecycleHandler lifecyclehandler.LifecycleHandler
-
 	// HasSetReadyCondition tracks whether the controller explicitly set the ready condition
 	HasSetReadyCondition bool
 
@@ -59,15 +57,12 @@ func (o *operationBase) GetUnstructured() *unstructured.Unstructured {
 	return o.object
 }
 
-func (o *operationBase) RecordEvent(eventType, reason, message string) {
-	r := o.lifecycleHandler.Recorder
-	r.Event(o.object, eventType, reason, message)
-}
-
 var _ Operation = &UpdateOperation{}
 
 type UpdateOperation struct {
 	operationBase
+
+	lifecycleHandler lifecyclehandler.LifecycleHandler
 }
 
 func NewUpdateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, client client.Client, object *unstructured.Unstructured) *UpdateOperation {

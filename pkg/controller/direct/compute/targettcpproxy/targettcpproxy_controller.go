@@ -20,10 +20,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	v1 "k8s.io/api/core/v1"
-
 	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/compute/apiv1"
@@ -267,25 +263,15 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	updated := &computepb.TargetTcpProxy{}
 
 	parent := a.id.Parent()
-
-	status := &krm.ComputeTargetTCPProxyStatus{}
-	// Regional API does not support Update
-	if parent.Location != "global" {
-		message := fmt.Sprintf("Update operation not supported for regional ComputeTargetTCPProxy")
-		updateOp.RecordEvent(v1.EventTypeWarning, k8s.UpdateFailed, message)
-		readyCondition := &v1alpha1.Condition{
-			Type:    v1alpha1.ReadyConditionType,
-			Status:  v1.ConditionFalse,
-			Reason:  k8s.UpdateFailed,
-			Message: message,
-		}
-		return updateOp.UpdateStatus(ctx, status, readyCondition)
-	}
-
 	tokens := strings.Split(a.id.String(), "/")
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
+	// Regional API does not support Update
+	errorMessage := fmt.Sprintf("Update operation not supported for regional ComputeTargetTCPProxy")
 	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
+		if parent.Location != "global" {
+			return fmt.Errorf("%s", errorMessage)
+		}
 		setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
 			Project: parent.ProjectID,
 			TargetTcpProxiesSetProxyHeaderRequestResource: &computepb.TargetTcpProxiesSetProxyHeaderRequest{ProxyHeader: targetTCPProxy.ProxyHeader},
@@ -305,6 +291,9 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 
 	if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) {
+		if parent.Location != "global" {
+			return fmt.Errorf("%s", errorMessage)
+		}
 		setBackendServiceReq := &computepb.SetBackendServiceTargetTcpProxyRequest{
 			Project: parent.ProjectID,
 			TargetTcpProxiesSetBackendServiceRequestResource: &computepb.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},
@@ -330,6 +319,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id, err)
 	}
 
+	status := &krm.ComputeTargetTCPProxyStatus{}
 	status = ComputeTargetTCPProxyStatus_FromProto(mapCtx, updated)
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
