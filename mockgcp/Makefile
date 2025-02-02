@@ -86,6 +86,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
 		./third_party/googleapis/mockgcp/cloud/gkemulticloud/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/kms/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/managedkafka/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
