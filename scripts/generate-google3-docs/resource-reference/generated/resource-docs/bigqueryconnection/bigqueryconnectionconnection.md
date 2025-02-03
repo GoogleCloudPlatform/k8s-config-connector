@@ -1047,8 +1047,6 @@ apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
   name: bigqueryconnection-dep
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
   displayName: BigQueryConnection Dependency
