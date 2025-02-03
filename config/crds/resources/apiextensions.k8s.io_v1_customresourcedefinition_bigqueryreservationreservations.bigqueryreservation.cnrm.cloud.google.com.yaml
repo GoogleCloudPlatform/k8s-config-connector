@@ -13,12 +13,12 @@ spec:
   names:
     categories:
     - gcp
-    kind: BigqueryReservationReservation
-    listKind: BigqueryReservationReservationList
+    kind: BigQueryReservationReservation
+    listKind: BigQueryReservationReservationList
     plural: bigqueryreservationreservations
     shortNames:
-    - gcpBigqueryReservationReservation
-    - gcpBigqueryReservationReservations
+    - gcpbigqueryreservationreservation
+    - gcpbigqueryreservationreservations
     singular: bigqueryreservationreservation
   preserveUnknownFields: false
   scope: Namespaced
@@ -42,7 +42,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: BigqueryReservationReservation is the Schema for the BigqueryReservationReservation
+        description: BigQueryReservationReservation is the Schema for the BigQueryReservationReservation
           API
         properties:
           apiVersion:
@@ -58,8 +58,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: BigqueryReservationReservationSpec defines the desired state
-              of BigqueryReservationReservation
+            description: BigQueryReservationReservationSpec defines the desired state
+              of BigQueryReservationReservation
             properties:
               autoscale:
                 description: The configuration parameters for the auto scaling feature.
@@ -161,8 +161,8 @@ spec:
             - slotCapacity
             type: object
           status:
-            description: BigqueryReservationReservationStatus defines the config connector
-              machine state of BigqueryReservationReservation
+            description: BigQueryReservationReservationStatus defines the config connector
+              machine state of BigQueryReservationReservation
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -191,7 +191,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the BigqueryReservationReservation
+                description: A unique specifier for the BigQueryReservationReservation
                   resource in GCP.
                 type: string
               observedGeneration:
