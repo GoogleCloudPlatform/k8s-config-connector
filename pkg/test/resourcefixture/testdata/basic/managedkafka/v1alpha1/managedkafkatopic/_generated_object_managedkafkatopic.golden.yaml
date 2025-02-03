@@ -1,0 +1,33 @@
+apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+kind: ManagedKafkaTopic
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: managedkafkatopic-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  clusterRef:
+    name: managedkafkacluster-${uniqueId}
+  configs:
+    cleanup.policy: delete
+    min.insync.replicas: "3"
+  location: us-central1
+  partitionCount: 3
+  projectRef:
+    external: ${projectId}
+  replicationFactor: 3
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    name: projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}
