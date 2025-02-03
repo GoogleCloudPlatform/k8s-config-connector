@@ -488,6 +488,18 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 				DisplayName:  asRef("SQL Server 2022 Web"),
 			},
 		}
+
+	case pb.SqlDatabaseVersion_SQLSERVER_2019_ENTERPRISE:
+		obj.MaintenanceVersion = "SQLSERVER_2019_ENTERPRISE_CU28.R20240916.00_00"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				DisplayName:  asRef("SQL Server 2022 Enterprise"),
+				MajorVersion: asRef("SQLSERVER_2022_ENTERPRISE"),
+				Name:         asRef("SQLSERVER_2022_ENTERPRISE"),
+			},
+		}
+		obj.DatabaseInstalledVersion = "SQLSERVER_2019_ENTERPRISE_CU28"
+
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
 	case pb.SqlDatabaseVersion_POSTGRES_15:
@@ -504,6 +516,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		obj.DatabaseInstalledVersion = "POSTGRES_16_3"
 		obj.MaintenanceVersion = "POSTGRES_16_3.R20240527.01_10"
 		obj.UpgradableDatabaseVersions = nil
+
 	default:
 		return fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
 	}
