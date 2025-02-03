@@ -1,0 +1,7 @@
+- exec: gcloud workflows deploy test-${uniqueId} --source=workflow.yaml --location=us-central1
+- exec: gcloud workflows describe test-${uniqueId} --location=us-central1
+- exec: gcloud workflows deploy test-${uniqueId} --source=workflow-v2.yaml --location=us-central1
+- exec: gcloud workflows describe test-${uniqueId} --location=us-central1
+# If we want to run the workflow:
+#- exec: gcloud workflows run test-${uniqueId} --location=us-central1
+- exec: gcloud workflows delete test-${uniqueId} --location=us-central1 --quiet
