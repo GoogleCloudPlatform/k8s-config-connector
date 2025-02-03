@@ -54,7 +54,8 @@ func AsProjectRef(in *v1alpha1.ResourceRef) *ProjectRef {
 }
 
 type Project struct {
-	ProjectID string
+	ProjectID     string
+	ProjectNumber string
 }
 
 // ResolveProjectFromAnnotation resolves the projectID to use for a resource,
@@ -124,8 +125,14 @@ func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace st
 		return nil, err
 	}
 
+	projectNumber, _, err := unstructured.NestedString(project.Object, "status", "number")
+	if err != nil {
+		return nil, fmt.Errorf("reading status.number from Project %v: %w", key, err)
+	}
+
 	return &Project{
-		ProjectID: projectID,
+		ProjectID:     projectID,
+		ProjectNumber: projectNumber,
 	}, nil
 }
 
