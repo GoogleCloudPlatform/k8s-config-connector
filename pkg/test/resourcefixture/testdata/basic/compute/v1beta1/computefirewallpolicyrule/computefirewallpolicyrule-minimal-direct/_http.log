@@ -1,6 +1,6 @@
 POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies?alt=json&parentId=organizations%2F${organizationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "A basic organization firewall policy",
@@ -36,7 +36,7 @@ X-Xss-Protection: 0
 
 GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -69,7 +69,7 @@ X-Xss-Protection: 0
 
 GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -179,8 +179,8 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 400 Bad Request
 Cache-Control: private
@@ -204,8 +204,8 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/addRule
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 {
   "action": "deny",
@@ -253,8 +253,8 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: operation=${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -287,8 +287,8 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 200 OK
 Cache-Control: private
@@ -324,8 +324,8 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/patchRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 {
   "action": "allow",
@@ -372,8 +372,8 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: operation=${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -406,8 +406,8 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 200 OK
 Cache-Control: private
@@ -443,8 +443,8 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/removeRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 200 OK
 Cache-Control: private
@@ -476,8 +476,8 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: operation=${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -510,8 +510,8 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: firewall_policy=${firewallPolicyID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 400 Bad Request
 Cache-Control: private
@@ -535,7 +535,7 @@ X-Xss-Protection: 0
 
 GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -645,7 +645,7 @@ X-Xss-Protection: 0
 
 DELETE https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -677,7 +677,7 @@ X-Xss-Protection: 0
 
 GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -710,7 +710,7 @@ X-Xss-Protection: 0
 
 GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Cache-Control: private

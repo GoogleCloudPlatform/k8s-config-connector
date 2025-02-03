@@ -1,6 +1,6 @@
 POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/pubsub.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private
@@ -27,7 +27,7 @@ X-Xss-Protection: 0
 
 POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/pubsub.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Cache-Control: private

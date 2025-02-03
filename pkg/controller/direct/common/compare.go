@@ -41,7 +41,7 @@ var BasicDiff = func(fieldName protoreflect.Name, a, b proto.Message) (bool, err
 		return true, nil
 	}
 	if !aField.Kind().IsValid() {
-		return false, fmt.Errorf("unimplemented kind: " + aField.Kind().String())
+		return false, fmt.Errorf("unimplemented kind: %s", aField.Kind().String())
 	}
 
 	diff := false

@@ -1,6 +1,6 @@
 GET https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 POST https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks?alt=json&networkId=${networkID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "Basic Network",
@@ -41,7 +41,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json
@@ -64,7 +64,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json

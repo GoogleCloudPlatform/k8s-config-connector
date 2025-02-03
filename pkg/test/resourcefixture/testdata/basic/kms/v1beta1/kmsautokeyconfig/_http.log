@@ -1,7 +1,7 @@
 GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2FautokeyConfig
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
 Cache-Control: private
@@ -22,8 +22,8 @@ X-Xss-Protection: 0
 
 PATCH https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint&updateMask=keyProject
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 {
   "keyProject": "projects/${uniqueId}",
@@ -51,8 +51,8 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2FautokeyConfig
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
 Cache-Control: private
@@ -75,8 +75,8 @@ X-Xss-Protection: 0
 
 PATCH https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint&updateMask=keyProject
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 {
   "keyProject": "projects/diff-{uniqueId}",
@@ -104,8 +104,8 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=folders%2F${folderID}%2FautokeyConfig
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
 Cache-Control: private

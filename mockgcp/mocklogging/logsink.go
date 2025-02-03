@@ -13,10 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// apiVersion: logging.cnrm.cloud.google.com/v1beta1
-// kind: LoggingLogSink
-// service: google.logging.v2.ConfigServiceV2
-// resource: LogSink
+// proto.service: google.logging.v2.ConfigServiceV2
+// proto.message: google.logging.v2.LogSink
 
 package mocklogging
 

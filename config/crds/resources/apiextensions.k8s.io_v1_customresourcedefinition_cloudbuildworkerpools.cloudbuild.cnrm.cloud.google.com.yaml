@@ -11,9 +11,14 @@ metadata:
 spec:
   group: cloudbuild.cnrm.cloud.google.com
   names:
+    categories:
+    - gcp
     kind: CloudBuildWorkerPool
     listKind: CloudBuildWorkerPoolList
     plural: cloudbuildworkerpools
+    shortNames:
+    - gcpcloudbuildworkerpool
+    - gcpcloudbuildworkerpools
     singular: cloudbuildworkerpool
   preserveUnknownFields: false
   scope: Namespaced

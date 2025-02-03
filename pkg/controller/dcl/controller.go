@@ -270,7 +270,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
 
-	dclConfig := dclclientconfig.SetUserAgentWithBlueprintAttribution(r.dclConfig, resource)
+	dclConfig := r.dclConfig
 	if !resource.GetDeletionTimestamp().IsZero() {
 		return r.finalizeResourceDeletion(ctx, resource, dclConfig)
 	}

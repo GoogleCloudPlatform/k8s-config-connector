@@ -32,7 +32,7 @@ import (
 // Note that SetBlueprintAttribution will be used to add the blueprint attribution part into the user agent per resource
 // if the resource has the 'cnrm.cloud.google.com/blueprint' annotation.
 func SetUserAgentForTerraformProvider() {
-	tfversion.ProviderVersion = gcp.KCCUserAgent
+	tfversion.ProviderVersion = gcp.KCCUserAgent()
 }
 
 // SetBlueprintAttribution sets the module name to the blueprint name on the given instance state if the resource has the 'cnrm.cloud.google.com/blueprint' annotation.

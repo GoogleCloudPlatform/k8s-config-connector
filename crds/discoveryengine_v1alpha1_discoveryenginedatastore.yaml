@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -134,12 +134,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. The DiscoveryEngineDataStore name. If not
-                  given, the metadata.name will be used.
+                description: The DiscoveryEngineDataStore name. If not given, the
+                  metadata.name will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
               solutionTypes:
                 description: |-
                   The solutions that the data store enrolls. Available solutions for each
@@ -255,7 +252,7 @@ spec:
                     type: string
                   defaultSchemaID:
                     description: Output only. The id of the default [Schema][google.cloud.discoveryengine.v1.Schema]
-                      asscociated to this data store.
+                      associated to this data store.
                     type: string
                 type: object
             type: object

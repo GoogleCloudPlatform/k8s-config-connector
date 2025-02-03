@@ -1,6 +1,6 @@
 GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Cache-Control: private
@@ -25,7 +25,7 @@ X-Xss-Protection: 0
 
 POST https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes?alt=json&noteId=containeranalysisnote-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "attestation": {
@@ -87,7 +87,7 @@ X-Xss-Protection: 0
 
 GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -128,7 +128,7 @@ X-Xss-Protection: 0
 
 PATCH https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "attestation": {
@@ -181,7 +181,7 @@ X-Xss-Protection: 0
 
 GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -218,7 +218,7 @@ X-Xss-Protection: 0
 
 DELETE https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -237,7 +237,7 @@ X-Xss-Protection: 0
 
 GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Cache-Control: private

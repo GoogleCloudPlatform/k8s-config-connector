@@ -95,6 +95,7 @@ SUPPORTED_SERVICES=(
   redis.googleapis.com
   run.googleapis.com
   secretmanager.googleapis.com
+  securesourcemanager.googleapis.com
   servicedirectory.googleapis.com
   servicenetworking.googleapis.com
   serviceusage.googleapis.com
@@ -109,4 +110,36 @@ SUPPORTED_SERVICES=(
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
 # long-running tests should be added to this regex in alphabetical order.
-LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|basicalloydbinstance|basicalloydbsecondarycluster|basicalloydbsecondaryinstance|cidrconnector|cloudidsendpoint|configcontrollerinstance|containercluster|containernodepool|databasealloydbuser|datafusioninstance|filestorebackup|filestoreinstance|fullalloydbbackup|fullalloydbcluster|gkehubfeaturemembership|gkehubmembership|iamalloydbuser|postgresinstance|readalloydbinstance|restorebackupalloydbcluster|zonalalloydbinstance|memcacheinstance|redisinstance|removedefaultnodepool|sqlinstanceencryptionkey|subnetconnector|vertexaidatasetencryptionkey|vertexaiendpointencryptionkey"
+LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|\
+basicalloydbinstance|\
+basicalloydbsecondarycluster|\
+basicalloydbsecondaryinstance|\
+cidrconnector|\
+cloudidsendpoint|\
+configcontrollerinstance|\
+containercluster|\
+containernodepool|\
+databasealloydbuser|\
+datafusioninstance|\
+filestorebackup|\
+filestoreinstance|\
+fullalloydbbackup|\
+fullalloydbcluster|\
+gkehubfeaturemembership|\
+gkehubmembership|\
+iamalloydbuser|\
+memcacheinstance|\
+postgresinstance|\
+readalloydbinstance|\
+redisinstance|\
+removedefaultnodepool|\
+restorebackupalloydbcluster|\
+securesourcemanagerinstancebasic|\
+securesourcemanagerinstancecmek|\
+securesourcemanagerrepositorybasic|\
+securesourcemanagerrepositoryfull|\
+sqlinstanceencryptionkey|\
+subnetconnector|\
+vertexaidatasetencryptionkey|\
+vertexaiendpointencryptionkey|\
+zonalalloydbinstance"

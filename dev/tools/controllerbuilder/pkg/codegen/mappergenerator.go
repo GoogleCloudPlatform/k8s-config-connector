@@ -221,7 +221,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &krm.%s{}\n", goTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			protoFieldName := strings.Title(protoField.JSONName())
+			protoFieldName := protoNameForField(protoField)
 			protoAccessor := "Get" + protoFieldName + "()"
 
 			krmFieldName := goFieldName(protoField)
@@ -308,12 +308,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 						krmFieldName,
 						useCustomMethod,
-						krmFieldName,
+						protoFieldName,
 					)
 				} else {
 					fmt.Fprintf(out, "\tout.%s = in.%s\n",
 						krmFieldName,
-						krmFieldName,
+						protoFieldName,
 					)
 				}
 				continue
@@ -395,7 +395,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			protoFieldName := strings.Title(protoField.JSONName())
+			protoFieldName := protoNameForField(protoField)
 
 			krmFieldName := goFieldName(protoField)
 			krmField := goFields[krmFieldName]
@@ -669,6 +669,11 @@ func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 	return name
 }
 
+func protoNameForField(protoField protoreflect.FieldDescriptor) string {
+	s := strings.Title(protoField.JSONName())
+	return s
+}
+
 func ToGoFieldName(name protoreflect.Name) string {
 	tokens := strings.Split(string(name), "_")
 	for i, token := range tokens {
@@ -728,6 +733,22 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
 		return "direct.Int64Value_FromProto"
+	case "google.protobuf.StringValue":
+		return "direct.StringValue_FromProto"
+	case "google.protobuf.BoolValue":
+		return "direct.BoolValue_FromProto"
+	case "google.protobuf.FloatValue":
+		return "direct.FloatValue_FromProto"
+	case "google.protobuf.DoubleValue":
+		return "direct.DoubleValue_FromProto"
+	case "google.protobuf.Int32Value":
+		return "direct.Int32Value_FromProto"
+	case "google.protobuf.UInt32Value":
+		return "direct.UInt32Value_FromProto"
+	case "google.protobuf.UInt64Value":
+		return "direct.UInt64Value_FromProto"
+	case "google.protobuf.BytesValue":
+		return "direct.BytesValue_FromProto"
 	}
 	klog.Fatalf("unhandled case in krmFromProtoFunctionName for proto field %s", fullname)
 	return ""
@@ -744,6 +765,22 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":
 		return "direct.Int64Value_ToProto"
+	case "google.protobuf.StringValue":
+		return "direct.StringValue_ToProto"
+	case "google.protobuf.BoolValue":
+		return "direct.BoolValue_ToProto"
+	case "google.protobuf.FloatValue":
+		return "direct.FloatValue_ToProto"
+	case "google.protobuf.DoubleValue":
+		return "direct.DoubleValue_ToProto"
+	case "google.protobuf.Int32Value":
+		return "direct.Int32Value_ToProto"
+	case "google.protobuf.UInt32Value":
+		return "direct.UInt32Value_ToProto"
+	case "google.protobuf.UInt64Value":
+		return "direct.UInt64Value_ToProto"
+	case "google.protobuf.BytesValue":
+		return "direct.BytesValue_ToProto"
 	}
 	klog.Fatalf("unhandled case in krmToProtoFunctionName for proto field %s", fullname)
 	return ""

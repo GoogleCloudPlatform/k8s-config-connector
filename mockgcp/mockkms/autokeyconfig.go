@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +mockgcp-support
-// apiVersion: kms.cnrm.cloud.google.com/v1beta1
-// kind: KMSAutokeyConfig
-// service: google.cloud.kms.v1.AutokeyAdmin
-// resource: AutokeyConfig
+// +tool:mockgcp-support
+// proto.service: google.cloud.kms.v1.AutokeyAdmin
+// proto.message: google.cloud.kms.v1.AutokeyConfig
 
 package mockkms
 

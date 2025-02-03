@@ -418,6 +418,7 @@ type UpdateAttachedClusterRequest struct {
 	//   - `proxy_config.kubernetes_secret.name`.
 	//   - `proxy_config.kubernetes_secret.namespace`.
 	//   - `security_posture_config.vulnerability_mode`
+	//   - `monitoring_config.cloud_monitoring_config.enabled`
 	UpdateMask *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 }
 

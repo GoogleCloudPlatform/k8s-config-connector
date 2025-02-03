@@ -36,17 +36,25 @@ type LogEntry struct {
 }
 
 type Request struct {
-	Method string      `json:"method,omitempty"`
-	URL    string      `json:"url,omitempty"`
+	Method string `json:"method,omitempty"`
+	URL    string `json:"url,omitempty"`
+
+	// The HTTP Headers for the request.
+	// These should be stored with canonicalized keys (using http.CanonicalHeaderKey(k))
 	Header http.Header `json:"header,omitempty"`
-	Body   string      `json:"body,omitempty"`
+
+	Body string `json:"body,omitempty"`
 }
 
 type Response struct {
-	Status     string      `json:"status,omitempty"`
-	StatusCode int         `json:"statusCode,omitempty"`
-	Header     http.Header `json:"header,omitempty"`
-	Body       string      `json:"body,omitempty"`
+	Status     string `json:"status,omitempty"`
+	StatusCode int    `json:"statusCode,omitempty"`
+
+	// The HTTP Headers for the response.
+	// These should be stored with canonicalized keys (using http.CanonicalHeaderKey(k))
+	Header http.Header `json:"header,omitempty"`
+
+	Body string `json:"body,omitempty"`
 }
 
 type HTTPRecorder struct {
@@ -68,6 +76,7 @@ func (r *HTTPRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
 
 	entry.Request.Header = make(http.Header)
 	for k, values := range req.Header {
+		k = http.CanonicalHeaderKey(k)
 		switch strings.ToLower(k) {
 		case "authorization":
 			entry.Request.Header[k] = []string{"(removed)"}
@@ -105,6 +114,7 @@ func (r *HTTPRecorder) record(entry *LogEntry, req *http.Request, resp *http.Res
 
 		entry.Response.Header = make(http.Header)
 		for k, values := range resp.Header {
+			k = http.CanonicalHeaderKey(k)
 			switch strings.ToLower(k) {
 			case "authorization":
 				entry.Response.Header[k] = []string{"(removed)"}
@@ -239,19 +249,13 @@ func prettifyJSON(s string, mutators ...JSONMutator) string {
 }
 
 func (r *Request) ReplaceHeader(key, value string) {
-	if http.CanonicalHeaderKey(key) == key {
-		r.Header.Set(key, value)
-	} else {
-		r.Header[key] = []string{value}
-	}
+	key = http.CanonicalHeaderKey(key)
+	r.Header.Set(key, value)
 }
 
 func (r *Response) ReplaceHeader(key, value string) {
-	if http.CanonicalHeaderKey(key) == key {
-		r.Header.Set(key, value)
-	} else {
-		r.Header[key] = []string{value}
-	}
+	key = http.CanonicalHeaderKey(key)
+	r.Header.Set(key, value)
 }
 
 func (r *Request) AddHeader(key, value string) {
@@ -263,21 +267,13 @@ func (r *Response) AddHeader(key, value string) {
 }
 
 func (r *Response) RemoveHeader(key string) {
-	// The http.header `Del` converts the `key` to `CanonicalHeaderKey`, which means
-	// it expects the passed-in parameter `key` to be case-insensitive, but `Header` itself should
-	// use canonical keys.
+	key = http.CanonicalHeaderKey(key)
 	r.Header.Del(key)
-	// Delete non canonical header keys like `x-goog-api-client`.
-	delete(r.Header, strings.ToLower(key))
 }
 
 func (r *Request) RemoveHeader(key string) {
-	// The http.header `Del` converts the `key` to `CanonicalHeaderKey`, which means
-	// it expects the passed-in parameter `key` to be case-insensitive, but `Header` itself should
-	// use canonical keys.
+	key = http.CanonicalHeaderKey(key)
 	r.Header.Del(key)
-	// Delete non canonical header keys like `x-goog-api-client`.
-	delete(r.Header, strings.ToLower(key))
 }
 
 func (r *Response) ParseBody() map[string]any {

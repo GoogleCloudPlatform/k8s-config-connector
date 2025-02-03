@@ -22,13 +22,7 @@ if there is no previous reference method, You may need to add a new` Resolve<Ref
 
 Check  to make sure your validation is complete.
 
-
-## 4.3 Register your controller
-
-To wire your controller in the Config Connector operator, you need to [register the controller](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/direct/register/register.go)
-
-
-## 4.4 Verify your controller
+## 4.3 Verify your controller
 
 To turn on the SciFi controller to reconcile resources:
 

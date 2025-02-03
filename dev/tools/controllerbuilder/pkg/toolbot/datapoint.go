@@ -19,16 +19,25 @@ import (
 	"fmt"
 	"strings"
 
-	"cloud.google.com/go/vertexai/genai"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
 // DataPoint holds the input and output for a tool.
 type DataPoint struct {
-	Type   string
-	Input  map[string]string
-	Output string
+	Description string
+	Type        string
+	Input       map[string]string
+	Output      string
+}
+
+// InputColumnKeys returns a set of the input column names
+func (p *DataPoint) InputColumnKeys() sets.Set[string] {
+	keys := sets.New[string]()
+	for k := range p.Input {
+		keys.Insert(k)
+	}
+	return keys
 }
 
 // SetInput sets an input value for the data point.
@@ -69,8 +78,8 @@ func (p *DataPoint) WriteCSV(csvWriter *csv.Writer, columns []string) error {
 	return csvWriter.Write(row)
 }
 
-// ToGenAIParts converts the data point to the input format for Gemini.
-func (p *DataPoint) ToGenAIParts() []genai.Part {
+// ToGenAIFormat converts the data point to the input format for Gemini (or other LLMs).
+func (p *DataPoint) ToGenAIFormat() string {
 	columnSet := sets.NewString()
 	if p.Output != "" {
 		columnSet.Insert("out")
@@ -79,7 +88,7 @@ func (p *DataPoint) ToGenAIParts() []genai.Part {
 		columnSet.Insert("in." + k)
 	}
 
-	var parts []genai.Part
+	var part strings.Builder
 	columns := columnSet.List()
 
 	for _, column := range columns {
@@ -97,9 +106,8 @@ func (p *DataPoint) ToGenAIParts() []genai.Part {
 			}
 		}
 
-		s := fmt.Sprintf("%s %s", column, v)
-		parts = append(parts, genai.Text(s))
+		fmt.Fprintf(&part, "%s: %s\n", column, v)
 	}
 
-	return parts
+	return part.String()
 }

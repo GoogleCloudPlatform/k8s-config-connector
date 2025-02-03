@@ -20,9 +20,18 @@ set -x
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# example usage
-go run . update-types \
+# example usage of inserting a field
+go run . update-types insert \
     --parent "google.monitoring.dashboard.v1.Dashboard" \
-    --insert-field "row_layout" \
+    --field "row_layout" \
     --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1 \
     --ignored-fields "google.monitoring.dashboard.v1.PickTimeSeriesFilter.interval"
+
+# example usage of syncing a message with all of its dependencies from proto package
+go run . update-types sync \
+    --service google.cloud.bigquery.datatransfer.v1 \
+    --api-version bigquerydatatransfer.cnrm.cloud.google.com/v1beta1 \
+    --legacy-mode  # this is a flag to indicate that the resource is previously generated with KRM fields without proto annotations
+
+# Fix up formatting
+${REPO_ROOT}/dev/tasks/fix-gofmt

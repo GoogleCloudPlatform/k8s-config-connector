@@ -19,26 +19,22 @@ import (
 	"fmt"
 	"log"
 
-	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 )
 
-func (u *TypeUpdater) insertGoMessagesGemini() error {
+func (u *FieldInserter) insertGoMessagesGemini() error {
 	ctx := context.Background()
-	client, err := llm.BuildGeminiClient(ctx)
+	llmClient, err := llm.BuildVertexAIClient(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Close()
-
-	model := client.GenerativeModel("gemini-1.5-pro")
+	defer llmClient.Close()
 
 	// Start new chat session
-	session := model.StartChat()
-	session.History = []*genai.Content{
-		{
-			Parts: []genai.Part{
-				genai.Text(`
+	systemPrompt := "" // TODO
+	session := llmClient.StartChat(systemPrompt)
+	var userParts []string
+	userParts = append(userParts, `
 						I have some Go structs written in Go files under a directory.
 						I will provide you the filename and content of each Go file under the directory.
 						I will also provide the content of the Go structs I want to insert to the files.
@@ -46,23 +42,16 @@ func (u *TypeUpdater) insertGoMessagesGemini() error {
 						Insert the Go structs based on alphabetical order of the "+kcc:proto=" comment of the Go structs.
 						You should only insert. Do not delete or edit the existing Go structs.
 						In your response, only include what is asked for.
-					`),
-			},
-			Role: "user",
-		},
-	}
+					`)
+
 	// provide the content of the Go structs
 	goStructs := ""
 	for _, s := range u.dependentMessages {
 		goStructs += string(s.generatedContent) + "\n"
 	}
 
-	session.History = append(session.History, &genai.Content{
-		Parts: []genai.Part{
-			genai.Text(fmt.Sprintf("the Go structs I want to insert:\n%s\n\n", goStructs)),
-		},
-		Role: "user",
-	})
+	userParts = append(userParts, fmt.Sprintf("the Go structs I want to insert:\n%s\n\n", goStructs))
+
 	// provide content of the existing Go files
 	files, err := listFiles(u.opts.APIDirectory)
 	if err != nil {
@@ -73,16 +62,12 @@ func (u *TypeUpdater) insertGoMessagesGemini() error {
 		if err != nil {
 			return fmt.Errorf("error reading file: %w", err)
 		}
-		session.History = append(session.History, &genai.Content{
-			Parts: []genai.Part{
-				genai.Text(fmt.Sprintf("filename:\n%s\ncontent:\n%s\n\n", f, content)),
-			},
-			Role: "user",
-		})
+		userParts = append(userParts, fmt.Sprintf("filename:\n%s\ncontent:\n%s\n\n", f, content))
 	}
 
+	userParts = append(userParts, "What is the content of the modified Go file")
 	// get response
-	resp, err := session.SendMessage(ctx, genai.Text("What is the content of the modified Go file"))
+	resp, err := session.SendMessage(ctx, userParts...)
 	if err != nil {
 		return fmt.Errorf("error receiving message: %w", err)
 	}
@@ -91,7 +76,7 @@ func (u *TypeUpdater) insertGoMessagesGemini() error {
 		return fmt.Errorf("error extracting modified content: %w", err)
 	}
 
-	resp, err = session.SendMessage(ctx, genai.Text("What is the filename that was modified"))
+	resp, err = session.SendMessage(ctx, "What is the filename that was modified")
 	if err != nil {
 		return fmt.Errorf("error receiving message: %w", err)
 	}

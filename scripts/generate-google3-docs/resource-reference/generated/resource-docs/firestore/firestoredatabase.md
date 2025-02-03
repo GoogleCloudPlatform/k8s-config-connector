@@ -30,7 +30,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>firestoredatabase</td>
+<td>gcpfirestoredatabase<br>gcpfirestoredatabases<br>firestoredatabase</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>

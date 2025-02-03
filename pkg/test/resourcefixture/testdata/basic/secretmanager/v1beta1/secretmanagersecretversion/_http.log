@@ -1,7 +1,7 @@
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -26,8 +26,8 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecretversion-dep-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "labels": {
@@ -67,8 +67,8 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}:addVersion?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
 
 {
   "parent": "projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}",
@@ -102,8 +102,8 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
 
 200 OK
 Cache-Control: private
@@ -130,8 +130,8 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:disable?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
 
 {
   "etag": "abcdef0123A=",
@@ -163,8 +163,8 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
 
 200 OK
 Cache-Control: private
@@ -191,8 +191,8 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:destroy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
 
 {
   "etag": "abcdef0123A=",
@@ -225,8 +225,8 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -256,8 +256,8 @@ X-Xss-Protection: 0
 
 DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
 
 200 OK
 Cache-Control: private

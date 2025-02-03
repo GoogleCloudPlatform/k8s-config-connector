@@ -1,6 +1,6 @@
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Cache-Control: private
@@ -25,7 +25,7 @@ X-Xss-Protection: 0
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/services?alt=json&serviceId=monitoringservice-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "custom": {},
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -89,7 +89,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Cache-Control: private
@@ -114,7 +114,7 @@ X-Xss-Protection: 0
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives?alt=json&serviceLevelObjectiveId=monitoringservicelevelobjective-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "calendarPeriod": "DAY",
@@ -189,7 +189,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -235,7 +235,7 @@ X-Xss-Protection: 0
 
 PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json&updateMask=calendarPeriod%2CdisplayName%2Cgoal%2CserviceLevelIndicator.windowsBased.goodTotalRatioThreshold.performance.distributionCut.distributionFilter%2CserviceLevelIndicator.windowsBased.goodTotalRatioThreshold.performance.distributionCut.range.max%2CserviceLevelIndicator.windowsBased.goodTotalRatioThreshold.performance.distributionCut.range.min%2CserviceLevelIndicator.windowsBased.goodTotalRatioThreshold.threshold%2CserviceLevelIndicator.windowsBased.windowPeriod%2CuserLabels
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "calendarPeriod": "FORTNIGHT",
@@ -309,7 +309,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -355,7 +355,7 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}/serviceLevelObjectives/monitoringservicelevelobjective-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -374,7 +374,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private
@@ -401,7 +401,7 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Cache-Control: private

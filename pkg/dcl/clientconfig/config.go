@@ -25,12 +25,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/logger"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	"golang.org/x/oauth2/google"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog/v2"
 )
 
@@ -42,7 +40,7 @@ type Options struct {
 
 func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Client, error) {
 	if opt.UserAgent == "" {
-		opt.UserAgent = gcp.KCCUserAgent
+		opt.UserAgent = gcp.KCCUserAgent()
 	}
 
 	if opt.HTTPClient == nil {
@@ -135,16 +133,4 @@ func CopyAndModifyForKind(dclConfig *dcl.Config, kind string) *dcl.Config {
 		return dclConfig.Clone(dcl.WithTimeout(timeout))
 	}
 	return dclConfig.Clone()
-}
-
-// SetUserAgentWithBlueprintAttribution returns a new DCL Config with the user agent containing the blueprint attribution
-// if the resource has the blueprint attribution annotation. Otherwise, the existing DCL Config is unmodified and returned.
-func SetUserAgentWithBlueprintAttribution(dclConfig *dcl.Config, resource metav1.Object) *dcl.Config {
-	bp, found := k8s.GetAnnotation(k8s.BlueprintAttributionAnnotation, resource)
-	if !found {
-		return dclConfig
-	}
-	userAgentWithBlueprintAttribution := fmt.Sprintf("%v blueprints/%v", gcp.KCCUserAgent, bp)
-	newConfig := dclConfig.Clone(dcl.WithUserAgent(userAgentWithBlueprintAttribution))
-	return newConfig
 }

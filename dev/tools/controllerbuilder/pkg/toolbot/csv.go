@@ -23,7 +23,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
@@ -34,11 +33,15 @@ type CSVExporter struct {
 	enhancers  []Enhancer
 	extractor  Extractor
 	dataPoints []*DataPoint
+
+	// StrictInputColumnKeys ensures that all input datapoints have this shape.
+	// This helps detect typos in the examples.
+	StrictInputColumnKeys sets.Set[string]
 }
 
 // Extractor is an interface for extracting data points from source code.
 type Extractor interface {
-	Extract(ctx context.Context, b []byte) ([]*DataPoint, error)
+	Extract(ctx context.Context, description string, b []byte) ([]*DataPoint, error)
 }
 
 // Enhancer is an interface for enhancing a data point.
@@ -64,7 +67,7 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 	if err != nil {
 		return fmt.Errorf("reading file %q: %w", p, err)
 	}
-	dataPoints, err := x.extractor.Extract(ctx, b)
+	dataPoints, err := x.BuildDataPoints(ctx, "file://"+p, b)
 	if err != nil {
 		return err
 	}
@@ -102,12 +105,6 @@ func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 // WriteCSVForAllTools writes CSV files for all tools.
 func (x *CSVExporter) WriteCSVForAllTools(ctx context.Context, outputDir string) error {
 	log := klog.FromContext(ctx)
-
-	for _, dataPoint := range x.dataPoints {
-		if err := x.EnhanceDataPoint(ctx, dataPoint); err != nil {
-			return err
-		}
-	}
 
 	toolNames := sets.NewString()
 	for _, dataPoint := range x.dataPoints {
@@ -177,8 +174,8 @@ func (x *CSVExporter) EnhanceDataPoint(ctx context.Context, d *DataPoint) error 
 }
 
 // BuildDataPoints extracts data points from a byte slice representing a Go file.
-func (x *CSVExporter) BuildDataPoints(ctx context.Context, src []byte) ([]*DataPoint, error) {
-	dataPoints, err := x.extractor.Extract(ctx, src)
+func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, src []byte) ([]*DataPoint, error) {
+	dataPoints, err := x.extractor.Extract(ctx, description, src)
 	if err != nil {
 		return nil, err
 	}
@@ -196,53 +193,53 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, src []byte) ([]*DataP
 func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Writer) error {
 	log := klog.FromContext(ctx)
 
-	client, err := llm.BuildGeminiClient(ctx)
+	client, err := llm.BuildVertexAIClient(ctx)
 	if err != nil {
 		return fmt.Errorf("building gemini client: %w", err)
 	}
 	defer client.Close()
 
-	model := client.GenerativeModel("gemini-1.5-pro-002")
+	systemPrompt := "" // TODO
+	chat := client.StartChat(systemPrompt)
 
-	// Some values that are recommended by aistudio
-	model.SetTemperature(1)
-	model.SetTopK(40)
-	model.SetTopP(0.95)
-	model.SetMaxOutputTokens(8192)
-	model.ResponseMIMEType = "text/plain"
-
-	var parts []genai.Part
+	var userParts []string
 
 	// We only include data points for the same tool as the input.
 	for _, dataPoint := range x.dataPoints {
 		if dataPoint.Type != input.Type {
 			continue
 		}
-		parts = append(parts, dataPoint.ToGenAIParts()...)
+
+		inputColumnKeys := dataPoint.InputColumnKeys()
+		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
+			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
+		}
+		userParts = append(userParts, dataPoint.ToGenAIFormat())
 	}
 
-	log.Info("context information", "num(parts)", len(parts))
+	log.Info("context information", "num(parts)", len(userParts))
 
-	// We also include the input data point.
-	parts = append(parts, input.ToGenAIParts()...)
+	{
+		// Prompt with the input data point.
+		prompt := input.ToGenAIFormat()
+		// We also include a prompt for Gemini to fill in.
+		prompt += "\nout: "
+		userParts = append(userParts, prompt)
+	}
 
-	// We also include a prompt for Gemini to fill in.
-	parts = append(parts, genai.Text("out "))
-
-	resp, err := model.GenerateContent(ctx, parts...)
+	resp, err := chat.SendMessage(ctx, userParts...)
 	if err != nil {
 		return fmt.Errorf("generating content with gemini: %w", err)
 	}
 
 	// Print the usage metadata (includes token count i.e. cost)
-	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata)
+	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata())
 
-	for _, candidate := range resp.Candidates {
-		content := candidate.Content
-
-		for _, part := range content.Parts {
-			if text, ok := part.(genai.Text); ok {
+	for _, candidate := range resp.Candidates() {
+		for _, part := range candidate.Parts() {
+			if text, ok := part.AsText(); ok {
 				klog.Infof("TEXT: %+v", text)
+				out.Write([]byte(text + "\n"))
 			} else {
 				klog.Infof("UNKNOWN: %T %+v", part, part)
 			}

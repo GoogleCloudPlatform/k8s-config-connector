@@ -39,12 +39,12 @@ func KMSKeyHandleSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyHandle) *kr
 	return out
 }
 
-func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleSpec, id *krm.KMSKeyHandleRef) *pb.KeyHandle {
+func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleSpec, id *krm.KMSKeyHandleIdentity) *pb.KeyHandle {
 	if in == nil {
 		return nil
 	}
 	out := &pb.KeyHandle{}
-	out.Name = id.External
+	out.Name = id.String()
 	out.ResourceTypeSelector = *in.ResourceTypeSelector
 	return out
 }

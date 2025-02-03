@@ -22,46 +22,37 @@ import (
 	"path/filepath"
 	"strings"
 
-	"cloud.google.com/go/vertexai/genai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
 
-func (u *TypeUpdater) insertGoFieldGemini() error {
+func (u *FieldInserter) insertGoFieldGemini() error {
 	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 	ctx := context.Background()
-	client, err := llm.BuildGeminiClient(ctx)
+	client, err := llm.BuildVertexAIClient(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer client.Close()
 
-	model := client.GenerativeModel("gemini-1.5-pro")
-
 	// Start new chat session
-	session := model.StartChat()
-	session.History = []*genai.Content{
-		{
-			Parts: []genai.Part{
-				genai.Text(fmt.Sprintf(`
+	systemPrompt := "" // TODO
+	chat := client.StartChat(systemPrompt)
+
+	var userParts []string
+
+	userParts = append(userParts, fmt.Sprintf(`
 						I have some Go structs written in Go files under a directory.
 						I will provide you the filename and content of each Go file under the directory.
 						I will also provide the content of the new Go field.
 						Could you find the Go struct which has comment "+kcc:proto=%s" with no following suffix,
 						and insert the Go field into the found Go struct.
 						In your response, only include what is asked for.
-					`, u.newField.parent.FullName())),
-			},
-			Role: "user",
-		},
-	}
+					`, u.newField.parent.FullName()))
+
 	// provide the content of the new Go field
-	session.History = append(session.History, &genai.Content{
-		Parts: []genai.Part{
-			genai.Text(fmt.Sprintf("new Go field:\n%s\n\n", u.newField.generatedContent)),
-		},
-		Role: "user",
-	})
+	userParts = append(userParts, fmt.Sprintf("new Go field:\n%s\n\n", u.newField.generatedContent))
+
 	// provide content of the existing Go files
 	files, err := listFiles(u.opts.APIDirectory)
 	if err != nil {
@@ -72,18 +63,15 @@ func (u *TypeUpdater) insertGoFieldGemini() error {
 		if err != nil {
 			return fmt.Errorf("error reading file: %w", err)
 		}
-		session.History = append(session.History, &genai.Content{
-			Parts: []genai.Part{
-				genai.Text(fmt.Sprintf("filename:\n%s\ncontent:\n%s\n\n", f, content)),
-			},
-			Role: "user",
-		})
+		userParts = append(userParts, fmt.Sprintf("filename:\n%s\ncontent:\n%s\n\n", f, content))
 	}
 
 	// TODO: provide content of the proto message for reference on the field ordering.
 
+	userParts = append(userParts, "What is the content of the modified Go file")
+
 	// get response
-	resp, err := session.SendMessage(ctx, genai.Text("What is the content of the modified Go file"))
+	resp, err := chat.SendMessage(ctx, userParts...)
 	if err != nil {
 		return fmt.Errorf("error receiving message: %w", err)
 	}
@@ -92,7 +80,7 @@ func (u *TypeUpdater) insertGoFieldGemini() error {
 		return fmt.Errorf("error extracting modified content: %w", err)
 	}
 
-	resp, err = session.SendMessage(ctx, genai.Text("What is the filename that was modified"))
+	resp, err = chat.SendMessage(ctx, "What is the filename that was modified")
 	if err != nil {
 		return fmt.Errorf("error receiving message: %w", err)
 	}
@@ -135,13 +123,14 @@ func writeFile(filePath, content string) error {
 }
 
 // extract the modified content of the file from the unstructured text response.
-func extractModifiedContent(resp *genai.GenerateContentResponse) (string, error) {
-	if len(resp.Candidates) == 0 {
+func extractModifiedContent(resp llm.Response) (string, error) {
+	candidates := resp.Candidates()
+	if len(candidates) == 0 {
 		return "", fmt.Errorf("no candidates found in response")
 	}
-	text, ok := resp.Candidates[0].Content.Parts[0].(genai.Text)
+	text, ok := candidates[0].Parts()[0].AsText()
 	if !ok {
-		return "", fmt.Errorf("unexpected response type %T", resp.Candidates[0].Content.Parts[0])
+		return "", fmt.Errorf("unexpected response type %T", candidates[0].Parts()[0])
 	}
 	str := string(text)
 	str = strings.TrimPrefix(str, "```go")
@@ -154,13 +143,14 @@ func extractModifiedContent(resp *genai.GenerateContentResponse) (string, error)
 }
 
 // extract the name of the modified file from the unstructured text response.
-func extractModifiedFilename(resp *genai.GenerateContentResponse) (string, error) {
-	if len(resp.Candidates) == 0 {
+func extractModifiedFilename(resp llm.Response) (string, error) {
+	candidates := resp.Candidates()
+	if len(candidates) == 0 {
 		return "", fmt.Errorf("no candidates found in response")
 	}
-	text, ok := resp.Candidates[0].Content.Parts[0].(genai.Text)
+	text, ok := candidates[0].Parts()[0].AsText()
 	if !ok {
-		return "", fmt.Errorf("unexpected response type %T", resp.Candidates[0].Content.Parts[0])
+		return "", fmt.Errorf("unexpected response type %T", candidates[0].Parts()[0])
 	}
 	str := string(text)
 	str = strings.TrimPrefix(str, "```go")

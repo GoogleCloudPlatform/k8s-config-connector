@@ -13,10 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// krm.apiVersion: logging.cnrm.cloud.google.com/v1beta1
-// krm.kind: LoggingLogView
 // proto.service: google.logging.v2.ConfigServiceV2
-// proto.resource: LogView
+// proto.message: google.logging.v2.LogView
 
 package mocklogging
 

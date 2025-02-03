@@ -24,7 +24,7 @@ UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/unmanageddetector:${SHORT_SH
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
 # ./github/workflows/lint.yaml
-GOLANGCI_LINT_VERSION := v1.59.1
+GOLANGCI_LINT_VERSION := v1.63.4
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
@@ -113,11 +113,13 @@ fmt:
 	-ignore "operator/config/rbac/cnrm_viewer_role.yaml" \
 	-ignore "operator/vendor/**" \
 	-ignore "**/testdata/**/_*" \
+	-ignore "**/testdata/**/script.yaml" \
 	-ignore "experiments/**/testdata/**" \
 	./
 
 .PHONY: lint
 lint:
+	mkdir -p ${GOLANGCI_LINT_CACHE}
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
@@ -226,6 +228,12 @@ install: manifests
 .PHONY: deploy-controller
 deploy-controller: docker-build docker-push
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+
+# Deploy controller only, this will skip CRD install in the configured K8s and usually runs much
+# faster than "make deploy". It is useful if you only want to quickly apply code change in controller
+.PHONY: deploy-controller-autopilot
+deploy-controller-autopilot: docker-build docker-push
+	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 # Generate CRD go clients
 .PHONY: generate-go-client
@@ -363,7 +371,7 @@ deploy-kcc-standard: docker-build docker-push config-connector-manifests-standar
 .PHONY: deploy-kcc-autopilot
 deploy-kcc-autopilot: docker-build docker-push config-connector-manifests-autopilot push-operator-manifest
 	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml ${CONTEXT_FLAG}
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: powertool-tests
 powertool-tests:

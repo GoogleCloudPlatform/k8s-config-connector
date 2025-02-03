@@ -100,7 +100,7 @@ done
 # Swap container registry
 # TODO: This is only needed for release bundles that we didn't build with our scripts here (i.e. only needed for release bundles built with the legacy process)
 for channeldir in channels autopilot-channels; do
-  find ${REPO_ROOT}/operator/${channeldir}/packages -type f -name "*.yaml" | xargs sed -i -e "s@gcr.io/cnrm-eap/@gcr.io/gke-release/cnrm/@g"
+  find ${REPO_ROOT}/operator/${channeldir}/packages -type f -name "*.yaml" | xargs sed -i -e "s@gcr.io/cnrm-eap/@gcr.io/gke-release/@g"
 done
 
 # Generate operator/config/gke-addon/image_configmap.yaml

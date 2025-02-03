@@ -64,6 +64,7 @@
 [missing_field] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.gceZone" is not set in unstructured objects
 [missing_field] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.networkConfig.authorizedExternalNetworks[].cidrRange" is not set in unstructured objects
 [missing_field] crd=alloydbusers.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.databaseRoles[]" is not set in unstructured objects
+[missing_field] crd=apigeeenvgroups.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.hostnames[]" is not set in unstructured objects
 [missing_field] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.runtimeDatabaseEncryptionKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].action" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.newerThan" is not set in unstructured objects
@@ -1566,11 +1567,8 @@
 [missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.stagingLocation" is not set in unstructured objects
 [missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.tempLocation" is not set in unstructured objects
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.additionalExperiments[]" is not set in unstructured objects
-[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.authenticationTokenSecretVersionRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.defaultBranch" is not set in unstructured objects
 [missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.sshAuthenticationConfig.hostPublicKey" is not set in unstructured objects
 [missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.sshAuthenticationConfig.userPrivateKeySecretVersionRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.url" is not set in unstructured objects
 [missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.npmrcEnvironmentVariablesSecretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.setAuthenticatedUserAdmin" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
@@ -3752,6 +3750,8 @@
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.enableDropProtection" is not set in unstructured objects
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.versionRetentionPeriod" is not set in unstructured objects
+[missing_field] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingConfig.autoscalingLimits.maxProcessingUnits" is not set in unstructured objects
+[missing_field] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingConfig.autoscalingLimits.minProcessingUnits" is not set in unstructured objects
 [missing_field] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.processingUnits" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.cloneSource.binLogCoordinates.binLogFileName" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.cloneSource.binLogCoordinates.binLogPosition" is not set in unstructured objects

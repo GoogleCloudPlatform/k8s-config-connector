@@ -50,7 +50,7 @@ func ManualApprovals_FromProto(mapCtx *direct.MapContext, in *pb.ManualApprovals
 		return nil
 	}
 	out := &krm.ManualApprovals{}
-	out.RequireApproverJustification = direct.LazyPtr(in.GetRequireApproverJustification())
+	out.RequireApproverJustification = direct.PtrTo(in.GetRequireApproverJustification())
 	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Step_FromProto)
 	return out
 }
@@ -106,17 +106,6 @@ func PrivilegedAccessManagerEntitlementSpec_ToProto(mapCtx *direct.MapContext, i
 	out.MaxRequestDuration = direct.StringDuration_ToProto(mapCtx, in.MaxRequestDuration)
 	out.RequesterJustificationConfig = RequesterJustificationConfig_ToProto(mapCtx, in.RequesterJustificationConfig)
 	out.AdditionalNotificationTargets = AdditionalNotificationTargets_ToProto(mapCtx, in.AdditionalNotificationTargets)
-	return out
-}
-func PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement) *krm.PrivilegedAccessManagerEntitlementObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PrivilegedAccessManagerEntitlementObservedState{}
-	out.State = direct.LazyPtr(in.State.String())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.UpdateTime)
-	out.Etag = direct.LazyPtr(in.Etag)
 	return out
 }
 func RequesterJustificationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement_RequesterJustificationConfig) *krm.RequesterJustificationConfig {

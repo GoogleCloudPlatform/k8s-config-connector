@@ -68,7 +68,7 @@ type Parameters struct {
 
 func (p *Parameters) ControllerConfig() *config.ControllerConfig {
 	c := &config.ControllerConfig{
-		UserAgent: gcp.KCCUserAgent,
+		UserAgent: gcp.KCCUserAgent(),
 	}
 	if p.OAuth2Token != "" {
 		c.GCPTokenSource = oauth2.StaticTokenSource(

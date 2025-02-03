@@ -1,6 +1,6 @@
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes?alt=json&meshId=networkservicesmesh-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "Original description",
@@ -42,7 +42,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json
@@ -66,7 +66,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json&updateMask=description%2CinterceptionPort%2Clabels
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "Updated description",
@@ -94,7 +94,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json
@@ -119,7 +119,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json
@@ -135,7 +135,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json

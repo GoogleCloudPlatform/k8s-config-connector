@@ -67,9 +67,9 @@ func (in *Instance_PrivateConfig) DeepCopyInto(out *Instance_PrivateConfig) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.CaPool != nil {
-		in, out := &in.CaPool, &out.CaPool
-		*out = new(string)
+	if in.CaPoolRef != nil {
+		in, out := &in.CaPoolRef, &out.CaPoolRef
+		*out = new(v1beta1.PrivateCACAPoolRef)
 		**out = **in
 	}
 	if in.HTTPServiceAttachment != nil {
@@ -340,6 +340,11 @@ func (in *SecureSourceManagerInstanceSpec) DeepCopyInto(out *SecureSourceManager
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
 		*out = new(v1beta1.KMSCryptoKeyRef)
 		**out = **in
+	}
+	if in.PrivateConfig != nil {
+		in, out := &in.PrivateConfig, &out.PrivateConfig
+		*out = new(Instance_PrivateConfig)
+		(*in).DeepCopyInto(*out)
 	}
 }
 

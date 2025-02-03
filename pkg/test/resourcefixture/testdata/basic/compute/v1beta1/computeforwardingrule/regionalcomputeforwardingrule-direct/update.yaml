@@ -24,6 +24,9 @@ spec:
   description: "A regional forwarding rule"
   target:
     targetVPNGatewayRef:
-      name: computetargetvpngateway-${uniqueId}
+      name: computetargetvpngateway-2-${uniqueId}
   ipProtocol: "ESP"
   location: us-central1
+  ipAddress:
+    addressRef:
+      name: computeraddress-${uniqueId}

@@ -61,6 +61,7 @@ type Resource struct {
 
 // Method is a REST endpoint; a specific method against a resource.
 type Method struct {
+	Deprecated  bool   `json:"deprecated"`
 	Description string `json:"description"`
 	FlatPath    string `json:"flatPath"`
 

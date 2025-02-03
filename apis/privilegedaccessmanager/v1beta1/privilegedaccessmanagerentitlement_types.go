@@ -108,7 +108,7 @@ type PrivilegedAccessManagerEntitlementStatus struct {
 
 // PrivilegedAccessManagerEntitlementSpec defines the desired state of
 // PrivilegedAccessManagerEntitlement.
-// +kcc:proto=google.privilegedaccessmanager.v1.Entitlement
+// +kcc:proto=google.cloud.privilegedaccessmanager.v1.Entitlement
 type PrivilegedAccessManagerEntitlementObservedState struct {
 	// Output only. Create time stamp.
 	// +optional
@@ -134,7 +134,7 @@ type PrivilegedAccessManagerEntitlementObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp
+// +kubebuilder:resource:categories=gcp,shortName=gcpprivilegedaccessmanagerentitlement;gcpprivilegedaccessmanagerentitlements
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"

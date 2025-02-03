@@ -26,4 +26,7 @@ status:
     type: Ready
   externalRef: projects/${projectId}/instances/spannerinstance-sample-${uniqueId}
   observedGeneration: 2
+  observedState:
+    numNodes: 3
+    processingUnits: 3000
   state: READY

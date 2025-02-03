@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>cloudbuildworkerpool</td>
+<td>gcpcloudbuildworkerpool<br>gcpcloudbuildworkerpools<br>cloudbuildworkerpool</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>

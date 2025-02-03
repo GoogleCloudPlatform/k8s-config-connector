@@ -123,7 +123,7 @@ func RunGenerateBasicReconciler(ctx context.Context, o *GenerateBasicReconcilerO
 		OutputMapperDirectory: o.OutputMapperDirectory,
 	}
 	if err := generatemapper.RunGenerateMapper(ctx, mapperOps); err != nil {
-		return fmt.Errorf("generate types: %w", err)
+		return fmt.Errorf("generate mapper: %w", err)
 	}
 	controllerOps := &generatecontroller.GenerateControllerOptions{
 		GenerateOptions: o.GenerateOptions,
@@ -131,7 +131,7 @@ func RunGenerateBasicReconciler(ctx context.Context, o *GenerateBasicReconcilerO
 		ProtoName:       o.ProtoName,
 	}
 	if err := generatecontroller.RunController(ctx, controllerOps); err != nil {
-		return fmt.Errorf("generate types: %w", err)
+		return fmt.Errorf("generate controller: %w", err)
 	}
 	return nil
 }

@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -93,7 +93,7 @@ spec:
                       value:
                         description: Specify a threshold value that can trigger the
                           alert. For categorical feature, the distribution distance
-                          is calculated by L-infinity norm. Each feature must have
+                          is calculated by L-inifinity norm. Each feature must have
                           a non-zero threshold if they need to be monitored. Otherwise
                           no alert will be triggered for that feature. The default
                           value is 0.3.

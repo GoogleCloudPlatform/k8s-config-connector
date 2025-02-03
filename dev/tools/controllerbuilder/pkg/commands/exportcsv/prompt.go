@@ -15,13 +15,17 @@
 package exportcsv
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
+	kccio "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/io"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 
 	"github.com/spf13/cobra"
@@ -33,12 +37,19 @@ type PromptOptions struct {
 
 	ProtoDir string
 	SrcDir   string
+	Output   string
+
+	// StrictInputColumnKeys ensures that all input datapoints have this shape.
+	// This helps detect typos in the examples.
+	StrictInputColumnKeys []string
 }
 
 // BindFlags binds the flags to the command.
 func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.SrcDir, "src-dir", o.SrcDir, "base directory for source code")
 	cmd.Flags().StringVar(&o.ProtoDir, "proto-dir", o.ProtoDir, "base directory for checkout of proto API definitions")
+	cmd.Flags().StringVar(&o.Output, "output", o.Output, "the directory to store the prompt outcome")
+	cmd.Flags().StringSliceVar(&o.StrictInputColumnKeys, "strict-input-columns", o.StrictInputColumnKeys, "return an error if we see an irregular datapoint for this tool")
 }
 
 // BuildPromptCommand builds the `prompt` command.
@@ -75,6 +86,7 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	if o.ProtoDir == "" {
 		return fmt.Errorf("--proto-dir is required")
 	}
+
 	extractor := &toolbot.ExtractToolMarkers{}
 	addProtoDefinition, err := toolbot.NewEnhanceWithProtoDefinition(o.ProtoDir)
 	if err != nil {
@@ -83,6 +95,10 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition)
 	if err != nil {
 		return err
+	}
+
+	if len(o.StrictInputColumnKeys) != 0 {
+		x.StrictInputColumnKeys = sets.New(o.StrictInputColumnKeys...)
 	}
 
 	if o.SrcDir != "" {
@@ -96,7 +112,7 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		return fmt.Errorf("reading from stdin: %w", err)
 	}
 
-	dataPoints, err := x.BuildDataPoints(ctx, b)
+	dataPoints, err := x.BuildDataPoints(ctx, "<prompt>", b)
 	if err != nil {
 		return err
 	}
@@ -109,9 +125,28 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 
 	log.Info("built data point", "dataPoint", dataPoint)
 
-	if err := x.RunGemini(ctx, dataPoint, os.Stdout); err != nil {
+	out := &bytes.Buffer{}
+	if err := x.RunGemini(ctx, dataPoint, out); err != nil {
 		return fmt.Errorf("running LLM inference: %w", err)
 
 	}
+
+	if o.Output == "" {
+		fmt.Println(out)
+		return nil
+	}
+
+	if tmpF, err := kccio.WriteToCache(ctx, o.Output, out.String(), fileNamePattern(dataPoint)); err != nil {
+		return err
+	} else {
+		fmt.Println(tmpF)
+	}
 	return nil
+}
+
+func fileNamePattern(dataPoint *toolbot.DataPoint) string {
+	for k, _ := range dataPoint.Input {
+		return strings.Replace(k, " ", "-", -1)
+	}
+	return ""
 }

@@ -1,0 +1,54 @@
+#!/bin/bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
+if [[ -z "${PROTO:-}" ]]; then
+  echo "PROTO must be set. e.g. google.bigtable.admin.v2.Table"
+  exit 1
+fi
+
+if [[ -z "${KIND:-}" ]]; then
+  echo "KIND must be set. e.g. BigtableTable"
+  exit 1
+fi
+
+if [[ -z "${OUTPUT:-}" ]]; then
+  OUTPUT="${REPO_ROOT}/.generate"
+fi
+
+go run . prompt --src-dir="${REPO_ROOT}" --proto-dir="${REPO_ROOT}/dev/tools/proto-to-mapper/third_party/googleapis/" --output=${OUTPUT} <<EOF
+// +kcc:proto=${PROTO}
+// kind: ${KIND}
+EOF
+
+# output=$(go run . prompt --src-dir="${REPO_ROOT}" --proto-dir="${REPO_ROOT}/dev/tools/proto-to-mapper/third_party/googleapis/" --output=${OUTPUT} <<EOF
+# // +kcc:proto=${PROTO}
+# EOF
+# 2>&1)
+
+# last_line="${output##*$'\n'}"
+
+# echo "Output is cached to $last_line"
+# mv ${last_line} ${last_line}-${PROTO,,}
+
+# SRC_FILE=${REPO_ROOT}/.generate/${last_line}-${PROTO,,}-modify
+
+# go run . apply --src-file=${SRC_FILE} --dest-file=${1}

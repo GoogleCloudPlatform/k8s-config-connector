@@ -88,6 +88,7 @@ func addResourceConfig(t *testing.T, smLoader *servicemappingloader.ServiceMappi
 // TODO(yuwenma): This is a temp fix. We should use a more generic approach.
 func IsPureDirectResource(gk schema.GroupKind) bool {
 	pureDirectResources := []string{
+		"ApigeeEnvgroup",
 		"BigQueryConnectionConnection",
 		"BigQueryDataTransferConfig",
 		"CloudBuildWorkerPool",
@@ -103,6 +104,8 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"Workstation",
 		"KMSAutokeyConfig",
 		"KMSKeyHandle",
+		"SecureSourceManagerInstance",
+		"SecureSourceManagerRepository",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }

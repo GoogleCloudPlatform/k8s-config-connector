@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -67,9 +68,9 @@ func (s *RegionalAddressesV1) Insert(ctx context.Context, req *pb.InsertAddressR
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#address")
-	if obj.Address == nil {
-		obj.Address = PtrTo("8.8.8.8")
-	}
+	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))
+
+	s.populateDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -84,6 +85,26 @@ func (s *RegionalAddressesV1) Insert(ctx context.Context, req *pb.InsertAddressR
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
 	})
+}
+
+func (s *RegionalAddressesV1) populateDefaults(obj *pb.Address) {
+	if obj.Address == nil {
+		obj.Address = PtrTo("8.8.8.8")
+	}
+	if obj.AddressType == nil {
+		obj.AddressType = PtrTo("EXTERNAL")
+	}
+	if obj.Description == nil {
+		obj.Description = PtrTo("")
+	}
+	if obj.NetworkTier == nil {
+		obj.NetworkTier = PtrTo("PREMIUM")
+	}
+	if obj.Status == nil {
+		obj.Status = PtrTo("RESERVED")
+	}
+
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.Labels))
 }
 
 func (s *RegionalAddressesV1) Delete(ctx context.Context, req *pb.DeleteAddressRequest) (*pb.Operation, error) {

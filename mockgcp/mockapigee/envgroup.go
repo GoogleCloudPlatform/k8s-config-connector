@@ -27,6 +27,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/apigee/v1"
+	field_mask "google.golang.org/protobuf/types/known/fieldmaskpb"
 )
 
 type EnvgroupV1 struct {
@@ -63,8 +64,10 @@ func (s *EnvgroupV1) CreateOrganizationsEnvgroup(ctx context.Context, req *pb.Cr
 	fqn := name.String()
 
 	obj := proto.Clone(req.OrganizationsEnvgroup).(*pb.GoogleCloudApigeeV1EnvironmentGroup)
-	obj.CreatedAt = timestamppb.Now().GetSeconds()
-	obj.LastModifiedAt = timestamppb.Now().GetSeconds()
+
+	now := timestamppb.Now().GetSeconds()
+	obj.CreatedAt = now
+	obj.LastModifiedAt = now
 	obj.State = "ACTIVE"
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -79,16 +82,58 @@ func (s *EnvgroupV1) CreateOrganizationsEnvgroup(ctx context.Context, req *pb.Cr
 	}
 	opPrefix := fmt.Sprintf("organizations/%s", name.Organization)
 
-	// TODO: StartLRO
 	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, func() *pb.GoogleCloudApigeeV1EnvironmentGroup {
-		obj.Name = name.EnvGroupName
-		obj.State = "ACTIVE"
-		return obj
+		retObj := proto.Clone(obj).(*pb.GoogleCloudApigeeV1EnvironmentGroup)
+		retObj.State = "ACTIVE"
+		retObj.CreatedAt = 0
+		retObj.LastModifiedAt = 0
+		return retObj
 	}())
 }
 
-func (s *EnvgroupV1) PatchOrganizationsEnvgroup(context.Context, *pb.PatchOrganizationsEnvgroupRequest) (*longrunningpb.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "***method PatchOrganizationsEnvgroup not implemented")
+func (s *EnvgroupV1) PatchOrganizationsEnvgroup(ctx context.Context, req *pb.PatchOrganizationsEnvgroupRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseEnvGroupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.GoogleCloudApigeeV1EnvironmentGroup{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// Required. A list of fields to be updated in this request.
+	paths := req.GetUpdateMask()
+	fieldMask, err := field_mask.New(obj, paths)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, path := range fieldMask.GetPaths() {
+		switch path {
+		case "hostnames":
+			obj.Hostnames = req.OrganizationsEnvgroup.Hostnames
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	opMetadata := &pb.GoogleCloudApigeeV1OperationMetadata{
+		OperationType:      "UPDATE",
+		State:              "FINISHED",
+		TargetResourceName: fqn,
+	}
+	opPrefix := fmt.Sprintf("organizations/%s", name.Organization)
+
+	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, func() *pb.GoogleCloudApigeeV1EnvironmentGroup {
+		retObj := proto.Clone(obj).(*pb.GoogleCloudApigeeV1EnvironmentGroup)
+		return retObj
+	}())
 }
 
 func (s *EnvgroupV1) DeleteOrganizationsEnvgroup(ctx context.Context, req *pb.DeleteOrganizationsEnvgroupRequest) (*longrunningpb.Operation, error) {
@@ -113,23 +158,22 @@ func (s *EnvgroupV1) DeleteOrganizationsEnvgroup(ctx context.Context, req *pb.De
 	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, &emptypb.Empty{})
 }
 
-type envGroupName struct {
+type EnvGroupName struct {
 	Organization string
 	EnvGroupName string
-	CAPoolName   string
 }
 
-func (n *envGroupName) String() string {
+func (n *EnvGroupName) String() string {
 	return "organizations/" + n.Organization + "/envgroups/" + n.EnvGroupName
 }
 
 // parseEnvGroupName parses a string into a envgroupName.
 // The expected form is organizations/<projectID>/envgroups/<name>
-func (s *MockService) parseEnvGroupName(name string) (*envGroupName, error) {
+func (s *MockService) parseEnvGroupName(name string) (*EnvGroupName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && tokens[0] == "organizations" && tokens[2] == "envgroups" {
-		name := &envGroupName{
+		name := &EnvGroupName{
 			Organization: tokens[1],
 			EnvGroupName: tokens[3],
 		}

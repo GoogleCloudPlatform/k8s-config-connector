@@ -6,7 +6,7 @@ generate-code: generate-pb
 generate-pb: install-protoc-linux
 	mkdir -p third_party
 	mkdir -p build
-	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git reset --hard origin/master && git pull)
+	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git fetch --all && git reset --hard origin/master && git pull)
 	protoc --include_imports --include_source_info \
 		-I ./third_party/googleapis/ \
 		-I ../../../mockgcp/apis \

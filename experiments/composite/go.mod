@@ -2,4 +2,4 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/composite
 
 go 1.22
 
-toolchain go1.23.2
+toolchain go1.23.4

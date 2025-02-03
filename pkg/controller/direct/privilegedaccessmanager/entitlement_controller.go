@@ -290,7 +290,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("successfully created PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 
 	status := &krm.PrivilegedAccessManagerEntitlementStatus{}
-	observedState := PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx, created)
+	observedState := PrivilegedAccessManagerEntitlementObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -320,9 +320,17 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("'spec.additionalNotificationTargets' field is updated (-old +new)", cmp.Diff(parsedActual.AdditionalNotificationTargets, parsedDesired.Spec.AdditionalNotificationTargets))
 		updateMask.Paths = append(updateMask.Paths, "additional_notification_targets")
 	}
-	if !reflect.DeepEqual(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow) {
-		log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow))
-		updateMask.Paths = append(updateMask.Paths, "approval_workflow")
+
+	// If '.spec.approvalWorkflow.manualApprovals.requireApproverJustification'
+	// is unset in the desired state, the corresponding field will be 'false' in
+	// the returned actual state when 'approvalWorkflow.manualApprovals' is not
+	// an empty struct. So the diffing needs to be handled differently.
+	if !(isApprovalWorkflowManualApprovalsRequireApproverJustificationUnset(&parsedDesired.Spec) &&
+		isApprovalWorkflowManualApprovalsRequireApproverJustificationSetToFalse(parsedActual)) {
+		if !reflect.DeepEqual(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow) {
+			log.V(2).Info("'spec.approvalWorkflow' field is updated (-old +new)", cmp.Diff(parsedActual.ApprovalWorkflow, parsedDesired.Spec.ApprovalWorkflow))
+			updateMask.Paths = append(updateMask.Paths, "approval_workflow")
+		}
 	}
 	if !reflect.DeepEqual(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers) {
 		log.V(2).Info("'spec.eligibleUsers' field is updated (-old +new)", cmp.Diff(parsedActual.EligibleUsers, parsedDesired.Spec.EligibleUsers))
@@ -344,7 +352,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.V(2).Info("underlying PrivilegedAccessManagerEntitlement already up to date", "name", a.id.FullyQualifiedName())
 
 		status := &krm.PrivilegedAccessManagerEntitlementStatus{}
-		observedState := PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx, a.actual)
+		observedState := PrivilegedAccessManagerEntitlementObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -379,12 +387,25 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("successfully updated PrivilegedAccessManagerEntitlement", "name", a.id.FullyQualifiedName())
 
 	status := &krm.PrivilegedAccessManagerEntitlementStatus{}
-	observedState := PrivilegedAccessManagerEntitlementStatusObservedState_FromProto(mapCtx, updated)
+	observedState := PrivilegedAccessManagerEntitlementObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ObservedState = observedState
 	return setStatus(u, status)
+}
+
+func isApprovalWorkflowManualApprovalsRequireApproverJustificationUnset(spec *krm.PrivilegedAccessManagerEntitlementSpec) bool {
+	return spec.ApprovalWorkflow == nil ||
+		spec.ApprovalWorkflow.ManualApprovals == nil ||
+		spec.ApprovalWorkflow.ManualApprovals.RequireApproverJustification == nil
+}
+
+func isApprovalWorkflowManualApprovalsRequireApproverJustificationSetToFalse(spec *krm.PrivilegedAccessManagerEntitlementSpec) bool {
+	return spec.ApprovalWorkflow != nil &&
+		spec.ApprovalWorkflow.ManualApprovals != nil &&
+		spec.ApprovalWorkflow.ManualApprovals.RequireApproverJustification != nil &&
+		*spec.ApprovalWorkflow.ManualApprovals.RequireApproverJustification == false
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

@@ -1,0 +1,135 @@
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=alloydbinstance-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}
+
+{
+  "instanceType": 1,
+  "labels": {
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Instance",
+    "availabilityType": "REGIONAL",
+    "clientConnectionConfig": {
+      "sslConfig": {
+        "sslMode": "ENCRYPTED_ONLY"
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "geminiConfig": {},
+    "instanceType": "PRIMARY",
+    "ipAddress": "10.1.2.3",
+    "labels": {
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
+    "nodes": [
+      {
+        "zoneId": "europe-west1-c"
+      }
+    ],
+    "observabilityConfig": {
+      "enabled": false,
+      "maxQueryStringLength": 10240,
+      "preserveComments": false,
+      "queryPlansPerMinute": 20,
+      "recordApplicationTags": false,
+      "trackActiveQueries": false,
+      "trackClientAddress": false,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
+    "queryInsightsConfig": {
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
+    },
+    "state": "READY",
+    "uid": "12345678",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "writableNode": {
+      "zoneId": "europe-west1-b"
+    }
+  }
+}

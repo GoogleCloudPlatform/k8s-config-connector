@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"time"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
@@ -33,4 +34,27 @@ func (s *GlobalOperationsV1) Get(ctx context.Context, req *pb.GetGlobalOperation
 	}
 
 	return lro, nil
+}
+
+func (s *GlobalOperationsV1) Wait(ctx context.Context, req *pb.WaitGlobalOperationRequest) (*pb.Operation, error) {
+	fqn := s.globalOperationFQN(req.Project, req.Operation)
+
+	deadline := 2 * time.Minute
+	timeoutAt := time.Now().Add(deadline)
+	for {
+		lro, err := s.getOperation(ctx, fqn)
+		if err != nil {
+			return nil, err
+		}
+		switch ValueOf(lro.Status) {
+		case pb.Operation_DONE:
+			return lro, nil
+		}
+
+		if time.Now().After(timeoutAt) {
+			return lro, nil
+		}
+
+		time.Sleep(2 * time.Second)
+	}
 }

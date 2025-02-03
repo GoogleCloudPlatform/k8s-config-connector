@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -73,6 +74,13 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = "1970-01-01T00:00:00Z"
+
+	// Apigee
+	visitor.replacePaths[".status.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.observedState.createdAt"] = time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix()
+	visitor.replacePaths[".status.observedState.lastModifiedAt"] = time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix()
 
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
@@ -184,6 +192,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to SecretManager
 	visitor.replacePaths[".expireTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Specific to CloudIdentityMembership
+	visitor.replacePaths[".membership.createTime"] = "2025-01-17T18:51:02.320337735Z"
+	visitor.replacePaths[".membership.updateTime"] = "2025-01-17T18:51:02.320337735Z"
 
 	// Specific to BigQueryConnectionConnection.
 	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "048077221682493034546"
@@ -307,7 +319,8 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
-			if n >= 2 {
+			if n >= 3 {
+				// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
 				typeName := tokens[len(tokens)-2]
 				firewallPolicyId := tokens[len(tokens)-3]
 				if typeName == "rules" {
@@ -339,6 +352,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${groupID}")
+				})
+
+			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityMembership"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${membershipID}")
 				})
 			}
 		}
@@ -708,12 +726,17 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
-	// Compute resources
-	visitor.sortSlices.Insert(".subnetworks")
-
 	// Specific to Apigee
-	visitor.replacePaths[".response.lastModifiedAt"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".response.createdAt"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".response.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".response.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	{
+		visitor.sortSlices.Insert(".response.properties.property")
+		visitor.sortSlices.Insert(".properties.property")
+		visitor.replacePaths[".expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+		visitor.replacePaths[".createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+		visitor.replacePaths[".lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	}
 
 	for _, event := range events {
 		// Compute URLs: Replace any compute beta URLs with v1 URLs
@@ -822,6 +845,14 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.ReplacePath(".cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
 		visitor.ReplacePath(".creationTime", "123456789")
 		visitor.ReplacePath(".lastModifiedTime", "123456789")
+	}
+
+	// Compute
+	{
+		visitor.sortSlices.Insert(".subnetworks")
+
+		visitor.replacePaths[".labelFingerprint"] = "abcdef0123A="
+		visitor.replacePaths[".address"] = "8.8.8.8"
 	}
 
 	// Run visitors

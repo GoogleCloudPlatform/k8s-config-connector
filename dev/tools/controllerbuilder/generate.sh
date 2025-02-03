@@ -32,7 +32,7 @@ go run . generate-types \
     --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
     --resource DiscoveryEngineEngine:Engine
 
-# go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/dev/tools/proto-to-mapper/third_party/googleapis/ <<EOF
+# go run . prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF
 # // +kcc:proto=google.cloud.discoveryengine.v1.Engine
 # EOF
 
@@ -176,7 +176,38 @@ go run main.go generate-types \
 
 go run . generate-mapper \
    --service google.spanner.admin.instance.v1  \
-   --api-version "spanner.cnrm.cloud.google.com/v1beta1" \
+   --api-version "spanner.cnrm.cloud.google.com/v1beta1"
+
+# IAPSettings
+go run . generate-types \
+    --service google.cloud.iap.v1 \
+    --api-version iap.cnrm.cloud.google.com/v1alpha1 \
+    --resource IAPSettings:IapSettings
+
+go run . generate-mapper \
+    --service google.cloud.iap.v1 \
+    --api-version iap.cnrm.cloud.google.com/v1alpha1
+
+# ManagedKafka
+go run . generate-types \
+    --service google.cloud.managedkafka.v1 \
+    --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+    --resource ManagedKafkaCluster:Cluster
+
+go run . generate-mapper \
+    --service google.cloud.managedkafka.v1 \
+    --api-version managedkafka.cnrm.cloud.google.com/v1alpha1
+
+# PrivilegedAccessManager
+go run . generate-mapper \
+    --service google.cloud.privilegedaccessmanager.v1 \
+    --api-version privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
+
+# Apigee
+go run . generate-types \
+    --service mockgcp.cloud.apigee.v1 \
+    --api-version apigee.cnrm.cloud.google.com/v1alpha1 \
+    --resource ApigeeInstance:GoogleCloudApigeeV1Instance
 
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

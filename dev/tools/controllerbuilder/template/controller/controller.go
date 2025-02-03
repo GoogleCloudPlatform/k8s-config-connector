@@ -74,7 +74,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.{{.Kind}}GVK, New{{.Kind}}Model)
+	registry.RegisterModel(krm.{{.Kind}}GVK, New{{.ProtoResource}}Model)
 }
 
 func New{{.ProtoResource}}Model(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -129,9 +129,9 @@ func (m *model{{.ProtoResource}}) AdapterForURL(ctx context.Context, url string)
 }
 
 type {{.ProtoResource}}Adapter struct {
-	id         *krm.{{.ProtoResource}}Ref
+	id         *krm.{{.ProtoResource}}Identity
 	gcpClient  *gcp.Client
-	desired    *krm.{{.ProtoResource}}
+	desired    *krm.{{.Kind}}
 	actual     *{{.KCCService}}pb.{{.ProtoResource}}
 }
 

@@ -1,7 +1,7 @@
 GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
 
 404 Not Found
 Cache-Control: private
@@ -33,8 +33,8 @@ X-Xss-Protection: 0
 
 POST https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles?%24alt=json%3Benum-encoding%3Dint&keyHandleId=5a4fa10e-995d-4ee0-a426-a220aa390320
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: parent=projects%2F${uniqueId}%2Flocations%2Fus-central1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${uniqueId}%2Flocations%2Fus-central1
 
 {
   "name": "projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320",
@@ -60,8 +60,8 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -88,8 +88,8 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${uniqueId}/locations/us-central1/keyHandles/5a4fa10e-995d-4ee0-a426-a220aa390320?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
 
 200 OK
 Cache-Control: private

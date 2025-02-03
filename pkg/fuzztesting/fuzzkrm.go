@@ -36,6 +36,10 @@ func RegisterKRMFuzzer(fuzzer KRMFuzzer) {
 	RegisterFuzzer(fuzzer.FuzzStatus)
 }
 
+func RegisterKRMSpecFuzzer(fuzzer KRMFuzzer) {
+	RegisterFuzzer(fuzzer.FuzzSpec)
+}
+
 func RegisterFuzzer(fuzzer FuzzFn) {
 	fuzzers = append(fuzzers, fuzzer)
 }
@@ -92,6 +96,27 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, 
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
 	fuzzer.Fuzz(t, seed)
+}
+
+type NoStatus struct{}
+
+// NewKRMTypedSpecFuzzer is a convenience function for creating a fuzzer that only
+// fuzzes the spec fields of a KRM type.
+func NewKRMTypedSpecFuzzer[ProtoT proto.Message, SpecType any](
+	protoType ProtoT,
+	specFromProto func(ctx *direct.MapContext, in ProtoT) *SpecType,
+	specToProto func(ctx *direct.MapContext, in *SpecType) ProtoT,
+) *KRMTypedFuzzer[ProtoT, SpecType, NoStatus] {
+	return &KRMTypedFuzzer[ProtoT, SpecType, NoStatus]{
+		ProtoType:           protoType,
+		SpecFromProto:       specFromProto,
+		SpecToProto:         specToProto,
+		StatusFromProto:     nil, // No status functions
+		StatusToProto:       nil, // No status functions
+		UnimplementedFields: sets.New[string](),
+		SpecFields:          sets.New[string](),
+		StatusFields:        sets.New[string](),
+	}
 }
 
 type FuzzTest[ProtoT proto.Message, KRMType any] struct {

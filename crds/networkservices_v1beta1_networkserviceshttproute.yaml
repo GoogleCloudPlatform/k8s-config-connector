@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.125.0
+    cnrm.cloud.google.com/version: 1.128.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -359,7 +359,7 @@ spec:
                             pathRedirect:
                               description: The path that will be used in the redirect
                                 response instead of the one that was supplied in the
-                                request. path_redirect cannot be supplied together
+                                request. path_redirect can not be supplied together
                                 with prefix_redirect. Supply one alone or neither.
                                 If neither is supplied, the path of the original request
                                 will be used for the redirect.
@@ -626,7 +626,7 @@ spec:
                             type: array
                           ignoreCase:
                             description: Specifies if prefix_match and full_path_match
-                              matches are case-sensitive. The default value is false.
+                              matches are case sensitive. The default value is false.
                             type: boolean
                           prefixMatch:
                             description: The HTTP request path value must begin with
