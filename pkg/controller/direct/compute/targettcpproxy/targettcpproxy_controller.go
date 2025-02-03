@@ -20,8 +20,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-
 	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/compute/apiv1"
@@ -265,17 +263,16 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	updated := &computepb.TargetTcpProxy{}
 
 	parent := a.id.Parent()
-
-	// Regional API does not support Update
-	if parent.Location != "global" {
-		return fmt.Errorf("update operation not supported for resource %v %v",
-			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
-	}
-
 	tokens := strings.Split(a.id.String(), "/")
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
+	// Regional API does not support Update
+	errorMessage := fmt.Sprintf("Update operation not supported for regional ComputeTargetTCPProxy")
 	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
+		updateOp.RecordUpdatingEvent()
+		if parent.Location != "global" {
+			return fmt.Errorf("%s", errorMessage)
+		}
 		setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
 			Project: parent.ProjectID,
 			TargetTcpProxiesSetProxyHeaderRequestResource: &computepb.TargetTcpProxiesSetProxyHeaderRequest{ProxyHeader: targetTCPProxy.ProxyHeader},
@@ -295,6 +292,10 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 
 	if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) {
+		updateOp.RecordUpdatingEvent()
+		if parent.Location != "global" {
+			return fmt.Errorf("%s", errorMessage)
+		}
 		setBackendServiceReq := &computepb.SetBackendServiceTargetTcpProxyRequest{
 			Project: parent.ProjectID,
 			TargetTcpProxiesSetBackendServiceRequestResource: &computepb.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},

@@ -189,33 +189,6 @@ func init() {
 		SkipUpdate:   true,
 	}
 
-	resourceContextMap["regionalcomputetargettcpproxy"] = ResourceContext{
-		ResourceKind: "ComputeTargetTCPProxy",
-		SkipUpdate:   true, // API does not support UPDATE/PATCH.
-	}
-
-	resourceContextMap["computetargettcpproxy"] = ResourceContext{
-		ResourceKind: "ComputeTargetTCPProxy",
-	}
-
-	resourceContextMap["globalcomputeforwardingrule"] = ResourceContext{
-		ResourceKind: "ComputeForwardingRule",
-		SkipUpdate:   true, // The only field which supports update is targetRef, which currently cannot be used for testing updates because of b/147506185
-		// TestCreateNoChangeUpdateDelete/basic-globalcomputeforwardingrule: dynamic_controller_integration_test.go:239:
-		//   reconcile returned unexpected error: Update call failed: error applying desired state: Error creating
-		//   GlobalForwardingRule: googleapi: Error 400: Invalid value for field 'resource.IPAddress': '34.95.75.26'.
-		//   Invalid IP address specified., invalid
-		SkipDriftDetection: true,
-	}
-
-	resourceContextMap["regionalcomputeforwardingrule"] = ResourceContext{
-		ResourceKind: "ComputeForwardingRule",
-		SkipUpdate:   false,
-		// TestCreateNoChangeUpdateDelete/basic-regionalcomputeforwardingrule: dynamic_controller_integration_test.go:149:
-		//   value mismatch for label with key 'label-one': got 'value-two', want 'value-one'
-		SkipDriftDetection: true,
-	}
-
 	resourceContextMap["computevpngateway"] = ResourceContext{
 		ResourceKind: "ComputeVPNGateway",
 		SkipUpdate:   true,
