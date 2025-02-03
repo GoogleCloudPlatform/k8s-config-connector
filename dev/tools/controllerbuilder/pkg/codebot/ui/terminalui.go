@@ -17,7 +17,11 @@ package ui
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
+	"strings"
+
+	"k8s.io/klog/v2"
 )
 
 type TerminalUI struct {
@@ -30,17 +34,42 @@ func NewTerminalUI() UI {
 
 func (u *TerminalUI) Run() error {
 	reader := bufio.NewReader(os.Stdin)
+	var text strings.Builder
+	lastLine := "\n"
 	for {
-		fmt.Printf(">>> ")
-		text, err := reader.ReadString('\n')
+		if text.Len() == 0 {
+			fmt.Printf(">>> ")
+		} else {
+			fmt.Printf("... ")
+		}
+		line, err := reader.ReadString('\n')
 		if err != nil {
-			return fmt.Errorf("reading from stdin: %w", err)
+			if err != io.EOF {
+				return fmt.Errorf("reading from stdin: %w", err)
+			}
 		}
-		// fmt.Println(text)
+		text.WriteString(line)
 
-		if err := u.callback(text); err != nil {
-			return fmt.Errorf("error running callback: %w", err)
+		// Only process if we have two empty lines in a row
+		// This allows users to enter multiline prompts
+		// (at the expense of requiring them to hit enter three times!)
+		if err == io.EOF || (line == "\n" && lastLine == "\n") {
+			if text.String() == "" {
+				if err == io.EOF {
+					return nil
+				} else {
+					fmt.Printf("I am but an LLM, I need instruction\n")
+					text.Reset()
+					continue
+				}
+			}
+			klog.V(2).Infof("sending text: %s", text.String())
+			if err := u.callback(text.String()); err != nil {
+				return fmt.Errorf("error running callback: %w", err)
+			}
+			text.Reset()
 		}
+		lastLine = line
 	}
 }
 
