@@ -57,14 +57,6 @@ type modelLoggingLink struct {
 
 func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
 
-	/*
-		var opts []option.ClientOption
-		opts, err := m.config.RESTClientOptions()
-		if err != nil {
-			return nil, err
-		}
-	*/
-
 	gcpClient, err := gcp.NewConfigRESTClient(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("building Logging Config client: %w", err)
@@ -173,6 +165,7 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	fmt.Printf("About to create link <%v>\n", resourceID)
 	op, err := a.gcpClient.CreateLink(ctx, req)
 	fmt.Printf("Created link: Err <%v>\n", err)
+	fmt.Printf("Created link: Op <%v>\n", op)
 	if err != nil {
 		return fmt.Errorf("creating Link %s: %w\n", a.id.External, err)
 	}
