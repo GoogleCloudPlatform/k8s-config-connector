@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
@@ -47,6 +48,11 @@ func TestIDTemplateCanBeUsedToMatchResourceNameShouldHaveValue(t *testing.T) {
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
 	for _, sm := range serviceMappings {
 		for _, rc := range sm.Spec.Resources {
+			// TODO: Remove the test file after all the resources are migrated to direct.
+			// The 'Direct' indicator is necessary during the migration so
+			// that Config Connector uses direct approach to generate CRDs
+			// but still allow TF-based controller to reconcile the resource.
+			// After the migration is completed, no service mapping should be left.
 			if rc.Direct {
 				continue
 			}
@@ -99,6 +105,45 @@ func TestServiceHostName(t *testing.T) {
 	}
 }
 
+func TestDirectResourceConfigsForMigrationOnly(t *testing.T) {
+	smLoader := testservicemappingloader.New(t)
+	var allDirectRCs []string
+	gvks := k8s.SortGVKsByKind(supportedgvks.BasedOnAllServiceMappings(smLoader))
+	for _, gvk := range gvks {
+		rcs, err := smLoader.GetResourceConfigs(gvk)
+		if err != nil {
+			t.Fatalf("error getting resource config for gvk %+v", gvk)
+		}
+		if len(rcs) == 0 {
+			t.Errorf("no resource config for gvk %+v but there should be at least one", gvk)
+		}
+		directCount := 0
+		var directRCs []string
+		for _, rc := range rcs {
+			if rc.Direct {
+				directCount++
+
+				// Only a Kind that is still TF-based can have `direct: true` in
+				// its resource config(s).
+				if !supportedgvks.IsTFBasedByGVK(gvk) {
+					t.Errorf("gvk %+v (resource config %v) is set to direct but it is not in direct migration", gvk, rc.Name)
+				}
+				directRCs = append(directRCs, fmt.Sprintf("gvk=%+v, resourceConfigName=%v", gvk, rc.Name))
+			}
+		}
+		if directCount == len(rcs) {
+			allDirectRCs = append(allDirectRCs, directRCs...)
+		} else if directCount == 0 {
+			continue
+		} else {
+			t.Errorf("%v out of %v resource configs mapping to gvk %+v is/are direct, but all should be direct or none should be direct", directCount, len(rcs), gvk)
+		}
+	}
+
+	want := strings.Join(allDirectRCs, "\n")
+	test.CompareGoldenFile(t, "testdata/resourcesindirectmigration.txt", want)
+}
+
 func TestIAMPolicyMappings(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
@@ -110,6 +155,11 @@ func TestIAMPolicyMappings(t *testing.T) {
 			if rc.Kind == "ComputeBackendService" {
 				continue
 			}
+			// TODO: Remove the test file after all the resources are migrated to direct.
+			// The 'Direct' indicator is necessary during the migration so
+			// that Config Connector uses direct approach to generate CRDs
+			// but still allow TF-based controller to reconcile the resource.
+			// After the migration is completed, no service mapping should be left.
 			if rc.Direct { // Do not check for direct resource
 				continue
 			}
@@ -612,6 +662,11 @@ func TestMustHaveIDTemplateOrServerGeneratedId(t *testing.T) {
 }
 
 func assertIDTemplateOrServerGeneratedID(t *testing.T, rc v1alpha1.ResourceConfig) {
+	// TODO: Remove the test file after all the resources are migrated to direct.
+	// The 'Direct' indicator is necessary during the migration so
+	// that Config Connector uses direct approach to generate CRDs
+	// but still allow TF-based controller to reconcile the resource.
+	// After the migration is completed, no service mapping should be left.
 	if !rc.Direct && rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
 		t.Fatalf("resource kind '%v' with name '%v' has neither id template or server generated ID defined: at least one must be present", rc.Kind, rc.Name)
 	}
@@ -1270,8 +1325,14 @@ func TestStorageVersionIsSetAndValidIFFV1alpha1ToV1beta1IsSet(t *testing.T) {
 				continue
 			}
 			if isV1alpha1ToV1beta1 {
-				// if this is a direct resource, the storage version is defiend
-				// in the kubebuilder tooling
+				// If this is a direct resource, the storage version is defined
+				// in the kubebuilder tooling.
+				//
+				// TODO: Remove the test file after all the resources are migrated to direct.
+				// The 'Direct' indicator is necessary during the migration so
+				// that Config Connector uses direct approach to generate CRDs
+				// but still allow TF-based controller to reconcile the resource.
+				// After the migration is completed, no service mapping should be left.
 				if r.Direct {
 					continue
 				}

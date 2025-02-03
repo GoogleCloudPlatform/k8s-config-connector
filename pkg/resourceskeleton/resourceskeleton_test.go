@@ -124,6 +124,11 @@ func ensureAssetTCExistsForEachResourceConfig(t *testing.T, smLoader *servicemap
 	}
 	for _, sm := range smLoader.GetServiceMappings() {
 		for _, rc := range sm.Spec.Resources {
+			// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
+			// The 'Direct' indicator won't be needed after we finish all the migrations.
+			// The 'Direct' indicator is necessary during the migration so
+			// that Config Connector uses direct approach to generate CRDs
+			// but still allow TF-based controller to reconcile the resource.
 			if rc.Direct {
 				continue
 			}
@@ -147,6 +152,11 @@ func ensureURITCExistsForEachResourceConfig(t *testing.T, smLoader *servicemappi
 	}
 	for _, sm := range smLoader.GetServiceMappings() {
 		for _, rc := range sm.Spec.Resources {
+			// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
+			// The 'Direct' indicator won't be needed after we finish all the migrations.
+			// The 'Direct' indicator is necessary during the migration so
+			// that Config Connector uses direct approach to generate CRDs
+			// but still allow TF-based controller to reconcile the resource.
 			if rc.Direct {
 				continue
 			}

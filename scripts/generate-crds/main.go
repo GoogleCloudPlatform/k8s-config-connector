@@ -124,6 +124,11 @@ func generateTFBasedCRDs() []*apiextensions.CustomResourceDefinition {
 			crds := make([]*apiextensions.CustomResourceDefinition, 0)
 			directCount := 0
 			for _, rc := range rcs {
+				// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
+				// The 'Direct' indicator won't be needed after we finish all the migrations.
+				// The 'Direct' indicator is necessary during the migration so
+				// that Config Connector uses direct approach to generate CRDs
+				// but still allow TF-based controller to reconcile the resource.
 				if rc.Direct {
 					fmt.Printf("skip generate TF-based CRD for direct resource %s\n", rc.Kind)
 					directCount += 1

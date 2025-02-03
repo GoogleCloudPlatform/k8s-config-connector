@@ -75,6 +75,11 @@ func getResourceConfigIDSet(t *testing.T, smLoader *servicemappingloader.Service
 	resourceConfigIds := make(map[string]bool, 0)
 	for _, sm := range sms {
 		for _, rc := range sm.Spec.Resources {
+			// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
+			// The 'Direct' indicator won't be needed after we finish all the migrations.
+			// The 'Direct' indicator is necessary during the migration so
+			// that Config Connector uses direct approach to generate CRDs
+			// but still allow TF-based controller to reconcile the resource.
 			if rc.Direct {
 				continue
 			}
