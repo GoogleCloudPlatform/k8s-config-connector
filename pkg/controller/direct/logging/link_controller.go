@@ -69,7 +69,6 @@ func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error
 	if err != nil {
 		return nil, fmt.Errorf("building Logging Config client: %w", err)
 	}
-	fmt.Printf("CLIENT SET UP WITHOUT ERROR\n")
 	return gcpClient, err
 }
 
@@ -281,7 +280,6 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 // Delete implements the Adapter interface.
 func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	fmt.Printf("INSIDE DELETE COMMAND")
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Link", "name", a.id.External)
 	fmt.Printf("Deleting Link:  <%v>\n", a.id.External)
