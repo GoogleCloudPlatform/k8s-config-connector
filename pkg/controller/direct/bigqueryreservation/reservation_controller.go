@@ -161,6 +161,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	mapCtx := &direct.MapContext{}
 
 	desiredPb := BigqueryReservationReservationSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
