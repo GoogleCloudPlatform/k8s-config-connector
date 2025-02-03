@@ -405,6 +405,11 @@ type NodepoolPodCidrOverprovisionConfig struct {
 	Disabled bool `json:"disabled"`
 }
 
+type NodepoolQueuedProvisioning struct {
+	/* Immutable. Whether nodes in this node pool are obtainable solely through the ProvisioningRequest API. */
+	Enabled bool `json:"enabled"`
+}
+
 type NodepoolReservationAffinity struct {
 	/* Immutable. Corresponds to the type of reservation consumption. */
 	ConsumeReservationType string `json:"consumeReservationType"`
@@ -536,6 +541,10 @@ type ContainerNodePoolSpec struct {
 	/* Immutable. Specifies the node placement policy. */
 	// +optional
 	PlacementPolicy *NodepoolPlacementPolicy `json:"placementPolicy,omitempty"`
+
+	/* Immutable. Specifies the configuration of queued provisioning. */
+	// +optional
+	QueuedProvisioning *NodepoolQueuedProvisioning `json:"queuedProvisioning,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

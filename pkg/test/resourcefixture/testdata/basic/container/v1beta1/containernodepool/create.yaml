@@ -23,6 +23,8 @@ spec:
   autoscaling:
     minNodeCount: 1
     maxNodeCount: 3
+  queuedProvisioning:
+    enabled: false
   nodeConfig:
     taint:
     - effect: NO_SCHEDULE
