@@ -108,7 +108,7 @@ func GenerateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 	if err := WriteToFile(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}
-	// Format and adjust the go imports in the generated controller file.
+	// Format and adjust the go imports in the generated controller file.
 	if err := FormatImports(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}

@@ -19,7 +19,7 @@ cd $REPO_ROOT/dev/tools/controllerbuilder
 
 ## 2.2 Generate the Config Connector Types (repeat-run safe) 
 
-This step generates the Config Connector API types you need from the generated proto in 2.1. The generated API is placed under `./apis` together with some other files that the [Kubernetes controller-gen](https://book.kubebuilder.io/reference/controller-gen) can leverage to build the Config Connector CRD and the Controller `runtime.Object`.
+This step generates the Config Connector API types you need from the generated proto in 2.1. The generated API is placed under `./apis` together with some other files that the [Kubernetes controller-gen](https://book.kubebuilder.io/reference/controller-gen) can leverage to build the Config Connector CRD and the Controller `runtime.Object`.
 
 Run the following command
 
@@ -38,7 +38,7 @@ The proto name of the GCP service, you can find them in [https://github.com/goog
 
 * `--output-api`
 
-The apis directory to where to write the result to. Shall always be   $REPO_ROOT/apis
+The apis directory to where to write the result to. Shall always be   $REPO_ROOT/apis
 
 * `--resource`
 

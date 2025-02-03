@@ -129,8 +129,8 @@ type WorkstationAdapter struct {
 var _ directbase.Adapter = &WorkstationAdapter{}
 
 // Find retrieves the GCP resource.
-// Return true means the object is found. This triggers Adapter `Update` call.
-// Return false means the object is not found. This triggers Adapter `Create` call.
+// Return true means the object is found. This triggers Adapter `Update` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *WorkstationAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -149,7 +149,7 @@ func (a *WorkstationAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *WorkstationAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Workstation", "name", a.id)
@@ -188,7 +188,7 @@ func (a *WorkstationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *WorkstationAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Workstation", "name", a.id)
