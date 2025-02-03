@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -71,9 +72,41 @@ func (r *DatasetRef) NormalizedExternal(ctx context.Context, reader client.Reade
 		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryDatasetGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	actualExternalRef, found, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if !found {
+		// BigQueryDataset is still TF based so we resolve the reference from the object
+		// Fetch BigQueryDataset object to construct the external form.
+		dataset := &unstructured.Unstructured{}
+		dataset.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   "bigquery.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "BigQueryDataset",
+		})
+		nn := types.NamespacedName{
+			Namespace: r.Namespace,
+			Name:      r.Name,
+		}
+
+		if err := reader.Get(ctx, nn, dataset); err != nil {
+			if apierrors.IsNotFound(err) {
+				return "", fmt.Errorf("referenced BigQueryDataset %v not found", nn)
+			}
+			return "", fmt.Errorf("error reading referenced BigQueryDataset %v: %w", nn, err)
+		}
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, dataset)
+		if err != nil {
+			return "", err
+		}
+		datasetID, err := refsv1beta1.GetResourceID(dataset)
+		if err != nil {
+			return "", err
+		}
+		actualExternal := fmt.Sprintf("projects/%s/datasets/%s", projectID, datasetID)
+		r.External = actualExternal
+		return r.External, nil
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)

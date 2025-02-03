@@ -111,11 +111,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Resolve BigQueryDataSet Ref
 	if obj.Spec.DatasetRef != nil {
-		dataset, err := refv1beta1.ResolveBigQueryDataset(ctx, reader, obj, obj.Spec.DatasetRef)
+		_, err := obj.Spec.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.DatasetRef.External = dataset.GetDatasetID() // the GCP API only takes datasetID
 	}
 
 	// Resolve KMSCryptoKey Ref
