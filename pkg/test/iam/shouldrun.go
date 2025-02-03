@@ -39,7 +39,7 @@ func ShouldRunWithExternalRef(fixture resourcefixture.ResourceFixture) bool {
 func ShouldRunWithIAMConditions(fixture resourcefixture.ResourceFixture) bool {
 	// We only need to test the case of "IAMPolicy (or IAMPolicyMember) with
 	// IAM condition" for a few resources. We could test IAM conditions for all
-	// resourcs that support conditions, but this is very expensive and not
+	// resources that support conditions, but this is very expensive and not
 	// really necessary.
 	switch fixture.GVK.Kind {
 	case "Project", // Commonly referenced resource for IAMPolicy/IAMPolicyMember

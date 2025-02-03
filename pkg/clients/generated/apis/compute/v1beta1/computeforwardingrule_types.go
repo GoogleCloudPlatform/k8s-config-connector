@@ -182,7 +182,7 @@ type ComputeForwardingRuleSpec struct {
 
 	A Forwarding Rule with protocol L3_DEFAULT can attach with target instance or
 	backend service with UNSPECIFIED protocol.
-	A forwarding rule with "L3_DEFAULT" IPProtocal cannot be attached to a backend service with TCP or UDP. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP", "L3_DEFAULT"]. */
+	A forwarding rule with "L3_DEFAULT" IPProtocol cannot be attached to a backend service with TCP or UDP. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP", "L3_DEFAULT"]. */
 	// +optional
 	IpProtocol *string `json:"ipProtocol,omitempty"`
 

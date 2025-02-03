@@ -1551,7 +1551,7 @@ spec:
     forwardInboundCredentials:
       idToken: true
       accessToken: true
-      refereshToken: true
+      refreshToken: true
 ---
 apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
 kind: CloudFunctionsFunction

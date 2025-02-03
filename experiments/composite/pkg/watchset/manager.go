@@ -149,9 +149,9 @@ func (w *gvrWatcher) watchForever(ctx context.Context) error {
 		}
 
 		if err := w.watchOnce(ctx); err != nil {
-			klog.Warningf("error from watch; will reconect: %v", err)
+			klog.Warningf("error from watch; will reconnect: %v", err)
 		} else {
-			klog.Warningf("watch closed; will reconect")
+			klog.Warningf("watch closed; will reconnect")
 		}
 		SleepWithContext(ctx, 5*time.Second)
 	}
