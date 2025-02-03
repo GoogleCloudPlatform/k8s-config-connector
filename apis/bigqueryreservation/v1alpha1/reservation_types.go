@@ -62,7 +62,7 @@ type BigQueryReservationReservationSpec struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ignore_idle_slots
 	IgnoreIdleSlots *bool `json:"ignoreIdleSlots,omitempty"`
 
-	// The configuration parameters for the auto scaling feature.
+	// Optional. The configuration parameters for the auto scaling feature.
 	Autoscale *AutoscaleSpec `json:"autoscale,omitempty"`
 
 	// Job concurrency target which sets a soft upper bound on the number of jobs
@@ -128,7 +128,7 @@ type BigQueryReservationReservationObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.original_primary_location
 	OriginalPrimaryLocation *string `json:"originalPrimaryLocation,omitempty"`
 
-	CurrentSlots *AutoscaleObservedState `json:"autoscale,omitempty"`
+	Autoscale *AutoscaleObservedState `json:"autoscale,omitempty"`
 }
 
 // +genclient
