@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: BigQueryRoutine
+    listKind: BigQueryRoutineList
     plural: bigqueryroutines
     shortNames:
     - gcpbigqueryroutine
@@ -40,50 +41,88 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: BigQueryRoutine is the Schema for the BigQueryRoutine API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: BigQueryRoutineSpec defines the desired state of BigQueryRoutine
             properties:
               arguments:
                 description: Input/output argument of a function or a stored procedure.
                 items:
                   properties:
                     argumentKind:
-                      description: 'Defaults to FIXED_TYPE. Default value: "FIXED_TYPE"
-                        Possible values: ["FIXED_TYPE", "ANY_TYPE"].'
+                      description: Optional. Defaults to FIXED_TYPE.
                       type: string
                     dataType:
-                      description: |-
-                        A JSON schema for the data type. Required unless argumentKind = ANY_TYPE.
-                        ~>**NOTE**: Because this field expects a JSON string, any changes to the string
-                        will create a diff, even if the JSON itself hasn't changed. If the API returns
-                        a different value for the same schema, e.g. it switched the order of values
-                        or replaced STRUCT field type with RECORD field type, we currently cannot
-                        suppress the recurring diff this causes. As a workaround, we recommend using
-                        the schema as returned by the API.
-                      type: string
+                      description: Required unless argument_kind = ANY_TYPE.
+                      properties:
+                        arrayElementType:
+                          description: The type of the array's elements, if type_kind
+                            = "ARRAY".
+                        rangeElementType:
+                          description: The type of the range's elements, if type_kind
+                            = "RANGE".
+                        structType:
+                          description: The fields of this struct, in order, if type_kind
+                            = "STRUCT".
+                          properties:
+                            fields:
+                              description: Fields within the struct.
+                              items:
+                                properties:
+                                  name:
+                                    description: Optional. The name of this field.
+                                      Can be absent for struct fields.
+                                    type: string
+                                  type:
+                                    description: Optional. The type of this parameter.
+                                      Absent if not explicitly specified (e.g., CREATE
+                                      FUNCTION statement can omit the return type;
+                                      in this case the output parameter does not have
+                                      this "type" field).
+                                type: object
+                              type: array
+                          type: object
+                        typeKind:
+                          description: Required. The top level type of this field.
+                            Can be any GoogleSQL data type (e.g., "INT64", "DATE",
+                            "ARRAY").
+                          type: string
+                      type: object
+                    isAggregate:
+                      description: Optional. Whether the argument is an aggregate
+                        function parameter. Must be Unset for routine types other
+                        than AGGREGATE_FUNCTION. For AGGREGATE_FUNCTION, if set to
+                        false, it is equivalent to adding "NOT AGGREGATE" clause in
+                        DDL; Otherwise, it is equivalent to omitting "NOT AGGREGATE"
+                        clause in DDL.
+                      properties:
+                        value:
+                          description: The bool value.
+                          type: boolean
+                      type: object
                     mode:
-                      description: 'Specifies whether the argument is input or output.
-                        Can be set for procedures only. Possible values: ["IN", "OUT",
-                        "INOUT"].'
+                      description: Optional. Specifies whether the argument is input
+                        or output. Can be set for procedures only.
                       type: string
                     name:
-                      description: The name of this argument. Can be absent for function
-                        return argument.
+                      description: Optional. The name of this argument. Can be absent
+                        for function return argument.
                       type: string
                   type: object
                 type: array
@@ -105,20 +144,21 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `BigQueryDataset`
-                      resource.'
+                    description: If provided must be in the format `projects/[project_id]/datasets/[dataset_id]`.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `metadata.name` field of a `BigQueryDataset`
+                      resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `metadata.namespace` field of a `BigQueryDataset`
+                      resource.
                     type: string
                 type: object
               definitionBody:
-                description: |-
-                  The body of the routine. For functions, this is the expression in the AS clause.
-                  If language=SQL, it is the substring inside (but excluding) the parentheses.
+                description: The body of the routine. For functions, this is the expression
+                  in the AS clause. If language=SQL, it is the substring inside (but
+                  excluding) the parentheses.
                 type: string
               description:
                 description: The description of the routine if defined.
@@ -129,9 +169,8 @@ spec:
                   "NOT_DETERMINISTIC"].'
                 type: string
               importedLibraries:
-                description: |-
-                  Optional. If language = "JAVASCRIPT", this field stores the path of the
-                  imported JAVASCRIPT libraries.
+                description: Optional. If language = "JAVASCRIPT", this field stores
+                  the path of the imported JAVASCRIPT libraries.
                 items:
                   type: string
                 type: array
@@ -157,20 +196,27 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The routineId of the resource. Used
-                  for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: Immutable. The BigQueryRoutine name. If not given, the
+                  metadata.name will be used.
                 type: string
+                x-kubernetes-validations:
+                - message: ResourceID field is immutable
+                  rule: self == oldSelf
               returnTableType:
                 description: |-
                   Optional. Can be set only if routineType = "TABLE_VALUED_FUNCTION".
@@ -180,16 +226,18 @@ spec:
                   be cast to match the column types specificed in return table type, at query time.
                 type: string
               returnType:
-                description: |-
-                  A JSON schema for the return type. Optional if language = "SQL"; required otherwise.
-                  If absent, the return type is inferred from definitionBody at query time in each query
-                  that references this routine. If present, then the evaluated result will be cast to
-                  the specified returned type at query time. ~>**NOTE**: Because this field expects a JSON
-                  string, any changes to the string will create a diff, even if the JSON itself hasn't
-                  changed. If the API returns a different value for the same schema, e.g. it switche
-                  d the order of values or replaced STRUCT field type with RECORD field type, we currently
-                  cannot suppress the recurring diff this causes. As a workaround, we recommend using
-                  the schema as returned by the API.
+                description: 'A JSON schema for the return type. Optional if language
+                  = "SQL"; required otherwise. If absent, the return type is inferred
+                  from definitionBody at query time in each query that references
+                  this routine. If present, then the evaluated result will be cast
+                  to the specified returned type at query time. ~>**NOTE**: Because
+                  this field expects a JSON string, any changes to the string will
+                  create a diff, even if the JSON itself hasn''t changed. If the API
+                  returns a different value for the same schema, e.g. it switche d
+                  the order of values or replaced STRUCT field type with RECORD field
+                  type, we currently cannot suppress the recurring diff this causes.
+                  As a workaround, we recommend using the schema as returned by the
+                  API.'
                 type: string
               routineType:
                 description: 'Immutable. The type of routine. Possible values: ["SCALAR_FUNCTION",
@@ -201,10 +249,12 @@ spec:
             - projectRef
             type: object
           status:
+            description: BigQueryRoutineStatus defines the config connector machine
+              state of BigQueryRoutine
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -229,14 +279,18 @@ spec:
                   type: object
                 type: array
               creationTime:
-                description: |-
-                  The time when this routine was created, in milliseconds since the
-                  epoch.
+                description: The time when this routine was created, in milliseconds
+                  since the epoch.
+                format: int64
                 type: integer
+              externalRef:
+                description: A unique specifier for the BigQueryRoutine resource in
+                  GCP.
+                type: string
               lastModifiedTime:
-                description: |-
-                  The time when this routine was modified, in milliseconds since the
-                  epoch.
+                description: The time when this routine was modified, in milliseconds
+                  since the epoch.
+                format: int64
                 type: integer
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -244,7 +298,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -253,9 +312,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
