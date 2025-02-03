@@ -38,7 +38,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.BigqueryReservationReservationGVK, NewReservationModel)
+	registry.RegisterModel(krm.BigQueryReservationReservationGVK, NewReservationModel)
 }
 
 func NewReservationModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -65,7 +65,7 @@ func (m *modelReservation) client(ctx context.Context) (*gcp.Client, error) {
 }
 
 func (m *modelReservation) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.BigqueryReservationReservation{}
+	obj := &krm.BigQueryReservationReservation{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -95,7 +95,7 @@ func (m *modelReservation) AdapterForURL(ctx context.Context, url string) (direc
 type ReservationAdapter struct {
 	id        *krm.ReservationIdentity
 	gcpClient *gcp.Client
-	desired   *krm.BigqueryReservationReservation
+	desired   *krm.BigQueryReservationReservation
 	actual    *bigqueryreservationpb.Reservation
 }
 
@@ -145,7 +145,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 	log.V(2).Info("successfully created Reservation", "name", created.Name)
 
-	status := &krm.BigqueryReservationReservationStatus{}
+	status := &krm.BigQueryReservationReservationStatus{}
 	status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -195,7 +195,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		status := &krm.BigqueryReservationReservationStatus{}
+		status := &krm.BigQueryReservationReservationStatus{}
 		status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
@@ -217,7 +217,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	log.V(2).Info("successfully updated Reservation", "name", updated.Name)
 
-	status := &krm.BigqueryReservationReservationStatus{}
+	status := &krm.BigQueryReservationReservationStatus{}
 	status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -232,7 +232,7 @@ func (a *ReservationAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.BigqueryReservationReservation{}
+	obj := &krm.BigQueryReservationReservation{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(BigqueryReservationReservationSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
@@ -247,7 +247,7 @@ func (a *ReservationAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	tokens := strings.Split(a.actual.Name, "/")
 	u.SetName(tokens[5])
-	u.SetGroupVersionKind(krm.BigqueryReservationReservationGVK)
+	u.SetGroupVersionKind(krm.BigQueryReservationReservationGVK)
 
 	u.Object = uObj
 	return u, nil

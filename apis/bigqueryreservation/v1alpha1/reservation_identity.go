@@ -53,7 +53,7 @@ func (p *ReservationParent) String() string {
 }
 
 // New builds a ReservationIdentity from the Config Connector Reservation object.
-func NewReservationIdentity(ctx context.Context, reader client.Reader, obj *BigqueryReservationReservation) (*ReservationIdentity, error) {
+func NewReservationIdentity(ctx context.Context, reader client.Reader, obj *BigQueryReservationReservation) (*ReservationIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)

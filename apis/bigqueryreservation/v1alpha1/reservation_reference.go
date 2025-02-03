@@ -47,7 +47,7 @@ type ReservationRef struct {
 // Otherwise, the "Name" and "Namespace" will be used to query the actual BigqueryReservation object from the cluster.
 func (r *ReservationRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigqueryReservationReservationGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigQueryReservationReservationGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
@@ -63,12 +63,12 @@ func (r *ReservationRef) NormalizedExternal(ctx context.Context, reader client.R
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BigqueryReservationReservationGVK)
+	u.SetGroupVersionKind(BigQueryReservationReservationGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BigqueryReservationReservationGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryReservationReservationGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
