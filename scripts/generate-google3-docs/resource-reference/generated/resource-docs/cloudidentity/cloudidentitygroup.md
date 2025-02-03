@@ -89,8 +89,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An extended description to help users determine the purpose of a Group.
-Must not be longer than 4,096 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}An extended description to help users determine the purpose of a Group. Must not be longer than 4,096 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -106,7 +105,7 @@ Must not be longer than 4,096 characters.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>groupKey</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -116,7 +115,7 @@ Must not be longer than 4,096 characters.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>groupKey.id</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -165,7 +164,7 @@ for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CON
     <tr>
         <td>
             <p><code>labels</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
@@ -183,7 +182,7 @@ Identity-mapped groups for Cloud Search have a label with a key of system/groups
     <tr>
         <td>
             <p><code>parent</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -201,12 +200,14 @@ groups or customers/{customer_id} for Google Groups.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
 
+
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -219,6 +220,7 @@ conditions:
   status: string
   type: string
 createTime: string
+externalRef: string
 name: string
 observedGeneration: integer
 updateTime: string
@@ -235,7 +237,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the CloudIdentityGroup's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -288,11 +290,17 @@ updateTime: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the CloudIdentityGroup resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Resource name of the Group in the format: groups/{group_id}, where group_id
-is the unique ID assigned to the Group.{% endverbatim %}</p>
+            <p>{% verbatim %}Resource name of the Group in the format: groups/{group_id}, where group_id is the unique ID assigned to the Group.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

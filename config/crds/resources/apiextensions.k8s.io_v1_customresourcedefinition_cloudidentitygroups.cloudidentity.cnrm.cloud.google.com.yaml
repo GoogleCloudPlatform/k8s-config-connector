@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: CloudIdentityGroup
+    listKind: CloudIdentityGroupList
     plural: cloudidentitygroups
     shortNames:
     - gcpcloudidentitygroup
@@ -43,25 +44,25 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: CloudIdentityGroup is the Schema for the cloudidentity API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
             properties:
               description:
-                description: |-
-                  An extended description to help users determine the purpose of a Group.
-                  Must not be longer than 4,096 characters.
+                description: An extended description to help users determine the purpose
+                  of a Group. Must not be longer than 4,096 characters.
                 type: string
               displayName:
                 description: The display name of the Group.
@@ -81,6 +82,9 @@ spec:
 
                       Must be unique within a namespace.
                     type: string
+                    x-kubernetes-validations:
+                    - message: Id field is immutable
+                      rule: self == oldSelf
                   namespace:
                     description: |-
                       Immutable. The namespace in which the entity exists.
@@ -95,6 +99,9 @@ spec:
                 required:
                 - id
                 type: object
+                x-kubernetes-validations:
+                - message: GroupKey field is immutable
+                  rule: self == oldSelf
               initialGroupConfig:
                 description: |-
                   Immutable. The initial configuration options for creating a Group.
@@ -125,10 +132,12 @@ spec:
                   Must be of the form identitysources/{identity_source_id} for external-identity-mapped
                   groups or customers/{customer_id} for Google Groups.
                 type: string
+                x-kubernetes-validations:
+                - message: Parent field is immutable
+                  rule: self == oldSelf
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: Immutable. The service-generated name of the resource.
+                  Used for acquisition only. Leave unset to create a new resource.
                 type: string
             required:
             - groupKey
@@ -138,8 +147,8 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the CloudIdentityGroup's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -166,10 +175,13 @@ spec:
               createTime:
                 description: The time when the Group was created.
                 type: string
+              externalRef:
+                description: A unique specifier for the CloudIdentityGroup resource
+                  in GCP.
+                type: string
               name:
-                description: |-
-                  Resource name of the Group in the format: groups/{group_id}, where group_id
-                  is the unique ID assigned to the Group.
+                description: 'Resource name of the Group in the format: groups/{group_id},
+                  where group_id is the unique ID assigned to the Group.'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -177,21 +189,14 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               updateTime:
                 description: The time when the Group was last updated.
                 type: string
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
