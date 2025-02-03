@@ -153,7 +153,7 @@ func TestSetSchemaForFieldUnderObjectOrArray(t *testing.T) {
 		hasError       bool
 	}{
 		{
-			name:  "set schema for non-existent field under object",
+			name:  "set schema for nonexistent field under object",
 			field: "test",
 			parent: &apiextensions.JSONSchemaProps{
 				Properties: map[string]apiextensions.JSONSchemaProps{
@@ -181,7 +181,7 @@ func TestSetSchemaForFieldUnderObjectOrArray(t *testing.T) {
 			},
 		},
 		{
-			name:  "set schema for non-existent field under map",
+			name:  "set schema for nonexistent field under map",
 			field: "test",
 			parent: &apiextensions.JSONSchemaProps{
 				AdditionalProperties: &apiextensions.JSONSchemaPropsOrBool{
@@ -219,7 +219,7 @@ func TestSetSchemaForFieldUnderObjectOrArray(t *testing.T) {
 			},
 		},
 		{
-			name:  "set schema for non-existent field under array",
+			name:  "set schema for nonexistent field under array",
 			field: "test",
 			parent: &apiextensions.JSONSchemaProps{
 				Items: &apiextensions.JSONSchemaPropsOrArray{

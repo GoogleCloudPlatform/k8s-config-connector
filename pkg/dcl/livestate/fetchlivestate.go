@@ -49,7 +49,7 @@ func FetchLiveState(ctx context.Context, resource *dcl.Resource, dclConfig *mmdc
 	if serverGeneratedIDNotConfigured {
 		// If the resource ID cannot be determined because it requires a server-
 		// generated ID that has not been set, this means the resource has not
-		// yet been created. Return as if the read returned a non-existent
+		// yet been created. Return as if the read returned a nonexistent
 		// resource.
 		return nil, nil
 	}
@@ -222,7 +222,7 @@ func resolveSensitiveValueForLiveState(value interface{}, secretVersions map[str
 		// the presetting of the path in the live state so that a diff is
 		// generated if the path had been updated in the spec. If the path
 		// still points to the same Secret in the spec, then the DCL KCClite
-		// conversion will appropriately error out due to the non-existent
+		// conversion will appropriately error out due to the nonexistent
 		// Secret.
 		return "", nil
 	}

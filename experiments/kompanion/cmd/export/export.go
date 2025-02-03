@@ -301,7 +301,7 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 	// create the work log for go routine workers to use
 	q := &taskQueue{}
 
-	// Parallize across resources, unless we are scoped to a few namespaces
+	// Parallelize across resources, unless we are scoped to a few namespaces
 	// The thought is that if users target a particular namespace (or a few), they may not have cluster-wide permission.
 	perNamespace := len(opts.targetNamespaces) > 0
 	if perNamespace {

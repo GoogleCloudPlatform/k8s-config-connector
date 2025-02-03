@@ -183,7 +183,7 @@ func topLevelObjectFieldExistsInStateMap(state map[string]interface{}, field str
 	if !ok {
 		return false, fmt.Errorf("field '%v' is not an object field", field)
 	}
-	// An object field should be considered non-existent if no sub-field is specified.
+	// An object field should be considered nonexistent if no sub-field is specified.
 	if len(listVal) == 0 {
 		return false, nil
 	}

@@ -9,7 +9,7 @@ insertText: |
       \${3:oncall-treatment}: \${4:stay-aware}
     name: \${5:monitoringalertpolicy-name}
   spec:
-    displayName: \${6:Sample Website Aetwork Connectivity Alert Policy}
+    displayName: \${6:Sample Website Network Connectivity Alert Policy}
     enabled: \${7:true}
     notificationChannels:
     - name: \${8:monitoringalertpolicy-dep1-networkconnectivity}

@@ -1048,7 +1048,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			errorCheckFunc: refNotReadyErrorCheckFunc,
 		},
 		{
-			name: "single-parent resource with project reference to non-existent Project",
+			name: "single-parent resource with project reference to nonexistent Project",
 			spec: map[string]interface{}{
 				"projectRef": map[string]interface{}{
 					"name": "project-name",
@@ -1248,7 +1248,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			errorCheckFunc: refNotReadyErrorCheckFunc,
 		},
 		{
-			name: "multi-parent resource with project reference to non-existent Project",
+			name: "multi-parent resource with project reference to nonexistent Project",
 			spec: map[string]interface{}{
 				"projectRef": map[string]interface{}{
 					"name": "project-name",
@@ -1422,7 +1422,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			errorCheckFunc: refNotReadyErrorCheckFunc,
 		},
 		{
-			name: "multi-parent resource with folder reference to non-existent Folder",
+			name: "multi-parent resource with folder reference to nonexistent Folder",
 			spec: map[string]interface{}{
 				"folderRef": map[string]interface{}{
 					"name": "folder-name",

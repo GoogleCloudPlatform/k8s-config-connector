@@ -80,7 +80,7 @@ spec:
                   data types will not be parsed. New stores will have this value set
                   to ENABLED by default after a notification period. Warning: turning
                   on this flag causes processing existing resources to fail if they
-                  contain references to non-existent resources. Possible values: ["COMPLEX_DATA_TYPE_REFERENCE_PARSING_UNSPECIFIED",
+                  contain references to nonexistent resources. Possible values: ["COMPLEX_DATA_TYPE_REFERENCE_PARSING_UNSPECIFIED",
                   "DISABLED", "ENABLED"].'
                 type: string
               dataset:
@@ -129,7 +129,7 @@ spec:
                 description: |-
                   Whether this FHIR store has the updateCreate capability. This determines if the client can use an Update
                   operation to create a new resource with a client-specified ID. If false, all IDs are server-assigned through
-                  the Create operation and attempts to Update a non-existent resource will return errors. Please treat the audit
+                  the Create operation and attempts to Update a nonexistent resource will return errors. Please treat the audit
                   logs with appropriate levels of care if client-specified resource IDs contain sensitive data such as patient
                   identifiers, those IDs will be part of the FHIR resource path recorded in Cloud audit logs and Cloud Pub/Sub
                   notifications.
@@ -150,7 +150,7 @@ spec:
                 - pubsubTopic
                 type: object
               notificationConfigs:
-                description: A list of notifcation configs that configure the notification
+                description: A list of notification configs that configure the notification
                   for every resource mutation in this FHIR store.
                 items:
                   properties:

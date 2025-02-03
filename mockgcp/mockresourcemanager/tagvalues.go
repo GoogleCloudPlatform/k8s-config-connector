@@ -55,7 +55,7 @@ func (s *TagValues) GetTagValue(ctx context.Context, req *pb.GetTagValueRequest)
 		}
 	}
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 
 	return obj, nil
 }
@@ -77,7 +77,7 @@ func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRe
 
 	namespacedName := ""
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 	tagKeyParent := parentTagKey.GetParent()
 	if strings.HasPrefix(tagKeyParent, "projects/") {
 		projectName, err := projects.ParseProjectName(tagKeyParent)
@@ -145,7 +145,7 @@ func (s *TagValues) UpdateTagValue(ctx context.Context, req *pb.UpdateTagValueRe
 		return nil, status.Errorf(codes.Internal, "error reading tagValue: %v", err)
 	}
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 
 	paths := req.GetUpdateMask().GetPaths()
 	for _, path := range paths {
@@ -187,7 +187,7 @@ func (s *TagValues) DeleteTagValue(ctx context.Context, req *pb.DeleteTagValueRe
 		}
 	}
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 
 	metadata := &pb.DeleteTagValueMetadata{}
 	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
