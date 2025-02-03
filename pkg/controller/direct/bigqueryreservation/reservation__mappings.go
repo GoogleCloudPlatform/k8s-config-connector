@@ -54,7 +54,7 @@ func BigqueryReservationReservationObservedState_ToProto(mapCtx *direct.MapConte
 		return nil
 	}
 	out := &pb.Reservation{}
-	out.Autoscale = AutoscaleObservedState_ToProto(mapCtx, in.CurrentSlots)
+	out.Autoscale = AutoscaleObservedState_ToProto(mapCtx, in.Autoscale)
 	out.PrimaryLocation = direct.ValueOf(in.PrimaryLocation)
 	out.SecondaryLocation = direct.ValueOf(in.SecondaryLocation)
 	out.OriginalPrimaryLocation = direct.ValueOf(in.OriginalPrimaryLocation)
@@ -69,7 +69,7 @@ func BigqueryReservationReservationObservedState_FromProto(mapCtx *direct.MapCon
 	out.PrimaryLocation = direct.LazyPtr(in.GetPrimaryLocation())
 	out.SecondaryLocation = direct.LazyPtr(in.GetSecondaryLocation())
 	out.OriginalPrimaryLocation = direct.LazyPtr(in.GetOriginalPrimaryLocation())
-	out.CurrentSlots = AutoscaleObservedState_FromProto(mapCtx, in.Autoscale)
+	out.Autoscale = AutoscaleObservedState_FromProto(mapCtx, in.Autoscale)
 	return out
 }
 
@@ -96,7 +96,9 @@ func AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservat
 		return nil
 	}
 	out := &krm.AutoscaleObservedState{}
-	out.CurrentSlots = direct.LazyPtr(in.GetCurrentSlots())
+	if out.CurrentSlots = direct.LazyPtr(in.GetCurrentSlots()); out.CurrentSlots == nil {
+		return nil
+	}
 	return out
 }
 func AutoscaleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutoscaleObservedState) *pb.Reservation_Autoscale {

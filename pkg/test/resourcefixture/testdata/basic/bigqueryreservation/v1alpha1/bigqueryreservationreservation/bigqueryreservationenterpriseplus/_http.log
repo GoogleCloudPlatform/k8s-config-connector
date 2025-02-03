@@ -1,6 +1,7 @@
-GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?alt=json
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,15 +23,16 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations?alt=json&reservationId=bigqueryreservationreservation${uniqueId}
+POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations?%24alt=json%3Benum-encoding%3Dint&reservationId=bigqueryreservationreservation${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 
 {
   "autoscale": {
-    "maxSlots": 50
+    "maxSlots": "50"
   },
-  "edition": "ENTERPRISE_PLUS"
+  "edition": 3
 }
 
 200 OK
@@ -48,16 +50,17 @@ X-Xss-Protection: 0
     "maxSlots": "50"
   },
   "creationTime": "123456789",
-  "edition": "ENTERPRISE_PLUS",
+  "edition": 3,
   "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?alt=json
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -74,22 +77,25 @@ X-Xss-Protection: 0
     "maxSlots": "50"
   },
   "creationTime": "123456789",
-  "edition": "ENTERPRISE_PLUS",
+  "edition": 3,
   "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?alt=json&updateMask=ignoreIdleSlots%2Cautoscale
+PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=slotCapacity%2CignoreIdleSlots%2Cconcurrency%2Cautoscale
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: reservation.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 {
   "autoscale": {
-    "maxSlots": 100
+    "maxSlots": "100"
   },
-  "ignoreIdleSlots": true
+  "edition": 3,
+  "ignoreIdleSlots": true,
+  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}"
 }
 
 200 OK
@@ -107,7 +113,7 @@ X-Xss-Protection: 0
     "maxSlots": "100"
   },
   "creationTime": "123456789",
-  "edition": "ENTERPRISE_PLUS",
+  "edition": 3,
   "ignoreIdleSlots": true,
   "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -115,9 +121,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?alt=json
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -134,7 +141,7 @@ X-Xss-Protection: 0
     "maxSlots": "100"
   },
   "creationTime": "123456789",
-  "edition": "ENTERPRISE_PLUS",
+  "edition": 3,
   "ignoreIdleSlots": true,
   "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -142,9 +149,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?alt=json
+DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
