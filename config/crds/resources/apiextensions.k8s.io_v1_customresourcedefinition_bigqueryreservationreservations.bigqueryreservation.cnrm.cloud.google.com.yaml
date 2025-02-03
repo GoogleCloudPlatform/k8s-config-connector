@@ -62,7 +62,8 @@ spec:
               of BigQueryReservationReservation
             properties:
               autoscale:
-                description: The configuration parameters for the auto scaling feature.
+                description: Optional. The configuration parameters for the auto scaling
+                  feature.
                 properties:
                   maxSlots:
                     description: Number of slots to be scaled when needed.
