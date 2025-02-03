@@ -55,6 +55,13 @@ func (rf *RandomFiller) fillWithRandom(t *testing.T, fieldName string, field ref
 		if field.IsNil() {
 			field.Set(reflect.New(field.Type().Elem()))
 		}
+		// todo acpana dedup w call below
+		if rf.fieldOverrides != nil {
+			if override, ok := rf.fieldOverrides[fieldName]; ok {
+				override(t, fieldName, field)
+				return
+			}
+		}
 		rf.fillWithRandom(t, fieldName, field.Elem())
 		return
 	}
