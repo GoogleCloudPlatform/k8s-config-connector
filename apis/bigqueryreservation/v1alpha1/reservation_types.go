@@ -20,7 +20,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var BigqueryReservationReservationGVK = GroupVersion.WithKind("BigqueryReservationReservationReservation")
+var BigQueryReservationReservationGVK = GroupVersion.WithKind("BigQueryReservationReservation")
 
 type Parent struct {
 	// +required
@@ -32,9 +32,9 @@ type Parent struct {
 	Location string `json:"location"`
 }
 
-// BigqueryReservationReservationSpec defines the desired state of BigqueryReservationReservation
+// BigQueryReservationReservationSpec defines the desired state of BigQueryReservationReservation
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation
-type BigqueryReservationReservationSpec struct {
+type BigQueryReservationReservationSpec struct {
 	Parent `json:",inline"`
 
 	// Immutable. Optional.
@@ -90,8 +90,8 @@ type BigqueryReservationReservationSpec struct {
 	SecondaryLocation *string `json:"secondaryLocation,omitempty"`
 }
 
-// BigqueryReservationReservationStatus defines the config connector machine state of BigqueryReservationReservation
-type BigqueryReservationReservationStatus struct {
+// BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation
+type BigQueryReservationReservationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -99,17 +99,17 @@ type BigqueryReservationReservationStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the BigqueryReservationReservation resource in GCP.
+	// A unique specifier for the BigQueryReservationReservation resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigqueryReservationReservationObservedState `json:"observedState,omitempty"`
+	ObservedState *BigQueryReservationReservationObservedState `json:"observedState,omitempty"`
 }
 
-// BigqueryReservationReservationSpec defines the desired state of BigqueryReservationReservation
+// BigQueryReservationReservationSpec defines the desired state of BigQueryReservationReservation
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation
-// BigqueryReservationReservationObservedState is the state of the BigqueryReservationReservation resource as most recently observed in GCP.
-type BigqueryReservationReservationObservedState struct {
+// BigQueryReservationReservationObservedState is the state of the BigQueryReservationReservation resource as most recently observed in GCP.
+type BigQueryReservationReservationObservedState struct {
 	// The current location of the reservation's primary replica. This
 	//  field is only set for reservations using the managed disaster recovery
 	//  feature.
@@ -134,7 +134,7 @@ type BigqueryReservationReservationObservedState struct {
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // TODO(user): make sure the pluralizaiton below is correct
-// +kubebuilder:resource:categories=gcp,shortName=gcpBigqueryReservationReservation;gcpBigqueryReservationReservations
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryreservationreservation;gcpbigqueryreservationreservations
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
@@ -142,23 +142,23 @@ type BigqueryReservationReservationObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// BigqueryReservationReservation is the Schema for the BigqueryReservationReservation API
+// BigQueryReservationReservation is the Schema for the BigQueryReservationReservation API
 // +k8s:openapi-gen=true
-type BigqueryReservationReservation struct {
+type BigQueryReservationReservation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   BigqueryReservationReservationSpec   `json:"spec,omitempty"`
-	Status BigqueryReservationReservationStatus `json:"status,omitempty"`
+	Spec   BigQueryReservationReservationSpec   `json:"spec,omitempty"`
+	Status BigQueryReservationReservationStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// BigqueryReservationReservationList contains a list of BigqueryReservationReservation
-type BigqueryReservationReservationList struct {
+// BigQueryReservationReservationList contains a list of BigQueryReservationReservation
+type BigQueryReservationReservationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigqueryReservationReservation `json:"items"`
+	Items           []BigQueryReservationReservation `json:"items"`
 }
 
 // +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.autoscale
@@ -180,5 +180,5 @@ type AutoscaleObservedState struct {
 }
 
 func init() {
-	SchemeBuilder.Register(&BigqueryReservationReservation{}, &BigqueryReservationReservationList{})
+	SchemeBuilder.Register(&BigQueryReservationReservation{}, &BigQueryReservationReservationList{})
 }
