@@ -17,12 +17,12 @@ package managedkafka
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -33,6 +33,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -165,15 +166,16 @@ func (a *TopicAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return mapCtx.Err()
 	}
 
-	// cannot use common.CompareProtoMessage because some proto fields are not correctly labeled as output only, which means the path may include a output only field
-	paths := []string{}
-	if !reflect.DeepEqual(desiredPb.PartitionCount, a.actual.PartitionCount) {
-		paths = append(paths, "partition_count")
+	// Set the name field to ensure the GCP API can identity the resource during UpdateTopic().
+	// This also prevents incorrect diffs, as the name field is not populated by ManagedKafkaTopicSpec_ToProto.
+	desiredPb.Name = a.id.String()
+
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
-	if !reflect.DeepEqual(desiredPb.Configs, a.actual.Configs) {
-		paths = append(paths, "configs")
-	}
-	if !reflect.DeepEqual(desiredPb.ReplicationFactor, a.actual.ReplicationFactor) {
+
+	if paths.Has("replication_factor") {
 		return fmt.Errorf("replicationFactor field is immutable")
 	}
 
@@ -187,9 +189,8 @@ func (a *TopicAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	desiredPb.Name = a.id.String() // populate the name field so that the GCP API can identify the resource
 	req := &pb.UpdateTopicRequest{
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 		Topic:      desiredPb,
 	}
 	updated, err := a.gcpClient.UpdateTopic(ctx, req)

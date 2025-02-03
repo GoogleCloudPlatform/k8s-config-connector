@@ -79,12 +79,11 @@ type ManagedKafkaTopicObservedState struct {
 	//  connecting directly to the cluster. Structured like:
 	//  projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.name
-	Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"` // TODO(jingyih): remove this field as it is the same as externalRef
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpmanagedkafkatopic;gcpmanagedkafkatopics
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
