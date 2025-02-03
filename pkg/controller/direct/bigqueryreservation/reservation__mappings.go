@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigqueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryReservationReservationSpec) *pb.Reservation {
+func BigqueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationSpec) *pb.Reservation {
 	if in == nil {
 		return nil
 	}
@@ -35,11 +35,11 @@ func BigqueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *k
 	return out
 }
 
-func BigqueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigqueryReservationReservationSpec {
+func BigqueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigqueryReservationReservationSpec{}
+	out := &krm.BigQueryReservationReservationSpec{}
 	out.SlotCapacity = direct.LazyPtr(in.GetSlotCapacity())
 	out.IgnoreIdleSlots = direct.LazyPtr(in.GetIgnoreIdleSlots())
 	out.Autoscale = AutoscaleSpec_FromProto(mapCtx, in.GetAutoscale())
@@ -49,7 +49,7 @@ func BigqueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in 
 	return out
 }
 
-func BigqueryReservationReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryReservationReservationObservedState) *pb.Reservation {
+func BigqueryReservationReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationObservedState) *pb.Reservation {
 	if in == nil {
 		return nil
 	}
@@ -61,11 +61,11 @@ func BigqueryReservationReservationObservedState_ToProto(mapCtx *direct.MapConte
 	return out
 }
 
-func BigqueryReservationReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigqueryReservationReservationObservedState {
+func BigqueryReservationReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigqueryReservationReservationObservedState{}
+	out := &krm.BigQueryReservationReservationObservedState{}
 	out.PrimaryLocation = direct.LazyPtr(in.GetPrimaryLocation())
 	out.SecondaryLocation = direct.LazyPtr(in.GetSecondaryLocation())
 	out.OriginalPrimaryLocation = direct.LazyPtr(in.GetOriginalPrimaryLocation())
