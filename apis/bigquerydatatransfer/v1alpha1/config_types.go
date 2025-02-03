@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -49,7 +50,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// The BigQuery target dataset id.
 	// +required
-	DatasetRef *refv1beta1.BigQueryDatasetRef `json:"datasetRef,omitempty"`
+	DatasetRef *bigquery.DatasetRef `json:"datasetRef,omitempty"`
 
 	// Is this config disabled. When set to true, no runs will be scheduled for
 	//  this transfer config.

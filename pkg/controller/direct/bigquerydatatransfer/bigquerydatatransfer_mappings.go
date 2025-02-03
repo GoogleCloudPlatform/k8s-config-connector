@@ -16,6 +16,7 @@ package bigquerydatatransfer
 
 import (
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
+	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -60,7 +61,7 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.BigQueryDataTransferConfigSpec{}
 	if in.GetDestinationDatasetId() != "" {
-		out.DatasetRef = &refv1beta1.BigQueryDatasetRef{External: in.GetDestinationDatasetId()}
+		out.DatasetRef = &bigquery.DatasetRef{External: in.GetDestinationDatasetId()}
 	}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
