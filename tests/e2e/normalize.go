@@ -212,6 +212,30 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
 
+	// Specific to DocumentAIProcessor
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.processorVersionAliases[].processorVersion") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "processorVersions":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${processorVersionID}")
+				}
+			}
+		}
+		return s
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.defaultProcessorVersion") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "processorVersions" {
+				tokens[len(tokens)-1] = "${processorVersionID}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
@@ -295,6 +319,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			if typeName == "transferConfigs" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${transferConfigID}")
+				})
+			}
+			if typeName == "processors" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${processorID}")
 				})
 			}
 		}
@@ -853,6 +882,12 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 		visitor.replacePaths[".labelFingerprint"] = "abcdef0123A="
 		visitor.replacePaths[".address"] = "8.8.8.8"
+	}
+
+	// DocumentAI
+	{
+		visitor.ReplacePath(".metadata.commonMetadata.createTime", "2025-01-01T12:34:56.123456Z")
+		visitor.ReplacePath(".metadata.commonMetadata.updateTime", "2025-01-02T12:34:56.123456Z")
 	}
 
 	// Run visitors
