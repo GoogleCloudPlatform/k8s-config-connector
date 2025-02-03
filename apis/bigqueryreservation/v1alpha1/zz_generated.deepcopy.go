@@ -141,8 +141,8 @@ func (in *BigQueryReservationReservationObservedState) DeepCopyInto(out *BigQuer
 		*out = new(string)
 		**out = **in
 	}
-	if in.CurrentSlots != nil {
-		in, out := &in.CurrentSlots, &out.CurrentSlots
+	if in.Autoscale != nil {
+		in, out := &in.Autoscale, &out.Autoscale
 		*out = new(AutoscaleObservedState)
 		(*in).DeepCopyInto(*out)
 	}
