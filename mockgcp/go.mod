@@ -20,7 +20,7 @@ require (
 	google.golang.org/grpc v1.67.1
 	google.golang.org/protobuf v1.35.1
 	k8s.io/api v0.27.11
-	k8s.io/apimachinery v0.27.11
+	k8s.io/apimachinery v0.27.16
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.15.2
 )
