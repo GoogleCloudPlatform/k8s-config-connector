@@ -1,0 +1,44 @@
+apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
+kind: ApigeeInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: apigeeinstance-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  accessLoggingConfig:
+    enabled: true
+    filter: status_code >= 200 && status_code < 400
+  consumerAcceptList:
+  - ${organizationID}
+  description: This is a test apigee instance
+  diskEncryptionKMSCryptoKeyRef:
+    name: kmscryptokey-${uniqueId}
+  displayName: My Apigee Instance
+  ipRange: 10.39.56.0/22,10.14.0.64/28
+  location: us-central1
+  organizationRef:
+    external: organizations/${organizationID}
+  peeringCIDRRange: SLASH_22
+  resourceID: apigeeinstance-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: organizations/${organizationID}/instances/apigeeinstance-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createdAt: 1711974896
+    host: 10.39.56.2
+    lastModifiedAt: 1711974896
+    port: "443"
+    runtimeVersion: 1-14-0-apigee-4
+    serviceAttachment: projects/eef779b38d9fb4b50p-tp/regions/us-central1/serviceAttachments/apigee-us-central1-i9mj
+    state: ACTIVE

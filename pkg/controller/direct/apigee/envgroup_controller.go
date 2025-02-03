@@ -20,7 +20,6 @@ import (
 	"reflect"
 	"sort"
 	"strings"
-	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1alpha1"
@@ -136,7 +135,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return fmt.Errorf("creating ApigeeEnvgroup %s: %w", a.fullyQualifiedName(), err)
 	}
 
-	if err := a.waitForOp(ctx, op); err != nil {
+	if err := WaitForApigeeOp(ctx, a.operationsClient, op); err != nil {
 		return fmt.Errorf("waiting for ApigeeEnvgroup %s creation: %w", a.id, err)
 	}
 
@@ -189,7 +188,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if err != nil {
 		return err
 	}
-	if err := a.waitForOp(ctx, op); err != nil {
+	if err := WaitForApigeeOp(ctx, a.operationsClient, op); err != nil {
 		return fmt.Errorf("waiting for ApigeeEnvgroup update %s: %w", a.id, err)
 	}
 
@@ -248,27 +247,10 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 		return false, fmt.Errorf("deleting ApigeeEnvgroup %s: %w", a.id, err)
 	}
 
-	if err := a.waitForOp(ctx, op); err != nil {
+	if err := WaitForApigeeOp(ctx, a.operationsClient, op); err != nil {
 		return false, fmt.Errorf("ApigeeEnvgroup deletion failed: %w", err)
 	}
 	return true, nil
-}
-
-func (a *Adapter) waitForOp(ctx context.Context, op *api.GoogleLongrunningOperation) error {
-	for {
-		current, err := a.operationsClient.Get(op.Name).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("getting operation status of %q: %w", op.Name, err)
-		}
-		if current.Done {
-			if current.Error != nil {
-				return fmt.Errorf("operation %q completed with error: %v", op.Name, current.Error)
-			} else {
-				return nil
-			}
-		}
-		time.Sleep(2 * time.Second)
-	}
 }
 
 func (a *Adapter) fullyQualifiedName() string {
