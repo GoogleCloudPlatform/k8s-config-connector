@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -33,7 +32,7 @@ var (
 	ApigeeOrganizationGVK = ApigeeGroupVersion.WithKind("ApigeeOrganization")
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ApigeeOrganizationRef{}
+var _ ExternalNormalizer = &ApigeeOrganizationRef{}
 
 type ApigeeOrganizationRef struct {
 	/* The ApigeeOrganization selfLink, when not managed by Config Connector. */

@@ -39,6 +39,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvgroup.md
   - title: "ApigeeEnvironment"
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvironment.md
+  - title: "ApigeeInstance"
+    path: /config-connector/docs/reference/resource-docs/apigee/apigeeinstance.md
   - title: "ApigeeOrganization"
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeorganization.md
 - title: "ArtifactRegistry"

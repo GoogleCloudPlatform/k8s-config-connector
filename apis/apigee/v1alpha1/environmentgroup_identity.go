@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )

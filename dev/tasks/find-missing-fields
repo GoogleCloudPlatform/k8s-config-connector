@@ -24,6 +24,8 @@ cd ${REPO_ROOT}
 # that we register all the types with.
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEnvgroupSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEnvgroupObservedState -fuzztime 60s
+go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceSpec -fuzztime 60s
+go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceObservedState -fuzztime 60s
 
 go test -v ./pkg/controller/direct/compute/firewallpolicyrule -fuzz=FuzzComputeFirewallPolicyRuleSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/compute/forwardingrule -fuzz=FuzzComputeForwardingRuleSpec -fuzztime 60s

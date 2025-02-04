@@ -19,7 +19,6 @@
 package v1alpha1
 
 import (
-	refsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -319,7 +318,7 @@ func (in *ApigeeInstanceSpec) DeepCopyInto(out *ApigeeInstanceSpec) {
 	*out = *in
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(refsv1alpha1.ApigeeOrganizationRef)
+		*out = new(v1beta1.ApigeeOrganizationRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -519,7 +518,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(refsv1alpha1.ApigeeOrganizationRef)
+		*out = new(v1beta1.ApigeeOrganizationRef)
 		**out = **in
 	}
 }
