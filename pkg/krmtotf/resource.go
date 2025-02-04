@@ -80,6 +80,12 @@ func NewResource(u *unstructured.Unstructured, sm *corekccv1alpha1.ServiceMappin
 func NewResourceFromResourceConfig(rc *corekccv1alpha1.ResourceConfig, p *tfschema.Provider) (*Resource, error) {
 	tfResource, ok := p.ResourcesMap[rc.Name]
 	// Pure Direct Resource does not have ResourceMap.
+	//
+	// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
+	// The 'Direct' indicator won't be needed after we finish all the migrations.
+	// The 'Direct' indicator is necessary during the migration so
+	// that Config Connector uses direct approach to generate CRDs
+	// but still allow TF-based controller to reconcile the resource.
 	if rc.Direct {
 		return &Resource{
 			TFInfo: &terraform.InstanceInfo{

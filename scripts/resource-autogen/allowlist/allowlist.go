@@ -94,7 +94,6 @@ var (
 		"data_catalog/google_data_catalog_entry_group",
 		"data_catalog/google_data_catalog_tag",
 		"data_catalog/google_data_catalog_tag_template",
-		"dataform/google_dataform_repository",
 		"datastore/google_datastore_index",
 		"datastream/google_datastream_connection_profile",
 		"datastream/google_datastream_private_connection",

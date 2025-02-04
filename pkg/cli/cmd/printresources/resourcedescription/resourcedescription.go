@@ -102,7 +102,15 @@ func doesResourceSupportExport(tfProvider *tfschema.Provider, sm v1alpha1.Servic
 }
 
 func resourceHasTFImporter(rc v1alpha1.ResourceConfig, tfProvider *tfschema.Provider) bool {
-	// every value for rc.Name should be in the ResourcesMap
+	// Every value for rc.Name should be in the ResourcesMap.
+	//
+	// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
+	// The 'Direct' indicator won't be needed after we finish all the migrations.
+	// The 'Direct' indicator is necessary during the migration so
+	// that Config Connector uses direct approach to generate CRDs
+	// but still allow TF-based controller to reconcile the resource.
+	// Once a resource is migrated to direct, we need to figure out a different
+	// way to support export for backwards compatibility if needed.
 	if rc.Direct {
 		return false
 	}

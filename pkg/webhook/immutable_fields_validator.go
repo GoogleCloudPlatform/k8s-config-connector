@@ -31,6 +31,7 @@ import (
 	dclcontainer "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension/container"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -294,7 +295,8 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("couldn't get ResourceConfig for kind %v: %w", obj.GetKind(), err))
 	}
-	if rc.Direct && rc.Name != "google_sql_database_instance" {
+	isDirect := supportedgvks.IsDirectByGVK(obj.GroupVersionKind())
+	if isDirect && rc.Name != "google_sql_database_instance" {
 		return allowedResponse
 	}
 
