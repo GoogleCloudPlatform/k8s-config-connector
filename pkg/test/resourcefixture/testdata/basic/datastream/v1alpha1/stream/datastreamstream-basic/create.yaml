@@ -1,0 +1,32 @@
+apiVersion: datastream.cnrm.cloud.google.com/v1alpha1
+kind: DatastreamStream
+metadata:
+  name: test-feb4
+spec:
+  location: us-central1
+  displayName: a new stream for testing
+  projectRef:
+    external: ${projectId}
+  sourceConfig:
+    sourceConnectionProfileRef: 
+      external: projects/96591550005/locations/us-central1/connectionProfiles/profile-feb-3-src
+    mysqlSourceConfig: {}
+  destinationConfig:
+    destinationConnectionProfileRef: 
+      external: projects/96591550005/locations/us-central1/connectionProfiles/profile-feb-3-dest
+<<<<<<< Updated upstream
+    gcsDestinationConfig:
+        fileRotationInterval: 60s
+        fileRotationMb: 50
+        jsonFileFormat:
+          compression: GZIP
+          schemaFileFormat: NO_SCHEMA_FILE
+
+  # customerManagedEncryptionKey:
+  #   external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-5lp3mugrlffqtgi/cryptoKeys/kmscryptokey-5lp3mugrlffqtgi
+=======
+    gcsDestinationConfig: {}
+  customerManagedEncryptionKey:
+    external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-5lp3mugrlffqtgi/cryptoKeys/kmscryptokey-5lp3mugrlffqtgi
+>>>>>>> Stashed changes
+  backfillNone: {}
