@@ -167,18 +167,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	paths := []string{}
-	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
-	// TODO(contributor): If choosing this option, remove the "Option 2" code.
-	/* 	{
-		var err error
-		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-		if err != nil {
-			return err
-		}
-	} */
 
-	// Option 2: manually add all mutable fields.
-	// TODO(contributor): If choosing this option, remove the "Option 1" code.
 	{
 		if !reflect.DeepEqual(a.desired.Spec.SlotCapacity, a.actual.SlotCapacity) {
 			paths = append(paths, "slot_capacity")
@@ -189,7 +178,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if !reflect.DeepEqual(a.desired.Spec.Concurrency, a.actual.Concurrency) {
 			paths = append(paths, "concurrency")
 		}
-		if !reflect.DeepEqual(a.desired.Spec.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
+		if a.desired.Spec.Autoscale != nil && !reflect.DeepEqual(a.desired.Spec.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
 			paths = append(paths, "autoscale")
 		}
 	}

@@ -65,6 +65,15 @@ func (s *ReservationV1) CreateReservation(ctx context.Context, req *pb.CreateRes
 		Seconds: now.Unix(),
 	}
 
+	if obj.SecondaryLocation != "" {
+		if obj.Edition == pb.Edition_ENTERPRISE_PLUS {
+			obj.PrimaryLocation = name.Location
+			obj.OriginalPrimaryLocation = obj.PrimaryLocation
+		} else {
+			return nil, status.Error(codes.InvalidArgument, "secondary_location can only be specified for ENTERPRISE_PLUS edition")
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
