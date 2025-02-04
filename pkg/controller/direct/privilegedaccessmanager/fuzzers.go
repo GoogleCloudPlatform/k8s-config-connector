@@ -11,6 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+// +tool:fuzz-gen
+// proto.message: google.cloud.privilegedaccessmanager.v1.Entitlement
+
 package privilegedaccessmanager
 
 import (
