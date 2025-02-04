@@ -20,6 +20,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/repocontext"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/rules"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
@@ -32,12 +34,16 @@ type Chat struct {
 	ui      ui.UI
 }
 
-type FileInfo struct {
-	Path    string
-	Content string
+type Options struct {
+	BaseDir string
+	ContextFiles map[string]*repocontext.FileInfo
+	MockGCPFiles map[string]string
+	APIsFiles map[string]string
+
+	Rules []rules.Rule // user defined rules for the system prompt
 }
 
-func NewChat(ctx context.Context, llmClient llm.Client, baseDir string, contextFiles map[string]*FileInfo, ui ui.UI) (*Chat, error) {
+func NewChat(ctx context.Context, llmClient llm.Client, ui ui.UI, opts *Options) (*Chat, error) {
 
 	systemPrompt := `
 You are a helpful AI coding assistant, expert in the go programming language and in creating kubernetes controllers.
@@ -53,14 +59,14 @@ If you think the code should be changed, use the tools to apply those changes in
 		functionDefinitions = append(functionDefinitions, tool.BuildFunctionDefinition())
 	}
 
-	if len(contextFiles) != 0 {
+	if len(opts.ContextFiles) != 0 {
 		var sb strings.Builder
 
 		fmt.Fprintf(&sb, "\n")
 		fmt.Fprintf(&sb, "Consider the following files:\n")
 
-		for _, file := range contextFiles {
-			fmt.Fprintf(&sb, "File %q:\n", file.Path)
+		for path, file := range opts.ContextFiles {
+			fmt.Fprintf(&sb, "File %q:\n", path)
 			fmt.Fprintf(&sb, "```go\n")
 			fmt.Fprintf(&sb, "%s\n", file.Content)
 			fmt.Fprintf(&sb, "```\n")
@@ -70,13 +76,49 @@ If you think the code should be changed, use the tools to apply those changes in
 		systemPrompt += sb.String()
 	}
 
+	if len(opts.MockGCPFiles) > 0 {
+		var sb strings.Builder
+
+		fmt.Fprintf(&sb, "\n")
+		fmt.Fprintf(&sb, "For mockGCP file generation in particular use the following files as good examples for code organization and existing patterns that you will follow:\n")
+		for _, fileContent := range opts.MockGCPFiles {
+			// todo acpana separate out by files and filepath
+			// fmt.Fprintf(&sb, "File %q:\n", path)
+			fmt.Fprintf(&sb, "%s\n", fileContent)
+			fmt.Fprintf(&sb, "\n")
+		}
+
+		systemPrompt += sb.String()
+	}
+
+	// separeating APIs context load for custom instruction sets
+	if len(opts.APIsFiles) > 0 {
+		var sb strings.Builder
+
+		fmt.Fprintf(&sb, "\n")
+		fmt.Fprintf(&sb, "For API file generation in particular use the following files as good examples for code organization and existing patterns that you will follow:\n")
+		for _, fileContent := range opts.APIsFiles {
+			// todo acpana separate out by files and filepath
+			// fmt.Fprintf(&sb, "File %q:\n", path)
+			fmt.Fprintf(&sb, "%s\n", fileContent)
+			fmt.Fprintf(&sb, "\n")
+		}
+		fmt.Fprintf(&sb, "DO NOT GENERATE deepcopy files.")
+
+		systemPrompt += sb.String()
+	}
+
+	if len(opts.Rules) > 0 {
+		systemPrompt = rules.ApplyRules(systemPrompt, opts.Rules)
+	}
+
 	session := llmClient.StartChat(systemPrompt)
 
 	session.SetFunctionDefinitions(functionDefinitions)
 
 	return &Chat{
 		client:  llmClient,
-		baseDir: baseDir,
+		baseDir: opts.BaseDir,
 		session: session,
 		ui:      ui,
 	}, nil

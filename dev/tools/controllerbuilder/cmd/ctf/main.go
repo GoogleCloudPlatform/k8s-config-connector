@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/repocontext"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
@@ -55,7 +56,7 @@ func run(ctx context.Context) error {
 		}
 	}()
 
-	contextFiles := make(map[string]*codebot.FileInfo)
+	contextFiles := make(map[string]*repocontext.FileInfo)
 
 	{
 		// main.go
@@ -73,7 +74,7 @@ func run(ctx context.Context) error {
 	}
 	`
 
-		contextFiles["main.go"] = &codebot.FileInfo{
+		contextFiles["main.go"] = &repocontext.FileInfo{
 			Content: s,
 			Path:    "main.go",
 		}
@@ -92,7 +93,7 @@ module mymodule
 go 1.21
 	`
 
-		contextFiles["go.mod"] = &codebot.FileInfo{
+		contextFiles["go.mod"] = &repocontext.FileInfo{
 			Content: s,
 			Path:    "go.mod",
 		}
@@ -122,7 +123,7 @@ go 1.21
 
 	u := ui.NewTerminalUI()
 
-	chat, err := codebot.NewChat(ctx, llmClient, tmpDir, contextFiles, u)
+	chat, err := codebot.NewChat(ctx, llmClient, u, &codebot.Options{BaseDir: tmpDir, ContextFiles: contextFiles})
 	if err != nil {
 		return err
 	}

@@ -23,6 +23,8 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/repocontext"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/rules"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
@@ -42,15 +44,25 @@ type Options struct {
 	ProtoDir string
 	// BaseDir is the base directory for the project code
 	BaseDir string
+
+	// MockGcp base dir
+	MockGcpDir string
+
+	// APIsDir for where we have the direct APIs only
+	APIsDir string
 }
 
 func run(ctx context.Context) error {
 	var o Options
+	files := []string{}
 
 	klog.InitFlags(nil)
 
 	flag.StringVar(&o.ProtoDir, "proto-dir", o.ProtoDir, "base directory for checkout of proto API definitions")
 	flag.StringVar(&o.BaseDir, "base-dir", o.BaseDir, "base directory for the project code")
+	flag.StringVar(&o.MockGcpDir, "mockgcp-dir", o.MockGcpDir, "MockGcp base dir")
+	flag.StringVar(&o.APIsDir, "apis-dir", o.APIsDir, "APIsDir for where we have the direct APIs only")
+
 	flag.Parse()
 
 	if o.ProtoDir == "" {
@@ -75,18 +87,19 @@ func run(ctx context.Context) error {
 			return fmt.Errorf("getting absolute path for current working directory %q: %w", cwd, err)
 		}
 		o.BaseDir = cwdAbs
+		//files = append(files, cwdAbs) // todo acpana doing this will make it stutter as /a/b => /a/b/a/b
 	}
 
-	files := flag.Args()
+	files = append(files, flag.Args()...)
 
-	contextFiles := make(map[string]*codebot.FileInfo)
+	contextFiles := make(map[string]*repocontext.FileInfo)
 	for _, file := range files {
 		p := filepath.Join(o.BaseDir, file)
 		b, err := os.ReadFile(p)
 		if err != nil {
 			return fmt.Errorf("reading file %q (in %q): %w", file, o.BaseDir, err)
 		}
-		contextFiles[file] = &codebot.FileInfo{
+		contextFiles[file] = &repocontext.FileInfo{
 			Path:    file,
 			Content: string(b),
 		}
@@ -160,7 +173,32 @@ func run(ctx context.Context) error {
 		return nil
 	})
 
-	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, ui)
+	codebotOpts := &codebot.Options{BaseDir: o.BaseDir, ContextFiles: contextFiles}
+	codebotOpts.Rules = []rules.Rule{}
+	codebotOpts.MockGCPFiles = map[string]string{}
+	codebotOpts.APIsFiles = map[string]string{}
+
+	// if present, gather mocks
+	if o.MockGcpDir != "" {
+		mocks, err := repocontext.GatherMockContents(o.MockGcpDir, 10)
+		if err != nil {
+			return err
+		}
+		codebotOpts.MockGCPFiles["mocks"] = strings.Join(mocks, "\n ==separator== \n")
+	}
+
+	// if present, gather apis
+	if o.APIsDir != "" {		
+		apis, err := repocontext.GatherAPIContents(o.APIsDir, 10)
+		if err != nil {
+			return err
+		}
+		codebotOpts.APIsFiles["apis"] = strings.Join(apis, "\n ==separator== \n")
+		codebotOpts.Rules = append(codebotOpts.Rules, rules.CRDShortNames)
+	}
+	codebotOpts.Rules = append(codebotOpts.Rules, rules.NoNakedReturns)
+
+	session, err := codebot.NewChat(ctx, llmClient, ui, codebotOpts)
 	if err != nil {
 		return err
 	}
