@@ -573,7 +573,7 @@ type Stream_BackfillAllStrategy struct {
 
 	// SQLServer data source objects to avoid backfilling
 	// +kcc:proto:field=google.cloud.datastream.v1.Stream.BackfillAllStrategy.sql_server_excluded_objects
-	// SqlServerExcludedObjects *SqlServerRdbms `json:"sqlServerExcludedObjects,omitempty"`
+	SqlServerExcludedObjects *SqlServerRdbms `json:"sqlServerExcludedObjects,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datastream.v1.Stream.BackfillNoneStrategy

@@ -113,7 +113,7 @@ type SourceConfigSpec struct {
 	// SQLServer data source configuration.
 	// +kcc:proto:field=google.cloud.datastream.v1.SourceConfig.sql_server_source_config
 	// This field is no longer supported in proto.
-	// SqlServerSourceConfig *SqlServerSourceConfig `json:"sqlServerSourceConfig,omitempty"`
+	SqlServerSourceConfig *SqlServerSourceConfig `json:"sqlServerSourceConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datastream.v1.DestinationConfig
