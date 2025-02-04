@@ -28,23 +28,28 @@ type DatastreamStreamSpec struct {
 	// The DatastreamStream name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// +required
 	/* Immutable. A reference to the project */
 	ProjectRef refs.ProjectRef `json:"projectRef"`
 
+	// +required
 	// Immutable. The name of the location this stream.
 	Location string `json:"location"`
 
-	// The source connection profile configuration.
+	// +required
+	// Immutable. The source connection profile configuration.
 	SourceConfig *SourceConfigSpec `json:"sourceConfig,omitempty"`
 
-	// The destination connection profile configuration.
+	// +required
+	// Immutable. The destination connection profile configuration.
 	DestinationConfig *DestinationConfig `json:"destinationConfig,omitempty"`
-
-	// Display name.
-	DisplayName *string `json:"displayName,omitempty"`
 
 	// Labels.
 	Labels map[string]string `json:"labels,omitempty"`
+
+	// The customer-managed encryption key's resource name, if the
+	//  stream is encrypted with customer-managed encryption key.
+	CustomerManagedEncryptionKeyRef *refs.KMSCryptoKeyRef `json:"customerManagedEncryptionKey,omitempty"`
 
 	// Backfill strategy.
 	BackfillAll  *Stream_BackfillAllStrategy  `json:"backfillAll,omitempty"`
@@ -71,9 +76,6 @@ type DatastreamStreamStatus struct {
 // +kcc:proto=google.cloud.datastream.v1.Stream
 // DatastreamStreamObservedState is the state of the DatastreamStream resource as most recently observed in GCP.
 type DatastreamStreamObservedState struct {
-	// Output only. The stream's name.
-	Name *string `json:"name,omitempty"`
-
 	// Output only. Create time.
 	CreateTime *string `json:"createTime,omitempty"`
 
@@ -85,15 +87,13 @@ type DatastreamStreamObservedState struct {
 
 	// Output only. A list of errors that occurred on the stream.
 	Errors []Error `json:"errors,omitempty"`
-
-	// Output only. The customer-managed encryption key's resource name, if the
-	//  stream is encrypted with customer-managed encryption key.
-	CustomerManagedEncryptionKey *string `json:"customerManagedEncryptionKey,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datastream.v1.SourceConfig
 type SourceConfigSpec struct {
-	// Required. Source connection profile resoource.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// +required
+	// Source connection profile resoource.
 	//  Format: `projects/{project}/locations/{location}/connectionProfiles/{name}`
 	// +kcc:proto:field=google.cloud.datastream.v1.SourceConfig.source_connection_profile
 	SourceConnectionProfileRef *ConnectionProfileRef `json:"sourceConnectionProfileRef,omitempty"`
@@ -118,7 +118,9 @@ type SourceConfigSpec struct {
 
 // +kcc:proto=google.cloud.datastream.v1.DestinationConfig
 type DestinationConfig struct {
-	// Required. Destination connection profile resource.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// +required
+	// Destination connection profile resource.
 	//  Format: `projects/{project}/locations/{location}/connectionProfiles/{name}`
 	// +kcc:proto:field=google.cloud.datastream.v1.DestinationConfig.destination_connection_profile
 	DestinationConnectionProfileRef *ConnectionProfileRef `json:"destinationConnectionProfileRef,omitempty"`

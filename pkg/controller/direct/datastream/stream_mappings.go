@@ -20,6 +20,26 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DatastreamStreamSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatastreamStreamSpec) *pb.Stream {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Stream{}
+	out.Labels = in.Labels
+	out.SourceConfig = SourceConfig_ToProto(mapCtx, in.SourceConfig)
+	out.DestinationConfig = DestinationConfig_ToProto(mapCtx, in.DestinationConfig)
+	if in.CustomerManagedEncryptionKeyRef != nil {
+		out.CustomerManagedEncryptionKey = direct.LazyPtr(in.CustomerManagedEncryptionKeyRef.External)
+	}
+	if oneof := Stream_BackfillAllStrategy_ToProto(mapCtx, in.BackfillAll); oneof != nil {
+		out.BackfillStrategy = &pb.Stream_BackfillAll{BackfillAll: oneof}
+	}
+	if oneof := Stream_BackfillNoneStrategy_ToProto(mapCtx, in.BackfillNone); oneof != nil {
+		out.BackfillStrategy = &pb.Stream_BackfillNone{BackfillNone: oneof}
+	}
+	return out
+}
+
 func SourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.SourceConfigSpec) *pb.SourceConfig {
 	if in == nil {
 		return nil
@@ -37,6 +57,7 @@ func SourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.SourceConfigSpec) *
 	if oneof := PostgresqlSourceConfig_ToProto(mapCtx, in.PostgresqlSourceConfig); oneof != nil {
 		out.SourceStreamConfig = &pb.SourceConfig_PostgresqlSourceConfig{PostgresqlSourceConfig: oneof}
 	}
+
 	return out
 }
 
@@ -97,7 +118,6 @@ func DatastreamStreamSpec_FromProto(mapCtx *direct.MapContext, in *pb.Stream) *k
 	}
 	out := &krm.DatastreamStreamSpec{}
 	out.Labels = in.Labels
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.SourceConfig = SourceConfig_FromProto(mapCtx, in.GetSourceConfig())
 	out.DestinationConfig = DestinationConfig_FromProto(mapCtx, in.GetDestinationConfig())
 	out.BackfillAll = Stream_BackfillAllStrategy_FromProto(mapCtx, in.GetBackfillAll())

@@ -100,13 +100,10 @@ func DatastreamStreamObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 		return nil
 	}
 	out := &krm.DatastreamStreamObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, Error_FromProto)
-	out.CustomerManagedEncryptionKey = in.CustomerManagedEncryptionKey
-	// MISSING: LastRecoveryTime
 	return out
 }
 func DatastreamStreamObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatastreamStreamObservedState) *pb.Stream {
@@ -114,31 +111,10 @@ func DatastreamStreamObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 		return nil
 	}
 	out := &pb.Stream{}
-	out.Name = direct.ValueOf(in.Name)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.State = direct.Enum_ToProto[pb.Stream_State](mapCtx, in.State)
 	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, Error_ToProto)
-	out.CustomerManagedEncryptionKey = in.CustomerManagedEncryptionKey
-	// MISSING: LastRecoveryTime
-	return out
-}
-func DatastreamStreamSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatastreamStreamSpec) *pb.Stream {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Stream{}
-	out.Labels = in.Labels
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.SourceConfig = SourceConfig_ToProto(mapCtx, in.SourceConfig)
-	out.DestinationConfig = DestinationConfig_ToProto(mapCtx, in.DestinationConfig)
-	if oneof := Stream_BackfillAllStrategy_ToProto(mapCtx, in.BackfillAll); oneof != nil {
-		out.BackfillStrategy = &pb.Stream_BackfillAll{BackfillAll: oneof}
-	}
-	if oneof := Stream_BackfillNoneStrategy_ToProto(mapCtx, in.BackfillNone); oneof != nil {
-		out.BackfillStrategy = &pb.Stream_BackfillNone{BackfillNone: oneof}
-	}
-	// MISSING: LastRecoveryTime
 	return out
 }
 func Error_FromProto(mapCtx *direct.MapContext, in *pb.Error) *krm.Error {

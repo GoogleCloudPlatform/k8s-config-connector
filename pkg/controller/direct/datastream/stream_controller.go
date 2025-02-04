@@ -16,6 +16,7 @@ package datastream
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
@@ -124,6 +125,19 @@ func (a *StreamAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+// Stream proto has several specialties. This function is for edge case handling.
+func (a *StreamAdapter) propogateSpecToResource(streampb *datastreampb.Stream) error {
+	// DisplayName is the actual metadata.name and spec.resourceID.
+	streampb.DisplayName = a.id.String()
+
+	// BackfillStrategy is required. The Config Connector API uses two optional field `backfillStrategy` and `backfillStrategyType`.
+	// TODO: CRD validation for oneOf.
+	if streampb.BackfillStrategy == nil {
+		return fmt.Errorf("backfillStrategy is required. Either `spec.backfillStrategy` or `spec.backfillStrategyType` must be set")
+	}
+	return nil
+}
+
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *StreamAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
@@ -135,7 +149,10 @@ func (a *StreamAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.DestinationConfig.GetBigqueryDestinationConfig()
+	if err := a.propogateSpecToResource(resource); err != nil {
+		return fmt.Errorf("validate Stream %s: %w", a.id, err)
+	}
+
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &datastreampb.CreateStreamRequest{
 		Parent:   a.id.Parent().String(),
@@ -166,7 +183,6 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Stream", "name", a.id)
 	mapCtx := &direct.MapContext{}
-
 	desiredPb := DatastreamStreamSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -186,12 +202,21 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+	// Stream proto does not have `output-only` field_behavior for `state`.
+	paths.Delete("state")
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths)}
 
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
+	if err := a.propogateSpecToResource(desiredPb); err != nil {
+		return fmt.Errorf("validate Stream %s: %w", a.id, err)
+	}
+
+	// Name is the actual identifier. This field is required in Update and rejected in Create.
+	// The Stream proto unfortunately marks the field as `output-only`.
+	desiredPb.Name = a.id.String()
+
 	req := &datastreampb.UpdateStreamRequest{
-		RequestId:  a.id.String(),
 		UpdateMask: updateMask,
 		Stream:     desiredPb,
 	}
@@ -201,7 +226,14 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Stream %s waiting update: %w", a.id, err)
+		m, metaErr := op.Metadata()
+		if metaErr != nil {
+			err = errors.Join(err, metaErr)
+			return fmt.Errorf("Stream %s waiting update: %w", a.id, err)
+		}
+		// Update failure reason is only stored in operation's metadata.
+		log.Info("operation", "metadata", m.String())
+		return fmt.Errorf("Stream %s waiting update: %w. meta: %s", a.id, err, m.String())
 	}
 	log.V(2).Info("successfully updated Stream", "name", a.id)
 

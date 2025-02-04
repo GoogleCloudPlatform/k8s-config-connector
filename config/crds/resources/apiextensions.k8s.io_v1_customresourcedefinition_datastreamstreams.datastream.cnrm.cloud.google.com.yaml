@@ -252,11 +252,101 @@ spec:
                           type: object
                         type: array
                     type: object
+                  sqlServerExcludedObjects:
+                    description: SQLServer data source objects to avoid backfilling
+                    properties:
+                      schemas:
+                        description: SQLServer schemas in the database server.
+                        items:
+                          properties:
+                            schema:
+                              description: Schema name.
+                              type: string
+                            tables:
+                              description: Tables in the schema.
+                              items:
+                                properties:
+                                  columns:
+                                    description: SQLServer columns in the schema.
+                                      When unspecified as part of include/exclude
+                                      objects, includes/excludes everything.
+                                    items:
+                                      properties:
+                                        column:
+                                          description: Column name.
+                                          type: string
+                                        dataType:
+                                          description: The SQLServer data type.
+                                          type: string
+                                        length:
+                                          description: Column length.
+                                          format: int32
+                                          type: integer
+                                        nullable:
+                                          description: Whether or not the column can
+                                            accept a null value.
+                                          type: boolean
+                                        ordinalPosition:
+                                          description: The ordinal position of the
+                                            column in the table.
+                                          format: int32
+                                          type: integer
+                                        precision:
+                                          description: Column precision.
+                                          format: int32
+                                          type: integer
+                                        primaryKey:
+                                          description: Whether or not the column represents
+                                            a primary key.
+                                          type: boolean
+                                        scale:
+                                          description: Column scale.
+                                          format: int32
+                                          type: integer
+                                      type: object
+                                    type: array
+                                  table:
+                                    description: Table name.
+                                    type: string
+                                type: object
+                              type: array
+                          type: object
+                        type: array
+                    type: object
                 type: object
               backfillNone:
                 type: object
+              customerManagedEncryptionKey:
+                description: The customer-managed encryption key's resource name,
+                  if the stream is encrypted with customer-managed encryption key.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               destinationConfig:
-                description: The destination connection profile configuration.
+                description: Immutable. The destination connection profile configuration.
                 properties:
                   bigqueryDestinationConfig:
                     description: BigQuery destination configuration.
@@ -359,8 +449,8 @@ spec:
                         type: object
                     type: object
                   destinationConnectionProfileRef:
-                    description: 'Required. Destination connection profile resource.
-                      Format: `projects/{project}/locations/{location}/connectionProfiles/{name}`'
+                    description: 'Destination connection profile resource. Format:
+                      `projects/{project}/locations/{location}/connectionProfiles/{name}`'
                     oneOf:
                     - not:
                         required:
@@ -388,6 +478,9 @@ spec:
                           resource.
                         type: string
                     type: object
+                    x-kubernetes-validations:
+                    - message: the field is immutable
+                      rule: self == oldSelf
                   gcsDestinationConfig:
                     description: A configuration for how data should be loaded to
                       Cloud Storage.
@@ -419,10 +512,9 @@ spec:
                           data to.
                         type: string
                     type: object
+                required:
+                - destinationConnectionProfileRef
                 type: object
-              displayName:
-                description: Display name.
-                type: string
               labels:
                 additionalProperties:
                   type: string
@@ -468,7 +560,7 @@ spec:
                   will be used.
                 type: string
               sourceConfig:
-                description: The source connection profile configuration.
+                description: Immutable. The source connection profile configuration.
                 properties:
                   mysqlSourceConfig:
                     description: MySQL data source configuration.
@@ -939,8 +1031,7 @@ spec:
                         type: string
                     type: object
                   sourceConnectionProfileRef:
-                    description: 'Required. Source connection profile resoource. Format:
-                      `projects/{project}/locations/{location}/connectionProfiles/{name}`'
+                    description: 'Source connection profile resoource. Format: `projects/{project}/locations/{location}/connectionProfiles/{name}`'
                     oneOf:
                     - not:
                         required:
@@ -968,10 +1059,158 @@ spec:
                           resource.
                         type: string
                     type: object
+                    x-kubernetes-validations:
+                    - message: the field is immutable
+                      rule: self == oldSelf
+                  sqlServerSourceConfig:
+                    description: SQLServer data source configuration. This field is
+                      no longer supported in proto.
+                    properties:
+                      changeTables:
+                        description: CDC reader reads from change tables.
+                        type: object
+                      excludeObjects:
+                        description: SQLServer objects to exclude from the stream.
+                        properties:
+                          schemas:
+                            description: SQLServer schemas in the database server.
+                            items:
+                              properties:
+                                schema:
+                                  description: Schema name.
+                                  type: string
+                                tables:
+                                  description: Tables in the schema.
+                                  items:
+                                    properties:
+                                      columns:
+                                        description: SQLServer columns in the schema.
+                                          When unspecified as part of include/exclude
+                                          objects, includes/excludes everything.
+                                        items:
+                                          properties:
+                                            column:
+                                              description: Column name.
+                                              type: string
+                                            dataType:
+                                              description: The SQLServer data type.
+                                              type: string
+                                            length:
+                                              description: Column length.
+                                              format: int32
+                                              type: integer
+                                            nullable:
+                                              description: Whether or not the column
+                                                can accept a null value.
+                                              type: boolean
+                                            ordinalPosition:
+                                              description: The ordinal position of
+                                                the column in the table.
+                                              format: int32
+                                              type: integer
+                                            precision:
+                                              description: Column precision.
+                                              format: int32
+                                              type: integer
+                                            primaryKey:
+                                              description: Whether or not the column
+                                                represents a primary key.
+                                              type: boolean
+                                            scale:
+                                              description: Column scale.
+                                              format: int32
+                                              type: integer
+                                          type: object
+                                        type: array
+                                      table:
+                                        description: Table name.
+                                        type: string
+                                    type: object
+                                  type: array
+                              type: object
+                            type: array
+                        type: object
+                      includeObjects:
+                        description: SQLServer objects to include in the stream.
+                        properties:
+                          schemas:
+                            description: SQLServer schemas in the database server.
+                            items:
+                              properties:
+                                schema:
+                                  description: Schema name.
+                                  type: string
+                                tables:
+                                  description: Tables in the schema.
+                                  items:
+                                    properties:
+                                      columns:
+                                        description: SQLServer columns in the schema.
+                                          When unspecified as part of include/exclude
+                                          objects, includes/excludes everything.
+                                        items:
+                                          properties:
+                                            column:
+                                              description: Column name.
+                                              type: string
+                                            dataType:
+                                              description: The SQLServer data type.
+                                              type: string
+                                            length:
+                                              description: Column length.
+                                              format: int32
+                                              type: integer
+                                            nullable:
+                                              description: Whether or not the column
+                                                can accept a null value.
+                                              type: boolean
+                                            ordinalPosition:
+                                              description: The ordinal position of
+                                                the column in the table.
+                                              format: int32
+                                              type: integer
+                                            precision:
+                                              description: Column precision.
+                                              format: int32
+                                              type: integer
+                                            primaryKey:
+                                              description: Whether or not the column
+                                                represents a primary key.
+                                              type: boolean
+                                            scale:
+                                              description: Column scale.
+                                              format: int32
+                                              type: integer
+                                          type: object
+                                        type: array
+                                      table:
+                                        description: Table name.
+                                        type: string
+                                    type: object
+                                  type: array
+                              type: object
+                            type: array
+                        type: object
+                      maxConcurrentBackfillTasks:
+                        description: Max concurrent backfill tasks.
+                        format: int32
+                        type: integer
+                      maxConcurrentCdcTasks:
+                        description: Max concurrent CDC tasks.
+                        format: int32
+                        type: integer
+                      transactionLogs:
+                        description: CDC reader reads from transaction logs.
+                        type: object
+                    type: object
+                required:
+                - sourceConnectionProfileRef
                 type: object
             required:
+            - destinationConfig
             - location
             - projectRef
+            - sourceConfig
             type: object
           status:
             description: DatastreamStreamStatus defines the config connector machine
@@ -1022,11 +1261,6 @@ spec:
                   createTime:
                     description: Output only. Create time.
                     type: string
-                  customerManagedEncryptionKey:
-                    description: Output only. The customer-managed encryption key's
-                      resource name, if the stream is encrypted with customer-managed
-                      encryption key.
-                    type: string
                   errors:
                     description: Output only. A list of errors that occurred on the
                       stream.
@@ -1054,9 +1288,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  name:
-                    description: Output only. The stream's name.
-                    type: string
                   state:
                     description: Output only. State of the stream.
                     type: string
