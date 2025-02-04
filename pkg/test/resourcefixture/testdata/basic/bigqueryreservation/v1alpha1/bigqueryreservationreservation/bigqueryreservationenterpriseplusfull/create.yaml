@@ -23,6 +23,7 @@ spec:
   edition: ENTERPRISE_PLUS
   ignoreIdleSlots: false
   location: us-west2
+  secondaryLocation: us-east1
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}

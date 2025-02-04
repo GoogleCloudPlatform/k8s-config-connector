@@ -18,11 +18,12 @@ metadata:
   name: bigqueryreservationreservation-${uniqueId}
 spec:
   autoscale:
-    maxSlots: 50
+    maxSlots: 100
   concurrency: 0
   edition: ENTERPRISE_PLUS
-  ignoreIdleSlots: false
+  ignoreIdleSlots: true
   location: us-west2
+  secondaryLocation: us-east1
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
