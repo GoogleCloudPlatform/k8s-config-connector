@@ -27,9 +27,12 @@ var ManagedKafkaTopicGVK = GroupVersion.WithKind("ManagedKafkaTopic")
 type ManagedKafkaTopicSpec struct {
 	commonv1alpha1.CommonSpec `json:",inline"`
 
+	// Required. the location of the Kafka resource.
+	// See https://cloud.google.com/managed-kafka/docs/locations for a list of supported locations.
 	// +required
 	Location string `json:"location"`
 
+	// Required. Reference to the Kafka cluster to create the topic in.
 	// +required
 	ClusterRef *ClusterRef `json:"clusterRef"`
 

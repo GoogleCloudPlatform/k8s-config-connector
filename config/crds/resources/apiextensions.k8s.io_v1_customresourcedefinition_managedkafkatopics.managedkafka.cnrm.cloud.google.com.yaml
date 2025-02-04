@@ -60,8 +60,8 @@ spec:
             description: ManagedKafkaTopicSpec defines the desired state of ManagedKafkaTopic
             properties:
               clusterRef:
-                description: ClusterRef defines the resource reference to ManagedKafkaCluster,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: Required. Reference to the Kafka cluster to create the
+                  topic in.
                 oneOf:
                 - not:
                     required:
@@ -96,6 +96,8 @@ spec:
                   name, for example: `cleanup.policy`, `compression.type`.'
                 type: object
               location:
+                description: Required. the location of the Kafka resource. See https://cloud.google.com/managed-kafka/docs/locations
+                  for a list of supported locations.
                 type: string
               partitionCount:
                 description: Required. The number of partitions this topic has. The
