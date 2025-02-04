@@ -1,0 +1,6 @@
+- exec: gcloud datastream streams create stream-${uniqueId} --location=us-central1 --display-name=my-stream
+- exec: gcloud datastream streams list --location=us-central1 --format="value(name)"
+- exec: gcloud datastream streams describe stream-${uniqueId} --location=us-central1
+- exec: gcloud datastream streams update stream-${uniqueId} --location=us-central1 --display-name=updated-stream
+- exec: gcloud datastream streams describe stream-${uniqueId} --location=us-central1
+- exec: gcloud datastream streams delete stream-${uniqueId} --location=us-central1
