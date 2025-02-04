@@ -59,7 +59,7 @@ func ManagedKafkaClusterObservedState_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krm.ManagedKafkaClusterObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
@@ -72,7 +72,7 @@ func ManagedKafkaClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Cluster{}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.State = direct.Enum_ToProto[pb.Cluster_State](mapCtx, in.State)
@@ -86,6 +86,7 @@ func ManagedKafkaClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster
 	}
 	out := &krm.ManagedKafkaClusterSpec{}
 	out.GcpConfig = GcpConfig_FromProto(mapCtx, in.GetGcpConfig())
+	// MISSING: Name
 	out.Labels = in.Labels
 	out.CapacityConfig = CapacityConfig_FromProto(mapCtx, in.GetCapacityConfig())
 	out.RebalanceConfig = RebalanceConfig_FromProto(mapCtx, in.GetRebalanceConfig())
@@ -101,6 +102,7 @@ func ManagedKafkaClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedK
 	if oneof := GcpConfig_ToProto(mapCtx, in.GcpConfig); oneof != nil {
 		out.PlatformConfig = &pb.Cluster_GcpConfig{GcpConfig: oneof}
 	}
+	// MISSING: Name
 	out.Labels = in.Labels
 	out.CapacityConfig = CapacityConfig_ToProto(mapCtx, in.CapacityConfig)
 	out.RebalanceConfig = RebalanceConfig_ToProto(mapCtx, in.RebalanceConfig)
@@ -108,27 +110,12 @@ func ManagedKafkaClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedK
 	// MISSING: SatisfiesPzs
 	return out
 }
-func ManagedKafkaTopicObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.ManagedKafkaTopicObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagedKafkaTopicObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	return out
-}
-func ManagedKafkaTopicObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaTopicObservedState) *pb.Topic {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Topic{}
-	out.Name = direct.ValueOf(in.Name)
-	return out
-}
 func ManagedKafkaTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.ManagedKafkaTopicSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ManagedKafkaTopicSpec{}
+	// MISSING: Name
 	out.PartitionCount = direct.LazyPtr(in.GetPartitionCount())
 	out.ReplicationFactor = direct.LazyPtr(in.GetReplicationFactor())
 	out.Configs = in.Configs
@@ -139,6 +126,7 @@ func ManagedKafkaTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKaf
 		return nil
 	}
 	out := &pb.Topic{}
+	// MISSING: Name
 	out.PartitionCount = direct.ValueOf(in.PartitionCount)
 	out.ReplicationFactor = direct.ValueOf(in.ReplicationFactor)
 	out.Configs = in.Configs
