@@ -44,6 +44,16 @@ type PromptOptions struct {
 	StrictInputColumnKeys []string
 }
 
+func (o *PromptOptions) InitDefaults() error {
+	root, err := options.RepoRoot()
+	if err != nil {
+		return err
+	}
+	o.SrcDir = root
+	o.ProtoDir = root + "/.build/third_party/googleapis/"
+	return nil
+}
+
 // BindFlags binds the flags to the command.
 func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.SrcDir, "src-dir", o.SrcDir, "base directory for source code")
@@ -56,6 +66,11 @@ func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 func BuildPromptCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	opt := &PromptOptions{
 		GenerateOptions: baseOptions,
+	}
+
+	if err := opt.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
 	}
 
 	cmd := &cobra.Command{
