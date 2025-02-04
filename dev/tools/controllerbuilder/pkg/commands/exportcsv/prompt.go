@@ -45,10 +45,7 @@ type PromptOptions struct {
 }
 
 func (o *PromptOptions) InitDefaults() error {
-	root, err := options.RepoRoot()
-	if err != nil {
-		return err
-	}
+	root := os.Getenv("REPO_ROOT")
 	o.SrcDir = root
 	o.ProtoDir = root + "/.build/third_party/googleapis/"
 	return nil
