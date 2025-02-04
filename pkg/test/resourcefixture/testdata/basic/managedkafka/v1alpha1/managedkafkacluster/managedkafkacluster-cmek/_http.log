@@ -796,7 +796,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=capacityConfig.memoryBytes%2CcapacityConfig.vcpuCount%2Cname%2CrebalanceConfig.mode
+PATCH https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=capacityConfig.memoryBytes%2CcapacityConfig.vcpuCount%2CrebalanceConfig.mode
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}
