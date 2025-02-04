@@ -194,16 +194,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                properties:
-                  name:
-                    description: 'Identifier. The name of the topic. The `topic` segment
-                      is used when connecting directly to the cluster. Structured
-                      like: projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}'
-                    type: string
-                type: object
             type: object
         required:
         - spec
