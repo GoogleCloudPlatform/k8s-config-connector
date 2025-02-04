@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -43,7 +43,7 @@ type CloudIdentityGroupSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="GroupKey field is immutable"
 	// Immutable. EntityKey of the Group.
 	// +required
-	GroupKey EntityKey `json:"groupKey"`
+	GroupKey *EntityKey `json:"groupKey"`
 
 	// Immutable. The initial configuration options for creating a Group. See the [API reference](https://cloud.google.com/identity/docs/reference/rest/v1beta1/groups/create#initialgroupconfig) for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"].
 	InitialGroupConfig *string `json:"initialGroupConfig,omitempty"`
@@ -62,10 +62,9 @@ type CloudIdentityGroupSpec struct {
 }
 
 // CloudIdentityGroupStatus defines the config connector machine state of CloudIdentityGroup
+// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.Group
 type CloudIdentityGroupStatus struct {
-	/* Conditions represent the latest available observations of the
-	   object's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	commonv1alpha1.CommonStatus `json:",inline"`
 
 	// The time when the `Group` was created.
 	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Group.create_time
@@ -75,18 +74,12 @@ type CloudIdentityGroupStatus struct {
 	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Group.name
 	Name *string `json:"name,omitempty"`
 
-	// A unique specifier for the CloudIdentityGroup resource in GCP.
-	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *CloudIdentityGroupObservedState `json:"observedState,omitempty"`
-
 	// The time when the `Group` was last updated.
 	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Group.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *CloudIdentityGroupObservedState `json:"observedState,omitempty"`
 }
 
 // CloudIdentityGroupObservedState is the state of the CloudIdentityGroup resource as most recently observed in GCP.
