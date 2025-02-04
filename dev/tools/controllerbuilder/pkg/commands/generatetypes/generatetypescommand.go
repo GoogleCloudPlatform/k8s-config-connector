@@ -25,11 +25,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/klog/v2"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/yaml"
 )
 
 type GenerateCRDOptions struct {
@@ -39,6 +41,8 @@ type GenerateCRDOptions struct {
 	SkipScaffoldFiles  bool
 
 	Resources ResourceList
+
+	ExistingCRDPaths PathList
 }
 
 type Resource struct {
@@ -72,6 +76,23 @@ func (r *ResourceList) Set(s string) error {
 	return nil
 }
 
+type PathList []string
+
+func (r *PathList) Type() string { return "crdpaths" }
+
+func (r *PathList) String() string {
+	var sb strings.Builder
+	for _, res := range *r {
+		fmt.Fprintf(&sb, "%s", res)
+	}
+	return sb.String()
+}
+
+func (r *PathList) Set(s string) error {
+	*r = append(*r, s)
+	return nil
+}
+
 func (o *GenerateCRDOptions) InitDefaults() error {
 	root, err := options.RepoRoot()
 	if err != nil {
@@ -85,6 +106,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
 	cmd.Flags().Var(&o.Resources, "resource", "the KRM Kind and the equivalent proto resource separated with a colon.  e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`.  Can be specified multiple times.")
 	cmd.Flags().BoolVar(&o.SkipScaffoldFiles, "skip-scaffold-files", false, "skip generating scaffold files (types, refs, and identity)")
+	cmd.Flags().Var(&o.ExistingCRDPaths, "existing-crd", "path to the existing CRD if the generated type is used for direct migration.  Can be specified multiple times.")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -161,7 +183,36 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
-	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, api)
+	specFieldDescriptions := make(map[string]string)
+	statusFieldDescriptions := make(map[string]string)
+	for _, path := range o.ExistingCRDPaths {
+		version, err := getVersionFromAPIVersion(o.APIVersion)
+		if err != nil {
+			return fmt.Errorf("error getting version from APIVersion: %w", err)
+		}
+		existingCRD, err := readCRD(path)
+		if err != nil {
+			return fmt.Errorf("error reading existing CRD from path %s: %w", path, err)
+		}
+
+		var existingCRDVersion *apiextensions.CustomResourceDefinitionVersion
+		for _, v := range existingCRD.Spec.Versions {
+			if v.Name == version {
+				existingCRDVersion = &v
+			}
+		}
+		if existingCRDVersion != nil {
+			spec, ok := existingCRDVersion.Schema.OpenAPIV3Schema.Properties["spec"]
+			if ok {
+				iterateCRDFields(spec.Properties, specFieldDescriptions)
+			}
+			status, ok := existingCRDVersion.Schema.OpenAPIV3Schema.Properties["status"]
+			if ok {
+				iterateCRDFields(status.Properties, statusFieldDescriptions)
+			}
+		}
+	}
+	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, api, specFieldDescriptions, statusFieldDescriptions)
 
 	for _, resource := range o.Resources {
 		resourceProtoFullName := o.ServiceName + "." + resource.ProtoName
@@ -215,6 +266,52 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	return nil
+}
+
+func readCRD(path string) (*apiextensions.CustomResourceDefinition, error) {
+	if !strings.HasSuffix(path, ".yaml") {
+		return nil, fmt.Errorf("path %s is not a yaml file", path)
+	}
+	y, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read CRD file %s: %w", path, err)
+	}
+	var crd apiextensions.CustomResourceDefinition
+	if err := yaml.Unmarshal(y, &crd); err != nil {
+		return nil, fmt.Errorf("error unmarshalling bytes into CRD: %w", err)
+	}
+	return &crd, nil
+}
+
+func getVersionFromAPIVersion(apiVersion string) (string, error) {
+	tokens := strings.Split(apiVersion, "/")
+	if len(tokens) != 2 {
+		return "", fmt.Errorf("apiVersion %s is not in the expected format of '[service].cnrm.cloud.google.com/[version]'", apiVersion)
+	}
+	return tokens[1], nil
+}
+
+func iterateCRDFields(props map[string]apiextensions.JSONSchemaProps, fieldDescriptionMap map[string]string) {
+	for field, prop := range props {
+		// TODO: Distinguish between customized fields and original fields.
+		if strings.HasSuffix(field, "Ref") || field == "value" || field == "valueFrom" ||
+			field == "conditions" || field == "observedGeneration" {
+			continue
+		}
+		if _, ok := fieldDescriptionMap[field]; ok {
+			// TODO: Support duplicated fields in a better way.
+			fieldDescriptionMap[field] = "DUPLICATED FIELD NAME"
+		} else {
+			fieldDescriptionMap[field] = prop.Description
+		}
+		if prop.Type == "object" && prop.AdditionalProperties == nil {
+			iterateCRDFields(prop.Properties, fieldDescriptionMap)
+		}
+		if prop.Type == "array" && prop.Items.Schema.Type == "object" {
+			iterateCRDFields(prop.Items.Schema.Properties, fieldDescriptionMap)
+		}
+	}
+	return
 }
 
 func capitalizeFirstRune(s string) string {

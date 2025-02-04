@@ -96,7 +96,7 @@ func (s *ProtoPackageSyncer) createFieldUpdatePlan(msgInfo messageInfo, fieldInf
 			goType,
 			jsonName)
 	} else { // for regular fields, generate complete field with comments
-		codegen.WriteField(&buf, protoField, msgDesc, 0, false) // HACK: use fieldIndex=0 to avoid generating a leading blank line on comments
+		codegen.WriteField(&buf, protoField, msgDesc, 0, false, nil) // HACK: use fieldIndex=0 to avoid generating a leading blank line on comments
 		// TODO: add support for transitive output fields when writing the field
 	}
 

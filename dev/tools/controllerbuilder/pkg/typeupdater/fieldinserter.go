@@ -180,13 +180,13 @@ func removeAlreadyGenerated(goPackagePath, outputAPIDirectory string, targets ma
 func (u *FieldInserter) generate() error {
 	var buf bytes.Buffer
 	klog.Infof("generate Go code for field %s", u.newField.proto.Name())
-	codegen.WriteField(&buf, u.newField.proto, u.newField.parent, 0, false) // TODO: add support for transitive output fields
+	codegen.WriteField(&buf, u.newField.proto, u.newField.parent, 0, false, nil) // TODO: add support for transitive output fields
 	u.newField.generatedContent = buf.Bytes()
 
 	for key, msg := range u.dependentMessages {
 		var buf bytes.Buffer
 		klog.Infof("generate Go code for messge %s", msg.proto.FullName())
-		codegen.WriteMessage(&buf, msg.proto)
+		codegen.WriteMessage(&buf, msg.proto, nil)
 		msg.generatedContent = buf.Bytes()
 		u.dependentMessages[key] = msg
 	}

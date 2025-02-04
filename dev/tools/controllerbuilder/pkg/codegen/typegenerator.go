@@ -24,20 +24,23 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
-	"k8s.io/apimachinery/pkg/util/sets"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
 type TypeGenerator struct {
 	generatorBase
-	api             *protoapi.Proto
-	goPackage       string
-	visitedMessages []protoreflect.MessageDescriptor
-	outputMessages  []*OutputMessageDetails
+	api                             *protoapi.Proto
+	goPackage                       string
+	visitedMessages                 []protoreflect.MessageDescriptor
+	outputMessages                  []*OutputMessageDetails
+	existingSpecFieldDescriptions   map[string]string
+	existingStatusFieldDescriptions map[string]string
 }
 
 type OutputMessageDetails struct {
@@ -45,10 +48,12 @@ type OutputMessageDetails struct {
 	OutputFields []protoreflect.FieldDescriptor
 }
 
-func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
+func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto, existingSpecFieldDescriptions, existingStatusFieldDescriptions map[string]string) *TypeGenerator {
 	g := &TypeGenerator{
-		goPackage: goPackage,
-		api:       api,
+		goPackage:                       goPackage,
+		api:                             api,
+		existingSpecFieldDescriptions:   existingSpecFieldDescriptions,
+		existingStatusFieldDescriptions: existingStatusFieldDescriptions,
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -150,7 +155,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 
 		out.packageName = krmVersion
 
-		WriteMessage(&out.body, msg)
+		WriteMessage(&out.body, msg, g.existingSpecFieldDescriptions)
 	}
 	return errors.Join(g.errors...)
 }
@@ -192,12 +197,12 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 
 		out.packageName = krmVersion
 
-		WriteOutputMessage(&out.body, msgDetails)
+		WriteOutputMessage(&out.body, msgDetails, g.existingStatusFieldDescriptions)
 	}
 	return errors.Join(g.errors...)
 }
 
-func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
+func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, existingFieldDescriptions map[string]string) {
 	goType := GoNameForProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
@@ -207,13 +212,13 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 		field := msg.Fields().Get(i)
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
 			// Only write non-output fields.
-			WriteField(out, field, msg, i, false)
+			WriteField(out, field, msg, i, false, existingFieldDescriptions)
 		}
 	}
 	fmt.Fprintf(out, "}\n")
 }
 
-func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails) {
+func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails, existingFieldDescriptions map[string]string) {
 	msg := msgDetails.Message
 	goType := goNameForOutputProtoMessage(msg)
 
@@ -224,9 +229,9 @@ func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails) {
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
 			// If field is not explicitly listed as an output, but it appears in OutputMessageDetails,
 			// then it must be a parent message that contains a child message with an output.
-			WriteField(out, field, msg, i, true)
+			WriteField(out, field, msg, i, true, existingFieldDescriptions)
 		} else {
-			WriteField(out, field, msg, i, false)
+			WriteField(out, field, msg, i, false, existingFieldDescriptions)
 		}
 	}
 	fmt.Fprintf(out, "}\n")
@@ -278,7 +283,7 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 	return goType, nil
 }
 
-func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool) {
+func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool, existingFieldDescriptions map[string]string) {
 	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
 	jsonName := GetJSONForKRM(field)
@@ -295,7 +300,23 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 		fmt.Fprintf(out, "\n")
 	}
 
-	if sourceLocations.LeadingComments != "" {
+	emptyExistingDescription := true
+	if len(existingFieldDescriptions) > 0 {
+		crdFieldName := text.SnakeCaseToLowerCamelCase(string(field.Name()))
+		description, ok := existingFieldDescriptions[crdFieldName]
+		if ok && description != "DUPLICATED FIELD NAME" {
+			for _, line := range strings.Split(description, "\n") {
+				if strings.TrimSpace(line) == "" {
+					fmt.Fprintf(out, "\t//\n")
+				} else {
+					emptyExistingDescription = false
+					fmt.Fprintf(out, "\t// %s\n", line)
+				}
+			}
+		}
+	}
+
+	if emptyExistingDescription && sourceLocations.LeadingComments != "" {
 		comment := strings.TrimSpace(sourceLocations.LeadingComments)
 		for _, line := range strings.Split(comment, "\n") {
 			if strings.TrimSpace(line) == "" {
@@ -362,6 +383,22 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 
 	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
 	fullName = strings.TrimPrefix(fullName, ".")
+	// Ensure acronyms in type names are also handled.
+	parts := strings.Split(fullName, ".")
+	for i, part := range parts {
+		partInSnakeCase := text.AsSnakeCase(part)
+		tokens := strings.Split(partInSnakeCase, "_")
+		for j, token := range tokens {
+			if IsAcronym(token) {
+				token = strings.ToUpper(token)
+			} else {
+				token = strings.Title(token)
+			}
+			tokens[j] = token
+		}
+		parts[i] = strings.Join(tokens, "")
+	}
+	fullName = strings.Join(parts, ".")
 	fullName = strings.ReplaceAll(fullName, ".", "_")
 	return fullName
 }
