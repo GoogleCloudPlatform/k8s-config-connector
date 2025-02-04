@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,19 +53,28 @@ func (s *managedKafka) CreateCluster(ctx context.Context, req *pb.CreateClusterR
 	obj := proto.Clone(req.GetCluster()).(*pb.Cluster)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Cluster_CREATING
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	metadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Method:     "google.cloud.managedkafka.v1.ManagedKafka.CreateCluster",
-		Target:     name.String(),
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.New(now),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "create",
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		obj.State = pb.Cluster_ACTIVE
+		obj.UpdateTime = timestamppb.New(now)
+		if !obj.GetSatisfiesPzi() { // hack: we don't support PZI yet. This is to match the real GCP
+			obj.SatisfiesPzi = proto.Bool(false)
+		}
+		if !obj.GetSatisfiesPzs() { // hack: we don't support PZS yet. This is to match the real GCP
+			obj.SatisfiesPzs = proto.Bool(false)
+		}
 		metadata.EndTime = timestamppb.Now()
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
@@ -85,7 +94,7 @@ func (s *managedKafka) GetCluster(ctx context.Context, req *pb.GetClusterRequest
 	obj := &pb.Cluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "cluster %v not found", name)
+			return nil, status.Errorf(codes.NotFound, "Resource '%v' was not found", name)
 		}
 		return nil, err
 	}
@@ -107,20 +116,37 @@ func (s *managedKafka) UpdateCluster(ctx context.Context, req *pb.UpdateClusterR
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
+	// updateMask=capacityConfig.memoryBytes%2CcapacityConfig.vcpuCount%2CgcpConfig.accessConfig.networkConfigs%2Cname%2CrebalanceConfig.mode
+	for _, path := range paths {
+		switch path {
+		case "capacityConfig.memoryBytes":
+			obj.CapacityConfig.MemoryBytes = req.GetCluster().GetCapacityConfig().GetMemoryBytes()
+		case "capacityConfig.vcpuCount":
+			obj.CapacityConfig.VcpuCount = req.GetCluster().GetCapacityConfig().GetVcpuCount()
+		case "gcpConfig.accessConfig.networkConfigs":
+			obj.GetGcpConfig().AccessConfig.NetworkConfigs = req.GetCluster().GetGcpConfig().GetAccessConfig().GetNetworkConfigs()
+		case "name":
+			obj.Name = req.GetCluster().GetName()
+		case "rebalanceConfig.mode":
+			obj.RebalanceConfig.Mode = req.GetCluster().GetRebalanceConfig().GetMode()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
+		}
+	}
 
-	proto.Merge(obj, req.GetCluster())
 	obj.UpdateTime = timestamppb.Now()
-	obj.State = pb.Cluster_UPDATING
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	metadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.Now(),
-		Method:     "google.cloud.managedkafka.v1.ManagedKafka.UpdateCluster",
-		Target:     name.String(),
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.Now(),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "update",
 	}
 
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
@@ -146,17 +172,16 @@ func (s *managedKafka) DeleteCluster(ctx context.Context, req *pb.DeleteClusterR
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
-
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	metadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.Now(),
-		Method:     "google.cloud.managedkafka.v1.ManagedKafka.DeleteCluster",
-		Target:     name.String(),
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.Now(),
+		EndTime:               timestamppb.Now(),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "delete",
 	}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
-		return &emptypb.Empty{}, nil
-	})
+	return s.operations.DoneLRO(ctx, prefix, metadata, &emptypb.Empty{})
 }
 
 type clusterName struct {
@@ -166,7 +191,7 @@ type clusterName struct {
 }
 
 func (n *clusterName) String() string {
-	return fmt.Sprintf("projects/%d/locations/%s/clusters/%s", n.Project.Number, n.Location, n.Cluster)
+	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", n.Project.ID, n.Location, n.Cluster)
 }
 
 func (s *MockService) parseClusterName(name string) (*clusterName, error) {

@@ -18,10 +18,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/managedkafka/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -34,12 +34,7 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *ManagedKafkaV1
-}
-
-type ManagedKafkaV1 struct {
-	*MockService
-	pb.UnimplementedManagedKafkaServer
+	v1 *managedKafka
 }
 
 // New creates a MockService.
@@ -49,7 +44,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &ManagedKafkaV1{MockService: s}
+	s.v1 = &managedKafka{MockService: s}
 	return s
 }
 
@@ -62,10 +57,19 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-
-	if err := pb.RegisterManagedKafkaHandler(ctx, mux, conn); err != nil {
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb.RegisterManagedKafkaHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
+	)
+	if err != nil {
 		return nil, err
+	}
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil

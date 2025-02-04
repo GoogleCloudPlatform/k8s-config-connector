@@ -25,6 +25,7 @@ var allServices = []string{
 	"anthos.googleapis.com",
 	"anthosconfigmanagement.googleapis.com",
 	"anthospolicycontroller.googleapis.com",
+	"managedkafka.googleapis.com",
 	"multiclusteringress.googleapis.com",
 	"multiclusterservicediscovery.googleapis.com",
 	"mesh.googleapis.com",
