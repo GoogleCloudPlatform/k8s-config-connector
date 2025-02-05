@@ -21,6 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+/* NOTYET
 func GeminiInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.GeminiInstanceConfig) *krm.GeminiInstanceConfig {
 	if in == nil {
 		return nil
@@ -37,6 +38,8 @@ func GeminiInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.GeminiInsta
 	out.Entitled = direct.ValueOf(in.Entitled)
 	return out
 }
+*/
+
 func Instance_ClientConnectionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ClientConnectionConfig) *krm.Instance_ClientConnectionConfig {
 	if in == nil {
 		return nil
@@ -129,6 +132,8 @@ func Instance_Node_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Node) *pb
 	out.State = direct.ValueOf(in.State)
 	return out
 }
+
+/* NOTYET
 func Instance_ObservabilityInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ObservabilityInstanceConfig) *krm.Instance_ObservabilityInstanceConfig {
 	if in == nil {
 		return nil
@@ -181,6 +186,8 @@ func Instance_PscInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.Insta
 	out.PscDnsName = direct.ValueOf(in.PSCDNSName)
 	return out
 }
+*/
+
 func Instance_QueryInsightsInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_QueryInsightsInstanceConfig) *krm.Instance_QueryInsightsInstanceConfig {
 	if in == nil {
 		return nil

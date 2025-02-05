@@ -96,6 +96,26 @@ type AlloyDBInstanceSpec struct {
 	ReadPoolConfig *Instance_ReadPoolConfig `json:"readPoolConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
+type Instance_InstanceNetworkConfig struct {
+	// Optional. A list of external network authorized to
+	// access this instance. This field is only allowed to be set when
+	// 'enablePublicIp' is set to true.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.authorized_external_networks
+	AuthorizedExternalNetworks []Instance_InstanceNetworkConfig_AuthorizedNetwork `json:"authorizedExternalNetworks,omitempty"`
+
+	// Optional. Enabling public ip for the instance. If
+	// a user wishes to disable this, please also clear the list of
+	// the authorized external networks set on the same instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.enable_public_ip
+	EnablePublicIP *bool `json:"enablePublicIp,omitempty"`
+
+	// Optional. Enabling an outbound public IP address to support a database
+	//  server sending requests out into the internet.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.enable_outbound_public_ip
+	EnableOutboundPublicIP *bool `json:"enableOutboundPublicIp,omitempty"`
+}
+
 // AlloyDBInstanceStatus defines the config connector machine state of AlloyDBInstance
 type AlloyDBInstanceStatus struct {
 	/* Conditions represent the latest available observations of the

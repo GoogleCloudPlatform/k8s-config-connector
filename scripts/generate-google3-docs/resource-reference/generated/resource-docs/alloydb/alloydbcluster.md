@@ -131,6 +131,7 @@ networkRef:
   namespace: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -166,7 +167,13 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The automated backup policy for this cluster. AutomatedBackupPolicy is disabled by default.{% endverbatim %}</p>
+            <p>{% verbatim %}The automated backup policy for this cluster.
+
+ If no policy is provided then the default policy will be used. If backups
+ are supported for the cluster, the default policy takes one backup a day,
+ has a backup window of 1 hour, and retains backups for 14 days.
+ For more information on the defaults, consult the
+ documentation for the message type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -176,11 +183,12 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The length of the time window during which a backup can be taken. If a backup does not succeed within this time window, it will be canceled and considered failed.
+            <p>{% verbatim %}The length of the time window during which a backup can be
+ taken. If a backup does not succeed within this time window, it will be
+ canceled and considered failed.
 
-The backup window must be at least 5 minutes long. There is no upper bound on the window. If not set, it will default to 1 hour.
-
-A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
+ The backup window must be at least 5 minutes long. There is no upper bound
+ on the window. If not set, it defaults to 1 hour.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -190,7 +198,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether automated backups are enabled.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether automated automated backups are enabled. If not set, defaults to true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -200,7 +208,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The encryption config can be specified to encrypt the backups with a customer-managed encryption key (CMEK). When this field is not specified, the backup will then use default encryption scheme to protect the user data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -210,7 +218,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}(Optional) The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].{% endverbatim %}</p>
+            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -220,7 +228,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -230,7 +238,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -240,7 +248,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -260,7 +268,10 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The location where the backup will be stored. Currently, the only supported option is to store the backup in the same region as the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}The location where the backup will be stored. Currently, the only supported
+ option is to store the backup in the same region as the cluster.
+
+ If empty, defaults to the region of the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -270,7 +281,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Quantity-based Backup retention policy to retain recent backups. Conflicts with 'time_based_retention', both can't be set together.{% endverbatim %}</p>
+            <p>{% verbatim %}Quantity-based Backup retention policy to retain recent backups.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -290,7 +301,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Time-based Backup retention policy. Conflicts with 'quantity_based_retention', both can't be set together.{% endverbatim %}</p>
+            <p>{% verbatim %}Time-based Backup retention policy.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -300,8 +311,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The retention period.
-A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
+            <p>{% verbatim %}The retention period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -321,7 +331,10 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The days of the week to perform a backup. At least one day of the week must be provided. Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].{% endverbatim %}</p>
+            <p>{% verbatim %}The days of the week to perform a backup.
+
+ If this field is left empty, the default of every day of the week is
+ used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -341,7 +354,11 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The times during the day to start a backup. At least one start time must be provided. The start times are assumed to be in UTC and to be an exact hour (e.g., 04:00:00).{% endverbatim %}</p>
+            <p>{% verbatim %}The times during the day to start a backup. The start times are assumed
+ to be in UTC and to be an exact hour (e.g., 04:00:00).
+
+ If no start times are provided, a single fixed start time is chosen
+ arbitrarily.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -371,7 +388,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Minutes of hour of day. Currently, only the value 0 is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}Minutes of hour of day. Must be from 0 to 59.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -381,7 +398,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Fractions of seconds in nanoseconds. Currently, only the value 0 is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -391,7 +408,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Seconds of minutes of the time. Currently, only the value 0 is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -411,9 +428,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The continuous backup config for this cluster.
-
-If no policy is provided then the default policy will be used. The default policy takes one backup a day and retains backups for 14 days.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Continuous backup configuration for this cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -423,7 +438,7 @@ If no policy is provided then the default policy will be used. The default polic
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether continuous backup recovery is enabled. If not set, defaults to true.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether ContinuousBackup is enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -433,7 +448,7 @@ If no policy is provided then the default policy will be used. The default polic
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key).{% endverbatim %}</p>
+            <p>{% verbatim %}The encryption config can be specified to encrypt the backups with a customer-managed encryption key (CMEK). When this field is not specified, the backup will then use default encryption scheme to protect the user data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -443,7 +458,7 @@ If no policy is provided then the default policy will be used. The default polic
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}(Optional) The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].{% endverbatim %}</p>
+            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -453,7 +468,7 @@ If no policy is provided then the default policy will be used. The default polic
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -463,7 +478,7 @@ If no policy is provided then the default policy will be used. The default polic
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -473,7 +488,7 @@ If no policy is provided then the default policy will be used. The default polic
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -483,9 +498,7 @@ If no policy is provided then the default policy will be used. The default polic
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The numbers of days that are eligible to restore from using PITR. To support the entire recovery window, backups and logs are retained for one day more than the recovery window.
-
-If not set, defaults to 14 days.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of days that are eligible to restore from using PITR. To support the entire recovery window, backups and logs are retained for one day more than the recovery window. If not set, defaults to 14 days.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -495,9 +508,7 @@ If not set, defaults to 14 days.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Policy to determine if the cluster should be deleted forcefully.
-Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster.
-Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance.{% endverbatim %}</p>
+            <p>{% verbatim %}Policy to determine if the cluster should be deleted forcefully. Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster. Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -517,7 +528,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The encryption config can be specified to encrypt the data disks and other persistent data resources of a cluster with a customer-managed encryption key (CMEK). When this field is not specified, the cluster will then use default encryption scheme to protect the user data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -527,7 +538,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}(Optional) The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].{% endverbatim %}</p>
+            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -537,7 +548,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -547,7 +558,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -557,7 +568,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -567,7 +578,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Initial user to setup during cluster creation.{% endverbatim %}</p>
+            <p>{% verbatim %}Input only. Initial user to setup during cluster creation. Required. If used in `RestoreCluster` this is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -657,7 +668,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}MaintenanceUpdatePolicy defines the policy for system updates.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The maintenance update policy determines when to allow or deny updates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -687,7 +698,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc. Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].{% endverbatim %}</p>
+            <p>{% verbatim %}Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -703,11 +714,11 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
     <tr>
         <td>
             <p><code>maintenanceUpdatePolicy.maintenanceWindows[].startTime.hours</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -717,7 +728,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Minutes of hour of day. Currently, only the value 0 is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}Minutes of hour of day. Must be from 0 to 59.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -727,7 +738,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Fractions of seconds in nanoseconds. Currently, only the value 0 is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -737,7 +748,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Seconds of minutes of the time. Currently, only the value 0 is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -747,7 +758,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Metadata related to network configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -757,8 +768,7 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
-If set, the instance IPs for this cluster will be created in the allocated range.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Name of the allocated IP range for the private IP AlloyDB cluster, for example: "google-managed-services-default". If set, the instance IPs for this cluster will be created in the allocated range. The range name must comply with RFC 1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. Field name is intended to be consistent with Cloud SQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -768,9 +778,7 @@ If set, the instance IPs for this cluster will be created in the allocated range
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}(Required) The relative resource name of the VPC network on which
-the instance can be accessed. It is specified in the following form:
-projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`. This is required to create a cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -780,7 +788,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`, where {{value}} is the `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -790,7 +798,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -800,7 +808,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -810,9 +818,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}(Required) The relative resource name of the VPC network on which
-the instance can be accessed. It is specified in the following form:
-projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`. This is required to create a cluster. Deprecated, use network_config.network instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -822,7 +828,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`, where {{value}} is the `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -832,7 +838,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -842,7 +848,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -862,7 +868,17 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -872,7 +888,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -882,7 +898,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -892,7 +908,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The clusterId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The AlloyDBCluster name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -902,7 +918,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The source when restoring from a backup. Conflicts with 'restore_continuous_backup_source', both can't be set together.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The source when restoring from a backup. Conflicts with 'restoreContinuousBackupSource', both can't be set together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -912,7 +928,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}(Required) The name of the backup that this cluster is restored from.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The name of the backup resource with the format: * projects/{project}/locations/{region}/backups/{backup_id}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -922,7 +938,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `AlloyDBBackup` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/backups/[backupId]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -932,7 +948,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBBackup` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -942,7 +958,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBBackup` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -952,7 +968,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The source when restoring via point in time recovery (PITR). Conflicts with 'restore_backup_source', both can't be set together.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The source when restoring via point in time recovery (PITR). Conflicts with 'restoreBackupSource', both can't be set together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -972,7 +988,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -982,7 +998,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -992,7 +1008,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1012,7 +1028,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Configuration of the secondary cluster for Cross Region Replication. This should be set if and only if the cluster is of type SECONDARY.{% endverbatim %}</p>
+            <p>{% verbatim %}Cross Region replication config specific to SECONDARY cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1022,8 +1038,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Name of the primary cluster must be in the format
-'projects/{project}/locations/{location}/clusters/{cluster_id}'{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the primary cluster name with the format: * projects/{project}/locations/{region}/clusters/{cluster_id}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1033,7 +1048,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1043,7 +1058,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1053,7 +1068,7 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1110,7 +1125,7 @@ uid: string
         <td><code>backupSource</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Cluster created from backup.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Cluster created from backup.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1131,7 +1146,7 @@ uid: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1180,7 +1195,7 @@ uid: string
         <td><code>continuousBackupInfo</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}ContinuousBackupInfo describes the continuous backup properties of a cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Continuous backup properties for this cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1194,14 +1209,14 @@ uid: string
         <td><code>continuousBackupInfo[].earliestRestorableTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The earliest restorable time that can be restored to. Output only field.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The earliest restorable time that can be restored to. Output only field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>continuousBackupInfo[].enabledTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}When ContinuousBackup was most recently enabled. Set to null if ContinuousBackup is not enabled.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. When ContinuousBackup was most recently enabled. Set to null if ContinuousBackup is not enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1243,7 +1258,7 @@ uid: string
         <td><code>continuousBackupInfo[].schedule</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Days of the week on which a continuous backup is taken. Output only field. Ignored if passed into the request.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Days of the week on which a continuous backup is taken. Output only field. Ignored if passed into the request.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1264,7 +1279,7 @@ uid: string
         <td><code>encryptionInfo</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}EncryptionInfo describes the encryption information of a cluster or a backup.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The encryption information for the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1299,7 +1314,7 @@ uid: string
         <td><code>migrationSource</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Cluster created via DMS migration.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Cluster created via DMS migration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1313,28 +1328,28 @@ uid: string
         <td><code>migrationSource[].hostPort</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The host and port of the on-premises instance in host:port format.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The host and port of the on-premises instance in host:port format{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>migrationSource[].referenceId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Place holder for the external source identifier(e.g DMS job name) that created the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Place holder for the external source identifier(e.g DMS job name) that created the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>migrationSource[].sourceType</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Type of migration source.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Type of migration source.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the cluster resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The name of the cluster resource with the format: * projects/{project}/locations/{region}/clusters/{cluster_id} where the cluster ID segment should satisfy the regex expression `[a-z0-9-]+`. For more details see https://google.aip.dev/122. The prefix of the cluster resource name is the name of the parent resource: * projects/{project}/locations/{region}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1348,21 +1363,21 @@ uid: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.clusterType</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type of cluster. If not set, defaults to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The type of the cluster. This is an output-only field and it's populated at the Cluster creation time or the Cluster promotion time. The cluster type is determined by which RPC was used to create the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>uid</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The system-generated UID of the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The system-generated UID of the resource. The UID is assigned when the resource is created, and it is retained until it is deleted.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
