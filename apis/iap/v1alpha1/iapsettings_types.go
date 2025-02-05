@@ -70,9 +70,8 @@ type IAPSettingsStatus struct {
 	// ObservedState *IAPSettingsObservedState `json:"observedState,omitempty"`
 }
 
-// IAPSettingsSpec defines the desired state of IAPSettings
-// +kcc:proto=google.cloud.iap.v1.IapSettings
 // IAPSettingsObservedState is the state of the IAPSettings resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.iap.v1.IapSettings
 // NOTYET: there is no output only field
 // type IAPSettingsObservedState struct {
 // }

@@ -75,9 +75,8 @@ type ManagedKafkaTopicStatus struct {
 	// ObservedState *ManagedKafkaTopicObservedState `json:"observedState,omitempty"`
 }
 
-// ManagedKafkaTopicSpec defines the desired state of ManagedKafkaTopic
-// +kcc:proto=google.cloud.managedkafka.v1.Topic
 // ManagedKafkaTopicObservedState is the state of the ManagedKafkaTopic resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.managedkafka.v1.Topic
 // NOTYET: the resource does not have any output only fields
 // type ManagedKafkaTopicObservedState struct {
 // }

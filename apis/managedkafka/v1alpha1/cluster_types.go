@@ -125,7 +125,6 @@ type ManagedKafkaClusterStatus struct {
 	ObservedState *ManagedKafkaClusterObservedState `json:"observedState,omitempty"`
 }
 
-// ManagedKafkaClusterSpec defines the desired state of ManagedKafkaCluster
 // ManagedKafkaClusterObservedState is the state of the ManagedKafkaCluster resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.managedkafka.v1.Cluster
 type ManagedKafkaClusterObservedState struct {
