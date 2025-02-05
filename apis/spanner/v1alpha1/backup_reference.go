@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &BackupRef{}
 // holds the GCP identifier for the KRM object.
 type BackupRef struct {
 	// A reference to an externally managed SpannerBackup resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
+	// Should be in the format "projects/{{projectID}}/instances/{{instance}}/backups/{{backupID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SpannerBackup resource.

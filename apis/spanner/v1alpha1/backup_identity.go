@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -65,8 +66,20 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *SpannerBa
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	// Get desired ID
+	instanceRef := obj.Spec.InstanceRef
+	if instanceRef == nil {
+		return nil, fmt.Errorf("no parent instance")
+	}
+	instanceExternal, err := instanceRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve cluster: %w", err)
+	}
+	instance, err := v1beta1.ParseSpannerInstanceExternal(instanceExternal)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve cluster: %w", err)
+	}
 
+	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -86,7 +99,7 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *SpannerBa
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Instance != Instance {
+		if actualParent.Instance != instance.ID() {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
 		if actualResourceID != resourceID {

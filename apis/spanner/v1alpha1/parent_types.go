@@ -27,7 +27,7 @@ type InstanceParent struct {
 	InstanceRef *v1beta1.SpannerInstanceRef `json:"instanceRef,omitempty"`
 }
 
-type DatabaseParent struct {
+type InstanceDatabaseParent struct {
 	// Immutable. The Project that this resource belongs to.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
@@ -35,6 +35,6 @@ type DatabaseParent struct {
 	// The reference to the parent instance
 	InstanceRef *v1beta1.SpannerInstanceRef `json:"instanceRef,omitempty"`
 
-	// The reference to the parent instance
+	// The reference to the parent database
 	DatabaseRef *DatabaseRef `json:"instanceRef,omitempty"`
 }

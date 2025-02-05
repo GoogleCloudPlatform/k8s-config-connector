@@ -96,9 +96,34 @@ spec:
                   has passed, the backup is eligible to be automatically deleted by
                   Cloud Spanner to free the resources used by the backup.
                 type: string
-              location:
-                description: The location of the cluster.
-                type: string
+              instanceRef:
+                description: The reference to the parent instance
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed SpannerInstance
+                      resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
+                    type: string
+                  name:
+                    description: The name of a SpannerInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a SpannerInstance resource.
+                    type: string
+                type: object
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
                 oneOf:

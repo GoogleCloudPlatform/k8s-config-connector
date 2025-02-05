@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,12 +23,7 @@ var SpannerBackupScheduleGVK = GroupVersion.WithKind("SpannerBackupSchedule")
 
 // SpannerBackupScheduleSpec defines the desired state of SpannerBackupSchedule
 type SpannerBackupScheduleSpec struct {
-	// Immutable. The Project that this resource belongs to.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// The location of the cluster.
-	Location string `json:"location,omitempty"`
+	*InstanceDatabaseParent `json:",inline"`
 
 	// The SpannerBackupSchedule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
