@@ -40,6 +40,22 @@ If you have a lot of fields that need to be manually written, you can split the 
 * Follow the naming convention as the auto-generated code. You shall have two methods `<field>_ToProto` and` <field>_FromProto`
 * Remove the `MISSING` comment
 
+## 3.3 (Optional) Add fuzzer test
+
+Note: For Beta resources, a fuzzer test is required for both the `Spec` and `Status` / `ObservedState`. To generate a fuzzer test, modify the following example and run it:
+
+```
+export REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd $REPO_ROOT/dev/tools/controllerbuilder
+
+go run main.go prompt \
+  <<EOF > $REPO_ROOT/pkg/controller/direct/managedkafka/cluster_fuzzer.go
+// +tool:fuzz-gen
+// proto.message: google.cloud.managedkafka.v1.Cluster
+// krm.kind: ManagedKafkaCluster
+EOF
+```
+
 
 ## Exit Criteria
 

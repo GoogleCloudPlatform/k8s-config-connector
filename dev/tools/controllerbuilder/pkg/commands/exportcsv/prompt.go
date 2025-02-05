@@ -44,6 +44,13 @@ type PromptOptions struct {
 	StrictInputColumnKeys []string
 }
 
+func (o *PromptOptions) InitDefaults() error {
+	root := os.Getenv("REPO_ROOT")
+	o.SrcDir = root
+	o.ProtoDir = root + "/.build/third_party/googleapis/"
+	return nil
+}
+
 // BindFlags binds the flags to the command.
 func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.SrcDir, "src-dir", o.SrcDir, "base directory for source code")
@@ -56,6 +63,11 @@ func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 func BuildPromptCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	opt := &PromptOptions{
 		GenerateOptions: baseOptions,
+	}
+
+	if err := opt.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
 	}
 
 	cmd := &cobra.Command{
@@ -92,7 +104,12 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	if err != nil {
 		return err
 	}
-	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition)
+	apiDir := o.SrcDir + "/apis/"
+	addGoStruct, err := toolbot.NewEnhanceWithGoStruct(apiDir)
+	if err != nil {
+		return err
+	}
+	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addGoStruct)
 	if err != nil {
 		return err
 	}

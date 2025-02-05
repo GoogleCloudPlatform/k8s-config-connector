@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:fuzz-gen
+// proto.message: google.cloud.discoveryengine.v1.DataStore
+
 package discoveryengine
 
 import (
