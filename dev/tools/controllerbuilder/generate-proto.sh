@@ -46,8 +46,9 @@ fi
 protoc --include_imports --include_source_info \
     -I ${THIRD_PARTY}/googleapis/ \
     -I ${REPO_ROOT}/mockgcp/apis \
-    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/cloudidentity/groups/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto \

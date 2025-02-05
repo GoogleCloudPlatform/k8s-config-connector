@@ -89,8 +89,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An extended description to help users determine the purpose of a Group.
-Must not be longer than 4,096 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}An extended description to help users determine the purpose of a `Group`. Must not be longer than 4,096 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -100,7 +99,7 @@ Must not be longer than 4,096 characters.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The display name of the Group.{% endverbatim %}</p>
+            <p>{% verbatim %}The display name of the `Group`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -120,15 +119,7 @@ Must not be longer than 4,096 characters.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The ID of the entity.
-
-For Google-managed entities, the id must be the email address of an existing
-group or user.
-
-For external-identity-mapped entities, the id must be a string conforming
-to the Identity Source's requirements.
-
-Must be unique within a namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -138,14 +129,7 @@ Must be unique within a namespace.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The namespace in which the entity exists.
-
-If not specified, the EntityKey represents a Google-managed entity
-such as a Google user or a Google Group.
-
-If specified, the EntityKey represents an external-identity-mapped group.
-The namespace must correspond to an identity source created in Admin Console
-and must be in the form of 'identitysources/{identity_source_id}'.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -155,11 +139,7 @@ and must be in the form of 'identitysources/{identity_source_id}'.{% endverbatim
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The initial configuration options for creating a Group.
-
-See the
-[API reference](https://cloud.google.com/identity/docs/reference/rest/v1beta1/groups/create#initialgroupconfig)
-for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The initial configuration options for creating a Group. See the [API reference](https://cloud.google.com/identity/docs/reference/rest/v1beta1/groups/create#initialgroupconfig) for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -169,15 +149,7 @@ for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CON
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}One or more label entries that apply to the Group. Currently supported labels contain a key with an empty value.
-
-Google Groups are the default type of group and have a label with a key of cloudidentity.googleapis.com/groups.discussion_forum and an empty value.
-
-Existing Google Groups can have an additional label with a key of cloudidentity.googleapis.com/groups.security and an empty value added to them. This is an immutable change and the security label cannot be removed once added.
-
-Dynamic groups have a label with a key of cloudidentity.googleapis.com/groups.dynamic.
-
-Identity-mapped groups for Cloud Search have a label with a key of system/groups/external and an empty value.{% endverbatim %}</p>
+            <p>{% verbatim %}One or more label entries that apply to the Group. Currently supported labels contain a key with an empty value. Google Groups are the default type of group and have a label with a key of cloudidentity.googleapis.com/groups.discussion_forum and an empty value. Existing Google Groups can have an additional label with a key of cloudidentity.googleapis.com/groups.security and an empty value added to them. This is an immutable change and the security label cannot be removed once added. Dynamic groups have a label with a key of cloudidentity.googleapis.com/groups.dynamic. Identity-mapped groups for Cloud Search have a label with a key of system/groups/external and an empty value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -187,11 +159,7 @@ Identity-mapped groups for Cloud Search have a label with a key of system/groups
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The resource name of the entity under which this Group resides in the
-Cloud Identity resource hierarchy.
-
-Must be of the form identitysources/{identity_source_id} for external-identity-mapped
-groups or customers/{customer_id} for Google Groups.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The resource name of the entity under which this `Group` resides in the Cloud Identity resource hierarchy. Must be of the form `identitysources/{identity_source}` for external [identity-mapped groups](https://support.google.com/a/answer/9039510) or `customers/{customer_id}` for Google Groups. The `customer_id` must begin with "C" (for example, 'C046psxkn'). [Find your customer ID.] (https://support.google.com/cloudidentity/answer/10070793){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -201,7 +169,7 @@ groups or customers/{customer_id} for Google Groups.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The CloudIdentityGroup name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -219,8 +187,13 @@ conditions:
   status: string
   type: string
 createTime: string
+externalRef: string
 name: string
 observedGeneration: integer
+observedState:
+  additionalGroupKeys:
+  - id: string
+    namespace: string
 updateTime: string
 ```
 
@@ -235,7 +208,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -284,15 +257,21 @@ updateTime: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the Group was created.{% endverbatim %}</p>
+            <p>{% verbatim %}The time when the `Group` was created.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the CloudIdentityGroup resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Resource name of the Group in the format: groups/{group_id}, where group_id
-is the unique ID assigned to the Group.{% endverbatim %}</p>
+            <p>{% verbatim %}The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Group`. Shall be of the form `groups/{group_id}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -303,10 +282,45 @@ is the unique ID assigned to the Group.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.additionalGroupKeys</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Additional group keys associated with the Group.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.additionalGroupKeys[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.additionalGroupKeys[].id</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.additionalGroupKeys[].namespace</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the Group was last updated.{% endverbatim %}</p>
+            <p>{% verbatim %}The time when the `Group` was last updated.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
