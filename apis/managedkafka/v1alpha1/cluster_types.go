@@ -126,8 +126,8 @@ type ManagedKafkaClusterStatus struct {
 }
 
 // ManagedKafkaClusterSpec defines the desired state of ManagedKafkaCluster
-// +kcc:proto=google.cloud.managedkafka.v1.Cluster
 // ManagedKafkaClusterObservedState is the state of the ManagedKafkaCluster resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.managedkafka.v1.Cluster
 type ManagedKafkaClusterObservedState struct {
 	// Identifier. The name of the cluster. Structured like:
 	//  projects/{project_number}/locations/{location}/clusters/{cluster_id}
