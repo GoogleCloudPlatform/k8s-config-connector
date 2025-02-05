@@ -107,7 +107,12 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	if err != nil {
 		return err
 	}
-	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition)
+	apiDir := o.SrcDir + "/apis/"
+	addGoStruct, err := toolbot.NewEnhanceWithGoStruct(apiDir)
+	if err != nil {
+		return err
+	}
+	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addGoStruct)
 	if err != nil {
 		return err
 	}
