@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"reflect"
 
+	bigquerykrmapi "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -111,10 +112,18 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Resolve BigQueryDataSet Ref
 	if obj.Spec.DatasetRef != nil {
-		_, err := obj.Spec.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		dataset, err := obj.Spec.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
+
+		// for backwards compatibility and to satisfy the GCP API constraints, we must overrite the
+		// external reference in the payloads to just the resource ID of the dataset.
+		_, id, err := bigquerykrmapi.ParseDatasetExternal(dataset)
+		if err != nil {
+			return nil, err
+		}
+		obj.Spec.DatasetRef.External = id
 	}
 
 	// Resolve KMSCryptoKey Ref
