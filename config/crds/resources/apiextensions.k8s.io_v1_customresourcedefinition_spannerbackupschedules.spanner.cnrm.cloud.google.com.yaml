@@ -60,6 +60,34 @@ spec:
           spec:
             description: SpannerBackupScheduleSpec defines the desired state of SpannerBackupSchedule
             properties:
+              databaseRef:
+                description: The reference to the parent database
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed SpannerDatabase
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/databases/{{databaseID}}".
+                    type: string
+                  name:
+                    description: The name of a SpannerDatabase resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a SpannerDatabase resource.
+                    type: string
+                type: object
               encryptionConfig:
                 description: Optional. The encryption configuration that will be used
                   to encrypt the backup. If this field is not specified, the backup
@@ -101,7 +129,7 @@ spec:
                 description: The schedule creates incremental backup chains.
                 type: object
               instanceRef:
-                description: The reference to the parent database
+                description: The reference to the parent instance
                 oneOf:
                 - not:
                     required:
@@ -118,14 +146,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed SpannerDatabase
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/databases/{{databaseID}}".
+                    description: A reference to an externally managed SpannerInstance
+                      resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
                     type: string
                   name:
-                    description: The name of a SpannerDatabase resource.
+                    description: The name of a SpannerInstance resource.
                     type: string
                   namespace:
-                    description: The namespace of a SpannerDatabase resource.
+                    description: The namespace of a SpannerInstance resource.
                     type: string
                 type: object
               projectRef:

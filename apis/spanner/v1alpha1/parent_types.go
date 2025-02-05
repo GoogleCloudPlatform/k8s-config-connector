@@ -36,5 +36,5 @@ type InstanceDatabaseParent struct {
 	InstanceRef *v1beta1.SpannerInstanceRef `json:"instanceRef,omitempty"`
 
 	// The reference to the parent database
-	DatabaseRef *DatabaseRef `json:"instanceRef,omitempty"`
+	DatabaseRef *DatabaseRef `json:"databaseRef,omitempty"`
 }

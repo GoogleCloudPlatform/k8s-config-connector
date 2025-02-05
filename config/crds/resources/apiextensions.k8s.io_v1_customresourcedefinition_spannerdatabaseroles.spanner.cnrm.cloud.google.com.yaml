@@ -60,7 +60,7 @@ spec:
           spec:
             description: SpannerDatabaseRoleSpec defines the desired state of SpannerDatabaseRole
             properties:
-              instanceRef:
+              databaseRef:
                 description: The reference to the parent database
                 oneOf:
                 - not:
@@ -86,6 +86,34 @@ spec:
                     type: string
                   namespace:
                     description: The namespace of a SpannerDatabase resource.
+                    type: string
+                type: object
+              instanceRef:
+                description: The reference to the parent instance
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed SpannerInstance
+                      resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
+                    type: string
+                  name:
+                    description: The name of a SpannerInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a SpannerInstance resource.
                     type: string
                 type: object
               projectRef:
