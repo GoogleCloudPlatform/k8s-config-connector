@@ -71,19 +71,16 @@ type ManagedKafkaTopicStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ManagedKafkaTopicObservedState `json:"observedState,omitempty"`
+	// NOTYET: the resource does not have any output only fields
+	// ObservedState *ManagedKafkaTopicObservedState `json:"observedState,omitempty"`
 }
 
 // ManagedKafkaTopicSpec defines the desired state of ManagedKafkaTopic
 // +kcc:proto=google.cloud.managedkafka.v1.Topic
 // ManagedKafkaTopicObservedState is the state of the ManagedKafkaTopic resource as most recently observed in GCP.
-type ManagedKafkaTopicObservedState struct {
-	// Identifier. The name of the topic. The `topic` segment is used when
-	//  connecting directly to the cluster. Structured like:
-	//  projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.name
-	Name *string `json:"name,omitempty"` // TODO(jingyih): remove this field as it is the same as externalRef
-}
+// NOTYET: the resource does not have any output only fields
+// type ManagedKafkaTopicObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

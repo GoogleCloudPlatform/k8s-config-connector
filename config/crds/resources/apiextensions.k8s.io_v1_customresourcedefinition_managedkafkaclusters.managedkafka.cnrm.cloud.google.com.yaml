@@ -278,10 +278,6 @@ spec:
                   createTime:
                     description: Output only. The time when the cluster was created.
                     type: string
-                  name:
-                    description: 'Identifier. The name of the cluster. Structured
-                      like: projects/{project_number}/locations/{location}/clusters/{cluster_id}'
-                    type: string
                   state:
                     description: Output only. The current state of the cluster.
                     type: string

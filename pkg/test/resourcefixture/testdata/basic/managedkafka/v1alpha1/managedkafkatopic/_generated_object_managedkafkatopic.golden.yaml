@@ -29,5 +29,3 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}
   observedGeneration: 2
-  observedState:
-    name: projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}

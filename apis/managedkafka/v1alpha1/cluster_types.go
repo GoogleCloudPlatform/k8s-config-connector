@@ -129,11 +129,6 @@ type ManagedKafkaClusterStatus struct {
 // ManagedKafkaClusterObservedState is the state of the ManagedKafkaCluster resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.managedkafka.v1.Cluster
 type ManagedKafkaClusterObservedState struct {
-	// Identifier. The name of the cluster. Structured like:
-	//  projects/{project_number}/locations/{location}/clusters/{cluster_id}
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.name
-	Name *string `json:"name,omitempty"` // TODO(jingyih): remove this field as it is the same as externalRef
-
 	// Output only. The time when the cluster was created.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.create_time
 	CreateTime *string `json:"createTime,omitempty"`

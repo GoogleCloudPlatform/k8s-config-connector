@@ -147,10 +147,6 @@ func (a *TopicAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	log.V(2).Info("successfully created Topic", "name", a.id)
 
 	status := &krm.ManagedKafkaTopicStatus{}
-	status.ObservedState = ManagedKafkaTopicObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 	status.ExternalRef = direct.LazyPtr(created.Name)
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -182,10 +178,6 @@ func (a *TopicAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.ManagedKafkaTopicStatus{}
-		status.ObservedState = ManagedKafkaTopicObservedState_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
@@ -200,10 +192,6 @@ func (a *TopicAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log.V(2).Info("successfully updated Topic", "name", a.id.String())
 
 	status := &krm.ManagedKafkaTopicStatus{}
-	status.ObservedState = ManagedKafkaTopicObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 	status.ExternalRef = direct.LazyPtr(updated.Name)
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
