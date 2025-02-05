@@ -2,6 +2,7 @@ GET https://apigee.googleapis.com/v1/organizations/${projectId}/instances/apigee
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -31,6 +32,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -42,7 +44,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "INSERT",
     "state": "IN_PROGRESS",
     "targetResourceName": "organizations/${projectId}/instances/apigeeinstance-${uniqueId}"
@@ -56,6 +58,7 @@ GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${ope
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -68,7 +71,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "INSERT",
     "progress": {
       "description": "Succeeded",
@@ -79,7 +82,7 @@ X-Xss-Protection: 0
   },
   "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1Instance",
     "consumerAcceptList": [
       "${projectId}"
     ],
@@ -92,7 +95,7 @@ X-Xss-Protection: 0
     "peeringCidrRange": "SLASH_22",
     "port": "443",
     "runtimeVersion": "1-14-0-apigee-4",
-    "serviceAttachment": "projects/eef779b38d9fb4b50p-tp/regions/us-central1/serviceAttachments/apigee-us-central1-8dhb",
+    "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/apigee-us-central1-abcd",
     "state": "ACTIVE"
   }
 }
@@ -103,6 +106,7 @@ GET https://apigee.googleapis.com/v1/organizations/${projectId}/instances/apigee
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -125,7 +129,7 @@ X-Xss-Protection: 0
   "peeringCidrRange": "SLASH_22",
   "port": "443",
   "runtimeVersion": "1-14-0-apigee-4",
-  "serviceAttachment": "projects/eef779b38d9fb4b50p-tp/regions/us-central1/serviceAttachments/apigee-us-central1-8dhb",
+  "serviceAttachment": "projects/${projectId}/regions/us-central1/serviceAttachments/apigee-us-central1-abcd",
   "state": "ACTIVE"
 }
 
@@ -135,6 +139,7 @@ DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/instances/api
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -146,7 +151,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "DELETE",
     "state": "IN_PROGRESS",
     "targetResourceName": "organizations/${projectId}/instances/apigeeinstance-${uniqueId}"
@@ -160,6 +165,7 @@ GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${ope
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -172,13 +178,13 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "DELETE",
     "state": "FINISHED",
     "targetResourceName": "organizations/${projectId}/instances/apigeeinstance-${uniqueId}"
   },
   "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1Instance"
   }
 }

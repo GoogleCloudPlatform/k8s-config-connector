@@ -52,6 +52,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterOrganizationsEnvironmentsServerServer(grpcServer, &environmentsServer{MockService: s})
 	pb.RegisterOrganizationsEnvgroupsServerServer(grpcServer, &EnvgroupV1{MockService: s})
+	pb.RegisterOrganizationsInstancesServerServer(grpcServer, &instancesServer{MockService: s})
 	pb.RegisterOrganizationsServerServer(grpcServer, &organizationsServer{MockService: s})
 }
 
@@ -59,6 +60,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterOrganizationsEnvironmentsServerHandler,
 		pb.RegisterOrganizationsEnvgroupsServerHandler,
+		pb.RegisterOrganizationsInstancesServerHandler,
 		pb.RegisterOrganizationsServerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
