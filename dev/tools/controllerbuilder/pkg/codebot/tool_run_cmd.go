@@ -69,13 +69,21 @@ func (t *RunTerminalCommand) Run(ctx context.Context, c *Chat, args map[string]a
 	cmd.Dir = c.baseDir
 	cmd.Args = append(tokens, strings.Split(t.Args, " ")...)
 
-	stdout, stderr := cmd.CombinedOutput()
-	if stderr != nil {
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+
+		if exitError, ok := err.(*exec.ExitError); ok {
+			result.Error = fmt.Sprintf("command failed with exit code %d: %s", exitError.ExitCode(), string(exitError.Stderr))
+		} else {
+			result.Error = fmt.Sprintf("command failed: %s", err.Error())
+		}
 		result.Success = false
-		result.Error = stderr.Error()
+	} else {
+		result.Success = true
 	}
-	result.Success = true
-	result.Output = string(stdout)
+	if len(output) > 0 {
+		result.Output = string(output)
+	}
 	return result, nil
 }
 
