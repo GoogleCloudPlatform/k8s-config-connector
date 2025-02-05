@@ -74,7 +74,8 @@ func (c *VertexAIClient) Close() error {
 func (c *VertexAIClient) StartChat(systemPrompt string) Chat {
 	// model := c.client.GenerativeModel("vertexai-1.5-flash")
 	// model := c.client.GenerativeModel("vertexai-exp-1206")
-	model := c.client.GenerativeModel("gemini-2.0-flash-exp")
+	// model := c.client.GenerativeModel("gemini-2.0-flash-exp")
+	model := c.client.GenerativeModel("gemini-2.0-pro-exp-02-05")
 	// model := c.client.GenerativeModel("gemma-2-27b-it")
 	// model := c.client.GenerativeModel("gemini-1.5-pro-002")
 
