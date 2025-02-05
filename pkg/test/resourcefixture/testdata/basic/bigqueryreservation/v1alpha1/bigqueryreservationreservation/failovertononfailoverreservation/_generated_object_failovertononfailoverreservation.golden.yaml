@@ -1,0 +1,36 @@
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryReservationReservation
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: bigqueryreservationreservation-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  autoscale:
+    maxSlots: 50
+  concurrency: 0
+  edition: ENTERPRISE_PLUS
+  ignoreIdleSlots: false
+  location: us-west2
+  projectRef:
+    external: ${projectId}
+  resourceID: bigqueryreservationreservation${uniqueId}
+  secondaryLocation: ""
+  slotCapacity: 0
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}
+  observedGeneration: 2
+  observedState:
+    originalPrimaryLocation: us-west2
+    primaryLocation: us-west2
+    secondaryLocation: us-east1
