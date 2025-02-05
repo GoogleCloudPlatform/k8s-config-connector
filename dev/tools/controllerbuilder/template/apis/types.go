@@ -57,11 +57,10 @@ type {{ .Kind }}Status struct {
 	ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
 }
 
-// {{ .Kind }}Spec defines the desired state of {{ .Kind }}
+// {{ .Kind }}ObservedState is the state of the {{ .Kind }} resource as most recently observed in GCP.
 {{- if .KindProtoTag }}
 // +kcc:proto={{ .KindProtoTag }}
 {{- end }}
-// {{ .Kind }}ObservedState is the state of the {{ .Kind }} resource as most recently observed in GCP.
 type {{ .Kind }}ObservedState struct {
 }
 
