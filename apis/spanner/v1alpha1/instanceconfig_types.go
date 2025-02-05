@@ -48,12 +48,11 @@ type SpannerInstanceConfigSpec struct {
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.replicas
 	Replicas []ReplicaInfo `json:"replicas,omitempty"`
 
-	// Base configuration name, e.g. projects/<project_name>/instanceConfigs/nam3,
-	//  based on which this configuration is created. Only set for user-managed
+	// Reference to the configuration based on which this configuration is created. Only set for user-managed
 	//  configurations. `base_config` must refer to a configuration of type
 	//  `GOOGLE_MANAGED` in the same project as this configuration.
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.base_config
-	BaseConfig *string `json:"baseConfig,omitempty"`
+	BaseConfig *InstanceConfigRef `json:"baseConfigRef,omitempty"`
 
 	// Cloud Labels are a flexible and lightweight mechanism for organizing cloud
 	//  resources into groups that reflect a customer's organizational needs and
