@@ -180,6 +180,10 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return mapCtx.Err()
 	}
 
+	// Set the name field to ensure the GCP API can identity the resource during UpdateCluster().
+	// This also prevents incorrect diffs, as the name field is not populated by ManagedKafkaClusterSpec_ToProto.
+	desiredPb.Name = a.id.String()
+
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -194,13 +198,11 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
 
-	desiredPb.Name = a.id.String() // populate the name field so that the GCP API can identify the resource
 	req := &pb.UpdateClusterRequest{
-		UpdateMask: updateMask,
-		Cluster:    desiredPb,
+		UpdateMask: &fieldmaskpb.FieldMask{
+			Paths: sets.List(paths)},
+		Cluster: desiredPb,
 	}
 	op, err := a.gcpClient.UpdateCluster(ctx, req)
 	if err != nil {
