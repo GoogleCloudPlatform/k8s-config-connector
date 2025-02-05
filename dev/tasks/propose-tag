@@ -105,3 +105,32 @@ done
 
 # Generate operator/config/gke-addon/image_configmap.yaml
 make -C ${REPO_ROOT}/operator manifests
+
+# find the STALE_VERSION
+folder_path="${REPO_ROOT}/operator/channels/packages/configconnector"
+if [ ! -d "$folder_path" ]; then
+    echo "Error: Directory $folder_path does not exist"
+    exit 1
+fi
+
+# List all directories in the specified path and store them in an array
+versions=($(ls -d "$folder_path"/*/ 2>/dev/null | xargs -n 1 basename))
+
+if [ ${#versions[@]} -eq 0 ]; then
+    echo "Error: No version directories found in $folder_path"
+    exit 1
+fi
+
+echo "Found versions:"
+printf '%s\n' "${versions[@]}"
+
+STALE_VERSION=$(printf "%s\n" "${versions[@]}" | sort -V | tail -n 4 | head -n 1)
+echo "stale version: ${STALE_VERSION}"
+
+# Remove the STALE_VERSION package for standard and autopilot
+rm -rf ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}
+rm -rf ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}
+
+# Format
+GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector
+GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/channels/packages/configconnector
