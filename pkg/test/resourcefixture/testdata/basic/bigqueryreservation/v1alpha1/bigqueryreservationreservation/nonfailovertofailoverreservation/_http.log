@@ -4,11 +4,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -35,11 +37,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -61,11 +65,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -96,11 +102,13 @@ X-Goog-Request-Params: reservation.name=projects%2F${projectId}%2Flocations%2Fus
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -122,11 +130,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -148,11 +158,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
