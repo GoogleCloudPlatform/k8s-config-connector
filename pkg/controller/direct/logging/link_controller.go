@@ -107,14 +107,12 @@ type LoggingLinkAdapter struct {
 var _ directbase.Adapter = &LoggingLinkAdapter{}
 
 func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
-	fmt.Printf("HELLO FROM INSIDE FIND STATEMENT: %q\n", a.id.External)
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting LoggingLink", "name", a.id.External)
 
 	req := &loggingpb.GetLinkRequest{Name: a.id.External}
 	linkpb, err := a.gcpClient.GetLink(ctx, req)
 	if err != nil {
-		fmt.Printf("ERROR from GetLink - %v\n", err)
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
@@ -162,10 +160,7 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		Link:   resource,
 		LinkId: resourceID,
 	}
-	fmt.Printf("About to create link <%v>\n", resourceID)
 	op, err := a.gcpClient.CreateLink(ctx, req)
-	fmt.Printf("Created link: Err <%v>\n", err)
-	fmt.Printf("Created link: Op <%v>\n", op)
 	if err != nil {
 		return fmt.Errorf("creating Link %s: %w\n", a.id.External, err)
 	}
@@ -275,7 +270,6 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Link", "name", a.id.External)
-	fmt.Printf("Deleting Link:  <%v>\n", a.id.External)
 
 	req := &loggingpb.DeleteLinkRequest{Name: a.id.External}
 	op, err := a.gcpClient.DeleteLink(ctx, req)
