@@ -142,10 +142,6 @@ type ContinuousBackupConfig struct {
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.ContinuousBackupInfo
-type ContinuousBackupInfo struct {
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
 type EncryptionInfo struct {
 }
@@ -306,10 +302,6 @@ type MaintenanceUpdatePolicy struct {
 	// Preferred windows to perform maintenance. Currently limited to 1.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.maintenance_windows
 	MaintenanceWindows []MaintenanceUpdatePolicy_MaintenanceWindow `json:"maintenanceWindows,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.MigrationSource
-type MigrationSource struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.SslConfig

@@ -15,11 +15,12 @@
 package alloydb
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func AlloyDBClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.AlloyDBClusterObservedState {
 	if in == nil {
 		return nil
@@ -242,24 +243,6 @@ func AutomatedBackupPolicy_TimeBasedRetention_ToProto(mapCtx *direct.MapContext,
 	out.RetentionPeriod = direct.StringDuration_ToProto(mapCtx, in.RetentionPeriod)
 	return out
 }
-func AutomatedBackupPolicy_WeeklySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupPolicy_WeeklySchedule) *krm.AutomatedBackupPolicy_WeeklySchedule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomatedBackupPolicy_WeeklySchedule{}
-	out.StartTimes = direct.Slice_FromProto(mapCtx, in.StartTimes, TimeOfDay_FromProto)
-	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
-	return out
-}
-func AutomatedBackupPolicy_WeeklySchedule_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupPolicy_WeeklySchedule) *pb.AutomatedBackupPolicy_WeeklySchedule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutomatedBackupPolicy_WeeklySchedule{}
-	out.StartTimes = direct.Slice_ToProto(mapCtx, in.StartTimes, TimeOfDay_ToProto)
-	out.DaysOfWeek = direct.EnumSlice_ToProto[pb.DayOfWeek](mapCtx, in.DaysOfWeek)
-	return out
-}
 func BackupSource_FromProto(mapCtx *direct.MapContext, in *pb.BackupSource) *krm.BackupSource {
 	if in == nil {
 		return nil
@@ -428,50 +411,6 @@ func ContinuousBackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.Continuou
 	out.Enabled = in.Enabled
 	out.RecoveryWindowDays = direct.ValueOf(in.RecoveryWindowDays)
 	out.EncryptionConfig = EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
-	return out
-}
-func ContinuousBackupInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContinuousBackupInfo) *krm.ContinuousBackupInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContinuousBackupInfo{}
-	// MISSING: EncryptionInfo
-	// MISSING: EnabledTime
-	// MISSING: Schedule
-	// MISSING: EarliestRestorableTime
-	return out
-}
-func ContinuousBackupInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContinuousBackupInfo) *pb.ContinuousBackupInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContinuousBackupInfo{}
-	// MISSING: EncryptionInfo
-	// MISSING: EnabledTime
-	// MISSING: Schedule
-	// MISSING: EarliestRestorableTime
-	return out
-}
-func ContinuousBackupInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ContinuousBackupInfo) *krm.ContinuousBackupInfoObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContinuousBackupInfoObservedState{}
-	out.EncryptionInfo = []*EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
-	out.EnabledTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEnabledTime())
-	out.Schedule = direct.EnumSlice_FromProto(mapCtx, in.Schedule)
-	out.EarliestRestorableTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEarliestRestorableTime())
-	return out
-}
-func ContinuousBackupInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContinuousBackupInfoObservedState) *pb.ContinuousBackupInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContinuousBackupInfo{}
-	out.EncryptionInfo = []*EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo)
-	out.EnabledTime = direct.StringTimestamp_ToProto(mapCtx, in.EnabledTime)
-	out.Schedule = direct.EnumSlice_ToProto[pb.DayOfWeek](mapCtx, in.Schedule)
-	out.EarliestRestorableTime = direct.StringTimestamp_ToProto(mapCtx, in.EarliestRestorableTime)
 	return out
 }
 func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
@@ -892,44 +831,6 @@ func MaintenanceUpdatePolicy_ToProto(mapCtx *direct.MapContext, in *krm.Maintena
 	out.MaintenanceWindows = direct.Slice_ToProto(mapCtx, in.MaintenanceWindows, MaintenanceUpdatePolicy_MaintenanceWindow_ToProto)
 	return out
 }
-func MaintenanceUpdatePolicy_MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceUpdatePolicy_MaintenanceWindow) *krm.MaintenanceUpdatePolicy_MaintenanceWindow {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MaintenanceUpdatePolicy_MaintenanceWindow{}
-	out.Day = direct.Enum_FromProto(mapCtx, in.GetDay())
-	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
-	return out
-}
-func MaintenanceUpdatePolicy_MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceUpdatePolicy_MaintenanceWindow) *pb.MaintenanceUpdatePolicy_MaintenanceWindow {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MaintenanceUpdatePolicy_MaintenanceWindow{}
-	out.Day = direct.Enum_ToProto[pb.DayOfWeek](mapCtx, in.Day)
-	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
-	return out
-}
-func MigrationSource_FromProto(mapCtx *direct.MapContext, in *pb.MigrationSource) *krm.MigrationSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MigrationSource{}
-	// MISSING: HostPort
-	// MISSING: ReferenceID
-	// MISSING: SourceType
-	return out
-}
-func MigrationSource_ToProto(mapCtx *direct.MapContext, in *krm.MigrationSource) *pb.MigrationSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MigrationSource{}
-	// MISSING: HostPort
-	// MISSING: ReferenceID
-	// MISSING: SourceType
-	return out
-}
 func MigrationSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MigrationSource) *krm.MigrationSourceObservedState {
 	if in == nil {
 		return nil
@@ -966,23 +867,5 @@ func SSLConfig_ToProto(mapCtx *direct.MapContext, in *krm.SSLConfig) *pb.SslConf
 	out := &pb.SslConfig{}
 	out.SslMode = direct.Enum_ToProto[pb.SslConfig_SslMode](mapCtx, in.SSLMode)
 	out.CaSource = direct.Enum_ToProto[pb.SslConfig_CaSource](mapCtx, in.CASource)
-	return out
-}
-func UserPassword_FromProto(mapCtx *direct.MapContext, in *pb.UserPassword) *krm.UserPassword {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UserPassword{}
-	out.User = direct.LazyPtr(in.GetUser())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	return out
-}
-func UserPassword_ToProto(mapCtx *direct.MapContext, in *krm.UserPassword) *pb.UserPassword {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserPassword{}
-	out.User = direct.ValueOf(in.User)
-	out.Password = UserPassword_Password_ToProto(mapCtx, in.Password)
 	return out
 }
