@@ -209,7 +209,6 @@ var (
 		"RunJob",
 		"RunService",
 		"SQLDatabase",
-		"SQLInstance",
 		"SQLSSLCert",
 		"SQLUser",
 		"SecretManagerSecret",
@@ -242,7 +241,9 @@ var (
 	// Any newly supported v1beta1 kinds should NOT have computed fields
 	// directly under 'status' in the schema.
 	v1beta1KindsWithComputedFieldsUnderStatus = append(v1beta1KindsWithStateIntoSpecMergeSupport,
-		"ComputeNetworkFirewallPolicyAssociation")
+		"ComputeNetworkFirewallPolicyAssociation",
+		"SQLInstance",
+	)
 )
 
 func SupportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
