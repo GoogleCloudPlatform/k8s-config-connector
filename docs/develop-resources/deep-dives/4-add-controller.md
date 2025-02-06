@@ -5,6 +5,8 @@ Run the following command to generate a controller template
 ```
 cd dev/tools/controllerbuilder
 go run main.go generate-controller --service <YOUR_SERVICE> --api-version <VERSION> --kind <YOUR_RESOURCE> --proto-resource <PROTO_RESOURCE>
+# For example,
+# go run main.go generate-controller --service alloydb.v1beta --api-version alloydb.cnrm.cloud.google.com/v1beta1 --kind AlloyDBInstance --proto-resource instance
 ```
 
 Fix the generated code to make your SciFi running!
