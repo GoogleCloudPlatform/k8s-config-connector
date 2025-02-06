@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+apiVersion: managedkafka.cnrm.cloud.google.com/v1beta1
 kind: ManagedKafkaCluster
 metadata:
   name: managedkafkacluster-${uniqueId}
@@ -21,12 +21,14 @@ spec:
     external: ${projectId}
   location: us-central1
   capacityConfig:
-    vcpuCount: 3
-    memoryBytes: 3221225472 # 3GB
+    vcpuCount: 4 # 3 -> 4
+    memoryBytes: 4294967296 # 3GB -> 4GB
   gcpConfig:
     accessConfig:
       networkConfigs:
       - subnetworkRef:
           name: computesubnetwork-${uniqueId}-1
+      - subnetworkRef:
+          name: computesubnetwork-${uniqueId}-2 # 1 subnetwork -> 2 subnetworks
   rebalanceConfig:
-    mode: NO_REBALANCE
+    mode: AUTO_REBALANCE_ON_SCALE_UP # NO_REBALANCE -> AUTO_REBALANCE_ON_SCALE_UP
