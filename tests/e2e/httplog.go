@@ -301,6 +301,15 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 	}
 
+	// Replace any operation IDs that appear in URLs
+	for _, event := range events {
+		u := event.Request.URL
+		for operationID := range x.OperationIDs {
+			u = strings.ReplaceAll(u, operationID, "${operationID}")
+		}
+		event.Request.URL = u
+	}
+
 	for _, event := range events {
 		if !isGetOperation(event) {
 			continue
