@@ -52,7 +52,6 @@ go run main.go prompt \
   <<EOF > $REPO_ROOT/pkg/controller/direct/managedkafka/cluster_fuzzer.go
 // +tool:fuzz-gen
 // proto.message: google.cloud.managedkafka.v1.Cluster
-// krm.kind: ManagedKafkaCluster
 EOF
 ```
 
