@@ -170,3 +170,12 @@ func ResolveAlloyDBClusterType(ctx context.Context, reader client.Reader, src cl
 func (c *AlloyDBCluster) String() string {
 	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", c.ProjectID, c.Location, c.ClusterID)
 }
+
+type AlloyDBBackupRef struct {
+	// If provided must be in the format `projects/[projectId]/locations/[location]/backups/[backupId]`.
+	External string `json:"external,omitempty"`
+	// The `metadata.name` field of a `AlloyDBBackup` resource.
+	Name string `json:"name,omitempty"`
+	// The `metadata.namespace` field of a `AlloyDBBackup` resource.
+	Namespace string `json:"namespace,omitempty"`
+}

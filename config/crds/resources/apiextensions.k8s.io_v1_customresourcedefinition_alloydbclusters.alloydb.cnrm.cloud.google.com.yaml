@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: AlloyDBCluster
+    listKind: AlloyDBClusterList
     plural: alloydbclusters
     shortNames:
     - gcpalloydbcluster
@@ -40,48 +41,59 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: AlloyDBCluster is the Schema for the AlloyDBCluster API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: AlloyDBClusterSpec defines the desired state of AlloyDBCluster
             properties:
               automatedBackupPolicy:
-                description: The automated backup policy for this cluster. AutomatedBackupPolicy
-                  is disabled by default.
+                description: |-
+                  The automated backup policy for this cluster.
+
+                   If no policy is provided then the default policy will be used. If backups
+                   are supported for the cluster, the default policy takes one backup a day,
+                   has a backup window of 1 hour, and retains backups for 14 days.
+                   For more information on the defaults, consult the
+                   documentation for the message type.
                 properties:
                   backupWindow:
                     description: |-
-                      The length of the time window during which a backup can be taken. If a backup does not succeed within this time window, it will be canceled and considered failed.
+                      The length of the time window during which a backup can be
+                       taken. If a backup does not succeed within this time window, it will be
+                       canceled and considered failed.
 
-                      The backup window must be at least 5 minutes long. There is no upper bound on the window. If not set, it will default to 1 hour.
-
-                      A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
+                       The backup window must be at least 5 minutes long. There is no upper bound
+                       on the window. If not set, it defaults to 1 hour.
                     type: string
                   enabled:
-                    description: Whether automated backups are enabled.
+                    description: Whether automated automated backups are enabled.
+                      If not set, defaults to true.
                     type: boolean
                   encryptionConfig:
-                    description: EncryptionConfig describes the encryption config
-                      of a cluster or a backup that is encrypted with a CMEK (customer-managed
-                      encryption key).
+                    description: Optional. The encryption config can be specified
+                      to encrypt the backups with a customer-managed encryption key
+                      (CMEK). When this field is not specified, the backup will then
+                      use default encryption scheme to protect the user data.
                     properties:
                       kmsKeyNameRef:
-                        description: '(Optional) The fully-qualified resource name
-                          of the KMS key. Each Cloud KMS key is regionalized and has
-                          the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].'
+                        description: 'The fully-qualified resource name of the KMS
+                          key. Each Cloud KMS key is regionalized and has the following
+                          format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
                         oneOf:
                         - not:
                             required:
@@ -98,14 +110,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'Allowed value: The `selfLink` field of a
-                              `KMSCryptoKey` resource.'
+                            description: A reference to an externally managed KMSCryptoKey.
+                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                             type: string
                           name:
-                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            description: The `name` of a `KMSCryptoKey` resource.
                             type: string
                           namespace:
-                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            description: The `namespace` of a `KMSCryptoKey` resource.
                             type: string
                         type: object
                     type: object
@@ -115,62 +127,70 @@ spec:
                     description: Labels to apply to backups created using this configuration.
                     type: object
                   location:
-                    description: The location where the backup will be stored. Currently,
-                      the only supported option is to store the backup in the same
-                      region as the cluster.
+                    description: |-
+                      The location where the backup will be stored. Currently, the only supported
+                       option is to store the backup in the same region as the cluster.
+
+                       If empty, defaults to the region of the cluster.
                     type: string
                   quantityBasedRetention:
                     description: Quantity-based Backup retention policy to retain
-                      recent backups. Conflicts with 'time_based_retention', both
-                      can't be set together.
+                      recent backups.
                     properties:
                       count:
                         description: The number of backups to retain.
+                        format: int32
                         type: integer
                     type: object
                   timeBasedRetention:
-                    description: Time-based Backup retention policy. Conflicts with
-                      'quantity_based_retention', both can't be set together.
+                    description: Time-based Backup retention policy.
                     properties:
                       retentionPeriod:
-                        description: |-
-                          The retention period.
-                          A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
+                        description: The retention period.
                         type: string
                     type: object
                   weeklySchedule:
                     description: Weekly schedule for the Backup.
                     properties:
                       daysOfWeek:
-                        description: 'The days of the week to perform a backup. At
-                          least one day of the week must be provided. Possible values:
-                          ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY",
-                          "SATURDAY", "SUNDAY"].'
+                        description: |-
+                          The days of the week to perform a backup.
+
+                           If this field is left empty, the default of every day of the week is
+                           used.
                         items:
                           type: string
                         type: array
                       startTimes:
-                        description: The times during the day to start a backup. At
-                          least one start time must be provided. The start times are
-                          assumed to be in UTC and to be an exact hour (e.g., 04:00:00).
+                        description: |-
+                          The times during the day to start a backup. The start times are assumed
+                           to be in UTC and to be an exact hour (e.g., 04:00:00).
+
+                           If no start times are provided, a single fixed start time is chosen
+                           arbitrarily.
                         items:
                           properties:
                             hours:
                               description: Hours of day in 24 hour format. Should
                                 be from 0 to 23. An API may choose to allow the value
                                 "24:00:00" for scenarios like business closing time.
+                              format: int32
                               type: integer
                             minutes:
-                              description: Minutes of hour of day. Currently, only
-                                the value 0 is supported.
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
                               type: integer
                             nanos:
-                              description: Fractions of seconds in nanoseconds. Currently,
-                                only the value 0 is supported.
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
                               type: integer
                             seconds:
-                              description: Seconds of minutes of the time. Currently,
-                                only the value 0 is supported.
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
                               type: integer
                           type: object
                         type: array
@@ -183,24 +203,21 @@ spec:
                   Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].'
                 type: string
               continuousBackupConfig:
-                description: |-
-                  The continuous backup config for this cluster.
-
-                  If no policy is provided then the default policy will be used. The default policy takes one backup a day and retains backups for 14 days.
+                description: Optional. Continuous backup configuration for this cluster.
                 properties:
                   enabled:
-                    description: Whether continuous backup recovery is enabled. If
-                      not set, defaults to true.
+                    description: Whether ContinuousBackup is enabled.
                     type: boolean
                   encryptionConfig:
-                    description: EncryptionConfig describes the encryption config
-                      of a cluster or a backup that is encrypted with a CMEK (customer-managed
-                      encryption key).
+                    description: The encryption config can be specified to encrypt
+                      the backups with a customer-managed encryption key (CMEK). When
+                      this field is not specified, the backup will then use default
+                      encryption scheme to protect the user data.
                     properties:
                       kmsKeyNameRef:
-                        description: '(Optional) The fully-qualified resource name
-                          of the KMS key. Each Cloud KMS key is regionalized and has
-                          the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].'
+                        description: 'The fully-qualified resource name of the KMS
+                          key. Each Cloud KMS key is regionalized and has the following
+                          format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
                         oneOf:
                         - not:
                             required:
@@ -217,43 +234,50 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'Allowed value: The `selfLink` field of a
-                              `KMSCryptoKey` resource.'
+                            description: A reference to an externally managed KMSCryptoKey.
+                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                             type: string
                           name:
-                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            description: The `name` of a `KMSCryptoKey` resource.
                             type: string
                           namespace:
-                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            description: The `namespace` of a `KMSCryptoKey` resource.
                             type: string
                         type: object
                     type: object
                   recoveryWindowDays:
-                    description: |-
-                      The numbers of days that are eligible to restore from using PITR. To support the entire recovery window, backups and logs are retained for one day more than the recovery window.
-
+                    description: The number of days that are eligible to restore from
+                      using PITR. To support the entire recovery window, backups and
+                      logs are retained for one day more than the recovery window.
                       If not set, defaults to 14 days.
+                    format: int32
                     type: integer
                 type: object
               deletionPolicy:
-                description: |-
-                  Policy to determine if the cluster should be deleted forcefully.
-                  Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster.
-                  Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance.
+                description: Policy to determine if the cluster should be deleted
+                  forcefully. Deleting a cluster forcefully, deletes the cluster and
+                  all its associated instances within the cluster. Deleting a Secondary
+                  cluster with a secondary instance REQUIRES setting deletion_policy
+                  = "FORCE" otherwise an error is returned. This is needed as there
+                  is no support to delete just the secondary instance, and the only
+                  way to delete secondary instance is to delete the associated secondary
+                  cluster forcefully which also deletes the secondary instance.
                 type: string
               displayName:
                 description: User-settable and human-readable display name for the
                   Cluster.
                 type: string
               encryptionConfig:
-                description: EncryptionConfig describes the encryption config of a
-                  cluster or a backup that is encrypted with a CMEK (customer-managed
-                  encryption key).
+                description: Optional. The encryption config can be specified to encrypt
+                  the data disks and other persistent data resources of a cluster
+                  with a customer-managed encryption key (CMEK). When this field is
+                  not specified, the cluster will then use default encryption scheme
+                  to protect the user data.
                 properties:
                   kmsKeyNameRef:
-                    description: '(Optional) The fully-qualified resource name of
-                      the KMS key. Each Cloud KMS key is regionalized and has the
-                      following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].'
+                    description: 'The fully-qualified resource name of the KMS key.
+                      Each Cloud KMS key is regionalized and has the following format:
+                      projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
                     oneOf:
                     - not:
                         required:
@@ -270,33 +294,23 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
-                          resource.'
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` of a `KMSCryptoKey` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` of a `KMSCryptoKey` resource.
                         type: string
                     type: object
                 type: object
               initialUser:
-                description: Initial user to setup during cluster creation.
+                description: Input only. Initial user to setup during cluster creation.
+                  Required. If used in `RestoreCluster` this is ignored.
                 properties:
                   password:
                     description: The initial password for the user.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
                     properties:
                       value:
                         description: Value of the field. Cannot be used if 'valueFrom'
@@ -318,8 +332,8 @@ spec:
                                   from.
                                 type: string
                             required:
-                            - name
                             - key
+                            - name
                             type: object
                         type: object
                     type: object
@@ -334,8 +348,8 @@ spec:
                   reside.
                 type: string
               maintenanceUpdatePolicy:
-                description: MaintenanceUpdatePolicy defines the policy for system
-                  updates.
+                description: Optional. The maintenance update policy determines when
+                  to allow or deny updates.
                 properties:
                   maintenanceWindows:
                     description: Preferred windows to perform maintenance. Currently
@@ -343,10 +357,8 @@ spec:
                     items:
                       properties:
                         day:
-                          description: 'Preferred day of the week for maintenance,
-                            e.g. MONDAY, TUESDAY, etc. Possible values: ["MONDAY",
-                            "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
-                            "SUNDAY"].'
+                          description: Preferred day of the week for maintenance,
+                            e.g. MONDAY, TUESDAY, etc.
                           type: string
                         startTime:
                           description: Preferred time to start the maintenance operation
@@ -355,22 +367,26 @@ spec:
                           properties:
                             hours:
                               description: Hours of day in 24 hour format. Should
-                                be from 0 to 23.
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
                               type: integer
                             minutes:
-                              description: Minutes of hour of day. Currently, only
-                                the value 0 is supported.
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
                               type: integer
                             nanos:
-                              description: Fractions of seconds in nanoseconds. Currently,
-                                only the value 0 is supported.
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
                               type: integer
                             seconds:
-                              description: Seconds of minutes of the time. Currently,
-                                only the value 0 is supported.
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
                               type: integer
-                          required:
-                          - hours
                           type: object
                       required:
                       - day
@@ -379,18 +395,22 @@ spec:
                     type: array
                 type: object
               networkConfig:
-                description: Metadata related to network configuration.
                 properties:
                   allocatedIpRange:
-                    description: |-
-                      The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
-                      If set, the instance IPs for this cluster will be created in the allocated range.
+                    description: 'Optional. Name of the allocated IP range for the
+                      private IP AlloyDB cluster, for example: "google-managed-services-default".
+                      If set, the instance IPs for this cluster will be created in
+                      the allocated range. The range name must comply with RFC 1035.
+                      Specifically, the name must be 1-63 characters long and match
+                      the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. Field name
+                      is intended to be consistent with Cloud SQL.'
                     type: string
                   networkRef:
-                    description: |-
-                      (Required) The relative resource name of the VPC network on which
-                      the instance can be accessed. It is specified in the following form:
-                      projects/{project}/global/networks/{network_id}.
+                    description: 'Optional. The resource link for the VPC network
+                      in which cluster resources are created and from which they are
+                      accessible via Private IP. The network must belong to the same
+                      project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`.
+                      This is required to create a cluster.'
                     oneOf:
                     - not:
                         required:
@@ -407,23 +427,24 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`,
-                          where {{value}} is the `name` field of a `ComputeNetwork`
-                          resource.'
+                        description: A reference to an externally managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` field of a `ComputeNetwork` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` field of a `ComputeNetwork` resource.
                         type: string
                     type: object
                 type: object
               networkRef:
-                description: |-
-                  (Required) The relative resource name of the VPC network on which
-                  the instance can be accessed. It is specified in the following form:
-                  projects/{project}/global/networks/{network_id}.
+                description: 'Required. The resource link for the VPC network in which
+                  cluster resources are created and from which they are accessible
+                  via Private IP. The network must belong to the same project as the
+                  cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`.
+                  This is required to create a cluster. Deprecated, use network_config.network
+                  instead.'
                 oneOf:
                 - not:
                     required:
@@ -440,14 +461,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`,
-                      where {{value}} is the `name` field of a `ComputeNetwork` resource.'
+                    description: A reference to an externally managed Compute Network
+                      resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `ComputeNetwork` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `ComputeNetwork` resource.
                     type: string
                 type: object
               projectRef:
@@ -468,27 +489,31 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The clusterId of the resource. Used
-                  for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The AlloyDBCluster name. If not given, the metadata.name
+                  will be used.
                 type: string
               restoreBackupSource:
                 description: Immutable. The source when restoring from a backup. Conflicts
-                  with 'restore_continuous_backup_source', both can't be set together.
+                  with 'restoreContinuousBackupSource', both can't be set together.
                 properties:
                   backupNameRef:
-                    description: (Required) The name of the backup that this cluster
-                      is restored from.
+                    description: 'Required. The name of the backup resource with the
+                      format: * projects/{project}/locations/{region}/backups/{backup_id}'
                     oneOf:
                     - not:
                         required:
@@ -505,14 +530,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of an `AlloyDBBackup`
-                          resource.'
+                        description: If provided must be in the format `projects/[projectId]/locations/[location]/backups/[backupId]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `metadata.name` field of a `AlloyDBBackup`
+                          resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `metadata.namespace` field of a `AlloyDBBackup`
+                          resource.
                         type: string
                     type: object
                 required:
@@ -520,7 +546,7 @@ spec:
                 type: object
               restoreContinuousBackupSource:
                 description: Immutable. The source when restoring via point in time
-                  recovery (PITR). Conflicts with 'restore_backup_source', both can't
+                  recovery (PITR). Conflicts with 'restoreBackupSource', both can't
                   be set together.
                 properties:
                   clusterRef:
@@ -542,14 +568,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of an `AlloyDBCluster`
-                          resource.'
+                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `metadata.name` field of a `AlloyDBCluster`
+                          resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `metadata.namespace` field of a `AlloyDBCluster`
+                          resource.
                         type: string
                     type: object
                   pointInTime:
@@ -561,14 +588,12 @@ spec:
                 - pointInTime
                 type: object
               secondaryConfig:
-                description: Configuration of the secondary cluster for Cross Region
-                  Replication. This should be set if and only if the cluster is of
-                  type SECONDARY.
+                description: Cross Region replication config specific to SECONDARY
+                  cluster.
                 properties:
                   primaryClusterNameRef:
-                    description: |-
-                      Name of the primary cluster must be in the format
-                      'projects/{project}/locations/{location}/clusters/{cluster_id}'
+                    description: 'The name of the primary cluster name with the format:
+                      * projects/{project}/locations/{region}/clusters/{cluster_id}'
                     oneOf:
                     - not:
                         required:
@@ -585,14 +610,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of an `AlloyDBCluster`
-                          resource.'
+                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `metadata.name` field of a `AlloyDBCluster`
+                          resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `metadata.namespace` field of a `AlloyDBCluster`
+                          resource.
                         type: string
                     type: object
                 required:
@@ -603,9 +629,11 @@ spec:
             - projectRef
             type: object
           status:
+            description: AlloyDBClusterStatus defines the config connector machine
+              state of AlloyDBCluster
             properties:
               backupSource:
-                description: Cluster created from backup.
+                description: Output only. Cluster created from backup.
                 items:
                   properties:
                     backupName:
@@ -614,8 +642,8 @@ spec:
                   type: object
                 type: array
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -640,17 +668,16 @@ spec:
                   type: object
                 type: array
               continuousBackupInfo:
-                description: ContinuousBackupInfo describes the continuous backup
-                  properties of a cluster.
+                description: Output only. Continuous backup properties for this cluster.
                 items:
                   properties:
                     earliestRestorableTime:
-                      description: The earliest restorable time that can be restored
-                        to. Output only field.
+                      description: Output only. The earliest restorable time that
+                        can be restored to. Output only field.
                       type: string
                     enabledTime:
-                      description: When ContinuousBackup was most recently enabled.
-                        Set to null if ContinuousBackup is not enabled.
+                      description: Output only. When ContinuousBackup was most recently
+                        enabled. Set to null if ContinuousBackup is not enabled.
                       type: string
                     encryptionInfo:
                       description: Output only. The encryption information for the
@@ -669,8 +696,9 @@ spec:
                         type: object
                       type: array
                     schedule:
-                      description: Days of the week on which a continuous backup is
-                        taken. Output only field. Ignored if passed into the request.
+                      description: Output only. Days of the week on which a continuous
+                        backup is taken. Output only field. Ignored if passed into
+                        the request.
                       items:
                         type: string
                       type: array
@@ -682,8 +710,7 @@ spec:
                   cannot be changed after cluster creation.
                 type: string
               encryptionInfo:
-                description: EncryptionInfo describes the encryption information of
-                  a cluster or a backup.
+                description: Output only. The encryption information for the cluster.
                 items:
                   properties:
                     encryptionType:
@@ -698,24 +725,29 @@ spec:
                   type: object
                 type: array
               migrationSource:
-                description: Cluster created via DMS migration.
+                description: Output only. Cluster created via DMS migration.
                 items:
                   properties:
                     hostPort:
-                      description: The host and port of the on-premises instance in
-                        host:port format.
+                      description: Output only. The host and port of the on-premises
+                        instance in host:port format
                       type: string
                     referenceId:
-                      description: Place holder for the external source identifier(e.g
-                        DMS job name) that created the cluster.
+                      description: Output only. Place holder for the external source
+                        identifier(e.g DMS job name) that created the cluster.
                       type: string
                     sourceType:
-                      description: Type of migration source.
+                      description: Output only. Type of migration source.
                       type: string
                   type: object
                 type: array
               name:
-                description: The name of the cluster resource.
+                description: 'Output only. The name of the cluster resource with the
+                  format: * projects/{project}/locations/{region}/clusters/{cluster_id}
+                  where the cluster ID segment should satisfy the regex expression
+                  `[a-z0-9-]+`. For more details see https://google.aip.dev/122. The
+                  prefix of the cluster resource name is the name of the parent resource:
+                  * projects/{project}/locations/{region}'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -723,26 +755,32 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               observedState:
-                description: The observed state of the underlying GCP resource.
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
                 properties:
                   clusterType:
-                    description: 'The type of cluster. If not set, defaults to PRIMARY.
-                      Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].'
+                    description: Output only. The type of the cluster. This is an
+                      output-only field and it's populated at the Cluster creation
+                      time or the Cluster promotion time. The cluster type is determined
+                      by which RPC was used to create the cluster (i.e. `CreateCluster`
+                      vs. `CreateSecondaryCluster`
                     type: string
                 type: object
               uid:
-                description: The system-generated UID of the resource.
+                description: Output only. The system-generated UID of the resource.
+                  The UID is assigned when the resource is created, and it is retained
+                  until it is deleted.
                 type: string
             type: object
         required:
         - spec
         type: object
     served: true
-    storage: false
-    subresources:
-      status: {}
+    storage: true
+    subresources: {}
   - additionalPrinterColumns:
     - jsonPath: .metadata.creationTimestamp
       name: Age
@@ -759,48 +797,59 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
+        description: AlloyDBCluster is the Schema for the AlloyDBCluster API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: AlloyDBClusterSpec defines the desired state of AlloyDBCluster
             properties:
               automatedBackupPolicy:
-                description: The automated backup policy for this cluster. AutomatedBackupPolicy
-                  is disabled by default.
+                description: |-
+                  The automated backup policy for this cluster.
+
+                   If no policy is provided then the default policy will be used. If backups
+                   are supported for the cluster, the default policy takes one backup a day,
+                   has a backup window of 1 hour, and retains backups for 14 days.
+                   For more information on the defaults, consult the
+                   documentation for the message type.
                 properties:
                   backupWindow:
                     description: |-
-                      The length of the time window during which a backup can be taken. If a backup does not succeed within this time window, it will be canceled and considered failed.
+                      The length of the time window during which a backup can be
+                       taken. If a backup does not succeed within this time window, it will be
+                       canceled and considered failed.
 
-                      The backup window must be at least 5 minutes long. There is no upper bound on the window. If not set, it will default to 1 hour.
-
-                      A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
+                       The backup window must be at least 5 minutes long. There is no upper bound
+                       on the window. If not set, it defaults to 1 hour.
                     type: string
                   enabled:
-                    description: Whether automated backups are enabled.
+                    description: Whether automated automated backups are enabled.
+                      If not set, defaults to true.
                     type: boolean
                   encryptionConfig:
-                    description: EncryptionConfig describes the encryption config
-                      of a cluster or a backup that is encrypted with a CMEK (customer-managed
-                      encryption key).
+                    description: Optional. The encryption config can be specified
+                      to encrypt the backups with a customer-managed encryption key
+                      (CMEK). When this field is not specified, the backup will then
+                      use default encryption scheme to protect the user data.
                     properties:
                       kmsKeyNameRef:
-                        description: '(Optional) The fully-qualified resource name
-                          of the KMS key. Each Cloud KMS key is regionalized and has
-                          the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].'
+                        description: 'The fully-qualified resource name of the KMS
+                          key. Each Cloud KMS key is regionalized and has the following
+                          format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
                         oneOf:
                         - not:
                             required:
@@ -817,14 +866,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'Allowed value: The `selfLink` field of a
-                              `KMSCryptoKey` resource.'
+                            description: A reference to an externally managed KMSCryptoKey.
+                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                             type: string
                           name:
-                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            description: The `name` of a `KMSCryptoKey` resource.
                             type: string
                           namespace:
-                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            description: The `namespace` of a `KMSCryptoKey` resource.
                             type: string
                         type: object
                     type: object
@@ -834,62 +883,70 @@ spec:
                     description: Labels to apply to backups created using this configuration.
                     type: object
                   location:
-                    description: The location where the backup will be stored. Currently,
-                      the only supported option is to store the backup in the same
-                      region as the cluster.
+                    description: |-
+                      The location where the backup will be stored. Currently, the only supported
+                       option is to store the backup in the same region as the cluster.
+
+                       If empty, defaults to the region of the cluster.
                     type: string
                   quantityBasedRetention:
                     description: Quantity-based Backup retention policy to retain
-                      recent backups. Conflicts with 'time_based_retention', both
-                      can't be set together.
+                      recent backups.
                     properties:
                       count:
                         description: The number of backups to retain.
+                        format: int32
                         type: integer
                     type: object
                   timeBasedRetention:
-                    description: Time-based Backup retention policy. Conflicts with
-                      'quantity_based_retention', both can't be set together.
+                    description: Time-based Backup retention policy.
                     properties:
                       retentionPeriod:
-                        description: |-
-                          The retention period.
-                          A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
+                        description: The retention period.
                         type: string
                     type: object
                   weeklySchedule:
                     description: Weekly schedule for the Backup.
                     properties:
                       daysOfWeek:
-                        description: 'The days of the week to perform a backup. At
-                          least one day of the week must be provided. Possible values:
-                          ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY",
-                          "SATURDAY", "SUNDAY"].'
+                        description: |-
+                          The days of the week to perform a backup.
+
+                           If this field is left empty, the default of every day of the week is
+                           used.
                         items:
                           type: string
                         type: array
                       startTimes:
-                        description: The times during the day to start a backup. At
-                          least one start time must be provided. The start times are
-                          assumed to be in UTC and to be an exact hour (e.g., 04:00:00).
+                        description: |-
+                          The times during the day to start a backup. The start times are assumed
+                           to be in UTC and to be an exact hour (e.g., 04:00:00).
+
+                           If no start times are provided, a single fixed start time is chosen
+                           arbitrarily.
                         items:
                           properties:
                             hours:
                               description: Hours of day in 24 hour format. Should
                                 be from 0 to 23. An API may choose to allow the value
                                 "24:00:00" for scenarios like business closing time.
+                              format: int32
                               type: integer
                             minutes:
-                              description: Minutes of hour of day. Currently, only
-                                the value 0 is supported.
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
                               type: integer
                             nanos:
-                              description: Fractions of seconds in nanoseconds. Currently,
-                                only the value 0 is supported.
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
                               type: integer
                             seconds:
-                              description: Seconds of minutes of the time. Currently,
-                                only the value 0 is supported.
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
                               type: integer
                           type: object
                         type: array
@@ -902,24 +959,21 @@ spec:
                   Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].'
                 type: string
               continuousBackupConfig:
-                description: |-
-                  The continuous backup config for this cluster.
-
-                  If no policy is provided then the default policy will be used. The default policy takes one backup a day and retains backups for 14 days.
+                description: Optional. Continuous backup configuration for this cluster.
                 properties:
                   enabled:
-                    description: Whether continuous backup recovery is enabled. If
-                      not set, defaults to true.
+                    description: Whether ContinuousBackup is enabled.
                     type: boolean
                   encryptionConfig:
-                    description: EncryptionConfig describes the encryption config
-                      of a cluster or a backup that is encrypted with a CMEK (customer-managed
-                      encryption key).
+                    description: The encryption config can be specified to encrypt
+                      the backups with a customer-managed encryption key (CMEK). When
+                      this field is not specified, the backup will then use default
+                      encryption scheme to protect the user data.
                     properties:
                       kmsKeyNameRef:
-                        description: '(Optional) The fully-qualified resource name
-                          of the KMS key. Each Cloud KMS key is regionalized and has
-                          the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].'
+                        description: 'The fully-qualified resource name of the KMS
+                          key. Each Cloud KMS key is regionalized and has the following
+                          format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
                         oneOf:
                         - not:
                             required:
@@ -936,43 +990,50 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'Allowed value: The `selfLink` field of a
-                              `KMSCryptoKey` resource.'
+                            description: A reference to an externally managed KMSCryptoKey.
+                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                             type: string
                           name:
-                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            description: The `name` of a `KMSCryptoKey` resource.
                             type: string
                           namespace:
-                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            description: The `namespace` of a `KMSCryptoKey` resource.
                             type: string
                         type: object
                     type: object
                   recoveryWindowDays:
-                    description: |-
-                      The numbers of days that are eligible to restore from using PITR. To support the entire recovery window, backups and logs are retained for one day more than the recovery window.
-
+                    description: The number of days that are eligible to restore from
+                      using PITR. To support the entire recovery window, backups and
+                      logs are retained for one day more than the recovery window.
                       If not set, defaults to 14 days.
+                    format: int32
                     type: integer
                 type: object
               deletionPolicy:
-                description: |-
-                  Policy to determine if the cluster should be deleted forcefully.
-                  Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster.
-                  Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance.
+                description: Policy to determine if the cluster should be deleted
+                  forcefully. Deleting a cluster forcefully, deletes the cluster and
+                  all its associated instances within the cluster. Deleting a Secondary
+                  cluster with a secondary instance REQUIRES setting deletion_policy
+                  = "FORCE" otherwise an error is returned. This is needed as there
+                  is no support to delete just the secondary instance, and the only
+                  way to delete secondary instance is to delete the associated secondary
+                  cluster forcefully which also deletes the secondary instance.
                 type: string
               displayName:
                 description: User-settable and human-readable display name for the
                   Cluster.
                 type: string
               encryptionConfig:
-                description: EncryptionConfig describes the encryption config of a
-                  cluster or a backup that is encrypted with a CMEK (customer-managed
-                  encryption key).
+                description: Optional. The encryption config can be specified to encrypt
+                  the data disks and other persistent data resources of a cluster
+                  with a customer-managed encryption key (CMEK). When this field is
+                  not specified, the cluster will then use default encryption scheme
+                  to protect the user data.
                 properties:
                   kmsKeyNameRef:
-                    description: '(Optional) The fully-qualified resource name of
-                      the KMS key. Each Cloud KMS key is regionalized and has the
-                      following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].'
+                    description: 'The fully-qualified resource name of the KMS key.
+                      Each Cloud KMS key is regionalized and has the following format:
+                      projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
                     oneOf:
                     - not:
                         required:
@@ -989,33 +1050,23 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
-                          resource.'
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` of a `KMSCryptoKey` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` of a `KMSCryptoKey` resource.
                         type: string
                     type: object
                 type: object
               initialUser:
-                description: Initial user to setup during cluster creation.
+                description: Input only. Initial user to setup during cluster creation.
+                  Required. If used in `RestoreCluster` this is ignored.
                 properties:
                   password:
                     description: The initial password for the user.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
                     properties:
                       value:
                         description: Value of the field. Cannot be used if 'valueFrom'
@@ -1037,8 +1088,8 @@ spec:
                                   from.
                                 type: string
                             required:
-                            - name
                             - key
+                            - name
                             type: object
                         type: object
                     type: object
@@ -1053,8 +1104,8 @@ spec:
                   reside.
                 type: string
               maintenanceUpdatePolicy:
-                description: MaintenanceUpdatePolicy defines the policy for system
-                  updates.
+                description: Optional. The maintenance update policy determines when
+                  to allow or deny updates.
                 properties:
                   maintenanceWindows:
                     description: Preferred windows to perform maintenance. Currently
@@ -1062,10 +1113,8 @@ spec:
                     items:
                       properties:
                         day:
-                          description: 'Preferred day of the week for maintenance,
-                            e.g. MONDAY, TUESDAY, etc. Possible values: ["MONDAY",
-                            "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
-                            "SUNDAY"].'
+                          description: Preferred day of the week for maintenance,
+                            e.g. MONDAY, TUESDAY, etc.
                           type: string
                         startTime:
                           description: Preferred time to start the maintenance operation
@@ -1074,22 +1123,26 @@ spec:
                           properties:
                             hours:
                               description: Hours of day in 24 hour format. Should
-                                be from 0 to 23.
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
                               type: integer
                             minutes:
-                              description: Minutes of hour of day. Currently, only
-                                the value 0 is supported.
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
                               type: integer
                             nanos:
-                              description: Fractions of seconds in nanoseconds. Currently,
-                                only the value 0 is supported.
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
                               type: integer
                             seconds:
-                              description: Seconds of minutes of the time. Currently,
-                                only the value 0 is supported.
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
                               type: integer
-                          required:
-                          - hours
                           type: object
                       required:
                       - day
@@ -1098,18 +1151,22 @@ spec:
                     type: array
                 type: object
               networkConfig:
-                description: Metadata related to network configuration.
                 properties:
                   allocatedIpRange:
-                    description: |-
-                      The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
-                      If set, the instance IPs for this cluster will be created in the allocated range.
+                    description: 'Optional. Name of the allocated IP range for the
+                      private IP AlloyDB cluster, for example: "google-managed-services-default".
+                      If set, the instance IPs for this cluster will be created in
+                      the allocated range. The range name must comply with RFC 1035.
+                      Specifically, the name must be 1-63 characters long and match
+                      the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. Field name
+                      is intended to be consistent with Cloud SQL.'
                     type: string
                   networkRef:
-                    description: |-
-                      (Required) The relative resource name of the VPC network on which
-                      the instance can be accessed. It is specified in the following form:
-                      projects/{project}/global/networks/{network_id}.
+                    description: 'Optional. The resource link for the VPC network
+                      in which cluster resources are created and from which they are
+                      accessible via Private IP. The network must belong to the same
+                      project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`.
+                      This is required to create a cluster.'
                     oneOf:
                     - not:
                         required:
@@ -1126,23 +1183,24 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`,
-                          where {{value}} is the `name` field of a `ComputeNetwork`
-                          resource.'
+                        description: A reference to an externally managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` field of a `ComputeNetwork` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` field of a `ComputeNetwork` resource.
                         type: string
                     type: object
                 type: object
               networkRef:
-                description: |-
-                  (Required) The relative resource name of the VPC network on which
-                  the instance can be accessed. It is specified in the following form:
-                  projects/{project}/global/networks/{network_id}.
+                description: 'Required. The resource link for the VPC network in which
+                  cluster resources are created and from which they are accessible
+                  via Private IP. The network must belong to the same project as the
+                  cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`.
+                  This is required to create a cluster. Deprecated, use network_config.network
+                  instead.'
                 oneOf:
                 - not:
                     required:
@@ -1159,14 +1217,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`,
-                      where {{value}} is the `name` field of a `ComputeNetwork` resource.'
+                    description: A reference to an externally managed Compute Network
+                      resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `ComputeNetwork` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `ComputeNetwork` resource.
                     type: string
                 type: object
               projectRef:
@@ -1187,27 +1245,31 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The clusterId of the resource. Used
-                  for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The AlloyDBCluster name. If not given, the metadata.name
+                  will be used.
                 type: string
               restoreBackupSource:
                 description: Immutable. The source when restoring from a backup. Conflicts
-                  with 'restore_continuous_backup_source', both can't be set together.
+                  with 'restoreContinuousBackupSource', both can't be set together.
                 properties:
                   backupNameRef:
-                    description: (Required) The name of the backup that this cluster
-                      is restored from.
+                    description: 'Required. The name of the backup resource with the
+                      format: * projects/{project}/locations/{region}/backups/{backup_id}'
                     oneOf:
                     - not:
                         required:
@@ -1224,14 +1286,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of an `AlloyDBBackup`
-                          resource.'
+                        description: If provided must be in the format `projects/[projectId]/locations/[location]/backups/[backupId]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `metadata.name` field of a `AlloyDBBackup`
+                          resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `metadata.namespace` field of a `AlloyDBBackup`
+                          resource.
                         type: string
                     type: object
                 required:
@@ -1239,7 +1302,7 @@ spec:
                 type: object
               restoreContinuousBackupSource:
                 description: Immutable. The source when restoring via point in time
-                  recovery (PITR). Conflicts with 'restore_backup_source', both can't
+                  recovery (PITR). Conflicts with 'restoreBackupSource', both can't
                   be set together.
                 properties:
                   clusterRef:
@@ -1261,14 +1324,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of an `AlloyDBCluster`
-                          resource.'
+                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `metadata.name` field of a `AlloyDBCluster`
+                          resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `metadata.namespace` field of a `AlloyDBCluster`
+                          resource.
                         type: string
                     type: object
                   pointInTime:
@@ -1280,14 +1344,12 @@ spec:
                 - pointInTime
                 type: object
               secondaryConfig:
-                description: Configuration of the secondary cluster for Cross Region
-                  Replication. This should be set if and only if the cluster is of
-                  type SECONDARY.
+                description: Cross Region replication config specific to SECONDARY
+                  cluster.
                 properties:
                   primaryClusterNameRef:
-                    description: |-
-                      Name of the primary cluster must be in the format
-                      'projects/{project}/locations/{location}/clusters/{cluster_id}'
+                    description: 'The name of the primary cluster name with the format:
+                      * projects/{project}/locations/{region}/clusters/{cluster_id}'
                     oneOf:
                     - not:
                         required:
@@ -1304,14 +1366,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of an `AlloyDBCluster`
-                          resource.'
+                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `metadata.name` field of a `AlloyDBCluster`
+                          resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `metadata.namespace` field of a `AlloyDBCluster`
+                          resource.
                         type: string
                     type: object
                 required:
@@ -1322,9 +1385,11 @@ spec:
             - projectRef
             type: object
           status:
+            description: AlloyDBClusterStatus defines the config connector machine
+              state of AlloyDBCluster
             properties:
               backupSource:
-                description: Cluster created from backup.
+                description: Output only. Cluster created from backup.
                 items:
                   properties:
                     backupName:
@@ -1333,8 +1398,8 @@ spec:
                   type: object
                 type: array
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -1359,17 +1424,16 @@ spec:
                   type: object
                 type: array
               continuousBackupInfo:
-                description: ContinuousBackupInfo describes the continuous backup
-                  properties of a cluster.
+                description: Output only. Continuous backup properties for this cluster.
                 items:
                   properties:
                     earliestRestorableTime:
-                      description: The earliest restorable time that can be restored
-                        to. Output only field.
+                      description: Output only. The earliest restorable time that
+                        can be restored to. Output only field.
                       type: string
                     enabledTime:
-                      description: When ContinuousBackup was most recently enabled.
-                        Set to null if ContinuousBackup is not enabled.
+                      description: Output only. When ContinuousBackup was most recently
+                        enabled. Set to null if ContinuousBackup is not enabled.
                       type: string
                     encryptionInfo:
                       description: Output only. The encryption information for the
@@ -1388,8 +1452,9 @@ spec:
                         type: object
                       type: array
                     schedule:
-                      description: Days of the week on which a continuous backup is
-                        taken. Output only field. Ignored if passed into the request.
+                      description: Output only. Days of the week on which a continuous
+                        backup is taken. Output only field. Ignored if passed into
+                        the request.
                       items:
                         type: string
                       type: array
@@ -1401,8 +1466,7 @@ spec:
                   cannot be changed after cluster creation.
                 type: string
               encryptionInfo:
-                description: EncryptionInfo describes the encryption information of
-                  a cluster or a backup.
+                description: Output only. The encryption information for the cluster.
                 items:
                   properties:
                     encryptionType:
@@ -1417,24 +1481,29 @@ spec:
                   type: object
                 type: array
               migrationSource:
-                description: Cluster created via DMS migration.
+                description: Output only. Cluster created via DMS migration.
                 items:
                   properties:
                     hostPort:
-                      description: The host and port of the on-premises instance in
-                        host:port format.
+                      description: Output only. The host and port of the on-premises
+                        instance in host:port format
                       type: string
                     referenceId:
-                      description: Place holder for the external source identifier(e.g
-                        DMS job name) that created the cluster.
+                      description: Output only. Place holder for the external source
+                        identifier(e.g DMS job name) that created the cluster.
                       type: string
                     sourceType:
-                      description: Type of migration source.
+                      description: Output only. Type of migration source.
                       type: string
                   type: object
                 type: array
               name:
-                description: The name of the cluster resource.
+                description: 'Output only. The name of the cluster resource with the
+                  format: * projects/{project}/locations/{region}/clusters/{cluster_id}
+                  where the cluster ID segment should satisfy the regex expression
+                  `[a-z0-9-]+`. For more details see https://google.aip.dev/122. The
+                  prefix of the cluster resource name is the name of the parent resource:
+                  * projects/{project}/locations/{region}'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -1442,29 +1511,30 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               observedState:
-                description: The observed state of the underlying GCP resource.
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
                 properties:
                   clusterType:
-                    description: 'The type of cluster. If not set, defaults to PRIMARY.
-                      Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].'
+                    description: Output only. The type of the cluster. This is an
+                      output-only field and it's populated at the Cluster creation
+                      time or the Cluster promotion time. The cluster type is determined
+                      by which RPC was used to create the cluster (i.e. `CreateCluster`
+                      vs. `CreateSecondaryCluster`
                     type: string
                 type: object
               uid:
-                description: The system-generated UID of the resource.
+                description: Output only. The system-generated UID of the resource.
+                  The UID is assigned when the resource is created, and it is retained
+                  until it is deleted.
                 type: string
             type: object
         required:
         - spec
         type: object
     served: true
-    storage: true
+    storage: false
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
