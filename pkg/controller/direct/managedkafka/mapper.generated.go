@@ -16,7 +16,8 @@ package managedkafka
 
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -110,18 +111,18 @@ func ManagedKafkaClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedK
 	// MISSING: SatisfiesPzs
 	return out
 }
-func ManagedKafkaTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.ManagedKafkaTopicSpec {
+func ManagedKafkaTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krmv1alpha1.ManagedKafkaTopicSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ManagedKafkaTopicSpec{}
+	out := &krmv1alpha1.ManagedKafkaTopicSpec{}
 	// MISSING: Name
 	out.PartitionCount = direct.LazyPtr(in.GetPartitionCount())
 	out.ReplicationFactor = direct.LazyPtr(in.GetReplicationFactor())
 	out.Configs = in.Configs
 	return out
 }
-func ManagedKafkaTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaTopicSpec) *pb.Topic {
+func ManagedKafkaTopicSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ManagedKafkaTopicSpec) *pb.Topic {
 	if in == nil {
 		return nil
 	}
