@@ -29,6 +29,10 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
+// +tool:mockgcp-support-apigee
+// proto.service: mockgcp.cloud.apigee.v1.OrganizationsEnvgroupsAttachmentsServer
+// proto.message: mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
+
 type envgroupAttachmentServer struct {
 	*MockService
 	pb.UnimplementedOrganizationsEnvgroupsAttachmentsServerServer

@@ -22,6 +22,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -202,14 +203,24 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 	systemPrompt := "" // TODO
 	chat := client.StartChat(systemPrompt)
 
-	var userParts []string
-
-	// We only include data points for the same tool as the input.
-	for _, dataPoint := range x.dataPoints {
-		if dataPoint.Type != input.Type {
-			continue
+	var sameTypeDataPoint []*DataPoint
+	t := input.Type
+	scopes := strings.Split(t, "-")
+	for i := len(scopes) - 1; i >= 0; i-- {
+		for _, dataPoint := range x.dataPoints {
+			if strings.HasPrefix(dataPoint.Type, t) {
+				sameTypeDataPoint = append(sameTypeDataPoint, dataPoint)
+			}
 		}
+		if len(sameTypeDataPoint) != 0 {
+			break
+		}
+		t = strings.TrimSuffix(t, "-"+scopes[i])
+	}
 
+	var userParts []string
+	// Filter if StrictInputColumnKeys is specified.
+	for _, dataPoint := range sameTypeDataPoint {
 		inputColumnKeys := dataPoint.InputColumnKeys()
 		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
 			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)

@@ -30,6 +30,10 @@ import (
 	field_mask "google.golang.org/protobuf/types/known/fieldmaskpb"
 )
 
+// +tool:mockgcp-support-apigee
+// proto.service: mockgcp.cloud.apigee.v1.OrganizationsEnvgroupsServer
+// proto.message: mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup
+
 type EnvgroupV1 struct {
 	*MockService
 	pb.UnimplementedOrganizationsEnvgroupsServerServer
