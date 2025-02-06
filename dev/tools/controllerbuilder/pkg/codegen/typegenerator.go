@@ -378,9 +378,7 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 		}
 		parts[i] = strings.Join(tokens, "")
 	}
-	fullName = strings.Join(parts, ".")
-	fullName = strings.ReplaceAll(fullName, ".", "_")
-	return fullName
+	return strings.Join(parts, "_")
 }
 
 func goNameForOutputProtoMessage(msg protoreflect.MessageDescriptor) string {
