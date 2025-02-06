@@ -266,10 +266,18 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	tokens := strings.Split(a.id.String(), "/")
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
+	// todo(yuhou): Can we have a cleaner way to detect spec changes? Can this be more general so we can applied in other controllers or base controller?
 	desiredSpec := &desired.Spec
 	actualSpec := ComputeTargetTCPProxySpec_FromProto(mapCtx, a.actual)
+	// Add resourceID to actualSpec as the converter function does not cover this field
+	if desiredSpec.ResourceID == nil {
+		// If resourceID is not specified, use metadata name
+		actualSpec.ResourceID = direct.LazyPtr(desired.Name)
+		desiredSpec.ResourceID = actualSpec.ResourceID
+	} else {
+		actualSpec.ResourceID = desiredSpec.ResourceID
+	}
 	// Changes on resource spec are detected
-	// todo(yuhou): Can we have a more general way that can be applied to other controllers or base controller?
 	if !reflect.DeepEqual(desiredSpec, actualSpec) && parent.Location != "global" {
 		// Regional ComputeTargetTCPProxy API does not support Update
 		return fmt.Errorf("update operation not supported for regional ComputeTargetTCPProxy")
