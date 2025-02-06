@@ -24,11 +24,12 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
-	"k8s.io/apimachinery/pkg/util/sets"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -362,6 +363,22 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 
 	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
 	fullName = strings.TrimPrefix(fullName, ".")
+	// Ensure acronyms in type names are also handled.
+	parts := strings.Split(fullName, ".")
+	for i, part := range parts {
+		partInSnakeCase := text.AsSnakeCase(part)
+		tokens := strings.Split(partInSnakeCase, "_")
+		for j, token := range tokens {
+			if IsAcronym(token) {
+				token = strings.ToUpper(token)
+			} else {
+				token = strings.Title(token)
+			}
+			tokens[j] = token
+		}
+		parts[i] = strings.Join(tokens, "")
+	}
+	fullName = strings.Join(parts, ".")
 	fullName = strings.ReplaceAll(fullName, ".", "_")
 	return fullName
 }
