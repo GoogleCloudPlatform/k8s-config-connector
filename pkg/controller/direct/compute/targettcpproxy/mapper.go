@@ -15,6 +15,8 @@
 package targettcpproxy
 
 import (
+	"strings"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -37,4 +39,13 @@ func ComputeTargetTCPProxySpec_BackendServiceRef_ToProto(mapCtx *direct.MapConte
 		mapCtx.Errorf("reference %s was not pre-resolved", in.Name)
 	}
 	return direct.LazyPtr(in.External)
+}
+
+func ComputeTargetTCPProxySpec_Region_FromProto(mapCtx *direct.MapContext, in string) *string {
+	if in == "" {
+		return nil
+	}
+	// Convert `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4` to `europe-west4`
+	tokens := strings.Split(in, "/")
+	return direct.LazyPtr(tokens[len(tokens)-1])
 }
