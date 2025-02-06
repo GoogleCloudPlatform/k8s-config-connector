@@ -77,6 +77,15 @@ func (r *DatasetRef) NormalizedExternal(ctx context.Context, reader client.Reade
 	}
 	if !found {
 		// BigQueryDataset is still TF based so we resolve the reference from the object
+		// BUT only construct the reference if the resource is ready
+		resource, err := k8s.NewResource(u)
+		if err != nil {
+			return "", fmt.Errorf("error converting unstructured to resource: %w", err)
+		}
+		if !k8s.IsResourceReady(resource) {
+			return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+		}
+
 		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
 		if err != nil {
 			return "", err
