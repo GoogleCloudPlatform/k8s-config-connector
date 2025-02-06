@@ -14,7 +14,6 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.managedkafka.v1.Cluster
-// krm.kind: ManagedKafkaCluster
 
 package managedkafka
 
@@ -24,16 +23,16 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(managedKafkaClusterFuzzer())
+	fuzztesting.RegisterKRMFuzzer(managedkafkaClusterFuzzer())
 }
 
-func managedKafkaClusterFuzzer() fuzztesting.KRMFuzzer {
+func managedkafkaClusterFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Cluster{},
 		ManagedKafkaClusterSpec_FromProto, ManagedKafkaClusterSpec_ToProto,
 		ManagedKafkaClusterObservedState_FromProto, ManagedKafkaClusterObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".name") // Identifier
 	f.UnimplementedFields.Insert(".satisfies_pzi")
 	f.UnimplementedFields.Insert(".satisfies_pzs")
 
