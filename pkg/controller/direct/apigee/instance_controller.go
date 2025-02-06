@@ -20,8 +20,8 @@ import (
 	"reflect"
 	"strings"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -180,6 +180,30 @@ func (a *ApigeeInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 	if resource.ConsumerAcceptList != nil && !reflect.DeepEqual(asSortedCopy(resource.ConsumerAcceptList), asSortedCopy(a.actual.ConsumerAcceptList)) {
 		log.V(2).Info("change detected: consumerAcceptList")
 		updateMask.Paths = append(updateMask.Paths, "consumer_accept_list")
+	}
+	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		log.V(2).Info("change detected: description")
+		updateMask.Paths = append(updateMask.Paths, "description")
+	}
+	if !reflect.DeepEqual(resource.DiskEncryptionKeyName, a.actual.DiskEncryptionKeyName) {
+		log.V(2).Info("change detected: diskEncryptionKeyName")
+		updateMask.Paths = append(updateMask.Paths, "disk_encryption_key_name")
+	}
+	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		log.V(2).Info("change detected: displayName")
+		updateMask.Paths = append(updateMask.Paths, "display_name")
+	}
+	if !reflect.DeepEqual(resource.IpRange, a.actual.IpRange) {
+		log.V(2).Info("change detected: ipRange")
+		updateMask.Paths = append(updateMask.Paths, "ip_range")
+	}
+	if !reflect.DeepEqual(resource.Location, a.actual.Location) {
+		log.V(2).Info("change detected: location")
+		updateMask.Paths = append(updateMask.Paths, "location")
+	}
+	if !reflect.DeepEqual(resource.PeeringCidrRange, a.actual.PeeringCidrRange) {
+		log.V(2).Info("change detected: peeringCIDRRange")
+		updateMask.Paths = append(updateMask.Paths, "peering_cidr_range")
 	}
 
 	if len(updateMask.Paths) == 0 {

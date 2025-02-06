@@ -21,6 +21,7 @@ import (
 	"math/rand"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/fuzz"
 	"github.com/google/go-cmp/cmp"
@@ -103,4 +104,70 @@ func prettyPrint(t *testing.T, k any) string {
 	}
 
 	return string(encoded)
+}
+
+func FuzzApigeeInstanceSpec(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		stream := rand.New(rand.NewSource(seed))
+		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
+
+		k1 := &krm.ApigeeInstanceSpec{}
+		filler.Fill(t, k1)
+
+		// KRM -> API
+		ctx := &direct.MapContext{}
+		apiObj := ApigeeInstanceSpec_ToAPI(ctx, k1)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), prettyPrint(t, k1))
+		}
+
+		// API -> KRM
+		k2 := ApigeeInstanceSpec_FromAPI(ctx, apiObj)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), prettyPrint(t, apiObj))
+		}
+
+		// Ignore Parent, ResourceID, and ref Name+Namespace fields during comparison
+		opts := cmp.Options{
+			cmpopts.IgnoreFields(krm.ApigeeInstanceSpec{}, "OrganizationRef"),
+			cmpopts.IgnoreFields(krm.ApigeeInstanceSpec{}, "ResourceID"),
+			cmpopts.IgnoreFields(refs.KMSCryptoKeyRef{}, "Name"),
+			cmpopts.IgnoreFields(refs.KMSCryptoKeyRef{}, "Namespace"),
+		}
+		if diff := cmp.Diff(k1, k2, opts...); diff != "" {
+			t.Logf("k1 = %v", k1)
+			t.Logf("k2 = %v", k2)
+			t.Errorf("roundtrip failed: diff = %s", diff)
+		}
+	})
+}
+
+func FuzzApigeeInstanceObservedState(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		stream := rand.New(rand.NewSource(seed))
+		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
+
+		k1 := &krm.ApigeeInstanceObservedState{}
+		filler.Fill(t, k1)
+
+		// KRM -> API
+		ctx := &direct.MapContext{}
+		apiObj := ApigeeInstanceObservedState_ToAPI(ctx, k1)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), prettyPrint(t, k1))
+		}
+
+		// API -> KRM
+		k2 := ApigeeInstanceObservedState_FromAPI(ctx, apiObj)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), prettyPrint(t, apiObj))
+		}
+
+		// Compare
+		if diff := cmp.Diff(k1, k2); diff != "" {
+			t.Logf("k1 = %v", k1)
+			t.Logf("k2 = %v", k2)
+			t.Errorf("roundtrip failed: diff = %s", diff)
+		}
+	})
 }

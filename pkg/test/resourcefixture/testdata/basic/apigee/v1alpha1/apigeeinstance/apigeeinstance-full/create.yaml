@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeInstance
 metadata:
   name: apigeeinstance-${uniqueId}

@@ -15,8 +15,8 @@
 package apigee
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/apigee/v1"
 )
@@ -26,7 +26,7 @@ func AccessLoggingConfig_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloudA
 		return nil
 	}
 	out := &krm.AccessLoggingConfig{}
-	out.Enabled = direct.LazyPtr(in.Enabled)
+	out.Enabled = &in.Enabled
 	out.Filter = direct.LazyPtr(in.Filter)
 	return out
 }
@@ -105,16 +105,16 @@ func ApigeeInstanceSpec_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeInstanceS
 	return out
 }
 
-func ApigeeInstanceSpec_DiskEncryptionKMSCryptoKeyRef_FromAPI(mapCtx *direct.MapContext, in string) *refsv1beta1.KMSCryptoKeyRef {
+func ApigeeInstanceSpec_DiskEncryptionKMSCryptoKeyRef_FromAPI(mapCtx *direct.MapContext, in string) *refs.KMSCryptoKeyRef {
 	if in == "" {
 		return nil
 	}
-	out := &refsv1beta1.KMSCryptoKeyRef{}
+	out := &refs.KMSCryptoKeyRef{}
 	out.External = in
 	return out
 }
 
-func ApigeeInstanceSpec_DiskEncryptionKMSCryptoKeyRef_ToAPI(mapCtx *direct.MapContext, in *refsv1beta1.KMSCryptoKeyRef) string {
+func ApigeeInstanceSpec_DiskEncryptionKMSCryptoKeyRef_ToAPI(mapCtx *direct.MapContext, in *refs.KMSCryptoKeyRef) string {
 	if in == nil {
 		return ""
 	}
