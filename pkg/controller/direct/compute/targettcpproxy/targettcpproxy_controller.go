@@ -266,12 +266,16 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	tokens := strings.Split(a.id.String(), "/")
 	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
-	// Regional API does not support Update
-	errorMessage := fmt.Sprintf("Update operation not supported for regional ComputeTargetTCPProxy")
+	desiredSpec := &desired.Spec
+	actualSpec := ComputeTargetTCPProxySpec_FromProto(mapCtx, a.actual)
+	// Changes on resource spec are detected
+	// todo(yuhou): Can we have a more general way that can be applied to other controllers or base controller?
+	if !reflect.DeepEqual(desiredSpec, actualSpec) && parent.Location != "global" {
+		// Regional ComputeTargetTCPProxy API does not support Update
+		return fmt.Errorf("update operation not supported for regional ComputeTargetTCPProxy")
+	}
+
 	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
-		if parent.Location != "global" {
-			return fmt.Errorf("%s", errorMessage)
-		}
 		setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
 			Project: parent.ProjectID,
 			TargetTcpProxiesSetProxyHeaderRequestResource: &computepb.TargetTcpProxiesSetProxyHeaderRequest{ProxyHeader: targetTCPProxy.ProxyHeader},
@@ -291,9 +295,6 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 
 	if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) {
-		if parent.Location != "global" {
-			return fmt.Errorf("%s", errorMessage)
-		}
 		setBackendServiceReq := &computepb.SetBackendServiceTargetTcpProxyRequest{
 			Project: parent.ProjectID,
 			TargetTcpProxiesSetBackendServiceRequestResource: &computepb.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},
@@ -310,7 +311,6 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 			}
 		}
 		log.V(2).Info("successfully updated ComputeTargetTCPProxy backend service", "name", a.id)
-
 	}
 
 	// Get the updated resource

@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -33,7 +34,7 @@ var (
 type ComputeTargetTCPProxySpec struct {
 	// A reference to the ComputeBackendService resource.
 	// +required
-	BackendServiceRef *ComputeBackendServiceRef `json:"backendServiceRef"`
+	BackendServiceRef *refs.ComputeBackendServiceRef `json:"backendServiceRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Description is immutable"
 	// Immutable. An optional description of this resource.
