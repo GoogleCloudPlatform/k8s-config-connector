@@ -100,6 +100,34 @@ func CloudcontrolspartnerEkmConnectionsSpec_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: EkmConnections
 	return out
 }
+func CloudcontrolspartnerPartnerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Partner) *krm.CloudcontrolspartnerPartnerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudcontrolspartnerPartnerObservedState{}
+	// MISSING: Name
+	// MISSING: Skus
+	// MISSING: EkmSolutions
+	// MISSING: OperatedCloudRegions
+	// MISSING: PartnerProjectID
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func CloudcontrolspartnerPartnerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerPartnerObservedState) *pb.Partner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Partner{}
+	// MISSING: Name
+	// MISSING: Skus
+	// MISSING: EkmSolutions
+	// MISSING: OperatedCloudRegions
+	// MISSING: PartnerProjectID
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
 func CloudcontrolspartnerPartnerPermissionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PartnerPermissions) *krm.CloudcontrolspartnerPartnerPermissionsObservedState {
 	if in == nil {
 		return nil
@@ -134,6 +162,34 @@ func CloudcontrolspartnerPartnerPermissionsSpec_ToProto(mapCtx *direct.MapContex
 	out := &pb.PartnerPermissions{}
 	// MISSING: Name
 	// MISSING: PartnerPermissions
+	return out
+}
+func CloudcontrolspartnerPartnerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Partner) *krm.CloudcontrolspartnerPartnerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudcontrolspartnerPartnerSpec{}
+	// MISSING: Name
+	// MISSING: Skus
+	// MISSING: EkmSolutions
+	// MISSING: OperatedCloudRegions
+	// MISSING: PartnerProjectID
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func CloudcontrolspartnerPartnerSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerPartnerSpec) *pb.Partner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Partner{}
+	// MISSING: Name
+	// MISSING: Skus
+	// MISSING: EkmSolutions
+	// MISSING: OperatedCloudRegions
+	// MISSING: PartnerProjectID
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	return out
 }
 func CloudcontrolspartnerWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.CloudcontrolspartnerWorkloadObservedState {
@@ -200,21 +256,77 @@ func CloudcontrolspartnerWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Partner
 	return out
 }
-func PartnerPermissions_FromProto(mapCtx *direct.MapContext, in *pb.PartnerPermissions) *krm.PartnerPermissions {
+func Partner_FromProto(mapCtx *direct.MapContext, in *pb.Partner) *krm.Partner {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PartnerPermissions{}
+	out := &krm.Partner{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.PartnerPermissions = direct.EnumSlice_FromProto(mapCtx, in.PartnerPermissions)
+	out.Skus = direct.Slice_FromProto(mapCtx, in.Skus, Sku_FromProto)
+	out.EkmSolutions = direct.Slice_FromProto(mapCtx, in.EkmSolutions, EkmMetadata_FromProto)
+	out.OperatedCloudRegions = in.OperatedCloudRegions
+	out.PartnerProjectID = direct.LazyPtr(in.GetPartnerProjectId())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	return out
 }
-func PartnerPermissions_ToProto(mapCtx *direct.MapContext, in *krm.PartnerPermissions) *pb.PartnerPermissions {
+func Partner_ToProto(mapCtx *direct.MapContext, in *krm.Partner) *pb.Partner {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PartnerPermissions{}
+	out := &pb.Partner{}
 	out.Name = direct.ValueOf(in.Name)
-	out.PartnerPermissions = direct.EnumSlice_ToProto[pb.PartnerPermissions_Permission](mapCtx, in.PartnerPermissions)
+	out.Skus = direct.Slice_ToProto(mapCtx, in.Skus, Sku_ToProto)
+	out.EkmSolutions = direct.Slice_ToProto(mapCtx, in.EkmSolutions, EkmMetadata_ToProto)
+	out.OperatedCloudRegions = in.OperatedCloudRegions
+	out.PartnerProjectId = direct.ValueOf(in.PartnerProjectID)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func PartnerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Partner) *krm.PartnerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PartnerObservedState{}
+	// MISSING: Name
+	// MISSING: Skus
+	// MISSING: EkmSolutions
+	// MISSING: OperatedCloudRegions
+	// MISSING: PartnerProjectID
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func PartnerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PartnerObservedState) *pb.Partner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Partner{}
+	// MISSING: Name
+	// MISSING: Skus
+	// MISSING: EkmSolutions
+	// MISSING: OperatedCloudRegions
+	// MISSING: PartnerProjectID
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func Sku_FromProto(mapCtx *direct.MapContext, in *pb.Sku) *krm.Sku {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Sku{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func Sku_ToProto(mapCtx *direct.MapContext, in *krm.Sku) *pb.Sku {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Sku{}
+	out.Id = direct.ValueOf(in.ID)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }

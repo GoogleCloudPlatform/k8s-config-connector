@@ -15,14 +15,68 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.PartnerPermissions
-type PartnerPermissions struct {
-	// Identifier. Format:
-	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.PartnerPermissions.name
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmMetadata
+type EkmMetadata struct {
+	// The Cloud EKM partner.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmMetadata.ekm_solution
+	EkmSolution *string `json:"ekmSolution,omitempty"`
+
+	// Endpoint for sending requests to the EKM for key provisioning during
+	//  Assured Workload creation.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmMetadata.ekm_endpoint_uri
+	EkmEndpointURI *string `json:"ekmEndpointURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Partner
+type Partner struct {
+	// Identifier. The resource name of the partner.
+	//  Format: `organizations/{organization}/locations/{location}/partner`
+	//  Example: "organizations/123456/locations/us-central1/partner"
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Partner.name
 	Name *string `json:"name,omitempty"`
 
-	// The partner permissions granted for the workload
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.PartnerPermissions.partner_permissions
-	PartnerPermissions []string `json:"partnerPermissions,omitempty"`
+	// List of SKUs the partner is offering
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Partner.skus
+	Skus []Sku `json:"skus,omitempty"`
+
+	// List of Google Cloud supported EKM partners supported by the partner
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Partner.ekm_solutions
+	EkmSolutions []EkmMetadata `json:"ekmSolutions,omitempty"`
+
+	// List of Google Cloud regions that the partner sells services to customers.
+	//  Valid Google Cloud regions found here:
+	//  https://cloud.google.com/compute/docs/regions-zones
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Partner.operated_cloud_regions
+	OperatedCloudRegions []string `json:"operatedCloudRegions,omitempty"`
+
+	// Google Cloud project ID in the partner's Google Cloud organization for
+	//  receiving enhanced Logs for Partners.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Partner.partner_project_id
+	PartnerProjectID *string `json:"partnerProjectID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Sku
+type Sku struct {
+	// Argentum product SKU, that is associated with the partner offerings to
+	//  customers used by Syntro for billing purposes. SKUs can represent resold
+	//  Google products or support services.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Sku.id
+	ID *string `json:"id,omitempty"`
+
+	// Display name of the product identified by the SKU. A partner may want to
+	//  show partner branded names for their offerings such as local sovereign
+	//  cloud solutions.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Sku.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Partner
+type PartnerObservedState struct {
+	// Output only. Time the resource was created
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Partner.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last time the resource was updated
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Partner.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
