@@ -15,10 +15,10 @@
 package channel
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/channel/apiv1/channelpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/channel/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func ChannelBillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.ChannelBillingAccountObservedState {
 	if in == nil {
@@ -126,6 +126,46 @@ func ChannelChannelPartnerLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ch
 	// MISSING: UpdateTime
 	// MISSING: PublicID
 	// MISSING: ChannelPartnerCloudIdentityInfo
+	return out
+}
+func ChannelChannelPartnerRepricingConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ChannelPartnerRepricingConfig) *krm.ChannelChannelPartnerRepricingConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelChannelPartnerRepricingConfigObservedState{}
+	// MISSING: Name
+	// MISSING: RepricingConfig
+	// MISSING: UpdateTime
+	return out
+}
+func ChannelChannelPartnerRepricingConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelChannelPartnerRepricingConfigObservedState) *pb.ChannelPartnerRepricingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelPartnerRepricingConfig{}
+	// MISSING: Name
+	// MISSING: RepricingConfig
+	// MISSING: UpdateTime
+	return out
+}
+func ChannelChannelPartnerRepricingConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.ChannelPartnerRepricingConfig) *krm.ChannelChannelPartnerRepricingConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelChannelPartnerRepricingConfigSpec{}
+	// MISSING: Name
+	// MISSING: RepricingConfig
+	// MISSING: UpdateTime
+	return out
+}
+func ChannelChannelPartnerRepricingConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelChannelPartnerRepricingConfigSpec) *pb.ChannelPartnerRepricingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelPartnerRepricingConfig{}
+	// MISSING: Name
+	// MISSING: RepricingConfig
+	// MISSING: UpdateTime
 	return out
 }
 func ChannelCustomerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.ChannelCustomerObservedState {
@@ -396,6 +436,46 @@ func ChannelOfferSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelOfferSpe
 	// MISSING: DealCode
 	return out
 }
+func ChannelPartnerRepricingConfig_FromProto(mapCtx *direct.MapContext, in *pb.ChannelPartnerRepricingConfig) *krm.ChannelPartnerRepricingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelPartnerRepricingConfig{}
+	// MISSING: Name
+	out.RepricingConfig = RepricingConfig_FromProto(mapCtx, in.GetRepricingConfig())
+	// MISSING: UpdateTime
+	return out
+}
+func ChannelPartnerRepricingConfig_ToProto(mapCtx *direct.MapContext, in *krm.ChannelPartnerRepricingConfig) *pb.ChannelPartnerRepricingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelPartnerRepricingConfig{}
+	// MISSING: Name
+	out.RepricingConfig = RepricingConfig_ToProto(mapCtx, in.RepricingConfig)
+	// MISSING: UpdateTime
+	return out
+}
+func ChannelPartnerRepricingConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ChannelPartnerRepricingConfig) *krm.ChannelPartnerRepricingConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelPartnerRepricingConfigObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: RepricingConfig
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func ChannelPartnerRepricingConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelPartnerRepricingConfigObservedState) *pb.ChannelPartnerRepricingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelPartnerRepricingConfig{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: RepricingConfig
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
 func ChannelProductObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Product) *krm.ChannelProductObservedState {
 	if in == nil {
 		return nil
@@ -570,46 +650,6 @@ func ConditionalOverride_ToProto(mapCtx *direct.MapContext, in *krm.ConditionalO
 	out.Adjustment = RepricingAdjustment_ToProto(mapCtx, in.Adjustment)
 	out.RebillingBasis = direct.Enum_ToProto[pb.RebillingBasis](mapCtx, in.RebillingBasis)
 	out.RepricingCondition = RepricingCondition_ToProto(mapCtx, in.RepricingCondition)
-	return out
-}
-func CustomerRepricingConfig_FromProto(mapCtx *direct.MapContext, in *pb.CustomerRepricingConfig) *krm.CustomerRepricingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomerRepricingConfig{}
-	// MISSING: Name
-	out.RepricingConfig = RepricingConfig_FromProto(mapCtx, in.GetRepricingConfig())
-	// MISSING: UpdateTime
-	return out
-}
-func CustomerRepricingConfig_ToProto(mapCtx *direct.MapContext, in *krm.CustomerRepricingConfig) *pb.CustomerRepricingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomerRepricingConfig{}
-	// MISSING: Name
-	out.RepricingConfig = RepricingConfig_ToProto(mapCtx, in.RepricingConfig)
-	// MISSING: UpdateTime
-	return out
-}
-func CustomerRepricingConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomerRepricingConfig) *krm.CustomerRepricingConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomerRepricingConfigObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: RepricingConfig
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func CustomerRepricingConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerRepricingConfigObservedState) *pb.CustomerRepricingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomerRepricingConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: RepricingConfig
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func PercentageAdjustment_FromProto(mapCtx *direct.MapContext, in *pb.PercentageAdjustment) *krm.PercentageAdjustment {

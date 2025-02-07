@@ -15,6 +15,15 @@
 package v1alpha1
 
 
+// +kcc:proto=google.cloud.channel.v1.ChannelPartnerRepricingConfig
+type ChannelPartnerRepricingConfig struct {
+
+	// Required. The configuration for bill modifications made by a reseller
+	//  before sending it to ChannelPartner.
+	// +kcc:proto:field=google.cloud.channel.v1.ChannelPartnerRepricingConfig.repricing_config
+	RepricingConfig *RepricingConfig `json:"repricingConfig,omitempty"`
+}
+
 // +kcc:proto=google.cloud.channel.v1.ConditionalOverride
 type ConditionalOverride struct {
 	// Required. Information about the applied override's adjustment.
@@ -30,15 +39,6 @@ type ConditionalOverride struct {
 	// Required. Specifies the condition which, if met, will apply the override.
 	// +kcc:proto:field=google.cloud.channel.v1.ConditionalOverride.repricing_condition
 	RepricingCondition *RepricingCondition `json:"repricingCondition,omitempty"`
-}
-
-// +kcc:proto=google.cloud.channel.v1.CustomerRepricingConfig
-type CustomerRepricingConfig struct {
-
-	// Required. The configuration for bill modifications made by a reseller
-	//  before sending it to customers.
-	// +kcc:proto:field=google.cloud.channel.v1.CustomerRepricingConfig.repricing_config
-	RepricingConfig *RepricingConfig `json:"repricingConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.channel.v1.PercentageAdjustment
@@ -225,18 +225,18 @@ type Decimal struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.CustomerRepricingConfig
-type CustomerRepricingConfigObservedState struct {
-	// Output only. Resource name of the CustomerRepricingConfig.
+// +kcc:proto=google.cloud.channel.v1.ChannelPartnerRepricingConfig
+type ChannelPartnerRepricingConfigObservedState struct {
+	// Output only. Resource name of the ChannelPartnerRepricingConfig.
 	//  Format:
-	//  accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
-	// +kcc:proto:field=google.cloud.channel.v1.CustomerRepricingConfig.name
+	//  accounts/{account_id}/channelPartnerLinks/{channel_partner_id}/channelPartnerRepricingConfigs/{id}.
+	// +kcc:proto:field=google.cloud.channel.v1.ChannelPartnerRepricingConfig.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. Timestamp of an update to the repricing rule. If `update_time`
 	//  is after
 	//  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
 	//  then it indicates this was set mid-month.
-	// +kcc:proto:field=google.cloud.channel.v1.CustomerRepricingConfig.update_time
+	// +kcc:proto:field=google.cloud.channel.v1.ChannelPartnerRepricingConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
