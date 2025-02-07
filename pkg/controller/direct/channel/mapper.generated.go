@@ -15,10 +15,10 @@
 package channel
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/channel/apiv1/channelpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/channel/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func ChannelBillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.ChannelBillingAccountObservedState {
 	if in == nil {
@@ -436,46 +436,6 @@ func ChannelOfferSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelOfferSpe
 	// MISSING: DealCode
 	return out
 }
-func ChannelPartnerRepricingConfig_FromProto(mapCtx *direct.MapContext, in *pb.ChannelPartnerRepricingConfig) *krm.ChannelPartnerRepricingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ChannelPartnerRepricingConfig{}
-	// MISSING: Name
-	out.RepricingConfig = RepricingConfig_FromProto(mapCtx, in.GetRepricingConfig())
-	// MISSING: UpdateTime
-	return out
-}
-func ChannelPartnerRepricingConfig_ToProto(mapCtx *direct.MapContext, in *krm.ChannelPartnerRepricingConfig) *pb.ChannelPartnerRepricingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ChannelPartnerRepricingConfig{}
-	// MISSING: Name
-	out.RepricingConfig = RepricingConfig_ToProto(mapCtx, in.RepricingConfig)
-	// MISSING: UpdateTime
-	return out
-}
-func ChannelPartnerRepricingConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ChannelPartnerRepricingConfig) *krm.ChannelPartnerRepricingConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ChannelPartnerRepricingConfigObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: RepricingConfig
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func ChannelPartnerRepricingConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelPartnerRepricingConfigObservedState) *pb.ChannelPartnerRepricingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ChannelPartnerRepricingConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: RepricingConfig
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
 func ChannelProductObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Product) *krm.ChannelProductObservedState {
 	if in == nil {
 		return nil
@@ -592,6 +552,42 @@ func ChannelReportSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelReportS
 	// MISSING: Description
 	return out
 }
+func ChannelSkuGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SkuGroup) *krm.ChannelSkuGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelSkuGroupObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	return out
+}
+func ChannelSkuGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelSkuGroupObservedState) *pb.SkuGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SkuGroup{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	return out
+}
+func ChannelSkuGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.SkuGroup) *krm.ChannelSkuGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelSkuGroupSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	return out
+}
+func ChannelSkuGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelSkuGroupSpec) *pb.SkuGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SkuGroup{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	return out
+}
 func ChannelSkuObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Sku) *krm.ChannelSkuObservedState {
 	if in == nil {
 		return nil
@@ -632,151 +628,21 @@ func ChannelSkuSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelSkuSpec) *
 	// MISSING: Product
 	return out
 }
-func ConditionalOverride_FromProto(mapCtx *direct.MapContext, in *pb.ConditionalOverride) *krm.ConditionalOverride {
+func SkuGroup_FromProto(mapCtx *direct.MapContext, in *pb.SkuGroup) *krm.SkuGroup {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ConditionalOverride{}
-	out.Adjustment = RepricingAdjustment_FromProto(mapCtx, in.GetAdjustment())
-	out.RebillingBasis = direct.Enum_FromProto(mapCtx, in.GetRebillingBasis())
-	out.RepricingCondition = RepricingCondition_FromProto(mapCtx, in.GetRepricingCondition())
+	out := &krm.SkuGroup{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
-func ConditionalOverride_ToProto(mapCtx *direct.MapContext, in *krm.ConditionalOverride) *pb.ConditionalOverride {
+func SkuGroup_ToProto(mapCtx *direct.MapContext, in *krm.SkuGroup) *pb.SkuGroup {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ConditionalOverride{}
-	out.Adjustment = RepricingAdjustment_ToProto(mapCtx, in.Adjustment)
-	out.RebillingBasis = direct.Enum_ToProto[pb.RebillingBasis](mapCtx, in.RebillingBasis)
-	out.RepricingCondition = RepricingCondition_ToProto(mapCtx, in.RepricingCondition)
-	return out
-}
-func PercentageAdjustment_FromProto(mapCtx *direct.MapContext, in *pb.PercentageAdjustment) *krm.PercentageAdjustment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PercentageAdjustment{}
-	out.Percentage = Decimal_FromProto(mapCtx, in.GetPercentage())
-	return out
-}
-func PercentageAdjustment_ToProto(mapCtx *direct.MapContext, in *krm.PercentageAdjustment) *pb.PercentageAdjustment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PercentageAdjustment{}
-	out.Percentage = Decimal_ToProto(mapCtx, in.Percentage)
-	return out
-}
-func RepricingAdjustment_FromProto(mapCtx *direct.MapContext, in *pb.RepricingAdjustment) *krm.RepricingAdjustment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RepricingAdjustment{}
-	out.PercentageAdjustment = PercentageAdjustment_FromProto(mapCtx, in.GetPercentageAdjustment())
-	return out
-}
-func RepricingAdjustment_ToProto(mapCtx *direct.MapContext, in *krm.RepricingAdjustment) *pb.RepricingAdjustment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RepricingAdjustment{}
-	if oneof := PercentageAdjustment_ToProto(mapCtx, in.PercentageAdjustment); oneof != nil {
-		out.Adjustment = &pb.RepricingAdjustment_PercentageAdjustment{PercentageAdjustment: oneof}
-	}
-	return out
-}
-func RepricingCondition_FromProto(mapCtx *direct.MapContext, in *pb.RepricingCondition) *krm.RepricingCondition {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RepricingCondition{}
-	out.SkuGroupCondition = SkuGroupCondition_FromProto(mapCtx, in.GetSkuGroupCondition())
-	return out
-}
-func RepricingCondition_ToProto(mapCtx *direct.MapContext, in *krm.RepricingCondition) *pb.RepricingCondition {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RepricingCondition{}
-	if oneof := SkuGroupCondition_ToProto(mapCtx, in.SkuGroupCondition); oneof != nil {
-		out.Condition = &pb.RepricingCondition_SkuGroupCondition{SkuGroupCondition: oneof}
-	}
-	return out
-}
-func RepricingConfig_FromProto(mapCtx *direct.MapContext, in *pb.RepricingConfig) *krm.RepricingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RepricingConfig{}
-	out.EntitlementGranularity = RepricingConfig_EntitlementGranularity_FromProto(mapCtx, in.GetEntitlementGranularity())
-	out.ChannelPartnerGranularity = RepricingConfig_ChannelPartnerGranularity_FromProto(mapCtx, in.GetChannelPartnerGranularity())
-	out.EffectiveInvoiceMonth = Date_FromProto(mapCtx, in.GetEffectiveInvoiceMonth())
-	out.Adjustment = RepricingAdjustment_FromProto(mapCtx, in.GetAdjustment())
-	out.RebillingBasis = direct.Enum_FromProto(mapCtx, in.GetRebillingBasis())
-	out.ConditionalOverrides = direct.Slice_FromProto(mapCtx, in.ConditionalOverrides, ConditionalOverride_FromProto)
-	return out
-}
-func RepricingConfig_ToProto(mapCtx *direct.MapContext, in *krm.RepricingConfig) *pb.RepricingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RepricingConfig{}
-	if oneof := RepricingConfig_EntitlementGranularity_ToProto(mapCtx, in.EntitlementGranularity); oneof != nil {
-		out.Granularity = &pb.RepricingConfig_EntitlementGranularity_{EntitlementGranularity: oneof}
-	}
-	if oneof := RepricingConfig_ChannelPartnerGranularity_ToProto(mapCtx, in.ChannelPartnerGranularity); oneof != nil {
-		out.Granularity = &pb.RepricingConfig_ChannelPartnerGranularity_{ChannelPartnerGranularity: oneof}
-	}
-	out.EffectiveInvoiceMonth = Date_ToProto(mapCtx, in.EffectiveInvoiceMonth)
-	out.Adjustment = RepricingAdjustment_ToProto(mapCtx, in.Adjustment)
-	out.RebillingBasis = direct.Enum_ToProto[pb.RebillingBasis](mapCtx, in.RebillingBasis)
-	out.ConditionalOverrides = direct.Slice_ToProto(mapCtx, in.ConditionalOverrides, ConditionalOverride_ToProto)
-	return out
-}
-func RepricingConfig_ChannelPartnerGranularity_FromProto(mapCtx *direct.MapContext, in *pb.RepricingConfig_ChannelPartnerGranularity) *krm.RepricingConfig_ChannelPartnerGranularity {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RepricingConfig_ChannelPartnerGranularity{}
-	return out
-}
-func RepricingConfig_ChannelPartnerGranularity_ToProto(mapCtx *direct.MapContext, in *krm.RepricingConfig_ChannelPartnerGranularity) *pb.RepricingConfig_ChannelPartnerGranularity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RepricingConfig_ChannelPartnerGranularity{}
-	return out
-}
-func RepricingConfig_EntitlementGranularity_FromProto(mapCtx *direct.MapContext, in *pb.RepricingConfig_EntitlementGranularity) *krm.RepricingConfig_EntitlementGranularity {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RepricingConfig_EntitlementGranularity{}
-	out.Entitlement = direct.LazyPtr(in.GetEntitlement())
-	return out
-}
-func RepricingConfig_EntitlementGranularity_ToProto(mapCtx *direct.MapContext, in *krm.RepricingConfig_EntitlementGranularity) *pb.RepricingConfig_EntitlementGranularity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RepricingConfig_EntitlementGranularity{}
-	out.Entitlement = direct.ValueOf(in.Entitlement)
-	return out
-}
-func SkuGroupCondition_FromProto(mapCtx *direct.MapContext, in *pb.SkuGroupCondition) *krm.SkuGroupCondition {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SkuGroupCondition{}
-	out.SkuGroup = direct.LazyPtr(in.GetSkuGroup())
-	return out
-}
-func SkuGroupCondition_ToProto(mapCtx *direct.MapContext, in *krm.SkuGroupCondition) *pb.SkuGroupCondition {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SkuGroupCondition{}
-	out.SkuGroup = direct.ValueOf(in.SkuGroup)
+	out := &pb.SkuGroup{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
