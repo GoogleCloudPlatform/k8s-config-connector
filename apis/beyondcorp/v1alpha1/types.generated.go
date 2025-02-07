@@ -15,66 +15,86 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.beyondcorp.appgateways.v1.AppGateway
-type AppGateway struct {
-	// Required. Unique resource name of the AppGateway.
-	//  The name is ignored when creating an AppGateway.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.name
+// +kcc:proto=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService
+type ClientConnectorService struct {
+	// Required. Name of resource. The name is ignored during creation.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.name
 	Name *string `json:"name,omitempty"`
 
-	// Optional. Resource labels to represent user provided metadata.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. An arbitrary user-provided name for the AppGateway. Cannot exceed
-	//  64 characters.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.display_name
+	// Optional. User-provided name.
+	//  The display name should follow certain format.
+	//  * Must be 6 to 30 characters in length.
+	//  * Can only contain lowercase letters, numbers, and hyphens.
+	//  * Must start with a letter.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Required. The type of network connectivity used by the AppGateway.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.type
-	Type *string `json:"type,omitempty"`
+	// Required. The details of the ingress settings.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.ingress
+	Ingress *ClientConnectorService_Ingress `json:"ingress,omitempty"`
 
-	// Required. The type of hosting used by the AppGateway.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.host_type
-	HostType *string `json:"hostType,omitempty"`
+	// Required. The details of the egress settings.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.egress
+	Egress *ClientConnectorService_Egress `json:"egress,omitempty"`
 }
 
-// +kcc:proto=google.cloud.beyondcorp.appgateways.v1.AppGateway.AllocatedConnection
-type AppGateway_AllocatedConnection struct {
-	// Required. The PSC uri of an allocated connection
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.AllocatedConnection.psc_uri
-	PscURI *string `json:"pscURI,omitempty"`
-
-	// Required. The ingress port of an allocated connection
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.AllocatedConnection.ingress_port
-	IngressPort *int32 `json:"ingressPort,omitempty"`
+// +kcc:proto=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Egress
+type ClientConnectorService_Egress struct {
+	// A VPC from the consumer project.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Egress.peered_vpc
+	PeeredVpc *ClientConnectorService_Egress_PeeredVpc `json:"peeredVpc,omitempty"`
 }
 
-// +kcc:proto=google.cloud.beyondcorp.appgateways.v1.AppGateway
-type AppGatewayObservedState struct {
-	// Output only. Timestamp when the resource was created.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.create_time
+// +kcc:proto=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Egress.PeeredVpc
+type ClientConnectorService_Egress_PeeredVpc struct {
+	// Required. The name of the peered VPC owned by the consumer project.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Egress.PeeredVpc.network_vpc
+	NetworkVpc *string `json:"networkVpc,omitempty"`
+}
+
+// +kcc:proto=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Ingress
+type ClientConnectorService_Ingress struct {
+	// The basic ingress config for ClientGateways.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Ingress.config
+	Config *ClientConnectorService_Ingress_Config `json:"config,omitempty"`
+}
+
+// +kcc:proto=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Ingress.Config
+type ClientConnectorService_Ingress_Config struct {
+	// Required. Immutable. The transport protocol used between the client and
+	//  the server.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Ingress.Config.transport_protocol
+	TransportProtocol *string `json:"transportProtocol,omitempty"`
+
+	// Required. The settings used to configure basic ClientGateways.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Ingress.Config.destination_routes
+	DestinationRoutes []ClientConnectorService_Ingress_Config_DestinationRoute `json:"destinationRoutes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Ingress.Config.DestinationRoute
+type ClientConnectorService_Ingress_Config_DestinationRoute struct {
+	// Required. The network address of the subnet
+	//  for which the packet is routed to the ClientGateway.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Ingress.Config.DestinationRoute.address
+	Address *string `json:"address,omitempty"`
+
+	// Required. The network mask of the subnet
+	//  for which the packet is routed to the ClientGateway.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.Ingress.Config.DestinationRoute.netmask
+	Netmask *string `json:"netmask,omitempty"`
+}
+
+// +kcc:proto=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService
+type ClientConnectorServiceObservedState struct {
+	// Output only. [Output only] Create time stamp.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Timestamp when the resource was last modified.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.update_time
+	// Output only. [Output only] Update time stamp.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. A unique identifier for the instance generated by the
-	//  system.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. The current state of the AppGateway.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.state
+	// Output only. The operational state of the ClientConnectorService.
+	// +kcc:proto:field=google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService.state
 	State *string `json:"state,omitempty"`
-
-	// Output only. Server-defined URI for this resource.
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.uri
-	URI *string `json:"uri,omitempty"`
-
-	// Output only. A list of connections allocated for the Gateway
-	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.allocated_connections
-	AllocatedConnections []AppGateway_AllocatedConnection `json:"allocatedConnections,omitempty"`
 }
