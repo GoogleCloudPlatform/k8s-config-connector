@@ -356,6 +356,54 @@ func BaremetalsolutionNfsShareSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ba
 	// MISSING: StorageType
 	return out
 }
+func BaremetalsolutionOSImageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OSImage) *krm.BaremetalsolutionOSImageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionOSImageObservedState{}
+	// MISSING: Name
+	// MISSING: Code
+	// MISSING: Description
+	// MISSING: ApplicableInstanceTypes
+	// MISSING: SupportedNetworkTemplates
+	return out
+}
+func BaremetalsolutionOSImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionOSImageObservedState) *pb.OSImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OSImage{}
+	// MISSING: Name
+	// MISSING: Code
+	// MISSING: Description
+	// MISSING: ApplicableInstanceTypes
+	// MISSING: SupportedNetworkTemplates
+	return out
+}
+func BaremetalsolutionOSImageSpec_FromProto(mapCtx *direct.MapContext, in *pb.OSImage) *krm.BaremetalsolutionOSImageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionOSImageSpec{}
+	// MISSING: Name
+	// MISSING: Code
+	// MISSING: Description
+	// MISSING: ApplicableInstanceTypes
+	// MISSING: SupportedNetworkTemplates
+	return out
+}
+func BaremetalsolutionOSImageSpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionOSImageSpec) *pb.OSImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OSImage{}
+	// MISSING: Name
+	// MISSING: Code
+	// MISSING: Description
+	// MISSING: ApplicableInstanceTypes
+	// MISSING: SupportedNetworkTemplates
+	return out
+}
 func BaremetalsolutionServerNetworkTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerNetworkTemplate) *krm.BaremetalsolutionServerNetworkTemplateObservedState {
 	if in == nil {
 		return nil
@@ -396,127 +444,51 @@ func BaremetalsolutionServerNetworkTemplateSpec_ToProto(mapCtx *direct.MapContex
 	// MISSING: LogicalInterfaces
 	return out
 }
-func NfsShare_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare) *krm.NfsShare {
+func OSImage_FromProto(mapCtx *direct.MapContext, in *pb.OSImage) *krm.OSImage {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NfsShare{}
+	out := &krm.OSImage{}
+	// MISSING: Name
+	out.Code = direct.LazyPtr(in.GetCode())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ApplicableInstanceTypes = in.ApplicableInstanceTypes
+	out.SupportedNetworkTemplates = in.SupportedNetworkTemplates
+	return out
+}
+func OSImage_ToProto(mapCtx *direct.MapContext, in *krm.OSImage) *pb.OSImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OSImage{}
+	// MISSING: Name
+	out.Code = direct.ValueOf(in.Code)
+	out.Description = direct.ValueOf(in.Description)
+	out.ApplicableInstanceTypes = in.ApplicableInstanceTypes
+	out.SupportedNetworkTemplates = in.SupportedNetworkTemplates
+	return out
+}
+func OSImageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OSImage) *krm.OSImageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OSImageObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: NfsShareID
-	// MISSING: ID
-	// MISSING: State
-	// MISSING: Volume
-	out.AllowedClients = direct.Slice_FromProto(mapCtx, in.AllowedClients, NfsShare_AllowedClient_FromProto)
-	out.Labels = in.Labels
-	out.RequestedSizeGib = direct.LazyPtr(in.GetRequestedSizeGib())
-	out.StorageType = direct.Enum_FromProto(mapCtx, in.GetStorageType())
+	// MISSING: Code
+	// MISSING: Description
+	// MISSING: ApplicableInstanceTypes
+	// MISSING: SupportedNetworkTemplates
 	return out
 }
-func NfsShare_ToProto(mapCtx *direct.MapContext, in *krm.NfsShare) *pb.NfsShare {
+func OSImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OSImageObservedState) *pb.OSImage {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NfsShare{}
+	out := &pb.OSImage{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: NfsShareID
-	// MISSING: ID
-	// MISSING: State
-	// MISSING: Volume
-	out.AllowedClients = direct.Slice_ToProto(mapCtx, in.AllowedClients, NfsShare_AllowedClient_ToProto)
-	out.Labels = in.Labels
-	out.RequestedSizeGib = direct.ValueOf(in.RequestedSizeGib)
-	out.StorageType = direct.Enum_ToProto[pb.NfsShare_StorageType](mapCtx, in.StorageType)
-	return out
-}
-func NfsShareObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare) *krm.NfsShareObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NfsShareObservedState{}
-	// MISSING: Name
-	out.NfsShareID = direct.LazyPtr(in.GetNfsShareId())
-	out.ID = direct.LazyPtr(in.GetId())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Volume = direct.LazyPtr(in.GetVolume())
-	out.AllowedClients = direct.Slice_FromProto(mapCtx, in.AllowedClients, NfsShare_AllowedClientObservedState_FromProto)
-	// MISSING: Labels
-	// MISSING: RequestedSizeGib
-	// MISSING: StorageType
-	return out
-}
-func NfsShareObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NfsShareObservedState) *pb.NfsShare {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NfsShare{}
-	// MISSING: Name
-	out.NfsShareId = direct.ValueOf(in.NfsShareID)
-	out.Id = direct.ValueOf(in.ID)
-	out.State = direct.Enum_ToProto[pb.NfsShare_State](mapCtx, in.State)
-	out.Volume = direct.ValueOf(in.Volume)
-	out.AllowedClients = direct.Slice_ToProto(mapCtx, in.AllowedClients, NfsShare_AllowedClientObservedState_ToProto)
-	// MISSING: Labels
-	// MISSING: RequestedSizeGib
-	// MISSING: StorageType
-	return out
-}
-func NfsShare_AllowedClient_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare_AllowedClient) *krm.NfsShare_AllowedClient {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NfsShare_AllowedClient{}
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	// MISSING: ShareIP
-	out.AllowedClientsCidr = direct.LazyPtr(in.GetAllowedClientsCidr())
-	out.MountPermissions = direct.Enum_FromProto(mapCtx, in.GetMountPermissions())
-	out.AllowDev = direct.LazyPtr(in.GetAllowDev())
-	out.AllowSuid = direct.LazyPtr(in.GetAllowSuid())
-	out.NoRootSquash = direct.LazyPtr(in.GetNoRootSquash())
-	// MISSING: NfsPath
-	return out
-}
-func NfsShare_AllowedClient_ToProto(mapCtx *direct.MapContext, in *krm.NfsShare_AllowedClient) *pb.NfsShare_AllowedClient {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NfsShare_AllowedClient{}
-	out.Network = direct.ValueOf(in.Network)
-	// MISSING: ShareIP
-	out.AllowedClientsCidr = direct.ValueOf(in.AllowedClientsCidr)
-	out.MountPermissions = direct.Enum_ToProto[pb.NfsShare_MountPermissions](mapCtx, in.MountPermissions)
-	out.AllowDev = direct.ValueOf(in.AllowDev)
-	out.AllowSuid = direct.ValueOf(in.AllowSuid)
-	out.NoRootSquash = direct.ValueOf(in.NoRootSquash)
-	// MISSING: NfsPath
-	return out
-}
-func NfsShare_AllowedClientObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare_AllowedClient) *krm.NfsShare_AllowedClientObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NfsShare_AllowedClientObservedState{}
-	// MISSING: Network
-	out.ShareIP = direct.LazyPtr(in.GetShareIp())
-	// MISSING: AllowedClientsCidr
-	// MISSING: MountPermissions
-	// MISSING: AllowDev
-	// MISSING: AllowSuid
-	// MISSING: NoRootSquash
-	out.NfsPath = direct.LazyPtr(in.GetNfsPath())
-	return out
-}
-func NfsShare_AllowedClientObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NfsShare_AllowedClientObservedState) *pb.NfsShare_AllowedClient {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NfsShare_AllowedClient{}
-	// MISSING: Network
-	out.ShareIp = direct.ValueOf(in.ShareIP)
-	// MISSING: AllowedClientsCidr
-	// MISSING: MountPermissions
-	// MISSING: AllowDev
-	// MISSING: AllowSuid
-	// MISSING: NoRootSquash
-	out.NfsPath = direct.ValueOf(in.NfsPath)
+	// MISSING: Code
+	// MISSING: Description
+	// MISSING: ApplicableInstanceTypes
+	// MISSING: SupportedNetworkTemplates
 	return out
 }
