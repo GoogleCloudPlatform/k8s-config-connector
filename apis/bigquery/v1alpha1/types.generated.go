@@ -15,175 +15,55 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.DataProvider
-type DataProvider struct {
-	// Optional. Name of the data provider.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataProvider.name
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Subscription
+type Subscription struct {
+}
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Subscription.LinkedResource
+type Subscription_LinkedResource struct {
+}
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Subscription
+type SubscriptionObservedState struct {
+	// Output only. Resource name of the source Listing.
+	//  e.g. projects/123/locations/US/dataExchanges/456/listings/789
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.listing
+	Listing *string `json:"listing,omitempty"`
+
+	// Output only. Resource name of the source Data Exchange.
+	//  e.g. projects/123/locations/US/dataExchanges/456
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.data_exchange
+	DataExchange *string `json:"dataExchange,omitempty"`
+
+	// Output only. The resource name of the subscription.
+	//  e.g. `projects/myproject/locations/US/subscriptions/123`.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.name
 	Name *string `json:"name,omitempty"`
 
-	// Optional. Email or URL of the data provider.
-	//  Max Length: 1000 bytes.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataProvider.primary_contact
-	PrimaryContact *string `json:"primaryContact,omitempty"`
-}
+	// Output only. Timestamp when the subscription was created.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.creation_time
+	CreationTime *string `json:"creationTime,omitempty"`
 
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing
-type Listing struct {
-	// Required. Shared dataset i.e. BigQuery dataset source.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.bigquery_dataset
-	BigqueryDataset *Listing_BigQueryDatasetSource `json:"bigqueryDataset,omitempty"`
+	// Output only. Timestamp when the subscription was last modified.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.last_modify_time
+	LastModifyTime *string `json:"lastModifyTime,omitempty"`
 
-	// Required. Human-readable display name of the listing. The display name must
-	//  contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
-	//  spaces ( ), ampersands (&) and can't start or end with spaces. Default
-	//  value is an empty string. Max length: 63 bytes.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.display_name
-	DisplayName *string `json:"displayName,omitempty"`
+	// Output only. Organization of the project this subscription belongs to.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.organization_id
+	OrganizationID *string `json:"organizationID,omitempty"`
 
-	// Optional. Short description of the listing. The description must not
-	//  contain Unicode non-characters and C0 and C1 control codes except tabs
-	//  (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default
-	//  value is an empty string. Max length: 2000 bytes.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.description
-	Description *string `json:"description,omitempty"`
+	// Output only. Display name of the project of this subscription.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.organization_display_name
+	OrganizationDisplayName *string `json:"organizationDisplayName,omitempty"`
 
-	// Optional. Email or URL of the primary point of contact of the listing.
-	//  Max Length: 1000 bytes.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.primary_contact
-	PrimaryContact *string `json:"primaryContact,omitempty"`
-
-	// Optional. Documentation describing the listing.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.documentation
-	Documentation *string `json:"documentation,omitempty"`
-
-	// Optional. Base64 encoded image representing the listing. Max Size: 3.0MiB
-	//  Expected image dimensions are 512x512 pixels, however the API only
-	//  performs validation on size of the encoded data.
-	//  Note: For byte fields, the contents of the field are base64-encoded (which
-	//  increases the size of the data by 33-36%) when using JSON on the wire.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.icon
-	Icon []byte `json:"icon,omitempty"`
-
-	// Optional. Details of the data provider who owns the source data.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.data_provider
-	DataProvider *DataProvider `json:"dataProvider,omitempty"`
-
-	// Optional. Categories of the listing. Up to two categories are allowed.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.categories
-	Categories []string `json:"categories,omitempty"`
-
-	// Optional. Details of the publisher who owns the listing and who can share
-	//  the source data.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.publisher
-	Publisher *Publisher `json:"publisher,omitempty"`
-
-	// Optional. Email or URL of the request access of the listing.
-	//  Subscribers can use this reference to request access.
-	//  Max Length: 1000 bytes.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.request_access
-	RequestAccess *string `json:"requestAccess,omitempty"`
-
-	// Optional. If set, restricted export configuration will be propagated and
-	//  enforced on the linked dataset.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.restricted_export_config
-	RestrictedExportConfig *Listing_RestrictedExportConfig `json:"restrictedExportConfig,omitempty"`
-
-	// Optional. Type of discovery of the listing on the discovery page.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.discovery_type
-	DiscoveryType *string `json:"discoveryType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource
-type Listing_BigQueryDatasetSource struct {
-	// Resource name of the dataset source for this listing.
-	//  e.g. `projects/myproject/datasets/123`
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.dataset
-	Dataset *string `json:"dataset,omitempty"`
-
-	// Optional. Resources in this dataset that are selectively shared.
-	//  If this field is empty, then the entire dataset (all resources) are
-	//  shared. This field is only valid for data clean room exchanges.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.selected_resources
-	SelectedResources []Listing_BigQueryDatasetSource_SelectedResource `json:"selectedResources,omitempty"`
-
-	// Optional. If set, restricted export policy will be propagated and
-	//  enforced on the linked dataset.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.restricted_export_policy
-	RestrictedExportPolicy *Listing_BigQueryDatasetSource_RestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy
-type Listing_BigQueryDatasetSource_RestrictedExportPolicy struct {
-	// Optional. If true, enable restricted export.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Optional. If true, restrict direct table access (read
-	//  api/tabledata.list) on linked table.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy.restrict_direct_table_access
-	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
-
-	// Optional. If true, restrict export of query result derived from
-	//  restricted linked dataset table.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy.restrict_query_result
-	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.SelectedResource
-type Listing_BigQueryDatasetSource_SelectedResource struct {
-	// Optional. Format:
-	//  For table:
-	//  `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
-	//  Example:"projects/test_project/datasets/test_dataset/tables/test_table"
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.SelectedResource.table
-	Table *string `json:"table,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig
-type Listing_RestrictedExportConfig struct {
-	// Optional. If true, enable restricted export.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Optional. If true, restrict export of query result derived from
-	//  restricted linked dataset table.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig.restrict_query_result
-	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Publisher
-type Publisher struct {
-	// Optional. Name of the listing publisher.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Publisher.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. Email or URL of the listing publisher.
-	//  Max Length: 1000 bytes.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Publisher.primary_contact
-	PrimaryContact *string `json:"primaryContact,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing
-type ListingObservedState struct {
-	// Output only. The resource name of the listing.
-	//  e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Current state of the listing.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.state
+	// Output only. Current state of the subscription.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.state
 	State *string `json:"state,omitempty"`
 
-	// Optional. If set, restricted export configuration will be propagated and
-	//  enforced on the linked dataset.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.restricted_export_config
-	RestrictedExportConfig *Listing_RestrictedExportConfigObservedState `json:"restrictedExportConfig,omitempty"`
-}
+	// TODO: unsupported map type with key string and value message
 
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig
-type Listing_RestrictedExportConfigObservedState struct {
-	// Output only. If true, restrict direct table access(read
-	//  api/tabledata.list) on linked table.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig.restrict_direct_table_access
-	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
+
+	// Output only. Email of the subscriber.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.subscriber_contact
+	SubscriberContact *string `json:"subscriberContact,omitempty"`
 }

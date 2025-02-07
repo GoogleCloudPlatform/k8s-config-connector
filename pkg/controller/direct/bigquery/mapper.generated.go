@@ -289,6 +289,74 @@ func BigqueryListingSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryList
 	// MISSING: DiscoveryType
 	return out
 }
+func BigquerySubscriptionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Subscription) *krm.BigquerySubscriptionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigquerySubscriptionObservedState{}
+	// MISSING: Listing
+	// MISSING: DataExchange
+	// MISSING: Name
+	// MISSING: CreationTime
+	// MISSING: LastModifyTime
+	// MISSING: OrganizationID
+	// MISSING: OrganizationDisplayName
+	// MISSING: State
+	// MISSING: LinkedDatasetMap
+	// MISSING: SubscriberContact
+	return out
+}
+func BigquerySubscriptionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigquerySubscriptionObservedState) *pb.Subscription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Subscription{}
+	// MISSING: Listing
+	// MISSING: DataExchange
+	// MISSING: Name
+	// MISSING: CreationTime
+	// MISSING: LastModifyTime
+	// MISSING: OrganizationID
+	// MISSING: OrganizationDisplayName
+	// MISSING: State
+	// MISSING: LinkedDatasetMap
+	// MISSING: SubscriberContact
+	return out
+}
+func BigquerySubscriptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subscription) *krm.BigquerySubscriptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigquerySubscriptionSpec{}
+	// MISSING: Listing
+	// MISSING: DataExchange
+	// MISSING: Name
+	// MISSING: CreationTime
+	// MISSING: LastModifyTime
+	// MISSING: OrganizationID
+	// MISSING: OrganizationDisplayName
+	// MISSING: State
+	// MISSING: LinkedDatasetMap
+	// MISSING: SubscriberContact
+	return out
+}
+func BigquerySubscriptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigquerySubscriptionSpec) *pb.Subscription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Subscription{}
+	// MISSING: Listing
+	// MISSING: DataExchange
+	// MISSING: Name
+	// MISSING: CreationTime
+	// MISSING: LastModifyTime
+	// MISSING: OrganizationID
+	// MISSING: OrganizationDisplayName
+	// MISSING: State
+	// MISSING: LinkedDatasetMap
+	// MISSING: SubscriberContact
+	return out
+}
 func DataExchange_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krm.DataExchange {
 	if in == nil {
 		return nil
@@ -387,48 +455,6 @@ func Listing_ToProto(mapCtx *direct.MapContext, in *krm.Listing) *pb.Listing {
 	}
 	return out
 }
-func ListingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krm.ListingObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ListingObservedState{}
-	// MISSING: BigqueryDataset
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PrimaryContact
-	// MISSING: Documentation
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: Icon
-	// MISSING: DataProvider
-	// MISSING: Categories
-	// MISSING: Publisher
-	// MISSING: RequestAccess
-	out.RestrictedExportConfig = Listing_RestrictedExportConfigObservedState_FromProto(mapCtx, in.GetRestrictedExportConfig())
-	// MISSING: DiscoveryType
-	return out
-}
-func ListingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ListingObservedState) *pb.Listing {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Listing{}
-	// MISSING: BigqueryDataset
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PrimaryContact
-	// MISSING: Documentation
-	out.State = direct.Enum_ToProto[pb.Listing_State](mapCtx, in.State)
-	// MISSING: Icon
-	// MISSING: DataProvider
-	// MISSING: Categories
-	// MISSING: Publisher
-	// MISSING: RequestAccess
-	out.RestrictedExportConfig = Listing_RestrictedExportConfigObservedState_ToProto(mapCtx, in.RestrictedExportConfig)
-	// MISSING: DiscoveryType
-	return out
-}
 func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource) *krm.Listing_BigQueryDatasetSource {
 	if in == nil {
 		return nil
@@ -505,26 +531,6 @@ func Listing_RestrictedExportConfig_ToProto(mapCtx *direct.MapContext, in *krm.L
 	out.Enabled = direct.ValueOf(in.Enabled)
 	out.RestrictDirectTableAccess = direct.ValueOf(in.RestrictDirectTableAccess)
 	out.RestrictQueryResult = direct.ValueOf(in.RestrictQueryResult)
-	return out
-}
-func Listing_RestrictedExportConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Listing_RestrictedExportConfig) *krm.Listing_RestrictedExportConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Listing_RestrictedExportConfigObservedState{}
-	// MISSING: Enabled
-	out.RestrictDirectTableAccess = direct.LazyPtr(in.GetRestrictDirectTableAccess())
-	// MISSING: RestrictQueryResult
-	return out
-}
-func Listing_RestrictedExportConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Listing_RestrictedExportConfigObservedState) *pb.Listing_RestrictedExportConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Listing_RestrictedExportConfig{}
-	// MISSING: Enabled
-	out.RestrictDirectTableAccess = direct.ValueOf(in.RestrictDirectTableAccess)
-	// MISSING: RestrictQueryResult
 	return out
 }
 func Publisher_FromProto(mapCtx *direct.MapContext, in *pb.Publisher) *krm.Publisher {
@@ -637,5 +643,93 @@ func SharingEnvironmentConfig_DefaultExchangeConfig_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.SharingEnvironmentConfig_DefaultExchangeConfig{}
+	return out
+}
+func Subscription_FromProto(mapCtx *direct.MapContext, in *pb.Subscription) *krm.Subscription {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Subscription{}
+	// MISSING: Listing
+	// MISSING: DataExchange
+	// MISSING: Name
+	// MISSING: CreationTime
+	// MISSING: LastModifyTime
+	// MISSING: OrganizationID
+	// MISSING: OrganizationDisplayName
+	// MISSING: State
+	// MISSING: LinkedDatasetMap
+	// MISSING: SubscriberContact
+	return out
+}
+func Subscription_ToProto(mapCtx *direct.MapContext, in *krm.Subscription) *pb.Subscription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Subscription{}
+	// MISSING: Listing
+	// MISSING: DataExchange
+	// MISSING: Name
+	// MISSING: CreationTime
+	// MISSING: LastModifyTime
+	// MISSING: OrganizationID
+	// MISSING: OrganizationDisplayName
+	// MISSING: State
+	// MISSING: LinkedDatasetMap
+	// MISSING: SubscriberContact
+	return out
+}
+func SubscriptionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Subscription) *krm.SubscriptionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SubscriptionObservedState{}
+	out.Listing = direct.LazyPtr(in.GetListing())
+	out.DataExchange = direct.LazyPtr(in.GetDataExchange())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreationTime())
+	out.LastModifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastModifyTime())
+	out.OrganizationID = direct.LazyPtr(in.GetOrganizationId())
+	out.OrganizationDisplayName = direct.LazyPtr(in.GetOrganizationDisplayName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: LinkedDatasetMap
+	out.SubscriberContact = direct.LazyPtr(in.GetSubscriberContact())
+	return out
+}
+func SubscriptionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SubscriptionObservedState) *pb.Subscription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Subscription{}
+	if oneof := SubscriptionObservedState_Listing_ToProto(mapCtx, in.Listing); oneof != nil {
+		out.ResourceName = oneof
+	}
+	if oneof := SubscriptionObservedState_DataExchange_ToProto(mapCtx, in.DataExchange); oneof != nil {
+		out.ResourceName = oneof
+	}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreationTime = direct.StringTimestamp_ToProto(mapCtx, in.CreationTime)
+	out.LastModifyTime = direct.StringTimestamp_ToProto(mapCtx, in.LastModifyTime)
+	out.OrganizationId = direct.ValueOf(in.OrganizationID)
+	out.OrganizationDisplayName = direct.ValueOf(in.OrganizationDisplayName)
+	out.State = direct.Enum_ToProto[pb.Subscription_State](mapCtx, in.State)
+	// MISSING: LinkedDatasetMap
+	out.SubscriberContact = direct.ValueOf(in.SubscriberContact)
+	return out
+}
+func Subscription_LinkedResource_FromProto(mapCtx *direct.MapContext, in *pb.Subscription_LinkedResource) *krm.Subscription_LinkedResource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Subscription_LinkedResource{}
+	// MISSING: LinkedDataset
+	return out
+}
+func Subscription_LinkedResource_ToProto(mapCtx *direct.MapContext, in *krm.Subscription_LinkedResource) *pb.Subscription_LinkedResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Subscription_LinkedResource{}
+	// MISSING: LinkedDataset
 	return out
 }
