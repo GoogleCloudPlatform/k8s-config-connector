@@ -15,50 +15,80 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.certificatemanager.v1.CertificateMapEntry
-type CertificateMapEntry struct {
-	// A user-defined name of the Certificate Map Entry. Certificate Map Entry
-	//  names must be unique globally and match pattern
-	//  `projects/*/locations/*/certificateMaps/*/certificateMapEntries/*`.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.name
+// +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig
+type TrustConfig struct {
+	// A user-defined name of the trust config. TrustConfig names must be
+	//  unique globally and match pattern
+	//  `projects/*/locations/*/trustConfigs/*`.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.name
 	Name *string `json:"name,omitempty"`
 
-	// One or more paragraphs of text description of a certificate map entry.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.description
-	Description *string `json:"description,omitempty"`
-
-	// Set of labels associated with a Certificate Map Entry.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.labels
+	// Set of labels associated with a TrustConfig.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// A Hostname (FQDN, e.g. `example.com`) or a wildcard hostname expression
-	//  (`*.example.com`) for a set of hostnames with common suffix. Used as
-	//  Server Name Indication (SNI) for selecting a proper certificate.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.hostname
-	Hostname *string `json:"hostname,omitempty"`
+	// One or more paragraphs of text description of a TrustConfig.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.description
+	Description *string `json:"description,omitempty"`
 
-	// A predefined matcher for particular cases, other than SNI selection.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.matcher
-	Matcher *string `json:"matcher,omitempty"`
+	// This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.etag
+	Etag *string `json:"etag,omitempty"`
 
-	// A set of Certificates defines for the given `hostname`. There can be
-	//  defined up to four certificates in each Certificate Map Entry. Each
-	//  certificate must match pattern `projects/*/locations/*/certificates/*`.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.certificates
-	Certificates []string `json:"certificates,omitempty"`
+	// Set of trust stores to perform validation against.
+	//
+	//  This field is supported when TrustConfig is configured with Load Balancers,
+	//  currently not supported for SPIFFE certificate validation.
+	//
+	//  Only one TrustStore specified is currently allowed.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.trust_stores
+	TrustStores []TrustConfig_TrustStore `json:"trustStores,omitempty"`
 }
 
-// +kcc:proto=google.cloud.certificatemanager.v1.CertificateMapEntry
-type CertificateMapEntryObservedState struct {
-	// Output only. The creation timestamp of a Certificate Map Entry.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.create_time
+// +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig.IntermediateCA
+type TrustConfig_IntermediateCA struct {
+	// PEM intermediate certificate used for building up paths
+	//  for validation.
+	//
+	//  Each certificate provided in PEM format may occupy up to 5kB.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.IntermediateCA.pem_certificate
+	PemCertificate *string `json:"pemCertificate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig.TrustAnchor
+type TrustConfig_TrustAnchor struct {
+	// PEM root certificate of the PKI used for validation.
+	//
+	//  Each certificate provided in PEM format may occupy up to 5kB.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.TrustAnchor.pem_certificate
+	PemCertificate *string `json:"pemCertificate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig.TrustStore
+type TrustConfig_TrustStore struct {
+	// List of Trust Anchors to be used while performing validation
+	//  against a given TrustStore.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.TrustStore.trust_anchors
+	TrustAnchors []TrustConfig_TrustAnchor `json:"trustAnchors,omitempty"`
+
+	// Set of intermediate CA certificates used for the path building
+	//  phase of chain validation.
+	//
+	//  The field is currently not supported if TrustConfig is used for the
+	//  workload certificate feature.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.TrustStore.intermediate_cas
+	IntermediateCas []TrustConfig_IntermediateCA `json:"intermediateCas,omitempty"`
+}
+
+// +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig
+type TrustConfigObservedState struct {
+	// Output only. The creation timestamp of a TrustConfig.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The update timestamp of a Certificate Map Entry.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.update_time
+	// Output only. The last update timestamp of a TrustConfig.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. A serving state of this Certificate Map Entry.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateMapEntry.state
-	State *string `json:"state,omitempty"`
 }
