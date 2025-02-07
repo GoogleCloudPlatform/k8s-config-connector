@@ -17,6 +17,7 @@ package register
 import (
 	_ "pkg/controller/direct/accessapproval"
 	_ "pkg/controller/direct/advisorynotifications"
+	_ "pkg/controller/direct/aiplatform"
 	_ "pkg/controller/direct/bigtable"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
