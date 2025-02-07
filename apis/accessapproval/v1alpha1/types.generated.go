@@ -15,158 +15,141 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.accessapproval.v1.AccessLocations
-type AccessLocations struct {
-	// The "home office" location of the principal. A two-letter country code
-	//  (ISO 3166-1 alpha-2), such as "US", "DE" or "GB" or a region code. In some
-	//  limited situations Google systems may refer refer to a region code instead
-	//  of a country code.
-	//  Possible Region Codes:
+// +kcc:proto=google.cloud.accessapproval.v1.AccessApprovalSettings
+type AccessApprovalSettings struct {
+	// The resource name of the settings. Format is one of:
 	//
-	//    * ASI: Asia
-	//    * EUR: Europe
-	//    * OCE: Oceania
-	//    * AFR: Africa
-	//    * NAM: North America
-	//    * SAM: South America
-	//    * ANT: Antarctica
-	//    * ANY: Any location
-	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessLocations.principal_office_country
-	PrincipalOfficeCountry *string `json:"principalOfficeCountry,omitempty"`
-
-	// Physical location of the principal at the time of the access. A
-	//  two-letter country code (ISO 3166-1 alpha-2), such as "US", "DE" or "GB" or
-	//  a region code. In some limited situations Google systems may refer refer to
-	//  a region code instead of a country code.
-	//  Possible Region Codes:
-	//
-	//    * ASI: Asia
-	//    * EUR: Europe
-	//    * OCE: Oceania
-	//    * AFR: Africa
-	//    * NAM: North America
-	//    * SAM: South America
-	//    * ANT: Antarctica
-	//    * ANY: Any location
-	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessLocations.principal_physical_location_country
-	PrincipalPhysicalLocationCountry *string `json:"principalPhysicalLocationCountry,omitempty"`
-}
-
-// +kcc:proto=google.cloud.accessapproval.v1.AccessReason
-type AccessReason struct {
-	// Type of access justification.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessReason.type
-	Type *string `json:"type,omitempty"`
-
-	// More detail about certain reason types. See comments for each type above.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessReason.detail
-	Detail *string `json:"detail,omitempty"`
-}
-
-// +kcc:proto=google.cloud.accessapproval.v1.ApprovalRequest
-type ApprovalRequest struct {
-	// The resource name of the request. Format is
-	//  "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}".
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.name
+	//    * "projects/{project}/accessApprovalSettings"
+	//    * "folders/{folder}/accessApprovalSettings"
+	//    * "organizations/{organization}/accessApprovalSettings"
+	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessApprovalSettings.name
 	Name *string `json:"name,omitempty"`
 
-	// The resource for which approval is being requested. The format of the
-	//  resource name is defined at
-	//  https://cloud.google.com/apis/design/resource_names. The resource name here
-	//  may either be a "full" resource name (e.g.
-	//  "//library.googleapis.com/shelves/shelf1/books/book2") or a "relative"
-	//  resource name (e.g. "shelves/shelf1/books/book2") as described in the
-	//  resource name specification.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.requested_resource_name
-	RequestedResourceName *string `json:"requestedResourceName,omitempty"`
+	// A list of email addresses to which notifications relating to approval
+	//  requests should be sent. Notifications relating to a resource will be sent
+	//  to all emails in the settings of ancestor resources of that resource. A
+	//  maximum of 50 email addresses are allowed.
+	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessApprovalSettings.notification_emails
+	NotificationEmails []string `json:"notificationEmails,omitempty"`
 
-	// Properties related to the resource represented by requested_resource_name.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.requested_resource_properties
-	RequestedResourceProperties *ResourceProperties `json:"requestedResourceProperties,omitempty"`
+	// A list of Google Cloud Services for which the given resource has Access
+	//  Approval enrolled. Access requests for the resource given by name against
+	//  any of these services contained here will be required to have explicit
+	//  approval. If name refers to an organization, enrollment can be done for
+	//  individual services. If name refers to a folder or project, enrollment can
+	//  only be done on an all or nothing basis.
+	//
+	//  If a cloud_product is repeated in this list, the first entry will be
+	//  honored and all following entries will be discarded. A maximum of 10
+	//  enrolled services will be enforced, to be expanded as the set of supported
+	//  services is expanded.
+	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessApprovalSettings.enrolled_services
+	EnrolledServices []EnrolledService `json:"enrolledServices,omitempty"`
 
-	// The justification for which approval is being requested.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.requested_reason
-	RequestedReason *AccessReason `json:"requestedReason,omitempty"`
-
-	// The locations for which approval is being requested.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.requested_locations
-	RequestedLocations *AccessLocations `json:"requestedLocations,omitempty"`
-
-	// The time at which approval was requested.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.request_time
-	RequestTime *string `json:"requestTime,omitempty"`
-
-	// The requested expiration for the approval. If the request is approved,
-	//  access will be granted from the time of approval until the expiration time.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.requested_expiration
-	RequestedExpiration *string `json:"requestedExpiration,omitempty"`
-
-	// Access was approved.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.approve
-	Approve *ApproveDecision `json:"approve,omitempty"`
-
-	// The request was dismissed.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApprovalRequest.dismiss
-	Dismiss *DismissDecision `json:"dismiss,omitempty"`
+	// The asymmetric crypto key version to use for signing approval requests.
+	//  Empty active_key_version indicates that a Google-managed key should be used
+	//  for signing. This property will be ignored if set by an ancestor of this
+	//  resource, and new non-empty values may not be set.
+	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessApprovalSettings.active_key_version
+	ActiveKeyVersion *string `json:"activeKeyVersion,omitempty"`
 }
 
-// +kcc:proto=google.cloud.accessapproval.v1.ApproveDecision
-type ApproveDecision struct {
-	// The time at which approval was granted.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApproveDecision.approve_time
-	ApproveTime *string `json:"approveTime,omitempty"`
+// +kcc:proto=google.cloud.accessapproval.v1.EnrolledService
+type EnrolledService struct {
+	// The product for which Access Approval will be enrolled. Allowed values are
+	//  listed below (case-sensitive):
+	//
+	//    * all
+	//    * GA
+	//    * App Engine
+	//    * BigQuery
+	//    * Cloud Bigtable
+	//    * Cloud Key Management Service
+	//    * Compute Engine
+	//    * Cloud Dataflow
+	//    * Cloud Dataproc
+	//    * Cloud DLP
+	//    * Cloud EKM
+	//    * Cloud HSM
+	//    * Cloud Identity and Access Management
+	//    * Cloud Logging
+	//    * Cloud Pub/Sub
+	//    * Cloud Spanner
+	//    * Cloud SQL
+	//    * Cloud Storage
+	//    * Google Kubernetes Engine
+	//    * Organization Policy Serivice
+	//    * Persistent Disk
+	//    * Resource Manager
+	//    * Secret Manager
+	//    * Speaker ID
+	//
+	//  Note: These values are supported as input for legacy purposes, but will not
+	//  be returned from the API.
+	//
+	//    * all
+	//    * ga-only
+	//    * appengine.googleapis.com
+	//    * bigquery.googleapis.com
+	//    * bigtable.googleapis.com
+	//    * container.googleapis.com
+	//    * cloudkms.googleapis.com
+	//    * cloudresourcemanager.googleapis.com
+	//    * cloudsql.googleapis.com
+	//    * compute.googleapis.com
+	//    * dataflow.googleapis.com
+	//    * dataproc.googleapis.com
+	//    * dlp.googleapis.com
+	//    * iam.googleapis.com
+	//    * logging.googleapis.com
+	//    * orgpolicy.googleapis.com
+	//    * pubsub.googleapis.com
+	//    * spanner.googleapis.com
+	//    * secretmanager.googleapis.com
+	//    * speakerid.googleapis.com
+	//    * storage.googleapis.com
+	//
+	//  Calls to UpdateAccessApprovalSettings using 'all' or any of the
+	//  XXX.googleapis.com will be translated to the associated product name
+	//  ('all', 'App Engine', etc.).
+	//
+	//  Note: 'all' will enroll the resource in all products supported at both 'GA'
+	//  and 'Preview' levels.
+	//
+	//  More information about levels of support is available at
+	//  https://cloud.google.com/access-approval/docs/supported-services
+	// +kcc:proto:field=google.cloud.accessapproval.v1.EnrolledService.cloud_product
+	CloudProduct *string `json:"cloudProduct,omitempty"`
 
-	// The time at which the approval expires.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApproveDecision.expire_time
-	ExpireTime *string `json:"expireTime,omitempty"`
-
-	// If set, denotes the timestamp at which the approval is invalidated.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApproveDecision.invalidate_time
-	InvalidateTime *string `json:"invalidateTime,omitempty"`
-
-	// The signature for the ApprovalRequest and details on how it was signed.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApproveDecision.signature_info
-	SignatureInfo *SignatureInfo `json:"signatureInfo,omitempty"`
-
-	// True when the request has been auto-approved.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ApproveDecision.auto_approved
-	AutoApproved *bool `json:"autoApproved,omitempty"`
+	// The enrollment level of the service.
+	// +kcc:proto:field=google.cloud.accessapproval.v1.EnrolledService.enrollment_level
+	EnrollmentLevel *string `json:"enrollmentLevel,omitempty"`
 }
 
-// +kcc:proto=google.cloud.accessapproval.v1.DismissDecision
-type DismissDecision struct {
-	// The time at which the approval request was dismissed.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.DismissDecision.dismiss_time
-	DismissTime *string `json:"dismissTime,omitempty"`
+// +kcc:proto=google.cloud.accessapproval.v1.AccessApprovalSettings
+type AccessApprovalSettingsObservedState struct {
+	// Output only. This field is read only (not settable via
+	//  UpdateAccessApprovalSettings method). If the field is true, that
+	//  indicates that at least one service is enrolled for Access Approval in one
+	//  or more ancestors of the Project or Folder (this field will always be
+	//  unset for the organization since organizations do not have ancestors).
+	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessApprovalSettings.enrolled_ancestor
+	EnrolledAncestor *bool `json:"enrolledAncestor,omitempty"`
 
-	// This field will be true if the ApprovalRequest was implicitly dismissed due
-	//  to inaction by the access approval approvers (the request is not acted
-	//  on by the approvers before the exiration time).
-	// +kcc:proto:field=google.cloud.accessapproval.v1.DismissDecision.implicit
-	Implicit *bool `json:"implicit,omitempty"`
-}
+	// Output only. This field is read only (not settable via UpdateAccessApprovalSettings
+	//  method). If the field is true, that indicates that an ancestor of this
+	//  Project or Folder has set active_key_version (this field will always be
+	//  unset for the organization since organizations do not have ancestors).
+	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessApprovalSettings.ancestor_has_active_key_version
+	AncestorHasActiveKeyVersion *bool `json:"ancestorHasActiveKeyVersion,omitempty"`
 
-// +kcc:proto=google.cloud.accessapproval.v1.ResourceProperties
-type ResourceProperties struct {
-	// Whether an approval will exclude the descendants of the resource being
-	//  requested.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.ResourceProperties.excludes_descendants
-	ExcludesDescendants *bool `json:"excludesDescendants,omitempty"`
-}
-
-// +kcc:proto=google.cloud.accessapproval.v1.SignatureInfo
-type SignatureInfo struct {
-	// The digital signature.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.SignatureInfo.signature
-	Signature []byte `json:"signature,omitempty"`
-
-	// The public key for the Google default signing, encoded in PEM format. The
-	//  signature was created using a private key which may be verified using
-	//  this public key.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.SignatureInfo.google_public_key_pem
-	GooglePublicKeyPem *string `json:"googlePublicKeyPem,omitempty"`
-
-	// The resource name of the customer CryptoKeyVersion used for signing.
-	// +kcc:proto:field=google.cloud.accessapproval.v1.SignatureInfo.customer_kms_key_version
-	CustomerKMSKeyVersion *string `json:"customerKMSKeyVersion,omitempty"`
+	// Output only. This field is read only (not settable via UpdateAccessApprovalSettings
+	//  method). If the field is true, that indicates that there is some
+	//  configuration issue with the active_key_version configured at this level in
+	//  the resource hierarchy (e.g. it doesn't exist or the Access Approval
+	//  service account doesn't have the correct permissions on it, etc.) This key
+	//  version is not necessarily the effective key version at this level, as key
+	//  versions are inherited top-down.
+	// +kcc:proto:field=google.cloud.accessapproval.v1.AccessApprovalSettings.invalid_key_version
+	InvalidKeyVersion *bool `json:"invalidKeyVersion,omitempty"`
 }
