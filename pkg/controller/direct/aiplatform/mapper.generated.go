@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -80,87 +80,99 @@ func AiplatformAnnotationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aiplatf
 	// MISSING: Labels
 	return out
 }
-func Annotation_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.Annotation {
+func AiplatformAnnotationSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationSpec) *krm.AiplatformAnnotationSpecObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Annotation{}
+	out := &krm.AiplatformAnnotationSpecObservedState{}
 	// MISSING: Name
-	out.PayloadSchemaURI = direct.LazyPtr(in.GetPayloadSchemaUri())
-	out.Payload = Value_FromProto(mapCtx, in.GetPayload())
+	// MISSING: DisplayName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func AiplatformAnnotationSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformAnnotationSpecObservedState) *pb.AnnotationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AnnotationSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func AiplatformAnnotationSpecSpec_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationSpec) *krm.AiplatformAnnotationSpecSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformAnnotationSpecSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func AiplatformAnnotationSpecSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformAnnotationSpecSpec) *pb.AnnotationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AnnotationSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func AnnotationSpec_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationSpec) *krm.AnnotationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnnotationSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.Etag = direct.LazyPtr(in.GetEtag())
-	// MISSING: AnnotationSource
-	out.Labels = in.Labels
 	return out
 }
-func Annotation_ToProto(mapCtx *direct.MapContext, in *krm.Annotation) *pb.Annotation {
+func AnnotationSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnnotationSpec) *pb.AnnotationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Annotation{}
+	out := &pb.AnnotationSpec{}
 	// MISSING: Name
-	out.PayloadSchemaUri = direct.ValueOf(in.PayloadSchemaURI)
-	out.Payload = Value_ToProto(mapCtx, in.Payload)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.Etag = direct.ValueOf(in.Etag)
-	// MISSING: AnnotationSource
-	out.Labels = in.Labels
 	return out
 }
-func AnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AnnotationObservedState {
+func AnnotationSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationSpec) *krm.AnnotationSpecObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AnnotationObservedState{}
+	out := &krm.AnnotationSpecObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: PayloadSchemaURI
-	// MISSING: Payload
+	// MISSING: DisplayName
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Etag
-	out.AnnotationSource = UserActionReference_FromProto(mapCtx, in.GetAnnotationSource())
-	// MISSING: Labels
 	return out
 }
-func AnnotationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnnotationObservedState) *pb.Annotation {
+func AnnotationSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnnotationSpecObservedState) *pb.AnnotationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Annotation{}
+	out := &pb.AnnotationSpec{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: PayloadSchemaURI
-	// MISSING: Payload
+	// MISSING: DisplayName
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Etag
-	out.AnnotationSource = UserActionReference_ToProto(mapCtx, in.AnnotationSource)
-	// MISSING: Labels
-	return out
-}
-func UserActionReference_FromProto(mapCtx *direct.MapContext, in *pb.UserActionReference) *krm.UserActionReference {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UserActionReference{}
-	out.Operation = direct.LazyPtr(in.GetOperation())
-	out.DataLabelingJob = direct.LazyPtr(in.GetDataLabelingJob())
-	out.Method = direct.LazyPtr(in.GetMethod())
-	return out
-}
-func UserActionReference_ToProto(mapCtx *direct.MapContext, in *krm.UserActionReference) *pb.UserActionReference {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserActionReference{}
-	if oneof := UserActionReference_Operation_ToProto(mapCtx, in.Operation); oneof != nil {
-		out.Reference = oneof
-	}
-	if oneof := UserActionReference_DataLabelingJob_ToProto(mapCtx, in.DataLabelingJob); oneof != nil {
-		out.Reference = oneof
-	}
-	out.Method = direct.ValueOf(in.Method)
 	return out
 }
