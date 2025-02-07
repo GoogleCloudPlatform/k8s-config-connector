@@ -15,28 +15,27 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.binaryauthorization.v1.Attestor
+// +kcc:proto=google.cloud.binaryauthorization.v1beta1.Attestor
 type Attestor struct {
 	// Required. The resource name, in the format:
 	//  `projects/*/attestors/*`. This field may not be updated.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.name
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.Attestor.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. A descriptive comment.  This field may be updated.
 	//  The field may be displayed in chooser dialogs.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.description
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.Attestor.description
 	Description *string `json:"description,omitempty"`
 
-	// This specifies how an attestation will be read, and how it will be used
-	//  during policy enforcement.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.user_owned_grafeas_note
-	UserOwnedGrafeasNote *UserOwnedGrafeasNote `json:"userOwnedGrafeasNote,omitempty"`
+	// A Drydock ATTESTATION_AUTHORITY Note, created by the user.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.Attestor.user_owned_drydock_note
+	UserOwnedDrydockNote *UserOwnedDrydockNote `json:"userOwnedDrydockNote,omitempty"`
 }
 
-// +kcc:proto=google.cloud.binaryauthorization.v1.AttestorPublicKey
+// +kcc:proto=google.cloud.binaryauthorization.v1beta1.AttestorPublicKey
 type AttestorPublicKey struct {
 	// Optional. A descriptive comment. This field may be updated.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestorPublicKey.comment
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.AttestorPublicKey.comment
 	Comment *string `json:"comment,omitempty"`
 
 	// The ID of this public key.
@@ -46,7 +45,7 @@ type AttestorPublicKey struct {
 	//  Additional restrictions on this field can be imposed based on which public
 	//  key type is encapsulated. See the documentation on `public_key` cases below
 	//  for details.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestorPublicKey.id
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.AttestorPublicKey.id
 	ID *string `json:"id,omitempty"`
 
 	// ASCII-armored representation of a PGP public key, as the entire output by
@@ -57,7 +56,7 @@ type AttestorPublicKey struct {
 	//  computes this ID as the OpenPGP RFC4880 V4 fingerprint, represented as
 	//  upper-case hex.  If `id` is provided by the caller, it will be
 	//  overwritten by the API-calculated ID.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestorPublicKey.ascii_armored_pgp_public_key
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.AttestorPublicKey.ascii_armored_pgp_public_key
 	AsciiArmoredPgpPublicKey *string `json:"asciiArmoredPgpPublicKey,omitempty"`
 
 	// A raw PKIX SubjectPublicKeyInfo format public key.
@@ -66,15 +65,15 @@ type AttestorPublicKey struct {
 	//  type of public key, but it MUST be a valid RFC3986 URI. If `id` is left
 	//  blank, a default one will be computed based on the digest of the DER
 	//  encoding of the public key.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestorPublicKey.pkix_public_key
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.AttestorPublicKey.pkix_public_key
 	PkixPublicKey *PkixPublicKey `json:"pkixPublicKey,omitempty"`
 }
 
-// +kcc:proto=google.cloud.binaryauthorization.v1.PkixPublicKey
+// +kcc:proto=google.cloud.binaryauthorization.v1beta1.PkixPublicKey
 type PkixPublicKey struct {
 	// A PEM-encoded public key, as described in
 	//  https://tools.ietf.org/html/rfc7468#section-13
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.PkixPublicKey.public_key_pem
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.PkixPublicKey.public_key_pem
 	PublicKeyPem *string `json:"publicKeyPem,omitempty"`
 
 	// The signature algorithm used to verify a message against a signature using
@@ -82,20 +81,20 @@ type PkixPublicKey struct {
 	//  These signature algorithm must match the structure and any object
 	//  identifiers encoded in `public_key_pem` (i.e. this algorithm must match
 	//  that of the public key).
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.PkixPublicKey.signature_algorithm
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.PkixPublicKey.signature_algorithm
 	SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
 }
 
-// +kcc:proto=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote
-type UserOwnedGrafeasNote struct {
-	// Required. The Grafeas resource name of a Attestation.Authority Note,
-	//  created by the user, in the format: `projects/*/notes/*`. This field may
-	//  not be updated.
+// +kcc:proto=google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote
+type UserOwnedDrydockNote struct {
+	// Required. The Drydock resource name of a ATTESTATION_AUTHORITY Note,
+	//  created by the user, in the format: `projects/*/notes/*` (or the legacy
+	//  `providers/*/notes/*`). This field may not be updated.
 	//
-	//  An attestation by this attestor is stored as a Grafeas
-	//  Attestation.Authority Occurrence that names a container image and that
-	//  links to this Note. Grafeas is an external dependency.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote.note_reference
+	//  An attestation by this attestor is stored as a Drydock
+	//  ATTESTATION_AUTHORITY Occurrence that names a container image and that
+	//  links to this Note. Drydock is an external dependency.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote.note_reference
 	NoteReference *string `json:"noteReference,omitempty"`
 
 	// Optional. Public keys that verify attestations signed by this
@@ -107,24 +106,23 @@ type UserOwnedGrafeasNote struct {
 	//
 	//  If this field is empty, this attestor always returns that no
 	//  valid attestations exist.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote.public_keys
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote.public_keys
 	PublicKeys []AttestorPublicKey `json:"publicKeys,omitempty"`
 }
 
-// +kcc:proto=google.cloud.binaryauthorization.v1.Attestor
+// +kcc:proto=google.cloud.binaryauthorization.v1beta1.Attestor
 type AttestorObservedState struct {
-	// This specifies how an attestation will be read, and how it will be used
-	//  during policy enforcement.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.user_owned_grafeas_note
-	UserOwnedGrafeasNote *UserOwnedGrafeasNoteObservedState `json:"userOwnedGrafeasNote,omitempty"`
+	// A Drydock ATTESTATION_AUTHORITY Note, created by the user.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.Attestor.user_owned_drydock_note
+	UserOwnedDrydockNote *UserOwnedDrydockNoteObservedState `json:"userOwnedDrydockNote,omitempty"`
 
 	// Output only. Time when the attestor was last updated.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.update_time
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.Attestor.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote
-type UserOwnedGrafeasNoteObservedState struct {
+// +kcc:proto=google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote
+type UserOwnedDrydockNoteObservedState struct {
 	// Output only. This field will contain the service account email address
 	//  that this Attestor will use as the principal when querying Container
 	//  Analysis. Attestor administrators must grant this service account the
@@ -134,6 +132,6 @@ type UserOwnedGrafeasNoteObservedState struct {
 	//  This email address is fixed for the lifetime of the Attestor, but callers
 	//  should not make any other assumptions about the service account email;
 	//  future versions may use an email based on a different naming pattern.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote.delegation_service_account_email
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote.delegation_service_account_email
 	DelegationServiceAccountEmail *string `json:"delegationServiceAccountEmail,omitempty"`
 }
