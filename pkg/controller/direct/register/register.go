@@ -29,6 +29,7 @@ import (
 	_ "pkg/controller/direct/backupdr"
 	_ "pkg/controller/direct/baremetalsolution"
 	_ "pkg/controller/direct/batch"
+	_ "pkg/controller/direct/beyondcorp"
 	_ "pkg/controller/direct/bigtable"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
