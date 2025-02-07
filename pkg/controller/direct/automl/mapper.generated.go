@@ -15,129 +15,25 @@
 package automl
 
 import (
+	pb "cloud.google.com/go/automl/apiv1beta1/automlpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/automl/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/automl/apiv1/automlpb"
 )
-func AutomlAnnotationSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationSpec) *krm.AutomlAnnotationSpecObservedState {
+func CorrelationStats_FromProto(mapCtx *direct.MapContext, in *pb.CorrelationStats) *krm.CorrelationStats {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AutomlAnnotationSpecObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExampleCount
+	out := &krm.CorrelationStats{}
+	out.CramersV = direct.LazyPtr(in.GetCramersV())
 	return out
 }
-func AutomlAnnotationSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutomlAnnotationSpecObservedState) *pb.AnnotationSpec {
+func CorrelationStats_ToProto(mapCtx *direct.MapContext, in *krm.CorrelationStats) *pb.CorrelationStats {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AnnotationSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExampleCount
-	return out
-}
-func AutomlAnnotationSpecSpec_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationSpec) *krm.AutomlAnnotationSpecSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlAnnotationSpecSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExampleCount
-	return out
-}
-func AutomlAnnotationSpecSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutomlAnnotationSpecSpec) *pb.AnnotationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AnnotationSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExampleCount
-	return out
-}
-func AutomlDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.AutomlDatasetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlDatasetObservedState{}
-	// MISSING: TranslationDatasetMetadata
-	// MISSING: ImageClassificationDatasetMetadata
-	// MISSING: TextClassificationDatasetMetadata
-	// MISSING: ImageObjectDetectionDatasetMetadata
-	// MISSING: TextExtractionDatasetMetadata
-	// MISSING: TextSentimentDatasetMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ExampleCount
-	// MISSING: CreateTime
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutomlDatasetObservedState) *pb.Dataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Dataset{}
-	// MISSING: TranslationDatasetMetadata
-	// MISSING: ImageClassificationDatasetMetadata
-	// MISSING: TextClassificationDatasetMetadata
-	// MISSING: ImageObjectDetectionDatasetMetadata
-	// MISSING: TextExtractionDatasetMetadata
-	// MISSING: TextSentimentDatasetMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ExampleCount
-	// MISSING: CreateTime
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.AutomlDatasetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlDatasetSpec{}
-	// MISSING: TranslationDatasetMetadata
-	// MISSING: ImageClassificationDatasetMetadata
-	// MISSING: TextClassificationDatasetMetadata
-	// MISSING: ImageObjectDetectionDatasetMetadata
-	// MISSING: TextExtractionDatasetMetadata
-	// MISSING: TextSentimentDatasetMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ExampleCount
-	// MISSING: CreateTime
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutomlDatasetSpec) *pb.Dataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Dataset{}
-	// MISSING: TranslationDatasetMetadata
-	// MISSING: ImageClassificationDatasetMetadata
-	// MISSING: TextClassificationDatasetMetadata
-	// MISSING: ImageObjectDetectionDatasetMetadata
-	// MISSING: TextExtractionDatasetMetadata
-	// MISSING: TextSentimentDatasetMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ExampleCount
-	// MISSING: CreateTime
-	// MISSING: Etag
-	// MISSING: Labels
+	out := &pb.CorrelationStats{}
+	out.CramersV = direct.ValueOf(in.CramersV)
 	return out
 }
 func Dataset_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.Dataset {
@@ -149,15 +45,17 @@ func Dataset_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.Dataset {
 	out.ImageClassificationDatasetMetadata = ImageClassificationDatasetMetadata_FromProto(mapCtx, in.GetImageClassificationDatasetMetadata())
 	out.TextClassificationDatasetMetadata = TextClassificationDatasetMetadata_FromProto(mapCtx, in.GetTextClassificationDatasetMetadata())
 	out.ImageObjectDetectionDatasetMetadata = ImageObjectDetectionDatasetMetadata_FromProto(mapCtx, in.GetImageObjectDetectionDatasetMetadata())
+	out.VideoClassificationDatasetMetadata = VideoClassificationDatasetMetadata_FromProto(mapCtx, in.GetVideoClassificationDatasetMetadata())
+	out.VideoObjectTrackingDatasetMetadata = VideoObjectTrackingDatasetMetadata_FromProto(mapCtx, in.GetVideoObjectTrackingDatasetMetadata())
 	out.TextExtractionDatasetMetadata = TextExtractionDatasetMetadata_FromProto(mapCtx, in.GetTextExtractionDatasetMetadata())
 	out.TextSentimentDatasetMetadata = TextSentimentDatasetMetadata_FromProto(mapCtx, in.GetTextSentimentDatasetMetadata())
+	out.TablesDatasetMetadata = TablesDatasetMetadata_FromProto(mapCtx, in.GetTablesDatasetMetadata())
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.ExampleCount = direct.LazyPtr(in.GetExampleCount())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
 	return out
 }
 func Dataset_ToProto(mapCtx *direct.MapContext, in *krm.Dataset) *pb.Dataset {
@@ -177,11 +75,20 @@ func Dataset_ToProto(mapCtx *direct.MapContext, in *krm.Dataset) *pb.Dataset {
 	if oneof := ImageObjectDetectionDatasetMetadata_ToProto(mapCtx, in.ImageObjectDetectionDatasetMetadata); oneof != nil {
 		out.DatasetMetadata = &pb.Dataset_ImageObjectDetectionDatasetMetadata{ImageObjectDetectionDatasetMetadata: oneof}
 	}
+	if oneof := VideoClassificationDatasetMetadata_ToProto(mapCtx, in.VideoClassificationDatasetMetadata); oneof != nil {
+		out.DatasetMetadata = &pb.Dataset_VideoClassificationDatasetMetadata{VideoClassificationDatasetMetadata: oneof}
+	}
+	if oneof := VideoObjectTrackingDatasetMetadata_ToProto(mapCtx, in.VideoObjectTrackingDatasetMetadata); oneof != nil {
+		out.DatasetMetadata = &pb.Dataset_VideoObjectTrackingDatasetMetadata{VideoObjectTrackingDatasetMetadata: oneof}
+	}
 	if oneof := TextExtractionDatasetMetadata_ToProto(mapCtx, in.TextExtractionDatasetMetadata); oneof != nil {
 		out.DatasetMetadata = &pb.Dataset_TextExtractionDatasetMetadata{TextExtractionDatasetMetadata: oneof}
 	}
 	if oneof := TextSentimentDatasetMetadata_ToProto(mapCtx, in.TextSentimentDatasetMetadata); oneof != nil {
 		out.DatasetMetadata = &pb.Dataset_TextSentimentDatasetMetadata{TextSentimentDatasetMetadata: oneof}
+	}
+	if oneof := TablesDatasetMetadata_ToProto(mapCtx, in.TablesDatasetMetadata); oneof != nil {
+		out.DatasetMetadata = &pb.Dataset_TablesDatasetMetadata{TablesDatasetMetadata: oneof}
 	}
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
@@ -189,6 +96,5 @@ func Dataset_ToProto(mapCtx *direct.MapContext, in *krm.Dataset) *pb.Dataset {
 	out.ExampleCount = direct.ValueOf(in.ExampleCount)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
 	return out
 }
