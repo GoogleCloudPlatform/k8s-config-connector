@@ -15,282 +15,363 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.automl.v1.ImageClassificationModelMetadata
-type ImageClassificationModelMetadata struct {
-	// Optional. The ID of the `base` model. If it is specified, the new model
-	//  will be created based on the `base` model. Otherwise, the new model will be
-	//  created from scratch. The `base` model must be in the same
-	//  `project` and `location` as the new model to create, and have the same
-	//  `model_type`.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.base_model_id
-	BaseModelID *string `json:"baseModelID,omitempty"`
+// +kcc:proto=google.cloud.automl.v1.BoundingBoxMetricsEntry
+type BoundingBoxMetricsEntry struct {
+	// Output only. The intersection-over-union threshold value used to compute
+	//  this metrics entry.
+	// +kcc:proto:field=google.cloud.automl.v1.BoundingBoxMetricsEntry.iou_threshold
+	IouThreshold *float32 `json:"iouThreshold,omitempty"`
 
-	// Optional. The train budget of creating this model, expressed in milli node
-	//  hours i.e. 1,000 value in this field means 1 node hour. The actual
-	//  `train_cost` will be equal or less than this value. If further model
-	//  training ceases to provide any improvements, it will stop without using
-	//  full budget and the stop_reason will be `MODEL_CONVERGED`.
-	//  Note, node_hour  = actual_hour * number_of_nodes_invovled.
-	//  For model type `cloud`(default), the train budget must be between 8,000
-	//  and 800,000 milli node hours, inclusive. The default value is 192, 000
-	//  which represents one day in wall time. For model type
-	//  `mobile-low-latency-1`, `mobile-versatile-1`, `mobile-high-accuracy-1`,
-	//  `mobile-core-ml-low-latency-1`, `mobile-core-ml-versatile-1`,
-	//  `mobile-core-ml-high-accuracy-1`, the train budget must be between 1,000
-	//  and 100,000 milli node hours, inclusive. The default value is 24, 000 which
-	//  represents one day in wall time.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.train_budget_milli_node_hours
-	TrainBudgetMilliNodeHours *int64 `json:"trainBudgetMilliNodeHours,omitempty"`
+	// Output only. The mean average precision, most often close to au_prc.
+	// +kcc:proto:field=google.cloud.automl.v1.BoundingBoxMetricsEntry.mean_average_precision
+	MeanAveragePrecision *float32 `json:"meanAveragePrecision,omitempty"`
 
-	// Optional. Type of the model. The available values are:
-	//  *   `cloud` - Model to be used via prediction calls to AutoML API.
-	//                This is the default value.
-	//  *   `mobile-low-latency-1` - A model that, in addition to providing
-	//                prediction via AutoML API, can also be exported (see
-	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
-	//                with TensorFlow afterwards. Expected to have low latency, but
-	//                may have lower prediction quality than other models.
-	//  *   `mobile-versatile-1` - A model that, in addition to providing
-	//                prediction via AutoML API, can also be exported (see
-	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
-	//                with TensorFlow afterwards.
-	//  *   `mobile-high-accuracy-1` - A model that, in addition to providing
-	//                prediction via AutoML API, can also be exported (see
-	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
-	//                with TensorFlow afterwards.  Expected to have a higher
-	//                latency, but should also have a higher prediction quality
-	//                than other models.
-	//  *   `mobile-core-ml-low-latency-1` - A model that, in addition to providing
-	//                prediction via AutoML API, can also be exported (see
-	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with Core
-	//                ML afterwards. Expected to have low latency, but may have
-	//                lower prediction quality than other models.
-	//  *   `mobile-core-ml-versatile-1` - A model that, in addition to providing
-	//                prediction via AutoML API, can also be exported (see
-	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with Core
-	//                ML afterwards.
-	//  *   `mobile-core-ml-high-accuracy-1` - A model that, in addition to
-	//                providing prediction via AutoML API, can also be exported
-	//                (see [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with
-	//                Core ML afterwards.  Expected to have a higher latency, but
-	//                should also have a higher prediction quality than other
-	//                models.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.model_type
-	ModelType *string `json:"modelType,omitempty"`
+	// Output only. Metrics for each label-match confidence_threshold from
+	//  0.05,0.10,...,0.95,0.96,0.97,0.98,0.99. Precision-recall curve is
+	//  derived from them.
+	// +kcc:proto:field=google.cloud.automl.v1.BoundingBoxMetricsEntry.confidence_metrics_entries
+	ConfidenceMetricsEntries []BoundingBoxMetricsEntry_ConfidenceMetricsEntry `json:"confidenceMetricsEntries,omitempty"`
 }
 
-// +kcc:proto=google.cloud.automl.v1.ImageObjectDetectionModelMetadata
-type ImageObjectDetectionModelMetadata struct {
-	// Optional. Type of the model. The available values are:
-	//  *   `cloud-high-accuracy-1` - (default) A model to be used via prediction
-	//                calls to AutoML API. Expected to have a higher latency, but
-	//                should also have a higher prediction quality than other
-	//                models.
-	//  *   `cloud-low-latency-1` -  A model to be used via prediction
-	//                calls to AutoML API. Expected to have low latency, but may
-	//                have lower prediction quality than other models.
-	//  *   `mobile-low-latency-1` - A model that, in addition to providing
-	//                prediction via AutoML API, can also be exported (see
-	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
-	//                with TensorFlow afterwards. Expected to have low latency, but
-	//                may have lower prediction quality than other models.
-	//  *   `mobile-versatile-1` - A model that, in addition to providing
-	//                prediction via AutoML API, can also be exported (see
-	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
-	//                with TensorFlow afterwards.
-	//  *   `mobile-high-accuracy-1` - A model that, in addition to providing
-	//                prediction via AutoML API, can also be exported (see
-	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
-	//                with TensorFlow afterwards.  Expected to have a higher
-	//                latency, but should also have a higher prediction quality
-	//                than other models.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.model_type
-	ModelType *string `json:"modelType,omitempty"`
+// +kcc:proto=google.cloud.automl.v1.BoundingBoxMetricsEntry.ConfidenceMetricsEntry
+type BoundingBoxMetricsEntry_ConfidenceMetricsEntry struct {
+	// Output only. The confidence threshold value used to compute the metrics.
+	// +kcc:proto:field=google.cloud.automl.v1.BoundingBoxMetricsEntry.ConfidenceMetricsEntry.confidence_threshold
+	ConfidenceThreshold *float32 `json:"confidenceThreshold,omitempty"`
 
-	// Optional. The train budget of creating this model, expressed in milli node
-	//  hours i.e. 1,000 value in this field means 1 node hour. The actual
-	//  `train_cost` will be equal or less than this value. If further model
-	//  training ceases to provide any improvements, it will stop without using
-	//  full budget and the stop_reason will be `MODEL_CONVERGED`.
-	//  Note, node_hour  = actual_hour * number_of_nodes_invovled.
-	//  For model type `cloud-high-accuracy-1`(default) and `cloud-low-latency-1`,
-	//  the train budget must be between 20,000 and 900,000 milli node hours,
-	//  inclusive. The default value is 216, 000 which represents one day in
-	//  wall time.
-	//  For model type `mobile-low-latency-1`, `mobile-versatile-1`,
-	//  `mobile-high-accuracy-1`, `mobile-core-ml-low-latency-1`,
-	//  `mobile-core-ml-versatile-1`, `mobile-core-ml-high-accuracy-1`, the train
-	//  budget must be between 1,000 and 100,000 milli node hours, inclusive.
-	//  The default value is 24, 000 which represents one day in wall time.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.train_budget_milli_node_hours
-	TrainBudgetMilliNodeHours *int64 `json:"trainBudgetMilliNodeHours,omitempty"`
+	// Output only. Recall under the given confidence threshold.
+	// +kcc:proto:field=google.cloud.automl.v1.BoundingBoxMetricsEntry.ConfidenceMetricsEntry.recall
+	Recall *float32 `json:"recall,omitempty"`
+
+	// Output only. Precision under the given confidence threshold.
+	// +kcc:proto:field=google.cloud.automl.v1.BoundingBoxMetricsEntry.ConfidenceMetricsEntry.precision
+	Precision *float32 `json:"precision,omitempty"`
+
+	// Output only. The harmonic mean of recall and precision.
+	// +kcc:proto:field=google.cloud.automl.v1.BoundingBoxMetricsEntry.ConfidenceMetricsEntry.f1_score
+	F1Score *float32 `json:"f1Score,omitempty"`
 }
 
-// +kcc:proto=google.cloud.automl.v1.Model
-type Model struct {
-	// Metadata for translation models.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.translation_model_metadata
-	TranslationModelMetadata *TranslationModelMetadata `json:"translationModelMetadata,omitempty"`
+// +kcc:proto=google.cloud.automl.v1.ClassificationEvaluationMetrics
+type ClassificationEvaluationMetrics struct {
+	// Output only. The Area Under Precision-Recall Curve metric. Micro-averaged
+	//  for the overall evaluation.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.au_prc
+	AuPrc *float32 `json:"auPrc,omitempty"`
 
-	// Metadata for image classification models.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.image_classification_model_metadata
-	ImageClassificationModelMetadata *ImageClassificationModelMetadata `json:"imageClassificationModelMetadata,omitempty"`
+	// Output only. The Area Under Receiver Operating Characteristic curve metric.
+	//  Micro-averaged for the overall evaluation.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.au_roc
+	AuRoc *float32 `json:"auRoc,omitempty"`
 
-	// Metadata for text classification models.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.text_classification_model_metadata
-	TextClassificationModelMetadata *TextClassificationModelMetadata `json:"textClassificationModelMetadata,omitempty"`
+	// Output only. The Log Loss metric.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.log_loss
+	LogLoss *float32 `json:"logLoss,omitempty"`
 
-	// Metadata for image object detection models.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.image_object_detection_model_metadata
-	ImageObjectDetectionModelMetadata *ImageObjectDetectionModelMetadata `json:"imageObjectDetectionModelMetadata,omitempty"`
+	// Output only. Metrics for each confidence_threshold in
+	//  0.00,0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 and
+	//  position_threshold = INT32_MAX_VALUE.
+	//  ROC and precision-recall curves, and other aggregated metrics are derived
+	//  from them. The confidence metrics entries may also be supplied for
+	//  additional values of position_threshold, but from these no aggregated
+	//  metrics are computed.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.confidence_metrics_entry
+	ConfidenceMetricsEntry []ClassificationEvaluationMetrics_ConfidenceMetricsEntry `json:"confidenceMetricsEntry,omitempty"`
 
-	// Metadata for text extraction models.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.text_extraction_model_metadata
-	TextExtractionModelMetadata *TextExtractionModelMetadata `json:"textExtractionModelMetadata,omitempty"`
+	// Output only. Confusion matrix of the evaluation.
+	//  Only set for MULTICLASS classification problems where number
+	//  of labels is no more than 10.
+	//  Only set for model level evaluation, not for evaluation per label.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.confusion_matrix
+	ConfusionMatrix *ClassificationEvaluationMetrics_ConfusionMatrix `json:"confusionMatrix,omitempty"`
 
-	// Metadata for text sentiment models.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.text_sentiment_model_metadata
-	TextSentimentModelMetadata *TextSentimentModelMetadata `json:"textSentimentModelMetadata,omitempty"`
+	// Output only. The annotation spec ids used for this evaluation.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.annotation_spec_id
+	AnnotationSpecID []string `json:"annotationSpecID,omitempty"`
+}
 
-	// Output only. Resource name of the model.
-	//  Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
-	// +kcc:proto:field=google.cloud.automl.v1.Model.name
+// +kcc:proto=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry
+type ClassificationEvaluationMetrics_ConfidenceMetricsEntry struct {
+	// Output only. Metrics are computed with an assumption that the model
+	//  never returns predictions with score lower than this value.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.confidence_threshold
+	ConfidenceThreshold *float32 `json:"confidenceThreshold,omitempty"`
+
+	// Output only. Metrics are computed with an assumption that the model
+	//  always returns at most this many predictions (ordered by their score,
+	//  descendingly), but they all still need to meet the confidence_threshold.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.position_threshold
+	PositionThreshold *int32 `json:"positionThreshold,omitempty"`
+
+	// Output only. Recall (True Positive Rate) for the given confidence
+	//  threshold.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall
+	Recall *float32 `json:"recall,omitempty"`
+
+	// Output only. Precision for the given confidence threshold.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision
+	Precision *float32 `json:"precision,omitempty"`
+
+	// Output only. False Positive Rate for the given confidence threshold.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.false_positive_rate
+	FalsePositiveRate *float32 `json:"falsePositiveRate,omitempty"`
+
+	// Output only. The harmonic mean of recall and precision.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score
+	F1Score *float32 `json:"f1Score,omitempty"`
+
+	// Output only. The Recall (True Positive Rate) when only considering the
+	//  label that has the highest prediction score and not below the confidence
+	//  threshold for each example.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1
+	RecallAt1 *float32 `json:"recallAt1,omitempty"`
+
+	// Output only. The precision when only considering the label that has the
+	//  highest prediction score and not below the confidence threshold for each
+	//  example.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1
+	PrecisionAt1 *float32 `json:"precisionAt1,omitempty"`
+
+	// Output only. The False Positive Rate when only considering the label that
+	//  has the highest prediction score and not below the confidence threshold
+	//  for each example.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.false_positive_rate_at1
+	FalsePositiveRateAt1 *float32 `json:"falsePositiveRateAt1,omitempty"`
+
+	// Output only. The harmonic mean of [recall_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1] and [precision_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1].
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.f1_score_at1
+	F1ScoreAt1 *float32 `json:"f1ScoreAt1,omitempty"`
+
+	// Output only. The number of model created labels that match a ground truth
+	//  label.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.true_positive_count
+	TruePositiveCount *int64 `json:"truePositiveCount,omitempty"`
+
+	// Output only. The number of model created labels that do not match a
+	//  ground truth label.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.false_positive_count
+	FalsePositiveCount *int64 `json:"falsePositiveCount,omitempty"`
+
+	// Output only. The number of ground truth labels that are not matched
+	//  by a model created label.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.false_negative_count
+	FalseNegativeCount *int64 `json:"falseNegativeCount,omitempty"`
+
+	// Output only. The number of labels that were not created by the model,
+	//  but if they would, they would not match a ground truth label.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.true_negative_count
+	TrueNegativeCount *int64 `json:"trueNegativeCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix
+type ClassificationEvaluationMetrics_ConfusionMatrix struct {
+	// Output only. IDs of the annotation specs used in the confusion matrix.
+	//  For Tables CLASSIFICATION
+	//  [prediction_type][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]
+	//  only list of [annotation_spec_display_name-s][] is populated.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.annotation_spec_id
+	AnnotationSpecID []string `json:"annotationSpecID,omitempty"`
+
+	// Output only. Display name of the annotation specs used in the confusion
+	//  matrix, as they were at the moment of the evaluation. For Tables
+	//  CLASSIFICATION
+	//  [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type],
+	//  distinct values of the target column at the moment of the model
+	//  evaluation are populated here.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name
+	DisplayName []string `json:"displayName,omitempty"`
+
+	// Output only. Rows in the confusion matrix. The number of rows is equal to
+	//  the size of `annotation_spec_id`.
+	//  `row[i].example_count[j]` is the number of examples that have ground
+	//  truth of the `annotation_spec_id[i]` and are predicted as
+	//  `annotation_spec_id[j]` by the model being evaluated.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.row
+	Row []ClassificationEvaluationMetrics_ConfusionMatrix_Row `json:"row,omitempty"`
+}
+
+// +kcc:proto=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.Row
+type ClassificationEvaluationMetrics_ConfusionMatrix_Row struct {
+	// Output only. Value of the specific cell in the confusion matrix.
+	//  The number of values each row has (i.e. the length of the row) is equal
+	//  to the length of the `annotation_spec_id` field or, if that one is not
+	//  populated, length of the [display_name][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name] field.
+	// +kcc:proto:field=google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.Row.example_count
+	ExampleCount []int32 `json:"exampleCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.automl.v1.ImageObjectDetectionEvaluationMetrics
+type ImageObjectDetectionEvaluationMetrics struct {
+	// Output only. The total number of bounding boxes (i.e. summed over all
+	//  images) the ground truth used to create this evaluation had.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionEvaluationMetrics.evaluated_bounding_box_count
+	EvaluatedBoundingBoxCount *int32 `json:"evaluatedBoundingBoxCount,omitempty"`
+
+	// Output only. The bounding boxes match metrics for each
+	//  Intersection-over-union threshold 0.05,0.10,...,0.95,0.96,0.97,0.98,0.99
+	//  and each label confidence threshold 0.05,0.10,...,0.95,0.96,0.97,0.98,0.99
+	//  pair.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionEvaluationMetrics.bounding_box_metrics_entries
+	BoundingBoxMetricsEntries []BoundingBoxMetricsEntry `json:"boundingBoxMetricsEntries,omitempty"`
+
+	// Output only. The single metric for bounding boxes evaluation:
+	//  the mean_average_precision averaged over all bounding_box_metrics_entries.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionEvaluationMetrics.bounding_box_mean_average_precision
+	BoundingBoxMeanAveragePrecision *float32 `json:"boundingBoxMeanAveragePrecision,omitempty"`
+}
+
+// +kcc:proto=google.cloud.automl.v1.ModelEvaluation
+type ModelEvaluation struct {
+	// Model evaluation metrics for image, text, video and tables
+	//  classification.
+	//  Tables problem is considered a classification when the target column
+	//  is CATEGORY DataType.
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.classification_evaluation_metrics
+	ClassificationEvaluationMetrics *ClassificationEvaluationMetrics `json:"classificationEvaluationMetrics,omitempty"`
+
+	// Model evaluation metrics for translation.
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.translation_evaluation_metrics
+	TranslationEvaluationMetrics *TranslationEvaluationMetrics `json:"translationEvaluationMetrics,omitempty"`
+
+	// Model evaluation metrics for image object detection.
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.image_object_detection_evaluation_metrics
+	ImageObjectDetectionEvaluationMetrics *ImageObjectDetectionEvaluationMetrics `json:"imageObjectDetectionEvaluationMetrics,omitempty"`
+
+	// Evaluation metrics for text sentiment models.
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.text_sentiment_evaluation_metrics
+	TextSentimentEvaluationMetrics *TextSentimentEvaluationMetrics `json:"textSentimentEvaluationMetrics,omitempty"`
+
+	// Evaluation metrics for text extraction models.
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.text_extraction_evaluation_metrics
+	TextExtractionEvaluationMetrics *TextExtractionEvaluationMetrics `json:"textExtractionEvaluationMetrics,omitempty"`
+
+	// Output only. Resource name of the model evaluation.
+	//  Format:
+	//  `projects/{project_id}/locations/{location_id}/models/{model_id}/modelEvaluations/{model_evaluation_id}`
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. The name of the model to show in the interface. The name can be
-	//  up to 32 characters long and can consist only of ASCII Latin letters A-Z
-	//  and a-z, underscores
-	//  (_), and ASCII digits 0-9. It must start with a letter.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.display_name
+	// Output only. The ID of the annotation spec that the model evaluation applies to. The
+	//  The ID is empty for the overall model evaluation.
+	//  For Tables annotation specs in the dataset do not exist and this ID is
+	//  always not set, but for CLASSIFICATION
+	//  [prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type]
+	//  the
+	//  [display_name][google.cloud.automl.v1.ModelEvaluation.display_name]
+	//  field is used.
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.annotation_spec_id
+	AnnotationSpecID *string `json:"annotationSpecID,omitempty"`
+
+	// Output only. The value of
+	//  [display_name][google.cloud.automl.v1.AnnotationSpec.display_name]
+	//  at the moment when the model was trained. Because this field returns a
+	//  value at model training time, for different models trained from the same
+	//  dataset, the values may differ, since display names could had been changed
+	//  between the two model's trainings. For Tables CLASSIFICATION
+	//  [prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type]
+	//  distinct values of the target column at the moment of the model evaluation
+	//  are populated here.
+	//  The display_name is empty for the overall model evaluation.
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Required. The resource ID of the dataset used to create the model. The dataset must
-	//  come from the same ancestor project and location.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.dataset_id
-	DatasetID *string `json:"datasetID,omitempty"`
-
-	// Output only. Timestamp when the model training finished  and can be used for prediction.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.create_time
+	// Output only. Timestamp when this model evaluation was created.
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Timestamp when this model was last updated.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Deployment state of the model. A model can only serve
-	//  prediction requests after it gets deployed.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.deployment_state
-	DeploymentState *string `json:"deploymentState,omitempty"`
-
-	// Used to perform a consistent read-modify-write updates. If not set, a blind
-	//  "overwrite" update happens.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Optional. The labels with user-defined metadata to organize your model.
-	//
-	//  Label keys and values can be no longer than 64 characters
-	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores and dashes. International characters are allowed.
-	//  Label values are optional. Label keys must start with a letter.
-	//
-	//  See https://goo.gl/xmQnxf for more information on and examples of labels.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// Output only. The number of examples used for model evaluation, i.e. for
+	//  which ground truth from time of model creation is compared against the
+	//  predicted annotations created by the model.
+	//  For overall ModelEvaluation (i.e. with annotation_spec_id not set) this is
+	//  the total number of all examples used for evaluation.
+	//  Otherwise, this is the count of examples that according to the ground
+	//  truth were annotated by the
+	//  [annotation_spec_id][google.cloud.automl.v1.ModelEvaluation.annotation_spec_id].
+	// +kcc:proto:field=google.cloud.automl.v1.ModelEvaluation.evaluated_example_count
+	EvaluatedExampleCount *int32 `json:"evaluatedExampleCount,omitempty"`
 }
 
-// +kcc:proto=google.cloud.automl.v1.TextClassificationModelMetadata
-type TextClassificationModelMetadata struct {
-	// Output only. Classification type of the dataset used to train this model.
-	// +kcc:proto:field=google.cloud.automl.v1.TextClassificationModelMetadata.classification_type
-	ClassificationType *string `json:"classificationType,omitempty"`
+// +kcc:proto=google.cloud.automl.v1.TextExtractionEvaluationMetrics
+type TextExtractionEvaluationMetrics struct {
+	// Output only. The Area under precision recall curve metric.
+	// +kcc:proto:field=google.cloud.automl.v1.TextExtractionEvaluationMetrics.au_prc
+	AuPrc *float32 `json:"auPrc,omitempty"`
+
+	// Output only. Metrics that have confidence thresholds.
+	//  Precision-recall curve can be derived from it.
+	// +kcc:proto:field=google.cloud.automl.v1.TextExtractionEvaluationMetrics.confidence_metrics_entries
+	ConfidenceMetricsEntries []TextExtractionEvaluationMetrics_ConfidenceMetricsEntry `json:"confidenceMetricsEntries,omitempty"`
 }
 
-// +kcc:proto=google.cloud.automl.v1.TextExtractionModelMetadata
-type TextExtractionModelMetadata struct {
+// +kcc:proto=google.cloud.automl.v1.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry
+type TextExtractionEvaluationMetrics_ConfidenceMetricsEntry struct {
+	// Output only. The confidence threshold value used to compute the metrics.
+	//  Only annotations with score of at least this threshold are considered to
+	//  be ones the model would return.
+	// +kcc:proto:field=google.cloud.automl.v1.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry.confidence_threshold
+	ConfidenceThreshold *float32 `json:"confidenceThreshold,omitempty"`
+
+	// Output only. Recall under the given confidence threshold.
+	// +kcc:proto:field=google.cloud.automl.v1.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry.recall
+	Recall *float32 `json:"recall,omitempty"`
+
+	// Output only. Precision under the given confidence threshold.
+	// +kcc:proto:field=google.cloud.automl.v1.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry.precision
+	Precision *float32 `json:"precision,omitempty"`
+
+	// Output only. The harmonic mean of recall and precision.
+	// +kcc:proto:field=google.cloud.automl.v1.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry.f1_score
+	F1Score *float32 `json:"f1Score,omitempty"`
 }
 
-// +kcc:proto=google.cloud.automl.v1.TextSentimentModelMetadata
-type TextSentimentModelMetadata struct {
+// +kcc:proto=google.cloud.automl.v1.TextSentimentEvaluationMetrics
+type TextSentimentEvaluationMetrics struct {
+	// Output only. Precision.
+	// +kcc:proto:field=google.cloud.automl.v1.TextSentimentEvaluationMetrics.precision
+	Precision *float32 `json:"precision,omitempty"`
+
+	// Output only. Recall.
+	// +kcc:proto:field=google.cloud.automl.v1.TextSentimentEvaluationMetrics.recall
+	Recall *float32 `json:"recall,omitempty"`
+
+	// Output only. The harmonic mean of recall and precision.
+	// +kcc:proto:field=google.cloud.automl.v1.TextSentimentEvaluationMetrics.f1_score
+	F1Score *float32 `json:"f1Score,omitempty"`
+
+	// Output only. Mean absolute error. Only set for the overall model
+	//  evaluation, not for evaluation of a single annotation spec.
+	// +kcc:proto:field=google.cloud.automl.v1.TextSentimentEvaluationMetrics.mean_absolute_error
+	MeanAbsoluteError *float32 `json:"meanAbsoluteError,omitempty"`
+
+	// Output only. Mean squared error. Only set for the overall model
+	//  evaluation, not for evaluation of a single annotation spec.
+	// +kcc:proto:field=google.cloud.automl.v1.TextSentimentEvaluationMetrics.mean_squared_error
+	MeanSquaredError *float32 `json:"meanSquaredError,omitempty"`
+
+	// Output only. Linear weighted kappa. Only set for the overall model
+	//  evaluation, not for evaluation of a single annotation spec.
+	// +kcc:proto:field=google.cloud.automl.v1.TextSentimentEvaluationMetrics.linear_kappa
+	LinearKappa *float32 `json:"linearKappa,omitempty"`
+
+	// Output only. Quadratic weighted kappa. Only set for the overall model
+	//  evaluation, not for evaluation of a single annotation spec.
+	// +kcc:proto:field=google.cloud.automl.v1.TextSentimentEvaluationMetrics.quadratic_kappa
+	QuadraticKappa *float32 `json:"quadraticKappa,omitempty"`
+
+	// Output only. Confusion matrix of the evaluation.
+	//  Only set for the overall model evaluation, not for evaluation of a single
+	//  annotation spec.
+	// +kcc:proto:field=google.cloud.automl.v1.TextSentimentEvaluationMetrics.confusion_matrix
+	ConfusionMatrix *ClassificationEvaluationMetrics_ConfusionMatrix `json:"confusionMatrix,omitempty"`
 }
 
-// +kcc:proto=google.cloud.automl.v1.TranslationModelMetadata
-type TranslationModelMetadata struct {
-	// The resource name of the model to use as a baseline to train the custom
-	//  model. If unset, we use the default base model provided by Google
-	//  Translate. Format:
-	//  `projects/{project_id}/locations/{location_id}/models/{model_id}`
-	// +kcc:proto:field=google.cloud.automl.v1.TranslationModelMetadata.base_model
-	BaseModel *string `json:"baseModel,omitempty"`
+// +kcc:proto=google.cloud.automl.v1.TranslationEvaluationMetrics
+type TranslationEvaluationMetrics struct {
+	// Output only. BLEU score.
+	// +kcc:proto:field=google.cloud.automl.v1.TranslationEvaluationMetrics.bleu_score
+	BleuScore *float64 `json:"bleuScore,omitempty"`
 
-	// Output only. Inferred from the dataset.
-	//  The source language (The BCP-47 language code) that is used for training.
-	// +kcc:proto:field=google.cloud.automl.v1.TranslationModelMetadata.source_language_code
-	SourceLanguageCode *string `json:"sourceLanguageCode,omitempty"`
-
-	// Output only. The target language (The BCP-47 language code) that is used
-	//  for training.
-	// +kcc:proto:field=google.cloud.automl.v1.TranslationModelMetadata.target_language_code
-	TargetLanguageCode *string `json:"targetLanguageCode,omitempty"`
-}
-
-// +kcc:proto=google.cloud.automl.v1.ImageClassificationModelMetadata
-type ImageClassificationModelMetadataObservedState struct {
-	// Output only. The actual train cost of creating this model, expressed in
-	//  milli node hours, i.e. 1,000 value in this field means 1 node hour.
-	//  Guaranteed to not exceed the train budget.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.train_cost_milli_node_hours
-	TrainCostMilliNodeHours *int64 `json:"trainCostMilliNodeHours,omitempty"`
-
-	// Output only. The reason that this create model operation stopped,
-	//  e.g. `BUDGET_REACHED`, `MODEL_CONVERGED`.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.stop_reason
-	StopReason *string `json:"stopReason,omitempty"`
-
-	// Output only. An approximate number of online prediction QPS that can
-	//  be supported by this model per each node on which it is deployed.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.node_qps
-	NodeQps *float64 `json:"nodeQps,omitempty"`
-
-	// Output only. The number of nodes this model is deployed on. A node is an
-	//  abstraction of a machine resource, which can handle online prediction QPS
-	//  as given in the node_qps field.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.node_count
-	NodeCount *int64 `json:"nodeCount,omitempty"`
-}
-
-// +kcc:proto=google.cloud.automl.v1.ImageObjectDetectionModelMetadata
-type ImageObjectDetectionModelMetadataObservedState struct {
-	// Output only. The number of nodes this model is deployed on. A node is an
-	//  abstraction of a machine resource, which can handle online prediction QPS
-	//  as given in the qps_per_node field.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.node_count
-	NodeCount *int64 `json:"nodeCount,omitempty"`
-
-	// Output only. An approximate number of online prediction QPS that can
-	//  be supported by this model per each node on which it is deployed.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.node_qps
-	NodeQps *float64 `json:"nodeQps,omitempty"`
-
-	// Output only. The reason that this create model operation stopped,
-	//  e.g. `BUDGET_REACHED`, `MODEL_CONVERGED`.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.stop_reason
-	StopReason *string `json:"stopReason,omitempty"`
-
-	// Output only. The actual train cost of creating this model, expressed in
-	//  milli node hours, i.e. 1,000 value in this field means 1 node hour.
-	//  Guaranteed to not exceed the train budget.
-	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.train_cost_milli_node_hours
-	TrainCostMilliNodeHours *int64 `json:"trainCostMilliNodeHours,omitempty"`
-}
-
-// +kcc:proto=google.cloud.automl.v1.Model
-type ModelObservedState struct {
-	// Metadata for image classification models.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.image_classification_model_metadata
-	ImageClassificationModelMetadata *ImageClassificationModelMetadataObservedState `json:"imageClassificationModelMetadata,omitempty"`
-
-	// Metadata for image object detection models.
-	// +kcc:proto:field=google.cloud.automl.v1.Model.image_object_detection_model_metadata
-	ImageObjectDetectionModelMetadata *ImageObjectDetectionModelMetadataObservedState `json:"imageObjectDetectionModelMetadata,omitempty"`
+	// Output only. BLEU score for base model.
+	// +kcc:proto:field=google.cloud.automl.v1.TranslationEvaluationMetrics.base_bleu_score
+	BaseBleuScore *float64 `json:"baseBleuScore,omitempty"`
 }
