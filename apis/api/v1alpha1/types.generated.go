@@ -1,0 +1,172 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+
+// +kcc:proto=google.api.apikeys.v2.AndroidApplication
+type AndroidApplication struct {
+	// The SHA1 fingerprint of the application. For example, both sha1 formats are
+	//  acceptable : DA:39:A3:EE:5E:6B:4B:0D:32:55:BF:EF:95:60:18:90:AF:D8:07:09 or
+	//  DA39A3EE5E6B4B0D3255BFEF95601890AFD80709.
+	//  Output format is the latter.
+	// +kcc:proto:field=google.api.apikeys.v2.AndroidApplication.sha1_fingerprint
+	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
+
+	// The package name of the application.
+	// +kcc:proto:field=google.api.apikeys.v2.AndroidApplication.package_name
+	PackageName *string `json:"packageName,omitempty"`
+}
+
+// +kcc:proto=google.api.apikeys.v2.AndroidKeyRestrictions
+type AndroidKeyRestrictions struct {
+	// A list of Android applications that are allowed to make API calls with
+	//  this key.
+	// +kcc:proto:field=google.api.apikeys.v2.AndroidKeyRestrictions.allowed_applications
+	AllowedApplications []AndroidApplication `json:"allowedApplications,omitempty"`
+}
+
+// +kcc:proto=google.api.apikeys.v2.ApiTarget
+type ApiTarget struct {
+	// The service for this restriction. It should be the canonical
+	//  service name, for example: `translate.googleapis.com`.
+	//  You can use [`gcloud services list`](/sdk/gcloud/reference/services/list)
+	//  to get a list of services that are enabled in the project.
+	// +kcc:proto:field=google.api.apikeys.v2.ApiTarget.service
+	Service *string `json:"service,omitempty"`
+
+	// Optional. List of one or more methods that can be called.
+	//  If empty, all methods for the service are allowed. A wildcard
+	//  (*) can be used as the last symbol.
+	//  Valid examples:
+	//    `google.cloud.translate.v2.TranslateService.GetSupportedLanguage`
+	//    `TranslateText`
+	//    `Get*`
+	//    `translate.googleapis.com.Get*`
+	// +kcc:proto:field=google.api.apikeys.v2.ApiTarget.methods
+	Methods []string `json:"methods,omitempty"`
+}
+
+// +kcc:proto=google.api.apikeys.v2.BrowserKeyRestrictions
+type BrowserKeyRestrictions struct {
+	// A list of regular expressions for the referrer URLs that are allowed
+	//  to make API calls with this key.
+	// +kcc:proto:field=google.api.apikeys.v2.BrowserKeyRestrictions.allowed_referrers
+	AllowedReferrers []string `json:"allowedReferrers,omitempty"`
+}
+
+// +kcc:proto=google.api.apikeys.v2.IosKeyRestrictions
+type IosKeyRestrictions struct {
+	// A list of bundle IDs that are allowed when making API calls with this key.
+	// +kcc:proto:field=google.api.apikeys.v2.IosKeyRestrictions.allowed_bundle_ids
+	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
+}
+
+// +kcc:proto=google.api.apikeys.v2.Key
+type Key struct {
+
+	// Human-readable display name of this key that you can modify.
+	//  The maximum length is 63 characters.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Annotations is an unstructured key-value map stored with a policy that
+	//  may be set by external tools to store and retrieve arbitrary metadata.
+	//  They are not queryable and should be preserved when modifying objects.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Key restrictions.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.restrictions
+	Restrictions *Restrictions `json:"restrictions,omitempty"`
+}
+
+// +kcc:proto=google.api.apikeys.v2.Restrictions
+type Restrictions struct {
+	// The HTTP referrers (websites) that are allowed to use the key.
+	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.browser_key_restrictions
+	BrowserKeyRestrictions *BrowserKeyRestrictions `json:"browserKeyRestrictions,omitempty"`
+
+	// The IP addresses of callers that are allowed to use the key.
+	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.server_key_restrictions
+	ServerKeyRestrictions *ServerKeyRestrictions `json:"serverKeyRestrictions,omitempty"`
+
+	// The Android apps that are allowed to use the key.
+	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.android_key_restrictions
+	AndroidKeyRestrictions *AndroidKeyRestrictions `json:"androidKeyRestrictions,omitempty"`
+
+	// The iOS apps that are allowed to use the key.
+	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.ios_key_restrictions
+	IosKeyRestrictions *IosKeyRestrictions `json:"iosKeyRestrictions,omitempty"`
+
+	// A restriction for a specific service and optionally one or
+	//  more specific methods. Requests are allowed if they
+	//  match any of these restrictions. If no restrictions are
+	//  specified, all targets are allowed.
+	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.api_targets
+	ApiTargets []ApiTarget `json:"apiTargets,omitempty"`
+}
+
+// +kcc:proto=google.api.apikeys.v2.ServerKeyRestrictions
+type ServerKeyRestrictions struct {
+	// A list of the caller IP addresses that are allowed to make API calls
+	//  with this key.
+	// +kcc:proto:field=google.api.apikeys.v2.ServerKeyRestrictions.allowed_ips
+	AllowedIps []string `json:"allowedIps,omitempty"`
+}
+
+// +kcc:proto=google.api.apikeys.v2.Key
+type KeyObservedState struct {
+	// Output only. The resource name of the key.
+	//  The `name` has the form:
+	//  `projects/<PROJECT_NUMBER>/locations/global/keys/<KEY_ID>`.
+	//  For example:
+	//  `projects/123456867718/locations/global/keys/b7ff1f9f-8275-410a-94dd-3855ee9b5dd2`
+	//
+	//  NOTE: Key is a global resource; hence the only supported value for
+	//  location is `global`.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Unique id in UUID4 format.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. An encrypted and signed value held by this key.
+	//  This field can be accessed only through the `GetKeyString` method.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.key_string
+	KeyString *string `json:"keyString,omitempty"`
+
+	// Output only. A timestamp identifying the time this key was originally
+	//  created.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. A timestamp identifying the time this key was last
+	//  updated.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. A timestamp when this key was deleted. If the resource is not
+	//  deleted, this must be empty.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Output only. A checksum computed by the server based on the current value
+	//  of the Key resource. This may be sent on update and delete requests to
+	//  ensure the client has an up-to-date value before proceeding. See
+	//  https://google.aip.dev/154.
+	// +kcc:proto:field=google.api.apikeys.v2.Key.etag
+	Etag *string `json:"etag,omitempty"`
+}
