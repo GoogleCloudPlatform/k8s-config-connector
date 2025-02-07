@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -900,71 +900,227 @@ func AiplatformDatasetVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aip
 	// MISSING: SatisfiesPzi
 	return out
 }
-func DatasetVersion_FromProto(mapCtx *direct.MapContext, in *pb.DatasetVersion) *krm.DatasetVersion {
+func AiplatformDeploymentResourcePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentResourcePool) *krm.AiplatformDeploymentResourcePoolObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatasetVersion{}
+	out := &krm.AiplatformDeploymentResourcePoolObservedState{}
 	// MISSING: Name
+	// MISSING: DedicatedResources
+	// MISSING: EncryptionSpec
+	// MISSING: ServiceAccount
+	// MISSING: DisableContainerLogging
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	// MISSING: BigQueryDatasetName
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: Metadata
-	// MISSING: ModelReference
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
 }
-func DatasetVersion_ToProto(mapCtx *direct.MapContext, in *krm.DatasetVersion) *pb.DatasetVersion {
+func AiplatformDeploymentResourcePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformDeploymentResourcePoolObservedState) *pb.DeploymentResourcePool {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DatasetVersion{}
+	out := &pb.DeploymentResourcePool{}
 	// MISSING: Name
+	// MISSING: DedicatedResources
+	// MISSING: EncryptionSpec
+	// MISSING: ServiceAccount
+	// MISSING: DisableContainerLogging
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Etag = direct.ValueOf(in.Etag)
-	// MISSING: BigQueryDatasetName
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: Metadata
-	// MISSING: ModelReference
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
 }
-func DatasetVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatasetVersion) *krm.DatasetVersionObservedState {
+func AiplatformDeploymentResourcePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentResourcePool) *krm.AiplatformDeploymentResourcePoolSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatasetVersionObservedState{}
+	out := &krm.AiplatformDeploymentResourcePoolSpec{}
+	// MISSING: Name
+	// MISSING: DedicatedResources
+	// MISSING: EncryptionSpec
+	// MISSING: ServiceAccount
+	// MISSING: DisableContainerLogging
+	// MISSING: CreateTime
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformDeploymentResourcePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformDeploymentResourcePoolSpec) *pb.DeploymentResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeploymentResourcePool{}
+	// MISSING: Name
+	// MISSING: DedicatedResources
+	// MISSING: EncryptionSpec
+	// MISSING: ServiceAccount
+	// MISSING: DisableContainerLogging
+	// MISSING: CreateTime
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AutoscalingMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingMetricSpec) *krm.AutoscalingMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutoscalingMetricSpec{}
+	out.MetricName = direct.LazyPtr(in.GetMetricName())
+	out.Target = direct.LazyPtr(in.GetTarget())
+	return out
+}
+func AutoscalingMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingMetricSpec) *pb.AutoscalingMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingMetricSpec{}
+	out.MetricName = direct.ValueOf(in.MetricName)
+	out.Target = direct.ValueOf(in.Target)
+	return out
+}
+func DedicatedResources_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedResources) *krm.DedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DedicatedResources{}
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
+	out.RequiredReplicaCount = direct.LazyPtr(in.GetRequiredReplicaCount())
+	out.AutoscalingMetricSpecs = direct.Slice_FromProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_FromProto)
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	return out
+}
+func DedicatedResources_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedResources) *pb.DedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DedicatedResources{}
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
+	out.RequiredReplicaCount = direct.ValueOf(in.RequiredReplicaCount)
+	out.AutoscalingMetricSpecs = direct.Slice_ToProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_ToProto)
+	out.Spot = direct.ValueOf(in.Spot)
+	return out
+}
+func DeploymentResourcePool_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentResourcePool) *krm.DeploymentResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeploymentResourcePool{}
 	out.Name = direct.LazyPtr(in.GetName())
+	out.DedicatedResources = DedicatedResources_FromProto(mapCtx, in.GetDedicatedResources())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.DisableContainerLogging = direct.LazyPtr(in.GetDisableContainerLogging())
+	// MISSING: CreateTime
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func DeploymentResourcePool_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentResourcePool) *pb.DeploymentResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeploymentResourcePool{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DedicatedResources = DedicatedResources_ToProto(mapCtx, in.DedicatedResources)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.DisableContainerLogging = direct.ValueOf(in.DisableContainerLogging)
+	// MISSING: CreateTime
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func DeploymentResourcePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentResourcePool) *krm.DeploymentResourcePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeploymentResourcePoolObservedState{}
+	// MISSING: Name
+	// MISSING: DedicatedResources
+	// MISSING: EncryptionSpec
+	// MISSING: ServiceAccount
+	// MISSING: DisableContainerLogging
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Etag
-	out.BigQueryDatasetName = direct.LazyPtr(in.GetBigQueryDatasetName())
-	// MISSING: DisplayName
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
-	out.ModelReference = direct.LazyPtr(in.GetModelReference())
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
-func DatasetVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatasetVersionObservedState) *pb.DatasetVersion {
+func DeploymentResourcePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentResourcePoolObservedState) *pb.DeploymentResourcePool {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DatasetVersion{}
-	out.Name = direct.ValueOf(in.Name)
+	out := &pb.DeploymentResourcePool{}
+	// MISSING: Name
+	// MISSING: DedicatedResources
+	// MISSING: EncryptionSpec
+	// MISSING: ServiceAccount
+	// MISSING: DisableContainerLogging
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Etag
-	out.BigQueryDatasetName = direct.ValueOf(in.BigQueryDatasetName)
-	// MISSING: DisplayName
-	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
-	out.ModelReference = direct.ValueOf(in.ModelReference)
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpec{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	return out
+}
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MachineSpec{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
+	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
+	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
+	return out
+}
+func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MachineSpec{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.AcceleratorType = direct.Enum_ToProto[pb.AcceleratorType](mapCtx, in.AcceleratorType)
+	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
+	out.TpuTopology = direct.ValueOf(in.TpuTopology)
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+	return out
+}
+func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_FromProto(mapCtx, in.GetReservationAffinityType())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Values = in.Values
+	return out
+}
+func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinity) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
+	out.Key = direct.ValueOf(in.Key)
+	out.Values = in.Values
 	return out
 }
