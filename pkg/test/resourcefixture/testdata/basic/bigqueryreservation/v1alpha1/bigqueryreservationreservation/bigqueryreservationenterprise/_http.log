@@ -9,7 +9,6 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
-X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -41,7 +40,6 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
-X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -68,7 +66,6 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
-X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -96,7 +93,8 @@ X-Goog-Request-Params: reservation.name=projects%2F${projectId}%2Flocations%2Fus
   "concurrency": "1",
   "edition": 2,
   "ignoreIdleSlots": true,
-  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}"
+  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}",
+  "slotCapacity": "50"
 }
 
 200 OK
@@ -105,7 +103,6 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
-X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -118,6 +115,7 @@ X-Xss-Protection: 0
   "edition": 2,
   "ignoreIdleSlots": true,
   "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}",
+  "slotCapacity": "50",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -134,7 +132,6 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
-X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -147,6 +144,7 @@ X-Xss-Protection: 0
   "edition": 2,
   "ignoreIdleSlots": true,
   "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}",
+  "slotCapacity": "50",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -163,7 +161,6 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
-X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 

@@ -19,7 +19,7 @@ spec:
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
-  slotCapacity: 0
+  slotCapacity: 50
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

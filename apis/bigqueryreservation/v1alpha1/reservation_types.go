@@ -46,13 +46,12 @@ type BigQueryReservationReservationSpec struct {
 	// For acquisition: This field must be provided to identify the Reservation resource to acquire.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Baseline slots available to this reservation. A slot is a unit of
+	//  Optional. Baseline slots available to this reservation. A slot is a unit of
 	//  computational power in BigQuery, and serves as the unit of parallelism.
 	//
 	//  Queries using this reservation might use more slots during runtime if
 	//  ignore_idle_slots is set to false, or autoscaling is enabled.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.slot_capacity
-	// +required
 	SlotCapacity *int64 `json:"slotCapacity,omitempty"`
 
 	// If false, any query or pipeline job using this reservation will use idle
