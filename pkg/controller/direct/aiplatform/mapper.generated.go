@@ -1136,149 +1136,147 @@ func AiplatformEntityTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aiplatf
 	// MISSING: SatisfiesPzi
 	return out
 }
-func EntityType_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.EntityType {
+func AiplatformExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.AiplatformExecutionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EntityType{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.MonitoringConfig = FeaturestoreMonitoringConfig_FromProto(mapCtx, in.GetMonitoringConfig())
-	out.OfflineStorageTtlDays = direct.LazyPtr(in.GetOfflineStorageTtlDays())
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func EntityType_ToProto(mapCtx *direct.MapContext, in *krm.EntityType) *pb.EntityType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntityType{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.Etag = direct.ValueOf(in.Etag)
-	out.MonitoringConfig = FeaturestoreMonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
-	out.OfflineStorageTtlDays = direct.ValueOf(in.OfflineStorageTtlDays)
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func EntityTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.EntityTypeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EntityTypeObservedState{}
+	out := &krm.AiplatformExecutionObservedState{}
 	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: State
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: SchemaTitle
+	// MISSING: SchemaVersion
+	// MISSING: Metadata
 	// MISSING: Description
+	return out
+}
+func AiplatformExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformExecutionObservedState) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: State
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: SchemaTitle
+	// MISSING: SchemaVersion
+	// MISSING: Metadata
+	// MISSING: Description
+	return out
+}
+func AiplatformExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.AiplatformExecutionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformExecutionSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: State
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: SchemaTitle
+	// MISSING: SchemaVersion
+	// MISSING: Metadata
+	// MISSING: Description
+	return out
+}
+func AiplatformExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformExecutionSpec) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: State
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: SchemaTitle
+	// MISSING: SchemaVersion
+	// MISSING: Metadata
+	// MISSING: Description
+	return out
+}
+func Execution_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Execution{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	out.Metadata = Metadata_FromProto(mapCtx, in.GetMetadata())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func Execution_ToProto(mapCtx *direct.MapContext, in *krm.Execution) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = Metadata_ToProto(mapCtx, in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func ExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.ExecutionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	// MISSING: State
+	// MISSING: Etag
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: MonitoringConfig
-	// MISSING: OfflineStorageTtlDays
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	// MISSING: SchemaTitle
+	// MISSING: SchemaVersion
+	// MISSING: Metadata
+	// MISSING: Description
 	return out
 }
-func EntityTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntityTypeObservedState) *pb.EntityType {
+func ExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionObservedState) *pb.Execution {
 	if in == nil {
 		return nil
 	}
-	out := &pb.EntityType{}
-	// MISSING: Name
-	// MISSING: Description
+	out := &pb.Execution{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	// MISSING: State
+	// MISSING: Etag
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: MonitoringConfig
-	// MISSING: OfflineStorageTtlDays
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
-	return out
-}
-func FeaturestoreMonitoringConfig_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig) *krm.FeaturestoreMonitoringConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeaturestoreMonitoringConfig{}
-	out.SnapshotAnalysis = FeaturestoreMonitoringConfig_SnapshotAnalysis_FromProto(mapCtx, in.GetSnapshotAnalysis())
-	out.ImportFeaturesAnalysis = FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_FromProto(mapCtx, in.GetImportFeaturesAnalysis())
-	out.NumericalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_FromProto(mapCtx, in.GetNumericalThresholdConfig())
-	out.CategoricalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_FromProto(mapCtx, in.GetCategoricalThresholdConfig())
-	return out
-}
-func FeaturestoreMonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreMonitoringConfig) *pb.FeaturestoreMonitoringConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeaturestoreMonitoringConfig{}
-	out.SnapshotAnalysis = FeaturestoreMonitoringConfig_SnapshotAnalysis_ToProto(mapCtx, in.SnapshotAnalysis)
-	out.ImportFeaturesAnalysis = FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_ToProto(mapCtx, in.ImportFeaturesAnalysis)
-	out.NumericalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_ToProto(mapCtx, in.NumericalThresholdConfig)
-	out.CategoricalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_ToProto(mapCtx, in.CategoricalThresholdConfig)
-	return out
-}
-func FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis) *krm.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis{}
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.AnomalyDetectionBaseline = direct.Enum_FromProto(mapCtx, in.GetAnomalyDetectionBaseline())
-	return out
-}
-func FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis) *pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis{}
-	out.State = direct.Enum_ToProto[pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_State](mapCtx, in.State)
-	out.AnomalyDetectionBaseline = direct.Enum_ToProto[pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_Baseline](mapCtx, in.AnomalyDetectionBaseline)
-	return out
-}
-func FeaturestoreMonitoringConfig_SnapshotAnalysis_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis) *krm.FeaturestoreMonitoringConfig_SnapshotAnalysis {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
-	out.Disabled = direct.LazyPtr(in.GetDisabled())
-	out.MonitoringIntervalDays = direct.LazyPtr(in.GetMonitoringIntervalDays())
-	out.StalenessDays = direct.LazyPtr(in.GetStalenessDays())
-	return out
-}
-func FeaturestoreMonitoringConfig_SnapshotAnalysis_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreMonitoringConfig_SnapshotAnalysis) *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
-	out.Disabled = direct.ValueOf(in.Disabled)
-	out.MonitoringIntervalDays = direct.ValueOf(in.MonitoringIntervalDays)
-	out.StalenessDays = direct.ValueOf(in.StalenessDays)
-	return out
-}
-func FeaturestoreMonitoringConfig_ThresholdConfig_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ThresholdConfig) *krm.FeaturestoreMonitoringConfig_ThresholdConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeaturestoreMonitoringConfig_ThresholdConfig{}
-	out.Value = direct.LazyPtr(in.GetValue())
-	return out
-}
-func FeaturestoreMonitoringConfig_ThresholdConfig_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreMonitoringConfig_ThresholdConfig) *pb.FeaturestoreMonitoringConfig_ThresholdConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeaturestoreMonitoringConfig_ThresholdConfig{}
-	if oneof := FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto(mapCtx, in.Value); oneof != nil {
-		out.Threshold = oneof
-	}
+	// MISSING: SchemaTitle
+	// MISSING: SchemaVersion
+	// MISSING: Metadata
+	// MISSING: Description
 	return out
 }
