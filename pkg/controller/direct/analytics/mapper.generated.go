@@ -15,10 +15,10 @@
 package analytics
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
@@ -174,6 +174,58 @@ func AnalyticsConversionEventSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ana
 	// MISSING: Custom
 	// MISSING: CountingMethod
 	// MISSING: DefaultConversionValue
+	return out
+}
+func AnalyticsCustomDimensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomDimension) *krm.AnalyticsCustomDimensionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsCustomDimensionObservedState{}
+	// MISSING: Name
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Scope
+	// MISSING: DisallowAdsPersonalization
+	return out
+}
+func AnalyticsCustomDimensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsCustomDimensionObservedState) *pb.CustomDimension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomDimension{}
+	// MISSING: Name
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Scope
+	// MISSING: DisallowAdsPersonalization
+	return out
+}
+func AnalyticsCustomDimensionSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomDimension) *krm.AnalyticsCustomDimensionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsCustomDimensionSpec{}
+	// MISSING: Name
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Scope
+	// MISSING: DisallowAdsPersonalization
+	return out
+}
+func AnalyticsCustomDimensionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsCustomDimensionSpec) *pb.CustomDimension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomDimension{}
+	// MISSING: Name
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Scope
+	// MISSING: DisallowAdsPersonalization
 	return out
 }
 func AnalyticsDataSharingSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.AnalyticsDataSharingSettingsObservedState {
@@ -560,77 +612,55 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func KeyEvent_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent) *krm.KeyEvent {
+func CustomDimension_FromProto(mapCtx *direct.MapContext, in *pb.CustomDimension) *krm.CustomDimension {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KeyEvent{}
+	out := &krm.CustomDimension{}
 	// MISSING: Name
-	out.EventName = direct.LazyPtr(in.GetEventName())
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	out.CountingMethod = direct.Enum_FromProto(mapCtx, in.GetCountingMethod())
-	out.DefaultValue = KeyEvent_DefaultValue_FromProto(mapCtx, in.GetDefaultValue())
+	out.ParameterName = direct.LazyPtr(in.GetParameterName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
+	out.DisallowAdsPersonalization = direct.LazyPtr(in.GetDisallowAdsPersonalization())
 	return out
 }
-func KeyEvent_ToProto(mapCtx *direct.MapContext, in *krm.KeyEvent) *pb.KeyEvent {
+func CustomDimension_ToProto(mapCtx *direct.MapContext, in *krm.CustomDimension) *pb.CustomDimension {
 	if in == nil {
 		return nil
 	}
-	out := &pb.KeyEvent{}
+	out := &pb.CustomDimension{}
 	// MISSING: Name
-	out.EventName = direct.ValueOf(in.EventName)
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	out.CountingMethod = direct.Enum_ToProto[pb.KeyEvent_CountingMethod](mapCtx, in.CountingMethod)
-	out.DefaultValue = KeyEvent_DefaultValue_ToProto(mapCtx, in.DefaultValue)
+	out.ParameterName = direct.ValueOf(in.ParameterName)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Scope = direct.Enum_ToProto[pb.CustomDimension_DimensionScope](mapCtx, in.Scope)
+	out.DisallowAdsPersonalization = direct.ValueOf(in.DisallowAdsPersonalization)
 	return out
 }
-func KeyEventObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent) *krm.KeyEventObservedState {
+func CustomDimensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomDimension) *krm.CustomDimensionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KeyEventObservedState{}
+	out := &krm.CustomDimensionObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: EventName
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.Deletable = direct.LazyPtr(in.GetDeletable())
-	out.Custom = direct.LazyPtr(in.GetCustom())
-	// MISSING: CountingMethod
-	// MISSING: DefaultValue
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Scope
+	// MISSING: DisallowAdsPersonalization
 	return out
 }
-func KeyEventObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KeyEventObservedState) *pb.KeyEvent {
+func CustomDimensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomDimensionObservedState) *pb.CustomDimension {
 	if in == nil {
 		return nil
 	}
-	out := &pb.KeyEvent{}
+	out := &pb.CustomDimension{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: EventName
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.Deletable = direct.ValueOf(in.Deletable)
-	out.Custom = direct.ValueOf(in.Custom)
-	// MISSING: CountingMethod
-	// MISSING: DefaultValue
-	return out
-}
-func KeyEvent_DefaultValue_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent_DefaultValue) *krm.KeyEvent_DefaultValue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.KeyEvent_DefaultValue{}
-	out.NumericValue = direct.LazyPtr(in.GetNumericValue())
-	out.CurrencyCode = direct.LazyPtr(in.GetCurrencyCode())
-	return out
-}
-func KeyEvent_DefaultValue_ToProto(mapCtx *direct.MapContext, in *krm.KeyEvent_DefaultValue) *pb.KeyEvent_DefaultValue {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KeyEvent_DefaultValue{}
-	out.NumericValue = direct.ValueOf(in.NumericValue)
-	out.CurrencyCode = direct.ValueOf(in.CurrencyCode)
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Scope
+	// MISSING: DisallowAdsPersonalization
 	return out
 }

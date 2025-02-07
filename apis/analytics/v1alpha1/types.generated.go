@@ -15,62 +15,53 @@
 package v1alpha1
 
 
-// +kcc:proto=google.analytics.admin.v1beta.KeyEvent
-type KeyEvent struct {
+// +kcc:proto=google.analytics.admin.v1beta.CustomDimension
+type CustomDimension struct {
 
-	// Immutable. The event name for this key event.
-	//  Examples: 'click', 'purchase'
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.event_name
-	EventName *string `json:"eventName,omitempty"`
-
-	// Required. The method by which Key Events will be counted across multiple
-	//  events within a session.
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.counting_method
-	CountingMethod *string `json:"countingMethod,omitempty"`
-
-	// Optional. Defines a default value/currency for a key event.
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.default_value
-	DefaultValue *KeyEvent_DefaultValue `json:"defaultValue,omitempty"`
-}
-
-// +kcc:proto=google.analytics.admin.v1beta.KeyEvent.DefaultValue
-type KeyEvent_DefaultValue struct {
-	// Required. This will be used to populate the "value" parameter for all
-	//  occurrences of this Key Event (specified by event_name) where that
-	//  parameter is unset.
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.DefaultValue.numeric_value
-	NumericValue *float64 `json:"numericValue,omitempty"`
-
-	// Required. When an occurrence of this Key Event (specified by event_name)
-	//  has no set currency this currency will be applied as the default. Must be
-	//  in ISO 4217 currency code format.
+	// Required. Immutable. Tagging parameter name for this custom dimension.
 	//
-	//  See https://en.wikipedia.org/wiki/ISO_4217 for more information.
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.DefaultValue.currency_code
-	CurrencyCode *string `json:"currencyCode,omitempty"`
+	//  If this is a user-scoped dimension, then this is the user property name.
+	//  If this is an event-scoped dimension, then this is the event parameter
+	//  name.
+	//
+	//  If this is an item-scoped dimension, then this is the parameter
+	//  name found in the eCommerce items array.
+	//
+	//  May only contain alphanumeric and underscore characters, starting with a
+	//  letter. Max length of 24 characters for user-scoped dimensions, 40
+	//  characters for event-scoped dimensions.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.parameter_name
+	ParameterName *string `json:"parameterName,omitempty"`
+
+	// Required. Display name for this custom dimension as shown in the Analytics
+	//  UI. Max length of 82 characters, alphanumeric plus space and underscore
+	//  starting with a letter. Legacy system-generated display names may contain
+	//  square brackets, but updates to this field will never permit square
+	//  brackets.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description for this custom dimension. Max length of 150
+	//  characters.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Immutable. The scope of this dimension.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.scope
+	Scope *string `json:"scope,omitempty"`
+
+	// Optional. If set to true, sets this dimension as NPA and excludes it from
+	//  ads personalization.
+	//
+	//  This is currently only supported by user-scoped custom dimensions.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.disallow_ads_personalization
+	DisallowAdsPersonalization *bool `json:"disallowAdsPersonalization,omitempty"`
 }
 
-// +kcc:proto=google.analytics.admin.v1beta.KeyEvent
-type KeyEventObservedState struct {
-	// Output only. Resource name of this key event.
-	//  Format: properties/{property}/keyEvents/{key_event}
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.name
+// +kcc:proto=google.analytics.admin.v1beta.CustomDimension
+type CustomDimensionObservedState struct {
+	// Output only. Resource name for this CustomDimension resource.
+	//  Format: properties/{property}/customDimensions/{customDimension}
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.name
 	Name *string `json:"name,omitempty"`
-
-	// Output only. Time when this key event was created in the property.
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. If set to true, this event can be deleted.
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.deletable
-	Deletable *bool `json:"deletable,omitempty"`
-
-	// Output only. If set to true, this key event refers to a custom event.  If
-	//  set to false, this key event refers to a default event in GA. Default
-	//  events typically have special meaning in GA. Default events are usually
-	//  created for you by the GA system, but in some cases can be created by
-	//  property admins. Custom events count towards the maximum number of
-	//  custom key events that may be created per property.
-	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.custom
-	Custom *bool `json:"custom,omitempty"`
 }
