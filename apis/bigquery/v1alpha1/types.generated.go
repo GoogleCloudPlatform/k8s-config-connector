@@ -15,55 +15,33 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Subscription
-type Subscription struct {
+// +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
+type Catalog struct {
 }
 
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Subscription.LinkedResource
-type Subscription_LinkedResource struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Subscription
-type SubscriptionObservedState struct {
-	// Output only. Resource name of the source Listing.
-	//  e.g. projects/123/locations/US/dataExchanges/456/listings/789
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.listing
-	Listing *string `json:"listing,omitempty"`
-
-	// Output only. Resource name of the source Data Exchange.
-	//  e.g. projects/123/locations/US/dataExchanges/456
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.data_exchange
-	DataExchange *string `json:"dataExchange,omitempty"`
-
-	// Output only. The resource name of the subscription.
-	//  e.g. `projects/myproject/locations/US/subscriptions/123`.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.name
+// +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
+type CatalogObservedState struct {
+	// Output only. The resource name.
+	//  Format:
+	//  projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. Timestamp when the subscription was created.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.creation_time
-	CreationTime *string `json:"creationTime,omitempty"`
+	// Output only. The creation time of the catalog.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Timestamp when the subscription was last modified.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.last_modify_time
-	LastModifyTime *string `json:"lastModifyTime,omitempty"`
+	// Output only. The last modification time of the catalog.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. Organization of the project this subscription belongs to.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.organization_id
-	OrganizationID *string `json:"organizationID,omitempty"`
+	// Output only. The deletion time of the catalog. Only set after the catalog
+	//  is deleted.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
 
-	// Output only. Display name of the project of this subscription.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.organization_display_name
-	OrganizationDisplayName *string `json:"organizationDisplayName,omitempty"`
-
-	// Output only. Current state of the subscription.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.state
-	State *string `json:"state,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// Output only. Email of the subscriber.
-	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Subscription.subscriber_contact
-	SubscriberContact *string `json:"subscriberContact,omitempty"`
+	// Output only. The time when this catalog is considered expired. Only set
+	//  after the catalog is deleted.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
 }
