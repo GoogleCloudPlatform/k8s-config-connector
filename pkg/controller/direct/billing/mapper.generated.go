@@ -16,195 +16,111 @@ package billing
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
+	pb "cloud.google.com/go/billing/apiv1/billingpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func AllUpdatesRule_FromProto(mapCtx *direct.MapContext, in *pb.AllUpdatesRule) *krm.AllUpdatesRule {
+func BillingAccount_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.BillingAccount {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AllUpdatesRule{}
-	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
-	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
-	out.MonitoringNotificationChannels = in.MonitoringNotificationChannels
-	out.DisableDefaultIamRecipients = direct.LazyPtr(in.GetDisableDefaultIamRecipients())
-	out.EnableProjectLevelRecipients = direct.LazyPtr(in.GetEnableProjectLevelRecipients())
-	return out
-}
-func AllUpdatesRule_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdatesRule) *pb.AllUpdatesRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllUpdatesRule{}
-	out.PubsubTopic = direct.ValueOf(in.PubsubTopic)
-	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
-	out.MonitoringNotificationChannels = in.MonitoringNotificationChannels
-	out.DisableDefaultIamRecipients = direct.ValueOf(in.DisableDefaultIamRecipients)
-	out.EnableProjectLevelRecipients = direct.ValueOf(in.EnableProjectLevelRecipients)
-	return out
-}
-func Budget_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.Budget {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Budget{}
+	out := &krm.BillingAccount{}
 	// MISSING: Name
+	// MISSING: Open
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.BudgetFilter = Filter_FromProto(mapCtx, in.GetBudgetFilter())
-	out.Amount = BudgetAmount_FromProto(mapCtx, in.GetAmount())
-	out.ThresholdRules = direct.Slice_FromProto(mapCtx, in.ThresholdRules, ThresholdRule_FromProto)
-	out.AllUpdatesRule = AllUpdatesRule_FromProto(mapCtx, in.GetAllUpdatesRule())
-	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.MasterBillingAccount = direct.LazyPtr(in.GetMasterBillingAccount())
+	// MISSING: Parent
+	out.CurrencyCode = direct.LazyPtr(in.GetCurrencyCode())
 	return out
 }
-func Budget_ToProto(mapCtx *direct.MapContext, in *krm.Budget) *pb.Budget {
+func BillingAccount_ToProto(mapCtx *direct.MapContext, in *krm.BillingAccount) *pb.BillingAccount {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Budget{}
+	out := &pb.BillingAccount{}
 	// MISSING: Name
+	// MISSING: Open
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.BudgetFilter = Filter_ToProto(mapCtx, in.BudgetFilter)
-	out.Amount = BudgetAmount_ToProto(mapCtx, in.Amount)
-	out.ThresholdRules = direct.Slice_ToProto(mapCtx, in.ThresholdRules, ThresholdRule_ToProto)
-	out.AllUpdatesRule = AllUpdatesRule_ToProto(mapCtx, in.AllUpdatesRule)
-	out.Etag = direct.ValueOf(in.Etag)
+	out.MasterBillingAccount = direct.ValueOf(in.MasterBillingAccount)
+	// MISSING: Parent
+	out.CurrencyCode = direct.ValueOf(in.CurrencyCode)
 	return out
 }
-func BudgetAmount_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) *krm.BudgetAmount {
+func BillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.BillingAccountObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BudgetAmount{}
-	out.SpecifiedAmount = Money_FromProto(mapCtx, in.GetSpecifiedAmount())
-	out.LastPeriodAmount = LastPeriodAmount_FromProto(mapCtx, in.GetLastPeriodAmount())
-	return out
-}
-func BudgetAmount_ToProto(mapCtx *direct.MapContext, in *krm.BudgetAmount) *pb.BudgetAmount {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BudgetAmount{}
-	if oneof := Money_ToProto(mapCtx, in.SpecifiedAmount); oneof != nil {
-		out.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{SpecifiedAmount: oneof}
-	}
-	if oneof := LastPeriodAmount_ToProto(mapCtx, in.LastPeriodAmount); oneof != nil {
-		out.BudgetAmount = &pb.BudgetAmount_LastPeriodAmount{LastPeriodAmount: oneof}
-	}
-	return out
-}
-func BudgetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BudgetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BudgetObservedState{}
+	out := &krm.BillingAccountObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
+	out.Open = direct.LazyPtr(in.GetOpen())
 	// MISSING: DisplayName
-	// MISSING: BudgetFilter
-	// MISSING: Amount
-	// MISSING: ThresholdRules
-	// MISSING: AllUpdatesRule
-	// MISSING: Etag
+	// MISSING: MasterBillingAccount
+	out.Parent = direct.LazyPtr(in.GetParent())
+	// MISSING: CurrencyCode
 	return out
 }
-func BudgetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BudgetObservedState) *pb.Budget {
+func BillingAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BillingAccountObservedState) *pb.BillingAccount {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Budget{}
+	out := &pb.BillingAccount{}
 	out.Name = direct.ValueOf(in.Name)
+	out.Open = direct.ValueOf(in.Open)
 	// MISSING: DisplayName
-	// MISSING: BudgetFilter
-	// MISSING: Amount
-	// MISSING: ThresholdRules
-	// MISSING: AllUpdatesRule
-	// MISSING: Etag
+	// MISSING: MasterBillingAccount
+	out.Parent = direct.ValueOf(in.Parent)
+	// MISSING: CurrencyCode
 	return out
 }
-func CustomPeriod_FromProto(mapCtx *direct.MapContext, in *pb.CustomPeriod) *krm.CustomPeriod {
+func BillingBillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.BillingBillingAccountObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomPeriod{}
-	out.StartDate = Date_FromProto(mapCtx, in.GetStartDate())
-	out.EndDate = Date_FromProto(mapCtx, in.GetEndDate())
+	out := &krm.BillingBillingAccountObservedState{}
+	// MISSING: Name
+	// MISSING: Open
+	// MISSING: DisplayName
+	// MISSING: MasterBillingAccount
+	// MISSING: Parent
+	// MISSING: CurrencyCode
 	return out
 }
-func CustomPeriod_ToProto(mapCtx *direct.MapContext, in *krm.CustomPeriod) *pb.CustomPeriod {
+func BillingBillingAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BillingBillingAccountObservedState) *pb.BillingAccount {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CustomPeriod{}
-	out.StartDate = Date_ToProto(mapCtx, in.StartDate)
-	out.EndDate = Date_ToProto(mapCtx, in.EndDate)
+	out := &pb.BillingAccount{}
+	// MISSING: Name
+	// MISSING: Open
+	// MISSING: DisplayName
+	// MISSING: MasterBillingAccount
+	// MISSING: Parent
+	// MISSING: CurrencyCode
 	return out
 }
-func Filter_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *krm.Filter {
+func BillingBillingAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.BillingBillingAccountSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Filter{}
-	out.Projects = in.Projects
-	out.ResourceAncestors = in.ResourceAncestors
-	out.CreditTypes = in.CreditTypes
-	out.CreditTypesTreatment = direct.Enum_FromProto(mapCtx, in.GetCreditTypesTreatment())
-	out.Services = in.Services
-	out.Subaccounts = in.Subaccounts
-	// MISSING: Labels
-	out.CalendarPeriod = direct.Enum_FromProto(mapCtx, in.GetCalendarPeriod())
-	out.CustomPeriod = CustomPeriod_FromProto(mapCtx, in.GetCustomPeriod())
+	out := &krm.BillingBillingAccountSpec{}
+	// MISSING: Name
+	// MISSING: Open
+	// MISSING: DisplayName
+	// MISSING: MasterBillingAccount
+	// MISSING: Parent
+	// MISSING: CurrencyCode
 	return out
 }
-func Filter_ToProto(mapCtx *direct.MapContext, in *krm.Filter) *pb.Filter {
+func BillingBillingAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.BillingBillingAccountSpec) *pb.BillingAccount {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Filter{}
-	out.Projects = in.Projects
-	out.ResourceAncestors = in.ResourceAncestors
-	out.CreditTypes = in.CreditTypes
-	out.CreditTypesTreatment = direct.Enum_ToProto[pb.Filter_CreditTypesTreatment](mapCtx, in.CreditTypesTreatment)
-	out.Services = in.Services
-	out.Subaccounts = in.Subaccounts
-	// MISSING: Labels
-	if oneof := Filter_CalendarPeriod_ToProto(mapCtx, in.CalendarPeriod); oneof != nil {
-		out.UsagePeriod = oneof
-	}
-	if oneof := CustomPeriod_ToProto(mapCtx, in.CustomPeriod); oneof != nil {
-		out.UsagePeriod = &pb.Filter_CustomPeriod{CustomPeriod: oneof}
-	}
-	return out
-}
-func LastPeriodAmount_FromProto(mapCtx *direct.MapContext, in *pb.LastPeriodAmount) *krm.LastPeriodAmount {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LastPeriodAmount{}
-	return out
-}
-func LastPeriodAmount_ToProto(mapCtx *direct.MapContext, in *krm.LastPeriodAmount) *pb.LastPeriodAmount {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LastPeriodAmount{}
-	return out
-}
-func ThresholdRule_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krm.ThresholdRule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ThresholdRule{}
-	out.ThresholdPercent = direct.LazyPtr(in.GetThresholdPercent())
-	out.SpendBasis = direct.Enum_FromProto(mapCtx, in.GetSpendBasis())
-	return out
-}
-func ThresholdRule_ToProto(mapCtx *direct.MapContext, in *krm.ThresholdRule) *pb.ThresholdRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ThresholdRule{}
-	out.ThresholdPercent = direct.ValueOf(in.ThresholdPercent)
-	out.SpendBasis = direct.Enum_ToProto[pb.ThresholdRule_Basis](mapCtx, in.SpendBasis)
+	out := &pb.BillingAccount{}
+	// MISSING: Name
+	// MISSING: Open
+	// MISSING: DisplayName
+	// MISSING: MasterBillingAccount
+	// MISSING: Parent
+	// MISSING: CurrencyCode
 	return out
 }
