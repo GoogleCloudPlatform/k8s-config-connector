@@ -25,6 +25,7 @@ import (
 	_ "pkg/controller/direct/apphub"
 	_ "pkg/controller/direct/asset"
 	_ "pkg/controller/direct/assuredworkloads"
+	_ "pkg/controller/direct/automl"
 	_ "pkg/controller/direct/bigtable"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
