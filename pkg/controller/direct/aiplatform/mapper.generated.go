@@ -1208,75 +1208,211 @@ func AiplatformExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aiplatfo
 	// MISSING: Description
 	return out
 }
-func Execution_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.Execution {
+func AiplatformFeatureObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.AiplatformFeatureObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Execution{}
+	out := &krm.AiplatformFeatureObservedState{}
 	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
+	// MISSING: Description
+	// MISSING: ValueType
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
-	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
-	out.Metadata = Metadata_FromProto(mapCtx, in.GetMetadata())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	return out
-}
-func Execution_ToProto(mapCtx *direct.MapContext, in *krm.Execution) *pb.Execution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Execution{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
-	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
-	out.Metadata = Metadata_ToProto(mapCtx, in.Metadata)
-	out.Description = direct.ValueOf(in.Description)
-	return out
-}
-func ExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.ExecutionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExecutionObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: Etag
 	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+func AiplatformFeatureObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformFeatureObservedState) *pb.Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+func AiplatformFeatureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.AiplatformFeatureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformFeatureSpec{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+func AiplatformFeatureSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformFeatureSpec) *pb.Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+func Feature_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.Feature {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Feature{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DisableMonitoring = direct.LazyPtr(in.GetDisableMonitoring())
+	// MISSING: MonitoringStatsAnomalies
+	out.VersionColumnName = direct.LazyPtr(in.GetVersionColumnName())
+	out.PointOfContact = direct.LazyPtr(in.GetPointOfContact())
+	return out
+}
+func Feature_ToProto(mapCtx *direct.MapContext, in *krm.Feature) *pb.Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.ValueType = direct.Enum_ToProto[pb.Feature_ValueType](mapCtx, in.ValueType)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	out.DisableMonitoring = direct.ValueOf(in.DisableMonitoring)
+	// MISSING: MonitoringStatsAnomalies
+	out.VersionColumnName = direct.ValueOf(in.VersionColumnName)
+	out.PointOfContact = direct.ValueOf(in.PointOfContact)
+	return out
+}
+func FeatureObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.FeatureObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: SchemaTitle
-	// MISSING: SchemaVersion
-	// MISSING: Metadata
-	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: DisableMonitoring
+	out.MonitoringStatsAnomalies = direct.Slice_FromProto(mapCtx, in.MonitoringStatsAnomalies, Feature_MonitoringStatsAnomaly_FromProto)
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
 	return out
 }
-func ExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionObservedState) *pb.Execution {
+func FeatureObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureObservedState) *pb.Feature {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Execution{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: Etag
-	// MISSING: Labels
+	out := &pb.Feature{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: SchemaTitle
-	// MISSING: SchemaVersion
-	// MISSING: Metadata
-	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: DisableMonitoring
+	out.MonitoringStatsAnomalies = direct.Slice_ToProto(mapCtx, in.MonitoringStatsAnomalies, Feature_MonitoringStatsAnomaly_ToProto)
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+func FeatureStatsAnomaly_FromProto(mapCtx *direct.MapContext, in *pb.FeatureStatsAnomaly) *krm.FeatureStatsAnomaly {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureStatsAnomaly{}
+	out.Score = direct.LazyPtr(in.GetScore())
+	out.StatsURI = direct.LazyPtr(in.GetStatsUri())
+	out.AnomalyURI = direct.LazyPtr(in.GetAnomalyUri())
+	out.DistributionDeviation = direct.LazyPtr(in.GetDistributionDeviation())
+	out.AnomalyDetectionThreshold = direct.LazyPtr(in.GetAnomalyDetectionThreshold())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func FeatureStatsAnomaly_ToProto(mapCtx *direct.MapContext, in *krm.FeatureStatsAnomaly) *pb.FeatureStatsAnomaly {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureStatsAnomaly{}
+	out.Score = direct.ValueOf(in.Score)
+	out.StatsUri = direct.ValueOf(in.StatsURI)
+	out.AnomalyUri = direct.ValueOf(in.AnomalyURI)
+	out.DistributionDeviation = direct.ValueOf(in.DistributionDeviation)
+	out.AnomalyDetectionThreshold = direct.ValueOf(in.AnomalyDetectionThreshold)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func Feature_MonitoringStatsAnomaly_FromProto(mapCtx *direct.MapContext, in *pb.Feature_MonitoringStatsAnomaly) *krm.Feature_MonitoringStatsAnomaly {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Feature_MonitoringStatsAnomaly{}
+	// MISSING: Objective
+	// MISSING: FeatureStatsAnomaly
+	return out
+}
+func Feature_MonitoringStatsAnomaly_ToProto(mapCtx *direct.MapContext, in *krm.Feature_MonitoringStatsAnomaly) *pb.Feature_MonitoringStatsAnomaly {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature_MonitoringStatsAnomaly{}
+	// MISSING: Objective
+	// MISSING: FeatureStatsAnomaly
+	return out
+}
+func Feature_MonitoringStatsAnomalyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feature_MonitoringStatsAnomaly) *krm.Feature_MonitoringStatsAnomalyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Feature_MonitoringStatsAnomalyObservedState{}
+	out.Objective = direct.Enum_FromProto(mapCtx, in.GetObjective())
+	out.FeatureStatsAnomaly = FeatureStatsAnomaly_FromProto(mapCtx, in.GetFeatureStatsAnomaly())
+	return out
+}
+func Feature_MonitoringStatsAnomalyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Feature_MonitoringStatsAnomalyObservedState) *pb.Feature_MonitoringStatsAnomaly {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature_MonitoringStatsAnomaly{}
+	out.Objective = direct.Enum_ToProto[pb.Feature_MonitoringStatsAnomaly_Objective](mapCtx, in.Objective)
+	out.FeatureStatsAnomaly = FeatureStatsAnomaly_ToProto(mapCtx, in.FeatureStatsAnomaly)
 	return out
 }
