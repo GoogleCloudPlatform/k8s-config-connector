@@ -15,10 +15,10 @@
 package apihub
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func ApihubApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApihubApiObservedState {
 	if in == nil {
@@ -158,6 +158,78 @@ func ApihubApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubApiSpec) *pb
 	// MISSING: Attributes
 	// MISSING: ApiStyle
 	// MISSING: SelectedVersion
+	return out
+}
+func ApihubAttributeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.ApihubAttributeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubAttributeObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: DefinitionType
+	// MISSING: Scope
+	// MISSING: DataType
+	// MISSING: AllowedValues
+	// MISSING: Cardinality
+	// MISSING: Mandatory
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func ApihubAttributeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubAttributeObservedState) *pb.Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attribute{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: DefinitionType
+	// MISSING: Scope
+	// MISSING: DataType
+	// MISSING: AllowedValues
+	// MISSING: Cardinality
+	// MISSING: Mandatory
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func ApihubAttributeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.ApihubAttributeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubAttributeSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: DefinitionType
+	// MISSING: Scope
+	// MISSING: DataType
+	// MISSING: AllowedValues
+	// MISSING: Cardinality
+	// MISSING: Mandatory
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func ApihubAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubAttributeSpec) *pb.Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attribute{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: DefinitionType
+	// MISSING: Scope
+	// MISSING: DataType
+	// MISSING: AllowedValues
+	// MISSING: Cardinality
+	// MISSING: Mandatory
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	return out
 }
 func ApihubDefinitionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Definition) *krm.ApihubDefinitionObservedState {
@@ -460,157 +532,97 @@ func ApihubVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubVersionS
 	// MISSING: SelectedDeployment
 	return out
 }
-func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
+func Attribute_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.Attribute {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AttributeValues{}
-	out.EnumValues = AttributeValues_EnumAttributeValues_FromProto(mapCtx, in.GetEnumValues())
-	out.StringValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetStringValues())
-	out.JsonValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetJsonValues())
-	// MISSING: Attribute
-	return out
-}
-func AttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues) *pb.AttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues{}
-	if oneof := AttributeValues_EnumAttributeValues_ToProto(mapCtx, in.EnumValues); oneof != nil {
-		out.Value = &pb.AttributeValues_EnumValues{EnumValues: oneof}
-	}
-	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.StringValues); oneof != nil {
-		out.Value = &pb.AttributeValues_StringValues{StringValues: oneof}
-	}
-	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.JsonValues); oneof != nil {
-		out.Value = &pb.AttributeValues_JsonValues{JsonValues: oneof}
-	}
-	// MISSING: Attribute
-	return out
-}
-func AttributeValues_EnumAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributeValues_EnumAttributeValues{}
-	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Attribute_AllowedValue_FromProto)
-	return out
-}
-func AttributeValues_EnumAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_EnumAttributeValues) *pb.AttributeValues_EnumAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues_EnumAttributeValues{}
-	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Attribute_AllowedValue_ToProto)
-	return out
-}
-func AttributeValues_StringAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_StringAttributeValues) *krm.AttributeValues_StringAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributeValues_StringAttributeValues{}
-	out.Values = in.Values
-	return out
-}
-func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_StringAttributeValues) *pb.AttributeValues_StringAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues_StringAttributeValues{}
-	out.Values = in.Values
-	return out
-}
-func Definition_FromProto(mapCtx *direct.MapContext, in *pb.Definition) *krm.Definition {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Definition{}
-	// MISSING: Schema
+	out := &krm.Attribute{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Spec
-	// MISSING: Type
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: DefinitionType
+	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
+	out.DataType = direct.Enum_FromProto(mapCtx, in.GetDataType())
+	out.AllowedValues = direct.Slice_FromProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_FromProto)
+	out.Cardinality = direct.LazyPtr(in.GetCardinality())
+	// MISSING: Mandatory
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: Attributes
 	return out
 }
-func Definition_ToProto(mapCtx *direct.MapContext, in *krm.Definition) *pb.Definition {
+func Attribute_ToProto(mapCtx *direct.MapContext, in *krm.Attribute) *pb.Attribute {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Definition{}
-	// MISSING: Schema
+	out := &pb.Attribute{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Spec
-	// MISSING: Type
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: DefinitionType
+	out.Scope = direct.Enum_ToProto[pb.Attribute_Scope](mapCtx, in.Scope)
+	out.DataType = direct.Enum_ToProto[pb.Attribute_DataType](mapCtx, in.DataType)
+	out.AllowedValues = direct.Slice_ToProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_ToProto)
+	out.Cardinality = direct.ValueOf(in.Cardinality)
+	// MISSING: Mandatory
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: Attributes
 	return out
 }
-func DefinitionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Definition) *krm.DefinitionObservedState {
+func AttributeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.AttributeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DefinitionObservedState{}
-	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	out := &krm.AttributeObservedState{}
 	// MISSING: Name
-	out.Spec = direct.LazyPtr(in.GetSpec())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.DefinitionType = direct.Enum_FromProto(mapCtx, in.GetDefinitionType())
+	// MISSING: Scope
+	// MISSING: DataType
+	// MISSING: AllowedValues
+	// MISSING: Cardinality
+	out.Mandatory = direct.LazyPtr(in.GetMandatory())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Attributes
 	return out
 }
-func DefinitionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DefinitionObservedState) *pb.Definition {
+func AttributeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributeObservedState) *pb.Attribute {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Definition{}
-	if oneof := Schema_ToProto(mapCtx, in.Schema); oneof != nil {
-		out.Value = &pb.Definition_Schema{Schema: oneof}
-	}
+	out := &pb.Attribute{}
 	// MISSING: Name
-	out.Spec = direct.ValueOf(in.Spec)
-	out.Type = direct.Enum_ToProto[pb.Definition_Type](mapCtx, in.Type)
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.DefinitionType = direct.Enum_ToProto[pb.Attribute_DefinitionType](mapCtx, in.DefinitionType)
+	// MISSING: Scope
+	// MISSING: DataType
+	// MISSING: AllowedValues
+	// MISSING: Cardinality
+	out.Mandatory = direct.ValueOf(in.Mandatory)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Attributes
 	return out
 }
-func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
+func Attribute_AllowedValue_FromProto(mapCtx *direct.MapContext, in *pb.Attribute_AllowedValue) *krm.Attribute_AllowedValue {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Schema{}
-	// MISSING: DisplayName
-	// MISSING: RawValue
-	return out
-}
-func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Schema{}
-	// MISSING: DisplayName
-	// MISSING: RawValue
-	return out
-}
-func SchemaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.SchemaObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SchemaObservedState{}
+	out := &krm.Attribute_AllowedValue{}
+	out.ID = direct.LazyPtr(in.GetId())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.RawValue = in.GetRawValue()
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Immutable = direct.LazyPtr(in.GetImmutable())
 	return out
 }
-func SchemaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SchemaObservedState) *pb.Schema {
+func Attribute_AllowedValue_ToProto(mapCtx *direct.MapContext, in *krm.Attribute_AllowedValue) *pb.Attribute_AllowedValue {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Schema{}
+	out := &pb.Attribute_AllowedValue{}
+	out.Id = direct.ValueOf(in.ID)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.RawValue = in.RawValue
+	out.Description = direct.ValueOf(in.Description)
+	out.Immutable = direct.ValueOf(in.Immutable)
 	return out
 }

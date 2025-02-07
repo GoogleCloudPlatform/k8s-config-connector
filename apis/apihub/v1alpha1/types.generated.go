@@ -15,6 +15,47 @@
 package v1alpha1
 
 
+// +kcc:proto=google.cloud.apihub.v1.Attribute
+type Attribute struct {
+	// Identifier. The name of the attribute in the API Hub.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/attributes/{attribute}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The display name of the attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The description of the attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The scope of the attribute. It represents the resource in the API
+	//  Hub to which the attribute can be linked.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.scope
+	Scope *string `json:"scope,omitempty"`
+
+	// Required. The type of the data of the attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.data_type
+	DataType *string `json:"dataType,omitempty"`
+
+	// Optional. The list of allowed values when the attribute value is of type
+	//  enum. This is required when the data_type of the attribute is ENUM. The
+	//  maximum number of allowed values of an attribute will be 1000.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.allowed_values
+	AllowedValues []Attribute_AllowedValue `json:"allowedValues,omitempty"`
+
+	// Optional. The maximum number of values that the attribute can have when
+	//  associated with an API Hub resource. Cardinality 1 would represent a
+	//  single-valued attribute. It must not be less than 1 or greater than 20. If
+	//  not specified, the cardinality would be set to 1 by default and represent a
+	//  single-valued attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.cardinality
+	Cardinality *int32 `json:"cardinality,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
 type Attribute_AllowedValue struct {
 	// Required. The ID of the allowed value.
@@ -44,91 +85,23 @@ type Attribute_AllowedValue struct {
 	Immutable *bool `json:"immutable,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues
-type AttributeValues struct {
-	// The attribute values associated with a resource in case attribute data
-	//  type is enum.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.enum_values
-	EnumValues *AttributeValues_EnumAttributeValues `json:"enumValues,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.Attribute
+type AttributeObservedState struct {
+	// Output only. The definition type of the attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.definition_type
+	DefinitionType *string `json:"definitionType,omitempty"`
 
-	// The attribute values associated with a resource in case attribute data
-	//  type is string.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.string_values
-	StringValues *AttributeValues_StringAttributeValues `json:"stringValues,omitempty"`
+	// Output only. When mandatory is true, the attribute is mandatory for the
+	//  resource specified in the scope. Only System defined attributes can be
+	//  mandatory.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.mandatory
+	Mandatory *bool `json:"mandatory,omitempty"`
 
-	// The attribute values associated with a resource in case attribute data
-	//  type is JSON.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.json_values
-	JsonValues *AttributeValues_StringAttributeValues `json:"jsonValues,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
-type AttributeValues_EnumAttributeValues struct {
-	// Required. The attribute values in case attribute data type is enum.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues.values
-	Values []Attribute_AllowedValue `json:"values,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues.StringAttributeValues
-type AttributeValues_StringAttributeValues struct {
-	// Required. The attribute values in case attribute data type is string or
-	//  JSON.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.StringAttributeValues.values
-	Values []string `json:"values,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Definition
-type Definition struct {
-
-	// Identifier. The name of the definition.
-	//
-	//  Format:
-	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/definitions/{definition}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Definition.name
-	Name *string `json:"name,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Schema
-type Schema struct {
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Definition
-type DefinitionObservedState struct {
-	// Output only. The value of a schema definition.
-	// +kcc:proto:field=google.cloud.apihub.v1.Definition.schema
-	Schema *Schema `json:"schema,omitempty"`
-
-	// Output only. The name of the spec from where the definition was parsed.
-	//  Format is
-	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Definition.spec
-	Spec *string `json:"spec,omitempty"`
-
-	// Output only. The type of the definition.
-	// +kcc:proto:field=google.cloud.apihub.v1.Definition.type
-	Type *string `json:"type,omitempty"`
-
-	// Output only. The time at which the definition was created.
-	// +kcc:proto:field=google.cloud.apihub.v1.Definition.create_time
+	// Output only. The time at which the attribute was created.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The time at which the definition was last updated.
-	// +kcc:proto:field=google.cloud.apihub.v1.Definition.update_time
+	// Output only. The time at which the attribute was last updated.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Schema
-type SchemaObservedState struct {
-	// Output only. The display name of the schema.
-	//  This will map to the name of the schema in the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.Schema.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Output only. The raw value of the schema definition corresponding to the
-	//  schema name in the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.Schema.raw_value
-	RawValue []byte `json:"rawValue,omitempty"`
 }
