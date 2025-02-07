@@ -15,10 +15,10 @@
 package analytics
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
 )
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
@@ -226,6 +226,62 @@ func AnalyticsCustomDimensionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ana
 	// MISSING: Description
 	// MISSING: Scope
 	// MISSING: DisallowAdsPersonalization
+	return out
+}
+func AnalyticsCustomMetricObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomMetric) *krm.AnalyticsCustomMetricObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsCustomMetricObservedState{}
+	// MISSING: Name
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: MeasurementUnit
+	// MISSING: Scope
+	// MISSING: RestrictedMetricType
+	return out
+}
+func AnalyticsCustomMetricObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsCustomMetricObservedState) *pb.CustomMetric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomMetric{}
+	// MISSING: Name
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: MeasurementUnit
+	// MISSING: Scope
+	// MISSING: RestrictedMetricType
+	return out
+}
+func AnalyticsCustomMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomMetric) *krm.AnalyticsCustomMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsCustomMetricSpec{}
+	// MISSING: Name
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: MeasurementUnit
+	// MISSING: Scope
+	// MISSING: RestrictedMetricType
+	return out
+}
+func AnalyticsCustomMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsCustomMetricSpec) *pb.CustomMetric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomMetric{}
+	// MISSING: Name
+	// MISSING: ParameterName
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: MeasurementUnit
+	// MISSING: Scope
+	// MISSING: RestrictedMetricType
 	return out
 }
 func AnalyticsDataSharingSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.AnalyticsDataSharingSettingsObservedState {
@@ -612,55 +668,59 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func CustomDimension_FromProto(mapCtx *direct.MapContext, in *pb.CustomDimension) *krm.CustomDimension {
+func CustomMetric_FromProto(mapCtx *direct.MapContext, in *pb.CustomMetric) *krm.CustomMetric {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomDimension{}
+	out := &krm.CustomMetric{}
 	// MISSING: Name
 	out.ParameterName = direct.LazyPtr(in.GetParameterName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MeasurementUnit = direct.Enum_FromProto(mapCtx, in.GetMeasurementUnit())
 	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
-	out.DisallowAdsPersonalization = direct.LazyPtr(in.GetDisallowAdsPersonalization())
+	out.RestrictedMetricType = direct.EnumSlice_FromProto(mapCtx, in.RestrictedMetricType)
 	return out
 }
-func CustomDimension_ToProto(mapCtx *direct.MapContext, in *krm.CustomDimension) *pb.CustomDimension {
+func CustomMetric_ToProto(mapCtx *direct.MapContext, in *krm.CustomMetric) *pb.CustomMetric {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CustomDimension{}
+	out := &pb.CustomMetric{}
 	// MISSING: Name
 	out.ParameterName = direct.ValueOf(in.ParameterName)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Scope = direct.Enum_ToProto[pb.CustomDimension_DimensionScope](mapCtx, in.Scope)
-	out.DisallowAdsPersonalization = direct.ValueOf(in.DisallowAdsPersonalization)
+	out.MeasurementUnit = direct.Enum_ToProto[pb.CustomMetric_MeasurementUnit](mapCtx, in.MeasurementUnit)
+	out.Scope = direct.Enum_ToProto[pb.CustomMetric_MetricScope](mapCtx, in.Scope)
+	out.RestrictedMetricType = direct.EnumSlice_ToProto[pb.CustomMetric_RestrictedMetricType](mapCtx, in.RestrictedMetricType)
 	return out
 }
-func CustomDimensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomDimension) *krm.CustomDimensionObservedState {
+func CustomMetricObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomMetric) *krm.CustomMetricObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomDimensionObservedState{}
+	out := &krm.CustomMetricObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: ParameterName
 	// MISSING: DisplayName
 	// MISSING: Description
+	// MISSING: MeasurementUnit
 	// MISSING: Scope
-	// MISSING: DisallowAdsPersonalization
+	// MISSING: RestrictedMetricType
 	return out
 }
-func CustomDimensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomDimensionObservedState) *pb.CustomDimension {
+func CustomMetricObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomMetricObservedState) *pb.CustomMetric {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CustomDimension{}
+	out := &pb.CustomMetric{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: ParameterName
 	// MISSING: DisplayName
 	// MISSING: Description
+	// MISSING: MeasurementUnit
 	// MISSING: Scope
-	// MISSING: DisallowAdsPersonalization
+	// MISSING: RestrictedMetricType
 	return out
 }

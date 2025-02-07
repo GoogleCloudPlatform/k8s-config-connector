@@ -15,53 +15,51 @@
 package v1alpha1
 
 
-// +kcc:proto=google.analytics.admin.v1beta.CustomDimension
-type CustomDimension struct {
+// +kcc:proto=google.analytics.admin.v1beta.CustomMetric
+type CustomMetric struct {
 
-	// Required. Immutable. Tagging parameter name for this custom dimension.
+	// Required. Immutable. Tagging name for this custom metric.
 	//
-	//  If this is a user-scoped dimension, then this is the user property name.
-	//  If this is an event-scoped dimension, then this is the event parameter
+	//  If this is an event-scoped metric, then this is the event parameter
 	//  name.
 	//
-	//  If this is an item-scoped dimension, then this is the parameter
-	//  name found in the eCommerce items array.
-	//
-	//  May only contain alphanumeric and underscore characters, starting with a
-	//  letter. Max length of 24 characters for user-scoped dimensions, 40
-	//  characters for event-scoped dimensions.
-	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.parameter_name
+	//  May only contain alphanumeric and underscore charactes, starting with a
+	//  letter. Max length of 40 characters for event-scoped metrics.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomMetric.parameter_name
 	ParameterName *string `json:"parameterName,omitempty"`
 
-	// Required. Display name for this custom dimension as shown in the Analytics
-	//  UI. Max length of 82 characters, alphanumeric plus space and underscore
+	// Required. Display name for this custom metric as shown in the Analytics UI.
+	//  Max length of 82 characters, alphanumeric plus space and underscore
 	//  starting with a letter. Legacy system-generated display names may contain
 	//  square brackets, but updates to this field will never permit square
 	//  brackets.
-	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.display_name
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomMetric.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Optional. Description for this custom dimension. Max length of 150
-	//  characters.
-	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.description
+	// Optional. Description for this custom dimension.
+	//  Max length of 150 characters.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomMetric.description
 	Description *string `json:"description,omitempty"`
 
-	// Required. Immutable. The scope of this dimension.
-	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.scope
+	// Required. The type for the custom metric's value.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomMetric.measurement_unit
+	MeasurementUnit *string `json:"measurementUnit,omitempty"`
+
+	// Required. Immutable. The scope of this custom metric.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomMetric.scope
 	Scope *string `json:"scope,omitempty"`
 
-	// Optional. If set to true, sets this dimension as NPA and excludes it from
-	//  ads personalization.
-	//
-	//  This is currently only supported by user-scoped custom dimensions.
-	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.disallow_ads_personalization
-	DisallowAdsPersonalization *bool `json:"disallowAdsPersonalization,omitempty"`
+	// Optional. Types of restricted data that this metric may contain. Required
+	//  for metrics with CURRENCY measurement unit. Must be empty for metrics with
+	//  a non-CURRENCY measurement unit.
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomMetric.restricted_metric_type
+	RestrictedMetricType []string `json:"restrictedMetricType,omitempty"`
 }
 
-// +kcc:proto=google.analytics.admin.v1beta.CustomDimension
-type CustomDimensionObservedState struct {
-	// Output only. Resource name for this CustomDimension resource.
-	//  Format: properties/{property}/customDimensions/{customDimension}
-	// +kcc:proto:field=google.analytics.admin.v1beta.CustomDimension.name
+// +kcc:proto=google.analytics.admin.v1beta.CustomMetric
+type CustomMetricObservedState struct {
+	// Output only. Resource name for this CustomMetric resource.
+	//  Format: properties/{property}/customMetrics/{customMetric}
+	// +kcc:proto:field=google.analytics.admin.v1beta.CustomMetric.name
 	Name *string `json:"name,omitempty"`
 }
