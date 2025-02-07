@@ -15,10 +15,10 @@
 package baremetalsolution
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/baremetalsolution/apiv2/baremetalsolutionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/baremetalsolution/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func BaremetalsolutionInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.BaremetalsolutionInstanceConfigObservedState {
 	if in == nil {
@@ -278,6 +278,78 @@ func BaremetalsolutionLunSpec_ToProto(mapCtx *direct.MapContext, in *krm.Baremet
 	// MISSING: Wwid
 	// MISSING: ExpireTime
 	// MISSING: Instances
+	return out
+}
+func BaremetalsolutionNetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.BaremetalsolutionNetworkConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionNetworkConfigObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Type
+	// MISSING: Bandwidth
+	// MISSING: VlanAttachments
+	// MISSING: Cidr
+	// MISSING: ServiceCidr
+	// MISSING: UserNote
+	// MISSING: GcpService
+	// MISSING: VlanSameProject
+	// MISSING: JumboFramesEnabled
+	return out
+}
+func BaremetalsolutionNetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionNetworkConfigObservedState) *pb.NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkConfig{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Type
+	// MISSING: Bandwidth
+	// MISSING: VlanAttachments
+	// MISSING: Cidr
+	// MISSING: ServiceCidr
+	// MISSING: UserNote
+	// MISSING: GcpService
+	// MISSING: VlanSameProject
+	// MISSING: JumboFramesEnabled
+	return out
+}
+func BaremetalsolutionNetworkConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.BaremetalsolutionNetworkConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionNetworkConfigSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Type
+	// MISSING: Bandwidth
+	// MISSING: VlanAttachments
+	// MISSING: Cidr
+	// MISSING: ServiceCidr
+	// MISSING: UserNote
+	// MISSING: GcpService
+	// MISSING: VlanSameProject
+	// MISSING: JumboFramesEnabled
+	return out
+}
+func BaremetalsolutionNetworkConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionNetworkConfigSpec) *pb.NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkConfig{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Type
+	// MISSING: Bandwidth
+	// MISSING: VlanAttachments
+	// MISSING: Cidr
+	// MISSING: ServiceCidr
+	// MISSING: UserNote
+	// MISSING: GcpService
+	// MISSING: VlanSameProject
+	// MISSING: JumboFramesEnabled
 	return out
 }
 func BaremetalsolutionNetworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.BaremetalsolutionNetworkObservedState {
@@ -748,129 +820,93 @@ func BaremetalsolutionVolumeConfigSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: PerformanceTier
 	return out
 }
-func VolumeConfig_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig) *krm.VolumeConfig {
+func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VolumeConfig{}
+	out := &krm.NetworkConfig{}
 	// MISSING: Name
 	out.ID = direct.LazyPtr(in.GetId())
-	out.SnapshotsEnabled = direct.LazyPtr(in.GetSnapshotsEnabled())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
-	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
-	out.LunRanges = direct.Slice_FromProto(mapCtx, in.LunRanges, VolumeConfig_LunRange_FromProto)
-	out.MachineIds = in.MachineIds
-	out.NfsExports = direct.Slice_FromProto(mapCtx, in.NfsExports, VolumeConfig_NfsExport_FromProto)
+	out.Bandwidth = direct.Enum_FromProto(mapCtx, in.GetBandwidth())
+	out.VlanAttachments = direct.Slice_FromProto(mapCtx, in.VlanAttachments, NetworkConfig_IntakeVlanAttachment_FromProto)
+	out.Cidr = direct.LazyPtr(in.GetCidr())
+	out.ServiceCidr = direct.Enum_FromProto(mapCtx, in.GetServiceCidr())
 	out.UserNote = direct.LazyPtr(in.GetUserNote())
 	out.GcpService = direct.LazyPtr(in.GetGcpService())
-	out.PerformanceTier = direct.Enum_FromProto(mapCtx, in.GetPerformanceTier())
+	out.VlanSameProject = direct.LazyPtr(in.GetVlanSameProject())
+	out.JumboFramesEnabled = direct.LazyPtr(in.GetJumboFramesEnabled())
 	return out
 }
-func VolumeConfig_ToProto(mapCtx *direct.MapContext, in *krm.VolumeConfig) *pb.VolumeConfig {
+func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.VolumeConfig{}
+	out := &pb.NetworkConfig{}
 	// MISSING: Name
 	out.Id = direct.ValueOf(in.ID)
-	out.SnapshotsEnabled = direct.ValueOf(in.SnapshotsEnabled)
-	out.Type = direct.Enum_ToProto[pb.VolumeConfig_Type](mapCtx, in.Type)
-	out.Protocol = direct.Enum_ToProto[pb.VolumeConfig_Protocol](mapCtx, in.Protocol)
-	out.SizeGb = direct.ValueOf(in.SizeGB)
-	out.LunRanges = direct.Slice_ToProto(mapCtx, in.LunRanges, VolumeConfig_LunRange_ToProto)
-	out.MachineIds = in.MachineIds
-	out.NfsExports = direct.Slice_ToProto(mapCtx, in.NfsExports, VolumeConfig_NfsExport_ToProto)
+	out.Type = direct.Enum_ToProto[pb.NetworkConfig_Type](mapCtx, in.Type)
+	out.Bandwidth = direct.Enum_ToProto[pb.NetworkConfig_Bandwidth](mapCtx, in.Bandwidth)
+	out.VlanAttachments = direct.Slice_ToProto(mapCtx, in.VlanAttachments, NetworkConfig_IntakeVlanAttachment_ToProto)
+	out.Cidr = direct.ValueOf(in.Cidr)
+	out.ServiceCidr = direct.Enum_ToProto[pb.NetworkConfig_ServiceCidr](mapCtx, in.ServiceCidr)
 	out.UserNote = direct.ValueOf(in.UserNote)
 	out.GcpService = direct.ValueOf(in.GcpService)
-	out.PerformanceTier = direct.Enum_ToProto[pb.VolumePerformanceTier](mapCtx, in.PerformanceTier)
+	out.VlanSameProject = direct.ValueOf(in.VlanSameProject)
+	out.JumboFramesEnabled = direct.ValueOf(in.JumboFramesEnabled)
 	return out
 }
-func VolumeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig) *krm.VolumeConfigObservedState {
+func NetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VolumeConfigObservedState{}
+	out := &krm.NetworkConfigObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: ID
-	// MISSING: SnapshotsEnabled
 	// MISSING: Type
-	// MISSING: Protocol
-	// MISSING: SizeGB
-	// MISSING: LunRanges
-	// MISSING: MachineIds
-	// MISSING: NfsExports
+	// MISSING: Bandwidth
+	// MISSING: VlanAttachments
+	// MISSING: Cidr
+	// MISSING: ServiceCidr
 	// MISSING: UserNote
 	// MISSING: GcpService
-	// MISSING: PerformanceTier
+	// MISSING: VlanSameProject
+	// MISSING: JumboFramesEnabled
 	return out
 }
-func VolumeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeConfigObservedState) *pb.VolumeConfig {
+func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfigObservedState) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.VolumeConfig{}
+	out := &pb.NetworkConfig{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: ID
-	// MISSING: SnapshotsEnabled
 	// MISSING: Type
-	// MISSING: Protocol
-	// MISSING: SizeGB
-	// MISSING: LunRanges
-	// MISSING: MachineIds
-	// MISSING: NfsExports
+	// MISSING: Bandwidth
+	// MISSING: VlanAttachments
+	// MISSING: Cidr
+	// MISSING: ServiceCidr
 	// MISSING: UserNote
 	// MISSING: GcpService
-	// MISSING: PerformanceTier
+	// MISSING: VlanSameProject
+	// MISSING: JumboFramesEnabled
 	return out
 }
-func VolumeConfig_LunRange_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig_LunRange) *krm.VolumeConfig_LunRange {
+func NetworkConfig_IntakeVlanAttachment_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig_IntakeVlanAttachment) *krm.NetworkConfig_IntakeVlanAttachment {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VolumeConfig_LunRange{}
-	out.Quantity = direct.LazyPtr(in.GetQuantity())
-	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
+	out := &krm.NetworkConfig_IntakeVlanAttachment{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.PairingKey = direct.LazyPtr(in.GetPairingKey())
 	return out
 }
-func VolumeConfig_LunRange_ToProto(mapCtx *direct.MapContext, in *krm.VolumeConfig_LunRange) *pb.VolumeConfig_LunRange {
+func NetworkConfig_IntakeVlanAttachment_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig_IntakeVlanAttachment) *pb.NetworkConfig_IntakeVlanAttachment {
 	if in == nil {
 		return nil
 	}
-	out := &pb.VolumeConfig_LunRange{}
-	out.Quantity = direct.ValueOf(in.Quantity)
-	out.SizeGb = direct.ValueOf(in.SizeGB)
-	return out
-}
-func VolumeConfig_NfsExport_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig_NfsExport) *krm.VolumeConfig_NfsExport {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VolumeConfig_NfsExport{}
-	out.NetworkID = direct.LazyPtr(in.GetNetworkId())
-	out.MachineID = direct.LazyPtr(in.GetMachineId())
-	out.Cidr = direct.LazyPtr(in.GetCidr())
-	out.Permissions = direct.Enum_FromProto(mapCtx, in.GetPermissions())
-	out.NoRootSquash = direct.LazyPtr(in.GetNoRootSquash())
-	out.AllowSuid = direct.LazyPtr(in.GetAllowSuid())
-	out.AllowDev = direct.LazyPtr(in.GetAllowDev())
-	return out
-}
-func VolumeConfig_NfsExport_ToProto(mapCtx *direct.MapContext, in *krm.VolumeConfig_NfsExport) *pb.VolumeConfig_NfsExport {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VolumeConfig_NfsExport{}
-	out.NetworkId = direct.ValueOf(in.NetworkID)
-	if oneof := VolumeConfig_NfsExport_MachineId_ToProto(mapCtx, in.MachineID); oneof != nil {
-		out.Client = oneof
-	}
-	if oneof := VolumeConfig_NfsExport_Cidr_ToProto(mapCtx, in.Cidr); oneof != nil {
-		out.Client = oneof
-	}
-	out.Permissions = direct.Enum_ToProto[pb.VolumeConfig_NfsExport_Permissions](mapCtx, in.Permissions)
-	out.NoRootSquash = direct.ValueOf(in.NoRootSquash)
-	out.AllowSuid = direct.ValueOf(in.AllowSuid)
-	out.AllowDev = direct.ValueOf(in.AllowDev)
+	out := &pb.NetworkConfig_IntakeVlanAttachment{}
+	out.Id = direct.ValueOf(in.ID)
+	out.PairingKey = direct.ValueOf(in.PairingKey)
 	return out
 }
