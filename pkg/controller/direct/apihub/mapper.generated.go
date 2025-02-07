@@ -560,6 +560,46 @@ func ApihubExternalApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubExte
 	// MISSING: UpdateTime
 	return out
 }
+func ApihubHostProjectRegistrationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HostProjectRegistration) *krm.ApihubHostProjectRegistrationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubHostProjectRegistrationObservedState{}
+	// MISSING: Name
+	// MISSING: GcpProject
+	// MISSING: CreateTime
+	return out
+}
+func ApihubHostProjectRegistrationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubHostProjectRegistrationObservedState) *pb.HostProjectRegistration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HostProjectRegistration{}
+	// MISSING: Name
+	// MISSING: GcpProject
+	// MISSING: CreateTime
+	return out
+}
+func ApihubHostProjectRegistrationSpec_FromProto(mapCtx *direct.MapContext, in *pb.HostProjectRegistration) *krm.ApihubHostProjectRegistrationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubHostProjectRegistrationSpec{}
+	// MISSING: Name
+	// MISSING: GcpProject
+	// MISSING: CreateTime
+	return out
+}
+func ApihubHostProjectRegistrationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubHostProjectRegistrationSpec) *pb.HostProjectRegistration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HostProjectRegistration{}
+	// MISSING: Name
+	// MISSING: GcpProject
+	// MISSING: CreateTime
+	return out
+}
 func ApihubSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Spec) *krm.ApihubSpecObservedState {
 	if in == nil {
 		return nil
@@ -724,165 +764,43 @@ func ApihubVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubVersionS
 	// MISSING: SelectedDeployment
 	return out
 }
-func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
+func HostProjectRegistration_FromProto(mapCtx *direct.MapContext, in *pb.HostProjectRegistration) *krm.HostProjectRegistration {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AttributeValues{}
-	out.EnumValues = AttributeValues_EnumAttributeValues_FromProto(mapCtx, in.GetEnumValues())
-	out.StringValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetStringValues())
-	out.JsonValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetJsonValues())
-	// MISSING: Attribute
-	return out
-}
-func AttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues) *pb.AttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues{}
-	if oneof := AttributeValues_EnumAttributeValues_ToProto(mapCtx, in.EnumValues); oneof != nil {
-		out.Value = &pb.AttributeValues_EnumValues{EnumValues: oneof}
-	}
-	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.StringValues); oneof != nil {
-		out.Value = &pb.AttributeValues_StringValues{StringValues: oneof}
-	}
-	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.JsonValues); oneof != nil {
-		out.Value = &pb.AttributeValues_JsonValues{JsonValues: oneof}
-	}
-	// MISSING: Attribute
-	return out
-}
-func AttributeValues_EnumAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributeValues_EnumAttributeValues{}
-	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Attribute_AllowedValue_FromProto)
-	return out
-}
-func AttributeValues_EnumAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_EnumAttributeValues) *pb.AttributeValues_EnumAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues_EnumAttributeValues{}
-	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Attribute_AllowedValue_ToProto)
-	return out
-}
-func AttributeValues_StringAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_StringAttributeValues) *krm.AttributeValues_StringAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributeValues_StringAttributeValues{}
-	out.Values = in.Values
-	return out
-}
-func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_StringAttributeValues) *pb.AttributeValues_StringAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues_StringAttributeValues{}
-	out.Values = in.Values
-	return out
-}
-func Attribute_AllowedValue_FromProto(mapCtx *direct.MapContext, in *pb.Attribute_AllowedValue) *krm.Attribute_AllowedValue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Attribute_AllowedValue{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Immutable = direct.LazyPtr(in.GetImmutable())
-	return out
-}
-func Attribute_AllowedValue_ToProto(mapCtx *direct.MapContext, in *krm.Attribute_AllowedValue) *pb.Attribute_AllowedValue {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Attribute_AllowedValue{}
-	out.Id = direct.ValueOf(in.ID)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Immutable = direct.ValueOf(in.Immutable)
-	return out
-}
-func Documentation_FromProto(mapCtx *direct.MapContext, in *pb.Documentation) *krm.Documentation {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Documentation{}
-	out.ExternalURI = direct.LazyPtr(in.GetExternalUri())
-	return out
-}
-func Documentation_ToProto(mapCtx *direct.MapContext, in *krm.Documentation) *pb.Documentation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Documentation{}
-	out.ExternalUri = direct.ValueOf(in.ExternalURI)
-	return out
-}
-func ExternalApi_FromProto(mapCtx *direct.MapContext, in *pb.ExternalApi) *krm.ExternalApi {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExternalApi{}
+	out := &krm.HostProjectRegistration{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Endpoints = in.Endpoints
-	out.Paths = in.Paths
-	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
-	// MISSING: Attributes
+	out.GcpProject = direct.LazyPtr(in.GetGcpProject())
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	return out
 }
-func ExternalApi_ToProto(mapCtx *direct.MapContext, in *krm.ExternalApi) *pb.ExternalApi {
+func HostProjectRegistration_ToProto(mapCtx *direct.MapContext, in *krm.HostProjectRegistration) *pb.HostProjectRegistration {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ExternalApi{}
+	out := &pb.HostProjectRegistration{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Endpoints = in.Endpoints
-	out.Paths = in.Paths
-	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
-	// MISSING: Attributes
+	out.GcpProject = direct.ValueOf(in.GcpProject)
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	return out
 }
-func ExternalApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalApi) *krm.ExternalApiObservedState {
+func HostProjectRegistrationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HostProjectRegistration) *krm.HostProjectRegistrationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExternalApiObservedState{}
+	out := &krm.HostProjectRegistrationObservedState{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Endpoints
-	// MISSING: Paths
-	// MISSING: Documentation
-	// MISSING: Attributes
+	// MISSING: GcpProject
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func ExternalApiObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExternalApiObservedState) *pb.ExternalApi {
+func HostProjectRegistrationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HostProjectRegistrationObservedState) *pb.HostProjectRegistration {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ExternalApi{}
+	out := &pb.HostProjectRegistration{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Endpoints
-	// MISSING: Paths
-	// MISSING: Documentation
-	// MISSING: Attributes
+	// MISSING: GcpProject
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
