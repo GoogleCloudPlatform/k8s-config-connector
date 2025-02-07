@@ -22,9 +22,6 @@ import (
 
 var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // LoggingLinkSpec defines the desired state of LoggingLink
 // +kcc:proto=google.logging.v2.Link
 type LoggingLinkSpec struct {
@@ -59,7 +56,6 @@ type LoggingLinkStatus struct {
 
 // LoggingLinkObservedState is the state of the LoggingLink resource as most recently observed in GCP.
 type LoggingLinkObservedState struct {
-	// We need to add a reference here to lifecycle state and Bigquery Dataset here since they are in the proto
 
 	// +optional
 	// +kubebuilder:validation:Format=date-time

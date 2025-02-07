@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,13 @@
 
 package v1alpha1
 
+
 // +kcc:proto=google.logging.v2.BigQueryDataset
 type BigQueryDataset struct {
+}
+
+// +kcc:proto=google.logging.v2.BigQueryDataset
+type BigQueryDatasetObservedState struct {
 	// Output only. The full resource name of the BigQuery dataset. The DATASET_ID
 	//  will match the ID of the link, so the link must match the naming
 	//  restrictions of BigQuery datasets (alphanumeric characters and underscores
@@ -23,5 +28,6 @@ type BigQueryDataset struct {
 	//
 	//  The dataset will have a resource path of
 	//    "bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET_ID]"
+	// +kcc:proto:field=google.logging.v2.BigQueryDataset.dataset_id
 	DatasetID *string `json:"datasetID,omitempty"`
 }
