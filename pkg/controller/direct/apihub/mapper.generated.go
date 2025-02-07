@@ -15,10 +15,10 @@
 package apihub
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func ApihubApiHubInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiHubInstance) *krm.ApihubApiHubInstanceObservedState {
 	if in == nil {
@@ -648,6 +648,46 @@ func ApihubPluginSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubPluginSpe
 	// MISSING: State
 	return out
 }
+func ApihubRuntimeProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.ApihubRuntimeProjectAttachmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubRuntimeProjectAttachmentObservedState{}
+	// MISSING: Name
+	// MISSING: RuntimeProject
+	// MISSING: CreateTime
+	return out
+}
+func ApihubRuntimeProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubRuntimeProjectAttachmentObservedState) *pb.RuntimeProjectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuntimeProjectAttachment{}
+	// MISSING: Name
+	// MISSING: RuntimeProject
+	// MISSING: CreateTime
+	return out
+}
+func ApihubRuntimeProjectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.ApihubRuntimeProjectAttachmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubRuntimeProjectAttachmentSpec{}
+	// MISSING: Name
+	// MISSING: RuntimeProject
+	// MISSING: CreateTime
+	return out
+}
+func ApihubRuntimeProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubRuntimeProjectAttachmentSpec) *pb.RuntimeProjectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuntimeProjectAttachment{}
+	// MISSING: Name
+	// MISSING: RuntimeProject
+	// MISSING: CreateTime
+	return out
+}
 func ApihubSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Spec) *krm.ApihubSpecObservedState {
 	if in == nil {
 		return nil
@@ -852,155 +892,43 @@ func ApihubVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubVersionS
 	// MISSING: SelectedDeployment
 	return out
 }
-func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
+func RuntimeProjectAttachment_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.RuntimeProjectAttachment {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AttributeValues{}
-	out.EnumValues = AttributeValues_EnumAttributeValues_FromProto(mapCtx, in.GetEnumValues())
-	out.StringValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetStringValues())
-	out.JsonValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetJsonValues())
-	// MISSING: Attribute
-	return out
-}
-func AttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues) *pb.AttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues{}
-	if oneof := AttributeValues_EnumAttributeValues_ToProto(mapCtx, in.EnumValues); oneof != nil {
-		out.Value = &pb.AttributeValues_EnumValues{EnumValues: oneof}
-	}
-	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.StringValues); oneof != nil {
-		out.Value = &pb.AttributeValues_StringValues{StringValues: oneof}
-	}
-	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.JsonValues); oneof != nil {
-		out.Value = &pb.AttributeValues_JsonValues{JsonValues: oneof}
-	}
-	// MISSING: Attribute
-	return out
-}
-func AttributeValuesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValuesObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributeValuesObservedState{}
-	// MISSING: EnumValues
-	// MISSING: StringValues
-	// MISSING: JsonValues
-	out.Attribute = direct.LazyPtr(in.GetAttribute())
-	return out
-}
-func AttributeValuesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValuesObservedState) *pb.AttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues{}
-	// MISSING: EnumValues
-	// MISSING: StringValues
-	// MISSING: JsonValues
-	out.Attribute = direct.ValueOf(in.Attribute)
-	return out
-}
-func AttributeValues_EnumAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributeValues_EnumAttributeValues{}
-	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Attribute_AllowedValue_FromProto)
-	return out
-}
-func AttributeValues_EnumAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_EnumAttributeValues) *pb.AttributeValues_EnumAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues_EnumAttributeValues{}
-	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Attribute_AllowedValue_ToProto)
-	return out
-}
-func AttributeValues_StringAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_StringAttributeValues) *krm.AttributeValues_StringAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributeValues_StringAttributeValues{}
-	out.Values = in.Values
-	return out
-}
-func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_StringAttributeValues) *pb.AttributeValues_StringAttributeValues {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributeValues_StringAttributeValues{}
-	out.Values = in.Values
-	return out
-}
-func Attribute_AllowedValue_FromProto(mapCtx *direct.MapContext, in *pb.Attribute_AllowedValue) *krm.Attribute_AllowedValue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Attribute_AllowedValue{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Immutable = direct.LazyPtr(in.GetImmutable())
-	return out
-}
-func Attribute_AllowedValue_ToProto(mapCtx *direct.MapContext, in *krm.Attribute_AllowedValue) *pb.Attribute_AllowedValue {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Attribute_AllowedValue{}
-	out.Id = direct.ValueOf(in.ID)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Immutable = direct.ValueOf(in.Immutable)
-	return out
-}
-func Plugin_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.Plugin {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Plugin{}
+	out := &krm.RuntimeProjectAttachment{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Type = AttributeValues_FromProto(mapCtx, in.GetType())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: State
+	out.RuntimeProject = direct.LazyPtr(in.GetRuntimeProject())
+	// MISSING: CreateTime
 	return out
 }
-func Plugin_ToProto(mapCtx *direct.MapContext, in *krm.Plugin) *pb.Plugin {
+func RuntimeProjectAttachment_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeProjectAttachment) *pb.RuntimeProjectAttachment {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Plugin{}
+	out := &pb.RuntimeProjectAttachment{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Type = AttributeValues_ToProto(mapCtx, in.Type)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: State
+	out.RuntimeProject = direct.ValueOf(in.RuntimeProject)
+	// MISSING: CreateTime
 	return out
 }
-func PluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.PluginObservedState {
+func RuntimeProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeProjectAttachment) *krm.RuntimeProjectAttachmentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PluginObservedState{}
+	out := &krm.RuntimeProjectAttachmentObservedState{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	out.Type = AttributeValuesObservedState_FromProto(mapCtx, in.GetType())
-	// MISSING: Description
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: RuntimeProject
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
-func PluginObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PluginObservedState) *pb.Plugin {
+func RuntimeProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeProjectAttachmentObservedState) *pb.RuntimeProjectAttachment {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Plugin{}
+	out := &pb.RuntimeProjectAttachment{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	out.Type = AttributeValuesObservedState_ToProto(mapCtx, in.Type)
-	// MISSING: Description
-	out.State = direct.Enum_ToProto[pb.Plugin_State](mapCtx, in.State)
+	// MISSING: RuntimeProject
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }

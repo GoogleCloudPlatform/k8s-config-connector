@@ -15,119 +15,24 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
-type Attribute_AllowedValue struct {
-	// Required. The ID of the allowed value.
-	//  * If provided, the same will be used. The service will throw an error if
-	//  the specified id is already used by another allowed value in the same
-	//  attribute resource.
-	//  * If not provided, a system generated id derived from the display name
-	//  will be used. In this case, the service will handle conflict resolution
-	//  by adding a system generated suffix in case of duplicates.
-	//
-	//  This value should be 4-63 characters, and valid characters
-	//  are /[a-z][0-9]-/.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.id
-	ID *string `json:"id,omitempty"`
-
-	// Required. The display name of the allowed value.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. The detailed description of the allowed value.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. When set to true, the allowed value cannot be updated or
-	//  deleted by the user. It can only be true for System defined attributes.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.immutable
-	Immutable *bool `json:"immutable,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues
-type AttributeValues struct {
-	// The attribute values associated with a resource in case attribute data
-	//  type is enum.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.enum_values
-	EnumValues *AttributeValues_EnumAttributeValues `json:"enumValues,omitempty"`
-
-	// The attribute values associated with a resource in case attribute data
-	//  type is string.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.string_values
-	StringValues *AttributeValues_StringAttributeValues `json:"stringValues,omitempty"`
-
-	// The attribute values associated with a resource in case attribute data
-	//  type is JSON.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.json_values
-	JsonValues *AttributeValues_StringAttributeValues `json:"jsonValues,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
-type AttributeValues_EnumAttributeValues struct {
-	// Required. The attribute values in case attribute data type is enum.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues.values
-	Values []Attribute_AllowedValue `json:"values,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues.StringAttributeValues
-type AttributeValues_StringAttributeValues struct {
-	// Required. The attribute values in case attribute data type is string or
-	//  JSON.
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.StringAttributeValues.values
-	Values []string `json:"values,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Plugin
-type Plugin struct {
-	// Identifier. The name of the plugin.
-	//  Format: `projects/{project}/locations/{location}/plugins/{plugin}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Plugin.name
+// +kcc:proto=google.cloud.apihub.v1.RuntimeProjectAttachment
+type RuntimeProjectAttachment struct {
+	// Identifier. The resource name of a runtime project attachment. Format:
+	//  "projects/{project}/locations/{location}/runtimeProjectAttachments/{runtime_project_attachment}".
+	// +kcc:proto:field=google.cloud.apihub.v1.RuntimeProjectAttachment.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. The display name of the plugin. Max length is 50 characters
-	//  (Unicode code points).
-	// +kcc:proto:field=google.cloud.apihub.v1.Plugin.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Required. The type of the API.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-plugin-type`
-	//  attribute.
-	//  The number of allowed values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Plugin.type
-	Type *AttributeValues `json:"type,omitempty"`
-
-	// Optional. The plugin description. Max length is 2000 characters (Unicode
-	//  code points).
-	// +kcc:proto:field=google.cloud.apihub.v1.Plugin.description
-	Description *string `json:"description,omitempty"`
+	// Required. Immutable. Google cloud project name in the format:
+	//  "projects/abc" or "projects/123". As input, project name with either
+	//  project id or number are accepted. As output, this field will contain
+	//  project number.
+	// +kcc:proto:field=google.cloud.apihub.v1.RuntimeProjectAttachment.runtime_project
+	RuntimeProject *string `json:"runtimeProject,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues
-type AttributeValuesObservedState struct {
-	// Output only. The name of the attribute.
-	//  Format: projects/{project}/locations/{location}/attributes/{attribute}
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.attribute
-	Attribute *string `json:"attribute,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Plugin
-type PluginObservedState struct {
-	// Required. The type of the API.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-plugin-type`
-	//  attribute.
-	//  The number of allowed values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Plugin.type
-	Type *AttributeValuesObservedState `json:"type,omitempty"`
-
-	// Output only. Represents the state of the plugin.
-	// +kcc:proto:field=google.cloud.apihub.v1.Plugin.state
-	State *string `json:"state,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.RuntimeProjectAttachment
+type RuntimeProjectAttachmentObservedState struct {
+	// Output only. Create time.
+	// +kcc:proto:field=google.cloud.apihub.v1.RuntimeProjectAttachment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
