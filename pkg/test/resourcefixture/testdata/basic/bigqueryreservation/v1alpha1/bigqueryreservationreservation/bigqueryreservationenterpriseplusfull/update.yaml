@@ -18,8 +18,8 @@ metadata:
   name: bigqueryreservationreservation-${uniqueId}
 spec:
   autoscale:
-    maxSlots: 100
-  concurrency: 0
+    maxSlots: 50
+  concurrency: 10
   edition: ENTERPRISE_PLUS
   ignoreIdleSlots: true
   location: us-west2
@@ -27,4 +27,4 @@ spec:
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
-  slotCapacity: 0
+  slotCapacity: 50
