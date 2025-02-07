@@ -15,75 +15,11 @@
 package cloudcontrolspartner
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/cloudcontrolspartner/apiv1/cloudcontrolspartnerpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudcontrolspartner/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/cloudcontrolspartner/apiv1beta/cloudcontrolspartnerpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudcontrolspartner/v1alpha1"
 )
-func CloudcontrolspartnerWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.CloudcontrolspartnerWorkloadObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudcontrolspartnerWorkloadObservedState{}
-	// MISSING: Name
-	// MISSING: FolderID
-	// MISSING: CreateTime
-	// MISSING: Folder
-	// MISSING: WorkloadOnboardingState
-	// MISSING: IsOnboarded
-	// MISSING: KeyManagementProjectID
-	// MISSING: Location
-	// MISSING: Partner
-	return out
-}
-func CloudcontrolspartnerWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerWorkloadObservedState) *pb.Workload {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Workload{}
-	// MISSING: Name
-	// MISSING: FolderID
-	// MISSING: CreateTime
-	// MISSING: Folder
-	// MISSING: WorkloadOnboardingState
-	// MISSING: IsOnboarded
-	// MISSING: KeyManagementProjectID
-	// MISSING: Location
-	// MISSING: Partner
-	return out
-}
-func CloudcontrolspartnerWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.CloudcontrolspartnerWorkloadSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudcontrolspartnerWorkloadSpec{}
-	// MISSING: Name
-	// MISSING: FolderID
-	// MISSING: CreateTime
-	// MISSING: Folder
-	// MISSING: WorkloadOnboardingState
-	// MISSING: IsOnboarded
-	// MISSING: KeyManagementProjectID
-	// MISSING: Location
-	// MISSING: Partner
-	return out
-}
-func CloudcontrolspartnerWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerWorkloadSpec) *pb.Workload {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Workload{}
-	// MISSING: Name
-	// MISSING: FolderID
-	// MISSING: CreateTime
-	// MISSING: Folder
-	// MISSING: WorkloadOnboardingState
-	// MISSING: IsOnboarded
-	// MISSING: KeyManagementProjectID
-	// MISSING: Location
-	// MISSING: Partner
-	return out
-}
 func Workload_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.Workload {
 	if in == nil {
 		return nil
