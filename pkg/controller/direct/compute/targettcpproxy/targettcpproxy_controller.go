@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/compute/apiv1"
@@ -259,72 +261,80 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 
-	op := &gcp.Operation{}
-	updated := &computepb.TargetTcpProxy{}
-
 	parent := a.id.Parent()
 	tokens := strings.Split(a.id.String(), "/")
-	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
+	updated := &computepb.TargetTcpProxy{}
 
-	// todo(yuhou): Can we have a cleaner way to detect spec changes? Can this be more general so we can applied in other controllers or base controller?
-	desiredSpec := &desired.Spec
-	actualSpec := ComputeTargetTCPProxySpec_FromProto(mapCtx, a.actual)
-	// Add resourceID to actualSpec as the converter function does not cover this field
-	if desiredSpec.ResourceID == nil {
-		// If resourceID is not specified, use metadata name
-		actualSpec.ResourceID = direct.LazyPtr(desired.Name)
-		desiredSpec.ResourceID = actualSpec.ResourceID
-	} else {
-		actualSpec.ResourceID = desiredSpec.ResourceID
-	}
-	// Changes on resource spec are detected
-	if !reflect.DeepEqual(desiredSpec, actualSpec) && parent.Location != "global" {
-		// Regional ComputeTargetTCPProxy API does not support Update
-		return fmt.Errorf("update operation not supported for regional ComputeTargetTCPProxy")
-	}
-
-	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
-		setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
-			Project: parent.ProjectID,
-			TargetTcpProxiesSetProxyHeaderRequestResource: &computepb.TargetTcpProxiesSetProxyHeaderRequest{ProxyHeader: targetTCPProxy.ProxyHeader},
-			TargetTcpProxy: tokens[len(tokens)-1],
-		}
-		op, err = a.targetTcpProxiesClient.SetProxyHeader(ctx, setProxyHeaderReq)
-		if err != nil {
-			return fmt.Errorf("updating ComputeTargetTCPProxy proxy header %s: %w", a.id, err)
-		}
-		if !op.Done() {
-			err = op.Wait(ctx)
-			if err != nil {
-				return fmt.Errorf("waiting ComputeTargetTCPProxy proxy header %s update failed: %w", a.id, err)
-			}
-		}
-		log.V(2).Info("successfully updated ComputeTargetTCPProxy proxy header", "name", a.id)
-	}
-
-	if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) {
-		setBackendServiceReq := &computepb.SetBackendServiceTargetTcpProxyRequest{
-			Project: parent.ProjectID,
-			TargetTcpProxiesSetBackendServiceRequestResource: &computepb.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},
-			TargetTcpProxy: tokens[len(tokens)-1],
-		}
-		op, err = a.targetTcpProxiesClient.SetBackendService(ctx, setBackendServiceReq)
-		if err != nil {
-			return fmt.Errorf("updating ComputeTargetTCPProxy backend service %s: %w", a.id, err)
-		}
-		if !op.Done() {
-			err = op.Wait(ctx)
-			if err != nil {
-				return fmt.Errorf("waiting ComputeTargetTCPProxy backend service %s update failed: %w", a.id, err)
-			}
-		}
-		log.V(2).Info("successfully updated ComputeTargetTCPProxy backend service", "name", a.id)
-	}
-
-	// Get the updated resource
-	updated, err = a.get(ctx)
+	// Assign API output-only values
+	// todo: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4455
+	targetTCPProxy.CreationTimestamp = a.actual.CreationTimestamp
+	targetTCPProxy.Id = a.actual.Id
+	targetTCPProxy.SelfLink = a.actual.SelfLink
+	targetTCPProxy.Kind = a.actual.Kind
+	// Convert region `europe-west4` to proto region format `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4`
+	// Prevent diff when comparing with proto message
+	targetTCPProxy.Region = direct.LazyPtr(fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", parent))
+	targetTCPProxy.Name = direct.LazyPtr(a.id.ID())
+	paths, err := common.CompareProtoMessage(targetTCPProxy, a.actual, common.BasicDiff)
 	if err != nil {
-		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id, err)
+		return err
+	}
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+
+		// Even though there is no update, we still want to update KRM status
+		updated = a.actual
+	} else {
+		// Changes on resource spec are detected
+		if parent.Location != "global" {
+			// Regional ComputeTargetTCPProxy API does not support Update
+			return fmt.Errorf("update operation not supported for regional ComputeTargetTCPProxy")
+		}
+
+		op := &gcp.Operation{}
+		if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
+			setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
+				Project: parent.ProjectID,
+				TargetTcpProxiesSetProxyHeaderRequestResource: &computepb.TargetTcpProxiesSetProxyHeaderRequest{ProxyHeader: targetTCPProxy.ProxyHeader},
+				TargetTcpProxy: tokens[len(tokens)-1],
+			}
+			op, err = a.targetTcpProxiesClient.SetProxyHeader(ctx, setProxyHeaderReq)
+			if err != nil {
+				return fmt.Errorf("updating ComputeTargetTCPProxy proxy header %s: %w", a.id, err)
+			}
+			if !op.Done() {
+				err = op.Wait(ctx)
+				if err != nil {
+					return fmt.Errorf("waiting ComputeTargetTCPProxy proxy header %s update failed: %w", a.id, err)
+				}
+			}
+			log.V(2).Info("successfully updated ComputeTargetTCPProxy proxy header", "name", a.id)
+		}
+
+		if !reflect.DeepEqual(targetTCPProxy.Service, a.actual.Service) {
+			setBackendServiceReq := &computepb.SetBackendServiceTargetTcpProxyRequest{
+				Project: parent.ProjectID,
+				TargetTcpProxiesSetBackendServiceRequestResource: &computepb.TargetTcpProxiesSetBackendServiceRequest{Service: targetTCPProxy.Service},
+				TargetTcpProxy: tokens[len(tokens)-1],
+			}
+			op, err = a.targetTcpProxiesClient.SetBackendService(ctx, setBackendServiceReq)
+			if err != nil {
+				return fmt.Errorf("updating ComputeTargetTCPProxy backend service %s: %w", a.id, err)
+			}
+			if !op.Done() {
+				err = op.Wait(ctx)
+				if err != nil {
+					return fmt.Errorf("waiting ComputeTargetTCPProxy backend service %s update failed: %w", a.id, err)
+				}
+			}
+			log.V(2).Info("successfully updated ComputeTargetTCPProxy backend service", "name", a.id)
+		}
+
+		// Get the updated resource
+		updated, err = a.get(ctx)
+		if err != nil {
+			return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id, err)
+		}
 	}
 
 	status := &krm.ComputeTargetTCPProxyStatus{}
@@ -339,6 +349,11 @@ func (a *targetTCPProxyAdapter) Export(ctx context.Context) (*unstructured.Unstr
 
 	mc := &direct.MapContext{}
 	spec := ComputeTargetTCPProxySpec_FromProto(mc, a.actual)
+	// Convert proto region format `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4` to `europe-west4`
+	if spec.Location != nil {
+		region := strings.Split(*spec.Location, "/")
+		spec.Location = direct.LazyPtr(region[len(region)-1])
+	}
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
 		return nil, fmt.Errorf("error converting targetTcpProxy spec to unstructured: %w", err)
