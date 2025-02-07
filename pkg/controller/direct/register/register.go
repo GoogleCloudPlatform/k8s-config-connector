@@ -37,6 +37,7 @@ import (
 	_ "pkg/controller/direct/blockchainnodeengine"
 	_ "pkg/controller/direct/certificatemanager"
 	_ "pkg/controller/direct/channel"
+	_ "pkg/controller/direct/cloudcontrolspartner"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
