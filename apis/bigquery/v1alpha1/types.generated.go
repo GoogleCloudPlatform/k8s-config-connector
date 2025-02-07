@@ -15,33 +15,52 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
-type Catalog struct {
+// +kcc:proto=google.cloud.bigquery.biglake.v1.Database
+type Database struct {
+	// Options of a Hive database.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.hive_options
+	HiveOptions *HiveDatabaseOptions `json:"hiveOptions,omitempty"`
+
+	// The database type.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.type
+	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
-type CatalogObservedState struct {
+// +kcc:proto=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions
+type HiveDatabaseOptions struct {
+	// Cloud Storage folder URI where the database data is stored, starting with
+	//  "gs://".
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions.location_uri
+	LocationURI *string `json:"locationURI,omitempty"`
+
+	// Stores user supplied Hive database parameters.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions.parameters
+	Parameters map[string]string `json:"parameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.biglake.v1.Database
+type DatabaseObservedState struct {
 	// Output only. The resource name.
 	//  Format:
-	//  projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
-	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.name
+	//  projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. The creation time of the catalog.
-	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.create_time
+	// Output only. The creation time of the database.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The last modification time of the catalog.
-	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.update_time
+	// Output only. The last modification time of the database.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. The deletion time of the catalog. Only set after the catalog
+	// Output only. The deletion time of the database. Only set after the database
 	//  is deleted.
-	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.delete_time
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.delete_time
 	DeleteTime *string `json:"deleteTime,omitempty"`
 
-	// Output only. The time when this catalog is considered expired. Only set
-	//  after the catalog is deleted.
-	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.expire_time
+	// Output only. The time when this database is considered expired. Only set
+	//  after the database is deleted.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.expire_time
 	ExpireTime *string `json:"expireTime,omitempty"`
 }
