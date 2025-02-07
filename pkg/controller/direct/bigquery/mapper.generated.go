@@ -16,307 +16,315 @@ package bigquery
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
+	pb "cloud.google.com/go/bigquery/storage/apiv1/storagepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func BiReservation_FromProto(mapCtx *direct.MapContext, in *pb.BiReservation) *krm.BiReservation {
+func ArrowSchema_FromProto(mapCtx *direct.MapContext, in *pb.ArrowSchema) *krm.ArrowSchema {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BiReservation{}
+	out := &krm.ArrowSchema{}
+	out.SerializedSchema = in.GetSerializedSchema()
+	return out
+}
+func ArrowSchema_ToProto(mapCtx *direct.MapContext, in *krm.ArrowSchema) *pb.ArrowSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ArrowSchema{}
+	out.SerializedSchema = in.SerializedSchema
+	return out
+}
+func ArrowSerializationOptions_FromProto(mapCtx *direct.MapContext, in *pb.ArrowSerializationOptions) *krm.ArrowSerializationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArrowSerializationOptions{}
+	out.BufferCompression = direct.Enum_FromProto(mapCtx, in.GetBufferCompression())
+	return out
+}
+func ArrowSerializationOptions_ToProto(mapCtx *direct.MapContext, in *krm.ArrowSerializationOptions) *pb.ArrowSerializationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ArrowSerializationOptions{}
+	out.BufferCompression = direct.Enum_ToProto[pb.ArrowSerializationOptions_CompressionCodec](mapCtx, in.BufferCompression)
+	return out
+}
+func AvroSchema_FromProto(mapCtx *direct.MapContext, in *pb.AvroSchema) *krm.AvroSchema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AvroSchema{}
+	out.Schema = direct.LazyPtr(in.GetSchema())
+	return out
+}
+func AvroSchema_ToProto(mapCtx *direct.MapContext, in *krm.AvroSchema) *pb.AvroSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AvroSchema{}
+	out.Schema = direct.ValueOf(in.Schema)
+	return out
+}
+func AvroSerializationOptions_FromProto(mapCtx *direct.MapContext, in *pb.AvroSerializationOptions) *krm.AvroSerializationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AvroSerializationOptions{}
+	out.EnableDisplayNameAttribute = direct.LazyPtr(in.GetEnableDisplayNameAttribute())
+	return out
+}
+func AvroSerializationOptions_ToProto(mapCtx *direct.MapContext, in *krm.AvroSerializationOptions) *pb.AvroSerializationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AvroSerializationOptions{}
+	out.EnableDisplayNameAttribute = direct.ValueOf(in.EnableDisplayNameAttribute)
+	return out
+}
+func BigqueryReadSessionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReadSession) *krm.BigqueryReadSessionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryReadSessionObservedState{}
+	// MISSING: Name
+	// MISSING: ExpireTime
+	// MISSING: DataFormat
+	// MISSING: AvroSchema
+	// MISSING: ArrowSchema
+	// MISSING: Table
+	// MISSING: TableModifiers
+	// MISSING: ReadOptions
+	// MISSING: Streams
+	// MISSING: EstimatedTotalBytesScanned
+	// MISSING: EstimatedTotalPhysicalFileSize
+	// MISSING: EstimatedRowCount
+	// MISSING: TraceID
+	return out
+}
+func BigqueryReadSessionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryReadSessionObservedState) *pb.ReadSession {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReadSession{}
+	// MISSING: Name
+	// MISSING: ExpireTime
+	// MISSING: DataFormat
+	// MISSING: AvroSchema
+	// MISSING: ArrowSchema
+	// MISSING: Table
+	// MISSING: TableModifiers
+	// MISSING: ReadOptions
+	// MISSING: Streams
+	// MISSING: EstimatedTotalBytesScanned
+	// MISSING: EstimatedTotalPhysicalFileSize
+	// MISSING: EstimatedRowCount
+	// MISSING: TraceID
+	return out
+}
+func BigqueryReadSessionSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReadSession) *krm.BigqueryReadSessionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryReadSessionSpec{}
+	// MISSING: Name
+	// MISSING: ExpireTime
+	// MISSING: DataFormat
+	// MISSING: AvroSchema
+	// MISSING: ArrowSchema
+	// MISSING: Table
+	// MISSING: TableModifiers
+	// MISSING: ReadOptions
+	// MISSING: Streams
+	// MISSING: EstimatedTotalBytesScanned
+	// MISSING: EstimatedTotalPhysicalFileSize
+	// MISSING: EstimatedRowCount
+	// MISSING: TraceID
+	return out
+}
+func BigqueryReadSessionSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryReadSessionSpec) *pb.ReadSession {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReadSession{}
+	// MISSING: Name
+	// MISSING: ExpireTime
+	// MISSING: DataFormat
+	// MISSING: AvroSchema
+	// MISSING: ArrowSchema
+	// MISSING: Table
+	// MISSING: TableModifiers
+	// MISSING: ReadOptions
+	// MISSING: Streams
+	// MISSING: EstimatedTotalBytesScanned
+	// MISSING: EstimatedTotalPhysicalFileSize
+	// MISSING: EstimatedRowCount
+	// MISSING: TraceID
+	return out
+}
+func ReadSession_FromProto(mapCtx *direct.MapContext, in *pb.ReadSession) *krm.ReadSession {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReadSession{}
+	// MISSING: Name
+	// MISSING: ExpireTime
+	out.DataFormat = direct.Enum_FromProto(mapCtx, in.GetDataFormat())
+	// MISSING: AvroSchema
+	// MISSING: ArrowSchema
+	out.Table = direct.LazyPtr(in.GetTable())
+	out.TableModifiers = ReadSession_TableModifiers_FromProto(mapCtx, in.GetTableModifiers())
+	out.ReadOptions = ReadSession_TableReadOptions_FromProto(mapCtx, in.GetReadOptions())
+	// MISSING: Streams
+	// MISSING: EstimatedTotalBytesScanned
+	// MISSING: EstimatedTotalPhysicalFileSize
+	// MISSING: EstimatedRowCount
+	out.TraceID = direct.LazyPtr(in.GetTraceId())
+	return out
+}
+func ReadSession_ToProto(mapCtx *direct.MapContext, in *krm.ReadSession) *pb.ReadSession {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReadSession{}
+	// MISSING: Name
+	// MISSING: ExpireTime
+	out.DataFormat = direct.Enum_ToProto[pb.DataFormat](mapCtx, in.DataFormat)
+	// MISSING: AvroSchema
+	// MISSING: ArrowSchema
+	out.Table = direct.ValueOf(in.Table)
+	out.TableModifiers = ReadSession_TableModifiers_ToProto(mapCtx, in.TableModifiers)
+	out.ReadOptions = ReadSession_TableReadOptions_ToProto(mapCtx, in.ReadOptions)
+	// MISSING: Streams
+	// MISSING: EstimatedTotalBytesScanned
+	// MISSING: EstimatedTotalPhysicalFileSize
+	// MISSING: EstimatedRowCount
+	out.TraceId = direct.ValueOf(in.TraceID)
+	return out
+}
+func ReadSessionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReadSession) *krm.ReadSessionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReadSessionObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: UpdateTime
-	out.Size = direct.LazyPtr(in.GetSize())
-	out.PreferredTables = direct.Slice_FromProto(mapCtx, in.PreferredTables, TableReference_FromProto)
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	// MISSING: DataFormat
+	out.AvroSchema = AvroSchema_FromProto(mapCtx, in.GetAvroSchema())
+	out.ArrowSchema = ArrowSchema_FromProto(mapCtx, in.GetArrowSchema())
+	// MISSING: Table
+	// MISSING: TableModifiers
+	// MISSING: ReadOptions
+	out.Streams = direct.Slice_FromProto(mapCtx, in.Streams, ReadStream_FromProto)
+	out.EstimatedTotalBytesScanned = direct.LazyPtr(in.GetEstimatedTotalBytesScanned())
+	out.EstimatedTotalPhysicalFileSize = direct.LazyPtr(in.GetEstimatedTotalPhysicalFileSize())
+	out.EstimatedRowCount = direct.LazyPtr(in.GetEstimatedRowCount())
+	// MISSING: TraceID
 	return out
 }
-func BiReservation_ToProto(mapCtx *direct.MapContext, in *krm.BiReservation) *pb.BiReservation {
+func ReadSessionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReadSessionObservedState) *pb.ReadSession {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BiReservation{}
+	out := &pb.ReadSession{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: UpdateTime
-	out.Size = direct.ValueOf(in.Size)
-	out.PreferredTables = direct.Slice_ToProto(mapCtx, in.PreferredTables, TableReference_ToProto)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	// MISSING: DataFormat
+	if oneof := AvroSchema_ToProto(mapCtx, in.AvroSchema); oneof != nil {
+		out.Schema = &pb.ReadSession_AvroSchema{AvroSchema: oneof}
+	}
+	if oneof := ArrowSchema_ToProto(mapCtx, in.ArrowSchema); oneof != nil {
+		out.Schema = &pb.ReadSession_ArrowSchema{ArrowSchema: oneof}
+	}
+	// MISSING: Table
+	// MISSING: TableModifiers
+	// MISSING: ReadOptions
+	out.Streams = direct.Slice_ToProto(mapCtx, in.Streams, ReadStream_ToProto)
+	out.EstimatedTotalBytesScanned = direct.ValueOf(in.EstimatedTotalBytesScanned)
+	out.EstimatedTotalPhysicalFileSize = direct.ValueOf(in.EstimatedTotalPhysicalFileSize)
+	out.EstimatedRowCount = direct.ValueOf(in.EstimatedRowCount)
+	// MISSING: TraceID
 	return out
 }
-func BiReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BiReservation) *krm.BiReservationObservedState {
+func ReadSession_TableModifiers_FromProto(mapCtx *direct.MapContext, in *pb.ReadSession_TableModifiers) *krm.ReadSession_TableModifiers {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BiReservationObservedState{}
+	out := &krm.ReadSession_TableModifiers{}
+	out.SnapshotTime = direct.StringTimestamp_FromProto(mapCtx, in.GetSnapshotTime())
+	return out
+}
+func ReadSession_TableModifiers_ToProto(mapCtx *direct.MapContext, in *krm.ReadSession_TableModifiers) *pb.ReadSession_TableModifiers {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReadSession_TableModifiers{}
+	out.SnapshotTime = direct.StringTimestamp_ToProto(mapCtx, in.SnapshotTime)
+	return out
+}
+func ReadSession_TableReadOptions_FromProto(mapCtx *direct.MapContext, in *pb.ReadSession_TableReadOptions) *krm.ReadSession_TableReadOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReadSession_TableReadOptions{}
+	out.SelectedFields = in.SelectedFields
+	out.RowRestriction = direct.LazyPtr(in.GetRowRestriction())
+	out.ArrowSerializationOptions = ArrowSerializationOptions_FromProto(mapCtx, in.GetArrowSerializationOptions())
+	out.AvroSerializationOptions = AvroSerializationOptions_FromProto(mapCtx, in.GetAvroSerializationOptions())
+	out.SamplePercentage = in.SamplePercentage
+	out.ResponseCompressionCodec = direct.Enum_FromProto(mapCtx, in.GetResponseCompressionCodec())
+	return out
+}
+func ReadSession_TableReadOptions_ToProto(mapCtx *direct.MapContext, in *krm.ReadSession_TableReadOptions) *pb.ReadSession_TableReadOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReadSession_TableReadOptions{}
+	out.SelectedFields = in.SelectedFields
+	out.RowRestriction = direct.ValueOf(in.RowRestriction)
+	if oneof := ArrowSerializationOptions_ToProto(mapCtx, in.ArrowSerializationOptions); oneof != nil {
+		out.OutputFormatSerializationOptions = &pb.ReadSession_TableReadOptions_ArrowSerializationOptions{ArrowSerializationOptions: oneof}
+	}
+	if oneof := AvroSerializationOptions_ToProto(mapCtx, in.AvroSerializationOptions); oneof != nil {
+		out.OutputFormatSerializationOptions = &pb.ReadSession_TableReadOptions_AvroSerializationOptions{AvroSerializationOptions: oneof}
+	}
+	out.SamplePercentage = in.SamplePercentage
+	if oneof := ReadSession_TableReadOptions_ResponseCompressionCodec_ToProto(mapCtx, in.ResponseCompressionCodec); oneof != nil {
+		out.ResponseCompressionCodec = oneof
+	}
+	return out
+}
+func ReadStream_FromProto(mapCtx *direct.MapContext, in *pb.ReadStream) *krm.ReadStream {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReadStream{}
 	// MISSING: Name
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Size
-	// MISSING: PreferredTables
 	return out
 }
-func BiReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BiReservationObservedState) *pb.BiReservation {
+func ReadStream_ToProto(mapCtx *direct.MapContext, in *krm.ReadStream) *pb.ReadStream {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BiReservation{}
+	out := &pb.ReadStream{}
 	// MISSING: Name
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Size
-	// MISSING: PreferredTables
 	return out
 }
-func BigqueryAssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigqueryAssignmentObservedState {
+func ReadStreamObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReadStream) *krm.ReadStreamObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigqueryAssignmentObservedState{}
-	// MISSING: Name
-	// MISSING: Assignee
-	// MISSING: JobType
-	// MISSING: State
+	out := &krm.ReadStreamObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
 	return out
 }
-func BigqueryAssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryAssignmentObservedState) *pb.Assignment {
+func ReadStreamObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReadStreamObservedState) *pb.ReadStream {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Assignment{}
-	// MISSING: Name
-	// MISSING: Assignee
-	// MISSING: JobType
-	// MISSING: State
-	return out
-}
-func BigqueryAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigqueryAssignmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryAssignmentSpec{}
-	// MISSING: Name
-	// MISSING: Assignee
-	// MISSING: JobType
-	// MISSING: State
-	return out
-}
-func BigqueryAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryAssignmentSpec) *pb.Assignment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Assignment{}
-	// MISSING: Name
-	// MISSING: Assignee
-	// MISSING: JobType
-	// MISSING: State
-	return out
-}
-func BigqueryBiReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BiReservation) *krm.BigqueryBiReservationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryBiReservationObservedState{}
-	// MISSING: Name
-	// MISSING: UpdateTime
-	// MISSING: Size
-	// MISSING: PreferredTables
-	return out
-}
-func BigqueryBiReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryBiReservationObservedState) *pb.BiReservation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BiReservation{}
-	// MISSING: Name
-	// MISSING: UpdateTime
-	// MISSING: Size
-	// MISSING: PreferredTables
-	return out
-}
-func BigqueryBiReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.BiReservation) *krm.BigqueryBiReservationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryBiReservationSpec{}
-	// MISSING: Name
-	// MISSING: UpdateTime
-	// MISSING: Size
-	// MISSING: PreferredTables
-	return out
-}
-func BigqueryBiReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryBiReservationSpec) *pb.BiReservation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BiReservation{}
-	// MISSING: Name
-	// MISSING: UpdateTime
-	// MISSING: Size
-	// MISSING: PreferredTables
-	return out
-}
-func BigqueryCapacityCommitmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CapacityCommitment) *krm.BigqueryCapacityCommitmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryCapacityCommitmentObservedState{}
-	// MISSING: Name
-	// MISSING: SlotCount
-	// MISSING: Plan
-	// MISSING: State
-	// MISSING: CommitmentStartTime
-	// MISSING: CommitmentEndTime
-	// MISSING: FailureStatus
-	// MISSING: RenewalPlan
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	// MISSING: IsFlatRate
-	return out
-}
-func BigqueryCapacityCommitmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryCapacityCommitmentObservedState) *pb.CapacityCommitment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CapacityCommitment{}
-	// MISSING: Name
-	// MISSING: SlotCount
-	// MISSING: Plan
-	// MISSING: State
-	// MISSING: CommitmentStartTime
-	// MISSING: CommitmentEndTime
-	// MISSING: FailureStatus
-	// MISSING: RenewalPlan
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	// MISSING: IsFlatRate
-	return out
-}
-func BigqueryCapacityCommitmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.CapacityCommitment) *krm.BigqueryCapacityCommitmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryCapacityCommitmentSpec{}
-	// MISSING: Name
-	// MISSING: SlotCount
-	// MISSING: Plan
-	// MISSING: State
-	// MISSING: CommitmentStartTime
-	// MISSING: CommitmentEndTime
-	// MISSING: FailureStatus
-	// MISSING: RenewalPlan
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	// MISSING: IsFlatRate
-	return out
-}
-func BigqueryCapacityCommitmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryCapacityCommitmentSpec) *pb.CapacityCommitment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CapacityCommitment{}
-	// MISSING: Name
-	// MISSING: SlotCount
-	// MISSING: Plan
-	// MISSING: State
-	// MISSING: CommitmentStartTime
-	// MISSING: CommitmentEndTime
-	// MISSING: FailureStatus
-	// MISSING: RenewalPlan
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	// MISSING: IsFlatRate
-	return out
-}
-func BigqueryReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigqueryReservationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryReservationObservedState{}
-	// MISSING: Name
-	// MISSING: SlotCapacity
-	// MISSING: IgnoreIdleSlots
-	// MISSING: Autoscale
-	// MISSING: Concurrency
-	// MISSING: CreationTime
-	// MISSING: UpdateTime
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	// MISSING: PrimaryLocation
-	// MISSING: SecondaryLocation
-	// MISSING: OriginalPrimaryLocation
-	return out
-}
-func BigqueryReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryReservationObservedState) *pb.Reservation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Reservation{}
-	// MISSING: Name
-	// MISSING: SlotCapacity
-	// MISSING: IgnoreIdleSlots
-	// MISSING: Autoscale
-	// MISSING: Concurrency
-	// MISSING: CreationTime
-	// MISSING: UpdateTime
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	// MISSING: PrimaryLocation
-	// MISSING: SecondaryLocation
-	// MISSING: OriginalPrimaryLocation
-	return out
-}
-func BigqueryReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigqueryReservationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryReservationSpec{}
-	// MISSING: Name
-	// MISSING: SlotCapacity
-	// MISSING: IgnoreIdleSlots
-	// MISSING: Autoscale
-	// MISSING: Concurrency
-	// MISSING: CreationTime
-	// MISSING: UpdateTime
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	// MISSING: PrimaryLocation
-	// MISSING: SecondaryLocation
-	// MISSING: OriginalPrimaryLocation
-	return out
-}
-func BigqueryReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryReservationSpec) *pb.Reservation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Reservation{}
-	// MISSING: Name
-	// MISSING: SlotCapacity
-	// MISSING: IgnoreIdleSlots
-	// MISSING: Autoscale
-	// MISSING: Concurrency
-	// MISSING: CreationTime
-	// MISSING: UpdateTime
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	// MISSING: PrimaryLocation
-	// MISSING: SecondaryLocation
-	// MISSING: OriginalPrimaryLocation
-	return out
-}
-func TableReference_FromProto(mapCtx *direct.MapContext, in *pb.TableReference) *krm.TableReference {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TableReference{}
-	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
-	out.TableID = direct.LazyPtr(in.GetTableId())
-	return out
-}
-func TableReference_ToProto(mapCtx *direct.MapContext, in *krm.TableReference) *pb.TableReference {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TableReference{}
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	out.DatasetId = direct.ValueOf(in.DatasetID)
-	out.TableId = direct.ValueOf(in.TableID)
+	out := &pb.ReadStream{}
+	out.Name = direct.ValueOf(in.Name)
 	return out
 }
