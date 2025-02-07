@@ -15,96 +15,123 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.beyondcorp.appconnections.v1.AppConnection
-type AppConnection struct {
-	// Required. Unique resource name of the AppConnection.
-	//  The name is ignored when creating a AppConnection.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.name
+// +kcc:proto=google.cloud.beyondcorp.appconnectors.v1.AppConnector
+type AppConnector struct {
+	// Required. Unique resource name of the AppConnector.
+	//  The name is ignored when creating a AppConnector.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Resource labels to represent user provided metadata.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.labels
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// Optional. An arbitrary user-provided name for the AppConnection. Cannot
+	// Optional. An arbitrary user-provided name for the AppConnector. Cannot
 	//  exceed 64 characters.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.display_name
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Required. The type of network connectivity used by the AppConnection.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.type
-	Type *string `json:"type,omitempty"`
+	// Required. Principal information about the Identity of the AppConnector.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.principal_info
+	PrincipalInfo *AppConnector_PrincipalInfo `json:"principalInfo,omitempty"`
 
-	// Required. Address of the remote application endpoint for the BeyondCorp
-	//  AppConnection.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.application_endpoint
-	ApplicationEndpoint *AppConnection_ApplicationEndpoint `json:"applicationEndpoint,omitempty"`
-
-	// Optional. List of [google.cloud.beyondcorp.v1main.Connector.name] that are
-	//  authorised to be associated with this AppConnection.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.connectors
-	Connectors []string `json:"connectors,omitempty"`
-
-	// Optional. Gateway used by the AppConnection.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.gateway
-	Gateway *AppConnection_Gateway `json:"gateway,omitempty"`
+	// Optional. Resource info of the connector.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.resource_info
+	ResourceInfo *ResourceInfo `json:"resourceInfo,omitempty"`
 }
 
-// +kcc:proto=google.cloud.beyondcorp.appconnections.v1.AppConnection.ApplicationEndpoint
-type AppConnection_ApplicationEndpoint struct {
-	// Required. Hostname or IP address of the remote application endpoint.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.ApplicationEndpoint.host
-	Host *string `json:"host,omitempty"`
-
-	// Required. Port of the remote application endpoint.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.ApplicationEndpoint.port
-	Port *int32 `json:"port,omitempty"`
+// +kcc:proto=google.cloud.beyondcorp.appconnectors.v1.AppConnector.PrincipalInfo
+type AppConnector_PrincipalInfo struct {
+	// A GCP service account.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.PrincipalInfo.service_account
+	ServiceAccount *AppConnector_PrincipalInfo_ServiceAccount `json:"serviceAccount,omitempty"`
 }
 
-// +kcc:proto=google.cloud.beyondcorp.appconnections.v1.AppConnection.Gateway
-type AppConnection_Gateway struct {
-	// Required. The type of hosting used by the gateway.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.Gateway.type
-	Type *string `json:"type,omitempty"`
-
-	// Required. AppGateway name in following format:
-	//  `projects/{project_id}/locations/{location_id}/appgateways/{gateway_id}`
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.Gateway.app_gateway
-	AppGateway *string `json:"appGateway,omitempty"`
+// +kcc:proto=google.cloud.beyondcorp.appconnectors.v1.AppConnector.PrincipalInfo.ServiceAccount
+type AppConnector_PrincipalInfo_ServiceAccount struct {
+	// Email address of the service account.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.PrincipalInfo.ServiceAccount.email
+	Email *string `json:"email,omitempty"`
 }
 
-// +kcc:proto=google.cloud.beyondcorp.appconnections.v1.AppConnection
-type AppConnectionObservedState struct {
+// +kcc:proto=google.cloud.beyondcorp.appconnectors.v1.ResourceInfo
+type ResourceInfo struct {
+	// Required. Unique Id for the resource.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.ResourceInfo.id
+	ID *string `json:"id,omitempty"`
+
+	// Overall health status. Overall status is derived based on the status of
+	//  each sub level resources.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.ResourceInfo.status
+	Status *string `json:"status,omitempty"`
+
+	// Specific details for the resource. This is for internal use only.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.ResourceInfo.resource
+	Resource *Any `json:"resource,omitempty"`
+
+	// The timestamp to collect the info. It is suggested to be set by
+	//  the topmost level resource only.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.ResourceInfo.time
+	Time *string `json:"time,omitempty"`
+
+	// List of Info for the sub level resources.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.ResourceInfo.sub
+	Sub []ResourceInfo `json:"sub,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.beyondcorp.appconnectors.v1.AppConnector
+type AppConnectorObservedState struct {
 	// Output only. Timestamp when the resource was created.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.create_time
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Timestamp when the resource was last modified.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.update_time
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. A unique identifier for the instance generated by the
 	//  system.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.uid
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.uid
 	Uid *string `json:"uid,omitempty"`
 
-	// Output only. The current state of the AppConnection.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.state
+	// Output only. The current state of the AppConnector.
+	// +kcc:proto:field=google.cloud.beyondcorp.appconnectors.v1.AppConnector.state
 	State *string `json:"state,omitempty"`
-
-	// Optional. Gateway used by the AppConnection.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.gateway
-	Gateway *AppConnection_GatewayObservedState `json:"gateway,omitempty"`
-}
-
-// +kcc:proto=google.cloud.beyondcorp.appconnections.v1.AppConnection.Gateway
-type AppConnection_GatewayObservedState struct {
-	// Output only. Server-defined URI for this resource.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.Gateway.uri
-	URI *string `json:"uri,omitempty"`
-
-	// Output only. Ingress port reserved on the gateways for this
-	//  AppConnection, if not specified or zero, the default port is 19443.
-	// +kcc:proto:field=google.cloud.beyondcorp.appconnections.v1.AppConnection.Gateway.ingress_port
-	IngressPort *int32 `json:"ingressPort,omitempty"`
 }
