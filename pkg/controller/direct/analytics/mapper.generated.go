@@ -15,10 +15,10 @@
 package analytics
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
@@ -176,6 +176,62 @@ func AnalyticsFirebaseLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.Analyt
 	// MISSING: CreateTime
 	return out
 }
+func AnalyticsGoogleAdsLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAdsLink) *krm.AnalyticsGoogleAdsLinkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsGoogleAdsLinkObservedState{}
+	// MISSING: Name
+	// MISSING: CustomerID
+	// MISSING: CanManageClients
+	// MISSING: AdsPersonalizationEnabled
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CreatorEmailAddress
+	return out
+}
+func AnalyticsGoogleAdsLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsGoogleAdsLinkObservedState) *pb.GoogleAdsLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleAdsLink{}
+	// MISSING: Name
+	// MISSING: CustomerID
+	// MISSING: CanManageClients
+	// MISSING: AdsPersonalizationEnabled
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CreatorEmailAddress
+	return out
+}
+func AnalyticsGoogleAdsLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAdsLink) *krm.AnalyticsGoogleAdsLinkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsGoogleAdsLinkSpec{}
+	// MISSING: Name
+	// MISSING: CustomerID
+	// MISSING: CanManageClients
+	// MISSING: AdsPersonalizationEnabled
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CreatorEmailAddress
+	return out
+}
+func AnalyticsGoogleAdsLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsGoogleAdsLinkSpec) *pb.GoogleAdsLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleAdsLink{}
+	// MISSING: Name
+	// MISSING: CustomerID
+	// MISSING: CanManageClients
+	// MISSING: AdsPersonalizationEnabled
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CreatorEmailAddress
+	return out
+}
 func AnalyticsPropertyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Property) *krm.AnalyticsPropertyObservedState {
 	if in == nil {
 		return nil
@@ -256,43 +312,59 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func FirebaseLink_FromProto(mapCtx *direct.MapContext, in *pb.FirebaseLink) *krm.FirebaseLink {
+func GoogleAdsLink_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAdsLink) *krm.GoogleAdsLink {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirebaseLink{}
+	out := &krm.GoogleAdsLink{}
 	// MISSING: Name
-	out.Project = direct.LazyPtr(in.GetProject())
+	out.CustomerID = direct.LazyPtr(in.GetCustomerId())
+	// MISSING: CanManageClients
+	out.AdsPersonalizationEnabled = direct.BoolValue_FromProto(mapCtx, in.GetAdsPersonalizationEnabled())
 	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CreatorEmailAddress
 	return out
 }
-func FirebaseLink_ToProto(mapCtx *direct.MapContext, in *krm.FirebaseLink) *pb.FirebaseLink {
+func GoogleAdsLink_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAdsLink) *pb.GoogleAdsLink {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FirebaseLink{}
+	out := &pb.GoogleAdsLink{}
 	// MISSING: Name
-	out.Project = direct.ValueOf(in.Project)
+	out.CustomerId = direct.ValueOf(in.CustomerID)
+	// MISSING: CanManageClients
+	out.AdsPersonalizationEnabled = direct.BoolValue_ToProto(mapCtx, in.AdsPersonalizationEnabled)
 	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CreatorEmailAddress
 	return out
 }
-func FirebaseLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirebaseLink) *krm.FirebaseLinkObservedState {
+func GoogleAdsLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAdsLink) *krm.GoogleAdsLinkObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirebaseLinkObservedState{}
+	out := &krm.GoogleAdsLinkObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Project
+	// MISSING: CustomerID
+	out.CanManageClients = direct.LazyPtr(in.GetCanManageClients())
+	// MISSING: AdsPersonalizationEnabled
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CreatorEmailAddress = direct.LazyPtr(in.GetCreatorEmailAddress())
 	return out
 }
-func FirebaseLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirebaseLinkObservedState) *pb.FirebaseLink {
+func GoogleAdsLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAdsLinkObservedState) *pb.GoogleAdsLink {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FirebaseLink{}
+	out := &pb.GoogleAdsLink{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Project
+	// MISSING: CustomerID
+	out.CanManageClients = direct.ValueOf(in.CanManageClients)
+	// MISSING: AdsPersonalizationEnabled
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CreatorEmailAddress = direct.ValueOf(in.CreatorEmailAddress)
 	return out
 }

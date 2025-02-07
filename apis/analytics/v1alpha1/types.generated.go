@@ -15,27 +15,44 @@
 package v1alpha1
 
 
-// +kcc:proto=google.analytics.admin.v1beta.FirebaseLink
-type FirebaseLink struct {
+// +kcc:proto=google.analytics.admin.v1beta.GoogleAdsLink
+type GoogleAdsLink struct {
 
-	// Immutable. Firebase project resource name. When creating a FirebaseLink,
-	//  you may provide this resource name using either a project number or project
-	//  ID. Once this resource has been created, returned FirebaseLinks will always
-	//  have a project_name that contains a project number.
-	//
-	//  Format: 'projects/{project number}'
-	//  Example: 'projects/1234'
-	// +kcc:proto:field=google.analytics.admin.v1beta.FirebaseLink.project
-	Project *string `json:"project,omitempty"`
+	// Immutable. Google Ads customer ID.
+	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.customer_id
+	CustomerID *string `json:"customerID,omitempty"`
+
+	// Enable personalized advertising features with this integration.
+	//  Automatically publish my Google Analytics audience lists and Google
+	//  Analytics remarketing events/parameters to the linked Google Ads account.
+	//  If this field is not set on create/update, it will be defaulted to true.
+	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.ads_personalization_enabled
+	AdsPersonalizationEnabled *bool `json:"adsPersonalizationEnabled,omitempty"`
 }
 
-// +kcc:proto=google.analytics.admin.v1beta.FirebaseLink
-type FirebaseLinkObservedState struct {
-	// Output only. Example format: properties/1234/firebaseLinks/5678
-	// +kcc:proto:field=google.analytics.admin.v1beta.FirebaseLink.name
+// +kcc:proto=google.analytics.admin.v1beta.GoogleAdsLink
+type GoogleAdsLinkObservedState struct {
+	// Output only. Format:
+	//  properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
+	//
+	//  Note: googleAdsLinkId is not the Google Ads customer ID.
+	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. Time when this FirebaseLink was originally created.
-	// +kcc:proto:field=google.analytics.admin.v1beta.FirebaseLink.create_time
+	// Output only. If true, this link is for a Google Ads manager account.
+	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.can_manage_clients
+	CanManageClients *bool `json:"canManageClients,omitempty"`
+
+	// Output only. Time when this link was originally created.
+	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.create_time
 	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time when this link was last updated.
+	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Email address of the user that created the link.
+	//  An empty string will be returned if the email address can't be retrieved.
+	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.creator_email_address
+	CreatorEmailAddress *string `json:"creatorEmailAddress,omitempty"`
 }
