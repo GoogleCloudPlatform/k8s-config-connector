@@ -15,84 +15,130 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.channel.v1.AssociationInfo
-type AssociationInfo struct {
-	// The name of the base entitlement, for which this entitlement is an add-on.
-	// +kcc:proto:field=google.cloud.channel.v1.AssociationInfo.base_entitlement
-	BaseEntitlement *string `json:"baseEntitlement,omitempty"`
+// +kcc:proto=google.cloud.channel.v1.Constraints
+type Constraints struct {
+	// Represents constraints required to purchase the Offer for a customer.
+	// +kcc:proto:field=google.cloud.channel.v1.Constraints.customer_constraints
+	CustomerConstraints *CustomerConstraints `json:"customerConstraints,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.CommitmentSettings
-type CommitmentSettings struct {
+// +kcc:proto=google.cloud.channel.v1.CustomerConstraints
+type CustomerConstraints struct {
+	// Allowed geographical regions of the customer.
+	// +kcc:proto:field=google.cloud.channel.v1.CustomerConstraints.allowed_regions
+	AllowedRegions []string `json:"allowedRegions,omitempty"`
 
-	// Optional. Renewal settings applicable for a commitment-based Offer.
-	// +kcc:proto:field=google.cloud.channel.v1.CommitmentSettings.renewal_settings
-	RenewalSettings *RenewalSettings `json:"renewalSettings,omitempty"`
+	// Allowed Customer Type.
+	// +kcc:proto:field=google.cloud.channel.v1.CustomerConstraints.allowed_customer_types
+	AllowedCustomerTypes []string `json:"allowedCustomerTypes,omitempty"`
+
+	// Allowed Promotional Order Type. Present for Promotional offers.
+	// +kcc:proto:field=google.cloud.channel.v1.CustomerConstraints.promotional_order_types
+	PromotionalOrderTypes []string `json:"promotionalOrderTypes,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.Entitlement
-type Entitlement struct {
+// +kcc:proto=google.cloud.channel.v1.MarketingInfo
+type MarketingInfo struct {
+	// Human readable name.
+	// +kcc:proto:field=google.cloud.channel.v1.MarketingInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
-	// Required. The offer resource name for which the entitlement is to be
-	//  created. Takes the form: accounts/{account_id}/offers/{offer_id}.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.offer
-	Offer *string `json:"offer,omitempty"`
+	// Human readable description. Description can contain HTML.
+	// +kcc:proto:field=google.cloud.channel.v1.MarketingInfo.description
+	Description *string `json:"description,omitempty"`
 
-	// Commitment settings for a commitment-based Offer.
-	//  Required for commitment based offers.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.commitment_settings
-	CommitmentSettings *CommitmentSettings `json:"commitmentSettings,omitempty"`
-
-	// Optional. This purchase order (PO) information is for resellers to use for
-	//  their company tracking usage. If a purchaseOrderId value is given, it
-	//  appears in the API responses and shows up in the invoice. The property
-	//  accepts up to 80 plain text characters. This is only supported for Google
-	//  Workspace entitlements.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.purchase_order_id
-	PurchaseOrderID *string `json:"purchaseOrderID,omitempty"`
-
-	// Association information to other entitlements.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.association_info
-	AssociationInfo *AssociationInfo `json:"associationInfo,omitempty"`
-
-	// Extended entitlement parameters. When creating an entitlement, valid
-	//  parameter names and values are defined in the
-	//  [Offer.parameter_definitions][google.cloud.channel.v1.Offer.parameter_definitions].
-	//
-	//  For Google Workspace, the following Parameters may be accepted as input:
-	//
-	//  - max_units: The maximum assignable units for a flexible offer
-	//
-	//  OR
-	//
-	//  - num_units: The total commitment for commitment-based offers
-	//
-	//  The response may additionally include the following output-only Parameters:
-	//
-	//  - assigned_units: The number of licenses assigned to users.
-	//
-	//  For Google Cloud billing subaccounts, the following Parameter may be
-	//  accepted as input:
-	//
-	//  - display_name: The display name of the billing subaccount.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.parameters
-	Parameters []Parameter `json:"parameters,omitempty"`
-
-	// Optional. The billing account resource name that is used to pay for this
-	//  entitlement.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.billing_account
-	BillingAccount *string `json:"billingAccount,omitempty"`
+	// Default logo.
+	// +kcc:proto:field=google.cloud.channel.v1.MarketingInfo.default_logo
+	DefaultLogo *Media `json:"defaultLogo,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.Parameter
-type Parameter struct {
-	// Name of the parameter.
-	// +kcc:proto:field=google.cloud.channel.v1.Parameter.name
+// +kcc:proto=google.cloud.channel.v1.Media
+type Media struct {
+	// Title of the media.
+	// +kcc:proto:field=google.cloud.channel.v1.Media.title
+	Title *string `json:"title,omitempty"`
+
+	// URL of the media.
+	// +kcc:proto:field=google.cloud.channel.v1.Media.content
+	Content *string `json:"content,omitempty"`
+
+	// Type of the media.
+	// +kcc:proto:field=google.cloud.channel.v1.Media.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.channel.v1.Offer
+type Offer struct {
+	// Resource Name of the Offer.
+	//  Format: accounts/{account_id}/offers/{offer_id}
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.name
 	Name *string `json:"name,omitempty"`
 
-	// Value of the parameter.
-	// +kcc:proto:field=google.cloud.channel.v1.Parameter.value
-	Value *Value `json:"value,omitempty"`
+	// Marketing information for the Offer.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.marketing_info
+	MarketingInfo *MarketingInfo `json:"marketingInfo,omitempty"`
+
+	// SKU the offer is associated with.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.sku
+	Sku *Sku `json:"sku,omitempty"`
+
+	// Describes the payment plan for the Offer.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.plan
+	Plan *Plan `json:"plan,omitempty"`
+
+	// Constraints on transacting the Offer.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.constraints
+	Constraints *Constraints `json:"constraints,omitempty"`
+
+	// Price for each monetizable resource type.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.price_by_resources
+	PriceByResources []PriceByResource `json:"priceByResources,omitempty"`
+
+	// Start of the Offer validity time.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Parameters required to use current Offer to purchase.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.parameter_definitions
+	ParameterDefinitions []ParameterDefinition `json:"parameterDefinitions,omitempty"`
+
+	// The deal code of the offer to get a special promotion or discount.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.deal_code
+	DealCode *string `json:"dealCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.channel.v1.ParameterDefinition
+type ParameterDefinition struct {
+	// Name of the parameter.
+	// +kcc:proto:field=google.cloud.channel.v1.ParameterDefinition.name
+	Name *string `json:"name,omitempty"`
+
+	// Data type of the parameter. Minimal value, Maximum value and allowed values
+	//  will use specified data type here.
+	// +kcc:proto:field=google.cloud.channel.v1.ParameterDefinition.parameter_type
+	ParameterType *string `json:"parameterType,omitempty"`
+
+	// Minimal value of the parameter, if applicable. Inclusive. For example,
+	//  minimal commitment when purchasing Anthos is 0.01.
+	//  Applicable to INT64 and DOUBLE parameter types.
+	// +kcc:proto:field=google.cloud.channel.v1.ParameterDefinition.min_value
+	MinValue *Value `json:"minValue,omitempty"`
+
+	// Maximum value of the parameter, if applicable. Inclusive. For example,
+	//  maximum seats when purchasing Google Workspace Business Standard.
+	//  Applicable to INT64 and DOUBLE parameter types.
+	// +kcc:proto:field=google.cloud.channel.v1.ParameterDefinition.max_value
+	MaxValue *Value `json:"maxValue,omitempty"`
+
+	// If not empty, parameter values must be drawn from this list.
+	//  For example, [us-west1, us-west2, ...]
+	//  Applicable to STRING parameter type.
+	// +kcc:proto:field=google.cloud.channel.v1.ParameterDefinition.allowed_values
+	AllowedValues []Value `json:"allowedValues,omitempty"`
+
+	// If set to true, parameter is optional to purchase this Offer.
+	// +kcc:proto:field=google.cloud.channel.v1.ParameterDefinition.optional
+	Optional *bool `json:"optional,omitempty"`
 }
 
 // +kcc:proto=google.cloud.channel.v1.Period
@@ -106,45 +152,135 @@ type Period struct {
 	PeriodType *string `json:"periodType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.ProvisionedService
-type ProvisionedService struct {
-}
-
-// +kcc:proto=google.cloud.channel.v1.RenewalSettings
-type RenewalSettings struct {
-	// If false, the plan will be completed at the end date.
-	// +kcc:proto:field=google.cloud.channel.v1.RenewalSettings.enable_renewal
-	EnableRenewal *bool `json:"enableRenewal,omitempty"`
-
-	// If true and enable_renewal = true, the unit (for example seats or licenses)
-	//  will be set to the number of active units at renewal time.
-	// +kcc:proto:field=google.cloud.channel.v1.RenewalSettings.resize_unit_count
-	ResizeUnitCount *bool `json:"resizeUnitCount,omitempty"`
-
+// +kcc:proto=google.cloud.channel.v1.Plan
+type Plan struct {
 	// Describes how a reseller will be billed.
-	// +kcc:proto:field=google.cloud.channel.v1.RenewalSettings.payment_plan
+	// +kcc:proto:field=google.cloud.channel.v1.Plan.payment_plan
 	PaymentPlan *string `json:"paymentPlan,omitempty"`
+
+	// Specifies when the payment needs to happen.
+	// +kcc:proto:field=google.cloud.channel.v1.Plan.payment_type
+	PaymentType *string `json:"paymentType,omitempty"`
 
 	// Describes how frequently the reseller will be billed, such as
 	//  once per month.
-	// +kcc:proto:field=google.cloud.channel.v1.RenewalSettings.payment_cycle
+	// +kcc:proto:field=google.cloud.channel.v1.Plan.payment_cycle
 	PaymentCycle *Period `json:"paymentCycle,omitempty"`
+
+	// Present for Offers with a trial period.
+	//  For trial-only Offers, a paid service needs to start before the trial
+	//  period ends for continued service.
+	//  For Regular Offers with a trial period, the regular pricing goes into
+	//  effect when trial period ends, or if paid service is started before the end
+	//  of the trial period.
+	// +kcc:proto:field=google.cloud.channel.v1.Plan.trial_period
+	TrialPeriod *Period `json:"trialPeriod,omitempty"`
+
+	// Reseller Billing account to charge after an offer transaction.
+	//  Only present for Google Cloud offers.
+	// +kcc:proto:field=google.cloud.channel.v1.Plan.billing_account
+	BillingAccount *string `json:"billingAccount,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.TrialSettings
-type TrialSettings struct {
-	// Determines if the entitlement is in a trial or not:
-	//
-	//  * `true` - The entitlement is in trial.
-	//  * `false` - The entitlement is not in trial.
-	// +kcc:proto:field=google.cloud.channel.v1.TrialSettings.trial
-	Trial *bool `json:"trial,omitempty"`
+// +kcc:proto=google.cloud.channel.v1.Price
+type Price struct {
+	// Base price.
+	// +kcc:proto:field=google.cloud.channel.v1.Price.base_price
+	BasePrice *Money `json:"basePrice,omitempty"`
 
-	// Date when the trial ends. The value is in milliseconds
-	//  using the UNIX Epoch format. See an example [Epoch
-	//  converter](https://www.epochconverter.com).
-	// +kcc:proto:field=google.cloud.channel.v1.TrialSettings.end_time
-	EndTime *string `json:"endTime,omitempty"`
+	// Discount percentage, represented as decimal.
+	//  For example, a 20% discount will be represent as 0.2.
+	// +kcc:proto:field=google.cloud.channel.v1.Price.discount
+	Discount *float64 `json:"discount,omitempty"`
+
+	// Effective Price after applying the discounts.
+	// +kcc:proto:field=google.cloud.channel.v1.Price.effective_price
+	EffectivePrice *Money `json:"effectivePrice,omitempty"`
+
+	// Link to external price list, such as link to Google Voice rate card.
+	// +kcc:proto:field=google.cloud.channel.v1.Price.external_price_uri
+	ExternalPriceURI *string `json:"externalPriceURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.channel.v1.PriceByResource
+type PriceByResource struct {
+	// Resource Type. Example: SEAT
+	// +kcc:proto:field=google.cloud.channel.v1.PriceByResource.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Price of the Offer. Present if there are no price phases.
+	// +kcc:proto:field=google.cloud.channel.v1.PriceByResource.price
+	Price *Price `json:"price,omitempty"`
+
+	// Specifies the price by time range.
+	// +kcc:proto:field=google.cloud.channel.v1.PriceByResource.price_phases
+	PricePhases []PricePhase `json:"pricePhases,omitempty"`
+}
+
+// +kcc:proto=google.cloud.channel.v1.PricePhase
+type PricePhase struct {
+	// Defines the phase period type.
+	// +kcc:proto:field=google.cloud.channel.v1.PricePhase.period_type
+	PeriodType *string `json:"periodType,omitempty"`
+
+	// Defines first period for the phase.
+	// +kcc:proto:field=google.cloud.channel.v1.PricePhase.first_period
+	FirstPeriod *int32 `json:"firstPeriod,omitempty"`
+
+	// Defines first period for the phase.
+	// +kcc:proto:field=google.cloud.channel.v1.PricePhase.last_period
+	LastPeriod *int32 `json:"lastPeriod,omitempty"`
+
+	// Price of the phase. Present if there are no price tiers.
+	// +kcc:proto:field=google.cloud.channel.v1.PricePhase.price
+	Price *Price `json:"price,omitempty"`
+
+	// Price by the resource tiers.
+	// +kcc:proto:field=google.cloud.channel.v1.PricePhase.price_tiers
+	PriceTiers []PriceTier `json:"priceTiers,omitempty"`
+}
+
+// +kcc:proto=google.cloud.channel.v1.PriceTier
+type PriceTier struct {
+	// First resource for which the tier price applies.
+	// +kcc:proto:field=google.cloud.channel.v1.PriceTier.first_resource
+	FirstResource *int32 `json:"firstResource,omitempty"`
+
+	// Last resource for which the tier price applies.
+	// +kcc:proto:field=google.cloud.channel.v1.PriceTier.last_resource
+	LastResource *int32 `json:"lastResource,omitempty"`
+
+	// Price of the tier.
+	// +kcc:proto:field=google.cloud.channel.v1.PriceTier.price
+	Price *Price `json:"price,omitempty"`
+}
+
+// +kcc:proto=google.cloud.channel.v1.Product
+type Product struct {
+	// Resource Name of the Product.
+	//  Format: products/{product_id}
+	// +kcc:proto:field=google.cloud.channel.v1.Product.name
+	Name *string `json:"name,omitempty"`
+
+	// Marketing information for the product.
+	// +kcc:proto:field=google.cloud.channel.v1.Product.marketing_info
+	MarketingInfo *MarketingInfo `json:"marketingInfo,omitempty"`
+}
+
+// +kcc:proto=google.cloud.channel.v1.Sku
+type Sku struct {
+	// Resource Name of the SKU.
+	//  Format: products/{product_id}/skus/{sku_id}
+	// +kcc:proto:field=google.cloud.channel.v1.Sku.name
+	Name *string `json:"name,omitempty"`
+
+	// Marketing information for the SKU.
+	// +kcc:proto:field=google.cloud.channel.v1.Sku.marketing_info
+	MarketingInfo *MarketingInfo `json:"marketingInfo,omitempty"`
+
+	// Product the SKU is associated with.
+	// +kcc:proto:field=google.cloud.channel.v1.Sku.product
+	Product *Product `json:"product,omitempty"`
 }
 
 // +kcc:proto=google.cloud.channel.v1.Value
@@ -207,102 +343,30 @@ type Any struct {
 	Value []byte `json:"value,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.CommitmentSettings
-type CommitmentSettingsObservedState struct {
-	// Output only. Commitment start timestamp.
-	// +kcc:proto:field=google.cloud.channel.v1.CommitmentSettings.start_time
-	StartTime *string `json:"startTime,omitempty"`
+// +kcc:proto=google.type.Money
+type Money struct {
+	// The three-letter currency code defined in ISO 4217.
+	// +kcc:proto:field=google.type.Money.currency_code
+	CurrencyCode *string `json:"currencyCode,omitempty"`
 
-	// Output only. Commitment end timestamp.
-	// +kcc:proto:field=google.cloud.channel.v1.CommitmentSettings.end_time
+	// The whole units of the amount.
+	//  For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+	// +kcc:proto:field=google.type.Money.units
+	Units *int64 `json:"units,omitempty"`
+
+	// Number of nano (10^-9) units of the amount.
+	//  The value must be between -999,999,999 and +999,999,999 inclusive.
+	//  If `units` is positive, `nanos` must be positive or zero.
+	//  If `units` is zero, `nanos` can be positive, zero, or negative.
+	//  If `units` is negative, `nanos` must be negative or zero.
+	//  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	// +kcc:proto:field=google.type.Money.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
+// +kcc:proto=google.cloud.channel.v1.Offer
+type OfferObservedState struct {
+	// Output only. End of the Offer validity time.
+	// +kcc:proto:field=google.cloud.channel.v1.Offer.end_time
 	EndTime *string `json:"endTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.channel.v1.Entitlement
-type EntitlementObservedState struct {
-	// Output only. Resource name of an entitlement in the form:
-	//  accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The time at which the entitlement is created.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time at which the entitlement is updated.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Commitment settings for a commitment-based Offer.
-	//  Required for commitment based offers.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.commitment_settings
-	CommitmentSettings *CommitmentSettingsObservedState `json:"commitmentSettings,omitempty"`
-
-	// Output only. Current provisioning state of the entitlement.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.provisioning_state
-	ProvisioningState *string `json:"provisioningState,omitempty"`
-
-	// Output only. Service provisioning details for the entitlement.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.provisioned_service
-	ProvisionedService *ProvisionedService `json:"provisionedService,omitempty"`
-
-	// Output only. Enumerable of all current suspension reasons for an
-	//  entitlement.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.suspension_reasons
-	SuspensionReasons []string `json:"suspensionReasons,omitempty"`
-
-	// Output only. Settings for trial offers.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.trial_settings
-	TrialSettings *TrialSettings `json:"trialSettings,omitempty"`
-
-	// Extended entitlement parameters. When creating an entitlement, valid
-	//  parameter names and values are defined in the
-	//  [Offer.parameter_definitions][google.cloud.channel.v1.Offer.parameter_definitions].
-	//
-	//  For Google Workspace, the following Parameters may be accepted as input:
-	//
-	//  - max_units: The maximum assignable units for a flexible offer
-	//
-	//  OR
-	//
-	//  - num_units: The total commitment for commitment-based offers
-	//
-	//  The response may additionally include the following output-only Parameters:
-	//
-	//  - assigned_units: The number of licenses assigned to users.
-	//
-	//  For Google Cloud billing subaccounts, the following Parameter may be
-	//  accepted as input:
-	//
-	//  - display_name: The display name of the billing subaccount.
-	// +kcc:proto:field=google.cloud.channel.v1.Entitlement.parameters
-	Parameters []ParameterObservedState `json:"parameters,omitempty"`
-}
-
-// +kcc:proto=google.cloud.channel.v1.Parameter
-type ParameterObservedState struct {
-	// Output only. Specifies whether this parameter is allowed to be changed. For
-	//  example, for a Google Workspace Business Starter entitlement in commitment
-	//  plan, num_units is editable when entitlement is active.
-	// +kcc:proto:field=google.cloud.channel.v1.Parameter.editable
-	Editable *bool `json:"editable,omitempty"`
-}
-
-// +kcc:proto=google.cloud.channel.v1.ProvisionedService
-type ProvisionedServiceObservedState struct {
-	// Output only. Provisioning ID of the entitlement. For Google Workspace, this
-	//  is the underlying Subscription ID. For Google Cloud, this is the Billing
-	//  Account ID of the billing subaccount.
-	// +kcc:proto:field=google.cloud.channel.v1.ProvisionedService.provisioning_id
-	ProvisioningID *string `json:"provisioningID,omitempty"`
-
-	// Output only. The product pertaining to the provisioning resource as
-	//  specified in the Offer.
-	// +kcc:proto:field=google.cloud.channel.v1.ProvisionedService.product_id
-	ProductID *string `json:"productID,omitempty"`
-
-	// Output only. The SKU pertaining to the provisioning resource as specified
-	//  in the Offer.
-	// +kcc:proto:field=google.cloud.channel.v1.ProvisionedService.sku_id
-	SkuID *string `json:"skuID,omitempty"`
 }
