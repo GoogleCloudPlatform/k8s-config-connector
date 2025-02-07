@@ -162,89 +162,6 @@ type Distribution_Range struct {
 	Max *float64 `json:"max,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.migration.v2.AzureSynapseDialect
-type AzureSynapseDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.BigQueryDialect
-type BigQueryDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.DB2Dialect
-type DB2Dialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.Dialect
-type Dialect struct {
-	// The BigQuery dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.bigquery_dialect
-	BigqueryDialect *BigQueryDialect `json:"bigqueryDialect,omitempty"`
-
-	// The HiveQL dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.hiveql_dialect
-	HiveqlDialect *HiveQLDialect `json:"hiveqlDialect,omitempty"`
-
-	// The Redshift dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.redshift_dialect
-	RedshiftDialect *RedshiftDialect `json:"redshiftDialect,omitempty"`
-
-	// The Teradata dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.teradata_dialect
-	TeradataDialect *TeradataDialect `json:"teradataDialect,omitempty"`
-
-	// The Oracle dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.oracle_dialect
-	OracleDialect *OracleDialect `json:"oracleDialect,omitempty"`
-
-	// The SparkSQL dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.sparksql_dialect
-	SparksqlDialect *SparkSQLDialect `json:"sparksqlDialect,omitempty"`
-
-	// The Snowflake dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.snowflake_dialect
-	SnowflakeDialect *SnowflakeDialect `json:"snowflakeDialect,omitempty"`
-
-	// The Netezza dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.netezza_dialect
-	NetezzaDialect *NetezzaDialect `json:"netezzaDialect,omitempty"`
-
-	// The Azure Synapse dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.azure_synapse_dialect
-	AzureSynapseDialect *AzureSynapseDialect `json:"azureSynapseDialect,omitempty"`
-
-	// The Vertica dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.vertica_dialect
-	VerticaDialect *VerticaDialect `json:"verticaDialect,omitempty"`
-
-	// The SQL Server dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.sql_server_dialect
-	SqlServerDialect *SQLServerDialect `json:"sqlServerDialect,omitempty"`
-
-	// The Postgresql dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.postgresql_dialect
-	PostgresqlDialect *PostgresqlDialect `json:"postgresqlDialect,omitempty"`
-
-	// The Presto dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.presto_dialect
-	PrestoDialect *PrestoDialect `json:"prestoDialect,omitempty"`
-
-	// The MySQL dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.mysql_dialect
-	MysqlDialect *MySQLDialect `json:"mysqlDialect,omitempty"`
-
-	// DB2 dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.db2_dialect
-	Db2Dialect *DB2Dialect `json:"db2Dialect,omitempty"`
-
-	// SQLite dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.sqlite_dialect
-	SqliteDialect *SQLiteDialect `json:"sqliteDialect,omitempty"`
-
-	// Greenplum dialect
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Dialect.greenplum_dialect
-	GreenplumDialect *GreenplumDialect `json:"greenplumDialect,omitempty"`
-}
-
 // +kcc:proto=google.cloud.bigquery.migration.v2.ErrorDetail
 type ErrorDetail struct {
 	// Optional. The exact location within the resource (if applicable).
@@ -269,229 +186,38 @@ type ErrorLocation struct {
 	Column *int32 `json:"column,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.migration.v2.GcsReportLogMessage
-type GcsReportLogMessage struct {
-	// Severity of the translation record.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.severity
-	Severity *string `json:"severity,omitempty"`
+// +kcc:proto=google.cloud.bigquery.migration.v2.MigrationSubtask
+type MigrationSubtask struct {
 
-	// Category of the error/warning. Example: SyntaxError
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.category
-	Category *string `json:"category,omitempty"`
+	// The unique ID of the task to which this subtask belongs.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.task_id
+	TaskID *string `json:"taskID,omitempty"`
 
-	// The file path in which the error occurred
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.file_path
-	FilePath *string `json:"filePath,omitempty"`
-
-	// The file name in which the error occurred
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.filename
-	Filename *string `json:"filename,omitempty"`
-
-	// Specifies the row from the source text where the error occurred (0 based,
-	//  -1 for messages without line location). Example: 2
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.source_script_line
-	SourceScriptLine *int32 `json:"sourceScriptLine,omitempty"`
-
-	// Specifies the column from the source texts where the error occurred. (0
-	//  based, -1 for messages without column location) example: 6
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.source_script_column
-	SourceScriptColumn *int32 `json:"sourceScriptColumn,omitempty"`
-
-	// Detailed message of the record.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.message
-	Message *string `json:"message,omitempty"`
-
-	// The script context (obfuscated) in which the error occurred
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.script_context
-	ScriptContext *string `json:"scriptContext,omitempty"`
-
-	// Category of the error/warning. Example: SyntaxError
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.action
-	Action *string `json:"action,omitempty"`
-
-	// Effect of the error/warning. Example: COMPATIBILITY
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.effect
-	Effect *string `json:"effect,omitempty"`
-
-	// Name of the affected object in the log message.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.GcsReportLogMessage.object_name
-	ObjectName *string `json:"objectName,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.GreenplumDialect
-type GreenplumDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.HiveQLDialect
-type HiveQLDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.Literal
-type Literal struct {
-	// Literal string data.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Literal.literal_string
-	LiteralString *string `json:"literalString,omitempty"`
-
-	// Literal byte data.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Literal.literal_bytes
-	LiteralBytes []byte `json:"literalBytes,omitempty"`
-
-	// Required. The identifier of the literal entry.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.Literal.relative_path
-	RelativePath *string `json:"relativePath,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.MigrationTask
-type MigrationTask struct {
-	// Task configuration for CW Batch/Offline SQL Translation.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.translation_config_details
-	TranslationConfigDetails *TranslationConfigDetails `json:"translationConfigDetails,omitempty"`
-
-	// Task details for unified SQL Translation.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.translation_details
-	TranslationDetails *TranslationDetails `json:"translationDetails,omitempty"`
-
-	// The type of the task. This must be one of the supported task types:
-	//  Translation_Teradata2BQ, Translation_Redshift2BQ, Translation_Bteq2BQ,
-	//  Translation_Oracle2BQ, Translation_HiveQL2BQ, Translation_SparkSQL2BQ,
-	//  Translation_Snowflake2BQ, Translation_Netezza2BQ,
-	//  Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
-	//  Translation_SQLServer2BQ, Translation_Presto2BQ, Translation_MySQL2BQ,
-	//  Translation_Postgresql2BQ, Translation_SQLite2BQ, Translation_Greenplum2BQ.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.type
+	// The type of the Subtask. The migration service does not check whether this
+	//  is a known type. It is up to the task creator (i.e. orchestrator or worker)
+	//  to ensure it only creates subtasks for which there are compatible workers
+	//  polling for Subtasks.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.type
 	Type *string `json:"type,omitempty"`
-
-	// Time when the task was created.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Time when the task was last updated.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.last_update_time
-	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 
 	// The number or resources with errors. Note: This is not the total
 	//  number of errors as each resource can have more than one error.
 	//  This is used to indicate truncation by having a `resource_error_count`
 	//  that is higher than the size of `resource_error_details`.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.resource_error_count
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.resource_error_count
 	ResourceErrorCount *int32 `json:"resourceErrorCount,omitempty"`
 
-	// The metrics for the task.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.metrics
-	Metrics []TimeSeries `json:"metrics,omitempty"`
-
-	// Count of all the processing errors in this task and its subtasks.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.total_processing_error_count
-	TotalProcessingErrorCount *int32 `json:"totalProcessingErrorCount,omitempty"`
-
-	// Count of all the resource errors in this task and its subtasks.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTask.total_resource_error_count
-	TotalResourceErrorCount *int32 `json:"totalResourceErrorCount,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.MigrationTaskResult
-type MigrationTaskResult struct {
-	// Details specific to translation task types.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationTaskResult.translation_task_result
-	TranslationTaskResult *TranslationTaskResult `json:"translationTaskResult,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.MigrationWorkflow
-type MigrationWorkflow struct {
-
-	// The display name of the workflow. This can be set to give a workflow
-	//  a descriptive name. There is no guarantee or enforcement of uniqueness.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationWorkflow.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// Time when the workflow was created.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationWorkflow.create_time
+	// Time when the subtask was created.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Time when the workflow was last updated.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationWorkflow.last_update_time
+	// Time when the subtask was last updated.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.last_update_time
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
-}
 
-// +kcc:proto=google.cloud.bigquery.migration.v2.MySQLDialect
-type MySQLDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.NameMappingKey
-type NameMappingKey struct {
-	// The type of object that is being mapped.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingKey.type
-	Type *string `json:"type,omitempty"`
-
-	// The database name (BigQuery project ID equivalent in the source data
-	//  warehouse).
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingKey.database
-	Database *string `json:"database,omitempty"`
-
-	// The schema name (BigQuery dataset equivalent in the source data warehouse).
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingKey.schema
-	Schema *string `json:"schema,omitempty"`
-
-	// The relation name (BigQuery table or view equivalent in the source data
-	//  warehouse).
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingKey.relation
-	Relation *string `json:"relation,omitempty"`
-
-	// The attribute name (BigQuery column equivalent in the source data
-	//  warehouse).
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingKey.attribute
-	Attribute *string `json:"attribute,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.NameMappingValue
-type NameMappingValue struct {
-	// The database name (BigQuery project ID equivalent in the target data
-	//  warehouse).
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingValue.database
-	Database *string `json:"database,omitempty"`
-
-	// The schema name (BigQuery dataset equivalent in the target data warehouse).
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingValue.schema
-	Schema *string `json:"schema,omitempty"`
-
-	// The relation name (BigQuery table or view equivalent in the target data
-	//  warehouse).
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingValue.relation
-	Relation *string `json:"relation,omitempty"`
-
-	// The attribute name (BigQuery column equivalent in the target data
-	//  warehouse).
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.NameMappingValue.attribute
-	Attribute *string `json:"attribute,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.NetezzaDialect
-type NetezzaDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.ObjectNameMapping
-type ObjectNameMapping struct {
-	// The name of the object in source that is being mapped.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.ObjectNameMapping.source
-	Source *NameMappingKey `json:"source,omitempty"`
-
-	// The desired target name of the object that is being mapped.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.ObjectNameMapping.target
-	Target *NameMappingValue `json:"target,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.ObjectNameMappingList
-type ObjectNameMappingList struct {
-	// The elements of the object name map.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.ObjectNameMappingList.name_map
-	NameMap []ObjectNameMapping `json:"nameMap,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.OracleDialect
-type OracleDialect struct {
+	// The metrics for the subtask.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.metrics
+	Metrics []TimeSeries `json:"metrics,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.Point
@@ -513,18 +239,6 @@ type Point struct {
 	Value *TypedValue `json:"value,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.migration.v2.PostgresqlDialect
-type PostgresqlDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.PrestoDialect
-type PrestoDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.RedshiftDialect
-type RedshiftDialect struct {
-}
-
 // +kcc:proto=google.cloud.bigquery.migration.v2.ResourceErrorDetail
 type ResourceErrorDetail struct {
 	// Required. Information about the resource where the error is located.
@@ -540,108 +254,6 @@ type ResourceErrorDetail struct {
 	//  `error_details`.
 	// +kcc:proto:field=google.cloud.bigquery.migration.v2.ResourceErrorDetail.error_count
 	ErrorCount *int32 `json:"errorCount,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.SQLServerDialect
-type SQLServerDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.SQLiteDialect
-type SQLiteDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.SnowflakeDialect
-type SnowflakeDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.SourceEnv
-type SourceEnv struct {
-	// The default database name to fully qualify SQL objects when their database
-	//  name is missing.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceEnv.default_database
-	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
-
-	// The schema search path. When SQL objects are missing schema name,
-	//  translation engine will search through this list to find the value.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceEnv.schema_search_path
-	SchemaSearchPath []string `json:"schemaSearchPath,omitempty"`
-
-	// Optional. Expects a valid BigQuery dataset ID that exists, e.g.,
-	//  project-123.metadata_store_123.  If specified, translation will search and
-	//  read the required schema information from a metadata store in this dataset.
-	//  If metadata store doesn't exist, translation will parse the metadata file
-	//  and upload the schema info to a temp table in the dataset to speed up
-	//  future translation jobs.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceEnv.metadata_store_dataset
-	MetadataStoreDataset *string `json:"metadataStoreDataset,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.SourceEnvironment
-type SourceEnvironment struct {
-	// The default database name to fully qualify SQL objects when their database
-	//  name is missing.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceEnvironment.default_database
-	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
-
-	// The schema search path. When SQL objects are missing schema name,
-	//  translation engine will search through this list to find the value.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceEnvironment.schema_search_path
-	SchemaSearchPath []string `json:"schemaSearchPath,omitempty"`
-
-	// Optional. Expects a validQ BigQuery dataset ID that exists, e.g.,
-	//  project-123.metadata_store_123.  If specified, translation will search and
-	//  read the required schema information from a metadata store in this dataset.
-	//  If metadata store doesn't exist, translation will parse the metadata file
-	//  and upload the schema info to a temp table in the dataset to speed up
-	//  future translation jobs.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceEnvironment.metadata_store_dataset
-	MetadataStoreDataset *string `json:"metadataStoreDataset,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.SourceSpec
-type SourceSpec struct {
-	// The base URI for all files to be read in as sources for translation.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceSpec.base_uri
-	BaseURI *string `json:"baseURI,omitempty"`
-
-	// Source literal.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceSpec.literal
-	Literal *Literal `json:"literal,omitempty"`
-
-	// Optional. The optional field to specify the encoding of the sql bytes.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceSpec.encoding
-	Encoding *string `json:"encoding,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.SourceTargetMapping
-type SourceTargetMapping struct {
-	// The source SQL or the path to it.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceTargetMapping.source_spec
-	SourceSpec *SourceSpec `json:"sourceSpec,omitempty"`
-
-	// The target SQL or the path for it.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.SourceTargetMapping.target_spec
-	TargetSpec *TargetSpec `json:"targetSpec,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.SparkSQLDialect
-type SparkSQLDialect struct {
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.TargetSpec
-type TargetSpec struct {
-	// The relative path for the target data. Given source file
-	//  `base_uri/input/sql`, the output would be
-	//  `target_base_uri/sql/relative_path/input.sql`.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TargetSpec.relative_path
-	RelativePath *string `json:"relativePath,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.TeradataDialect
-type TeradataDialect struct {
-	// Which Teradata sub-dialect mode the user specifies.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TeradataDialect.mode
-	Mode *string `json:"mode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.migration.v2.TimeInterval
@@ -690,83 +302,6 @@ type TimeSeries struct {
 	Points []Point `json:"points,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.migration.v2.TranslationConfigDetails
-type TranslationConfigDetails struct {
-	// The Cloud Storage path for a directory of files to translate in a task.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationConfigDetails.gcs_source_path
-	GcsSourcePath *string `json:"gcsSourcePath,omitempty"`
-
-	// The Cloud Storage path to write back the corresponding input files to.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationConfigDetails.gcs_target_path
-	GcsTargetPath *string `json:"gcsTargetPath,omitempty"`
-
-	// The mapping of objects to their desired output names in list form.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationConfigDetails.name_mapping_list
-	NameMappingList *ObjectNameMappingList `json:"nameMappingList,omitempty"`
-
-	// The dialect of the input files.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationConfigDetails.source_dialect
-	SourceDialect *Dialect `json:"sourceDialect,omitempty"`
-
-	// The target dialect for the engine to translate the input to.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationConfigDetails.target_dialect
-	TargetDialect *Dialect `json:"targetDialect,omitempty"`
-
-	// The default source environment values for the translation.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationConfigDetails.source_env
-	SourceEnv *SourceEnv `json:"sourceEnv,omitempty"`
-
-	// The indicator to show translation request initiator.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationConfigDetails.request_source
-	RequestSource *string `json:"requestSource,omitempty"`
-
-	// The types of output to generate, e.g. sql, metadata etc. If not specified,
-	//  a default set of targets will be generated. Some additional target types
-	//  may be slower to generate. See the documentation for the set of available
-	//  target types.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationConfigDetails.target_types
-	TargetTypes []string `json:"targetTypes,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.TranslationDetails
-type TranslationDetails struct {
-	// The mapping from source to target SQL.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationDetails.source_target_mapping
-	SourceTargetMapping []SourceTargetMapping `json:"sourceTargetMapping,omitempty"`
-
-	// The base URI for all writes to persistent storage.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationDetails.target_base_uri
-	TargetBaseURI *string `json:"targetBaseURI,omitempty"`
-
-	// The default source environment values for the translation.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationDetails.source_environment
-	SourceEnvironment *SourceEnvironment `json:"sourceEnvironment,omitempty"`
-
-	// The list of literal targets that will be directly returned to the response.
-	//  Each entry consists of the constructed path, EXCLUDING the base path. Not
-	//  providing a target_base_uri will prevent writing to persistent storage.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationDetails.target_return_literals
-	TargetReturnLiterals []string `json:"targetReturnLiterals,omitempty"`
-
-	// The types of output to generate, e.g. sql, metadata,
-	//  lineage_from_sql_scripts, etc. If not specified, a default set of
-	//  targets will be generated. Some additional target types may be slower to
-	//  generate. See the documentation for the set of available target types.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationDetails.target_types
-	TargetTypes []string `json:"targetTypes,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.TranslationTaskResult
-type TranslationTaskResult struct {
-	// The list of the translated literals.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationTaskResult.translated_literals
-	TranslatedLiterals []Literal `json:"translatedLiterals,omitempty"`
-
-	// The records from the aggregate CSV report for a migration workflow.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TranslationTaskResult.report_log_messages
-	ReportLogMessages []GcsReportLogMessage `json:"reportLogMessages,omitempty"`
-}
-
 // +kcc:proto=google.cloud.bigquery.migration.v2.TypedValue
 type TypedValue struct {
 	// A Boolean value: `true` or `false`.
@@ -790,10 +325,6 @@ type TypedValue struct {
 	// A distribution value.
 	// +kcc:proto:field=google.cloud.bigquery.migration.v2.TypedValue.distribution_value
 	DistributionValue *Distribution `json:"distributionValue,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.migration.v2.VerticaDialect
-type VerticaDialect struct {
 }
 
 // +kcc:proto=google.protobuf.Any
@@ -893,16 +424,27 @@ type ResourceInfo struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.migration.v2.MigrationWorkflow
-type MigrationWorkflowObservedState struct {
-	// Output only. Immutable. Identifier. The unique identifier for the migration
-	//  workflow. The ID is server-generated.
+// +kcc:proto=google.cloud.bigquery.migration.v2.MigrationSubtask
+type MigrationSubtaskObservedState struct {
+	// Output only. Immutable. The resource name for the migration subtask. The ID
+	//  is server-generated.
 	//
-	//  Example: `projects/123/locations/us/workflows/345`
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationWorkflow.name
+	//  Example: `projects/123/locations/us/workflows/345/subtasks/678`
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. That status of the workflow.
-	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationWorkflow.state
+	// Output only. The current state of the subtask.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.state
 	State *string `json:"state,omitempty"`
+
+	// Output only. An explanation that may be populated when the task is in
+	//  FAILED state.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.processing_error
+	ProcessingError *ErrorInfo `json:"processingError,omitempty"`
+
+	// Output only. Provides details to errors and issues encountered while
+	//  processing the subtask. Presence of error details does not mean that the
+	//  subtask failed.
+	// +kcc:proto:field=google.cloud.bigquery.migration.v2.MigrationSubtask.resource_error_details
+	ResourceErrorDetails []ResourceErrorDetail `json:"resourceErrorDetails,omitempty"`
 }
