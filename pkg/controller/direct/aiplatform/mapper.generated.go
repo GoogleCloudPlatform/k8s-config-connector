@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -2656,6 +2656,118 @@ func AiplatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: EncryptionSpec
 	return out
 }
+func AiplatformNotebookRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.AiplatformNotebookRuntimeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformNotebookRuntimeObservedState{}
+	// MISSING: Name
+	// MISSING: RuntimeUser
+	// MISSING: NotebookRuntimeTemplateRef
+	// MISSING: ProxyURI
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: HealthState
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: ServiceAccount
+	// MISSING: RuntimeState
+	// MISSING: IsUpgradable
+	// MISSING: Labels
+	// MISSING: ExpirationTime
+	// MISSING: Version
+	// MISSING: NotebookRuntimeType
+	// MISSING: IdleShutdownConfig
+	// MISSING: NetworkTags
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformNotebookRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformNotebookRuntimeObservedState) *pb.NotebookRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntime{}
+	// MISSING: Name
+	// MISSING: RuntimeUser
+	// MISSING: NotebookRuntimeTemplateRef
+	// MISSING: ProxyURI
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: HealthState
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: ServiceAccount
+	// MISSING: RuntimeState
+	// MISSING: IsUpgradable
+	// MISSING: Labels
+	// MISSING: ExpirationTime
+	// MISSING: Version
+	// MISSING: NotebookRuntimeType
+	// MISSING: IdleShutdownConfig
+	// MISSING: NetworkTags
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformNotebookRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.AiplatformNotebookRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformNotebookRuntimeSpec{}
+	// MISSING: Name
+	// MISSING: RuntimeUser
+	// MISSING: NotebookRuntimeTemplateRef
+	// MISSING: ProxyURI
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: HealthState
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: ServiceAccount
+	// MISSING: RuntimeState
+	// MISSING: IsUpgradable
+	// MISSING: Labels
+	// MISSING: ExpirationTime
+	// MISSING: Version
+	// MISSING: NotebookRuntimeType
+	// MISSING: IdleShutdownConfig
+	// MISSING: NetworkTags
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformNotebookRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformNotebookRuntimeSpec) *pb.NotebookRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntime{}
+	// MISSING: Name
+	// MISSING: RuntimeUser
+	// MISSING: NotebookRuntimeTemplateRef
+	// MISSING: ProxyURI
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: HealthState
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: ServiceAccount
+	// MISSING: RuntimeState
+	// MISSING: IsUpgradable
+	// MISSING: Labels
+	// MISSING: ExpirationTime
+	// MISSING: Version
+	// MISSING: NotebookRuntimeType
+	// MISSING: IdleShutdownConfig
+	// MISSING: NetworkTags
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 func AiplatformNotebookRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.AiplatformNotebookRuntimeTemplateObservedState {
 	if in == nil {
 		return nil
@@ -2772,86 +2884,6 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	return out
 }
-func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MachineSpec{}
-	out.MachineType = direct.LazyPtr(in.GetMachineType())
-	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
-	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
-	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
-	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
-	return out
-}
-func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MachineSpec{}
-	out.MachineType = direct.ValueOf(in.MachineType)
-	out.AcceleratorType = direct.Enum_ToProto[pb.AcceleratorType](mapCtx, in.AcceleratorType)
-	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
-	out.TpuTopology = direct.ValueOf(in.TpuTopology)
-	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
-	return out
-}
-func NetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkSpec) *krm.NetworkSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkSpec{}
-	out.EnableInternetAccess = direct.LazyPtr(in.GetEnableInternetAccess())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.Subnetwork = direct.LazyPtr(in.GetSubnetwork())
-	return out
-}
-func NetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSpec) *pb.NetworkSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NetworkSpec{}
-	out.EnableInternetAccess = direct.ValueOf(in.EnableInternetAccess)
-	out.Network = direct.ValueOf(in.Network)
-	out.Subnetwork = direct.ValueOf(in.Subnetwork)
-	return out
-}
-func NotebookEucConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEucConfig) *krm.NotebookEucConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookEucConfig{}
-	out.EucDisabled = direct.LazyPtr(in.GetEucDisabled())
-	// MISSING: BypassActasCheck
-	return out
-}
-func NotebookEucConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotebookEucConfig) *pb.NotebookEucConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookEucConfig{}
-	out.EucDisabled = direct.ValueOf(in.EucDisabled)
-	// MISSING: BypassActasCheck
-	return out
-}
-func NotebookEucConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEucConfig) *krm.NotebookEucConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookEucConfigObservedState{}
-	// MISSING: EucDisabled
-	out.BypassActasCheck = direct.LazyPtr(in.GetBypassActasCheck())
-	return out
-}
-func NotebookEucConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookEucConfigObservedState) *pb.NotebookEucConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookEucConfig{}
-	// MISSING: EucDisabled
-	out.BypassActasCheck = direct.ValueOf(in.BypassActasCheck)
-	return out
-}
 func NotebookIdleShutdownConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotebookIdleShutdownConfig) *krm.NotebookIdleShutdownConfig {
 	if in == nil {
 		return nil
@@ -2870,157 +2902,115 @@ func NotebookIdleShutdownConfig_ToProto(mapCtx *direct.MapContext, in *krm.Noteb
 	out.IdleShutdownDisabled = direct.ValueOf(in.IdleShutdownDisabled)
 	return out
 }
-func NotebookRuntimeTemplate_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.NotebookRuntimeTemplate {
+func NotebookRuntime_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.NotebookRuntime {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NotebookRuntimeTemplate{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.NotebookRuntime{}
+	// MISSING: Name
+	out.RuntimeUser = direct.LazyPtr(in.GetRuntimeUser())
+	// MISSING: NotebookRuntimeTemplateRef
+	// MISSING: ProxyURI
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: HealthState
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: IsDefault
-	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
-	out.DataPersistentDiskSpec = PersistentDiskSpec_FromProto(mapCtx, in.GetDataPersistentDiskSpec())
-	out.NetworkSpec = NetworkSpec_FromProto(mapCtx, in.GetNetworkSpec())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: ServiceAccount
+	// MISSING: RuntimeState
+	// MISSING: IsUpgradable
 	out.Labels = in.Labels
-	out.IdleShutdownConfig = NotebookIdleShutdownConfig_FromProto(mapCtx, in.GetIdleShutdownConfig())
-	out.EucConfig = NotebookEucConfig_FromProto(mapCtx, in.GetEucConfig())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.NotebookRuntimeType = direct.Enum_FromProto(mapCtx, in.GetNotebookRuntimeType())
-	out.ShieldedVmConfig = ShieldedVmConfig_FromProto(mapCtx, in.GetShieldedVmConfig())
+	// MISSING: ExpirationTime
+	// MISSING: Version
+	// MISSING: NotebookRuntimeType
+	// MISSING: IdleShutdownConfig
 	out.NetworkTags = in.NetworkTags
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-func NotebookRuntimeTemplate_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntimeTemplate) *pb.NotebookRuntimeTemplate {
+func NotebookRuntime_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntime) *pb.NotebookRuntime {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NotebookRuntimeTemplate{}
-	out.Name = direct.ValueOf(in.Name)
+	out := &pb.NotebookRuntime{}
+	// MISSING: Name
+	out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
+	// MISSING: NotebookRuntimeTemplateRef
+	// MISSING: ProxyURI
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: HealthState
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: IsDefault
-	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
-	out.DataPersistentDiskSpec = PersistentDiskSpec_ToProto(mapCtx, in.DataPersistentDiskSpec)
-	out.NetworkSpec = NetworkSpec_ToProto(mapCtx, in.NetworkSpec)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: ServiceAccount
+	// MISSING: RuntimeState
+	// MISSING: IsUpgradable
 	out.Labels = in.Labels
-	out.IdleShutdownConfig = NotebookIdleShutdownConfig_ToProto(mapCtx, in.IdleShutdownConfig)
-	out.EucConfig = NotebookEucConfig_ToProto(mapCtx, in.EucConfig)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.NotebookRuntimeType = direct.Enum_ToProto[pb.NotebookRuntimeType](mapCtx, in.NotebookRuntimeType)
-	out.ShieldedVmConfig = ShieldedVmConfig_ToProto(mapCtx, in.ShieldedVmConfig)
+	// MISSING: ExpirationTime
+	// MISSING: Version
+	// MISSING: NotebookRuntimeType
+	// MISSING: IdleShutdownConfig
 	out.NetworkTags = in.NetworkTags
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-func NotebookRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.NotebookRuntimeTemplateObservedState {
+func NotebookRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.NotebookRuntimeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NotebookRuntimeTemplateObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	out.IsDefault = direct.LazyPtr(in.GetIsDefault())
-	// MISSING: MachineSpec
-	// MISSING: DataPersistentDiskSpec
-	// MISSING: NetworkSpec
-	// MISSING: ServiceAccount
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: IdleShutdownConfig
-	out.EucConfig = NotebookEucConfigObservedState_FromProto(mapCtx, in.GetEucConfig())
+	out := &krm.NotebookRuntimeObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: RuntimeUser
+	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_FromProto(mapCtx, in.GetNotebookRuntimeTemplateRef())
+	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: NotebookRuntimeType
-	// MISSING: ShieldedVmConfig
-	// MISSING: NetworkTags
-	// MISSING: EncryptionSpec
-	return out
-}
-func NotebookRuntimeTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntimeTemplateObservedState) *pb.NotebookRuntimeTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookRuntimeTemplate{}
-	// MISSING: Name
+	out.HealthState = direct.Enum_FromProto(mapCtx, in.GetHealthState())
 	// MISSING: DisplayName
 	// MISSING: Description
-	out.IsDefault = direct.ValueOf(in.IsDefault)
-	// MISSING: MachineSpec
-	// MISSING: DataPersistentDiskSpec
-	// MISSING: NetworkSpec
-	// MISSING: ServiceAccount
-	// MISSING: Etag
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.RuntimeState = direct.Enum_FromProto(mapCtx, in.GetRuntimeState())
+	out.IsUpgradable = direct.LazyPtr(in.GetIsUpgradable())
 	// MISSING: Labels
-	// MISSING: IdleShutdownConfig
-	out.EucConfig = NotebookEucConfigObservedState_ToProto(mapCtx, in.EucConfig)
+	out.ExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpirationTime())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.NotebookRuntimeType = direct.Enum_FromProto(mapCtx, in.GetNotebookRuntimeType())
+	out.IdleShutdownConfig = NotebookIdleShutdownConfig_FromProto(mapCtx, in.GetIdleShutdownConfig())
+	// MISSING: NetworkTags
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+func NotebookRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntimeObservedState) *pb.NotebookRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntime{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: RuntimeUser
+	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_ToProto(mapCtx, in.NotebookRuntimeTemplateRef)
+	out.ProxyUri = direct.ValueOf(in.ProxyURI)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: NotebookRuntimeType
-	// MISSING: ShieldedVmConfig
+	out.HealthState = direct.Enum_ToProto[pb.NotebookRuntime_HealthState](mapCtx, in.HealthState)
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.RuntimeState = direct.Enum_ToProto[pb.NotebookRuntime_RuntimeState](mapCtx, in.RuntimeState)
+	out.IsUpgradable = direct.ValueOf(in.IsUpgradable)
+	// MISSING: Labels
+	out.ExpirationTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpirationTime)
+	out.Version = direct.ValueOf(in.Version)
+	out.NotebookRuntimeType = direct.Enum_ToProto[pb.NotebookRuntimeType](mapCtx, in.NotebookRuntimeType)
+	out.IdleShutdownConfig = NotebookIdleShutdownConfig_ToProto(mapCtx, in.IdleShutdownConfig)
 	// MISSING: NetworkTags
-	// MISSING: EncryptionSpec
-	return out
-}
-func PersistentDiskSpec_FromProto(mapCtx *direct.MapContext, in *pb.PersistentDiskSpec) *krm.PersistentDiskSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PersistentDiskSpec{}
-	out.DiskType = direct.LazyPtr(in.GetDiskType())
-	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
-	return out
-}
-func PersistentDiskSpec_ToProto(mapCtx *direct.MapContext, in *krm.PersistentDiskSpec) *pb.PersistentDiskSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PersistentDiskSpec{}
-	out.DiskType = direct.ValueOf(in.DiskType)
-	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
-	return out
-}
-func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ReservationAffinity{}
-	out.ReservationAffinityType = direct.Enum_FromProto(mapCtx, in.GetReservationAffinityType())
-	out.Key = direct.LazyPtr(in.GetKey())
-	out.Values = in.Values
-	return out
-}
-func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinity) *pb.ReservationAffinity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReservationAffinity{}
-	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
-	out.Key = direct.ValueOf(in.Key)
-	out.Values = in.Values
-	return out
-}
-func ShieldedVmConfig_FromProto(mapCtx *direct.MapContext, in *pb.ShieldedVmConfig) *krm.ShieldedVmConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ShieldedVmConfig{}
-	out.EnableSecureBoot = direct.LazyPtr(in.GetEnableSecureBoot())
-	return out
-}
-func ShieldedVmConfig_ToProto(mapCtx *direct.MapContext, in *krm.ShieldedVmConfig) *pb.ShieldedVmConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ShieldedVmConfig{}
-	out.EnableSecureBoot = direct.ValueOf(in.EnableSecureBoot)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
