@@ -15,10 +15,10 @@
 package apihub
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func ApihubApiHubInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiHubInstance) *krm.ApihubApiHubInstanceObservedState {
 	if in == nil {
@@ -676,6 +676,46 @@ func ApihubSpecSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubSpecSpec) *
 	// MISSING: ParsingMode
 	return out
 }
+func ApihubStyleGuideObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StyleGuide) *krm.ApihubStyleGuideObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubStyleGuideObservedState{}
+	// MISSING: Name
+	// MISSING: Linter
+	// MISSING: Contents
+	return out
+}
+func ApihubStyleGuideObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubStyleGuideObservedState) *pb.StyleGuide {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StyleGuide{}
+	// MISSING: Name
+	// MISSING: Linter
+	// MISSING: Contents
+	return out
+}
+func ApihubStyleGuideSpec_FromProto(mapCtx *direct.MapContext, in *pb.StyleGuide) *krm.ApihubStyleGuideSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubStyleGuideSpec{}
+	// MISSING: Name
+	// MISSING: Linter
+	// MISSING: Contents
+	return out
+}
+func ApihubStyleGuideSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubStyleGuideSpec) *pb.StyleGuide {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StyleGuide{}
+	// MISSING: Name
+	// MISSING: Linter
+	// MISSING: Contents
+	return out
+}
 func ApihubVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.ApihubVersionObservedState {
 	if in == nil {
 		return nil
@@ -764,43 +804,41 @@ func ApihubVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubVersionS
 	// MISSING: SelectedDeployment
 	return out
 }
-func HostProjectRegistration_FromProto(mapCtx *direct.MapContext, in *pb.HostProjectRegistration) *krm.HostProjectRegistration {
+func StyleGuide_FromProto(mapCtx *direct.MapContext, in *pb.StyleGuide) *krm.StyleGuide {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HostProjectRegistration{}
+	out := &krm.StyleGuide{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.GcpProject = direct.LazyPtr(in.GetGcpProject())
-	// MISSING: CreateTime
+	out.Linter = direct.Enum_FromProto(mapCtx, in.GetLinter())
+	out.Contents = StyleGuideContents_FromProto(mapCtx, in.GetContents())
 	return out
 }
-func HostProjectRegistration_ToProto(mapCtx *direct.MapContext, in *krm.HostProjectRegistration) *pb.HostProjectRegistration {
+func StyleGuide_ToProto(mapCtx *direct.MapContext, in *krm.StyleGuide) *pb.StyleGuide {
 	if in == nil {
 		return nil
 	}
-	out := &pb.HostProjectRegistration{}
+	out := &pb.StyleGuide{}
 	out.Name = direct.ValueOf(in.Name)
-	out.GcpProject = direct.ValueOf(in.GcpProject)
-	// MISSING: CreateTime
+	out.Linter = direct.Enum_ToProto[pb.Linter](mapCtx, in.Linter)
+	out.Contents = StyleGuideContents_ToProto(mapCtx, in.Contents)
 	return out
 }
-func HostProjectRegistrationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HostProjectRegistration) *krm.HostProjectRegistrationObservedState {
+func StyleGuideContents_FromProto(mapCtx *direct.MapContext, in *pb.StyleGuideContents) *krm.StyleGuideContents {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HostProjectRegistrationObservedState{}
-	// MISSING: Name
-	// MISSING: GcpProject
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out := &krm.StyleGuideContents{}
+	out.Contents = in.GetContents()
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
 	return out
 }
-func HostProjectRegistrationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HostProjectRegistrationObservedState) *pb.HostProjectRegistration {
+func StyleGuideContents_ToProto(mapCtx *direct.MapContext, in *krm.StyleGuideContents) *pb.StyleGuideContents {
 	if in == nil {
 		return nil
 	}
-	out := &pb.HostProjectRegistration{}
-	// MISSING: Name
-	// MISSING: GcpProject
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out := &pb.StyleGuideContents{}
+	out.Contents = in.Contents
+	out.MimeType = direct.ValueOf(in.MimeType)
 	return out
 }

@@ -15,25 +15,31 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apihub.v1.HostProjectRegistration
-type HostProjectRegistration struct {
-	// Identifier. The name of the host project registration.
+// +kcc:proto=google.cloud.apihub.v1.StyleGuide
+type StyleGuide struct {
+	// Identifier. The name of the style guide.
+	//
 	//  Format:
-	//  "projects/{project}/locations/{location}/hostProjectRegistrations/{host_project_registration}".
-	// +kcc:proto:field=google.cloud.apihub.v1.HostProjectRegistration.name
+	//  `projects/{project}/locations/{location}/plugins/{plugin}/styleGuide`
+	// +kcc:proto:field=google.cloud.apihub.v1.StyleGuide.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. Immutable. Google cloud project name in the format:
-	//  "projects/abc" or "projects/123". As input, project name with either
-	//  project id or number are accepted. As output, this field will contain
-	//  project number.
-	// +kcc:proto:field=google.cloud.apihub.v1.HostProjectRegistration.gcp_project
-	GcpProject *string `json:"gcpProject,omitempty"`
+	// Required. Target linter for the style guide.
+	// +kcc:proto:field=google.cloud.apihub.v1.StyleGuide.linter
+	Linter *string `json:"linter,omitempty"`
+
+	// Required. Input only. The contents of the uploaded style guide.
+	// +kcc:proto:field=google.cloud.apihub.v1.StyleGuide.contents
+	Contents *StyleGuideContents `json:"contents,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.HostProjectRegistration
-type HostProjectRegistrationObservedState struct {
-	// Output only. The time at which the host project registration was created.
-	// +kcc:proto:field=google.cloud.apihub.v1.HostProjectRegistration.create_time
-	CreateTime *string `json:"createTime,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.StyleGuideContents
+type StyleGuideContents struct {
+	// Required. The contents of the style guide.
+	// +kcc:proto:field=google.cloud.apihub.v1.StyleGuideContents.contents
+	Contents []byte `json:"contents,omitempty"`
+
+	// Required. The mime type of the content.
+	// +kcc:proto:field=google.cloud.apihub.v1.StyleGuideContents.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
 }
