@@ -23,7 +23,6 @@ import (
 	"go/token"
 	"os"
 	"path/filepath"
-	"runtime/debug"
 	"strings"
 	"text/template"
 
@@ -42,30 +41,33 @@ var funcMap = template.FuncMap{
 	"ToLower": strings.ToLower,
 }
 
-func RegisterController(service, kind string) error {
-	// Read register file
-	directControllerPkgPath, err := buildDirectControllerPath()
-	if err != nil {
-		return nil
+func NewControllerBuilder(rootPath, service, proto string) *ControllerBuilder {
+	return &ControllerBuilder{
+		rootPath: rootPath,
+		service:  service,
+		proto:    proto,
 	}
-	registerFilePath := filepath.Join(directControllerPkgPath, "register", "register.go")
+}
+
+type ControllerBuilder struct {
+	rootPath string
+	service  string
+	proto    string
+}
+
+func (c *ControllerBuilder) RegisterController() error {
+	// Read register file
+	registerFilePath := filepath.Join(c.getDirectPath(), "register", "register.go")
 	fset := token.NewFileSet()
 	f, err := parser.ParseFile(fset, registerFilePath, nil, parser.ParseComments)
 	if err != nil {
 		return err
 	}
 
-	// Get main model name
-	bi, ok := debug.ReadBuildInfo()
-	if !ok {
-		return fmt.Errorf("could not read build info")
-	}
-	modelPath := strings.TrimSuffix(bi.Main.Path, currRelPath)
-
-	importPath := filepath.Join(modelPath, directControllerRelPath, service)
+	importPath := filepath.Join("github.com/GoogleCloudPlatform/k8s-config-connector", directControllerRelPath, c.service)
 	added := astutil.AddNamedImport(fset, f, "_", importPath)
 	if !added {
-		fmt.Printf("skip registering controller %s\n", service)
+		fmt.Printf("skip registering controller %s\n", c.service)
 		return nil
 	}
 
@@ -78,11 +80,11 @@ func RegisterController(service, kind string) error {
 	if err := FormatImports(registerFilePath, out.Bytes()); err != nil {
 		return err
 	}
-	color.HiGreen("New controller %s has been registered.\n", kind)
+	color.HiGreen("New controller %s has been registered.\n", c.proto)
 	return nil
 }
 
-func GenerateController(service, kind string, cArgs *ccTemplate.ControllerArgs) error {
+func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs) error {
 	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
 	if err != nil {
 		return fmt.Errorf("parse controller template: %w", err)
@@ -93,7 +95,7 @@ func GenerateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 		return err
 	}
 
-	controllerFilePath, err := buildControllerPath(service, cArgs.ProtoResource)
+	controllerFilePath, err := c.getControllerPath()
 	if err != nil {
 		return err
 	}
@@ -112,31 +114,20 @@ func GenerateController(service, kind string, cArgs *ccTemplate.ControllerArgs) 
 	if err := FormatImports(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}
-	color.HiGreen("New controller %s has been generated.", kind)
+	color.HiGreen("New controller %s has been generated.", c.proto)
 	return nil
 }
 
-func buildDirectControllerPath() (string, error) {
-	pwd, err := os.Getwd()
-	if err != nil {
-		return "", fmt.Errorf("get current working directory: %w", err)
-	}
-	abs, err := filepath.Abs(pwd)
-	if err != nil {
-		return "", fmt.Errorf("get absolute path %s: %w", pwd, err)
-	}
-	seg := strings.Split(abs, currRelPath)
-	return filepath.Join(seg[0], directControllerRelPath), nil
+func (c *ControllerBuilder) getDirectPath() string {
+	seg := strings.Split(c.rootPath, currRelPath)
+	return filepath.Join(seg[0], directControllerRelPath)
 }
 
-func buildControllerPath(service, protoResource string) (string, error) {
-	filename := strings.ToLower(protoResource) + "_controller.go"
-	directControllerPkgPath, err := buildDirectControllerPath()
-	if err != nil {
-		return "", nil
-	}
-	controllerDir := filepath.Join(directControllerPkgPath, service)
-	err = os.MkdirAll(controllerDir, os.ModePerm)
+func (c *ControllerBuilder) getControllerPath() (string, error) {
+	filename := strings.ToLower(c.proto) + "_controller.go"
+	direct := c.getDirectPath()
+	controllerDir := filepath.Join(direct, c.service)
+	err := os.MkdirAll(controllerDir, os.ModePerm)
 	if err != nil {
 		return "", fmt.Errorf("create controller directory %s: %w", controllerDir, err)
 	}
