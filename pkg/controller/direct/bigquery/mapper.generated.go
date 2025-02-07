@@ -15,11 +15,11 @@
 package bigquery
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func BigQueryDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigQueryDataTransferConfigObservedState {
 	if in == nil {
@@ -195,150 +195,112 @@ func BigqueryDataSourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryD
 	// MISSING: MinimumScheduleInterval
 	return out
 }
-func DataSource_FromProto(mapCtx *direct.MapContext, in *pb.DataSource) *krm.DataSource {
+func BigqueryTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigqueryTransferConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataSource{}
+	out := &krm.BigqueryTransferConfigObservedState{}
 	// MISSING: Name
-	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.ClientID = direct.LazyPtr(in.GetClientId())
-	out.Scopes = in.Scopes
-	out.TransferType = direct.Enum_FromProto(mapCtx, in.GetTransferType())
-	out.SupportsMultipleTransfers = direct.LazyPtr(in.GetSupportsMultipleTransfers())
-	out.UpdateDeadlineSeconds = direct.LazyPtr(in.GetUpdateDeadlineSeconds())
-	out.DefaultSchedule = direct.LazyPtr(in.GetDefaultSchedule())
-	out.SupportsCustomSchedule = direct.LazyPtr(in.GetSupportsCustomSchedule())
-	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, DataSourceParameter_FromProto)
-	out.HelpURL = direct.LazyPtr(in.GetHelpUrl())
-	out.AuthorizationType = direct.Enum_FromProto(mapCtx, in.GetAuthorizationType())
-	out.DataRefreshType = direct.Enum_FromProto(mapCtx, in.GetDataRefreshType())
-	out.DefaultDataRefreshWindowDays = direct.LazyPtr(in.GetDefaultDataRefreshWindowDays())
-	out.ManualRunsDisabled = direct.LazyPtr(in.GetManualRunsDisabled())
-	out.MinimumScheduleInterval = direct.StringDuration_FromProto(mapCtx, in.GetMinimumScheduleInterval())
+	// MISSING: DestinationDatasetID
+	// MISSING: DisplayName
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: DatasetRegion
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	// MISSING: OwnerInfo
+	// MISSING: EncryptionConfiguration
+	// MISSING: Error
 	return out
 }
-func DataSource_ToProto(mapCtx *direct.MapContext, in *krm.DataSource) *pb.DataSource {
+func BigqueryTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryTransferConfigObservedState) *pb.TransferConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataSource{}
+	out := &pb.TransferConfig{}
 	// MISSING: Name
-	out.DataSourceId = direct.ValueOf(in.DataSourceID)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.ClientId = direct.ValueOf(in.ClientID)
-	out.Scopes = in.Scopes
-	out.TransferType = direct.Enum_ToProto[pb.TransferType](mapCtx, in.TransferType)
-	out.SupportsMultipleTransfers = direct.ValueOf(in.SupportsMultipleTransfers)
-	out.UpdateDeadlineSeconds = direct.ValueOf(in.UpdateDeadlineSeconds)
-	out.DefaultSchedule = direct.ValueOf(in.DefaultSchedule)
-	out.SupportsCustomSchedule = direct.ValueOf(in.SupportsCustomSchedule)
-	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, DataSourceParameter_ToProto)
-	out.HelpUrl = direct.ValueOf(in.HelpURL)
-	out.AuthorizationType = direct.Enum_ToProto[pb.DataSource_AuthorizationType](mapCtx, in.AuthorizationType)
-	out.DataRefreshType = direct.Enum_ToProto[pb.DataSource_DataRefreshType](mapCtx, in.DataRefreshType)
-	out.DefaultDataRefreshWindowDays = direct.ValueOf(in.DefaultDataRefreshWindowDays)
-	out.ManualRunsDisabled = direct.ValueOf(in.ManualRunsDisabled)
-	out.MinimumScheduleInterval = direct.StringDuration_ToProto(mapCtx, in.MinimumScheduleInterval)
-	return out
-}
-func DataSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSource) *krm.DataSourceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataSourceObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DataSourceID
+	// MISSING: DestinationDatasetID
 	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ClientID
-	// MISSING: Scopes
-	// MISSING: TransferType
-	// MISSING: SupportsMultipleTransfers
-	// MISSING: UpdateDeadlineSeconds
-	// MISSING: DefaultSchedule
-	// MISSING: SupportsCustomSchedule
-	// MISSING: Parameters
-	// MISSING: HelpURL
-	// MISSING: AuthorizationType
-	// MISSING: DataRefreshType
-	// MISSING: DefaultDataRefreshWindowDays
-	// MISSING: ManualRunsDisabled
-	// MISSING: MinimumScheduleInterval
-	return out
-}
-func DataSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataSourceObservedState) *pb.DataSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataSource{}
-	out.Name = direct.ValueOf(in.Name)
 	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: DatasetRegion
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	// MISSING: OwnerInfo
+	// MISSING: EncryptionConfiguration
+	// MISSING: Error
+	return out
+}
+func BigqueryTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.BigqueryTransferConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryTransferConfigSpec{}
+	// MISSING: Name
+	// MISSING: DestinationDatasetID
 	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ClientID
-	// MISSING: Scopes
-	// MISSING: TransferType
-	// MISSING: SupportsMultipleTransfers
-	// MISSING: UpdateDeadlineSeconds
-	// MISSING: DefaultSchedule
-	// MISSING: SupportsCustomSchedule
-	// MISSING: Parameters
-	// MISSING: HelpURL
-	// MISSING: AuthorizationType
-	// MISSING: DataRefreshType
-	// MISSING: DefaultDataRefreshWindowDays
-	// MISSING: ManualRunsDisabled
-	// MISSING: MinimumScheduleInterval
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: DatasetRegion
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	// MISSING: OwnerInfo
+	// MISSING: EncryptionConfiguration
+	// MISSING: Error
 	return out
 }
-func DataSourceParameter_FromProto(mapCtx *direct.MapContext, in *pb.DataSourceParameter) *krm.DataSourceParameter {
+func BigqueryTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryTransferConfigSpec) *pb.TransferConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataSourceParameter{}
-	out.ParamID = direct.LazyPtr(in.GetParamId())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Required = direct.LazyPtr(in.GetRequired())
-	out.Repeated = direct.LazyPtr(in.GetRepeated())
-	out.ValidationRegex = direct.LazyPtr(in.GetValidationRegex())
-	out.AllowedValues = in.AllowedValues
-	out.MinValue = DoubleValue_FromProto(mapCtx, in.GetMinValue())
-	out.MaxValue = DoubleValue_FromProto(mapCtx, in.GetMaxValue())
-	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, DataSourceParameter_FromProto)
-	out.ValidationDescription = direct.LazyPtr(in.GetValidationDescription())
-	out.ValidationHelpURL = direct.LazyPtr(in.GetValidationHelpUrl())
-	out.Immutable = direct.LazyPtr(in.GetImmutable())
-	out.Recurse = direct.LazyPtr(in.GetRecurse())
-	out.Deprecated = direct.LazyPtr(in.GetDeprecated())
-	return out
-}
-func DataSourceParameter_ToProto(mapCtx *direct.MapContext, in *krm.DataSourceParameter) *pb.DataSourceParameter {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataSourceParameter{}
-	out.ParamId = direct.ValueOf(in.ParamID)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Type = direct.Enum_ToProto[pb.DataSourceParameter_Type](mapCtx, in.Type)
-	out.Required = direct.ValueOf(in.Required)
-	out.Repeated = direct.ValueOf(in.Repeated)
-	out.ValidationRegex = direct.ValueOf(in.ValidationRegex)
-	out.AllowedValues = in.AllowedValues
-	out.MinValue = DoubleValue_ToProto(mapCtx, in.MinValue)
-	out.MaxValue = DoubleValue_ToProto(mapCtx, in.MaxValue)
-	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, DataSourceParameter_ToProto)
-	out.ValidationDescription = direct.ValueOf(in.ValidationDescription)
-	out.ValidationHelpUrl = direct.ValueOf(in.ValidationHelpURL)
-	out.Immutable = direct.ValueOf(in.Immutable)
-	out.Recurse = direct.ValueOf(in.Recurse)
-	out.Deprecated = direct.ValueOf(in.Deprecated)
+	out := &pb.TransferConfig{}
+	// MISSING: Name
+	// MISSING: DestinationDatasetID
+	// MISSING: DisplayName
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: DatasetRegion
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	// MISSING: OwnerInfo
+	// MISSING: EncryptionConfiguration
+	// MISSING: Error
 	return out
 }
 func EmailPreferences_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krm.EmailPreferences {
@@ -467,6 +429,118 @@ func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSched
 	out.Schedule = direct.ValueOf(in.Schedule)
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func TransferConfig_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.TransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TransferConfig{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DestinationDatasetID = direct.LazyPtr(in.GetDestinationDatasetId())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
+	out.Params = Params_FromProto(mapCtx, in.GetParams())
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	out.ScheduleOptions = ScheduleOptions_FromProto(mapCtx, in.GetScheduleOptions())
+	out.ScheduleOptionsV2 = ScheduleOptionsV2_FromProto(mapCtx, in.GetScheduleOptionsV2())
+	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	out.UserID = direct.LazyPtr(in.GetUserId())
+	// MISSING: DatasetRegion
+	out.NotificationPubsubTopic = direct.LazyPtr(in.GetNotificationPubsubTopic())
+	out.EmailPreferences = EmailPreferences_FromProto(mapCtx, in.GetEmailPreferences())
+	// MISSING: OwnerInfo
+	out.EncryptionConfiguration = EncryptionConfiguration_FromProto(mapCtx, in.GetEncryptionConfiguration())
+	// MISSING: Error
+	return out
+}
+func TransferConfig_ToProto(mapCtx *direct.MapContext, in *krm.TransferConfig) *pb.TransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransferConfig{}
+	out.Name = direct.ValueOf(in.Name)
+	if oneof := TransferConfig_DestinationDatasetId_ToProto(mapCtx, in.DestinationDatasetID); oneof != nil {
+		out.Destination = oneof
+	}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.DataSourceId = direct.ValueOf(in.DataSourceID)
+	out.Params = Params_ToProto(mapCtx, in.Params)
+	out.Schedule = direct.ValueOf(in.Schedule)
+	out.ScheduleOptions = ScheduleOptions_ToProto(mapCtx, in.ScheduleOptions)
+	out.ScheduleOptionsV2 = ScheduleOptionsV2_ToProto(mapCtx, in.ScheduleOptionsV2)
+	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	// MISSING: UpdateTime
+	// MISSING: NextRunTime
+	// MISSING: State
+	out.UserId = direct.ValueOf(in.UserID)
+	// MISSING: DatasetRegion
+	out.NotificationPubsubTopic = direct.ValueOf(in.NotificationPubsubTopic)
+	out.EmailPreferences = EmailPreferences_ToProto(mapCtx, in.EmailPreferences)
+	// MISSING: OwnerInfo
+	out.EncryptionConfiguration = EncryptionConfiguration_ToProto(mapCtx, in.EncryptionConfiguration)
+	// MISSING: Error
+	return out
+}
+func TransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.TransferConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TransferConfigObservedState{}
+	// MISSING: Name
+	// MISSING: DestinationDatasetID
+	// MISSING: DisplayName
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: UserID
+	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	out.OwnerInfo = UserInfo_FromProto(mapCtx, in.GetOwnerInfo())
+	// MISSING: EncryptionConfiguration
+	out.Error = Status_FromProto(mapCtx, in.GetError())
+	return out
+}
+func TransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TransferConfigObservedState) *pb.TransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransferConfig{}
+	// MISSING: Name
+	// MISSING: DestinationDatasetID
+	// MISSING: DisplayName
+	// MISSING: DataSourceID
+	// MISSING: Params
+	// MISSING: Schedule
+	// MISSING: ScheduleOptions
+	// MISSING: ScheduleOptionsV2
+	// MISSING: DataRefreshWindowDays
+	// MISSING: Disabled
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
+	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
+	// MISSING: UserID
+	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	if oneof := UserInfo_ToProto(mapCtx, in.OwnerInfo); oneof != nil {
+		out.OwnerInfo = &pb.TransferConfig_OwnerInfo{OwnerInfo: oneof}
+	}
+	// MISSING: EncryptionConfiguration
+	out.Error = Status_ToProto(mapCtx, in.Error)
 	return out
 }
 func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfo {
