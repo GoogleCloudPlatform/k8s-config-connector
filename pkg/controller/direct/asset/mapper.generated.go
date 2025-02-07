@@ -16,66 +16,10 @@ package asset
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/asset/apiv1/assetpb"
+	pb "cloud.google.com/go/asset/apiv1p2beta1/assetpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func AssetFeedObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.AssetFeedObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AssetFeedObservedState{}
-	// MISSING: Name
-	// MISSING: AssetNames
-	// MISSING: AssetTypes
-	// MISSING: ContentType
-	// MISSING: FeedOutputConfig
-	// MISSING: Condition
-	// MISSING: RelationshipTypes
-	return out
-}
-func AssetFeedObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssetFeedObservedState) *pb.Feed {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Feed{}
-	// MISSING: Name
-	// MISSING: AssetNames
-	// MISSING: AssetTypes
-	// MISSING: ContentType
-	// MISSING: FeedOutputConfig
-	// MISSING: Condition
-	// MISSING: RelationshipTypes
-	return out
-}
-func AssetFeedSpec_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.AssetFeedSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AssetFeedSpec{}
-	// MISSING: Name
-	// MISSING: AssetNames
-	// MISSING: AssetTypes
-	// MISSING: ContentType
-	// MISSING: FeedOutputConfig
-	// MISSING: Condition
-	// MISSING: RelationshipTypes
-	return out
-}
-func AssetFeedSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetFeedSpec) *pb.Feed {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Feed{}
-	// MISSING: Name
-	// MISSING: AssetNames
-	// MISSING: AssetTypes
-	// MISSING: ContentType
-	// MISSING: FeedOutputConfig
-	// MISSING: Condition
-	// MISSING: RelationshipTypes
-	return out
-}
 func Feed_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.Feed {
 	if in == nil {
 		return nil
@@ -86,8 +30,6 @@ func Feed_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.Feed {
 	out.AssetTypes = in.AssetTypes
 	out.ContentType = direct.Enum_FromProto(mapCtx, in.GetContentType())
 	out.FeedOutputConfig = FeedOutputConfig_FromProto(mapCtx, in.GetFeedOutputConfig())
-	out.Condition = Expr_FromProto(mapCtx, in.GetCondition())
-	out.RelationshipTypes = in.RelationshipTypes
 	return out
 }
 func Feed_ToProto(mapCtx *direct.MapContext, in *krm.Feed) *pb.Feed {
@@ -100,8 +42,6 @@ func Feed_ToProto(mapCtx *direct.MapContext, in *krm.Feed) *pb.Feed {
 	out.AssetTypes = in.AssetTypes
 	out.ContentType = direct.Enum_ToProto[pb.ContentType](mapCtx, in.ContentType)
 	out.FeedOutputConfig = FeedOutputConfig_ToProto(mapCtx, in.FeedOutputConfig)
-	out.Condition = Expr_ToProto(mapCtx, in.Condition)
-	out.RelationshipTypes = in.RelationshipTypes
 	return out
 }
 func FeedOutputConfig_FromProto(mapCtx *direct.MapContext, in *pb.FeedOutputConfig) *krm.FeedOutputConfig {
