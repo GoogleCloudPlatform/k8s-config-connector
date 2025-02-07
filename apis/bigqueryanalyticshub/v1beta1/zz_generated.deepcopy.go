@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -437,7 +438,7 @@ func (in *BigQueryDatasetSource) DeepCopyInto(out *BigQueryDatasetSource) {
 	*out = *in
 	if in.DatasetRef != nil {
 		in, out := &in.DatasetRef, &out.DatasetRef
-		*out = new(refsv1beta1.BigQueryDatasetRef)
+		*out = new(bigqueryv1beta1.DatasetRef)
 		**out = **in
 	}
 	if in.SelectedResources != nil {

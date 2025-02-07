@@ -71,9 +71,32 @@ func (r *DatasetRef) NormalizedExternal(ctx context.Context, reader client.Reade
 		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryDatasetGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	actualExternalRef, found, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if !found {
+		// BigQueryDataset is still TF based so we resolve the reference from the object
+		// BUT only construct the reference if the resource is ready
+		resource, err := k8s.NewResource(u)
+		if err != nil {
+			return "", fmt.Errorf("error converting unstructured to resource: %w", err)
+		}
+		if !k8s.IsResourceReady(resource) {
+			return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+		}
+
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return "", err
+		}
+		datasetID, err := refsv1beta1.GetResourceID(u)
+		if err != nil {
+			return "", err
+		}
+		actualExternal := fmt.Sprintf("projects/%s/datasets/%s", projectID, datasetID)
+		r.External = actualExternal
+		return r.External, nil
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
