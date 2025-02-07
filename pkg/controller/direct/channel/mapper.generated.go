@@ -128,64 +128,84 @@ func ChannelChannelPartnerLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ch
 	// MISSING: ChannelPartnerCloudIdentityInfo
 	return out
 }
-func ChannelPartnerLink_FromProto(mapCtx *direct.MapContext, in *pb.ChannelPartnerLink) *krm.ChannelPartnerLink {
+func ChannelCustomerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.ChannelCustomerObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ChannelPartnerLink{}
+	out := &krm.ChannelCustomerObservedState{}
 	// MISSING: Name
-	out.ResellerCloudIdentityID = direct.LazyPtr(in.GetResellerCloudIdentityId())
-	out.LinkState = direct.Enum_FromProto(mapCtx, in.GetLinkState())
-	// MISSING: InviteLinkURI
+	// MISSING: OrgDisplayName
+	// MISSING: OrgPostalAddress
+	// MISSING: PrimaryContactInfo
+	// MISSING: AlternateEmail
+	// MISSING: Domain
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: PublicID
-	// MISSING: ChannelPartnerCloudIdentityInfo
+	// MISSING: CloudIdentityID
+	// MISSING: LanguageCode
+	// MISSING: CloudIdentityInfo
+	// MISSING: ChannelPartnerID
+	// MISSING: CorrelationID
 	return out
 }
-func ChannelPartnerLink_ToProto(mapCtx *direct.MapContext, in *krm.ChannelPartnerLink) *pb.ChannelPartnerLink {
+func ChannelCustomerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelCustomerObservedState) *pb.Customer {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ChannelPartnerLink{}
+	out := &pb.Customer{}
 	// MISSING: Name
-	out.ResellerCloudIdentityId = direct.ValueOf(in.ResellerCloudIdentityID)
-	out.LinkState = direct.Enum_ToProto[pb.ChannelPartnerLinkState](mapCtx, in.LinkState)
-	// MISSING: InviteLinkURI
+	// MISSING: OrgDisplayName
+	// MISSING: OrgPostalAddress
+	// MISSING: PrimaryContactInfo
+	// MISSING: AlternateEmail
+	// MISSING: Domain
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: PublicID
-	// MISSING: ChannelPartnerCloudIdentityInfo
+	// MISSING: CloudIdentityID
+	// MISSING: LanguageCode
+	// MISSING: CloudIdentityInfo
+	// MISSING: ChannelPartnerID
+	// MISSING: CorrelationID
 	return out
 }
-func ChannelPartnerLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ChannelPartnerLink) *krm.ChannelPartnerLinkObservedState {
+func ChannelCustomerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.ChannelCustomerSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ChannelPartnerLinkObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: ResellerCloudIdentityID
-	// MISSING: LinkState
-	out.InviteLinkURI = direct.LazyPtr(in.GetInviteLinkUri())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.PublicID = direct.LazyPtr(in.GetPublicId())
-	out.ChannelPartnerCloudIdentityInfo = CloudIdentityInfo_FromProto(mapCtx, in.GetChannelPartnerCloudIdentityInfo())
+	out := &krm.ChannelCustomerSpec{}
+	// MISSING: Name
+	// MISSING: OrgDisplayName
+	// MISSING: OrgPostalAddress
+	// MISSING: PrimaryContactInfo
+	// MISSING: AlternateEmail
+	// MISSING: Domain
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CloudIdentityID
+	// MISSING: LanguageCode
+	// MISSING: CloudIdentityInfo
+	// MISSING: ChannelPartnerID
+	// MISSING: CorrelationID
 	return out
 }
-func ChannelPartnerLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelPartnerLinkObservedState) *pb.ChannelPartnerLink {
+func ChannelCustomerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelCustomerSpec) *pb.Customer {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ChannelPartnerLink{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: ResellerCloudIdentityID
-	// MISSING: LinkState
-	out.InviteLinkUri = direct.ValueOf(in.InviteLinkURI)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.PublicId = direct.ValueOf(in.PublicID)
-	out.ChannelPartnerCloudIdentityInfo = CloudIdentityInfo_ToProto(mapCtx, in.ChannelPartnerCloudIdentityInfo)
+	out := &pb.Customer{}
+	// MISSING: Name
+	// MISSING: OrgDisplayName
+	// MISSING: OrgPostalAddress
+	// MISSING: PrimaryContactInfo
+	// MISSING: AlternateEmail
+	// MISSING: Domain
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CloudIdentityID
+	// MISSING: LanguageCode
+	// MISSING: CloudIdentityInfo
+	// MISSING: ChannelPartnerID
+	// MISSING: CorrelationID
 	return out
 }
 func CloudIdentityInfo_FromProto(mapCtx *direct.MapContext, in *pb.CloudIdentityInfo) *krm.CloudIdentityInfo {
@@ -246,6 +266,138 @@ func CloudIdentityInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: LanguageCode
 	out.AdminConsoleUri = direct.ValueOf(in.AdminConsoleURI)
 	// MISSING: EduData
+	return out
+}
+func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContactInfo{}
+	out.FirstName = direct.LazyPtr(in.GetFirstName())
+	out.LastName = direct.LazyPtr(in.GetLastName())
+	// MISSING: DisplayName
+	out.Email = direct.LazyPtr(in.GetEmail())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Phone = direct.LazyPtr(in.GetPhone())
+	return out
+}
+func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContactInfo{}
+	out.FirstName = direct.ValueOf(in.FirstName)
+	out.LastName = direct.ValueOf(in.LastName)
+	// MISSING: DisplayName
+	out.Email = direct.ValueOf(in.Email)
+	out.Title = direct.ValueOf(in.Title)
+	out.Phone = direct.ValueOf(in.Phone)
+	return out
+}
+func ContactInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContactInfoObservedState{}
+	// MISSING: FirstName
+	// MISSING: LastName
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Email
+	// MISSING: Title
+	// MISSING: Phone
+	return out
+}
+func ContactInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfoObservedState) *pb.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContactInfo{}
+	// MISSING: FirstName
+	// MISSING: LastName
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Email
+	// MISSING: Title
+	// MISSING: Phone
+	return out
+}
+func Customer_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.Customer {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Customer{}
+	// MISSING: Name
+	out.OrgDisplayName = direct.LazyPtr(in.GetOrgDisplayName())
+	out.OrgPostalAddress = PostalAddress_FromProto(mapCtx, in.GetOrgPostalAddress())
+	out.PrimaryContactInfo = ContactInfo_FromProto(mapCtx, in.GetPrimaryContactInfo())
+	out.AlternateEmail = direct.LazyPtr(in.GetAlternateEmail())
+	out.Domain = direct.LazyPtr(in.GetDomain())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CloudIdentityID
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	// MISSING: CloudIdentityInfo
+	out.ChannelPartnerID = direct.LazyPtr(in.GetChannelPartnerId())
+	out.CorrelationID = direct.LazyPtr(in.GetCorrelationId())
+	return out
+}
+func Customer_ToProto(mapCtx *direct.MapContext, in *krm.Customer) *pb.Customer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Customer{}
+	// MISSING: Name
+	out.OrgDisplayName = direct.ValueOf(in.OrgDisplayName)
+	out.OrgPostalAddress = PostalAddress_ToProto(mapCtx, in.OrgPostalAddress)
+	out.PrimaryContactInfo = ContactInfo_ToProto(mapCtx, in.PrimaryContactInfo)
+	out.AlternateEmail = direct.ValueOf(in.AlternateEmail)
+	out.Domain = direct.ValueOf(in.Domain)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: CloudIdentityID
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	// MISSING: CloudIdentityInfo
+	out.ChannelPartnerId = direct.ValueOf(in.ChannelPartnerID)
+	out.CorrelationId = direct.ValueOf(in.CorrelationID)
+	return out
+}
+func CustomerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.CustomerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomerObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: OrgDisplayName
+	// MISSING: OrgPostalAddress
+	out.PrimaryContactInfo = ContactInfoObservedState_FromProto(mapCtx, in.GetPrimaryContactInfo())
+	// MISSING: AlternateEmail
+	// MISSING: Domain
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CloudIdentityID = direct.LazyPtr(in.GetCloudIdentityId())
+	// MISSING: LanguageCode
+	out.CloudIdentityInfo = CloudIdentityInfo_FromProto(mapCtx, in.GetCloudIdentityInfo())
+	// MISSING: ChannelPartnerID
+	// MISSING: CorrelationID
+	return out
+}
+func CustomerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerObservedState) *pb.Customer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Customer{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: OrgDisplayName
+	// MISSING: OrgPostalAddress
+	out.PrimaryContactInfo = ContactInfoObservedState_ToProto(mapCtx, in.PrimaryContactInfo)
+	// MISSING: AlternateEmail
+	// MISSING: Domain
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CloudIdentityId = direct.ValueOf(in.CloudIdentityID)
+	// MISSING: LanguageCode
+	out.CloudIdentityInfo = CloudIdentityInfo_ToProto(mapCtx, in.CloudIdentityInfo)
+	// MISSING: ChannelPartnerID
+	// MISSING: CorrelationID
 	return out
 }
 func EduData_FromProto(mapCtx *direct.MapContext, in *pb.EduData) *krm.EduData {
