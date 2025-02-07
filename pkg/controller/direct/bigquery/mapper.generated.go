@@ -303,6 +303,94 @@ func BigqueryTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bigqu
 	// MISSING: Error
 	return out
 }
+func BigqueryTransferRunObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferRun) *krm.BigqueryTransferRunObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryTransferRunObservedState{}
+	// MISSING: Name
+	// MISSING: ScheduleTime
+	// MISSING: RunTime
+	// MISSING: ErrorStatus
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Params
+	// MISSING: DestinationDatasetID
+	// MISSING: DataSourceID
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: Schedule
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	return out
+}
+func BigqueryTransferRunObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryTransferRunObservedState) *pb.TransferRun {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransferRun{}
+	// MISSING: Name
+	// MISSING: ScheduleTime
+	// MISSING: RunTime
+	// MISSING: ErrorStatus
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Params
+	// MISSING: DestinationDatasetID
+	// MISSING: DataSourceID
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: Schedule
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	return out
+}
+func BigqueryTransferRunSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransferRun) *krm.BigqueryTransferRunSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryTransferRunSpec{}
+	// MISSING: Name
+	// MISSING: ScheduleTime
+	// MISSING: RunTime
+	// MISSING: ErrorStatus
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Params
+	// MISSING: DestinationDatasetID
+	// MISSING: DataSourceID
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: Schedule
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	return out
+}
+func BigqueryTransferRunSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryTransferRunSpec) *pb.TransferRun {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransferRun{}
+	// MISSING: Name
+	// MISSING: ScheduleTime
+	// MISSING: RunTime
+	// MISSING: ErrorStatus
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Params
+	// MISSING: DestinationDatasetID
+	// MISSING: DataSourceID
+	// MISSING: State
+	// MISSING: UserID
+	// MISSING: Schedule
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	return out
+}
 func EmailPreferences_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krm.EmailPreferences {
 	if in == nil {
 		return nil
@@ -431,116 +519,94 @@ func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSched
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func TransferConfig_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.TransferConfig {
+func TransferRun_FromProto(mapCtx *direct.MapContext, in *pb.TransferRun) *krm.TransferRun {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TransferConfig{}
+	out := &krm.TransferRun{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DestinationDatasetID = direct.LazyPtr(in.GetDestinationDatasetId())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
-	out.Params = Params_FromProto(mapCtx, in.GetParams())
-	out.Schedule = direct.LazyPtr(in.GetSchedule())
-	out.ScheduleOptions = ScheduleOptions_FromProto(mapCtx, in.GetScheduleOptions())
-	out.ScheduleOptionsV2 = ScheduleOptionsV2_FromProto(mapCtx, in.GetScheduleOptionsV2())
-	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
-	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.ScheduleTime = direct.StringTimestamp_FromProto(mapCtx, in.GetScheduleTime())
+	out.RunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRunTime())
+	out.ErrorStatus = Status_FromProto(mapCtx, in.GetErrorStatus())
+	// MISSING: StartTime
+	// MISSING: EndTime
 	// MISSING: UpdateTime
-	// MISSING: NextRunTime
-	// MISSING: State
+	// MISSING: Params
+	// MISSING: DestinationDatasetID
+	// MISSING: DataSourceID
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.UserID = direct.LazyPtr(in.GetUserId())
-	// MISSING: DatasetRegion
+	// MISSING: Schedule
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	return out
+}
+func TransferRun_ToProto(mapCtx *direct.MapContext, in *krm.TransferRun) *pb.TransferRun {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransferRun{}
+	out.Name = direct.ValueOf(in.Name)
+	out.ScheduleTime = direct.StringTimestamp_ToProto(mapCtx, in.ScheduleTime)
+	out.RunTime = direct.StringTimestamp_ToProto(mapCtx, in.RunTime)
+	out.ErrorStatus = Status_ToProto(mapCtx, in.ErrorStatus)
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Params
+	// MISSING: DestinationDatasetID
+	// MISSING: DataSourceID
+	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
+	out.UserId = direct.ValueOf(in.UserID)
+	// MISSING: Schedule
+	// MISSING: NotificationPubsubTopic
+	// MISSING: EmailPreferences
+	return out
+}
+func TransferRunObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferRun) *krm.TransferRunObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TransferRunObservedState{}
+	// MISSING: Name
+	// MISSING: ScheduleTime
+	// MISSING: RunTime
+	// MISSING: ErrorStatus
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Params = Params_FromProto(mapCtx, in.GetParams())
+	out.DestinationDatasetID = direct.LazyPtr(in.GetDestinationDatasetId())
+	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())
+	// MISSING: State
+	// MISSING: UserID
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
 	out.NotificationPubsubTopic = direct.LazyPtr(in.GetNotificationPubsubTopic())
 	out.EmailPreferences = EmailPreferences_FromProto(mapCtx, in.GetEmailPreferences())
-	// MISSING: OwnerInfo
-	out.EncryptionConfiguration = EncryptionConfiguration_FromProto(mapCtx, in.GetEncryptionConfiguration())
-	// MISSING: Error
 	return out
 }
-func TransferConfig_ToProto(mapCtx *direct.MapContext, in *krm.TransferConfig) *pb.TransferConfig {
+func TransferRunObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TransferRunObservedState) *pb.TransferRun {
 	if in == nil {
 		return nil
 	}
-	out := &pb.TransferConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	if oneof := TransferConfig_DestinationDatasetId_ToProto(mapCtx, in.DestinationDatasetID); oneof != nil {
+	out := &pb.TransferRun{}
+	// MISSING: Name
+	// MISSING: ScheduleTime
+	// MISSING: RunTime
+	// MISSING: ErrorStatus
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Params = Params_ToProto(mapCtx, in.Params)
+	if oneof := TransferRunObservedState_DestinationDatasetId_ToProto(mapCtx, in.DestinationDatasetID); oneof != nil {
 		out.Destination = oneof
 	}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.DataSourceId = direct.ValueOf(in.DataSourceID)
-	out.Params = Params_ToProto(mapCtx, in.Params)
-	out.Schedule = direct.ValueOf(in.Schedule)
-	out.ScheduleOptions = ScheduleOptions_ToProto(mapCtx, in.ScheduleOptions)
-	out.ScheduleOptionsV2 = ScheduleOptionsV2_ToProto(mapCtx, in.ScheduleOptionsV2)
-	out.DataRefreshWindowDays = direct.ValueOf(in.DataRefreshWindowDays)
-	out.Disabled = direct.ValueOf(in.Disabled)
-	// MISSING: UpdateTime
-	// MISSING: NextRunTime
 	// MISSING: State
-	out.UserId = direct.ValueOf(in.UserID)
-	// MISSING: DatasetRegion
+	// MISSING: UserID
+	out.Schedule = direct.ValueOf(in.Schedule)
 	out.NotificationPubsubTopic = direct.ValueOf(in.NotificationPubsubTopic)
 	out.EmailPreferences = EmailPreferences_ToProto(mapCtx, in.EmailPreferences)
-	// MISSING: OwnerInfo
-	out.EncryptionConfiguration = EncryptionConfiguration_ToProto(mapCtx, in.EncryptionConfiguration)
-	// MISSING: Error
-	return out
-}
-func TransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransferConfig) *krm.TransferConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TransferConfigObservedState{}
-	// MISSING: Name
-	// MISSING: DestinationDatasetID
-	// MISSING: DisplayName
-	// MISSING: DataSourceID
-	// MISSING: Params
-	// MISSING: Schedule
-	// MISSING: ScheduleOptions
-	// MISSING: ScheduleOptionsV2
-	// MISSING: DataRefreshWindowDays
-	// MISSING: Disabled
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: UserID
-	out.DatasetRegion = direct.LazyPtr(in.GetDatasetRegion())
-	// MISSING: NotificationPubsubTopic
-	// MISSING: EmailPreferences
-	out.OwnerInfo = UserInfo_FromProto(mapCtx, in.GetOwnerInfo())
-	// MISSING: EncryptionConfiguration
-	out.Error = Status_FromProto(mapCtx, in.GetError())
-	return out
-}
-func TransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TransferConfigObservedState) *pb.TransferConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TransferConfig{}
-	// MISSING: Name
-	// MISSING: DestinationDatasetID
-	// MISSING: DisplayName
-	// MISSING: DataSourceID
-	// MISSING: Params
-	// MISSING: Schedule
-	// MISSING: ScheduleOptions
-	// MISSING: ScheduleOptionsV2
-	// MISSING: DataRefreshWindowDays
-	// MISSING: Disabled
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
-	out.State = direct.Enum_ToProto[pb.TransferState](mapCtx, in.State)
-	// MISSING: UserID
-	out.DatasetRegion = direct.ValueOf(in.DatasetRegion)
-	// MISSING: NotificationPubsubTopic
-	// MISSING: EmailPreferences
-	if oneof := UserInfo_ToProto(mapCtx, in.OwnerInfo); oneof != nil {
-		out.OwnerInfo = &pb.TransferConfig_OwnerInfo{OwnerInfo: oneof}
-	}
-	// MISSING: EncryptionConfiguration
-	out.Error = Status_ToProto(mapCtx, in.Error)
 	return out
 }
 func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfo {
