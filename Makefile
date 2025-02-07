@@ -112,8 +112,7 @@ fmt:
 	-ignore "operator/config/gke-addon/image_configmap.yaml" \
 	-ignore "operator/config/rbac/cnrm_viewer_role.yaml" \
 	-ignore "operator/vendor/**" \
-	-ignore "**/testdata/**/_*" \
-	-ignore "**/testdata/**/script.yaml" \
+	-ignore "**/testdata/**/*" \
 	-ignore "experiments/**/testdata/**" \
 	./
 
