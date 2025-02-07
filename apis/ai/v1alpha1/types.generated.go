@@ -15,31 +15,29 @@
 package v1alpha1
 
 
-// +kcc:proto=google.ai.generativelanguage.v1beta.Permission
+// +kcc:proto=google.ai.generativelanguage.v1beta3.Permission
 type Permission struct {
 
-	// Optional. Immutable. The type of the grantee.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Permission.grantee_type
+	// Required. Immutable. The type of the grantee.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta3.Permission.grantee_type
 	GranteeType *string `json:"granteeType,omitempty"`
 
 	// Optional. Immutable. The email address of the user of group which this
 	//  permission refers. Field is not set when permission's grantee type is
 	//  EVERYONE.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Permission.email_address
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta3.Permission.email_address
 	EmailAddress *string `json:"emailAddress,omitempty"`
 
 	// Required. The role granted by this permission.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Permission.role
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta3.Permission.role
 	Role *string `json:"role,omitempty"`
 }
 
-// +kcc:proto=google.ai.generativelanguage.v1beta.Permission
+// +kcc:proto=google.ai.generativelanguage.v1beta3.Permission
 type PermissionObservedState struct {
-	// Output only. Identifier. The permission name. A unique name will be
-	//  generated on create. Examples:
-	//      tunedModels/{tuned_model}/permissions/{permission}
-	//      corpora/{corpus}/permissions/{permission}
-	//  Output only.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Permission.name
+	// Output only. The permission name. A unique name will be generated on
+	//  create. Example: tunedModels/{tuned_model}permssions/{permission} Output
+	//  only.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta3.Permission.name
 	Name *string `json:"name,omitempty"`
 }
