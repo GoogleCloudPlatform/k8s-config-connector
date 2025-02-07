@@ -15,142 +15,123 @@
 package v1alpha1
 
 
-// +kcc:proto=google.api.cloudquotas.v1.DimensionsInfo
-type DimensionsInfo struct {
-	// The map of dimensions for this dimensions info. The key of a map entry
-	//  is "region", "zone" or the name of a service specific dimension, and the
-	//  value of a map entry is the value of the dimension.  If a dimension does
-	//  not appear in the map of dimensions, the dimensions info applies to all
-	//  the dimension values except for those that have another DimenisonInfo
-	//  instance configured for the specific value.
-	//  Example: {"provider" : "Foo Inc"} where "provider" is a service specific
-	//  dimension of a quota.
-	// +kcc:proto:field=google.api.cloudquotas.v1.DimensionsInfo.dimensions
-	Dimensions map[string]string `json:"dimensions,omitempty"`
+// +kcc:proto=google.api.cloudquotas.v1.QuotaConfig
+type QuotaConfig struct {
+	// Required. The preferred value. Must be greater than or equal to -1. If set
+	//  to -1, it means the value is "unlimited".
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaConfig.preferred_value
+	PreferredValue *int64 `json:"preferredValue,omitempty"`
 
-	// Quota details for the specified dimensions.
-	// +kcc:proto:field=google.api.cloudquotas.v1.DimensionsInfo.details
-	Details *QuotaDetails `json:"details,omitempty"`
-
-	// The applicable regions or zones of this dimensions info. The field will be
-	//  set to ['global'] for quotas that are not per region or per zone.
-	//  Otherwise, it will be set to the list of locations this dimension info is
-	//  applicable to.
-	// +kcc:proto:field=google.api.cloudquotas.v1.DimensionsInfo.applicable_locations
-	ApplicableLocations []string `json:"applicableLocations,omitempty"`
+	// Optional. The annotations map for clients to store small amounts of
+	//  arbitrary data. Do not put PII or other sensitive information here. See
+	//  https://google.aip.dev/128#annotations
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaConfig.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
-// +kcc:proto=google.api.cloudquotas.v1.QuotaDetails
-type QuotaDetails struct {
-	// The value currently in effect and being enforced.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaDetails.value
-	Value *int64 `json:"value,omitempty"`
-
-	// Rollout information of this quota.
-	//  This field is present only if the effective limit will change due to the
-	//  ongoing rollout of the service config.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaDetails.rollout_info
-	RolloutInfo *RolloutInfo `json:"rolloutInfo,omitempty"`
-}
-
-// +kcc:proto=google.api.cloudquotas.v1.QuotaIncreaseEligibility
-type QuotaIncreaseEligibility struct {
-	// Whether a higher quota value can be requested for the quota.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaIncreaseEligibility.is_eligible
-	IsEligible *bool `json:"isEligible,omitempty"`
-
-	// The reason of why it is ineligible to request increased value of the quota.
-	//  If the is_eligible field is true, it defaults to
-	//  INELIGIBILITY_REASON_UNSPECIFIED.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaIncreaseEligibility.ineligibility_reason
-	IneligibilityReason *string `json:"ineligibilityReason,omitempty"`
-}
-
-// +kcc:proto=google.api.cloudquotas.v1.QuotaInfo
-type QuotaInfo struct {
-	// Resource name of this QuotaInfo.
+// +kcc:proto=google.api.cloudquotas.v1.QuotaPreference
+type QuotaPreference struct {
+	// Required except in the CREATE requests.
+	//  The resource name of the quota preference.
 	//  The ID component following "locations/" must be "global".
 	//  Example:
-	//  `projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion`
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.name
+	//  `projects/123/locations/global/quotaPreferences/my-config-for-us-east1`
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.name
 	Name *string `json:"name,omitempty"`
 
-	// The id of the quota, which is unquie within the service.
-	//  Example: `CpusPerProjectPerRegion`
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.quota_id
-	QuotaID *string `json:"quotaID,omitempty"`
+	// Immutable. The dimensions that this quota preference applies to. The key of
+	//  the map entry is the name of a dimension, such as "region", "zone",
+	//  "network_id", and the value of the map entry is the dimension value.
+	//
+	//  If a dimension is missing from the map of dimensions, the quota preference
+	//  applies to all the dimension values except for those that have other quota
+	//  preferences configured for the specific value.
+	//
+	//  NOTE: QuotaPreferences can only be applied across all values of "user" and
+	//  "resource" dimension. Do not set values for "user" or "resource" in the
+	//  dimension map.
+	//
+	//  Example: {"provider", "Foo Inc"} where "provider" is a service specific
+	//  dimension.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.dimensions
+	Dimensions map[string]string `json:"dimensions,omitempty"`
 
-	// The metric of the quota. It specifies the resources consumption the quota
-	//  is defined for.
-	//  Example: `compute.googleapis.com/cpus`
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.metric
-	Metric *string `json:"metric,omitempty"`
+	// Required. Preferred quota configuration.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.quota_config
+	QuotaConfig *QuotaConfig `json:"quotaConfig,omitempty"`
 
-	// The name of the service in which the quota is defined.
-	//  Example: `compute.googleapis.com`
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.service
+	// Optional. The current etag of the quota preference. If an etag is provided
+	//  on update and does not match the current server's etag of the quota
+	//  preference, the request will be blocked and an ABORTED error will be
+	//  returned. See https://google.aip.dev/134#etags for more details on etags.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Required. The name of the service to which the quota preference is applied.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.service
 	Service *string `json:"service,omitempty"`
 
-	// Whether this is a precise quota. A precise quota is tracked with absolute
-	//  precision. In contrast, an imprecise quota is not tracked with precision.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.is_precise
-	IsPrecise *bool `json:"isPrecise,omitempty"`
+	// Required. The id of the quota to which the quota preference is applied. A
+	//  quota name is unique in the service. Example: `CpusPerProjectPerRegion`
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.quota_id
+	QuotaID *string `json:"quotaID,omitempty"`
 
-	// The reset time interval for the quota. Refresh interval applies to rate
-	//  quota only.
-	//  Example: "minute" for per minute, "day" for per day, or "10 seconds" for
-	//  every 10 seconds.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.refresh_interval
-	RefreshInterval *string `json:"refreshInterval,omitempty"`
+	// The reason / justification for this quota preference.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.justification
+	Justification *string `json:"justification,omitempty"`
 
-	// The container type of the QuotaInfo.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.container_type
-	ContainerType *string `json:"containerType,omitempty"`
-
-	// The dimensions the quota is defined on.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.dimensions
-	Dimensions []string `json:"dimensions,omitempty"`
-
-	// The display name of the quota metric
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.metric_display_name
-	MetricDisplayName *string `json:"metricDisplayName,omitempty"`
-
-	// The display name of the quota.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.quota_display_name
-	QuotaDisplayName *string `json:"quotaDisplayName,omitempty"`
-
-	// The unit in which the metric value is reported, e.g., "MByte".
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.metric_unit
-	MetricUnit *string `json:"metricUnit,omitempty"`
-
-	// Whether it is eligible to request a higher quota value for this quota.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.quota_increase_eligibility
-	QuotaIncreaseEligibility *QuotaIncreaseEligibility `json:"quotaIncreaseEligibility,omitempty"`
-
-	// Whether the quota value is fixed or adjustable
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.is_fixed
-	IsFixed *bool `json:"isFixed,omitempty"`
-
-	// The collection of dimensions info ordered by their dimensions from more
-	//  specific ones to less specific ones.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.dimensions_infos
-	DimensionsInfos []DimensionsInfo `json:"dimensionsInfos,omitempty"`
-
-	// Whether the quota is a concurrent quota. Concurrent quotas are enforced
-	//  on the total number of concurrent operations in flight at any given time.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.is_concurrent
-	IsConcurrent *bool `json:"isConcurrent,omitempty"`
-
-	// URI to the page where users can request more quota for the cloud
-	//  service—for example,
-	//  https://console.cloud.google.com/iam-admin/quotas.
-	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.service_request_quota_uri
-	ServiceRequestQuotaURI *string `json:"serviceRequestQuotaURI,omitempty"`
+	// Input only. An email address that can be used to contact the the user, in
+	//  case Google Cloud needs more information to make a decision before
+	//  additional quota can be granted.
+	//
+	//  When requesting a quota increase, the email address is required.
+	//  When requesting a quota decrease, the email address is optional.
+	//  For example, the email address is optional when the
+	//  `QuotaConfig.preferred_value` is smaller than the
+	//  `QuotaDetails.reset_value`.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.contact_email
+	ContactEmail *string `json:"contactEmail,omitempty"`
 }
 
-// +kcc:proto=google.api.cloudquotas.v1.RolloutInfo
-type RolloutInfo struct {
-	// Whether there is an ongoing rollout for a quota or not.
-	// +kcc:proto:field=google.api.cloudquotas.v1.RolloutInfo.ongoing_rollout
-	OngoingRollout *bool `json:"ongoingRollout,omitempty"`
+// +kcc:proto=google.api.cloudquotas.v1.QuotaConfig
+type QuotaConfigObservedState struct {
+	// Output only. Optional details about the state of this quota preference.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaConfig.state_detail
+	StateDetail *string `json:"stateDetail,omitempty"`
+
+	// Output only. Granted quota value.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaConfig.granted_value
+	GrantedValue *int64 `json:"grantedValue,omitempty"`
+
+	// Output only. The trace id that the Google Cloud uses to provision the
+	//  requested quota. This trace id may be used by the client to contact Cloud
+	//  support to track the state of a quota preference request. The trace id is
+	//  only produced for increase requests and is unique for each request. The
+	//  quota decrease requests do not have a trace id.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaConfig.trace_id
+	TraceID *string `json:"traceID,omitempty"`
+
+	// Output only. The origin of the quota preference request.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaConfig.request_origin
+	RequestOrigin *string `json:"requestOrigin,omitempty"`
+}
+
+// +kcc:proto=google.api.cloudquotas.v1.QuotaPreference
+type QuotaPreferenceObservedState struct {
+	// Required. Preferred quota configuration.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.quota_config
+	QuotaConfig *QuotaConfigObservedState `json:"quotaConfig,omitempty"`
+
+	// Output only. Create time stamp
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update time stamp
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Is the quota preference pending Google Cloud approval and
+	//  fulfillment.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaPreference.reconciling
+	Reconciling *bool `json:"reconciling,omitempty"`
 }
