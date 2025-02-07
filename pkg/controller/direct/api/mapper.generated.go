@@ -16,102 +16,10 @@ package api
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/cloudquotas/apiv1/cloudquotaspb"
+	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/api/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func ApiQuotaInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaInfo) *krm.ApiQuotaInfoObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiQuotaInfoObservedState{}
-	// MISSING: Name
-	// MISSING: QuotaID
-	// MISSING: Metric
-	// MISSING: Service
-	// MISSING: IsPrecise
-	// MISSING: RefreshInterval
-	// MISSING: ContainerType
-	// MISSING: Dimensions
-	// MISSING: MetricDisplayName
-	// MISSING: QuotaDisplayName
-	// MISSING: MetricUnit
-	// MISSING: QuotaIncreaseEligibility
-	// MISSING: IsFixed
-	// MISSING: DimensionsInfos
-	// MISSING: IsConcurrent
-	// MISSING: ServiceRequestQuotaURI
-	return out
-}
-func ApiQuotaInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaInfoObservedState) *pb.QuotaInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.QuotaInfo{}
-	// MISSING: Name
-	// MISSING: QuotaID
-	// MISSING: Metric
-	// MISSING: Service
-	// MISSING: IsPrecise
-	// MISSING: RefreshInterval
-	// MISSING: ContainerType
-	// MISSING: Dimensions
-	// MISSING: MetricDisplayName
-	// MISSING: QuotaDisplayName
-	// MISSING: MetricUnit
-	// MISSING: QuotaIncreaseEligibility
-	// MISSING: IsFixed
-	// MISSING: DimensionsInfos
-	// MISSING: IsConcurrent
-	// MISSING: ServiceRequestQuotaURI
-	return out
-}
-func ApiQuotaInfoSpec_FromProto(mapCtx *direct.MapContext, in *pb.QuotaInfo) *krm.ApiQuotaInfoSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiQuotaInfoSpec{}
-	// MISSING: Name
-	// MISSING: QuotaID
-	// MISSING: Metric
-	// MISSING: Service
-	// MISSING: IsPrecise
-	// MISSING: RefreshInterval
-	// MISSING: ContainerType
-	// MISSING: Dimensions
-	// MISSING: MetricDisplayName
-	// MISSING: QuotaDisplayName
-	// MISSING: MetricUnit
-	// MISSING: QuotaIncreaseEligibility
-	// MISSING: IsFixed
-	// MISSING: DimensionsInfos
-	// MISSING: IsConcurrent
-	// MISSING: ServiceRequestQuotaURI
-	return out
-}
-func ApiQuotaInfoSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaInfoSpec) *pb.QuotaInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.QuotaInfo{}
-	// MISSING: Name
-	// MISSING: QuotaID
-	// MISSING: Metric
-	// MISSING: Service
-	// MISSING: IsPrecise
-	// MISSING: RefreshInterval
-	// MISSING: ContainerType
-	// MISSING: Dimensions
-	// MISSING: MetricDisplayName
-	// MISSING: QuotaDisplayName
-	// MISSING: MetricUnit
-	// MISSING: QuotaIncreaseEligibility
-	// MISSING: IsFixed
-	// MISSING: DimensionsInfos
-	// MISSING: IsConcurrent
-	// MISSING: ServiceRequestQuotaURI
-	return out
-}
 func DimensionsInfo_FromProto(mapCtx *direct.MapContext, in *pb.DimensionsInfo) *krm.DimensionsInfo {
 	if in == nil {
 		return nil
