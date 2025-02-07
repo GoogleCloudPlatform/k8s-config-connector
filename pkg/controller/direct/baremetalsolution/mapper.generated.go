@@ -20,6 +20,86 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/baremetalsolution/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+func BaremetalsolutionInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.BaremetalsolutionInstanceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionInstanceConfigObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: InstanceType
+	// MISSING: Hyperthreading
+	// MISSING: OsImage
+	// MISSING: ClientNetwork
+	// MISSING: PrivateNetwork
+	// MISSING: UserNote
+	// MISSING: AccountNetworksEnabled
+	// MISSING: NetworkConfig
+	// MISSING: NetworkTemplate
+	// MISSING: LogicalInterfaces
+	// MISSING: SSHKeyNames
+	return out
+}
+func BaremetalsolutionInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionInstanceConfigObservedState) *pb.InstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceConfig{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: InstanceType
+	// MISSING: Hyperthreading
+	// MISSING: OsImage
+	// MISSING: ClientNetwork
+	// MISSING: PrivateNetwork
+	// MISSING: UserNote
+	// MISSING: AccountNetworksEnabled
+	// MISSING: NetworkConfig
+	// MISSING: NetworkTemplate
+	// MISSING: LogicalInterfaces
+	// MISSING: SSHKeyNames
+	return out
+}
+func BaremetalsolutionInstanceConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.BaremetalsolutionInstanceConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionInstanceConfigSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: InstanceType
+	// MISSING: Hyperthreading
+	// MISSING: OsImage
+	// MISSING: ClientNetwork
+	// MISSING: PrivateNetwork
+	// MISSING: UserNote
+	// MISSING: AccountNetworksEnabled
+	// MISSING: NetworkConfig
+	// MISSING: NetworkTemplate
+	// MISSING: LogicalInterfaces
+	// MISSING: SSHKeyNames
+	return out
+}
+func BaremetalsolutionInstanceConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionInstanceConfigSpec) *pb.InstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceConfig{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: InstanceType
+	// MISSING: Hyperthreading
+	// MISSING: OsImage
+	// MISSING: ClientNetwork
+	// MISSING: PrivateNetwork
+	// MISSING: UserNote
+	// MISSING: AccountNetworksEnabled
+	// MISSING: NetworkConfig
+	// MISSING: NetworkTemplate
+	// MISSING: LogicalInterfaces
+	// MISSING: SSHKeyNames
+	return out
+}
 func BaremetalsolutionInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.BaremetalsolutionInstanceObservedState {
 	if in == nil {
 		return nil
@@ -592,125 +672,147 @@ func BaremetalsolutionServerNetworkTemplateSpec_ToProto(mapCtx *direct.MapContex
 	// MISSING: LogicalInterfaces
 	return out
 }
-func InstanceQuota_FromProto(mapCtx *direct.MapContext, in *pb.InstanceQuota) *krm.InstanceQuota {
+func InstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.InstanceConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InstanceQuota{}
+	out := &krm.InstanceConfig{}
 	// MISSING: Name
+	out.ID = direct.LazyPtr(in.GetId())
 	out.InstanceType = direct.LazyPtr(in.GetInstanceType())
-	out.GcpService = direct.LazyPtr(in.GetGcpService())
-	out.Location = direct.LazyPtr(in.GetLocation())
-	out.AvailableMachineCount = direct.LazyPtr(in.GetAvailableMachineCount())
+	out.Hyperthreading = direct.LazyPtr(in.GetHyperthreading())
+	out.OsImage = direct.LazyPtr(in.GetOsImage())
+	out.ClientNetwork = InstanceConfig_NetworkAddress_FromProto(mapCtx, in.GetClientNetwork())
+	out.PrivateNetwork = InstanceConfig_NetworkAddress_FromProto(mapCtx, in.GetPrivateNetwork())
+	out.UserNote = direct.LazyPtr(in.GetUserNote())
+	out.AccountNetworksEnabled = direct.LazyPtr(in.GetAccountNetworksEnabled())
+	out.NetworkConfig = direct.Enum_FromProto(mapCtx, in.GetNetworkConfig())
+	out.NetworkTemplate = direct.LazyPtr(in.GetNetworkTemplate())
+	out.LogicalInterfaces = direct.Slice_FromProto(mapCtx, in.LogicalInterfaces, LogicalInterface_FromProto)
+	out.SSHKeyNames = in.SshKeyNames
 	return out
 }
-func InstanceQuota_ToProto(mapCtx *direct.MapContext, in *krm.InstanceQuota) *pb.InstanceQuota {
+func InstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.InstanceConfig) *pb.InstanceConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InstanceQuota{}
+	out := &pb.InstanceConfig{}
 	// MISSING: Name
+	out.Id = direct.ValueOf(in.ID)
 	out.InstanceType = direct.ValueOf(in.InstanceType)
-	out.GcpService = direct.ValueOf(in.GcpService)
-	out.Location = direct.ValueOf(in.Location)
-	out.AvailableMachineCount = direct.ValueOf(in.AvailableMachineCount)
+	out.Hyperthreading = direct.ValueOf(in.Hyperthreading)
+	out.OsImage = direct.ValueOf(in.OsImage)
+	out.ClientNetwork = InstanceConfig_NetworkAddress_ToProto(mapCtx, in.ClientNetwork)
+	out.PrivateNetwork = InstanceConfig_NetworkAddress_ToProto(mapCtx, in.PrivateNetwork)
+	out.UserNote = direct.ValueOf(in.UserNote)
+	out.AccountNetworksEnabled = direct.ValueOf(in.AccountNetworksEnabled)
+	out.NetworkConfig = direct.Enum_ToProto[pb.InstanceConfig_NetworkConfig](mapCtx, in.NetworkConfig)
+	out.NetworkTemplate = direct.ValueOf(in.NetworkTemplate)
+	out.LogicalInterfaces = direct.Slice_ToProto(mapCtx, in.LogicalInterfaces, LogicalInterface_ToProto)
+	out.SshKeyNames = in.SSHKeyNames
 	return out
 }
-func InstanceQuotaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceQuota) *krm.InstanceQuotaObservedState {
+func InstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.InstanceConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InstanceQuotaObservedState{}
+	out := &krm.InstanceConfigObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: ID
 	// MISSING: InstanceType
-	// MISSING: GcpService
-	// MISSING: Location
-	// MISSING: AvailableMachineCount
+	// MISSING: Hyperthreading
+	// MISSING: OsImage
+	// MISSING: ClientNetwork
+	// MISSING: PrivateNetwork
+	// MISSING: UserNote
+	// MISSING: AccountNetworksEnabled
+	// MISSING: NetworkConfig
+	// MISSING: NetworkTemplate
+	// MISSING: LogicalInterfaces
+	// MISSING: SSHKeyNames
 	return out
 }
-func InstanceQuotaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceQuotaObservedState) *pb.InstanceQuota {
+func InstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceConfigObservedState) *pb.InstanceConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InstanceQuota{}
+	out := &pb.InstanceConfig{}
 	out.Name = direct.ValueOf(in.Name)
+	// MISSING: ID
 	// MISSING: InstanceType
-	// MISSING: GcpService
-	// MISSING: Location
-	// MISSING: AvailableMachineCount
+	// MISSING: Hyperthreading
+	// MISSING: OsImage
+	// MISSING: ClientNetwork
+	// MISSING: PrivateNetwork
+	// MISSING: UserNote
+	// MISSING: AccountNetworksEnabled
+	// MISSING: NetworkConfig
+	// MISSING: NetworkTemplate
+	// MISSING: LogicalInterfaces
+	// MISSING: SSHKeyNames
 	return out
 }
-func ProvisioningQuota_FromProto(mapCtx *direct.MapContext, in *pb.ProvisioningQuota) *krm.ProvisioningQuota {
+func InstanceConfig_NetworkAddress_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig_NetworkAddress) *krm.InstanceConfig_NetworkAddress {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ProvisioningQuota{}
-	// MISSING: Name
-	out.AssetType = direct.Enum_FromProto(mapCtx, in.GetAssetType())
-	out.GcpService = direct.LazyPtr(in.GetGcpService())
-	out.Location = direct.LazyPtr(in.GetLocation())
-	out.AvailableCount = direct.LazyPtr(in.GetAvailableCount())
-	out.InstanceQuota = InstanceQuota_FromProto(mapCtx, in.GetInstanceQuota())
-	out.ServerCount = direct.LazyPtr(in.GetServerCount())
-	out.NetworkBandwidth = direct.LazyPtr(in.GetNetworkBandwidth())
-	out.StorageGib = direct.LazyPtr(in.GetStorageGib())
+	out := &krm.InstanceConfig_NetworkAddress{}
+	out.NetworkID = direct.LazyPtr(in.GetNetworkId())
+	out.Address = direct.LazyPtr(in.GetAddress())
+	out.ExistingNetworkID = direct.LazyPtr(in.GetExistingNetworkId())
 	return out
 }
-func ProvisioningQuota_ToProto(mapCtx *direct.MapContext, in *krm.ProvisioningQuota) *pb.ProvisioningQuota {
+func InstanceConfig_NetworkAddress_ToProto(mapCtx *direct.MapContext, in *krm.InstanceConfig_NetworkAddress) *pb.InstanceConfig_NetworkAddress {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ProvisioningQuota{}
-	// MISSING: Name
-	out.AssetType = direct.Enum_ToProto[pb.ProvisioningQuota_AssetType](mapCtx, in.AssetType)
-	out.GcpService = direct.ValueOf(in.GcpService)
-	out.Location = direct.ValueOf(in.Location)
-	out.AvailableCount = direct.ValueOf(in.AvailableCount)
-	if oneof := InstanceQuota_ToProto(mapCtx, in.InstanceQuota); oneof != nil {
-		out.Quota = &pb.ProvisioningQuota_InstanceQuota{InstanceQuota: oneof}
-	}
-	if oneof := ProvisioningQuota_ServerCount_ToProto(mapCtx, in.ServerCount); oneof != nil {
-		out.Availability = oneof
-	}
-	if oneof := ProvisioningQuota_NetworkBandwidth_ToProto(mapCtx, in.NetworkBandwidth); oneof != nil {
-		out.Availability = oneof
-	}
-	if oneof := ProvisioningQuota_StorageGib_ToProto(mapCtx, in.StorageGib); oneof != nil {
-		out.Availability = oneof
-	}
+	out := &pb.InstanceConfig_NetworkAddress{}
+	out.NetworkId = direct.ValueOf(in.NetworkID)
+	out.Address = direct.ValueOf(in.Address)
+	out.ExistingNetworkId = direct.ValueOf(in.ExistingNetworkID)
 	return out
 }
-func ProvisioningQuotaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProvisioningQuota) *krm.ProvisioningQuotaObservedState {
+func LogicalInterface_FromProto(mapCtx *direct.MapContext, in *pb.LogicalInterface) *krm.LogicalInterface {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ProvisioningQuotaObservedState{}
+	out := &krm.LogicalInterface{}
+	out.LogicalNetworkInterfaces = direct.Slice_FromProto(mapCtx, in.LogicalNetworkInterfaces, LogicalInterface_LogicalNetworkInterface_FromProto)
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: AssetType
-	// MISSING: GcpService
-	// MISSING: Location
-	// MISSING: AvailableCount
-	out.InstanceQuota = InstanceQuotaObservedState_FromProto(mapCtx, in.GetInstanceQuota())
-	// MISSING: ServerCount
-	// MISSING: NetworkBandwidth
-	// MISSING: StorageGib
+	out.InterfaceIndex = direct.LazyPtr(in.GetInterfaceIndex())
 	return out
 }
-func ProvisioningQuotaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProvisioningQuotaObservedState) *pb.ProvisioningQuota {
+func LogicalInterface_ToProto(mapCtx *direct.MapContext, in *krm.LogicalInterface) *pb.LogicalInterface {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ProvisioningQuota{}
+	out := &pb.LogicalInterface{}
+	out.LogicalNetworkInterfaces = direct.Slice_ToProto(mapCtx, in.LogicalNetworkInterfaces, LogicalInterface_LogicalNetworkInterface_ToProto)
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: AssetType
-	// MISSING: GcpService
-	// MISSING: Location
-	// MISSING: AvailableCount
-	if oneof := InstanceQuotaObservedState_ToProto(mapCtx, in.InstanceQuota); oneof != nil {
-		out.Quota = &pb.ProvisioningQuota_InstanceQuota{InstanceQuota: oneof}
+	out.InterfaceIndex = direct.ValueOf(in.InterfaceIndex)
+	return out
+}
+func LogicalInterface_LogicalNetworkInterface_FromProto(mapCtx *direct.MapContext, in *pb.LogicalInterface_LogicalNetworkInterface) *krm.LogicalInterface_LogicalNetworkInterface {
+	if in == nil {
+		return nil
 	}
-	// MISSING: ServerCount
-	// MISSING: NetworkBandwidth
-	// MISSING: StorageGib
+	out := &krm.LogicalInterface_LogicalNetworkInterface{}
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
+	out.DefaultGateway = direct.LazyPtr(in.GetDefaultGateway())
+	out.NetworkType = direct.Enum_FromProto(mapCtx, in.GetNetworkType())
+	out.ID = direct.LazyPtr(in.GetId())
+	return out
+}
+func LogicalInterface_LogicalNetworkInterface_ToProto(mapCtx *direct.MapContext, in *krm.LogicalInterface_LogicalNetworkInterface) *pb.LogicalInterface_LogicalNetworkInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogicalInterface_LogicalNetworkInterface{}
+	out.Network = direct.ValueOf(in.Network)
+	out.IpAddress = direct.ValueOf(in.IPAddress)
+	out.DefaultGateway = direct.ValueOf(in.DefaultGateway)
+	out.NetworkType = direct.Enum_ToProto[pb.Network_Type](mapCtx, in.NetworkType)
+	out.Id = direct.ValueOf(in.ID)
 	return out
 }
