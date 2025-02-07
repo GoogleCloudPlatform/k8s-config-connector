@@ -16,8 +16,7 @@ package main
 
 import (
 	"fmt"
-	"maps"
-	"slices"
+	"sort"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -39,7 +38,13 @@ func main() {
 			mergeableKinds[gvk.Kind] = true
 		}
 	}
-	sortedKinds := slices.Sorted(maps.Keys(mergeableKinds))
+	sortedKinds := make([]string, 0)
+	for k, _ := range mergeableKinds {
+		sortedKinds = append(sortedKinds, k)
+	}
+	sort.Strings(sortedKinds)
+	// stdversion: slices.Sorted requires go1.23 or later (file is go1.22) (govet)
+	// sortedKinds := slices.Sorted(maps.Keys(mergeableKinds))
 	for _, k := range sortedKinds {
 		fmt.Printf("*   %s\n", k)
 	}
