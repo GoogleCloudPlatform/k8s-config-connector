@@ -35,6 +35,7 @@ import (
 	_ "pkg/controller/direct/billing"
 	_ "pkg/controller/direct/binaryauthorization"
 	_ "pkg/controller/direct/blockchainnodeengine"
+	_ "pkg/controller/direct/certificatemanager"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
