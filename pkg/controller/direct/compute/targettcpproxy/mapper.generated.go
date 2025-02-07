@@ -28,7 +28,7 @@ func ComputeTargetTCPProxySpec_FromProto(mapCtx *direct.MapContext, in *pb.Targe
 	out.Description = in.Description
 	out.ProxyBind = in.ProxyBind
 	out.ProxyHeader = in.ProxyHeader
-	out.Location = ComputeTargetTCPProxySpec_Region_FromProto(mapCtx, direct.ValueOf(in.Region))
+	out.Location = in.Region
 	out.BackendServiceRef = ComputeTargetTCPProxySpec_BackendServiceRef_FromProto(mapCtx, direct.ValueOf(in.Service))
 	return out
 }

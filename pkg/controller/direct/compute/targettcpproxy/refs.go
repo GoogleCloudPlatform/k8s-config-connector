@@ -95,9 +95,7 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 
 		}
 		obj.Spec.BackendServiceRef.External = backendServiceRef.External
-		// Remove Name field as it's already resolved to External
-		// todo(yuhou): Shall we apply this to other resolvers?
-		obj.Spec.BackendServiceRef.Name = ""
+		// todo(yuhou): Shall we Remove Name field as it's already resolved to External?
 	}
 	return nil
 }

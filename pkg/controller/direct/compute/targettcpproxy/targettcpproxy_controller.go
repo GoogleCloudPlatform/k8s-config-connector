@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/compute/apiv1"
@@ -264,21 +266,29 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 
 	parent := a.id.Parent()
 	tokens := strings.Split(a.id.String(), "/")
-	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
 
-	// todo(yuhou): Can we have a cleaner way to detect spec changes? Can this be more general so we can applied in other controllers or base controller?
-	desiredSpec := &desired.Spec
-	actualSpec := ComputeTargetTCPProxySpec_FromProto(mapCtx, a.actual)
-	// Add resourceID to actualSpec as the converter function does not cover this field
-	if desiredSpec.ResourceID == nil {
-		// If resourceID is not specified, use metadata name
-		actualSpec.ResourceID = direct.LazyPtr(desired.Name)
-		desiredSpec.ResourceID = actualSpec.ResourceID
-	} else {
-		actualSpec.ResourceID = desiredSpec.ResourceID
+	// Assign API output-only values
+	targetTCPProxy.CreationTimestamp = a.actual.CreationTimestamp
+	targetTCPProxy.Id = a.actual.Id
+	targetTCPProxy.SelfLink = a.actual.SelfLink
+	targetTCPProxy.Kind = a.actual.Kind
+	// Convert `europe-west4` to `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4`
+	parts := strings.Split(a.actual.GetRegion(), "/")
+	parts[len(parts)-1] = targetTCPProxy.GetRegion()
+	targetTCPProxy.Region = direct.LazyPtr(strings.Join(parts, "/"))
+	targetTCPProxy.Name = direct.LazyPtr(a.id.ID())
+
+	paths, err := common.CompareProtoMessage(targetTCPProxy, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+		return nil
+	}
+
 	// Changes on resource spec are detected
-	if !reflect.DeepEqual(desiredSpec, actualSpec) && parent.Location != "global" {
+	if parent.Location != "global" {
 		// Regional ComputeTargetTCPProxy API does not support Update
 		return fmt.Errorf("update operation not supported for regional ComputeTargetTCPProxy")
 	}
