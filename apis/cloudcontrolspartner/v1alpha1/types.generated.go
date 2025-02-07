@@ -15,14 +15,14 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.PartnerPermissions
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.PartnerPermissions
 type PartnerPermissions struct {
 	// Identifier. Format:
 	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.PartnerPermissions.name
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.PartnerPermissions.name
 	Name *string `json:"name,omitempty"`
 
 	// The partner permissions granted for the workload
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.PartnerPermissions.partner_permissions
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.PartnerPermissions.partner_permissions
 	PartnerPermissions []string `json:"partnerPermissions,omitempty"`
 }
