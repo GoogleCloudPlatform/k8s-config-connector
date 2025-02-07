@@ -15,14 +15,14 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.bigquery.storage.v1.ReadStream
+// +kcc:proto=google.cloud.bigquery.storage.v1beta2.ReadStream
 type ReadStream struct {
 }
 
-// +kcc:proto=google.cloud.bigquery.storage.v1.ReadStream
+// +kcc:proto=google.cloud.bigquery.storage.v1beta2.ReadStream
 type ReadStreamObservedState struct {
 	// Output only. Name of the stream, in the form
 	//  `projects/{project_id}/locations/{location}/sessions/{session_id}/streams/{stream_id}`.
-	// +kcc:proto:field=google.cloud.bigquery.storage.v1.ReadStream.name
+	// +kcc:proto:field=google.cloud.bigquery.storage.v1beta2.ReadStream.name
 	Name *string `json:"name,omitempty"`
 }
