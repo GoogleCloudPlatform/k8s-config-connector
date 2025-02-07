@@ -15,84 +15,125 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.binaryauthorization.v1.AdmissionRule
-type AdmissionRule struct {
-	// Required. How this admission rule will be evaluated.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AdmissionRule.evaluation_mode
-	EvaluationMode *string `json:"evaluationMode,omitempty"`
-
-	// Optional. The resource names of the attestors that must attest to
-	//  a container image, in the format `projects/*/attestors/*`. Each
-	//  attestor must exist before a policy can reference it.  To add an attestor
-	//  to a policy the principal issuing the policy change request must be able
-	//  to read the attestor resource.
-	//
-	//  Note: this field must be non-empty when the evaluation_mode field specifies
-	//  REQUIRE_ATTESTATION, otherwise it must be empty.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AdmissionRule.require_attestations_by
-	RequireAttestationsBy []string `json:"requireAttestationsBy,omitempty"`
-
-	// Required. The action when a pod creation is denied by the admission rule.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AdmissionRule.enforcement_mode
-	EnforcementMode *string `json:"enforcementMode,omitempty"`
-}
-
-// +kcc:proto=google.cloud.binaryauthorization.v1.AdmissionWhitelistPattern
-type AdmissionWhitelistPattern struct {
-	// An image name pattern to allowlist, in the form `registry/path/to/image`.
-	//  This supports a trailing `*` wildcard, but this is allowed only in
-	//  text after the `registry/` part. This also supports a trailing `**`
-	//  wildcard which matches subdirectories of a given entry.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AdmissionWhitelistPattern.name_pattern
-	NamePattern *string `json:"namePattern,omitempty"`
-}
-
-// +kcc:proto=google.cloud.binaryauthorization.v1.Policy
-type Policy struct {
-
-	// Optional. A descriptive comment.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. Controls the evaluation of a Google-maintained global admission
-	//  policy for common system-level images. Images not covered by the global
-	//  policy will be subject to the project admission policy. This setting
-	//  has no effect when specified inside a global admission policy.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.global_policy_evaluation_mode
-	GlobalPolicyEvaluationMode *string `json:"globalPolicyEvaluationMode,omitempty"`
-
-	// Optional. Admission policy allowlisting. A matching admission request will
-	//  always be permitted. This feature is typically used to exclude Google or
-	//  third-party infrastructure images from Binary Authorization policies.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.admission_whitelist_patterns
-	AdmissionWhitelistPatterns []AdmissionWhitelistPattern `json:"admissionWhitelistPatterns,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// Required. Default admission rule for a cluster without a per-cluster, per-
-	//  kubernetes-service-account, or per-istio-service-identity admission rule.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.default_admission_rule
-	DefaultAdmissionRule *AdmissionRule `json:"defaultAdmissionRule,omitempty"`
-}
-
-// +kcc:proto=google.cloud.binaryauthorization.v1.Policy
-type PolicyObservedState struct {
-	// Output only. The resource name, in the format `projects/*/policy`. There is
-	//  at most one policy per project.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.name
+// +kcc:proto=google.cloud.binaryauthorization.v1.Attestor
+type Attestor struct {
+	// Required. The resource name, in the format:
+	//  `projects/*/attestors/*`. This field may not be updated.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. Time when the policy was last updated.
-	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Policy.update_time
+	// Optional. A descriptive comment.  This field may be updated.
+	//  The field may be displayed in chooser dialogs.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.description
+	Description *string `json:"description,omitempty"`
+
+	// This specifies how an attestation will be read, and how it will be used
+	//  during policy enforcement.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.user_owned_grafeas_note
+	UserOwnedGrafeasNote *UserOwnedGrafeasNote `json:"userOwnedGrafeasNote,omitempty"`
+}
+
+// +kcc:proto=google.cloud.binaryauthorization.v1.AttestorPublicKey
+type AttestorPublicKey struct {
+	// Optional. A descriptive comment. This field may be updated.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestorPublicKey.comment
+	Comment *string `json:"comment,omitempty"`
+
+	// The ID of this public key.
+	//  Signatures verified by BinAuthz must include the ID of the public key that
+	//  can be used to verify them, and that ID must match the contents of this
+	//  field exactly.
+	//  Additional restrictions on this field can be imposed based on which public
+	//  key type is encapsulated. See the documentation on `public_key` cases below
+	//  for details.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestorPublicKey.id
+	ID *string `json:"id,omitempty"`
+
+	// ASCII-armored representation of a PGP public key, as the entire output by
+	//  the command `gpg --export --armor foo@example.com` (either LF or CRLF
+	//  line endings).
+	//  When using this field, `id` should be left blank.  The BinAuthz API
+	//  handlers will calculate the ID and fill it in automatically.  BinAuthz
+	//  computes this ID as the OpenPGP RFC4880 V4 fingerprint, represented as
+	//  upper-case hex.  If `id` is provided by the caller, it will be
+	//  overwritten by the API-calculated ID.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestorPublicKey.ascii_armored_pgp_public_key
+	AsciiArmoredPgpPublicKey *string `json:"asciiArmoredPgpPublicKey,omitempty"`
+
+	// A raw PKIX SubjectPublicKeyInfo format public key.
+	//
+	//  NOTE: `id` may be explicitly provided by the caller when using this
+	//  type of public key, but it MUST be a valid RFC3986 URI. If `id` is left
+	//  blank, a default one will be computed based on the digest of the DER
+	//  encoding of the public key.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.AttestorPublicKey.pkix_public_key
+	PkixPublicKey *PkixPublicKey `json:"pkixPublicKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.binaryauthorization.v1.PkixPublicKey
+type PkixPublicKey struct {
+	// A PEM-encoded public key, as described in
+	//  https://tools.ietf.org/html/rfc7468#section-13
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.PkixPublicKey.public_key_pem
+	PublicKeyPem *string `json:"publicKeyPem,omitempty"`
+
+	// The signature algorithm used to verify a message against a signature using
+	//  this key.
+	//  These signature algorithm must match the structure and any object
+	//  identifiers encoded in `public_key_pem` (i.e. this algorithm must match
+	//  that of the public key).
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.PkixPublicKey.signature_algorithm
+	SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
+}
+
+// +kcc:proto=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote
+type UserOwnedGrafeasNote struct {
+	// Required. The Grafeas resource name of a Attestation.Authority Note,
+	//  created by the user, in the format: `projects/*/notes/*`. This field may
+	//  not be updated.
+	//
+	//  An attestation by this attestor is stored as a Grafeas
+	//  Attestation.Authority Occurrence that names a container image and that
+	//  links to this Note. Grafeas is an external dependency.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote.note_reference
+	NoteReference *string `json:"noteReference,omitempty"`
+
+	// Optional. Public keys that verify attestations signed by this
+	//  attestor.  This field may be updated.
+	//
+	//  If this field is non-empty, one of the specified public keys must
+	//  verify that an attestation was signed by this attestor for the
+	//  image specified in the admission request.
+	//
+	//  If this field is empty, this attestor always returns that no
+	//  valid attestations exist.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote.public_keys
+	PublicKeys []AttestorPublicKey `json:"publicKeys,omitempty"`
+}
+
+// +kcc:proto=google.cloud.binaryauthorization.v1.Attestor
+type AttestorObservedState struct {
+	// This specifies how an attestation will be read, and how it will be used
+	//  during policy enforcement.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.user_owned_grafeas_note
+	UserOwnedGrafeasNote *UserOwnedGrafeasNoteObservedState `json:"userOwnedGrafeasNote,omitempty"`
+
+	// Output only. Time when the attestor was last updated.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.Attestor.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote
+type UserOwnedGrafeasNoteObservedState struct {
+	// Output only. This field will contain the service account email address
+	//  that this Attestor will use as the principal when querying Container
+	//  Analysis. Attestor administrators must grant this service account the
+	//  IAM role needed to read attestations from the [note_reference][Note] in
+	//  Container Analysis (`containeranalysis.notes.occurrences.viewer`).
+	//
+	//  This email address is fixed for the lifetime of the Attestor, but callers
+	//  should not make any other assumptions about the service account email;
+	//  future versions may use an email based on a different naming pattern.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote.delegation_service_account_email
+	DelegationServiceAccountEmail *string `json:"delegationServiceAccountEmail,omitempty"`
 }
