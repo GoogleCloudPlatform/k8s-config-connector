@@ -15,11 +15,95 @@
 package assuredworkloads
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/assuredworkloads/apiv1/assuredworkloadspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/assuredworkloads/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
+func AssuredworkloadsViolationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Violation) *krm.AssuredworkloadsViolationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssuredworkloadsViolationObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: OrgPolicyConstraint
+	// MISSING: AuditLogLink
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: Remediation
+	// MISSING: Acknowledged
+	// MISSING: AcknowledgementTime
+	// MISSING: ExceptionAuditLogLink
+	return out
+}
+func AssuredworkloadsViolationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssuredworkloadsViolationObservedState) *pb.Violation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: OrgPolicyConstraint
+	// MISSING: AuditLogLink
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: Remediation
+	// MISSING: Acknowledged
+	// MISSING: AcknowledgementTime
+	// MISSING: ExceptionAuditLogLink
+	return out
+}
+func AssuredworkloadsViolationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Violation) *krm.AssuredworkloadsViolationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssuredworkloadsViolationSpec{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: OrgPolicyConstraint
+	// MISSING: AuditLogLink
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: Remediation
+	// MISSING: Acknowledged
+	// MISSING: AcknowledgementTime
+	// MISSING: ExceptionAuditLogLink
+	return out
+}
+func AssuredworkloadsViolationSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssuredworkloadsViolationSpec) *pb.Violation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: OrgPolicyConstraint
+	// MISSING: AuditLogLink
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: Remediation
+	// MISSING: Acknowledged
+	// MISSING: AcknowledgementTime
+	// MISSING: ExceptionAuditLogLink
+	return out
+}
 func AssuredworkloadsWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.AssuredworkloadsWorkloadObservedState {
 	if in == nil {
 		return nil
@@ -112,151 +196,187 @@ func AssuredworkloadsWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ass
 	// MISSING: Partner
 	return out
 }
-func Workload_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.Workload {
+func Violation_FromProto(mapCtx *direct.MapContext, in *pb.Violation) *krm.Violation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Workload{}
+	out := &krm.Violation{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: OrgPolicyConstraint
+	// MISSING: AuditLogLink
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: Remediation
+	// MISSING: Acknowledged
+	out.AcknowledgementTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAcknowledgementTime())
+	// MISSING: ExceptionAuditLogLink
+	return out
+}
+func Violation_ToProto(mapCtx *direct.MapContext, in *krm.Violation) *pb.Violation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: OrgPolicyConstraint
+	// MISSING: AuditLogLink
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: Remediation
+	// MISSING: Acknowledged
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.AcknowledgementTime); oneof != nil {
+		out.AcknowledgementTime = &pb.Violation_AcknowledgementTime{AcknowledgementTime: oneof}
+	}
+	// MISSING: ExceptionAuditLogLink
+	return out
+}
+func ViolationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Violation) *krm.ViolationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ViolationObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: Resources
-	out.ComplianceRegime = direct.Enum_FromProto(mapCtx, in.GetComplianceRegime())
-	// MISSING: CreateTime
-	out.BillingAccount = direct.LazyPtr(in.GetBillingAccount())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
-	out.ProvisionedResourcesParent = direct.LazyPtr(in.GetProvisionedResourcesParent())
-	out.KMSSettings = Workload_KMSSettings_FromProto(mapCtx, in.GetKmsSettings())
-	out.ResourceSettings = direct.Slice_FromProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_FromProto)
-	// MISSING: KajEnrollmentState
-	out.EnableSovereignControls = direct.LazyPtr(in.GetEnableSovereignControls())
-	// MISSING: SaaEnrollmentResponse
-	// MISSING: CompliantButDisallowedServices
-	out.Partner = direct.Enum_FromProto(mapCtx, in.GetPartner())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.BeginTime = direct.StringTimestamp_FromProto(mapCtx, in.GetBeginTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ResolveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetResolveTime())
+	out.Category = direct.LazyPtr(in.GetCategory())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.OrgPolicyConstraint = direct.LazyPtr(in.GetOrgPolicyConstraint())
+	out.AuditLogLink = direct.LazyPtr(in.GetAuditLogLink())
+	out.NonCompliantOrgPolicy = direct.LazyPtr(in.GetNonCompliantOrgPolicy())
+	out.Remediation = Violation_Remediation_FromProto(mapCtx, in.GetRemediation())
+	out.Acknowledged = direct.LazyPtr(in.GetAcknowledged())
+	// MISSING: AcknowledgementTime
+	out.ExceptionAuditLogLink = direct.LazyPtr(in.GetExceptionAuditLogLink())
 	return out
 }
-func Workload_ToProto(mapCtx *direct.MapContext, in *krm.Workload) *pb.Workload {
+func ViolationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ViolationObservedState) *pb.Violation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload{}
+	out := &pb.Violation{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: Resources
-	out.ComplianceRegime = direct.Enum_ToProto[pb.Workload_ComplianceRegime](mapCtx, in.ComplianceRegime)
-	// MISSING: CreateTime
-	out.BillingAccount = direct.ValueOf(in.BillingAccount)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
-	out.ProvisionedResourcesParent = direct.ValueOf(in.ProvisionedResourcesParent)
-	out.KmsSettings = Workload_KMSSettings_ToProto(mapCtx, in.KMSSettings)
-	out.ResourceSettings = direct.Slice_ToProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_ToProto)
-	// MISSING: KajEnrollmentState
-	out.EnableSovereignControls = direct.ValueOf(in.EnableSovereignControls)
-	// MISSING: SaaEnrollmentResponse
-	// MISSING: CompliantButDisallowedServices
-	out.Partner = direct.Enum_ToProto[pb.Workload_Partner](mapCtx, in.Partner)
+	out.Description = direct.ValueOf(in.Description)
+	out.BeginTime = direct.StringTimestamp_ToProto(mapCtx, in.BeginTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ResolveTime = direct.StringTimestamp_ToProto(mapCtx, in.ResolveTime)
+	out.Category = direct.ValueOf(in.Category)
+	out.State = direct.Enum_ToProto[pb.Violation_State](mapCtx, in.State)
+	out.OrgPolicyConstraint = direct.ValueOf(in.OrgPolicyConstraint)
+	out.AuditLogLink = direct.ValueOf(in.AuditLogLink)
+	out.NonCompliantOrgPolicy = direct.ValueOf(in.NonCompliantOrgPolicy)
+	out.Remediation = Violation_Remediation_ToProto(mapCtx, in.Remediation)
+	out.Acknowledged = direct.ValueOf(in.Acknowledged)
+	// MISSING: AcknowledgementTime
+	out.ExceptionAuditLogLink = direct.ValueOf(in.ExceptionAuditLogLink)
 	return out
 }
-func WorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.WorkloadObservedState {
+func Violation_Remediation_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation) *krm.Violation_Remediation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkloadObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	out.Resources = direct.Slice_FromProto(mapCtx, in.Resources, Workload_ResourceInfo_FromProto)
-	// MISSING: ComplianceRegime
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: BillingAccount
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
-	// MISSING: ResourceSettings
-	out.KajEnrollmentState = direct.Enum_FromProto(mapCtx, in.GetKajEnrollmentState())
-	// MISSING: EnableSovereignControls
-	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_FromProto(mapCtx, in.GetSaaEnrollmentResponse())
-	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
-	// MISSING: Partner
+	out := &krm.Violation_Remediation{}
+	out.Instructions = Violation_Remediation_Instructions_FromProto(mapCtx, in.GetInstructions())
+	out.CompliantValues = in.CompliantValues
+	// MISSING: RemediationType
 	return out
 }
-func WorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadObservedState) *pb.Workload {
+func Violation_Remediation_ToProto(mapCtx *direct.MapContext, in *krm.Violation_Remediation) *pb.Violation_Remediation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	out.Resources = direct.Slice_ToProto(mapCtx, in.Resources, Workload_ResourceInfo_ToProto)
-	// MISSING: ComplianceRegime
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: BillingAccount
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
-	// MISSING: ResourceSettings
-	out.KajEnrollmentState = direct.Enum_ToProto[pb.Workload_KajEnrollmentState](mapCtx, in.KajEnrollmentState)
-	// MISSING: EnableSovereignControls
-	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_ToProto(mapCtx, in.SaaEnrollmentResponse)
-	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
-	// MISSING: Partner
+	out := &pb.Violation_Remediation{}
+	out.Instructions = Violation_Remediation_Instructions_ToProto(mapCtx, in.Instructions)
+	out.CompliantValues = in.CompliantValues
+	// MISSING: RemediationType
 	return out
 }
-func Workload_KMSSettings_FromProto(mapCtx *direct.MapContext, in *pb.Workload_KMSSettings) *krm.Workload_KMSSettings {
+func Violation_RemediationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation) *krm.Violation_RemediationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Workload_KMSSettings{}
-	out.NextRotationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRotationTime())
-	out.RotationPeriod = direct.StringDuration_FromProto(mapCtx, in.GetRotationPeriod())
+	out := &krm.Violation_RemediationObservedState{}
+	// MISSING: Instructions
+	// MISSING: CompliantValues
+	out.RemediationType = direct.Enum_FromProto(mapCtx, in.GetRemediationType())
 	return out
 }
-func Workload_KMSSettings_ToProto(mapCtx *direct.MapContext, in *krm.Workload_KMSSettings) *pb.Workload_KMSSettings {
+func Violation_RemediationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Violation_RemediationObservedState) *pb.Violation_Remediation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload_KMSSettings{}
-	out.NextRotationTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRotationTime)
-	out.RotationPeriod = direct.StringDuration_ToProto(mapCtx, in.RotationPeriod)
+	out := &pb.Violation_Remediation{}
+	// MISSING: Instructions
+	// MISSING: CompliantValues
+	out.RemediationType = direct.Enum_ToProto[pb.Violation_Remediation_RemediationType](mapCtx, in.RemediationType)
 	return out
 }
-func Workload_ResourceInfo_FromProto(mapCtx *direct.MapContext, in *pb.Workload_ResourceInfo) *krm.Workload_ResourceInfo {
+func Violation_Remediation_Instructions_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation_Instructions) *krm.Violation_Remediation_Instructions {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Workload_ResourceInfo{}
-	out.ResourceID = direct.LazyPtr(in.GetResourceId())
-	out.ResourceType = direct.Enum_FromProto(mapCtx, in.GetResourceType())
+	out := &krm.Violation_Remediation_Instructions{}
+	out.GcloudInstructions = Violation_Remediation_Instructions_Gcloud_FromProto(mapCtx, in.GetGcloudInstructions())
+	out.ConsoleInstructions = Violation_Remediation_Instructions_Console_FromProto(mapCtx, in.GetConsoleInstructions())
 	return out
 }
-func Workload_ResourceInfo_ToProto(mapCtx *direct.MapContext, in *krm.Workload_ResourceInfo) *pb.Workload_ResourceInfo {
+func Violation_Remediation_Instructions_ToProto(mapCtx *direct.MapContext, in *krm.Violation_Remediation_Instructions) *pb.Violation_Remediation_Instructions {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload_ResourceInfo{}
-	out.ResourceId = direct.ValueOf(in.ResourceID)
-	out.ResourceType = direct.Enum_ToProto[pb.Workload_ResourceInfo_ResourceType](mapCtx, in.ResourceType)
+	out := &pb.Violation_Remediation_Instructions{}
+	out.GcloudInstructions = Violation_Remediation_Instructions_Gcloud_ToProto(mapCtx, in.GcloudInstructions)
+	out.ConsoleInstructions = Violation_Remediation_Instructions_Console_ToProto(mapCtx, in.ConsoleInstructions)
 	return out
 }
-func Workload_ResourceSettings_FromProto(mapCtx *direct.MapContext, in *pb.Workload_ResourceSettings) *krm.Workload_ResourceSettings {
+func Violation_Remediation_Instructions_Console_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation_Instructions_Console) *krm.Violation_Remediation_Instructions_Console {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Workload_ResourceSettings{}
-	out.ResourceID = direct.LazyPtr(in.GetResourceId())
-	out.ResourceType = direct.Enum_FromProto(mapCtx, in.GetResourceType())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out := &krm.Violation_Remediation_Instructions_Console{}
+	out.ConsoleUris = in.ConsoleUris
+	out.Steps = in.Steps
+	out.AdditionalLinks = in.AdditionalLinks
 	return out
 }
-func Workload_ResourceSettings_ToProto(mapCtx *direct.MapContext, in *krm.Workload_ResourceSettings) *pb.Workload_ResourceSettings {
+func Violation_Remediation_Instructions_Console_ToProto(mapCtx *direct.MapContext, in *krm.Violation_Remediation_Instructions_Console) *pb.Violation_Remediation_Instructions_Console {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload_ResourceSettings{}
-	out.ResourceId = direct.ValueOf(in.ResourceID)
-	out.ResourceType = direct.Enum_ToProto[pb.Workload_ResourceInfo_ResourceType](mapCtx, in.ResourceType)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out := &pb.Violation_Remediation_Instructions_Console{}
+	out.ConsoleUris = in.ConsoleUris
+	out.Steps = in.Steps
+	out.AdditionalLinks = in.AdditionalLinks
+	return out
+}
+func Violation_Remediation_Instructions_Gcloud_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation_Instructions_Gcloud) *krm.Violation_Remediation_Instructions_Gcloud {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Violation_Remediation_Instructions_Gcloud{}
+	out.GcloudCommands = in.GcloudCommands
+	out.Steps = in.Steps
+	out.AdditionalLinks = in.AdditionalLinks
+	return out
+}
+func Violation_Remediation_Instructions_Gcloud_ToProto(mapCtx *direct.MapContext, in *krm.Violation_Remediation_Instructions_Gcloud) *pb.Violation_Remediation_Instructions_Gcloud {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation_Remediation_Instructions_Gcloud{}
+	out.GcloudCommands = in.GcloudCommands
+	out.Steps = in.Steps
+	out.AdditionalLinks = in.AdditionalLinks
 	return out
 }
