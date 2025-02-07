@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,168 +14,515 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.alloydb.v1beta.GeminiInstanceConfig
-type GeminiInstanceConfig struct {
-	// Output only. Whether the Gemini in Databases add-on is enabled for the
-	//  instance. It will be true only if the add-on has been enabled for the
-	//  billing account corresponding to the instance. Its status is toggled from
-	//  the Admin Control Center (ACC) and cannot be toggled using AlloyDBInstance's APIs.
-	Entitled *bool `json:"entitled,omitempty"`
-}
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ClientConnectionConfig
-type Instance_ClientConnectionConfig struct {
-	// Optional. Configuration to enforce connectors only (ex: AuthProxy)
-	//  connections to the database.
-	RequireConnectors *bool `json:"requireConnectors,omitempty"`
+// +kcc:proto=google.cloud.alloydb.v1.AutomatedBackupPolicy
+type AutomatedBackupPolicy struct {
+	// Weekly schedule for the Backup.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.weekly_schedule
+	WeeklySchedule *AutomatedBackupPolicy_WeeklySchedule `json:"weeklySchedule,omitempty"`
 
-	// Optional. SSL configuration option for this instance.
-	SSLConfig *SSLConfig `json:"sslConfig,omitempty"`
-}
+	// Time-based Backup retention policy.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.time_based_retention
+	TimeBasedRetention *AutomatedBackupPolicy_TimeBasedRetention `json:"timeBasedRetention,omitempty"`
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
-type Instance_InstanceNetworkConfig struct {
-	// Optional. A list of external network authorized to access this instance.
-	// This field is only allowed to be set when 'enablePublicIp' is set to true.
-	AuthorizedExternalNetworks []Instance_InstanceNetworkConfig_AuthorizedNetwork `json:"authorizedExternalNetworks,omitempty"`
+	// Quantity-based Backup retention policy to retain recent backups.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.quantity_based_retention
+	QuantityBasedRetention *AutomatedBackupPolicy_QuantityBasedRetention `json:"quantityBasedRetention,omitempty"`
 
-	// Optional. Enabling public ip for the instance. If a user wishes
-	// to disable this, please also clear the list of the authorized
-	// external networks set on the same instance.
-	EnablePublicIP *bool `json:"enablePublicIp,omitempty"`
-
-	// Optional. Enabling an outbound public IP address to support a database
-	//  server sending requests out into the internet.
-	EnableOutboundPublicIP *bool `json:"enableOutboundPublicIp,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
-type Instance_InstanceNetworkConfig_AuthorizedNetwork struct {
-	// CIDR range for one authorzied network of the instance.
-	CidrRange *string `json:"cidrRange,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.MachineConfig
-type Instance_MachineConfig struct {
-	// The number of CPU's in the VM instance.
-	CPUCount *int32 `json:"cpuCount,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.Node
-type Instance_Node struct {
-	// The Compute Engine zone of the VM e.g. "us-central1-b".
-	ZoneID *string `json:"zoneID,omitempty"`
-
-	// The identifier of the VM e.g. "test-read-0601-407e52be-ms3l".
-	ID *string `json:"id,omitempty"`
-
-	// The private IP address of the VM e.g. "10.57.0.34".
-	IP *string `json:"ip,omitempty"`
-
-	// Determined by state of the compute VM and postgres-service health.
-	//  Compute VM state can have values listed in
-	//  https://cloud.google.com/compute/docs/instances/instance-life-cycle and
-	//  postgres-service health can have values: HEALTHY and UNHEALTHY.
-	State *string `json:"state,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
-type Instance_ObservabilityInstanceConfig struct {
-	// Observability feature status for an instance.
-	//  This flag is turned "off" by default.
+	// Whether automated automated backups are enabled. If not set, defaults to
+	//  true.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Preserve comments in query string for an instance.
-	//  This flag is turned "off" by default.
-	PreserveComments *bool `json:"preserveComments,omitempty"`
+	// The length of the time window during which a backup can be
+	//  taken. If a backup does not succeed within this time window, it will be
+	//  canceled and considered failed.
+	//
+	//  The backup window must be at least 5 minutes long. There is no upper bound
+	//  on the window. If not set, it defaults to 1 hour.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.backup_window
+	BackupWindow *string `json:"backupWindow,omitempty"`
 
-	// Track wait events during query execution for an instance.
-	//  This flag is turned "on" by default but tracking is enabled only after
-	//  observability enabled flag is also turned on.
-	TrackWaitEvents *bool `json:"trackWaitEvents,omitempty"`
+	// Optional. The encryption config can be specified to encrypt the
+	//  backups with a customer-managed encryption key (CMEK). When this field is
+	//  not specified, the backup will then use default encryption scheme to
+	//  protect the user data.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.encryption_config
+	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
 
-	// Output only. Track wait event types during query execution for an
-	//  instance. This flag is turned "on" by default but tracking is enabled
-	//  only after observability enabled flag is also turned on. This is
-	//  read-only flag and only modifiable by producer API.
-	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
+	// The location where the backup will be stored. Currently, the only supported
+	//  option is to store the backup in the same region as the cluster.
+	//
+	//  If empty, defaults to the region of the cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.location
+	Location *string `json:"location,omitempty"`
 
-	// Query string length. The default value is 10k.
-	MaxQueryStringLength *int32 `json:"maxQueryStringLength,omitempty"`
-
-	// Record application tags for an instance.
-	//  This flag is turned "off" by default.
-	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
-
-	// Number of query execution plans captured by Insights per minute
-	//  for all queries combined. The default value is 200.
-	//  Any integer between 0 to 200 is considered valid.
-	QueryPlansPerMinute *int32 `json:"queryPlansPerMinute,omitempty"`
-
-	// Track actively running queries on the instance.
-	//  If not set, this flag is "off" by default.
-	TrackActiveQueries *bool `json:"trackActiveQueries,omitempty"`
-
-	// Track client address for an instance.
-	//  If not set, default value is "off".
-	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
+	// Labels to apply to backups created using this configuration.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.labels
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
-type Instance_PscInstanceConfig struct {
-	// Output only. The service attachment created when Private
-	//  Service Connect (PSC) is enabled for the instance.
-	//  The name of the resource will be in the format of
-	//  `projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>`
-	ServiceAttachmentLink *string `json:"serviceAttachmentLink,omitempty"`
-
-	// Optional. List of consumer projects that are allowed to create
-	//  PSC endpoints to service-attachments to this instance.
-	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
-
-	// Output only. The DNS name of the instance for PSC connectivity.
-	//  Name convention: <uid>.<uid>.<region>.alloydb-psc.goog
-	PSCDNSName *string `json:"pscDnsName,omitempty"`
+// +kcc:proto=google.cloud.alloydb.v1.AutomatedBackupPolicy.QuantityBasedRetention
+type AutomatedBackupPolicy_QuantityBasedRetention struct {
+	// The number of backups to retain.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.QuantityBasedRetention.count
+	Count *int32 `json:"count,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
-type Instance_QueryInsightsInstanceConfig struct {
-	// Record application tags for an instance.
-	//  This flag is turned "on" by default.
-	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
-
-	// Record client address for an instance. Client address is PII information.
-	//  This flag is turned "on" by default.
-	RecordClientAddress *bool `json:"recordClientAddress,omitempty"`
-
-	// Query string length. The default value is 1024.
-	//  Any integer between 256 and 4500 is considered valid.
-	QueryStringLength *uint32 `json:"queryStringLength,omitempty"`
-
-	// Number of query execution plans captured by Insights per minute
-	//  for all queries combined. The default value is 5.
-	//  Any integer between 0 and 20 is considered valid.
-	QueryPlansPerMinute *uint32 `json:"queryPlansPerMinute,omitempty"`
+// +kcc:proto=google.cloud.alloydb.v1.AutomatedBackupPolicy.TimeBasedRetention
+type AutomatedBackupPolicy_TimeBasedRetention struct {
+	// The retention period.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.TimeBasedRetention.retention_period
+	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ReadPoolConfig
-type Instance_ReadPoolConfig struct {
-	// Read capacity, i.e. number of nodes in a read pool instance.
-	NodeCount *int32 `json:"nodeCount,omitempty"`
+// +kcc:proto=google.cloud.alloydb.v1.AutomatedBackupPolicy.WeeklySchedule
+type AutomatedBackupPolicy_WeeklySchedule struct {
+	// The times during the day to start a backup. The start times are assumed
+	//  to be in UTC and to be an exact hour (e.g., 04:00:00).
+	//
+	//  If no start times are provided, a single fixed start time is chosen
+	//  arbitrarily.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.WeeklySchedule.start_times
+	StartTimes []TimeOfDay `json:"startTimes,omitempty"`
+
+	// The days of the week to perform a backup.
+	//
+	//  If this field is left empty, the default of every day of the week is
+	//  used.
+	// +kcc:proto:field=google.cloud.alloydb.v1.AutomatedBackupPolicy.WeeklySchedule.days_of_week
+	DaysOfWeek []string `json:"daysOfWeek,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.UpdatePolicy
-type Instance_UpdatePolicy struct {
-	// Mode for updating the instance.
-	Mode *string `json:"mode,omitempty"`
+// +kcc:proto=google.cloud.alloydb.v1.BackupSource
+type BackupSource struct {
+
+	// Required. The name of the backup resource with the format:
+	//   * projects/{project}/locations/{region}/backups/{backup_id}
+	// +kcc:proto:field=google.cloud.alloydb.v1.BackupSource.backup_name
+	BackupName *string `json:"backupName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.SslConfig
-type SSLConfig struct {
+// +kcc:proto=google.cloud.alloydb.v1.Cluster
+type Cluster struct {
+
+	// User-settable and human-readable display name for the Cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Labels as key value pairs
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. The database engine major version. This is an optional field and
+	//  it is populated at the Cluster creation time. If a database version is not
+	//  supplied at cluster creation time, then a default database version will
+	//  be used.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.database_version
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.network_config
+	NetworkConfig *Cluster_NetworkConfig `json:"networkConfig,omitempty"`
+
+	// Required. The resource link for the VPC network in which cluster resources
+	//  are created and from which they are accessible via Private IP. The network
+	//  must belong to the same project as the cluster. It is specified in the
+	//  form: `projects/{project}/global/networks/{network_id}`. This is required
+	//  to create a cluster. Deprecated, use network_config.network instead.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.network
+	Network *string `json:"network,omitempty"`
+
+	// For Resource freshness validation (https://google.aip.dev/154)
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Annotations to allow client tools to store small amount of arbitrary data.
+	//  This is distinct from labels.
+	//  https://google.aip.dev/128
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Input only. Initial user to setup during cluster creation. Required.
+	//  If used in `RestoreCluster` this is ignored.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.initial_user
+	InitialUser *UserPassword `json:"initialUser,omitempty"`
+
+	// The automated backup policy for this cluster.
+	//
+	//  If no policy is provided then the default policy will be used. If backups
+	//  are supported for the cluster, the default policy takes one backup a day,
+	//  has a backup window of 1 hour, and retains backups for 14 days.
+	//  For more information on the defaults, consult the
+	//  documentation for the message type.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.automated_backup_policy
+	AutomatedBackupPolicy *AutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
+
+	// SSL configuration for this AlloyDB cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.ssl_config
+	SslConfig *SslConfig `json:"sslConfig,omitempty"`
+
+	// Optional. The encryption config can be specified to encrypt the data disks
+	//  and other persistent data resources of a cluster with a
+	//  customer-managed encryption key (CMEK). When this field is not
+	//  specified, the cluster will then use default encryption scheme to
+	//  protect the user data.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.encryption_config
+	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
+
+	// Optional. Continuous backup configuration for this cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.continuous_backup_config
+	ContinuousBackupConfig *ContinuousBackupConfig `json:"continuousBackupConfig,omitempty"`
+
+	// Cross Region replication config specific to SECONDARY cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.secondary_config
+	SecondaryConfig *Cluster_SecondaryConfig `json:"secondaryConfig,omitempty"`
+
+	// Optional. The configuration for Private Service Connect (PSC) for the
+	//  cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.psc_config
+	PscConfig *Cluster_PscConfig `json:"pscConfig,omitempty"`
+
+	// Optional. The maintenance update policy determines when to allow or deny
+	//  updates.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.maintenance_update_policy
+	MaintenanceUpdatePolicy *MaintenanceUpdatePolicy `json:"maintenanceUpdatePolicy,omitempty"`
+
+	// Optional. Subscription type of the cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.subscription_type
+	SubscriptionType *string `json:"subscriptionType,omitempty"`
+
+	// Optional. Input only. Immutable. Tag keys/values directly bound to this
+	//  resource. For example:
+	//  ```
+	//  "123/environment": "production",
+	//  "123/costCenter": "marketing"
+	//  ```
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.tags
+	Tags map[string]string `json:"tags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.Cluster.NetworkConfig
+type Cluster_NetworkConfig struct {
+	// Optional. The resource link for the VPC network in which cluster
+	//  resources are created and from which they are accessible via Private IP.
+	//  The network must belong to the same project as the cluster. It is
+	//  specified in the form:
+	//  `projects/{project_number}/global/networks/{network_id}`. This is
+	//  required to create a cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.NetworkConfig.network
+	Network *string `json:"network,omitempty"`
+
+	// Optional. Name of the allocated IP range for the private IP AlloyDB
+	//  cluster, for example: "google-managed-services-default". If set, the
+	//  instance IPs for this cluster will be created in the allocated range. The
+	//  range name must comply with RFC 1035. Specifically, the name must be 1-63
+	//  characters long and match the regular expression
+	//  `[a-z]([-a-z0-9]*[a-z0-9])?`.
+	//  Field name is intended to be consistent with Cloud SQL.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.NetworkConfig.allocated_ip_range
+	AllocatedIPRange *string `json:"allocatedIPRange,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.Cluster.PrimaryConfig
+type Cluster_PrimaryConfig struct {
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.Cluster.PscConfig
+type Cluster_PscConfig struct {
+	// Optional. Create an instance that allows connections from Private Service
+	//  Connect endpoints to the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.PscConfig.psc_enabled
+	PscEnabled *bool `json:"pscEnabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.Cluster.SecondaryConfig
+type Cluster_SecondaryConfig struct {
+	// The name of the primary cluster name with the format:
+	//  * projects/{project}/locations/{region}/clusters/{cluster_id}
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.SecondaryConfig.primary_cluster_name
+	PrimaryClusterName *string `json:"primaryClusterName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.Cluster.TrialMetadata
+type Cluster_TrialMetadata struct {
+	// start time of the trial cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.TrialMetadata.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// End time of the trial cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.TrialMetadata.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Upgrade time of trial cluster to Standard cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.TrialMetadata.upgrade_time
+	UpgradeTime *string `json:"upgradeTime,omitempty"`
+
+	// grace end time of the cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.TrialMetadata.grace_end_time
+	GraceEndTime *string `json:"graceEndTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.ContinuousBackupConfig
+type ContinuousBackupConfig struct {
+	// Whether ContinuousBackup is enabled.
+	// +kcc:proto:field=google.cloud.alloydb.v1.ContinuousBackupConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The number of days that are eligible to restore from using PITR. To support
+	//  the entire recovery window, backups and logs are retained for one day more
+	//  than the recovery window. If not set, defaults to 14 days.
+	// +kcc:proto:field=google.cloud.alloydb.v1.ContinuousBackupConfig.recovery_window_days
+	RecoveryWindowDays *int32 `json:"recoveryWindowDays,omitempty"`
+
+	// The encryption config can be specified to encrypt the
+	//  backups with a customer-managed encryption key (CMEK). When this field is
+	//  not specified, the backup will then use default encryption scheme to
+	//  protect the user data.
+	// +kcc:proto:field=google.cloud.alloydb.v1.ContinuousBackupConfig.encryption_config
+	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.ContinuousBackupInfo
+type ContinuousBackupInfo struct {
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.EncryptionConfig
+type EncryptionConfig struct {
+	// The fully-qualified resource name of the KMS key.
+	//  Each Cloud KMS key is regionalized and has the following format:
+	//  projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
+	// +kcc:proto:field=google.cloud.alloydb.v1.EncryptionConfig.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.EncryptionInfo
+type EncryptionInfo struct {
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.MaintenanceSchedule
+type MaintenanceSchedule struct {
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.MaintenanceUpdatePolicy
+type MaintenanceUpdatePolicy struct {
+	// Preferred windows to perform maintenance. Currently limited to 1.
+	// +kcc:proto:field=google.cloud.alloydb.v1.MaintenanceUpdatePolicy.maintenance_windows
+	MaintenanceWindows []MaintenanceUpdatePolicy_MaintenanceWindow `json:"maintenanceWindows,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.MaintenanceUpdatePolicy.MaintenanceWindow
+type MaintenanceUpdatePolicy_MaintenanceWindow struct {
+	// Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc.
+	// +kcc:proto:field=google.cloud.alloydb.v1.MaintenanceUpdatePolicy.MaintenanceWindow.day
+	Day *string `json:"day,omitempty"`
+
+	// Preferred time to start the maintenance operation on the specified day.
+	//  Maintenance will start within 1 hour of this time.
+	// +kcc:proto:field=google.cloud.alloydb.v1.MaintenanceUpdatePolicy.MaintenanceWindow.start_time
+	StartTime *TimeOfDay `json:"startTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.MigrationSource
+type MigrationSource struct {
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.SslConfig
+type SslConfig struct {
 	// Optional. SSL mode. Specifies client-server SSL/TLS connection behavior.
-	SSLMode *string `json:"sslMode,omitempty"`
+	// +kcc:proto:field=google.cloud.alloydb.v1.SslConfig.ssl_mode
+	SslMode *string `json:"sslMode,omitempty"`
 
 	// Optional. Certificate Authority (CA) source. Only CA_SOURCE_MANAGED is
 	//  supported currently, and is the default value.
-	CASource *string `json:"caSource,omitempty"`
+	// +kcc:proto:field=google.cloud.alloydb.v1.SslConfig.ca_source
+	CaSource *string `json:"caSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.UserPassword
+type UserPassword struct {
+	// The database username.
+	// +kcc:proto:field=google.cloud.alloydb.v1.UserPassword.user
+	User *string `json:"user,omitempty"`
+
+	// The initial password for the user.
+	// +kcc:proto:field=google.cloud.alloydb.v1.UserPassword.password
+	Password *string `json:"password,omitempty"`
+}
+
+// +kcc:proto=google.type.TimeOfDay
+type TimeOfDay struct {
+	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+	//  to allow the value "24:00:00" for scenarios like business closing time.
+	// +kcc:proto:field=google.type.TimeOfDay.hours
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Minutes of hour of day. Must be from 0 to 59.
+	// +kcc:proto:field=google.type.TimeOfDay.minutes
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+	//  allow the value 60 if it allows leap-seconds.
+	// +kcc:proto:field=google.type.TimeOfDay.seconds
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+	// +kcc:proto:field=google.type.TimeOfDay.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.BackupSource
+type BackupSourceObservedState struct {
+	// Output only. The system-generated UID of the backup which was used to
+	//  create this resource. The UID is generated when the backup is created, and
+	//  it is retained until the backup is deleted.
+	// +kcc:proto:field=google.cloud.alloydb.v1.BackupSource.backup_uid
+	BackupUid *string `json:"backupUid,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.Cluster
+type ClusterObservedState struct {
+	// Output only. Cluster created from backup.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.backup_source
+	BackupSource *BackupSource `json:"backupSource,omitempty"`
+
+	// Output only. Cluster created via DMS migration.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.migration_source
+	MigrationSource *MigrationSource `json:"migrationSource,omitempty"`
+
+	// Output only. The name of the cluster resource with the format:
+	//   * projects/{project}/locations/{region}/clusters/{cluster_id}
+	//  where the cluster ID segment should satisfy the regex expression
+	//  `[a-z0-9-]+`. For more details see https://google.aip.dev/122.
+	//  The prefix of the cluster resource name is the name of the parent resource:
+	//   * projects/{project}/locations/{region}
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The system-generated UID of the resource. The UID is assigned
+	//  when the resource is created, and it is retained until it is deleted.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Create time stamp
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update time stamp
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Delete time stamp
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Output only. The current serving state of the cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The type of the cluster. This is an output-only field and it's
+	//  populated at the Cluster creation time or the Cluster promotion
+	//  time. The cluster type is determined by which RPC was used to create
+	//  the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.cluster_type
+	ClusterType *string `json:"clusterType,omitempty"`
+
+	// Output only. Reconciling (https://google.aip.dev/128#reconciliation).
+	//  Set to true if the current state of Cluster does not match the user's
+	//  intended state, and the service is actively updating the resource to
+	//  reconcile them. This can happen due to user-triggered updates or
+	//  system actions like failover or maintenance.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.reconciling
+	Reconciling *bool `json:"reconciling,omitempty"`
+
+	// Output only. The encryption information for the cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.encryption_info
+	EncryptionInfo *EncryptionInfo `json:"encryptionInfo,omitempty"`
+
+	// Output only. Continuous backup properties for this cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.continuous_backup_info
+	ContinuousBackupInfo *ContinuousBackupInfo `json:"continuousBackupInfo,omitempty"`
+
+	// Output only. Cross Region replication config specific to PRIMARY cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.primary_config
+	PrimaryConfig *Cluster_PrimaryConfig `json:"primaryConfig,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. The maintenance schedule for the cluster, generated for a
+	//  specific rollout if a maintenance window is set.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.maintenance_schedule
+	MaintenanceSchedule *MaintenanceSchedule `json:"maintenanceSchedule,omitempty"`
+
+	// Output only. Metadata for free trial clusters
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.trial_metadata
+	TrialMetadata *Cluster_TrialMetadata `json:"trialMetadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.Cluster.PrimaryConfig
+type Cluster_PrimaryConfigObservedState struct {
+	// Output only. Names of the clusters that are replicating from this
+	//  cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Cluster.PrimaryConfig.secondary_cluster_names
+	SecondaryClusterNames []string `json:"secondaryClusterNames,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.ContinuousBackupInfo
+type ContinuousBackupInfoObservedState struct {
+	// Output only. The encryption information for the WALs and backups required
+	//  for ContinuousBackup.
+	// +kcc:proto:field=google.cloud.alloydb.v1.ContinuousBackupInfo.encryption_info
+	EncryptionInfo *EncryptionInfo `json:"encryptionInfo,omitempty"`
+
+	// Output only. When ContinuousBackup was most recently enabled. Set to null
+	//  if ContinuousBackup is not enabled.
+	// +kcc:proto:field=google.cloud.alloydb.v1.ContinuousBackupInfo.enabled_time
+	EnabledTime *string `json:"enabledTime,omitempty"`
+
+	// Output only. Days of the week on which a continuous backup is taken. Output
+	//  only field. Ignored if passed into the request.
+	// +kcc:proto:field=google.cloud.alloydb.v1.ContinuousBackupInfo.schedule
+	Schedule []string `json:"schedule,omitempty"`
+
+	// Output only. The earliest restorable time that can be restored to. Output
+	//  only field.
+	// +kcc:proto:field=google.cloud.alloydb.v1.ContinuousBackupInfo.earliest_restorable_time
+	EarliestRestorableTime *string `json:"earliestRestorableTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.EncryptionInfo
+type EncryptionInfoObservedState struct {
+	// Output only. Type of encryption.
+	// +kcc:proto:field=google.cloud.alloydb.v1.EncryptionInfo.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// Output only. Cloud KMS key versions that are being used to protect the
+	//  database or the backup.
+	// +kcc:proto:field=google.cloud.alloydb.v1.EncryptionInfo.kms_key_versions
+	KMSKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.MaintenanceSchedule
+type MaintenanceScheduleObservedState struct {
+	// Output only. The scheduled start time for the maintenance.
+	// +kcc:proto:field=google.cloud.alloydb.v1.MaintenanceSchedule.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1.MigrationSource
+type MigrationSourceObservedState struct {
+	// Output only. The host and port of the on-premises instance in host:port
+	//  format
+	// +kcc:proto:field=google.cloud.alloydb.v1.MigrationSource.host_port
+	HostPort *string `json:"hostPort,omitempty"`
+
+	// Output only. Place holder for the external source identifier(e.g DMS job
+	//  name) that created the cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1.MigrationSource.reference_id
+	ReferenceID *string `json:"referenceID,omitempty"`
+
+	// Output only. Type of migration source.
+	// +kcc:proto:field=google.cloud.alloydb.v1.MigrationSource.source_type
+	SourceType *string `json:"sourceType,omitempty"`
 }
