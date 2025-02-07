@@ -15,54 +15,115 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apihub.v1.ApiHubInstance
-type ApiHubInstance struct {
+// +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
+type Attribute_AllowedValue struct {
+	// Required. The ID of the allowed value.
+	//  * If provided, the same will be used. The service will throw an error if
+	//  the specified id is already used by another allowed value in the same
+	//  attribute resource.
+	//  * If not provided, a system generated id derived from the display name
+	//  will be used. In this case, the service will handle conflict resolution
+	//  by adding a system generated suffix in case of duplicates.
+	//
+	//  This value should be 4-63 characters, and valid characters
+	//  are /[a-z][0-9]-/.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. The display name of the allowed value.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The detailed description of the allowed value.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. When set to true, the allowed value cannot be updated or
+	//  deleted by the user. It can only be true for System defined attributes.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.immutable
+	Immutable *bool `json:"immutable,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues
+type AttributeValues struct {
+	// The attribute values associated with a resource in case attribute data
+	//  type is enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.enum_values
+	EnumValues *AttributeValues_EnumAttributeValues `json:"enumValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is string.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.string_values
+	StringValues *AttributeValues_StringAttributeValues `json:"stringValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is JSON.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.json_values
+	JsonValues *AttributeValues_StringAttributeValues `json:"jsonValues,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
+type AttributeValues_EnumAttributeValues struct {
+	// Required. The attribute values in case attribute data type is enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues.values
+	Values []Attribute_AllowedValue `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues.StringAttributeValues
+type AttributeValues_StringAttributeValues struct {
+	// Required. The attribute values in case attribute data type is string or
+	//  JSON.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.StringAttributeValues.values
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Documentation
+type Documentation struct {
+	// Optional. The uri of the externally hosted documentation.
+	// +kcc:proto:field=google.cloud.apihub.v1.Documentation.external_uri
+	ExternalURI *string `json:"externalURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.ExternalApi
+type ExternalApi struct {
 	// Identifier. Format:
-	//  `projects/{project}/locations/{location}/apiHubInstances/{apiHubInstance}`.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.name
+	//  `projects/{project}/locations/{location}/externalApi/{externalApi}`.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExternalApi.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. Config of the ApiHub instance.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.config
-	Config *ApiHubInstance_Config `json:"config,omitempty"`
+	// Required. Display name of the external API. Max length is 63 characters
+	//  (Unicode Code Points).
+	// +kcc:proto:field=google.cloud.apihub.v1.ExternalApi.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
-	// Optional. Instance labels to represent user-provided metadata.
-	//  Refer to cloud documentation on labels for more details.
-	//  https://cloud.google.com/compute/docs/labeling-resources
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. Description of the ApiHub instance.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.description
+	// Optional. Description of the external API. Max length is 2000 characters
+	//  (Unicode Code Points).
+	// +kcc:proto:field=google.cloud.apihub.v1.ExternalApi.description
 	Description *string `json:"description,omitempty"`
+
+	// Optional. List of endpoints on which this API is accessible.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExternalApi.endpoints
+	Endpoints []string `json:"endpoints,omitempty"`
+
+	// Optional. List of paths served by this API.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExternalApi.paths
+	Paths []string `json:"paths,omitempty"`
+
+	// Optional. Documentation of the external API.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExternalApi.documentation
+	Documentation *Documentation `json:"documentation,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
 }
 
-// +kcc:proto=google.cloud.apihub.v1.ApiHubInstance.Config
-type ApiHubInstance_Config struct {
-	// Required. The Customer Managed Encryption Key (CMEK) used for data
-	//  encryption. The CMEK name should follow the format of
-	//  `projects/([^/]+)/locations/([^/]+)/keyRings/([^/]+)/cryptoKeys/([^/]+)`,
-	//  where the location must match the instance location.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.Config.cmek_key_name
-	CmekKeyName *string `json:"cmekKeyName,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.ApiHubInstance
-type ApiHubInstanceObservedState struct {
+// +kcc:proto=google.cloud.apihub.v1.ExternalApi
+type ExternalApiObservedState struct {
 	// Output only. Creation timestamp.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.create_time
+	// +kcc:proto:field=google.cloud.apihub.v1.ExternalApi.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Last update timestamp.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.update_time
+	// +kcc:proto:field=google.cloud.apihub.v1.ExternalApi.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. The current state of the ApiHub instance.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Extra information about ApiHub instance state. Currently the
-	//  message would be populated when state is `FAILED`.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.state_message
-	StateMessage *string `json:"stateMessage,omitempty"`
 }
