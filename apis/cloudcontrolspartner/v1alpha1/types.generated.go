@@ -15,34 +15,85 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest
-type AccessApprovalRequest struct {
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Workload
+type Workload struct {
 	// Identifier. Format:
-	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/accessApprovalRequests/{access_approval_request}`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest.name
+	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}`
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.name
 	Name *string `json:"name,omitempty"`
 
-	// The time at which approval was requested.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest.request_time
-	RequestTime *string `json:"requestTime,omitempty"`
+	// Container for workload onboarding steps.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.workload_onboarding_state
+	WorkloadOnboardingState *WorkloadOnboardingState `json:"workloadOnboardingState,omitempty"`
 
-	// The justification for which approval is being requested.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest.requested_reason
-	RequestedReason *AccessReason `json:"requestedReason,omitempty"`
+	// Indicates whether a workload is fully onboarded.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.is_onboarded
+	IsOnboarded *bool `json:"isOnboarded,omitempty"`
 
-	// The requested expiration for the approval. If the request is approved,
-	//  access will be granted from the time of approval until the expiration time.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest.requested_expiration_time
-	RequestedExpirationTime *string `json:"requestedExpirationTime,omitempty"`
+	// The project id of the key management project for the workload
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.key_management_project_id
+	KeyManagementProjectID *string `json:"keyManagementProjectID,omitempty"`
+
+	// The Google Cloud location of the workload
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.location
+	Location *string `json:"location,omitempty"`
+
+	// Partner associated with this workload.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.partner
+	Partner *string `json:"partner,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.AccessReason
-type AccessReason struct {
-	// Type of access justification.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessReason.type
-	Type *string `json:"type,omitempty"`
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingState
+type WorkloadOnboardingState struct {
+	// List of workload onboarding steps.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingState.onboarding_steps
+	OnboardingSteps []WorkloadOnboardingStep `json:"onboardingSteps,omitempty"`
+}
 
-	// More detail about certain reason types. See comments for each type above.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessReason.detail
-	Detail *string `json:"detail,omitempty"`
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep
+type WorkloadOnboardingStep struct {
+	// The onboarding step.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep.step
+	Step *string `json:"step,omitempty"`
+
+	// The starting time of the onboarding step.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The completion time of the onboarding step.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep.completion_time
+	CompletionTime *string `json:"completionTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Workload
+type WorkloadObservedState struct {
+	// Output only. Folder id this workload is associated with
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.folder_id
+	FolderID *int64 `json:"folderID,omitempty"`
+
+	// Output only. Time the resource was created.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The name of container folder of the assured workload
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.folder
+	Folder *string `json:"folder,omitempty"`
+
+	// Container for workload onboarding steps.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.workload_onboarding_state
+	WorkloadOnboardingState *WorkloadOnboardingStateObservedState `json:"workloadOnboardingState,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingState
+type WorkloadOnboardingStateObservedState struct {
+	// List of workload onboarding steps.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingState.onboarding_steps
+	OnboardingSteps []WorkloadOnboardingStepObservedState `json:"onboardingSteps,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep
+type WorkloadOnboardingStepObservedState struct {
+	// Output only. The completion state of the onboarding step.
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep.completion_state
+	CompletionState *string `json:"completionState,omitempty"`
 }
