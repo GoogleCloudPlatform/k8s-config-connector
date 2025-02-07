@@ -15,61 +15,51 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Customer
-type Customer struct {
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnection
+type EkmConnection struct {
+	// Resource name of the EKM connection in the format:
+	//  projects/{project}/locations/{location}/ekmConnections/{ekm_connection}
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.connection_name
+	ConnectionName *string `json:"connectionName,omitempty"`
+
+	// The connection error that occurred if any
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.connection_error
+	ConnectionError *EkmConnection_ConnectionError `json:"connectionError,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnection.ConnectionError
+type EkmConnection_ConnectionError struct {
+	// The error domain for the error
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.ConnectionError.error_domain
+	ErrorDomain *string `json:"errorDomain,omitempty"`
+
+	// The error message for the error
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.ConnectionError.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnections
+type EkmConnections struct {
 	// Identifier. Format:
-	//  `organizations/{organization}/locations/{location}/customers/{customer}`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.name
+	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections`
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnections.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. Display name for the customer
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.display_name
-	DisplayName *string `json:"displayName,omitempty"`
+	// The EKM connections associated with the workload
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnections.ekm_connections
+	EkmConnections []EkmConnection `json:"ekmConnections,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState
-type CustomerOnboardingState struct {
-	// List of customer onboarding steps
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState.onboarding_steps
-	OnboardingSteps []CustomerOnboardingStep `json:"onboardingSteps,omitempty"`
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnection
+type EkmConnectionObservedState struct {
+	// Output only. The connection state
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.connection_state
+	ConnectionState *string `json:"connectionState,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep
-type CustomerOnboardingStep struct {
-	// The onboarding step
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.step
-	Step *string `json:"step,omitempty"`
-
-	// The starting time of the onboarding step
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// The completion time of the onboarding step
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.completion_time
-	CompletionTime *string `json:"completionTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Customer
-type CustomerObservedState struct {
-	// Output only. Container for customer onboarding steps
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.customer_onboarding_state
-	CustomerOnboardingState *CustomerOnboardingState `json:"customerOnboardingState,omitempty"`
-
-	// Output only. Indicates whether a customer is fully onboarded
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.is_onboarded
-	IsOnboarded *bool `json:"isOnboarded,omitempty"`
-}
-
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState
-type CustomerOnboardingStateObservedState struct {
-	// List of customer onboarding steps
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState.onboarding_steps
-	OnboardingSteps []CustomerOnboardingStepObservedState `json:"onboardingSteps,omitempty"`
-}
-
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep
-type CustomerOnboardingStepObservedState struct {
-	// Output only. Current state of the step
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.completion_state
-	CompletionState *string `json:"completionState,omitempty"`
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnections
+type EkmConnectionsObservedState struct {
+	// The EKM connections associated with the workload
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnections.ekm_connections
+	EkmConnections []EkmConnectionObservedState `json:"ekmConnections,omitempty"`
 }

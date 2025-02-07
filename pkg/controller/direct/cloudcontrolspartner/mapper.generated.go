@@ -64,6 +64,42 @@ func CloudcontrolspartnerCustomerSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: IsOnboarded
 	return out
 }
+func CloudcontrolspartnerEkmConnectionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EkmConnections) *krm.CloudcontrolspartnerEkmConnectionsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudcontrolspartnerEkmConnectionsObservedState{}
+	// MISSING: Name
+	// MISSING: EkmConnections
+	return out
+}
+func CloudcontrolspartnerEkmConnectionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerEkmConnectionsObservedState) *pb.EkmConnections {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EkmConnections{}
+	// MISSING: Name
+	// MISSING: EkmConnections
+	return out
+}
+func CloudcontrolspartnerEkmConnectionsSpec_FromProto(mapCtx *direct.MapContext, in *pb.EkmConnections) *krm.CloudcontrolspartnerEkmConnectionsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudcontrolspartnerEkmConnectionsSpec{}
+	// MISSING: Name
+	// MISSING: EkmConnections
+	return out
+}
+func CloudcontrolspartnerEkmConnectionsSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerEkmConnectionsSpec) *pb.EkmConnections {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EkmConnections{}
+	// MISSING: Name
+	// MISSING: EkmConnections
+	return out
+}
 func CloudcontrolspartnerWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.CloudcontrolspartnerWorkloadObservedState {
 	if in == nil {
 		return nil
@@ -128,123 +164,97 @@ func CloudcontrolspartnerWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Partner
 	return out
 }
-func Customer_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.Customer {
+func EkmConnection_FromProto(mapCtx *direct.MapContext, in *pb.EkmConnection) *krm.EkmConnection {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Customer{}
+	out := &krm.EkmConnection{}
+	out.ConnectionName = direct.LazyPtr(in.GetConnectionName())
+	// MISSING: ConnectionState
+	out.ConnectionError = EkmConnection_ConnectionError_FromProto(mapCtx, in.GetConnectionError())
+	return out
+}
+func EkmConnection_ToProto(mapCtx *direct.MapContext, in *krm.EkmConnection) *pb.EkmConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EkmConnection{}
+	out.ConnectionName = direct.ValueOf(in.ConnectionName)
+	// MISSING: ConnectionState
+	out.ConnectionError = EkmConnection_ConnectionError_ToProto(mapCtx, in.ConnectionError)
+	return out
+}
+func EkmConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EkmConnection) *krm.EkmConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EkmConnectionObservedState{}
+	// MISSING: ConnectionName
+	out.ConnectionState = direct.Enum_FromProto(mapCtx, in.GetConnectionState())
+	// MISSING: ConnectionError
+	return out
+}
+func EkmConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EkmConnectionObservedState) *pb.EkmConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EkmConnection{}
+	// MISSING: ConnectionName
+	out.ConnectionState = direct.Enum_ToProto[pb.EkmConnection_ConnectionState](mapCtx, in.ConnectionState)
+	// MISSING: ConnectionError
+	return out
+}
+func EkmConnection_ConnectionError_FromProto(mapCtx *direct.MapContext, in *pb.EkmConnection_ConnectionError) *krm.EkmConnection_ConnectionError {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EkmConnection_ConnectionError{}
+	out.ErrorDomain = direct.LazyPtr(in.GetErrorDomain())
+	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
+	return out
+}
+func EkmConnection_ConnectionError_ToProto(mapCtx *direct.MapContext, in *krm.EkmConnection_ConnectionError) *pb.EkmConnection_ConnectionError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EkmConnection_ConnectionError{}
+	out.ErrorDomain = direct.ValueOf(in.ErrorDomain)
+	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	return out
+}
+func EkmConnections_FromProto(mapCtx *direct.MapContext, in *pb.EkmConnections) *krm.EkmConnections {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EkmConnections{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: CustomerOnboardingState
-	// MISSING: IsOnboarded
+	out.EkmConnections = direct.Slice_FromProto(mapCtx, in.EkmConnections, EkmConnection_FromProto)
 	return out
 }
-func Customer_ToProto(mapCtx *direct.MapContext, in *krm.Customer) *pb.Customer {
+func EkmConnections_ToProto(mapCtx *direct.MapContext, in *krm.EkmConnections) *pb.EkmConnections {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Customer{}
+	out := &pb.EkmConnections{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: CustomerOnboardingState
-	// MISSING: IsOnboarded
+	out.EkmConnections = direct.Slice_ToProto(mapCtx, in.EkmConnections, EkmConnection_ToProto)
 	return out
 }
-func CustomerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.CustomerObservedState {
+func EkmConnectionsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EkmConnections) *krm.EkmConnectionsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomerObservedState{}
+	out := &krm.EkmConnectionsObservedState{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	out.CustomerOnboardingState = CustomerOnboardingState_FromProto(mapCtx, in.GetCustomerOnboardingState())
-	out.IsOnboarded = direct.LazyPtr(in.GetIsOnboarded())
+	out.EkmConnections = direct.Slice_FromProto(mapCtx, in.EkmConnections, EkmConnectionObservedState_FromProto)
 	return out
 }
-func CustomerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerObservedState) *pb.Customer {
+func EkmConnectionsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EkmConnectionsObservedState) *pb.EkmConnections {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Customer{}
+	out := &pb.EkmConnections{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	out.CustomerOnboardingState = CustomerOnboardingState_ToProto(mapCtx, in.CustomerOnboardingState)
-	out.IsOnboarded = direct.ValueOf(in.IsOnboarded)
-	return out
-}
-func CustomerOnboardingState_FromProto(mapCtx *direct.MapContext, in *pb.CustomerOnboardingState) *krm.CustomerOnboardingState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomerOnboardingState{}
-	out.OnboardingSteps = direct.Slice_FromProto(mapCtx, in.OnboardingSteps, CustomerOnboardingStep_FromProto)
-	return out
-}
-func CustomerOnboardingState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerOnboardingState) *pb.CustomerOnboardingState {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomerOnboardingState{}
-	out.OnboardingSteps = direct.Slice_ToProto(mapCtx, in.OnboardingSteps, CustomerOnboardingStep_ToProto)
-	return out
-}
-func CustomerOnboardingStateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomerOnboardingState) *krm.CustomerOnboardingStateObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomerOnboardingStateObservedState{}
-	out.OnboardingSteps = direct.Slice_FromProto(mapCtx, in.OnboardingSteps, CustomerOnboardingStepObservedState_FromProto)
-	return out
-}
-func CustomerOnboardingStateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerOnboardingStateObservedState) *pb.CustomerOnboardingState {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomerOnboardingState{}
-	out.OnboardingSteps = direct.Slice_ToProto(mapCtx, in.OnboardingSteps, CustomerOnboardingStepObservedState_ToProto)
-	return out
-}
-func CustomerOnboardingStep_FromProto(mapCtx *direct.MapContext, in *pb.CustomerOnboardingStep) *krm.CustomerOnboardingStep {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomerOnboardingStep{}
-	out.Step = direct.Enum_FromProto(mapCtx, in.GetStep())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.CompletionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCompletionTime())
-	// MISSING: CompletionState
-	return out
-}
-func CustomerOnboardingStep_ToProto(mapCtx *direct.MapContext, in *krm.CustomerOnboardingStep) *pb.CustomerOnboardingStep {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomerOnboardingStep{}
-	out.Step = direct.Enum_ToProto[pb.CustomerOnboardingStep_Step](mapCtx, in.Step)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.CompletionTime = direct.StringTimestamp_ToProto(mapCtx, in.CompletionTime)
-	// MISSING: CompletionState
-	return out
-}
-func CustomerOnboardingStepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomerOnboardingStep) *krm.CustomerOnboardingStepObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomerOnboardingStepObservedState{}
-	// MISSING: Step
-	// MISSING: StartTime
-	// MISSING: CompletionTime
-	out.CompletionState = direct.Enum_FromProto(mapCtx, in.GetCompletionState())
-	return out
-}
-func CustomerOnboardingStepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerOnboardingStepObservedState) *pb.CustomerOnboardingStep {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomerOnboardingStep{}
-	// MISSING: Step
-	// MISSING: StartTime
-	// MISSING: CompletionTime
-	out.CompletionState = direct.Enum_ToProto[pb.CompletionState](mapCtx, in.CompletionState)
+	out.EkmConnections = direct.Slice_ToProto(mapCtx, in.EkmConnections, EkmConnectionObservedState_ToProto)
 	return out
 }
