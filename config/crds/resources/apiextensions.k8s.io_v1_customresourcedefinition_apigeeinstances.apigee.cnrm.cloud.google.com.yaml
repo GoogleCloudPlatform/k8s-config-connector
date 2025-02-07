@@ -157,15 +157,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ApigeeOrganization selfLink, when not managed
-                      by Config Connector.
+                    description: A reference to an externally managed ApigeeOrganization
+                      resource. Should be in the format "organizations/{{organizationID}}".
                     type: string
                   name:
-                    description: The `name` field of an `ApigeeOrganization` resource.
+                    description: The name of a ApigeeOrganization resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of an `ApigeeOrganization`
-                      resource.
+                    description: The namespace of a ApigeeOrganization resource.
                     type: string
                 type: object
               peeringCIDRRange:
@@ -403,15 +402,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ApigeeOrganization selfLink, when not managed
-                      by Config Connector.
+                    description: A reference to an externally managed ApigeeOrganization
+                      resource. Should be in the format "organizations/{{organizationID}}".
                     type: string
                   name:
-                    description: The `name` field of an `ApigeeOrganization` resource.
+                    description: The name of a ApigeeOrganization resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of an `ApigeeOrganization`
-                      resource.
+                    description: The namespace of a ApigeeOrganization resource.
                     type: string
                 type: object
               peeringCIDRRange:

@@ -286,10 +286,9 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "ApigeeEnvironment",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/dcl2crd":         "true",
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "stable",
-			"cnrm.cloud.google.com/system":          "true",
+			"cnrm.cloud.google.com/dcl2crd":        "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -342,10 +341,9 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "ApigeeOrganization",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/dcl2crd":         "true",
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "stable",
-			"cnrm.cloud.google.com/system":          "true",
+			"cnrm.cloud.google.com/dcl2crd":        "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{

@@ -15,8 +15,9 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -25,13 +26,13 @@ var EnvgroupAttachmentGVK = GroupVersion.WithKind("ApigeeEnvgroupAttachment")
 // ApigeeEnvgroupAttachmentSpec defines the desired state of EnvgroupAttachment
 type ApigeeEnvgroupAttachmentSpec struct {
 	// +required
-	OrganizationRef *refs.ApigeeOrganizationRef `json:"organizationRef"`
+	OrganizationRef *apigeev1beta1.OrganizationRef `json:"organizationRef"`
 
 	// Immutable. The Apigee environment group which will host the environment.
 	EnvgroupRef *EnvironmentGroupRef `json:"envgroup"`
 
 	// Immutable. The Apigee environment to attach to.
-	EnvironmentRef *EnvironmentRef `json:"environment"`
+	EnvironmentRef *apigeev1beta1.EnvironmentRef `json:"environment"`
 
 	// The EnvgroupAttachment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

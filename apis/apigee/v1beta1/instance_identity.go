@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -62,7 +61,7 @@ func NewApigeeInstanceIdentity(ctx context.Context, reader client.Reader, obj *A
 	if orgExternal == "" {
 		return nil, fmt.Errorf("cannot resolve organization")
 	}
-	orgID, err := refs.ParseApigeeOrganizationExternal(orgExternal)
+	orgID, err := ParseOrganizationExternal(orgExternal)
 	if err != nil {
 		return nil, err
 	}

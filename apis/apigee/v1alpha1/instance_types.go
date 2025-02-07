@@ -15,8 +15,10 @@
 package v1alpha1
 
 import (
+	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -38,7 +40,7 @@ type AccessLoggingConfig struct {
 type ApigeeInstanceSpec struct {
 	// Reference to parent Apigee Organization.
 	// +required
-	OrganizationRef *refs.ApigeeOrganizationRef `json:"organizationRef"`
+	OrganizationRef *apigeev1beta1.OrganizationRef `json:"organizationRef"`
 
 	// The ApigeeInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
