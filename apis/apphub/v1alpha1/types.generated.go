@@ -15,57 +15,32 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredService
-type DiscoveredService struct {
-	// Identifier. The resource name of the discovered service. Format:
-	//  "projects/{host-project-id}/locations/{location}/discoveredServices/{uuid}""
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.name
+// +kcc:proto=google.cloud.apphub.v1.ServiceProjectAttachment
+type ServiceProjectAttachment struct {
+	// Identifier. The resource name of a ServiceProjectAttachment. Format:
+	//  "projects/{host-project-id}/locations/global/serviceProjectAttachments/{service-project-id}."
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProjectAttachment.name
 	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. Service project name in the format: "projects/abc" or
+	//  "projects/123". As input, project name with either project id or number are
+	//  accepted. As output, this field will contain project number.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProjectAttachment.service_project
+	ServiceProject *string `json:"serviceProject,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
-type ServiceProperties struct {
-}
+// +kcc:proto=google.cloud.apphub.v1.ServiceProjectAttachment
+type ServiceProjectAttachmentObservedState struct {
+	// Output only. Create time.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProjectAttachment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 
-// +kcc:proto=google.cloud.apphub.v1.ServiceReference
-type ServiceReference struct {
-}
+	// Output only. A globally unique identifier (in UUID4 format) for the
+	//  `ServiceProjectAttachment`.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProjectAttachment.uid
+	Uid *string `json:"uid,omitempty"`
 
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredService
-type DiscoveredServiceObservedState struct {
-	// Output only. Reference to an underlying networking resource that can
-	//  comprise a Service. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_reference
-	ServiceReference *ServiceReference `json:"serviceReference,omitempty"`
-
-	// Output only. Properties of an underlying compute resource that can comprise
-	//  a Service. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_properties
-	ServiceProperties *ServiceProperties `json:"serviceProperties,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
-type ServicePropertiesObservedState struct {
-	// Output only. The service project identifier that the underlying cloud
-	//  resource resides in.
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.gcp_project
-	GcpProject *string `json:"gcpProject,omitempty"`
-
-	// Output only. The location that the underlying resource resides in, for
-	//  example, us-west1.
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.location
-	Location *string `json:"location,omitempty"`
-
-	// Output only. The location that the underlying resource resides in if it is
-	//  zonal, for example, us-west1-a).
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.zone
-	Zone *string `json:"zone,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apphub.v1.ServiceReference
-type ServiceReferenceObservedState struct {
-	// Output only. The underlying resource URI (For example, URI of Forwarding
-	//  Rule, URL Map, and Backend Service).
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceReference.uri
-	URI *string `json:"uri,omitempty"`
+	// Output only. ServiceProjectAttachment state.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProjectAttachment.state
+	State *string `json:"state,omitempty"`
 }
