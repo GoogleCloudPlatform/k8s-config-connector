@@ -16,7 +16,7 @@ package ai
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta2/generativelanguagepb"
+	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta3/generativelanguagepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
