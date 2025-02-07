@@ -16,6 +16,7 @@ package register
 
 import (
 	_ "pkg/controller/direct/ai"
+	_ "pkg/controller/direct/analytics"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
