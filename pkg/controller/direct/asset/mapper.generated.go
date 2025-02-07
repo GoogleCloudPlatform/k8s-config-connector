@@ -15,10 +15,10 @@
 package asset
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/asset/apiv1p2beta1/assetpb"
+	pb "cloud.google.com/go/asset/apiv1p5beta1/assetpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func Asset_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.Asset {
 	if in == nil {
@@ -29,11 +29,11 @@ func Asset_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.Asset {
 	out.AssetType = direct.LazyPtr(in.GetAssetType())
 	out.Resource = Resource_FromProto(mapCtx, in.GetResource())
 	out.IamPolicy = Policy_FromProto(mapCtx, in.GetIamPolicy())
-	out.Ancestors = in.Ancestors
+	out.OrgPolicy = direct.Slice_FromProto(mapCtx, in.OrgPolicy, Policy_FromProto)
 	out.AccessPolicy = AccessPolicy_FromProto(mapCtx, in.GetAccessPolicy())
 	out.AccessLevel = AccessLevel_FromProto(mapCtx, in.GetAccessLevel())
 	out.ServicePerimeter = ServicePerimeter_FromProto(mapCtx, in.GetServicePerimeter())
-	out.OrgPolicy = direct.Slice_FromProto(mapCtx, in.OrgPolicy, Policy_FromProto)
+	out.Ancestors = in.Ancestors
 	return out
 }
 func Asset_ToProto(mapCtx *direct.MapContext, in *krm.Asset) *pb.Asset {
@@ -45,7 +45,7 @@ func Asset_ToProto(mapCtx *direct.MapContext, in *krm.Asset) *pb.Asset {
 	out.AssetType = direct.ValueOf(in.AssetType)
 	out.Resource = Resource_ToProto(mapCtx, in.Resource)
 	out.IamPolicy = Policy_ToProto(mapCtx, in.IamPolicy)
-	out.Ancestors = in.Ancestors
+	out.OrgPolicy = direct.Slice_ToProto(mapCtx, in.OrgPolicy, Policy_ToProto)
 	if oneof := AccessPolicy_ToProto(mapCtx, in.AccessPolicy); oneof != nil {
 		out.AccessContextPolicy = &pb.Asset_AccessPolicy{AccessPolicy: oneof}
 	}
@@ -55,7 +55,7 @@ func Asset_ToProto(mapCtx *direct.MapContext, in *krm.Asset) *pb.Asset {
 	if oneof := ServicePerimeter_ToProto(mapCtx, in.ServicePerimeter); oneof != nil {
 		out.AccessContextPolicy = &pb.Asset_ServicePerimeter{ServicePerimeter: oneof}
 	}
-	out.OrgPolicy = direct.Slice_ToProto(mapCtx, in.OrgPolicy, Policy_ToProto)
+	out.Ancestors = in.Ancestors
 	return out
 }
 func Resource_FromProto(mapCtx *direct.MapContext, in *pb.Resource) *krm.Resource {
