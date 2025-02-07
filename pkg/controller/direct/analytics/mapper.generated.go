@@ -15,10 +15,10 @@
 package analytics
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
@@ -282,6 +282,46 @@ func AnalyticsCustomMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.Analyt
 	// MISSING: MeasurementUnit
 	// MISSING: Scope
 	// MISSING: RestrictedMetricType
+	return out
+}
+func AnalyticsDataRetentionSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionSettings) *krm.AnalyticsDataRetentionSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsDataRetentionSettingsObservedState{}
+	// MISSING: Name
+	// MISSING: EventDataRetention
+	// MISSING: ResetUserDataOnNewActivity
+	return out
+}
+func AnalyticsDataRetentionSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataRetentionSettingsObservedState) *pb.DataRetentionSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataRetentionSettings{}
+	// MISSING: Name
+	// MISSING: EventDataRetention
+	// MISSING: ResetUserDataOnNewActivity
+	return out
+}
+func AnalyticsDataRetentionSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionSettings) *krm.AnalyticsDataRetentionSettingsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsDataRetentionSettingsSpec{}
+	// MISSING: Name
+	// MISSING: EventDataRetention
+	// MISSING: ResetUserDataOnNewActivity
+	return out
+}
+func AnalyticsDataRetentionSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataRetentionSettingsSpec) *pb.DataRetentionSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataRetentionSettings{}
+	// MISSING: Name
+	// MISSING: EventDataRetention
+	// MISSING: ResetUserDataOnNewActivity
 	return out
 }
 func AnalyticsDataSharingSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.AnalyticsDataSharingSettingsObservedState {
@@ -668,59 +708,43 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func CustomMetric_FromProto(mapCtx *direct.MapContext, in *pb.CustomMetric) *krm.CustomMetric {
+func DataRetentionSettings_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionSettings) *krm.DataRetentionSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomMetric{}
+	out := &krm.DataRetentionSettings{}
 	// MISSING: Name
-	out.ParameterName = direct.LazyPtr(in.GetParameterName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.MeasurementUnit = direct.Enum_FromProto(mapCtx, in.GetMeasurementUnit())
-	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
-	out.RestrictedMetricType = direct.EnumSlice_FromProto(mapCtx, in.RestrictedMetricType)
+	out.EventDataRetention = direct.Enum_FromProto(mapCtx, in.GetEventDataRetention())
+	out.ResetUserDataOnNewActivity = direct.LazyPtr(in.GetResetUserDataOnNewActivity())
 	return out
 }
-func CustomMetric_ToProto(mapCtx *direct.MapContext, in *krm.CustomMetric) *pb.CustomMetric {
+func DataRetentionSettings_ToProto(mapCtx *direct.MapContext, in *krm.DataRetentionSettings) *pb.DataRetentionSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CustomMetric{}
+	out := &pb.DataRetentionSettings{}
 	// MISSING: Name
-	out.ParameterName = direct.ValueOf(in.ParameterName)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.MeasurementUnit = direct.Enum_ToProto[pb.CustomMetric_MeasurementUnit](mapCtx, in.MeasurementUnit)
-	out.Scope = direct.Enum_ToProto[pb.CustomMetric_MetricScope](mapCtx, in.Scope)
-	out.RestrictedMetricType = direct.EnumSlice_ToProto[pb.CustomMetric_RestrictedMetricType](mapCtx, in.RestrictedMetricType)
+	out.EventDataRetention = direct.Enum_ToProto[pb.DataRetentionSettings_RetentionDuration](mapCtx, in.EventDataRetention)
+	out.ResetUserDataOnNewActivity = direct.ValueOf(in.ResetUserDataOnNewActivity)
 	return out
 }
-func CustomMetricObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomMetric) *krm.CustomMetricObservedState {
+func DataRetentionSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionSettings) *krm.DataRetentionSettingsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomMetricObservedState{}
+	out := &krm.DataRetentionSettingsObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: MeasurementUnit
-	// MISSING: Scope
-	// MISSING: RestrictedMetricType
+	// MISSING: EventDataRetention
+	// MISSING: ResetUserDataOnNewActivity
 	return out
 }
-func CustomMetricObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomMetricObservedState) *pb.CustomMetric {
+func DataRetentionSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataRetentionSettingsObservedState) *pb.DataRetentionSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CustomMetric{}
+	out := &pb.DataRetentionSettings{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: MeasurementUnit
-	// MISSING: Scope
-	// MISSING: RestrictedMetricType
+	// MISSING: EventDataRetention
+	// MISSING: ResetUserDataOnNewActivity
 	return out
 }
