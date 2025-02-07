@@ -20,70 +20,62 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigeeregistry/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func Api_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.Api {
+func ApiVersion_FromProto(mapCtx *direct.MapContext, in *pb.ApiVersion) *krm.ApiVersion {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Api{}
+	out := &krm.ApiVersion{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Availability = direct.LazyPtr(in.GetAvailability())
-	out.RecommendedVersion = direct.LazyPtr(in.GetRecommendedVersion())
-	out.RecommendedDeployment = direct.LazyPtr(in.GetRecommendedDeployment())
+	out.State = direct.LazyPtr(in.GetState())
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	return out
 }
-func Api_ToProto(mapCtx *direct.MapContext, in *krm.Api) *pb.Api {
+func ApiVersion_ToProto(mapCtx *direct.MapContext, in *krm.ApiVersion) *pb.ApiVersion {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Api{}
+	out := &pb.ApiVersion{}
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Availability = direct.ValueOf(in.Availability)
-	out.RecommendedVersion = direct.ValueOf(in.RecommendedVersion)
-	out.RecommendedDeployment = direct.ValueOf(in.RecommendedDeployment)
+	out.State = direct.ValueOf(in.State)
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	return out
 }
-func ApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApiObservedState {
+func ApiVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiVersion) *krm.ApiVersionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiObservedState{}
+	out := &krm.ApiVersionObservedState{}
 	// MISSING: Name
 	// MISSING: DisplayName
 	// MISSING: Description
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Availability
-	// MISSING: RecommendedVersion
-	// MISSING: RecommendedDeployment
+	// MISSING: State
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out
 }
-func ApiObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiObservedState) *pb.Api {
+func ApiVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiVersionObservedState) *pb.ApiVersion {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Api{}
+	out := &pb.ApiVersion{}
 	// MISSING: Name
 	// MISSING: DisplayName
 	// MISSING: Description
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Availability
-	// MISSING: RecommendedVersion
-	// MISSING: RecommendedDeployment
+	// MISSING: State
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out
@@ -152,6 +144,66 @@ func ApigeeregistryApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.Apigeeregi
 	// MISSING: Availability
 	// MISSING: RecommendedVersion
 	// MISSING: RecommendedDeployment
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiVersion) *krm.ApigeeregistryApiVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryApiVersionObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryApiVersionObservedState) *pb.ApiVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiVersion{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.ApiVersion) *krm.ApigeeregistryApiVersionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryApiVersionSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryApiVersionSpec) *pb.ApiVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiVersion{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out

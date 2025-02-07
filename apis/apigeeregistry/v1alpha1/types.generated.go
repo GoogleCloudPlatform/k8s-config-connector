@@ -15,49 +15,40 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apigeeregistry.v1.Api
-type Api struct {
+// +kcc:proto=google.cloud.apigeeregistry.v1.ApiVersion
+type ApiVersion struct {
 	// Resource name.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.name
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.ApiVersion.name
 	Name *string `json:"name,omitempty"`
 
 	// Human-meaningful name.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.display_name
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.ApiVersion.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// A detailed description.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.description
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.ApiVersion.description
 	Description *string `json:"description,omitempty"`
 
-	// A user-definable description of the availability of this service.
-	//  Format: free-form, but we expect single words that describe availability,
-	//  e.g., "NONE", "TESTING", "PREVIEW", "GENERAL", "DEPRECATED", "SHUTDOWN".
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.availability
-	Availability *string `json:"availability,omitempty"`
-
-	// The recommended version of the API.
-	//  Format: `apis/{api}/versions/{version}`
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.recommended_version
-	RecommendedVersion *string `json:"recommendedVersion,omitempty"`
-
-	// The recommended deployment of the API.
-	//  Format: `apis/{api}/deployments/{deployment}`
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.recommended_deployment
-	RecommendedDeployment *string `json:"recommendedDeployment,omitempty"`
+	// A user-definable description of the lifecycle phase of this API version.
+	//  Format: free-form, but we expect single words that describe API maturity,
+	//  e.g., "CONCEPT", "DESIGN", "DEVELOPMENT", "STAGING", "PRODUCTION",
+	//  "DEPRECATED", "RETIRED".
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.ApiVersion.state
+	State *string `json:"state,omitempty"`
 
 	// Labels attach identifying metadata to resources. Identifying metadata can
 	//  be used to filter list operations.
 	//
 	//  Label keys and values can be no longer than 64 characters
 	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores, and dashes. International characters are allowed.
+	//  characters, underscores and dashes. International characters are allowed.
 	//  No more than 64 user labels can be associated with one resource (System
 	//  labels are excluded).
 	//
 	//  See https://goo.gl/xmQnxf for more information and examples of labels.
 	//  System reserved label keys are prefixed with
 	//  `apigeeregistry.googleapis.com/` and cannot be changed.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.labels
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.ApiVersion.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Annotations attach non-identifying metadata to resources.
@@ -65,17 +56,17 @@ type Api struct {
 	//  Annotation keys and values are less restricted than those of labels, but
 	//  should be generally used for small values of broad interest. Larger, topic-
 	//  specific metadata should be stored in Artifacts.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.annotations
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.ApiVersion.annotations
 	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apigeeregistry.v1.Api
-type ApiObservedState struct {
+// +kcc:proto=google.cloud.apigeeregistry.v1.ApiVersion
+type ApiVersionObservedState struct {
 	// Output only. Creation timestamp.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.create_time
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.ApiVersion.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Last update timestamp.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.update_time
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.ApiVersion.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
