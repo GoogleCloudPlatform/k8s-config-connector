@@ -15,99 +15,99 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Violation
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Violation
 type Violation struct {
 	// Identifier. Format:
 	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.name
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.name
 	Name *string `json:"name,omitempty"`
 
 	// The folder_id of the violation
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.folder_id
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.folder_id
 	FolderID *int64 `json:"folderID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Violation.Remediation
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation
 type Violation_Remediation struct {
 	// Required. Remediation instructions to resolve violations
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.instructions
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.instructions
 	Instructions *Violation_Remediation_Instructions `json:"instructions,omitempty"`
 
 	// Values that can resolve the violation
 	//  For example: for list org policy violations, this will either be the list
 	//  of allowed or denied values
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.compliant_values
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.compliant_values
 	CompliantValues []string `json:"compliantValues,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions
 type Violation_Remediation_Instructions struct {
 	// Remediation instructions to resolve violation via gcloud cli
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.gcloud_instructions
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.gcloud_instructions
 	GcloudInstructions *Violation_Remediation_Instructions_Gcloud `json:"gcloudInstructions,omitempty"`
 
 	// Remediation instructions to resolve violation via cloud console
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.console_instructions
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.console_instructions
 	ConsoleInstructions *Violation_Remediation_Instructions_Console `json:"consoleInstructions,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.Console
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.Console
 type Violation_Remediation_Instructions_Console struct {
 	// Link to console page where violations can be resolved
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.Console.console_uris
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.Console.console_uris
 	ConsoleUris []string `json:"consoleUris,omitempty"`
 
 	// Steps to resolve violation via cloud console
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.Console.steps
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.Console.steps
 	Steps []string `json:"steps,omitempty"`
 
 	// Additional urls for more information about steps
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.Console.additional_links
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.Console.additional_links
 	AdditionalLinks []string `json:"additionalLinks,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.Gcloud
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.Gcloud
 type Violation_Remediation_Instructions_Gcloud struct {
 	// Gcloud command to resolve violation
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.Gcloud.gcloud_commands
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.Gcloud.gcloud_commands
 	GcloudCommands []string `json:"gcloudCommands,omitempty"`
 
 	// Steps to resolve violation via gcloud cli
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.Gcloud.steps
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.Gcloud.steps
 	Steps []string `json:"steps,omitempty"`
 
 	// Additional urls for more information about steps
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.Instructions.Gcloud.additional_links
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.Instructions.Gcloud.additional_links
 	AdditionalLinks []string `json:"additionalLinks,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Violation
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Violation
 type ViolationObservedState struct {
 	// Output only. Description for the Violation.
 	//  e.g. OrgPolicy gcp.resourceLocations has non compliant value.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.description
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.description
 	Description *string `json:"description,omitempty"`
 
 	// Output only. Time of the event which triggered the Violation.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.begin_time
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.begin_time
 	BeginTime *string `json:"beginTime,omitempty"`
 
 	// Output only. The last time when the Violation record was updated.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.update_time
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Time of the event which fixed the Violation.
 	//  If the violation is ACTIVE this will be empty.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.resolve_time
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.resolve_time
 	ResolveTime *string `json:"resolveTime,omitempty"`
 
 	// Output only. Category under which this violation is mapped.
 	//  e.g. Location, Service Usage, Access, Encryption, etc.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.category
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.category
 	Category *string `json:"category,omitempty"`
 
 	// Output only. State of the violation
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.state
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.state
 	State *string `json:"state,omitempty"`
 
 	// Output only. Immutable. Name of the OrgPolicy which was modified with
@@ -115,18 +115,18 @@ type ViolationObservedState struct {
 	//   `projects/{project_number}/policies/{constraint_name}`
 	//   `folders/{folder_id}/policies/{constraint_name}`
 	//   `organizations/{organization_id}/policies/{constraint_name}`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.non_compliant_org_policy
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.non_compliant_org_policy
 	NonCompliantOrgPolicy *string `json:"nonCompliantOrgPolicy,omitempty"`
 
 	// Output only. Compliance violation remediation
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.remediation
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.remediation
 	Remediation *Violation_Remediation `json:"remediation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Violation.Remediation
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation
 type Violation_RemediationObservedState struct {
 	// Output only. Remediation type based on the type of org policy values
 	//  violated
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Violation.Remediation.remediation_type
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Violation.Remediation.remediation_type
 	RemediationType *string `json:"remediationType,omitempty"`
 }
