@@ -15,30 +15,39 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.alloydb.v1.ConnectionInfo
+// +kcc:proto=google.cloud.alloydb.v1beta.ConnectionInfo
 type ConnectionInfo struct {
 	// The name of the ConnectionInfo singleton resource, e.g.:
 	//  projects/{project}/locations/{location}/clusters/*/instances/*/connectionInfo
 	//  This field currently has no semantic meaning.
-	// +kcc:proto:field=google.cloud.alloydb.v1.ConnectionInfo.name
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.ConnectionInfo.name
 	Name *string `json:"name,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1.ConnectionInfo
+// +kcc:proto=google.cloud.alloydb.v1beta.ConnectionInfo
 type ConnectionInfoObservedState struct {
 	// Output only. The private network IP address for the Instance. This is the
 	//  default IP for the instance and is always created (even if enable_public_ip
 	//  is set). This is the connection endpoint for an end-user application.
-	// +kcc:proto:field=google.cloud.alloydb.v1.ConnectionInfo.ip_address
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.ConnectionInfo.ip_address
 	IPAddress *string `json:"ipAddress,omitempty"`
 
 	// Output only. The public IP addresses for the Instance. This is available
 	//  ONLY when enable_public_ip is set. This is the connection endpoint for an
 	//  end-user application.
-	// +kcc:proto:field=google.cloud.alloydb.v1.ConnectionInfo.public_ip_address
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.ConnectionInfo.public_ip_address
 	PublicIPAddress *string `json:"publicIPAddress,omitempty"`
 
+	// Output only. The pem-encoded chain that may be used to verify the X.509
+	//  certificate. Expected to be in issuer-to-root order according to RFC 5246.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.ConnectionInfo.pem_certificate_chain
+	PemCertificateChain []string `json:"pemCertificateChain,omitempty"`
+
 	// Output only. The unique ID of the Instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1.ConnectionInfo.instance_uid
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.ConnectionInfo.instance_uid
 	InstanceUid *string `json:"instanceUid,omitempty"`
+
+	// Output only. The DNS name to use with PSC for the Instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.ConnectionInfo.psc_dns_name
+	PscDnsName *string `json:"pscDnsName,omitempty"`
 }
