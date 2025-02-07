@@ -15,61 +15,61 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Customer
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Customer
 type Customer struct {
 	// Identifier. Format:
 	//  `organizations/{organization}/locations/{location}/customers/{customer}`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.name
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Customer.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. Display name for the customer
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.display_name
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Customer.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingState
 type CustomerOnboardingState struct {
 	// List of customer onboarding steps
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState.onboarding_steps
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingState.onboarding_steps
 	OnboardingSteps []CustomerOnboardingStep `json:"onboardingSteps,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingStep
 type CustomerOnboardingStep struct {
 	// The onboarding step
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.step
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingStep.step
 	Step *string `json:"step,omitempty"`
 
 	// The starting time of the onboarding step
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.start_time
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingStep.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
 	// The completion time of the onboarding step
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.completion_time
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingStep.completion_time
 	CompletionTime *string `json:"completionTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Customer
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.Customer
 type CustomerObservedState struct {
 	// Output only. Container for customer onboarding steps
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.customer_onboarding_state
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Customer.customer_onboarding_state
 	CustomerOnboardingState *CustomerOnboardingState `json:"customerOnboardingState,omitempty"`
 
 	// Output only. Indicates whether a customer is fully onboarded
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.is_onboarded
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.Customer.is_onboarded
 	IsOnboarded *bool `json:"isOnboarded,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingState
 type CustomerOnboardingStateObservedState struct {
 	// List of customer onboarding steps
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState.onboarding_steps
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingState.onboarding_steps
 	OnboardingSteps []CustomerOnboardingStepObservedState `json:"onboardingSteps,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingStep
 type CustomerOnboardingStepObservedState struct {
 	// Output only. Current state of the step
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.completion_state
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.CustomerOnboardingStep.completion_state
 	CompletionState *string `json:"completionState,omitempty"`
 }
