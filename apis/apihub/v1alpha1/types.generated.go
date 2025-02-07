@@ -15,19 +15,6 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apihub.v1.ApiOperation
-type ApiOperation struct {
-	// Identifier. The name of the operation.
-	//
-	//  Format:
-	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.name
-	Name *string `json:"name,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-}
-
 // +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
 type Attribute_AllowedValue struct {
 	// Required. The ID of the allowed value.
@@ -90,90 +77,58 @@ type AttributeValues_StringAttributeValues struct {
 	Values []string `json:"values,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.Documentation
-type Documentation struct {
-	// Optional. The uri of the externally hosted documentation.
-	// +kcc:proto:field=google.cloud.apihub.v1.Documentation.external_uri
-	ExternalURI *string `json:"externalURI,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.Definition
+type Definition struct {
+
+	// Identifier. The name of the definition.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/definitions/{definition}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Definition.name
+	Name *string `json:"name,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
 }
 
-// +kcc:proto=google.cloud.apihub.v1.HttpOperation
-type HttpOperation struct {
+// +kcc:proto=google.cloud.apihub.v1.Schema
+type Schema struct {
 }
 
-// +kcc:proto=google.cloud.apihub.v1.OperationDetails
-type OperationDetails struct {
-	// The HTTP Operation.
-	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.http_operation
-	HTTPOperation *HttpOperation `json:"httpOperation,omitempty"`
-}
+// +kcc:proto=google.cloud.apihub.v1.Definition
+type DefinitionObservedState struct {
+	// Output only. The value of a schema definition.
+	// +kcc:proto:field=google.cloud.apihub.v1.Definition.schema
+	Schema *Schema `json:"schema,omitempty"`
 
-// +kcc:proto=google.cloud.apihub.v1.Path
-type Path struct {
-}
-
-// +kcc:proto=google.cloud.apihub.v1.ApiOperation
-type ApiOperationObservedState struct {
-	// Output only. The name of the spec from where the operation was parsed.
+	// Output only. The name of the spec from where the definition was parsed.
 	//  Format is
 	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}`
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.spec
+	// +kcc:proto:field=google.cloud.apihub.v1.Definition.spec
 	Spec *string `json:"spec,omitempty"`
 
-	// Output only. Operation details.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.details
-	Details *OperationDetails `json:"details,omitempty"`
+	// Output only. The type of the definition.
+	// +kcc:proto:field=google.cloud.apihub.v1.Definition.type
+	Type *string `json:"type,omitempty"`
 
-	// Output only. The time at which the operation was created.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.create_time
+	// Output only. The time at which the definition was created.
+	// +kcc:proto:field=google.cloud.apihub.v1.Definition.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The time at which the operation was last updated.
-	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.update_time
+	// Output only. The time at which the definition was last updated.
+	// +kcc:proto:field=google.cloud.apihub.v1.Definition.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.HttpOperation
-type HttpOperationObservedState struct {
-	// Output only. The path details for the Operation.
-	// +kcc:proto:field=google.cloud.apihub.v1.HttpOperation.path
-	Path *Path `json:"path,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.Schema
+type SchemaObservedState struct {
+	// Output only. The display name of the schema.
+	//  This will map to the name of the schema in the spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.Schema.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
-	// Output only. Operation method
-	// +kcc:proto:field=google.cloud.apihub.v1.HttpOperation.method
-	Method *string `json:"method,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.OperationDetails
-type OperationDetailsObservedState struct {
-	// The HTTP Operation.
-	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.http_operation
-	HTTPOperation *HttpOperationObservedState `json:"httpOperation,omitempty"`
-
-	// Output only. Description of the operation behavior.
-	//  For OpenAPI spec, this will map to `operation.description` in the
-	//  spec, in case description is empty, `operation.summary` will be used.
-	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.description
-	Description *string `json:"description,omitempty"`
-
-	// Output only. Additional external documentation for this operation.
-	//  For OpenAPI spec, this will map to `operation.documentation` in the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.documentation
-	Documentation *Documentation `json:"documentation,omitempty"`
-
-	// Output only. For OpenAPI spec, this will be set if `operation.deprecated`is
-	//  marked as `true` in the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.deprecated
-	Deprecated *bool `json:"deprecated,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Path
-type PathObservedState struct {
-	// Output only. Complete path relative to server endpoint.
-	// +kcc:proto:field=google.cloud.apihub.v1.Path.path
-	Path *string `json:"path,omitempty"`
-
-	// Output only. A short description for the path applicable to all operations.
-	// +kcc:proto:field=google.cloud.apihub.v1.Path.description
-	Description *string `json:"description,omitempty"`
+	// Output only. The raw value of the schema definition corresponding to the
+	//  schema name in the spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.Schema.raw_value
+	RawValue []byte `json:"rawValue,omitempty"`
 }
