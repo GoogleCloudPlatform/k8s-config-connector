@@ -1068,791 +1068,217 @@ func AiplatformEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aiplatfor
 	// MISSING: SatisfiesPzi
 	return out
 }
-func AutomaticResources_FromProto(mapCtx *direct.MapContext, in *pb.AutomaticResources) *krm.AutomaticResources {
+func AiplatformEntityTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.AiplatformEntityTypeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AutomaticResources{}
-	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
-	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
-	return out
-}
-func AutomaticResources_ToProto(mapCtx *direct.MapContext, in *krm.AutomaticResources) *pb.AutomaticResources {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutomaticResources{}
-	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
-	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
-	return out
-}
-func AutoscalingMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingMetricSpec) *krm.AutoscalingMetricSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutoscalingMetricSpec{}
-	out.MetricName = direct.LazyPtr(in.GetMetricName())
-	out.Target = direct.LazyPtr(in.GetTarget())
-	return out
-}
-func AutoscalingMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingMetricSpec) *pb.AutoscalingMetricSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutoscalingMetricSpec{}
-	out.MetricName = direct.ValueOf(in.MetricName)
-	out.Target = direct.ValueOf(in.Target)
-	return out
-}
-func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigQueryDestination{}
-	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
-	return out
-}
-func BigQueryDestination_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDestination) *pb.BigQueryDestination {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BigQueryDestination{}
-	out.OutputUri = direct.ValueOf(in.OutputURI)
-	return out
-}
-func BlurBaselineConfig_FromProto(mapCtx *direct.MapContext, in *pb.BlurBaselineConfig) *krm.BlurBaselineConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BlurBaselineConfig{}
-	out.MaxBlurSigma = direct.LazyPtr(in.GetMaxBlurSigma())
-	return out
-}
-func BlurBaselineConfig_ToProto(mapCtx *direct.MapContext, in *krm.BlurBaselineConfig) *pb.BlurBaselineConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BlurBaselineConfig{}
-	out.MaxBlurSigma = direct.ValueOf(in.MaxBlurSigma)
-	return out
-}
-func ClientConnectionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectionConfig) *krm.ClientConnectionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ClientConnectionConfig{}
-	out.InferenceTimeout = direct.StringDuration_FromProto(mapCtx, in.GetInferenceTimeout())
-	return out
-}
-func ClientConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectionConfig) *pb.ClientConnectionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientConnectionConfig{}
-	out.InferenceTimeout = direct.StringDuration_ToProto(mapCtx, in.InferenceTimeout)
-	return out
-}
-func DedicatedResources_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedResources) *krm.DedicatedResources {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DedicatedResources{}
-	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
-	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
-	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
-	out.RequiredReplicaCount = direct.LazyPtr(in.GetRequiredReplicaCount())
-	out.AutoscalingMetricSpecs = direct.Slice_FromProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_FromProto)
-	out.Spot = direct.LazyPtr(in.GetSpot())
-	return out
-}
-func DedicatedResources_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedResources) *pb.DedicatedResources {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DedicatedResources{}
-	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
-	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
-	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
-	out.RequiredReplicaCount = direct.ValueOf(in.RequiredReplicaCount)
-	out.AutoscalingMetricSpecs = direct.Slice_ToProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_ToProto)
-	out.Spot = direct.ValueOf(in.Spot)
-	return out
-}
-func DeployedModel_FromProto(mapCtx *direct.MapContext, in *pb.DeployedModel) *krm.DeployedModel {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployedModel{}
-	out.DedicatedResources = DedicatedResources_FromProto(mapCtx, in.GetDedicatedResources())
-	out.AutomaticResources = AutomaticResources_FromProto(mapCtx, in.GetAutomaticResources())
-	out.SharedResources = direct.LazyPtr(in.GetSharedResources())
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Model = direct.LazyPtr(in.GetModel())
-	// MISSING: ModelVersionID
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: CreateTime
-	out.ExplanationSpec = ExplanationSpec_FromProto(mapCtx, in.GetExplanationSpec())
-	out.DisableExplanations = direct.LazyPtr(in.GetDisableExplanations())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.DisableContainerLogging = direct.LazyPtr(in.GetDisableContainerLogging())
-	out.EnableAccessLogging = direct.LazyPtr(in.GetEnableAccessLogging())
-	// MISSING: PrivateEndpoints
-	out.FasterDeploymentConfig = FasterDeploymentConfig_FromProto(mapCtx, in.GetFasterDeploymentConfig())
-	// MISSING: Status
-	out.SystemLabels = in.SystemLabels
-	return out
-}
-func DeployedModel_ToProto(mapCtx *direct.MapContext, in *krm.DeployedModel) *pb.DeployedModel {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DeployedModel{}
-	if oneof := DedicatedResources_ToProto(mapCtx, in.DedicatedResources); oneof != nil {
-		out.PredictionResources = &pb.DeployedModel_DedicatedResources{DedicatedResources: oneof}
-	}
-	if oneof := AutomaticResources_ToProto(mapCtx, in.AutomaticResources); oneof != nil {
-		out.PredictionResources = &pb.DeployedModel_AutomaticResources{AutomaticResources: oneof}
-	}
-	if oneof := DeployedModel_SharedResources_ToProto(mapCtx, in.SharedResources); oneof != nil {
-		out.PredictionResources = oneof
-	}
-	out.Id = direct.ValueOf(in.ID)
-	out.Model = direct.ValueOf(in.Model)
-	// MISSING: ModelVersionID
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: CreateTime
-	out.ExplanationSpec = ExplanationSpec_ToProto(mapCtx, in.ExplanationSpec)
-	out.DisableExplanations = direct.ValueOf(in.DisableExplanations)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.DisableContainerLogging = direct.ValueOf(in.DisableContainerLogging)
-	out.EnableAccessLogging = direct.ValueOf(in.EnableAccessLogging)
-	// MISSING: PrivateEndpoints
-	out.FasterDeploymentConfig = FasterDeploymentConfig_ToProto(mapCtx, in.FasterDeploymentConfig)
-	// MISSING: Status
-	out.SystemLabels = in.SystemLabels
-	return out
-}
-func DeployedModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeployedModel) *krm.DeployedModelObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployedModelObservedState{}
-	// MISSING: DedicatedResources
-	// MISSING: AutomaticResources
-	// MISSING: SharedResources
-	// MISSING: ID
-	// MISSING: Model
-	out.ModelVersionID = direct.LazyPtr(in.GetModelVersionId())
-	// MISSING: DisplayName
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: ExplanationSpec
-	// MISSING: DisableExplanations
-	// MISSING: ServiceAccount
-	// MISSING: DisableContainerLogging
-	// MISSING: EnableAccessLogging
-	out.PrivateEndpoints = PrivateEndpoints_FromProto(mapCtx, in.GetPrivateEndpoints())
-	// MISSING: FasterDeploymentConfig
-	out.Status = DeployedModel_Status_FromProto(mapCtx, in.GetStatus())
-	// MISSING: SystemLabels
-	return out
-}
-func DeployedModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployedModelObservedState) *pb.DeployedModel {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DeployedModel{}
-	// MISSING: DedicatedResources
-	// MISSING: AutomaticResources
-	// MISSING: SharedResources
-	// MISSING: ID
-	// MISSING: Model
-	out.ModelVersionId = direct.ValueOf(in.ModelVersionID)
-	// MISSING: DisplayName
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: ExplanationSpec
-	// MISSING: DisableExplanations
-	// MISSING: ServiceAccount
-	// MISSING: DisableContainerLogging
-	// MISSING: EnableAccessLogging
-	out.PrivateEndpoints = PrivateEndpoints_ToProto(mapCtx, in.PrivateEndpoints)
-	// MISSING: FasterDeploymentConfig
-	out.Status = DeployedModel_Status_ToProto(mapCtx, in.Status)
-	// MISSING: SystemLabels
-	return out
-}
-func DeployedModel_Status_FromProto(mapCtx *direct.MapContext, in *pb.DeployedModel_Status) *krm.DeployedModel_Status {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployedModel_Status{}
-	// MISSING: Message
-	// MISSING: LastUpdateTime
-	// MISSING: AvailableReplicaCount
-	return out
-}
-func DeployedModel_Status_ToProto(mapCtx *direct.MapContext, in *krm.DeployedModel_Status) *pb.DeployedModel_Status {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DeployedModel_Status{}
-	// MISSING: Message
-	// MISSING: LastUpdateTime
-	// MISSING: AvailableReplicaCount
-	return out
-}
-func DeployedModel_StatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeployedModel_Status) *krm.DeployedModel_StatusObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployedModel_StatusObservedState{}
-	out.Message = direct.LazyPtr(in.GetMessage())
-	out.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
-	out.AvailableReplicaCount = direct.LazyPtr(in.GetAvailableReplicaCount())
-	return out
-}
-func DeployedModel_StatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployedModel_StatusObservedState) *pb.DeployedModel_Status {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DeployedModel_Status{}
-	out.Message = direct.ValueOf(in.Message)
-	out.LastUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.LastUpdateTime)
-	out.AvailableReplicaCount = direct.ValueOf(in.AvailableReplicaCount)
-	return out
-}
-func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionSpec{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	return out
-}
-func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionSpec{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	return out
-}
-func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoint {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Endpoint{}
+	out := &krm.AiplatformEntityTypeObservedState{}
 	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: DeployedModels
-	// MISSING: TrafficSplit
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.EnablePrivateServiceConnect = direct.LazyPtr(in.GetEnablePrivateServiceConnect())
-	out.PrivateServiceConnectConfig = PrivateServiceConnectConfig_FromProto(mapCtx, in.GetPrivateServiceConnectConfig())
-	// MISSING: ModelDeploymentMonitoringJob
-	out.PredictRequestResponseLoggingConfig = PredictRequestResponseLoggingConfig_FromProto(mapCtx, in.GetPredictRequestResponseLoggingConfig())
-	out.DedicatedEndpointEnabled = direct.LazyPtr(in.GetDedicatedEndpointEnabled())
-	// MISSING: DedicatedEndpointDns
-	out.ClientConnectionConfig = ClientConnectionConfig_FromProto(mapCtx, in.GetClientConnectionConfig())
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Endpoint{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: DeployedModels
-	// MISSING: TrafficSplit
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	out.Network = direct.ValueOf(in.Network)
-	out.EnablePrivateServiceConnect = direct.ValueOf(in.EnablePrivateServiceConnect)
-	out.PrivateServiceConnectConfig = PrivateServiceConnectConfig_ToProto(mapCtx, in.PrivateServiceConnectConfig)
-	// MISSING: ModelDeploymentMonitoringJob
-	out.PredictRequestResponseLoggingConfig = PredictRequestResponseLoggingConfig_ToProto(mapCtx, in.PredictRequestResponseLoggingConfig)
-	out.DedicatedEndpointEnabled = direct.ValueOf(in.DedicatedEndpointEnabled)
-	// MISSING: DedicatedEndpointDns
-	out.ClientConnectionConfig = ClientConnectionConfig_ToProto(mapCtx, in.ClientConnectionConfig)
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.EndpointObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EndpointObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
 	// MISSING: Description
-	out.DeployedModels = direct.Slice_FromProto(mapCtx, in.DeployedModels, DeployedModel_FromProto)
-	// MISSING: TrafficSplit
-	// MISSING: Etag
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTtlDays
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformEntityTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformEntityTypeObservedState) *pb.EntityType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityType{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTtlDays
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformEntityTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.AiplatformEntityTypeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformEntityTypeSpec{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTtlDays
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformEntityTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformEntityTypeSpec) *pb.EntityType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityType{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTtlDays
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func EntityType_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.EntityType {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntityType{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.MonitoringConfig = FeaturestoreMonitoringConfig_FromProto(mapCtx, in.GetMonitoringConfig())
+	out.OfflineStorageTtlDays = direct.LazyPtr(in.GetOfflineStorageTtlDays())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func EntityType_ToProto(mapCtx *direct.MapContext, in *krm.EntityType) *pb.EntityType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityType{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	out.MonitoringConfig = FeaturestoreMonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
+	out.OfflineStorageTtlDays = direct.ValueOf(in.OfflineStorageTtlDays)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func EntityTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.EntityTypeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntityTypeObservedState{}
+	// MISSING: Name
+	// MISSING: Description
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: EncryptionSpec
-	// MISSING: Network
-	// MISSING: EnablePrivateServiceConnect
-	out.PrivateServiceConnectConfig = PrivateServiceConnectConfigObservedState_FromProto(mapCtx, in.GetPrivateServiceConnectConfig())
-	out.ModelDeploymentMonitoringJob = direct.LazyPtr(in.GetModelDeploymentMonitoringJob())
-	// MISSING: PredictRequestResponseLoggingConfig
-	// MISSING: DedicatedEndpointEnabled
-	out.DedicatedEndpointDns = direct.LazyPtr(in.GetDedicatedEndpointDns())
-	// MISSING: ClientConnectionConfig
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTtlDays
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
-func EndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EndpointObservedState) *pb.Endpoint {
+func EntityTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntityTypeObservedState) *pb.EntityType {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Endpoint{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
+	out := &pb.EntityType{}
+	// MISSING: Name
 	// MISSING: Description
-	out.DeployedModels = direct.Slice_ToProto(mapCtx, in.DeployedModels, DeployedModel_ToProto)
-	// MISSING: TrafficSplit
-	// MISSING: Etag
-	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: EncryptionSpec
-	// MISSING: Network
-	// MISSING: EnablePrivateServiceConnect
-	out.PrivateServiceConnectConfig = PrivateServiceConnectConfigObservedState_ToProto(mapCtx, in.PrivateServiceConnectConfig)
-	out.ModelDeploymentMonitoringJob = direct.ValueOf(in.ModelDeploymentMonitoringJob)
-	// MISSING: PredictRequestResponseLoggingConfig
-	// MISSING: DedicatedEndpointEnabled
-	out.DedicatedEndpointDns = direct.ValueOf(in.DedicatedEndpointDns)
-	// MISSING: ClientConnectionConfig
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTtlDays
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
-func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Examples {
+func FeaturestoreMonitoringConfig_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig) *krm.FeaturestoreMonitoringConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Examples{}
-	out.ExampleGcsSource = Examples_ExampleGcsSource_FromProto(mapCtx, in.GetExampleGcsSource())
-	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
-	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
-	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
+	out := &krm.FeaturestoreMonitoringConfig{}
+	out.SnapshotAnalysis = FeaturestoreMonitoringConfig_SnapshotAnalysis_FromProto(mapCtx, in.GetSnapshotAnalysis())
+	out.ImportFeaturesAnalysis = FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_FromProto(mapCtx, in.GetImportFeaturesAnalysis())
+	out.NumericalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_FromProto(mapCtx, in.GetNumericalThresholdConfig())
+	out.CategoricalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_FromProto(mapCtx, in.GetCategoricalThresholdConfig())
 	return out
 }
-func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples {
+func FeaturestoreMonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreMonitoringConfig) *pb.FeaturestoreMonitoringConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Examples{}
-	if oneof := Examples_ExampleGcsSource_ToProto(mapCtx, in.ExampleGcsSource); oneof != nil {
-		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
-	}
-	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
-		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
-	}
-	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
-		out.Config = &pb.Examples_Presets{Presets: oneof}
-	}
-	out.NeighborCount = direct.ValueOf(in.NeighborCount)
+	out := &pb.FeaturestoreMonitoringConfig{}
+	out.SnapshotAnalysis = FeaturestoreMonitoringConfig_SnapshotAnalysis_ToProto(mapCtx, in.SnapshotAnalysis)
+	out.ImportFeaturesAnalysis = FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_ToProto(mapCtx, in.ImportFeaturesAnalysis)
+	out.NumericalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_ToProto(mapCtx, in.NumericalThresholdConfig)
+	out.CategoricalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_ToProto(mapCtx, in.CategoricalThresholdConfig)
 	return out
 }
-func Examples_ExampleGcsSource_FromProto(mapCtx *direct.MapContext, in *pb.Examples_ExampleGcsSource) *krm.Examples_ExampleGcsSource {
+func FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis) *krm.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Examples_ExampleGcsSource{}
-	out.DataFormat = direct.Enum_FromProto(mapCtx, in.GetDataFormat())
-	out.GcsSource = GcsSource_FromProto(mapCtx, in.GetGcsSource())
+	out := &krm.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.AnomalyDetectionBaseline = direct.Enum_FromProto(mapCtx, in.GetAnomalyDetectionBaseline())
 	return out
 }
-func Examples_ExampleGcsSource_ToProto(mapCtx *direct.MapContext, in *krm.Examples_ExampleGcsSource) *pb.Examples_ExampleGcsSource {
+func FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis) *pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Examples_ExampleGcsSource{}
-	out.DataFormat = direct.Enum_ToProto[pb.Examples_ExampleGcsSource_DataFormat](mapCtx, in.DataFormat)
-	out.GcsSource = GcsSource_ToProto(mapCtx, in.GcsSource)
+	out := &pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis{}
+	out.State = direct.Enum_ToProto[pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_State](mapCtx, in.State)
+	out.AnomalyDetectionBaseline = direct.Enum_ToProto[pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_Baseline](mapCtx, in.AnomalyDetectionBaseline)
 	return out
 }
-func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krm.ExplanationParameters {
+func FeaturestoreMonitoringConfig_SnapshotAnalysis_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis) *krm.FeaturestoreMonitoringConfig_SnapshotAnalysis {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExplanationParameters{}
-	out.SampledShapleyAttribution = SampledShapleyAttribution_FromProto(mapCtx, in.GetSampledShapleyAttribution())
-	out.IntegratedGradientsAttribution = IntegratedGradientsAttribution_FromProto(mapCtx, in.GetIntegratedGradientsAttribution())
-	out.XraiAttribution = XraiAttribution_FromProto(mapCtx, in.GetXraiAttribution())
-	out.Examples = Examples_FromProto(mapCtx, in.GetExamples())
-	out.TopK = direct.LazyPtr(in.GetTopK())
-	out.OutputIndices = ListValue_FromProto(mapCtx, in.GetOutputIndices())
+	out := &krm.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.MonitoringIntervalDays = direct.LazyPtr(in.GetMonitoringIntervalDays())
+	out.StalenessDays = direct.LazyPtr(in.GetStalenessDays())
 	return out
 }
-func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationParameters) *pb.ExplanationParameters {
+func FeaturestoreMonitoringConfig_SnapshotAnalysis_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreMonitoringConfig_SnapshotAnalysis) *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ExplanationParameters{}
-	if oneof := SampledShapleyAttribution_ToProto(mapCtx, in.SampledShapleyAttribution); oneof != nil {
-		out.Method = &pb.ExplanationParameters_SampledShapleyAttribution{SampledShapleyAttribution: oneof}
-	}
-	if oneof := IntegratedGradientsAttribution_ToProto(mapCtx, in.IntegratedGradientsAttribution); oneof != nil {
-		out.Method = &pb.ExplanationParameters_IntegratedGradientsAttribution{IntegratedGradientsAttribution: oneof}
-	}
-	if oneof := XraiAttribution_ToProto(mapCtx, in.XraiAttribution); oneof != nil {
-		out.Method = &pb.ExplanationParameters_XraiAttribution{XraiAttribution: oneof}
-	}
-	if oneof := Examples_ToProto(mapCtx, in.Examples); oneof != nil {
-		out.Method = &pb.ExplanationParameters_Examples{Examples: oneof}
-	}
-	out.TopK = direct.ValueOf(in.TopK)
-	out.OutputIndices = ListValue_ToProto(mapCtx, in.OutputIndices)
+	out := &pb.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.MonitoringIntervalDays = direct.ValueOf(in.MonitoringIntervalDays)
+	out.StalenessDays = direct.ValueOf(in.StalenessDays)
 	return out
 }
-func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {
+func FeaturestoreMonitoringConfig_ThresholdConfig_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ThresholdConfig) *krm.FeaturestoreMonitoringConfig_ThresholdConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExplanationSpec{}
-	out.Parameters = ExplanationParameters_FromProto(mapCtx, in.GetParameters())
-	out.Metadata = ExplanationMetadata_FromProto(mapCtx, in.GetMetadata())
+	out := &krm.FeaturestoreMonitoringConfig_ThresholdConfig{}
+	out.Value = direct.LazyPtr(in.GetValue())
 	return out
 }
-func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec) *pb.ExplanationSpec {
+func FeaturestoreMonitoringConfig_ThresholdConfig_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreMonitoringConfig_ThresholdConfig) *pb.FeaturestoreMonitoringConfig_ThresholdConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ExplanationSpec{}
-	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
-	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
-	return out
-}
-func FasterDeploymentConfig_FromProto(mapCtx *direct.MapContext, in *pb.FasterDeploymentConfig) *krm.FasterDeploymentConfig {
-	if in == nil {
-		return nil
+	out := &pb.FeaturestoreMonitoringConfig_ThresholdConfig{}
+	if oneof := FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto(mapCtx, in.Value); oneof != nil {
+		out.Threshold = oneof
 	}
-	out := &krm.FasterDeploymentConfig{}
-	out.FastTryoutEnabled = direct.LazyPtr(in.GetFastTryoutEnabled())
-	return out
-}
-func FasterDeploymentConfig_ToProto(mapCtx *direct.MapContext, in *krm.FasterDeploymentConfig) *pb.FasterDeploymentConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FasterDeploymentConfig{}
-	out.FastTryoutEnabled = direct.ValueOf(in.FastTryoutEnabled)
-	return out
-}
-func FeatureNoiseSigma_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma) *krm.FeatureNoiseSigma {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeatureNoiseSigma{}
-	out.NoiseSigma = direct.Slice_FromProto(mapCtx, in.NoiseSigma, FeatureNoiseSigma_NoiseSigmaForFeature_FromProto)
-	return out
-}
-func FeatureNoiseSigma_ToProto(mapCtx *direct.MapContext, in *krm.FeatureNoiseSigma) *pb.FeatureNoiseSigma {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeatureNoiseSigma{}
-	out.NoiseSigma = direct.Slice_ToProto(mapCtx, in.NoiseSigma, FeatureNoiseSigma_NoiseSigmaForFeature_ToProto)
-	return out
-}
-func FeatureNoiseSigma_NoiseSigmaForFeature_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma_NoiseSigmaForFeature) *krm.FeatureNoiseSigma_NoiseSigmaForFeature {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeatureNoiseSigma_NoiseSigmaForFeature{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Sigma = direct.LazyPtr(in.GetSigma())
-	return out
-}
-func FeatureNoiseSigma_NoiseSigmaForFeature_ToProto(mapCtx *direct.MapContext, in *krm.FeatureNoiseSigma_NoiseSigmaForFeature) *pb.FeatureNoiseSigma_NoiseSigmaForFeature {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeatureNoiseSigma_NoiseSigmaForFeature{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Sigma = direct.ValueOf(in.Sigma)
-	return out
-}
-func GcsSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GcsSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GcsSource{}
-	out.Uris = in.Uris
-	return out
-}
-func GcsSource_ToProto(mapCtx *direct.MapContext, in *krm.GcsSource) *pb.GcsSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GcsSource{}
-	out.Uris = in.Uris
-	return out
-}
-func IntegratedGradientsAttribution_FromProto(mapCtx *direct.MapContext, in *pb.IntegratedGradientsAttribution) *krm.IntegratedGradientsAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IntegratedGradientsAttribution{}
-	out.StepCount = direct.LazyPtr(in.GetStepCount())
-	out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, in.GetSmoothGradConfig())
-	out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, in.GetBlurBaselineConfig())
-	return out
-}
-func IntegratedGradientsAttribution_ToProto(mapCtx *direct.MapContext, in *krm.IntegratedGradientsAttribution) *pb.IntegratedGradientsAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IntegratedGradientsAttribution{}
-	out.StepCount = direct.ValueOf(in.StepCount)
-	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
-	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
-	return out
-}
-func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MachineSpec{}
-	out.MachineType = direct.LazyPtr(in.GetMachineType())
-	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
-	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
-	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
-	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
-	return out
-}
-func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MachineSpec{}
-	out.MachineType = direct.ValueOf(in.MachineType)
-	out.AcceleratorType = direct.Enum_ToProto[pb.AcceleratorType](mapCtx, in.AcceleratorType)
-	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
-	out.TpuTopology = direct.ValueOf(in.TpuTopology)
-	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
-	return out
-}
-func PredictRequestResponseLoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.PredictRequestResponseLoggingConfig) *krm.PredictRequestResponseLoggingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PredictRequestResponseLoggingConfig{}
-	out.Enabled = direct.LazyPtr(in.GetEnabled())
-	out.SamplingRate = direct.LazyPtr(in.GetSamplingRate())
-	out.BigqueryDestination = BigQueryDestination_FromProto(mapCtx, in.GetBigqueryDestination())
-	return out
-}
-func PredictRequestResponseLoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.PredictRequestResponseLoggingConfig) *pb.PredictRequestResponseLoggingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PredictRequestResponseLoggingConfig{}
-	out.Enabled = direct.ValueOf(in.Enabled)
-	out.SamplingRate = direct.ValueOf(in.SamplingRate)
-	out.BigqueryDestination = BigQueryDestination_ToProto(mapCtx, in.BigqueryDestination)
-	return out
-}
-func Presets_FromProto(mapCtx *direct.MapContext, in *pb.Presets) *krm.Presets {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Presets{}
-	out.Query = direct.Enum_FromProto(mapCtx, in.GetQuery())
-	out.Modality = direct.Enum_FromProto(mapCtx, in.GetModality())
-	return out
-}
-func Presets_ToProto(mapCtx *direct.MapContext, in *krm.Presets) *pb.Presets {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Presets{}
-	if oneof := Presets_Query_ToProto(mapCtx, in.Query); oneof != nil {
-		out.Query = oneof
-	}
-	out.Modality = direct.Enum_ToProto[pb.Presets_Modality](mapCtx, in.Modality)
-	return out
-}
-func PrivateEndpoints_FromProto(mapCtx *direct.MapContext, in *pb.PrivateEndpoints) *krm.PrivateEndpoints {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PrivateEndpoints{}
-	// MISSING: PredictHTTPURI
-	// MISSING: ExplainHTTPURI
-	// MISSING: HealthHTTPURI
-	// MISSING: ServiceAttachment
-	return out
-}
-func PrivateEndpoints_ToProto(mapCtx *direct.MapContext, in *krm.PrivateEndpoints) *pb.PrivateEndpoints {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivateEndpoints{}
-	// MISSING: PredictHTTPURI
-	// MISSING: ExplainHTTPURI
-	// MISSING: HealthHTTPURI
-	// MISSING: ServiceAttachment
-	return out
-}
-func PrivateEndpointsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateEndpoints) *krm.PrivateEndpointsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PrivateEndpointsObservedState{}
-	out.PredictHTTPURI = direct.LazyPtr(in.GetPredictHttpUri())
-	out.ExplainHTTPURI = direct.LazyPtr(in.GetExplainHttpUri())
-	out.HealthHTTPURI = direct.LazyPtr(in.GetHealthHttpUri())
-	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
-	return out
-}
-func PrivateEndpointsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PrivateEndpointsObservedState) *pb.PrivateEndpoints {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivateEndpoints{}
-	out.PredictHttpUri = direct.ValueOf(in.PredictHTTPURI)
-	out.ExplainHttpUri = direct.ValueOf(in.ExplainHTTPURI)
-	out.HealthHttpUri = direct.ValueOf(in.HealthHTTPURI)
-	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
-	return out
-}
-func PrivateServiceConnectConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConfig) *krm.PrivateServiceConnectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PrivateServiceConnectConfig{}
-	out.EnablePrivateServiceConnect = direct.LazyPtr(in.GetEnablePrivateServiceConnect())
-	out.ProjectAllowlist = in.ProjectAllowlist
-	// MISSING: ServiceAttachment
-	return out
-}
-func PrivateServiceConnectConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConfig) *pb.PrivateServiceConnectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivateServiceConnectConfig{}
-	out.EnablePrivateServiceConnect = direct.ValueOf(in.EnablePrivateServiceConnect)
-	out.ProjectAllowlist = in.ProjectAllowlist
-	// MISSING: ServiceAttachment
-	return out
-}
-func PrivateServiceConnectConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConfig) *krm.PrivateServiceConnectConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PrivateServiceConnectConfigObservedState{}
-	// MISSING: EnablePrivateServiceConnect
-	// MISSING: ProjectAllowlist
-	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
-	return out
-}
-func PrivateServiceConnectConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConfigObservedState) *pb.PrivateServiceConnectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivateServiceConnectConfig{}
-	// MISSING: EnablePrivateServiceConnect
-	// MISSING: ProjectAllowlist
-	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
-	return out
-}
-func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ReservationAffinity{}
-	out.ReservationAffinityType = direct.Enum_FromProto(mapCtx, in.GetReservationAffinityType())
-	out.Key = direct.LazyPtr(in.GetKey())
-	out.Values = in.Values
-	return out
-}
-func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinity) *pb.ReservationAffinity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReservationAffinity{}
-	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
-	out.Key = direct.ValueOf(in.Key)
-	out.Values = in.Values
-	return out
-}
-func SampledShapleyAttribution_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krm.SampledShapleyAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SampledShapleyAttribution{}
-	out.PathCount = direct.LazyPtr(in.GetPathCount())
-	return out
-}
-func SampledShapleyAttribution_ToProto(mapCtx *direct.MapContext, in *krm.SampledShapleyAttribution) *pb.SampledShapleyAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SampledShapleyAttribution{}
-	out.PathCount = direct.ValueOf(in.PathCount)
-	return out
-}
-func SmoothGradConfig_FromProto(mapCtx *direct.MapContext, in *pb.SmoothGradConfig) *krm.SmoothGradConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SmoothGradConfig{}
-	out.NoiseSigma = direct.LazyPtr(in.GetNoiseSigma())
-	out.FeatureNoiseSigma = FeatureNoiseSigma_FromProto(mapCtx, in.GetFeatureNoiseSigma())
-	out.NoisySampleCount = direct.LazyPtr(in.GetNoisySampleCount())
-	return out
-}
-func SmoothGradConfig_ToProto(mapCtx *direct.MapContext, in *krm.SmoothGradConfig) *pb.SmoothGradConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SmoothGradConfig{}
-	if oneof := SmoothGradConfig_NoiseSigma_ToProto(mapCtx, in.NoiseSigma); oneof != nil {
-		out.GradientNoiseSigma = oneof
-	}
-	if oneof := FeatureNoiseSigma_ToProto(mapCtx, in.FeatureNoiseSigma); oneof != nil {
-		out.GradientNoiseSigma = &pb.SmoothGradConfig_FeatureNoiseSigma{FeatureNoiseSigma: oneof}
-	}
-	out.NoisySampleCount = direct.ValueOf(in.NoisySampleCount)
-	return out
-}
-func XraiAttribution_FromProto(mapCtx *direct.MapContext, in *pb.XraiAttribution) *krm.XraiAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &krm.XraiAttribution{}
-	out.StepCount = direct.LazyPtr(in.GetStepCount())
-	out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, in.GetSmoothGradConfig())
-	out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, in.GetBlurBaselineConfig())
-	return out
-}
-func XraiAttribution_ToProto(mapCtx *direct.MapContext, in *krm.XraiAttribution) *pb.XraiAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.XraiAttribution{}
-	out.StepCount = direct.ValueOf(in.StepCount)
-	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
-	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
