@@ -15,10 +15,10 @@
 package channel
 
 import (
+	pb "cloud.google.com/go/channel/apiv1/channelpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/channel/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/channel/apiv1/channelpb"
 )
 func ChannelBillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.ChannelBillingAccountObservedState {
 	if in == nil {
@@ -392,6 +392,42 @@ func ChannelProductSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelProduc
 	// MISSING: MarketingInfo
 	return out
 }
+func ChannelReportJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReportJob) *krm.ChannelReportJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelReportJobObservedState{}
+	// MISSING: Name
+	// MISSING: ReportStatus
+	return out
+}
+func ChannelReportJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelReportJobObservedState) *pb.ReportJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportJob{}
+	// MISSING: Name
+	// MISSING: ReportStatus
+	return out
+}
+func ChannelReportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReportJob) *krm.ChannelReportJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelReportJobSpec{}
+	// MISSING: Name
+	// MISSING: ReportStatus
+	return out
+}
+func ChannelReportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelReportJobSpec) *pb.ReportJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportJob{}
+	// MISSING: Name
+	// MISSING: ReportStatus
+	return out
+}
 func ChannelSkuObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Sku) *krm.ChannelSkuObservedState {
 	if in == nil {
 		return nil
@@ -432,63 +468,41 @@ func ChannelSkuSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelSkuSpec) *
 	// MISSING: Product
 	return out
 }
-func MarketingInfo_FromProto(mapCtx *direct.MapContext, in *pb.MarketingInfo) *krm.MarketingInfo {
+func ReportJob_FromProto(mapCtx *direct.MapContext, in *pb.ReportJob) *krm.ReportJob {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MarketingInfo{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.DefaultLogo = Media_FromProto(mapCtx, in.GetDefaultLogo())
-	return out
-}
-func MarketingInfo_ToProto(mapCtx *direct.MapContext, in *krm.MarketingInfo) *pb.MarketingInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MarketingInfo{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.DefaultLogo = Media_ToProto(mapCtx, in.DefaultLogo)
-	return out
-}
-func Media_FromProto(mapCtx *direct.MapContext, in *pb.Media) *krm.Media {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Media{}
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.Content = direct.LazyPtr(in.GetContent())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	return out
-}
-func Media_ToProto(mapCtx *direct.MapContext, in *krm.Media) *pb.Media {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Media{}
-	out.Title = direct.ValueOf(in.Title)
-	out.Content = direct.ValueOf(in.Content)
-	out.Type = direct.Enum_ToProto[pb.MediaType](mapCtx, in.Type)
-	return out
-}
-func Sku_FromProto(mapCtx *direct.MapContext, in *pb.Sku) *krm.Sku {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Sku{}
+	out := &krm.ReportJob{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.MarketingInfo = MarketingInfo_FromProto(mapCtx, in.GetMarketingInfo())
-	out.Product = Product_FromProto(mapCtx, in.GetProduct())
+	out.ReportStatus = ReportStatus_FromProto(mapCtx, in.GetReportStatus())
 	return out
 }
-func Sku_ToProto(mapCtx *direct.MapContext, in *krm.Sku) *pb.Sku {
+func ReportJob_ToProto(mapCtx *direct.MapContext, in *krm.ReportJob) *pb.ReportJob {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Sku{}
+	out := &pb.ReportJob{}
 	out.Name = direct.ValueOf(in.Name)
-	out.MarketingInfo = MarketingInfo_ToProto(mapCtx, in.MarketingInfo)
-	out.Product = Product_ToProto(mapCtx, in.Product)
+	out.ReportStatus = ReportStatus_ToProto(mapCtx, in.ReportStatus)
+	return out
+}
+func ReportStatus_FromProto(mapCtx *direct.MapContext, in *pb.ReportStatus) *krm.ReportStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReportStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func ReportStatus_ToProto(mapCtx *direct.MapContext, in *krm.ReportStatus) *pb.ReportStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportStatus{}
+	out.State = direct.Enum_ToProto[pb.ReportStatus_State](mapCtx, in.State)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }

@@ -15,48 +15,30 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.channel.v1.MarketingInfo
-type MarketingInfo struct {
-	// Human readable name.
-	// +kcc:proto:field=google.cloud.channel.v1.MarketingInfo.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Human readable description. Description can contain HTML.
-	// +kcc:proto:field=google.cloud.channel.v1.MarketingInfo.description
-	Description *string `json:"description,omitempty"`
-
-	// Default logo.
-	// +kcc:proto:field=google.cloud.channel.v1.MarketingInfo.default_logo
-	DefaultLogo *Media `json:"defaultLogo,omitempty"`
-}
-
-// +kcc:proto=google.cloud.channel.v1.Media
-type Media struct {
-	// Title of the media.
-	// +kcc:proto:field=google.cloud.channel.v1.Media.title
-	Title *string `json:"title,omitempty"`
-
-	// URL of the media.
-	// +kcc:proto:field=google.cloud.channel.v1.Media.content
-	Content *string `json:"content,omitempty"`
-
-	// Type of the media.
-	// +kcc:proto:field=google.cloud.channel.v1.Media.type
-	Type *string `json:"type,omitempty"`
-}
-
-// +kcc:proto=google.cloud.channel.v1.Sku
-type Sku struct {
-	// Resource Name of the SKU.
-	//  Format: products/{product_id}/skus/{sku_id}
-	// +kcc:proto:field=google.cloud.channel.v1.Sku.name
+// +kcc:proto=google.cloud.channel.v1.ReportJob
+type ReportJob struct {
+	// Required. The resource name of a report job.
+	//  Name uses the format:
+	//  `accounts/{account_id}/reportJobs/{report_job_id}`
+	// +kcc:proto:field=google.cloud.channel.v1.ReportJob.name
 	Name *string `json:"name,omitempty"`
 
-	// Marketing information for the SKU.
-	// +kcc:proto:field=google.cloud.channel.v1.Sku.marketing_info
-	MarketingInfo *MarketingInfo `json:"marketingInfo,omitempty"`
+	// The current status of report generation.
+	// +kcc:proto:field=google.cloud.channel.v1.ReportJob.report_status
+	ReportStatus *ReportStatus `json:"reportStatus,omitempty"`
+}
 
-	// Product the SKU is associated with.
-	// +kcc:proto:field=google.cloud.channel.v1.Sku.product
-	Product *Product `json:"product,omitempty"`
+// +kcc:proto=google.cloud.channel.v1.ReportStatus
+type ReportStatus struct {
+	// The current state of the report generation process.
+	// +kcc:proto:field=google.cloud.channel.v1.ReportStatus.state
+	State *string `json:"state,omitempty"`
+
+	// The report generation's start time.
+	// +kcc:proto:field=google.cloud.channel.v1.ReportStatus.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The report generation's completion time.
+	// +kcc:proto:field=google.cloud.channel.v1.ReportStatus.end_time
+	EndTime *string `json:"endTime,omitempty"`
 }
