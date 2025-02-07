@@ -15,133 +15,125 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureViewSync
-type FeatureViewSync struct {
-	// Identifier. Name of the FeatureViewSync. Format:
-	//  `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}/featureViewSyncs/{feature_view_sync}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.name
+// +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec
+type EncryptionSpec struct {
+	// Required. The Cloud KMS resource identifier of the customer managed
+	//  encryption key used to protect a resource. Has the form:
+	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+	//  The key needs to be in the same region as where the compute resource is
+	//  created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EncryptionSpec.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Featurestore
+type Featurestore struct {
+
+	// Optional. Used to perform consistent read-modify-write updates. If not set,
+	//  a blind "overwrite" update happens.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. The labels with user-defined metadata to organize your
+	//  Featurestore.
+	//
+	//  Label keys and values can be no longer than 64 characters
+	//  (Unicode codepoints), can only contain lowercase letters, numeric
+	//  characters, underscores and dashes. International characters are allowed.
+	//
+	//  See https://goo.gl/xmQnxf for more information on and examples of labels.
+	//  No more than 64 user labels can be associated with one Featurestore(System
+	//  labels are excluded)."
+	//  System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+	//  and are immutable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Config for online storage resources. The field should not
+	//  co-exist with the field of `OnlineStoreReplicationConfig`. If both of it
+	//  and OnlineStoreReplicationConfig are unset, the feature store will not have
+	//  an online store and cannot be used for online serving.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.online_serving_config
+	OnlineServingConfig *Featurestore_OnlineServingConfig `json:"onlineServingConfig,omitempty"`
+
+	// Optional. TTL in days for feature values that will be stored in online
+	//  serving storage. The Feature Store online storage periodically removes
+	//  obsolete feature values older than `online_storage_ttl_days` since the
+	//  feature generation time. Note that `online_storage_ttl_days` should be less
+	//  than or equal to `offline_storage_ttl_days` for each EntityType under a
+	//  featurestore. If not set, default to 4000 days
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.online_storage_ttl_days
+	OnlineStorageTtlDays *int32 `json:"onlineStorageTtlDays,omitempty"`
+
+	// Optional. Customer-managed encryption key spec for data storage. If set,
+	//  both of the online and offline data storage will be secured by this key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Featurestore.OnlineServingConfig
+type Featurestore_OnlineServingConfig struct {
+	// The number of nodes for the online store. The number of nodes doesn't
+	//  scale automatically, but you can manually update the number of
+	//  nodes. If set to 0, the featurestore will not have an
+	//  online store and cannot be used for online serving.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.OnlineServingConfig.fixed_node_count
+	FixedNodeCount *int32 `json:"fixedNodeCount,omitempty"`
+
+	// Online serving scaling configuration.
+	//  Only one of `fixed_node_count` and `scaling` can be set. Setting one will
+	//  reset the other.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.OnlineServingConfig.scaling
+	Scaling *Featurestore_OnlineServingConfig_Scaling `json:"scaling,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Featurestore.OnlineServingConfig.Scaling
+type Featurestore_OnlineServingConfig_Scaling struct {
+	// Required. The minimum number of nodes to scale down to. Must be greater
+	//  than or equal to 1.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.OnlineServingConfig.Scaling.min_node_count
+	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
+
+	// The maximum number of nodes to scale up to. Must be greater than
+	//  min_node_count, and less than or equal to 10 times of 'min_node_count'.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.OnlineServingConfig.Scaling.max_node_count
+	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+
+	// Optional. The cpu utilization that the Autoscaler should be trying to
+	//  achieve. This number is on a scale from 0 (no utilization) to 100
+	//  (total utilization), and is limited between 10 and 80. When a cluster's
+	//  CPU utilization exceeds the target that you have set, Bigtable
+	//  immediately adds nodes to the cluster. When CPU utilization is
+	//  substantially lower than the target, Bigtable removes nodes. If not set
+	//  or set to 0, default to 50.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.OnlineServingConfig.Scaling.cpu_utilization_target
+	CpuUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Featurestore
+type FeaturestoreObservedState struct {
+	// Output only. Name of the Featurestore. Format:
+	//  `projects/{project}/locations/{location}/featurestores/{featurestore}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.name
 	Name *string `json:"name,omitempty"`
-}
 
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureViewSync.SyncSummary
-type FeatureViewSync_SyncSummary struct {
-
-	// Lower bound of the system time watermark for the sync job. This is only
-	//  set for continuously syncing feature views.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.SyncSummary.system_watermark_time
-	SystemWatermarkTime *string `json:"systemWatermarkTime,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
-
-// +kcc:proto=google.type.Interval
-type Interval struct {
-	// Optional. Inclusive start of the interval.
-	//
-	//  If specified, a Timestamp matching this interval will have to be the same
-	//  or after the start.
-	// +kcc:proto:field=google.type.Interval.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// Optional. Exclusive end of the interval.
-	//
-	//  If specified, a Timestamp matching this interval will have to be before the
-	//  end.
-	// +kcc:proto:field=google.type.Interval.end_time
-	EndTime *string `json:"endTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureViewSync
-type FeatureViewSyncObservedState struct {
-	// Output only. Time when this FeatureViewSync is created. Creation of a
-	//  FeatureViewSync means that the job is pending / waiting for sufficient
-	//  resources but may not have started the actual data transfer yet.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.create_time
+	// Output only. Timestamp when this Featurestore was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Time when this FeatureViewSync is finished.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.run_time
-	RunTime *Interval `json:"runTime,omitempty"`
+	// Output only. Timestamp when this Featurestore was last updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. Final status of the FeatureViewSync.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.final_status
-	FinalStatus *Status `json:"finalStatus,omitempty"`
-
-	// Output only. Summary of the sync job.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.sync_summary
-	SyncSummary *FeatureViewSync_SyncSummary `json:"syncSummary,omitempty"`
+	// Output only. State of the featurestore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.state
+	State *string `json:"state,omitempty"`
 
 	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.satisfies_pzs
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.satisfies_pzs
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
 
 	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.satisfies_pzi
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Featurestore.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureViewSync.SyncSummary
-type FeatureViewSync_SyncSummaryObservedState struct {
-	// Output only. Total number of rows synced.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.SyncSummary.row_synced
-	RowSynced *int64 `json:"rowSynced,omitempty"`
-
-	// Output only. BigQuery slot milliseconds consumed for the sync job.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureViewSync.SyncSummary.total_slot
-	TotalSlot *int64 `json:"totalSlot,omitempty"`
 }

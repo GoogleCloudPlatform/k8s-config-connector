@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -1544,99 +1544,201 @@ func AiplatformFeatureViewSyncSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ai
 	// MISSING: SatisfiesPzi
 	return out
 }
-func FeatureViewSync_FromProto(mapCtx *direct.MapContext, in *pb.FeatureViewSync) *krm.FeatureViewSync {
+func AiplatformFeaturestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.AiplatformFeaturestoreObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureViewSync{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CreateTime
-	// MISSING: RunTime
-	// MISSING: FinalStatus
-	// MISSING: SyncSummary
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func FeatureViewSync_ToProto(mapCtx *direct.MapContext, in *krm.FeatureViewSync) *pb.FeatureViewSync {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeatureViewSync{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: CreateTime
-	// MISSING: RunTime
-	// MISSING: FinalStatus
-	// MISSING: SyncSummary
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func FeatureViewSyncObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureViewSync) *krm.FeatureViewSyncObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeatureViewSyncObservedState{}
+	out := &krm.AiplatformFeaturestoreObservedState{}
 	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: OnlineServingConfig
+	// MISSING: State
+	// MISSING: OnlineStorageTtlDays
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformFeaturestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformFeaturestoreObservedState) *pb.Featurestore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: OnlineServingConfig
+	// MISSING: State
+	// MISSING: OnlineStorageTtlDays
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformFeaturestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.AiplatformFeaturestoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformFeaturestoreSpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: OnlineServingConfig
+	// MISSING: State
+	// MISSING: OnlineStorageTtlDays
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformFeaturestoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformFeaturestoreSpec) *pb.Featurestore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: OnlineServingConfig
+	// MISSING: State
+	// MISSING: OnlineStorageTtlDays
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpec{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	return out
+}
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func Featurestore_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.Featurestore {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Featurestore{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.OnlineServingConfig = Featurestore_OnlineServingConfig_FromProto(mapCtx, in.GetOnlineServingConfig())
+	// MISSING: State
+	out.OnlineStorageTtlDays = direct.LazyPtr(in.GetOnlineStorageTtlDays())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func Featurestore_ToProto(mapCtx *direct.MapContext, in *krm.Featurestore) *pb.Featurestore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.OnlineServingConfig = Featurestore_OnlineServingConfig_ToProto(mapCtx, in.OnlineServingConfig)
+	// MISSING: State
+	out.OnlineStorageTtlDays = direct.ValueOf(in.OnlineStorageTtlDays)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func FeaturestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.FeaturestoreObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeaturestoreObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.RunTime = Interval_FromProto(mapCtx, in.GetRunTime())
-	out.FinalStatus = Status_FromProto(mapCtx, in.GetFinalStatus())
-	out.SyncSummary = FeatureViewSync_SyncSummary_FromProto(mapCtx, in.GetSyncSummary())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: OnlineServingConfig
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: OnlineStorageTtlDays
+	// MISSING: EncryptionSpec
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
-func FeatureViewSyncObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureViewSyncObservedState) *pb.FeatureViewSync {
+func FeaturestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeaturestoreObservedState) *pb.Featurestore {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FeatureViewSync{}
-	// MISSING: Name
+	out := &pb.Featurestore{}
+	out.Name = direct.ValueOf(in.Name)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.RunTime = Interval_ToProto(mapCtx, in.RunTime)
-	out.FinalStatus = Status_ToProto(mapCtx, in.FinalStatus)
-	out.SyncSummary = FeatureViewSync_SyncSummary_ToProto(mapCtx, in.SyncSummary)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: OnlineServingConfig
+	out.State = direct.Enum_ToProto[pb.Featurestore_State](mapCtx, in.State)
+	// MISSING: OnlineStorageTtlDays
+	// MISSING: EncryptionSpec
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
-func FeatureViewSync_SyncSummary_FromProto(mapCtx *direct.MapContext, in *pb.FeatureViewSync_SyncSummary) *krm.FeatureViewSync_SyncSummary {
+func Featurestore_OnlineServingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krm.Featurestore_OnlineServingConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureViewSync_SyncSummary{}
-	// MISSING: RowSynced
-	// MISSING: TotalSlot
-	out.SystemWatermarkTime = direct.StringTimestamp_FromProto(mapCtx, in.GetSystemWatermarkTime())
+	out := &krm.Featurestore_OnlineServingConfig{}
+	out.FixedNodeCount = direct.LazyPtr(in.GetFixedNodeCount())
+	out.Scaling = Featurestore_OnlineServingConfig_Scaling_FromProto(mapCtx, in.GetScaling())
 	return out
 }
-func FeatureViewSync_SyncSummary_ToProto(mapCtx *direct.MapContext, in *krm.FeatureViewSync_SyncSummary) *pb.FeatureViewSync_SyncSummary {
+func Featurestore_OnlineServingConfig_ToProto(mapCtx *direct.MapContext, in *krm.Featurestore_OnlineServingConfig) *pb.Featurestore_OnlineServingConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FeatureViewSync_SyncSummary{}
-	// MISSING: RowSynced
-	// MISSING: TotalSlot
-	out.SystemWatermarkTime = direct.StringTimestamp_ToProto(mapCtx, in.SystemWatermarkTime)
+	out := &pb.Featurestore_OnlineServingConfig{}
+	out.FixedNodeCount = direct.ValueOf(in.FixedNodeCount)
+	out.Scaling = Featurestore_OnlineServingConfig_Scaling_ToProto(mapCtx, in.Scaling)
 	return out
 }
-func FeatureViewSync_SyncSummaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureViewSync_SyncSummary) *krm.FeatureViewSync_SyncSummaryObservedState {
+func Featurestore_OnlineServingConfig_Scaling_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig_Scaling) *krm.Featurestore_OnlineServingConfig_Scaling {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureViewSync_SyncSummaryObservedState{}
-	out.RowSynced = direct.LazyPtr(in.GetRowSynced())
-	out.TotalSlot = direct.LazyPtr(in.GetTotalSlot())
-	// MISSING: SystemWatermarkTime
+	out := &krm.Featurestore_OnlineServingConfig_Scaling{}
+	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	out.CpuUtilizationTarget = direct.LazyPtr(in.GetCpuUtilizationTarget())
 	return out
 }
-func FeatureViewSync_SyncSummaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureViewSync_SyncSummaryObservedState) *pb.FeatureViewSync_SyncSummary {
+func Featurestore_OnlineServingConfig_Scaling_ToProto(mapCtx *direct.MapContext, in *krm.Featurestore_OnlineServingConfig_Scaling) *pb.Featurestore_OnlineServingConfig_Scaling {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FeatureViewSync_SyncSummary{}
-	out.RowSynced = direct.ValueOf(in.RowSynced)
-	out.TotalSlot = direct.ValueOf(in.TotalSlot)
-	// MISSING: SystemWatermarkTime
+	out := &pb.Featurestore_OnlineServingConfig_Scaling{}
+	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	out.CpuUtilizationTarget = direct.ValueOf(in.CpuUtilizationTarget)
 	return out
 }
