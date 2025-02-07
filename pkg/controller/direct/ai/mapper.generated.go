@@ -15,46 +15,100 @@
 package ai
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ai/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func Model_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.Model {
+func AiPermissionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Permission) *krm.AiPermissionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Model{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.BaseModelID = direct.LazyPtr(in.GetBaseModelId())
-	out.Version = direct.LazyPtr(in.GetVersion())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.InputTokenLimit = direct.LazyPtr(in.GetInputTokenLimit())
-	out.OutputTokenLimit = direct.LazyPtr(in.GetOutputTokenLimit())
-	out.SupportedGenerationMethods = in.SupportedGenerationMethods
-	out.Temperature = in.Temperature
-	out.MaxTemperature = in.MaxTemperature
-	out.TopP = in.TopP
-	out.TopK = in.TopK
+	out := &krm.AiPermissionObservedState{}
+	// MISSING: Name
+	// MISSING: GranteeType
+	// MISSING: EmailAddress
+	// MISSING: Role
 	return out
 }
-func Model_ToProto(mapCtx *direct.MapContext, in *krm.Model) *pb.Model {
+func AiPermissionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiPermissionObservedState) *pb.Permission {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Model{}
+	out := &pb.Permission{}
+	// MISSING: Name
+	// MISSING: GranteeType
+	// MISSING: EmailAddress
+	// MISSING: Role
+	return out
+}
+func AiPermissionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Permission) *krm.AiPermissionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiPermissionSpec{}
+	// MISSING: Name
+	// MISSING: GranteeType
+	// MISSING: EmailAddress
+	// MISSING: Role
+	return out
+}
+func AiPermissionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiPermissionSpec) *pb.Permission {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Permission{}
+	// MISSING: Name
+	// MISSING: GranteeType
+	// MISSING: EmailAddress
+	// MISSING: Role
+	return out
+}
+func Permission_FromProto(mapCtx *direct.MapContext, in *pb.Permission) *krm.Permission {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Permission{}
+	// MISSING: Name
+	out.GranteeType = direct.Enum_FromProto(mapCtx, in.GetGranteeType())
+	out.EmailAddress = in.EmailAddress
+	out.Role = direct.Enum_FromProto(mapCtx, in.GetRole())
+	return out
+}
+func Permission_ToProto(mapCtx *direct.MapContext, in *krm.Permission) *pb.Permission {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Permission{}
+	// MISSING: Name
+	if oneof := Permission_GranteeType_ToProto(mapCtx, in.GranteeType); oneof != nil {
+		out.GranteeType = oneof
+	}
+	out.EmailAddress = in.EmailAddress
+	if oneof := Permission_Role_ToProto(mapCtx, in.Role); oneof != nil {
+		out.Role = oneof
+	}
+	return out
+}
+func PermissionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Permission) *krm.PermissionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PermissionObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: GranteeType
+	// MISSING: EmailAddress
+	// MISSING: Role
+	return out
+}
+func PermissionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PermissionObservedState) *pb.Permission {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Permission{}
 	out.Name = direct.ValueOf(in.Name)
-	out.BaseModelId = direct.ValueOf(in.BaseModelID)
-	out.Version = direct.ValueOf(in.Version)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.InputTokenLimit = direct.ValueOf(in.InputTokenLimit)
-	out.OutputTokenLimit = direct.ValueOf(in.OutputTokenLimit)
-	out.SupportedGenerationMethods = in.SupportedGenerationMethods
-	out.Temperature = in.Temperature
-	out.MaxTemperature = in.MaxTemperature
-	out.TopP = in.TopP
-	out.TopK = in.TopK
+	// MISSING: GranteeType
+	// MISSING: EmailAddress
+	// MISSING: Role
 	return out
 }
