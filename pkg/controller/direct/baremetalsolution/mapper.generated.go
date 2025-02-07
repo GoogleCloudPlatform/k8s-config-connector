@@ -752,6 +752,42 @@ func BaremetalsolutionProvisioningQuotaSpec_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: StorageGib
 	return out
 }
+func BaremetalsolutionSSHKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SSHKey) *krm.BaremetalsolutionSSHKeyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionSSHKeyObservedState{}
+	// MISSING: Name
+	// MISSING: PublicKey
+	return out
+}
+func BaremetalsolutionSSHKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionSSHKeyObservedState) *pb.SSHKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SSHKey{}
+	// MISSING: Name
+	// MISSING: PublicKey
+	return out
+}
+func BaremetalsolutionSSHKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.SSHKey) *krm.BaremetalsolutionSSHKeySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionSSHKeySpec{}
+	// MISSING: Name
+	// MISSING: PublicKey
+	return out
+}
+func BaremetalsolutionSSHKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionSSHKeySpec) *pb.SSHKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SSHKey{}
+	// MISSING: Name
+	// MISSING: PublicKey
+	return out
+}
 func BaremetalsolutionServerNetworkTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerNetworkTemplate) *krm.BaremetalsolutionServerNetworkTemplateObservedState {
 	if in == nil {
 		return nil
@@ -868,51 +904,39 @@ func BaremetalsolutionVolumeConfigSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: PerformanceTier
 	return out
 }
-func InstanceQuota_FromProto(mapCtx *direct.MapContext, in *pb.InstanceQuota) *krm.InstanceQuota {
+func SSHKey_FromProto(mapCtx *direct.MapContext, in *pb.SSHKey) *krm.SSHKey {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InstanceQuota{}
+	out := &krm.SSHKey{}
 	// MISSING: Name
-	out.InstanceType = direct.LazyPtr(in.GetInstanceType())
-	out.GcpService = direct.LazyPtr(in.GetGcpService())
-	out.Location = direct.LazyPtr(in.GetLocation())
-	out.AvailableMachineCount = direct.LazyPtr(in.GetAvailableMachineCount())
+	out.PublicKey = direct.LazyPtr(in.GetPublicKey())
 	return out
 }
-func InstanceQuota_ToProto(mapCtx *direct.MapContext, in *krm.InstanceQuota) *pb.InstanceQuota {
+func SSHKey_ToProto(mapCtx *direct.MapContext, in *krm.SSHKey) *pb.SSHKey {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InstanceQuota{}
+	out := &pb.SSHKey{}
 	// MISSING: Name
-	out.InstanceType = direct.ValueOf(in.InstanceType)
-	out.GcpService = direct.ValueOf(in.GcpService)
-	out.Location = direct.ValueOf(in.Location)
-	out.AvailableMachineCount = direct.ValueOf(in.AvailableMachineCount)
+	out.PublicKey = direct.ValueOf(in.PublicKey)
 	return out
 }
-func InstanceQuotaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceQuota) *krm.InstanceQuotaObservedState {
+func SSHKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SSHKey) *krm.SSHKeyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InstanceQuotaObservedState{}
+	out := &krm.SSHKeyObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: InstanceType
-	// MISSING: GcpService
-	// MISSING: Location
-	// MISSING: AvailableMachineCount
+	// MISSING: PublicKey
 	return out
 }
-func InstanceQuotaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceQuotaObservedState) *pb.InstanceQuota {
+func SSHKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SSHKeyObservedState) *pb.SSHKey {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InstanceQuota{}
+	out := &pb.SSHKey{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: InstanceType
-	// MISSING: GcpService
-	// MISSING: Location
-	// MISSING: AvailableMachineCount
+	// MISSING: PublicKey
 	return out
 }

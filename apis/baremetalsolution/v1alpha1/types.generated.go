@@ -15,31 +15,18 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.baremetalsolution.v2.InstanceQuota
-type InstanceQuota struct {
+// +kcc:proto=google.cloud.baremetalsolution.v2.SSHKey
+type SSHKey struct {
 
-	// Instance type.
-	//  Deprecated: use gcp_service.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceQuota.instance_type
-	InstanceType *string `json:"instanceType,omitempty"`
-
-	// The gcp service of the provisioning quota.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceQuota.gcp_service
-	GcpService *string `json:"gcpService,omitempty"`
-
-	// Location where the quota applies.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceQuota.location
-	Location *string `json:"location,omitempty"`
-
-	// Number of machines than can be created for the given location and
-	//  instance_type.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceQuota.available_machine_count
-	AvailableMachineCount *int32 `json:"availableMachineCount,omitempty"`
+	// The public SSH key. This must be in OpenSSH .authorized_keys format.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.SSHKey.public_key
+	PublicKey *string `json:"publicKey,omitempty"`
 }
 
-// +kcc:proto=google.cloud.baremetalsolution.v2.InstanceQuota
-type InstanceQuotaObservedState struct {
-	// Output only. The name of the instance quota.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceQuota.name
+// +kcc:proto=google.cloud.baremetalsolution.v2.SSHKey
+type SSHKeyObservedState struct {
+	// Output only. The name of this SSH key.
+	//  Currently, the only valid value for the location is "global".
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.SSHKey.name
 	Name *string `json:"name,omitempty"`
 }
