@@ -16,86 +16,10 @@ package ai
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/ai/generativelanguage/apiv1/generativelanguagepb"
+	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func AiModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AiModelObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiModelObservedState{}
-	// MISSING: Name
-	// MISSING: BaseModelID
-	// MISSING: Version
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: InputTokenLimit
-	// MISSING: OutputTokenLimit
-	// MISSING: SupportedGenerationMethods
-	// MISSING: Temperature
-	// MISSING: MaxTemperature
-	// MISSING: TopP
-	// MISSING: TopK
-	return out
-}
-func AiModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiModelObservedState) *pb.Model {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Model{}
-	// MISSING: Name
-	// MISSING: BaseModelID
-	// MISSING: Version
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: InputTokenLimit
-	// MISSING: OutputTokenLimit
-	// MISSING: SupportedGenerationMethods
-	// MISSING: Temperature
-	// MISSING: MaxTemperature
-	// MISSING: TopP
-	// MISSING: TopK
-	return out
-}
-func AiModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AiModelSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiModelSpec{}
-	// MISSING: Name
-	// MISSING: BaseModelID
-	// MISSING: Version
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: InputTokenLimit
-	// MISSING: OutputTokenLimit
-	// MISSING: SupportedGenerationMethods
-	// MISSING: Temperature
-	// MISSING: MaxTemperature
-	// MISSING: TopP
-	// MISSING: TopK
-	return out
-}
-func AiModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiModelSpec) *pb.Model {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Model{}
-	// MISSING: Name
-	// MISSING: BaseModelID
-	// MISSING: Version
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: InputTokenLimit
-	// MISSING: OutputTokenLimit
-	// MISSING: SupportedGenerationMethods
-	// MISSING: Temperature
-	// MISSING: MaxTemperature
-	// MISSING: TopP
-	// MISSING: TopK
-	return out
-}
 func Model_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.Model {
 	if in == nil {
 		return nil
