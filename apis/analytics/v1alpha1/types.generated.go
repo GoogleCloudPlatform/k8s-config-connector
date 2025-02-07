@@ -15,50 +15,25 @@
 package v1alpha1
 
 
-// +kcc:proto=google.analytics.admin.v1beta.AccountSummary
-type AccountSummary struct {
-	// Resource name for this account summary.
-	//  Format: accountSummaries/{account_id}
-	//  Example: "accountSummaries/1000"
-	// +kcc:proto:field=google.analytics.admin.v1beta.AccountSummary.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.analytics.admin.v1beta.MeasurementProtocolSecret
+type MeasurementProtocolSecret struct {
 
-	// Resource name of account referred to by this account summary
-	//  Format: accounts/{account_id}
-	//  Example: "accounts/1000"
-	// +kcc:proto:field=google.analytics.admin.v1beta.AccountSummary.account
-	Account *string `json:"account,omitempty"`
-
-	// Display name for the account referred to in this account summary.
-	// +kcc:proto:field=google.analytics.admin.v1beta.AccountSummary.display_name
+	// Required. Human-readable display name for this secret.
+	// +kcc:proto:field=google.analytics.admin.v1beta.MeasurementProtocolSecret.display_name
 	DisplayName *string `json:"displayName,omitempty"`
-
-	// List of summaries for child accounts of this account.
-	// +kcc:proto:field=google.analytics.admin.v1beta.AccountSummary.property_summaries
-	PropertySummaries []PropertySummary `json:"propertySummaries,omitempty"`
 }
 
-// +kcc:proto=google.analytics.admin.v1beta.PropertySummary
-type PropertySummary struct {
-	// Resource name of property referred to by this property summary
-	//  Format: properties/{property_id}
-	//  Example: "properties/1000"
-	// +kcc:proto:field=google.analytics.admin.v1beta.PropertySummary.property
-	Property *string `json:"property,omitempty"`
+// +kcc:proto=google.analytics.admin.v1beta.MeasurementProtocolSecret
+type MeasurementProtocolSecretObservedState struct {
+	// Output only. Resource name of this secret. This secret may be a child of
+	//  any type of stream. Format:
+	//  properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
+	// +kcc:proto:field=google.analytics.admin.v1beta.MeasurementProtocolSecret.name
+	Name *string `json:"name,omitempty"`
 
-	// Display name for the property referred to in this property summary.
-	// +kcc:proto:field=google.analytics.admin.v1beta.PropertySummary.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The property's property type.
-	// +kcc:proto:field=google.analytics.admin.v1beta.PropertySummary.property_type
-	PropertyType *string `json:"propertyType,omitempty"`
-
-	// Resource name of this property's logical parent.
-	//
-	//  Note: The Property-Moving UI can be used to change the parent.
-	//  Format: accounts/{account}, properties/{property}
-	//  Example: "accounts/100", "properties/200"
-	// +kcc:proto:field=google.analytics.admin.v1beta.PropertySummary.parent
-	Parent *string `json:"parent,omitempty"`
+	// Output only. The measurement protocol secret value. Pass this value to the
+	//  api_secret field of the Measurement Protocol API when sending hits to this
+	//  secret's parent property.
+	// +kcc:proto:field=google.analytics.admin.v1beta.MeasurementProtocolSecret.secret_value
+	SecretValue *string `json:"secretValue,omitempty"`
 }

@@ -20,28 +20,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func AccountSummary_FromProto(mapCtx *direct.MapContext, in *pb.AccountSummary) *krm.AccountSummary {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AccountSummary{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Account = direct.LazyPtr(in.GetAccount())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.PropertySummaries = direct.Slice_FromProto(mapCtx, in.PropertySummaries, PropertySummary_FromProto)
-	return out
-}
-func AccountSummary_ToProto(mapCtx *direct.MapContext, in *krm.AccountSummary) *pb.AccountSummary {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AccountSummary{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Account = direct.ValueOf(in.Account)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.PropertySummaries = direct.Slice_ToProto(mapCtx, in.PropertySummaries, PropertySummary_ToProto)
-	return out
-}
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
 		return nil
@@ -350,6 +328,46 @@ func AnalyticsGoogleAdsLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.Analy
 	// MISSING: CreatorEmailAddress
 	return out
 }
+func AnalyticsMeasurementProtocolSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MeasurementProtocolSecret) *krm.AnalyticsMeasurementProtocolSecretObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsMeasurementProtocolSecretObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: SecretValue
+	return out
+}
+func AnalyticsMeasurementProtocolSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsMeasurementProtocolSecretObservedState) *pb.MeasurementProtocolSecret {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MeasurementProtocolSecret{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: SecretValue
+	return out
+}
+func AnalyticsMeasurementProtocolSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.MeasurementProtocolSecret) *krm.AnalyticsMeasurementProtocolSecretSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsMeasurementProtocolSecretSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: SecretValue
+	return out
+}
+func AnalyticsMeasurementProtocolSecretSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsMeasurementProtocolSecretSpec) *pb.MeasurementProtocolSecret {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MeasurementProtocolSecret{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: SecretValue
+	return out
+}
 func AnalyticsPropertyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Property) *krm.AnalyticsPropertyObservedState {
 	if in == nil {
 		return nil
@@ -430,25 +448,43 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func PropertySummary_FromProto(mapCtx *direct.MapContext, in *pb.PropertySummary) *krm.PropertySummary {
+func MeasurementProtocolSecret_FromProto(mapCtx *direct.MapContext, in *pb.MeasurementProtocolSecret) *krm.MeasurementProtocolSecret {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PropertySummary{}
-	out.Property = direct.LazyPtr(in.GetProperty())
+	out := &krm.MeasurementProtocolSecret{}
+	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.PropertyType = direct.Enum_FromProto(mapCtx, in.GetPropertyType())
-	out.Parent = direct.LazyPtr(in.GetParent())
+	// MISSING: SecretValue
 	return out
 }
-func PropertySummary_ToProto(mapCtx *direct.MapContext, in *krm.PropertySummary) *pb.PropertySummary {
+func MeasurementProtocolSecret_ToProto(mapCtx *direct.MapContext, in *krm.MeasurementProtocolSecret) *pb.MeasurementProtocolSecret {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PropertySummary{}
-	out.Property = direct.ValueOf(in.Property)
+	out := &pb.MeasurementProtocolSecret{}
+	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.PropertyType = direct.Enum_ToProto[pb.PropertyType](mapCtx, in.PropertyType)
-	out.Parent = direct.ValueOf(in.Parent)
+	// MISSING: SecretValue
+	return out
+}
+func MeasurementProtocolSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MeasurementProtocolSecret) *krm.MeasurementProtocolSecretObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MeasurementProtocolSecretObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	out.SecretValue = direct.LazyPtr(in.GetSecretValue())
+	return out
+}
+func MeasurementProtocolSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MeasurementProtocolSecretObservedState) *pb.MeasurementProtocolSecret {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MeasurementProtocolSecret{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	out.SecretValue = direct.ValueOf(in.SecretValue)
 	return out
 }
