@@ -20,68 +20,104 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func BackupPlanAssociation_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupPlanAssociation {
+func BackupVault_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVault {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupPlanAssociation{}
+	out := &krm.BackupVault{}
 	// MISSING: Name
-	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.Resource = direct.LazyPtr(in.GetResource())
-	out.BackupPlan = direct.LazyPtr(in.GetBackupPlan())
+	out.Description = in.Description
+	out.Labels = in.Labels
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
+	out.BackupMinimumEnforcedRetentionDuration = direct.StringDuration_FromProto(mapCtx, in.GetBackupMinimumEnforcedRetentionDuration())
+	// MISSING: Deletable
+	out.Etag = in.Etag
 	// MISSING: State
-	// MISSING: RulesConfigInfo
-	// MISSING: DataSource
+	out.EffectiveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEffectiveTime())
+	// MISSING: BackupCount
+	// MISSING: ServiceAccount
+	// MISSING: TotalStoredBytes
+	// MISSING: Uid
+	out.Annotations = in.Annotations
+	out.AccessRestriction = direct.Enum_FromProto(mapCtx, in.GetAccessRestriction())
 	return out
 }
-func BackupPlanAssociation_ToProto(mapCtx *direct.MapContext, in *krm.BackupPlanAssociation) *pb.BackupPlanAssociation {
+func BackupVault_ToProto(mapCtx *direct.MapContext, in *krm.BackupVault) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BackupPlanAssociation{}
+	out := &pb.BackupVault{}
 	// MISSING: Name
-	out.ResourceType = direct.ValueOf(in.ResourceType)
-	out.Resource = direct.ValueOf(in.Resource)
-	out.BackupPlan = direct.ValueOf(in.BackupPlan)
+	out.Description = in.Description
+	out.Labels = in.Labels
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.BackupMinimumEnforcedRetentionDuration); oneof != nil {
+		out.BackupMinimumEnforcedRetentionDuration = &pb.BackupVault_BackupMinimumEnforcedRetentionDuration{BackupMinimumEnforcedRetentionDuration: oneof}
+	}
+	// MISSING: Deletable
+	out.Etag = in.Etag
 	// MISSING: State
-	// MISSING: RulesConfigInfo
-	// MISSING: DataSource
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.EffectiveTime); oneof != nil {
+		out.EffectiveTime = &pb.BackupVault_EffectiveTime{EffectiveTime: oneof}
+	}
+	// MISSING: BackupCount
+	// MISSING: ServiceAccount
+	// MISSING: TotalStoredBytes
+	// MISSING: Uid
+	out.Annotations = in.Annotations
+	out.AccessRestriction = direct.Enum_ToProto[pb.BackupVault_AccessRestriction](mapCtx, in.AccessRestriction)
 	return out
 }
-func BackupPlanAssociationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupPlanAssociationObservedState {
+func BackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVaultObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupPlanAssociationObservedState{}
+	out := &krm.BackupVaultObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: ResourceType
-	// MISSING: Resource
-	// MISSING: BackupPlan
+	// MISSING: Description
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: BackupMinimumEnforcedRetentionDuration
+	out.Deletable = in.Deletable
+	// MISSING: Etag
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.RulesConfigInfo = direct.Slice_FromProto(mapCtx, in.RulesConfigInfo, RuleConfigInfo_FromProto)
-	out.DataSource = direct.LazyPtr(in.GetDataSource())
+	// MISSING: EffectiveTime
+	out.BackupCount = direct.LazyPtr(in.GetBackupCount())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.TotalStoredBytes = direct.LazyPtr(in.GetTotalStoredBytes())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Annotations
+	// MISSING: AccessRestriction
 	return out
 }
-func BackupPlanAssociationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupPlanAssociationObservedState) *pb.BackupPlanAssociation {
+func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultObservedState) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BackupPlanAssociation{}
+	out := &pb.BackupVault{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: ResourceType
-	// MISSING: Resource
-	// MISSING: BackupPlan
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.State = direct.Enum_ToProto[pb.BackupPlanAssociation_State](mapCtx, in.State)
-	out.RulesConfigInfo = direct.Slice_ToProto(mapCtx, in.RulesConfigInfo, RuleConfigInfo_ToProto)
-	out.DataSource = direct.ValueOf(in.DataSource)
+	// MISSING: Description
+	// MISSING: Labels
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.CreateTime); oneof != nil {
+		out.CreateTime = &pb.BackupVault_CreateTime{CreateTime: oneof}
+	}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime); oneof != nil {
+		out.UpdateTime = &pb.BackupVault_UpdateTime{UpdateTime: oneof}
+	}
+	// MISSING: BackupMinimumEnforcedRetentionDuration
+	out.Deletable = in.Deletable
+	// MISSING: Etag
+	out.State = direct.Enum_ToProto[pb.BackupVault_State](mapCtx, in.State)
+	// MISSING: EffectiveTime
+	out.BackupCount = direct.ValueOf(in.BackupCount)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.TotalStoredBytes = direct.ValueOf(in.TotalStoredBytes)
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Annotations
+	// MISSING: AccessRestriction
 	return out
 }
 func BackupdrBackupPlanAssociationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupdrBackupPlanAssociationObservedState {
@@ -220,6 +256,98 @@ func BackupdrBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupdrB
 	// MISSING: BackupVaultServiceAccount
 	return out
 }
+func BackupdrBackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupdrBackupVaultObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupdrBackupVaultObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: BackupMinimumEnforcedRetentionDuration
+	// MISSING: Deletable
+	// MISSING: Etag
+	// MISSING: State
+	// MISSING: EffectiveTime
+	// MISSING: BackupCount
+	// MISSING: ServiceAccount
+	// MISSING: TotalStoredBytes
+	// MISSING: Uid
+	// MISSING: Annotations
+	// MISSING: AccessRestriction
+	return out
+}
+func BackupdrBackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupdrBackupVaultObservedState) *pb.BackupVault {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupVault{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: BackupMinimumEnforcedRetentionDuration
+	// MISSING: Deletable
+	// MISSING: Etag
+	// MISSING: State
+	// MISSING: EffectiveTime
+	// MISSING: BackupCount
+	// MISSING: ServiceAccount
+	// MISSING: TotalStoredBytes
+	// MISSING: Uid
+	// MISSING: Annotations
+	// MISSING: AccessRestriction
+	return out
+}
+func BackupdrBackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupdrBackupVaultSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupdrBackupVaultSpec{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: BackupMinimumEnforcedRetentionDuration
+	// MISSING: Deletable
+	// MISSING: Etag
+	// MISSING: State
+	// MISSING: EffectiveTime
+	// MISSING: BackupCount
+	// MISSING: ServiceAccount
+	// MISSING: TotalStoredBytes
+	// MISSING: Uid
+	// MISSING: Annotations
+	// MISSING: AccessRestriction
+	return out
+}
+func BackupdrBackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupdrBackupVaultSpec) *pb.BackupVault {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupVault{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: BackupMinimumEnforcedRetentionDuration
+	// MISSING: Deletable
+	// MISSING: Etag
+	// MISSING: State
+	// MISSING: EffectiveTime
+	// MISSING: BackupCount
+	// MISSING: ServiceAccount
+	// MISSING: TotalStoredBytes
+	// MISSING: Uid
+	// MISSING: Annotations
+	// MISSING: AccessRestriction
+	return out
+}
 func BackupdrManagementServerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.BackupdrManagementServerObservedState {
 	if in == nil {
 		return nil
@@ -310,49 +438,5 @@ func BackupdrManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bac
 	// MISSING: BaProxyURI
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
-	return out
-}
-func RuleConfigInfo_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krm.RuleConfigInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RuleConfigInfo{}
-	// MISSING: RuleID
-	// MISSING: LastBackupState
-	// MISSING: LastBackupError
-	// MISSING: LastSuccessfulBackupConsistencyTime
-	return out
-}
-func RuleConfigInfo_ToProto(mapCtx *direct.MapContext, in *krm.RuleConfigInfo) *pb.RuleConfigInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RuleConfigInfo{}
-	// MISSING: RuleID
-	// MISSING: LastBackupState
-	// MISSING: LastBackupError
-	// MISSING: LastSuccessfulBackupConsistencyTime
-	return out
-}
-func RuleConfigInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krm.RuleConfigInfoObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RuleConfigInfoObservedState{}
-	out.RuleID = direct.LazyPtr(in.GetRuleId())
-	out.LastBackupState = direct.Enum_FromProto(mapCtx, in.GetLastBackupState())
-	out.LastBackupError = Status_FromProto(mapCtx, in.GetLastBackupError())
-	out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastSuccessfulBackupConsistencyTime())
-	return out
-}
-func RuleConfigInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RuleConfigInfo{}
-	out.RuleId = direct.ValueOf(in.RuleID)
-	out.LastBackupState = direct.Enum_ToProto[pb.RuleConfigInfo_LastBackupState](mapCtx, in.LastBackupState)
-	out.LastBackupError = Status_ToProto(mapCtx, in.LastBackupError)
-	out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_ToProto(mapCtx, in.LastSuccessfulBackupConsistencyTime)
 	return out
 }

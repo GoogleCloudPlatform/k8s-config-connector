@@ -15,134 +15,89 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.backupdr.v1.BackupPlanAssociation
-type BackupPlanAssociation struct {
+// +kcc:proto=google.cloud.backupdr.v1.BackupVault
+type BackupVault struct {
 
-	// Required. Immutable. Resource type of workload on which backupplan is
-	//  applied
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.resource_type
-	ResourceType *string `json:"resourceType,omitempty"`
+	// Optional. The description of the BackupVault instance (2048 characters or
+	//  less).
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.description
+	Description *string `json:"description,omitempty"`
 
-	// Required. Immutable. Resource name of workload on which backupplan is
-	//  applied
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.resource
-	Resource *string `json:"resource,omitempty"`
+	// Optional. Resource labels to represent user provided metadata.
+	//  No labels currently defined:
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.labels
+	Labels map[string]string `json:"labels,omitempty"`
 
-	// Required. Resource name of backup plan which needs to be applied on
-	//  workload. Format:
-	//  projects/{project}/locations/{location}/backupPlans/{backupPlanId}
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.backup_plan
-	BackupPlan *string `json:"backupPlan,omitempty"`
+	// Required. The default and minimum enforced retention for each backup within
+	//  the backup vault.  The enforced retention for each backup can be extended.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.backup_minimum_enforced_retention_duration
+	BackupMinimumEnforcedRetentionDuration *string `json:"backupMinimumEnforcedRetentionDuration,omitempty"`
+
+	// Optional. Server specified ETag for the backup vault resource to
+	//  prevent simultaneous updates from overwiting each other.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. Time after which the BackupVault resource is locked.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.effective_time
+	EffectiveTime *string `json:"effectiveTime,omitempty"`
+
+	// Optional. User annotations. See https://google.aip.dev/128#annotations
+	//  Stores small amounts of arbitrary data.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Optional. Note: This field is added for future use case and will not be
+	//  supported in the current release.
+	//
+	//  Access restriction for the backup vault.
+	//  Default value is WITHIN_ORGANIZATION if not provided during creation.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.access_restriction
+	AccessRestriction *string `json:"accessRestriction,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.RuleConfigInfo
-type RuleConfigInfo struct {
-}
-
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
-
-// +kcc:proto=google.cloud.backupdr.v1.BackupPlanAssociation
-type BackupPlanAssociationObservedState struct {
-	// Output only. Identifier. The resource name of BackupPlanAssociation in
-	//  below format Format :
-	//  projects/{project}/locations/{location}/backupPlanAssociations/{backupPlanAssociationId}
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.name
+// +kcc:proto=google.cloud.backupdr.v1.BackupVault
+type BackupVaultObservedState struct {
+	// Output only. Identifier. Name of the backup vault to create. It must have
+	//  the
+	//  format`"projects/{project}/locations/{location}/backupVaults/{backupvault}"`.
+	//  `{backupvault}` cannot be changed after creation. It must be between 3-63
+	//  characters long and must be unique within the project and location.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. The time when the instance was created.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.create_time
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The time when the instance was updated.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.update_time
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. The BackupPlanAssociation resource state.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.state
+	// Output only. Set to true when there are no backups nested under this
+	//  resource.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.deletable
+	Deletable *bool `json:"deletable,omitempty"`
+
+	// Output only. The BackupVault resource instance state.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.state
 	State *string `json:"state,omitempty"`
 
-	// Output only. The config info related to backup rules.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.rules_config_info
-	RulesConfigInfo []RuleConfigInfo `json:"rulesConfigInfo,omitempty"`
+	// Output only. The number of backups in this backup vault.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.backup_count
+	BackupCount *int64 `json:"backupCount,omitempty"`
 
-	// Output only. Resource name of data source which will be used as storage
-	//  location for backups taken. Format :
-	//  projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.data_source
-	DataSource *string `json:"dataSource,omitempty"`
-}
+	// Output only. Service account used by the BackupVault Service for this
+	//  BackupVault.  The user should grant this account permissions in their
+	//  workload project to enable the service to run backups and restores there.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
 
-// +kcc:proto=google.cloud.backupdr.v1.RuleConfigInfo
-type RuleConfigInfoObservedState struct {
-	// Output only. Backup Rule id fetched from backup plan.
-	// +kcc:proto:field=google.cloud.backupdr.v1.RuleConfigInfo.rule_id
-	RuleID *string `json:"ruleID,omitempty"`
+	// Output only. Total size of the storage used by all backup resources.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.total_stored_bytes
+	TotalStoredBytes *int64 `json:"totalStoredBytes,omitempty"`
 
-	// Output only. The last backup state for rule.
-	// +kcc:proto:field=google.cloud.backupdr.v1.RuleConfigInfo.last_backup_state
-	LastBackupState *string `json:"lastBackupState,omitempty"`
-
-	// Output only. google.rpc.Status object to store the last backup error.
-	// +kcc:proto:field=google.cloud.backupdr.v1.RuleConfigInfo.last_backup_error
-	LastBackupError *Status `json:"lastBackupError,omitempty"`
-
-	// Output only. The point in time when the last successful backup was captured
-	//  from the source.
-	// +kcc:proto:field=google.cloud.backupdr.v1.RuleConfigInfo.last_successful_backup_consistency_time
-	LastSuccessfulBackupConsistencyTime *string `json:"lastSuccessfulBackupConsistencyTime,omitempty"`
+	// Output only. Immutable after resource creation until resource deletion.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.uid
+	Uid *string `json:"uid,omitempty"`
 }
