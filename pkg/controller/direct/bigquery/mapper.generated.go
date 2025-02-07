@@ -20,6 +20,94 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+func Assignment_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Assignment{}
+	// MISSING: Name
+	out.Assignee = direct.LazyPtr(in.GetAssignee())
+	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
+	// MISSING: State
+	return out
+}
+func Assignment_ToProto(mapCtx *direct.MapContext, in *krm.Assignment) *pb.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assignment{}
+	// MISSING: Name
+	out.Assignee = direct.ValueOf(in.Assignee)
+	out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
+	// MISSING: State
+	return out
+}
+func AssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.AssignmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssignmentObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Assignee
+	// MISSING: JobType
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func AssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssignmentObservedState) *pb.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assignment{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Assignee
+	// MISSING: JobType
+	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
+	return out
+}
+func BigqueryAssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigqueryAssignmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryAssignmentObservedState{}
+	// MISSING: Name
+	// MISSING: Assignee
+	// MISSING: JobType
+	// MISSING: State
+	return out
+}
+func BigqueryAssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryAssignmentObservedState) *pb.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assignment{}
+	// MISSING: Name
+	// MISSING: Assignee
+	// MISSING: JobType
+	// MISSING: State
+	return out
+}
+func BigqueryAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigqueryAssignmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryAssignmentSpec{}
+	// MISSING: Name
+	// MISSING: Assignee
+	// MISSING: JobType
+	// MISSING: State
+	return out
+}
+func BigqueryAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryAssignmentSpec) *pb.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assignment{}
+	// MISSING: Name
+	// MISSING: Assignee
+	// MISSING: JobType
+	// MISSING: State
+	return out
+}
 func BigqueryCapacityCommitmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CapacityCommitment) *krm.BigqueryCapacityCommitmentObservedState {
 	if in == nil {
 		return nil
@@ -166,77 +254,5 @@ func BigqueryReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bigquery
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
-	return out
-}
-func CapacityCommitment_FromProto(mapCtx *direct.MapContext, in *pb.CapacityCommitment) *krm.CapacityCommitment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CapacityCommitment{}
-	// MISSING: Name
-	out.SlotCount = direct.LazyPtr(in.GetSlotCount())
-	out.Plan = direct.Enum_FromProto(mapCtx, in.GetPlan())
-	// MISSING: State
-	// MISSING: CommitmentStartTime
-	// MISSING: CommitmentEndTime
-	// MISSING: FailureStatus
-	out.RenewalPlan = direct.Enum_FromProto(mapCtx, in.GetRenewalPlan())
-	out.MultiRegionAuxiliary = direct.LazyPtr(in.GetMultiRegionAuxiliary())
-	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
-	// MISSING: IsFlatRate
-	return out
-}
-func CapacityCommitment_ToProto(mapCtx *direct.MapContext, in *krm.CapacityCommitment) *pb.CapacityCommitment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CapacityCommitment{}
-	// MISSING: Name
-	out.SlotCount = direct.ValueOf(in.SlotCount)
-	out.Plan = direct.Enum_ToProto[pb.CapacityCommitment_CommitmentPlan](mapCtx, in.Plan)
-	// MISSING: State
-	// MISSING: CommitmentStartTime
-	// MISSING: CommitmentEndTime
-	// MISSING: FailureStatus
-	out.RenewalPlan = direct.Enum_ToProto[pb.CapacityCommitment_CommitmentPlan](mapCtx, in.RenewalPlan)
-	out.MultiRegionAuxiliary = direct.ValueOf(in.MultiRegionAuxiliary)
-	out.Edition = direct.Enum_ToProto[pb.Edition](mapCtx, in.Edition)
-	// MISSING: IsFlatRate
-	return out
-}
-func CapacityCommitmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CapacityCommitment) *krm.CapacityCommitmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CapacityCommitmentObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: SlotCount
-	// MISSING: Plan
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CommitmentStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCommitmentStartTime())
-	out.CommitmentEndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCommitmentEndTime())
-	out.FailureStatus = Status_FromProto(mapCtx, in.GetFailureStatus())
-	// MISSING: RenewalPlan
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	out.IsFlatRate = direct.LazyPtr(in.GetIsFlatRate())
-	return out
-}
-func CapacityCommitmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CapacityCommitmentObservedState) *pb.CapacityCommitment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CapacityCommitment{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: SlotCount
-	// MISSING: Plan
-	out.State = direct.Enum_ToProto[pb.CapacityCommitment_State](mapCtx, in.State)
-	out.CommitmentStartTime = direct.StringTimestamp_ToProto(mapCtx, in.CommitmentStartTime)
-	out.CommitmentEndTime = direct.StringTimestamp_ToProto(mapCtx, in.CommitmentEndTime)
-	out.FailureStatus = Status_ToProto(mapCtx, in.FailureStatus)
-	// MISSING: RenewalPlan
-	// MISSING: MultiRegionAuxiliary
-	// MISSING: Edition
-	out.IsFlatRate = direct.ValueOf(in.IsFlatRate)
 	return out
 }
