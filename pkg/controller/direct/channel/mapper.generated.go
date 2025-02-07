@@ -20,6 +20,22 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/channel/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+func AssociationInfo_FromProto(mapCtx *direct.MapContext, in *pb.AssociationInfo) *krm.AssociationInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssociationInfo{}
+	out.BaseEntitlement = direct.LazyPtr(in.GetBaseEntitlement())
+	return out
+}
+func AssociationInfo_ToProto(mapCtx *direct.MapContext, in *krm.AssociationInfo) *pb.AssociationInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssociationInfo{}
+	out.BaseEntitlement = direct.ValueOf(in.BaseEntitlement)
+	return out
+}
 func ChannelBillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.ChannelBillingAccountObservedState {
 	if in == nil {
 		return nil
@@ -208,215 +224,375 @@ func ChannelCustomerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelCusto
 	// MISSING: CorrelationID
 	return out
 }
-func CloudIdentityInfo_FromProto(mapCtx *direct.MapContext, in *pb.CloudIdentityInfo) *krm.CloudIdentityInfo {
+func ChannelEntitlementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement) *krm.ChannelEntitlementObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CloudIdentityInfo{}
-	out.CustomerType = direct.Enum_FromProto(mapCtx, in.GetCustomerType())
-	// MISSING: PrimaryDomain
-	// MISSING: IsDomainVerified
-	out.AlternateEmail = direct.LazyPtr(in.GetAlternateEmail())
-	out.PhoneNumber = direct.LazyPtr(in.GetPhoneNumber())
-	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
-	// MISSING: AdminConsoleURI
-	out.EduData = EduData_FromProto(mapCtx, in.GetEduData())
-	return out
-}
-func CloudIdentityInfo_ToProto(mapCtx *direct.MapContext, in *krm.CloudIdentityInfo) *pb.CloudIdentityInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudIdentityInfo{}
-	out.CustomerType = direct.Enum_ToProto[pb.CloudIdentityInfo_CustomerType](mapCtx, in.CustomerType)
-	// MISSING: PrimaryDomain
-	// MISSING: IsDomainVerified
-	out.AlternateEmail = direct.ValueOf(in.AlternateEmail)
-	out.PhoneNumber = direct.ValueOf(in.PhoneNumber)
-	out.LanguageCode = direct.ValueOf(in.LanguageCode)
-	// MISSING: AdminConsoleURI
-	out.EduData = EduData_ToProto(mapCtx, in.EduData)
-	return out
-}
-func CloudIdentityInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudIdentityInfo) *krm.CloudIdentityInfoObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudIdentityInfoObservedState{}
-	// MISSING: CustomerType
-	out.PrimaryDomain = direct.LazyPtr(in.GetPrimaryDomain())
-	out.IsDomainVerified = direct.LazyPtr(in.GetIsDomainVerified())
-	// MISSING: AlternateEmail
-	// MISSING: PhoneNumber
-	// MISSING: LanguageCode
-	out.AdminConsoleURI = direct.LazyPtr(in.GetAdminConsoleUri())
-	// MISSING: EduData
-	return out
-}
-func CloudIdentityInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudIdentityInfoObservedState) *pb.CloudIdentityInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudIdentityInfo{}
-	// MISSING: CustomerType
-	out.PrimaryDomain = direct.ValueOf(in.PrimaryDomain)
-	out.IsDomainVerified = direct.ValueOf(in.IsDomainVerified)
-	// MISSING: AlternateEmail
-	// MISSING: PhoneNumber
-	// MISSING: LanguageCode
-	out.AdminConsoleUri = direct.ValueOf(in.AdminConsoleURI)
-	// MISSING: EduData
-	return out
-}
-func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContactInfo{}
-	out.FirstName = direct.LazyPtr(in.GetFirstName())
-	out.LastName = direct.LazyPtr(in.GetLastName())
-	// MISSING: DisplayName
-	out.Email = direct.LazyPtr(in.GetEmail())
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.Phone = direct.LazyPtr(in.GetPhone())
-	return out
-}
-func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContactInfo{}
-	out.FirstName = direct.ValueOf(in.FirstName)
-	out.LastName = direct.ValueOf(in.LastName)
-	// MISSING: DisplayName
-	out.Email = direct.ValueOf(in.Email)
-	out.Title = direct.ValueOf(in.Title)
-	out.Phone = direct.ValueOf(in.Phone)
-	return out
-}
-func ContactInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfoObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContactInfoObservedState{}
-	// MISSING: FirstName
-	// MISSING: LastName
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: Email
-	// MISSING: Title
-	// MISSING: Phone
-	return out
-}
-func ContactInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfoObservedState) *pb.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContactInfo{}
-	// MISSING: FirstName
-	// MISSING: LastName
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: Email
-	// MISSING: Title
-	// MISSING: Phone
-	return out
-}
-func Customer_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.Customer {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Customer{}
+	out := &krm.ChannelEntitlementObservedState{}
 	// MISSING: Name
-	out.OrgDisplayName = direct.LazyPtr(in.GetOrgDisplayName())
-	out.OrgPostalAddress = PostalAddress_FromProto(mapCtx, in.GetOrgPostalAddress())
-	out.PrimaryContactInfo = ContactInfo_FromProto(mapCtx, in.GetPrimaryContactInfo())
-	out.AlternateEmail = direct.LazyPtr(in.GetAlternateEmail())
-	out.Domain = direct.LazyPtr(in.GetDomain())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: CloudIdentityID
-	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
-	// MISSING: CloudIdentityInfo
-	out.ChannelPartnerID = direct.LazyPtr(in.GetChannelPartnerId())
-	out.CorrelationID = direct.LazyPtr(in.GetCorrelationId())
+	// MISSING: Offer
+	// MISSING: CommitmentSettings
+	// MISSING: ProvisioningState
+	// MISSING: ProvisionedService
+	// MISSING: SuspensionReasons
+	// MISSING: PurchaseOrderID
+	// MISSING: TrialSettings
+	// MISSING: AssociationInfo
+	// MISSING: Parameters
+	// MISSING: BillingAccount
 	return out
 }
-func Customer_ToProto(mapCtx *direct.MapContext, in *krm.Customer) *pb.Customer {
+func ChannelEntitlementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelEntitlementObservedState) *pb.Entitlement {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Customer{}
+	out := &pb.Entitlement{}
 	// MISSING: Name
-	out.OrgDisplayName = direct.ValueOf(in.OrgDisplayName)
-	out.OrgPostalAddress = PostalAddress_ToProto(mapCtx, in.OrgPostalAddress)
-	out.PrimaryContactInfo = ContactInfo_ToProto(mapCtx, in.PrimaryContactInfo)
-	out.AlternateEmail = direct.ValueOf(in.AlternateEmail)
-	out.Domain = direct.ValueOf(in.Domain)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: CloudIdentityID
-	out.LanguageCode = direct.ValueOf(in.LanguageCode)
-	// MISSING: CloudIdentityInfo
-	out.ChannelPartnerId = direct.ValueOf(in.ChannelPartnerID)
-	out.CorrelationId = direct.ValueOf(in.CorrelationID)
+	// MISSING: Offer
+	// MISSING: CommitmentSettings
+	// MISSING: ProvisioningState
+	// MISSING: ProvisionedService
+	// MISSING: SuspensionReasons
+	// MISSING: PurchaseOrderID
+	// MISSING: TrialSettings
+	// MISSING: AssociationInfo
+	// MISSING: Parameters
+	// MISSING: BillingAccount
 	return out
 }
-func CustomerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.CustomerObservedState {
+func ChannelEntitlementSpec_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement) *krm.ChannelEntitlementSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomerObservedState{}
+	out := &krm.ChannelEntitlementSpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Offer
+	// MISSING: CommitmentSettings
+	// MISSING: ProvisioningState
+	// MISSING: ProvisionedService
+	// MISSING: SuspensionReasons
+	// MISSING: PurchaseOrderID
+	// MISSING: TrialSettings
+	// MISSING: AssociationInfo
+	// MISSING: Parameters
+	// MISSING: BillingAccount
+	return out
+}
+func ChannelEntitlementSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelEntitlementSpec) *pb.Entitlement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entitlement{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Offer
+	// MISSING: CommitmentSettings
+	// MISSING: ProvisioningState
+	// MISSING: ProvisionedService
+	// MISSING: SuspensionReasons
+	// MISSING: PurchaseOrderID
+	// MISSING: TrialSettings
+	// MISSING: AssociationInfo
+	// MISSING: Parameters
+	// MISSING: BillingAccount
+	return out
+}
+func CommitmentSettings_FromProto(mapCtx *direct.MapContext, in *pb.CommitmentSettings) *krm.CommitmentSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CommitmentSettings{}
+	// MISSING: StartTime
+	// MISSING: EndTime
+	out.RenewalSettings = RenewalSettings_FromProto(mapCtx, in.GetRenewalSettings())
+	return out
+}
+func CommitmentSettings_ToProto(mapCtx *direct.MapContext, in *krm.CommitmentSettings) *pb.CommitmentSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CommitmentSettings{}
+	// MISSING: StartTime
+	// MISSING: EndTime
+	out.RenewalSettings = RenewalSettings_ToProto(mapCtx, in.RenewalSettings)
+	return out
+}
+func CommitmentSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CommitmentSettings) *krm.CommitmentSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CommitmentSettingsObservedState{}
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	// MISSING: RenewalSettings
+	return out
+}
+func CommitmentSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CommitmentSettingsObservedState) *pb.CommitmentSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CommitmentSettings{}
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	// MISSING: RenewalSettings
+	return out
+}
+func Entitlement_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement) *krm.Entitlement {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Entitlement{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Offer = direct.LazyPtr(in.GetOffer())
+	out.CommitmentSettings = CommitmentSettings_FromProto(mapCtx, in.GetCommitmentSettings())
+	// MISSING: ProvisioningState
+	// MISSING: ProvisionedService
+	// MISSING: SuspensionReasons
+	out.PurchaseOrderID = direct.LazyPtr(in.GetPurchaseOrderId())
+	// MISSING: TrialSettings
+	out.AssociationInfo = AssociationInfo_FromProto(mapCtx, in.GetAssociationInfo())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Parameter_FromProto)
+	out.BillingAccount = direct.LazyPtr(in.GetBillingAccount())
+	return out
+}
+func Entitlement_ToProto(mapCtx *direct.MapContext, in *krm.Entitlement) *pb.Entitlement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entitlement{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Offer = direct.ValueOf(in.Offer)
+	out.CommitmentSettings = CommitmentSettings_ToProto(mapCtx, in.CommitmentSettings)
+	// MISSING: ProvisioningState
+	// MISSING: ProvisionedService
+	// MISSING: SuspensionReasons
+	out.PurchaseOrderId = direct.ValueOf(in.PurchaseOrderID)
+	// MISSING: TrialSettings
+	out.AssociationInfo = AssociationInfo_ToProto(mapCtx, in.AssociationInfo)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Parameter_ToProto)
+	out.BillingAccount = direct.ValueOf(in.BillingAccount)
+	return out
+}
+func EntitlementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entitlement) *krm.EntitlementObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntitlementObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: OrgDisplayName
-	// MISSING: OrgPostalAddress
-	out.PrimaryContactInfo = ContactInfoObservedState_FromProto(mapCtx, in.GetPrimaryContactInfo())
-	// MISSING: AlternateEmail
-	// MISSING: Domain
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.CloudIdentityID = direct.LazyPtr(in.GetCloudIdentityId())
-	// MISSING: LanguageCode
-	out.CloudIdentityInfo = CloudIdentityInfo_FromProto(mapCtx, in.GetCloudIdentityInfo())
-	// MISSING: ChannelPartnerID
-	// MISSING: CorrelationID
+	// MISSING: Offer
+	out.CommitmentSettings = CommitmentSettingsObservedState_FromProto(mapCtx, in.GetCommitmentSettings())
+	out.ProvisioningState = direct.Enum_FromProto(mapCtx, in.GetProvisioningState())
+	out.ProvisionedService = ProvisionedService_FromProto(mapCtx, in.GetProvisionedService())
+	out.SuspensionReasons = direct.EnumSlice_FromProto(mapCtx, in.SuspensionReasons)
+	// MISSING: PurchaseOrderID
+	out.TrialSettings = TrialSettings_FromProto(mapCtx, in.GetTrialSettings())
+	// MISSING: AssociationInfo
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, ParameterObservedState_FromProto)
+	// MISSING: BillingAccount
 	return out
 }
-func CustomerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerObservedState) *pb.Customer {
+func EntitlementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntitlementObservedState) *pb.Entitlement {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Customer{}
+	out := &pb.Entitlement{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: OrgDisplayName
-	// MISSING: OrgPostalAddress
-	out.PrimaryContactInfo = ContactInfoObservedState_ToProto(mapCtx, in.PrimaryContactInfo)
-	// MISSING: AlternateEmail
-	// MISSING: Domain
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.CloudIdentityId = direct.ValueOf(in.CloudIdentityID)
-	// MISSING: LanguageCode
-	out.CloudIdentityInfo = CloudIdentityInfo_ToProto(mapCtx, in.CloudIdentityInfo)
-	// MISSING: ChannelPartnerID
-	// MISSING: CorrelationID
+	// MISSING: Offer
+	out.CommitmentSettings = CommitmentSettingsObservedState_ToProto(mapCtx, in.CommitmentSettings)
+	out.ProvisioningState = direct.Enum_ToProto[pb.Entitlement_ProvisioningState](mapCtx, in.ProvisioningState)
+	out.ProvisionedService = ProvisionedService_ToProto(mapCtx, in.ProvisionedService)
+	out.SuspensionReasons = direct.EnumSlice_ToProto[pb.Entitlement_SuspensionReason](mapCtx, in.SuspensionReasons)
+	// MISSING: PurchaseOrderID
+	out.TrialSettings = TrialSettings_ToProto(mapCtx, in.TrialSettings)
+	// MISSING: AssociationInfo
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, ParameterObservedState_ToProto)
+	// MISSING: BillingAccount
 	return out
 }
-func EduData_FromProto(mapCtx *direct.MapContext, in *pb.EduData) *krm.EduData {
+func Parameter_FromProto(mapCtx *direct.MapContext, in *pb.Parameter) *krm.Parameter {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EduData{}
-	out.InstituteType = direct.Enum_FromProto(mapCtx, in.GetInstituteType())
-	out.InstituteSize = direct.Enum_FromProto(mapCtx, in.GetInstituteSize())
-	out.Website = direct.LazyPtr(in.GetWebsite())
+	out := &krm.Parameter{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Value = Value_FromProto(mapCtx, in.GetValue())
+	// MISSING: Editable
 	return out
 }
-func EduData_ToProto(mapCtx *direct.MapContext, in *krm.EduData) *pb.EduData {
+func Parameter_ToProto(mapCtx *direct.MapContext, in *krm.Parameter) *pb.Parameter {
 	if in == nil {
 		return nil
 	}
-	out := &pb.EduData{}
-	out.InstituteType = direct.Enum_ToProto[pb.EduData_InstituteType](mapCtx, in.InstituteType)
-	out.InstituteSize = direct.Enum_ToProto[pb.EduData_InstituteSize](mapCtx, in.InstituteSize)
-	out.Website = direct.ValueOf(in.Website)
+	out := &pb.Parameter{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Value = Value_ToProto(mapCtx, in.Value)
+	// MISSING: Editable
+	return out
+}
+func ParameterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Parameter) *krm.ParameterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterObservedState{}
+	// MISSING: Name
+	// MISSING: Value
+	out.Editable = direct.LazyPtr(in.GetEditable())
+	return out
+}
+func ParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterObservedState) *pb.Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Parameter{}
+	// MISSING: Name
+	// MISSING: Value
+	out.Editable = direct.ValueOf(in.Editable)
+	return out
+}
+func Period_FromProto(mapCtx *direct.MapContext, in *pb.Period) *krm.Period {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Period{}
+	out.Duration = direct.LazyPtr(in.GetDuration())
+	out.PeriodType = direct.Enum_FromProto(mapCtx, in.GetPeriodType())
+	return out
+}
+func Period_ToProto(mapCtx *direct.MapContext, in *krm.Period) *pb.Period {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Period{}
+	out.Duration = direct.ValueOf(in.Duration)
+	out.PeriodType = direct.Enum_ToProto[pb.PeriodType](mapCtx, in.PeriodType)
+	return out
+}
+func ProvisionedService_FromProto(mapCtx *direct.MapContext, in *pb.ProvisionedService) *krm.ProvisionedService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProvisionedService{}
+	// MISSING: ProvisioningID
+	// MISSING: ProductID
+	// MISSING: SkuID
+	return out
+}
+func ProvisionedService_ToProto(mapCtx *direct.MapContext, in *krm.ProvisionedService) *pb.ProvisionedService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProvisionedService{}
+	// MISSING: ProvisioningID
+	// MISSING: ProductID
+	// MISSING: SkuID
+	return out
+}
+func ProvisionedServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProvisionedService) *krm.ProvisionedServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProvisionedServiceObservedState{}
+	out.ProvisioningID = direct.LazyPtr(in.GetProvisioningId())
+	out.ProductID = direct.LazyPtr(in.GetProductId())
+	out.SkuID = direct.LazyPtr(in.GetSkuId())
+	return out
+}
+func ProvisionedServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProvisionedServiceObservedState) *pb.ProvisionedService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProvisionedService{}
+	out.ProvisioningId = direct.ValueOf(in.ProvisioningID)
+	out.ProductId = direct.ValueOf(in.ProductID)
+	out.SkuId = direct.ValueOf(in.SkuID)
+	return out
+}
+func RenewalSettings_FromProto(mapCtx *direct.MapContext, in *pb.RenewalSettings) *krm.RenewalSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RenewalSettings{}
+	out.EnableRenewal = direct.LazyPtr(in.GetEnableRenewal())
+	out.ResizeUnitCount = direct.LazyPtr(in.GetResizeUnitCount())
+	out.PaymentPlan = direct.Enum_FromProto(mapCtx, in.GetPaymentPlan())
+	out.PaymentCycle = Period_FromProto(mapCtx, in.GetPaymentCycle())
+	return out
+}
+func RenewalSettings_ToProto(mapCtx *direct.MapContext, in *krm.RenewalSettings) *pb.RenewalSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RenewalSettings{}
+	out.EnableRenewal = direct.ValueOf(in.EnableRenewal)
+	out.ResizeUnitCount = direct.ValueOf(in.ResizeUnitCount)
+	out.PaymentPlan = direct.Enum_ToProto[pb.PaymentPlan](mapCtx, in.PaymentPlan)
+	out.PaymentCycle = Period_ToProto(mapCtx, in.PaymentCycle)
+	return out
+}
+func TrialSettings_FromProto(mapCtx *direct.MapContext, in *pb.TrialSettings) *krm.TrialSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TrialSettings{}
+	out.Trial = direct.LazyPtr(in.GetTrial())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func TrialSettings_ToProto(mapCtx *direct.MapContext, in *krm.TrialSettings) *pb.TrialSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrialSettings{}
+	out.Trial = direct.ValueOf(in.Trial)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func Value_FromProto(mapCtx *direct.MapContext, in *pb.Value) *krm.Value {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Value{}
+	out.Int64Value = direct.LazyPtr(in.GetInt64Value())
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.DoubleValue = direct.LazyPtr(in.GetDoubleValue())
+	out.ProtoValue = Any_FromProto(mapCtx, in.GetProtoValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	return out
+}
+func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *pb.Value {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Value{}
+	if oneof := Value_Int64Value_ToProto(mapCtx, in.Int64Value); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := Value_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := Value_DoubleValue_ToProto(mapCtx, in.DoubleValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := Any_ToProto(mapCtx, in.ProtoValue); oneof != nil {
+		out.Kind = &pb.Value_ProtoValue{ProtoValue: oneof}
+	}
+	if oneof := Value_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
+		out.Kind = oneof
+	}
 	return out
 }
