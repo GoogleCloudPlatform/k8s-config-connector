@@ -126,11 +126,22 @@ func (s *ReservationV1) UpdateReservation(ctx context.Context, req *pb.UpdateRes
 		if obj.Edition != pb.Edition_ENTERPRISE_PLUS {
 			return nil, status.Error(codes.InvalidArgument, "secondary_location can only be specified for ENTERPRISE_PLUS edition")
 		}
-		return nil, status.Error(codes.InvalidArgument, "Changing the secondary location of an existing failover reservation is not supported. Please remove the existing secondary location before setting a new secondary location.")
+		if obj.SecondaryLocation != "" && req.Reservation.SecondaryLocation != "" {
+			return nil, status.Error(codes.InvalidArgument, "Changing the secondary location of an existing failover reservation is not supported. Please remove the existing secondary location before setting a new secondary location.")
+		}
 	}
 
 	if err := fields.UpdateByFieldMask(obj, req.Reservation, req.UpdateMask.Paths); err != nil {
 		return nil, fmt.Errorf("update field_mask.paths: %w", err)
+	}
+
+	if updateSecondaryLocation {
+		// handle the case of changing from failover to non-failover reservation
+		if obj.SecondaryLocation == "" {
+			obj = setFieldfailoverNonFailover(obj)
+		} else {
+			obj = setFieldNonfailoverFailover(obj, name.Location)
+		}
 	}
 
 	obj.UpdateTime = &timestamppb.Timestamp{
@@ -187,4 +198,24 @@ func (s *MockService) parseReservationName(name string) (*reservationName, error
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+// For Enterprise_plus, user can switch between failover and non-failover reservations
+// by setting or unsetting the secondary_location.
+// When user unsets the secondary_location, setFieldfailoverNonFailover removes
+// the primary_location, original_primary_location and secondary_location in the response.
+func setFieldfailoverNonFailover(obj *pb.Reservation) *pb.Reservation {
+	if obj.OriginalPrimaryLocation != "" && obj.PrimaryLocation != "" {
+		obj.OriginalPrimaryLocation = ""
+		obj.PrimaryLocation = ""
+	}
+	return obj
+}
+
+func setFieldNonfailoverFailover(obj *pb.Reservation, location string) *pb.Reservation {
+	if obj.OriginalPrimaryLocation == "" && obj.PrimaryLocation == "" {
+		obj.OriginalPrimaryLocation = location
+		obj.PrimaryLocation = location
+	}
+	return obj
 }
