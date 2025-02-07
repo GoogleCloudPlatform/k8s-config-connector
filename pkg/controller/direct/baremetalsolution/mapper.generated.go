@@ -292,6 +292,70 @@ func BaremetalsolutionNetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bar
 	// MISSING: GatewayIP
 	return out
 }
+func BaremetalsolutionNfsShareObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare) *krm.BaremetalsolutionNfsShareObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionNfsShareObservedState{}
+	// MISSING: Name
+	// MISSING: NfsShareID
+	// MISSING: ID
+	// MISSING: State
+	// MISSING: Volume
+	// MISSING: AllowedClients
+	// MISSING: Labels
+	// MISSING: RequestedSizeGib
+	// MISSING: StorageType
+	return out
+}
+func BaremetalsolutionNfsShareObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionNfsShareObservedState) *pb.NfsShare {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NfsShare{}
+	// MISSING: Name
+	// MISSING: NfsShareID
+	// MISSING: ID
+	// MISSING: State
+	// MISSING: Volume
+	// MISSING: AllowedClients
+	// MISSING: Labels
+	// MISSING: RequestedSizeGib
+	// MISSING: StorageType
+	return out
+}
+func BaremetalsolutionNfsShareSpec_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare) *krm.BaremetalsolutionNfsShareSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionNfsShareSpec{}
+	// MISSING: Name
+	// MISSING: NfsShareID
+	// MISSING: ID
+	// MISSING: State
+	// MISSING: Volume
+	// MISSING: AllowedClients
+	// MISSING: Labels
+	// MISSING: RequestedSizeGib
+	// MISSING: StorageType
+	return out
+}
+func BaremetalsolutionNfsShareSpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionNfsShareSpec) *pb.NfsShare {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NfsShare{}
+	// MISSING: Name
+	// MISSING: NfsShareID
+	// MISSING: ID
+	// MISSING: State
+	// MISSING: Volume
+	// MISSING: AllowedClients
+	// MISSING: Labels
+	// MISSING: RequestedSizeGib
+	// MISSING: StorageType
+	return out
+}
 func BaremetalsolutionServerNetworkTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerNetworkTemplate) *krm.BaremetalsolutionServerNetworkTemplateObservedState {
 	if in == nil {
 		return nil
@@ -332,203 +396,127 @@ func BaremetalsolutionServerNetworkTemplateSpec_ToProto(mapCtx *direct.MapContex
 	// MISSING: LogicalInterfaces
 	return out
 }
-func Network_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.Network {
+func NfsShare_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare) *krm.NfsShare {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Network{}
-	// MISSING: Name
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
-	out.MacAddress = in.MacAddress
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.VlanID = direct.LazyPtr(in.GetVlanId())
-	out.Cidr = direct.LazyPtr(in.GetCidr())
-	out.Vrf = VRF_FromProto(mapCtx, in.GetVrf())
-	out.Labels = in.Labels
-	out.ServicesCidr = direct.LazyPtr(in.GetServicesCidr())
-	out.Reservations = direct.Slice_FromProto(mapCtx, in.Reservations, NetworkAddressReservation_FromProto)
-	// MISSING: Pod
-	out.MountPoints = direct.Slice_FromProto(mapCtx, in.MountPoints, NetworkMountPoint_FromProto)
-	out.JumboFramesEnabled = direct.LazyPtr(in.GetJumboFramesEnabled())
-	// MISSING: GatewayIP
-	return out
-}
-func Network_ToProto(mapCtx *direct.MapContext, in *krm.Network) *pb.Network {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Network{}
-	// MISSING: Name
-	out.Id = direct.ValueOf(in.ID)
-	out.Type = direct.Enum_ToProto[pb.Network_Type](mapCtx, in.Type)
-	out.IpAddress = direct.ValueOf(in.IPAddress)
-	out.MacAddress = in.MacAddress
-	out.State = direct.Enum_ToProto[pb.Network_State](mapCtx, in.State)
-	out.VlanId = direct.ValueOf(in.VlanID)
-	out.Cidr = direct.ValueOf(in.Cidr)
-	out.Vrf = VRF_ToProto(mapCtx, in.Vrf)
-	out.Labels = in.Labels
-	out.ServicesCidr = direct.ValueOf(in.ServicesCidr)
-	out.Reservations = direct.Slice_ToProto(mapCtx, in.Reservations, NetworkAddressReservation_ToProto)
-	// MISSING: Pod
-	out.MountPoints = direct.Slice_ToProto(mapCtx, in.MountPoints, NetworkMountPoint_ToProto)
-	out.JumboFramesEnabled = direct.ValueOf(in.JumboFramesEnabled)
-	// MISSING: GatewayIP
-	return out
-}
-func NetworkAddressReservation_FromProto(mapCtx *direct.MapContext, in *pb.NetworkAddressReservation) *krm.NetworkAddressReservation {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkAddressReservation{}
-	out.StartAddress = direct.LazyPtr(in.GetStartAddress())
-	out.EndAddress = direct.LazyPtr(in.GetEndAddress())
-	out.Note = direct.LazyPtr(in.GetNote())
-	return out
-}
-func NetworkAddressReservation_ToProto(mapCtx *direct.MapContext, in *krm.NetworkAddressReservation) *pb.NetworkAddressReservation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NetworkAddressReservation{}
-	out.StartAddress = direct.ValueOf(in.StartAddress)
-	out.EndAddress = direct.ValueOf(in.EndAddress)
-	out.Note = direct.ValueOf(in.Note)
-	return out
-}
-func NetworkMountPoint_FromProto(mapCtx *direct.MapContext, in *pb.NetworkMountPoint) *krm.NetworkMountPoint {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkMountPoint{}
-	out.Instance = direct.LazyPtr(in.GetInstance())
-	out.LogicalInterface = direct.LazyPtr(in.GetLogicalInterface())
-	out.DefaultGateway = direct.LazyPtr(in.GetDefaultGateway())
-	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
-	return out
-}
-func NetworkMountPoint_ToProto(mapCtx *direct.MapContext, in *krm.NetworkMountPoint) *pb.NetworkMountPoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NetworkMountPoint{}
-	out.Instance = direct.ValueOf(in.Instance)
-	out.LogicalInterface = direct.ValueOf(in.LogicalInterface)
-	out.DefaultGateway = direct.ValueOf(in.DefaultGateway)
-	out.IpAddress = direct.ValueOf(in.IPAddress)
-	return out
-}
-func NetworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.NetworkObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkObservedState{}
+	out := &krm.NfsShare{}
 	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: NfsShareID
 	// MISSING: ID
-	// MISSING: Type
-	// MISSING: IPAddress
-	// MISSING: MacAddress
 	// MISSING: State
-	// MISSING: VlanID
-	// MISSING: Cidr
-	// MISSING: Vrf
-	// MISSING: Labels
-	// MISSING: ServicesCidr
-	// MISSING: Reservations
-	out.Pod = direct.LazyPtr(in.GetPod())
-	// MISSING: MountPoints
-	// MISSING: JumboFramesEnabled
-	out.GatewayIP = direct.LazyPtr(in.GetGatewayIp())
+	// MISSING: Volume
+	out.AllowedClients = direct.Slice_FromProto(mapCtx, in.AllowedClients, NfsShare_AllowedClient_FromProto)
+	out.Labels = in.Labels
+	out.RequestedSizeGib = direct.LazyPtr(in.GetRequestedSizeGib())
+	out.StorageType = direct.Enum_FromProto(mapCtx, in.GetStorageType())
 	return out
 }
-func NetworkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkObservedState) *pb.Network {
+func NfsShare_ToProto(mapCtx *direct.MapContext, in *krm.NfsShare) *pb.NfsShare {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Network{}
+	out := &pb.NfsShare{}
 	out.Name = direct.ValueOf(in.Name)
+	// MISSING: NfsShareID
 	// MISSING: ID
-	// MISSING: Type
-	// MISSING: IPAddress
-	// MISSING: MacAddress
 	// MISSING: State
-	// MISSING: VlanID
-	// MISSING: Cidr
-	// MISSING: Vrf
-	// MISSING: Labels
-	// MISSING: ServicesCidr
-	// MISSING: Reservations
-	out.Pod = direct.ValueOf(in.Pod)
-	// MISSING: MountPoints
-	// MISSING: JumboFramesEnabled
-	out.GatewayIp = direct.ValueOf(in.GatewayIP)
+	// MISSING: Volume
+	out.AllowedClients = direct.Slice_ToProto(mapCtx, in.AllowedClients, NfsShare_AllowedClient_ToProto)
+	out.Labels = in.Labels
+	out.RequestedSizeGib = direct.ValueOf(in.RequestedSizeGib)
+	out.StorageType = direct.Enum_ToProto[pb.NfsShare_StorageType](mapCtx, in.StorageType)
 	return out
 }
-func VRF_FromProto(mapCtx *direct.MapContext, in *pb.VRF) *krm.VRF {
+func NfsShareObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare) *krm.NfsShareObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VRF{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.QosPolicy = VRF_QosPolicy_FromProto(mapCtx, in.GetQosPolicy())
-	out.VlanAttachments = direct.Slice_FromProto(mapCtx, in.VlanAttachments, VRF_VlanAttachment_FromProto)
-	return out
-}
-func VRF_ToProto(mapCtx *direct.MapContext, in *krm.VRF) *pb.VRF {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VRF{}
-	out.Name = direct.ValueOf(in.Name)
-	out.State = direct.Enum_ToProto[pb.VRF_State](mapCtx, in.State)
-	out.QosPolicy = VRF_QosPolicy_ToProto(mapCtx, in.QosPolicy)
-	out.VlanAttachments = direct.Slice_ToProto(mapCtx, in.VlanAttachments, VRF_VlanAttachment_ToProto)
-	return out
-}
-func VRF_QosPolicy_FromProto(mapCtx *direct.MapContext, in *pb.VRF_QosPolicy) *krm.VRF_QosPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VRF_QosPolicy{}
-	out.BandwidthGbps = direct.LazyPtr(in.GetBandwidthGbps())
-	return out
-}
-func VRF_QosPolicy_ToProto(mapCtx *direct.MapContext, in *krm.VRF_QosPolicy) *pb.VRF_QosPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VRF_QosPolicy{}
-	out.BandwidthGbps = direct.ValueOf(in.BandwidthGbps)
-	return out
-}
-func VRF_VlanAttachment_FromProto(mapCtx *direct.MapContext, in *pb.VRF_VlanAttachment) *krm.VRF_VlanAttachment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VRF_VlanAttachment{}
-	out.PeerVlanID = direct.LazyPtr(in.GetPeerVlanId())
-	out.PeerIP = direct.LazyPtr(in.GetPeerIp())
-	out.RouterIP = direct.LazyPtr(in.GetRouterIp())
-	out.PairingKey = direct.LazyPtr(in.GetPairingKey())
-	out.QosPolicy = VRF_QosPolicy_FromProto(mapCtx, in.GetQosPolicy())
+	out := &krm.NfsShareObservedState{}
+	// MISSING: Name
+	out.NfsShareID = direct.LazyPtr(in.GetNfsShareId())
 	out.ID = direct.LazyPtr(in.GetId())
-	out.InterconnectAttachment = direct.LazyPtr(in.GetInterconnectAttachment())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Volume = direct.LazyPtr(in.GetVolume())
+	out.AllowedClients = direct.Slice_FromProto(mapCtx, in.AllowedClients, NfsShare_AllowedClientObservedState_FromProto)
+	// MISSING: Labels
+	// MISSING: RequestedSizeGib
+	// MISSING: StorageType
 	return out
 }
-func VRF_VlanAttachment_ToProto(mapCtx *direct.MapContext, in *krm.VRF_VlanAttachment) *pb.VRF_VlanAttachment {
+func NfsShareObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NfsShareObservedState) *pb.NfsShare {
 	if in == nil {
 		return nil
 	}
-	out := &pb.VRF_VlanAttachment{}
-	out.PeerVlanId = direct.ValueOf(in.PeerVlanID)
-	out.PeerIp = direct.ValueOf(in.PeerIP)
-	out.RouterIp = direct.ValueOf(in.RouterIP)
-	out.PairingKey = direct.ValueOf(in.PairingKey)
-	out.QosPolicy = VRF_QosPolicy_ToProto(mapCtx, in.QosPolicy)
+	out := &pb.NfsShare{}
+	// MISSING: Name
+	out.NfsShareId = direct.ValueOf(in.NfsShareID)
 	out.Id = direct.ValueOf(in.ID)
-	out.InterconnectAttachment = direct.ValueOf(in.InterconnectAttachment)
+	out.State = direct.Enum_ToProto[pb.NfsShare_State](mapCtx, in.State)
+	out.Volume = direct.ValueOf(in.Volume)
+	out.AllowedClients = direct.Slice_ToProto(mapCtx, in.AllowedClients, NfsShare_AllowedClientObservedState_ToProto)
+	// MISSING: Labels
+	// MISSING: RequestedSizeGib
+	// MISSING: StorageType
+	return out
+}
+func NfsShare_AllowedClient_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare_AllowedClient) *krm.NfsShare_AllowedClient {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NfsShare_AllowedClient{}
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	// MISSING: ShareIP
+	out.AllowedClientsCidr = direct.LazyPtr(in.GetAllowedClientsCidr())
+	out.MountPermissions = direct.Enum_FromProto(mapCtx, in.GetMountPermissions())
+	out.AllowDev = direct.LazyPtr(in.GetAllowDev())
+	out.AllowSuid = direct.LazyPtr(in.GetAllowSuid())
+	out.NoRootSquash = direct.LazyPtr(in.GetNoRootSquash())
+	// MISSING: NfsPath
+	return out
+}
+func NfsShare_AllowedClient_ToProto(mapCtx *direct.MapContext, in *krm.NfsShare_AllowedClient) *pb.NfsShare_AllowedClient {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NfsShare_AllowedClient{}
+	out.Network = direct.ValueOf(in.Network)
+	// MISSING: ShareIP
+	out.AllowedClientsCidr = direct.ValueOf(in.AllowedClientsCidr)
+	out.MountPermissions = direct.Enum_ToProto[pb.NfsShare_MountPermissions](mapCtx, in.MountPermissions)
+	out.AllowDev = direct.ValueOf(in.AllowDev)
+	out.AllowSuid = direct.ValueOf(in.AllowSuid)
+	out.NoRootSquash = direct.ValueOf(in.NoRootSquash)
+	// MISSING: NfsPath
+	return out
+}
+func NfsShare_AllowedClientObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NfsShare_AllowedClient) *krm.NfsShare_AllowedClientObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NfsShare_AllowedClientObservedState{}
+	// MISSING: Network
+	out.ShareIP = direct.LazyPtr(in.GetShareIp())
+	// MISSING: AllowedClientsCidr
+	// MISSING: MountPermissions
+	// MISSING: AllowDev
+	// MISSING: AllowSuid
+	// MISSING: NoRootSquash
+	out.NfsPath = direct.LazyPtr(in.GetNfsPath())
+	return out
+}
+func NfsShare_AllowedClientObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NfsShare_AllowedClientObservedState) *pb.NfsShare_AllowedClient {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NfsShare_AllowedClient{}
+	// MISSING: Network
+	out.ShareIp = direct.ValueOf(in.ShareIP)
+	// MISSING: AllowedClientsCidr
+	// MISSING: MountPermissions
+	// MISSING: AllowDev
+	// MISSING: AllowSuid
+	// MISSING: NoRootSquash
+	out.NfsPath = direct.ValueOf(in.NfsPath)
 	return out
 }
