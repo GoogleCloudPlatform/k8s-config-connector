@@ -15,10 +15,10 @@
 package analytics
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
@@ -136,6 +136,46 @@ func AnalyticsDataStreamSpec_ToProto(mapCtx *direct.MapContext, in *krm.Analytic
 	// MISSING: UpdateTime
 	return out
 }
+func AnalyticsFirebaseLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirebaseLink) *krm.AnalyticsFirebaseLinkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsFirebaseLinkObservedState{}
+	// MISSING: Name
+	// MISSING: Project
+	// MISSING: CreateTime
+	return out
+}
+func AnalyticsFirebaseLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsFirebaseLinkObservedState) *pb.FirebaseLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirebaseLink{}
+	// MISSING: Name
+	// MISSING: Project
+	// MISSING: CreateTime
+	return out
+}
+func AnalyticsFirebaseLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.FirebaseLink) *krm.AnalyticsFirebaseLinkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsFirebaseLinkSpec{}
+	// MISSING: Name
+	// MISSING: Project
+	// MISSING: CreateTime
+	return out
+}
+func AnalyticsFirebaseLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsFirebaseLinkSpec) *pb.FirebaseLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirebaseLink{}
+	// MISSING: Name
+	// MISSING: Project
+	// MISSING: CreateTime
+	return out
+}
 func AnalyticsPropertyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Property) *krm.AnalyticsPropertyObservedState {
 	if in == nil {
 		return nil
@@ -216,187 +256,43 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func DataStream_FromProto(mapCtx *direct.MapContext, in *pb.DataStream) *krm.DataStream {
+func FirebaseLink_FromProto(mapCtx *direct.MapContext, in *pb.FirebaseLink) *krm.FirebaseLink {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataStream{}
-	out.WebStreamData = DataStream_WebStreamData_FromProto(mapCtx, in.GetWebStreamData())
-	out.AndroidAppStreamData = DataStream_AndroidAppStreamData_FromProto(mapCtx, in.GetAndroidAppStreamData())
-	out.IosAppStreamData = DataStream_IosAppStreamData_FromProto(mapCtx, in.GetIosAppStreamData())
+	out := &krm.FirebaseLink{}
 	// MISSING: Name
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Project = direct.LazyPtr(in.GetProject())
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	return out
 }
-func DataStream_ToProto(mapCtx *direct.MapContext, in *krm.DataStream) *pb.DataStream {
+func FirebaseLink_ToProto(mapCtx *direct.MapContext, in *krm.FirebaseLink) *pb.FirebaseLink {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataStream{}
-	if oneof := DataStream_WebStreamData_ToProto(mapCtx, in.WebStreamData); oneof != nil {
-		out.StreamData = &pb.DataStream_WebStreamData_{WebStreamData: oneof}
-	}
-	if oneof := DataStream_AndroidAppStreamData_ToProto(mapCtx, in.AndroidAppStreamData); oneof != nil {
-		out.StreamData = &pb.DataStream_AndroidAppStreamData_{AndroidAppStreamData: oneof}
-	}
-	if oneof := DataStream_IosAppStreamData_ToProto(mapCtx, in.IosAppStreamData); oneof != nil {
-		out.StreamData = &pb.DataStream_IosAppStreamData_{IosAppStreamData: oneof}
-	}
+	out := &pb.FirebaseLink{}
 	// MISSING: Name
-	out.Type = direct.Enum_ToProto[pb.DataStream_DataStreamType](mapCtx, in.Type)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Project = direct.ValueOf(in.Project)
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	return out
 }
-func DataStreamObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStream) *krm.DataStreamObservedState {
+func FirebaseLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirebaseLink) *krm.FirebaseLinkObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataStreamObservedState{}
-	out.WebStreamData = DataStream_WebStreamDataObservedState_FromProto(mapCtx, in.GetWebStreamData())
-	out.AndroidAppStreamData = DataStream_AndroidAppStreamDataObservedState_FromProto(mapCtx, in.GetAndroidAppStreamData())
-	out.IosAppStreamData = DataStream_IosAppStreamDataObservedState_FromProto(mapCtx, in.GetIosAppStreamData())
+	out := &krm.FirebaseLinkObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Type
-	// MISSING: DisplayName
+	// MISSING: Project
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func DataStreamObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStreamObservedState) *pb.DataStream {
+func FirebaseLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FirebaseLinkObservedState) *pb.FirebaseLink {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataStream{}
-	if oneof := DataStream_WebStreamDataObservedState_ToProto(mapCtx, in.WebStreamData); oneof != nil {
-		out.StreamData = &pb.DataStream_WebStreamData_{WebStreamData: oneof}
-	}
-	if oneof := DataStream_AndroidAppStreamDataObservedState_ToProto(mapCtx, in.AndroidAppStreamData); oneof != nil {
-		out.StreamData = &pb.DataStream_AndroidAppStreamData_{AndroidAppStreamData: oneof}
-	}
-	if oneof := DataStream_IosAppStreamDataObservedState_ToProto(mapCtx, in.IosAppStreamData); oneof != nil {
-		out.StreamData = &pb.DataStream_IosAppStreamData_{IosAppStreamData: oneof}
-	}
+	out := &pb.FirebaseLink{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Type
-	// MISSING: DisplayName
+	// MISSING: Project
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
-func DataStream_AndroidAppStreamData_FromProto(mapCtx *direct.MapContext, in *pb.DataStream_AndroidAppStreamData) *krm.DataStream_AndroidAppStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataStream_AndroidAppStreamData{}
-	// MISSING: FirebaseAppID
-	out.PackageName = direct.LazyPtr(in.GetPackageName())
-	return out
-}
-func DataStream_AndroidAppStreamData_ToProto(mapCtx *direct.MapContext, in *krm.DataStream_AndroidAppStreamData) *pb.DataStream_AndroidAppStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStream_AndroidAppStreamData{}
-	// MISSING: FirebaseAppID
-	out.PackageName = direct.ValueOf(in.PackageName)
-	return out
-}
-func DataStream_AndroidAppStreamDataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStream_AndroidAppStreamData) *krm.DataStream_AndroidAppStreamDataObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataStream_AndroidAppStreamDataObservedState{}
-	out.FirebaseAppID = direct.LazyPtr(in.GetFirebaseAppId())
-	// MISSING: PackageName
-	return out
-}
-func DataStream_AndroidAppStreamDataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStream_AndroidAppStreamDataObservedState) *pb.DataStream_AndroidAppStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStream_AndroidAppStreamData{}
-	out.FirebaseAppId = direct.ValueOf(in.FirebaseAppID)
-	// MISSING: PackageName
-	return out
-}
-func DataStream_IosAppStreamData_FromProto(mapCtx *direct.MapContext, in *pb.DataStream_IosAppStreamData) *krm.DataStream_IosAppStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataStream_IosAppStreamData{}
-	// MISSING: FirebaseAppID
-	out.BundleID = direct.LazyPtr(in.GetBundleId())
-	return out
-}
-func DataStream_IosAppStreamData_ToProto(mapCtx *direct.MapContext, in *krm.DataStream_IosAppStreamData) *pb.DataStream_IosAppStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStream_IosAppStreamData{}
-	// MISSING: FirebaseAppID
-	out.BundleId = direct.ValueOf(in.BundleID)
-	return out
-}
-func DataStream_IosAppStreamDataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStream_IosAppStreamData) *krm.DataStream_IosAppStreamDataObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataStream_IosAppStreamDataObservedState{}
-	out.FirebaseAppID = direct.LazyPtr(in.GetFirebaseAppId())
-	// MISSING: BundleID
-	return out
-}
-func DataStream_IosAppStreamDataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStream_IosAppStreamDataObservedState) *pb.DataStream_IosAppStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStream_IosAppStreamData{}
-	out.FirebaseAppId = direct.ValueOf(in.FirebaseAppID)
-	// MISSING: BundleID
-	return out
-}
-func DataStream_WebStreamData_FromProto(mapCtx *direct.MapContext, in *pb.DataStream_WebStreamData) *krm.DataStream_WebStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataStream_WebStreamData{}
-	// MISSING: MeasurementID
-	// MISSING: FirebaseAppID
-	out.DefaultURI = direct.LazyPtr(in.GetDefaultUri())
-	return out
-}
-func DataStream_WebStreamData_ToProto(mapCtx *direct.MapContext, in *krm.DataStream_WebStreamData) *pb.DataStream_WebStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStream_WebStreamData{}
-	// MISSING: MeasurementID
-	// MISSING: FirebaseAppID
-	out.DefaultUri = direct.ValueOf(in.DefaultURI)
-	return out
-}
-func DataStream_WebStreamDataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStream_WebStreamData) *krm.DataStream_WebStreamDataObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataStream_WebStreamDataObservedState{}
-	out.MeasurementID = direct.LazyPtr(in.GetMeasurementId())
-	out.FirebaseAppID = direct.LazyPtr(in.GetFirebaseAppId())
-	// MISSING: DefaultURI
-	return out
-}
-func DataStream_WebStreamDataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStream_WebStreamDataObservedState) *pb.DataStream_WebStreamData {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStream_WebStreamData{}
-	out.MeasurementId = direct.ValueOf(in.MeasurementID)
-	out.FirebaseAppId = direct.ValueOf(in.FirebaseAppID)
-	// MISSING: DefaultURI
 	return out
 }
