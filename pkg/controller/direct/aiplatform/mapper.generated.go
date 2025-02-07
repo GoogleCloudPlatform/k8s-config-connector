@@ -20,32 +20,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func ActiveLearningConfig_FromProto(mapCtx *direct.MapContext, in *pb.ActiveLearningConfig) *krm.ActiveLearningConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ActiveLearningConfig{}
-	out.MaxDataItemCount = direct.LazyPtr(in.GetMaxDataItemCount())
-	out.MaxDataItemPercentage = direct.LazyPtr(in.GetMaxDataItemPercentage())
-	out.SampleConfig = SampleConfig_FromProto(mapCtx, in.GetSampleConfig())
-	out.TrainingConfig = TrainingConfig_FromProto(mapCtx, in.GetTrainingConfig())
-	return out
-}
-func ActiveLearningConfig_ToProto(mapCtx *direct.MapContext, in *krm.ActiveLearningConfig) *pb.ActiveLearningConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ActiveLearningConfig{}
-	if oneof := ActiveLearningConfig_MaxDataItemCount_ToProto(mapCtx, in.MaxDataItemCount); oneof != nil {
-		out.HumanLabelingBudget = oneof
-	}
-	if oneof := ActiveLearningConfig_MaxDataItemPercentage_ToProto(mapCtx, in.MaxDataItemPercentage); oneof != nil {
-		out.HumanLabelingBudget = oneof
-	}
-	out.SampleConfig = SampleConfig_ToProto(mapCtx, in.SampleConfig)
-	out.TrainingConfig = TrainingConfig_ToProto(mapCtx, in.TrainingConfig)
-	return out
-}
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
 		return nil
@@ -766,104 +740,188 @@ func AiplatformDataLabelingJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ai
 	// MISSING: ActiveLearningConfig
 	return out
 }
-func DataLabelingJob_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *krm.DataLabelingJob {
+func AiplatformDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.AiplatformDatasetObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataLabelingJob{}
+	out := &krm.AiplatformDatasetObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: MetadataSchemaURI
+	// MISSING: Metadata
+	// MISSING: DataItemCount
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: SavedQueries
+	// MISSING: EncryptionSpec
+	// MISSING: MetadataArtifact
+	// MISSING: ModelReference
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformDatasetObservedState) *pb.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dataset{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: MetadataSchemaURI
+	// MISSING: Metadata
+	// MISSING: DataItemCount
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: SavedQueries
+	// MISSING: EncryptionSpec
+	// MISSING: MetadataArtifact
+	// MISSING: ModelReference
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.AiplatformDatasetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformDatasetSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: MetadataSchemaURI
+	// MISSING: Metadata
+	// MISSING: DataItemCount
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: SavedQueries
+	// MISSING: EncryptionSpec
+	// MISSING: MetadataArtifact
+	// MISSING: ModelReference
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformDatasetSpec) *pb.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dataset{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: MetadataSchemaURI
+	// MISSING: Metadata
+	// MISSING: DataItemCount
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: SavedQueries
+	// MISSING: EncryptionSpec
+	// MISSING: MetadataArtifact
+	// MISSING: ModelReference
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func Dataset_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Dataset{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Datasets = in.Datasets
-	out.AnnotationLabels = in.AnnotationLabels
-	out.LabelerCount = direct.LazyPtr(in.GetLabelerCount())
-	out.InstructionURI = direct.LazyPtr(in.GetInstructionUri())
-	out.InputsSchemaURI = direct.LazyPtr(in.GetInputsSchemaUri())
-	out.Inputs = Value_FromProto(mapCtx, in.GetInputs())
-	// MISSING: State
-	// MISSING: LabelingProgress
-	// MISSING: CurrentSpend
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
+	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	// MISSING: DataItemCount
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: Error
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Labels = in.Labels
-	out.SpecialistPools = in.SpecialistPools
+	out.SavedQueries = direct.Slice_FromProto(mapCtx, in.SavedQueries, SavedQuery_FromProto)
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.ActiveLearningConfig = ActiveLearningConfig_FromProto(mapCtx, in.GetActiveLearningConfig())
+	// MISSING: MetadataArtifact
+	out.ModelReference = direct.LazyPtr(in.GetModelReference())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-func DataLabelingJob_ToProto(mapCtx *direct.MapContext, in *krm.DataLabelingJob) *pb.DataLabelingJob {
+func Dataset_ToProto(mapCtx *direct.MapContext, in *krm.Dataset) *pb.Dataset {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataLabelingJob{}
+	out := &pb.Dataset{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Datasets = in.Datasets
-	out.AnnotationLabels = in.AnnotationLabels
-	out.LabelerCount = direct.ValueOf(in.LabelerCount)
-	out.InstructionUri = direct.ValueOf(in.InstructionURI)
-	out.InputsSchemaUri = direct.ValueOf(in.InputsSchemaURI)
-	out.Inputs = Value_ToProto(mapCtx, in.Inputs)
-	// MISSING: State
-	// MISSING: LabelingProgress
-	// MISSING: CurrentSpend
+	out.Description = direct.ValueOf(in.Description)
+	out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
+	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+	// MISSING: DataItemCount
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: Error
+	out.Etag = direct.ValueOf(in.Etag)
 	out.Labels = in.Labels
-	out.SpecialistPools = in.SpecialistPools
+	out.SavedQueries = direct.Slice_ToProto(mapCtx, in.SavedQueries, SavedQuery_ToProto)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	out.ActiveLearningConfig = ActiveLearningConfig_ToProto(mapCtx, in.ActiveLearningConfig)
+	// MISSING: MetadataArtifact
+	out.ModelReference = direct.ValueOf(in.ModelReference)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-func DataLabelingJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *krm.DataLabelingJobObservedState {
+func DatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.DatasetObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataLabelingJobObservedState{}
+	out := &krm.DatasetObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: DisplayName
-	// MISSING: Datasets
-	// MISSING: AnnotationLabels
-	// MISSING: LabelerCount
-	// MISSING: InstructionURI
-	// MISSING: InputsSchemaURI
-	// MISSING: Inputs
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.LabelingProgress = direct.LazyPtr(in.GetLabelingProgress())
-	out.CurrentSpend = Money_FromProto(mapCtx, in.GetCurrentSpend())
+	// MISSING: Description
+	// MISSING: MetadataSchemaURI
+	// MISSING: Metadata
+	out.DataItemCount = direct.LazyPtr(in.GetDataItemCount())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Error = Status_FromProto(mapCtx, in.GetError())
+	// MISSING: Etag
 	// MISSING: Labels
-	// MISSING: SpecialistPools
+	out.SavedQueries = direct.Slice_FromProto(mapCtx, in.SavedQueries, SavedQueryObservedState_FromProto)
 	// MISSING: EncryptionSpec
-	// MISSING: ActiveLearningConfig
+	out.MetadataArtifact = direct.LazyPtr(in.GetMetadataArtifact())
+	// MISSING: ModelReference
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
-func DataLabelingJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataLabelingJobObservedState) *pb.DataLabelingJob {
+func DatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatasetObservedState) *pb.Dataset {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataLabelingJob{}
+	out := &pb.Dataset{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: DisplayName
-	// MISSING: Datasets
-	// MISSING: AnnotationLabels
-	// MISSING: LabelerCount
-	// MISSING: InstructionURI
-	// MISSING: InputsSchemaURI
-	// MISSING: Inputs
-	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
-	out.LabelingProgress = direct.ValueOf(in.LabelingProgress)
-	out.CurrentSpend = Money_ToProto(mapCtx, in.CurrentSpend)
+	// MISSING: Description
+	// MISSING: MetadataSchemaURI
+	// MISSING: Metadata
+	out.DataItemCount = direct.ValueOf(in.DataItemCount)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Error = Status_ToProto(mapCtx, in.Error)
+	// MISSING: Etag
 	// MISSING: Labels
-	// MISSING: SpecialistPools
+	out.SavedQueries = direct.Slice_ToProto(mapCtx, in.SavedQueries, SavedQueryObservedState_ToProto)
 	// MISSING: EncryptionSpec
-	// MISSING: ActiveLearningConfig
+	out.MetadataArtifact = direct.ValueOf(in.MetadataArtifact)
+	// MISSING: ModelReference
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
@@ -882,43 +940,71 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	return out
 }
-func SampleConfig_FromProto(mapCtx *direct.MapContext, in *pb.SampleConfig) *krm.SampleConfig {
+func SavedQuery_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.SavedQuery {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SampleConfig{}
-	out.InitialBatchSamplePercentage = direct.LazyPtr(in.GetInitialBatchSamplePercentage())
-	out.FollowingBatchSamplePercentage = direct.LazyPtr(in.GetFollowingBatchSamplePercentage())
-	out.SampleStrategy = direct.Enum_FromProto(mapCtx, in.GetSampleStrategy())
+	out := &krm.SavedQuery{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: AnnotationFilter
+	out.ProblemType = direct.LazyPtr(in.GetProblemType())
+	// MISSING: AnnotationSpecCount
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: SupportAutomlTraining
 	return out
 }
-func SampleConfig_ToProto(mapCtx *direct.MapContext, in *krm.SampleConfig) *pb.SampleConfig {
+func SavedQuery_ToProto(mapCtx *direct.MapContext, in *krm.SavedQuery) *pb.SavedQuery {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SampleConfig{}
-	if oneof := SampleConfig_InitialBatchSamplePercentage_ToProto(mapCtx, in.InitialBatchSamplePercentage); oneof != nil {
-		out.InitialBatchSampleSize = oneof
-	}
-	if oneof := SampleConfig_FollowingBatchSamplePercentage_ToProto(mapCtx, in.FollowingBatchSamplePercentage); oneof != nil {
-		out.FollowingBatchSampleSize = oneof
-	}
-	out.SampleStrategy = direct.Enum_ToProto[pb.SampleConfig_SampleStrategy](mapCtx, in.SampleStrategy)
+	out := &pb.SavedQuery{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: AnnotationFilter
+	out.ProblemType = direct.ValueOf(in.ProblemType)
+	// MISSING: AnnotationSpecCount
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: SupportAutomlTraining
 	return out
 }
-func TrainingConfig_FromProto(mapCtx *direct.MapContext, in *pb.TrainingConfig) *krm.TrainingConfig {
+func SavedQueryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.SavedQueryObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TrainingConfig{}
-	out.TimeoutTrainingMilliHours = direct.LazyPtr(in.GetTimeoutTrainingMilliHours())
+	out := &krm.SavedQueryObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	// MISSING: Metadata
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.AnnotationFilter = direct.LazyPtr(in.GetAnnotationFilter())
+	// MISSING: ProblemType
+	out.AnnotationSpecCount = direct.LazyPtr(in.GetAnnotationSpecCount())
+	// MISSING: Etag
+	out.SupportAutomlTraining = direct.LazyPtr(in.GetSupportAutomlTraining())
 	return out
 }
-func TrainingConfig_ToProto(mapCtx *direct.MapContext, in *krm.TrainingConfig) *pb.TrainingConfig {
+func SavedQueryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SavedQueryObservedState) *pb.SavedQuery {
 	if in == nil {
 		return nil
 	}
-	out := &pb.TrainingConfig{}
-	out.TimeoutTrainingMilliHours = direct.ValueOf(in.TimeoutTrainingMilliHours)
+	out := &pb.SavedQuery{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	// MISSING: Metadata
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.AnnotationFilter = direct.ValueOf(in.AnnotationFilter)
+	// MISSING: ProblemType
+	out.AnnotationSpecCount = direct.ValueOf(in.AnnotationSpecCount)
+	// MISSING: Etag
+	out.SupportAutomlTraining = direct.ValueOf(in.SupportAutomlTraining)
 	return out
 }
