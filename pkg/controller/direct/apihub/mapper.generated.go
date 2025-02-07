@@ -600,6 +600,54 @@ func ApihubHostProjectRegistrationSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: CreateTime
 	return out
 }
+func ApihubPluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.ApihubPluginObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubPluginObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Type
+	// MISSING: Description
+	// MISSING: State
+	return out
+}
+func ApihubPluginObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubPluginObservedState) *pb.Plugin {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Plugin{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Type
+	// MISSING: Description
+	// MISSING: State
+	return out
+}
+func ApihubPluginSpec_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.ApihubPluginSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubPluginSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Type
+	// MISSING: Description
+	// MISSING: State
+	return out
+}
+func ApihubPluginSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubPluginSpec) *pb.Plugin {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Plugin{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Type
+	// MISSING: Description
+	// MISSING: State
+	return out
+}
 func ApihubSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Spec) *krm.ApihubSpecObservedState {
 	if in == nil {
 		return nil
@@ -804,41 +852,155 @@ func ApihubVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubVersionS
 	// MISSING: SelectedDeployment
 	return out
 }
-func StyleGuide_FromProto(mapCtx *direct.MapContext, in *pb.StyleGuide) *krm.StyleGuide {
+func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
 	if in == nil {
 		return nil
 	}
-	out := &krm.StyleGuide{}
+	out := &krm.AttributeValues{}
+	out.EnumValues = AttributeValues_EnumAttributeValues_FromProto(mapCtx, in.GetEnumValues())
+	out.StringValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetStringValues())
+	out.JsonValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetJsonValues())
+	// MISSING: Attribute
+	return out
+}
+func AttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues) *pb.AttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues{}
+	if oneof := AttributeValues_EnumAttributeValues_ToProto(mapCtx, in.EnumValues); oneof != nil {
+		out.Value = &pb.AttributeValues_EnumValues{EnumValues: oneof}
+	}
+	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.StringValues); oneof != nil {
+		out.Value = &pb.AttributeValues_StringValues{StringValues: oneof}
+	}
+	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.JsonValues); oneof != nil {
+		out.Value = &pb.AttributeValues_JsonValues{JsonValues: oneof}
+	}
+	// MISSING: Attribute
+	return out
+}
+func AttributeValuesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValuesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValuesObservedState{}
+	// MISSING: EnumValues
+	// MISSING: StringValues
+	// MISSING: JsonValues
+	out.Attribute = direct.LazyPtr(in.GetAttribute())
+	return out
+}
+func AttributeValuesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValuesObservedState) *pb.AttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues{}
+	// MISSING: EnumValues
+	// MISSING: StringValues
+	// MISSING: JsonValues
+	out.Attribute = direct.ValueOf(in.Attribute)
+	return out
+}
+func AttributeValues_EnumAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValues_EnumAttributeValues{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Attribute_AllowedValue_FromProto)
+	return out
+}
+func AttributeValues_EnumAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_EnumAttributeValues) *pb.AttributeValues_EnumAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues_EnumAttributeValues{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Attribute_AllowedValue_ToProto)
+	return out
+}
+func AttributeValues_StringAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_StringAttributeValues) *krm.AttributeValues_StringAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValues_StringAttributeValues{}
+	out.Values = in.Values
+	return out
+}
+func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_StringAttributeValues) *pb.AttributeValues_StringAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues_StringAttributeValues{}
+	out.Values = in.Values
+	return out
+}
+func Attribute_AllowedValue_FromProto(mapCtx *direct.MapContext, in *pb.Attribute_AllowedValue) *krm.Attribute_AllowedValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Attribute_AllowedValue{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Immutable = direct.LazyPtr(in.GetImmutable())
+	return out
+}
+func Attribute_AllowedValue_ToProto(mapCtx *direct.MapContext, in *krm.Attribute_AllowedValue) *pb.Attribute_AllowedValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attribute_AllowedValue{}
+	out.Id = direct.ValueOf(in.ID)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Immutable = direct.ValueOf(in.Immutable)
+	return out
+}
+func Plugin_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.Plugin {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Plugin{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Linter = direct.Enum_FromProto(mapCtx, in.GetLinter())
-	out.Contents = StyleGuideContents_FromProto(mapCtx, in.GetContents())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Type = AttributeValues_FromProto(mapCtx, in.GetType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
 	return out
 }
-func StyleGuide_ToProto(mapCtx *direct.MapContext, in *krm.StyleGuide) *pb.StyleGuide {
+func Plugin_ToProto(mapCtx *direct.MapContext, in *krm.Plugin) *pb.Plugin {
 	if in == nil {
 		return nil
 	}
-	out := &pb.StyleGuide{}
+	out := &pb.Plugin{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Linter = direct.Enum_ToProto[pb.Linter](mapCtx, in.Linter)
-	out.Contents = StyleGuideContents_ToProto(mapCtx, in.Contents)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Type = AttributeValues_ToProto(mapCtx, in.Type)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
 	return out
 }
-func StyleGuideContents_FromProto(mapCtx *direct.MapContext, in *pb.StyleGuideContents) *krm.StyleGuideContents {
+func PluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.PluginObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.StyleGuideContents{}
-	out.Contents = in.GetContents()
-	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out := &krm.PluginObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.Type = AttributeValuesObservedState_FromProto(mapCtx, in.GetType())
+	// MISSING: Description
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func StyleGuideContents_ToProto(mapCtx *direct.MapContext, in *krm.StyleGuideContents) *pb.StyleGuideContents {
+func PluginObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PluginObservedState) *pb.Plugin {
 	if in == nil {
 		return nil
 	}
-	out := &pb.StyleGuideContents{}
-	out.Contents = in.Contents
-	out.MimeType = direct.ValueOf(in.MimeType)
+	out := &pb.Plugin{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.Type = AttributeValuesObservedState_ToProto(mapCtx, in.Type)
+	// MISSING: Description
+	out.State = direct.Enum_ToProto[pb.Plugin_State](mapCtx, in.State)
 	return out
 }
