@@ -404,71 +404,99 @@ func AlloydbSupportedDatabaseFlagSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: RequiresDbRestart
 	return out
 }
-func SupportedDatabaseFlag_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag) *krm.SupportedDatabaseFlag {
+func AlloydbUserObservedState_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.AlloydbUserObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SupportedDatabaseFlag{}
-	out.StringRestrictions = SupportedDatabaseFlag_StringRestrictions_FromProto(mapCtx, in.GetStringRestrictions())
-	out.IntegerRestrictions = SupportedDatabaseFlag_IntegerRestrictions_FromProto(mapCtx, in.GetIntegerRestrictions())
+	out := &krm.AlloydbUserObservedState{}
+	// MISSING: Name
+	// MISSING: Password
+	// MISSING: DatabaseRoles
+	// MISSING: UserType
+	// MISSING: KeepExtraRoles
+	return out
+}
+func AlloydbUserObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloydbUserObservedState) *pb.User {
+	if in == nil {
+		return nil
+	}
+	out := &pb.User{}
+	// MISSING: Name
+	// MISSING: Password
+	// MISSING: DatabaseRoles
+	// MISSING: UserType
+	// MISSING: KeepExtraRoles
+	return out
+}
+func AlloydbUserSpec_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.AlloydbUserSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloydbUserSpec{}
+	// MISSING: Name
+	// MISSING: Password
+	// MISSING: DatabaseRoles
+	// MISSING: UserType
+	// MISSING: KeepExtraRoles
+	return out
+}
+func AlloydbUserSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloydbUserSpec) *pb.User {
+	if in == nil {
+		return nil
+	}
+	out := &pb.User{}
+	// MISSING: Name
+	// MISSING: Password
+	// MISSING: DatabaseRoles
+	// MISSING: UserType
+	// MISSING: KeepExtraRoles
+	return out
+}
+func User_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.User {
+	if in == nil {
+		return nil
+	}
+	out := &krm.User{}
+	// MISSING: Name
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.DatabaseRoles = in.DatabaseRoles
+	out.UserType = direct.Enum_FromProto(mapCtx, in.GetUserType())
+	out.KeepExtraRoles = direct.LazyPtr(in.GetKeepExtraRoles())
+	return out
+}
+func User_ToProto(mapCtx *direct.MapContext, in *krm.User) *pb.User {
+	if in == nil {
+		return nil
+	}
+	out := &pb.User{}
+	// MISSING: Name
+	out.Password = direct.ValueOf(in.Password)
+	out.DatabaseRoles = in.DatabaseRoles
+	out.UserType = direct.Enum_ToProto[pb.User_UserType](mapCtx, in.UserType)
+	out.KeepExtraRoles = direct.ValueOf(in.KeepExtraRoles)
+	return out
+}
+func UserObservedState_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.UserObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UserObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.FlagName = direct.LazyPtr(in.GetFlagName())
-	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
-	out.AcceptsMultipleValues = direct.LazyPtr(in.GetAcceptsMultipleValues())
-	out.SupportedDbVersions = direct.EnumSlice_FromProto(mapCtx, in.SupportedDbVersions)
-	out.RequiresDbRestart = direct.LazyPtr(in.GetRequiresDbRestart())
+	// MISSING: Password
+	// MISSING: DatabaseRoles
+	// MISSING: UserType
+	// MISSING: KeepExtraRoles
 	return out
 }
-func SupportedDatabaseFlag_ToProto(mapCtx *direct.MapContext, in *krm.SupportedDatabaseFlag) *pb.SupportedDatabaseFlag {
+func UserObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UserObservedState) *pb.User {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SupportedDatabaseFlag{}
-	if oneof := SupportedDatabaseFlag_StringRestrictions_ToProto(mapCtx, in.StringRestrictions); oneof != nil {
-		out.Restrictions = &pb.SupportedDatabaseFlag_StringRestrictions_{StringRestrictions: oneof}
-	}
-	if oneof := SupportedDatabaseFlag_IntegerRestrictions_ToProto(mapCtx, in.IntegerRestrictions); oneof != nil {
-		out.Restrictions = &pb.SupportedDatabaseFlag_IntegerRestrictions_{IntegerRestrictions: oneof}
-	}
+	out := &pb.User{}
 	out.Name = direct.ValueOf(in.Name)
-	out.FlagName = direct.ValueOf(in.FlagName)
-	out.ValueType = direct.Enum_ToProto[pb.SupportedDatabaseFlag_ValueType](mapCtx, in.ValueType)
-	out.AcceptsMultipleValues = direct.ValueOf(in.AcceptsMultipleValues)
-	out.SupportedDbVersions = direct.EnumSlice_ToProto[pb.DatabaseVersion](mapCtx, in.SupportedDbVersions)
-	out.RequiresDbRestart = direct.ValueOf(in.RequiresDbRestart)
-	return out
-}
-func SupportedDatabaseFlag_IntegerRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag_IntegerRestrictions) *krm.SupportedDatabaseFlag_IntegerRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SupportedDatabaseFlag_IntegerRestrictions{}
-	out.MinValue = direct.Int64Value_FromProto(mapCtx, in.GetMinValue())
-	out.MaxValue = direct.Int64Value_FromProto(mapCtx, in.GetMaxValue())
-	return out
-}
-func SupportedDatabaseFlag_IntegerRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.SupportedDatabaseFlag_IntegerRestrictions) *pb.SupportedDatabaseFlag_IntegerRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SupportedDatabaseFlag_IntegerRestrictions{}
-	out.MinValue = direct.Int64Value_ToProto(mapCtx, in.MinValue)
-	out.MaxValue = direct.Int64Value_ToProto(mapCtx, in.MaxValue)
-	return out
-}
-func SupportedDatabaseFlag_StringRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag_StringRestrictions) *krm.SupportedDatabaseFlag_StringRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SupportedDatabaseFlag_StringRestrictions{}
-	out.AllowedValues = in.AllowedValues
-	return out
-}
-func SupportedDatabaseFlag_StringRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.SupportedDatabaseFlag_StringRestrictions) *pb.SupportedDatabaseFlag_StringRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SupportedDatabaseFlag_StringRestrictions{}
-	out.AllowedValues = in.AllowedValues
+	// MISSING: Password
+	// MISSING: DatabaseRoles
+	// MISSING: UserType
+	// MISSING: KeepExtraRoles
 	return out
 }
