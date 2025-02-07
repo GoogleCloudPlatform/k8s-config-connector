@@ -15,66 +15,17 @@
 package bigquery
 
 import (
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/bigquery/datapolicies/apiv1/datapoliciespb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
+	pb "cloud.google.com/go/bigquery/datapolicies/apiv1beta1/datapoliciespb"
 )
-func BigqueryDataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.BigqueryDataPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryDataPolicyObservedState{}
-	// MISSING: PolicyTag
-	// MISSING: DataMaskingPolicy
-	// MISSING: Name
-	// MISSING: DataPolicyType
-	// MISSING: DataPolicyID
-	return out
-}
-func BigqueryDataPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryDataPolicyObservedState) *pb.DataPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataPolicy{}
-	// MISSING: PolicyTag
-	// MISSING: DataMaskingPolicy
-	// MISSING: Name
-	// MISSING: DataPolicyType
-	// MISSING: DataPolicyID
-	return out
-}
-func BigqueryDataPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.BigqueryDataPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigqueryDataPolicySpec{}
-	// MISSING: PolicyTag
-	// MISSING: DataMaskingPolicy
-	// MISSING: Name
-	// MISSING: DataPolicyType
-	// MISSING: DataPolicyID
-	return out
-}
-func BigqueryDataPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryDataPolicySpec) *pb.DataPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataPolicy{}
-	// MISSING: PolicyTag
-	// MISSING: DataMaskingPolicy
-	// MISSING: Name
-	// MISSING: DataPolicyType
-	// MISSING: DataPolicyID
-	return out
-}
 func DataMaskingPolicy_FromProto(mapCtx *direct.MapContext, in *pb.DataMaskingPolicy) *krm.DataMaskingPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataMaskingPolicy{}
 	out.PredefinedExpression = direct.Enum_FromProto(mapCtx, in.GetPredefinedExpression())
-	out.Routine = direct.LazyPtr(in.GetRoutine())
 	return out
 }
 func DataMaskingPolicy_ToProto(mapCtx *direct.MapContext, in *krm.DataMaskingPolicy) *pb.DataMaskingPolicy {
@@ -83,9 +34,6 @@ func DataMaskingPolicy_ToProto(mapCtx *direct.MapContext, in *krm.DataMaskingPol
 	}
 	out := &pb.DataMaskingPolicy{}
 	if oneof := DataMaskingPolicy_PredefinedExpression_ToProto(mapCtx, in.PredefinedExpression); oneof != nil {
-		out.MaskingExpression = oneof
-	}
-	if oneof := DataMaskingPolicy_Routine_ToProto(mapCtx, in.Routine); oneof != nil {
 		out.MaskingExpression = oneof
 	}
 	return out
