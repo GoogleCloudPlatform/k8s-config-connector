@@ -148,8 +148,8 @@ spec:
                   vice versa).
                 type: string
               slotCapacity:
-                description: |-
-                  Baseline slots available to this reservation. A slot is a unit of
+                description: |2-
+                   Optional. Baseline slots available to this reservation. A slot is a unit of
                    computational power in BigQuery, and serves as the unit of parallelism.
 
                    Queries using this reservation might use more slots during runtime if
@@ -159,7 +159,6 @@ spec:
             required:
             - location
             - projectRef
-            - slotCapacity
             type: object
           status:
             description: BigQueryReservationReservationStatus defines the config connector
