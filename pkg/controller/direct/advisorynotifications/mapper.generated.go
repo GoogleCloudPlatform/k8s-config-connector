@@ -15,10 +15,10 @@
 package advisorynotifications
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/advisorynotifications/apiv1/advisorynotificationspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/advisorynotifications/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AdvisorynotificationsNotificationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Notification) *krm.AdvisorynotificationsNotificationObservedState {
 	if in == nil {
@@ -68,179 +68,79 @@ func AdvisorynotificationsNotificationSpec_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: NotificationType
 	return out
 }
-func Attachment_FromProto(mapCtx *direct.MapContext, in *pb.Attachment) *krm.Attachment {
+func AdvisorynotificationsSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.AdvisorynotificationsSettingsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Attachment{}
-	out.Csv = Csv_FromProto(mapCtx, in.GetCsv())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out := &krm.AdvisorynotificationsSettingsObservedState{}
+	// MISSING: Name
+	// MISSING: NotificationSettings
+	// MISSING: Etag
 	return out
 }
-func Attachment_ToProto(mapCtx *direct.MapContext, in *krm.Attachment) *pb.Attachment {
+func AdvisorynotificationsSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AdvisorynotificationsSettingsObservedState) *pb.Settings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Attachment{}
-	if oneof := Csv_ToProto(mapCtx, in.Csv); oneof != nil {
-		out.Data = &pb.Attachment_Csv{Csv: oneof}
-	}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out := &pb.Settings{}
+	// MISSING: Name
+	// MISSING: NotificationSettings
+	// MISSING: Etag
 	return out
 }
-func Csv_FromProto(mapCtx *direct.MapContext, in *pb.Csv) *krm.Csv {
+func AdvisorynotificationsSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.AdvisorynotificationsSettingsSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Csv{}
-	out.Headers = in.Headers
-	out.DataRows = direct.Slice_FromProto(mapCtx, in.DataRows, Csv_CsvRow_FromProto)
+	out := &krm.AdvisorynotificationsSettingsSpec{}
+	// MISSING: Name
+	// MISSING: NotificationSettings
+	// MISSING: Etag
 	return out
 }
-func Csv_ToProto(mapCtx *direct.MapContext, in *krm.Csv) *pb.Csv {
+func AdvisorynotificationsSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.AdvisorynotificationsSettingsSpec) *pb.Settings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Csv{}
-	out.Headers = in.Headers
-	out.DataRows = direct.Slice_ToProto(mapCtx, in.DataRows, Csv_CsvRow_ToProto)
+	out := &pb.Settings{}
+	// MISSING: Name
+	// MISSING: NotificationSettings
+	// MISSING: Etag
 	return out
 }
-func Csv_CsvRow_FromProto(mapCtx *direct.MapContext, in *pb.Csv_CsvRow) *krm.Csv_CsvRow {
+func NotificationSettings_FromProto(mapCtx *direct.MapContext, in *pb.NotificationSettings) *krm.NotificationSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Csv_CsvRow{}
-	out.Entries = in.Entries
+	out := &krm.NotificationSettings{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
 	return out
 }
-func Csv_CsvRow_ToProto(mapCtx *direct.MapContext, in *krm.Csv_CsvRow) *pb.Csv_CsvRow {
+func NotificationSettings_ToProto(mapCtx *direct.MapContext, in *krm.NotificationSettings) *pb.NotificationSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Csv_CsvRow{}
-	out.Entries = in.Entries
+	out := &pb.NotificationSettings{}
+	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
-func Message_FromProto(mapCtx *direct.MapContext, in *pb.Message) *krm.Message {
+func Settings_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.Settings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Message{}
-	out.Body = Message_Body_FromProto(mapCtx, in.GetBody())
-	out.Attachments = direct.Slice_FromProto(mapCtx, in.Attachments, Attachment_FromProto)
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.LocalizationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLocalizationTime())
-	return out
-}
-func Message_ToProto(mapCtx *direct.MapContext, in *krm.Message) *pb.Message {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Message{}
-	out.Body = Message_Body_ToProto(mapCtx, in.Body)
-	out.Attachments = direct.Slice_ToProto(mapCtx, in.Attachments, Attachment_ToProto)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.LocalizationTime = direct.StringTimestamp_ToProto(mapCtx, in.LocalizationTime)
-	return out
-}
-func Message_Body_FromProto(mapCtx *direct.MapContext, in *pb.Message_Body) *krm.Message_Body {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Message_Body{}
-	out.Text = Text_FromProto(mapCtx, in.GetText())
-	return out
-}
-func Message_Body_ToProto(mapCtx *direct.MapContext, in *krm.Message_Body) *pb.Message_Body {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Message_Body{}
-	out.Text = Text_ToProto(mapCtx, in.Text)
-	return out
-}
-func Notification_FromProto(mapCtx *direct.MapContext, in *pb.Notification) *krm.Notification {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Notification{}
+	out := &krm.Settings{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Subject = Subject_FromProto(mapCtx, in.GetSubject())
-	out.Messages = direct.Slice_FromProto(mapCtx, in.Messages, Message_FromProto)
-	// MISSING: CreateTime
-	out.NotificationType = direct.Enum_FromProto(mapCtx, in.GetNotificationType())
+	// MISSING: NotificationSettings
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
-func Notification_ToProto(mapCtx *direct.MapContext, in *krm.Notification) *pb.Notification {
+func Settings_ToProto(mapCtx *direct.MapContext, in *krm.Settings) *pb.Settings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Notification{}
+	out := &pb.Settings{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Subject = Subject_ToProto(mapCtx, in.Subject)
-	out.Messages = direct.Slice_ToProto(mapCtx, in.Messages, Message_ToProto)
-	// MISSING: CreateTime
-	out.NotificationType = direct.Enum_ToProto[pb.NotificationType](mapCtx, in.NotificationType)
-	return out
-}
-func NotificationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Notification) *krm.NotificationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotificationObservedState{}
-	// MISSING: Name
-	// MISSING: Subject
-	// MISSING: Messages
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: NotificationType
-	return out
-}
-func NotificationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotificationObservedState) *pb.Notification {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Notification{}
-	// MISSING: Name
-	// MISSING: Subject
-	// MISSING: Messages
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: NotificationType
-	return out
-}
-func Subject_FromProto(mapCtx *direct.MapContext, in *pb.Subject) *krm.Subject {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Subject{}
-	out.Text = Text_FromProto(mapCtx, in.GetText())
-	return out
-}
-func Subject_ToProto(mapCtx *direct.MapContext, in *krm.Subject) *pb.Subject {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Subject{}
-	out.Text = Text_ToProto(mapCtx, in.Text)
-	return out
-}
-func Text_FromProto(mapCtx *direct.MapContext, in *pb.Text) *krm.Text {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Text{}
-	out.EnText = direct.LazyPtr(in.GetEnText())
-	out.LocalizedText = direct.LazyPtr(in.GetLocalizedText())
-	out.LocalizationState = direct.Enum_FromProto(mapCtx, in.GetLocalizationState())
-	return out
-}
-func Text_ToProto(mapCtx *direct.MapContext, in *krm.Text) *pb.Text {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Text{}
-	out.EnText = direct.ValueOf(in.EnText)
-	out.LocalizedText = direct.ValueOf(in.LocalizedText)
-	out.LocalizationState = direct.Enum_ToProto[pb.LocalizationState](mapCtx, in.LocalizationState)
+	// MISSING: NotificationSettings
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
