@@ -45,14 +45,18 @@ type Media struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.Product
-type Product struct {
-	// Resource Name of the Product.
-	//  Format: products/{product_id}
-	// +kcc:proto:field=google.cloud.channel.v1.Product.name
+// +kcc:proto=google.cloud.channel.v1.Sku
+type Sku struct {
+	// Resource Name of the SKU.
+	//  Format: products/{product_id}/skus/{sku_id}
+	// +kcc:proto:field=google.cloud.channel.v1.Sku.name
 	Name *string `json:"name,omitempty"`
 
-	// Marketing information for the product.
-	// +kcc:proto:field=google.cloud.channel.v1.Product.marketing_info
+	// Marketing information for the SKU.
+	// +kcc:proto:field=google.cloud.channel.v1.Sku.marketing_info
 	MarketingInfo *MarketingInfo `json:"marketingInfo,omitempty"`
+
+	// Product the SKU is associated with.
+	// +kcc:proto:field=google.cloud.channel.v1.Sku.product
+	Product *Product `json:"product,omitempty"`
 }

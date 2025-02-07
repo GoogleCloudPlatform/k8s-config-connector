@@ -15,10 +15,10 @@
 package channel
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/channel/apiv1/channelpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/channel/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/channel/apiv1/channelpb"
 )
 func ChannelBillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.ChannelBillingAccountObservedState {
 	if in == nil {
@@ -392,6 +392,46 @@ func ChannelProductSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelProduc
 	// MISSING: MarketingInfo
 	return out
 }
+func ChannelSkuObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Sku) *krm.ChannelSkuObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelSkuObservedState{}
+	// MISSING: Name
+	// MISSING: MarketingInfo
+	// MISSING: Product
+	return out
+}
+func ChannelSkuObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChannelSkuObservedState) *pb.Sku {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Sku{}
+	// MISSING: Name
+	// MISSING: MarketingInfo
+	// MISSING: Product
+	return out
+}
+func ChannelSkuSpec_FromProto(mapCtx *direct.MapContext, in *pb.Sku) *krm.ChannelSkuSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelSkuSpec{}
+	// MISSING: Name
+	// MISSING: MarketingInfo
+	// MISSING: Product
+	return out
+}
+func ChannelSkuSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChannelSkuSpec) *pb.Sku {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Sku{}
+	// MISSING: Name
+	// MISSING: MarketingInfo
+	// MISSING: Product
+	return out
+}
 func MarketingInfo_FromProto(mapCtx *direct.MapContext, in *pb.MarketingInfo) *krm.MarketingInfo {
 	if in == nil {
 		return nil
@@ -432,21 +472,23 @@ func Media_ToProto(mapCtx *direct.MapContext, in *krm.Media) *pb.Media {
 	out.Type = direct.Enum_ToProto[pb.MediaType](mapCtx, in.Type)
 	return out
 }
-func Product_FromProto(mapCtx *direct.MapContext, in *pb.Product) *krm.Product {
+func Sku_FromProto(mapCtx *direct.MapContext, in *pb.Sku) *krm.Sku {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Product{}
+	out := &krm.Sku{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.MarketingInfo = MarketingInfo_FromProto(mapCtx, in.GetMarketingInfo())
+	out.Product = Product_FromProto(mapCtx, in.GetProduct())
 	return out
 }
-func Product_ToProto(mapCtx *direct.MapContext, in *krm.Product) *pb.Product {
+func Sku_ToProto(mapCtx *direct.MapContext, in *krm.Sku) *pb.Sku {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Product{}
+	out := &pb.Sku{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MarketingInfo = MarketingInfo_ToProto(mapCtx, in.MarketingInfo)
+	out.Product = Product_ToProto(mapCtx, in.Product)
 	return out
 }
