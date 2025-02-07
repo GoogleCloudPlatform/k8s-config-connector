@@ -15,346 +15,55 @@
 package v1alpha1
 
 
-// +kcc:proto=google.bigtable.admin.v2.BackupInfo
-type BackupInfo struct {
-}
+// +kcc:proto=google.bigtable.admin.v2.Backup
+type Backup struct {
+	// A globally unique identifier for the backup which cannot be
+	//  changed. Values are of the form
+	//  `projects/{project}/instances/{instance}/clusters/{cluster}/
+	//     backups/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`
+	//  The final segment of the name must be between 1 and 50 characters
+	//  in length.
+	//
+	//  The backup is stored in the cluster identified by the prefix of the backup
+	//  name of the form
+	//  `projects/{project}/instances/{instance}/clusters/{cluster}`.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.name
+	Name *string `json:"name,omitempty"`
 
-// +kcc:proto=google.bigtable.admin.v2.ChangeStreamConfig
-type ChangeStreamConfig struct {
-	// How long the change stream should be retained. Change stream data older
-	//  than the retention period will not be returned when reading the change
-	//  stream from the table.
-	//  Values must be at least 1 day and at most 7 days, and will be truncated to
-	//  microsecond granularity.
-	// +kcc:proto:field=google.bigtable.admin.v2.ChangeStreamConfig.retention_period
-	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
-}
+	// Required. Immutable. Name of the table from which this backup was created.
+	//  This needs to be in the same instance as the backup. Values are of the form
+	//  `projects/{project}/instances/{instance}/tables/{source_table}`.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.source_table
+	SourceTable *string `json:"sourceTable,omitempty"`
 
-// +kcc:proto=google.bigtable.admin.v2.ColumnFamily
-type ColumnFamily struct {
-	// Garbage collection rule specified as a protobuf.
-	//  Must serialize to at most 500 bytes.
+	// Required. The expiration time of the backup.
+	//  When creating a backup or updating its `expire_time`, the value must be
+	//  greater than the backup creation time by:
+	//  - At least 6 hours
+	//  - At most 90 days
 	//
-	//  NOTE: Garbage collection executes opportunistically in the background, and
-	//  so it's possible for reads to return a cell even if it matches the active
-	//  GC expression for its family.
-	// +kcc:proto:field=google.bigtable.admin.v2.ColumnFamily.gc_rule
-	GcRule *GcRule `json:"gcRule,omitempty"`
+	//  Once the `expire_time` has passed, Cloud Bigtable will delete the backup.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
 
-	// The type of data stored in each of this family's cell values, including its
-	//  full encoding. If omitted, the family only serves raw untyped bytes.
+	// Indicates the backup type of the backup.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.backup_type
+	BackupType *string `json:"backupType,omitempty"`
+
+	// The time at which the hot backup will be converted to a standard backup.
+	//  Once the `hot_to_standard_time` has passed, Cloud Bigtable will convert the
+	//  hot backup to a standard backup. This value must be greater than the backup
+	//  creation time by:
+	//  - At least 24 hours
 	//
-	//  For now, only the `Aggregate` type is supported.
-	//
-	//  `Aggregate` can only be set at family creation and is immutable afterwards.
-	//
-	//
-	//  If `value_type` is `Aggregate`, written data must be compatible with:
-	//   * `value_type.input_type` for `AddInput` mutations
-	// +kcc:proto:field=google.bigtable.admin.v2.ColumnFamily.value_type
-	ValueType *Type `json:"valueType,omitempty"`
+	//  This field only applies for hot backups. When creating or updating a
+	//  standard backup, attempting to set this field will fail the request.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.hot_to_standard_time
+	HotToStandardTime *string `json:"hotToStandardTime,omitempty"`
 }
 
 // +kcc:proto=google.bigtable.admin.v2.EncryptionInfo
 type EncryptionInfo struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.GcRule
-type GcRule struct {
-	// Delete all cells in a column except the most recent N.
-	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.max_num_versions
-	MaxNumVersions *int32 `json:"maxNumVersions,omitempty"`
-
-	// Delete cells in a column older than the given age.
-	//  Values must be at least one millisecond, and will be truncated to
-	//  microsecond granularity.
-	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.max_age
-	MaxAge *string `json:"maxAge,omitempty"`
-
-	// Delete cells that would be deleted by every nested rule.
-	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.intersection
-	Intersection *GcRule_Intersection `json:"intersection,omitempty"`
-
-	// Delete cells that would be deleted by any nested rule.
-	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.union
-	Union *GcRule_Union `json:"union,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.GcRule.Intersection
-type GcRule_Intersection struct {
-	// Only delete cells which would be deleted by every element of `rules`.
-	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.Intersection.rules
-	Rules []GcRule `json:"rules,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.GcRule.Union
-type GcRule_Union struct {
-	// Delete cells which would be deleted by any element of `rules`.
-	// +kcc:proto:field=google.bigtable.admin.v2.GcRule.Union.rules
-	Rules []GcRule `json:"rules,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.RestoreInfo
-type RestoreInfo struct {
-	// The type of the restore source.
-	// +kcc:proto:field=google.bigtable.admin.v2.RestoreInfo.source_type
-	SourceType *string `json:"sourceType,omitempty"`
-
-	// Information about the backup used to restore the table. The backup
-	//  may no longer exist.
-	// +kcc:proto:field=google.bigtable.admin.v2.RestoreInfo.backup_info
-	BackupInfo *BackupInfo `json:"backupInfo,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Snapshot
-type Snapshot struct {
-	// The unique name of the snapshot.
-	//  Values are of the form
-	//  `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Snapshot.name
-	Name *string `json:"name,omitempty"`
-
-	// The time when the snapshot will be deleted. The maximum amount of time a
-	//  snapshot can stay active is 365 days. If 'ttl' is not specified,
-	//  the default maximum of 365 days will be used.
-	// +kcc:proto:field=google.bigtable.admin.v2.Snapshot.delete_time
-	DeleteTime *string `json:"deleteTime,omitempty"`
-
-	// Description of the snapshot.
-	// +kcc:proto:field=google.bigtable.admin.v2.Snapshot.description
-	Description *string `json:"description,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Table.AutomatedBackupPolicy
-type Table_AutomatedBackupPolicy struct {
-	// Required. How long the automated backups should be retained. The only
-	//  supported value at this time is 3 days.
-	// +kcc:proto:field=google.bigtable.admin.v2.Table.AutomatedBackupPolicy.retention_period
-	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
-
-	// Required. How frequently automated backups should occur. The only
-	//  supported value at this time is 24 hours.
-	// +kcc:proto:field=google.bigtable.admin.v2.Table.AutomatedBackupPolicy.frequency
-	Frequency *string `json:"frequency,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Table.ClusterState
-type Table_ClusterState struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type
-type Type struct {
-	// Bytes
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.bytes_type
-	BytesType *Type_Bytes `json:"bytesType,omitempty"`
-
-	// String
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.string_type
-	StringType *Type_String `json:"stringType,omitempty"`
-
-	// Int64
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.int64_type
-	Int64Type *Type_Int64 `json:"int64Type,omitempty"`
-
-	// Float32
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.float32_type
-	Float32Type *Type_Float32 `json:"float32Type,omitempty"`
-
-	// Float64
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.float64_type
-	Float64Type *Type_Float64 `json:"float64Type,omitempty"`
-
-	// Bool
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.bool_type
-	BoolType *Type_Bool `json:"boolType,omitempty"`
-
-	// Timestamp
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.timestamp_type
-	TimestampType *Type_Timestamp `json:"timestampType,omitempty"`
-
-	// Date
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.date_type
-	DateType *Type_Date `json:"dateType,omitempty"`
-
-	// Aggregate
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.aggregate_type
-	AggregateType *Type_Aggregate `json:"aggregateType,omitempty"`
-
-	// Struct
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.struct_type
-	StructType *Type_Struct `json:"structType,omitempty"`
-
-	// Array
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.array_type
-	ArrayType *Type_Array `json:"arrayType,omitempty"`
-
-	// Map
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.map_type
-	MapType *Type_Map `json:"mapType,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Aggregate
-type Type_Aggregate struct {
-	// Type of the inputs that are accumulated by this `Aggregate`, which must
-	//  specify a full encoding.
-	//  Use `AddInput` mutations to accumulate new inputs.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Aggregate.input_type
-	InputType *Type `json:"inputType,omitempty"`
-
-	// Sum aggregator.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Aggregate.sum
-	Sum *Type_Aggregate_Sum `json:"sum,omitempty"`
-
-	// HyperLogLogPlusPlusUniqueCount aggregator.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Aggregate.hllpp_unique_count
-	HllppUniqueCount *Type_Aggregate_HyperLogLogPlusPlusUniqueCount `json:"hllppUniqueCount,omitempty"`
-
-	// Max aggregator.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Aggregate.max
-	Max *Type_Aggregate_Max `json:"max,omitempty"`
-
-	// Min aggregator.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Aggregate.min
-	Min *Type_Aggregate_Min `json:"min,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Aggregate.HyperLogLogPlusPlusUniqueCount
-type Type_Aggregate_HyperLogLogPlusPlusUniqueCount struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Aggregate.Max
-type Type_Aggregate_Max struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Aggregate.Min
-type Type_Aggregate_Min struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Aggregate.Sum
-type Type_Aggregate_Sum struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Array
-type Type_Array struct {
-	// The type of the elements in the array. This must not be `Array`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Array.element_type
-	ElementType *Type `json:"elementType,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Bool
-type Type_Bool struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Bytes
-type Type_Bytes struct {
-	// The encoding to use when converting to/from lower level types.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Bytes.encoding
-	Encoding *Type_Bytes_Encoding `json:"encoding,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Bytes.Encoding
-type Type_Bytes_Encoding struct {
-	// Use `Raw` encoding.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Bytes.Encoding.raw
-	Raw *Type_Bytes_Encoding_Raw `json:"raw,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Bytes.Encoding.Raw
-type Type_Bytes_Encoding_Raw struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Date
-type Type_Date struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Float32
-type Type_Float32 struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Float64
-type Type_Float64 struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Int64
-type Type_Int64 struct {
-	// The encoding to use when converting to/from lower level types.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Int64.encoding
-	Encoding *Type_Int64_Encoding `json:"encoding,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Int64.Encoding
-type Type_Int64_Encoding struct {
-	// Use `BigEndianBytes` encoding.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Int64.Encoding.big_endian_bytes
-	BigEndianBytes *Type_Int64_Encoding_BigEndianBytes `json:"bigEndianBytes,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Int64.Encoding.BigEndianBytes
-type Type_Int64_Encoding_BigEndianBytes struct {
-	// Deprecated: ignored if set.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Int64.Encoding.BigEndianBytes.bytes_type
-	BytesType *Type_Bytes `json:"bytesType,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Map
-type Type_Map struct {
-	// The type of a map key.
-	//  Only `Bytes`, `String`, and `Int64` are allowed as key types.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Map.key_type
-	KeyType *Type `json:"keyType,omitempty"`
-
-	// The type of the values in a map.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Map.value_type
-	ValueType *Type `json:"valueType,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.String
-type Type_String struct {
-	// The encoding to use when converting to/from lower level types.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.String.encoding
-	Encoding *Type_String_Encoding `json:"encoding,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.String.Encoding
-type Type_String_Encoding struct {
-	// Deprecated: if set, converts to an empty `utf8_bytes`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.String.Encoding.utf8_raw
-	Utf8Raw *Type_String_Encoding_Utf8Raw `json:"utf8Raw,omitempty"`
-
-	// Use `Utf8Bytes` encoding.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.String.Encoding.utf8_bytes
-	Utf8Bytes *Type_String_Encoding_Utf8Bytes `json:"utf8Bytes,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.String.Encoding.Utf8Bytes
-type Type_String_Encoding_Utf8Bytes struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.String.Encoding.Utf8Raw
-type Type_String_Encoding_Utf8Raw struct {
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Struct
-type Type_Struct struct {
-	// The names and types of the fields in this struct.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.fields
-	Fields []Type_Struct_Field `json:"fields,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Struct.Field
-type Type_Struct_Field struct {
-	// The field name (optional). Fields without a `field_name` are considered
-	//  anonymous and cannot be referenced by name.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.Field.field_name
-	FieldName *string `json:"fieldName,omitempty"`
-
-	// The type of values in this field.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.Field.type
-	Type *Type `json:"type,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Type.Timestamp
-type Type_Timestamp struct {
 }
 
 // +kcc:proto=google.protobuf.Any
@@ -414,60 +123,55 @@ type Status struct {
 	Details []Any `json:"details,omitempty"`
 }
 
-// +kcc:proto=google.bigtable.admin.v2.BackupInfo
-type BackupInfoObservedState struct {
-	// Output only. Name of the backup.
-	// +kcc:proto:field=google.bigtable.admin.v2.BackupInfo.backup
-	Backup *string `json:"backup,omitempty"`
-
-	// Output only. The time that the backup was started. Row data in the backup
-	//  will be no older than this timestamp.
-	// +kcc:proto:field=google.bigtable.admin.v2.BackupInfo.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// Output only. This time that the backup was finished. Row data in the
-	//  backup will be no newer than this timestamp.
-	// +kcc:proto:field=google.bigtable.admin.v2.BackupInfo.end_time
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Output only. Name of the table the backup was created from.
-	// +kcc:proto:field=google.bigtable.admin.v2.BackupInfo.source_table
-	SourceTable *string `json:"sourceTable,omitempty"`
-
+// +kcc:proto=google.bigtable.admin.v2.Backup
+type BackupObservedState struct {
 	// Output only. Name of the backup from which this backup was copied. If a
 	//  backup is not created by copying a backup, this field will be empty. Values
 	//  are of the form:
 	//  projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>
-	// +kcc:proto:field=google.bigtable.admin.v2.BackupInfo.source_backup
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.source_backup
 	SourceBackup *string `json:"sourceBackup,omitempty"`
-}
 
-// +kcc:proto=google.bigtable.admin.v2.RestoreInfo
-type RestoreInfoObservedState struct {
-	// Information about the backup used to restore the table. The backup
-	//  may no longer exist.
-	// +kcc:proto:field=google.bigtable.admin.v2.RestoreInfo.backup_info
-	BackupInfo *BackupInfoObservedState `json:"backupInfo,omitempty"`
-}
+	// Output only. `start_time` is the time that the backup was started
+	//  (i.e. approximately the time the
+	//  [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup]
+	//  request is received).  The row data in this backup will be no older than
+	//  this timestamp.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.start_time
+	StartTime *string `json:"startTime,omitempty"`
 
-// +kcc:proto=google.bigtable.admin.v2.Snapshot
-type SnapshotObservedState struct {
-	// Output only. The source table at the time the snapshot was taken.
-	// +kcc:proto:field=google.bigtable.admin.v2.Snapshot.source_table
-	SourceTable *Table `json:"sourceTable,omitempty"`
+	// Output only. `end_time` is the time that the backup was finished. The row
+	//  data in the backup will be no newer than this timestamp.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.end_time
+	EndTime *string `json:"endTime,omitempty"`
 
-	// Output only. The size of the data in the source table at the time the
-	//  snapshot was taken. In some cases, this value may be computed
-	//  asynchronously via a background process and a placeholder of 0 will be used
-	//  in the meantime.
-	// +kcc:proto:field=google.bigtable.admin.v2.Snapshot.data_size_bytes
-	DataSizeBytes *int64 `json:"dataSizeBytes,omitempty"`
+	// Output only. Size of the backup in bytes.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.size_bytes
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
 
-	// Output only. The time when the snapshot is created.
-	// +kcc:proto:field=google.bigtable.admin.v2.Snapshot.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The current state of the snapshot.
-	// +kcc:proto:field=google.bigtable.admin.v2.Snapshot.state
+	// Output only. The current state of the backup.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.state
 	State *string `json:"state,omitempty"`
+
+	// Output only. The encryption information for the backup.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.encryption_info
+	EncryptionInfo *EncryptionInfo `json:"encryptionInfo,omitempty"`
+}
+
+// +kcc:proto=google.bigtable.admin.v2.EncryptionInfo
+type EncryptionInfoObservedState struct {
+	// Output only. The type of encryption used to protect this resource.
+	// +kcc:proto:field=google.bigtable.admin.v2.EncryptionInfo.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// Output only. The status of encrypt/decrypt calls on underlying data for
+	//  this resource. Regardless of status, the existing data is always encrypted
+	//  at rest.
+	// +kcc:proto:field=google.bigtable.admin.v2.EncryptionInfo.encryption_status
+	EncryptionStatus *Status `json:"encryptionStatus,omitempty"`
+
+	// Output only. The version of the Cloud KMS key specified in the parent
+	//  cluster that is in use for the data underlying this table.
+	// +kcc:proto:field=google.bigtable.admin.v2.EncryptionInfo.kms_key_version
+	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
 }
