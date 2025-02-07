@@ -114,6 +114,21 @@ func (s *ReservationV1) UpdateReservation(ctx context.Context, req *pb.UpdateRes
 		return nil, err
 	}
 
+	updateSecondaryLocation := false
+	for _, p := range req.UpdateMask.Paths {
+		if p == "secondaryLocation" {
+			updateSecondaryLocation = true
+			break
+		}
+	}
+
+	if updateSecondaryLocation {
+		if obj.Edition != pb.Edition_ENTERPRISE_PLUS {
+			return nil, status.Error(codes.InvalidArgument, "secondary_location can only be specified for ENTERPRISE_PLUS edition")
+		}
+		return nil, status.Error(codes.InvalidArgument, "Changing the secondary location of an existing failover reservation is not supported. Please remove the existing secondary location")
+	}
+
 	if err := fields.UpdateByFieldMask(obj, req.Reservation, req.UpdateMask.Paths); err != nil {
 		return nil, fmt.Errorf("update field_mask.paths: %w", err)
 	}
