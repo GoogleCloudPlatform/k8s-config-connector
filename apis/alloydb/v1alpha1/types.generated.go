@@ -15,174 +15,62 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.alloydb.v1.Backup
-type Backup struct {
+// +kcc:proto=google.cloud.alloydb.v1.SupportedDatabaseFlag
+type SupportedDatabaseFlag struct {
+	// Restriction on STRING type value.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.string_restrictions
+	StringRestrictions *SupportedDatabaseFlag_StringRestrictions `json:"stringRestrictions,omitempty"`
 
-	// User-settable and human-readable display name for the Backup.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.display_name
-	DisplayName *string `json:"displayName,omitempty"`
+	// Restriction on INTEGER type value.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.integer_restrictions
+	IntegerRestrictions *SupportedDatabaseFlag_IntegerRestrictions `json:"integerRestrictions,omitempty"`
 
-	// Labels as key value pairs
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// The backup type, which suggests the trigger for the backup.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.type
-	Type *string `json:"type,omitempty"`
-
-	// User-provided description of the backup.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. The full resource name of the backup source cluster
-	//  (e.g., projects/{project}/locations/{region}/clusters/{cluster_id}).
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.cluster_name
-	ClusterName *string `json:"clusterName,omitempty"`
-
-	// Optional. The encryption config can be specified to encrypt the
-	//  backup with a customer-managed encryption key (CMEK). When this field is
-	//  not specified, the backup will then use default encryption scheme to
-	//  protect the user data.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.encryption_config
-	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
-
-	// For Resource freshness validation (https://google.aip.dev/154)
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Annotations to allow client tools to store small amount of arbitrary data.
-	//  This is distinct from labels.
-	//  https://google.aip.dev/128
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.annotations
-	Annotations map[string]string `json:"annotations,omitempty"`
-
-	// Optional. Input only. Immutable. Tag keys/values directly bound to this
-	//  resource. For example:
-	//  ```
-	//  "123/environment": "production",
-	//  "123/costCenter": "marketing"
-	//  ```
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.tags
-	Tags map[string]string `json:"tags,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1.Backup.QuantityBasedExpiry
-type Backup_QuantityBasedExpiry struct {
-}
-
-// +kcc:proto=google.cloud.alloydb.v1.EncryptionConfig
-type EncryptionConfig struct {
-	// The fully-qualified resource name of the KMS key.
-	//  Each Cloud KMS key is regionalized and has the following format:
-	//  projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
-	// +kcc:proto:field=google.cloud.alloydb.v1.EncryptionConfig.kms_key_name
-	KMSKeyName *string `json:"kmsKeyName,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1.EncryptionInfo
-type EncryptionInfo struct {
-}
-
-// +kcc:proto=google.cloud.alloydb.v1.Backup
-type BackupObservedState struct {
-	// Output only. The name of the backup resource with the format:
-	//   * projects/{project}/locations/{region}/backups/{backup_id}
-	//  where the cluster and backup ID segments should satisfy the regex
-	//  expression `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`, e.g. 1-63 characters of
-	//  lowercase letters, numbers, and dashes, starting with a letter, and ending
-	//  with a letter or number. For more details see https://google.aip.dev/122.
-	//  The prefix of the backup resource name is the name of the parent
-	//  resource:
-	//   * projects/{project}/locations/{region}
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.name
+	// The name of the flag resource, following Google Cloud conventions, e.g.:
+	//   * projects/{project}/locations/{location}/flags/{flag}
+	//  This field currently has no semantic meaning.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. The system-generated UID of the resource. The UID is assigned
-	//  when the resource is created, and it is retained until it is deleted.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.uid
-	Uid *string `json:"uid,omitempty"`
+	// The name of the database flag, e.g. "max_allowed_packets".
+	//  The is a possibly key for the Instance.database_flags map field.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.flag_name
+	FlagName *string `json:"flagName,omitempty"`
 
-	// Output only. Create time stamp
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.create_time
-	CreateTime *string `json:"createTime,omitempty"`
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.value_type
+	ValueType *string `json:"valueType,omitempty"`
 
-	// Output only. Update time stamp
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
+	// Whether the database flag accepts multiple values. If true,
+	//  a comma-separated list of stringified values may be specified.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.accepts_multiple_values
+	AcceptsMultipleValues *bool `json:"acceptsMultipleValues,omitempty"`
 
-	// Output only. Delete time stamp
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.delete_time
-	DeleteTime *string `json:"deleteTime,omitempty"`
+	// Major database engine versions for which this flag is supported.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.supported_db_versions
+	SupportedDbVersions []string `json:"supportedDbVersions,omitempty"`
 
-	// Output only. The current state of the backup.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. The system-generated UID of the cluster which was used to
-	//  create this resource.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.cluster_uid
-	ClusterUid *string `json:"clusterUid,omitempty"`
-
-	// Output only. Reconciling (https://google.aip.dev/128#reconciliation), if
-	//  true, indicates that the service is actively updating the resource. This
-	//  can happen due to user-triggered updates or system actions like failover or
-	//  maintenance.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.reconciling
-	Reconciling *bool `json:"reconciling,omitempty"`
-
-	// Output only. The encryption information for the backup.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.encryption_info
-	EncryptionInfo *EncryptionInfo `json:"encryptionInfo,omitempty"`
-
-	// Output only. The size of the backup in bytes.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.size_bytes
-	SizeBytes *int64 `json:"sizeBytes,omitempty"`
-
-	// Output only. The time at which after the backup is eligible to be garbage
-	//  collected. It is the duration specified by the backup's retention policy,
-	//  added to the backup's create_time.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.expiry_time
-	ExpiryTime *string `json:"expiryTime,omitempty"`
-
-	// Output only. The QuantityBasedExpiry of the backup, specified by the
-	//  backup's retention policy. Once the expiry quantity is over retention, the
-	//  backup is eligible to be garbage collected.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.expiry_quantity
-	ExpiryQuantity *Backup_QuantityBasedExpiry `json:"expiryQuantity,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.satisfies_pzs
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
-
-	// Output only. The database engine major version of the cluster this backup
-	//  was created from. Any restored cluster created from this backup will have
-	//  the same database version.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.database_version
-	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+	// Whether setting or updating this flag on an Instance requires a database
+	//  restart. If a flag that requires database restart is set, the backend
+	//  will automatically restart the database (making sure to satisfy any
+	//  availability SLO's).
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.requires_db_restart
+	RequiresDbRestart *bool `json:"requiresDbRestart,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1.Backup.QuantityBasedExpiry
-type Backup_QuantityBasedExpiryObservedState struct {
-	// Output only. The backup's position among its backups with the same source
-	//  cluster and type, by descending chronological order create time(i.e.
-	//  newest first).
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.QuantityBasedExpiry.retention_count
-	RetentionCount *int32 `json:"retentionCount,omitempty"`
+// +kcc:proto=google.cloud.alloydb.v1.SupportedDatabaseFlag.IntegerRestrictions
+type SupportedDatabaseFlag_IntegerRestrictions struct {
+	// The minimum value that can be specified, if applicable.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.IntegerRestrictions.min_value
+	MinValue *int64 `json:"minValue,omitempty"`
 
-	// Output only. The length of the quantity-based queue, specified by the
-	//  backup's retention policy.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Backup.QuantityBasedExpiry.total_retention_count
-	TotalRetentionCount *int32 `json:"totalRetentionCount,omitempty"`
+	// The maximum value that can be specified, if applicable.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.IntegerRestrictions.max_value
+	MaxValue *int64 `json:"maxValue,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1.EncryptionInfo
-type EncryptionInfoObservedState struct {
-	// Output only. Type of encryption.
-	// +kcc:proto:field=google.cloud.alloydb.v1.EncryptionInfo.encryption_type
-	EncryptionType *string `json:"encryptionType,omitempty"`
-
-	// Output only. Cloud KMS key versions that are being used to protect the
-	//  database or the backup.
-	// +kcc:proto:field=google.cloud.alloydb.v1.EncryptionInfo.kms_key_versions
-	KMSKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+// +kcc:proto=google.cloud.alloydb.v1.SupportedDatabaseFlag.StringRestrictions
+type SupportedDatabaseFlag_StringRestrictions struct {
+	// The list of allowed values, if bounded. This field will be empty
+	//  if there is a unbounded number of allowed values.
+	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.StringRestrictions.allowed_values
+	AllowedValues []string `json:"allowedValues,omitempty"`
 }

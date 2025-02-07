@@ -344,211 +344,131 @@ func AlloydbConnectionInfoSpec_ToProto(mapCtx *direct.MapContext, in *krm.Alloyd
 	// MISSING: InstanceUid
 	return out
 }
-func Backup_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.Backup {
+func AlloydbSupportedDatabaseFlagObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag) *krm.AlloydbSupportedDatabaseFlagObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Backup{}
+	out := &krm.AlloydbSupportedDatabaseFlagObservedState{}
+	// MISSING: StringRestrictions
+	// MISSING: IntegerRestrictions
 	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	out.Labels = in.Labels
-	// MISSING: State
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: ClusterUid
-	out.ClusterName = direct.LazyPtr(in.GetClusterName())
-	// MISSING: Reconciling
-	out.EncryptionConfig = EncryptionConfig_FromProto(mapCtx, in.GetEncryptionConfig())
-	// MISSING: EncryptionInfo
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Annotations = in.Annotations
-	// MISSING: SizeBytes
-	// MISSING: ExpiryTime
-	// MISSING: ExpiryQuantity
-	// MISSING: SatisfiesPzs
-	// MISSING: DatabaseVersion
-	out.Tags = in.Tags
+	// MISSING: FlagName
+	// MISSING: ValueType
+	// MISSING: AcceptsMultipleValues
+	// MISSING: SupportedDbVersions
+	// MISSING: RequiresDbRestart
 	return out
 }
-func Backup_ToProto(mapCtx *direct.MapContext, in *krm.Backup) *pb.Backup {
+func AlloydbSupportedDatabaseFlagObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloydbSupportedDatabaseFlagObservedState) *pb.SupportedDatabaseFlag {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Backup{}
+	out := &pb.SupportedDatabaseFlag{}
+	// MISSING: StringRestrictions
+	// MISSING: IntegerRestrictions
 	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	out.Labels = in.Labels
-	// MISSING: State
-	out.Type = direct.Enum_ToProto[pb.Backup_Type](mapCtx, in.Type)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: ClusterUid
-	out.ClusterName = direct.ValueOf(in.ClusterName)
-	// MISSING: Reconciling
-	out.EncryptionConfig = EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
-	// MISSING: EncryptionInfo
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Annotations = in.Annotations
-	// MISSING: SizeBytes
-	// MISSING: ExpiryTime
-	// MISSING: ExpiryQuantity
-	// MISSING: SatisfiesPzs
-	// MISSING: DatabaseVersion
-	out.Tags = in.Tags
+	// MISSING: FlagName
+	// MISSING: ValueType
+	// MISSING: AcceptsMultipleValues
+	// MISSING: SupportedDbVersions
+	// MISSING: RequiresDbRestart
 	return out
 }
-func BackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.BackupObservedState {
+func AlloydbSupportedDatabaseFlagSpec_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag) *krm.AlloydbSupportedDatabaseFlagSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupObservedState{}
+	out := &krm.AlloydbSupportedDatabaseFlagSpec{}
+	// MISSING: StringRestrictions
+	// MISSING: IntegerRestrictions
+	// MISSING: Name
+	// MISSING: FlagName
+	// MISSING: ValueType
+	// MISSING: AcceptsMultipleValues
+	// MISSING: SupportedDbVersions
+	// MISSING: RequiresDbRestart
+	return out
+}
+func AlloydbSupportedDatabaseFlagSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloydbSupportedDatabaseFlagSpec) *pb.SupportedDatabaseFlag {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SupportedDatabaseFlag{}
+	// MISSING: StringRestrictions
+	// MISSING: IntegerRestrictions
+	// MISSING: Name
+	// MISSING: FlagName
+	// MISSING: ValueType
+	// MISSING: AcceptsMultipleValues
+	// MISSING: SupportedDbVersions
+	// MISSING: RequiresDbRestart
+	return out
+}
+func SupportedDatabaseFlag_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag) *krm.SupportedDatabaseFlag {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SupportedDatabaseFlag{}
+	out.StringRestrictions = SupportedDatabaseFlag_StringRestrictions_FromProto(mapCtx, in.GetStringRestrictions())
+	out.IntegerRestrictions = SupportedDatabaseFlag_IntegerRestrictions_FromProto(mapCtx, in.GetIntegerRestrictions())
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	// MISSING: Labels
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: Type
-	// MISSING: Description
-	out.ClusterUid = direct.LazyPtr(in.GetClusterUid())
-	// MISSING: ClusterName
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	// MISSING: EncryptionConfig
-	out.EncryptionInfo = EncryptionInfo_FromProto(mapCtx, in.GetEncryptionInfo())
-	// MISSING: Etag
-	// MISSING: Annotations
-	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
-	out.ExpiryTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpiryTime())
-	out.ExpiryQuantity = Backup_QuantityBasedExpiry_FromProto(mapCtx, in.GetExpiryQuantity())
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
-	// MISSING: Tags
+	out.FlagName = direct.LazyPtr(in.GetFlagName())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	out.AcceptsMultipleValues = direct.LazyPtr(in.GetAcceptsMultipleValues())
+	out.SupportedDbVersions = direct.EnumSlice_FromProto(mapCtx, in.SupportedDbVersions)
+	out.RequiresDbRestart = direct.LazyPtr(in.GetRequiresDbRestart())
 	return out
 }
-func BackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupObservedState) *pb.Backup {
+func SupportedDatabaseFlag_ToProto(mapCtx *direct.MapContext, in *krm.SupportedDatabaseFlag) *pb.SupportedDatabaseFlag {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Backup{}
+	out := &pb.SupportedDatabaseFlag{}
+	if oneof := SupportedDatabaseFlag_StringRestrictions_ToProto(mapCtx, in.StringRestrictions); oneof != nil {
+		out.Restrictions = &pb.SupportedDatabaseFlag_StringRestrictions_{StringRestrictions: oneof}
+	}
+	if oneof := SupportedDatabaseFlag_IntegerRestrictions_ToProto(mapCtx, in.IntegerRestrictions); oneof != nil {
+		out.Restrictions = &pb.SupportedDatabaseFlag_IntegerRestrictions_{IntegerRestrictions: oneof}
+	}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
-	out.Uid = direct.ValueOf(in.Uid)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	// MISSING: Labels
-	out.State = direct.Enum_ToProto[pb.Backup_State](mapCtx, in.State)
-	// MISSING: Type
-	// MISSING: Description
-	out.ClusterUid = direct.ValueOf(in.ClusterUid)
-	// MISSING: ClusterName
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	// MISSING: EncryptionConfig
-	out.EncryptionInfo = EncryptionInfo_ToProto(mapCtx, in.EncryptionInfo)
-	// MISSING: Etag
-	// MISSING: Annotations
-	out.SizeBytes = direct.ValueOf(in.SizeBytes)
-	out.ExpiryTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpiryTime)
-	out.ExpiryQuantity = Backup_QuantityBasedExpiry_ToProto(mapCtx, in.ExpiryQuantity)
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.DatabaseVersion = direct.Enum_ToProto[pb.DatabaseVersion](mapCtx, in.DatabaseVersion)
-	// MISSING: Tags
+	out.FlagName = direct.ValueOf(in.FlagName)
+	out.ValueType = direct.Enum_ToProto[pb.SupportedDatabaseFlag_ValueType](mapCtx, in.ValueType)
+	out.AcceptsMultipleValues = direct.ValueOf(in.AcceptsMultipleValues)
+	out.SupportedDbVersions = direct.EnumSlice_ToProto[pb.DatabaseVersion](mapCtx, in.SupportedDbVersions)
+	out.RequiresDbRestart = direct.ValueOf(in.RequiresDbRestart)
 	return out
 }
-func Backup_QuantityBasedExpiry_FromProto(mapCtx *direct.MapContext, in *pb.Backup_QuantityBasedExpiry) *krm.Backup_QuantityBasedExpiry {
+func SupportedDatabaseFlag_IntegerRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag_IntegerRestrictions) *krm.SupportedDatabaseFlag_IntegerRestrictions {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Backup_QuantityBasedExpiry{}
-	// MISSING: RetentionCount
-	// MISSING: TotalRetentionCount
+	out := &krm.SupportedDatabaseFlag_IntegerRestrictions{}
+	out.MinValue = direct.Int64Value_FromProto(mapCtx, in.GetMinValue())
+	out.MaxValue = direct.Int64Value_FromProto(mapCtx, in.GetMaxValue())
 	return out
 }
-func Backup_QuantityBasedExpiry_ToProto(mapCtx *direct.MapContext, in *krm.Backup_QuantityBasedExpiry) *pb.Backup_QuantityBasedExpiry {
+func SupportedDatabaseFlag_IntegerRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.SupportedDatabaseFlag_IntegerRestrictions) *pb.SupportedDatabaseFlag_IntegerRestrictions {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Backup_QuantityBasedExpiry{}
-	// MISSING: RetentionCount
-	// MISSING: TotalRetentionCount
+	out := &pb.SupportedDatabaseFlag_IntegerRestrictions{}
+	out.MinValue = direct.Int64Value_ToProto(mapCtx, in.MinValue)
+	out.MaxValue = direct.Int64Value_ToProto(mapCtx, in.MaxValue)
 	return out
 }
-func Backup_QuantityBasedExpiryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup_QuantityBasedExpiry) *krm.Backup_QuantityBasedExpiryObservedState {
+func SupportedDatabaseFlag_StringRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag_StringRestrictions) *krm.SupportedDatabaseFlag_StringRestrictions {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Backup_QuantityBasedExpiryObservedState{}
-	out.RetentionCount = direct.LazyPtr(in.GetRetentionCount())
-	out.TotalRetentionCount = direct.LazyPtr(in.GetTotalRetentionCount())
+	out := &krm.SupportedDatabaseFlag_StringRestrictions{}
+	out.AllowedValues = in.AllowedValues
 	return out
 }
-func Backup_QuantityBasedExpiryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Backup_QuantityBasedExpiryObservedState) *pb.Backup_QuantityBasedExpiry {
+func SupportedDatabaseFlag_StringRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.SupportedDatabaseFlag_StringRestrictions) *pb.SupportedDatabaseFlag_StringRestrictions {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Backup_QuantityBasedExpiry{}
-	out.RetentionCount = direct.ValueOf(in.RetentionCount)
-	out.TotalRetentionCount = direct.ValueOf(in.TotalRetentionCount)
-	return out
-}
-func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionConfig{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	return out
-}
-func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionConfig{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	return out
-}
-func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionInfo{}
-	// MISSING: EncryptionType
-	// MISSING: KMSKeyVersions
-	return out
-}
-func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfo) *pb.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionInfo{}
-	// MISSING: EncryptionType
-	// MISSING: KMSKeyVersions
-	return out
-}
-func EncryptionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfoObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionInfoObservedState{}
-	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
-	out.KMSKeyVersions = in.KmsKeyVersions
-	return out
-}
-func EncryptionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfoObservedState) *pb.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionInfo{}
-	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_Type](mapCtx, in.EncryptionType)
-	out.KmsKeyVersions = in.KMSKeyVersions
+	out := &pb.SupportedDatabaseFlag_StringRestrictions{}
+	out.AllowedValues = in.AllowedValues
 	return out
 }
