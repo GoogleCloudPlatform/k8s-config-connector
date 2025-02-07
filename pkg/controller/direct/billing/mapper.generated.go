@@ -16,64 +16,32 @@ package billing
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
+	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func BillingBudgetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetObservedState {
+func AllUpdatesRule_FromProto(mapCtx *direct.MapContext, in *pb.AllUpdatesRule) *krm.AllUpdatesRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BillingBudgetObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: BudgetFilter
-	// MISSING: Amount
-	// MISSING: ThresholdRules
-	// MISSING: NotificationsRule
-	// MISSING: Etag
+	out := &krm.AllUpdatesRule{}
+	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	out.MonitoringNotificationChannels = in.MonitoringNotificationChannels
+	out.DisableDefaultIamRecipients = direct.LazyPtr(in.GetDisableDefaultIamRecipients())
+	out.EnableProjectLevelRecipients = direct.LazyPtr(in.GetEnableProjectLevelRecipients())
 	return out
 }
-func BillingBudgetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetObservedState) *pb.Budget {
+func AllUpdatesRule_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdatesRule) *pb.AllUpdatesRule {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Budget{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: BudgetFilter
-	// MISSING: Amount
-	// MISSING: ThresholdRules
-	// MISSING: NotificationsRule
-	// MISSING: Etag
-	return out
-}
-func BillingBudgetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BillingBudgetSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: BudgetFilter
-	// MISSING: Amount
-	// MISSING: ThresholdRules
-	// MISSING: NotificationsRule
-	// MISSING: Etag
-	return out
-}
-func BillingBudgetSpec_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetSpec) *pb.Budget {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Budget{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: BudgetFilter
-	// MISSING: Amount
-	// MISSING: ThresholdRules
-	// MISSING: NotificationsRule
-	// MISSING: Etag
+	out := &pb.AllUpdatesRule{}
+	out.PubsubTopic = direct.ValueOf(in.PubsubTopic)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.MonitoringNotificationChannels = in.MonitoringNotificationChannels
+	out.DisableDefaultIamRecipients = direct.ValueOf(in.DisableDefaultIamRecipients)
+	out.EnableProjectLevelRecipients = direct.ValueOf(in.EnableProjectLevelRecipients)
 	return out
 }
 func Budget_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.Budget {
@@ -86,7 +54,7 @@ func Budget_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.Budget {
 	out.BudgetFilter = Filter_FromProto(mapCtx, in.GetBudgetFilter())
 	out.Amount = BudgetAmount_FromProto(mapCtx, in.GetAmount())
 	out.ThresholdRules = direct.Slice_FromProto(mapCtx, in.ThresholdRules, ThresholdRule_FromProto)
-	out.NotificationsRule = NotificationsRule_FromProto(mapCtx, in.GetNotificationsRule())
+	out.AllUpdatesRule = AllUpdatesRule_FromProto(mapCtx, in.GetAllUpdatesRule())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
@@ -100,7 +68,7 @@ func Budget_ToProto(mapCtx *direct.MapContext, in *krm.Budget) *pb.Budget {
 	out.BudgetFilter = Filter_ToProto(mapCtx, in.BudgetFilter)
 	out.Amount = BudgetAmount_ToProto(mapCtx, in.Amount)
 	out.ThresholdRules = direct.Slice_ToProto(mapCtx, in.ThresholdRules, ThresholdRule_ToProto)
-	out.NotificationsRule = NotificationsRule_ToProto(mapCtx, in.NotificationsRule)
+	out.AllUpdatesRule = AllUpdatesRule_ToProto(mapCtx, in.AllUpdatesRule)
 	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
@@ -136,7 +104,7 @@ func BudgetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *kr
 	// MISSING: BudgetFilter
 	// MISSING: Amount
 	// MISSING: ThresholdRules
-	// MISSING: NotificationsRule
+	// MISSING: AllUpdatesRule
 	// MISSING: Etag
 	return out
 }
@@ -150,7 +118,7 @@ func BudgetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BudgetObserv
 	// MISSING: BudgetFilter
 	// MISSING: Amount
 	// MISSING: ThresholdRules
-	// MISSING: NotificationsRule
+	// MISSING: AllUpdatesRule
 	// MISSING: Etag
 	return out
 }
@@ -220,30 +188,6 @@ func LastPeriodAmount_ToProto(mapCtx *direct.MapContext, in *krm.LastPeriodAmoun
 		return nil
 	}
 	out := &pb.LastPeriodAmount{}
-	return out
-}
-func NotificationsRule_FromProto(mapCtx *direct.MapContext, in *pb.NotificationsRule) *krm.NotificationsRule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotificationsRule{}
-	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
-	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
-	out.MonitoringNotificationChannels = in.MonitoringNotificationChannels
-	out.DisableDefaultIamRecipients = direct.LazyPtr(in.GetDisableDefaultIamRecipients())
-	out.EnableProjectLevelRecipients = direct.LazyPtr(in.GetEnableProjectLevelRecipients())
-	return out
-}
-func NotificationsRule_ToProto(mapCtx *direct.MapContext, in *krm.NotificationsRule) *pb.NotificationsRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotificationsRule{}
-	out.PubsubTopic = direct.ValueOf(in.PubsubTopic)
-	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
-	out.MonitoringNotificationChannels = in.MonitoringNotificationChannels
-	out.DisableDefaultIamRecipients = direct.ValueOf(in.DisableDefaultIamRecipients)
-	out.EnableProjectLevelRecipients = direct.ValueOf(in.EnableProjectLevelRecipients)
 	return out
 }
 func ThresholdRule_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krm.ThresholdRule {
