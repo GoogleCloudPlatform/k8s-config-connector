@@ -16,7 +16,7 @@ package ai
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb"
+	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta2/generativelanguagepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -34,7 +34,6 @@ func Model_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.Model {
 	out.OutputTokenLimit = direct.LazyPtr(in.GetOutputTokenLimit())
 	out.SupportedGenerationMethods = in.SupportedGenerationMethods
 	out.Temperature = in.Temperature
-	out.MaxTemperature = in.MaxTemperature
 	out.TopP = in.TopP
 	out.TopK = in.TopK
 	return out
@@ -53,7 +52,6 @@ func Model_ToProto(mapCtx *direct.MapContext, in *krm.Model) *pb.Model {
 	out.OutputTokenLimit = direct.ValueOf(in.OutputTokenLimit)
 	out.SupportedGenerationMethods = in.SupportedGenerationMethods
 	out.Temperature = in.Temperature
-	out.MaxTemperature = in.MaxTemperature
 	out.TopP = in.TopP
 	out.TopK = in.TopK
 	return out
