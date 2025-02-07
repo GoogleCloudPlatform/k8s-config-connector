@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -1716,6 +1716,98 @@ func AiplatformHyperparameterTuningJobSpec_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: SatisfiesPzi
 	return out
 }
+func AiplatformIndexEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IndexEndpoint) *krm.AiplatformIndexEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformIndexEndpointObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: DeployedIndexes
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Network
+	// MISSING: EnablePrivateServiceConnect
+	// MISSING: PrivateServiceConnectConfig
+	// MISSING: PublicEndpointEnabled
+	// MISSING: PublicEndpointDomainName
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformIndexEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformIndexEndpointObservedState) *pb.IndexEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IndexEndpoint{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: DeployedIndexes
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Network
+	// MISSING: EnablePrivateServiceConnect
+	// MISSING: PrivateServiceConnectConfig
+	// MISSING: PublicEndpointEnabled
+	// MISSING: PublicEndpointDomainName
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformIndexEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.IndexEndpoint) *krm.AiplatformIndexEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformIndexEndpointSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: DeployedIndexes
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Network
+	// MISSING: EnablePrivateServiceConnect
+	// MISSING: PrivateServiceConnectConfig
+	// MISSING: PublicEndpointEnabled
+	// MISSING: PublicEndpointDomainName
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformIndexEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformIndexEndpointSpec) *pb.IndexEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IndexEndpoint{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: DeployedIndexes
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Network
+	// MISSING: EnablePrivateServiceConnect
+	// MISSING: PrivateServiceConnectConfig
+	// MISSING: PublicEndpointEnabled
+	// MISSING: PublicEndpointDomainName
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 func AiplatformIndexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.AiplatformIndexObservedState {
 	if in == nil {
 		return nil
@@ -1804,44 +1896,180 @@ func AiplatformIndexSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformIn
 	// MISSING: SatisfiesPzi
 	return out
 }
-func DeployedIndexRef_FromProto(mapCtx *direct.MapContext, in *pb.DeployedIndexRef) *krm.DeployedIndexRef {
+func AutomaticResources_FromProto(mapCtx *direct.MapContext, in *pb.AutomaticResources) *krm.AutomaticResources {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeployedIndexRef{}
-	out.IndexEndpoint = direct.LazyPtr(in.GetIndexEndpoint())
-	out.DeployedIndexID = direct.LazyPtr(in.GetDeployedIndexId())
-	// MISSING: DisplayName
+	out := &krm.AutomaticResources{}
+	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
 	return out
 }
-func DeployedIndexRef_ToProto(mapCtx *direct.MapContext, in *krm.DeployedIndexRef) *pb.DeployedIndexRef {
+func AutomaticResources_ToProto(mapCtx *direct.MapContext, in *krm.AutomaticResources) *pb.AutomaticResources {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DeployedIndexRef{}
-	out.IndexEndpoint = direct.ValueOf(in.IndexEndpoint)
-	out.DeployedIndexId = direct.ValueOf(in.DeployedIndexID)
-	// MISSING: DisplayName
+	out := &pb.AutomaticResources{}
+	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
 	return out
 }
-func DeployedIndexRefObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeployedIndexRef) *krm.DeployedIndexRefObservedState {
+func AutoscalingMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingMetricSpec) *krm.AutoscalingMetricSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeployedIndexRefObservedState{}
-	// MISSING: IndexEndpoint
-	// MISSING: DeployedIndexID
+	out := &krm.AutoscalingMetricSpec{}
+	out.MetricName = direct.LazyPtr(in.GetMetricName())
+	out.Target = direct.LazyPtr(in.GetTarget())
+	return out
+}
+func AutoscalingMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingMetricSpec) *pb.AutoscalingMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingMetricSpec{}
+	out.MetricName = direct.ValueOf(in.MetricName)
+	out.Target = direct.ValueOf(in.Target)
+	return out
+}
+func DedicatedResources_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedResources) *krm.DedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DedicatedResources{}
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
+	out.RequiredReplicaCount = direct.LazyPtr(in.GetRequiredReplicaCount())
+	out.AutoscalingMetricSpecs = direct.Slice_FromProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_FromProto)
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	return out
+}
+func DedicatedResources_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedResources) *pb.DedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DedicatedResources{}
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
+	out.RequiredReplicaCount = direct.ValueOf(in.RequiredReplicaCount)
+	out.AutoscalingMetricSpecs = direct.Slice_ToProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_ToProto)
+	out.Spot = direct.ValueOf(in.Spot)
+	return out
+}
+func DeployedIndex_FromProto(mapCtx *direct.MapContext, in *pb.DeployedIndex) *krm.DeployedIndex {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeployedIndex{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Index = direct.LazyPtr(in.GetIndex())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: CreateTime
+	// MISSING: PrivateEndpoints
+	// MISSING: IndexSyncTime
+	out.AutomaticResources = AutomaticResources_FromProto(mapCtx, in.GetAutomaticResources())
+	out.DedicatedResources = DedicatedResources_FromProto(mapCtx, in.GetDedicatedResources())
+	out.EnableAccessLogging = direct.LazyPtr(in.GetEnableAccessLogging())
+	out.DeployedIndexAuthConfig = DeployedIndexAuthConfig_FromProto(mapCtx, in.GetDeployedIndexAuthConfig())
+	out.ReservedIPRanges = in.ReservedIpRanges
+	out.DeploymentGroup = direct.LazyPtr(in.GetDeploymentGroup())
+	out.PscAutomationConfigs = direct.Slice_FromProto(mapCtx, in.PscAutomationConfigs, PSCAutomationConfig_FromProto)
 	return out
 }
-func DeployedIndexRefObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployedIndexRefObservedState) *pb.DeployedIndexRef {
+func DeployedIndex_ToProto(mapCtx *direct.MapContext, in *krm.DeployedIndex) *pb.DeployedIndex {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DeployedIndexRef{}
-	// MISSING: IndexEndpoint
-	// MISSING: DeployedIndexID
+	out := &pb.DeployedIndex{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Index = direct.ValueOf(in.Index)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: CreateTime
+	// MISSING: PrivateEndpoints
+	// MISSING: IndexSyncTime
+	out.AutomaticResources = AutomaticResources_ToProto(mapCtx, in.AutomaticResources)
+	out.DedicatedResources = DedicatedResources_ToProto(mapCtx, in.DedicatedResources)
+	out.EnableAccessLogging = direct.ValueOf(in.EnableAccessLogging)
+	out.DeployedIndexAuthConfig = DeployedIndexAuthConfig_ToProto(mapCtx, in.DeployedIndexAuthConfig)
+	out.ReservedIpRanges = in.ReservedIPRanges
+	out.DeploymentGroup = direct.ValueOf(in.DeploymentGroup)
+	out.PscAutomationConfigs = direct.Slice_ToProto(mapCtx, in.PscAutomationConfigs, PSCAutomationConfig_ToProto)
+	return out
+}
+func DeployedIndexAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.DeployedIndexAuthConfig) *krm.DeployedIndexAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeployedIndexAuthConfig{}
+	out.AuthProvider = DeployedIndexAuthConfig_AuthProvider_FromProto(mapCtx, in.GetAuthProvider())
+	return out
+}
+func DeployedIndexAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.DeployedIndexAuthConfig) *pb.DeployedIndexAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeployedIndexAuthConfig{}
+	out.AuthProvider = DeployedIndexAuthConfig_AuthProvider_ToProto(mapCtx, in.AuthProvider)
+	return out
+}
+func DeployedIndexAuthConfig_AuthProvider_FromProto(mapCtx *direct.MapContext, in *pb.DeployedIndexAuthConfig_AuthProvider) *krm.DeployedIndexAuthConfig_AuthProvider {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeployedIndexAuthConfig_AuthProvider{}
+	out.Audiences = in.Audiences
+	out.AllowedIssuers = in.AllowedIssuers
+	return out
+}
+func DeployedIndexAuthConfig_AuthProvider_ToProto(mapCtx *direct.MapContext, in *krm.DeployedIndexAuthConfig_AuthProvider) *pb.DeployedIndexAuthConfig_AuthProvider {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeployedIndexAuthConfig_AuthProvider{}
+	out.Audiences = in.Audiences
+	out.AllowedIssuers = in.AllowedIssuers
+	return out
+}
+func DeployedIndexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeployedIndex) *krm.DeployedIndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeployedIndexObservedState{}
+	// MISSING: ID
+	// MISSING: Index
+	// MISSING: DisplayName
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.PrivateEndpoints = IndexPrivateEndpoints_FromProto(mapCtx, in.GetPrivateEndpoints())
+	out.IndexSyncTime = direct.StringTimestamp_FromProto(mapCtx, in.GetIndexSyncTime())
+	// MISSING: AutomaticResources
+	// MISSING: DedicatedResources
+	// MISSING: EnableAccessLogging
+	// MISSING: DeployedIndexAuthConfig
+	// MISSING: ReservedIPRanges
+	// MISSING: DeploymentGroup
+	// MISSING: PscAutomationConfigs
+	return out
+}
+func DeployedIndexObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployedIndexObservedState) *pb.DeployedIndex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeployedIndex{}
+	// MISSING: ID
+	// MISSING: Index
+	// MISSING: DisplayName
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.PrivateEndpoints = IndexPrivateEndpoints_ToProto(mapCtx, in.PrivateEndpoints)
+	out.IndexSyncTime = direct.StringTimestamp_ToProto(mapCtx, in.IndexSyncTime)
+	// MISSING: AutomaticResources
+	// MISSING: DedicatedResources
+	// MISSING: EnableAccessLogging
+	// MISSING: DeployedIndexAuthConfig
+	// MISSING: ReservedIPRanges
+	// MISSING: DeploymentGroup
+	// MISSING: PscAutomationConfigs
 	return out
 }
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
@@ -1860,131 +2088,257 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	return out
 }
-func Index_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.Index {
+func IndexEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.IndexEndpoint) *krm.IndexEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Index{}
+	out := &krm.IndexEndpoint{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
 	// MISSING: DeployedIndexes
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Labels = in.Labels
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: IndexStats
-	out.IndexUpdateMethod = direct.Enum_FromProto(mapCtx, in.GetIndexUpdateMethod())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.EnablePrivateServiceConnect = direct.LazyPtr(in.GetEnablePrivateServiceConnect())
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfig_FromProto(mapCtx, in.GetPrivateServiceConnectConfig())
+	out.PublicEndpointEnabled = direct.LazyPtr(in.GetPublicEndpointEnabled())
+	// MISSING: PublicEndpointDomainName
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
 }
-func Index_ToProto(mapCtx *direct.MapContext, in *krm.Index) *pb.Index {
+func IndexEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.IndexEndpoint) *pb.IndexEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Index{}
+	out := &pb.IndexEndpoint{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
-	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
 	// MISSING: DeployedIndexes
 	out.Etag = direct.ValueOf(in.Etag)
 	out.Labels = in.Labels
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: IndexStats
-	out.IndexUpdateMethod = direct.Enum_ToProto[pb.Index_IndexUpdateMethod](mapCtx, in.IndexUpdateMethod)
+	out.Network = direct.ValueOf(in.Network)
+	out.EnablePrivateServiceConnect = direct.ValueOf(in.EnablePrivateServiceConnect)
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfig_ToProto(mapCtx, in.PrivateServiceConnectConfig)
+	out.PublicEndpointEnabled = direct.ValueOf(in.PublicEndpointEnabled)
+	// MISSING: PublicEndpointDomainName
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
 }
-func IndexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.IndexObservedState {
+func IndexEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IndexEndpoint) *krm.IndexEndpointObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IndexObservedState{}
+	out := &krm.IndexEndpointObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: DisplayName
 	// MISSING: Description
-	// MISSING: MetadataSchemaURI
-	// MISSING: Metadata
-	out.DeployedIndexes = direct.Slice_FromProto(mapCtx, in.DeployedIndexes, DeployedIndexRef_FromProto)
+	out.DeployedIndexes = direct.Slice_FromProto(mapCtx, in.DeployedIndexes, DeployedIndex_FromProto)
 	// MISSING: Etag
 	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.IndexStats = IndexStats_FromProto(mapCtx, in.GetIndexStats())
-	// MISSING: IndexUpdateMethod
+	// MISSING: Network
+	// MISSING: EnablePrivateServiceConnect
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfigObservedState_FromProto(mapCtx, in.GetPrivateServiceConnectConfig())
+	// MISSING: PublicEndpointEnabled
+	out.PublicEndpointDomainName = direct.LazyPtr(in.GetPublicEndpointDomainName())
 	// MISSING: EncryptionSpec
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
-func IndexObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IndexObservedState) *pb.Index {
+func IndexEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IndexEndpointObservedState) *pb.IndexEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Index{}
+	out := &pb.IndexEndpoint{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: DisplayName
 	// MISSING: Description
-	// MISSING: MetadataSchemaURI
-	// MISSING: Metadata
-	out.DeployedIndexes = direct.Slice_ToProto(mapCtx, in.DeployedIndexes, DeployedIndexRef_ToProto)
+	out.DeployedIndexes = direct.Slice_ToProto(mapCtx, in.DeployedIndexes, DeployedIndex_ToProto)
 	// MISSING: Etag
 	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.IndexStats = IndexStats_ToProto(mapCtx, in.IndexStats)
-	// MISSING: IndexUpdateMethod
+	// MISSING: Network
+	// MISSING: EnablePrivateServiceConnect
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfigObservedState_ToProto(mapCtx, in.PrivateServiceConnectConfig)
+	// MISSING: PublicEndpointEnabled
+	out.PublicEndpointDomainName = direct.ValueOf(in.PublicEndpointDomainName)
 	// MISSING: EncryptionSpec
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
-func IndexStats_FromProto(mapCtx *direct.MapContext, in *pb.IndexStats) *krm.IndexStats {
+func IndexPrivateEndpoints_FromProto(mapCtx *direct.MapContext, in *pb.IndexPrivateEndpoints) *krm.IndexPrivateEndpoints {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IndexStats{}
-	// MISSING: VectorsCount
-	// MISSING: SparseVectorsCount
-	// MISSING: ShardsCount
+	out := &krm.IndexPrivateEndpoints{}
+	// MISSING: MatchGrpcAddress
+	// MISSING: ServiceAttachment
+	// MISSING: PscAutomatedEndpoints
 	return out
 }
-func IndexStats_ToProto(mapCtx *direct.MapContext, in *krm.IndexStats) *pb.IndexStats {
+func IndexPrivateEndpoints_ToProto(mapCtx *direct.MapContext, in *krm.IndexPrivateEndpoints) *pb.IndexPrivateEndpoints {
 	if in == nil {
 		return nil
 	}
-	out := &pb.IndexStats{}
-	// MISSING: VectorsCount
-	// MISSING: SparseVectorsCount
-	// MISSING: ShardsCount
+	out := &pb.IndexPrivateEndpoints{}
+	// MISSING: MatchGrpcAddress
+	// MISSING: ServiceAttachment
+	// MISSING: PscAutomatedEndpoints
 	return out
 }
-func IndexStatsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IndexStats) *krm.IndexStatsObservedState {
+func IndexPrivateEndpointsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IndexPrivateEndpoints) *krm.IndexPrivateEndpointsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IndexStatsObservedState{}
-	out.VectorsCount = direct.LazyPtr(in.GetVectorsCount())
-	out.SparseVectorsCount = direct.LazyPtr(in.GetSparseVectorsCount())
-	out.ShardsCount = direct.LazyPtr(in.GetShardsCount())
+	out := &krm.IndexPrivateEndpointsObservedState{}
+	out.MatchGrpcAddress = direct.LazyPtr(in.GetMatchGrpcAddress())
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	out.PscAutomatedEndpoints = direct.Slice_FromProto(mapCtx, in.PscAutomatedEndpoints, PscAutomatedEndpoints_FromProto)
 	return out
 }
-func IndexStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IndexStatsObservedState) *pb.IndexStats {
+func IndexPrivateEndpointsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IndexPrivateEndpointsObservedState) *pb.IndexPrivateEndpoints {
 	if in == nil {
 		return nil
 	}
-	out := &pb.IndexStats{}
-	out.VectorsCount = direct.ValueOf(in.VectorsCount)
-	out.SparseVectorsCount = direct.ValueOf(in.SparseVectorsCount)
-	out.ShardsCount = direct.ValueOf(in.ShardsCount)
+	out := &pb.IndexPrivateEndpoints{}
+	out.MatchGrpcAddress = direct.ValueOf(in.MatchGrpcAddress)
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	out.PscAutomatedEndpoints = direct.Slice_ToProto(mapCtx, in.PscAutomatedEndpoints, PscAutomatedEndpoints_ToProto)
+	return out
+}
+func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MachineSpec{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
+	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
+	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
+	return out
+}
+func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MachineSpec{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.AcceleratorType = direct.Enum_ToProto[pb.AcceleratorType](mapCtx, in.AcceleratorType)
+	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
+	out.TpuTopology = direct.ValueOf(in.TpuTopology)
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+	return out
+}
+func PSCAutomationConfig_FromProto(mapCtx *direct.MapContext, in *pb.PSCAutomationConfig) *krm.PSCAutomationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCAutomationConfig{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	return out
+}
+func PSCAutomationConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutomationConfig) *pb.PSCAutomationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PSCAutomationConfig{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.Network = direct.ValueOf(in.Network)
+	return out
+}
+func PrivateServiceConnectConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConfig) *krm.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateServiceConnectConfig{}
+	out.EnablePrivateServiceConnect = direct.LazyPtr(in.GetEnablePrivateServiceConnect())
+	out.ProjectAllowlist = in.ProjectAllowlist
+	// MISSING: ServiceAttachment
+	return out
+}
+func PrivateServiceConnectConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConfig) *pb.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateServiceConnectConfig{}
+	out.EnablePrivateServiceConnect = direct.ValueOf(in.EnablePrivateServiceConnect)
+	out.ProjectAllowlist = in.ProjectAllowlist
+	// MISSING: ServiceAttachment
+	return out
+}
+func PrivateServiceConnectConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConfig) *krm.PrivateServiceConnectConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateServiceConnectConfigObservedState{}
+	// MISSING: EnablePrivateServiceConnect
+	// MISSING: ProjectAllowlist
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	return out
+}
+func PrivateServiceConnectConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConfigObservedState) *pb.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateServiceConnectConfig{}
+	// MISSING: EnablePrivateServiceConnect
+	// MISSING: ProjectAllowlist
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	return out
+}
+func PscAutomatedEndpoints_FromProto(mapCtx *direct.MapContext, in *pb.PscAutomatedEndpoints) *krm.PscAutomatedEndpoints {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PscAutomatedEndpoints{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.MatchAddress = direct.LazyPtr(in.GetMatchAddress())
+	return out
+}
+func PscAutomatedEndpoints_ToProto(mapCtx *direct.MapContext, in *krm.PscAutomatedEndpoints) *pb.PscAutomatedEndpoints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscAutomatedEndpoints{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.Network = direct.ValueOf(in.Network)
+	out.MatchAddress = direct.ValueOf(in.MatchAddress)
+	return out
+}
+func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_FromProto(mapCtx, in.GetReservationAffinityType())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Values = in.Values
+	return out
+}
+func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinity) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
+	out.Key = direct.ValueOf(in.Key)
+	out.Values = in.Values
 	return out
 }
