@@ -15,6 +15,19 @@
 package v1alpha1
 
 
+// +kcc:proto=google.cloud.apihub.v1.ApiOperation
+type ApiOperation struct {
+	// Identifier. The name of the operation.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
+	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.name
+	Name *string `json:"name,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+
 // +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
 type Attribute_AllowedValue struct {
 	// Required. The ID of the allowed value.
@@ -77,76 +90,6 @@ type AttributeValues_StringAttributeValues struct {
 	Values []string `json:"values,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.Deployment
-type Deployment struct {
-	// Identifier. The name of the deployment.
-	//
-	//  Format:
-	//  `projects/{project}/locations/{location}/deployments/{deployment}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The display name of the deployment.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. The description of the deployment.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. The documentation of the deployment.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.documentation
-	Documentation *Documentation `json:"documentation,omitempty"`
-
-	// Required. The type of deployment.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-deployment-type`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.deployment_type
-	DeploymentType *AttributeValues `json:"deploymentType,omitempty"`
-
-	// Required. A URI to the runtime resource. This URI can be used to manage the
-	//  resource. For example, if the runtime resource is of type APIGEE_PROXY,
-	//  then this field will contain the URI to the management UI of the proxy.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.resource_uri
-	ResourceURI *string `json:"resourceURI,omitempty"`
-
-	// Required. The endpoints at which this deployment resource is listening for
-	//  API requests. This could be a list of complete URIs, hostnames or an IP
-	//  addresses.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.endpoints
-	Endpoints []string `json:"endpoints,omitempty"`
-
-	// Optional. The SLO for this deployment.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-slo`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.slo
-	Slo *AttributeValues `json:"slo,omitempty"`
-
-	// Optional. The environment mapping to this deployment.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-environment`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.environment
-	Environment *AttributeValues `json:"environment,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-}
-
 // +kcc:proto=google.cloud.apihub.v1.Documentation
 type Documentation struct {
 	// Optional. The uri of the externally hosted documentation.
@@ -154,38 +97,83 @@ type Documentation struct {
 	ExternalURI *string `json:"externalURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.AttributeValues
-type AttributeValuesObservedState struct {
-	// Output only. The name of the attribute.
-	//  Format: projects/{project}/locations/{location}/attributes/{attribute}
-	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.attribute
-	Attribute *string `json:"attribute,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.HttpOperation
+type HttpOperation struct {
 }
 
-// +kcc:proto=google.cloud.apihub.v1.Deployment
-type DeploymentObservedState struct {
-	// Required. The type of deployment.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-deployment-type`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.deployment_type
-	DeploymentType *AttributeValuesObservedState `json:"deploymentType,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.OperationDetails
+type OperationDetails struct {
+	// The HTTP Operation.
+	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.http_operation
+	HTTPOperation *HttpOperation `json:"httpOperation,omitempty"`
+}
 
-	// Output only. The API versions linked to this deployment.
-	//  Note: A particular deployment could be linked to multiple different API
-	//  versions (of same or different APIs).
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.api_versions
-	ApiVersions []string `json:"apiVersions,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.Path
+type Path struct {
+}
 
-	// Output only. The time at which the deployment was created.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.create_time
+// +kcc:proto=google.cloud.apihub.v1.ApiOperation
+type ApiOperationObservedState struct {
+	// Output only. The name of the spec from where the operation was parsed.
+	//  Format is
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}`
+	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.spec
+	Spec *string `json:"spec,omitempty"`
+
+	// Output only. Operation details.
+	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.details
+	Details *OperationDetails `json:"details,omitempty"`
+
+	// Output only. The time at which the operation was created.
+	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The time at which the deployment was last updated.
-	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.update_time
+	// Output only. The time at which the operation was last updated.
+	// +kcc:proto:field=google.cloud.apihub.v1.ApiOperation.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.HttpOperation
+type HttpOperationObservedState struct {
+	// Output only. The path details for the Operation.
+	// +kcc:proto:field=google.cloud.apihub.v1.HttpOperation.path
+	Path *Path `json:"path,omitempty"`
+
+	// Output only. Operation method
+	// +kcc:proto:field=google.cloud.apihub.v1.HttpOperation.method
+	Method *string `json:"method,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.OperationDetails
+type OperationDetailsObservedState struct {
+	// The HTTP Operation.
+	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.http_operation
+	HTTPOperation *HttpOperationObservedState `json:"httpOperation,omitempty"`
+
+	// Output only. Description of the operation behavior.
+	//  For OpenAPI spec, this will map to `operation.description` in the
+	//  spec, in case description is empty, `operation.summary` will be used.
+	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. Additional external documentation for this operation.
+	//  For OpenAPI spec, this will map to `operation.documentation` in the spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.documentation
+	Documentation *Documentation `json:"documentation,omitempty"`
+
+	// Output only. For OpenAPI spec, this will be set if `operation.deprecated`is
+	//  marked as `true` in the spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.OperationDetails.deprecated
+	Deprecated *bool `json:"deprecated,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Path
+type PathObservedState struct {
+	// Output only. Complete path relative to server endpoint.
+	// +kcc:proto:field=google.cloud.apihub.v1.Path.path
+	Path *string `json:"path,omitempty"`
+
+	// Output only. A short description for the path applicable to all operations.
+	// +kcc:proto:field=google.cloud.apihub.v1.Path.description
+	Description *string `json:"description,omitempty"`
 }
