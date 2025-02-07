@@ -15,10 +15,10 @@
 package apihub
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func ApihubApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApihubApiObservedState {
 	if in == nil {
@@ -288,6 +288,74 @@ func ApihubDefinitionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubDefin
 	// MISSING: Attributes
 	return out
 }
+func ApihubDependencyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.ApihubDependencyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubDependencyObservedState{}
+	// MISSING: Name
+	// MISSING: Consumer
+	// MISSING: Supplier
+	// MISSING: State
+	// MISSING: Description
+	// MISSING: DiscoveryMode
+	// MISSING: ErrorDetail
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Attributes
+	return out
+}
+func ApihubDependencyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubDependencyObservedState) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	// MISSING: Name
+	// MISSING: Consumer
+	// MISSING: Supplier
+	// MISSING: State
+	// MISSING: Description
+	// MISSING: DiscoveryMode
+	// MISSING: ErrorDetail
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Attributes
+	return out
+}
+func ApihubDependencySpec_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.ApihubDependencySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubDependencySpec{}
+	// MISSING: Name
+	// MISSING: Consumer
+	// MISSING: Supplier
+	// MISSING: State
+	// MISSING: Description
+	// MISSING: DiscoveryMode
+	// MISSING: ErrorDetail
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Attributes
+	return out
+}
+func ApihubDependencySpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubDependencySpec) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	// MISSING: Name
+	// MISSING: Consumer
+	// MISSING: Supplier
+	// MISSING: State
+	// MISSING: Description
+	// MISSING: DiscoveryMode
+	// MISSING: ErrorDetail
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Attributes
+	return out
+}
 func ApihubDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.ApihubDeploymentObservedState {
 	if in == nil {
 		return nil
@@ -532,76 +600,64 @@ func ApihubVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubVersionS
 	// MISSING: SelectedDeployment
 	return out
 }
-func Attribute_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.Attribute {
+func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Attribute{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: DefinitionType
-	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
-	out.DataType = direct.Enum_FromProto(mapCtx, in.GetDataType())
-	out.AllowedValues = direct.Slice_FromProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_FromProto)
-	out.Cardinality = direct.LazyPtr(in.GetCardinality())
-	// MISSING: Mandatory
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out := &krm.AttributeValues{}
+	out.EnumValues = AttributeValues_EnumAttributeValues_FromProto(mapCtx, in.GetEnumValues())
+	out.StringValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetStringValues())
+	out.JsonValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetJsonValues())
+	// MISSING: Attribute
 	return out
 }
-func Attribute_ToProto(mapCtx *direct.MapContext, in *krm.Attribute) *pb.Attribute {
+func AttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues) *pb.AttributeValues {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Attribute{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: DefinitionType
-	out.Scope = direct.Enum_ToProto[pb.Attribute_Scope](mapCtx, in.Scope)
-	out.DataType = direct.Enum_ToProto[pb.Attribute_DataType](mapCtx, in.DataType)
-	out.AllowedValues = direct.Slice_ToProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_ToProto)
-	out.Cardinality = direct.ValueOf(in.Cardinality)
-	// MISSING: Mandatory
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out := &pb.AttributeValues{}
+	if oneof := AttributeValues_EnumAttributeValues_ToProto(mapCtx, in.EnumValues); oneof != nil {
+		out.Value = &pb.AttributeValues_EnumValues{EnumValues: oneof}
+	}
+	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.StringValues); oneof != nil {
+		out.Value = &pb.AttributeValues_StringValues{StringValues: oneof}
+	}
+	if oneof := AttributeValues_StringAttributeValues_ToProto(mapCtx, in.JsonValues); oneof != nil {
+		out.Value = &pb.AttributeValues_JsonValues{JsonValues: oneof}
+	}
+	// MISSING: Attribute
 	return out
 }
-func AttributeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.AttributeObservedState {
+func AttributeValues_EnumAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValues {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AttributeObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	out.DefinitionType = direct.Enum_FromProto(mapCtx, in.GetDefinitionType())
-	// MISSING: Scope
-	// MISSING: DataType
-	// MISSING: AllowedValues
-	// MISSING: Cardinality
-	out.Mandatory = direct.LazyPtr(in.GetMandatory())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out := &krm.AttributeValues_EnumAttributeValues{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Attribute_AllowedValue_FromProto)
 	return out
 }
-func AttributeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributeObservedState) *pb.Attribute {
+func AttributeValues_EnumAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_EnumAttributeValues) *pb.AttributeValues_EnumAttributeValues {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Attribute{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	out.DefinitionType = direct.Enum_ToProto[pb.Attribute_DefinitionType](mapCtx, in.DefinitionType)
-	// MISSING: Scope
-	// MISSING: DataType
-	// MISSING: AllowedValues
-	// MISSING: Cardinality
-	out.Mandatory = direct.ValueOf(in.Mandatory)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out := &pb.AttributeValues_EnumAttributeValues{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Attribute_AllowedValue_ToProto)
+	return out
+}
+func AttributeValues_StringAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_StringAttributeValues) *krm.AttributeValues_StringAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValues_StringAttributeValues{}
+	out.Values = in.Values
+	return out
+}
+func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_StringAttributeValues) *pb.AttributeValues_StringAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues_StringAttributeValues{}
+	out.Values = in.Values
 	return out
 }
 func Attribute_AllowedValue_FromProto(mapCtx *direct.MapContext, in *pb.Attribute_AllowedValue) *krm.Attribute_AllowedValue {
@@ -624,5 +680,135 @@ func Attribute_AllowedValue_ToProto(mapCtx *direct.MapContext, in *krm.Attribute
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Immutable = direct.ValueOf(in.Immutable)
+	return out
+}
+func Dependency_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Dependency{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Consumer = DependencyEntityReference_FromProto(mapCtx, in.GetConsumer())
+	out.Supplier = DependencyEntityReference_FromProto(mapCtx, in.GetSupplier())
+	// MISSING: State
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: DiscoveryMode
+	// MISSING: ErrorDetail
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Attributes
+	return out
+}
+func Dependency_ToProto(mapCtx *direct.MapContext, in *krm.Dependency) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Consumer = DependencyEntityReference_ToProto(mapCtx, in.Consumer)
+	out.Supplier = DependencyEntityReference_ToProto(mapCtx, in.Supplier)
+	// MISSING: State
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: DiscoveryMode
+	// MISSING: ErrorDetail
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Attributes
+	return out
+}
+func DependencyEntityReference_FromProto(mapCtx *direct.MapContext, in *pb.DependencyEntityReference) *krm.DependencyEntityReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyEntityReference{}
+	out.OperationResourceName = direct.LazyPtr(in.GetOperationResourceName())
+	out.ExternalApiResourceName = direct.LazyPtr(in.GetExternalApiResourceName())
+	// MISSING: DisplayName
+	return out
+}
+func DependencyEntityReference_ToProto(mapCtx *direct.MapContext, in *krm.DependencyEntityReference) *pb.DependencyEntityReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DependencyEntityReference{}
+	if oneof := DependencyEntityReference_OperationResourceName_ToProto(mapCtx, in.OperationResourceName); oneof != nil {
+		out.Identifier = oneof
+	}
+	if oneof := DependencyEntityReference_ExternalApiResourceName_ToProto(mapCtx, in.ExternalApiResourceName); oneof != nil {
+		out.Identifier = oneof
+	}
+	// MISSING: DisplayName
+	return out
+}
+func DependencyEntityReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DependencyEntityReference) *krm.DependencyEntityReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyEntityReferenceObservedState{}
+	// MISSING: OperationResourceName
+	// MISSING: ExternalApiResourceName
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func DependencyEntityReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DependencyEntityReferenceObservedState) *pb.DependencyEntityReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DependencyEntityReference{}
+	// MISSING: OperationResourceName
+	// MISSING: ExternalApiResourceName
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+func DependencyErrorDetail_FromProto(mapCtx *direct.MapContext, in *pb.DependencyErrorDetail) *krm.DependencyErrorDetail {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyErrorDetail{}
+	out.Error = direct.Enum_FromProto(mapCtx, in.GetError())
+	out.ErrorTime = direct.StringTimestamp_FromProto(mapCtx, in.GetErrorTime())
+	return out
+}
+func DependencyErrorDetail_ToProto(mapCtx *direct.MapContext, in *krm.DependencyErrorDetail) *pb.DependencyErrorDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DependencyErrorDetail{}
+	out.Error = direct.Enum_ToProto[pb.DependencyErrorDetail_Error](mapCtx, in.Error)
+	out.ErrorTime = direct.StringTimestamp_ToProto(mapCtx, in.ErrorTime)
+	return out
+}
+func DependencyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.DependencyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyObservedState{}
+	// MISSING: Name
+	out.Consumer = DependencyEntityReferenceObservedState_FromProto(mapCtx, in.GetConsumer())
+	// MISSING: Supplier
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: Description
+	out.DiscoveryMode = direct.Enum_FromProto(mapCtx, in.GetDiscoveryMode())
+	out.ErrorDetail = DependencyErrorDetail_FromProto(mapCtx, in.GetErrorDetail())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Attributes
+	return out
+}
+func DependencyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DependencyObservedState) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	// MISSING: Name
+	out.Consumer = DependencyEntityReferenceObservedState_ToProto(mapCtx, in.Consumer)
+	// MISSING: Supplier
+	out.State = direct.Enum_ToProto[pb.Dependency_State](mapCtx, in.State)
+	// MISSING: Description
+	out.DiscoveryMode = direct.Enum_ToProto[pb.Dependency_DiscoveryMode](mapCtx, in.DiscoveryMode)
+	out.ErrorDetail = DependencyErrorDetail_ToProto(mapCtx, in.ErrorDetail)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Attributes
 	return out
 }

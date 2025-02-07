@@ -15,47 +15,6 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apihub.v1.Attribute
-type Attribute struct {
-	// Identifier. The name of the attribute in the API Hub.
-	//
-	//  Format:
-	//  `projects/{project}/locations/{location}/attributes/{attribute}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The display name of the attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. The description of the attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. The scope of the attribute. It represents the resource in the API
-	//  Hub to which the attribute can be linked.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.scope
-	Scope *string `json:"scope,omitempty"`
-
-	// Required. The type of the data of the attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.data_type
-	DataType *string `json:"dataType,omitempty"`
-
-	// Optional. The list of allowed values when the attribute value is of type
-	//  enum. This is required when the data_type of the attribute is ENUM. The
-	//  maximum number of allowed values of an attribute will be 1000.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.allowed_values
-	AllowedValues []Attribute_AllowedValue `json:"allowedValues,omitempty"`
-
-	// Optional. The maximum number of values that the attribute can have when
-	//  associated with an API Hub resource. Cardinality 1 would represent a
-	//  single-valued attribute. It must not be less than 1 or greater than 20. If
-	//  not specified, the cardinality would be set to 1 by default and represent a
-	//  single-valued attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.cardinality
-	Cardinality *int32 `json:"cardinality,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
 type Attribute_AllowedValue struct {
 	// Required. The ID of the allowed value.
@@ -85,23 +44,122 @@ type Attribute_AllowedValue struct {
 	Immutable *bool `json:"immutable,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.Attribute
-type AttributeObservedState struct {
-	// Output only. The definition type of the attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.definition_type
-	DefinitionType *string `json:"definitionType,omitempty"`
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues
+type AttributeValues struct {
+	// The attribute values associated with a resource in case attribute data
+	//  type is enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.enum_values
+	EnumValues *AttributeValues_EnumAttributeValues `json:"enumValues,omitempty"`
 
-	// Output only. When mandatory is true, the attribute is mandatory for the
-	//  resource specified in the scope. Only System defined attributes can be
-	//  mandatory.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.mandatory
-	Mandatory *bool `json:"mandatory,omitempty"`
+	// The attribute values associated with a resource in case attribute data
+	//  type is string.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.string_values
+	StringValues *AttributeValues_StringAttributeValues `json:"stringValues,omitempty"`
 
-	// Output only. The time at which the attribute was created.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.create_time
+	// The attribute values associated with a resource in case attribute data
+	//  type is JSON.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.json_values
+	JsonValues *AttributeValues_StringAttributeValues `json:"jsonValues,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
+type AttributeValues_EnumAttributeValues struct {
+	// Required. The attribute values in case attribute data type is enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues.values
+	Values []Attribute_AllowedValue `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues.StringAttributeValues
+type AttributeValues_StringAttributeValues struct {
+	// Required. The attribute values in case attribute data type is string or
+	//  JSON.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.StringAttributeValues.values
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Dependency
+type Dependency struct {
+	// Identifier. The name of the dependency in the API Hub.
+	//
+	//  Format: `projects/{project}/locations/{location}/dependencies/{dependency}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. The entity acting as the consumer in the dependency.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.consumer
+	Consumer *DependencyEntityReference `json:"consumer,omitempty"`
+
+	// Required. Immutable. The entity acting as the supplier in the dependency.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.supplier
+	Supplier *DependencyEntityReference `json:"supplier,omitempty"`
+
+	// Optional. Human readable description corresponding of the dependency.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.description
+	Description *string `json:"description,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+
+// +kcc:proto=google.cloud.apihub.v1.DependencyEntityReference
+type DependencyEntityReference struct {
+	// The resource name of an operation in the API Hub.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyEntityReference.operation_resource_name
+	OperationResourceName *string `json:"operationResourceName,omitempty"`
+
+	// The resource name of an external API in the API Hub.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/externalApis/{external_api}`
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyEntityReference.external_api_resource_name
+	ExternalApiResourceName *string `json:"externalApiResourceName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.DependencyErrorDetail
+type DependencyErrorDetail struct {
+	// Optional. Error in the dependency.
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyErrorDetail.error
+	Error *string `json:"error,omitempty"`
+
+	// Optional. Timestamp at which the error was found.
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyErrorDetail.error_time
+	ErrorTime *string `json:"errorTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Dependency
+type DependencyObservedState struct {
+	// Required. Immutable. The entity acting as the consumer in the dependency.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.consumer
+	Consumer *DependencyEntityReferenceObservedState `json:"consumer,omitempty"`
+
+	// Output only. State of the dependency.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Discovery mode of the dependency.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.discovery_mode
+	DiscoveryMode *string `json:"discoveryMode,omitempty"`
+
+	// Output only. Error details of a dependency if the system has detected it
+	//  internally.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.error_detail
+	ErrorDetail *DependencyErrorDetail `json:"errorDetail,omitempty"`
+
+	// Output only. The time at which the dependency was created.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The time at which the attribute was last updated.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.update_time
+	// Output only. The time at which the dependency was last updated.
+	// +kcc:proto:field=google.cloud.apihub.v1.Dependency.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.DependencyEntityReference
+type DependencyEntityReferenceObservedState struct {
+	// Output only. Display name of the entity.
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyEntityReference.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 }
