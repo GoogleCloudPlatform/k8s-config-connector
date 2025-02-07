@@ -15,11 +15,33 @@
 package analytics
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
+func AccountSummary_FromProto(mapCtx *direct.MapContext, in *pb.AccountSummary) *krm.AccountSummary {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccountSummary{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Account = direct.LazyPtr(in.GetAccount())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.PropertySummaries = direct.Slice_FromProto(mapCtx, in.PropertySummaries, PropertySummary_FromProto)
+	return out
+}
+func AccountSummary_ToProto(mapCtx *direct.MapContext, in *krm.AccountSummary) *pb.AccountSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccountSummary{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Account = direct.ValueOf(in.Account)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.PropertySummaries = direct.Slice_ToProto(mapCtx, in.PropertySummaries, PropertySummary_ToProto)
+	return out
+}
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
 		return nil
@@ -74,6 +96,50 @@ func AnalyticsAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAc
 	// MISSING: RegionCode
 	// MISSING: Deleted
 	// MISSING: GmpOrganization
+	return out
+}
+func AnalyticsAccountSummaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccountSummary) *krm.AnalyticsAccountSummaryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsAccountSummaryObservedState{}
+	// MISSING: Name
+	// MISSING: Account
+	// MISSING: DisplayName
+	// MISSING: PropertySummaries
+	return out
+}
+func AnalyticsAccountSummaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAccountSummaryObservedState) *pb.AccountSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccountSummary{}
+	// MISSING: Name
+	// MISSING: Account
+	// MISSING: DisplayName
+	// MISSING: PropertySummaries
+	return out
+}
+func AnalyticsAccountSummarySpec_FromProto(mapCtx *direct.MapContext, in *pb.AccountSummary) *krm.AnalyticsAccountSummarySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsAccountSummarySpec{}
+	// MISSING: Name
+	// MISSING: Account
+	// MISSING: DisplayName
+	// MISSING: PropertySummaries
+	return out
+}
+func AnalyticsAccountSummarySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAccountSummarySpec) *pb.AccountSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccountSummary{}
+	// MISSING: Name
+	// MISSING: Account
+	// MISSING: DisplayName
+	// MISSING: PropertySummaries
 	return out
 }
 func AnalyticsDataSharingSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.AnalyticsDataSharingSettingsObservedState {
@@ -364,55 +430,25 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func DataSharingSettings_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.DataSharingSettings {
+func PropertySummary_FromProto(mapCtx *direct.MapContext, in *pb.PropertySummary) *krm.PropertySummary {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataSharingSettings{}
-	// MISSING: Name
-	out.SharingWithGoogleSupportEnabled = direct.LazyPtr(in.GetSharingWithGoogleSupportEnabled())
-	out.SharingWithGoogleAssignedSalesEnabled = direct.LazyPtr(in.GetSharingWithGoogleAssignedSalesEnabled())
-	out.SharingWithGoogleAnySalesEnabled = direct.LazyPtr(in.GetSharingWithGoogleAnySalesEnabled())
-	out.SharingWithGoogleProductsEnabled = direct.LazyPtr(in.GetSharingWithGoogleProductsEnabled())
-	out.SharingWithOthersEnabled = direct.LazyPtr(in.GetSharingWithOthersEnabled())
+	out := &krm.PropertySummary{}
+	out.Property = direct.LazyPtr(in.GetProperty())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.PropertyType = direct.Enum_FromProto(mapCtx, in.GetPropertyType())
+	out.Parent = direct.LazyPtr(in.GetParent())
 	return out
 }
-func DataSharingSettings_ToProto(mapCtx *direct.MapContext, in *krm.DataSharingSettings) *pb.DataSharingSettings {
+func PropertySummary_ToProto(mapCtx *direct.MapContext, in *krm.PropertySummary) *pb.PropertySummary {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataSharingSettings{}
-	// MISSING: Name
-	out.SharingWithGoogleSupportEnabled = direct.ValueOf(in.SharingWithGoogleSupportEnabled)
-	out.SharingWithGoogleAssignedSalesEnabled = direct.ValueOf(in.SharingWithGoogleAssignedSalesEnabled)
-	out.SharingWithGoogleAnySalesEnabled = direct.ValueOf(in.SharingWithGoogleAnySalesEnabled)
-	out.SharingWithGoogleProductsEnabled = direct.ValueOf(in.SharingWithGoogleProductsEnabled)
-	out.SharingWithOthersEnabled = direct.ValueOf(in.SharingWithOthersEnabled)
-	return out
-}
-func DataSharingSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.DataSharingSettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataSharingSettingsObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: SharingWithGoogleSupportEnabled
-	// MISSING: SharingWithGoogleAssignedSalesEnabled
-	// MISSING: SharingWithGoogleAnySalesEnabled
-	// MISSING: SharingWithGoogleProductsEnabled
-	// MISSING: SharingWithOthersEnabled
-	return out
-}
-func DataSharingSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataSharingSettingsObservedState) *pb.DataSharingSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataSharingSettings{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: SharingWithGoogleSupportEnabled
-	// MISSING: SharingWithGoogleAssignedSalesEnabled
-	// MISSING: SharingWithGoogleAnySalesEnabled
-	// MISSING: SharingWithGoogleProductsEnabled
-	// MISSING: SharingWithOthersEnabled
+	out := &pb.PropertySummary{}
+	out.Property = direct.ValueOf(in.Property)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.PropertyType = direct.Enum_ToProto[pb.PropertyType](mapCtx, in.PropertyType)
+	out.Parent = direct.ValueOf(in.Parent)
 	return out
 }

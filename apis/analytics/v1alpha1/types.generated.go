@@ -15,39 +15,50 @@
 package v1alpha1
 
 
-// +kcc:proto=google.analytics.admin.v1beta.DataSharingSettings
-type DataSharingSettings struct {
+// +kcc:proto=google.analytics.admin.v1beta.AccountSummary
+type AccountSummary struct {
+	// Resource name for this account summary.
+	//  Format: accountSummaries/{account_id}
+	//  Example: "accountSummaries/1000"
+	// +kcc:proto:field=google.analytics.admin.v1beta.AccountSummary.name
+	Name *string `json:"name,omitempty"`
 
-	// Allows Google support to access the data in order to help troubleshoot
-	//  issues.
-	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_google_support_enabled
-	SharingWithGoogleSupportEnabled *bool `json:"sharingWithGoogleSupportEnabled,omitempty"`
+	// Resource name of account referred to by this account summary
+	//  Format: accounts/{account_id}
+	//  Example: "accounts/1000"
+	// +kcc:proto:field=google.analytics.admin.v1beta.AccountSummary.account
+	Account *string `json:"account,omitempty"`
 
-	// Allows Google sales teams that are assigned to the customer to access the
-	//  data in order to suggest configuration changes to improve results.
-	//  Sales team restrictions still apply when enabled.
-	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_google_assigned_sales_enabled
-	SharingWithGoogleAssignedSalesEnabled *bool `json:"sharingWithGoogleAssignedSalesEnabled,omitempty"`
+	// Display name for the account referred to in this account summary.
+	// +kcc:proto:field=google.analytics.admin.v1beta.AccountSummary.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
-	// Allows any of Google sales to access the data in order to suggest
-	//  configuration changes to improve results.
-	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_google_any_sales_enabled
-	SharingWithGoogleAnySalesEnabled *bool `json:"sharingWithGoogleAnySalesEnabled,omitempty"`
-
-	// Allows Google to use the data to improve other Google products or services.
-	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_google_products_enabled
-	SharingWithGoogleProductsEnabled *bool `json:"sharingWithGoogleProductsEnabled,omitempty"`
-
-	// Allows Google to share the data anonymously in aggregate form with others.
-	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_others_enabled
-	SharingWithOthersEnabled *bool `json:"sharingWithOthersEnabled,omitempty"`
+	// List of summaries for child accounts of this account.
+	// +kcc:proto:field=google.analytics.admin.v1beta.AccountSummary.property_summaries
+	PropertySummaries []PropertySummary `json:"propertySummaries,omitempty"`
 }
 
-// +kcc:proto=google.analytics.admin.v1beta.DataSharingSettings
-type DataSharingSettingsObservedState struct {
-	// Output only. Resource name.
-	//  Format: accounts/{account}/dataSharingSettings
-	//  Example: "accounts/1000/dataSharingSettings"
-	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.analytics.admin.v1beta.PropertySummary
+type PropertySummary struct {
+	// Resource name of property referred to by this property summary
+	//  Format: properties/{property_id}
+	//  Example: "properties/1000"
+	// +kcc:proto:field=google.analytics.admin.v1beta.PropertySummary.property
+	Property *string `json:"property,omitempty"`
+
+	// Display name for the property referred to in this property summary.
+	// +kcc:proto:field=google.analytics.admin.v1beta.PropertySummary.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The property's property type.
+	// +kcc:proto:field=google.analytics.admin.v1beta.PropertySummary.property_type
+	PropertyType *string `json:"propertyType,omitempty"`
+
+	// Resource name of this property's logical parent.
+	//
+	//  Note: The Property-Moving UI can be used to change the parent.
+	//  Format: accounts/{account}, properties/{property}
+	//  Example: "accounts/100", "properties/200"
+	// +kcc:proto:field=google.analytics.admin.v1beta.PropertySummary.parent
+	Parent *string `json:"parent,omitempty"`
 }
