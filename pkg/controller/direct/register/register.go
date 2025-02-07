@@ -21,6 +21,7 @@ import (
 	_ "pkg/controller/direct/alloydb"
 	_ "pkg/controller/direct/apigateway"
 	_ "pkg/controller/direct/apigeeregistry"
+	_ "pkg/controller/direct/apihub"
 	_ "pkg/controller/direct/bigtable"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
