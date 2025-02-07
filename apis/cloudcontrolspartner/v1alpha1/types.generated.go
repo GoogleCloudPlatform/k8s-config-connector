@@ -15,34 +15,34 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.AccessApprovalRequest
 type AccessApprovalRequest struct {
 	// Identifier. Format:
 	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/accessApprovalRequests/{access_approval_request}`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest.name
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.AccessApprovalRequest.name
 	Name *string `json:"name,omitempty"`
 
 	// The time at which approval was requested.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest.request_time
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.AccessApprovalRequest.request_time
 	RequestTime *string `json:"requestTime,omitempty"`
 
 	// The justification for which approval is being requested.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest.requested_reason
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.AccessApprovalRequest.requested_reason
 	RequestedReason *AccessReason `json:"requestedReason,omitempty"`
 
 	// The requested expiration for the approval. If the request is approved,
 	//  access will be granted from the time of approval until the expiration time.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest.requested_expiration_time
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.AccessApprovalRequest.requested_expiration_time
 	RequestedExpirationTime *string `json:"requestedExpirationTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.AccessReason
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.AccessReason
 type AccessReason struct {
 	// Type of access justification.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessReason.type
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.AccessReason.type
 	Type *string `json:"type,omitempty"`
 
 	// More detail about certain reason types. See comments for each type above.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.AccessReason.detail
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.AccessReason.detail
 	Detail *string `json:"detail,omitempty"`
 }
