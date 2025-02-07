@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -2168,6 +2168,58 @@ func AiplatformModelEvaluationObservedState_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Metadata
 	return out
 }
+func AiplatformModelEvaluationSliceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice) *krm.AiplatformModelEvaluationSliceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformModelEvaluationSliceObservedState{}
+	// MISSING: Name
+	// MISSING: Slice
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: ModelExplanation
+	return out
+}
+func AiplatformModelEvaluationSliceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformModelEvaluationSliceObservedState) *pb.ModelEvaluationSlice {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluationSlice{}
+	// MISSING: Name
+	// MISSING: Slice
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: ModelExplanation
+	return out
+}
+func AiplatformModelEvaluationSliceSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice) *krm.AiplatformModelEvaluationSliceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformModelEvaluationSliceSpec{}
+	// MISSING: Name
+	// MISSING: Slice
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: ModelExplanation
+	return out
+}
+func AiplatformModelEvaluationSliceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformModelEvaluationSliceSpec) *pb.ModelEvaluationSlice {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluationSlice{}
+	// MISSING: Name
+	// MISSING: Slice
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: ModelExplanation
+	return out
+}
 func AiplatformModelEvaluationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.AiplatformModelEvaluationSpec {
 	if in == nil {
 		return nil
@@ -2420,278 +2472,178 @@ func AttributionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Attribu
 	out.OutputName = direct.ValueOf(in.OutputName)
 	return out
 }
-func BlurBaselineConfig_FromProto(mapCtx *direct.MapContext, in *pb.BlurBaselineConfig) *krm.BlurBaselineConfig {
+func ModelEvaluationSlice_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice) *krm.ModelEvaluationSlice {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BlurBaselineConfig{}
-	out.MaxBlurSigma = direct.LazyPtr(in.GetMaxBlurSigma())
-	return out
-}
-func BlurBaselineConfig_ToProto(mapCtx *direct.MapContext, in *krm.BlurBaselineConfig) *pb.BlurBaselineConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BlurBaselineConfig{}
-	out.MaxBlurSigma = direct.ValueOf(in.MaxBlurSigma)
-	return out
-}
-func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Examples {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Examples{}
-	out.ExampleGcsSource = Examples_ExampleGcsSource_FromProto(mapCtx, in.GetExampleGcsSource())
-	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
-	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
-	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
-	return out
-}
-func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Examples{}
-	if oneof := Examples_ExampleGcsSource_ToProto(mapCtx, in.ExampleGcsSource); oneof != nil {
-		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
-	}
-	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
-		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
-	}
-	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
-		out.Config = &pb.Examples_Presets{Presets: oneof}
-	}
-	out.NeighborCount = direct.ValueOf(in.NeighborCount)
-	return out
-}
-func Examples_ExampleGcsSource_FromProto(mapCtx *direct.MapContext, in *pb.Examples_ExampleGcsSource) *krm.Examples_ExampleGcsSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Examples_ExampleGcsSource{}
-	out.DataFormat = direct.Enum_FromProto(mapCtx, in.GetDataFormat())
-	out.GcsSource = GcsSource_FromProto(mapCtx, in.GetGcsSource())
-	return out
-}
-func Examples_ExampleGcsSource_ToProto(mapCtx *direct.MapContext, in *krm.Examples_ExampleGcsSource) *pb.Examples_ExampleGcsSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Examples_ExampleGcsSource{}
-	out.DataFormat = direct.Enum_ToProto[pb.Examples_ExampleGcsSource_DataFormat](mapCtx, in.DataFormat)
-	out.GcsSource = GcsSource_ToProto(mapCtx, in.GcsSource)
-	return out
-}
-func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krm.ExplanationParameters {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExplanationParameters{}
-	out.SampledShapleyAttribution = SampledShapleyAttribution_FromProto(mapCtx, in.GetSampledShapleyAttribution())
-	out.IntegratedGradientsAttribution = IntegratedGradientsAttribution_FromProto(mapCtx, in.GetIntegratedGradientsAttribution())
-	out.XraiAttribution = XraiAttribution_FromProto(mapCtx, in.GetXraiAttribution())
-	out.Examples = Examples_FromProto(mapCtx, in.GetExamples())
-	out.TopK = direct.LazyPtr(in.GetTopK())
-	out.OutputIndices = ListValue_FromProto(mapCtx, in.GetOutputIndices())
-	return out
-}
-func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationParameters) *pb.ExplanationParameters {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExplanationParameters{}
-	if oneof := SampledShapleyAttribution_ToProto(mapCtx, in.SampledShapleyAttribution); oneof != nil {
-		out.Method = &pb.ExplanationParameters_SampledShapleyAttribution{SampledShapleyAttribution: oneof}
-	}
-	if oneof := IntegratedGradientsAttribution_ToProto(mapCtx, in.IntegratedGradientsAttribution); oneof != nil {
-		out.Method = &pb.ExplanationParameters_IntegratedGradientsAttribution{IntegratedGradientsAttribution: oneof}
-	}
-	if oneof := XraiAttribution_ToProto(mapCtx, in.XraiAttribution); oneof != nil {
-		out.Method = &pb.ExplanationParameters_XraiAttribution{XraiAttribution: oneof}
-	}
-	if oneof := Examples_ToProto(mapCtx, in.Examples); oneof != nil {
-		out.Method = &pb.ExplanationParameters_Examples{Examples: oneof}
-	}
-	out.TopK = direct.ValueOf(in.TopK)
-	out.OutputIndices = ListValue_ToProto(mapCtx, in.OutputIndices)
-	return out
-}
-func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExplanationSpec{}
-	out.Parameters = ExplanationParameters_FromProto(mapCtx, in.GetParameters())
-	out.Metadata = ExplanationMetadata_FromProto(mapCtx, in.GetMetadata())
-	return out
-}
-func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec) *pb.ExplanationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExplanationSpec{}
-	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
-	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
-	return out
-}
-func FeatureNoiseSigma_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma) *krm.FeatureNoiseSigma {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeatureNoiseSigma{}
-	out.NoiseSigma = direct.Slice_FromProto(mapCtx, in.NoiseSigma, FeatureNoiseSigma_NoiseSigmaForFeature_FromProto)
-	return out
-}
-func FeatureNoiseSigma_ToProto(mapCtx *direct.MapContext, in *krm.FeatureNoiseSigma) *pb.FeatureNoiseSigma {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeatureNoiseSigma{}
-	out.NoiseSigma = direct.Slice_ToProto(mapCtx, in.NoiseSigma, FeatureNoiseSigma_NoiseSigmaForFeature_ToProto)
-	return out
-}
-func FeatureNoiseSigma_NoiseSigmaForFeature_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma_NoiseSigmaForFeature) *krm.FeatureNoiseSigma_NoiseSigmaForFeature {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FeatureNoiseSigma_NoiseSigmaForFeature{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Sigma = direct.LazyPtr(in.GetSigma())
-	return out
-}
-func FeatureNoiseSigma_NoiseSigmaForFeature_ToProto(mapCtx *direct.MapContext, in *krm.FeatureNoiseSigma_NoiseSigmaForFeature) *pb.FeatureNoiseSigma_NoiseSigmaForFeature {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FeatureNoiseSigma_NoiseSigmaForFeature{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Sigma = direct.ValueOf(in.Sigma)
-	return out
-}
-func GcsSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GcsSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GcsSource{}
-	out.Uris = in.Uris
-	return out
-}
-func GcsSource_ToProto(mapCtx *direct.MapContext, in *krm.GcsSource) *pb.GcsSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GcsSource{}
-	out.Uris = in.Uris
-	return out
-}
-func IntegratedGradientsAttribution_FromProto(mapCtx *direct.MapContext, in *pb.IntegratedGradientsAttribution) *krm.IntegratedGradientsAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IntegratedGradientsAttribution{}
-	out.StepCount = direct.LazyPtr(in.GetStepCount())
-	out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, in.GetSmoothGradConfig())
-	out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, in.GetBlurBaselineConfig())
-	return out
-}
-func IntegratedGradientsAttribution_ToProto(mapCtx *direct.MapContext, in *krm.IntegratedGradientsAttribution) *pb.IntegratedGradientsAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IntegratedGradientsAttribution{}
-	out.StepCount = direct.ValueOf(in.StepCount)
-	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
-	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
-	return out
-}
-func ModelEvaluation_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.ModelEvaluation {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelEvaluation{}
+	out := &krm.ModelEvaluationSlice{}
 	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Slice
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: ModelExplanation
+	return out
+}
+func ModelEvaluationSlice_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice) *pb.ModelEvaluationSlice {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluationSlice{}
+	// MISSING: Name
+	// MISSING: Slice
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: ModelExplanation
+	return out
+}
+func ModelEvaluationSliceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice) *krm.ModelEvaluationSliceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelEvaluationSliceObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Slice = ModelEvaluationSlice_Slice_FromProto(mapCtx, in.GetSlice())
 	out.MetricsSchemaURI = direct.LazyPtr(in.GetMetricsSchemaUri())
 	out.Metrics = Value_FromProto(mapCtx, in.GetMetrics())
-	// MISSING: CreateTime
-	out.SliceDimensions = in.SliceDimensions
-	out.DataItemSchemaURI = direct.LazyPtr(in.GetDataItemSchemaUri())
-	out.AnnotationSchemaURI = direct.LazyPtr(in.GetAnnotationSchemaUri())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.ModelExplanation = ModelExplanation_FromProto(mapCtx, in.GetModelExplanation())
-	out.ExplanationSpecs = direct.Slice_FromProto(mapCtx, in.ExplanationSpecs, ModelEvaluation_ModelEvaluationExplanationSpec_FromProto)
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
-func ModelEvaluation_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluation) *pb.ModelEvaluation {
+func ModelEvaluationSliceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSliceObservedState) *pb.ModelEvaluationSlice {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelEvaluation{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out := &pb.ModelEvaluationSlice{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Slice = ModelEvaluationSlice_Slice_ToProto(mapCtx, in.Slice)
 	out.MetricsSchemaUri = direct.ValueOf(in.MetricsSchemaURI)
 	out.Metrics = Value_ToProto(mapCtx, in.Metrics)
-	// MISSING: CreateTime
-	out.SliceDimensions = in.SliceDimensions
-	out.DataItemSchemaUri = direct.ValueOf(in.DataItemSchemaURI)
-	out.AnnotationSchemaUri = direct.ValueOf(in.AnnotationSchemaURI)
-	out.ModelExplanation = ModelExplanation_ToProto(mapCtx, in.ModelExplanation)
-	out.ExplanationSpecs = direct.Slice_ToProto(mapCtx, in.ExplanationSpecs, ModelEvaluation_ModelEvaluationExplanationSpec_ToProto)
-	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
-	return out
-}
-func ModelEvaluationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.ModelEvaluationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelEvaluationObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
-	// MISSING: MetricsSchemaURI
-	// MISSING: Metrics
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: SliceDimensions
-	// MISSING: DataItemSchemaURI
-	// MISSING: AnnotationSchemaURI
-	out.ModelExplanation = ModelExplanationObservedState_FromProto(mapCtx, in.GetModelExplanation())
-	// MISSING: ExplanationSpecs
-	// MISSING: Metadata
-	return out
-}
-func ModelEvaluationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationObservedState) *pb.ModelEvaluation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelEvaluation{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
-	// MISSING: MetricsSchemaURI
-	// MISSING: Metrics
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: SliceDimensions
-	// MISSING: DataItemSchemaURI
-	// MISSING: AnnotationSchemaURI
-	out.ModelExplanation = ModelExplanationObservedState_ToProto(mapCtx, in.ModelExplanation)
-	// MISSING: ExplanationSpecs
-	// MISSING: Metadata
+	out.ModelExplanation = ModelExplanation_ToProto(mapCtx, in.ModelExplanation)
 	return out
 }
-func ModelEvaluation_ModelEvaluationExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation_ModelEvaluationExplanationSpec) *krm.ModelEvaluation_ModelEvaluationExplanationSpec {
+func ModelEvaluationSlice_Slice_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice) *krm.ModelEvaluationSlice_Slice {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelEvaluation_ModelEvaluationExplanationSpec{}
-	out.ExplanationType = direct.LazyPtr(in.GetExplanationType())
-	out.ExplanationSpec = ExplanationSpec_FromProto(mapCtx, in.GetExplanationSpec())
+	out := &krm.ModelEvaluationSlice_Slice{}
+	// MISSING: Dimension
+	// MISSING: Value
+	// MISSING: SliceSpec
 	return out
 }
-func ModelEvaluation_ModelEvaluationExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluation_ModelEvaluationExplanationSpec) *pb.ModelEvaluation_ModelEvaluationExplanationSpec {
+func ModelEvaluationSlice_Slice_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice) *pb.ModelEvaluationSlice_Slice {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelEvaluation_ModelEvaluationExplanationSpec{}
-	out.ExplanationType = direct.ValueOf(in.ExplanationType)
-	out.ExplanationSpec = ExplanationSpec_ToProto(mapCtx, in.ExplanationSpec)
+	out := &pb.ModelEvaluationSlice_Slice{}
+	// MISSING: Dimension
+	// MISSING: Value
+	// MISSING: SliceSpec
+	return out
+}
+func ModelEvaluationSlice_SliceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice) *krm.ModelEvaluationSlice_SliceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelEvaluationSlice_SliceObservedState{}
+	out.Dimension = direct.LazyPtr(in.GetDimension())
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.SliceSpec = ModelEvaluationSlice_Slice_SliceSpec_FromProto(mapCtx, in.GetSliceSpec())
+	return out
+}
+func ModelEvaluationSlice_SliceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_SliceObservedState) *pb.ModelEvaluationSlice_Slice {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluationSlice_Slice{}
+	out.Dimension = direct.ValueOf(in.Dimension)
+	out.Value = direct.ValueOf(in.Value)
+	out.SliceSpec = ModelEvaluationSlice_Slice_SliceSpec_ToProto(mapCtx, in.SliceSpec)
+	return out
+}
+func ModelEvaluationSlice_Slice_SliceSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice_SliceSpec) *krm.ModelEvaluationSlice_Slice_SliceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelEvaluationSlice_Slice_SliceSpec{}
+	// MISSING: Configs
+	return out
+}
+func ModelEvaluationSlice_Slice_SliceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice_SliceSpec) *pb.ModelEvaluationSlice_Slice_SliceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluationSlice_Slice_SliceSpec{}
+	// MISSING: Configs
+	return out
+}
+func ModelEvaluationSlice_Slice_SliceSpec_Range_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice_SliceSpec_Range) *krm.ModelEvaluationSlice_Slice_SliceSpec_Range {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelEvaluationSlice_Slice_SliceSpec_Range{}
+	out.Low = direct.LazyPtr(in.GetLow())
+	out.High = direct.LazyPtr(in.GetHigh())
+	return out
+}
+func ModelEvaluationSlice_Slice_SliceSpec_Range_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice_SliceSpec_Range) *pb.ModelEvaluationSlice_Slice_SliceSpec_Range {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluationSlice_Slice_SliceSpec_Range{}
+	out.Low = direct.ValueOf(in.Low)
+	out.High = direct.ValueOf(in.High)
+	return out
+}
+func ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig) *krm.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig{}
+	out.Value = ModelEvaluationSlice_Slice_SliceSpec_Value_FromProto(mapCtx, in.GetValue())
+	out.Range = ModelEvaluationSlice_Slice_SliceSpec_Range_FromProto(mapCtx, in.GetRange())
+	out.AllValues = direct.BoolValue_FromProto(mapCtx, in.GetAllValues())
+	return out
+}
+func ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig) *pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig{}
+	if oneof := ModelEvaluationSlice_Slice_SliceSpec_Value_ToProto(mapCtx, in.Value); oneof != nil {
+		out.Kind = &pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_Value{Value: oneof}
+	}
+	if oneof := ModelEvaluationSlice_Slice_SliceSpec_Range_ToProto(mapCtx, in.Range); oneof != nil {
+		out.Kind = &pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_Range{Range: oneof}
+	}
+	if oneof := direct.BoolValue_ToProto(mapCtx, in.AllValues); oneof != nil {
+		out.Kind = &pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_AllValues{AllValues: oneof}
+	}
+	return out
+}
+func ModelEvaluationSlice_Slice_SliceSpec_Value_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice_SliceSpec_Value) *krm.ModelEvaluationSlice_Slice_SliceSpec_Value {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelEvaluationSlice_Slice_SliceSpec_Value{}
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.FloatValue = direct.LazyPtr(in.GetFloatValue())
+	return out
+}
+func ModelEvaluationSlice_Slice_SliceSpec_Value_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice_SliceSpec_Value) *pb.ModelEvaluationSlice_Slice_SliceSpec_Value {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluationSlice_Slice_SliceSpec_Value{}
+	if oneof := ModelEvaluationSlice_Slice_SliceSpec_Value_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := ModelEvaluationSlice_Slice_SliceSpec_Value_FloatValue_ToProto(mapCtx, in.FloatValue); oneof != nil {
+		out.Kind = oneof
+	}
 	return out
 }
 func ModelExplanation_FromProto(mapCtx *direct.MapContext, in *pb.ModelExplanation) *krm.ModelExplanation {
@@ -2724,85 +2676,5 @@ func ModelExplanationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Mo
 	}
 	out := &pb.ModelExplanation{}
 	out.MeanAttributions = direct.Slice_ToProto(mapCtx, in.MeanAttributions, Attribution_ToProto)
-	return out
-}
-func Presets_FromProto(mapCtx *direct.MapContext, in *pb.Presets) *krm.Presets {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Presets{}
-	out.Query = direct.Enum_FromProto(mapCtx, in.GetQuery())
-	out.Modality = direct.Enum_FromProto(mapCtx, in.GetModality())
-	return out
-}
-func Presets_ToProto(mapCtx *direct.MapContext, in *krm.Presets) *pb.Presets {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Presets{}
-	if oneof := Presets_Query_ToProto(mapCtx, in.Query); oneof != nil {
-		out.Query = oneof
-	}
-	out.Modality = direct.Enum_ToProto[pb.Presets_Modality](mapCtx, in.Modality)
-	return out
-}
-func SampledShapleyAttribution_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krm.SampledShapleyAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SampledShapleyAttribution{}
-	out.PathCount = direct.LazyPtr(in.GetPathCount())
-	return out
-}
-func SampledShapleyAttribution_ToProto(mapCtx *direct.MapContext, in *krm.SampledShapleyAttribution) *pb.SampledShapleyAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SampledShapleyAttribution{}
-	out.PathCount = direct.ValueOf(in.PathCount)
-	return out
-}
-func SmoothGradConfig_FromProto(mapCtx *direct.MapContext, in *pb.SmoothGradConfig) *krm.SmoothGradConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SmoothGradConfig{}
-	out.NoiseSigma = direct.LazyPtr(in.GetNoiseSigma())
-	out.FeatureNoiseSigma = FeatureNoiseSigma_FromProto(mapCtx, in.GetFeatureNoiseSigma())
-	out.NoisySampleCount = direct.LazyPtr(in.GetNoisySampleCount())
-	return out
-}
-func SmoothGradConfig_ToProto(mapCtx *direct.MapContext, in *krm.SmoothGradConfig) *pb.SmoothGradConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SmoothGradConfig{}
-	if oneof := SmoothGradConfig_NoiseSigma_ToProto(mapCtx, in.NoiseSigma); oneof != nil {
-		out.GradientNoiseSigma = oneof
-	}
-	if oneof := FeatureNoiseSigma_ToProto(mapCtx, in.FeatureNoiseSigma); oneof != nil {
-		out.GradientNoiseSigma = &pb.SmoothGradConfig_FeatureNoiseSigma{FeatureNoiseSigma: oneof}
-	}
-	out.NoisySampleCount = direct.ValueOf(in.NoisySampleCount)
-	return out
-}
-func XraiAttribution_FromProto(mapCtx *direct.MapContext, in *pb.XraiAttribution) *krm.XraiAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &krm.XraiAttribution{}
-	out.StepCount = direct.LazyPtr(in.GetStepCount())
-	out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, in.GetSmoothGradConfig())
-	out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, in.GetBlurBaselineConfig())
-	return out
-}
-func XraiAttribution_ToProto(mapCtx *direct.MapContext, in *krm.XraiAttribution) *pb.XraiAttribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.XraiAttribution{}
-	out.StepCount = direct.ValueOf(in.StepCount)
-	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
-	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
