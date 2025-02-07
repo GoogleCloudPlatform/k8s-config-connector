@@ -15,11 +15,11 @@
 package bigtable
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 )
 func AppProfile_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.AppProfile {
 	if in == nil {
@@ -287,6 +287,30 @@ func BackupInfo_ToProto(mapCtx *direct.MapContext, in *krm.BackupInfo) *pb.Backu
 	out.SourceBackup = direct.ValueOf(in.SourceBackup)
 	return out
 }
+func BackupInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) *krm.BackupInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupInfoObservedState{}
+	out.Backup = direct.LazyPtr(in.GetBackup())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.SourceTable = direct.LazyPtr(in.GetSourceTable())
+	out.SourceBackup = direct.LazyPtr(in.GetSourceBackup())
+	return out
+}
+func BackupInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupInfoObservedState) *pb.BackupInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupInfo{}
+	out.Backup = direct.ValueOf(in.Backup)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.SourceTable = direct.ValueOf(in.SourceTable)
+	out.SourceBackup = direct.ValueOf(in.SourceBackup)
+	return out
+}
 func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.BigtableAppProfileObservedState {
 	if in == nil {
 		return nil
@@ -461,6 +485,66 @@ func BigtableHotTabletSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableHo
 	// MISSING: StartKey
 	// MISSING: EndKey
 	// MISSING: NodeCpuUsagePercent
+	return out
+}
+func BigtableTableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigtableTableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigtableTableObservedState{}
+	// MISSING: Name
+	// MISSING: ClusterStates
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	// MISSING: RestoreInfo
+	// MISSING: ChangeStreamConfig
+	// MISSING: DeletionProtection
+	// MISSING: AutomatedBackupPolicy
+	return out
+}
+func BigtableTableObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigtableTableObservedState) *pb.Table {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Table{}
+	// MISSING: Name
+	// MISSING: ClusterStates
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	// MISSING: RestoreInfo
+	// MISSING: ChangeStreamConfig
+	// MISSING: DeletionProtection
+	// MISSING: AutomatedBackupPolicy
+	return out
+}
+func BigtableTableSpec_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigtableTableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigtableTableSpec{}
+	// MISSING: Name
+	// MISSING: ClusterStates
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	// MISSING: RestoreInfo
+	// MISSING: ChangeStreamConfig
+	// MISSING: DeletionProtection
+	// MISSING: AutomatedBackupPolicy
+	return out
+}
+func BigtableTableSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableTableSpec) *pb.Table {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Table{}
+	// MISSING: Name
+	// MISSING: ClusterStates
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	// MISSING: RestoreInfo
+	// MISSING: ChangeStreamConfig
+	// MISSING: DeletionProtection
+	// MISSING: AutomatedBackupPolicy
 	return out
 }
 func ChangeStreamConfig_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krm.ChangeStreamConfig {
@@ -707,34 +791,6 @@ func HotTablet_ToProto(mapCtx *direct.MapContext, in *krm.HotTablet) *pb.HotTabl
 	out.NodeCpuUsagePercent = direct.ValueOf(in.NodeCpuUsagePercent)
 	return out
 }
-func HotTabletObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HotTablet) *krm.HotTabletObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.HotTabletObservedState{}
-	// MISSING: Name
-	// MISSING: TableName
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	// MISSING: StartKey
-	// MISSING: EndKey
-	out.NodeCpuUsagePercent = direct.LazyPtr(in.GetNodeCpuUsagePercent())
-	return out
-}
-func HotTabletObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HotTabletObservedState) *pb.HotTablet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HotTablet{}
-	// MISSING: Name
-	// MISSING: TableName
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	// MISSING: StartKey
-	// MISSING: EndKey
-	out.NodeCpuUsagePercent = direct.ValueOf(in.NodeCpuUsagePercent)
-	return out
-}
 func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instance {
 	if in == nil {
 		return nil
@@ -799,6 +855,26 @@ func RestoreInfo_ToProto(mapCtx *direct.MapContext, in *krm.RestoreInfo) *pb.Res
 	out := &pb.RestoreInfo{}
 	out.SourceType = direct.Enum_ToProto[pb.RestoreSourceType](mapCtx, in.SourceType)
 	if oneof := BackupInfo_ToProto(mapCtx, in.BackupInfo); oneof != nil {
+		out.SourceInfo = &pb.RestoreInfo_BackupInfo{BackupInfo: oneof}
+	}
+	return out
+}
+func RestoreInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RestoreInfo) *krm.RestoreInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreInfoObservedState{}
+	// MISSING: SourceType
+	out.BackupInfo = BackupInfoObservedState_FromProto(mapCtx, in.GetBackupInfo())
+	return out
+}
+func RestoreInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RestoreInfoObservedState) *pb.RestoreInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreInfo{}
+	// MISSING: SourceType
+	if oneof := BackupInfoObservedState_ToProto(mapCtx, in.BackupInfo); oneof != nil {
 		out.SourceInfo = &pb.RestoreInfo_BackupInfo{BackupInfo: oneof}
 	}
 	return out
@@ -875,6 +951,36 @@ func Table_ToProto(mapCtx *direct.MapContext, in *krm.Table) *pb.Table {
 	if oneof := Table_AutomatedBackupPolicy_ToProto(mapCtx, in.AutomatedBackupPolicy); oneof != nil {
 		out.AutomatedBackupConfig = &pb.Table_AutomatedBackupPolicy_{AutomatedBackupPolicy: oneof}
 	}
+	return out
+}
+func TableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.TableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TableObservedState{}
+	// MISSING: Name
+	// MISSING: ClusterStates
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	out.RestoreInfo = RestoreInfo_FromProto(mapCtx, in.GetRestoreInfo())
+	// MISSING: ChangeStreamConfig
+	// MISSING: DeletionProtection
+	// MISSING: AutomatedBackupPolicy
+	return out
+}
+func TableObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TableObservedState) *pb.Table {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Table{}
+	// MISSING: Name
+	// MISSING: ClusterStates
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	out.RestoreInfo = RestoreInfo_ToProto(mapCtx, in.RestoreInfo)
+	// MISSING: ChangeStreamConfig
+	// MISSING: DeletionProtection
+	// MISSING: AutomatedBackupPolicy
 	return out
 }
 func Table_AutomatedBackupPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Table_AutomatedBackupPolicy) *krm.Table_AutomatedBackupPolicy {
@@ -987,6 +1093,48 @@ func Type_Aggregate_ToProto(mapCtx *direct.MapContext, in *krm.Type_Aggregate) *
 	// MISSING: Min
 	return out
 }
+func Type_Aggregate_HyperLogLogPlusPlusUniqueCount_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_HyperLogLogPlusPlusUniqueCount) *krm.Type_Aggregate_HyperLogLogPlusPlusUniqueCount {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Aggregate_HyperLogLogPlusPlusUniqueCount{}
+	return out
+}
+func Type_Aggregate_HyperLogLogPlusPlusUniqueCount_ToProto(mapCtx *direct.MapContext, in *krm.Type_Aggregate_HyperLogLogPlusPlusUniqueCount) *pb.Type_Aggregate_HyperLogLogPlusPlusUniqueCount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Aggregate_HyperLogLogPlusPlusUniqueCount{}
+	return out
+}
+func Type_Aggregate_Max_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Max) *krm.Type_Aggregate_Max {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Aggregate_Max{}
+	return out
+}
+func Type_Aggregate_Max_ToProto(mapCtx *direct.MapContext, in *krm.Type_Aggregate_Max) *pb.Type_Aggregate_Max {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Aggregate_Max{}
+	return out
+}
+func Type_Aggregate_Min_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Min) *krm.Type_Aggregate_Min {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Aggregate_Min{}
+	return out
+}
+func Type_Aggregate_Min_ToProto(mapCtx *direct.MapContext, in *krm.Type_Aggregate_Min) *pb.Type_Aggregate_Min {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Aggregate_Min{}
+	return out
+}
 func Type_Aggregate_Sum_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Sum) *krm.Type_Aggregate_Sum {
 	if in == nil {
 		return nil
@@ -999,6 +1147,36 @@ func Type_Aggregate_Sum_ToProto(mapCtx *direct.MapContext, in *krm.Type_Aggregat
 		return nil
 	}
 	out := &pb.Type_Aggregate_Sum{}
+	return out
+}
+func Type_Array_FromProto(mapCtx *direct.MapContext, in *pb.Type_Array) *krm.Type_Array {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Array{}
+	out.ElementType = Type_FromProto(mapCtx, in.GetElementType())
+	return out
+}
+func Type_Array_ToProto(mapCtx *direct.MapContext, in *krm.Type_Array) *pb.Type_Array {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Array{}
+	out.ElementType = Type_ToProto(mapCtx, in.ElementType)
+	return out
+}
+func Type_Bool_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bool) *krm.Type_Bool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Bool{}
+	return out
+}
+func Type_Bool_ToProto(mapCtx *direct.MapContext, in *krm.Type_Bool) *pb.Type_Bool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Bool{}
 	return out
 }
 func Type_Bytes_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bytes) *krm.Type_Bytes {
@@ -1047,6 +1225,48 @@ func Type_Bytes_Encoding_Raw_ToProto(mapCtx *direct.MapContext, in *krm.Type_Byt
 		return nil
 	}
 	out := &pb.Type_Bytes_Encoding_Raw{}
+	return out
+}
+func Type_Date_FromProto(mapCtx *direct.MapContext, in *pb.Type_Date) *krm.Type_Date {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Date{}
+	return out
+}
+func Type_Date_ToProto(mapCtx *direct.MapContext, in *krm.Type_Date) *pb.Type_Date {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Date{}
+	return out
+}
+func Type_Float32_FromProto(mapCtx *direct.MapContext, in *pb.Type_Float32) *krm.Type_Float32 {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Float32{}
+	return out
+}
+func Type_Float32_ToProto(mapCtx *direct.MapContext, in *krm.Type_Float32) *pb.Type_Float32 {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Float32{}
+	return out
+}
+func Type_Float64_FromProto(mapCtx *direct.MapContext, in *pb.Type_Float64) *krm.Type_Float64 {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Float64{}
+	return out
+}
+func Type_Float64_ToProto(mapCtx *direct.MapContext, in *krm.Type_Float64) *pb.Type_Float64 {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Float64{}
 	return out
 }
 func Type_Int64_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64) *krm.Type_Int64 {
@@ -1099,6 +1319,24 @@ func Type_Int64_Encoding_BigEndianBytes_ToProto(mapCtx *direct.MapContext, in *k
 	out.BytesType = Type_Bytes_ToProto(mapCtx, in.BytesType)
 	return out
 }
+func Type_Map_FromProto(mapCtx *direct.MapContext, in *pb.Type_Map) *krm.Type_Map {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Map{}
+	out.KeyType = Type_FromProto(mapCtx, in.GetKeyType())
+	out.ValueType = Type_FromProto(mapCtx, in.GetValueType())
+	return out
+}
+func Type_Map_ToProto(mapCtx *direct.MapContext, in *krm.Type_Map) *pb.Type_Map {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Map{}
+	out.KeyType = Type_ToProto(mapCtx, in.KeyType)
+	out.ValueType = Type_ToProto(mapCtx, in.ValueType)
+	return out
+}
 func Type_String_FromProto(mapCtx *direct.MapContext, in *pb.Type_String) *krm.Type_String {
 	if in == nil {
 		return nil
@@ -1135,6 +1373,20 @@ func Type_String_Encoding_ToProto(mapCtx *direct.MapContext, in *krm.Type_String
 	// MISSING: Utf8Bytes
 	return out
 }
+func Type_String_Encoding_Utf8Bytes_FromProto(mapCtx *direct.MapContext, in *pb.Type_String_Encoding_Utf8Bytes) *krm.Type_String_Encoding_Utf8Bytes {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_String_Encoding_Utf8Bytes{}
+	return out
+}
+func Type_String_Encoding_Utf8Bytes_ToProto(mapCtx *direct.MapContext, in *krm.Type_String_Encoding_Utf8Bytes) *pb.Type_String_Encoding_Utf8Bytes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_String_Encoding_Utf8Bytes{}
+	return out
+}
 func Type_String_Encoding_Utf8Raw_FromProto(mapCtx *direct.MapContext, in *pb.Type_String_Encoding_Utf8Raw) *krm.Type_String_Encoding_Utf8Raw {
 	if in == nil {
 		return nil
@@ -1147,5 +1399,53 @@ func Type_String_Encoding_Utf8Raw_ToProto(mapCtx *direct.MapContext, in *krm.Typ
 		return nil
 	}
 	out := &pb.Type_String_Encoding_Utf8Raw{}
+	return out
+}
+func Type_Struct_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct) *krm.Type_Struct {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Struct{}
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Type_Struct_Field_FromProto)
+	return out
+}
+func Type_Struct_ToProto(mapCtx *direct.MapContext, in *krm.Type_Struct) *pb.Type_Struct {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Struct{}
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, Type_Struct_Field_ToProto)
+	return out
+}
+func Type_Struct_Field_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Field) *krm.Type_Struct_Field {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Struct_Field{}
+	out.FieldName = direct.LazyPtr(in.GetFieldName())
+	out.Type = Type_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Type_Struct_Field_ToProto(mapCtx *direct.MapContext, in *krm.Type_Struct_Field) *pb.Type_Struct_Field {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Struct_Field{}
+	out.FieldName = direct.ValueOf(in.FieldName)
+	out.Type = Type_ToProto(mapCtx, in.Type)
+	return out
+}
+func Type_Timestamp_FromProto(mapCtx *direct.MapContext, in *pb.Type_Timestamp) *krm.Type_Timestamp {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Type_Timestamp{}
+	return out
+}
+func Type_Timestamp_ToProto(mapCtx *direct.MapContext, in *krm.Type_Timestamp) *pb.Type_Timestamp {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Type_Timestamp{}
 	return out
 }
