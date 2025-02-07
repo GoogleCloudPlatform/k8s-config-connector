@@ -15,99 +15,11 @@
 package apihub
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func Api_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.Api {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Api{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
-	out.Owner = Owner_FromProto(mapCtx, in.GetOwner())
-	// MISSING: Versions
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.TargetUser = AttributeValues_FromProto(mapCtx, in.GetTargetUser())
-	out.Team = AttributeValues_FromProto(mapCtx, in.GetTeam())
-	out.BusinessUnit = AttributeValues_FromProto(mapCtx, in.GetBusinessUnit())
-	out.MaturityLevel = AttributeValues_FromProto(mapCtx, in.GetMaturityLevel())
-	// MISSING: Attributes
-	out.ApiStyle = AttributeValues_FromProto(mapCtx, in.GetApiStyle())
-	out.SelectedVersion = direct.LazyPtr(in.GetSelectedVersion())
-	return out
-}
-func Api_ToProto(mapCtx *direct.MapContext, in *krm.Api) *pb.Api {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Api{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
-	out.Owner = Owner_ToProto(mapCtx, in.Owner)
-	// MISSING: Versions
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.TargetUser = AttributeValues_ToProto(mapCtx, in.TargetUser)
-	out.Team = AttributeValues_ToProto(mapCtx, in.Team)
-	out.BusinessUnit = AttributeValues_ToProto(mapCtx, in.BusinessUnit)
-	out.MaturityLevel = AttributeValues_ToProto(mapCtx, in.MaturityLevel)
-	// MISSING: Attributes
-	out.ApiStyle = AttributeValues_ToProto(mapCtx, in.ApiStyle)
-	out.SelectedVersion = direct.ValueOf(in.SelectedVersion)
-	return out
-}
-func ApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApiObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Documentation
-	// MISSING: Owner
-	out.Versions = in.Versions
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.TargetUser = AttributeValuesObservedState_FromProto(mapCtx, in.GetTargetUser())
-	// MISSING: Team
-	// MISSING: BusinessUnit
-	// MISSING: MaturityLevel
-	// MISSING: Attributes
-	// MISSING: ApiStyle
-	// MISSING: SelectedVersion
-	return out
-}
-func ApiObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiObservedState) *pb.Api {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Api{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Documentation
-	// MISSING: Owner
-	out.Versions = in.Versions
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.TargetUser = AttributeValuesObservedState_ToProto(mapCtx, in.TargetUser)
-	// MISSING: Team
-	// MISSING: BusinessUnit
-	// MISSING: MaturityLevel
-	// MISSING: Attributes
-	// MISSING: ApiStyle
-	// MISSING: SelectedVersion
-	return out
-}
 func ApihubApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApihubApiObservedState {
 	if in == nil {
 		return nil
@@ -194,6 +106,94 @@ func ApihubApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubApiSpec) *pb
 	// MISSING: Attributes
 	// MISSING: ApiStyle
 	// MISSING: SelectedVersion
+	return out
+}
+func ApihubVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.ApihubVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubVersionObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	// MISSING: Specs
+	// MISSING: ApiOperations
+	// MISSING: Definitions
+	// MISSING: Deployments
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Lifecycle
+	// MISSING: Compliance
+	// MISSING: Accreditation
+	// MISSING: Attributes
+	// MISSING: SelectedDeployment
+	return out
+}
+func ApihubVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubVersionObservedState) *pb.Version {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Version{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	// MISSING: Specs
+	// MISSING: ApiOperations
+	// MISSING: Definitions
+	// MISSING: Deployments
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Lifecycle
+	// MISSING: Compliance
+	// MISSING: Accreditation
+	// MISSING: Attributes
+	// MISSING: SelectedDeployment
+	return out
+}
+func ApihubVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.ApihubVersionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubVersionSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	// MISSING: Specs
+	// MISSING: ApiOperations
+	// MISSING: Definitions
+	// MISSING: Deployments
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Lifecycle
+	// MISSING: Compliance
+	// MISSING: Accreditation
+	// MISSING: Attributes
+	// MISSING: SelectedDeployment
+	return out
+}
+func ApihubVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubVersionSpec) *pb.Version {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Version{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	// MISSING: Specs
+	// MISSING: ApiOperations
+	// MISSING: Definitions
+	// MISSING: Deployments
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Lifecycle
+	// MISSING: Compliance
+	// MISSING: Accreditation
+	// MISSING: Attributes
+	// MISSING: SelectedDeployment
 	return out
 }
 func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValues {
@@ -294,21 +294,91 @@ func Documentation_ToProto(mapCtx *direct.MapContext, in *krm.Documentation) *pb
 	out.ExternalUri = direct.ValueOf(in.ExternalURI)
 	return out
 }
-func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
+func Version_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.Version {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Owner{}
+	out := &krm.Version{}
+	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Email = direct.LazyPtr(in.GetEmail())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
+	// MISSING: Specs
+	// MISSING: ApiOperations
+	// MISSING: Definitions
+	out.Deployments = in.Deployments
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Lifecycle = AttributeValues_FromProto(mapCtx, in.GetLifecycle())
+	out.Compliance = AttributeValues_FromProto(mapCtx, in.GetCompliance())
+	out.Accreditation = AttributeValues_FromProto(mapCtx, in.GetAccreditation())
+	// MISSING: Attributes
+	out.SelectedDeployment = direct.LazyPtr(in.GetSelectedDeployment())
 	return out
 }
-func Owner_ToProto(mapCtx *direct.MapContext, in *krm.Owner) *pb.Owner {
+func Version_ToProto(mapCtx *direct.MapContext, in *krm.Version) *pb.Version {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Owner{}
+	out := &pb.Version{}
+	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Email = direct.ValueOf(in.Email)
+	out.Description = direct.ValueOf(in.Description)
+	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
+	// MISSING: Specs
+	// MISSING: ApiOperations
+	// MISSING: Definitions
+	out.Deployments = in.Deployments
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Lifecycle = AttributeValues_ToProto(mapCtx, in.Lifecycle)
+	out.Compliance = AttributeValues_ToProto(mapCtx, in.Compliance)
+	out.Accreditation = AttributeValues_ToProto(mapCtx, in.Accreditation)
+	// MISSING: Attributes
+	out.SelectedDeployment = direct.ValueOf(in.SelectedDeployment)
+	return out
+}
+func VersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.VersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VersionObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	out.Specs = in.Specs
+	out.ApiOperations = in.ApiOperations
+	out.Definitions = in.Definitions
+	// MISSING: Deployments
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Lifecycle = AttributeValuesObservedState_FromProto(mapCtx, in.GetLifecycle())
+	// MISSING: Compliance
+	// MISSING: Accreditation
+	// MISSING: Attributes
+	// MISSING: SelectedDeployment
+	return out
+}
+func VersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VersionObservedState) *pb.Version {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Version{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	out.Specs = in.Specs
+	out.ApiOperations = in.ApiOperations
+	out.Definitions = in.Definitions
+	// MISSING: Deployments
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Lifecycle = AttributeValuesObservedState_ToProto(mapCtx, in.Lifecycle)
+	// MISSING: Compliance
+	// MISSING: Accreditation
+	// MISSING: Attributes
+	// MISSING: SelectedDeployment
 	return out
 }

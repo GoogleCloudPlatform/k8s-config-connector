@@ -15,97 +15,6 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apihub.v1.Api
-type Api struct {
-	// Identifier. The name of the API resource in the API Hub.
-	//
-	//  Format:
-	//  `projects/{project}/locations/{location}/apis/{api}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The display name of the API resource.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. The description of the API resource.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. The documentation for the API resource.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.documentation
-	Documentation *Documentation `json:"documentation,omitempty"`
-
-	// Optional. Owner details for the API resource.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.owner
-	Owner *Owner `json:"owner,omitempty"`
-
-	// Optional. The target users for the API.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-target-user`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.target_user
-	TargetUser *AttributeValues `json:"targetUser,omitempty"`
-
-	// Optional. The team owning the API.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-team`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.team
-	Team *AttributeValues `json:"team,omitempty"`
-
-	// Optional. The business unit owning the API.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-business-unit`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.business_unit
-	BusinessUnit *AttributeValues `json:"businessUnit,omitempty"`
-
-	// Optional. The maturity level of the API.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-maturity-level`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.maturity_level
-	MaturityLevel *AttributeValues `json:"maturityLevel,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// Optional. The style of the API.
-	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-api-style`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API. All values should be from the list of allowed values defined for the
-	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.api_style
-	ApiStyle *AttributeValues `json:"apiStyle,omitempty"`
-
-	// Optional. The selected version for an API resource.
-	//  This can be used when special handling is needed on client side for
-	//  particular version of the API. Format is
-	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.selected_version
-	SelectedVersion *string `json:"selectedVersion,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
 type Attribute_AllowedValue struct {
 	// Required. The ID of the allowed value.
@@ -175,44 +84,78 @@ type Documentation struct {
 	ExternalURI *string `json:"externalURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.Owner
-type Owner struct {
-	// Optional. The name of the owner.
-	// +kcc:proto:field=google.cloud.apihub.v1.Owner.display_name
+// +kcc:proto=google.cloud.apihub.v1.Version
+type Version struct {
+	// Identifier. The name of the version.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The display name of the version.
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Required. The email of the owner.
-	// +kcc:proto:field=google.cloud.apihub.v1.Owner.email
-	Email *string `json:"email,omitempty"`
-}
+	// Optional. The description of the version.
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.description
+	Description *string `json:"description,omitempty"`
 
-// +kcc:proto=google.cloud.apihub.v1.Api
-type ApiObservedState struct {
-	// Output only. The list of versions present in an API resource.
-	//  Note: An API resource can be associated with more than 1 version.
+	// Optional. The documentation of the version.
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.documentation
+	Documentation *Documentation `json:"documentation,omitempty"`
+
+	// Optional. The deployments linked to this API version.
+	//  Note: A particular API version could be deployed to multiple deployments
+	//  (for dev deployment, UAT deployment, etc)
 	//  Format is
-	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.versions
-	Versions []string `json:"versions,omitempty"`
+	//  `projects/{project}/locations/{location}/deployments/{deployment}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.deployments
+	Deployments []string `json:"deployments,omitempty"`
 
-	// Output only. The time at which the API resource was created.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time at which the API resource was last updated.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Optional. The target users for the API.
+	// Optional. The lifecycle of the API version.
 	//  This maps to the following system defined attribute:
-	//  `projects/{project}/locations/{location}/attributes/system-target-user`
+	//  `projects/{project}/locations/{location}/attributes/system-lifecycle`
 	//  attribute.
 	//  The number of values for this attribute will be based on the
 	//  cardinality of the attribute. The same can be retrieved via GetAttribute
 	//  API. All values should be from the list of allowed values defined for the
 	//  attribute.
-	// +kcc:proto:field=google.cloud.apihub.v1.Api.target_user
-	TargetUser *AttributeValuesObservedState `json:"targetUser,omitempty"`
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.lifecycle
+	Lifecycle *AttributeValues `json:"lifecycle,omitempty"`
+
+	// Optional. The compliance associated with the API version.
+	//  This maps to the following system defined attribute:
+	//  `projects/{project}/locations/{location}/attributes/system-compliance`
+	//  attribute.
+	//  The number of values for this attribute will be based on the
+	//  cardinality of the attribute. The same can be retrieved via GetAttribute
+	//  API. All values should be from the list of allowed values defined for the
+	//  attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.compliance
+	Compliance *AttributeValues `json:"compliance,omitempty"`
+
+	// Optional. The accreditations associated with the API version.
+	//  This maps to the following system defined attribute:
+	//  `projects/{project}/locations/{location}/attributes/system-accreditation`
+	//  attribute.
+	//  The number of values for this attribute will be based on the
+	//  cardinality of the attribute. The same can be retrieved via GetAttribute
+	//  API. All values should be from the list of allowed values defined for the
+	//  attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.accreditation
+	Accreditation *AttributeValues `json:"accreditation,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// Optional. The selected deployment for a Version resource.
+	//  This can be used when special handling is needed on client side for a
+	//  particular deployment linked to the version.
+	//  Format is
+	//  `projects/{project}/locations/{location}/deployments/{deployment}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.selected_deployment
+	SelectedDeployment *string `json:"selectedDeployment,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues
@@ -221,4 +164,47 @@ type AttributeValuesObservedState struct {
 	//  Format: projects/{project}/locations/{location}/attributes/{attribute}
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.attribute
 	Attribute *string `json:"attribute,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Version
+type VersionObservedState struct {
+	// Output only. The specs associated with this version.
+	//  Note that an API version can be associated with multiple specs.
+	//  Format is
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.specs
+	Specs []string `json:"specs,omitempty"`
+
+	// Output only. The operations contained in the API version.
+	//  These operations will be added to the version when a new spec is
+	//  added or when an existing spec is updated. Format is
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.api_operations
+	ApiOperations []string `json:"apiOperations,omitempty"`
+
+	// Output only. The definitions contained in the API version.
+	//  These definitions will be added to the version when a new spec is
+	//  added or when an existing spec is updated. Format is
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/definitions/{definition}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.definitions
+	Definitions []string `json:"definitions,omitempty"`
+
+	// Output only. The time at which the version was created.
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which the version was last updated.
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. The lifecycle of the API version.
+	//  This maps to the following system defined attribute:
+	//  `projects/{project}/locations/{location}/attributes/system-lifecycle`
+	//  attribute.
+	//  The number of values for this attribute will be based on the
+	//  cardinality of the attribute. The same can be retrieved via GetAttribute
+	//  API. All values should be from the list of allowed values defined for the
+	//  attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Version.lifecycle
+	Lifecycle *AttributeValuesObservedState `json:"lifecycle,omitempty"`
 }
