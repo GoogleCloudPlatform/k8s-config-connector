@@ -15,10 +15,10 @@
 package cloudcontrolspartner
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudcontrolspartner/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/cloudcontrolspartner/apiv1/cloudcontrolspartnerpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudcontrolspartner/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func CloudcontrolspartnerCustomerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.CloudcontrolspartnerCustomerObservedState {
 	if in == nil {
@@ -192,6 +192,74 @@ func CloudcontrolspartnerPartnerSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: UpdateTime
 	return out
 }
+func CloudcontrolspartnerViolationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Violation) *krm.CloudcontrolspartnerViolationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudcontrolspartnerViolationObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: FolderID
+	// MISSING: Remediation
+	return out
+}
+func CloudcontrolspartnerViolationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerViolationObservedState) *pb.Violation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: FolderID
+	// MISSING: Remediation
+	return out
+}
+func CloudcontrolspartnerViolationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Violation) *krm.CloudcontrolspartnerViolationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudcontrolspartnerViolationSpec{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: FolderID
+	// MISSING: Remediation
+	return out
+}
+func CloudcontrolspartnerViolationSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerViolationSpec) *pb.Violation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: BeginTime
+	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: NonCompliantOrgPolicy
+	// MISSING: FolderID
+	// MISSING: Remediation
+	return out
+}
 func CloudcontrolspartnerWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.CloudcontrolspartnerWorkloadObservedState {
 	if in == nil {
 		return nil
@@ -256,77 +324,169 @@ func CloudcontrolspartnerWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Partner
 	return out
 }
-func Partner_FromProto(mapCtx *direct.MapContext, in *pb.Partner) *krm.Partner {
+func Violation_FromProto(mapCtx *direct.MapContext, in *pb.Violation) *krm.Violation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Partner{}
+	out := &krm.Violation{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Skus = direct.Slice_FromProto(mapCtx, in.Skus, Sku_FromProto)
-	out.EkmSolutions = direct.Slice_FromProto(mapCtx, in.EkmSolutions, EkmMetadata_FromProto)
-	out.OperatedCloudRegions = in.OperatedCloudRegions
-	out.PartnerProjectID = direct.LazyPtr(in.GetPartnerProjectId())
-	// MISSING: CreateTime
+	// MISSING: Description
+	// MISSING: BeginTime
 	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: NonCompliantOrgPolicy
+	out.FolderID = direct.LazyPtr(in.GetFolderId())
+	// MISSING: Remediation
 	return out
 }
-func Partner_ToProto(mapCtx *direct.MapContext, in *krm.Partner) *pb.Partner {
+func Violation_ToProto(mapCtx *direct.MapContext, in *krm.Violation) *pb.Violation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Partner{}
+	out := &pb.Violation{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Skus = direct.Slice_ToProto(mapCtx, in.Skus, Sku_ToProto)
-	out.EkmSolutions = direct.Slice_ToProto(mapCtx, in.EkmSolutions, EkmMetadata_ToProto)
-	out.OperatedCloudRegions = in.OperatedCloudRegions
-	out.PartnerProjectId = direct.ValueOf(in.PartnerProjectID)
-	// MISSING: CreateTime
+	// MISSING: Description
+	// MISSING: BeginTime
 	// MISSING: UpdateTime
+	// MISSING: ResolveTime
+	// MISSING: Category
+	// MISSING: State
+	// MISSING: NonCompliantOrgPolicy
+	out.FolderId = direct.ValueOf(in.FolderID)
+	// MISSING: Remediation
 	return out
 }
-func PartnerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Partner) *krm.PartnerObservedState {
+func ViolationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Violation) *krm.ViolationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PartnerObservedState{}
+	out := &krm.ViolationObservedState{}
 	// MISSING: Name
-	// MISSING: Skus
-	// MISSING: EkmSolutions
-	// MISSING: OperatedCloudRegions
-	// MISSING: PartnerProjectID
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.BeginTime = direct.StringTimestamp_FromProto(mapCtx, in.GetBeginTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ResolveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetResolveTime())
+	out.Category = direct.LazyPtr(in.GetCategory())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.NonCompliantOrgPolicy = direct.LazyPtr(in.GetNonCompliantOrgPolicy())
+	// MISSING: FolderID
+	out.Remediation = Violation_Remediation_FromProto(mapCtx, in.GetRemediation())
 	return out
 }
-func PartnerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PartnerObservedState) *pb.Partner {
+func ViolationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ViolationObservedState) *pb.Violation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Partner{}
+	out := &pb.Violation{}
 	// MISSING: Name
-	// MISSING: Skus
-	// MISSING: EkmSolutions
-	// MISSING: OperatedCloudRegions
-	// MISSING: PartnerProjectID
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Description = direct.ValueOf(in.Description)
+	out.BeginTime = direct.StringTimestamp_ToProto(mapCtx, in.BeginTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ResolveTime = direct.StringTimestamp_ToProto(mapCtx, in.ResolveTime)
+	out.Category = direct.ValueOf(in.Category)
+	out.State = direct.Enum_ToProto[pb.Violation_State](mapCtx, in.State)
+	out.NonCompliantOrgPolicy = direct.ValueOf(in.NonCompliantOrgPolicy)
+	// MISSING: FolderID
+	out.Remediation = Violation_Remediation_ToProto(mapCtx, in.Remediation)
 	return out
 }
-func Sku_FromProto(mapCtx *direct.MapContext, in *pb.Sku) *krm.Sku {
+func Violation_Remediation_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation) *krm.Violation_Remediation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Sku{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out := &krm.Violation_Remediation{}
+	out.Instructions = Violation_Remediation_Instructions_FromProto(mapCtx, in.GetInstructions())
+	out.CompliantValues = in.CompliantValues
+	// MISSING: RemediationType
 	return out
 }
-func Sku_ToProto(mapCtx *direct.MapContext, in *krm.Sku) *pb.Sku {
+func Violation_Remediation_ToProto(mapCtx *direct.MapContext, in *krm.Violation_Remediation) *pb.Violation_Remediation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Sku{}
-	out.Id = direct.ValueOf(in.ID)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out := &pb.Violation_Remediation{}
+	out.Instructions = Violation_Remediation_Instructions_ToProto(mapCtx, in.Instructions)
+	out.CompliantValues = in.CompliantValues
+	// MISSING: RemediationType
+	return out
+}
+func Violation_RemediationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation) *krm.Violation_RemediationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Violation_RemediationObservedState{}
+	// MISSING: Instructions
+	// MISSING: CompliantValues
+	out.RemediationType = direct.Enum_FromProto(mapCtx, in.GetRemediationType())
+	return out
+}
+func Violation_RemediationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Violation_RemediationObservedState) *pb.Violation_Remediation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation_Remediation{}
+	// MISSING: Instructions
+	// MISSING: CompliantValues
+	out.RemediationType = direct.Enum_ToProto[pb.Violation_Remediation_RemediationType](mapCtx, in.RemediationType)
+	return out
+}
+func Violation_Remediation_Instructions_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation_Instructions) *krm.Violation_Remediation_Instructions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Violation_Remediation_Instructions{}
+	out.GcloudInstructions = Violation_Remediation_Instructions_Gcloud_FromProto(mapCtx, in.GetGcloudInstructions())
+	out.ConsoleInstructions = Violation_Remediation_Instructions_Console_FromProto(mapCtx, in.GetConsoleInstructions())
+	return out
+}
+func Violation_Remediation_Instructions_ToProto(mapCtx *direct.MapContext, in *krm.Violation_Remediation_Instructions) *pb.Violation_Remediation_Instructions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation_Remediation_Instructions{}
+	out.GcloudInstructions = Violation_Remediation_Instructions_Gcloud_ToProto(mapCtx, in.GcloudInstructions)
+	out.ConsoleInstructions = Violation_Remediation_Instructions_Console_ToProto(mapCtx, in.ConsoleInstructions)
+	return out
+}
+func Violation_Remediation_Instructions_Console_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation_Instructions_Console) *krm.Violation_Remediation_Instructions_Console {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Violation_Remediation_Instructions_Console{}
+	out.ConsoleUris = in.ConsoleUris
+	out.Steps = in.Steps
+	out.AdditionalLinks = in.AdditionalLinks
+	return out
+}
+func Violation_Remediation_Instructions_Console_ToProto(mapCtx *direct.MapContext, in *krm.Violation_Remediation_Instructions_Console) *pb.Violation_Remediation_Instructions_Console {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation_Remediation_Instructions_Console{}
+	out.ConsoleUris = in.ConsoleUris
+	out.Steps = in.Steps
+	out.AdditionalLinks = in.AdditionalLinks
+	return out
+}
+func Violation_Remediation_Instructions_Gcloud_FromProto(mapCtx *direct.MapContext, in *pb.Violation_Remediation_Instructions_Gcloud) *krm.Violation_Remediation_Instructions_Gcloud {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Violation_Remediation_Instructions_Gcloud{}
+	out.GcloudCommands = in.GcloudCommands
+	out.Steps = in.Steps
+	out.AdditionalLinks = in.AdditionalLinks
+	return out
+}
+func Violation_Remediation_Instructions_Gcloud_ToProto(mapCtx *direct.MapContext, in *krm.Violation_Remediation_Instructions_Gcloud) *pb.Violation_Remediation_Instructions_Gcloud {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Violation_Remediation_Instructions_Gcloud{}
+	out.GcloudCommands = in.GcloudCommands
+	out.Steps = in.Steps
+	out.AdditionalLinks = in.AdditionalLinks
 	return out
 }
