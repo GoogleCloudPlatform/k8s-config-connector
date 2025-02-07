@@ -44,27 +44,29 @@ func (i *LinkIdentity) Parent() *LinkParent {
 }
 
 type LinkParent struct {
-	ProjectID string
-	Location  string
+	ProjectID          string
+	Location           string
+	LoggingLogBucketID string
 }
 
 func (p *LinkParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/buckets/" + p.LoggingLogBucketID
 }
 
 // New builds a LinkIdentity from the Config Connector Link object.
 func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink) (*LinkIdentity, error) {
 
+	// TODO this thinks the parent is a project, its a bucket
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	bucketRef, err := refsv1beta1.ResolveLoggingLogBucketRef(ctx, reader, obj, obj.Spec.LoggingLogBucketRef)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
+	projectID := bucketRef.ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := bucketRef.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -96,8 +98,9 @@ func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink
 	}
 	return &LinkIdentity{
 		parent: &LinkParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:          projectID,
+			Location:           location,
+			LoggingLogBucketID: resourceID,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +108,14 @@ func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink
 
 func ParseLinkExternal(external string) (parent *LinkParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "links" {
-		return nil, "", fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/links/{{linkID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "buckets" || tokens[6] != "links" {
+		return nil, "", fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}})", external)
 	}
 	parent = &LinkParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:          tokens[1],
+		Location:           tokens[3],
+		LoggingLogBucketID: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
