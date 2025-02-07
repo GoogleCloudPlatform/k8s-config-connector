@@ -18,276 +18,8 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb"
+	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta3/generativelanguagepb"
 )
-func AiChunkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.AiChunkObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiChunkObservedState{}
-	// MISSING: Name
-	// MISSING: Data
-	// MISSING: CustomMetadata
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	return out
-}
-func AiChunkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiChunkObservedState) *pb.Chunk {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Chunk{}
-	// MISSING: Name
-	// MISSING: Data
-	// MISSING: CustomMetadata
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	return out
-}
-func AiChunkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.AiChunkSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiChunkSpec{}
-	// MISSING: Name
-	// MISSING: Data
-	// MISSING: CustomMetadata
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	return out
-}
-func AiChunkSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiChunkSpec) *pb.Chunk {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Chunk{}
-	// MISSING: Name
-	// MISSING: Data
-	// MISSING: CustomMetadata
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	return out
-}
-func AiCorpusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Corpus) *krm.AiCorpusObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiCorpusObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AiCorpusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiCorpusObservedState) *pb.Corpus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Corpus{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AiCorpusSpec_FromProto(mapCtx *direct.MapContext, in *pb.Corpus) *krm.AiCorpusSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiCorpusSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AiCorpusSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiCorpusSpec) *pb.Corpus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Corpus{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AiDocumentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.AiDocumentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiDocumentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CustomMetadata
-	// MISSING: UpdateTime
-	// MISSING: CreateTime
-	return out
-}
-func AiDocumentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiDocumentObservedState) *pb.Document {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Document{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CustomMetadata
-	// MISSING: UpdateTime
-	// MISSING: CreateTime
-	return out
-}
-func AiDocumentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.AiDocumentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiDocumentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CustomMetadata
-	// MISSING: UpdateTime
-	// MISSING: CreateTime
-	return out
-}
-func AiDocumentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiDocumentSpec) *pb.Document {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Document{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CustomMetadata
-	// MISSING: UpdateTime
-	// MISSING: CreateTime
-	return out
-}
-func AiPermissionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Permission) *krm.AiPermissionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiPermissionObservedState{}
-	// MISSING: Name
-	// MISSING: GranteeType
-	// MISSING: EmailAddress
-	// MISSING: Role
-	return out
-}
-func AiPermissionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiPermissionObservedState) *pb.Permission {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Permission{}
-	// MISSING: Name
-	// MISSING: GranteeType
-	// MISSING: EmailAddress
-	// MISSING: Role
-	return out
-}
-func AiPermissionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Permission) *krm.AiPermissionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiPermissionSpec{}
-	// MISSING: Name
-	// MISSING: GranteeType
-	// MISSING: EmailAddress
-	// MISSING: Role
-	return out
-}
-func AiPermissionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiPermissionSpec) *pb.Permission {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Permission{}
-	// MISSING: Name
-	// MISSING: GranteeType
-	// MISSING: EmailAddress
-	// MISSING: Role
-	return out
-}
-func AiTunedModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TunedModel) *krm.AiTunedModelObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiTunedModelObservedState{}
-	// MISSING: TunedModelSource
-	// MISSING: BaseModel
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Temperature
-	// MISSING: TopP
-	// MISSING: TopK
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: TuningTask
-	// MISSING: ReaderProjectNumbers
-	return out
-}
-func AiTunedModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiTunedModelObservedState) *pb.TunedModel {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TunedModel{}
-	// MISSING: TunedModelSource
-	// MISSING: BaseModel
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Temperature
-	// MISSING: TopP
-	// MISSING: TopK
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: TuningTask
-	// MISSING: ReaderProjectNumbers
-	return out
-}
-func AiTunedModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.TunedModel) *krm.AiTunedModelSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiTunedModelSpec{}
-	// MISSING: TunedModelSource
-	// MISSING: BaseModel
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Temperature
-	// MISSING: TopP
-	// MISSING: TopK
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: TuningTask
-	// MISSING: ReaderProjectNumbers
-	return out
-}
-func AiTunedModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiTunedModelSpec) *pb.TunedModel {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TunedModel{}
-	// MISSING: TunedModelSource
-	// MISSING: BaseModel
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Temperature
-	// MISSING: TopP
-	// MISSING: TopK
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: TuningTask
-	// MISSING: ReaderProjectNumbers
-	return out
-}
 func Dataset_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.Dataset {
 	if in == nil {
 		return nil
@@ -311,10 +43,9 @@ func Hyperparameters_FromProto(mapCtx *direct.MapContext, in *pb.Hyperparameters
 		return nil
 	}
 	out := &krm.Hyperparameters{}
-	out.LearningRate = direct.LazyPtr(in.GetLearningRate())
-	out.LearningRateMultiplier = direct.LazyPtr(in.GetLearningRateMultiplier())
 	out.EpochCount = in.EpochCount
 	out.BatchSize = in.BatchSize
+	out.LearningRate = in.LearningRate
 	return out
 }
 func Hyperparameters_ToProto(mapCtx *direct.MapContext, in *krm.Hyperparameters) *pb.Hyperparameters {
@@ -322,14 +53,9 @@ func Hyperparameters_ToProto(mapCtx *direct.MapContext, in *krm.Hyperparameters)
 		return nil
 	}
 	out := &pb.Hyperparameters{}
-	if oneof := Hyperparameters_LearningRate_ToProto(mapCtx, in.LearningRate); oneof != nil {
-		out.LearningRateOption = oneof
-	}
-	if oneof := Hyperparameters_LearningRateMultiplier_ToProto(mapCtx, in.LearningRateMultiplier); oneof != nil {
-		out.LearningRateOption = oneof
-	}
 	out.EpochCount = in.EpochCount
 	out.BatchSize = in.BatchSize
+	out.LearningRate = in.LearningRate
 	return out
 }
 func TunedModel_FromProto(mapCtx *direct.MapContext, in *pb.TunedModel) *krm.TunedModel {
@@ -349,7 +75,6 @@ func TunedModel_FromProto(mapCtx *direct.MapContext, in *pb.TunedModel) *krm.Tun
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.TuningTask = TuningTask_FromProto(mapCtx, in.GetTuningTask())
-	out.ReaderProjectNumbers = in.ReaderProjectNumbers
 	return out
 }
 func TunedModel_ToProto(mapCtx *direct.MapContext, in *krm.TunedModel) *pb.TunedModel {
@@ -373,7 +98,6 @@ func TunedModel_ToProto(mapCtx *direct.MapContext, in *krm.TunedModel) *pb.Tuned
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.TuningTask = TuningTask_ToProto(mapCtx, in.TuningTask)
-	out.ReaderProjectNumbers = in.ReaderProjectNumbers
 	return out
 }
 func TunedModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TunedModel) *krm.TunedModelObservedState {
@@ -393,7 +117,6 @@ func TunedModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TunedMo
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.TuningTask = TuningTaskObservedState_FromProto(mapCtx, in.GetTuningTask())
-	// MISSING: ReaderProjectNumbers
 	return out
 }
 func TunedModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TunedModelObservedState) *pb.TunedModel {
@@ -415,7 +138,6 @@ func TunedModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TunedMod
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.TuningTask = TuningTaskObservedState_ToProto(mapCtx, in.TuningTask)
-	// MISSING: ReaderProjectNumbers
 	return out
 }
 func TunedModelSource_FromProto(mapCtx *direct.MapContext, in *pb.TunedModelSource) *krm.TunedModelSource {
