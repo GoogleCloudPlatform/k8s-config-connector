@@ -16,193 +16,169 @@ package beyondcorp
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/beyondcorp/appconnectors/apiv1/appconnectorspb"
+	pb "cloud.google.com/go/beyondcorp/appgateways/apiv1/appgatewayspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/beyondcorp/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func AppConnector_FromProto(mapCtx *direct.MapContext, in *pb.AppConnector) *krm.AppConnector {
+func AppGateway_FromProto(mapCtx *direct.MapContext, in *pb.AppGateway) *krm.AppGateway {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppConnector{}
+	out := &krm.AppGateway{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Uid
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	// MISSING: State
-	out.PrincipalInfo = AppConnector_PrincipalInfo_FromProto(mapCtx, in.GetPrincipalInfo())
-	out.ResourceInfo = ResourceInfo_FromProto(mapCtx, in.GetResourceInfo())
+	// MISSING: URI
+	// MISSING: AllocatedConnections
+	out.HostType = direct.Enum_FromProto(mapCtx, in.GetHostType())
 	return out
 }
-func AppConnector_ToProto(mapCtx *direct.MapContext, in *krm.AppConnector) *pb.AppConnector {
+func AppGateway_ToProto(mapCtx *direct.MapContext, in *krm.AppGateway) *pb.AppGateway {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AppConnector{}
+	out := &pb.AppGateway{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: Uid
+	out.Type = direct.Enum_ToProto[pb.AppGateway_Type](mapCtx, in.Type)
 	// MISSING: State
-	out.PrincipalInfo = AppConnector_PrincipalInfo_ToProto(mapCtx, in.PrincipalInfo)
-	out.ResourceInfo = ResourceInfo_ToProto(mapCtx, in.ResourceInfo)
+	// MISSING: URI
+	// MISSING: AllocatedConnections
+	out.HostType = direct.Enum_ToProto[pb.AppGateway_HostType](mapCtx, in.HostType)
 	return out
 }
-func AppConnectorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppConnector) *krm.AppConnectorObservedState {
+func AppGatewayObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppGateway) *krm.AppGatewayObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppConnectorObservedState{}
+	out := &krm.AppGatewayObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	// MISSING: DisplayName
 	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Type
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: PrincipalInfo
-	// MISSING: ResourceInfo
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.AllocatedConnections = direct.Slice_FromProto(mapCtx, in.AllocatedConnections, AppGateway_AllocatedConnection_FromProto)
+	// MISSING: HostType
 	return out
 }
-func AppConnectorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppConnectorObservedState) *pb.AppConnector {
+func AppGatewayObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppGatewayObservedState) *pb.AppGateway {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AppConnector{}
+	out := &pb.AppGateway{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	// MISSING: DisplayName
 	out.Uid = direct.ValueOf(in.Uid)
-	out.State = direct.Enum_ToProto[pb.AppConnector_State](mapCtx, in.State)
-	// MISSING: PrincipalInfo
-	// MISSING: ResourceInfo
+	// MISSING: Type
+	out.State = direct.Enum_ToProto[pb.AppGateway_State](mapCtx, in.State)
+	out.Uri = direct.ValueOf(in.URI)
+	out.AllocatedConnections = direct.Slice_ToProto(mapCtx, in.AllocatedConnections, AppGateway_AllocatedConnection_ToProto)
+	// MISSING: HostType
 	return out
 }
-func AppConnector_PrincipalInfo_FromProto(mapCtx *direct.MapContext, in *pb.AppConnector_PrincipalInfo) *krm.AppConnector_PrincipalInfo {
+func AppGateway_AllocatedConnection_FromProto(mapCtx *direct.MapContext, in *pb.AppGateway_AllocatedConnection) *krm.AppGateway_AllocatedConnection {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppConnector_PrincipalInfo{}
-	out.ServiceAccount = AppConnector_PrincipalInfo_ServiceAccount_FromProto(mapCtx, in.GetServiceAccount())
+	out := &krm.AppGateway_AllocatedConnection{}
+	out.PscURI = direct.LazyPtr(in.GetPscUri())
+	out.IngressPort = direct.LazyPtr(in.GetIngressPort())
 	return out
 }
-func AppConnector_PrincipalInfo_ToProto(mapCtx *direct.MapContext, in *krm.AppConnector_PrincipalInfo) *pb.AppConnector_PrincipalInfo {
+func AppGateway_AllocatedConnection_ToProto(mapCtx *direct.MapContext, in *krm.AppGateway_AllocatedConnection) *pb.AppGateway_AllocatedConnection {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AppConnector_PrincipalInfo{}
-	if oneof := AppConnector_PrincipalInfo_ServiceAccount_ToProto(mapCtx, in.ServiceAccount); oneof != nil {
-		out.Type = &pb.AppConnector_PrincipalInfo_ServiceAccount_{ServiceAccount: oneof}
-	}
+	out := &pb.AppGateway_AllocatedConnection{}
+	out.PscUri = direct.ValueOf(in.PscURI)
+	out.IngressPort = direct.ValueOf(in.IngressPort)
 	return out
 }
-func AppConnector_PrincipalInfo_ServiceAccount_FromProto(mapCtx *direct.MapContext, in *pb.AppConnector_PrincipalInfo_ServiceAccount) *krm.AppConnector_PrincipalInfo_ServiceAccount {
+func BeyondcorpAppGatewayObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppGateway) *krm.BeyondcorpAppGatewayObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppConnector_PrincipalInfo_ServiceAccount{}
-	out.Email = direct.LazyPtr(in.GetEmail())
-	return out
-}
-func AppConnector_PrincipalInfo_ServiceAccount_ToProto(mapCtx *direct.MapContext, in *krm.AppConnector_PrincipalInfo_ServiceAccount) *pb.AppConnector_PrincipalInfo_ServiceAccount {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AppConnector_PrincipalInfo_ServiceAccount{}
-	out.Email = direct.ValueOf(in.Email)
-	return out
-}
-func BeyondcorpAppConnectorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppConnector) *krm.BeyondcorpAppConnectorObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BeyondcorpAppConnectorObservedState{}
+	out := &krm.BeyondcorpAppGatewayObservedState{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: DisplayName
 	// MISSING: Uid
+	// MISSING: Type
 	// MISSING: State
-	// MISSING: PrincipalInfo
-	// MISSING: ResourceInfo
+	// MISSING: URI
+	// MISSING: AllocatedConnections
+	// MISSING: HostType
 	return out
 }
-func BeyondcorpAppConnectorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BeyondcorpAppConnectorObservedState) *pb.AppConnector {
+func BeyondcorpAppGatewayObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BeyondcorpAppGatewayObservedState) *pb.AppGateway {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AppConnector{}
+	out := &pb.AppGateway{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: DisplayName
 	// MISSING: Uid
+	// MISSING: Type
 	// MISSING: State
-	// MISSING: PrincipalInfo
-	// MISSING: ResourceInfo
+	// MISSING: URI
+	// MISSING: AllocatedConnections
+	// MISSING: HostType
 	return out
 }
-func BeyondcorpAppConnectorSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppConnector) *krm.BeyondcorpAppConnectorSpec {
+func BeyondcorpAppGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.AppGateway) *krm.BeyondcorpAppGatewaySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BeyondcorpAppConnectorSpec{}
+	out := &krm.BeyondcorpAppGatewaySpec{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: DisplayName
 	// MISSING: Uid
+	// MISSING: Type
 	// MISSING: State
-	// MISSING: PrincipalInfo
-	// MISSING: ResourceInfo
+	// MISSING: URI
+	// MISSING: AllocatedConnections
+	// MISSING: HostType
 	return out
 }
-func BeyondcorpAppConnectorSpec_ToProto(mapCtx *direct.MapContext, in *krm.BeyondcorpAppConnectorSpec) *pb.AppConnector {
+func BeyondcorpAppGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.BeyondcorpAppGatewaySpec) *pb.AppGateway {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AppConnector{}
+	out := &pb.AppGateway{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: DisplayName
 	// MISSING: Uid
+	// MISSING: Type
 	// MISSING: State
-	// MISSING: PrincipalInfo
-	// MISSING: ResourceInfo
-	return out
-}
-func ResourceInfo_FromProto(mapCtx *direct.MapContext, in *pb.ResourceInfo) *krm.ResourceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ResourceInfo{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
-	out.Resource = Any_FromProto(mapCtx, in.GetResource())
-	out.Time = direct.StringTimestamp_FromProto(mapCtx, in.GetTime())
-	out.Sub = direct.Slice_FromProto(mapCtx, in.Sub, ResourceInfo_FromProto)
-	return out
-}
-func ResourceInfo_ToProto(mapCtx *direct.MapContext, in *krm.ResourceInfo) *pb.ResourceInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ResourceInfo{}
-	out.Id = direct.ValueOf(in.ID)
-	out.Status = direct.Enum_ToProto[pb.HealthStatus](mapCtx, in.Status)
-	out.Resource = Any_ToProto(mapCtx, in.Resource)
-	out.Time = direct.StringTimestamp_ToProto(mapCtx, in.Time)
-	out.Sub = direct.Slice_ToProto(mapCtx, in.Sub, ResourceInfo_ToProto)
+	// MISSING: URI
+	// MISSING: AllocatedConnections
+	// MISSING: HostType
 	return out
 }
