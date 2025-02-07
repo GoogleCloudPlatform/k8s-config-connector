@@ -15,33 +15,6 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apphub.v1.Application
-type Application struct {
-	// Identifier. The resource name of an Application. Format:
-	//  "projects/{host-project-id}/locations/{location}/applications/{application-id}"
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. User-defined name for the Application.
-	//  Can have a maximum length of 63 characters.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. User-defined description of an Application.
-	//  Can have a maximum length of 2048 characters.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. Consumer provided attributes.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.attributes
-	Attributes *Attributes `json:"attributes,omitempty"`
-
-	// Required. Immutable. Defines what data can be included into this
-	//  Application. Limits which Services and Workloads can be registered.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.scope
-	Scope *Scope `json:"scope,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apphub.v1.Attributes
 type Attributes struct {
 	// Optional. User-defined criticality information.
@@ -92,29 +65,92 @@ type Environment struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apphub.v1.Scope
-type Scope struct {
-	// Required. Scope Type.
-	// +kcc:proto:field=google.cloud.apphub.v1.Scope.type
-	Type *string `json:"type,omitempty"`
+// +kcc:proto=google.cloud.apphub.v1.Service
+type Service struct {
+	// Identifier. The resource name of a Service. Format:
+	//  "projects/{host-project-id}/locations/{location}/applications/{application-id}/services/{service-id}"
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. User-defined name for the Service.
+	//  Can have a maximum length of 63 characters.
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User-defined description of a Service.
+	//  Can have a maximum length of 2048 characters.
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Consumer provided attributes.
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.attributes
+	Attributes *Attributes `json:"attributes,omitempty"`
+
+	// Required. Immutable. The resource name of the original discovered service.
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.discovered_service
+	DiscoveredService *string `json:"discoveredService,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apphub.v1.Application
-type ApplicationObservedState struct {
+// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
+type ServiceProperties struct {
+}
+
+// +kcc:proto=google.cloud.apphub.v1.ServiceReference
+type ServiceReference struct {
+}
+
+// +kcc:proto=google.cloud.apphub.v1.Service
+type ServiceObservedState struct {
+	// Output only. Reference to an underlying networking resource that can
+	//  comprise a Service. These are immutable.
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.service_reference
+	ServiceReference *ServiceReference `json:"serviceReference,omitempty"`
+
+	// Output only. Properties of an underlying compute resource that can comprise
+	//  a Service. These are immutable.
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.service_properties
+	ServiceProperties *ServiceProperties `json:"serviceProperties,omitempty"`
+
 	// Output only. Create time.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.create_time
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Update time.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.update_time
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. A universally unique identifier (in UUID4 format) for the
-	//  `Application`.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.uid
+	// Output only. A universally unique identifier (UUID) for the `Service` in
+	//  the UUID4 format.
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.uid
 	Uid *string `json:"uid,omitempty"`
 
-	// Output only. Application state.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.state
+	// Output only. Service state.
+	// +kcc:proto:field=google.cloud.apphub.v1.Service.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
+type ServicePropertiesObservedState struct {
+	// Output only. The service project identifier that the underlying cloud
+	//  resource resides in.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.gcp_project
+	GcpProject *string `json:"gcpProject,omitempty"`
+
+	// Output only. The location that the underlying resource resides in, for
+	//  example, us-west1.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.location
+	Location *string `json:"location,omitempty"`
+
+	// Output only. The location that the underlying resource resides in if it is
+	//  zonal, for example, us-west1-a).
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.zone
+	Zone *string `json:"zone,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apphub.v1.ServiceReference
+type ServiceReferenceObservedState struct {
+	// Output only. The underlying resource URI (For example, URI of Forwarding
+	//  Rule, URL Map, and Backend Service).
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceReference.uri
+	URI *string `json:"uri,omitempty"`
 }
