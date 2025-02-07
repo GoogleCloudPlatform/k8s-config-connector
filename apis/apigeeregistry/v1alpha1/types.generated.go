@@ -15,55 +15,67 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.apigeeregistry.v1.Instance
-type Instance struct {
-	// Format: `projects/*/locations/*/instance`.
-	//  Currently only `locations/global` is supported.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.name
+// +kcc:proto=google.cloud.apigeeregistry.v1.Api
+type Api struct {
+	// Resource name.
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. Config of the Instance.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.config
-	Config *Instance_Config `json:"config,omitempty"`
+	// Human-meaningful name.
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A detailed description.
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.description
+	Description *string `json:"description,omitempty"`
+
+	// A user-definable description of the availability of this service.
+	//  Format: free-form, but we expect single words that describe availability,
+	//  e.g., "NONE", "TESTING", "PREVIEW", "GENERAL", "DEPRECATED", "SHUTDOWN".
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.availability
+	Availability *string `json:"availability,omitempty"`
+
+	// The recommended version of the API.
+	//  Format: `apis/{api}/versions/{version}`
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.recommended_version
+	RecommendedVersion *string `json:"recommendedVersion,omitempty"`
+
+	// The recommended deployment of the API.
+	//  Format: `apis/{api}/deployments/{deployment}`
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.recommended_deployment
+	RecommendedDeployment *string `json:"recommendedDeployment,omitempty"`
+
+	// Labels attach identifying metadata to resources. Identifying metadata can
+	//  be used to filter list operations.
+	//
+	//  Label keys and values can be no longer than 64 characters
+	//  (Unicode codepoints), can only contain lowercase letters, numeric
+	//  characters, underscores, and dashes. International characters are allowed.
+	//  No more than 64 user labels can be associated with one resource (System
+	//  labels are excluded).
+	//
+	//  See https://goo.gl/xmQnxf for more information and examples of labels.
+	//  System reserved label keys are prefixed with
+	//  `apigeeregistry.googleapis.com/` and cannot be changed.
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Annotations attach non-identifying metadata to resources.
+	//
+	//  Annotation keys and values are less restricted than those of labels, but
+	//  should be generally used for small values of broad interest. Larger, topic-
+	//  specific metadata should be stored in Artifacts.
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apigeeregistry.v1.Instance.Config
-type Instance_Config struct {
-
-	// Required. The Customer Managed Encryption Key (CMEK) used for data encryption.
-	//  The CMEK name should follow the format of
-	//  `projects/([^/]+)/locations/([^/]+)/keyRings/([^/]+)/cryptoKeys/([^/]+)`,
-	//  where the `location` must match InstanceConfig.location.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.Config.cmek_key_name
-	CmekKeyName *string `json:"cmekKeyName,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apigeeregistry.v1.Instance
-type InstanceObservedState struct {
+// +kcc:proto=google.cloud.apigeeregistry.v1.Api
+type ApiObservedState struct {
 	// Output only. Creation timestamp.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.create_time
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Last update timestamp.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.update_time
+	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Api.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. The current state of the Instance.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Extra information of Instance.State if the state is `FAILED`.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.state_message
-	StateMessage *string `json:"stateMessage,omitempty"`
-
-	// Required. Config of the Instance.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.config
-	Config *Instance_ConfigObservedState `json:"config,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apigeeregistry.v1.Instance.Config
-type Instance_ConfigObservedState struct {
-	// Output only. The GCP location where the Instance resides.
-	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.Config.location
-	Location *string `json:"location,omitempty"`
 }

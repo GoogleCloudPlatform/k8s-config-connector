@@ -15,11 +15,147 @@
 package apigeeregistry
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apigeeregistry/apiv1/apigeeregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigeeregistry/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+func Api_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.Api {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Api{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Availability = direct.LazyPtr(in.GetAvailability())
+	out.RecommendedVersion = direct.LazyPtr(in.GetRecommendedVersion())
+	out.RecommendedDeployment = direct.LazyPtr(in.GetRecommendedDeployment())
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func Api_ToProto(mapCtx *direct.MapContext, in *krm.Api) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Availability = direct.ValueOf(in.Availability)
+	out.RecommendedVersion = direct.ValueOf(in.RecommendedVersion)
+	out.RecommendedDeployment = direct.ValueOf(in.RecommendedDeployment)
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func ApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApiObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApiObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Availability
+	// MISSING: RecommendedVersion
+	// MISSING: RecommendedDeployment
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApiObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiObservedState) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Availability
+	// MISSING: RecommendedVersion
+	// MISSING: RecommendedDeployment
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApigeeregistryApiObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryApiObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Availability
+	// MISSING: RecommendedVersion
+	// MISSING: RecommendedDeployment
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryApiObservedState) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Availability
+	// MISSING: RecommendedVersion
+	// MISSING: RecommendedDeployment
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiSpec_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.ApigeeregistryApiSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryApiSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Availability
+	// MISSING: RecommendedVersion
+	// MISSING: RecommendedDeployment
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryApiSpec) *pb.Api {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Api{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Availability
+	// MISSING: RecommendedVersion
+	// MISSING: RecommendedDeployment
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
 func ApigeeregistryInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ApigeeregistryInstanceObservedState {
 	if in == nil {
 		return nil
@@ -70,93 +206,5 @@ func ApigeeregistryInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Apige
 	// MISSING: State
 	// MISSING: StateMessage
 	// MISSING: Config
-	return out
-}
-func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Instance{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StateMessage
-	out.Config = Instance_Config_FromProto(mapCtx, in.GetConfig())
-	return out
-}
-func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StateMessage
-	out.Config = Instance_Config_ToProto(mapCtx, in.Config)
-	return out
-}
-func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.InstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InstanceObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
-	out.Config = Instance_ConfigObservedState_FromProto(mapCtx, in.GetConfig())
-	return out
-}
-func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
-	out.StateMessage = direct.ValueOf(in.StateMessage)
-	out.Config = Instance_ConfigObservedState_ToProto(mapCtx, in.Config)
-	return out
-}
-func Instance_Config_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Config) *krm.Instance_Config {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Instance_Config{}
-	// MISSING: Location
-	out.CmekKeyName = direct.LazyPtr(in.GetCmekKeyName())
-	return out
-}
-func Instance_Config_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Config) *pb.Instance_Config {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_Config{}
-	// MISSING: Location
-	out.CmekKeyName = direct.ValueOf(in.CmekKeyName)
-	return out
-}
-func Instance_ConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Config) *krm.Instance_ConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Instance_ConfigObservedState{}
-	out.Location = direct.LazyPtr(in.GetLocation())
-	// MISSING: CmekKeyName
-	return out
-}
-func Instance_ConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConfigObservedState) *pb.Instance_Config {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_Config{}
-	out.Location = direct.ValueOf(in.Location)
-	// MISSING: CmekKeyName
 	return out
 }
