@@ -40,7 +40,7 @@ type RunTerminalCommandResults struct {
 	Error   string `json:"error"`
 }
 
-func (t *RunTerminalCommand) Run(ctx context.Context, c *Chat, args map[string]any) (*RunTerminalCommandResults, error) {
+func (t *RunTerminalCommand) Run(ctx context.Context, c *Chat, args map[string]any) (any, error) {
 	b, err := json.Marshal(args)
 	if err != nil {
 		return nil, fmt.Errorf("converting to json: %w", err)

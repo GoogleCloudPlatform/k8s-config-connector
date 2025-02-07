@@ -99,6 +99,8 @@ func run(ctx context.Context) error {
 
 	defer llmClient.Close()
 
+	toolbox := codebot.NewToolbox(codebot.GetAllTools())
+
 	var chatSession *codebot.Chat
 
 	// ui := ui.NewTViewUI()
@@ -160,7 +162,7 @@ func run(ctx context.Context) error {
 		return nil
 	})
 
-	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, ui)
+	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, toolbox, ui)
 	if err != nil {
 		return err
 	}

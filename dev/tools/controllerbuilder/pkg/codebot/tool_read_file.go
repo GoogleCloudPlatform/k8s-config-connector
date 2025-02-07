@@ -37,7 +37,7 @@ type ReadFileResponse struct {
 	Contents string `json:"contents"`
 }
 
-func (t *ReadFile) Run(ctx context.Context, c *Chat, args map[string]any) (*ReadFileResponse, error) {
+func (t *ReadFile) Run(ctx context.Context, c *Chat, args map[string]any) (any, error) {
 	b, err := json.Marshal(args)
 	if err != nil {
 		return nil, fmt.Errorf("converting to json: %w", err)

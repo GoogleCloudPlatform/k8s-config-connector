@@ -117,12 +117,13 @@ go 1.21
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}
-
 	defer llmClient.Close()
 
 	u := ui.NewTerminalUI()
 
-	chat, err := codebot.NewChat(ctx, llmClient, tmpDir, contextFiles, u)
+	toolbox := codebot.NewToolbox(codebot.GetAllTools())
+
+	chat, err := codebot.NewChat(ctx, llmClient, tmpDir, contextFiles, toolbox, u)
 	if err != nil {
 		return err
 	}

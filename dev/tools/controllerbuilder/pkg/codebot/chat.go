@@ -30,6 +30,8 @@ type Chat struct {
 	session llm.Chat
 	baseDir string
 	ui      ui.UI
+
+	toolbox *Toolbox
 }
 
 type FileInfo struct {
@@ -37,8 +39,7 @@ type FileInfo struct {
 	Content string
 }
 
-func NewChat(ctx context.Context, llmClient llm.Client, baseDir string, contextFiles map[string]*FileInfo, ui ui.UI) (*Chat, error) {
-
+func NewChat(ctx context.Context, llmClient llm.Client, baseDir string, contextFiles map[string]*FileInfo, toolbox *Toolbox, ui ui.UI) (*Chat, error) {
 	systemPrompt := `
 You are a helpful AI coding assistant, expert in the go programming language and in creating kubernetes controllers.
 
@@ -47,11 +48,7 @@ Help the user with their problems.  Do not do more than the user asks; propose m
 If you think the code should be changed, use the tools to apply those changes instead of printing them.  Do not make multiple parallel changes to the same file.
 `
 
-	var functionDefinitions []*llm.FunctionDefinition
-
-	for _, tool := range GetTools() {
-		functionDefinitions = append(functionDefinitions, tool.BuildFunctionDefinition())
-	}
+	functionDefinitions := toolbox.GetFunctionDefinitions()
 
 	if len(contextFiles) != 0 {
 		var sb strings.Builder
@@ -79,6 +76,7 @@ If you think the code should be changed, use the tools to apply those changes in
 		baseDir: baseDir,
 		session: session,
 		ui:      ui,
+		toolbox: toolbox,
 	}, nil
 
 }
@@ -121,7 +119,7 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 					// klog.Infof("functionCall: %+v", functionCall)
 					klog.V(2).Infof("functionCall: %+v", functionCall.Name)
 					c.ui.AddLLMOutput(&ui.LLMOutput{Text: fmt.Sprintf("functionCall: %+v", functionCall)})
-					result, err := c.runFunctionCall(ctx, functionCall)
+					result, err := c.toolbox.CallFunction(ctx, c, functionCall)
 					if err != nil {
 						return fmt.Errorf("unexpected error running function: %w", err)
 					}
