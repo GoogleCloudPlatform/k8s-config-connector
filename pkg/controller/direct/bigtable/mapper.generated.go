@@ -15,11 +15,11 @@
 package bigtable
 
 import (
-	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 )
 func AppProfile_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.AppProfile {
 	if in == nil {
@@ -95,20 +95,6 @@ func AppProfile_MultiClusterRoutingUseAny_ToProto(mapCtx *direct.MapContext, in 
 	out := &pb.AppProfile_MultiClusterRoutingUseAny{}
 	out.ClusterIds = in.ClusterIds
 	// MISSING: RowAffinity
-	return out
-}
-func AppProfile_MultiClusterRoutingUseAny_RowAffinity_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
-	return out
-}
-func AppProfile_MultiClusterRoutingUseAny_RowAffinity_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
 	return out
 }
 func AppProfile_SingleClusterRouting_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krm.AppProfile_SingleClusterRouting {
@@ -421,6 +407,62 @@ func BigtableClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableClus
 	// MISSING: EncryptionConfig
 	return out
 }
+func BigtableHotTabletObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HotTablet) *krm.BigtableHotTabletObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigtableHotTabletObservedState{}
+	// MISSING: Name
+	// MISSING: TableName
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: StartKey
+	// MISSING: EndKey
+	// MISSING: NodeCpuUsagePercent
+	return out
+}
+func BigtableHotTabletObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigtableHotTabletObservedState) *pb.HotTablet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HotTablet{}
+	// MISSING: Name
+	// MISSING: TableName
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: StartKey
+	// MISSING: EndKey
+	// MISSING: NodeCpuUsagePercent
+	return out
+}
+func BigtableHotTabletSpec_FromProto(mapCtx *direct.MapContext, in *pb.HotTablet) *krm.BigtableHotTabletSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigtableHotTabletSpec{}
+	// MISSING: Name
+	// MISSING: TableName
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: StartKey
+	// MISSING: EndKey
+	// MISSING: NodeCpuUsagePercent
+	return out
+}
+func BigtableHotTabletSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableHotTabletSpec) *pb.HotTablet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HotTablet{}
+	// MISSING: Name
+	// MISSING: TableName
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: StartKey
+	// MISSING: EndKey
+	// MISSING: NodeCpuUsagePercent
+	return out
+}
 func ChangeStreamConfig_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krm.ChangeStreamConfig {
 	if in == nil {
 		return nil
@@ -662,6 +704,34 @@ func HotTablet_ToProto(mapCtx *direct.MapContext, in *krm.HotTablet) *pb.HotTabl
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.StartKey = direct.ValueOf(in.StartKey)
 	out.EndKey = direct.ValueOf(in.EndKey)
+	out.NodeCpuUsagePercent = direct.ValueOf(in.NodeCpuUsagePercent)
+	return out
+}
+func HotTabletObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HotTablet) *krm.HotTabletObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HotTabletObservedState{}
+	// MISSING: Name
+	// MISSING: TableName
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	// MISSING: StartKey
+	// MISSING: EndKey
+	out.NodeCpuUsagePercent = direct.LazyPtr(in.GetNodeCpuUsagePercent())
+	return out
+}
+func HotTabletObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HotTabletObservedState) *pb.HotTablet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HotTablet{}
+	// MISSING: Name
+	// MISSING: TableName
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	// MISSING: StartKey
+	// MISSING: EndKey
 	out.NodeCpuUsagePercent = direct.ValueOf(in.NodeCpuUsagePercent)
 	return out
 }
