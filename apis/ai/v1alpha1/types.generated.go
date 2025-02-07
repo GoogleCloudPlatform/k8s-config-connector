@@ -15,6 +15,36 @@
 package v1alpha1
 
 
+// +kcc:proto=google.ai.generativelanguage.v1beta.Chunk
+type Chunk struct {
+	// Immutable. Identifier. The `Chunk` resource name. The ID (name excluding
+	//  the "corpora/*/documents/*/chunks/" prefix) can contain up to 40 characters
+	//  that are lowercase alphanumeric or dashes (-). The ID cannot start or end
+	//  with a dash. If the name is empty on create, a random 12-character unique
+	//  ID will be generated.
+	//  Example: `corpora/{corpus_id}/documents/{document_id}/chunks/123a456b789c`
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Chunk.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The content for the `Chunk`, such as the text string.
+	//  The maximum number of tokens per chunk is 2043.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Chunk.data
+	Data *ChunkData `json:"data,omitempty"`
+
+	// Optional. User provided custom metadata stored as key-value pairs.
+	//  The maximum number of `CustomMetadata` per chunk is 20.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Chunk.custom_metadata
+	CustomMetadata []CustomMetadata `json:"customMetadata,omitempty"`
+}
+
+// +kcc:proto=google.ai.generativelanguage.v1beta.ChunkData
+type ChunkData struct {
+	// The `Chunk` content as a string.
+	//  The maximum number of tokens per chunk is 2043.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.ChunkData.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+}
+
 // +kcc:proto=google.ai.generativelanguage.v1beta.CustomMetadata
 type CustomMetadata struct {
 	// The string value of the metadata to store.
@@ -34,29 +64,6 @@ type CustomMetadata struct {
 	Key *string `json:"key,omitempty"`
 }
 
-// +kcc:proto=google.ai.generativelanguage.v1beta.Document
-type Document struct {
-	// Immutable. Identifier. The `Document` resource name. The ID (name excluding
-	//  the "corpora/*/documents/" prefix) can contain up to 40 characters that are
-	//  lowercase alphanumeric or dashes (-). The ID cannot start or end with a
-	//  dash. If the name is empty on create, a unique name will be derived from
-	//  `display_name` along with a 12 character random suffix.
-	//  Example: `corpora/{corpus_id}/documents/my-awesome-doc-123a456b789c`
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Document.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. The human-readable display name for the `Document`. The display
-	//  name must be no more than 512 characters in length, including spaces.
-	//  Example: "Semantic Retriever Documentation"
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Document.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. User provided custom metadata stored as key-value pairs used for
-	//  querying. A `Document` can have a maximum of 20 `CustomMetadata`.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Document.custom_metadata
-	CustomMetadata []CustomMetadata `json:"customMetadata,omitempty"`
-}
-
 // +kcc:proto=google.ai.generativelanguage.v1beta.StringList
 type StringList struct {
 	// The string values of the metadata to store.
@@ -64,13 +71,17 @@ type StringList struct {
 	Values []string `json:"values,omitempty"`
 }
 
-// +kcc:proto=google.ai.generativelanguage.v1beta.Document
-type DocumentObservedState struct {
-	// Output only. The Timestamp of when the `Document` was last updated.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Document.update_time
+// +kcc:proto=google.ai.generativelanguage.v1beta.Chunk
+type ChunkObservedState struct {
+	// Output only. The Timestamp of when the `Chunk` was created.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Chunk.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The Timestamp of when the `Chunk` was last updated.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Chunk.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. The Timestamp of when the `Document` was created.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Document.create_time
-	CreateTime *string `json:"createTime,omitempty"`
+	// Output only. Current state of the `Chunk`.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Chunk.state
+	State *string `json:"state,omitempty"`
 }

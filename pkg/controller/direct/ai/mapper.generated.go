@@ -15,11 +15,63 @@
 package ai
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ai/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ai/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+func AiChunkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.AiChunkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiChunkObservedState{}
+	// MISSING: Name
+	// MISSING: Data
+	// MISSING: CustomMetadata
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	return out
+}
+func AiChunkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiChunkObservedState) *pb.Chunk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Chunk{}
+	// MISSING: Name
+	// MISSING: Data
+	// MISSING: CustomMetadata
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	return out
+}
+func AiChunkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.AiChunkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiChunkSpec{}
+	// MISSING: Name
+	// MISSING: Data
+	// MISSING: CustomMetadata
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	return out
+}
+func AiChunkSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiChunkSpec) *pb.Chunk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Chunk{}
+	// MISSING: Name
+	// MISSING: Data
+	// MISSING: CustomMetadata
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
+	return out
+}
 func AiCorpusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Corpus) *krm.AiCorpusObservedState {
 	if in == nil {
 		return nil
@@ -156,52 +208,74 @@ func AiPermissionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiPermissionSpe
 	// MISSING: Role
 	return out
 }
-func Document_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.Document {
+func Chunk_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.Chunk {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Document{}
+	out := &krm.Chunk{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Data = ChunkData_FromProto(mapCtx, in.GetData())
 	out.CustomMetadata = direct.Slice_FromProto(mapCtx, in.CustomMetadata, CustomMetadata_FromProto)
-	// MISSING: UpdateTime
 	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
 	return out
 }
-func Document_ToProto(mapCtx *direct.MapContext, in *krm.Document) *pb.Document {
+func Chunk_ToProto(mapCtx *direct.MapContext, in *krm.Chunk) *pb.Chunk {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Document{}
+	out := &pb.Chunk{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Data = ChunkData_ToProto(mapCtx, in.Data)
 	out.CustomMetadata = direct.Slice_ToProto(mapCtx, in.CustomMetadata, CustomMetadata_ToProto)
-	// MISSING: UpdateTime
 	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: State
 	return out
 }
-func DocumentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.DocumentObservedState {
+func ChunkData_FromProto(mapCtx *direct.MapContext, in *pb.ChunkData) *krm.ChunkData {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DocumentObservedState{}
+	out := &krm.ChunkData{}
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	return out
+}
+func ChunkData_ToProto(mapCtx *direct.MapContext, in *krm.ChunkData) *pb.ChunkData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChunkData{}
+	if oneof := ChunkData_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.Data = oneof
+	}
+	return out
+}
+func ChunkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.ChunkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChunkObservedState{}
 	// MISSING: Name
-	// MISSING: DisplayName
+	// MISSING: Data
 	// MISSING: CustomMetadata
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func DocumentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DocumentObservedState) *pb.Document {
+func ChunkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChunkObservedState) *pb.Chunk {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Document{}
+	out := &pb.Chunk{}
 	// MISSING: Name
-	// MISSING: DisplayName
+	// MISSING: Data
 	// MISSING: CustomMetadata
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Chunk_State](mapCtx, in.State)
 	return out
 }
 func StringList_FromProto(mapCtx *direct.MapContext, in *pb.StringList) *krm.StringList {
