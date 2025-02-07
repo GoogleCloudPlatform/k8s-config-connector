@@ -15,145 +15,200 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.backupdr.v1.ManagementServer
-type ManagementServer struct {
+// +kcc:proto=google.cloud.backupdr.v1.BackupPlan
+type BackupPlan struct {
 
-	// Optional. The description of the ManagementServer instance (2048 characters
-	//  or less).
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.description
+	// Optional. The description of the `BackupPlan` resource.
+	//
+	//  The description allows for additional details about `BackupPlan` and its
+	//  use cases to be provided. An example description is the following:  "This
+	//  is a backup plan that performs a daily backup at 6pm and retains data for 3
+	//  months". The description must be at most 2048 characters.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.description
 	Description *string `json:"description,omitempty"`
 
-	// Optional. Resource labels to represent user provided metadata.
-	//  Labels currently defined:
-	//  1. migrate_from_go=<false|true>
-	//     If set to true, the MS is created in migration ready mode.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.labels
+	// Optional. This collection of key/value pairs allows for custom labels to be
+	//  supplied by the user.  Example, {"tag": "Weekly"}.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// Optional. The type of the ManagementServer resource.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.type
-	Type *string `json:"type,omitempty"`
+	// Required. The backup rules for this `BackupPlan`. There must be at least
+	//  one `BackupRule` message.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_rules
+	BackupRules []BackupRule `json:"backupRules,omitempty"`
 
-	// Optional. VPC networks to which the ManagementServer instance is connected.
-	//  For this version, only a single network is supported. This field is
-	//  optional if MS is created without PSA
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.networks
-	Networks []NetworkConfig `json:"networks,omitempty"`
+	// Required. The resource type to which the `BackupPlan` will be applied.
+	//  Examples include, "compute.googleapis.com/Instance",
+	//  "sqladmin.googleapis.com/Instance", or "alloydb.googleapis.com/Cluster".
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
 
-	// Optional. Server specified ETag for the ManagementServer resource to
-	//  prevent simultaneous updates from overwiting each other.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.etag
+	// Optional. `etag` is returned from the service in the response. As a user of
+	//  the service, you may provide an etag value in this field to prevent stale
+	//  resources.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.etag
 	Etag *string `json:"etag,omitempty"`
+
+	// Required. Resource name of backup vault which will be used as storage
+	//  location for backups. Format:
+	//  projects/{project}/locations/{location}/backupVaults/{backupvault}
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_vault
+	BackupVault *string `json:"backupVault,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.ManagementURI
-type ManagementURI struct {
+// +kcc:proto=google.cloud.backupdr.v1.BackupRule
+type BackupRule struct {
+	// Required. Immutable. The unique id of this `BackupRule`. The `rule_id` is
+	//  unique per `BackupPlan`.The `rule_id` must start with a lowercase letter
+	//  followed by up to 62 lowercase letters, numbers, or hyphens. Pattern,
+	//  /[a-z][a-z0-9-]{,62}/.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupRule.rule_id
+	RuleID *string `json:"ruleID,omitempty"`
+
+	// Required. Configures the duration for which backup data will be kept. It is
+	//  defined in “days”. The value should be greater than or equal to minimum
+	//  enforced retention of the backup vault.
+	//
+	//  Minimum value is 1 and maximum value is 90 for hourly backups.
+	//  Minimum value is 1 and maximum value is 90 for daily backups.
+	//  Minimum value is 7 and maximum value is 186 for weekly backups.
+	//  Minimum value is 30 and maximum value is 732 for monthly backups.
+	//  Minimum value is 365 and maximum value is 36159 for yearly backups.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupRule.backup_retention_days
+	BackupRetentionDays *int32 `json:"backupRetentionDays,omitempty"`
+
+	// Required. Defines a schedule that runs within the confines of a defined
+	//  window of time.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupRule.standard_schedule
+	StandardSchedule *StandardSchedule `json:"standardSchedule,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.NetworkConfig
-type NetworkConfig struct {
-	// Optional. The resource name of the Google Compute Engine VPC network to
-	//  which the ManagementServer instance is connected.
-	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.network
-	Network *string `json:"network,omitempty"`
+// +kcc:proto=google.cloud.backupdr.v1.BackupWindow
+type BackupWindow struct {
+	// Required. The hour of day (0-23) when the window starts for e.g. if value
+	//  of start hour of day is 6 that mean backup window start at 6:00.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupWindow.start_hour_of_day
+	StartHourOfDay *int32 `json:"startHourOfDay,omitempty"`
 
-	// Optional. The network connect mode of the ManagementServer instance. For
-	//  this version, only PRIVATE_SERVICE_ACCESS is supported.
-	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.peering_mode
-	PeeringMode *string `json:"peeringMode,omitempty"`
+	// Required. The hour of day (1-24) when the window end for e.g. if value of
+	//  end hour of day is 10 that mean backup window end time is 10:00.
+	//
+	//  End hour of day should be greater than start hour of day.
+	//  0 <= start_hour_of_day < end_hour_of_day <= 24
+	//
+	//  End hour of day is not include in backup window that mean if
+	//  end_hour_of_day= 10 jobs should start before 10:00.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupWindow.end_hour_of_day
+	EndHourOfDay *int32 `json:"endHourOfDay,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI
-type WorkforceIdentityBasedManagementURI struct {
+// +kcc:proto=google.cloud.backupdr.v1.StandardSchedule
+type StandardSchedule struct {
+	// Required. Specifies the `RecurrenceType` for the schedule.
+	// +kcc:proto:field=google.cloud.backupdr.v1.StandardSchedule.recurrence_type
+	RecurrenceType *string `json:"recurrenceType,omitempty"`
+
+	// Optional. Specifies frequency for hourly backups. A hourly frequency of 2
+	//  means jobs will run every 2 hours from start time till end time defined.
+	//
+	//  This is required for `recurrence_type`, `HOURLY` and is not applicable
+	//  otherwise. A validation error will occur if a value is supplied and
+	//  `recurrence_type` is not `HOURLY`.
+	//
+	//  Value of hourly frequency should be between 6 and 23.
+	//
+	//  Reason for limit : We found that there is bandwidth limitation of 3GB/S for
+	//  GMI while taking a backup and 5GB/S while doing a restore. Given the amount
+	//  of parallel backups and restore we are targeting, this will potentially
+	//  take the backup time to mins and hours (in worst case scenario).
+	// +kcc:proto:field=google.cloud.backupdr.v1.StandardSchedule.hourly_frequency
+	HourlyFrequency *int32 `json:"hourlyFrequency,omitempty"`
+
+	// Optional. Specifies days of week like, MONDAY or TUESDAY, on which jobs
+	//  will run.
+	//
+	//  This is required for `recurrence_type`, `WEEKLY` and is not applicable
+	//  otherwise. A validation error will occur if a value is supplied and
+	//  `recurrence_type` is not `WEEKLY`.
+	// +kcc:proto:field=google.cloud.backupdr.v1.StandardSchedule.days_of_week
+	DaysOfWeek []string `json:"daysOfWeek,omitempty"`
+
+	// Optional. Specifies days of months like 1, 5, or 14 on which jobs will run.
+	//
+	//  Values for `days_of_month` are only applicable for `recurrence_type`,
+	//  `MONTHLY` and `YEARLY`. A validation error will occur if other values are
+	//  supplied.
+	// +kcc:proto:field=google.cloud.backupdr.v1.StandardSchedule.days_of_month
+	DaysOfMonth []int32 `json:"daysOfMonth,omitempty"`
+
+	// Optional. Specifies a week day of the month like, FIRST SUNDAY or LAST
+	//  MONDAY, on which jobs will run. This will be specified by two fields in
+	//  `WeekDayOfMonth`, one for the day, e.g. `MONDAY`, and one for the week,
+	//  e.g. `LAST`.
+	//
+	//  This field is only applicable for `recurrence_type`, `MONTHLY` and
+	//  `YEARLY`. A validation error will occur if other values are supplied.
+	// +kcc:proto:field=google.cloud.backupdr.v1.StandardSchedule.week_day_of_month
+	WeekDayOfMonth *WeekDayOfMonth `json:"weekDayOfMonth,omitempty"`
+
+	// Optional. Specifies the months of year, like `FEBRUARY` and/or `MAY`, on
+	//  which jobs will run.
+	//
+	//  This field is only applicable when `recurrence_type` is `YEARLY`. A
+	//  validation error will occur if other values are supplied.
+	// +kcc:proto:field=google.cloud.backupdr.v1.StandardSchedule.months
+	Months []string `json:"months,omitempty"`
+
+	// Required. A BackupWindow defines the window of day during which backup jobs
+	//  will run. Jobs are queued at the beginning of the window and will be marked
+	//  as `NOT_RUN` if they do not start by the end of the window.
+	//
+	//  Note: running jobs will not be cancelled at the end of the window.
+	// +kcc:proto:field=google.cloud.backupdr.v1.StandardSchedule.backup_window
+	BackupWindow *BackupWindow `json:"backupWindow,omitempty"`
+
+	// Required. The time zone to be used when interpreting the schedule.
+	//  The value of this field must be a time zone name from the IANA tz database.
+	//  See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the
+	//  list of valid timezone names. For e.g., Europe/Paris.
+	// +kcc:proto:field=google.cloud.backupdr.v1.StandardSchedule.time_zone
+	TimeZone *string `json:"timeZone,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID
-type WorkforceIdentityBasedOAuth2ClientID struct {
+// +kcc:proto=google.cloud.backupdr.v1.WeekDayOfMonth
+type WeekDayOfMonth struct {
+	// Required. Specifies the week of the month.
+	// +kcc:proto:field=google.cloud.backupdr.v1.WeekDayOfMonth.week_of_month
+	WeekOfMonth *string `json:"weekOfMonth,omitempty"`
+
+	// Required. Specifies the day of the week.
+	// +kcc:proto:field=google.cloud.backupdr.v1.WeekDayOfMonth.day_of_week
+	DayOfWeek *string `json:"dayOfWeek,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.ManagementServer
-type ManagementServerObservedState struct {
-	// Output only. Identifier. The resource name.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.name
+// +kcc:proto=google.cloud.backupdr.v1.BackupPlan
+type BackupPlanObservedState struct {
+	// Output only. Identifier. The resource name of the `BackupPlan`.
+	//
+	//  Format: `projects/{project}/locations/{location}/backupPlans/{backup_plan}`
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. The time when the instance was created.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.create_time
+	// Output only. When the `BackupPlan` was created.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The time when the instance was updated.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.update_time
+	// Output only. When the `BackupPlan` was last updated.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. The hostname or ip address of the exposed AGM endpoints, used
-	//  by clients to connect to AGM/RD graphical user interface and APIs.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.management_uri
-	ManagementURI *ManagementURI `json:"managementURI,omitempty"`
-
-	// Output only. The hostnames of the exposed AGM endpoints for both types of
-	//  user i.e. 1p and 3p, used to connect AGM/RM UI.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.workforce_identity_based_management_uri
-	WorkforceIdentityBasedManagementURI *WorkforceIdentityBasedManagementURI `json:"workforceIdentityBasedManagementURI,omitempty"`
-
-	// Output only. The ManagementServer state.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.state
+	// Output only. The `State` for the `BackupPlan`.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.state
 	State *string `json:"state,omitempty"`
 
-	// Output only. The OAuth 2.0 client id is required to make API calls to the
-	//  BackupDR instance API of this ManagementServer. This is the value that
-	//  should be provided in the 'aud' field of the OIDC ID Token (see openid
-	//  specification
-	//  https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.oauth2_client_id
-	Oauth2ClientID *string `json:"oauth2ClientID,omitempty"`
-
-	// Output only. The OAuth client IDs for both types of user i.e. 1p and 3p.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.workforce_identity_based_oauth2_client_id
-	WorkforceIdentityBasedOauth2ClientID *WorkforceIdentityBasedOAuth2ClientID `json:"workforceIdentityBasedOauth2ClientID,omitempty"`
-
-	// Output only. The hostname or ip address of the exposed AGM endpoints, used
-	//  by BAs to connect to BA proxy.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.ba_proxy_uri
-	BaProxyURI []string `json:"baProxyURI,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.satisfies_pzs
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.satisfies_pzi
-	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-}
-
-// +kcc:proto=google.cloud.backupdr.v1.ManagementURI
-type ManagementURIObservedState struct {
-	// Output only. The ManagementServer AGM/RD WebUI URL.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementURI.web_ui
-	WebUi *string `json:"webUi,omitempty"`
-
-	// Output only. The ManagementServer AGM/RD API URL.
-	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementURI.api
-	Api *string `json:"api,omitempty"`
-}
-
-// +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI
-type WorkforceIdentityBasedManagementURIObservedState struct {
-	// Output only. First party Management URI for Google Identities.
-	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI.first_party_management_uri
-	FirstPartyManagementURI *string `json:"firstPartyManagementURI,omitempty"`
-
-	// Output only. Third party Management URI for External Identity Providers.
-	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI.third_party_management_uri
-	ThirdPartyManagementURI *string `json:"thirdPartyManagementURI,omitempty"`
-}
-
-// +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID
-type WorkforceIdentityBasedOAuth2ClientIDObservedState struct {
-	// Output only. First party OAuth Client ID for Google Identities.
-	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID.first_party_oauth2_client_id
-	FirstPartyOauth2ClientID *string `json:"firstPartyOauth2ClientID,omitempty"`
-
-	// Output only. Third party OAuth Client ID for External Identity Providers.
-	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID.third_party_oauth2_client_id
-	ThirdPartyOauth2ClientID *string `json:"thirdPartyOauth2ClientID,omitempty"`
+	// Output only. The Google Cloud Platform Service Account to be used by the
+	//  BackupVault for taking backups. Specify the email address of the Backup
+	//  Vault Service Account.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_vault_service_account
+	BackupVaultServiceAccount *string `json:"backupVaultServiceAccount,omitempty"`
 }
