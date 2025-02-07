@@ -15,10 +15,10 @@
 package baremetalsolution
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/baremetalsolution/apiv2/baremetalsolutionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/baremetalsolution/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func BaremetalsolutionInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.BaremetalsolutionInstanceConfigObservedState {
 	if in == nil {
@@ -672,147 +672,205 @@ func BaremetalsolutionServerNetworkTemplateSpec_ToProto(mapCtx *direct.MapContex
 	// MISSING: LogicalInterfaces
 	return out
 }
-func InstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.InstanceConfig {
+func BaremetalsolutionVolumeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig) *krm.BaremetalsolutionVolumeConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InstanceConfig{}
+	out := &krm.BaremetalsolutionVolumeConfigObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: SnapshotsEnabled
+	// MISSING: Type
+	// MISSING: Protocol
+	// MISSING: SizeGB
+	// MISSING: LunRanges
+	// MISSING: MachineIds
+	// MISSING: NfsExports
+	// MISSING: UserNote
+	// MISSING: GcpService
+	// MISSING: PerformanceTier
+	return out
+}
+func BaremetalsolutionVolumeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionVolumeConfigObservedState) *pb.VolumeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VolumeConfig{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: SnapshotsEnabled
+	// MISSING: Type
+	// MISSING: Protocol
+	// MISSING: SizeGB
+	// MISSING: LunRanges
+	// MISSING: MachineIds
+	// MISSING: NfsExports
+	// MISSING: UserNote
+	// MISSING: GcpService
+	// MISSING: PerformanceTier
+	return out
+}
+func BaremetalsolutionVolumeConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig) *krm.BaremetalsolutionVolumeConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionVolumeConfigSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: SnapshotsEnabled
+	// MISSING: Type
+	// MISSING: Protocol
+	// MISSING: SizeGB
+	// MISSING: LunRanges
+	// MISSING: MachineIds
+	// MISSING: NfsExports
+	// MISSING: UserNote
+	// MISSING: GcpService
+	// MISSING: PerformanceTier
+	return out
+}
+func BaremetalsolutionVolumeConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionVolumeConfigSpec) *pb.VolumeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VolumeConfig{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: SnapshotsEnabled
+	// MISSING: Type
+	// MISSING: Protocol
+	// MISSING: SizeGB
+	// MISSING: LunRanges
+	// MISSING: MachineIds
+	// MISSING: NfsExports
+	// MISSING: UserNote
+	// MISSING: GcpService
+	// MISSING: PerformanceTier
+	return out
+}
+func VolumeConfig_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig) *krm.VolumeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VolumeConfig{}
 	// MISSING: Name
 	out.ID = direct.LazyPtr(in.GetId())
-	out.InstanceType = direct.LazyPtr(in.GetInstanceType())
-	out.Hyperthreading = direct.LazyPtr(in.GetHyperthreading())
-	out.OsImage = direct.LazyPtr(in.GetOsImage())
-	out.ClientNetwork = InstanceConfig_NetworkAddress_FromProto(mapCtx, in.GetClientNetwork())
-	out.PrivateNetwork = InstanceConfig_NetworkAddress_FromProto(mapCtx, in.GetPrivateNetwork())
+	out.SnapshotsEnabled = direct.LazyPtr(in.GetSnapshotsEnabled())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
+	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
+	out.LunRanges = direct.Slice_FromProto(mapCtx, in.LunRanges, VolumeConfig_LunRange_FromProto)
+	out.MachineIds = in.MachineIds
+	out.NfsExports = direct.Slice_FromProto(mapCtx, in.NfsExports, VolumeConfig_NfsExport_FromProto)
 	out.UserNote = direct.LazyPtr(in.GetUserNote())
-	out.AccountNetworksEnabled = direct.LazyPtr(in.GetAccountNetworksEnabled())
-	out.NetworkConfig = direct.Enum_FromProto(mapCtx, in.GetNetworkConfig())
-	out.NetworkTemplate = direct.LazyPtr(in.GetNetworkTemplate())
-	out.LogicalInterfaces = direct.Slice_FromProto(mapCtx, in.LogicalInterfaces, LogicalInterface_FromProto)
-	out.SSHKeyNames = in.SshKeyNames
+	out.GcpService = direct.LazyPtr(in.GetGcpService())
+	out.PerformanceTier = direct.Enum_FromProto(mapCtx, in.GetPerformanceTier())
 	return out
 }
-func InstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.InstanceConfig) *pb.InstanceConfig {
+func VolumeConfig_ToProto(mapCtx *direct.MapContext, in *krm.VolumeConfig) *pb.VolumeConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InstanceConfig{}
+	out := &pb.VolumeConfig{}
 	// MISSING: Name
 	out.Id = direct.ValueOf(in.ID)
-	out.InstanceType = direct.ValueOf(in.InstanceType)
-	out.Hyperthreading = direct.ValueOf(in.Hyperthreading)
-	out.OsImage = direct.ValueOf(in.OsImage)
-	out.ClientNetwork = InstanceConfig_NetworkAddress_ToProto(mapCtx, in.ClientNetwork)
-	out.PrivateNetwork = InstanceConfig_NetworkAddress_ToProto(mapCtx, in.PrivateNetwork)
+	out.SnapshotsEnabled = direct.ValueOf(in.SnapshotsEnabled)
+	out.Type = direct.Enum_ToProto[pb.VolumeConfig_Type](mapCtx, in.Type)
+	out.Protocol = direct.Enum_ToProto[pb.VolumeConfig_Protocol](mapCtx, in.Protocol)
+	out.SizeGb = direct.ValueOf(in.SizeGB)
+	out.LunRanges = direct.Slice_ToProto(mapCtx, in.LunRanges, VolumeConfig_LunRange_ToProto)
+	out.MachineIds = in.MachineIds
+	out.NfsExports = direct.Slice_ToProto(mapCtx, in.NfsExports, VolumeConfig_NfsExport_ToProto)
 	out.UserNote = direct.ValueOf(in.UserNote)
-	out.AccountNetworksEnabled = direct.ValueOf(in.AccountNetworksEnabled)
-	out.NetworkConfig = direct.Enum_ToProto[pb.InstanceConfig_NetworkConfig](mapCtx, in.NetworkConfig)
-	out.NetworkTemplate = direct.ValueOf(in.NetworkTemplate)
-	out.LogicalInterfaces = direct.Slice_ToProto(mapCtx, in.LogicalInterfaces, LogicalInterface_ToProto)
-	out.SshKeyNames = in.SSHKeyNames
+	out.GcpService = direct.ValueOf(in.GcpService)
+	out.PerformanceTier = direct.Enum_ToProto[pb.VolumePerformanceTier](mapCtx, in.PerformanceTier)
 	return out
 }
-func InstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.InstanceConfigObservedState {
+func VolumeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig) *krm.VolumeConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InstanceConfigObservedState{}
+	out := &krm.VolumeConfigObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: ID
-	// MISSING: InstanceType
-	// MISSING: Hyperthreading
-	// MISSING: OsImage
-	// MISSING: ClientNetwork
-	// MISSING: PrivateNetwork
+	// MISSING: SnapshotsEnabled
+	// MISSING: Type
+	// MISSING: Protocol
+	// MISSING: SizeGB
+	// MISSING: LunRanges
+	// MISSING: MachineIds
+	// MISSING: NfsExports
 	// MISSING: UserNote
-	// MISSING: AccountNetworksEnabled
-	// MISSING: NetworkConfig
-	// MISSING: NetworkTemplate
-	// MISSING: LogicalInterfaces
-	// MISSING: SSHKeyNames
+	// MISSING: GcpService
+	// MISSING: PerformanceTier
 	return out
 }
-func InstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceConfigObservedState) *pb.InstanceConfig {
+func VolumeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeConfigObservedState) *pb.VolumeConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InstanceConfig{}
+	out := &pb.VolumeConfig{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: ID
-	// MISSING: InstanceType
-	// MISSING: Hyperthreading
-	// MISSING: OsImage
-	// MISSING: ClientNetwork
-	// MISSING: PrivateNetwork
+	// MISSING: SnapshotsEnabled
+	// MISSING: Type
+	// MISSING: Protocol
+	// MISSING: SizeGB
+	// MISSING: LunRanges
+	// MISSING: MachineIds
+	// MISSING: NfsExports
 	// MISSING: UserNote
-	// MISSING: AccountNetworksEnabled
-	// MISSING: NetworkConfig
-	// MISSING: NetworkTemplate
-	// MISSING: LogicalInterfaces
-	// MISSING: SSHKeyNames
+	// MISSING: GcpService
+	// MISSING: PerformanceTier
 	return out
 }
-func InstanceConfig_NetworkAddress_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig_NetworkAddress) *krm.InstanceConfig_NetworkAddress {
+func VolumeConfig_LunRange_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig_LunRange) *krm.VolumeConfig_LunRange {
 	if in == nil {
 		return nil
 	}
-	out := &krm.InstanceConfig_NetworkAddress{}
+	out := &krm.VolumeConfig_LunRange{}
+	out.Quantity = direct.LazyPtr(in.GetQuantity())
+	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
+	return out
+}
+func VolumeConfig_LunRange_ToProto(mapCtx *direct.MapContext, in *krm.VolumeConfig_LunRange) *pb.VolumeConfig_LunRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VolumeConfig_LunRange{}
+	out.Quantity = direct.ValueOf(in.Quantity)
+	out.SizeGb = direct.ValueOf(in.SizeGB)
+	return out
+}
+func VolumeConfig_NfsExport_FromProto(mapCtx *direct.MapContext, in *pb.VolumeConfig_NfsExport) *krm.VolumeConfig_NfsExport {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VolumeConfig_NfsExport{}
 	out.NetworkID = direct.LazyPtr(in.GetNetworkId())
-	out.Address = direct.LazyPtr(in.GetAddress())
-	out.ExistingNetworkID = direct.LazyPtr(in.GetExistingNetworkId())
+	out.MachineID = direct.LazyPtr(in.GetMachineId())
+	out.Cidr = direct.LazyPtr(in.GetCidr())
+	out.Permissions = direct.Enum_FromProto(mapCtx, in.GetPermissions())
+	out.NoRootSquash = direct.LazyPtr(in.GetNoRootSquash())
+	out.AllowSuid = direct.LazyPtr(in.GetAllowSuid())
+	out.AllowDev = direct.LazyPtr(in.GetAllowDev())
 	return out
 }
-func InstanceConfig_NetworkAddress_ToProto(mapCtx *direct.MapContext, in *krm.InstanceConfig_NetworkAddress) *pb.InstanceConfig_NetworkAddress {
+func VolumeConfig_NfsExport_ToProto(mapCtx *direct.MapContext, in *krm.VolumeConfig_NfsExport) *pb.VolumeConfig_NfsExport {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InstanceConfig_NetworkAddress{}
+	out := &pb.VolumeConfig_NfsExport{}
 	out.NetworkId = direct.ValueOf(in.NetworkID)
-	out.Address = direct.ValueOf(in.Address)
-	out.ExistingNetworkId = direct.ValueOf(in.ExistingNetworkID)
-	return out
-}
-func LogicalInterface_FromProto(mapCtx *direct.MapContext, in *pb.LogicalInterface) *krm.LogicalInterface {
-	if in == nil {
-		return nil
+	if oneof := VolumeConfig_NfsExport_MachineId_ToProto(mapCtx, in.MachineID); oneof != nil {
+		out.Client = oneof
 	}
-	out := &krm.LogicalInterface{}
-	out.LogicalNetworkInterfaces = direct.Slice_FromProto(mapCtx, in.LogicalNetworkInterfaces, LogicalInterface_LogicalNetworkInterface_FromProto)
-	out.Name = direct.LazyPtr(in.GetName())
-	out.InterfaceIndex = direct.LazyPtr(in.GetInterfaceIndex())
-	return out
-}
-func LogicalInterface_ToProto(mapCtx *direct.MapContext, in *krm.LogicalInterface) *pb.LogicalInterface {
-	if in == nil {
-		return nil
+	if oneof := VolumeConfig_NfsExport_Cidr_ToProto(mapCtx, in.Cidr); oneof != nil {
+		out.Client = oneof
 	}
-	out := &pb.LogicalInterface{}
-	out.LogicalNetworkInterfaces = direct.Slice_ToProto(mapCtx, in.LogicalNetworkInterfaces, LogicalInterface_LogicalNetworkInterface_ToProto)
-	out.Name = direct.ValueOf(in.Name)
-	out.InterfaceIndex = direct.ValueOf(in.InterfaceIndex)
-	return out
-}
-func LogicalInterface_LogicalNetworkInterface_FromProto(mapCtx *direct.MapContext, in *pb.LogicalInterface_LogicalNetworkInterface) *krm.LogicalInterface_LogicalNetworkInterface {
-	if in == nil {
-		return nil
-	}
-	out := &krm.LogicalInterface_LogicalNetworkInterface{}
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
-	out.DefaultGateway = direct.LazyPtr(in.GetDefaultGateway())
-	out.NetworkType = direct.Enum_FromProto(mapCtx, in.GetNetworkType())
-	out.ID = direct.LazyPtr(in.GetId())
-	return out
-}
-func LogicalInterface_LogicalNetworkInterface_ToProto(mapCtx *direct.MapContext, in *krm.LogicalInterface_LogicalNetworkInterface) *pb.LogicalInterface_LogicalNetworkInterface {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LogicalInterface_LogicalNetworkInterface{}
-	out.Network = direct.ValueOf(in.Network)
-	out.IpAddress = direct.ValueOf(in.IPAddress)
-	out.DefaultGateway = direct.ValueOf(in.DefaultGateway)
-	out.NetworkType = direct.Enum_ToProto[pb.Network_Type](mapCtx, in.NetworkType)
-	out.Id = direct.ValueOf(in.ID)
+	out.Permissions = direct.Enum_ToProto[pb.VolumeConfig_NfsExport_Permissions](mapCtx, in.Permissions)
+	out.NoRootSquash = direct.ValueOf(in.NoRootSquash)
+	out.AllowSuid = direct.ValueOf(in.AllowSuid)
+	out.AllowDev = direct.ValueOf(in.AllowDev)
 	return out
 }

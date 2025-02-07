@@ -15,127 +15,107 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.baremetalsolution.v2.InstanceConfig
-type InstanceConfig struct {
+// +kcc:proto=google.cloud.baremetalsolution.v2.VolumeConfig
+type VolumeConfig struct {
 
-	// A transient unique identifier to idenfity an instance within an
+	// A transient unique identifier to identify a volume within an
 	//  ProvisioningConfig request.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.id
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.id
 	ID *string `json:"id,omitempty"`
 
-	// Instance type.
-	//  [Available
-	//  types](https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations)
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.instance_type
-	InstanceType *string `json:"instanceType,omitempty"`
+	// Whether snapshots should be enabled.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.snapshots_enabled
+	SnapshotsEnabled *bool `json:"snapshotsEnabled,omitempty"`
 
-	// Whether the instance should be provisioned with Hyperthreading enabled.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.hyperthreading
-	Hyperthreading *bool `json:"hyperthreading,omitempty"`
+	// The type of this Volume.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.type
+	Type *string `json:"type,omitempty"`
 
-	// OS image to initialize the instance.
-	//  [Available
-	//  images](https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations)
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.os_image
-	OsImage *string `json:"osImage,omitempty"`
+	// Volume protocol.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.protocol
+	Protocol *string `json:"protocol,omitempty"`
 
-	// Client network address. Filled if InstanceConfig.multivlan_config is false.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.client_network
-	ClientNetwork *InstanceConfig_NetworkAddress `json:"clientNetwork,omitempty"`
+	// The requested size of this volume, in GB.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.size_gb
+	SizeGB *int32 `json:"sizeGB,omitempty"`
 
-	// Private network address, if any. Filled if InstanceConfig.multivlan_config
-	//  is false.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.private_network
-	PrivateNetwork *InstanceConfig_NetworkAddress `json:"privateNetwork,omitempty"`
+	// LUN ranges to be configured. Set only when protocol is PROTOCOL_FC.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.lun_ranges
+	LunRanges []VolumeConfig_LunRange `json:"lunRanges,omitempty"`
+
+	// Machine ids connected to this volume. Set only when protocol is
+	//  PROTOCOL_FC.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.machine_ids
+	MachineIds []string `json:"machineIds,omitempty"`
+
+	// NFS exports. Set only when protocol is PROTOCOL_NFS.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.nfs_exports
+	NfsExports []VolumeConfig_NfsExport `json:"nfsExports,omitempty"`
 
 	// User note field, it can be used by customers to add additional information
 	//  for the BMS Ops team .
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.user_note
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.user_note
 	UserNote *string `json:"userNote,omitempty"`
 
-	// If true networks can be from different projects of the same vendor account.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.account_networks_enabled
-	AccountNetworksEnabled *bool `json:"accountNetworksEnabled,omitempty"`
+	// The GCP service of the storage volume. Available gcp_service are in
+	//  https://cloud.google.com/bare-metal/docs/bms-planning.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.gcp_service
+	GcpService *string `json:"gcpService,omitempty"`
 
-	// The type of network configuration on the instance.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.network_config
-	NetworkConfig *string `json:"networkConfig,omitempty"`
-
-	// Server network template name. Filled if InstanceConfig.multivlan_config is
-	//  true.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.network_template
-	NetworkTemplate *string `json:"networkTemplate,omitempty"`
-
-	// List of logical interfaces for the instance. The number of logical
-	//  interfaces will be the same as number of hardware bond/nic on the chosen
-	//  network template. Filled if InstanceConfig.multivlan_config is true.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.logical_interfaces
-	LogicalInterfaces []LogicalInterface `json:"logicalInterfaces,omitempty"`
-
-	// List of names of ssh keys used to provision the instance.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.ssh_key_names
-	SSHKeyNames []string `json:"sshKeyNames,omitempty"`
+	// Performance tier of the Volume.
+	//  Default is SHARED.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.performance_tier
+	PerformanceTier *string `json:"performanceTier,omitempty"`
 }
 
-// +kcc:proto=google.cloud.baremetalsolution.v2.InstanceConfig.NetworkAddress
-type InstanceConfig_NetworkAddress struct {
-	// Id of the network to use, within the same ProvisioningConfig request.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.NetworkAddress.network_id
+// +kcc:proto=google.cloud.baremetalsolution.v2.VolumeConfig.LunRange
+type VolumeConfig_LunRange struct {
+	// Number of LUNs to create.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.LunRange.quantity
+	Quantity *int32 `json:"quantity,omitempty"`
+
+	// The requested size of each LUN, in GB.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.LunRange.size_gb
+	SizeGB *int32 `json:"sizeGB,omitempty"`
+}
+
+// +kcc:proto=google.cloud.baremetalsolution.v2.VolumeConfig.NfsExport
+type VolumeConfig_NfsExport struct {
+	// Network to use to publish the export.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.NfsExport.network_id
 	NetworkID *string `json:"networkID,omitempty"`
 
-	// IPv4 address to be assigned to the server.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.NetworkAddress.address
-	Address *string `json:"address,omitempty"`
+	// Either a single machine, identified by an ID, or a comma-separated
+	//  list of machine IDs.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.NfsExport.machine_id
+	MachineID *string `json:"machineID,omitempty"`
 
-	// Name of the existing network to use.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.NetworkAddress.existing_network_id
-	ExistingNetworkID *string `json:"existingNetworkID,omitempty"`
+	// A CIDR range.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.NfsExport.cidr
+	Cidr *string `json:"cidr,omitempty"`
+
+	// Export permissions.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.NfsExport.permissions
+	Permissions *string `json:"permissions,omitempty"`
+
+	// Disable root squashing, which is a feature of NFS.
+	//  Root squash is a special mapping of the remote superuser (root) identity
+	//  when using identity authentication.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.NfsExport.no_root_squash
+	NoRootSquash *bool `json:"noRootSquash,omitempty"`
+
+	// Allow the setuid flag.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.NfsExport.allow_suid
+	AllowSuid *bool `json:"allowSuid,omitempty"`
+
+	// Allow dev flag in NfsShare AllowedClientsRequest.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.NfsExport.allow_dev
+	AllowDev *bool `json:"allowDev,omitempty"`
 }
 
-// +kcc:proto=google.cloud.baremetalsolution.v2.LogicalInterface
-type LogicalInterface struct {
-	// List of logical network interfaces within a logical interface.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.LogicalInterface.logical_network_interfaces
-	LogicalNetworkInterfaces []LogicalInterface_LogicalNetworkInterface `json:"logicalNetworkInterfaces,omitempty"`
-
-	// Interface name. This is of syntax <bond><bond_mode> or <nic> and
-	//  forms part of the network template name.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.LogicalInterface.name
-	Name *string `json:"name,omitempty"`
-
-	// The index of the logical interface mapping to the index of the hardware
-	//  bond or nic on the chosen network template. This field is deprecated.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.LogicalInterface.interface_index
-	InterfaceIndex *int32 `json:"interfaceIndex,omitempty"`
-}
-
-// +kcc:proto=google.cloud.baremetalsolution.v2.LogicalInterface.LogicalNetworkInterface
-type LogicalInterface_LogicalNetworkInterface struct {
-	// Name of the network
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.LogicalInterface.LogicalNetworkInterface.network
-	Network *string `json:"network,omitempty"`
-
-	// IP address in the network
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.LogicalInterface.LogicalNetworkInterface.ip_address
-	IPAddress *string `json:"ipAddress,omitempty"`
-
-	// Whether this interface is the default gateway for the instance. Only
-	//  one interface can be the default gateway for the instance.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.LogicalInterface.LogicalNetworkInterface.default_gateway
-	DefaultGateway *bool `json:"defaultGateway,omitempty"`
-
-	// Type of network.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.LogicalInterface.LogicalNetworkInterface.network_type
-	NetworkType *string `json:"networkType,omitempty"`
-
-	// An identifier for the `Network`, generated by the backend.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.LogicalInterface.LogicalNetworkInterface.id
-	ID *string `json:"id,omitempty"`
-}
-
-// +kcc:proto=google.cloud.baremetalsolution.v2.InstanceConfig
-type InstanceConfigObservedState struct {
-	// Output only. The name of the instance config.
-	// +kcc:proto:field=google.cloud.baremetalsolution.v2.InstanceConfig.name
+// +kcc:proto=google.cloud.baremetalsolution.v2.VolumeConfig
+type VolumeConfigObservedState struct {
+	// Output only. The name of the volume config.
+	// +kcc:proto:field=google.cloud.baremetalsolution.v2.VolumeConfig.name
 	Name *string `json:"name,omitempty"`
 }
