@@ -16,735 +16,163 @@ package analytics
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
+	pb "google.golang.org/genproto/googleapis/analytics/data/v1beta"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
+func AnalyticsAudienceExportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AudienceExport) *krm.AnalyticsAudienceExportObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AnalyticsAccountObservedState{}
+	out := &krm.AnalyticsAudienceExportObservedState{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	// MISSING: RegionCode
-	// MISSING: Deleted
-	// MISSING: GmpOrganization
+	// MISSING: Audience
+	// MISSING: AudienceDisplayName
+	// MISSING: Dimensions
+	// MISSING: State
+	// MISSING: BeginCreatingTime
+	// MISSING: CreationQuotaTokensCharged
+	// MISSING: RowCount
+	// MISSING: ErrorMessage
+	// MISSING: PercentageCompleted
 	return out
 }
-func AnalyticsAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAccountObservedState) *pb.Account {
+func AnalyticsAudienceExportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAudienceExportObservedState) *pb.AudienceExport {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Account{}
+	out := &pb.AudienceExport{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	// MISSING: RegionCode
-	// MISSING: Deleted
-	// MISSING: GmpOrganization
+	// MISSING: Audience
+	// MISSING: AudienceDisplayName
+	// MISSING: Dimensions
+	// MISSING: State
+	// MISSING: BeginCreatingTime
+	// MISSING: CreationQuotaTokensCharged
+	// MISSING: RowCount
+	// MISSING: ErrorMessage
+	// MISSING: PercentageCompleted
 	return out
 }
-func AnalyticsAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountSpec {
+func AnalyticsAudienceExportSpec_FromProto(mapCtx *direct.MapContext, in *pb.AudienceExport) *krm.AnalyticsAudienceExportSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AnalyticsAccountSpec{}
+	out := &krm.AnalyticsAudienceExportSpec{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	// MISSING: RegionCode
-	// MISSING: Deleted
-	// MISSING: GmpOrganization
+	// MISSING: Audience
+	// MISSING: AudienceDisplayName
+	// MISSING: Dimensions
+	// MISSING: State
+	// MISSING: BeginCreatingTime
+	// MISSING: CreationQuotaTokensCharged
+	// MISSING: RowCount
+	// MISSING: ErrorMessage
+	// MISSING: PercentageCompleted
 	return out
 }
-func AnalyticsAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAccountSpec) *pb.Account {
+func AnalyticsAudienceExportSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAudienceExportSpec) *pb.AudienceExport {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Account{}
+	out := &pb.AudienceExport{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	// MISSING: RegionCode
-	// MISSING: Deleted
-	// MISSING: GmpOrganization
+	// MISSING: Audience
+	// MISSING: AudienceDisplayName
+	// MISSING: Dimensions
+	// MISSING: State
+	// MISSING: BeginCreatingTime
+	// MISSING: CreationQuotaTokensCharged
+	// MISSING: RowCount
+	// MISSING: ErrorMessage
+	// MISSING: PercentageCompleted
 	return out
 }
-func AnalyticsAccountSummaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccountSummary) *krm.AnalyticsAccountSummaryObservedState {
+func AudienceDimension_FromProto(mapCtx *direct.MapContext, in *pb.AudienceDimension) *krm.AudienceDimension {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AnalyticsAccountSummaryObservedState{}
-	// MISSING: Name
-	// MISSING: Account
-	// MISSING: DisplayName
-	// MISSING: PropertySummaries
+	out := &krm.AudienceDimension{}
+	out.DimensionName = direct.LazyPtr(in.GetDimensionName())
 	return out
 }
-func AnalyticsAccountSummaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAccountSummaryObservedState) *pb.AccountSummary {
+func AudienceDimension_ToProto(mapCtx *direct.MapContext, in *krm.AudienceDimension) *pb.AudienceDimension {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AccountSummary{}
-	// MISSING: Name
-	// MISSING: Account
-	// MISSING: DisplayName
-	// MISSING: PropertySummaries
+	out := &pb.AudienceDimension{}
+	out.DimensionName = direct.ValueOf(in.DimensionName)
 	return out
 }
-func AnalyticsAccountSummarySpec_FromProto(mapCtx *direct.MapContext, in *pb.AccountSummary) *krm.AnalyticsAccountSummarySpec {
+func AudienceExport_FromProto(mapCtx *direct.MapContext, in *pb.AudienceExport) *krm.AudienceExport {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AnalyticsAccountSummarySpec{}
+	out := &krm.AudienceExport{}
 	// MISSING: Name
-	// MISSING: Account
-	// MISSING: DisplayName
-	// MISSING: PropertySummaries
+	out.Audience = direct.LazyPtr(in.GetAudience())
+	// MISSING: AudienceDisplayName
+	out.Dimensions = direct.Slice_FromProto(mapCtx, in.Dimensions, AudienceDimension_FromProto)
+	// MISSING: State
+	// MISSING: BeginCreatingTime
+	// MISSING: CreationQuotaTokensCharged
+	// MISSING: RowCount
+	// MISSING: ErrorMessage
+	// MISSING: PercentageCompleted
 	return out
 }
-func AnalyticsAccountSummarySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAccountSummarySpec) *pb.AccountSummary {
+func AudienceExport_ToProto(mapCtx *direct.MapContext, in *krm.AudienceExport) *pb.AudienceExport {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AccountSummary{}
+	out := &pb.AudienceExport{}
 	// MISSING: Name
-	// MISSING: Account
-	// MISSING: DisplayName
-	// MISSING: PropertySummaries
+	out.Audience = direct.ValueOf(in.Audience)
+	// MISSING: AudienceDisplayName
+	out.Dimensions = direct.Slice_ToProto(mapCtx, in.Dimensions, AudienceDimension_ToProto)
+	// MISSING: State
+	// MISSING: BeginCreatingTime
+	// MISSING: CreationQuotaTokensCharged
+	// MISSING: RowCount
+	// MISSING: ErrorMessage
+	// MISSING: PercentageCompleted
 	return out
 }
-func AnalyticsConversionEventObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversionEvent) *krm.AnalyticsConversionEventObservedState {
+func AudienceExportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AudienceExport) *krm.AudienceExportObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AnalyticsConversionEventObservedState{}
-	// MISSING: Name
-	// MISSING: EventName
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	// MISSING: CountingMethod
-	// MISSING: DefaultConversionValue
-	return out
-}
-func AnalyticsConversionEventObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsConversionEventObservedState) *pb.ConversionEvent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ConversionEvent{}
-	// MISSING: Name
-	// MISSING: EventName
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	// MISSING: CountingMethod
-	// MISSING: DefaultConversionValue
-	return out
-}
-func AnalyticsConversionEventSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConversionEvent) *krm.AnalyticsConversionEventSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsConversionEventSpec{}
-	// MISSING: Name
-	// MISSING: EventName
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	// MISSING: CountingMethod
-	// MISSING: DefaultConversionValue
-	return out
-}
-func AnalyticsConversionEventSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsConversionEventSpec) *pb.ConversionEvent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ConversionEvent{}
-	// MISSING: Name
-	// MISSING: EventName
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	// MISSING: CountingMethod
-	// MISSING: DefaultConversionValue
-	return out
-}
-func AnalyticsCustomDimensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomDimension) *krm.AnalyticsCustomDimensionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsCustomDimensionObservedState{}
-	// MISSING: Name
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Scope
-	// MISSING: DisallowAdsPersonalization
-	return out
-}
-func AnalyticsCustomDimensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsCustomDimensionObservedState) *pb.CustomDimension {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomDimension{}
-	// MISSING: Name
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Scope
-	// MISSING: DisallowAdsPersonalization
-	return out
-}
-func AnalyticsCustomDimensionSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomDimension) *krm.AnalyticsCustomDimensionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsCustomDimensionSpec{}
-	// MISSING: Name
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Scope
-	// MISSING: DisallowAdsPersonalization
-	return out
-}
-func AnalyticsCustomDimensionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsCustomDimensionSpec) *pb.CustomDimension {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomDimension{}
-	// MISSING: Name
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Scope
-	// MISSING: DisallowAdsPersonalization
-	return out
-}
-func AnalyticsCustomMetricObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomMetric) *krm.AnalyticsCustomMetricObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsCustomMetricObservedState{}
-	// MISSING: Name
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: MeasurementUnit
-	// MISSING: Scope
-	// MISSING: RestrictedMetricType
-	return out
-}
-func AnalyticsCustomMetricObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsCustomMetricObservedState) *pb.CustomMetric {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomMetric{}
-	// MISSING: Name
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: MeasurementUnit
-	// MISSING: Scope
-	// MISSING: RestrictedMetricType
-	return out
-}
-func AnalyticsCustomMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomMetric) *krm.AnalyticsCustomMetricSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsCustomMetricSpec{}
-	// MISSING: Name
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: MeasurementUnit
-	// MISSING: Scope
-	// MISSING: RestrictedMetricType
-	return out
-}
-func AnalyticsCustomMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsCustomMetricSpec) *pb.CustomMetric {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomMetric{}
-	// MISSING: Name
-	// MISSING: ParameterName
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: MeasurementUnit
-	// MISSING: Scope
-	// MISSING: RestrictedMetricType
-	return out
-}
-func AnalyticsDataRetentionSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionSettings) *krm.AnalyticsDataRetentionSettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsDataRetentionSettingsObservedState{}
-	// MISSING: Name
-	// MISSING: EventDataRetention
-	// MISSING: ResetUserDataOnNewActivity
-	return out
-}
-func AnalyticsDataRetentionSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataRetentionSettingsObservedState) *pb.DataRetentionSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataRetentionSettings{}
-	// MISSING: Name
-	// MISSING: EventDataRetention
-	// MISSING: ResetUserDataOnNewActivity
-	return out
-}
-func AnalyticsDataRetentionSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionSettings) *krm.AnalyticsDataRetentionSettingsSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsDataRetentionSettingsSpec{}
-	// MISSING: Name
-	// MISSING: EventDataRetention
-	// MISSING: ResetUserDataOnNewActivity
-	return out
-}
-func AnalyticsDataRetentionSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataRetentionSettingsSpec) *pb.DataRetentionSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataRetentionSettings{}
-	// MISSING: Name
-	// MISSING: EventDataRetention
-	// MISSING: ResetUserDataOnNewActivity
-	return out
-}
-func AnalyticsDataSharingSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.AnalyticsDataSharingSettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsDataSharingSettingsObservedState{}
-	// MISSING: Name
-	// MISSING: SharingWithGoogleSupportEnabled
-	// MISSING: SharingWithGoogleAssignedSalesEnabled
-	// MISSING: SharingWithGoogleAnySalesEnabled
-	// MISSING: SharingWithGoogleProductsEnabled
-	// MISSING: SharingWithOthersEnabled
-	return out
-}
-func AnalyticsDataSharingSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataSharingSettingsObservedState) *pb.DataSharingSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataSharingSettings{}
-	// MISSING: Name
-	// MISSING: SharingWithGoogleSupportEnabled
-	// MISSING: SharingWithGoogleAssignedSalesEnabled
-	// MISSING: SharingWithGoogleAnySalesEnabled
-	// MISSING: SharingWithGoogleProductsEnabled
-	// MISSING: SharingWithOthersEnabled
-	return out
-}
-func AnalyticsDataSharingSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.AnalyticsDataSharingSettingsSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsDataSharingSettingsSpec{}
-	// MISSING: Name
-	// MISSING: SharingWithGoogleSupportEnabled
-	// MISSING: SharingWithGoogleAssignedSalesEnabled
-	// MISSING: SharingWithGoogleAnySalesEnabled
-	// MISSING: SharingWithGoogleProductsEnabled
-	// MISSING: SharingWithOthersEnabled
-	return out
-}
-func AnalyticsDataSharingSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataSharingSettingsSpec) *pb.DataSharingSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataSharingSettings{}
-	// MISSING: Name
-	// MISSING: SharingWithGoogleSupportEnabled
-	// MISSING: SharingWithGoogleAssignedSalesEnabled
-	// MISSING: SharingWithGoogleAnySalesEnabled
-	// MISSING: SharingWithGoogleProductsEnabled
-	// MISSING: SharingWithOthersEnabled
-	return out
-}
-func AnalyticsDataStreamObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStream) *krm.AnalyticsDataStreamObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsDataStreamObservedState{}
-	// MISSING: WebStreamData
-	// MISSING: AndroidAppStreamData
-	// MISSING: IosAppStreamData
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AnalyticsDataStreamObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataStreamObservedState) *pb.DataStream {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStream{}
-	// MISSING: WebStreamData
-	// MISSING: AndroidAppStreamData
-	// MISSING: IosAppStreamData
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AnalyticsDataStreamSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataStream) *krm.AnalyticsDataStreamSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsDataStreamSpec{}
-	// MISSING: WebStreamData
-	// MISSING: AndroidAppStreamData
-	// MISSING: IosAppStreamData
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AnalyticsDataStreamSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataStreamSpec) *pb.DataStream {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStream{}
-	// MISSING: WebStreamData
-	// MISSING: AndroidAppStreamData
-	// MISSING: IosAppStreamData
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AnalyticsFirebaseLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirebaseLink) *krm.AnalyticsFirebaseLinkObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsFirebaseLinkObservedState{}
-	// MISSING: Name
-	// MISSING: Project
-	// MISSING: CreateTime
-	return out
-}
-func AnalyticsFirebaseLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsFirebaseLinkObservedState) *pb.FirebaseLink {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FirebaseLink{}
-	// MISSING: Name
-	// MISSING: Project
-	// MISSING: CreateTime
-	return out
-}
-func AnalyticsFirebaseLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.FirebaseLink) *krm.AnalyticsFirebaseLinkSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsFirebaseLinkSpec{}
-	// MISSING: Name
-	// MISSING: Project
-	// MISSING: CreateTime
-	return out
-}
-func AnalyticsFirebaseLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsFirebaseLinkSpec) *pb.FirebaseLink {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FirebaseLink{}
-	// MISSING: Name
-	// MISSING: Project
-	// MISSING: CreateTime
-	return out
-}
-func AnalyticsGoogleAdsLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAdsLink) *krm.AnalyticsGoogleAdsLinkObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsGoogleAdsLinkObservedState{}
-	// MISSING: Name
-	// MISSING: CustomerID
-	// MISSING: CanManageClients
-	// MISSING: AdsPersonalizationEnabled
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CreatorEmailAddress
-	return out
-}
-func AnalyticsGoogleAdsLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsGoogleAdsLinkObservedState) *pb.GoogleAdsLink {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleAdsLink{}
-	// MISSING: Name
-	// MISSING: CustomerID
-	// MISSING: CanManageClients
-	// MISSING: AdsPersonalizationEnabled
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CreatorEmailAddress
-	return out
-}
-func AnalyticsGoogleAdsLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAdsLink) *krm.AnalyticsGoogleAdsLinkSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsGoogleAdsLinkSpec{}
-	// MISSING: Name
-	// MISSING: CustomerID
-	// MISSING: CanManageClients
-	// MISSING: AdsPersonalizationEnabled
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CreatorEmailAddress
-	return out
-}
-func AnalyticsGoogleAdsLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsGoogleAdsLinkSpec) *pb.GoogleAdsLink {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleAdsLink{}
-	// MISSING: Name
-	// MISSING: CustomerID
-	// MISSING: CanManageClients
-	// MISSING: AdsPersonalizationEnabled
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CreatorEmailAddress
-	return out
-}
-func AnalyticsKeyEventObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent) *krm.AnalyticsKeyEventObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsKeyEventObservedState{}
-	// MISSING: Name
-	// MISSING: EventName
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	// MISSING: CountingMethod
-	// MISSING: DefaultValue
-	return out
-}
-func AnalyticsKeyEventObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsKeyEventObservedState) *pb.KeyEvent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KeyEvent{}
-	// MISSING: Name
-	// MISSING: EventName
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	// MISSING: CountingMethod
-	// MISSING: DefaultValue
-	return out
-}
-func AnalyticsKeyEventSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent) *krm.AnalyticsKeyEventSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsKeyEventSpec{}
-	// MISSING: Name
-	// MISSING: EventName
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	// MISSING: CountingMethod
-	// MISSING: DefaultValue
-	return out
-}
-func AnalyticsKeyEventSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsKeyEventSpec) *pb.KeyEvent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KeyEvent{}
-	// MISSING: Name
-	// MISSING: EventName
-	// MISSING: CreateTime
-	// MISSING: Deletable
-	// MISSING: Custom
-	// MISSING: CountingMethod
-	// MISSING: DefaultValue
-	return out
-}
-func AnalyticsMeasurementProtocolSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MeasurementProtocolSecret) *krm.AnalyticsMeasurementProtocolSecretObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsMeasurementProtocolSecretObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: SecretValue
-	return out
-}
-func AnalyticsMeasurementProtocolSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsMeasurementProtocolSecretObservedState) *pb.MeasurementProtocolSecret {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MeasurementProtocolSecret{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: SecretValue
-	return out
-}
-func AnalyticsMeasurementProtocolSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.MeasurementProtocolSecret) *krm.AnalyticsMeasurementProtocolSecretSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsMeasurementProtocolSecretSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: SecretValue
-	return out
-}
-func AnalyticsMeasurementProtocolSecretSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsMeasurementProtocolSecretSpec) *pb.MeasurementProtocolSecret {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MeasurementProtocolSecret{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: SecretValue
-	return out
-}
-func AnalyticsPropertyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Property) *krm.AnalyticsPropertyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsPropertyObservedState{}
-	// MISSING: Name
-	// MISSING: PropertyType
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Parent
-	// MISSING: DisplayName
-	// MISSING: IndustryCategory
-	// MISSING: TimeZone
-	// MISSING: CurrencyCode
-	// MISSING: ServiceLevel
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Account
-	return out
-}
-func AnalyticsPropertyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsPropertyObservedState) *pb.Property {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Property{}
-	// MISSING: Name
-	// MISSING: PropertyType
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Parent
-	// MISSING: DisplayName
-	// MISSING: IndustryCategory
-	// MISSING: TimeZone
-	// MISSING: CurrencyCode
-	// MISSING: ServiceLevel
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Account
-	return out
-}
-func AnalyticsPropertySpec_FromProto(mapCtx *direct.MapContext, in *pb.Property) *krm.AnalyticsPropertySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AnalyticsPropertySpec{}
-	// MISSING: Name
-	// MISSING: PropertyType
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Parent
-	// MISSING: DisplayName
-	// MISSING: IndustryCategory
-	// MISSING: TimeZone
-	// MISSING: CurrencyCode
-	// MISSING: ServiceLevel
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Account
-	return out
-}
-func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsPropertySpec) *pb.Property {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Property{}
-	// MISSING: Name
-	// MISSING: PropertyType
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Parent
-	// MISSING: DisplayName
-	// MISSING: IndustryCategory
-	// MISSING: TimeZone
-	// MISSING: CurrencyCode
-	// MISSING: ServiceLevel
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Account
-	return out
-}
-func DataRetentionSettings_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionSettings) *krm.DataRetentionSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataRetentionSettings{}
-	// MISSING: Name
-	out.EventDataRetention = direct.Enum_FromProto(mapCtx, in.GetEventDataRetention())
-	out.ResetUserDataOnNewActivity = direct.LazyPtr(in.GetResetUserDataOnNewActivity())
-	return out
-}
-func DataRetentionSettings_ToProto(mapCtx *direct.MapContext, in *krm.DataRetentionSettings) *pb.DataRetentionSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataRetentionSettings{}
-	// MISSING: Name
-	out.EventDataRetention = direct.Enum_ToProto[pb.DataRetentionSettings_RetentionDuration](mapCtx, in.EventDataRetention)
-	out.ResetUserDataOnNewActivity = direct.ValueOf(in.ResetUserDataOnNewActivity)
-	return out
-}
-func DataRetentionSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionSettings) *krm.DataRetentionSettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataRetentionSettingsObservedState{}
+	out := &krm.AudienceExportObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: EventDataRetention
-	// MISSING: ResetUserDataOnNewActivity
+	// MISSING: Audience
+	out.AudienceDisplayName = direct.LazyPtr(in.GetAudienceDisplayName())
+	// MISSING: Dimensions
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.BeginCreatingTime = direct.StringTimestamp_FromProto(mapCtx, in.GetBeginCreatingTime())
+	out.CreationQuotaTokensCharged = direct.LazyPtr(in.GetCreationQuotaTokensCharged())
+	out.RowCount = in.RowCount
+	out.ErrorMessage = in.ErrorMessage
+	out.PercentageCompleted = in.PercentageCompleted
 	return out
 }
-func DataRetentionSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataRetentionSettingsObservedState) *pb.DataRetentionSettings {
+func AudienceExportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AudienceExportObservedState) *pb.AudienceExport {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataRetentionSettings{}
+	out := &pb.AudienceExport{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: EventDataRetention
-	// MISSING: ResetUserDataOnNewActivity
+	// MISSING: Audience
+	out.AudienceDisplayName = direct.ValueOf(in.AudienceDisplayName)
+	// MISSING: Dimensions
+	if oneof := AudienceExportObservedState_State_ToProto(mapCtx, in.State); oneof != nil {
+		out.State = oneof
+	}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.BeginCreatingTime); oneof != nil {
+		out.BeginCreatingTime = &pb.AudienceExport_BeginCreatingTime{BeginCreatingTime: oneof}
+	}
+	out.CreationQuotaTokensCharged = direct.ValueOf(in.CreationQuotaTokensCharged)
+	out.RowCount = in.RowCount
+	out.ErrorMessage = in.ErrorMessage
+	out.PercentageCompleted = in.PercentageCompleted
 	return out
 }
