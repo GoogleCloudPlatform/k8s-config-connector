@@ -15,20 +15,15 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.asset.v1.Asset
+// +kcc:proto=google.cloud.asset.v1p2beta1.Asset
 type Asset struct {
-	// The last update timestamp of an asset. update_time is updated when
-	//  create/update/delete operation is performed.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
 	// The full name of the asset. Example:
 	//  `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
 	//
 	//  See [Resource
 	//  names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
 	//  for more information.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.name
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.name
 	Name *string `json:"name,omitempty"`
 
 	// The type of the asset. Example: `compute.googleapis.com/Disk`
@@ -36,11 +31,11 @@ type Asset struct {
 	//  See [Supported asset
 	//  types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
 	//  for more information.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.asset_type
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.asset_type
 	AssetType *string `json:"assetType,omitempty"`
 
 	// A representation of the resource.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.resource
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.resource
 	Resource *Resource `json:"resource,omitempty"`
 
 	// A representation of the IAM policy set on a Google Cloud resource.
@@ -52,48 +47,8 @@ type Asset struct {
 	//  the hierarchy. See
 	//  [this topic](https://cloud.google.com/iam/help/allow-policies/inheritance)
 	//  for more information.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.iam_policy
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.iam_policy
 	IamPolicy *Policy `json:"iamPolicy,omitempty"`
-
-	// A representation of an [organization
-	//  policy](https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy).
-	//  There can be more than one organization policy with different constraints
-	//  set on a given resource.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.org_policy
-	OrgPolicy []Policy `json:"orgPolicy,omitempty"`
-
-	// Also refer to the [access policy user
-	//  guide](https://cloud.google.com/access-context-manager/docs/overview#access-policies).
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.access_policy
-	AccessPolicy *AccessPolicy `json:"accessPolicy,omitempty"`
-
-	// Also refer to the [access level user
-	//  guide](https://cloud.google.com/access-context-manager/docs/overview#access-levels).
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.access_level
-	AccessLevel *AccessLevel `json:"accessLevel,omitempty"`
-
-	// Also refer to the [service perimeter user
-	//  guide](https://cloud.google.com/vpc-service-controls/docs/overview).
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.service_perimeter
-	ServicePerimeter *ServicePerimeter `json:"servicePerimeter,omitempty"`
-
-	// A representation of runtime OS Inventory information. See [this
-	//  topic](https://cloud.google.com/compute/docs/instances/os-inventory-management)
-	//  for more information.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.os_inventory
-	OsInventory *Inventory `json:"osInventory,omitempty"`
-
-	// DEPRECATED. This field only presents for the purpose of
-	//  backward-compatibility. The server will never generate responses with this
-	//  field.
-	//  The related assets of the asset of one relationship type. One asset
-	//  only represents one type of relationship.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.related_assets
-	RelatedAssets *RelatedAssets `json:"relatedAssets,omitempty"`
-
-	// One related asset of the current asset.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.related_asset
-	RelatedAsset *RelatedAsset `json:"relatedAsset,omitempty"`
 
 	// The ancestry path of an asset in Google Cloud [resource
 	//  hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
@@ -103,79 +58,36 @@ type Asset struct {
 	//  asset itself.
 	//
 	//  Example: `["projects/123456789", "folders/5432", "organizations/1234"]`
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.ancestors
-	Ancestors []string `json:"ancestors,omitempty"`
-}
-
-// +kcc:proto=google.cloud.asset.v1.RelatedAsset
-type RelatedAsset struct {
-	// The full name of the asset. Example:
-	//  `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
-	//
-	//  See [Resource
-	//  names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
-	//  for more information.
-	// +kcc:proto:field=google.cloud.asset.v1.RelatedAsset.asset
-	Asset *string `json:"asset,omitempty"`
-
-	// The type of the asset. Example: `compute.googleapis.com/Disk`
-	//
-	//  See [Supported asset
-	//  types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
-	//  for more information.
-	// +kcc:proto:field=google.cloud.asset.v1.RelatedAsset.asset_type
-	AssetType *string `json:"assetType,omitempty"`
-
-	// The ancestors of an asset in Google Cloud [resource
-	//  hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
-	//  represented as a list of relative resource names. An ancestry path starts
-	//  with the closest ancestor in the hierarchy and ends at root.
-	//
-	//  Example: `["projects/123456789", "folders/5432", "organizations/1234"]`
-	// +kcc:proto:field=google.cloud.asset.v1.RelatedAsset.ancestors
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.ancestors
 	Ancestors []string `json:"ancestors,omitempty"`
 
-	// The unique identifier of the relationship type. Example:
-	//  `INSTANCE_TO_INSTANCEGROUP`
-	// +kcc:proto:field=google.cloud.asset.v1.RelatedAsset.relationship_type
-	RelationshipType *string `json:"relationshipType,omitempty"`
+	// Please also refer to the [access policy user
+	//  guide](https://cloud.google.com/access-context-manager/docs/overview#access-policies).
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.access_policy
+	AccessPolicy *AccessPolicy `json:"accessPolicy,omitempty"`
+
+	// Please also refer to the [access level user
+	//  guide](https://cloud.google.com/access-context-manager/docs/overview#access-levels).
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.access_level
+	AccessLevel *AccessLevel `json:"accessLevel,omitempty"`
+
+	// Please also refer to the [service perimeter user
+	//  guide](https://cloud.google.com/vpc-service-controls/docs/overview).
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.service_perimeter
+	ServicePerimeter *ServicePerimeter `json:"servicePerimeter,omitempty"`
+
+	// A representation of an [organization
+	//  policy](https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy).
+	//  There can be more than one organization policy with different constraints
+	//  set on a given resource.
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Asset.org_policy
+	OrgPolicy []Policy `json:"orgPolicy,omitempty"`
 }
 
-// +kcc:proto=google.cloud.asset.v1.RelatedAssets
-type RelatedAssets struct {
-	// The detailed relationship attributes.
-	// +kcc:proto:field=google.cloud.asset.v1.RelatedAssets.relationship_attributes
-	RelationshipAttributes *RelationshipAttributes `json:"relationshipAttributes,omitempty"`
-
-	// The peer resources of the relationship.
-	// +kcc:proto:field=google.cloud.asset.v1.RelatedAssets.assets
-	Assets []RelatedAsset `json:"assets,omitempty"`
-}
-
-// +kcc:proto=google.cloud.asset.v1.RelationshipAttributes
-type RelationshipAttributes struct {
-	// The unique identifier of the relationship type. Example:
-	//  `INSTANCE_TO_INSTANCEGROUP`
-	// +kcc:proto:field=google.cloud.asset.v1.RelationshipAttributes.type
-	Type *string `json:"type,omitempty"`
-
-	// The source asset type. Example: `compute.googleapis.com/Instance`
-	// +kcc:proto:field=google.cloud.asset.v1.RelationshipAttributes.source_resource_type
-	SourceResourceType *string `json:"sourceResourceType,omitempty"`
-
-	// The target asset type. Example: `compute.googleapis.com/Disk`
-	// +kcc:proto:field=google.cloud.asset.v1.RelationshipAttributes.target_resource_type
-	TargetResourceType *string `json:"targetResourceType,omitempty"`
-
-	// The detail of the relationship, e.g. `contains`, `attaches`
-	// +kcc:proto:field=google.cloud.asset.v1.RelationshipAttributes.action
-	Action *string `json:"action,omitempty"`
-}
-
-// +kcc:proto=google.cloud.asset.v1.Resource
+// +kcc:proto=google.cloud.asset.v1p2beta1.Resource
 type Resource struct {
 	// The API version. Example: `v1`
-	// +kcc:proto:field=google.cloud.asset.v1.Resource.version
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Resource.version
 	Version *string `json:"version,omitempty"`
 
 	// The URL of the discovery document containing the resource's JSON schema.
@@ -184,7 +96,7 @@ type Resource struct {
 	//
 	//  This value is unspecified for resources that do not have an API based on a
 	//  discovery document, such as Cloud Bigtable.
-	// +kcc:proto:field=google.cloud.asset.v1.Resource.discovery_document_uri
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Resource.discovery_document_uri
 	DiscoveryDocumentURI *string `json:"discoveryDocumentURI,omitempty"`
 
 	// The JSON schema name listed in the discovery document. Example:
@@ -192,7 +104,7 @@ type Resource struct {
 	//
 	//  This value is unspecified for resources that do not have an API based on a
 	//  discovery document, such as Cloud Bigtable.
-	// +kcc:proto:field=google.cloud.asset.v1.Resource.discovery_name
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Resource.discovery_name
 	DiscoveryName *string `json:"discoveryName,omitempty"`
 
 	// The REST URL for accessing the resource. An HTTP `GET` request using this
@@ -200,7 +112,7 @@ type Resource struct {
 	//  `https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`
 	//
 	//  This value is unspecified for resources without a REST API.
-	// +kcc:proto:field=google.cloud.asset.v1.Resource.resource_url
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Resource.resource_url
 	ResourceURL *string `json:"resourceURL,omitempty"`
 
 	// The full name of the immediate parent of this resource. See
@@ -213,18 +125,15 @@ type Resource struct {
 	//  hierarchy](https://cloud.google.com/iam/docs/overview#policy_hierarchy).
 	//  Example:
 	//  `//cloudresourcemanager.googleapis.com/projects/my_project_123`
-	// +kcc:proto:field=google.cloud.asset.v1.Resource.parent
+	//
+	//  For third-party assets, this field may be set differently.
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Resource.parent
 	Parent *string `json:"parent,omitempty"`
 
 	// The content of the resource, in which some sensitive fields are removed
 	//  and may not be present.
-	// +kcc:proto:field=google.cloud.asset.v1.Resource.data
+	// +kcc:proto:field=google.cloud.asset.v1p2beta1.Resource.data
 	Data map[string]string `json:"data,omitempty"`
-
-	// The location of the resource in Google Cloud, such as its zone and region.
-	//  For more information, see https://cloud.google.com/about/locations/.
-	// +kcc:proto:field=google.cloud.asset.v1.Resource.location
-	Location *string `json:"location,omitempty"`
 }
 
 // +kcc:proto=google.cloud.orgpolicy.v1.Policy
@@ -455,271 +364,6 @@ type Policy_ListPolicy struct {
 
 // +kcc:proto=google.cloud.orgpolicy.v1.Policy.RestoreDefault
 type Policy_RestoreDefault struct {
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory
-type Inventory struct {
-
-	// Base level operating system information for the VM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.os_info
-	OsInfo *Inventory_OsInfo `json:"osInfo,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.Item
-type Inventory_Item struct {
-	// Identifier for this item, unique across items for this VM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.Item.id
-	ID *string `json:"id,omitempty"`
-
-	// The origin of this inventory item.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.Item.origin_type
-	OriginType *string `json:"originType,omitempty"`
-
-	// When this inventory item was first detected.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.Item.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// When this inventory item was last modified.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.Item.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// The specific type of inventory, correlating to its specific details.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.Item.type
-	Type *string `json:"type,omitempty"`
-
-	// Software package present on the VM instance.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.Item.installed_package
-	InstalledPackage *Inventory_SoftwarePackage `json:"installedPackage,omitempty"`
-
-	// Software package available to be installed on the VM instance.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.Item.available_package
-	AvailablePackage *Inventory_SoftwarePackage `json:"availablePackage,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.OsInfo
-type Inventory_OsInfo struct {
-	// The VM hostname.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.OsInfo.hostname
-	Hostname *string `json:"hostname,omitempty"`
-
-	// The operating system long name.
-	//  For example 'Debian GNU/Linux 9' or 'Microsoft Window Server 2019
-	//  Datacenter'.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.OsInfo.long_name
-	LongName *string `json:"longName,omitempty"`
-
-	// The operating system short name.
-	//  For example, 'windows' or 'debian'.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.OsInfo.short_name
-	ShortName *string `json:"shortName,omitempty"`
-
-	// The version of the operating system.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.OsInfo.version
-	Version *string `json:"version,omitempty"`
-
-	// The system architecture of the operating system.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.OsInfo.architecture
-	Architecture *string `json:"architecture,omitempty"`
-
-	// The kernel version of the operating system.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.OsInfo.kernel_version
-	KernelVersion *string `json:"kernelVersion,omitempty"`
-
-	// The kernel release of the operating system.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.OsInfo.kernel_release
-	KernelRelease *string `json:"kernelRelease,omitempty"`
-
-	// The current version of the OS Config agent running on the VM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.OsInfo.osconfig_agent_version
-	OsconfigAgentVersion *string `json:"osconfigAgentVersion,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.SoftwarePackage
-type Inventory_SoftwarePackage struct {
-	// Yum package info.
-	//  For details about the yum package manager, see
-	//  https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.yum_package
-	YumPackage *Inventory_VersionedPackage `json:"yumPackage,omitempty"`
-
-	// Details of an APT package.
-	//  For details about the apt package manager, see
-	//  https://wiki.debian.org/Apt.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.apt_package
-	AptPackage *Inventory_VersionedPackage `json:"aptPackage,omitempty"`
-
-	// Details of a Zypper package.
-	//  For details about the Zypper package manager, see
-	//  https://en.opensuse.org/SDB:Zypper_manual.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.zypper_package
-	ZypperPackage *Inventory_VersionedPackage `json:"zypperPackage,omitempty"`
-
-	// Details of a Googet package.
-	//   For details about the googet package manager, see
-	//   https://github.com/google/googet.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.googet_package
-	GoogetPackage *Inventory_VersionedPackage `json:"googetPackage,omitempty"`
-
-	// Details of a Zypper patch.
-	//  For details about the Zypper package manager, see
-	//  https://en.opensuse.org/SDB:Zypper_manual.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.zypper_patch
-	ZypperPatch *Inventory_ZypperPatch `json:"zypperPatch,omitempty"`
-
-	// Details of a Windows Update package.
-	//  See https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for
-	//  information about Windows Update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.wua_package
-	WuaPackage *Inventory_WindowsUpdatePackage `json:"wuaPackage,omitempty"`
-
-	// Details of a Windows Quick Fix engineering package.
-	//  See
-	//  https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
-	//  for info in Windows Quick Fix Engineering.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.qfe_package
-	QfePackage *Inventory_WindowsQuickFixEngineeringPackage `json:"qfePackage,omitempty"`
-
-	// Details of a COS package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.cos_package
-	CosPackage *Inventory_VersionedPackage `json:"cosPackage,omitempty"`
-
-	// Details of Windows Application.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.SoftwarePackage.windows_application
-	WindowsApplication *Inventory_WindowsApplication `json:"windowsApplication,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.VersionedPackage
-type Inventory_VersionedPackage struct {
-	// The name of the package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.VersionedPackage.package_name
-	PackageName *string `json:"packageName,omitempty"`
-
-	// The system architecture this package is intended for.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.VersionedPackage.architecture
-	Architecture *string `json:"architecture,omitempty"`
-
-	// The version of the package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.VersionedPackage.version
-	Version *string `json:"version,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.WindowsApplication
-type Inventory_WindowsApplication struct {
-	// The name of the application or product.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsApplication.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The version of the product or application in string format.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsApplication.display_version
-	DisplayVersion *string `json:"displayVersion,omitempty"`
-
-	// The name of the manufacturer for the product or application.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsApplication.publisher
-	Publisher *string `json:"publisher,omitempty"`
-
-	// The last time this product received service. The value of this property
-	//  is replaced each time a patch is applied or removed from the product or
-	//  the command-line option is used to repair the product.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsApplication.install_date
-	InstallDate *Date `json:"installDate,omitempty"`
-
-	// The internet address for technical support.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsApplication.help_link
-	HelpLink *string `json:"helpLink,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.WindowsQuickFixEngineeringPackage
-type Inventory_WindowsQuickFixEngineeringPackage struct {
-	// A short textual description of the QFE update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsQuickFixEngineeringPackage.caption
-	Caption *string `json:"caption,omitempty"`
-
-	// A textual description of the QFE update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsQuickFixEngineeringPackage.description
-	Description *string `json:"description,omitempty"`
-
-	// Unique identifier associated with a particular QFE update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsQuickFixEngineeringPackage.hot_fix_id
-	HotFixID *string `json:"hotFixID,omitempty"`
-
-	// Date that the QFE update was installed.  Mapped from installed_on field.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsQuickFixEngineeringPackage.install_time
-	InstallTime *string `json:"installTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage
-type Inventory_WindowsUpdatePackage struct {
-	// The localized title of the update package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.title
-	Title *string `json:"title,omitempty"`
-
-	// The localized description of the update package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.description
-	Description *string `json:"description,omitempty"`
-
-	// The categories that are associated with this update package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.categories
-	Categories []Inventory_WindowsUpdatePackage_WindowsUpdateCategory `json:"categories,omitempty"`
-
-	// A collection of Microsoft Knowledge Base article IDs that are associated
-	//  with the update package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.kb_article_ids
-	KbArticleIds []string `json:"kbArticleIds,omitempty"`
-
-	// A hyperlink to the language-specific support information for the update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.support_url
-	SupportURL *string `json:"supportURL,omitempty"`
-
-	// A collection of URLs that provide more information about the update
-	//  package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.more_info_urls
-	MoreInfoUrls []string `json:"moreInfoUrls,omitempty"`
-
-	// Gets the identifier of an update package.  Stays the same across
-	//  revisions.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.update_id
-	UpdateID *string `json:"updateID,omitempty"`
-
-	// The revision number of this update package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.revision_number
-	RevisionNumber *int32 `json:"revisionNumber,omitempty"`
-
-	// The last published date of the update, in (UTC) date and time.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.last_deployment_change_time
-	LastDeploymentChangeTime *string `json:"lastDeploymentChangeTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.WindowsUpdateCategory
-type Inventory_WindowsUpdatePackage_WindowsUpdateCategory struct {
-	// The identifier of the windows update category.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.WindowsUpdateCategory.id
-	ID *string `json:"id,omitempty"`
-
-	// The name of the windows update category.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.WindowsUpdatePackage.WindowsUpdateCategory.name
-	Name *string `json:"name,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory.ZypperPatch
-type Inventory_ZypperPatch struct {
-	// The name of the patch.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.ZypperPatch.patch_name
-	PatchName *string `json:"patchName,omitempty"`
-
-	// The category of the patch.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.ZypperPatch.category
-	Category *string `json:"category,omitempty"`
-
-	// The severity specified for this patch
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.ZypperPatch.severity
-	Severity *string `json:"severity,omitempty"`
-
-	// Any summary information provided about this patch.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.ZypperPatch.summary
-	Summary *string `json:"summary,omitempty"`
 }
 
 // +kcc:proto=google.iam.v1.AuditConfig
@@ -1411,25 +1055,6 @@ type ServicePerimeterConfig_VpcAccessibleServices struct {
 	AllowedServices []string `json:"allowedServices,omitempty"`
 }
 
-// +kcc:proto=google.type.Date
-type Date struct {
-	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
-	//  a year.
-	// +kcc:proto:field=google.type.Date.year
-	Year *int32 `json:"year,omitempty"`
-
-	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
-	//  month and day.
-	// +kcc:proto:field=google.type.Date.month
-	Month *int32 `json:"month,omitempty"`
-
-	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
-	//  to specify a year by itself or a year and month where the day isn't
-	//  significant.
-	// +kcc:proto:field=google.type.Date.day
-	Day *int32 `json:"day,omitempty"`
-}
-
 // +kcc:proto=google.type.Expr
 type Expr struct {
 	// Textual representation of an expression in Common Expression Language
@@ -1452,27 +1077,4 @@ type Expr struct {
 	//  reporting, e.g. a file name and a position in the file.
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
-}
-
-// +kcc:proto=google.cloud.asset.v1.Asset
-type AssetObservedState struct {
-	// A representation of runtime OS Inventory information. See [this
-	//  topic](https://cloud.google.com/compute/docs/instances/os-inventory-management)
-	//  for more information.
-	// +kcc:proto:field=google.cloud.asset.v1.Asset.os_inventory
-	OsInventory *InventoryObservedState `json:"osInventory,omitempty"`
-}
-
-// +kcc:proto=google.cloud.osconfig.v1.Inventory
-type InventoryObservedState struct {
-	// Output only. The `Inventory` API resource name.
-	//
-	//  Format:
-	//  `projects/{project_number}/locations/{location}/instances/{instance_id}/inventory`
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Timestamp of the last reported inventory for the VM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.Inventory.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
