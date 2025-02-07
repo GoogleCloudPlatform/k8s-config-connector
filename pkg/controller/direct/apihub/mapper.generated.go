@@ -108,6 +108,86 @@ func ApihubApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubApiSpec) *pb
 	// MISSING: SelectedVersion
 	return out
 }
+func ApihubDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.ApihubDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubDeploymentObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	// MISSING: DeploymentType
+	// MISSING: ResourceURI
+	// MISSING: Endpoints
+	// MISSING: ApiVersions
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Slo
+	// MISSING: Environment
+	// MISSING: Attributes
+	return out
+}
+func ApihubDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubDeploymentObservedState) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	// MISSING: DeploymentType
+	// MISSING: ResourceURI
+	// MISSING: Endpoints
+	// MISSING: ApiVersions
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Slo
+	// MISSING: Environment
+	// MISSING: Attributes
+	return out
+}
+func ApihubDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.ApihubDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubDeploymentSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	// MISSING: DeploymentType
+	// MISSING: ResourceURI
+	// MISSING: Endpoints
+	// MISSING: ApiVersions
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Slo
+	// MISSING: Environment
+	// MISSING: Attributes
+	return out
+}
+func ApihubDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubDeploymentSpec) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	// MISSING: DeploymentType
+	// MISSING: ResourceURI
+	// MISSING: Endpoints
+	// MISSING: ApiVersions
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Slo
+	// MISSING: Environment
+	// MISSING: Attributes
+	return out
+}
 func ApihubSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Spec) *krm.ApihubSpecObservedState {
 	if in == nil {
 		return nil
@@ -354,6 +434,86 @@ func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in
 	out.Values = in.Values
 	return out
 }
+func Deployment_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Deployment{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
+	out.DeploymentType = AttributeValues_FromProto(mapCtx, in.GetDeploymentType())
+	out.ResourceURI = direct.LazyPtr(in.GetResourceUri())
+	out.Endpoints = in.Endpoints
+	// MISSING: ApiVersions
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Slo = AttributeValues_FromProto(mapCtx, in.GetSlo())
+	out.Environment = AttributeValues_FromProto(mapCtx, in.GetEnvironment())
+	// MISSING: Attributes
+	return out
+}
+func Deployment_ToProto(mapCtx *direct.MapContext, in *krm.Deployment) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
+	out.DeploymentType = AttributeValues_ToProto(mapCtx, in.DeploymentType)
+	out.ResourceUri = direct.ValueOf(in.ResourceURI)
+	out.Endpoints = in.Endpoints
+	// MISSING: ApiVersions
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Slo = AttributeValues_ToProto(mapCtx, in.Slo)
+	out.Environment = AttributeValues_ToProto(mapCtx, in.Environment)
+	// MISSING: Attributes
+	return out
+}
+func DeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.DeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeploymentObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	out.DeploymentType = AttributeValuesObservedState_FromProto(mapCtx, in.GetDeploymentType())
+	// MISSING: ResourceURI
+	// MISSING: Endpoints
+	out.ApiVersions = in.ApiVersions
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Slo
+	// MISSING: Environment
+	// MISSING: Attributes
+	return out
+}
+func DeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentObservedState) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Documentation
+	out.DeploymentType = AttributeValuesObservedState_ToProto(mapCtx, in.DeploymentType)
+	// MISSING: ResourceURI
+	// MISSING: Endpoints
+	out.ApiVersions = in.ApiVersions
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Slo
+	// MISSING: Environment
+	// MISSING: Attributes
+	return out
+}
 func Documentation_FromProto(mapCtx *direct.MapContext, in *pb.Documentation) *krm.Documentation {
 	if in == nil {
 		return nil
@@ -368,255 +528,5 @@ func Documentation_ToProto(mapCtx *direct.MapContext, in *krm.Documentation) *pb
 	}
 	out := &pb.Documentation{}
 	out.ExternalUri = direct.ValueOf(in.ExternalURI)
-	return out
-}
-func Issue_FromProto(mapCtx *direct.MapContext, in *pb.Issue) *krm.Issue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Issue{}
-	out.Code = direct.LazyPtr(in.GetCode())
-	out.Path = in.Path
-	out.Message = direct.LazyPtr(in.GetMessage())
-	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
-	out.Range = Range_FromProto(mapCtx, in.GetRange())
-	return out
-}
-func Issue_ToProto(mapCtx *direct.MapContext, in *krm.Issue) *pb.Issue {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Issue{}
-	out.Code = direct.ValueOf(in.Code)
-	out.Path = in.Path
-	out.Message = direct.ValueOf(in.Message)
-	out.Severity = direct.Enum_ToProto[pb.Severity](mapCtx, in.Severity)
-	out.Range = Range_ToProto(mapCtx, in.Range)
-	return out
-}
-func OpenApiSpecDetails_FromProto(mapCtx *direct.MapContext, in *pb.OpenApiSpecDetails) *krm.OpenApiSpecDetails {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OpenApiSpecDetails{}
-	// MISSING: Format
-	// MISSING: Version
-	// MISSING: Owner
-	return out
-}
-func OpenApiSpecDetails_ToProto(mapCtx *direct.MapContext, in *krm.OpenApiSpecDetails) *pb.OpenApiSpecDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OpenApiSpecDetails{}
-	// MISSING: Format
-	// MISSING: Version
-	// MISSING: Owner
-	return out
-}
-func OpenApiSpecDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OpenApiSpecDetails) *krm.OpenApiSpecDetailsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OpenApiSpecDetailsObservedState{}
-	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
-	out.Version = direct.LazyPtr(in.GetVersion())
-	out.Owner = Owner_FromProto(mapCtx, in.GetOwner())
-	return out
-}
-func OpenApiSpecDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OpenApiSpecDetailsObservedState) *pb.OpenApiSpecDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OpenApiSpecDetails{}
-	out.Format = direct.Enum_ToProto[pb.OpenApiSpecDetails_Format](mapCtx, in.Format)
-	out.Version = direct.ValueOf(in.Version)
-	out.Owner = Owner_ToProto(mapCtx, in.Owner)
-	return out
-}
-func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Owner{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Email = direct.LazyPtr(in.GetEmail())
-	return out
-}
-func Owner_ToProto(mapCtx *direct.MapContext, in *krm.Owner) *pb.Owner {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Owner{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Email = direct.ValueOf(in.Email)
-	return out
-}
-func Point_FromProto(mapCtx *direct.MapContext, in *pb.Point) *krm.Point {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Point{}
-	out.Line = direct.LazyPtr(in.GetLine())
-	out.Character = direct.LazyPtr(in.GetCharacter())
-	return out
-}
-func Point_ToProto(mapCtx *direct.MapContext, in *krm.Point) *pb.Point {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Point{}
-	out.Line = direct.ValueOf(in.Line)
-	out.Character = direct.ValueOf(in.Character)
-	return out
-}
-func Range_FromProto(mapCtx *direct.MapContext, in *pb.Range) *krm.Range {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Range{}
-	out.Start = Point_FromProto(mapCtx, in.GetStart())
-	out.End = Point_FromProto(mapCtx, in.GetEnd())
-	return out
-}
-func Range_ToProto(mapCtx *direct.MapContext, in *krm.Range) *pb.Range {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Range{}
-	out.Start = Point_ToProto(mapCtx, in.Start)
-	out.End = Point_ToProto(mapCtx, in.End)
-	return out
-}
-func Spec_FromProto(mapCtx *direct.MapContext, in *pb.Spec) *krm.Spec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Spec{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.SpecType = AttributeValues_FromProto(mapCtx, in.GetSpecType())
-	out.Contents = SpecContents_FromProto(mapCtx, in.GetContents())
-	// MISSING: Details
-	out.SourceURI = direct.LazyPtr(in.GetSourceUri())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.LintResponse = LintResponse_FromProto(mapCtx, in.GetLintResponse())
-	// MISSING: Attributes
-	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
-	out.ParsingMode = direct.Enum_FromProto(mapCtx, in.GetParsingMode())
-	return out
-}
-func Spec_ToProto(mapCtx *direct.MapContext, in *krm.Spec) *pb.Spec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Spec{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.SpecType = AttributeValues_ToProto(mapCtx, in.SpecType)
-	out.Contents = SpecContents_ToProto(mapCtx, in.Contents)
-	// MISSING: Details
-	out.SourceUri = direct.ValueOf(in.SourceURI)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.LintResponse = LintResponse_ToProto(mapCtx, in.LintResponse)
-	// MISSING: Attributes
-	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
-	out.ParsingMode = direct.Enum_ToProto[pb.Spec_ParsingMode](mapCtx, in.ParsingMode)
-	return out
-}
-func SpecContents_FromProto(mapCtx *direct.MapContext, in *pb.SpecContents) *krm.SpecContents {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpecContents{}
-	out.Contents = in.GetContents()
-	out.MimeType = direct.LazyPtr(in.GetMimeType())
-	return out
-}
-func SpecContents_ToProto(mapCtx *direct.MapContext, in *krm.SpecContents) *pb.SpecContents {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpecContents{}
-	out.Contents = in.Contents
-	out.MimeType = direct.ValueOf(in.MimeType)
-	return out
-}
-func SpecDetails_FromProto(mapCtx *direct.MapContext, in *pb.SpecDetails) *krm.SpecDetails {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpecDetails{}
-	// MISSING: OpenApiSpecDetails
-	// MISSING: Description
-	return out
-}
-func SpecDetails_ToProto(mapCtx *direct.MapContext, in *krm.SpecDetails) *pb.SpecDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpecDetails{}
-	// MISSING: OpenApiSpecDetails
-	// MISSING: Description
-	return out
-}
-func SpecDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecDetails) *krm.SpecDetailsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpecDetailsObservedState{}
-	out.OpenApiSpecDetails = OpenApiSpecDetails_FromProto(mapCtx, in.GetOpenApiSpecDetails())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	return out
-}
-func SpecDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpecDetailsObservedState) *pb.SpecDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpecDetails{}
-	if oneof := OpenApiSpecDetails_ToProto(mapCtx, in.OpenApiSpecDetails); oneof != nil {
-		out.Details = &pb.SpecDetails_OpenApiSpecDetails{OpenApiSpecDetails: oneof}
-	}
-	out.Description = direct.ValueOf(in.Description)
-	return out
-}
-func SpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Spec) *krm.SpecObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpecObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	out.SpecType = AttributeValuesObservedState_FromProto(mapCtx, in.GetSpecType())
-	// MISSING: Contents
-	out.Details = SpecDetails_FromProto(mapCtx, in.GetDetails())
-	// MISSING: SourceURI
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: LintResponse
-	// MISSING: Attributes
-	// MISSING: Documentation
-	// MISSING: ParsingMode
-	return out
-}
-func SpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpecObservedState) *pb.Spec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Spec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	out.SpecType = AttributeValuesObservedState_ToProto(mapCtx, in.SpecType)
-	// MISSING: Contents
-	out.Details = SpecDetails_ToProto(mapCtx, in.Details)
-	// MISSING: SourceURI
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: LintResponse
-	// MISSING: Attributes
-	// MISSING: Documentation
-	// MISSING: ParsingMode
 	return out
 }

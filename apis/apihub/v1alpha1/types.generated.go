@@ -77,180 +77,81 @@ type AttributeValues_StringAttributeValues struct {
 	Values []string `json:"values,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.Deployment
+type Deployment struct {
+	// Identifier. The name of the deployment.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/deployments/{deployment}`
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The display name of the deployment.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The description of the deployment.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The documentation of the deployment.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.documentation
+	Documentation *Documentation `json:"documentation,omitempty"`
+
+	// Required. The type of deployment.
+	//  This maps to the following system defined attribute:
+	//  `projects/{project}/locations/{location}/attributes/system-deployment-type`
+	//  attribute.
+	//  The number of values for this attribute will be based on the
+	//  cardinality of the attribute. The same can be retrieved via GetAttribute
+	//  API. All values should be from the list of allowed values defined for the
+	//  attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.deployment_type
+	DeploymentType *AttributeValues `json:"deploymentType,omitempty"`
+
+	// Required. A URI to the runtime resource. This URI can be used to manage the
+	//  resource. For example, if the runtime resource is of type APIGEE_PROXY,
+	//  then this field will contain the URI to the management UI of the proxy.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.resource_uri
+	ResourceURI *string `json:"resourceURI,omitempty"`
+
+	// Required. The endpoints at which this deployment resource is listening for
+	//  API requests. This could be a list of complete URIs, hostnames or an IP
+	//  addresses.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.endpoints
+	Endpoints []string `json:"endpoints,omitempty"`
+
+	// Optional. The SLO for this deployment.
+	//  This maps to the following system defined attribute:
+	//  `projects/{project}/locations/{location}/attributes/system-slo`
+	//  attribute.
+	//  The number of values for this attribute will be based on the
+	//  cardinality of the attribute. The same can be retrieved via GetAttribute
+	//  API. All values should be from the list of allowed values defined for the
+	//  attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.slo
+	Slo *AttributeValues `json:"slo,omitempty"`
+
+	// Optional. The environment mapping to this deployment.
+	//  This maps to the following system defined attribute:
+	//  `projects/{project}/locations/{location}/attributes/system-environment`
+	//  attribute.
+	//  The number of values for this attribute will be based on the
+	//  cardinality of the attribute. The same can be retrieved via GetAttribute
+	//  API. All values should be from the list of allowed values defined for the
+	//  attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.environment
+	Environment *AttributeValues `json:"environment,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+
 // +kcc:proto=google.cloud.apihub.v1.Documentation
 type Documentation struct {
 	// Optional. The uri of the externally hosted documentation.
 	// +kcc:proto:field=google.cloud.apihub.v1.Documentation.external_uri
 	ExternalURI *string `json:"externalURI,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Issue
-type Issue struct {
-	// Required. Rule code unique to each rule defined in linter.
-	// +kcc:proto:field=google.cloud.apihub.v1.Issue.code
-	Code *string `json:"code,omitempty"`
-
-	// Required. An array of strings indicating the location in the analyzed
-	//  document where the rule was triggered.
-	// +kcc:proto:field=google.cloud.apihub.v1.Issue.path
-	Path []string `json:"path,omitempty"`
-
-	// Required. Human-readable message describing the issue found by the linter.
-	// +kcc:proto:field=google.cloud.apihub.v1.Issue.message
-	Message *string `json:"message,omitempty"`
-
-	// Required. Severity level of the rule violation.
-	// +kcc:proto:field=google.cloud.apihub.v1.Issue.severity
-	Severity *string `json:"severity,omitempty"`
-
-	// Required. Object describing where in the file the issue was found.
-	// +kcc:proto:field=google.cloud.apihub.v1.Issue.range
-	Range *Range `json:"range,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.LintResponse
-type LintResponse struct {
-	// Optional. Array of issues found in the analyzed document.
-	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.issues
-	Issues []Issue `json:"issues,omitempty"`
-
-	// Optional. Summary of all issue types and counts for each severity level.
-	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.summary
-	Summary []LintResponse_SummaryEntry `json:"summary,omitempty"`
-
-	// Required. Lint state represents success or failure for linting.
-	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.state
-	State *string `json:"state,omitempty"`
-
-	// Required. Name of the linting application.
-	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.source
-	Source *string `json:"source,omitempty"`
-
-	// Required. Name of the linter used.
-	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.linter
-	Linter *string `json:"linter,omitempty"`
-
-	// Required. Timestamp when the linting response was generated.
-	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.LintResponse.SummaryEntry
-type LintResponse_SummaryEntry struct {
-	// Required. Severity of the issue.
-	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.SummaryEntry.severity
-	Severity *string `json:"severity,omitempty"`
-
-	// Required. Count of issues with the given severity.
-	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.SummaryEntry.count
-	Count *int32 `json:"count,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.OpenApiSpecDetails
-type OpenApiSpecDetails struct {
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Owner
-type Owner struct {
-	// Optional. The name of the owner.
-	// +kcc:proto:field=google.cloud.apihub.v1.Owner.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Required. The email of the owner.
-	// +kcc:proto:field=google.cloud.apihub.v1.Owner.email
-	Email *string `json:"email,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Point
-type Point struct {
-	// Required. Line number (zero-indexed).
-	// +kcc:proto:field=google.cloud.apihub.v1.Point.line
-	Line *int32 `json:"line,omitempty"`
-
-	// Required. Character position within the line (zero-indexed).
-	// +kcc:proto:field=google.cloud.apihub.v1.Point.character
-	Character *int32 `json:"character,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Range
-type Range struct {
-	// Required. Start of the issue.
-	// +kcc:proto:field=google.cloud.apihub.v1.Range.start
-	Start *Point `json:"start,omitempty"`
-
-	// Required. End of the issue.
-	// +kcc:proto:field=google.cloud.apihub.v1.Range.end
-	End *Point `json:"end,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Spec
-type Spec struct {
-	// Identifier. The name of the spec.
-	//
-	//  Format:
-	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}`
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The display name of the spec.
-	//  This can contain the file name of the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Required. The type of spec.
-	//  The value should be one of the allowed values defined for
-	//  `projects/{project}/locations/{location}/attributes/system-spec-type`
-	//  attribute.
-	//  The number of values for this attribute will be based on the
-	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API.
-	//
-	//  Note, this field is mandatory if content is provided.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.spec_type
-	SpecType *AttributeValues `json:"specType,omitempty"`
-
-	// Optional. Input only. The contents of the uploaded spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.contents
-	Contents *SpecContents `json:"contents,omitempty"`
-
-	// Optional. The URI of the spec source in case file is uploaded
-	//  from an external version control system.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.source_uri
-	SourceURI *string `json:"sourceURI,omitempty"`
-
-	// Optional. The lint response for the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.lint_response
-	LintResponse *LintResponse `json:"lintResponse,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// Optional. The documentation of the spec.
-	//  For OpenAPI spec, this will be populated from `externalDocs` in OpenAPI
-	//  spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.documentation
-	Documentation *Documentation `json:"documentation,omitempty"`
-
-	// Optional. Input only. Enum specifying the parsing mode for OpenAPI
-	//  Specification (OAS) parsing.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.parsing_mode
-	ParsingMode *string `json:"parsingMode,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.SpecContents
-type SpecContents struct {
-	// Required. The contents of the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.SpecContents.contents
-	Contents []byte `json:"contents,omitempty"`
-
-	// Required. The mime type of the content for example application/json,
-	//  application/yaml, application/wsdl etc.
-	// +kcc:proto:field=google.cloud.apihub.v1.SpecContents.mime_type
-	MimeType *string `json:"mimeType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.SpecDetails
-type SpecDetails struct {
 }
 
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues
@@ -261,61 +162,30 @@ type AttributeValuesObservedState struct {
 	Attribute *string `json:"attribute,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.OpenApiSpecDetails
-type OpenApiSpecDetailsObservedState struct {
-	// Output only. The format of the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.OpenApiSpecDetails.format
-	Format *string `json:"format,omitempty"`
-
-	// Output only. The version in the spec.
-	//  This maps to `info.version` in OpenAPI spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.OpenApiSpecDetails.version
-	Version *string `json:"version,omitempty"`
-
-	// Output only. Owner details for the spec.
-	//  This maps to `info.contact` in OpenAPI spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.OpenApiSpecDetails.owner
-	Owner *Owner `json:"owner,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.Spec
-type SpecObservedState struct {
-	// Required. The type of spec.
-	//  The value should be one of the allowed values defined for
-	//  `projects/{project}/locations/{location}/attributes/system-spec-type`
+// +kcc:proto=google.cloud.apihub.v1.Deployment
+type DeploymentObservedState struct {
+	// Required. The type of deployment.
+	//  This maps to the following system defined attribute:
+	//  `projects/{project}/locations/{location}/attributes/system-deployment-type`
 	//  attribute.
 	//  The number of values for this attribute will be based on the
 	//  cardinality of the attribute. The same can be retrieved via GetAttribute
-	//  API.
-	//
-	//  Note, this field is mandatory if content is provided.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.spec_type
-	SpecType *AttributeValuesObservedState `json:"specType,omitempty"`
+	//  API. All values should be from the list of allowed values defined for the
+	//  attribute.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.deployment_type
+	DeploymentType *AttributeValuesObservedState `json:"deploymentType,omitempty"`
 
-	// Output only. Details parsed from the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.details
-	Details *SpecDetails `json:"details,omitempty"`
+	// Output only. The API versions linked to this deployment.
+	//  Note: A particular deployment could be linked to multiple different API
+	//  versions (of same or different APIs).
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.api_versions
+	ApiVersions []string `json:"apiVersions,omitempty"`
 
-	// Output only. The time at which the spec was created.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.create_time
+	// Output only. The time at which the deployment was created.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The time at which the spec was last updated.
-	// +kcc:proto:field=google.cloud.apihub.v1.Spec.update_time
+	// Output only. The time at which the deployment was last updated.
+	// +kcc:proto:field=google.cloud.apihub.v1.Deployment.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.SpecDetails
-type SpecDetailsObservedState struct {
-	// Output only. Additional details apart from `OperationDetails` parsed from
-	//  an OpenAPI spec. The OperationDetails parsed from the spec can be
-	//  obtained by using
-	//  [ListAPIOperations][google.cloud.apihub.v1.ApiHub.ListApiOperations]
-	//  method.
-	// +kcc:proto:field=google.cloud.apihub.v1.SpecDetails.open_api_spec_details
-	OpenApiSpecDetails *OpenApiSpecDetails `json:"openApiSpecDetails,omitempty"`
-
-	// Output only. The description of the spec.
-	// +kcc:proto:field=google.cloud.apihub.v1.SpecDetails.description
-	Description *string `json:"description,omitempty"`
 }
