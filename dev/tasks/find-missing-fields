@@ -20,8 +20,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-# TODO: We need to figure out how to find all the fuzz tests, or maybe we should have one fuzz test
-# that we register all the types with.
+go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -fuzztime 600s # fuzz for 10 minutes because we are fuzzing all the registered mappers
+
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEnvgroupSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEnvgroupObservedState -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceSpec -fuzztime 60s
