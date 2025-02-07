@@ -15,51 +15,51 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnection
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.EkmConnection
 type EkmConnection struct {
 	// Resource name of the EKM connection in the format:
 	//  projects/{project}/locations/{location}/ekmConnections/{ekm_connection}
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.connection_name
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.EkmConnection.connection_name
 	ConnectionName *string `json:"connectionName,omitempty"`
 
 	// The connection error that occurred if any
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.connection_error
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.EkmConnection.connection_error
 	ConnectionError *EkmConnection_ConnectionError `json:"connectionError,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnection.ConnectionError
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.EkmConnection.ConnectionError
 type EkmConnection_ConnectionError struct {
 	// The error domain for the error
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.ConnectionError.error_domain
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.EkmConnection.ConnectionError.error_domain
 	ErrorDomain *string `json:"errorDomain,omitempty"`
 
 	// The error message for the error
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.ConnectionError.error_message
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.EkmConnection.ConnectionError.error_message
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnections
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.EkmConnections
 type EkmConnections struct {
 	// Identifier. Format:
 	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnections.name
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.EkmConnections.name
 	Name *string `json:"name,omitempty"`
 
 	// The EKM connections associated with the workload
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnections.ekm_connections
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.EkmConnections.ekm_connections
 	EkmConnections []EkmConnection `json:"ekmConnections,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnection
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.EkmConnection
 type EkmConnectionObservedState struct {
 	// Output only. The connection state
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnection.connection_state
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.EkmConnection.connection_state
 	ConnectionState *string `json:"connectionState,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.EkmConnections
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1beta.EkmConnections
 type EkmConnectionsObservedState struct {
 	// The EKM connections associated with the workload
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.EkmConnections.ekm_connections
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1beta.EkmConnections.ekm_connections
 	EkmConnections []EkmConnectionObservedState `json:"ekmConnections,omitempty"`
 }
