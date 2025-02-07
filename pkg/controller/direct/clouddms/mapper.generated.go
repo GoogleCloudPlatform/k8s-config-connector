@@ -100,6 +100,74 @@ func ClouddmsConnectionProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cl
 	// MISSING: Provider
 	return out
 }
+func ClouddmsConversionWorkspaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversionWorkspace) *krm.ClouddmsConversionWorkspaceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClouddmsConversionWorkspaceObservedState{}
+	// MISSING: Name
+	// MISSING: Source
+	// MISSING: Destination
+	// MISSING: GlobalSettings
+	// MISSING: HasUncommittedChanges
+	// MISSING: LatestCommitID
+	// MISSING: LatestCommitTime
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DisplayName
+	return out
+}
+func ClouddmsConversionWorkspaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ClouddmsConversionWorkspaceObservedState) *pb.ConversionWorkspace {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConversionWorkspace{}
+	// MISSING: Name
+	// MISSING: Source
+	// MISSING: Destination
+	// MISSING: GlobalSettings
+	// MISSING: HasUncommittedChanges
+	// MISSING: LatestCommitID
+	// MISSING: LatestCommitTime
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DisplayName
+	return out
+}
+func ClouddmsConversionWorkspaceSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConversionWorkspace) *krm.ClouddmsConversionWorkspaceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClouddmsConversionWorkspaceSpec{}
+	// MISSING: Name
+	// MISSING: Source
+	// MISSING: Destination
+	// MISSING: GlobalSettings
+	// MISSING: HasUncommittedChanges
+	// MISSING: LatestCommitID
+	// MISSING: LatestCommitTime
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DisplayName
+	return out
+}
+func ClouddmsConversionWorkspaceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ClouddmsConversionWorkspaceSpec) *pb.ConversionWorkspace {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConversionWorkspace{}
+	// MISSING: Name
+	// MISSING: Source
+	// MISSING: Destination
+	// MISSING: GlobalSettings
+	// MISSING: HasUncommittedChanges
+	// MISSING: LatestCommitID
+	// MISSING: LatestCommitTime
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DisplayName
+	return out
+}
 func ClouddmsMigrationJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob) *krm.ClouddmsMigrationJobObservedState {
 	if in == nil {
 		return nil
@@ -284,83 +352,89 @@ func ClouddmsPrivateConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cl
 	// MISSING: VpcPeeringConfig
 	return out
 }
-func PrivateConnection_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.PrivateConnection {
+func ConversionWorkspace_FromProto(mapCtx *direct.MapContext, in *pb.ConversionWorkspace) *krm.ConversionWorkspace {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PrivateConnection{}
+	out := &krm.ConversionWorkspace{}
 	out.Name = direct.LazyPtr(in.GetName())
+	out.Source = DatabaseEngineInfo_FromProto(mapCtx, in.GetSource())
+	out.Destination = DatabaseEngineInfo_FromProto(mapCtx, in.GetDestination())
+	out.GlobalSettings = in.GlobalSettings
+	// MISSING: HasUncommittedChanges
+	// MISSING: LatestCommitID
+	// MISSING: LatestCommitTime
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: State
-	// MISSING: Error
-	out.VpcPeeringConfig = VpcPeeringConfig_FromProto(mapCtx, in.GetVpcPeeringConfig())
 	return out
 }
-func PrivateConnection_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConnection) *pb.PrivateConnection {
+func ConversionWorkspace_ToProto(mapCtx *direct.MapContext, in *krm.ConversionWorkspace) *pb.ConversionWorkspace {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PrivateConnection{}
+	out := &pb.ConversionWorkspace{}
 	out.Name = direct.ValueOf(in.Name)
+	out.Source = DatabaseEngineInfo_ToProto(mapCtx, in.Source)
+	out.Destination = DatabaseEngineInfo_ToProto(mapCtx, in.Destination)
+	out.GlobalSettings = in.GlobalSettings
+	// MISSING: HasUncommittedChanges
+	// MISSING: LatestCommitID
+	// MISSING: LatestCommitTime
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: State
-	// MISSING: Error
-	if oneof := VpcPeeringConfig_ToProto(mapCtx, in.VpcPeeringConfig); oneof != nil {
-		out.Connectivity = &pb.PrivateConnection_VpcPeeringConfig{VpcPeeringConfig: oneof}
-	}
 	return out
 }
-func PrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.PrivateConnectionObservedState {
+func ConversionWorkspaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversionWorkspace) *krm.ConversionWorkspaceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PrivateConnectionObservedState{}
+	out := &krm.ConversionWorkspaceObservedState{}
 	// MISSING: Name
+	// MISSING: Source
+	// MISSING: Destination
+	// MISSING: GlobalSettings
+	out.HasUncommittedChanges = direct.LazyPtr(in.GetHasUncommittedChanges())
+	out.LatestCommitID = direct.LazyPtr(in.GetLatestCommitId())
+	out.LatestCommitTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLatestCommitTime())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
 	// MISSING: DisplayName
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Error = Status_FromProto(mapCtx, in.GetError())
-	// MISSING: VpcPeeringConfig
 	return out
 }
-func PrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConnectionObservedState) *pb.PrivateConnection {
+func ConversionWorkspaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConversionWorkspaceObservedState) *pb.ConversionWorkspace {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PrivateConnection{}
+	out := &pb.ConversionWorkspace{}
 	// MISSING: Name
+	// MISSING: Source
+	// MISSING: Destination
+	// MISSING: GlobalSettings
+	out.HasUncommittedChanges = direct.ValueOf(in.HasUncommittedChanges)
+	out.LatestCommitId = direct.ValueOf(in.LatestCommitID)
+	out.LatestCommitTime = direct.StringTimestamp_ToProto(mapCtx, in.LatestCommitTime)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
 	// MISSING: DisplayName
-	out.State = direct.Enum_ToProto[pb.PrivateConnection_State](mapCtx, in.State)
-	out.Error = Status_ToProto(mapCtx, in.Error)
-	// MISSING: VpcPeeringConfig
 	return out
 }
-func VpcPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConfig) *krm.VpcPeeringConfig {
+func DatabaseEngineInfo_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseEngineInfo) *krm.DatabaseEngineInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VpcPeeringConfig{}
-	out.VpcName = direct.LazyPtr(in.GetVpcName())
-	out.Subnet = direct.LazyPtr(in.GetSubnet())
+	out := &krm.DatabaseEngineInfo{}
+	out.Engine = direct.Enum_FromProto(mapCtx, in.GetEngine())
+	out.Version = direct.LazyPtr(in.GetVersion())
 	return out
 }
-func VpcPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.VpcPeeringConfig) *pb.VpcPeeringConfig {
+func DatabaseEngineInfo_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseEngineInfo) *pb.DatabaseEngineInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.VpcPeeringConfig{}
-	out.VpcName = direct.ValueOf(in.VpcName)
-	out.Subnet = direct.ValueOf(in.Subnet)
+	out := &pb.DatabaseEngineInfo{}
+	out.Engine = direct.Enum_ToProto[pb.DatabaseEngine](mapCtx, in.Engine)
+	out.Version = direct.ValueOf(in.Version)
 	return out
 }
