@@ -15,10 +15,10 @@
 package ai
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb"
 )
 func AiCorpusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Corpus) *krm.AiCorpusObservedState {
 	if in == nil {
@@ -62,6 +62,54 @@ func AiCorpusSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiCorpusSpec) *pb.C
 	// MISSING: DisplayName
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
+	return out
+}
+func AiDocumentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.AiDocumentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiDocumentObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CustomMetadata
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	return out
+}
+func AiDocumentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiDocumentObservedState) *pb.Document {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Document{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CustomMetadata
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	return out
+}
+func AiDocumentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.AiDocumentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiDocumentSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CustomMetadata
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	return out
+}
+func AiDocumentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiDocumentSpec) *pb.Document {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Document{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CustomMetadata
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
 	return out
 }
 func AiPermissionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Permission) *krm.AiPermissionObservedState {
@@ -108,47 +156,67 @@ func AiPermissionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiPermissionSpe
 	// MISSING: Role
 	return out
 }
-func Corpus_FromProto(mapCtx *direct.MapContext, in *pb.Corpus) *krm.Corpus {
+func Document_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.Document {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Corpus{}
+	out := &krm.Document{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: CreateTime
+	out.CustomMetadata = direct.Slice_FromProto(mapCtx, in.CustomMetadata, CustomMetadata_FromProto)
 	// MISSING: UpdateTime
+	// MISSING: CreateTime
 	return out
 }
-func Corpus_ToProto(mapCtx *direct.MapContext, in *krm.Corpus) *pb.Corpus {
+func Document_ToProto(mapCtx *direct.MapContext, in *krm.Document) *pb.Document {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Corpus{}
+	out := &pb.Document{}
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: CreateTime
+	out.CustomMetadata = direct.Slice_ToProto(mapCtx, in.CustomMetadata, CustomMetadata_ToProto)
 	// MISSING: UpdateTime
+	// MISSING: CreateTime
 	return out
 }
-func CorpusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Corpus) *krm.CorpusObservedState {
+func DocumentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.DocumentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CorpusObservedState{}
+	out := &krm.DocumentObservedState{}
 	// MISSING: Name
 	// MISSING: DisplayName
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: CustomMetadata
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
-func CorpusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CorpusObservedState) *pb.Corpus {
+func DocumentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DocumentObservedState) *pb.Document {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Corpus{}
+	out := &pb.Document{}
 	// MISSING: Name
 	// MISSING: DisplayName
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: CustomMetadata
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func StringList_FromProto(mapCtx *direct.MapContext, in *pb.StringList) *krm.StringList {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StringList{}
+	out.Values = in.Values
+	return out
+}
+func StringList_ToProto(mapCtx *direct.MapContext, in *krm.StringList) *pb.StringList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StringList{}
+	out.Values = in.Values
 	return out
 }
