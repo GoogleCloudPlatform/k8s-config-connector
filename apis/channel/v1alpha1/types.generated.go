@@ -15,30 +15,47 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.channel.v1.ReportJob
-type ReportJob struct {
-	// Required. The resource name of a report job.
-	//  Name uses the format:
-	//  `accounts/{account_id}/reportJobs/{report_job_id}`
-	// +kcc:proto:field=google.cloud.channel.v1.ReportJob.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.cloud.channel.v1.Column
+type Column struct {
+	// The unique name of the column (for example, customer_domain,
+	//  channel_partner, customer_cost). You can use column IDs in
+	//  [RunReportJobRequest.filter][google.cloud.channel.v1.RunReportJobRequest.filter].
+	//  To see all reports and their columns, call
+	//  [CloudChannelReportsService.ListReports][google.cloud.channel.v1.CloudChannelReportsService.ListReports].
+	// +kcc:proto:field=google.cloud.channel.v1.Column.column_id
+	ColumnID *string `json:"columnID,omitempty"`
 
-	// The current status of report generation.
-	// +kcc:proto:field=google.cloud.channel.v1.ReportJob.report_status
-	ReportStatus *ReportStatus `json:"reportStatus,omitempty"`
+	// The column's display name.
+	// +kcc:proto:field=google.cloud.channel.v1.Column.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The type of the values for this column.
+	// +kcc:proto:field=google.cloud.channel.v1.Column.data_type
+	DataType *string `json:"dataType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.channel.v1.ReportStatus
-type ReportStatus struct {
-	// The current state of the report generation process.
-	// +kcc:proto:field=google.cloud.channel.v1.ReportStatus.state
-	State *string `json:"state,omitempty"`
+// +kcc:proto=google.cloud.channel.v1.Report
+type Report struct {
+	// Required. The report's resource name. Specifies the account and report used
+	//  to generate report data. The report_id identifier is a UID (for example,
+	//  `613bf59q`).
+	//
+	//  Name uses the format:
+	//  accounts/{account_id}/reports/{report_id}
+	// +kcc:proto:field=google.cloud.channel.v1.Report.name
+	Name *string `json:"name,omitempty"`
 
-	// The report generation's start time.
-	// +kcc:proto:field=google.cloud.channel.v1.ReportStatus.start_time
-	StartTime *string `json:"startTime,omitempty"`
+	// A human-readable name for this report.
+	// +kcc:proto:field=google.cloud.channel.v1.Report.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
-	// The report generation's completion time.
-	// +kcc:proto:field=google.cloud.channel.v1.ReportStatus.end_time
-	EndTime *string `json:"endTime,omitempty"`
+	// The list of columns included in the report. This defines the schema of
+	//  the report results.
+	// +kcc:proto:field=google.cloud.channel.v1.Report.columns
+	Columns []Column `json:"columns,omitempty"`
+
+	// A description of other aspects of the report, such as the products
+	//  it supports.
+	// +kcc:proto:field=google.cloud.channel.v1.Report.description
+	Description *string `json:"description,omitempty"`
 }
