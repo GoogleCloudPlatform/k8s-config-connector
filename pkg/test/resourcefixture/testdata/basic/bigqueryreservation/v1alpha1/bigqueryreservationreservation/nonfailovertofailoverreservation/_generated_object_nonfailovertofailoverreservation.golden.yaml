@@ -30,4 +30,7 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}
   observedGeneration: 2
-  observedState: {}
+  observedState:
+    originalPrimaryLocation: us-west2
+    primaryLocation: us-west2
+    secondaryLocation: us-east1
