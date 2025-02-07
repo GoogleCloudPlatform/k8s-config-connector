@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.logging.v2.BigQueryDataset
 type BigQueryDataset struct {
 }

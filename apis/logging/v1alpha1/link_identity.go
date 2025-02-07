@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type LinkIdentity struct {
 	parent *LinkParent
-	id string
+	id     string
 }
 
 func (i *LinkIdentity) String() string {
-	return  i.parent.String() + "/links/" + i.id
+	return i.parent.String() + "/links/" + i.id
 }
 
 func (i *LinkIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *LinkIdentity) ID() string {
 }
 
 func (i *LinkIdentity) Parent() *LinkParent {
-	return  i.parent
+	return i.parent
 }
 
 type LinkParent struct {
@@ -51,7 +51,6 @@ type LinkParent struct {
 func (p *LinkParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a LinkIdentity from the Config Connector Link object.
 func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink) (*LinkIdentity, error) {
