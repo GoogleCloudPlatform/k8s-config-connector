@@ -904,39 +904,273 @@ func BaremetalsolutionVolumeConfigSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: PerformanceTier
 	return out
 }
-func SSHKey_FromProto(mapCtx *direct.MapContext, in *pb.SSHKey) *krm.SSHKey {
+func BaremetalsolutionVolumeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.BaremetalsolutionVolumeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SSHKey{}
+	out := &krm.BaremetalsolutionVolumeObservedState{}
 	// MISSING: Name
-	out.PublicKey = direct.LazyPtr(in.GetPublicKey())
+	// MISSING: ID
+	// MISSING: StorageType
+	// MISSING: State
+	// MISSING: RequestedSizeGib
+	// MISSING: OriginallyRequestedSizeGib
+	// MISSING: CurrentSizeGib
+	// MISSING: EmergencySizeGib
+	// MISSING: MaxSizeGib
+	// MISSING: AutoGrownSizeGib
+	// MISSING: RemainingSpaceGib
+	// MISSING: SnapshotReservationDetail
+	// MISSING: SnapshotAutoDeleteBehavior
+	// MISSING: Labels
+	// MISSING: SnapshotEnabled
+	// MISSING: Pod
+	// MISSING: Protocol
+	// MISSING: BootVolume
+	// MISSING: PerformanceTier
+	// MISSING: Notes
+	// MISSING: WorkloadProfile
+	// MISSING: ExpireTime
+	// MISSING: Instances
+	// MISSING: Attached
 	return out
 }
-func SSHKey_ToProto(mapCtx *direct.MapContext, in *krm.SSHKey) *pb.SSHKey {
+func BaremetalsolutionVolumeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionVolumeObservedState) *pb.Volume {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SSHKey{}
+	out := &pb.Volume{}
 	// MISSING: Name
-	out.PublicKey = direct.ValueOf(in.PublicKey)
+	// MISSING: ID
+	// MISSING: StorageType
+	// MISSING: State
+	// MISSING: RequestedSizeGib
+	// MISSING: OriginallyRequestedSizeGib
+	// MISSING: CurrentSizeGib
+	// MISSING: EmergencySizeGib
+	// MISSING: MaxSizeGib
+	// MISSING: AutoGrownSizeGib
+	// MISSING: RemainingSpaceGib
+	// MISSING: SnapshotReservationDetail
+	// MISSING: SnapshotAutoDeleteBehavior
+	// MISSING: Labels
+	// MISSING: SnapshotEnabled
+	// MISSING: Pod
+	// MISSING: Protocol
+	// MISSING: BootVolume
+	// MISSING: PerformanceTier
+	// MISSING: Notes
+	// MISSING: WorkloadProfile
+	// MISSING: ExpireTime
+	// MISSING: Instances
+	// MISSING: Attached
 	return out
 }
-func SSHKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SSHKey) *krm.SSHKeyObservedState {
+func BaremetalsolutionVolumeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.BaremetalsolutionVolumeSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SSHKeyObservedState{}
+	out := &krm.BaremetalsolutionVolumeSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: StorageType
+	// MISSING: State
+	// MISSING: RequestedSizeGib
+	// MISSING: OriginallyRequestedSizeGib
+	// MISSING: CurrentSizeGib
+	// MISSING: EmergencySizeGib
+	// MISSING: MaxSizeGib
+	// MISSING: AutoGrownSizeGib
+	// MISSING: RemainingSpaceGib
+	// MISSING: SnapshotReservationDetail
+	// MISSING: SnapshotAutoDeleteBehavior
+	// MISSING: Labels
+	// MISSING: SnapshotEnabled
+	// MISSING: Pod
+	// MISSING: Protocol
+	// MISSING: BootVolume
+	// MISSING: PerformanceTier
+	// MISSING: Notes
+	// MISSING: WorkloadProfile
+	// MISSING: ExpireTime
+	// MISSING: Instances
+	// MISSING: Attached
+	return out
+}
+func BaremetalsolutionVolumeSpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionVolumeSpec) *pb.Volume {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Volume{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: StorageType
+	// MISSING: State
+	// MISSING: RequestedSizeGib
+	// MISSING: OriginallyRequestedSizeGib
+	// MISSING: CurrentSizeGib
+	// MISSING: EmergencySizeGib
+	// MISSING: MaxSizeGib
+	// MISSING: AutoGrownSizeGib
+	// MISSING: RemainingSpaceGib
+	// MISSING: SnapshotReservationDetail
+	// MISSING: SnapshotAutoDeleteBehavior
+	// MISSING: Labels
+	// MISSING: SnapshotEnabled
+	// MISSING: Pod
+	// MISSING: Protocol
+	// MISSING: BootVolume
+	// MISSING: PerformanceTier
+	// MISSING: Notes
+	// MISSING: WorkloadProfile
+	// MISSING: ExpireTime
+	// MISSING: Instances
+	// MISSING: Attached
+	return out
+}
+func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Volume{}
+	// MISSING: Name
+	out.ID = direct.LazyPtr(in.GetId())
+	out.StorageType = direct.Enum_FromProto(mapCtx, in.GetStorageType())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.RequestedSizeGib = direct.LazyPtr(in.GetRequestedSizeGib())
+	out.OriginallyRequestedSizeGib = direct.LazyPtr(in.GetOriginallyRequestedSizeGib())
+	out.CurrentSizeGib = direct.LazyPtr(in.GetCurrentSizeGib())
+	out.EmergencySizeGib = direct.LazyPtr(in.GetEmergencySizeGib())
+	out.MaxSizeGib = direct.LazyPtr(in.GetMaxSizeGib())
+	out.AutoGrownSizeGib = direct.LazyPtr(in.GetAutoGrownSizeGib())
+	out.RemainingSpaceGib = direct.LazyPtr(in.GetRemainingSpaceGib())
+	out.SnapshotReservationDetail = Volume_SnapshotReservationDetail_FromProto(mapCtx, in.GetSnapshotReservationDetail())
+	out.SnapshotAutoDeleteBehavior = direct.Enum_FromProto(mapCtx, in.GetSnapshotAutoDeleteBehavior())
+	out.Labels = in.Labels
+	out.SnapshotEnabled = direct.LazyPtr(in.GetSnapshotEnabled())
+	out.Pod = direct.LazyPtr(in.GetPod())
+	// MISSING: Protocol
+	// MISSING: BootVolume
+	out.PerformanceTier = direct.Enum_FromProto(mapCtx, in.GetPerformanceTier())
+	out.Notes = direct.LazyPtr(in.GetNotes())
+	out.WorkloadProfile = direct.Enum_FromProto(mapCtx, in.GetWorkloadProfile())
+	// MISSING: ExpireTime
+	// MISSING: Instances
+	// MISSING: Attached
+	return out
+}
+func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Volume{}
+	// MISSING: Name
+	out.Id = direct.ValueOf(in.ID)
+	out.StorageType = direct.Enum_ToProto[pb.Volume_StorageType](mapCtx, in.StorageType)
+	out.State = direct.Enum_ToProto[pb.Volume_State](mapCtx, in.State)
+	out.RequestedSizeGib = direct.ValueOf(in.RequestedSizeGib)
+	out.OriginallyRequestedSizeGib = direct.ValueOf(in.OriginallyRequestedSizeGib)
+	out.CurrentSizeGib = direct.ValueOf(in.CurrentSizeGib)
+	out.EmergencySizeGib = direct.ValueOf(in.EmergencySizeGib)
+	out.MaxSizeGib = direct.ValueOf(in.MaxSizeGib)
+	out.AutoGrownSizeGib = direct.ValueOf(in.AutoGrownSizeGib)
+	out.RemainingSpaceGib = direct.ValueOf(in.RemainingSpaceGib)
+	out.SnapshotReservationDetail = Volume_SnapshotReservationDetail_ToProto(mapCtx, in.SnapshotReservationDetail)
+	out.SnapshotAutoDeleteBehavior = direct.Enum_ToProto[pb.Volume_SnapshotAutoDeleteBehavior](mapCtx, in.SnapshotAutoDeleteBehavior)
+	out.Labels = in.Labels
+	out.SnapshotEnabled = direct.ValueOf(in.SnapshotEnabled)
+	out.Pod = direct.ValueOf(in.Pod)
+	// MISSING: Protocol
+	// MISSING: BootVolume
+	out.PerformanceTier = direct.Enum_ToProto[pb.VolumePerformanceTier](mapCtx, in.PerformanceTier)
+	out.Notes = direct.ValueOf(in.Notes)
+	out.WorkloadProfile = direct.Enum_ToProto[pb.Volume_WorkloadProfile](mapCtx, in.WorkloadProfile)
+	// MISSING: ExpireTime
+	// MISSING: Instances
+	// MISSING: Attached
+	return out
+}
+func VolumeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.VolumeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VolumeObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: PublicKey
+	// MISSING: ID
+	// MISSING: StorageType
+	// MISSING: State
+	// MISSING: RequestedSizeGib
+	// MISSING: OriginallyRequestedSizeGib
+	// MISSING: CurrentSizeGib
+	// MISSING: EmergencySizeGib
+	// MISSING: MaxSizeGib
+	// MISSING: AutoGrownSizeGib
+	// MISSING: RemainingSpaceGib
+	// MISSING: SnapshotReservationDetail
+	// MISSING: SnapshotAutoDeleteBehavior
+	// MISSING: Labels
+	// MISSING: SnapshotEnabled
+	// MISSING: Pod
+	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
+	out.BootVolume = direct.LazyPtr(in.GetBootVolume())
+	// MISSING: PerformanceTier
+	// MISSING: Notes
+	// MISSING: WorkloadProfile
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Instances = in.Instances
+	out.Attached = direct.LazyPtr(in.GetAttached())
 	return out
 }
-func SSHKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SSHKeyObservedState) *pb.SSHKey {
+func VolumeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeObservedState) *pb.Volume {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SSHKey{}
+	out := &pb.Volume{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: PublicKey
+	// MISSING: ID
+	// MISSING: StorageType
+	// MISSING: State
+	// MISSING: RequestedSizeGib
+	// MISSING: OriginallyRequestedSizeGib
+	// MISSING: CurrentSizeGib
+	// MISSING: EmergencySizeGib
+	// MISSING: MaxSizeGib
+	// MISSING: AutoGrownSizeGib
+	// MISSING: RemainingSpaceGib
+	// MISSING: SnapshotReservationDetail
+	// MISSING: SnapshotAutoDeleteBehavior
+	// MISSING: Labels
+	// MISSING: SnapshotEnabled
+	// MISSING: Pod
+	out.Protocol = direct.Enum_ToProto[pb.Volume_Protocol](mapCtx, in.Protocol)
+	out.BootVolume = direct.ValueOf(in.BootVolume)
+	// MISSING: PerformanceTier
+	// MISSING: Notes
+	// MISSING: WorkloadProfile
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Instances = in.Instances
+	out.Attached = direct.ValueOf(in.Attached)
+	return out
+}
+func Volume_SnapshotReservationDetail_FromProto(mapCtx *direct.MapContext, in *pb.Volume_SnapshotReservationDetail) *krm.Volume_SnapshotReservationDetail {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Volume_SnapshotReservationDetail{}
+	out.ReservedSpaceGib = direct.LazyPtr(in.GetReservedSpaceGib())
+	out.ReservedSpaceUsedPercent = direct.LazyPtr(in.GetReservedSpaceUsedPercent())
+	out.ReservedSpaceRemainingGib = direct.LazyPtr(in.GetReservedSpaceRemainingGib())
+	out.ReservedSpacePercent = direct.LazyPtr(in.GetReservedSpacePercent())
+	return out
+}
+func Volume_SnapshotReservationDetail_ToProto(mapCtx *direct.MapContext, in *krm.Volume_SnapshotReservationDetail) *pb.Volume_SnapshotReservationDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Volume_SnapshotReservationDetail{}
+	out.ReservedSpaceGib = direct.ValueOf(in.ReservedSpaceGib)
+	out.ReservedSpaceUsedPercent = direct.ValueOf(in.ReservedSpaceUsedPercent)
+	out.ReservedSpaceRemainingGib = direct.ValueOf(in.ReservedSpaceRemainingGib)
+	out.ReservedSpacePercent = direct.ValueOf(in.ReservedSpacePercent)
 	return out
 }
