@@ -129,7 +129,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BigqueryReservationReservationSpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := BigqueryReservationReservationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -137,7 +137,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	req := &bigqueryreservationpb.CreateReservationRequest{
 		Parent:        a.id.Parent().String(),
 		ReservationId: a.id.ID(),
-		Reservation:   resource,
+		Reservation:   desiredPb,
 	}
 	created, err := a.gcpClient.CreateReservation(ctx, req)
 	if err != nil {
@@ -168,19 +168,20 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	paths := []string{}
 
-	{
-		if !reflect.DeepEqual(a.desired.Spec.SlotCapacity, a.actual.SlotCapacity) {
-			paths = append(paths, "slot_capacity")
-		}
-		if !reflect.DeepEqual(a.desired.Spec.IgnoreIdleSlots, a.actual.IgnoreIdleSlots) {
-			paths = append(paths, "ignore_idle_slots")
-		}
-		if !reflect.DeepEqual(a.desired.Spec.Concurrency, a.actual.Concurrency) {
-			paths = append(paths, "concurrency")
-		}
-		if a.desired.Spec.Autoscale != nil && !reflect.DeepEqual(a.desired.Spec.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
-			paths = append(paths, "autoscale")
-		}
+	if !reflect.DeepEqual(*a.desired.Spec.SlotCapacity, a.actual.SlotCapacity) {
+		paths = append(paths, "slot_capacity")
+	}
+	if !reflect.DeepEqual(*a.desired.Spec.IgnoreIdleSlots, a.actual.IgnoreIdleSlots) {
+		paths = append(paths, "ignore_idle_slots")
+	}
+	if !reflect.DeepEqual(*a.desired.Spec.Concurrency, a.actual.Concurrency) {
+		paths = append(paths, "concurrency")
+	}
+	if !reflect.DeepEqual(*a.desired.Spec.SecondaryLocation, a.actual.SecondaryLocation) {
+		paths = append(paths, "secondary_location")
+	}
+	if a.desired.Spec.Autoscale != nil && !reflect.DeepEqual(*a.desired.Spec.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
+		paths = append(paths, "autoscale")
 	}
 
 	if len(paths) == 0 {
@@ -193,7 +194,6 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	updateMask := &fieldmaskpb.FieldMask{
-		// Paths: sets.List(paths)
 		Paths: paths,
 	}
 
