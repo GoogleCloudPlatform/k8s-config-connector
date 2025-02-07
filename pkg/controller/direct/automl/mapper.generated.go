@@ -17,281 +17,9 @@ package automl
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/automl/apiv1/automlpb"
+	pb "cloud.google.com/go/automl/apiv1beta1/automlpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/automl/v1alpha1"
 )
-func AutomlAnnotationSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationSpec) *krm.AutomlAnnotationSpecObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlAnnotationSpecObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExampleCount
-	return out
-}
-func AutomlAnnotationSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutomlAnnotationSpecObservedState) *pb.AnnotationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AnnotationSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExampleCount
-	return out
-}
-func AutomlAnnotationSpecSpec_FromProto(mapCtx *direct.MapContext, in *pb.AnnotationSpec) *krm.AutomlAnnotationSpecSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlAnnotationSpecSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExampleCount
-	return out
-}
-func AutomlAnnotationSpecSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutomlAnnotationSpecSpec) *pb.AnnotationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AnnotationSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExampleCount
-	return out
-}
-func AutomlDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.AutomlDatasetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlDatasetObservedState{}
-	// MISSING: TranslationDatasetMetadata
-	// MISSING: ImageClassificationDatasetMetadata
-	// MISSING: TextClassificationDatasetMetadata
-	// MISSING: ImageObjectDetectionDatasetMetadata
-	// MISSING: TextExtractionDatasetMetadata
-	// MISSING: TextSentimentDatasetMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ExampleCount
-	// MISSING: CreateTime
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutomlDatasetObservedState) *pb.Dataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Dataset{}
-	// MISSING: TranslationDatasetMetadata
-	// MISSING: ImageClassificationDatasetMetadata
-	// MISSING: TextClassificationDatasetMetadata
-	// MISSING: ImageObjectDetectionDatasetMetadata
-	// MISSING: TextExtractionDatasetMetadata
-	// MISSING: TextSentimentDatasetMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ExampleCount
-	// MISSING: CreateTime
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.AutomlDatasetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlDatasetSpec{}
-	// MISSING: TranslationDatasetMetadata
-	// MISSING: ImageClassificationDatasetMetadata
-	// MISSING: TextClassificationDatasetMetadata
-	// MISSING: ImageObjectDetectionDatasetMetadata
-	// MISSING: TextExtractionDatasetMetadata
-	// MISSING: TextSentimentDatasetMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ExampleCount
-	// MISSING: CreateTime
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutomlDatasetSpec) *pb.Dataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Dataset{}
-	// MISSING: TranslationDatasetMetadata
-	// MISSING: ImageClassificationDatasetMetadata
-	// MISSING: TextClassificationDatasetMetadata
-	// MISSING: ImageObjectDetectionDatasetMetadata
-	// MISSING: TextExtractionDatasetMetadata
-	// MISSING: TextSentimentDatasetMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ExampleCount
-	// MISSING: CreateTime
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlModelEvaluationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.AutomlModelEvaluationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlModelEvaluationObservedState{}
-	// MISSING: ClassificationEvaluationMetrics
-	// MISSING: TranslationEvaluationMetrics
-	// MISSING: ImageObjectDetectionEvaluationMetrics
-	// MISSING: TextSentimentEvaluationMetrics
-	// MISSING: TextExtractionEvaluationMetrics
-	// MISSING: Name
-	// MISSING: AnnotationSpecID
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: EvaluatedExampleCount
-	return out
-}
-func AutomlModelEvaluationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutomlModelEvaluationObservedState) *pb.ModelEvaluation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelEvaluation{}
-	// MISSING: ClassificationEvaluationMetrics
-	// MISSING: TranslationEvaluationMetrics
-	// MISSING: ImageObjectDetectionEvaluationMetrics
-	// MISSING: TextSentimentEvaluationMetrics
-	// MISSING: TextExtractionEvaluationMetrics
-	// MISSING: Name
-	// MISSING: AnnotationSpecID
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: EvaluatedExampleCount
-	return out
-}
-func AutomlModelEvaluationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.AutomlModelEvaluationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlModelEvaluationSpec{}
-	// MISSING: ClassificationEvaluationMetrics
-	// MISSING: TranslationEvaluationMetrics
-	// MISSING: ImageObjectDetectionEvaluationMetrics
-	// MISSING: TextSentimentEvaluationMetrics
-	// MISSING: TextExtractionEvaluationMetrics
-	// MISSING: Name
-	// MISSING: AnnotationSpecID
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: EvaluatedExampleCount
-	return out
-}
-func AutomlModelEvaluationSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutomlModelEvaluationSpec) *pb.ModelEvaluation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelEvaluation{}
-	// MISSING: ClassificationEvaluationMetrics
-	// MISSING: TranslationEvaluationMetrics
-	// MISSING: ImageObjectDetectionEvaluationMetrics
-	// MISSING: TextSentimentEvaluationMetrics
-	// MISSING: TextExtractionEvaluationMetrics
-	// MISSING: Name
-	// MISSING: AnnotationSpecID
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: EvaluatedExampleCount
-	return out
-}
-func AutomlModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AutomlModelObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlModelObservedState{}
-	// MISSING: TranslationModelMetadata
-	// MISSING: ImageClassificationModelMetadata
-	// MISSING: TextClassificationModelMetadata
-	// MISSING: ImageObjectDetectionModelMetadata
-	// MISSING: TextExtractionModelMetadata
-	// MISSING: TextSentimentModelMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DatasetID
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeploymentState
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutomlModelObservedState) *pb.Model {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Model{}
-	// MISSING: TranslationModelMetadata
-	// MISSING: ImageClassificationModelMetadata
-	// MISSING: TextClassificationModelMetadata
-	// MISSING: ImageObjectDetectionModelMetadata
-	// MISSING: TextExtractionModelMetadata
-	// MISSING: TextSentimentModelMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DatasetID
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeploymentState
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AutomlModelSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutomlModelSpec{}
-	// MISSING: TranslationModelMetadata
-	// MISSING: ImageClassificationModelMetadata
-	// MISSING: TextClassificationModelMetadata
-	// MISSING: ImageObjectDetectionModelMetadata
-	// MISSING: TextExtractionModelMetadata
-	// MISSING: TextSentimentModelMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DatasetID
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeploymentState
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
-func AutomlModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutomlModelSpec) *pb.Model {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Model{}
-	// MISSING: TranslationModelMetadata
-	// MISSING: ImageClassificationModelMetadata
-	// MISSING: TextClassificationModelMetadata
-	// MISSING: ImageObjectDetectionModelMetadata
-	// MISSING: TextExtractionModelMetadata
-	// MISSING: TextSentimentModelMetadata
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DatasetID
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeploymentState
-	// MISSING: Etag
-	// MISSING: Labels
-	return out
-}
 func BoundingBoxMetricsEntry_FromProto(mapCtx *direct.MapContext, in *pb.BoundingBoxMetricsEntry) *krm.BoundingBoxMetricsEntry {
 	if in == nil {
 		return nil
@@ -340,6 +68,7 @@ func ClassificationEvaluationMetrics_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.ClassificationEvaluationMetrics{}
 	out.AuPrc = direct.LazyPtr(in.GetAuPrc())
+	out.BaseAuPrc = direct.LazyPtr(in.GetBaseAuPrc())
 	out.AuRoc = direct.LazyPtr(in.GetAuRoc())
 	out.LogLoss = direct.LazyPtr(in.GetLogLoss())
 	out.ConfidenceMetricsEntry = direct.Slice_FromProto(mapCtx, in.ConfidenceMetricsEntry, ClassificationEvaluationMetrics_ConfidenceMetricsEntry_FromProto)
@@ -353,6 +82,7 @@ func ClassificationEvaluationMetrics_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.ClassificationEvaluationMetrics{}
 	out.AuPrc = direct.ValueOf(in.AuPrc)
+	out.BaseAuPrc = direct.ValueOf(in.BaseAuPrc)
 	out.AuRoc = direct.ValueOf(in.AuRoc)
 	out.LogLoss = direct.ValueOf(in.LogLoss)
 	out.ConfidenceMetricsEntry = direct.Slice_ToProto(mapCtx, in.ConfidenceMetricsEntry, ClassificationEvaluationMetrics_ConfidenceMetricsEntry_ToProto)
@@ -464,8 +194,10 @@ func ModelEvaluation_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation
 	}
 	out := &krm.ModelEvaluation{}
 	out.ClassificationEvaluationMetrics = ClassificationEvaluationMetrics_FromProto(mapCtx, in.GetClassificationEvaluationMetrics())
+	out.RegressionEvaluationMetrics = RegressionEvaluationMetrics_FromProto(mapCtx, in.GetRegressionEvaluationMetrics())
 	out.TranslationEvaluationMetrics = TranslationEvaluationMetrics_FromProto(mapCtx, in.GetTranslationEvaluationMetrics())
 	out.ImageObjectDetectionEvaluationMetrics = ImageObjectDetectionEvaluationMetrics_FromProto(mapCtx, in.GetImageObjectDetectionEvaluationMetrics())
+	out.VideoObjectTrackingEvaluationMetrics = VideoObjectTrackingEvaluationMetrics_FromProto(mapCtx, in.GetVideoObjectTrackingEvaluationMetrics())
 	out.TextSentimentEvaluationMetrics = TextSentimentEvaluationMetrics_FromProto(mapCtx, in.GetTextSentimentEvaluationMetrics())
 	out.TextExtractionEvaluationMetrics = TextExtractionEvaluationMetrics_FromProto(mapCtx, in.GetTextExtractionEvaluationMetrics())
 	out.Name = direct.LazyPtr(in.GetName())
@@ -483,11 +215,17 @@ func ModelEvaluation_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluation)
 	if oneof := ClassificationEvaluationMetrics_ToProto(mapCtx, in.ClassificationEvaluationMetrics); oneof != nil {
 		out.Metrics = &pb.ModelEvaluation_ClassificationEvaluationMetrics{ClassificationEvaluationMetrics: oneof}
 	}
+	if oneof := RegressionEvaluationMetrics_ToProto(mapCtx, in.RegressionEvaluationMetrics); oneof != nil {
+		out.Metrics = &pb.ModelEvaluation_RegressionEvaluationMetrics{RegressionEvaluationMetrics: oneof}
+	}
 	if oneof := TranslationEvaluationMetrics_ToProto(mapCtx, in.TranslationEvaluationMetrics); oneof != nil {
 		out.Metrics = &pb.ModelEvaluation_TranslationEvaluationMetrics{TranslationEvaluationMetrics: oneof}
 	}
 	if oneof := ImageObjectDetectionEvaluationMetrics_ToProto(mapCtx, in.ImageObjectDetectionEvaluationMetrics); oneof != nil {
 		out.Metrics = &pb.ModelEvaluation_ImageObjectDetectionEvaluationMetrics{ImageObjectDetectionEvaluationMetrics: oneof}
+	}
+	if oneof := VideoObjectTrackingEvaluationMetrics_ToProto(mapCtx, in.VideoObjectTrackingEvaluationMetrics); oneof != nil {
+		out.Metrics = &pb.ModelEvaluation_VideoObjectTrackingEvaluationMetrics{VideoObjectTrackingEvaluationMetrics: oneof}
 	}
 	if oneof := TextSentimentEvaluationMetrics_ToProto(mapCtx, in.TextSentimentEvaluationMetrics); oneof != nil {
 		out.Metrics = &pb.ModelEvaluation_TextSentimentEvaluationMetrics{TextSentimentEvaluationMetrics: oneof}
@@ -500,6 +238,30 @@ func ModelEvaluation_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluation)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.EvaluatedExampleCount = direct.ValueOf(in.EvaluatedExampleCount)
+	return out
+}
+func RegressionEvaluationMetrics_FromProto(mapCtx *direct.MapContext, in *pb.RegressionEvaluationMetrics) *krm.RegressionEvaluationMetrics {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegressionEvaluationMetrics{}
+	out.RootMeanSquaredError = direct.LazyPtr(in.GetRootMeanSquaredError())
+	out.MeanAbsoluteError = direct.LazyPtr(in.GetMeanAbsoluteError())
+	out.MeanAbsolutePercentageError = direct.LazyPtr(in.GetMeanAbsolutePercentageError())
+	out.RSquared = direct.LazyPtr(in.GetRSquared())
+	out.RootMeanSquaredLogError = direct.LazyPtr(in.GetRootMeanSquaredLogError())
+	return out
+}
+func RegressionEvaluationMetrics_ToProto(mapCtx *direct.MapContext, in *krm.RegressionEvaluationMetrics) *pb.RegressionEvaluationMetrics {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RegressionEvaluationMetrics{}
+	out.RootMeanSquaredError = direct.ValueOf(in.RootMeanSquaredError)
+	out.MeanAbsoluteError = direct.ValueOf(in.MeanAbsoluteError)
+	out.MeanAbsolutePercentageError = direct.ValueOf(in.MeanAbsolutePercentageError)
+	out.RSquared = direct.ValueOf(in.RSquared)
+	out.RootMeanSquaredLogError = direct.ValueOf(in.RootMeanSquaredLogError)
 	return out
 }
 func TextExtractionEvaluationMetrics_FromProto(mapCtx *direct.MapContext, in *pb.TextExtractionEvaluationMetrics) *krm.TextExtractionEvaluationMetrics {
@@ -555,6 +317,7 @@ func TextSentimentEvaluationMetrics_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.LinearKappa = direct.LazyPtr(in.GetLinearKappa())
 	out.QuadraticKappa = direct.LazyPtr(in.GetQuadraticKappa())
 	out.ConfusionMatrix = ClassificationEvaluationMetrics_ConfusionMatrix_FromProto(mapCtx, in.GetConfusionMatrix())
+	out.AnnotationSpecID = in.AnnotationSpecId
 	return out
 }
 func TextSentimentEvaluationMetrics_ToProto(mapCtx *direct.MapContext, in *krm.TextSentimentEvaluationMetrics) *pb.TextSentimentEvaluationMetrics {
@@ -570,6 +333,7 @@ func TextSentimentEvaluationMetrics_ToProto(mapCtx *direct.MapContext, in *krm.T
 	out.LinearKappa = direct.ValueOf(in.LinearKappa)
 	out.QuadraticKappa = direct.ValueOf(in.QuadraticKappa)
 	out.ConfusionMatrix = ClassificationEvaluationMetrics_ConfusionMatrix_ToProto(mapCtx, in.ConfusionMatrix)
+	out.AnnotationSpecId = in.AnnotationSpecID
 	return out
 }
 func TranslationEvaluationMetrics_FromProto(mapCtx *direct.MapContext, in *pb.TranslationEvaluationMetrics) *krm.TranslationEvaluationMetrics {
@@ -588,5 +352,27 @@ func TranslationEvaluationMetrics_ToProto(mapCtx *direct.MapContext, in *krm.Tra
 	out := &pb.TranslationEvaluationMetrics{}
 	out.BleuScore = direct.ValueOf(in.BleuScore)
 	out.BaseBleuScore = direct.ValueOf(in.BaseBleuScore)
+	return out
+}
+func VideoObjectTrackingEvaluationMetrics_FromProto(mapCtx *direct.MapContext, in *pb.VideoObjectTrackingEvaluationMetrics) *krm.VideoObjectTrackingEvaluationMetrics {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VideoObjectTrackingEvaluationMetrics{}
+	out.EvaluatedFrameCount = direct.LazyPtr(in.GetEvaluatedFrameCount())
+	out.EvaluatedBoundingBoxCount = direct.LazyPtr(in.GetEvaluatedBoundingBoxCount())
+	out.BoundingBoxMetricsEntries = direct.Slice_FromProto(mapCtx, in.BoundingBoxMetricsEntries, BoundingBoxMetricsEntry_FromProto)
+	out.BoundingBoxMeanAveragePrecision = direct.LazyPtr(in.GetBoundingBoxMeanAveragePrecision())
+	return out
+}
+func VideoObjectTrackingEvaluationMetrics_ToProto(mapCtx *direct.MapContext, in *krm.VideoObjectTrackingEvaluationMetrics) *pb.VideoObjectTrackingEvaluationMetrics {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VideoObjectTrackingEvaluationMetrics{}
+	out.EvaluatedFrameCount = direct.ValueOf(in.EvaluatedFrameCount)
+	out.EvaluatedBoundingBoxCount = direct.ValueOf(in.EvaluatedBoundingBoxCount)
+	out.BoundingBoxMetricsEntries = direct.Slice_ToProto(mapCtx, in.BoundingBoxMetricsEntries, BoundingBoxMetricsEntry_ToProto)
+	out.BoundingBoxMeanAveragePrecision = direct.ValueOf(in.BoundingBoxMeanAveragePrecision)
 	return out
 }
