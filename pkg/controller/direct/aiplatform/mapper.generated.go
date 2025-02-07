@@ -2868,6 +2868,108 @@ func AiplatformNotebookRuntimeTemplateSpec_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: EncryptionSpec
 	return out
 }
+func AiplatformPersistentResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.AiplatformPersistentResourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformPersistentResourceObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ResourcePools
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Network
+	// MISSING: EncryptionSpec
+	// MISSING: ResourceRuntimeSpec
+	// MISSING: ResourceRuntime
+	// MISSING: ReservedIPRanges
+	return out
+}
+func AiplatformPersistentResourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformPersistentResourceObservedState) *pb.PersistentResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PersistentResource{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ResourcePools
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Network
+	// MISSING: EncryptionSpec
+	// MISSING: ResourceRuntimeSpec
+	// MISSING: ResourceRuntime
+	// MISSING: ReservedIPRanges
+	return out
+}
+func AiplatformPersistentResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.AiplatformPersistentResourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformPersistentResourceSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ResourcePools
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Network
+	// MISSING: EncryptionSpec
+	// MISSING: ResourceRuntimeSpec
+	// MISSING: ResourceRuntime
+	// MISSING: ReservedIPRanges
+	return out
+}
+func AiplatformPersistentResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformPersistentResourceSpec) *pb.PersistentResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PersistentResource{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ResourcePools
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Network
+	// MISSING: EncryptionSpec
+	// MISSING: ResourceRuntimeSpec
+	// MISSING: ResourceRuntime
+	// MISSING: ReservedIPRanges
+	return out
+}
+func DiskSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiskSpec) *krm.DiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiskSpec{}
+	out.BootDiskType = direct.LazyPtr(in.GetBootDiskType())
+	out.BootDiskSizeGB = direct.LazyPtr(in.GetBootDiskSizeGb())
+	return out
+}
+func DiskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiskSpec) *pb.DiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiskSpec{}
+	out.BootDiskType = direct.ValueOf(in.BootDiskType)
+	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
+	return out
+}
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
 	if in == nil {
 		return nil
@@ -2884,133 +2986,325 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	return out
 }
-func NotebookIdleShutdownConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotebookIdleShutdownConfig) *krm.NotebookIdleShutdownConfig {
+func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NotebookIdleShutdownConfig{}
-	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
-	out.IdleShutdownDisabled = direct.LazyPtr(in.GetIdleShutdownDisabled())
+	out := &krm.MachineSpec{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
+	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
+	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
 	return out
 }
-func NotebookIdleShutdownConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotebookIdleShutdownConfig) *pb.NotebookIdleShutdownConfig {
+func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NotebookIdleShutdownConfig{}
-	out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
-	out.IdleShutdownDisabled = direct.ValueOf(in.IdleShutdownDisabled)
+	out := &pb.MachineSpec{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.AcceleratorType = direct.Enum_ToProto[pb.AcceleratorType](mapCtx, in.AcceleratorType)
+	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
+	out.TpuTopology = direct.ValueOf(in.TpuTopology)
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
 	return out
 }
-func NotebookRuntime_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.NotebookRuntime {
+func PersistentResource_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.PersistentResource {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NotebookRuntime{}
-	// MISSING: Name
-	out.RuntimeUser = direct.LazyPtr(in.GetRuntimeUser())
-	// MISSING: NotebookRuntimeTemplateRef
-	// MISSING: ProxyURI
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: HealthState
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: ServiceAccount
-	// MISSING: RuntimeState
-	// MISSING: IsUpgradable
-	out.Labels = in.Labels
-	// MISSING: ExpirationTime
-	// MISSING: Version
-	// MISSING: NotebookRuntimeType
-	// MISSING: IdleShutdownConfig
-	out.NetworkTags = in.NetworkTags
-	// MISSING: EncryptionSpec
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func NotebookRuntime_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntime) *pb.NotebookRuntime {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookRuntime{}
-	// MISSING: Name
-	out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
-	// MISSING: NotebookRuntimeTemplateRef
-	// MISSING: ProxyURI
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: HealthState
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: ServiceAccount
-	// MISSING: RuntimeState
-	// MISSING: IsUpgradable
-	out.Labels = in.Labels
-	// MISSING: ExpirationTime
-	// MISSING: Version
-	// MISSING: NotebookRuntimeType
-	// MISSING: IdleShutdownConfig
-	out.NetworkTags = in.NetworkTags
-	// MISSING: EncryptionSpec
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func NotebookRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.NotebookRuntimeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookRuntimeObservedState{}
+	out := &krm.PersistentResource{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: RuntimeUser
-	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_FromProto(mapCtx, in.GetNotebookRuntimeTemplateRef())
-	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.HealthState = direct.Enum_FromProto(mapCtx, in.GetHealthState())
-	// MISSING: DisplayName
-	// MISSING: Description
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.RuntimeState = direct.Enum_FromProto(mapCtx, in.GetRuntimeState())
-	out.IsUpgradable = direct.LazyPtr(in.GetIsUpgradable())
-	// MISSING: Labels
-	out.ExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpirationTime())
-	out.Version = direct.LazyPtr(in.GetVersion())
-	out.NotebookRuntimeType = direct.Enum_FromProto(mapCtx, in.GetNotebookRuntimeType())
-	out.IdleShutdownConfig = NotebookIdleShutdownConfig_FromProto(mapCtx, in.GetIdleShutdownConfig())
-	// MISSING: NetworkTags
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ResourcePools = direct.Slice_FromProto(mapCtx, in.ResourcePools, ResourcePool_FromProto)
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Network = direct.LazyPtr(in.GetNetwork())
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	out.ResourceRuntimeSpec = ResourceRuntimeSpec_FromProto(mapCtx, in.GetResourceRuntimeSpec())
+	// MISSING: ResourceRuntime
+	out.ReservedIPRanges = in.ReservedIpRanges
 	return out
 }
-func NotebookRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntimeObservedState) *pb.NotebookRuntime {
+func PersistentResource_ToProto(mapCtx *direct.MapContext, in *krm.PersistentResource) *pb.PersistentResource {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NotebookRuntime{}
+	out := &pb.PersistentResource{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: RuntimeUser
-	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_ToProto(mapCtx, in.NotebookRuntimeTemplateRef)
-	out.ProxyUri = direct.ValueOf(in.ProxyURI)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.HealthState = direct.Enum_ToProto[pb.NotebookRuntime_HealthState](mapCtx, in.HealthState)
-	// MISSING: DisplayName
-	// MISSING: Description
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.RuntimeState = direct.Enum_ToProto[pb.NotebookRuntime_RuntimeState](mapCtx, in.RuntimeState)
-	out.IsUpgradable = direct.ValueOf(in.IsUpgradable)
-	// MISSING: Labels
-	out.ExpirationTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpirationTime)
-	out.Version = direct.ValueOf(in.Version)
-	out.NotebookRuntimeType = direct.Enum_ToProto[pb.NotebookRuntimeType](mapCtx, in.NotebookRuntimeType)
-	out.IdleShutdownConfig = NotebookIdleShutdownConfig_ToProto(mapCtx, in.IdleShutdownConfig)
-	// MISSING: NetworkTags
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ResourcePools = direct.Slice_ToProto(mapCtx, in.ResourcePools, ResourcePool_ToProto)
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Network = direct.ValueOf(in.Network)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	out.ResourceRuntimeSpec = ResourceRuntimeSpec_ToProto(mapCtx, in.ResourceRuntimeSpec)
+	// MISSING: ResourceRuntime
+	out.ReservedIpRanges = in.ReservedIPRanges
+	return out
+}
+func PersistentResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.PersistentResourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PersistentResourceObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.ResourcePools = direct.Slice_FromProto(mapCtx, in.ResourcePools, ResourcePoolObservedState_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = Status_FromProto(mapCtx, in.GetError())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Network
+	// MISSING: EncryptionSpec
+	// MISSING: ResourceRuntimeSpec
+	out.ResourceRuntime = ResourceRuntime_FromProto(mapCtx, in.GetResourceRuntime())
+	// MISSING: ReservedIPRanges
+	return out
+}
+func PersistentResourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PersistentResourceObservedState) *pb.PersistentResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PersistentResource{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.ResourcePools = direct.Slice_ToProto(mapCtx, in.ResourcePools, ResourcePoolObservedState_ToProto)
+	out.State = direct.Enum_ToProto[pb.PersistentResource_State](mapCtx, in.State)
+	out.Error = Status_ToProto(mapCtx, in.Error)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Network
+	// MISSING: EncryptionSpec
+	// MISSING: ResourceRuntimeSpec
+	out.ResourceRuntime = ResourceRuntime_ToProto(mapCtx, in.ResourceRuntime)
+	// MISSING: ReservedIPRanges
+	return out
+}
+func RayLogsSpec_FromProto(mapCtx *direct.MapContext, in *pb.RayLogsSpec) *krm.RayLogsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayLogsSpec{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func RayLogsSpec_ToProto(mapCtx *direct.MapContext, in *krm.RayLogsSpec) *pb.RayLogsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayLogsSpec{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func RayMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.RayMetricSpec) *krm.RayMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayMetricSpec{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func RayMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.RayMetricSpec) *pb.RayMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayMetricSpec{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func RaySpec_FromProto(mapCtx *direct.MapContext, in *pb.RaySpec) *krm.RaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RaySpec{}
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.ResourcePoolImages = in.ResourcePoolImages
+	out.HeadNodeResourcePoolID = direct.LazyPtr(in.GetHeadNodeResourcePoolId())
+	out.RayMetricSpec = RayMetricSpec_FromProto(mapCtx, in.GetRayMetricSpec())
+	out.RayLogsSpec = RayLogsSpec_FromProto(mapCtx, in.GetRayLogsSpec())
+	return out
+}
+func RaySpec_ToProto(mapCtx *direct.MapContext, in *krm.RaySpec) *pb.RaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RaySpec{}
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.ResourcePoolImages = in.ResourcePoolImages
+	out.HeadNodeResourcePoolId = direct.ValueOf(in.HeadNodeResourcePoolID)
+	out.RayMetricSpec = RayMetricSpec_ToProto(mapCtx, in.RayMetricSpec)
+	out.RayLogsSpec = RayLogsSpec_ToProto(mapCtx, in.RayLogsSpec)
+	return out
+}
+func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_FromProto(mapCtx, in.GetReservationAffinityType())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Values = in.Values
+	return out
+}
+func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinity) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
+	out.Key = direct.ValueOf(in.Key)
+	out.Values = in.Values
+	return out
+}
+func ResourcePool_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool) *krm.ResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePool{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.ReplicaCount = in.ReplicaCount
+	out.DiskSpec = DiskSpec_FromProto(mapCtx, in.GetDiskSpec())
+	// MISSING: UsedReplicaCount
+	out.AutoscalingSpec = ResourcePool_AutoscalingSpec_FromProto(mapCtx, in.GetAutoscalingSpec())
+	return out
+}
+func ResourcePool_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePool) *pb.ResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePool{}
+	out.Id = direct.ValueOf(in.ID)
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.ReplicaCount = in.ReplicaCount
+	out.DiskSpec = DiskSpec_ToProto(mapCtx, in.DiskSpec)
+	// MISSING: UsedReplicaCount
+	out.AutoscalingSpec = ResourcePool_AutoscalingSpec_ToProto(mapCtx, in.AutoscalingSpec)
+	return out
+}
+func ResourcePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool) *krm.ResourcePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePoolObservedState{}
+	// MISSING: ID
+	// MISSING: MachineSpec
+	// MISSING: ReplicaCount
+	// MISSING: DiskSpec
+	out.UsedReplicaCount = direct.LazyPtr(in.GetUsedReplicaCount())
+	// MISSING: AutoscalingSpec
+	return out
+}
+func ResourcePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePoolObservedState) *pb.ResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePool{}
+	// MISSING: ID
+	// MISSING: MachineSpec
+	// MISSING: ReplicaCount
+	// MISSING: DiskSpec
+	out.UsedReplicaCount = direct.ValueOf(in.UsedReplicaCount)
+	// MISSING: AutoscalingSpec
+	return out
+}
+func ResourcePool_AutoscalingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool_AutoscalingSpec) *krm.ResourcePool_AutoscalingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePool_AutoscalingSpec{}
+	out.MinReplicaCount = in.MinReplicaCount
+	out.MaxReplicaCount = in.MaxReplicaCount
+	return out
+}
+func ResourcePool_AutoscalingSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePool_AutoscalingSpec) *pb.ResourcePool_AutoscalingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePool_AutoscalingSpec{}
+	out.MinReplicaCount = in.MinReplicaCount
+	out.MaxReplicaCount = in.MaxReplicaCount
+	return out
+}
+func ResourceRuntime_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntime) *krm.ResourceRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceRuntime{}
+	// MISSING: AccessUris
+	return out
+}
+func ResourceRuntime_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntime) *pb.ResourceRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRuntime{}
+	// MISSING: AccessUris
+	return out
+}
+func ResourceRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntime) *krm.ResourceRuntimeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceRuntimeObservedState{}
+	out.AccessUris = in.AccessUris
+	return out
+}
+func ResourceRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntimeObservedState) *pb.ResourceRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRuntime{}
+	out.AccessUris = in.AccessUris
+	return out
+}
+func ResourceRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntimeSpec) *krm.ResourceRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceRuntimeSpec{}
+	out.ServiceAccountSpec = ServiceAccountSpec_FromProto(mapCtx, in.GetServiceAccountSpec())
+	out.RaySpec = RaySpec_FromProto(mapCtx, in.GetRaySpec())
+	return out
+}
+func ResourceRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntimeSpec) *pb.ResourceRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRuntimeSpec{}
+	out.ServiceAccountSpec = ServiceAccountSpec_ToProto(mapCtx, in.ServiceAccountSpec)
+	out.RaySpec = RaySpec_ToProto(mapCtx, in.RaySpec)
+	return out
+}
+func ServiceAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountSpec) *krm.ServiceAccountSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceAccountSpec{}
+	out.EnableCustomServiceAccount = direct.LazyPtr(in.GetEnableCustomServiceAccount())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	return out
+}
+func ServiceAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccountSpec) *pb.ServiceAccountSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceAccountSpec{}
+	out.EnableCustomServiceAccount = direct.ValueOf(in.EnableCustomServiceAccount)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	return out
 }
