@@ -20,60 +20,58 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func AccessApprovalSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessApprovalSettings) *krm.AccessApprovalSettings {
+func AccessApprovalServiceAccount_FromProto(mapCtx *direct.MapContext, in *pb.AccessApprovalServiceAccount) *krm.AccessApprovalServiceAccount {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessApprovalSettings{}
+	out := &krm.AccessApprovalServiceAccount{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.NotificationEmails = in.NotificationEmails
-	out.EnrolledServices = direct.Slice_FromProto(mapCtx, in.EnrolledServices, EnrolledService_FromProto)
-	// MISSING: EnrolledAncestor
-	out.ActiveKeyVersion = direct.LazyPtr(in.GetActiveKeyVersion())
-	// MISSING: AncestorHasActiveKeyVersion
-	// MISSING: InvalidKeyVersion
+	out.AccountEmail = direct.LazyPtr(in.GetAccountEmail())
 	return out
 }
-func AccessApprovalSettings_ToProto(mapCtx *direct.MapContext, in *krm.AccessApprovalSettings) *pb.AccessApprovalSettings {
+func AccessApprovalServiceAccount_ToProto(mapCtx *direct.MapContext, in *krm.AccessApprovalServiceAccount) *pb.AccessApprovalServiceAccount {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AccessApprovalSettings{}
+	out := &pb.AccessApprovalServiceAccount{}
 	out.Name = direct.ValueOf(in.Name)
-	out.NotificationEmails = in.NotificationEmails
-	out.EnrolledServices = direct.Slice_ToProto(mapCtx, in.EnrolledServices, EnrolledService_ToProto)
-	// MISSING: EnrolledAncestor
-	out.ActiveKeyVersion = direct.ValueOf(in.ActiveKeyVersion)
-	// MISSING: AncestorHasActiveKeyVersion
-	// MISSING: InvalidKeyVersion
+	out.AccountEmail = direct.ValueOf(in.AccountEmail)
 	return out
 }
-func AccessApprovalSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessApprovalSettings) *krm.AccessApprovalSettingsObservedState {
+func AccessapprovalAccessApprovalServiceAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessApprovalServiceAccount) *krm.AccessapprovalAccessApprovalServiceAccountObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessApprovalSettingsObservedState{}
+	out := &krm.AccessapprovalAccessApprovalServiceAccountObservedState{}
 	// MISSING: Name
-	// MISSING: NotificationEmails
-	// MISSING: EnrolledServices
-	out.EnrolledAncestor = direct.LazyPtr(in.GetEnrolledAncestor())
-	// MISSING: ActiveKeyVersion
-	out.AncestorHasActiveKeyVersion = direct.LazyPtr(in.GetAncestorHasActiveKeyVersion())
-	out.InvalidKeyVersion = direct.LazyPtr(in.GetInvalidKeyVersion())
+	// MISSING: AccountEmail
 	return out
 }
-func AccessApprovalSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessApprovalSettingsObservedState) *pb.AccessApprovalSettings {
+func AccessapprovalAccessApprovalServiceAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessapprovalAccessApprovalServiceAccountObservedState) *pb.AccessApprovalServiceAccount {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AccessApprovalSettings{}
+	out := &pb.AccessApprovalServiceAccount{}
 	// MISSING: Name
-	// MISSING: NotificationEmails
-	// MISSING: EnrolledServices
-	out.EnrolledAncestor = direct.ValueOf(in.EnrolledAncestor)
-	// MISSING: ActiveKeyVersion
-	out.AncestorHasActiveKeyVersion = direct.ValueOf(in.AncestorHasActiveKeyVersion)
-	out.InvalidKeyVersion = direct.ValueOf(in.InvalidKeyVersion)
+	// MISSING: AccountEmail
+	return out
+}
+func AccessapprovalAccessApprovalServiceAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessApprovalServiceAccount) *krm.AccessapprovalAccessApprovalServiceAccountSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessapprovalAccessApprovalServiceAccountSpec{}
+	// MISSING: Name
+	// MISSING: AccountEmail
+	return out
+}
+func AccessapprovalAccessApprovalServiceAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessapprovalAccessApprovalServiceAccountSpec) *pb.AccessApprovalServiceAccount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessApprovalServiceAccount{}
+	// MISSING: Name
+	// MISSING: AccountEmail
 	return out
 }
 func AccessapprovalAccessApprovalSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessApprovalSettings) *krm.AccessapprovalAccessApprovalSettingsObservedState {
@@ -130,23 +128,5 @@ func AccessapprovalAccessApprovalSettingsSpec_ToProto(mapCtx *direct.MapContext,
 	// MISSING: ActiveKeyVersion
 	// MISSING: AncestorHasActiveKeyVersion
 	// MISSING: InvalidKeyVersion
-	return out
-}
-func EnrolledService_FromProto(mapCtx *direct.MapContext, in *pb.EnrolledService) *krm.EnrolledService {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EnrolledService{}
-	out.CloudProduct = direct.LazyPtr(in.GetCloudProduct())
-	out.EnrollmentLevel = direct.Enum_FromProto(mapCtx, in.GetEnrollmentLevel())
-	return out
-}
-func EnrolledService_ToProto(mapCtx *direct.MapContext, in *krm.EnrolledService) *pb.EnrolledService {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EnrolledService{}
-	out.CloudProduct = direct.ValueOf(in.CloudProduct)
-	out.EnrollmentLevel = direct.Enum_ToProto[pb.EnrollmentLevel](mapCtx, in.EnrollmentLevel)
 	return out
 }
