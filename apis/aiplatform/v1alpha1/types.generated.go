@@ -15,160 +15,110 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.aiplatform.v1.Feature
-type Feature struct {
-	// Immutable. Name of the Feature.
-	//  Format:
-	//  `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entity_type}/features/{feature}`
-	//  `projects/{project}/locations/{location}/featureGroups/{feature_group}/features/{feature}`
+// +kcc:proto=google.cloud.aiplatform.v1.BigQuerySource
+type BigQuerySource struct {
+	// Required. BigQuery URI to a table, up to 2000 characters long.
+	//  Accepted forms:
 	//
-	//  The last part feature is assigned by the client. The feature can be up to
-	//  64 characters long and can consist only of ASCII Latin letters A-Z and a-z,
-	//  underscore(_), and ASCII digits 0-9 starting with a letter. The value will
-	//  be unique given an entity type.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.name
+	//  *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BigQuerySource.input_uri
+	InputURI *string `json:"inputURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureGroup
+type FeatureGroup struct {
+	// Indicates that features for this group come from BigQuery Table/View.
+	//  By default treats the source as a sparse time series source. The BigQuery
+	//  source table or view must have at least one entity ID column and a column
+	//  named `feature_timestamp`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.big_query
+	BigQuery *FeatureGroup_BigQuery `json:"bigQuery,omitempty"`
+
+	// Identifier. Name of the FeatureGroup. Format:
+	//  `projects/{project}/locations/{location}/featureGroups/{featureGroup}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.name
 	Name *string `json:"name,omitempty"`
 
-	// Description of the Feature.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.description
-	Description *string `json:"description,omitempty"`
+	// Optional. Used to perform consistent read-modify-write updates. If not set,
+	//  a blind "overwrite" update happens.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.etag
+	Etag *string `json:"etag,omitempty"`
 
-	// Immutable. Only applicable for Vertex AI Feature Store (Legacy).
-	//  Type of Feature value.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.value_type
-	ValueType *string `json:"valueType,omitempty"`
-
-	// Optional. The labels with user-defined metadata to organize your Features.
+	// Optional. The labels with user-defined metadata to organize your
+	//  FeatureGroup.
 	//
 	//  Label keys and values can be no longer than 64 characters
 	//  (Unicode codepoints), can only contain lowercase letters, numeric
 	//  characters, underscores and dashes. International characters are allowed.
 	//
 	//  See https://goo.gl/xmQnxf for more information on and examples of labels.
-	//  No more than 64 user labels can be associated with one Feature (System
-	//  labels are excluded)."
-	//  System reserved label keys are prefixed with "aiplatform.googleapis.com/"
-	//  and are immutable.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.labels
+	//  No more than 64 user labels can be associated with one
+	//  FeatureGroup(System labels are excluded)." System reserved label keys
+	//  are prefixed with "aiplatform.googleapis.com/" and are immutable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// Used to perform a consistent read-modify-write updates. If not set, a blind
-	//  "overwrite" update happens.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Optional. Only applicable for Vertex AI Feature Store (Legacy).
-	//  If not set, use the monitoring_config defined for the EntityType this
-	//  Feature belongs to.
-	//  Only Features with type
-	//  ([Feature.ValueType][google.cloud.aiplatform.v1.Feature.ValueType]) BOOL,
-	//  STRING, DOUBLE or INT64 can enable monitoring.
-	//
-	//  If set to true, all types of data monitoring are disabled despite the
-	//  config on EntityType.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.disable_monitoring
-	DisableMonitoring *bool `json:"disableMonitoring,omitempty"`
-
-	// Only applicable for Vertex AI Feature Store.
-	//  The name of the BigQuery Table/View column hosting data for this version.
-	//  If no value is provided, will use feature_id.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.version_column_name
-	VersionColumnName *string `json:"versionColumnName,omitempty"`
-
-	// Entity responsible for maintaining this feature. Can be comma separated
-	//  list of email addresses or URIs.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.point_of_contact
-	PointOfContact *string `json:"pointOfContact,omitempty"`
+	// Optional. Description of the FeatureGroup.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.description
+	Description *string `json:"description,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.Feature.MonitoringStatsAnomaly
-type Feature_MonitoringStatsAnomaly struct {
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureGroup.BigQuery
+type FeatureGroup_BigQuery struct {
+	// Required. Immutable. The BigQuery source URI that points to either a
+	//  BigQuery Table or View.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.big_query_source
+	BigQuerySource *BigQuerySource `json:"bigQuerySource,omitempty"`
+
+	// Optional. Columns to construct entity_id / row keys.
+	//  If not provided defaults to `entity_id`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.entity_id_columns
+	EntityIDColumns []string `json:"entityIDColumns,omitempty"`
+
+	// Optional. Set if the data source is not a time-series.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.static_data_source
+	StaticDataSource *bool `json:"staticDataSource,omitempty"`
+
+	// Optional. If the source is a time-series source, this can be set to
+	//  control how downstream sources (ex:
+	//  [FeatureView][google.cloud.aiplatform.v1.FeatureView] ) will treat
+	//  time-series sources. If not set, will treat the source as a time-series
+	//  source with `feature_timestamp` as timestamp column and no scan boundary.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.time_series
+	TimeSeries *FeatureGroup_BigQuery_TimeSeries `json:"timeSeries,omitempty"`
+
+	// Optional. If set, all feature values will be fetched
+	//  from a single row per unique entityId including nulls.
+	//  If not set, will collapse all rows for each unique entityId into a singe
+	//  row with any non-null values if present, if no non-null values are
+	//  present will sync null.
+	//  ex: If source has schema
+	//  `(entity_id, feature_timestamp, f0, f1)` and the following rows:
+	//  `(e1, 2020-01-01T10:00:00.123Z, 10, 15)`
+	//  `(e1, 2020-02-01T10:00:00.123Z, 20, null)`
+	//  If dense is set, `(e1, 20, null)` is synced to online stores. If dense is
+	//  not set, `(e1, 20, 15)` is synced to online stores.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.dense
+	Dense *bool `json:"dense,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureStatsAnomaly
-type FeatureStatsAnomaly struct {
-	// Feature importance score, only populated when cross-feature monitoring is
-	//  enabled. For now only used to represent feature attribution score within
-	//  range [0, 1] for
-	//  [ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW][google.cloud.aiplatform.v1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW]
-	//  and
-	//  [ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT][google.cloud.aiplatform.v1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT].
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureStatsAnomaly.score
-	Score *float64 `json:"score,omitempty"`
-
-	// Path of the stats file for current feature values in Cloud Storage bucket.
-	//  Format: gs://<bucket_name>/<object_name>/stats.
-	//  Example: gs://monitoring_bucket/feature_name/stats.
-	//  Stats are stored as binary format with Protobuf message
-	//  [tensorflow.metadata.v0.FeatureNameStatistics](https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/statistics.proto).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureStatsAnomaly.stats_uri
-	StatsURI *string `json:"statsURI,omitempty"`
-
-	// Path of the anomaly file for current feature values in Cloud Storage
-	//  bucket.
-	//  Format: gs://<bucket_name>/<object_name>/anomalies.
-	//  Example: gs://monitoring_bucket/feature_name/anomalies.
-	//  Stats are stored as binary format with Protobuf message
-	//  Anoamlies are stored as binary format with Protobuf message
-	//  [tensorflow.metadata.v0.AnomalyInfo]
-	//  (https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/anomalies.proto).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureStatsAnomaly.anomaly_uri
-	AnomalyURI *string `json:"anomalyURI,omitempty"`
-
-	// Deviation from the current stats to baseline stats.
-	//    1. For categorical feature, the distribution distance is calculated by
-	//       L-inifinity norm.
-	//    2. For numerical feature, the distribution distance is calculated by
-	//       Jensen–Shannon divergence.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureStatsAnomaly.distribution_deviation
-	DistributionDeviation *float64 `json:"distributionDeviation,omitempty"`
-
-	// This is the threshold used when detecting anomalies.
-	//  The threshold can be changed by user, so this one might be different from
-	//  [ThresholdConfig.value][google.cloud.aiplatform.v1.ThresholdConfig.value].
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureStatsAnomaly.anomaly_detection_threshold
-	AnomalyDetectionThreshold *float64 `json:"anomalyDetectionThreshold,omitempty"`
-
-	// The start timestamp of window where stats were generated.
-	//  For objectives where time window doesn't make sense (e.g. Featurestore
-	//  Snapshot Monitoring), start_time is only used to indicate the monitoring
-	//  intervals, so it always equals to (end_time - monitoring_interval).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureStatsAnomaly.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// The end timestamp of window where stats were generated.
-	//  For objectives where time window doesn't make sense (e.g. Featurestore
-	//  Snapshot Monitoring), end_time indicates the timestamp of the data used to
-	//  generate stats (e.g. timestamp we take snapshots for feature values).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureStatsAnomaly.end_time
-	EndTime *string `json:"endTime,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.TimeSeries
+type FeatureGroup_BigQuery_TimeSeries struct {
+	// Optional. Column hosting timestamp values for a time-series source.
+	//  Will be used to determine the latest `feature_values` for each entity.
+	//  Optional. If not provided, column named `feature_timestamp` of
+	//  type `TIMESTAMP` will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.TimeSeries.timestamp_column
+	TimestampColumn *string `json:"timestampColumn,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.Feature
-type FeatureObservedState struct {
-	// Output only. Only applicable for Vertex AI Feature Store (Legacy).
-	//  Timestamp when this EntityType was created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.create_time
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureGroup
+type FeatureGroupObservedState struct {
+	// Output only. Timestamp when this FeatureGroup was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Only applicable for Vertex AI Feature Store (Legacy).
-	//  Timestamp when this EntityType was most recently updated.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.update_time
+	// Output only. Timestamp when this FeatureGroup was last updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Only applicable for Vertex AI Feature Store (Legacy).
-	//  The list of historical stats and anomalies with specified objectives.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.monitoring_stats_anomalies
-	MonitoringStatsAnomalies []Feature_MonitoringStatsAnomaly `json:"monitoringStatsAnomalies,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.Feature.MonitoringStatsAnomaly
-type Feature_MonitoringStatsAnomalyObservedState struct {
-	// Output only. The objective for each stats.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.MonitoringStatsAnomaly.objective
-	Objective *string `json:"objective,omitempty"`
-
-	// Output only. The stats and anomalies generated at specific timestamp.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Feature.MonitoringStatsAnomaly.feature_stats_anomaly
-	FeatureStatsAnomaly *FeatureStatsAnomaly `json:"featureStatsAnomaly,omitempty"`
 }

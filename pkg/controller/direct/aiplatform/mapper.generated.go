@@ -1208,6 +1208,62 @@ func AiplatformExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aiplatfo
 	// MISSING: Description
 	return out
 }
+func AiplatformFeatureGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup) *krm.AiplatformFeatureGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformFeatureGroupObservedState{}
+	// MISSING: BigQuery
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: Description
+	return out
+}
+func AiplatformFeatureGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformFeatureGroupObservedState) *pb.FeatureGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureGroup{}
+	// MISSING: BigQuery
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: Description
+	return out
+}
+func AiplatformFeatureGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup) *krm.AiplatformFeatureGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformFeatureGroupSpec{}
+	// MISSING: BigQuery
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: Description
+	return out
+}
+func AiplatformFeatureGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformFeatureGroupSpec) *pb.FeatureGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureGroup{}
+	// MISSING: BigQuery
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: Description
+	return out
+}
 func AiplatformFeatureObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.AiplatformFeatureObservedState {
 	if in == nil {
 		return nil
@@ -1280,139 +1336,117 @@ func AiplatformFeatureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aiplatform
 	// MISSING: PointOfContact
 	return out
 }
-func Feature_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.Feature {
+func BigQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.BigQuerySource) *krm.BigQuerySource {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Feature{}
+	out := &krm.BigQuerySource{}
+	out.InputURI = direct.LazyPtr(in.GetInputUri())
+	return out
+}
+func BigQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.BigQuerySource) *pb.BigQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQuerySource{}
+	out.InputUri = direct.ValueOf(in.InputURI)
+	return out
+}
+func FeatureGroup_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup) *krm.FeatureGroup {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureGroup{}
+	out.BigQuery = FeatureGroup_BigQuery_FromProto(mapCtx, in.GetBigQuery())
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
 	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.DisableMonitoring = direct.LazyPtr(in.GetDisableMonitoring())
-	// MISSING: MonitoringStatsAnomalies
-	out.VersionColumnName = direct.LazyPtr(in.GetVersionColumnName())
-	out.PointOfContact = direct.LazyPtr(in.GetPointOfContact())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
-func Feature_ToProto(mapCtx *direct.MapContext, in *krm.Feature) *pb.Feature {
+func FeatureGroup_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroup) *pb.FeatureGroup {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Feature{}
+	out := &pb.FeatureGroup{}
+	if oneof := FeatureGroup_BigQuery_ToProto(mapCtx, in.BigQuery); oneof != nil {
+		out.Source = &pb.FeatureGroup_BigQuery_{BigQuery: oneof}
+	}
 	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	out.ValueType = direct.Enum_ToProto[pb.Feature_ValueType](mapCtx, in.ValueType)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
 	out.Etag = direct.ValueOf(in.Etag)
-	out.DisableMonitoring = direct.ValueOf(in.DisableMonitoring)
-	// MISSING: MonitoringStatsAnomalies
-	out.VersionColumnName = direct.ValueOf(in.VersionColumnName)
-	out.PointOfContact = direct.ValueOf(in.PointOfContact)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
 	return out
 }
-func FeatureObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.FeatureObservedState {
+func FeatureGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup) *krm.FeatureGroupObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureObservedState{}
+	out := &krm.FeatureGroupObservedState{}
+	// MISSING: BigQuery
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: ValueType
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
 	// MISSING: Etag
-	// MISSING: DisableMonitoring
-	out.MonitoringStatsAnomalies = direct.Slice_FromProto(mapCtx, in.MonitoringStatsAnomalies, Feature_MonitoringStatsAnomaly_FromProto)
-	// MISSING: VersionColumnName
-	// MISSING: PointOfContact
+	// MISSING: Labels
+	// MISSING: Description
 	return out
 }
-func FeatureObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureObservedState) *pb.Feature {
+func FeatureGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroupObservedState) *pb.FeatureGroup {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Feature{}
+	out := &pb.FeatureGroup{}
+	// MISSING: BigQuery
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: ValueType
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
 	// MISSING: Etag
-	// MISSING: DisableMonitoring
-	out.MonitoringStatsAnomalies = direct.Slice_ToProto(mapCtx, in.MonitoringStatsAnomalies, Feature_MonitoringStatsAnomaly_ToProto)
-	// MISSING: VersionColumnName
-	// MISSING: PointOfContact
+	// MISSING: Labels
+	// MISSING: Description
 	return out
 }
-func FeatureStatsAnomaly_FromProto(mapCtx *direct.MapContext, in *pb.FeatureStatsAnomaly) *krm.FeatureStatsAnomaly {
+func FeatureGroup_BigQuery_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup_BigQuery) *krm.FeatureGroup_BigQuery {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureStatsAnomaly{}
-	out.Score = direct.LazyPtr(in.GetScore())
-	out.StatsURI = direct.LazyPtr(in.GetStatsUri())
-	out.AnomalyURI = direct.LazyPtr(in.GetAnomalyUri())
-	out.DistributionDeviation = direct.LazyPtr(in.GetDistributionDeviation())
-	out.AnomalyDetectionThreshold = direct.LazyPtr(in.GetAnomalyDetectionThreshold())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out := &krm.FeatureGroup_BigQuery{}
+	out.BigQuerySource = BigQuerySource_FromProto(mapCtx, in.GetBigQuerySource())
+	out.EntityIDColumns = in.EntityIdColumns
+	out.StaticDataSource = direct.LazyPtr(in.GetStaticDataSource())
+	out.TimeSeries = FeatureGroup_BigQuery_TimeSeries_FromProto(mapCtx, in.GetTimeSeries())
+	out.Dense = direct.LazyPtr(in.GetDense())
 	return out
 }
-func FeatureStatsAnomaly_ToProto(mapCtx *direct.MapContext, in *krm.FeatureStatsAnomaly) *pb.FeatureStatsAnomaly {
+func FeatureGroup_BigQuery_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroup_BigQuery) *pb.FeatureGroup_BigQuery {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FeatureStatsAnomaly{}
-	out.Score = direct.ValueOf(in.Score)
-	out.StatsUri = direct.ValueOf(in.StatsURI)
-	out.AnomalyUri = direct.ValueOf(in.AnomalyURI)
-	out.DistributionDeviation = direct.ValueOf(in.DistributionDeviation)
-	out.AnomalyDetectionThreshold = direct.ValueOf(in.AnomalyDetectionThreshold)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out := &pb.FeatureGroup_BigQuery{}
+	out.BigQuerySource = BigQuerySource_ToProto(mapCtx, in.BigQuerySource)
+	out.EntityIdColumns = in.EntityIDColumns
+	out.StaticDataSource = direct.ValueOf(in.StaticDataSource)
+	out.TimeSeries = FeatureGroup_BigQuery_TimeSeries_ToProto(mapCtx, in.TimeSeries)
+	out.Dense = direct.ValueOf(in.Dense)
 	return out
 }
-func Feature_MonitoringStatsAnomaly_FromProto(mapCtx *direct.MapContext, in *pb.Feature_MonitoringStatsAnomaly) *krm.Feature_MonitoringStatsAnomaly {
+func FeatureGroup_BigQuery_TimeSeries_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup_BigQuery_TimeSeries) *krm.FeatureGroup_BigQuery_TimeSeries {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Feature_MonitoringStatsAnomaly{}
-	// MISSING: Objective
-	// MISSING: FeatureStatsAnomaly
+	out := &krm.FeatureGroup_BigQuery_TimeSeries{}
+	out.TimestampColumn = direct.LazyPtr(in.GetTimestampColumn())
 	return out
 }
-func Feature_MonitoringStatsAnomaly_ToProto(mapCtx *direct.MapContext, in *krm.Feature_MonitoringStatsAnomaly) *pb.Feature_MonitoringStatsAnomaly {
+func FeatureGroup_BigQuery_TimeSeries_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroup_BigQuery_TimeSeries) *pb.FeatureGroup_BigQuery_TimeSeries {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Feature_MonitoringStatsAnomaly{}
-	// MISSING: Objective
-	// MISSING: FeatureStatsAnomaly
-	return out
-}
-func Feature_MonitoringStatsAnomalyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feature_MonitoringStatsAnomaly) *krm.Feature_MonitoringStatsAnomalyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Feature_MonitoringStatsAnomalyObservedState{}
-	out.Objective = direct.Enum_FromProto(mapCtx, in.GetObjective())
-	out.FeatureStatsAnomaly = FeatureStatsAnomaly_FromProto(mapCtx, in.GetFeatureStatsAnomaly())
-	return out
-}
-func Feature_MonitoringStatsAnomalyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Feature_MonitoringStatsAnomalyObservedState) *pb.Feature_MonitoringStatsAnomaly {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Feature_MonitoringStatsAnomaly{}
-	out.Objective = direct.Enum_ToProto[pb.Feature_MonitoringStatsAnomaly_Objective](mapCtx, in.Objective)
-	out.FeatureStatsAnomaly = FeatureStatsAnomaly_ToProto(mapCtx, in.FeatureStatsAnomaly)
+	out := &pb.FeatureGroup_BigQuery_TimeSeries{}
+	out.TimestampColumn = direct.ValueOf(in.TimestampColumn)
 	return out
 }
