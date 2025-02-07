@@ -46,7 +46,7 @@ type BigQueryReservationReservationSpec struct {
 	// For acquisition: This field must be provided to identify the Reservation resource to acquire.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	//  Optional. Baseline slots available to this reservation. A slot is a unit of
+	// Optional. Baseline slots available to this reservation. A slot is a unit of
 	//  computational power in BigQuery, and serves as the unit of parallelism.
 	//
 	//  Queries using this reservation might use more slots during runtime if
