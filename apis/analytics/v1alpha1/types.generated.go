@@ -15,44 +15,39 @@
 package v1alpha1
 
 
-// +kcc:proto=google.analytics.admin.v1beta.GoogleAdsLink
-type GoogleAdsLink struct {
+// +kcc:proto=google.analytics.admin.v1beta.DataSharingSettings
+type DataSharingSettings struct {
 
-	// Immutable. Google Ads customer ID.
-	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.customer_id
-	CustomerID *string `json:"customerID,omitempty"`
+	// Allows Google support to access the data in order to help troubleshoot
+	//  issues.
+	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_google_support_enabled
+	SharingWithGoogleSupportEnabled *bool `json:"sharingWithGoogleSupportEnabled,omitempty"`
 
-	// Enable personalized advertising features with this integration.
-	//  Automatically publish my Google Analytics audience lists and Google
-	//  Analytics remarketing events/parameters to the linked Google Ads account.
-	//  If this field is not set on create/update, it will be defaulted to true.
-	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.ads_personalization_enabled
-	AdsPersonalizationEnabled *bool `json:"adsPersonalizationEnabled,omitempty"`
+	// Allows Google sales teams that are assigned to the customer to access the
+	//  data in order to suggest configuration changes to improve results.
+	//  Sales team restrictions still apply when enabled.
+	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_google_assigned_sales_enabled
+	SharingWithGoogleAssignedSalesEnabled *bool `json:"sharingWithGoogleAssignedSalesEnabled,omitempty"`
+
+	// Allows any of Google sales to access the data in order to suggest
+	//  configuration changes to improve results.
+	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_google_any_sales_enabled
+	SharingWithGoogleAnySalesEnabled *bool `json:"sharingWithGoogleAnySalesEnabled,omitempty"`
+
+	// Allows Google to use the data to improve other Google products or services.
+	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_google_products_enabled
+	SharingWithGoogleProductsEnabled *bool `json:"sharingWithGoogleProductsEnabled,omitempty"`
+
+	// Allows Google to share the data anonymously in aggregate form with others.
+	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.sharing_with_others_enabled
+	SharingWithOthersEnabled *bool `json:"sharingWithOthersEnabled,omitempty"`
 }
 
-// +kcc:proto=google.analytics.admin.v1beta.GoogleAdsLink
-type GoogleAdsLinkObservedState struct {
-	// Output only. Format:
-	//  properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
-	//
-	//  Note: googleAdsLinkId is not the Google Ads customer ID.
-	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.name
+// +kcc:proto=google.analytics.admin.v1beta.DataSharingSettings
+type DataSharingSettingsObservedState struct {
+	// Output only. Resource name.
+	//  Format: accounts/{account}/dataSharingSettings
+	//  Example: "accounts/1000/dataSharingSettings"
+	// +kcc:proto:field=google.analytics.admin.v1beta.DataSharingSettings.name
 	Name *string `json:"name,omitempty"`
-
-	// Output only. If true, this link is for a Google Ads manager account.
-	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.can_manage_clients
-	CanManageClients *bool `json:"canManageClients,omitempty"`
-
-	// Output only. Time when this link was originally created.
-	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Time when this link was last updated.
-	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Email address of the user that created the link.
-	//  An empty string will be returned if the email address can't be retrieved.
-	// +kcc:proto:field=google.analytics.admin.v1beta.GoogleAdsLink.creator_email_address
-	CreatorEmailAddress *string `json:"creatorEmailAddress,omitempty"`
 }

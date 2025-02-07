@@ -15,10 +15,10 @@
 package analytics
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
@@ -74,6 +74,58 @@ func AnalyticsAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsAc
 	// MISSING: RegionCode
 	// MISSING: Deleted
 	// MISSING: GmpOrganization
+	return out
+}
+func AnalyticsDataSharingSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.AnalyticsDataSharingSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsDataSharingSettingsObservedState{}
+	// MISSING: Name
+	// MISSING: SharingWithGoogleSupportEnabled
+	// MISSING: SharingWithGoogleAssignedSalesEnabled
+	// MISSING: SharingWithGoogleAnySalesEnabled
+	// MISSING: SharingWithGoogleProductsEnabled
+	// MISSING: SharingWithOthersEnabled
+	return out
+}
+func AnalyticsDataSharingSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataSharingSettingsObservedState) *pb.DataSharingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataSharingSettings{}
+	// MISSING: Name
+	// MISSING: SharingWithGoogleSupportEnabled
+	// MISSING: SharingWithGoogleAssignedSalesEnabled
+	// MISSING: SharingWithGoogleAnySalesEnabled
+	// MISSING: SharingWithGoogleProductsEnabled
+	// MISSING: SharingWithOthersEnabled
+	return out
+}
+func AnalyticsDataSharingSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.AnalyticsDataSharingSettingsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsDataSharingSettingsSpec{}
+	// MISSING: Name
+	// MISSING: SharingWithGoogleSupportEnabled
+	// MISSING: SharingWithGoogleAssignedSalesEnabled
+	// MISSING: SharingWithGoogleAnySalesEnabled
+	// MISSING: SharingWithGoogleProductsEnabled
+	// MISSING: SharingWithOthersEnabled
+	return out
+}
+func AnalyticsDataSharingSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsDataSharingSettingsSpec) *pb.DataSharingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataSharingSettings{}
+	// MISSING: Name
+	// MISSING: SharingWithGoogleSupportEnabled
+	// MISSING: SharingWithGoogleAssignedSalesEnabled
+	// MISSING: SharingWithGoogleAnySalesEnabled
+	// MISSING: SharingWithGoogleProductsEnabled
+	// MISSING: SharingWithOthersEnabled
 	return out
 }
 func AnalyticsDataStreamObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStream) *krm.AnalyticsDataStreamObservedState {
@@ -312,59 +364,55 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func GoogleAdsLink_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAdsLink) *krm.GoogleAdsLink {
+func DataSharingSettings_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.DataSharingSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleAdsLink{}
+	out := &krm.DataSharingSettings{}
 	// MISSING: Name
-	out.CustomerID = direct.LazyPtr(in.GetCustomerId())
-	// MISSING: CanManageClients
-	out.AdsPersonalizationEnabled = direct.BoolValue_FromProto(mapCtx, in.GetAdsPersonalizationEnabled())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CreatorEmailAddress
+	out.SharingWithGoogleSupportEnabled = direct.LazyPtr(in.GetSharingWithGoogleSupportEnabled())
+	out.SharingWithGoogleAssignedSalesEnabled = direct.LazyPtr(in.GetSharingWithGoogleAssignedSalesEnabled())
+	out.SharingWithGoogleAnySalesEnabled = direct.LazyPtr(in.GetSharingWithGoogleAnySalesEnabled())
+	out.SharingWithGoogleProductsEnabled = direct.LazyPtr(in.GetSharingWithGoogleProductsEnabled())
+	out.SharingWithOthersEnabled = direct.LazyPtr(in.GetSharingWithOthersEnabled())
 	return out
 }
-func GoogleAdsLink_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAdsLink) *pb.GoogleAdsLink {
+func DataSharingSettings_ToProto(mapCtx *direct.MapContext, in *krm.DataSharingSettings) *pb.DataSharingSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GoogleAdsLink{}
+	out := &pb.DataSharingSettings{}
 	// MISSING: Name
-	out.CustomerId = direct.ValueOf(in.CustomerID)
-	// MISSING: CanManageClients
-	out.AdsPersonalizationEnabled = direct.BoolValue_ToProto(mapCtx, in.AdsPersonalizationEnabled)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CreatorEmailAddress
+	out.SharingWithGoogleSupportEnabled = direct.ValueOf(in.SharingWithGoogleSupportEnabled)
+	out.SharingWithGoogleAssignedSalesEnabled = direct.ValueOf(in.SharingWithGoogleAssignedSalesEnabled)
+	out.SharingWithGoogleAnySalesEnabled = direct.ValueOf(in.SharingWithGoogleAnySalesEnabled)
+	out.SharingWithGoogleProductsEnabled = direct.ValueOf(in.SharingWithGoogleProductsEnabled)
+	out.SharingWithOthersEnabled = direct.ValueOf(in.SharingWithOthersEnabled)
 	return out
 }
-func GoogleAdsLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAdsLink) *krm.GoogleAdsLinkObservedState {
+func DataSharingSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSharingSettings) *krm.DataSharingSettingsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleAdsLinkObservedState{}
+	out := &krm.DataSharingSettingsObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CustomerID
-	out.CanManageClients = direct.LazyPtr(in.GetCanManageClients())
-	// MISSING: AdsPersonalizationEnabled
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.CreatorEmailAddress = direct.LazyPtr(in.GetCreatorEmailAddress())
+	// MISSING: SharingWithGoogleSupportEnabled
+	// MISSING: SharingWithGoogleAssignedSalesEnabled
+	// MISSING: SharingWithGoogleAnySalesEnabled
+	// MISSING: SharingWithGoogleProductsEnabled
+	// MISSING: SharingWithOthersEnabled
 	return out
 }
-func GoogleAdsLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAdsLinkObservedState) *pb.GoogleAdsLink {
+func DataSharingSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataSharingSettingsObservedState) *pb.DataSharingSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GoogleAdsLink{}
+	out := &pb.DataSharingSettings{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: CustomerID
-	out.CanManageClients = direct.ValueOf(in.CanManageClients)
-	// MISSING: AdsPersonalizationEnabled
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.CreatorEmailAddress = direct.ValueOf(in.CreatorEmailAddress)
+	// MISSING: SharingWithGoogleSupportEnabled
+	// MISSING: SharingWithGoogleAssignedSalesEnabled
+	// MISSING: SharingWithGoogleAnySalesEnabled
+	// MISSING: SharingWithGoogleProductsEnabled
+	// MISSING: SharingWithOthersEnabled
 	return out
 }
