@@ -15,85 +15,61 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Workload
-type Workload struct {
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Customer
+type Customer struct {
 	// Identifier. Format:
-	//  `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}`
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.name
+	//  `organizations/{organization}/locations/{location}/customers/{customer}`
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.name
 	Name *string `json:"name,omitempty"`
 
-	// Container for workload onboarding steps.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.workload_onboarding_state
-	WorkloadOnboardingState *WorkloadOnboardingState `json:"workloadOnboardingState,omitempty"`
-
-	// Indicates whether a workload is fully onboarded.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.is_onboarded
-	IsOnboarded *bool `json:"isOnboarded,omitempty"`
-
-	// The project id of the key management project for the workload
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.key_management_project_id
-	KeyManagementProjectID *string `json:"keyManagementProjectID,omitempty"`
-
-	// The Google Cloud location of the workload
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.location
-	Location *string `json:"location,omitempty"`
-
-	// Partner associated with this workload.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.partner
-	Partner *string `json:"partner,omitempty"`
+	// Required. Display name for the customer
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingState
-type WorkloadOnboardingState struct {
-	// List of workload onboarding steps.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingState.onboarding_steps
-	OnboardingSteps []WorkloadOnboardingStep `json:"onboardingSteps,omitempty"`
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState
+type CustomerOnboardingState struct {
+	// List of customer onboarding steps
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState.onboarding_steps
+	OnboardingSteps []CustomerOnboardingStep `json:"onboardingSteps,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep
-type WorkloadOnboardingStep struct {
-	// The onboarding step.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep.step
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep
+type CustomerOnboardingStep struct {
+	// The onboarding step
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.step
 	Step *string `json:"step,omitempty"`
 
-	// The starting time of the onboarding step.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep.start_time
+	// The starting time of the onboarding step
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
-	// The completion time of the onboarding step.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep.completion_time
+	// The completion time of the onboarding step
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.completion_time
 	CompletionTime *string `json:"completionTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Workload
-type WorkloadObservedState struct {
-	// Output only. Folder id this workload is associated with
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.folder_id
-	FolderID *int64 `json:"folderID,omitempty"`
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.Customer
+type CustomerObservedState struct {
+	// Output only. Container for customer onboarding steps
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.customer_onboarding_state
+	CustomerOnboardingState *CustomerOnboardingState `json:"customerOnboardingState,omitempty"`
 
-	// Output only. Time the resource was created.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The name of container folder of the assured workload
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.folder
-	Folder *string `json:"folder,omitempty"`
-
-	// Container for workload onboarding steps.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Workload.workload_onboarding_state
-	WorkloadOnboardingState *WorkloadOnboardingStateObservedState `json:"workloadOnboardingState,omitempty"`
+	// Output only. Indicates whether a customer is fully onboarded
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.Customer.is_onboarded
+	IsOnboarded *bool `json:"isOnboarded,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingState
-type WorkloadOnboardingStateObservedState struct {
-	// List of workload onboarding steps.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingState.onboarding_steps
-	OnboardingSteps []WorkloadOnboardingStepObservedState `json:"onboardingSteps,omitempty"`
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState
+type CustomerOnboardingStateObservedState struct {
+	// List of customer onboarding steps
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingState.onboarding_steps
+	OnboardingSteps []CustomerOnboardingStepObservedState `json:"onboardingSteps,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep
-type WorkloadOnboardingStepObservedState struct {
-	// Output only. The completion state of the onboarding step.
-	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.WorkloadOnboardingStep.completion_state
+// +kcc:proto=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep
+type CustomerOnboardingStepObservedState struct {
+	// Output only. Current state of the step
+	// +kcc:proto:field=google.cloud.cloudcontrolspartner.v1.CustomerOnboardingStep.completion_state
 	CompletionState *string `json:"completionState,omitempty"`
 }

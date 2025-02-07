@@ -20,6 +20,50 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudcontrolspartner/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+func CloudcontrolspartnerCustomerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.CloudcontrolspartnerCustomerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudcontrolspartnerCustomerObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CustomerOnboardingState
+	// MISSING: IsOnboarded
+	return out
+}
+func CloudcontrolspartnerCustomerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerCustomerObservedState) *pb.Customer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Customer{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CustomerOnboardingState
+	// MISSING: IsOnboarded
+	return out
+}
+func CloudcontrolspartnerCustomerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.CloudcontrolspartnerCustomerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudcontrolspartnerCustomerSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CustomerOnboardingState
+	// MISSING: IsOnboarded
+	return out
+}
+func CloudcontrolspartnerCustomerSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudcontrolspartnerCustomerSpec) *pb.Customer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Customer{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: CustomerOnboardingState
+	// MISSING: IsOnboarded
+	return out
+}
 func CloudcontrolspartnerWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.CloudcontrolspartnerWorkloadObservedState {
 	if in == nil {
 		return nil
@@ -84,140 +128,120 @@ func CloudcontrolspartnerWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Partner
 	return out
 }
-func Workload_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.Workload {
+func Customer_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.Customer {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Workload{}
+	out := &krm.Customer{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: FolderID
-	// MISSING: CreateTime
-	// MISSING: Folder
-	out.WorkloadOnboardingState = WorkloadOnboardingState_FromProto(mapCtx, in.GetWorkloadOnboardingState())
-	out.IsOnboarded = direct.LazyPtr(in.GetIsOnboarded())
-	out.KeyManagementProjectID = direct.LazyPtr(in.GetKeyManagementProjectId())
-	out.Location = direct.LazyPtr(in.GetLocation())
-	out.Partner = direct.Enum_FromProto(mapCtx, in.GetPartner())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: CustomerOnboardingState
+	// MISSING: IsOnboarded
 	return out
 }
-func Workload_ToProto(mapCtx *direct.MapContext, in *krm.Workload) *pb.Workload {
+func Customer_ToProto(mapCtx *direct.MapContext, in *krm.Customer) *pb.Customer {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload{}
+	out := &pb.Customer{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: FolderID
-	// MISSING: CreateTime
-	// MISSING: Folder
-	out.WorkloadOnboardingState = WorkloadOnboardingState_ToProto(mapCtx, in.WorkloadOnboardingState)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: CustomerOnboardingState
+	// MISSING: IsOnboarded
+	return out
+}
+func CustomerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Customer) *krm.CustomerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomerObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.CustomerOnboardingState = CustomerOnboardingState_FromProto(mapCtx, in.GetCustomerOnboardingState())
+	out.IsOnboarded = direct.LazyPtr(in.GetIsOnboarded())
+	return out
+}
+func CustomerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerObservedState) *pb.Customer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Customer{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.CustomerOnboardingState = CustomerOnboardingState_ToProto(mapCtx, in.CustomerOnboardingState)
 	out.IsOnboarded = direct.ValueOf(in.IsOnboarded)
-	out.KeyManagementProjectId = direct.ValueOf(in.KeyManagementProjectID)
-	out.Location = direct.ValueOf(in.Location)
-	out.Partner = direct.Enum_ToProto[pb.Workload_Partner](mapCtx, in.Partner)
 	return out
 }
-func WorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.WorkloadObservedState {
+func CustomerOnboardingState_FromProto(mapCtx *direct.MapContext, in *pb.CustomerOnboardingState) *krm.CustomerOnboardingState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkloadObservedState{}
-	// MISSING: Name
-	out.FolderID = direct.LazyPtr(in.GetFolderId())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.Folder = direct.LazyPtr(in.GetFolder())
-	out.WorkloadOnboardingState = WorkloadOnboardingStateObservedState_FromProto(mapCtx, in.GetWorkloadOnboardingState())
-	// MISSING: IsOnboarded
-	// MISSING: KeyManagementProjectID
-	// MISSING: Location
-	// MISSING: Partner
+	out := &krm.CustomerOnboardingState{}
+	out.OnboardingSteps = direct.Slice_FromProto(mapCtx, in.OnboardingSteps, CustomerOnboardingStep_FromProto)
 	return out
 }
-func WorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadObservedState) *pb.Workload {
+func CustomerOnboardingState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerOnboardingState) *pb.CustomerOnboardingState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload{}
-	// MISSING: Name
-	out.FolderId = direct.ValueOf(in.FolderID)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.Folder = direct.ValueOf(in.Folder)
-	out.WorkloadOnboardingState = WorkloadOnboardingStateObservedState_ToProto(mapCtx, in.WorkloadOnboardingState)
-	// MISSING: IsOnboarded
-	// MISSING: KeyManagementProjectID
-	// MISSING: Location
-	// MISSING: Partner
+	out := &pb.CustomerOnboardingState{}
+	out.OnboardingSteps = direct.Slice_ToProto(mapCtx, in.OnboardingSteps, CustomerOnboardingStep_ToProto)
 	return out
 }
-func WorkloadOnboardingState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadOnboardingState) *krm.WorkloadOnboardingState {
+func CustomerOnboardingStateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomerOnboardingState) *krm.CustomerOnboardingStateObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkloadOnboardingState{}
-	out.OnboardingSteps = direct.Slice_FromProto(mapCtx, in.OnboardingSteps, WorkloadOnboardingStep_FromProto)
+	out := &krm.CustomerOnboardingStateObservedState{}
+	out.OnboardingSteps = direct.Slice_FromProto(mapCtx, in.OnboardingSteps, CustomerOnboardingStepObservedState_FromProto)
 	return out
 }
-func WorkloadOnboardingState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadOnboardingState) *pb.WorkloadOnboardingState {
+func CustomerOnboardingStateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerOnboardingStateObservedState) *pb.CustomerOnboardingState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.WorkloadOnboardingState{}
-	out.OnboardingSteps = direct.Slice_ToProto(mapCtx, in.OnboardingSteps, WorkloadOnboardingStep_ToProto)
+	out := &pb.CustomerOnboardingState{}
+	out.OnboardingSteps = direct.Slice_ToProto(mapCtx, in.OnboardingSteps, CustomerOnboardingStepObservedState_ToProto)
 	return out
 }
-func WorkloadOnboardingStateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadOnboardingState) *krm.WorkloadOnboardingStateObservedState {
+func CustomerOnboardingStep_FromProto(mapCtx *direct.MapContext, in *pb.CustomerOnboardingStep) *krm.CustomerOnboardingStep {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkloadOnboardingStateObservedState{}
-	out.OnboardingSteps = direct.Slice_FromProto(mapCtx, in.OnboardingSteps, WorkloadOnboardingStepObservedState_FromProto)
-	return out
-}
-func WorkloadOnboardingStateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadOnboardingStateObservedState) *pb.WorkloadOnboardingState {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkloadOnboardingState{}
-	out.OnboardingSteps = direct.Slice_ToProto(mapCtx, in.OnboardingSteps, WorkloadOnboardingStepObservedState_ToProto)
-	return out
-}
-func WorkloadOnboardingStep_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadOnboardingStep) *krm.WorkloadOnboardingStep {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkloadOnboardingStep{}
+	out := &krm.CustomerOnboardingStep{}
 	out.Step = direct.Enum_FromProto(mapCtx, in.GetStep())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.CompletionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCompletionTime())
 	// MISSING: CompletionState
 	return out
 }
-func WorkloadOnboardingStep_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadOnboardingStep) *pb.WorkloadOnboardingStep {
+func CustomerOnboardingStep_ToProto(mapCtx *direct.MapContext, in *krm.CustomerOnboardingStep) *pb.CustomerOnboardingStep {
 	if in == nil {
 		return nil
 	}
-	out := &pb.WorkloadOnboardingStep{}
-	out.Step = direct.Enum_ToProto[pb.WorkloadOnboardingStep_Step](mapCtx, in.Step)
+	out := &pb.CustomerOnboardingStep{}
+	out.Step = direct.Enum_ToProto[pb.CustomerOnboardingStep_Step](mapCtx, in.Step)
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.CompletionTime = direct.StringTimestamp_ToProto(mapCtx, in.CompletionTime)
 	// MISSING: CompletionState
 	return out
 }
-func WorkloadOnboardingStepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadOnboardingStep) *krm.WorkloadOnboardingStepObservedState {
+func CustomerOnboardingStepObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomerOnboardingStep) *krm.CustomerOnboardingStepObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkloadOnboardingStepObservedState{}
+	out := &krm.CustomerOnboardingStepObservedState{}
 	// MISSING: Step
 	// MISSING: StartTime
 	// MISSING: CompletionTime
 	out.CompletionState = direct.Enum_FromProto(mapCtx, in.GetCompletionState())
 	return out
 }
-func WorkloadOnboardingStepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadOnboardingStepObservedState) *pb.WorkloadOnboardingStep {
+func CustomerOnboardingStepObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomerOnboardingStepObservedState) *pb.CustomerOnboardingStep {
 	if in == nil {
 		return nil
 	}
-	out := &pb.WorkloadOnboardingStep{}
+	out := &pb.CustomerOnboardingStep{}
 	// MISSING: Step
 	// MISSING: StartTime
 	// MISSING: CompletionTime
