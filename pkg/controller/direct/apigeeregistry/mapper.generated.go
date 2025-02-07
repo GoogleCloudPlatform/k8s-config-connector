@@ -20,86 +20,170 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apigeeregistry/apiv1/apigeeregistrypb"
 )
-func ApiSpec_FromProto(mapCtx *direct.MapContext, in *pb.ApiSpec) *krm.ApiSpec {
+func ApiDeployment_FromProto(mapCtx *direct.MapContext, in *pb.ApiDeployment) *krm.ApiDeployment {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiSpec{}
+	out := &krm.ApiDeployment{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Filename = direct.LazyPtr(in.GetFilename())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: RevisionID
 	// MISSING: CreateTime
 	// MISSING: RevisionCreateTime
 	// MISSING: RevisionUpdateTime
-	out.MimeType = direct.LazyPtr(in.GetMimeType())
-	// MISSING: SizeBytes
-	// MISSING: Hash
-	out.SourceURI = direct.LazyPtr(in.GetSourceUri())
-	out.Contents = in.GetContents()
+	out.ApiSpecRevision = direct.LazyPtr(in.GetApiSpecRevision())
+	out.EndpointURI = direct.LazyPtr(in.GetEndpointUri())
+	out.ExternalChannelURI = direct.LazyPtr(in.GetExternalChannelUri())
+	out.IntendedAudience = direct.LazyPtr(in.GetIntendedAudience())
+	out.AccessGuidance = direct.LazyPtr(in.GetAccessGuidance())
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	return out
 }
-func ApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiSpec) *pb.ApiSpec {
+func ApiDeployment_ToProto(mapCtx *direct.MapContext, in *krm.ApiDeployment) *pb.ApiDeployment {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ApiSpec{}
+	out := &pb.ApiDeployment{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Filename = direct.ValueOf(in.Filename)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: RevisionID
 	// MISSING: CreateTime
 	// MISSING: RevisionCreateTime
 	// MISSING: RevisionUpdateTime
-	out.MimeType = direct.ValueOf(in.MimeType)
-	// MISSING: SizeBytes
-	// MISSING: Hash
-	out.SourceUri = direct.ValueOf(in.SourceURI)
-	out.Contents = in.Contents
+	out.ApiSpecRevision = direct.ValueOf(in.ApiSpecRevision)
+	out.EndpointUri = direct.ValueOf(in.EndpointURI)
+	out.ExternalChannelUri = direct.ValueOf(in.ExternalChannelURI)
+	out.IntendedAudience = direct.ValueOf(in.IntendedAudience)
+	out.AccessGuidance = direct.ValueOf(in.AccessGuidance)
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	return out
 }
-func ApiSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiSpec) *krm.ApiSpecObservedState {
+func ApiDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiDeployment) *krm.ApiDeploymentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiSpecObservedState{}
+	out := &krm.ApiDeploymentObservedState{}
 	// MISSING: Name
-	// MISSING: Filename
+	// MISSING: DisplayName
 	// MISSING: Description
 	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
 	out.RevisionUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionUpdateTime())
-	// MISSING: MimeType
-	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
-	out.Hash = direct.LazyPtr(in.GetHash())
-	// MISSING: SourceURI
-	// MISSING: Contents
+	// MISSING: ApiSpecRevision
+	// MISSING: EndpointURI
+	// MISSING: ExternalChannelURI
+	// MISSING: IntendedAudience
+	// MISSING: AccessGuidance
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out
 }
-func ApiSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiSpecObservedState) *pb.ApiSpec {
+func ApiDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiDeploymentObservedState) *pb.ApiDeployment {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ApiSpec{}
+	out := &pb.ApiDeployment{}
 	// MISSING: Name
-	// MISSING: Filename
+	// MISSING: DisplayName
 	// MISSING: Description
 	out.RevisionId = direct.ValueOf(in.RevisionID)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
 	out.RevisionUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionUpdateTime)
-	// MISSING: MimeType
-	out.SizeBytes = direct.ValueOf(in.SizeBytes)
-	out.Hash = direct.ValueOf(in.Hash)
-	// MISSING: SourceURI
-	// MISSING: Contents
+	// MISSING: ApiSpecRevision
+	// MISSING: EndpointURI
+	// MISSING: ExternalChannelURI
+	// MISSING: IntendedAudience
+	// MISSING: AccessGuidance
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiDeployment) *krm.ApigeeregistryApiDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryApiDeploymentObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: RevisionID
+	// MISSING: CreateTime
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	// MISSING: ApiSpecRevision
+	// MISSING: EndpointURI
+	// MISSING: ExternalChannelURI
+	// MISSING: IntendedAudience
+	// MISSING: AccessGuidance
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryApiDeploymentObservedState) *pb.ApiDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiDeployment{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: RevisionID
+	// MISSING: CreateTime
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	// MISSING: ApiSpecRevision
+	// MISSING: EndpointURI
+	// MISSING: ExternalChannelURI
+	// MISSING: IntendedAudience
+	// MISSING: AccessGuidance
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.ApiDeployment) *krm.ApigeeregistryApiDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryApiDeploymentSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: RevisionID
+	// MISSING: CreateTime
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	// MISSING: ApiSpecRevision
+	// MISSING: EndpointURI
+	// MISSING: ExternalChannelURI
+	// MISSING: IntendedAudience
+	// MISSING: AccessGuidance
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryApiDeploymentSpec) *pb.ApiDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiDeployment{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: RevisionID
+	// MISSING: CreateTime
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	// MISSING: ApiSpecRevision
+	// MISSING: EndpointURI
+	// MISSING: ExternalChannelURI
+	// MISSING: IntendedAudience
+	// MISSING: AccessGuidance
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out
