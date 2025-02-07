@@ -15,138 +15,130 @@
 package bigquery
 
 import (
-	pb "cloud.google.com/go/bigquery/dataexchange/apiv1beta1/dataexchangepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/bigquery/datapolicies/apiv1/datapoliciespb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
 )
-func DataProvider_FromProto(mapCtx *direct.MapContext, in *pb.DataProvider) *krm.DataProvider {
+func BigqueryDataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.BigqueryDataPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataProvider{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
-	return out
-}
-func DataProvider_ToProto(mapCtx *direct.MapContext, in *krm.DataProvider) *pb.DataProvider {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataProvider{}
-	out.Name = direct.ValueOf(in.Name)
-	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
-	return out
-}
-func Listing_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krm.Listing {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Listing{}
-	out.BigqueryDataset = Listing_BigQueryDatasetSource_FromProto(mapCtx, in.GetBigqueryDataset())
+	out := &krm.BigqueryDataPolicyObservedState{}
+	// MISSING: PolicyTag
+	// MISSING: DataMaskingPolicy
 	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
-	out.Documentation = direct.LazyPtr(in.GetDocumentation())
-	// MISSING: State
-	out.Icon = in.GetIcon()
-	out.DataProvider = DataProvider_FromProto(mapCtx, in.GetDataProvider())
-	out.Categories = direct.EnumSlice_FromProto(mapCtx, in.Categories)
-	out.Publisher = Publisher_FromProto(mapCtx, in.GetPublisher())
-	out.RequestAccess = direct.LazyPtr(in.GetRequestAccess())
+	// MISSING: DataPolicyType
+	// MISSING: DataPolicyID
 	return out
 }
-func Listing_ToProto(mapCtx *direct.MapContext, in *krm.Listing) *pb.Listing {
+func BigqueryDataPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryDataPolicyObservedState) *pb.DataPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Listing{}
-	if oneof := Listing_BigQueryDatasetSource_ToProto(mapCtx, in.BigqueryDataset); oneof != nil {
-		out.Source = &pb.Listing_BigqueryDataset{BigqueryDataset: oneof}
+	out := &pb.DataPolicy{}
+	// MISSING: PolicyTag
+	// MISSING: DataMaskingPolicy
+	// MISSING: Name
+	// MISSING: DataPolicyType
+	// MISSING: DataPolicyID
+	return out
+}
+func BigqueryDataPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.BigqueryDataPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryDataPolicySpec{}
+	// MISSING: PolicyTag
+	// MISSING: DataMaskingPolicy
+	// MISSING: Name
+	// MISSING: DataPolicyType
+	// MISSING: DataPolicyID
+	return out
+}
+func BigqueryDataPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryDataPolicySpec) *pb.DataPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataPolicy{}
+	// MISSING: PolicyTag
+	// MISSING: DataMaskingPolicy
+	// MISSING: Name
+	// MISSING: DataPolicyType
+	// MISSING: DataPolicyID
+	return out
+}
+func DataMaskingPolicy_FromProto(mapCtx *direct.MapContext, in *pb.DataMaskingPolicy) *krm.DataMaskingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataMaskingPolicy{}
+	out.PredefinedExpression = direct.Enum_FromProto(mapCtx, in.GetPredefinedExpression())
+	out.Routine = direct.LazyPtr(in.GetRoutine())
+	return out
+}
+func DataMaskingPolicy_ToProto(mapCtx *direct.MapContext, in *krm.DataMaskingPolicy) *pb.DataMaskingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataMaskingPolicy{}
+	if oneof := DataMaskingPolicy_PredefinedExpression_ToProto(mapCtx, in.PredefinedExpression); oneof != nil {
+		out.MaskingExpression = oneof
+	}
+	if oneof := DataMaskingPolicy_Routine_ToProto(mapCtx, in.Routine); oneof != nil {
+		out.MaskingExpression = oneof
+	}
+	return out
+}
+func DataPolicy_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.DataPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataPolicy{}
+	out.PolicyTag = direct.LazyPtr(in.GetPolicyTag())
+	out.DataMaskingPolicy = DataMaskingPolicy_FromProto(mapCtx, in.GetDataMaskingPolicy())
+	// MISSING: Name
+	out.DataPolicyType = direct.Enum_FromProto(mapCtx, in.GetDataPolicyType())
+	out.DataPolicyID = direct.LazyPtr(in.GetDataPolicyId())
+	return out
+}
+func DataPolicy_ToProto(mapCtx *direct.MapContext, in *krm.DataPolicy) *pb.DataPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataPolicy{}
+	if oneof := DataPolicy_PolicyTag_ToProto(mapCtx, in.PolicyTag); oneof != nil {
+		out.MatchingLabel = oneof
+	}
+	if oneof := DataMaskingPolicy_ToProto(mapCtx, in.DataMaskingPolicy); oneof != nil {
+		out.Policy = &pb.DataPolicy_DataMaskingPolicy{DataMaskingPolicy: oneof}
 	}
 	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
-	out.Documentation = direct.ValueOf(in.Documentation)
-	// MISSING: State
-	out.Icon = in.Icon
-	out.DataProvider = DataProvider_ToProto(mapCtx, in.DataProvider)
-	out.Categories = direct.EnumSlice_ToProto[pb.Listing_Category](mapCtx, in.Categories)
-	out.Publisher = Publisher_ToProto(mapCtx, in.Publisher)
-	out.RequestAccess = direct.ValueOf(in.RequestAccess)
+	out.DataPolicyType = direct.Enum_ToProto[pb.DataPolicy_DataPolicyType](mapCtx, in.DataPolicyType)
+	out.DataPolicyId = direct.ValueOf(in.DataPolicyID)
 	return out
 }
-func ListingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krm.ListingObservedState {
+func DataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.DataPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ListingObservedState{}
-	// MISSING: BigqueryDataset
+	out := &krm.DataPolicyObservedState{}
+	// MISSING: PolicyTag
+	// MISSING: DataMaskingPolicy
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PrimaryContact
-	// MISSING: Documentation
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: Icon
-	// MISSING: DataProvider
-	// MISSING: Categories
-	// MISSING: Publisher
-	// MISSING: RequestAccess
+	// MISSING: DataPolicyType
+	// MISSING: DataPolicyID
 	return out
 }
-func ListingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ListingObservedState) *pb.Listing {
+func DataPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataPolicyObservedState) *pb.DataPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Listing{}
-	// MISSING: BigqueryDataset
+	out := &pb.DataPolicy{}
+	// MISSING: PolicyTag
+	// MISSING: DataMaskingPolicy
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PrimaryContact
-	// MISSING: Documentation
-	out.State = direct.Enum_ToProto[pb.Listing_State](mapCtx, in.State)
-	// MISSING: Icon
-	// MISSING: DataProvider
-	// MISSING: Categories
-	// MISSING: Publisher
-	// MISSING: RequestAccess
-	return out
-}
-func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource) *krm.Listing_BigQueryDatasetSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Listing_BigQueryDatasetSource{}
-	out.Dataset = direct.LazyPtr(in.GetDataset())
-	return out
-}
-func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krm.Listing_BigQueryDatasetSource) *pb.Listing_BigQueryDatasetSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Listing_BigQueryDatasetSource{}
-	out.Dataset = direct.ValueOf(in.Dataset)
-	return out
-}
-func Publisher_FromProto(mapCtx *direct.MapContext, in *pb.Publisher) *krm.Publisher {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Publisher{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
-	return out
-}
-func Publisher_ToProto(mapCtx *direct.MapContext, in *krm.Publisher) *pb.Publisher {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Publisher{}
-	out.Name = direct.ValueOf(in.Name)
-	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
+	// MISSING: DataPolicyType
+	// MISSING: DataPolicyID
 	return out
 }
