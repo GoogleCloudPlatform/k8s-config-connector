@@ -15,67 +15,91 @@
 package apigeeregistry
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/apigeeregistry/apiv1/apigeeregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigeeregistry/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/apigeeregistry/apiv1/apigeeregistrypb"
 )
-func ApiVersion_FromProto(mapCtx *direct.MapContext, in *pb.ApiVersion) *krm.ApiVersion {
+func ApiSpec_FromProto(mapCtx *direct.MapContext, in *pb.ApiSpec) *krm.ApiSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiVersion{}
+	out := &krm.ApiSpec{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Filename = direct.LazyPtr(in.GetFilename())
 	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: RevisionID
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.State = direct.LazyPtr(in.GetState())
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	// MISSING: SizeBytes
+	// MISSING: Hash
+	out.SourceURI = direct.LazyPtr(in.GetSourceUri())
+	out.Contents = in.GetContents()
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	return out
 }
-func ApiVersion_ToProto(mapCtx *direct.MapContext, in *krm.ApiVersion) *pb.ApiVersion {
+func ApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiSpec) *pb.ApiSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ApiVersion{}
+	out := &pb.ApiSpec{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Filename = direct.ValueOf(in.Filename)
 	out.Description = direct.ValueOf(in.Description)
+	// MISSING: RevisionID
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.State = direct.ValueOf(in.State)
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	out.MimeType = direct.ValueOf(in.MimeType)
+	// MISSING: SizeBytes
+	// MISSING: Hash
+	out.SourceUri = direct.ValueOf(in.SourceURI)
+	out.Contents = in.Contents
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	return out
 }
-func ApiVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiVersion) *krm.ApiVersionObservedState {
+func ApiSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiSpec) *krm.ApiSpecObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiVersionObservedState{}
+	out := &krm.ApiSpecObservedState{}
 	// MISSING: Name
-	// MISSING: DisplayName
+	// MISSING: Filename
 	// MISSING: Description
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: State
+	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
+	out.RevisionUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionUpdateTime())
+	// MISSING: MimeType
+	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
+	out.Hash = direct.LazyPtr(in.GetHash())
+	// MISSING: SourceURI
+	// MISSING: Contents
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out
 }
-func ApiVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiVersionObservedState) *pb.ApiVersion {
+func ApiSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiSpecObservedState) *pb.ApiSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ApiVersion{}
+	out := &pb.ApiSpec{}
 	// MISSING: Name
-	// MISSING: DisplayName
+	// MISSING: Filename
 	// MISSING: Description
+	out.RevisionId = direct.ValueOf(in.RevisionID)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: State
+	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
+	out.RevisionUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionUpdateTime)
+	// MISSING: MimeType
+	out.SizeBytes = direct.ValueOf(in.SizeBytes)
+	out.Hash = direct.ValueOf(in.Hash)
+	// MISSING: SourceURI
+	// MISSING: Contents
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out
@@ -144,6 +168,90 @@ func ApigeeregistryApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.Apigeeregi
 	// MISSING: Availability
 	// MISSING: RecommendedVersion
 	// MISSING: RecommendedDeployment
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiSpec) *krm.ApigeeregistryApiSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryApiSpecObservedState{}
+	// MISSING: Name
+	// MISSING: Filename
+	// MISSING: Description
+	// MISSING: RevisionID
+	// MISSING: CreateTime
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	// MISSING: MimeType
+	// MISSING: SizeBytes
+	// MISSING: Hash
+	// MISSING: SourceURI
+	// MISSING: Contents
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryApiSpecObservedState) *pb.ApiSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiSpec{}
+	// MISSING: Name
+	// MISSING: Filename
+	// MISSING: Description
+	// MISSING: RevisionID
+	// MISSING: CreateTime
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	// MISSING: MimeType
+	// MISSING: SizeBytes
+	// MISSING: Hash
+	// MISSING: SourceURI
+	// MISSING: Contents
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiSpecSpec_FromProto(mapCtx *direct.MapContext, in *pb.ApiSpec) *krm.ApigeeregistryApiSpecSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryApiSpecSpec{}
+	// MISSING: Name
+	// MISSING: Filename
+	// MISSING: Description
+	// MISSING: RevisionID
+	// MISSING: CreateTime
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	// MISSING: MimeType
+	// MISSING: SizeBytes
+	// MISSING: Hash
+	// MISSING: SourceURI
+	// MISSING: Contents
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func ApigeeregistryApiSpecSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryApiSpecSpec) *pb.ApiSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiSpec{}
+	// MISSING: Name
+	// MISSING: Filename
+	// MISSING: Description
+	// MISSING: RevisionID
+	// MISSING: CreateTime
+	// MISSING: RevisionCreateTime
+	// MISSING: RevisionUpdateTime
+	// MISSING: MimeType
+	// MISSING: SizeBytes
+	// MISSING: Hash
+	// MISSING: SourceURI
+	// MISSING: Contents
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out
