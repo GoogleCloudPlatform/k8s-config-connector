@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -1948,55 +1948,163 @@ func AiplatformMetadataSchemaSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aip
 	// MISSING: Description
 	return out
 }
-func MetadataSchema_FromProto(mapCtx *direct.MapContext, in *pb.MetadataSchema) *krm.MetadataSchema {
+func AiplatformMetadataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.AiplatformMetadataStoreObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MetadataSchema{}
+	out := &krm.AiplatformMetadataStoreObservedState{}
 	// MISSING: Name
-	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
-	out.Schema = direct.LazyPtr(in.GetSchema())
-	out.SchemaType = direct.Enum_FromProto(mapCtx, in.GetSchemaType())
 	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: EncryptionSpec
+	// MISSING: Description
+	// MISSING: State
+	// MISSING: DataplexConfig
+	return out
+}
+func AiplatformMetadataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformMetadataStoreObservedState) *pb.MetadataStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataStore{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: EncryptionSpec
+	// MISSING: Description
+	// MISSING: State
+	// MISSING: DataplexConfig
+	return out
+}
+func AiplatformMetadataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.AiplatformMetadataStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformMetadataStoreSpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: EncryptionSpec
+	// MISSING: Description
+	// MISSING: State
+	// MISSING: DataplexConfig
+	return out
+}
+func AiplatformMetadataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformMetadataStoreSpec) *pb.MetadataStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataStore{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: EncryptionSpec
+	// MISSING: Description
+	// MISSING: State
+	// MISSING: DataplexConfig
+	return out
+}
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpec{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	return out
+}
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func MetadataStore_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.MetadataStore {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataStore{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
+	out.DataplexConfig = MetadataStore_DataplexConfig_FromProto(mapCtx, in.GetDataplexConfig())
 	return out
 }
-func MetadataSchema_ToProto(mapCtx *direct.MapContext, in *krm.MetadataSchema) *pb.MetadataSchema {
+func MetadataStore_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore) *pb.MetadataStore {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MetadataSchema{}
+	out := &pb.MetadataStore{}
 	// MISSING: Name
-	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
-	out.Schema = direct.ValueOf(in.Schema)
-	out.SchemaType = direct.Enum_ToProto[pb.MetadataSchema_MetadataSchemaType](mapCtx, in.SchemaType)
 	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
+	out.DataplexConfig = MetadataStore_DataplexConfig_ToProto(mapCtx, in.DataplexConfig)
 	return out
 }
-func MetadataSchemaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataSchema) *krm.MetadataSchemaObservedState {
+func MetadataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.MetadataStoreObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MetadataSchemaObservedState{}
+	out := &krm.MetadataStoreObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: SchemaVersion
-	// MISSING: Schema
-	// MISSING: SchemaType
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: EncryptionSpec
 	// MISSING: Description
+	out.State = MetadataStore_MetadataStoreState_FromProto(mapCtx, in.GetState())
+	// MISSING: DataplexConfig
 	return out
 }
-func MetadataSchemaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataSchemaObservedState) *pb.MetadataSchema {
+func MetadataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStoreObservedState) *pb.MetadataStore {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MetadataSchema{}
+	out := &pb.MetadataStore{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: SchemaVersion
-	// MISSING: Schema
-	// MISSING: SchemaType
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: EncryptionSpec
 	// MISSING: Description
+	out.State = MetadataStore_MetadataStoreState_ToProto(mapCtx, in.State)
+	// MISSING: DataplexConfig
+	return out
+}
+func MetadataStore_DataplexConfig_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_DataplexConfig) *krm.MetadataStore_DataplexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataStore_DataplexConfig{}
+	out.EnabledPipelinesLineage = direct.LazyPtr(in.GetEnabledPipelinesLineage())
+	return out
+}
+func MetadataStore_DataplexConfig_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore_DataplexConfig) *pb.MetadataStore_DataplexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataStore_DataplexConfig{}
+	out.EnabledPipelinesLineage = direct.ValueOf(in.EnabledPipelinesLineage)
+	return out
+}
+func MetadataStore_MetadataStoreState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_MetadataStoreState) *krm.MetadataStore_MetadataStoreState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataStore_MetadataStoreState{}
+	out.DiskUtilizationBytes = direct.LazyPtr(in.GetDiskUtilizationBytes())
+	return out
+}
+func MetadataStore_MetadataStoreState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore_MetadataStoreState) *pb.MetadataStore_MetadataStoreState {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataStore_MetadataStoreState{}
+	out.DiskUtilizationBytes = direct.ValueOf(in.DiskUtilizationBytes)
 	return out
 }

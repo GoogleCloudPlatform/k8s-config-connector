@@ -15,42 +15,65 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.aiplatform.v1.MetadataSchema
-type MetadataSchema struct {
-
-	// The version of the MetadataSchema. The version's format must match
-	//  the following regular expression: `^[0-9]+[.][0-9]+[.][0-9]+$`, which would
-	//  allow to order/compare different versions. Example: 1.0.0, 1.0.1, etc.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataSchema.schema_version
-	SchemaVersion *string `json:"schemaVersion,omitempty"`
-
-	// Required. The raw YAML string representation of the MetadataSchema. The
-	//  combination of [MetadataSchema.version] and the schema name given by
-	//  `title` in [MetadataSchema.schema] must be unique within a MetadataStore.
-	//
-	//  The schema is defined as an OpenAPI 3.0.2
-	//  [MetadataSchema
-	//  Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schemaObject)
-	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataSchema.schema
-	Schema *string `json:"schema,omitempty"`
-
-	// The type of the MetadataSchema. This is a property that identifies which
-	//  metadata types will use the MetadataSchema.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataSchema.schema_type
-	SchemaType *string `json:"schemaType,omitempty"`
-
-	// Description of the Metadata Schema
-	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataSchema.description
-	Description *string `json:"description,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec
+type EncryptionSpec struct {
+	// Required. The Cloud KMS resource identifier of the customer managed
+	//  encryption key used to protect a resource. Has the form:
+	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+	//  The key needs to be in the same region as where the compute resource is
+	//  created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EncryptionSpec.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.MetadataSchema
-type MetadataSchemaObservedState struct {
-	// Output only. The resource name of the MetadataSchema.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataSchema.name
+// +kcc:proto=google.cloud.aiplatform.v1.MetadataStore
+type MetadataStore struct {
+
+	// Customer-managed encryption key spec for a Metadata Store. If set, this
+	//  Metadata Store and all sub-resources of this Metadata Store are secured
+	//  using this key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+
+	// Description of the MetadataStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Dataplex integration settings.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.dataplex_config
+	DataplexConfig *MetadataStore_DataplexConfig `json:"dataplexConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.MetadataStore.DataplexConfig
+type MetadataStore_DataplexConfig struct {
+	// Optional. Whether or not Data Lineage synchronization is enabled for
+	//  Vertex Pipelines.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.DataplexConfig.enabled_pipelines_lineage
+	EnabledPipelinesLineage *bool `json:"enabledPipelinesLineage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.MetadataStore.MetadataStoreState
+type MetadataStore_MetadataStoreState struct {
+	// The disk utilization of the MetadataStore in bytes.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.MetadataStoreState.disk_utilization_bytes
+	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.MetadataStore
+type MetadataStoreObservedState struct {
+	// Output only. The resource name of the MetadataStore instance.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. Timestamp when this MetadataSchema was created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataSchema.create_time
+	// Output only. Timestamp when this MetadataStore was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.create_time
 	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when this MetadataStore was last updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. State information of the MetadataStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MetadataStore.state
+	State *MetadataStore_MetadataStoreState `json:"state,omitempty"`
 }
