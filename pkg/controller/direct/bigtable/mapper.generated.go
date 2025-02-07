@@ -15,11 +15,11 @@
 package bigtable
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AppProfile_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.AppProfile {
 	if in == nil {
@@ -95,6 +95,20 @@ func AppProfile_MultiClusterRoutingUseAny_ToProto(mapCtx *direct.MapContext, in 
 	out := &pb.AppProfile_MultiClusterRoutingUseAny{}
 	out.ClusterIds = in.ClusterIds
 	// MISSING: RowAffinity
+	return out
+}
+func AppProfile_MultiClusterRoutingUseAny_RowAffinity_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
+	return out
+}
+func AppProfile_MultiClusterRoutingUseAny_RowAffinity_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
 	return out
 }
 func AppProfile_SingleClusterRouting_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krm.AppProfile_SingleClusterRouting {
@@ -287,6 +301,66 @@ func BackupInfo_ToProto(mapCtx *direct.MapContext, in *krm.BackupInfo) *pb.Backu
 	out.SourceBackup = direct.ValueOf(in.SourceBackup)
 	return out
 }
+func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.BigtableAppProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigtableAppProfileObservedState{}
+	// MISSING: Name
+	// MISSING: Etag
+	// MISSING: Description
+	// MISSING: MultiClusterRoutingUseAny
+	// MISSING: SingleClusterRouting
+	// MISSING: Priority
+	// MISSING: StandardIsolation
+	// MISSING: DataBoostIsolationReadOnly
+	return out
+}
+func BigtableAppProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigtableAppProfileObservedState) *pb.AppProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AppProfile{}
+	// MISSING: Name
+	// MISSING: Etag
+	// MISSING: Description
+	// MISSING: MultiClusterRoutingUseAny
+	// MISSING: SingleClusterRouting
+	// MISSING: Priority
+	// MISSING: StandardIsolation
+	// MISSING: DataBoostIsolationReadOnly
+	return out
+}
+func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.BigtableAppProfileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigtableAppProfileSpec{}
+	// MISSING: Name
+	// MISSING: Etag
+	// MISSING: Description
+	// MISSING: MultiClusterRoutingUseAny
+	// MISSING: SingleClusterRouting
+	// MISSING: Priority
+	// MISSING: StandardIsolation
+	// MISSING: DataBoostIsolationReadOnly
+	return out
+}
+func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableAppProfileSpec) *pb.AppProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AppProfile{}
+	// MISSING: Name
+	// MISSING: Etag
+	// MISSING: Description
+	// MISSING: MultiClusterRoutingUseAny
+	// MISSING: SingleClusterRouting
+	// MISSING: Priority
+	// MISSING: StandardIsolation
+	// MISSING: DataBoostIsolationReadOnly
+	return out
+}
 func BigtableClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.BigtableClusterObservedState {
 	if in == nil {
 		return nil
@@ -393,36 +467,6 @@ func Cluster_ToProto(mapCtx *direct.MapContext, in *krm.Cluster) *pb.Cluster {
 	}
 	out.DefaultStorageType = direct.Enum_ToProto[pb.StorageType](mapCtx, in.DefaultStorageType)
 	out.EncryptionConfig = Cluster_EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
-	return out
-}
-func ClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.ClusterObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ClusterObservedState{}
-	// MISSING: Name
-	// MISSING: Location
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: ServeNodes
-	// MISSING: NodeScalingFactor
-	// MISSING: ClusterConfig
-	// MISSING: DefaultStorageType
-	// MISSING: EncryptionConfig
-	return out
-}
-func ClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ClusterObservedState) *pb.Cluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Cluster{}
-	// MISSING: Name
-	// MISSING: Location
-	out.State = direct.Enum_ToProto[pb.Cluster_State](mapCtx, in.State)
-	// MISSING: ServeNodes
-	// MISSING: NodeScalingFactor
-	// MISSING: ClusterConfig
-	// MISSING: DefaultStorageType
-	// MISSING: EncryptionConfig
 	return out
 }
 func Cluster_ClusterAutoscalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ClusterAutoscalingConfig) *krm.Cluster_ClusterAutoscalingConfig {
