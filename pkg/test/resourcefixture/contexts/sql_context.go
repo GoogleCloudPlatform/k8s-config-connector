@@ -15,56 +15,27 @@
 package contexts
 
 func init() {
-	resourceContextMap["sqlinstance-activationpolicy"] = ResourceContext{
-		// TODO: After switching to use direct controller, we can update the direct controller
-		// logic to support creating SQLInstances with `activationPolicy: "NEVER"`. Then, we
-		// can enable this test. The TF based controller does not support creating
-		// SQLInstances with `activationPolicy: "NEVER"`.
-		SkipDriftDetection: true,
-		ResourceKind:       "SQLInstance",
-	}
-
 	resourceContextMap["sqlinstance-activationpolicy-direct"] = ResourceContext{
-		// TODO: After switching to use direct controller, we can update the direct controller
-		// logic to support creating SQLInstances with `activationPolicy: "NEVER"`. Then, we
-		// can enable this test. The TF based controller does not support creating
-		// SQLInstances with `activationPolicy: "NEVER"`.
+		// The SQL API does not support creating SQLInstances with `activationPolicy: "NEVER"`.
+		// Users must first create, then perform an update to deactivate instances.
 		SkipDriftDetection: true,
 		ResourceKind:       "SQLInstance",
-	}
-
-	resourceContextMap["sqlinstance-backupconfiguration-binarylog"] = ResourceContext{
-		// TODO: Remove after switching to use direct controller.
-		SkipNoChange: true,
-		ResourceKind: "SQLInstance",
 	}
 
 	resourceContextMap["sqlinstance-backupconfiguration-binarylog-direct"] = ResourceContext{
-		// TODO: Remove after switching to use direct controller.
-		SkipNoChange: true,
-		ResourceKind: "SQLInstance",
-	}
-
-	resourceContextMap["sqlinstance-backupconfiguration-pitr"] = ResourceContext{
-		// TODO: Remove after switching to use direct controller.
+		// Defaulting behavior of backup configuration requires multiple updates.
 		SkipNoChange: true,
 		ResourceKind: "SQLInstance",
 	}
 
 	resourceContextMap["sqlinstance-backupconfiguration-pitr-direct"] = ResourceContext{
-		// TODO: Remove after switching to use direct controller.
-		SkipNoChange: true,
-		ResourceKind: "SQLInstance",
-	}
-
-	resourceContextMap["sqlinstance-datacacheconfig"] = ResourceContext{
-		// TODO: Remove after switching to use direct controller.
+		// Defaulting behavior of backup configuration requires multiple updates.
 		SkipNoChange: true,
 		ResourceKind: "SQLInstance",
 	}
 
 	resourceContextMap["sqlinstance-datacacheconfig-direct"] = ResourceContext{
-		// TODO: Remove after switching to use direct controller.
+		// The direct controller requires two updates to set edition: ENTERPRISE_PLUS.
 		SkipNoChange: true,
 		ResourceKind: "SQLInstance",
 	}
