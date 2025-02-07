@@ -344,6 +344,46 @@ func AlloydbConnectionInfoSpec_ToProto(mapCtx *direct.MapContext, in *krm.Alloyd
 	// MISSING: InstanceUid
 	return out
 }
+func AlloydbDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.AlloydbDatabaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloydbDatabaseObservedState{}
+	// MISSING: Name
+	// MISSING: Charset
+	// MISSING: Collation
+	return out
+}
+func AlloydbDatabaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloydbDatabaseObservedState) *pb.Database {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Database{}
+	// MISSING: Name
+	// MISSING: Charset
+	// MISSING: Collation
+	return out
+}
+func AlloydbDatabaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.AlloydbDatabaseSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloydbDatabaseSpec{}
+	// MISSING: Name
+	// MISSING: Charset
+	// MISSING: Collation
+	return out
+}
+func AlloydbDatabaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloydbDatabaseSpec) *pb.Database {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Database{}
+	// MISSING: Name
+	// MISSING: Charset
+	// MISSING: Collation
+	return out
+}
 func AlloydbSupportedDatabaseFlagObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SupportedDatabaseFlag) *krm.AlloydbSupportedDatabaseFlagObservedState {
 	if in == nil {
 		return nil
@@ -452,51 +492,23 @@ func AlloydbUserSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloydbUserSpec)
 	// MISSING: KeepExtraRoles
 	return out
 }
-func User_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.User {
+func Database_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.Database {
 	if in == nil {
 		return nil
 	}
-	out := &krm.User{}
-	// MISSING: Name
-	out.Password = direct.LazyPtr(in.GetPassword())
-	out.DatabaseRoles = in.DatabaseRoles
-	out.UserType = direct.Enum_FromProto(mapCtx, in.GetUserType())
-	out.KeepExtraRoles = direct.LazyPtr(in.GetKeepExtraRoles())
-	return out
-}
-func User_ToProto(mapCtx *direct.MapContext, in *krm.User) *pb.User {
-	if in == nil {
-		return nil
-	}
-	out := &pb.User{}
-	// MISSING: Name
-	out.Password = direct.ValueOf(in.Password)
-	out.DatabaseRoles = in.DatabaseRoles
-	out.UserType = direct.Enum_ToProto[pb.User_UserType](mapCtx, in.UserType)
-	out.KeepExtraRoles = direct.ValueOf(in.KeepExtraRoles)
-	return out
-}
-func UserObservedState_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.UserObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UserObservedState{}
+	out := &krm.Database{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Password
-	// MISSING: DatabaseRoles
-	// MISSING: UserType
-	// MISSING: KeepExtraRoles
+	out.Charset = direct.LazyPtr(in.GetCharset())
+	out.Collation = direct.LazyPtr(in.GetCollation())
 	return out
 }
-func UserObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UserObservedState) *pb.User {
+func Database_ToProto(mapCtx *direct.MapContext, in *krm.Database) *pb.Database {
 	if in == nil {
 		return nil
 	}
-	out := &pb.User{}
+	out := &pb.Database{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Password
-	// MISSING: DatabaseRoles
-	// MISSING: UserType
-	// MISSING: KeepExtraRoles
+	out.Charset = direct.ValueOf(in.Charset)
+	out.Collation = direct.ValueOf(in.Collation)
 	return out
 }

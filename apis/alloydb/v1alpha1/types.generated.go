@@ -15,32 +15,22 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.alloydb.v1.User
-type User struct {
-
-	// Input only. Password for the user.
-	// +kcc:proto:field=google.cloud.alloydb.v1.User.password
-	Password *string `json:"password,omitempty"`
-
-	// Optional. List of database roles this user has.
-	//  The database role strings are subject to the PostgreSQL naming conventions.
-	// +kcc:proto:field=google.cloud.alloydb.v1.User.database_roles
-	DatabaseRoles []string `json:"databaseRoles,omitempty"`
-
-	// Optional. Type of this user.
-	// +kcc:proto:field=google.cloud.alloydb.v1.User.user_type
-	UserType *string `json:"userType,omitempty"`
-
-	// Input only. If the user already exists and it has additional roles, keep
-	//  them granted.
-	// +kcc:proto:field=google.cloud.alloydb.v1.User.keep_extra_roles
-	KeepExtraRoles *bool `json:"keepExtraRoles,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1.User
-type UserObservedState struct {
-	// Output only. Name of the resource in the form of
-	//  projects/{project}/locations/{location}/cluster/{cluster}/users/{user}.
-	// +kcc:proto:field=google.cloud.alloydb.v1.User.name
+// +kcc:proto=google.cloud.alloydb.v1.Database
+type Database struct {
+	// Identifier. Name of the resource in the form of
+	//  `projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}`.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Database.name
 	Name *string `json:"name,omitempty"`
+
+	// Optional. Charset for the database.
+	//  This field can contain any PostgreSQL supported charset name.
+	//  Example values include "UTF8", "SQL_ASCII", etc.
+	// +kcc:proto:field=google.cloud.alloydb.v1.Database.charset
+	Charset *string `json:"charset,omitempty"`
+
+	// Optional. Collation for the database.
+	//  Name of the custom or native collation for postgres.
+	//  Example values include "C", "POSIX", etc
+	// +kcc:proto:field=google.cloud.alloydb.v1.Database.collation
+	Collation *string `json:"collation,omitempty"`
 }
