@@ -15,10 +15,10 @@
 package analytics
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/analytics/admin/apiv1beta/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/analytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Account) *krm.AnalyticsAccountObservedState {
 	if in == nil {
@@ -384,6 +384,62 @@ func AnalyticsGoogleAdsLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.Analy
 	// MISSING: CreatorEmailAddress
 	return out
 }
+func AnalyticsKeyEventObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent) *krm.AnalyticsKeyEventObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsKeyEventObservedState{}
+	// MISSING: Name
+	// MISSING: EventName
+	// MISSING: CreateTime
+	// MISSING: Deletable
+	// MISSING: Custom
+	// MISSING: CountingMethod
+	// MISSING: DefaultValue
+	return out
+}
+func AnalyticsKeyEventObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsKeyEventObservedState) *pb.KeyEvent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyEvent{}
+	// MISSING: Name
+	// MISSING: EventName
+	// MISSING: CreateTime
+	// MISSING: Deletable
+	// MISSING: Custom
+	// MISSING: CountingMethod
+	// MISSING: DefaultValue
+	return out
+}
+func AnalyticsKeyEventSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent) *krm.AnalyticsKeyEventSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalyticsKeyEventSpec{}
+	// MISSING: Name
+	// MISSING: EventName
+	// MISSING: CreateTime
+	// MISSING: Deletable
+	// MISSING: Custom
+	// MISSING: CountingMethod
+	// MISSING: DefaultValue
+	return out
+}
+func AnalyticsKeyEventSpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsKeyEventSpec) *pb.KeyEvent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyEvent{}
+	// MISSING: Name
+	// MISSING: EventName
+	// MISSING: CreateTime
+	// MISSING: Deletable
+	// MISSING: Custom
+	// MISSING: CountingMethod
+	// MISSING: DefaultValue
+	return out
+}
 func AnalyticsMeasurementProtocolSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MeasurementProtocolSecret) *krm.AnalyticsMeasurementProtocolSecretObservedState {
 	if in == nil {
 		return nil
@@ -504,79 +560,77 @@ func AnalyticsPropertySpec_ToProto(mapCtx *direct.MapContext, in *krm.AnalyticsP
 	// MISSING: Account
 	return out
 }
-func ConversionEvent_FromProto(mapCtx *direct.MapContext, in *pb.ConversionEvent) *krm.ConversionEvent {
+func KeyEvent_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent) *krm.KeyEvent {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ConversionEvent{}
+	out := &krm.KeyEvent{}
 	// MISSING: Name
 	out.EventName = direct.LazyPtr(in.GetEventName())
 	// MISSING: CreateTime
 	// MISSING: Deletable
 	// MISSING: Custom
 	out.CountingMethod = direct.Enum_FromProto(mapCtx, in.GetCountingMethod())
-	out.DefaultConversionValue = ConversionEvent_DefaultConversionValue_FromProto(mapCtx, in.GetDefaultConversionValue())
+	out.DefaultValue = KeyEvent_DefaultValue_FromProto(mapCtx, in.GetDefaultValue())
 	return out
 }
-func ConversionEvent_ToProto(mapCtx *direct.MapContext, in *krm.ConversionEvent) *pb.ConversionEvent {
+func KeyEvent_ToProto(mapCtx *direct.MapContext, in *krm.KeyEvent) *pb.KeyEvent {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ConversionEvent{}
+	out := &pb.KeyEvent{}
 	// MISSING: Name
 	out.EventName = direct.ValueOf(in.EventName)
 	// MISSING: CreateTime
 	// MISSING: Deletable
 	// MISSING: Custom
-	out.CountingMethod = direct.Enum_ToProto[pb.ConversionEvent_ConversionCountingMethod](mapCtx, in.CountingMethod)
-	if oneof := ConversionEvent_DefaultConversionValue_ToProto(mapCtx, in.DefaultConversionValue); oneof != nil {
-		out.DefaultConversionValue = &pb.ConversionEvent_DefaultConversionValue_{DefaultConversionValue: oneof}
-	}
+	out.CountingMethod = direct.Enum_ToProto[pb.KeyEvent_CountingMethod](mapCtx, in.CountingMethod)
+	out.DefaultValue = KeyEvent_DefaultValue_ToProto(mapCtx, in.DefaultValue)
 	return out
 }
-func ConversionEventObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversionEvent) *krm.ConversionEventObservedState {
+func KeyEventObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent) *krm.KeyEventObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ConversionEventObservedState{}
+	out := &krm.KeyEventObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: EventName
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.Deletable = direct.LazyPtr(in.GetDeletable())
 	out.Custom = direct.LazyPtr(in.GetCustom())
 	// MISSING: CountingMethod
-	// MISSING: DefaultConversionValue
+	// MISSING: DefaultValue
 	return out
 }
-func ConversionEventObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConversionEventObservedState) *pb.ConversionEvent {
+func KeyEventObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KeyEventObservedState) *pb.KeyEvent {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ConversionEvent{}
+	out := &pb.KeyEvent{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: EventName
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.Deletable = direct.ValueOf(in.Deletable)
 	out.Custom = direct.ValueOf(in.Custom)
 	// MISSING: CountingMethod
-	// MISSING: DefaultConversionValue
+	// MISSING: DefaultValue
 	return out
 }
-func ConversionEvent_DefaultConversionValue_FromProto(mapCtx *direct.MapContext, in *pb.ConversionEvent_DefaultConversionValue) *krm.ConversionEvent_DefaultConversionValue {
+func KeyEvent_DefaultValue_FromProto(mapCtx *direct.MapContext, in *pb.KeyEvent_DefaultValue) *krm.KeyEvent_DefaultValue {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ConversionEvent_DefaultConversionValue{}
-	out.Value = in.Value
-	out.CurrencyCode = in.CurrencyCode
+	out := &krm.KeyEvent_DefaultValue{}
+	out.NumericValue = direct.LazyPtr(in.GetNumericValue())
+	out.CurrencyCode = direct.LazyPtr(in.GetCurrencyCode())
 	return out
 }
-func ConversionEvent_DefaultConversionValue_ToProto(mapCtx *direct.MapContext, in *krm.ConversionEvent_DefaultConversionValue) *pb.ConversionEvent_DefaultConversionValue {
+func KeyEvent_DefaultValue_ToProto(mapCtx *direct.MapContext, in *krm.KeyEvent_DefaultValue) *pb.KeyEvent_DefaultValue {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ConversionEvent_DefaultConversionValue{}
-	out.Value = in.Value
-	out.CurrencyCode = in.CurrencyCode
+	out := &pb.KeyEvent_DefaultValue{}
+	out.NumericValue = direct.ValueOf(in.NumericValue)
+	out.CurrencyCode = direct.ValueOf(in.CurrencyCode)
 	return out
 }

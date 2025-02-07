@@ -15,62 +15,62 @@
 package v1alpha1
 
 
-// +kcc:proto=google.analytics.admin.v1beta.ConversionEvent
-type ConversionEvent struct {
+// +kcc:proto=google.analytics.admin.v1beta.KeyEvent
+type KeyEvent struct {
 
-	// Immutable. The event name for this conversion event.
+	// Immutable. The event name for this key event.
 	//  Examples: 'click', 'purchase'
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.event_name
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.event_name
 	EventName *string `json:"eventName,omitempty"`
 
-	// Optional. The method by which conversions will be counted across multiple
-	//  events within a session. If this value is not provided, it will be set to
-	//  `ONCE_PER_EVENT`.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.counting_method
+	// Required. The method by which Key Events will be counted across multiple
+	//  events within a session.
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.counting_method
 	CountingMethod *string `json:"countingMethod,omitempty"`
 
-	// Optional. Defines a default value/currency for a conversion event.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.default_conversion_value
-	DefaultConversionValue *ConversionEvent_DefaultConversionValue `json:"defaultConversionValue,omitempty"`
+	// Optional. Defines a default value/currency for a key event.
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.default_value
+	DefaultValue *KeyEvent_DefaultValue `json:"defaultValue,omitempty"`
 }
 
-// +kcc:proto=google.analytics.admin.v1beta.ConversionEvent.DefaultConversionValue
-type ConversionEvent_DefaultConversionValue struct {
-	// This value will be used to populate the value for all conversions
-	//  of the specified event_name where the event "value" parameter is unset.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.DefaultConversionValue.value
-	Value *float64 `json:"value,omitempty"`
+// +kcc:proto=google.analytics.admin.v1beta.KeyEvent.DefaultValue
+type KeyEvent_DefaultValue struct {
+	// Required. This will be used to populate the "value" parameter for all
+	//  occurrences of this Key Event (specified by event_name) where that
+	//  parameter is unset.
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.DefaultValue.numeric_value
+	NumericValue *float64 `json:"numericValue,omitempty"`
 
-	// When a conversion event for this event_name has no set currency,
-	//  this currency will be applied as the default. Must be in ISO 4217
-	//  currency code format. See https://en.wikipedia.org/wiki/ISO_4217 for
-	//  more information.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.DefaultConversionValue.currency_code
+	// Required. When an occurrence of this Key Event (specified by event_name)
+	//  has no set currency this currency will be applied as the default. Must be
+	//  in ISO 4217 currency code format.
+	//
+	//  See https://en.wikipedia.org/wiki/ISO_4217 for more information.
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.DefaultValue.currency_code
 	CurrencyCode *string `json:"currencyCode,omitempty"`
 }
 
-// +kcc:proto=google.analytics.admin.v1beta.ConversionEvent
-type ConversionEventObservedState struct {
-	// Output only. Resource name of this conversion event.
-	//  Format: properties/{property}/conversionEvents/{conversion_event}
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.name
+// +kcc:proto=google.analytics.admin.v1beta.KeyEvent
+type KeyEventObservedState struct {
+	// Output only. Resource name of this key event.
+	//  Format: properties/{property}/keyEvents/{key_event}
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. Time when this conversion event was created in the property.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.create_time
+	// Output only. Time when this key event was created in the property.
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. If set, this event can currently be deleted with
-	//  DeleteConversionEvent.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.deletable
+	// Output only. If set to true, this event can be deleted.
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.deletable
 	Deletable *bool `json:"deletable,omitempty"`
 
-	// Output only. If set to true, this conversion event refers to a custom
-	//  event.  If set to false, this conversion event refers to a default event in
-	//  GA. Default events typically have special meaning in GA. Default events are
-	//  usually created for you by the GA system, but in some cases can be created
-	//  by property admins. Custom events count towards the maximum number of
-	//  custom conversion events that may be created per property.
-	// +kcc:proto:field=google.analytics.admin.v1beta.ConversionEvent.custom
+	// Output only. If set to true, this key event refers to a custom event.  If
+	//  set to false, this key event refers to a default event in GA. Default
+	//  events typically have special meaning in GA. Default events are usually
+	//  created for you by the GA system, but in some cases can be created by
+	//  property admins. Custom events count towards the maximum number of
+	//  custom key events that may be created per property.
+	// +kcc:proto:field=google.analytics.admin.v1beta.KeyEvent.custom
 	Custom *bool `json:"custom,omitempty"`
 }
