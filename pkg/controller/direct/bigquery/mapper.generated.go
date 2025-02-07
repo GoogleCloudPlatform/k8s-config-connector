@@ -20,48 +20,48 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func Assignment_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.Assignment {
+func BiReservation_FromProto(mapCtx *direct.MapContext, in *pb.BiReservation) *krm.BiReservation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Assignment{}
-	// MISSING: Name
-	out.Assignee = direct.LazyPtr(in.GetAssignee())
-	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
-	// MISSING: State
-	return out
-}
-func Assignment_ToProto(mapCtx *direct.MapContext, in *krm.Assignment) *pb.Assignment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Assignment{}
-	// MISSING: Name
-	out.Assignee = direct.ValueOf(in.Assignee)
-	out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
-	// MISSING: State
-	return out
-}
-func AssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.AssignmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AssignmentObservedState{}
+	out := &krm.BiReservation{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Assignee
-	// MISSING: JobType
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: UpdateTime
+	out.Size = direct.LazyPtr(in.GetSize())
+	out.PreferredTables = direct.Slice_FromProto(mapCtx, in.PreferredTables, TableReference_FromProto)
 	return out
 }
-func AssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssignmentObservedState) *pb.Assignment {
+func BiReservation_ToProto(mapCtx *direct.MapContext, in *krm.BiReservation) *pb.BiReservation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Assignment{}
+	out := &pb.BiReservation{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Assignee
-	// MISSING: JobType
-	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
+	// MISSING: UpdateTime
+	out.Size = direct.ValueOf(in.Size)
+	out.PreferredTables = direct.Slice_ToProto(mapCtx, in.PreferredTables, TableReference_ToProto)
+	return out
+}
+func BiReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BiReservation) *krm.BiReservationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BiReservationObservedState{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Size
+	// MISSING: PreferredTables
+	return out
+}
+func BiReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BiReservationObservedState) *pb.BiReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BiReservation{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Size
+	// MISSING: PreferredTables
 	return out
 }
 func BigqueryAssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigqueryAssignmentObservedState {
@@ -106,6 +106,50 @@ func BigqueryAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryA
 	// MISSING: Assignee
 	// MISSING: JobType
 	// MISSING: State
+	return out
+}
+func BigqueryBiReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BiReservation) *krm.BigqueryBiReservationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryBiReservationObservedState{}
+	// MISSING: Name
+	// MISSING: UpdateTime
+	// MISSING: Size
+	// MISSING: PreferredTables
+	return out
+}
+func BigqueryBiReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryBiReservationObservedState) *pb.BiReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BiReservation{}
+	// MISSING: Name
+	// MISSING: UpdateTime
+	// MISSING: Size
+	// MISSING: PreferredTables
+	return out
+}
+func BigqueryBiReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.BiReservation) *krm.BigqueryBiReservationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryBiReservationSpec{}
+	// MISSING: Name
+	// MISSING: UpdateTime
+	// MISSING: Size
+	// MISSING: PreferredTables
+	return out
+}
+func BigqueryBiReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryBiReservationSpec) *pb.BiReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BiReservation{}
+	// MISSING: Name
+	// MISSING: UpdateTime
+	// MISSING: Size
+	// MISSING: PreferredTables
 	return out
 }
 func BigqueryCapacityCommitmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CapacityCommitment) *krm.BigqueryCapacityCommitmentObservedState {
@@ -254,5 +298,25 @@ func BigqueryReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bigquery
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
+	return out
+}
+func TableReference_FromProto(mapCtx *direct.MapContext, in *pb.TableReference) *krm.TableReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TableReference{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.TableID = direct.LazyPtr(in.GetTableId())
+	return out
+}
+func TableReference_ToProto(mapCtx *direct.MapContext, in *krm.TableReference) *pb.TableReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TableReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.TableId = direct.ValueOf(in.TableID)
 	return out
 }

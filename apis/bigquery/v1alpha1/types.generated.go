@@ -15,29 +15,41 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
-type Assignment struct {
-
-	// The resource which will use the reservation. E.g.
-	//  `projects/myproject`, `folders/123`, or `organizations/456`.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.assignee
-	Assignee *string `json:"assignee,omitempty"`
-
-	// Which type of jobs will use the reservation.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.job_type
-	JobType *string `json:"jobType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
-type AssignmentObservedState struct {
-	// Output only. Name of the resource. E.g.:
-	//  `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
-	//  The assignment_id must only contain lower case alphanumeric characters or
-	//  dashes and the max length is 64 characters.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.name
+// +kcc:proto=google.cloud.bigquery.reservation.v1.BiReservation
+type BiReservation struct {
+	// The resource name of the singleton BI reservation.
+	//  Reservation names have the form
+	//  `projects/{project_id}/locations/{location_id}/biReservation`.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.BiReservation.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. State of the assignment.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.state
-	State *string `json:"state,omitempty"`
+	// Size of a reservation, in bytes.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.BiReservation.size
+	Size *int64 `json:"size,omitempty"`
+
+	// Preferred tables to use BI capacity for.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.BiReservation.preferred_tables
+	PreferredTables []TableReference `json:"preferredTables,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.reservation.v1.TableReference
+type TableReference struct {
+	// The assigned project ID of the project.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.TableReference.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// The ID of the dataset in the above project.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.TableReference.dataset_id
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// The ID of the table in the above dataset.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.TableReference.table_id
+	TableID *string `json:"tableID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.reservation.v1.BiReservation
+type BiReservationObservedState struct {
+	// Output only. The last update timestamp of a reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.BiReservation.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
