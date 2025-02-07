@@ -15,10 +15,10 @@
 package baremetalsolution
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/baremetalsolution/apiv2/baremetalsolutionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/baremetalsolution/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func BaremetalsolutionInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.BaremetalsolutionInstanceConfigObservedState {
 	if in == nil {
@@ -966,6 +966,58 @@ func BaremetalsolutionVolumeObservedState_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Attached
 	return out
 }
+func BaremetalsolutionVolumeSnapshotObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VolumeSnapshot) *krm.BaremetalsolutionVolumeSnapshotObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionVolumeSnapshotObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: StorageVolume
+	// MISSING: Type
+	return out
+}
+func BaremetalsolutionVolumeSnapshotObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionVolumeSnapshotObservedState) *pb.VolumeSnapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VolumeSnapshot{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: StorageVolume
+	// MISSING: Type
+	return out
+}
+func BaremetalsolutionVolumeSnapshotSpec_FromProto(mapCtx *direct.MapContext, in *pb.VolumeSnapshot) *krm.BaremetalsolutionVolumeSnapshotSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionVolumeSnapshotSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: StorageVolume
+	// MISSING: Type
+	return out
+}
+func BaremetalsolutionVolumeSnapshotSpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionVolumeSnapshotSpec) *pb.VolumeSnapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VolumeSnapshot{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: StorageVolume
+	// MISSING: Type
+	return out
+}
 func BaremetalsolutionVolumeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.BaremetalsolutionVolumeSpec {
 	if in == nil {
 		return nil
@@ -1028,149 +1080,55 @@ func BaremetalsolutionVolumeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bare
 	// MISSING: Attached
 	return out
 }
-func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
+func VolumeSnapshot_FromProto(mapCtx *direct.MapContext, in *pb.VolumeSnapshot) *krm.VolumeSnapshot {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Volume{}
-	// MISSING: Name
-	out.ID = direct.LazyPtr(in.GetId())
-	out.StorageType = direct.Enum_FromProto(mapCtx, in.GetStorageType())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.RequestedSizeGib = direct.LazyPtr(in.GetRequestedSizeGib())
-	out.OriginallyRequestedSizeGib = direct.LazyPtr(in.GetOriginallyRequestedSizeGib())
-	out.CurrentSizeGib = direct.LazyPtr(in.GetCurrentSizeGib())
-	out.EmergencySizeGib = direct.LazyPtr(in.GetEmergencySizeGib())
-	out.MaxSizeGib = direct.LazyPtr(in.GetMaxSizeGib())
-	out.AutoGrownSizeGib = direct.LazyPtr(in.GetAutoGrownSizeGib())
-	out.RemainingSpaceGib = direct.LazyPtr(in.GetRemainingSpaceGib())
-	out.SnapshotReservationDetail = Volume_SnapshotReservationDetail_FromProto(mapCtx, in.GetSnapshotReservationDetail())
-	out.SnapshotAutoDeleteBehavior = direct.Enum_FromProto(mapCtx, in.GetSnapshotAutoDeleteBehavior())
-	out.Labels = in.Labels
-	out.SnapshotEnabled = direct.LazyPtr(in.GetSnapshotEnabled())
-	out.Pod = direct.LazyPtr(in.GetPod())
-	// MISSING: Protocol
-	// MISSING: BootVolume
-	out.PerformanceTier = direct.Enum_FromProto(mapCtx, in.GetPerformanceTier())
-	out.Notes = direct.LazyPtr(in.GetNotes())
-	out.WorkloadProfile = direct.Enum_FromProto(mapCtx, in.GetWorkloadProfile())
-	// MISSING: ExpireTime
-	// MISSING: Instances
-	// MISSING: Attached
-	return out
-}
-func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Volume{}
-	// MISSING: Name
-	out.Id = direct.ValueOf(in.ID)
-	out.StorageType = direct.Enum_ToProto[pb.Volume_StorageType](mapCtx, in.StorageType)
-	out.State = direct.Enum_ToProto[pb.Volume_State](mapCtx, in.State)
-	out.RequestedSizeGib = direct.ValueOf(in.RequestedSizeGib)
-	out.OriginallyRequestedSizeGib = direct.ValueOf(in.OriginallyRequestedSizeGib)
-	out.CurrentSizeGib = direct.ValueOf(in.CurrentSizeGib)
-	out.EmergencySizeGib = direct.ValueOf(in.EmergencySizeGib)
-	out.MaxSizeGib = direct.ValueOf(in.MaxSizeGib)
-	out.AutoGrownSizeGib = direct.ValueOf(in.AutoGrownSizeGib)
-	out.RemainingSpaceGib = direct.ValueOf(in.RemainingSpaceGib)
-	out.SnapshotReservationDetail = Volume_SnapshotReservationDetail_ToProto(mapCtx, in.SnapshotReservationDetail)
-	out.SnapshotAutoDeleteBehavior = direct.Enum_ToProto[pb.Volume_SnapshotAutoDeleteBehavior](mapCtx, in.SnapshotAutoDeleteBehavior)
-	out.Labels = in.Labels
-	out.SnapshotEnabled = direct.ValueOf(in.SnapshotEnabled)
-	out.Pod = direct.ValueOf(in.Pod)
-	// MISSING: Protocol
-	// MISSING: BootVolume
-	out.PerformanceTier = direct.Enum_ToProto[pb.VolumePerformanceTier](mapCtx, in.PerformanceTier)
-	out.Notes = direct.ValueOf(in.Notes)
-	out.WorkloadProfile = direct.Enum_ToProto[pb.Volume_WorkloadProfile](mapCtx, in.WorkloadProfile)
-	// MISSING: ExpireTime
-	// MISSING: Instances
-	// MISSING: Attached
-	return out
-}
-func VolumeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.VolumeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VolumeObservedState{}
+	out := &krm.VolumeSnapshot{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: ID
-	// MISSING: StorageType
-	// MISSING: State
-	// MISSING: RequestedSizeGib
-	// MISSING: OriginallyRequestedSizeGib
-	// MISSING: CurrentSizeGib
-	// MISSING: EmergencySizeGib
-	// MISSING: MaxSizeGib
-	// MISSING: AutoGrownSizeGib
-	// MISSING: RemainingSpaceGib
-	// MISSING: SnapshotReservationDetail
-	// MISSING: SnapshotAutoDeleteBehavior
-	// MISSING: Labels
-	// MISSING: SnapshotEnabled
-	// MISSING: Pod
-	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
-	out.BootVolume = direct.LazyPtr(in.GetBootVolume())
-	// MISSING: PerformanceTier
-	// MISSING: Notes
-	// MISSING: WorkloadProfile
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.Instances = in.Instances
-	out.Attached = direct.LazyPtr(in.GetAttached())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: StorageVolume
+	// MISSING: Type
 	return out
 }
-func VolumeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeObservedState) *pb.Volume {
+func VolumeSnapshot_ToProto(mapCtx *direct.MapContext, in *krm.VolumeSnapshot) *pb.VolumeSnapshot {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Volume{}
+	out := &pb.VolumeSnapshot{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: ID
-	// MISSING: StorageType
-	// MISSING: State
-	// MISSING: RequestedSizeGib
-	// MISSING: OriginallyRequestedSizeGib
-	// MISSING: CurrentSizeGib
-	// MISSING: EmergencySizeGib
-	// MISSING: MaxSizeGib
-	// MISSING: AutoGrownSizeGib
-	// MISSING: RemainingSpaceGib
-	// MISSING: SnapshotReservationDetail
-	// MISSING: SnapshotAutoDeleteBehavior
-	// MISSING: Labels
-	// MISSING: SnapshotEnabled
-	// MISSING: Pod
-	out.Protocol = direct.Enum_ToProto[pb.Volume_Protocol](mapCtx, in.Protocol)
-	out.BootVolume = direct.ValueOf(in.BootVolume)
-	// MISSING: PerformanceTier
-	// MISSING: Notes
-	// MISSING: WorkloadProfile
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	out.Instances = in.Instances
-	out.Attached = direct.ValueOf(in.Attached)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: StorageVolume
+	// MISSING: Type
 	return out
 }
-func Volume_SnapshotReservationDetail_FromProto(mapCtx *direct.MapContext, in *pb.Volume_SnapshotReservationDetail) *krm.Volume_SnapshotReservationDetail {
+func VolumeSnapshotObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VolumeSnapshot) *krm.VolumeSnapshotObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Volume_SnapshotReservationDetail{}
-	out.ReservedSpaceGib = direct.LazyPtr(in.GetReservedSpaceGib())
-	out.ReservedSpaceUsedPercent = direct.LazyPtr(in.GetReservedSpaceUsedPercent())
-	out.ReservedSpaceRemainingGib = direct.LazyPtr(in.GetReservedSpaceRemainingGib())
-	out.ReservedSpacePercent = direct.LazyPtr(in.GetReservedSpacePercent())
+	out := &krm.VolumeSnapshotObservedState{}
+	// MISSING: Name
+	out.ID = direct.LazyPtr(in.GetId())
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StorageVolume = direct.LazyPtr(in.GetStorageVolume())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
-func Volume_SnapshotReservationDetail_ToProto(mapCtx *direct.MapContext, in *krm.Volume_SnapshotReservationDetail) *pb.Volume_SnapshotReservationDetail {
+func VolumeSnapshotObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VolumeSnapshotObservedState) *pb.VolumeSnapshot {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Volume_SnapshotReservationDetail{}
-	out.ReservedSpaceGib = direct.ValueOf(in.ReservedSpaceGib)
-	out.ReservedSpaceUsedPercent = direct.ValueOf(in.ReservedSpaceUsedPercent)
-	out.ReservedSpaceRemainingGib = direct.ValueOf(in.ReservedSpaceRemainingGib)
-	out.ReservedSpacePercent = direct.ValueOf(in.ReservedSpacePercent)
+	out := &pb.VolumeSnapshot{}
+	// MISSING: Name
+	out.Id = direct.ValueOf(in.ID)
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StorageVolume = direct.ValueOf(in.StorageVolume)
+	out.Type = direct.Enum_ToProto[pb.VolumeSnapshot_SnapshotType](mapCtx, in.Type)
 	return out
 }
