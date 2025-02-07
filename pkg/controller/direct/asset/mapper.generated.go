@@ -15,11 +15,137 @@
 package asset
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
+func Asset_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset{}
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.AssetType = direct.LazyPtr(in.GetAssetType())
+	out.Resource = Resource_FromProto(mapCtx, in.GetResource())
+	out.IamPolicy = Policy_FromProto(mapCtx, in.GetIamPolicy())
+	out.OrgPolicy = direct.Slice_FromProto(mapCtx, in.OrgPolicy, Policy_FromProto)
+	out.AccessPolicy = AccessPolicy_FromProto(mapCtx, in.GetAccessPolicy())
+	out.AccessLevel = AccessLevel_FromProto(mapCtx, in.GetAccessLevel())
+	out.ServicePerimeter = ServicePerimeter_FromProto(mapCtx, in.GetServicePerimeter())
+	out.OsInventory = Inventory_FromProto(mapCtx, in.GetOsInventory())
+	out.RelatedAssets = RelatedAssets_FromProto(mapCtx, in.GetRelatedAssets())
+	out.RelatedAsset = RelatedAsset_FromProto(mapCtx, in.GetRelatedAsset())
+	out.Ancestors = in.Ancestors
+	return out
+}
+func Asset_ToProto(mapCtx *direct.MapContext, in *krm.Asset) *pb.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset{}
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Name = direct.ValueOf(in.Name)
+	out.AssetType = direct.ValueOf(in.AssetType)
+	out.Resource = Resource_ToProto(mapCtx, in.Resource)
+	out.IamPolicy = Policy_ToProto(mapCtx, in.IamPolicy)
+	out.OrgPolicy = direct.Slice_ToProto(mapCtx, in.OrgPolicy, Policy_ToProto)
+	if oneof := AccessPolicy_ToProto(mapCtx, in.AccessPolicy); oneof != nil {
+		out.AccessContextPolicy = &pb.Asset_AccessPolicy{AccessPolicy: oneof}
+	}
+	if oneof := AccessLevel_ToProto(mapCtx, in.AccessLevel); oneof != nil {
+		out.AccessContextPolicy = &pb.Asset_AccessLevel{AccessLevel: oneof}
+	}
+	if oneof := ServicePerimeter_ToProto(mapCtx, in.ServicePerimeter); oneof != nil {
+		out.AccessContextPolicy = &pb.Asset_ServicePerimeter{ServicePerimeter: oneof}
+	}
+	out.OsInventory = Inventory_ToProto(mapCtx, in.OsInventory)
+	out.RelatedAssets = RelatedAssets_ToProto(mapCtx, in.RelatedAssets)
+	out.RelatedAsset = RelatedAsset_ToProto(mapCtx, in.RelatedAsset)
+	out.Ancestors = in.Ancestors
+	return out
+}
+func AssetAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.AssetAssetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssetAssetObservedState{}
+	// MISSING: UpdateTime
+	// MISSING: Name
+	// MISSING: AssetType
+	// MISSING: Resource
+	// MISSING: IamPolicy
+	// MISSING: OrgPolicy
+	// MISSING: AccessPolicy
+	// MISSING: AccessLevel
+	// MISSING: ServicePerimeter
+	// MISSING: OsInventory
+	// MISSING: RelatedAssets
+	// MISSING: RelatedAsset
+	// MISSING: Ancestors
+	return out
+}
+func AssetAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssetAssetObservedState) *pb.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset{}
+	// MISSING: UpdateTime
+	// MISSING: Name
+	// MISSING: AssetType
+	// MISSING: Resource
+	// MISSING: IamPolicy
+	// MISSING: OrgPolicy
+	// MISSING: AccessPolicy
+	// MISSING: AccessLevel
+	// MISSING: ServicePerimeter
+	// MISSING: OsInventory
+	// MISSING: RelatedAssets
+	// MISSING: RelatedAsset
+	// MISSING: Ancestors
+	return out
+}
+func AssetAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.AssetAssetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssetAssetSpec{}
+	// MISSING: UpdateTime
+	// MISSING: Name
+	// MISSING: AssetType
+	// MISSING: Resource
+	// MISSING: IamPolicy
+	// MISSING: OrgPolicy
+	// MISSING: AccessPolicy
+	// MISSING: AccessLevel
+	// MISSING: ServicePerimeter
+	// MISSING: OsInventory
+	// MISSING: RelatedAssets
+	// MISSING: RelatedAsset
+	// MISSING: Ancestors
+	return out
+}
+func AssetAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetAssetSpec) *pb.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset{}
+	// MISSING: UpdateTime
+	// MISSING: Name
+	// MISSING: AssetType
+	// MISSING: Resource
+	// MISSING: IamPolicy
+	// MISSING: OrgPolicy
+	// MISSING: AccessPolicy
+	// MISSING: AccessLevel
+	// MISSING: ServicePerimeter
+	// MISSING: OsInventory
+	// MISSING: RelatedAssets
+	// MISSING: RelatedAsset
+	// MISSING: Ancestors
+	return out
+}
 func AssetFeedObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.AssetFeedObservedState {
 	if in == nil {
 		return nil
@@ -74,6 +200,46 @@ func AssetFeedSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetFeedSpec) *pb
 	// MISSING: FeedOutputConfig
 	// MISSING: Condition
 	// MISSING: RelationshipTypes
+	return out
+}
+func AssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.AssetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssetObservedState{}
+	// MISSING: UpdateTime
+	// MISSING: Name
+	// MISSING: AssetType
+	// MISSING: Resource
+	// MISSING: IamPolicy
+	// MISSING: OrgPolicy
+	// MISSING: AccessPolicy
+	// MISSING: AccessLevel
+	// MISSING: ServicePerimeter
+	out.OsInventory = InventoryObservedState_FromProto(mapCtx, in.GetOsInventory())
+	// MISSING: RelatedAssets
+	// MISSING: RelatedAsset
+	// MISSING: Ancestors
+	return out
+}
+func AssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssetObservedState) *pb.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset{}
+	// MISSING: UpdateTime
+	// MISSING: Name
+	// MISSING: AssetType
+	// MISSING: Resource
+	// MISSING: IamPolicy
+	// MISSING: OrgPolicy
+	// MISSING: AccessPolicy
+	// MISSING: AccessLevel
+	// MISSING: ServicePerimeter
+	out.OsInventory = InventoryObservedState_ToProto(mapCtx, in.OsInventory)
+	// MISSING: RelatedAssets
+	// MISSING: RelatedAsset
+	// MISSING: Ancestors
 	return out
 }
 func AssetSavedQueryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQueryObservedState {
@@ -136,201 +302,93 @@ func AssetSavedQuerySpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetSavedQu
 	// MISSING: Content
 	return out
 }
-func IamPolicyAnalysisQuery_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery) *krm.IamPolicyAnalysisQuery {
+func RelatedAsset_FromProto(mapCtx *direct.MapContext, in *pb.RelatedAsset) *krm.RelatedAsset {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IamPolicyAnalysisQuery{}
-	out.Scope = direct.LazyPtr(in.GetScope())
-	out.ResourceSelector = IamPolicyAnalysisQuery_ResourceSelector_FromProto(mapCtx, in.GetResourceSelector())
-	out.IdentitySelector = IamPolicyAnalysisQuery_IdentitySelector_FromProto(mapCtx, in.GetIdentitySelector())
-	out.AccessSelector = IamPolicyAnalysisQuery_AccessSelector_FromProto(mapCtx, in.GetAccessSelector())
-	out.Options = IamPolicyAnalysisQuery_Options_FromProto(mapCtx, in.GetOptions())
-	out.ConditionContext = IamPolicyAnalysisQuery_ConditionContext_FromProto(mapCtx, in.GetConditionContext())
+	out := &krm.RelatedAsset{}
+	out.Asset = direct.LazyPtr(in.GetAsset())
+	out.AssetType = direct.LazyPtr(in.GetAssetType())
+	out.Ancestors = in.Ancestors
+	out.RelationshipType = direct.LazyPtr(in.GetRelationshipType())
 	return out
 }
-func IamPolicyAnalysisQuery_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQuery) *pb.IamPolicyAnalysisQuery {
+func RelatedAsset_ToProto(mapCtx *direct.MapContext, in *krm.RelatedAsset) *pb.RelatedAsset {
 	if in == nil {
 		return nil
 	}
-	out := &pb.IamPolicyAnalysisQuery{}
-	out.Scope = direct.ValueOf(in.Scope)
-	out.ResourceSelector = IamPolicyAnalysisQuery_ResourceSelector_ToProto(mapCtx, in.ResourceSelector)
-	out.IdentitySelector = IamPolicyAnalysisQuery_IdentitySelector_ToProto(mapCtx, in.IdentitySelector)
-	out.AccessSelector = IamPolicyAnalysisQuery_AccessSelector_ToProto(mapCtx, in.AccessSelector)
-	out.Options = IamPolicyAnalysisQuery_Options_ToProto(mapCtx, in.Options)
-	out.ConditionContext = IamPolicyAnalysisQuery_ConditionContext_ToProto(mapCtx, in.ConditionContext)
+	out := &pb.RelatedAsset{}
+	out.Asset = direct.ValueOf(in.Asset)
+	out.AssetType = direct.ValueOf(in.AssetType)
+	out.Ancestors = in.Ancestors
+	out.RelationshipType = direct.ValueOf(in.RelationshipType)
 	return out
 }
-func IamPolicyAnalysisQuery_AccessSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krm.IamPolicyAnalysisQuery_AccessSelector {
+func RelatedAssets_FromProto(mapCtx *direct.MapContext, in *pb.RelatedAssets) *krm.RelatedAssets {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IamPolicyAnalysisQuery_AccessSelector{}
-	out.Roles = in.Roles
-	out.Permissions = in.Permissions
+	out := &krm.RelatedAssets{}
+	out.RelationshipAttributes = RelationshipAttributes_FromProto(mapCtx, in.GetRelationshipAttributes())
+	out.Assets = direct.Slice_FromProto(mapCtx, in.Assets, RelatedAsset_FromProto)
 	return out
 }
-func IamPolicyAnalysisQuery_AccessSelector_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQuery_AccessSelector) *pb.IamPolicyAnalysisQuery_AccessSelector {
+func RelatedAssets_ToProto(mapCtx *direct.MapContext, in *krm.RelatedAssets) *pb.RelatedAssets {
 	if in == nil {
 		return nil
 	}
-	out := &pb.IamPolicyAnalysisQuery_AccessSelector{}
-	out.Roles = in.Roles
-	out.Permissions = in.Permissions
+	out := &pb.RelatedAssets{}
+	out.RelationshipAttributes = RelationshipAttributes_ToProto(mapCtx, in.RelationshipAttributes)
+	out.Assets = direct.Slice_ToProto(mapCtx, in.Assets, RelatedAsset_ToProto)
 	return out
 }
-func IamPolicyAnalysisQuery_ConditionContext_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krm.IamPolicyAnalysisQuery_ConditionContext {
+func RelationshipAttributes_FromProto(mapCtx *direct.MapContext, in *pb.RelationshipAttributes) *krm.RelationshipAttributes {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IamPolicyAnalysisQuery_ConditionContext{}
-	out.AccessTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAccessTime())
+	out := &krm.RelationshipAttributes{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.SourceResourceType = direct.LazyPtr(in.GetSourceResourceType())
+	out.TargetResourceType = direct.LazyPtr(in.GetTargetResourceType())
+	out.Action = direct.LazyPtr(in.GetAction())
 	return out
 }
-func IamPolicyAnalysisQuery_ConditionContext_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQuery_ConditionContext) *pb.IamPolicyAnalysisQuery_ConditionContext {
+func RelationshipAttributes_ToProto(mapCtx *direct.MapContext, in *krm.RelationshipAttributes) *pb.RelationshipAttributes {
 	if in == nil {
 		return nil
 	}
-	out := &pb.IamPolicyAnalysisQuery_ConditionContext{}
-	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.AccessTime); oneof != nil {
-		out.TimeContext = &pb.IamPolicyAnalysisQuery_ConditionContext_AccessTime{AccessTime: oneof}
-	}
+	out := &pb.RelationshipAttributes{}
+	out.Type = direct.ValueOf(in.Type)
+	out.SourceResourceType = direct.ValueOf(in.SourceResourceType)
+	out.TargetResourceType = direct.ValueOf(in.TargetResourceType)
+	out.Action = direct.ValueOf(in.Action)
 	return out
 }
-func IamPolicyAnalysisQuery_IdentitySelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_IdentitySelector) *krm.IamPolicyAnalysisQuery_IdentitySelector {
+func Resource_FromProto(mapCtx *direct.MapContext, in *pb.Resource) *krm.Resource {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IamPolicyAnalysisQuery_IdentitySelector{}
-	out.Identity = direct.LazyPtr(in.GetIdentity())
+	out := &krm.Resource{}
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.DiscoveryDocumentURI = direct.LazyPtr(in.GetDiscoveryDocumentUri())
+	out.DiscoveryName = direct.LazyPtr(in.GetDiscoveryName())
+	out.ResourceURL = direct.LazyPtr(in.GetResourceUrl())
+	out.Parent = direct.LazyPtr(in.GetParent())
+	out.Data = Data_FromProto(mapCtx, in.GetData())
+	out.Location = direct.LazyPtr(in.GetLocation())
 	return out
 }
-func IamPolicyAnalysisQuery_IdentitySelector_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQuery_IdentitySelector) *pb.IamPolicyAnalysisQuery_IdentitySelector {
+func Resource_ToProto(mapCtx *direct.MapContext, in *krm.Resource) *pb.Resource {
 	if in == nil {
 		return nil
 	}
-	out := &pb.IamPolicyAnalysisQuery_IdentitySelector{}
-	out.Identity = direct.ValueOf(in.Identity)
-	return out
-}
-func IamPolicyAnalysisQuery_Options_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krm.IamPolicyAnalysisQuery_Options {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyAnalysisQuery_Options{}
-	out.ExpandGroups = direct.LazyPtr(in.GetExpandGroups())
-	out.ExpandRoles = direct.LazyPtr(in.GetExpandRoles())
-	out.ExpandResources = direct.LazyPtr(in.GetExpandResources())
-	out.OutputResourceEdges = direct.LazyPtr(in.GetOutputResourceEdges())
-	out.OutputGroupEdges = direct.LazyPtr(in.GetOutputGroupEdges())
-	out.AnalyzeServiceAccountImpersonation = direct.LazyPtr(in.GetAnalyzeServiceAccountImpersonation())
-	return out
-}
-func IamPolicyAnalysisQuery_Options_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQuery_Options) *pb.IamPolicyAnalysisQuery_Options {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_Options{}
-	out.ExpandGroups = direct.ValueOf(in.ExpandGroups)
-	out.ExpandRoles = direct.ValueOf(in.ExpandRoles)
-	out.ExpandResources = direct.ValueOf(in.ExpandResources)
-	out.OutputResourceEdges = direct.ValueOf(in.OutputResourceEdges)
-	out.OutputGroupEdges = direct.ValueOf(in.OutputGroupEdges)
-	out.AnalyzeServiceAccountImpersonation = direct.ValueOf(in.AnalyzeServiceAccountImpersonation)
-	return out
-}
-func IamPolicyAnalysisQuery_ResourceSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ResourceSelector) *krm.IamPolicyAnalysisQuery_ResourceSelector {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyAnalysisQuery_ResourceSelector{}
-	out.FullResourceName = direct.LazyPtr(in.GetFullResourceName())
-	return out
-}
-func IamPolicyAnalysisQuery_ResourceSelector_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQuery_ResourceSelector) *pb.IamPolicyAnalysisQuery_ResourceSelector {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_ResourceSelector{}
-	out.FullResourceName = direct.ValueOf(in.FullResourceName)
-	return out
-}
-func SavedQuery_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.SavedQuery {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SavedQuery{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: Creator
-	// MISSING: LastUpdateTime
-	// MISSING: LastUpdater
-	out.Labels = in.Labels
-	out.Content = SavedQuery_QueryContent_FromProto(mapCtx, in.GetContent())
-	return out
-}
-func SavedQuery_ToProto(mapCtx *direct.MapContext, in *krm.SavedQuery) *pb.SavedQuery {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SavedQuery{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: Creator
-	// MISSING: LastUpdateTime
-	// MISSING: LastUpdater
-	out.Labels = in.Labels
-	out.Content = SavedQuery_QueryContent_ToProto(mapCtx, in.Content)
-	return out
-}
-func SavedQueryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.SavedQueryObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SavedQueryObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.Creator = direct.LazyPtr(in.GetCreator())
-	out.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
-	out.LastUpdater = direct.LazyPtr(in.GetLastUpdater())
-	// MISSING: Labels
-	// MISSING: Content
-	return out
-}
-func SavedQueryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SavedQueryObservedState) *pb.SavedQuery {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SavedQuery{}
-	// MISSING: Name
-	// MISSING: Description
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.Creator = direct.ValueOf(in.Creator)
-	out.LastUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.LastUpdateTime)
-	out.LastUpdater = direct.ValueOf(in.LastUpdater)
-	// MISSING: Labels
-	// MISSING: Content
-	return out
-}
-func SavedQuery_QueryContent_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery_QueryContent) *krm.SavedQuery_QueryContent {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SavedQuery_QueryContent{}
-	out.IamPolicyAnalysisQuery = IamPolicyAnalysisQuery_FromProto(mapCtx, in.GetIamPolicyAnalysisQuery())
-	return out
-}
-func SavedQuery_QueryContent_ToProto(mapCtx *direct.MapContext, in *krm.SavedQuery_QueryContent) *pb.SavedQuery_QueryContent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SavedQuery_QueryContent{}
-	if oneof := IamPolicyAnalysisQuery_ToProto(mapCtx, in.IamPolicyAnalysisQuery); oneof != nil {
-		out.QueryContent = &pb.SavedQuery_QueryContent_IamPolicyAnalysisQuery{IamPolicyAnalysisQuery: oneof}
-	}
+	out := &pb.Resource{}
+	out.Version = direct.ValueOf(in.Version)
+	out.DiscoveryDocumentUri = direct.ValueOf(in.DiscoveryDocumentURI)
+	out.DiscoveryName = direct.ValueOf(in.DiscoveryName)
+	out.ResourceUrl = direct.ValueOf(in.ResourceURL)
+	out.Parent = direct.ValueOf(in.Parent)
+	out.Data = Data_ToProto(mapCtx, in.Data)
+	out.Location = direct.ValueOf(in.Location)
 	return out
 }
