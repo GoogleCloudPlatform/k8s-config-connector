@@ -15,31 +15,32 @@
 package v1alpha1
 
 
-// +kcc:proto=google.ai.generativelanguage.v1beta.Permission
-type Permission struct {
+// +kcc:proto=google.ai.generativelanguage.v1beta.Corpus
+type Corpus struct {
+	// Immutable. Identifier. The `Corpus` resource name. The ID (name excluding
+	//  the "corpora/" prefix) can contain up to 40 characters that are lowercase
+	//  alphanumeric or dashes
+	//  (-). The ID cannot start or end with a dash. If the name is empty on
+	//  create, a unique name will be derived from `display_name` along with a 12
+	//  character random suffix.
+	//  Example: `corpora/my-awesome-corpora-123a456b789c`
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Corpus.name
+	Name *string `json:"name,omitempty"`
 
-	// Optional. Immutable. The type of the grantee.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Permission.grantee_type
-	GranteeType *string `json:"granteeType,omitempty"`
-
-	// Optional. Immutable. The email address of the user of group which this
-	//  permission refers. Field is not set when permission's grantee type is
-	//  EVERYONE.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Permission.email_address
-	EmailAddress *string `json:"emailAddress,omitempty"`
-
-	// Required. The role granted by this permission.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Permission.role
-	Role *string `json:"role,omitempty"`
+	// Optional. The human-readable display name for the `Corpus`. The display
+	//  name must be no more than 512 characters in length, including spaces.
+	//  Example: "Docs on Semantic Retriever"
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Corpus.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// +kcc:proto=google.ai.generativelanguage.v1beta.Permission
-type PermissionObservedState struct {
-	// Output only. Identifier. The permission name. A unique name will be
-	//  generated on create. Examples:
-	//      tunedModels/{tuned_model}/permissions/{permission}
-	//      corpora/{corpus}/permissions/{permission}
-	//  Output only.
-	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Permission.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.ai.generativelanguage.v1beta.Corpus
+type CorpusObservedState struct {
+	// Output only. The Timestamp of when the `Corpus` was created.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Corpus.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The Timestamp of when the `Corpus` was last updated.
+	// +kcc:proto:field=google.ai.generativelanguage.v1beta.Corpus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
