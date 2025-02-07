@@ -152,6 +152,54 @@ func BaremetalsolutionInstanceObservedState_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: FirmwareVersion
 	return out
 }
+func BaremetalsolutionInstanceQuotaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceQuota) *krm.BaremetalsolutionInstanceQuotaObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionInstanceQuotaObservedState{}
+	// MISSING: Name
+	// MISSING: InstanceType
+	// MISSING: GcpService
+	// MISSING: Location
+	// MISSING: AvailableMachineCount
+	return out
+}
+func BaremetalsolutionInstanceQuotaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionInstanceQuotaObservedState) *pb.InstanceQuota {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceQuota{}
+	// MISSING: Name
+	// MISSING: InstanceType
+	// MISSING: GcpService
+	// MISSING: Location
+	// MISSING: AvailableMachineCount
+	return out
+}
+func BaremetalsolutionInstanceQuotaSpec_FromProto(mapCtx *direct.MapContext, in *pb.InstanceQuota) *krm.BaremetalsolutionInstanceQuotaSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaremetalsolutionInstanceQuotaSpec{}
+	// MISSING: Name
+	// MISSING: InstanceType
+	// MISSING: GcpService
+	// MISSING: Location
+	// MISSING: AvailableMachineCount
+	return out
+}
+func BaremetalsolutionInstanceQuotaSpec_ToProto(mapCtx *direct.MapContext, in *krm.BaremetalsolutionInstanceQuotaSpec) *pb.InstanceQuota {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceQuota{}
+	// MISSING: Name
+	// MISSING: InstanceType
+	// MISSING: GcpService
+	// MISSING: Location
+	// MISSING: AvailableMachineCount
+	return out
+}
 func BaremetalsolutionInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.BaremetalsolutionInstanceSpec {
 	if in == nil {
 		return nil
@@ -820,93 +868,51 @@ func BaremetalsolutionVolumeConfigSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: PerformanceTier
 	return out
 }
-func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
+func InstanceQuota_FromProto(mapCtx *direct.MapContext, in *pb.InstanceQuota) *krm.InstanceQuota {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConfig{}
+	out := &krm.InstanceQuota{}
 	// MISSING: Name
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Bandwidth = direct.Enum_FromProto(mapCtx, in.GetBandwidth())
-	out.VlanAttachments = direct.Slice_FromProto(mapCtx, in.VlanAttachments, NetworkConfig_IntakeVlanAttachment_FromProto)
-	out.Cidr = direct.LazyPtr(in.GetCidr())
-	out.ServiceCidr = direct.Enum_FromProto(mapCtx, in.GetServiceCidr())
-	out.UserNote = direct.LazyPtr(in.GetUserNote())
+	out.InstanceType = direct.LazyPtr(in.GetInstanceType())
 	out.GcpService = direct.LazyPtr(in.GetGcpService())
-	out.VlanSameProject = direct.LazyPtr(in.GetVlanSameProject())
-	out.JumboFramesEnabled = direct.LazyPtr(in.GetJumboFramesEnabled())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.AvailableMachineCount = direct.LazyPtr(in.GetAvailableMachineCount())
 	return out
 }
-func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
+func InstanceQuota_ToProto(mapCtx *direct.MapContext, in *krm.InstanceQuota) *pb.InstanceQuota {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NetworkConfig{}
+	out := &pb.InstanceQuota{}
 	// MISSING: Name
-	out.Id = direct.ValueOf(in.ID)
-	out.Type = direct.Enum_ToProto[pb.NetworkConfig_Type](mapCtx, in.Type)
-	out.Bandwidth = direct.Enum_ToProto[pb.NetworkConfig_Bandwidth](mapCtx, in.Bandwidth)
-	out.VlanAttachments = direct.Slice_ToProto(mapCtx, in.VlanAttachments, NetworkConfig_IntakeVlanAttachment_ToProto)
-	out.Cidr = direct.ValueOf(in.Cidr)
-	out.ServiceCidr = direct.Enum_ToProto[pb.NetworkConfig_ServiceCidr](mapCtx, in.ServiceCidr)
-	out.UserNote = direct.ValueOf(in.UserNote)
+	out.InstanceType = direct.ValueOf(in.InstanceType)
 	out.GcpService = direct.ValueOf(in.GcpService)
-	out.VlanSameProject = direct.ValueOf(in.VlanSameProject)
-	out.JumboFramesEnabled = direct.ValueOf(in.JumboFramesEnabled)
+	out.Location = direct.ValueOf(in.Location)
+	out.AvailableMachineCount = direct.ValueOf(in.AvailableMachineCount)
 	return out
 }
-func NetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfigObservedState {
+func InstanceQuotaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceQuota) *krm.InstanceQuotaObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConfigObservedState{}
+	out := &krm.InstanceQuotaObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: ID
-	// MISSING: Type
-	// MISSING: Bandwidth
-	// MISSING: VlanAttachments
-	// MISSING: Cidr
-	// MISSING: ServiceCidr
-	// MISSING: UserNote
+	// MISSING: InstanceType
 	// MISSING: GcpService
-	// MISSING: VlanSameProject
-	// MISSING: JumboFramesEnabled
+	// MISSING: Location
+	// MISSING: AvailableMachineCount
 	return out
 }
-func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfigObservedState) *pb.NetworkConfig {
+func InstanceQuotaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceQuotaObservedState) *pb.InstanceQuota {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NetworkConfig{}
+	out := &pb.InstanceQuota{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: ID
-	// MISSING: Type
-	// MISSING: Bandwidth
-	// MISSING: VlanAttachments
-	// MISSING: Cidr
-	// MISSING: ServiceCidr
-	// MISSING: UserNote
+	// MISSING: InstanceType
 	// MISSING: GcpService
-	// MISSING: VlanSameProject
-	// MISSING: JumboFramesEnabled
-	return out
-}
-func NetworkConfig_IntakeVlanAttachment_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig_IntakeVlanAttachment) *krm.NetworkConfig_IntakeVlanAttachment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkConfig_IntakeVlanAttachment{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.PairingKey = direct.LazyPtr(in.GetPairingKey())
-	return out
-}
-func NetworkConfig_IntakeVlanAttachment_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig_IntakeVlanAttachment) *pb.NetworkConfig_IntakeVlanAttachment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NetworkConfig_IntakeVlanAttachment{}
-	out.Id = direct.ValueOf(in.ID)
-	out.PairingKey = direct.ValueOf(in.PairingKey)
+	// MISSING: Location
+	// MISSING: AvailableMachineCount
 	return out
 }
