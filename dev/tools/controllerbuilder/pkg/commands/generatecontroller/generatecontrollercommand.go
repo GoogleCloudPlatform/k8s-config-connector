@@ -29,7 +29,6 @@ import (
 
 type GenerateControllerOptions struct {
 	*options.GenerateOptions
-
 	Kind      string
 	ProtoName string
 }
@@ -97,10 +96,13 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 		ProtoResource: o.ProtoName,
 		ProtoVersion:  version,
 	}
-	err1 := scaffold.GenerateController(serviceName, o.ProtoName, cArgs)
-	err2 := scaffold.RegisterController(serviceName, o.ProtoName)
-	if err1 != nil || err2 != nil {
-		return errors.Join(err1, err2)
+	root, err := options.RepoRoot()
+	if err != nil {
+		return err
 	}
-	return nil
+
+	c := scaffold.NewControllerBuilder(root, serviceName, o.ProtoName)
+	err = errors.Join(err, c.GenerateController(cArgs))
+	err = errors.Join(err, c.RegisterController())
+	return err
 }
