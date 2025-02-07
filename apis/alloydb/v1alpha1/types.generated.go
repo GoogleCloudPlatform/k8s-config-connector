@@ -15,22 +15,22 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.alloydb.v1.Database
+// +kcc:proto=google.cloud.alloydb.v1beta.Database
 type Database struct {
 	// Identifier. Name of the resource in the form of
 	//  `projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}`.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Database.name
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Database.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Charset for the database.
 	//  This field can contain any PostgreSQL supported charset name.
 	//  Example values include "UTF8", "SQL_ASCII", etc.
-	// +kcc:proto:field=google.cloud.alloydb.v1.Database.charset
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Database.charset
 	Charset *string `json:"charset,omitempty"`
 
 	// Optional. Collation for the database.
 	//  Name of the custom or native collation for postgres.
 	//  Example values include "C", "POSIX", etc
-	// +kcc:proto:field=google.cloud.alloydb.v1.Database.collation
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Database.collation
 	Collation *string `json:"collation,omitempty"`
 }
