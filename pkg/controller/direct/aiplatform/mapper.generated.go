@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -2548,171 +2548,421 @@ func AiplatformNasTrialDetailSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aip
 	// MISSING: TrainTrial
 	return out
 }
-func Measurement_FromProto(mapCtx *direct.MapContext, in *pb.Measurement) *krm.Measurement {
+func AiplatformNotebookExecutionJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.AiplatformNotebookExecutionJobObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Measurement{}
-	// MISSING: ElapsedDuration
-	// MISSING: StepCount
-	// MISSING: Metrics
-	return out
-}
-func Measurement_ToProto(mapCtx *direct.MapContext, in *krm.Measurement) *pb.Measurement {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Measurement{}
-	// MISSING: ElapsedDuration
-	// MISSING: StepCount
-	// MISSING: Metrics
-	return out
-}
-func MeasurementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Measurement) *krm.MeasurementObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MeasurementObservedState{}
-	out.ElapsedDuration = direct.StringDuration_FromProto(mapCtx, in.GetElapsedDuration())
-	out.StepCount = direct.LazyPtr(in.GetStepCount())
-	out.Metrics = direct.Slice_FromProto(mapCtx, in.Metrics, Measurement_Metric_FromProto)
-	return out
-}
-func MeasurementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MeasurementObservedState) *pb.Measurement {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Measurement{}
-	out.ElapsedDuration = direct.StringDuration_ToProto(mapCtx, in.ElapsedDuration)
-	out.StepCount = direct.ValueOf(in.StepCount)
-	out.Metrics = direct.Slice_ToProto(mapCtx, in.Metrics, Measurement_Metric_ToProto)
-	return out
-}
-func Measurement_Metric_FromProto(mapCtx *direct.MapContext, in *pb.Measurement_Metric) *krm.Measurement_Metric {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Measurement_Metric{}
-	// MISSING: MetricID
-	// MISSING: Value
-	return out
-}
-func Measurement_Metric_ToProto(mapCtx *direct.MapContext, in *krm.Measurement_Metric) *pb.Measurement_Metric {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Measurement_Metric{}
-	// MISSING: MetricID
-	// MISSING: Value
-	return out
-}
-func Measurement_MetricObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Measurement_Metric) *krm.Measurement_MetricObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Measurement_MetricObservedState{}
-	out.MetricID = direct.LazyPtr(in.GetMetricId())
-	out.Value = direct.LazyPtr(in.GetValue())
-	return out
-}
-func Measurement_MetricObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Measurement_MetricObservedState) *pb.Measurement_Metric {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Measurement_Metric{}
-	out.MetricId = direct.ValueOf(in.MetricID)
-	out.Value = direct.ValueOf(in.Value)
-	return out
-}
-func NasTrial_FromProto(mapCtx *direct.MapContext, in *pb.NasTrial) *krm.NasTrial {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NasTrial{}
-	// MISSING: ID
-	// MISSING: State
-	// MISSING: FinalMeasurement
-	// MISSING: StartTime
-	// MISSING: EndTime
-	return out
-}
-func NasTrial_ToProto(mapCtx *direct.MapContext, in *krm.NasTrial) *pb.NasTrial {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NasTrial{}
-	// MISSING: ID
-	// MISSING: State
-	// MISSING: FinalMeasurement
-	// MISSING: StartTime
-	// MISSING: EndTime
-	return out
-}
-func NasTrialDetail_FromProto(mapCtx *direct.MapContext, in *pb.NasTrialDetail) *krm.NasTrialDetail {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NasTrialDetail{}
+	out := &krm.AiplatformNotebookExecutionJobObservedState{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GcsNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GcsOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
 	// MISSING: Name
-	out.Parameters = direct.LazyPtr(in.GetParameters())
-	out.SearchTrial = NasTrial_FromProto(mapCtx, in.GetSearchTrial())
-	out.TrainTrial = NasTrial_FromProto(mapCtx, in.GetTrainTrial())
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
 	return out
 }
-func NasTrialDetail_ToProto(mapCtx *direct.MapContext, in *krm.NasTrialDetail) *pb.NasTrialDetail {
+func AiplatformNotebookExecutionJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformNotebookExecutionJobObservedState) *pb.NotebookExecutionJob {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NasTrialDetail{}
+	out := &pb.NotebookExecutionJob{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GcsNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GcsOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
 	// MISSING: Name
-	out.Parameters = direct.ValueOf(in.Parameters)
-	out.SearchTrial = NasTrial_ToProto(mapCtx, in.SearchTrial)
-	out.TrainTrial = NasTrial_ToProto(mapCtx, in.TrainTrial)
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
 	return out
 }
-func NasTrialDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasTrialDetail) *krm.NasTrialDetailObservedState {
+func AiplatformNotebookExecutionJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.AiplatformNotebookExecutionJobSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NasTrialDetailObservedState{}
+	out := &krm.AiplatformNotebookExecutionJobSpec{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GcsNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GcsOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
+	return out
+}
+func AiplatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformNotebookExecutionJobSpec) *pb.NotebookExecutionJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GcsNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GcsOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
+	return out
+}
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpec{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	return out
+}
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MachineSpec{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
+	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
+	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
+	return out
+}
+func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MachineSpec{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.AcceleratorType = direct.Enum_ToProto[pb.AcceleratorType](mapCtx, in.AcceleratorType)
+	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
+	out.TpuTopology = direct.ValueOf(in.TpuTopology)
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+	return out
+}
+func NetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkSpec) *krm.NetworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkSpec{}
+	out.EnableInternetAccess = direct.LazyPtr(in.GetEnableInternetAccess())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.Subnetwork = direct.LazyPtr(in.GetSubnetwork())
+	return out
+}
+func NetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSpec) *pb.NetworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkSpec{}
+	out.EnableInternetAccess = direct.ValueOf(in.EnableInternetAccess)
+	out.Network = direct.ValueOf(in.Network)
+	out.Subnetwork = direct.ValueOf(in.Subnetwork)
+	return out
+}
+func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.NotebookExecutionJob {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookExecutionJob{}
+	out.DataformRepositorySource = NotebookExecutionJob_DataformRepositorySource_FromProto(mapCtx, in.GetDataformRepositorySource())
+	out.GcsNotebookSource = NotebookExecutionJob_GcsNotebookSource_FromProto(mapCtx, in.GetGcsNotebookSource())
+	out.DirectNotebookSource = NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx, in.GetDirectNotebookSource())
+	out.NotebookRuntimeTemplateResourceName = direct.LazyPtr(in.GetNotebookRuntimeTemplateResourceName())
+	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
+	out.GcsOutputURI = direct.LazyPtr(in.GetGcsOutputUri())
+	out.ExecutionUser = direct.LazyPtr(in.GetExecutionUser())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.WorkbenchRuntime = NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx, in.GetWorkbenchRuntime())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.KernelName = direct.LazyPtr(in.GetKernelName())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob) *pb.NotebookExecutionJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob{}
+	if oneof := NotebookExecutionJob_DataformRepositorySource_ToProto(mapCtx, in.DataformRepositorySource); oneof != nil {
+		out.NotebookSource = &pb.NotebookExecutionJob_DataformRepositorySource_{DataformRepositorySource: oneof}
+	}
+	if oneof := NotebookExecutionJob_GcsNotebookSource_ToProto(mapCtx, in.GcsNotebookSource); oneof != nil {
+		out.NotebookSource = &pb.NotebookExecutionJob_GcsNotebookSource_{GcsNotebookSource: oneof}
+	}
+	if oneof := NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx, in.DirectNotebookSource); oneof != nil {
+		out.NotebookSource = &pb.NotebookExecutionJob_DirectNotebookSource_{DirectNotebookSource: oneof}
+	}
+	if oneof := NotebookExecutionJob_NotebookRuntimeTemplateResourceName_ToProto(mapCtx, in.NotebookRuntimeTemplateResourceName); oneof != nil {
+		out.EnvironmentSpec = oneof
+	}
+	if oneof := NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
+		out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
+	}
+	if oneof := NotebookExecutionJob_GcsOutputUri_ToProto(mapCtx, in.GcsOutputURI); oneof != nil {
+		out.ExecutionSink = oneof
+	}
+	if oneof := NotebookExecutionJob_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
+		out.ExecutionIdentity = oneof
+	}
+	if oneof := NotebookExecutionJob_ServiceAccount_ToProto(mapCtx, in.ServiceAccount); oneof != nil {
+		out.ExecutionIdentity = oneof
+	}
+	if oneof := NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx, in.WorkbenchRuntime); oneof != nil {
+		out.RuntimeEnvironment = &pb.NotebookExecutionJob_WorkbenchRuntime_{WorkbenchRuntime: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.KernelName = direct.ValueOf(in.KernelName)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
+func NotebookExecutionJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.NotebookExecutionJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookExecutionJobObservedState{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GcsNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GcsOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Parameters
-	out.SearchTrial = NasTrialObservedState_FromProto(mapCtx, in.GetSearchTrial())
-	// MISSING: TrainTrial
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	out.ScheduleResourceName = direct.LazyPtr(in.GetScheduleResourceName())
+	out.JobState = direct.Enum_FromProto(mapCtx, in.GetJobState())
+	out.Status = Status_FromProto(mapCtx, in.GetStatus())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
 	return out
 }
-func NasTrialDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasTrialDetailObservedState) *pb.NasTrialDetail {
+func NotebookExecutionJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJobObservedState) *pb.NotebookExecutionJob {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NasTrialDetail{}
+	out := &pb.NotebookExecutionJob{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GcsNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GcsOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Parameters
-	out.SearchTrial = NasTrialObservedState_ToProto(mapCtx, in.SearchTrial)
-	// MISSING: TrainTrial
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	out.ScheduleResourceName = direct.ValueOf(in.ScheduleResourceName)
+	out.JobState = direct.Enum_ToProto[pb.JobState](mapCtx, in.JobState)
+	out.Status = Status_ToProto(mapCtx, in.Status)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
 	return out
 }
-func NasTrialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasTrial) *krm.NasTrialObservedState {
+func NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_CustomEnvironmentSpec) *krm.NotebookExecutionJob_CustomEnvironmentSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NasTrialObservedState{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.FinalMeasurement = Measurement_FromProto(mapCtx, in.GetFinalMeasurement())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out := &krm.NotebookExecutionJob_CustomEnvironmentSpec{}
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.PersistentDiskSpec = PersistentDiskSpec_FromProto(mapCtx, in.GetPersistentDiskSpec())
+	out.NetworkSpec = NetworkSpec_FromProto(mapCtx, in.GetNetworkSpec())
 	return out
 }
-func NasTrialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasTrialObservedState) *pb.NasTrial {
+func NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_CustomEnvironmentSpec) *pb.NotebookExecutionJob_CustomEnvironmentSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NasTrial{}
-	out.Id = direct.ValueOf(in.ID)
-	out.State = direct.Enum_ToProto[pb.NasTrial_State](mapCtx, in.State)
-	out.FinalMeasurement = Measurement_ToProto(mapCtx, in.FinalMeasurement)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out := &pb.NotebookExecutionJob_CustomEnvironmentSpec{}
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.PersistentDiskSpec = PersistentDiskSpec_ToProto(mapCtx, in.PersistentDiskSpec)
+	out.NetworkSpec = NetworkSpec_ToProto(mapCtx, in.NetworkSpec)
+	return out
+}
+func NotebookExecutionJob_DataformRepositorySource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_DataformRepositorySource) *krm.NotebookExecutionJob_DataformRepositorySource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookExecutionJob_DataformRepositorySource{}
+	out.DataformRepositoryResourceName = direct.LazyPtr(in.GetDataformRepositoryResourceName())
+	out.CommitSha = direct.LazyPtr(in.GetCommitSha())
+	return out
+}
+func NotebookExecutionJob_DataformRepositorySource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_DataformRepositorySource) *pb.NotebookExecutionJob_DataformRepositorySource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob_DataformRepositorySource{}
+	out.DataformRepositoryResourceName = direct.ValueOf(in.DataformRepositoryResourceName)
+	out.CommitSha = direct.ValueOf(in.CommitSha)
+	return out
+}
+func NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_DirectNotebookSource) *krm.NotebookExecutionJob_DirectNotebookSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookExecutionJob_DirectNotebookSource{}
+	out.Content = in.GetContent()
+	return out
+}
+func NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_DirectNotebookSource) *pb.NotebookExecutionJob_DirectNotebookSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob_DirectNotebookSource{}
+	out.Content = in.Content
+	return out
+}
+func NotebookExecutionJob_GcsNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_GcsNotebookSource) *krm.NotebookExecutionJob_GcsNotebookSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookExecutionJob_GcsNotebookSource{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	return out
+}
+func NotebookExecutionJob_GcsNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_GcsNotebookSource) *pb.NotebookExecutionJob_GcsNotebookSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob_GcsNotebookSource{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.Generation = direct.ValueOf(in.Generation)
+	return out
+}
+func NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_WorkbenchRuntime) *krm.NotebookExecutionJob_WorkbenchRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookExecutionJob_WorkbenchRuntime{}
+	return out
+}
+func NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_WorkbenchRuntime) *pb.NotebookExecutionJob_WorkbenchRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob_WorkbenchRuntime{}
+	return out
+}
+func PersistentDiskSpec_FromProto(mapCtx *direct.MapContext, in *pb.PersistentDiskSpec) *krm.PersistentDiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PersistentDiskSpec{}
+	out.DiskType = direct.LazyPtr(in.GetDiskType())
+	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
+	return out
+}
+func PersistentDiskSpec_ToProto(mapCtx *direct.MapContext, in *krm.PersistentDiskSpec) *pb.PersistentDiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PersistentDiskSpec{}
+	out.DiskType = direct.ValueOf(in.DiskType)
+	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
+	return out
+}
+func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_FromProto(mapCtx, in.GetReservationAffinityType())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Values = in.Values
+	return out
+}
+func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinity) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
+	out.Key = direct.ValueOf(in.Key)
+	out.Values = in.Values
 	return out
 }
