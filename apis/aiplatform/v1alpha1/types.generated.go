@@ -15,37 +15,45 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.aiplatform.v1.BigQuerySource
-type BigQuerySource struct {
-	// Required. BigQuery URI to a table, up to 2000 characters long.
-	//  Accepted forms:
-	//
-	//  *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.BigQuerySource.input_uri
-	InputURI *string `json:"inputURI,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec
+type EncryptionSpec struct {
+	// Required. The Cloud KMS resource identifier of the customer managed
+	//  encryption key used to protect a resource. Has the form:
+	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+	//  The key needs to be in the same region as where the compute resource is
+	//  created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EncryptionSpec.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureGroup
-type FeatureGroup struct {
-	// Indicates that features for this group come from BigQuery Table/View.
-	//  By default treats the source as a sparse time series source. The BigQuery
-	//  source table or view must have at least one entity ID column and a column
-	//  named `feature_timestamp`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.big_query
-	BigQuery *FeatureGroup_BigQuery `json:"bigQuery,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureOnlineStore
+type FeatureOnlineStore struct {
+	// Contains settings for the Cloud Bigtable instance that will be created
+	//  to serve featureValues for all FeatureViews under this
+	//  FeatureOnlineStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.bigtable
+	Bigtable *FeatureOnlineStore_Bigtable `json:"bigtable,omitempty"`
 
-	// Identifier. Name of the FeatureGroup. Format:
-	//  `projects/{project}/locations/{location}/featureGroups/{featureGroup}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.name
+	// Contains settings for the Optimized store that will be created
+	//  to serve featureValues for all FeatureViews under this
+	//  FeatureOnlineStore. When choose Optimized storage type, need to set
+	//  [PrivateServiceConnectConfig.enable_private_service_connect][google.cloud.aiplatform.v1.PrivateServiceConnectConfig.enable_private_service_connect]
+	//  to use private endpoint. Otherwise will use public endpoint by default.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.optimized
+	Optimized *FeatureOnlineStore_Optimized `json:"optimized,omitempty"`
+
+	// Identifier. Name of the FeatureOnlineStore. Format:
+	//  `projects/{project}/locations/{location}/featureOnlineStores/{featureOnlineStore}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Used to perform consistent read-modify-write updates. If not set,
 	//  a blind "overwrite" update happens.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.etag
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.etag
 	Etag *string `json:"etag,omitempty"`
 
 	// Optional. The labels with user-defined metadata to organize your
-	//  FeatureGroup.
+	//  FeatureOnlineStore.
 	//
 	//  Label keys and values can be no longer than 64 characters
 	//  (Unicode codepoints), can only contain lowercase letters, numeric
@@ -53,72 +61,135 @@ type FeatureGroup struct {
 	//
 	//  See https://goo.gl/xmQnxf for more information on and examples of labels.
 	//  No more than 64 user labels can be associated with one
-	//  FeatureGroup(System labels are excluded)." System reserved label keys
+	//  FeatureOnlineStore(System labels are excluded)." System reserved label keys
 	//  are prefixed with "aiplatform.googleapis.com/" and are immutable.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.labels
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// Optional. Description of the FeatureGroup.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.description
-	Description *string `json:"description,omitempty"`
+	// Optional. The dedicated serving endpoint for this FeatureOnlineStore, which
+	//  is different from common Vertex service endpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.dedicated_serving_endpoint
+	DedicatedServingEndpoint *FeatureOnlineStore_DedicatedServingEndpoint `json:"dedicatedServingEndpoint,omitempty"`
+
+	// Optional. Customer-managed encryption key spec for data storage. If set,
+	//  online store will be secured by this key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureGroup.BigQuery
-type FeatureGroup_BigQuery struct {
-	// Required. Immutable. The BigQuery source URI that points to either a
-	//  BigQuery Table or View.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.big_query_source
-	BigQuerySource *BigQuerySource `json:"bigQuerySource,omitempty"`
-
-	// Optional. Columns to construct entity_id / row keys.
-	//  If not provided defaults to `entity_id`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.entity_id_columns
-	EntityIDColumns []string `json:"entityIDColumns,omitempty"`
-
-	// Optional. Set if the data source is not a time-series.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.static_data_source
-	StaticDataSource *bool `json:"staticDataSource,omitempty"`
-
-	// Optional. If the source is a time-series source, this can be set to
-	//  control how downstream sources (ex:
-	//  [FeatureView][google.cloud.aiplatform.v1.FeatureView] ) will treat
-	//  time-series sources. If not set, will treat the source as a time-series
-	//  source with `feature_timestamp` as timestamp column and no scan boundary.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.time_series
-	TimeSeries *FeatureGroup_BigQuery_TimeSeries `json:"timeSeries,omitempty"`
-
-	// Optional. If set, all feature values will be fetched
-	//  from a single row per unique entityId including nulls.
-	//  If not set, will collapse all rows for each unique entityId into a singe
-	//  row with any non-null values if present, if no non-null values are
-	//  present will sync null.
-	//  ex: If source has schema
-	//  `(entity_id, feature_timestamp, f0, f1)` and the following rows:
-	//  `(e1, 2020-01-01T10:00:00.123Z, 10, 15)`
-	//  `(e1, 2020-02-01T10:00:00.123Z, 20, null)`
-	//  If dense is set, `(e1, 20, null)` is synced to online stores. If dense is
-	//  not set, `(e1, 20, 15)` is synced to online stores.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.dense
-	Dense *bool `json:"dense,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureOnlineStore.Bigtable
+type FeatureOnlineStore_Bigtable struct {
+	// Required. Autoscaling config applied to Bigtable Instance.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.Bigtable.auto_scaling
+	AutoScaling *FeatureOnlineStore_Bigtable_AutoScaling `json:"autoScaling,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.TimeSeries
-type FeatureGroup_BigQuery_TimeSeries struct {
-	// Optional. Column hosting timestamp values for a time-series source.
-	//  Will be used to determine the latest `feature_values` for each entity.
-	//  Optional. If not provided, column named `feature_timestamp` of
-	//  type `TIMESTAMP` will be used.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.BigQuery.TimeSeries.timestamp_column
-	TimestampColumn *string `json:"timestampColumn,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureOnlineStore.Bigtable.AutoScaling
+type FeatureOnlineStore_Bigtable_AutoScaling struct {
+	// Required. The minimum number of nodes to scale down to. Must be greater
+	//  than or equal to 1.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.Bigtable.AutoScaling.min_node_count
+	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
+
+	// Required. The maximum number of nodes to scale up to. Must be greater
+	//  than or equal to min_node_count, and less than or equal to 10 times of
+	//  'min_node_count'.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.Bigtable.AutoScaling.max_node_count
+	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+
+	// Optional. A percentage of the cluster's CPU capacity. Can be from 10%
+	//  to 80%. When a cluster's CPU utilization exceeds the target that you
+	//  have set, Bigtable immediately adds nodes to the cluster. When CPU
+	//  utilization is substantially lower than the target, Bigtable removes
+	//  nodes. If not set will default to 50%.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.Bigtable.AutoScaling.cpu_utilization_target
+	CpuUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.FeatureGroup
-type FeatureGroupObservedState struct {
-	// Output only. Timestamp when this FeatureGroup was created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.create_time
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureOnlineStore.DedicatedServingEndpoint
+type FeatureOnlineStore_DedicatedServingEndpoint struct {
+
+	// Optional. Private service connect config. The private service connection
+	//  is available only for Optimized storage type, not for embedding
+	//  management now. If
+	//  [PrivateServiceConnectConfig.enable_private_service_connect][google.cloud.aiplatform.v1.PrivateServiceConnectConfig.enable_private_service_connect]
+	//  set to true, customers will use private service connection to send
+	//  request. Otherwise, the connection will set to public endpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.DedicatedServingEndpoint.private_service_connect_config
+	PrivateServiceConnectConfig *PrivateServiceConnectConfig `json:"privateServiceConnectConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureOnlineStore.Optimized
+type FeatureOnlineStore_Optimized struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.PrivateServiceConnectConfig
+type PrivateServiceConnectConfig struct {
+	// Required. If true, expose the IndexEndpoint via private service connect.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PrivateServiceConnectConfig.enable_private_service_connect
+	EnablePrivateServiceConnect *bool `json:"enablePrivateServiceConnect,omitempty"`
+
+	// A list of Projects from which the forwarding rule will target the service
+	//  attachment.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PrivateServiceConnectConfig.project_allowlist
+	ProjectAllowlist []string `json:"projectAllowlist,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureOnlineStore
+type FeatureOnlineStoreObservedState struct {
+	// Output only. Timestamp when this FeatureOnlineStore was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Timestamp when this FeatureGroup was last updated.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureGroup.update_time
+	// Output only. Timestamp when this FeatureOnlineStore was last updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. State of the featureOnlineStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.state
+	State *string `json:"state,omitempty"`
+
+	// Optional. The dedicated serving endpoint for this FeatureOnlineStore, which
+	//  is different from common Vertex service endpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.dedicated_serving_endpoint
+	DedicatedServingEndpoint *FeatureOnlineStore_DedicatedServingEndpointObservedState `json:"dedicatedServingEndpoint,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureOnlineStore.DedicatedServingEndpoint
+type FeatureOnlineStore_DedicatedServingEndpointObservedState struct {
+	// Output only. This field will be populated with the domain name to use for
+	//  this FeatureOnlineStore
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.DedicatedServingEndpoint.public_endpoint_domain_name
+	PublicEndpointDomainName *string `json:"publicEndpointDomainName,omitempty"`
+
+	// Optional. Private service connect config. The private service connection
+	//  is available only for Optimized storage type, not for embedding
+	//  management now. If
+	//  [PrivateServiceConnectConfig.enable_private_service_connect][google.cloud.aiplatform.v1.PrivateServiceConnectConfig.enable_private_service_connect]
+	//  set to true, customers will use private service connection to send
+	//  request. Otherwise, the connection will set to public endpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.DedicatedServingEndpoint.private_service_connect_config
+	PrivateServiceConnectConfig *PrivateServiceConnectConfigObservedState `json:"privateServiceConnectConfig,omitempty"`
+
+	// Output only. The name of the service attachment resource. Populated if
+	//  private service connect is enabled and after FeatureViewSync is created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureOnlineStore.DedicatedServingEndpoint.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.PrivateServiceConnectConfig
+type PrivateServiceConnectConfigObservedState struct {
+	// Output only. The name of the generated service attachment resource.
+	//  This is only populated if the endpoint is deployed with
+	//  PrivateServiceConnect.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PrivateServiceConnectConfig.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }

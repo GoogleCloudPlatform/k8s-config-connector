@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -1300,6 +1300,82 @@ func AiplatformFeatureObservedState_ToProto(mapCtx *direct.MapContext, in *krm.A
 	// MISSING: PointOfContact
 	return out
 }
+func AiplatformFeatureOnlineStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.AiplatformFeatureOnlineStoreObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformFeatureOnlineStoreObservedState{}
+	// MISSING: Bigtable
+	// MISSING: Optimized
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: State
+	// MISSING: DedicatedServingEndpoint
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformFeatureOnlineStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformFeatureOnlineStoreObservedState) *pb.FeatureOnlineStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore{}
+	// MISSING: Bigtable
+	// MISSING: Optimized
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: State
+	// MISSING: DedicatedServingEndpoint
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformFeatureOnlineStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.AiplatformFeatureOnlineStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformFeatureOnlineStoreSpec{}
+	// MISSING: Bigtable
+	// MISSING: Optimized
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: State
+	// MISSING: DedicatedServingEndpoint
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformFeatureOnlineStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformFeatureOnlineStoreSpec) *pb.FeatureOnlineStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore{}
+	// MISSING: Bigtable
+	// MISSING: Optimized
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: State
+	// MISSING: DedicatedServingEndpoint
+	// MISSING: EncryptionSpec
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 func AiplatformFeatureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.AiplatformFeatureSpec {
 	if in == nil {
 		return nil
@@ -1336,117 +1412,229 @@ func AiplatformFeatureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aiplatform
 	// MISSING: PointOfContact
 	return out
 }
-func BigQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.BigQuerySource) *krm.BigQuerySource {
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigQuerySource{}
-	out.InputURI = direct.LazyPtr(in.GetInputUri())
+	out := &krm.EncryptionSpec{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
 	return out
 }
-func BigQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.BigQuerySource) *pb.BigQuerySource {
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BigQuerySource{}
-	out.InputUri = direct.ValueOf(in.InputURI)
+	out := &pb.EncryptionSpec{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	return out
 }
-func FeatureGroup_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup) *krm.FeatureGroup {
+func FeatureOnlineStore_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.FeatureOnlineStore {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureGroup{}
-	out.BigQuery = FeatureGroup_BigQuery_FromProto(mapCtx, in.GetBigQuery())
+	out := &krm.FeatureOnlineStore{}
+	out.Bigtable = FeatureOnlineStore_Bigtable_FromProto(mapCtx, in.GetBigtable())
+	out.Optimized = FeatureOnlineStore_Optimized_FromProto(mapCtx, in.GetOptimized())
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Labels = in.Labels
-	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
+	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_FromProto(mapCtx, in.GetDedicatedServingEndpoint())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-func FeatureGroup_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroup) *pb.FeatureGroup {
+func FeatureOnlineStore_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore) *pb.FeatureOnlineStore {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FeatureGroup{}
-	if oneof := FeatureGroup_BigQuery_ToProto(mapCtx, in.BigQuery); oneof != nil {
-		out.Source = &pb.FeatureGroup_BigQuery_{BigQuery: oneof}
+	out := &pb.FeatureOnlineStore{}
+	if oneof := FeatureOnlineStore_Bigtable_ToProto(mapCtx, in.Bigtable); oneof != nil {
+		out.StorageType = &pb.FeatureOnlineStore_Bigtable_{Bigtable: oneof}
+	}
+	if oneof := FeatureOnlineStore_Optimized_ToProto(mapCtx, in.Optimized); oneof != nil {
+		out.StorageType = &pb.FeatureOnlineStore_Optimized_{Optimized: oneof}
 	}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.Etag = direct.ValueOf(in.Etag)
 	out.Labels = in.Labels
-	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
+	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx, in.DedicatedServingEndpoint)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-func FeatureGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup) *krm.FeatureGroupObservedState {
+func FeatureOnlineStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.FeatureOnlineStoreObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureGroupObservedState{}
-	// MISSING: BigQuery
+	out := &krm.FeatureOnlineStoreObservedState{}
+	// MISSING: Bigtable
+	// MISSING: Optimized
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Etag
 	// MISSING: Labels
-	// MISSING: Description
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpointObservedState_FromProto(mapCtx, in.GetDedicatedServingEndpoint())
+	// MISSING: EncryptionSpec
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
-func FeatureGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroupObservedState) *pb.FeatureGroup {
+func FeatureOnlineStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStoreObservedState) *pb.FeatureOnlineStore {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FeatureGroup{}
-	// MISSING: BigQuery
+	out := &pb.FeatureOnlineStore{}
+	// MISSING: Bigtable
+	// MISSING: Optimized
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Etag
 	// MISSING: Labels
-	// MISSING: Description
+	out.State = direct.Enum_ToProto[pb.FeatureOnlineStore_State](mapCtx, in.State)
+	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpointObservedState_ToProto(mapCtx, in.DedicatedServingEndpoint)
+	// MISSING: EncryptionSpec
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
-func FeatureGroup_BigQuery_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup_BigQuery) *krm.FeatureGroup_BigQuery {
+func FeatureOnlineStore_Bigtable_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_Bigtable) *krm.FeatureOnlineStore_Bigtable {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureGroup_BigQuery{}
-	out.BigQuerySource = BigQuerySource_FromProto(mapCtx, in.GetBigQuerySource())
-	out.EntityIDColumns = in.EntityIdColumns
-	out.StaticDataSource = direct.LazyPtr(in.GetStaticDataSource())
-	out.TimeSeries = FeatureGroup_BigQuery_TimeSeries_FromProto(mapCtx, in.GetTimeSeries())
-	out.Dense = direct.LazyPtr(in.GetDense())
+	out := &krm.FeatureOnlineStore_Bigtable{}
+	out.AutoScaling = FeatureOnlineStore_Bigtable_AutoScaling_FromProto(mapCtx, in.GetAutoScaling())
 	return out
 }
-func FeatureGroup_BigQuery_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroup_BigQuery) *pb.FeatureGroup_BigQuery {
+func FeatureOnlineStore_Bigtable_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_Bigtable) *pb.FeatureOnlineStore_Bigtable {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FeatureGroup_BigQuery{}
-	out.BigQuerySource = BigQuerySource_ToProto(mapCtx, in.BigQuerySource)
-	out.EntityIdColumns = in.EntityIDColumns
-	out.StaticDataSource = direct.ValueOf(in.StaticDataSource)
-	out.TimeSeries = FeatureGroup_BigQuery_TimeSeries_ToProto(mapCtx, in.TimeSeries)
-	out.Dense = direct.ValueOf(in.Dense)
+	out := &pb.FeatureOnlineStore_Bigtable{}
+	out.AutoScaling = FeatureOnlineStore_Bigtable_AutoScaling_ToProto(mapCtx, in.AutoScaling)
 	return out
 }
-func FeatureGroup_BigQuery_TimeSeries_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup_BigQuery_TimeSeries) *krm.FeatureGroup_BigQuery_TimeSeries {
+func FeatureOnlineStore_Bigtable_AutoScaling_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_Bigtable_AutoScaling) *krm.FeatureOnlineStore_Bigtable_AutoScaling {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FeatureGroup_BigQuery_TimeSeries{}
-	out.TimestampColumn = direct.LazyPtr(in.GetTimestampColumn())
+	out := &krm.FeatureOnlineStore_Bigtable_AutoScaling{}
+	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	out.CpuUtilizationTarget = direct.LazyPtr(in.GetCpuUtilizationTarget())
 	return out
 }
-func FeatureGroup_BigQuery_TimeSeries_ToProto(mapCtx *direct.MapContext, in *krm.FeatureGroup_BigQuery_TimeSeries) *pb.FeatureGroup_BigQuery_TimeSeries {
+func FeatureOnlineStore_Bigtable_AutoScaling_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_Bigtable_AutoScaling) *pb.FeatureOnlineStore_Bigtable_AutoScaling {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FeatureGroup_BigQuery_TimeSeries{}
-	out.TimestampColumn = direct.ValueOf(in.TimestampColumn)
+	out := &pb.FeatureOnlineStore_Bigtable_AutoScaling{}
+	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	out.CpuUtilizationTarget = direct.ValueOf(in.CpuUtilizationTarget)
+	return out
+}
+func FeatureOnlineStore_DedicatedServingEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_DedicatedServingEndpoint) *krm.FeatureOnlineStore_DedicatedServingEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureOnlineStore_DedicatedServingEndpoint{}
+	// MISSING: PublicEndpointDomainName
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfig_FromProto(mapCtx, in.GetPrivateServiceConnectConfig())
+	// MISSING: ServiceAttachment
+	return out
+}
+func FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_DedicatedServingEndpoint) *pb.FeatureOnlineStore_DedicatedServingEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore_DedicatedServingEndpoint{}
+	// MISSING: PublicEndpointDomainName
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfig_ToProto(mapCtx, in.PrivateServiceConnectConfig)
+	// MISSING: ServiceAttachment
+	return out
+}
+func FeatureOnlineStore_DedicatedServingEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_DedicatedServingEndpoint) *krm.FeatureOnlineStore_DedicatedServingEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureOnlineStore_DedicatedServingEndpointObservedState{}
+	out.PublicEndpointDomainName = direct.LazyPtr(in.GetPublicEndpointDomainName())
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfigObservedState_FromProto(mapCtx, in.GetPrivateServiceConnectConfig())
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	return out
+}
+func FeatureOnlineStore_DedicatedServingEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_DedicatedServingEndpointObservedState) *pb.FeatureOnlineStore_DedicatedServingEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore_DedicatedServingEndpoint{}
+	out.PublicEndpointDomainName = direct.ValueOf(in.PublicEndpointDomainName)
+	out.PrivateServiceConnectConfig = PrivateServiceConnectConfigObservedState_ToProto(mapCtx, in.PrivateServiceConnectConfig)
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	return out
+}
+func FeatureOnlineStore_Optimized_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_Optimized) *krm.FeatureOnlineStore_Optimized {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureOnlineStore_Optimized{}
+	return out
+}
+func FeatureOnlineStore_Optimized_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_Optimized) *pb.FeatureOnlineStore_Optimized {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureOnlineStore_Optimized{}
+	return out
+}
+func PrivateServiceConnectConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConfig) *krm.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateServiceConnectConfig{}
+	out.EnablePrivateServiceConnect = direct.LazyPtr(in.GetEnablePrivateServiceConnect())
+	out.ProjectAllowlist = in.ProjectAllowlist
+	// MISSING: ServiceAttachment
+	return out
+}
+func PrivateServiceConnectConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConfig) *pb.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateServiceConnectConfig{}
+	out.EnablePrivateServiceConnect = direct.ValueOf(in.EnablePrivateServiceConnect)
+	out.ProjectAllowlist = in.ProjectAllowlist
+	// MISSING: ServiceAttachment
+	return out
+}
+func PrivateServiceConnectConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConfig) *krm.PrivateServiceConnectConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateServiceConnectConfigObservedState{}
+	// MISSING: EnablePrivateServiceConnect
+	// MISSING: ProjectAllowlist
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	return out
+}
+func PrivateServiceConnectConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConfigObservedState) *pb.PrivateServiceConnectConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateServiceConnectConfig{}
+	// MISSING: EnablePrivateServiceConnect
+	// MISSING: ProjectAllowlist
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
 	return out
 }
