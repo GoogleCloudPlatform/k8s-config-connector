@@ -2416,265 +2416,751 @@ func AiplatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformMo
 	// MISSING: SatisfiesPzi
 	return out
 }
-func Attribution_FromProto(mapCtx *direct.MapContext, in *pb.Attribution) *krm.Attribution {
+func AiplatformNasJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *krm.AiplatformNasJobObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Attribution{}
-	// MISSING: BaselineOutputValue
-	// MISSING: InstanceOutputValue
-	// MISSING: FeatureAttributions
-	// MISSING: OutputIndex
-	// MISSING: OutputDisplayName
-	// MISSING: ApproximationError
-	// MISSING: OutputName
-	return out
-}
-func Attribution_ToProto(mapCtx *direct.MapContext, in *krm.Attribution) *pb.Attribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Attribution{}
-	// MISSING: BaselineOutputValue
-	// MISSING: InstanceOutputValue
-	// MISSING: FeatureAttributions
-	// MISSING: OutputIndex
-	// MISSING: OutputDisplayName
-	// MISSING: ApproximationError
-	// MISSING: OutputName
-	return out
-}
-func AttributionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Attribution) *krm.AttributionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributionObservedState{}
-	out.BaselineOutputValue = direct.LazyPtr(in.GetBaselineOutputValue())
-	out.InstanceOutputValue = direct.LazyPtr(in.GetInstanceOutputValue())
-	out.FeatureAttributions = Value_FromProto(mapCtx, in.GetFeatureAttributions())
-	out.OutputIndex = in.OutputIndex
-	out.OutputDisplayName = direct.LazyPtr(in.GetOutputDisplayName())
-	out.ApproximationError = direct.LazyPtr(in.GetApproximationError())
-	out.OutputName = direct.LazyPtr(in.GetOutputName())
-	return out
-}
-func AttributionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributionObservedState) *pb.Attribution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Attribution{}
-	out.BaselineOutputValue = direct.ValueOf(in.BaselineOutputValue)
-	out.InstanceOutputValue = direct.ValueOf(in.InstanceOutputValue)
-	out.FeatureAttributions = Value_ToProto(mapCtx, in.FeatureAttributions)
-	out.OutputIndex = in.OutputIndex
-	out.OutputDisplayName = direct.ValueOf(in.OutputDisplayName)
-	out.ApproximationError = direct.ValueOf(in.ApproximationError)
-	out.OutputName = direct.ValueOf(in.OutputName)
-	return out
-}
-func ModelEvaluationSlice_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice) *krm.ModelEvaluationSlice {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelEvaluationSlice{}
+	out := &krm.AiplatformNasJobObservedState{}
 	// MISSING: Name
-	// MISSING: Slice
-	// MISSING: MetricsSchemaURI
-	// MISSING: Metrics
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	// MISSING: NasJobOutput
+	// MISSING: State
 	// MISSING: CreateTime
-	// MISSING: ModelExplanation
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-func ModelEvaluationSlice_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice) *pb.ModelEvaluationSlice {
+func AiplatformNasJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformNasJobObservedState) *pb.NasJob {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelEvaluationSlice{}
+	out := &pb.NasJob{}
 	// MISSING: Name
-	// MISSING: Slice
-	// MISSING: MetricsSchemaURI
-	// MISSING: Metrics
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	// MISSING: NasJobOutput
+	// MISSING: State
 	// MISSING: CreateTime
-	// MISSING: ModelExplanation
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-func ModelEvaluationSliceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice) *krm.ModelEvaluationSliceObservedState {
+func AiplatformNasJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *krm.AiplatformNasJobSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelEvaluationSliceObservedState{}
+	out := &krm.AiplatformNasJobSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	// MISSING: NasJobOutput
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func AiplatformNasJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformNasJobSpec) *pb.NasJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJob{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	// MISSING: NasJobOutput
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func ContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ContainerSpec) *krm.ContainerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerSpec{}
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
+	return out
+}
+func ContainerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerSpec) *pb.ContainerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerSpec{}
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
+	return out
+}
+func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *krm.CustomJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomJobSpec{}
+	out.PersistentResourceID = direct.LazyPtr(in.GetPersistentResourceId())
+	out.WorkerPoolSpecs = direct.Slice_FromProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_FromProto)
+	out.Scheduling = Scheduling_FromProto(mapCtx, in.GetScheduling())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.ReservedIPRanges = in.ReservedIpRanges
+	out.BaseOutputDirectory = GcsDestination_FromProto(mapCtx, in.GetBaseOutputDirectory())
+	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
+	out.Tensorboard = direct.LazyPtr(in.GetTensorboard())
+	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
+	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
+	out.Experiment = direct.LazyPtr(in.GetExperiment())
+	out.ExperimentRun = direct.LazyPtr(in.GetExperimentRun())
+	out.Models = in.Models
+	return out
+}
+func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb.CustomJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomJobSpec{}
+	out.PersistentResourceId = direct.ValueOf(in.PersistentResourceID)
+	out.WorkerPoolSpecs = direct.Slice_ToProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_ToProto)
+	out.Scheduling = Scheduling_ToProto(mapCtx, in.Scheduling)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.Network = direct.ValueOf(in.Network)
+	out.ReservedIpRanges = in.ReservedIPRanges
+	out.BaseOutputDirectory = GcsDestination_ToProto(mapCtx, in.BaseOutputDirectory)
+	out.ProtectedArtifactLocationId = direct.ValueOf(in.ProtectedArtifactLocationID)
+	out.Tensorboard = direct.ValueOf(in.Tensorboard)
+	out.EnableWebAccess = direct.ValueOf(in.EnableWebAccess)
+	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
+	out.Experiment = direct.ValueOf(in.Experiment)
+	out.ExperimentRun = direct.ValueOf(in.ExperimentRun)
+	out.Models = in.Models
+	return out
+}
+func DiskSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiskSpec) *krm.DiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiskSpec{}
+	out.BootDiskType = direct.LazyPtr(in.GetBootDiskType())
+	out.BootDiskSizeGB = direct.LazyPtr(in.GetBootDiskSizeGb())
+	return out
+}
+func DiskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiskSpec) *pb.DiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiskSpec{}
+	out.BootDiskType = direct.ValueOf(in.BootDiskType)
+	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
+	return out
+}
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpec{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	return out
+}
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func EnvVar_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krm.EnvVar {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnvVar{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Slice = ModelEvaluationSlice_Slice_FromProto(mapCtx, in.GetSlice())
-	out.MetricsSchemaURI = direct.LazyPtr(in.GetMetricsSchemaUri())
-	out.Metrics = Value_FromProto(mapCtx, in.GetMetrics())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.ModelExplanation = ModelExplanation_FromProto(mapCtx, in.GetModelExplanation())
-	return out
-}
-func ModelEvaluationSliceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSliceObservedState) *pb.ModelEvaluationSlice {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelEvaluationSlice{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Slice = ModelEvaluationSlice_Slice_ToProto(mapCtx, in.Slice)
-	out.MetricsSchemaUri = direct.ValueOf(in.MetricsSchemaURI)
-	out.Metrics = Value_ToProto(mapCtx, in.Metrics)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.ModelExplanation = ModelExplanation_ToProto(mapCtx, in.ModelExplanation)
-	return out
-}
-func ModelEvaluationSlice_Slice_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice) *krm.ModelEvaluationSlice_Slice {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelEvaluationSlice_Slice{}
-	// MISSING: Dimension
-	// MISSING: Value
-	// MISSING: SliceSpec
-	return out
-}
-func ModelEvaluationSlice_Slice_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice) *pb.ModelEvaluationSlice_Slice {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelEvaluationSlice_Slice{}
-	// MISSING: Dimension
-	// MISSING: Value
-	// MISSING: SliceSpec
-	return out
-}
-func ModelEvaluationSlice_SliceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice) *krm.ModelEvaluationSlice_SliceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelEvaluationSlice_SliceObservedState{}
-	out.Dimension = direct.LazyPtr(in.GetDimension())
 	out.Value = direct.LazyPtr(in.GetValue())
-	out.SliceSpec = ModelEvaluationSlice_Slice_SliceSpec_FromProto(mapCtx, in.GetSliceSpec())
 	return out
 }
-func ModelEvaluationSlice_SliceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_SliceObservedState) *pb.ModelEvaluationSlice_Slice {
+func EnvVar_ToProto(mapCtx *direct.MapContext, in *krm.EnvVar) *pb.EnvVar {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelEvaluationSlice_Slice{}
-	out.Dimension = direct.ValueOf(in.Dimension)
+	out := &pb.EnvVar{}
+	out.Name = direct.ValueOf(in.Name)
 	out.Value = direct.ValueOf(in.Value)
-	out.SliceSpec = ModelEvaluationSlice_Slice_SliceSpec_ToProto(mapCtx, in.SliceSpec)
 	return out
 }
-func ModelEvaluationSlice_Slice_SliceSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice_SliceSpec) *krm.ModelEvaluationSlice_Slice_SliceSpec {
+func GcsDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krm.GcsDestination {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelEvaluationSlice_Slice_SliceSpec{}
-	// MISSING: Configs
+	out := &krm.GcsDestination{}
+	out.OutputURIPrefix = direct.LazyPtr(in.GetOutputUriPrefix())
 	return out
 }
-func ModelEvaluationSlice_Slice_SliceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice_SliceSpec) *pb.ModelEvaluationSlice_Slice_SliceSpec {
+func GcsDestination_ToProto(mapCtx *direct.MapContext, in *krm.GcsDestination) *pb.GcsDestination {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelEvaluationSlice_Slice_SliceSpec{}
-	// MISSING: Configs
+	out := &pb.GcsDestination{}
+	out.OutputUriPrefix = direct.ValueOf(in.OutputURIPrefix)
 	return out
 }
-func ModelEvaluationSlice_Slice_SliceSpec_Range_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice_SliceSpec_Range) *krm.ModelEvaluationSlice_Slice_SliceSpec_Range {
+func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelEvaluationSlice_Slice_SliceSpec_Range{}
-	out.Low = direct.LazyPtr(in.GetLow())
-	out.High = direct.LazyPtr(in.GetHigh())
+	out := &krm.MachineSpec{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
+	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
+	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
 	return out
 }
-func ModelEvaluationSlice_Slice_SliceSpec_Range_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice_SliceSpec_Range) *pb.ModelEvaluationSlice_Slice_SliceSpec_Range {
+func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelEvaluationSlice_Slice_SliceSpec_Range{}
-	out.Low = direct.ValueOf(in.Low)
-	out.High = direct.ValueOf(in.High)
+	out := &pb.MachineSpec{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.AcceleratorType = direct.Enum_ToProto[pb.AcceleratorType](mapCtx, in.AcceleratorType)
+	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
+	out.TpuTopology = direct.ValueOf(in.TpuTopology)
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
 	return out
 }
-func ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig) *krm.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig {
+func Measurement_FromProto(mapCtx *direct.MapContext, in *pb.Measurement) *krm.Measurement {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig{}
-	out.Value = ModelEvaluationSlice_Slice_SliceSpec_Value_FromProto(mapCtx, in.GetValue())
-	out.Range = ModelEvaluationSlice_Slice_SliceSpec_Range_FromProto(mapCtx, in.GetRange())
-	out.AllValues = direct.BoolValue_FromProto(mapCtx, in.GetAllValues())
+	out := &krm.Measurement{}
+	// MISSING: ElapsedDuration
+	// MISSING: StepCount
+	// MISSING: Metrics
 	return out
 }
-func ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig) *pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig {
+func Measurement_ToProto(mapCtx *direct.MapContext, in *krm.Measurement) *pb.Measurement {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig{}
-	if oneof := ModelEvaluationSlice_Slice_SliceSpec_Value_ToProto(mapCtx, in.Value); oneof != nil {
-		out.Kind = &pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_Value{Value: oneof}
-	}
-	if oneof := ModelEvaluationSlice_Slice_SliceSpec_Range_ToProto(mapCtx, in.Range); oneof != nil {
-		out.Kind = &pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_Range{Range: oneof}
-	}
-	if oneof := direct.BoolValue_ToProto(mapCtx, in.AllValues); oneof != nil {
-		out.Kind = &pb.ModelEvaluationSlice_Slice_SliceSpec_SliceConfig_AllValues{AllValues: oneof}
-	}
+	out := &pb.Measurement{}
+	// MISSING: ElapsedDuration
+	// MISSING: StepCount
+	// MISSING: Metrics
 	return out
 }
-func ModelEvaluationSlice_Slice_SliceSpec_Value_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluationSlice_Slice_SliceSpec_Value) *krm.ModelEvaluationSlice_Slice_SliceSpec_Value {
+func MeasurementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Measurement) *krm.MeasurementObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelEvaluationSlice_Slice_SliceSpec_Value{}
-	out.StringValue = direct.LazyPtr(in.GetStringValue())
-	out.FloatValue = direct.LazyPtr(in.GetFloatValue())
+	out := &krm.MeasurementObservedState{}
+	out.ElapsedDuration = direct.StringDuration_FromProto(mapCtx, in.GetElapsedDuration())
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	out.Metrics = direct.Slice_FromProto(mapCtx, in.Metrics, Measurement_Metric_FromProto)
 	return out
 }
-func ModelEvaluationSlice_Slice_SliceSpec_Value_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationSlice_Slice_SliceSpec_Value) *pb.ModelEvaluationSlice_Slice_SliceSpec_Value {
+func MeasurementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MeasurementObservedState) *pb.Measurement {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelEvaluationSlice_Slice_SliceSpec_Value{}
-	if oneof := ModelEvaluationSlice_Slice_SliceSpec_Value_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
-		out.Kind = oneof
-	}
-	if oneof := ModelEvaluationSlice_Slice_SliceSpec_Value_FloatValue_ToProto(mapCtx, in.FloatValue); oneof != nil {
-		out.Kind = oneof
-	}
+	out := &pb.Measurement{}
+	out.ElapsedDuration = direct.StringDuration_ToProto(mapCtx, in.ElapsedDuration)
+	out.StepCount = direct.ValueOf(in.StepCount)
+	out.Metrics = direct.Slice_ToProto(mapCtx, in.Metrics, Measurement_Metric_ToProto)
 	return out
 }
-func ModelExplanation_FromProto(mapCtx *direct.MapContext, in *pb.ModelExplanation) *krm.ModelExplanation {
+func Measurement_Metric_FromProto(mapCtx *direct.MapContext, in *pb.Measurement_Metric) *krm.Measurement_Metric {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelExplanation{}
-	// MISSING: MeanAttributions
+	out := &krm.Measurement_Metric{}
+	// MISSING: MetricID
+	// MISSING: Value
 	return out
 }
-func ModelExplanation_ToProto(mapCtx *direct.MapContext, in *krm.ModelExplanation) *pb.ModelExplanation {
+func Measurement_Metric_ToProto(mapCtx *direct.MapContext, in *krm.Measurement_Metric) *pb.Measurement_Metric {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelExplanation{}
-	// MISSING: MeanAttributions
+	out := &pb.Measurement_Metric{}
+	// MISSING: MetricID
+	// MISSING: Value
 	return out
 }
-func ModelExplanationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelExplanation) *krm.ModelExplanationObservedState {
+func Measurement_MetricObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Measurement_Metric) *krm.Measurement_MetricObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelExplanationObservedState{}
-	out.MeanAttributions = direct.Slice_FromProto(mapCtx, in.MeanAttributions, Attribution_FromProto)
+	out := &krm.Measurement_MetricObservedState{}
+	out.MetricID = direct.LazyPtr(in.GetMetricId())
+	out.Value = direct.LazyPtr(in.GetValue())
 	return out
 }
-func ModelExplanationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelExplanationObservedState) *pb.ModelExplanation {
+func Measurement_MetricObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Measurement_MetricObservedState) *pb.Measurement_Metric {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelExplanation{}
-	out.MeanAttributions = direct.Slice_ToProto(mapCtx, in.MeanAttributions, Attribution_ToProto)
+	out := &pb.Measurement_Metric{}
+	out.MetricId = direct.ValueOf(in.MetricID)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func NasJob_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *krm.NasJob {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJob{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.NasJobSpec = NasJobSpec_FromProto(mapCtx, in.GetNasJobSpec())
+	// MISSING: NasJobOutput
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EnableRestrictedImageTraining = direct.LazyPtr(in.GetEnableRestrictedImageTraining())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func NasJob_ToProto(mapCtx *direct.MapContext, in *krm.NasJob) *pb.NasJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJob{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.NasJobSpec = NasJobSpec_ToProto(mapCtx, in.NasJobSpec)
+	// MISSING: NasJobOutput
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EnableRestrictedImageTraining = direct.ValueOf(in.EnableRestrictedImageTraining)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func NasJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *krm.NasJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	out.NasJobOutput = NasJobOutput_FromProto(mapCtx, in.GetNasJobOutput())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Error = Status_FromProto(mapCtx, in.GetError())
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+func NasJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasJobObservedState) *pb.NasJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJob{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	out.NasJobOutput = NasJobOutput_ToProto(mapCtx, in.NasJobOutput)
+	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Error = Status_ToProto(mapCtx, in.Error)
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+func NasJobOutput_FromProto(mapCtx *direct.MapContext, in *pb.NasJobOutput) *krm.NasJobOutput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobOutput{}
+	// MISSING: MultiTrialJobOutput
+	return out
+}
+func NasJobOutput_ToProto(mapCtx *direct.MapContext, in *krm.NasJobOutput) *pb.NasJobOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobOutput{}
+	// MISSING: MultiTrialJobOutput
+	return out
+}
+func NasJobOutputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasJobOutput) *krm.NasJobOutputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobOutputObservedState{}
+	out.MultiTrialJobOutput = NasJobOutput_MultiTrialJobOutput_FromProto(mapCtx, in.GetMultiTrialJobOutput())
+	return out
+}
+func NasJobOutputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasJobOutputObservedState) *pb.NasJobOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobOutput{}
+	if oneof := NasJobOutput_MultiTrialJobOutput_ToProto(mapCtx, in.MultiTrialJobOutput); oneof != nil {
+		out.Output = &pb.NasJobOutput_MultiTrialJobOutput_{MultiTrialJobOutput: oneof}
+	}
+	return out
+}
+func NasJobOutput_MultiTrialJobOutput_FromProto(mapCtx *direct.MapContext, in *pb.NasJobOutput_MultiTrialJobOutput) *krm.NasJobOutput_MultiTrialJobOutput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobOutput_MultiTrialJobOutput{}
+	// MISSING: SearchTrials
+	// MISSING: TrainTrials
+	return out
+}
+func NasJobOutput_MultiTrialJobOutput_ToProto(mapCtx *direct.MapContext, in *krm.NasJobOutput_MultiTrialJobOutput) *pb.NasJobOutput_MultiTrialJobOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobOutput_MultiTrialJobOutput{}
+	// MISSING: SearchTrials
+	// MISSING: TrainTrials
+	return out
+}
+func NasJobOutput_MultiTrialJobOutputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasJobOutput_MultiTrialJobOutput) *krm.NasJobOutput_MultiTrialJobOutputObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobOutput_MultiTrialJobOutputObservedState{}
+	out.SearchTrials = direct.Slice_FromProto(mapCtx, in.SearchTrials, NasTrial_FromProto)
+	out.TrainTrials = direct.Slice_FromProto(mapCtx, in.TrainTrials, NasTrial_FromProto)
+	return out
+}
+func NasJobOutput_MultiTrialJobOutputObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasJobOutput_MultiTrialJobOutputObservedState) *pb.NasJobOutput_MultiTrialJobOutput {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobOutput_MultiTrialJobOutput{}
+	out.SearchTrials = direct.Slice_ToProto(mapCtx, in.SearchTrials, NasTrial_ToProto)
+	out.TrainTrials = direct.Slice_ToProto(mapCtx, in.TrainTrials, NasTrial_ToProto)
+	return out
+}
+func NasJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec) *krm.NasJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec{}
+	out.MultiTrialAlgorithmSpec = NasJobSpec_MultiTrialAlgorithmSpec_FromProto(mapCtx, in.GetMultiTrialAlgorithmSpec())
+	out.ResumeNasJobID = direct.LazyPtr(in.GetResumeNasJobId())
+	out.SearchSpaceSpec = direct.LazyPtr(in.GetSearchSpaceSpec())
+	return out
+}
+func NasJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec) *pb.NasJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec{}
+	if oneof := NasJobSpec_MultiTrialAlgorithmSpec_ToProto(mapCtx, in.MultiTrialAlgorithmSpec); oneof != nil {
+		out.NasAlgorithmSpec = &pb.NasJobSpec_MultiTrialAlgorithmSpec_{MultiTrialAlgorithmSpec: oneof}
+	}
+	out.ResumeNasJobId = direct.ValueOf(in.ResumeNasJobID)
+	out.SearchSpaceSpec = direct.ValueOf(in.SearchSpaceSpec)
+	return out
+}
+func NasJobSpec_MultiTrialAlgorithmSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec_MultiTrialAlgorithmSpec) *krm.NasJobSpec_MultiTrialAlgorithmSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec{}
+	out.MultiTrialAlgorithm = direct.Enum_FromProto(mapCtx, in.GetMultiTrialAlgorithm())
+	out.Metric = NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_FromProto(mapCtx, in.GetMetric())
+	out.SearchTrialSpec = NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_FromProto(mapCtx, in.GetSearchTrialSpec())
+	out.TrainTrialSpec = NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_FromProto(mapCtx, in.GetTrainTrialSpec())
+	return out
+}
+func NasJobSpec_MultiTrialAlgorithmSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec_MultiTrialAlgorithmSpec) *pb.NasJobSpec_MultiTrialAlgorithmSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec{}
+	out.MultiTrialAlgorithm = direct.Enum_ToProto[pb.NasJobSpec_MultiTrialAlgorithmSpec_MultiTrialAlgorithm](mapCtx, in.MultiTrialAlgorithm)
+	out.Metric = NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_ToProto(mapCtx, in.Metric)
+	out.SearchTrialSpec = NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_ToProto(mapCtx, in.SearchTrialSpec)
+	out.TrainTrialSpec = NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_ToProto(mapCtx, in.TrainTrialSpec)
+	return out
+}
+func NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec) *krm.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec{}
+	out.MetricID = direct.LazyPtr(in.GetMetricId())
+	out.Goal = direct.Enum_FromProto(mapCtx, in.GetGoal())
+	return out
+}
+func NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec) *pb.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec{}
+	out.MetricId = direct.ValueOf(in.MetricID)
+	out.Goal = direct.Enum_ToProto[pb.NasJobSpec_MultiTrialAlgorithmSpec_MetricSpec_GoalType](mapCtx, in.Goal)
+	return out
+}
+func NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec) *krm.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec{}
+	out.SearchTrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetSearchTrialJobSpec())
+	out.MaxTrialCount = direct.LazyPtr(in.GetMaxTrialCount())
+	out.MaxParallelTrialCount = direct.LazyPtr(in.GetMaxParallelTrialCount())
+	out.MaxFailedTrialCount = direct.LazyPtr(in.GetMaxFailedTrialCount())
+	return out
+}
+func NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec) *pb.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec_SearchTrialSpec{}
+	out.SearchTrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.SearchTrialJobSpec)
+	out.MaxTrialCount = direct.ValueOf(in.MaxTrialCount)
+	out.MaxParallelTrialCount = direct.ValueOf(in.MaxParallelTrialCount)
+	out.MaxFailedTrialCount = direct.ValueOf(in.MaxFailedTrialCount)
+	return out
+}
+func NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_FromProto(mapCtx *direct.MapContext, in *pb.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec) *krm.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec{}
+	out.TrainTrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetTrainTrialJobSpec())
+	out.MaxParallelTrialCount = direct.LazyPtr(in.GetMaxParallelTrialCount())
+	out.Frequency = direct.LazyPtr(in.GetFrequency())
+	return out
+}
+func NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec_ToProto(mapCtx *direct.MapContext, in *krm.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec) *pb.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJobSpec_MultiTrialAlgorithmSpec_TrainTrialSpec{}
+	out.TrainTrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.TrainTrialJobSpec)
+	out.MaxParallelTrialCount = direct.ValueOf(in.MaxParallelTrialCount)
+	out.Frequency = direct.ValueOf(in.Frequency)
+	return out
+}
+func NasTrial_FromProto(mapCtx *direct.MapContext, in *pb.NasTrial) *krm.NasTrial {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasTrial{}
+	// MISSING: ID
+	// MISSING: State
+	// MISSING: FinalMeasurement
+	// MISSING: StartTime
+	// MISSING: EndTime
+	return out
+}
+func NasTrial_ToProto(mapCtx *direct.MapContext, in *krm.NasTrial) *pb.NasTrial {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasTrial{}
+	// MISSING: ID
+	// MISSING: State
+	// MISSING: FinalMeasurement
+	// MISSING: StartTime
+	// MISSING: EndTime
+	return out
+}
+func NasTrialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NasTrial) *krm.NasTrialObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NasTrialObservedState{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.FinalMeasurement = Measurement_FromProto(mapCtx, in.GetFinalMeasurement())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func NasTrialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NasTrialObservedState) *pb.NasTrial {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasTrial{}
+	out.Id = direct.ValueOf(in.ID)
+	out.State = direct.Enum_ToProto[pb.NasTrial_State](mapCtx, in.State)
+	out.FinalMeasurement = Measurement_ToProto(mapCtx, in.FinalMeasurement)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func NfsMount_FromProto(mapCtx *direct.MapContext, in *pb.NfsMount) *krm.NfsMount {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NfsMount{}
+	out.Server = direct.LazyPtr(in.GetServer())
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.MountPoint = direct.LazyPtr(in.GetMountPoint())
+	return out
+}
+func NfsMount_ToProto(mapCtx *direct.MapContext, in *krm.NfsMount) *pb.NfsMount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NfsMount{}
+	out.Server = direct.ValueOf(in.Server)
+	out.Path = direct.ValueOf(in.Path)
+	out.MountPoint = direct.ValueOf(in.MountPoint)
+	return out
+}
+func PythonPackageSpec_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krm.PythonPackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PythonPackageSpec{}
+	out.ExecutorImageURI = direct.LazyPtr(in.GetExecutorImageUri())
+	out.PackageUris = in.PackageUris
+	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
+	out.Args = in.Args
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
+	return out
+}
+func PythonPackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.PythonPackageSpec) *pb.PythonPackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PythonPackageSpec{}
+	out.ExecutorImageUri = direct.ValueOf(in.ExecutorImageURI)
+	out.PackageUris = in.PackageUris
+	out.PythonModule = direct.ValueOf(in.PythonModule)
+	out.Args = in.Args
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
+	return out
+}
+func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_FromProto(mapCtx, in.GetReservationAffinityType())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Values = in.Values
+	return out
+}
+func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinity) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
+	out.Key = direct.ValueOf(in.Key)
+	out.Values = in.Values
+	return out
+}
+func Scheduling_FromProto(mapCtx *direct.MapContext, in *pb.Scheduling) *krm.Scheduling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Scheduling{}
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.RestartJobOnWorkerRestart = direct.LazyPtr(in.GetRestartJobOnWorkerRestart())
+	out.Strategy = direct.Enum_FromProto(mapCtx, in.GetStrategy())
+	out.DisableRetries = direct.LazyPtr(in.GetDisableRetries())
+	out.MaxWaitDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxWaitDuration())
+	return out
+}
+func Scheduling_ToProto(mapCtx *direct.MapContext, in *krm.Scheduling) *pb.Scheduling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scheduling{}
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.RestartJobOnWorkerRestart = direct.ValueOf(in.RestartJobOnWorkerRestart)
+	out.Strategy = direct.Enum_ToProto[pb.Scheduling_Strategy](mapCtx, in.Strategy)
+	out.DisableRetries = direct.ValueOf(in.DisableRetries)
+	out.MaxWaitDuration = direct.StringDuration_ToProto(mapCtx, in.MaxWaitDuration)
+	return out
+}
+func WorkerPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krm.WorkerPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkerPoolSpec{}
+	out.ContainerSpec = ContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
+	out.PythonPackageSpec = PythonPackageSpec_FromProto(mapCtx, in.GetPythonPackageSpec())
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.ReplicaCount = direct.LazyPtr(in.GetReplicaCount())
+	out.NfsMounts = direct.Slice_FromProto(mapCtx, in.NfsMounts, NfsMount_FromProto)
+	out.DiskSpec = DiskSpec_FromProto(mapCtx, in.GetDiskSpec())
+	return out
+}
+func WorkerPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkerPoolSpec) *pb.WorkerPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkerPoolSpec{}
+	if oneof := ContainerSpec_ToProto(mapCtx, in.ContainerSpec); oneof != nil {
+		out.Task = &pb.WorkerPoolSpec_ContainerSpec{ContainerSpec: oneof}
+	}
+	if oneof := PythonPackageSpec_ToProto(mapCtx, in.PythonPackageSpec); oneof != nil {
+		out.Task = &pb.WorkerPoolSpec_PythonPackageSpec{PythonPackageSpec: oneof}
+	}
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.ReplicaCount = direct.ValueOf(in.ReplicaCount)
+	out.NfsMounts = direct.Slice_ToProto(mapCtx, in.NfsMounts, NfsMount_ToProto)
+	out.DiskSpec = DiskSpec_ToProto(mapCtx, in.DiskSpec)
 	return out
 }
