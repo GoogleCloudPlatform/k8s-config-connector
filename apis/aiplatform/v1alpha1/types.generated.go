@@ -83,131 +83,110 @@ type NetworkSpec struct {
 	Subnetwork *string `json:"subnetwork,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob
-type NotebookExecutionJob struct {
-	// The Dataform Repository pointing to a single file notebook repository.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.dataform_repository_source
-	DataformRepositorySource *NotebookExecutionJob_DataformRepositorySource `json:"dataformRepositorySource,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookEucConfig
+type NotebookEucConfig struct {
+	// Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
+	//  In proto3, the default value of a boolean is false. In this way, by default
+	//  EUC will be enabled for NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookEucConfig.euc_disabled
+	EucDisabled *bool `json:"eucDisabled,omitempty"`
+}
 
-	// The Cloud Storage url pointing to the ipynb file. Format:
-	//  `gs://bucket/notebook_file.ipynb`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.gcs_notebook_source
-	GcsNotebookSource *NotebookExecutionJob_GcsNotebookSource `json:"gcsNotebookSource,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig
+type NotebookIdleShutdownConfig struct {
+	// Required. Duration is accurate to the second. In Notebook, Idle Timeout is
+	//  accurate to minute so the range of idle_timeout (second) is: 10 * 60 ~ 1440
+	//  * 60.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig.idle_timeout
+	IdleTimeout *string `json:"idleTimeout,omitempty"`
 
-	// The contents of an input notebook file.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.direct_notebook_source
-	DirectNotebookSource *NotebookExecutionJob_DirectNotebookSource `json:"directNotebookSource,omitempty"`
+	// Whether Idle Shutdown is disabled in this NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig.idle_shutdown_disabled
+	IdleShutdownDisabled *bool `json:"idleShutdownDisabled,omitempty"`
+}
 
-	// The NotebookRuntimeTemplate to source compute configuration from.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.notebook_runtime_template_resource_name
-	NotebookRuntimeTemplateResourceName *string `json:"notebookRuntimeTemplateResourceName,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookRuntimeTemplate
+type NotebookRuntimeTemplate struct {
+	// The resource name of the NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.name
+	Name *string `json:"name,omitempty"`
 
-	// The custom compute configuration for an execution job.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.custom_environment_spec
-	CustomEnvironmentSpec *NotebookExecutionJob_CustomEnvironmentSpec `json:"customEnvironmentSpec,omitempty"`
-
-	// The Cloud Storage location to upload the result to. Format:
-	//  `gs://bucket-name`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.gcs_output_uri
-	GcsOutputURI *string `json:"gcsOutputURI,omitempty"`
-
-	// The user email to run the execution as. Only supported by Colab runtimes.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.execution_user
-	ExecutionUser *string `json:"executionUser,omitempty"`
-
-	// The service account to run the execution as.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
-
-	// The Workbench runtime configuration to use for the notebook execution.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.workbench_runtime
-	WorkbenchRuntime *NotebookExecutionJob_WorkbenchRuntime `json:"workbenchRuntime,omitempty"`
-
-	// The display name of the NotebookExecutionJob. The name can be up to 128
-	//  characters long and can consist of any UTF-8 characters.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.display_name
+	// Required. The display name of the NotebookRuntimeTemplate.
+	//  The name can be up to 128 characters long and can consist of any UTF-8
+	//  characters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Max running time of the execution job in seconds (default 86400s / 24 hrs).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.execution_timeout
-	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
+	// The description of the NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.description
+	Description *string `json:"description,omitempty"`
 
-	// The labels with user-defined metadata to organize NotebookExecutionJobs.
+	// Optional. Immutable. The specification of a single machine for the
+	//  template.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Optional. The specification of [persistent
+	//  disk][https://cloud.google.com/compute/docs/disks/persistent-disks]
+	//  attached to the runtime as data disk storage.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.data_persistent_disk_spec
+	DataPersistentDiskSpec *PersistentDiskSpec `json:"dataPersistentDiskSpec,omitempty"`
+
+	// Optional. Network spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.network_spec
+	NetworkSpec *NetworkSpec `json:"networkSpec,omitempty"`
+
+	// The service account that the runtime workload runs as.
+	//  You can use any service account within the same project, but you
+	//  must have the service account user permission to use the instance.
+	//
+	//  If not specified, the [Compute Engine default service
+	//  account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
+	//  is used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Used to perform consistent read-modify-write updates. If not set, a blind
+	//  "overwrite" update happens.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// The labels with user-defined metadata to organize the
+	//  NotebookRuntimeTemplates.
 	//
 	//  Label keys and values can be no longer than 64 characters
 	//  (Unicode codepoints), can only contain lowercase letters, numeric
 	//  characters, underscores and dashes. International characters are allowed.
 	//
 	//  See https://goo.gl/xmQnxf for more information and examples of labels.
-	//  System reserved label keys are prefixed with "aiplatform.googleapis.com/"
-	//  and are immutable.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.labels
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// The name of the kernel to use during notebook execution. If unset, the
-	//  default kernel is used.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.kernel_name
-	KernelName *string `json:"kernelName,omitempty"`
+	// The idle shutdown configuration of NotebookRuntimeTemplate. This config
+	//  will only be set when idle shutdown is enabled.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.idle_shutdown_config
+	IdleShutdownConfig *NotebookIdleShutdownConfig `json:"idleShutdownConfig,omitempty"`
 
-	// Customer-managed encryption key spec for the notebook execution job.
-	//  This field is auto-populated if the
-	//  [NotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookRuntimeTemplate]
-	//  has an encryption spec.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.encryption_spec
+	// EUC configuration of the NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.euc_config
+	EucConfig *NotebookEucConfig `json:"eucConfig,omitempty"`
+
+	// Optional. Immutable. The type of the notebook runtime template.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.notebook_runtime_type
+	NotebookRuntimeType *string `json:"notebookRuntimeType,omitempty"`
+
+	// Optional. Immutable. Runtime Shielded VM spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.shielded_vm_config
+	ShieldedVmConfig *ShieldedVmConfig `json:"shieldedVmConfig,omitempty"`
+
+	// Optional. The Compute Engine tags to add to runtime (see [Tagging
+	//  instances](https://cloud.google.com/vpc/docs/add-remove-network-tags)).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.network_tags
+	NetworkTags []string `json:"networkTags,omitempty"`
+
+	// Customer-managed encryption key spec for the notebook runtime.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.encryption_spec
 	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec
-type NotebookExecutionJob_CustomEnvironmentSpec struct {
-	// The specification of a single machine for the execution job.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.machine_spec
-	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
-
-	// The specification of a persistent disk to attach for the execution job.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.persistent_disk_spec
-	PersistentDiskSpec *PersistentDiskSpec `json:"persistentDiskSpec,omitempty"`
-
-	// The network configuration to use for the execution job.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.network_spec
-	NetworkSpec *NetworkSpec `json:"networkSpec,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.DataformRepositorySource
-type NotebookExecutionJob_DataformRepositorySource struct {
-	// The resource name of the Dataform Repository. Format:
-	//  `projects/{project_id}/locations/{location}/repositories/{repository_id}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.DataformRepositorySource.dataform_repository_resource_name
-	DataformRepositoryResourceName *string `json:"dataformRepositoryResourceName,omitempty"`
-
-	// The commit SHA to read repository with. If unset, the file will be read
-	//  at HEAD.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.DataformRepositorySource.commit_sha
-	CommitSha *string `json:"commitSha,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.DirectNotebookSource
-type NotebookExecutionJob_DirectNotebookSource struct {
-	// The base64-encoded contents of the input notebook file.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.DirectNotebookSource.content
-	Content []byte `json:"content,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource
-type NotebookExecutionJob_GcsNotebookSource struct {
-	// The Cloud Storage uri pointing to the ipynb file. Format:
-	//  `gs://bucket/notebook_file.ipynb`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.uri
-	URI *string `json:"uri,omitempty"`
-
-	// The version of the Cloud Storage object to read. If unset, the current
-	//  version of the object is read. See
-	//  https://cloud.google.com/storage/docs/metadata#generation-number.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.generation
-	Generation *string `json:"generation,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.WorkbenchRuntime
-type NotebookExecutionJob_WorkbenchRuntime struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.PersistentDiskSpec
@@ -244,92 +223,48 @@ type ReservationAffinity struct {
 	Values []string `json:"values,omitempty"`
 }
 
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
+// +kcc:proto=google.cloud.aiplatform.v1.ShieldedVmConfig
+type ShieldedVmConfig struct {
+	// Defines whether the instance has [Secure
+	//  Boot](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#secure-boot)
+	//  enabled.
 	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
+	//  Secure Boot helps ensure that the system only runs authentic software by
+	//  verifying the digital signature of all boot components, and halting the
+	//  boot process if signature verification fails.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ShieldedVmConfig.enable_secure_boot
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 }
 
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookEucConfig
+type NotebookEucConfigObservedState struct {
+	// Output only. Whether ActAs check is bypassed for service account attached
+	//  to the VM. If false, we need ActAs check for the default Compute Engine
+	//  Service account. When a Runtime is created, a VM is allocated using Default
+	//  Compute Engine Service Account. Any user requesting to use this Runtime
+	//  requires Service Account User (ActAs) permission over this SA. If true,
+	//  Runtime owner is using EUC and does not require the above permission as VM
+	//  no longer use default Compute Engine SA, but a P4SA.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookEucConfig.bypass_actas_check
+	BypassActasCheck *bool `json:"bypassActasCheck,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob
-type NotebookExecutionJobObservedState struct {
-	// Output only. The resource name of this NotebookExecutionJob. Format:
-	//  `projects/{project_id}/locations/{location}/notebookExecutionJobs/{job_id}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookRuntimeTemplate
+type NotebookRuntimeTemplateObservedState struct {
+	// Output only. The default template to use if not specified.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.is_default
+	IsDefault *bool `json:"isDefault,omitempty"`
 
-	// Output only. The Schedule resource name if this job is triggered by one.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/schedules/{schedule_id}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.schedule_resource_name
-	ScheduleResourceName *string `json:"scheduleResourceName,omitempty"`
+	// EUC configuration of the NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.euc_config
+	EucConfig *NotebookEucConfigObservedState `json:"eucConfig,omitempty"`
 
-	// Output only. The state of the NotebookExecutionJob.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.job_state
-	JobState *string `json:"jobState,omitempty"`
-
-	// Output only. Populated when the NotebookExecutionJob is completed. When
-	//  there is an error during notebook execution, the error details are
-	//  populated.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.status
-	Status *Status `json:"status,omitempty"`
-
-	// Output only. Timestamp when this NotebookExecutionJob was created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.create_time
+	// Output only. Timestamp when this NotebookRuntimeTemplate was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. Timestamp when this NotebookExecutionJob was most recently
+	// Output only. Timestamp when this NotebookRuntimeTemplate was most recently
 	//  updated.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.update_time
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }

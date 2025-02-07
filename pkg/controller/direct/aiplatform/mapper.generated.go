@@ -2656,6 +2656,106 @@ func AiplatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: EncryptionSpec
 	return out
 }
+func AiplatformNotebookRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.AiplatformNotebookRuntimeTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformNotebookRuntimeTemplateObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: IsDefault
+	// MISSING: MachineSpec
+	// MISSING: DataPersistentDiskSpec
+	// MISSING: NetworkSpec
+	// MISSING: ServiceAccount
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: IdleShutdownConfig
+	// MISSING: EucConfig
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: NotebookRuntimeType
+	// MISSING: ShieldedVmConfig
+	// MISSING: NetworkTags
+	// MISSING: EncryptionSpec
+	return out
+}
+func AiplatformNotebookRuntimeTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformNotebookRuntimeTemplateObservedState) *pb.NotebookRuntimeTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntimeTemplate{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: IsDefault
+	// MISSING: MachineSpec
+	// MISSING: DataPersistentDiskSpec
+	// MISSING: NetworkSpec
+	// MISSING: ServiceAccount
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: IdleShutdownConfig
+	// MISSING: EucConfig
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: NotebookRuntimeType
+	// MISSING: ShieldedVmConfig
+	// MISSING: NetworkTags
+	// MISSING: EncryptionSpec
+	return out
+}
+func AiplatformNotebookRuntimeTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.AiplatformNotebookRuntimeTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformNotebookRuntimeTemplateSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: IsDefault
+	// MISSING: MachineSpec
+	// MISSING: DataPersistentDiskSpec
+	// MISSING: NetworkSpec
+	// MISSING: ServiceAccount
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: IdleShutdownConfig
+	// MISSING: EucConfig
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: NotebookRuntimeType
+	// MISSING: ShieldedVmConfig
+	// MISSING: NetworkTags
+	// MISSING: EncryptionSpec
+	return out
+}
+func AiplatformNotebookRuntimeTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformNotebookRuntimeTemplateSpec) *pb.NotebookRuntimeTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntimeTemplate{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: IsDefault
+	// MISSING: MachineSpec
+	// MISSING: DataPersistentDiskSpec
+	// MISSING: NetworkSpec
+	// MISSING: ServiceAccount
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: IdleShutdownConfig
+	// MISSING: EucConfig
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: NotebookRuntimeType
+	// MISSING: ShieldedVmConfig
+	// MISSING: NetworkTags
+	// MISSING: EncryptionSpec
+	return out
+}
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
 	if in == nil {
 		return nil
@@ -2716,216 +2816,158 @@ func NetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSpec) *pb.Net
 	out.Subnetwork = direct.ValueOf(in.Subnetwork)
 	return out
 }
-func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.NotebookExecutionJob {
+func NotebookEucConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEucConfig) *krm.NotebookEucConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NotebookExecutionJob{}
-	out.DataformRepositorySource = NotebookExecutionJob_DataformRepositorySource_FromProto(mapCtx, in.GetDataformRepositorySource())
-	out.GcsNotebookSource = NotebookExecutionJob_GcsNotebookSource_FromProto(mapCtx, in.GetGcsNotebookSource())
-	out.DirectNotebookSource = NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx, in.GetDirectNotebookSource())
-	out.NotebookRuntimeTemplateResourceName = direct.LazyPtr(in.GetNotebookRuntimeTemplateResourceName())
-	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
-	out.GcsOutputURI = direct.LazyPtr(in.GetGcsOutputUri())
-	out.ExecutionUser = direct.LazyPtr(in.GetExecutionUser())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.WorkbenchRuntime = NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx, in.GetWorkbenchRuntime())
-	// MISSING: Name
+	out := &krm.NotebookEucConfig{}
+	out.EucDisabled = direct.LazyPtr(in.GetEucDisabled())
+	// MISSING: BypassActasCheck
+	return out
+}
+func NotebookEucConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotebookEucConfig) *pb.NotebookEucConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookEucConfig{}
+	out.EucDisabled = direct.ValueOf(in.EucDisabled)
+	// MISSING: BypassActasCheck
+	return out
+}
+func NotebookEucConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEucConfig) *krm.NotebookEucConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookEucConfigObservedState{}
+	// MISSING: EucDisabled
+	out.BypassActasCheck = direct.LazyPtr(in.GetBypassActasCheck())
+	return out
+}
+func NotebookEucConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookEucConfigObservedState) *pb.NotebookEucConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookEucConfig{}
+	// MISSING: EucDisabled
+	out.BypassActasCheck = direct.ValueOf(in.BypassActasCheck)
+	return out
+}
+func NotebookIdleShutdownConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotebookIdleShutdownConfig) *krm.NotebookIdleShutdownConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookIdleShutdownConfig{}
+	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
+	out.IdleShutdownDisabled = direct.LazyPtr(in.GetIdleShutdownDisabled())
+	return out
+}
+func NotebookIdleShutdownConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotebookIdleShutdownConfig) *pb.NotebookIdleShutdownConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookIdleShutdownConfig{}
+	out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
+	out.IdleShutdownDisabled = direct.ValueOf(in.IdleShutdownDisabled)
+	return out
+}
+func NotebookRuntimeTemplate_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.NotebookRuntimeTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookRuntimeTemplate{}
+	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
-	// MISSING: ScheduleResourceName
-	// MISSING: JobState
-	// MISSING: Status
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: IsDefault
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.DataPersistentDiskSpec = PersistentDiskSpec_FromProto(mapCtx, in.GetDataPersistentDiskSpec())
+	out.NetworkSpec = NetworkSpec_FromProto(mapCtx, in.GetNetworkSpec())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.IdleShutdownConfig = NotebookIdleShutdownConfig_FromProto(mapCtx, in.GetIdleShutdownConfig())
+	out.EucConfig = NotebookEucConfig_FromProto(mapCtx, in.GetEucConfig())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.KernelName = direct.LazyPtr(in.GetKernelName())
+	out.NotebookRuntimeType = direct.Enum_FromProto(mapCtx, in.GetNotebookRuntimeType())
+	out.ShieldedVmConfig = ShieldedVmConfig_FromProto(mapCtx, in.GetShieldedVmConfig())
+	out.NetworkTags = in.NetworkTags
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
-func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob) *pb.NotebookExecutionJob {
+func NotebookRuntimeTemplate_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntimeTemplate) *pb.NotebookRuntimeTemplate {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NotebookExecutionJob{}
-	if oneof := NotebookExecutionJob_DataformRepositorySource_ToProto(mapCtx, in.DataformRepositorySource); oneof != nil {
-		out.NotebookSource = &pb.NotebookExecutionJob_DataformRepositorySource_{DataformRepositorySource: oneof}
-	}
-	if oneof := NotebookExecutionJob_GcsNotebookSource_ToProto(mapCtx, in.GcsNotebookSource); oneof != nil {
-		out.NotebookSource = &pb.NotebookExecutionJob_GcsNotebookSource_{GcsNotebookSource: oneof}
-	}
-	if oneof := NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx, in.DirectNotebookSource); oneof != nil {
-		out.NotebookSource = &pb.NotebookExecutionJob_DirectNotebookSource_{DirectNotebookSource: oneof}
-	}
-	if oneof := NotebookExecutionJob_NotebookRuntimeTemplateResourceName_ToProto(mapCtx, in.NotebookRuntimeTemplateResourceName); oneof != nil {
-		out.EnvironmentSpec = oneof
-	}
-	if oneof := NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
-		out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
-	}
-	if oneof := NotebookExecutionJob_GcsOutputUri_ToProto(mapCtx, in.GcsOutputURI); oneof != nil {
-		out.ExecutionSink = oneof
-	}
-	if oneof := NotebookExecutionJob_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
-		out.ExecutionIdentity = oneof
-	}
-	if oneof := NotebookExecutionJob_ServiceAccount_ToProto(mapCtx, in.ServiceAccount); oneof != nil {
-		out.ExecutionIdentity = oneof
-	}
-	if oneof := NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx, in.WorkbenchRuntime); oneof != nil {
-		out.RuntimeEnvironment = &pb.NotebookExecutionJob_WorkbenchRuntime_{WorkbenchRuntime: oneof}
-	}
-	// MISSING: Name
+	out := &pb.NotebookRuntimeTemplate{}
+	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
-	// MISSING: ScheduleResourceName
-	// MISSING: JobState
-	// MISSING: Status
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: IsDefault
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.DataPersistentDiskSpec = PersistentDiskSpec_ToProto(mapCtx, in.DataPersistentDiskSpec)
+	out.NetworkSpec = NetworkSpec_ToProto(mapCtx, in.NetworkSpec)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.IdleShutdownConfig = NotebookIdleShutdownConfig_ToProto(mapCtx, in.IdleShutdownConfig)
+	out.EucConfig = NotebookEucConfig_ToProto(mapCtx, in.EucConfig)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.KernelName = direct.ValueOf(in.KernelName)
+	out.NotebookRuntimeType = direct.Enum_ToProto[pb.NotebookRuntimeType](mapCtx, in.NotebookRuntimeType)
+	out.ShieldedVmConfig = ShieldedVmConfig_ToProto(mapCtx, in.ShieldedVmConfig)
+	out.NetworkTags = in.NetworkTags
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
-func NotebookExecutionJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.NotebookExecutionJobObservedState {
+func NotebookRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.NotebookRuntimeTemplateObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NotebookExecutionJobObservedState{}
-	// MISSING: DataformRepositorySource
-	// MISSING: GcsNotebookSource
-	// MISSING: DirectNotebookSource
-	// MISSING: NotebookRuntimeTemplateResourceName
-	// MISSING: CustomEnvironmentSpec
-	// MISSING: GcsOutputURI
-	// MISSING: ExecutionUser
-	// MISSING: ServiceAccount
-	// MISSING: WorkbenchRuntime
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.NotebookRuntimeTemplateObservedState{}
+	// MISSING: Name
 	// MISSING: DisplayName
-	// MISSING: ExecutionTimeout
-	out.ScheduleResourceName = direct.LazyPtr(in.GetScheduleResourceName())
-	out.JobState = direct.Enum_FromProto(mapCtx, in.GetJobState())
-	out.Status = Status_FromProto(mapCtx, in.GetStatus())
+	// MISSING: Description
+	out.IsDefault = direct.LazyPtr(in.GetIsDefault())
+	// MISSING: MachineSpec
+	// MISSING: DataPersistentDiskSpec
+	// MISSING: NetworkSpec
+	// MISSING: ServiceAccount
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: IdleShutdownConfig
+	out.EucConfig = NotebookEucConfigObservedState_FromProto(mapCtx, in.GetEucConfig())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: KernelName
+	// MISSING: NotebookRuntimeType
+	// MISSING: ShieldedVmConfig
+	// MISSING: NetworkTags
 	// MISSING: EncryptionSpec
 	return out
 }
-func NotebookExecutionJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJobObservedState) *pb.NotebookExecutionJob {
+func NotebookRuntimeTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntimeTemplateObservedState) *pb.NotebookRuntimeTemplate {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NotebookExecutionJob{}
-	// MISSING: DataformRepositorySource
-	// MISSING: GcsNotebookSource
-	// MISSING: DirectNotebookSource
-	// MISSING: NotebookRuntimeTemplateResourceName
-	// MISSING: CustomEnvironmentSpec
-	// MISSING: GcsOutputURI
-	// MISSING: ExecutionUser
-	// MISSING: ServiceAccount
-	// MISSING: WorkbenchRuntime
-	out.Name = direct.ValueOf(in.Name)
+	out := &pb.NotebookRuntimeTemplate{}
+	// MISSING: Name
 	// MISSING: DisplayName
-	// MISSING: ExecutionTimeout
-	out.ScheduleResourceName = direct.ValueOf(in.ScheduleResourceName)
-	out.JobState = direct.Enum_ToProto[pb.JobState](mapCtx, in.JobState)
-	out.Status = Status_ToProto(mapCtx, in.Status)
+	// MISSING: Description
+	out.IsDefault = direct.ValueOf(in.IsDefault)
+	// MISSING: MachineSpec
+	// MISSING: DataPersistentDiskSpec
+	// MISSING: NetworkSpec
+	// MISSING: ServiceAccount
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: IdleShutdownConfig
+	out.EucConfig = NotebookEucConfigObservedState_ToProto(mapCtx, in.EucConfig)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: KernelName
+	// MISSING: NotebookRuntimeType
+	// MISSING: ShieldedVmConfig
+	// MISSING: NetworkTags
 	// MISSING: EncryptionSpec
-	return out
-}
-func NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_CustomEnvironmentSpec) *krm.NotebookExecutionJob_CustomEnvironmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookExecutionJob_CustomEnvironmentSpec{}
-	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
-	out.PersistentDiskSpec = PersistentDiskSpec_FromProto(mapCtx, in.GetPersistentDiskSpec())
-	out.NetworkSpec = NetworkSpec_FromProto(mapCtx, in.GetNetworkSpec())
-	return out
-}
-func NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_CustomEnvironmentSpec) *pb.NotebookExecutionJob_CustomEnvironmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookExecutionJob_CustomEnvironmentSpec{}
-	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
-	out.PersistentDiskSpec = PersistentDiskSpec_ToProto(mapCtx, in.PersistentDiskSpec)
-	out.NetworkSpec = NetworkSpec_ToProto(mapCtx, in.NetworkSpec)
-	return out
-}
-func NotebookExecutionJob_DataformRepositorySource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_DataformRepositorySource) *krm.NotebookExecutionJob_DataformRepositorySource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookExecutionJob_DataformRepositorySource{}
-	out.DataformRepositoryResourceName = direct.LazyPtr(in.GetDataformRepositoryResourceName())
-	out.CommitSha = direct.LazyPtr(in.GetCommitSha())
-	return out
-}
-func NotebookExecutionJob_DataformRepositorySource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_DataformRepositorySource) *pb.NotebookExecutionJob_DataformRepositorySource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookExecutionJob_DataformRepositorySource{}
-	out.DataformRepositoryResourceName = direct.ValueOf(in.DataformRepositoryResourceName)
-	out.CommitSha = direct.ValueOf(in.CommitSha)
-	return out
-}
-func NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_DirectNotebookSource) *krm.NotebookExecutionJob_DirectNotebookSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookExecutionJob_DirectNotebookSource{}
-	out.Content = in.GetContent()
-	return out
-}
-func NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_DirectNotebookSource) *pb.NotebookExecutionJob_DirectNotebookSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookExecutionJob_DirectNotebookSource{}
-	out.Content = in.Content
-	return out
-}
-func NotebookExecutionJob_GcsNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_GcsNotebookSource) *krm.NotebookExecutionJob_GcsNotebookSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookExecutionJob_GcsNotebookSource{}
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.Generation = direct.LazyPtr(in.GetGeneration())
-	return out
-}
-func NotebookExecutionJob_GcsNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_GcsNotebookSource) *pb.NotebookExecutionJob_GcsNotebookSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookExecutionJob_GcsNotebookSource{}
-	out.Uri = direct.ValueOf(in.URI)
-	out.Generation = direct.ValueOf(in.Generation)
-	return out
-}
-func NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_WorkbenchRuntime) *krm.NotebookExecutionJob_WorkbenchRuntime {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookExecutionJob_WorkbenchRuntime{}
-	return out
-}
-func NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_WorkbenchRuntime) *pb.NotebookExecutionJob_WorkbenchRuntime {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookExecutionJob_WorkbenchRuntime{}
 	return out
 }
 func PersistentDiskSpec_FromProto(mapCtx *direct.MapContext, in *pb.PersistentDiskSpec) *krm.PersistentDiskSpec {
@@ -2964,5 +3006,21 @@ func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationA
 	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
 	out.Key = direct.ValueOf(in.Key)
 	out.Values = in.Values
+	return out
+}
+func ShieldedVmConfig_FromProto(mapCtx *direct.MapContext, in *pb.ShieldedVmConfig) *krm.ShieldedVmConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShieldedVmConfig{}
+	out.EnableSecureBoot = direct.LazyPtr(in.GetEnableSecureBoot())
+	return out
+}
+func ShieldedVmConfig_ToProto(mapCtx *direct.MapContext, in *krm.ShieldedVmConfig) *pb.ShieldedVmConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShieldedVmConfig{}
+	out.EnableSecureBoot = direct.ValueOf(in.EnableSecureBoot)
 	return out
 }
