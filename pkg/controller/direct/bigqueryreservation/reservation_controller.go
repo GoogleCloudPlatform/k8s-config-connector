@@ -168,16 +168,16 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	paths := []string{}
 
-	if !reflect.DeepEqual(*a.desired.Spec.SlotCapacity, a.actual.SlotCapacity) {
+	if a.desired.Spec.SlotCapacity != nil && !reflect.DeepEqual(*a.desired.Spec.SlotCapacity, a.actual.SlotCapacity) {
 		paths = append(paths, "slot_capacity")
 	}
-	if !reflect.DeepEqual(*a.desired.Spec.IgnoreIdleSlots, a.actual.IgnoreIdleSlots) {
+	if a.desired.Spec.IgnoreIdleSlots != nil && !reflect.DeepEqual(*a.desired.Spec.IgnoreIdleSlots, a.actual.IgnoreIdleSlots) {
 		paths = append(paths, "ignore_idle_slots")
 	}
-	if !reflect.DeepEqual(*a.desired.Spec.Concurrency, a.actual.Concurrency) {
+	if a.desired.Spec.Concurrency != nil && !reflect.DeepEqual(*a.desired.Spec.Concurrency, a.actual.Concurrency) {
 		paths = append(paths, "concurrency")
 	}
-	if !reflect.DeepEqual(*a.desired.Spec.SecondaryLocation, a.actual.SecondaryLocation) {
+	if a.desired.Spec.SecondaryLocation != nil && !reflect.DeepEqual(*a.desired.Spec.SecondaryLocation, a.actual.SecondaryLocation) {
 		paths = append(paths, "secondary_location")
 	}
 	if a.desired.Spec.Autoscale != nil && !reflect.DeepEqual(*a.desired.Spec.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
