@@ -23,6 +23,7 @@ import (
 	_ "pkg/controller/direct/apigeeregistry"
 	_ "pkg/controller/direct/apihub"
 	_ "pkg/controller/direct/apphub"
+	_ "pkg/controller/direct/asset"
 	_ "pkg/controller/direct/bigtable"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
