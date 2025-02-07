@@ -168,7 +168,7 @@ func (in *LoggingLinkObservedState) DeepCopyInto(out *LoggingLinkObservedState) 
 	}
 	if in.BigQueryDataset != nil {
 		in, out := &in.BigQueryDataset, &out.BigQueryDataset
-		*out = new(BigQueryDataset)
+		*out = new(v1beta1.BigQueryDatasetRef)
 		**out = **in
 	}
 }

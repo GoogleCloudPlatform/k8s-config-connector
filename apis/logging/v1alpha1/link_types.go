@@ -67,7 +67,7 @@ type LoggingLinkObservedState struct {
 
 	// this field is just a string, but its an object(string)
 	// https://github.com/googleapis/googleapis/blob/master/google/logging/v2/logging_config.proto#L1063
-	BigQueryDataset *BigQueryDataset `json:"bigQueryDataset,omitempty"`
+	BigQueryDataset *refs.BigQueryDatasetRef `json:"bigQueryDataset,omitempty"`
 }
 
 // +genclient

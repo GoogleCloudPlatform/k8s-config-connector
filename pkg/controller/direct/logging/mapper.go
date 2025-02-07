@@ -42,25 +42,6 @@ func LoggingLinkSpec_LoggingLogBucketRef_ToProto(mapCtx *direct.MapContext, in *
 	return direct.LazyPtr(in.External)
 }
 
-/*
-	func BigQueryDataset_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDataset) *krm.BigQueryDataset {
-		if in == nil {
-			return nil
-		}
-		out := &krm.BigQueryDataset{}
-		out.DatasetID = direct.LazyPtr(in.GetDatasetId())
-		return out
-	}
-
-	func BigQueryDataset_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataset) *pb.BigQueryDataset {
-		if in == nil {
-			return nil
-		}
-		out := &pb.BigQueryDataset{}
-		out.DatasetId = direct.ValueOf(in.DatasetID)
-		return out
-	}
-*/
 func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkSpec {
 	if in == nil {
 		return nil
@@ -92,18 +73,19 @@ func LoggingLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) 
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
 	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifecycleState())
-	//out.BigQueryDataset = BigQueryDataset_FromProto(mapCtx, in.BigqueryDataset)
+	bigQueryDatasetRef := refs.BigQueryDatasetRef{External: in.GetBigqueryDataset().DatasetId}
+	out.BigQueryDataset = &bigQueryDatasetRef
 	return out
 }
 func LoggingLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkObservedState) *pb.Link {
 	if in == nil {
 		return nil
 	}
-	// TODO do I want to return a link or an observed state?
 	out := &pb.Link{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// This is the first lifecycle state return by a direct controller, so this is a guess based on other enums
 	out.LifecycleState = direct.Enum_ToProto[pb.LifecycleState](mapCtx, in.LifecycleState)
-	//out.BigqueryDataset = BigQueryDataset_ToProto(mapCtx, in.BigQueryDataset)
+	bigqueryDataset := &pb.BigQueryDataset{DatasetId: in.BigQueryDataset.External}
+	out.BigqueryDataset = bigqueryDataset
 	return out
 }
