@@ -15,10 +15,10 @@
 package aiplatform
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AiplatformAnnotationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Annotation) *krm.AiplatformAnnotationObservedState {
 	if in == nil {
@@ -2132,6 +2132,78 @@ func AiplatformModelDeploymentMonitoringJobSpec_ToProto(mapCtx *direct.MapContex
 	// MISSING: SatisfiesPzi
 	return out
 }
+func AiplatformModelEvaluationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.AiplatformModelEvaluationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformModelEvaluationObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: SliceDimensions
+	// MISSING: DataItemSchemaURI
+	// MISSING: AnnotationSchemaURI
+	// MISSING: ModelExplanation
+	// MISSING: ExplanationSpecs
+	// MISSING: Metadata
+	return out
+}
+func AiplatformModelEvaluationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformModelEvaluationObservedState) *pb.ModelEvaluation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluation{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: SliceDimensions
+	// MISSING: DataItemSchemaURI
+	// MISSING: AnnotationSchemaURI
+	// MISSING: ModelExplanation
+	// MISSING: ExplanationSpecs
+	// MISSING: Metadata
+	return out
+}
+func AiplatformModelEvaluationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.AiplatformModelEvaluationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiplatformModelEvaluationSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: SliceDimensions
+	// MISSING: DataItemSchemaURI
+	// MISSING: AnnotationSchemaURI
+	// MISSING: ModelExplanation
+	// MISSING: ExplanationSpecs
+	// MISSING: Metadata
+	return out
+}
+func AiplatformModelEvaluationSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformModelEvaluationSpec) *pb.ModelEvaluation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelEvaluation{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
+	// MISSING: CreateTime
+	// MISSING: SliceDimensions
+	// MISSING: DataItemSchemaURI
+	// MISSING: AnnotationSchemaURI
+	// MISSING: ModelExplanation
+	// MISSING: ExplanationSpecs
+	// MISSING: Metadata
+	return out
+}
 func AiplatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AiplatformModelObservedState {
 	if in == nil {
 		return nil
@@ -2292,68 +2364,208 @@ func AiplatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformMo
 	// MISSING: SatisfiesPzi
 	return out
 }
-func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
+func Attribution_FromProto(mapCtx *direct.MapContext, in *pb.Attribution) *krm.Attribution {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigQueryDestination{}
-	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
+	out := &krm.Attribution{}
+	// MISSING: BaselineOutputValue
+	// MISSING: InstanceOutputValue
+	// MISSING: FeatureAttributions
+	// MISSING: OutputIndex
+	// MISSING: OutputDisplayName
+	// MISSING: ApproximationError
+	// MISSING: OutputName
 	return out
 }
-func BigQueryDestination_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDestination) *pb.BigQueryDestination {
+func Attribution_ToProto(mapCtx *direct.MapContext, in *krm.Attribution) *pb.Attribution {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BigQueryDestination{}
-	out.OutputUri = direct.ValueOf(in.OutputURI)
+	out := &pb.Attribution{}
+	// MISSING: BaselineOutputValue
+	// MISSING: InstanceOutputValue
+	// MISSING: FeatureAttributions
+	// MISSING: OutputIndex
+	// MISSING: OutputDisplayName
+	// MISSING: ApproximationError
+	// MISSING: OutputName
 	return out
 }
-func BigQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.BigQuerySource) *krm.BigQuerySource {
+func AttributionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Attribution) *krm.AttributionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigQuerySource{}
-	out.InputURI = direct.LazyPtr(in.GetInputUri())
+	out := &krm.AttributionObservedState{}
+	out.BaselineOutputValue = direct.LazyPtr(in.GetBaselineOutputValue())
+	out.InstanceOutputValue = direct.LazyPtr(in.GetInstanceOutputValue())
+	out.FeatureAttributions = Value_FromProto(mapCtx, in.GetFeatureAttributions())
+	out.OutputIndex = in.OutputIndex
+	out.OutputDisplayName = direct.LazyPtr(in.GetOutputDisplayName())
+	out.ApproximationError = direct.LazyPtr(in.GetApproximationError())
+	out.OutputName = direct.LazyPtr(in.GetOutputName())
 	return out
 }
-func BigQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.BigQuerySource) *pb.BigQuerySource {
+func AttributionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributionObservedState) *pb.Attribution {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BigQuerySource{}
-	out.InputUri = direct.ValueOf(in.InputURI)
+	out := &pb.Attribution{}
+	out.BaselineOutputValue = direct.ValueOf(in.BaselineOutputValue)
+	out.InstanceOutputValue = direct.ValueOf(in.InstanceOutputValue)
+	out.FeatureAttributions = Value_ToProto(mapCtx, in.FeatureAttributions)
+	out.OutputIndex = in.OutputIndex
+	out.OutputDisplayName = direct.ValueOf(in.OutputDisplayName)
+	out.ApproximationError = direct.ValueOf(in.ApproximationError)
+	out.OutputName = direct.ValueOf(in.OutputName)
 	return out
 }
-func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+func BlurBaselineConfig_FromProto(mapCtx *direct.MapContext, in *pb.BlurBaselineConfig) *krm.BlurBaselineConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EncryptionSpec{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	out := &krm.BlurBaselineConfig{}
+	out.MaxBlurSigma = direct.LazyPtr(in.GetMaxBlurSigma())
 	return out
 }
-func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+func BlurBaselineConfig_ToProto(mapCtx *direct.MapContext, in *krm.BlurBaselineConfig) *pb.BlurBaselineConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.EncryptionSpec{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	out := &pb.BlurBaselineConfig{}
+	out.MaxBlurSigma = direct.ValueOf(in.MaxBlurSigma)
 	return out
 }
-func GcsDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krm.GcsDestination {
+func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Examples {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GcsDestination{}
-	out.OutputURIPrefix = direct.LazyPtr(in.GetOutputUriPrefix())
+	out := &krm.Examples{}
+	out.ExampleGcsSource = Examples_ExampleGcsSource_FromProto(mapCtx, in.GetExampleGcsSource())
+	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
+	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
 	return out
 }
-func GcsDestination_ToProto(mapCtx *direct.MapContext, in *krm.GcsDestination) *pb.GcsDestination {
+func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GcsDestination{}
-	out.OutputUriPrefix = direct.ValueOf(in.OutputURIPrefix)
+	out := &pb.Examples{}
+	if oneof := Examples_ExampleGcsSource_ToProto(mapCtx, in.ExampleGcsSource); oneof != nil {
+		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
+	}
+	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
+	}
+	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
+		out.Config = &pb.Examples_Presets{Presets: oneof}
+	}
+	out.NeighborCount = direct.ValueOf(in.NeighborCount)
+	return out
+}
+func Examples_ExampleGcsSource_FromProto(mapCtx *direct.MapContext, in *pb.Examples_ExampleGcsSource) *krm.Examples_ExampleGcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Examples_ExampleGcsSource{}
+	out.DataFormat = direct.Enum_FromProto(mapCtx, in.GetDataFormat())
+	out.GcsSource = GcsSource_FromProto(mapCtx, in.GetGcsSource())
+	return out
+}
+func Examples_ExampleGcsSource_ToProto(mapCtx *direct.MapContext, in *krm.Examples_ExampleGcsSource) *pb.Examples_ExampleGcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Examples_ExampleGcsSource{}
+	out.DataFormat = direct.Enum_ToProto[pb.Examples_ExampleGcsSource_DataFormat](mapCtx, in.DataFormat)
+	out.GcsSource = GcsSource_ToProto(mapCtx, in.GcsSource)
+	return out
+}
+func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krm.ExplanationParameters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationParameters{}
+	out.SampledShapleyAttribution = SampledShapleyAttribution_FromProto(mapCtx, in.GetSampledShapleyAttribution())
+	out.IntegratedGradientsAttribution = IntegratedGradientsAttribution_FromProto(mapCtx, in.GetIntegratedGradientsAttribution())
+	out.XraiAttribution = XraiAttribution_FromProto(mapCtx, in.GetXraiAttribution())
+	out.Examples = Examples_FromProto(mapCtx, in.GetExamples())
+	out.TopK = direct.LazyPtr(in.GetTopK())
+	out.OutputIndices = ListValue_FromProto(mapCtx, in.GetOutputIndices())
+	return out
+}
+func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationParameters) *pb.ExplanationParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationParameters{}
+	if oneof := SampledShapleyAttribution_ToProto(mapCtx, in.SampledShapleyAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_SampledShapleyAttribution{SampledShapleyAttribution: oneof}
+	}
+	if oneof := IntegratedGradientsAttribution_ToProto(mapCtx, in.IntegratedGradientsAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_IntegratedGradientsAttribution{IntegratedGradientsAttribution: oneof}
+	}
+	if oneof := XraiAttribution_ToProto(mapCtx, in.XraiAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_XraiAttribution{XraiAttribution: oneof}
+	}
+	if oneof := Examples_ToProto(mapCtx, in.Examples); oneof != nil {
+		out.Method = &pb.ExplanationParameters_Examples{Examples: oneof}
+	}
+	out.TopK = direct.ValueOf(in.TopK)
+	out.OutputIndices = ListValue_ToProto(mapCtx, in.OutputIndices)
+	return out
+}
+func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationSpec{}
+	out.Parameters = ExplanationParameters_FromProto(mapCtx, in.GetParameters())
+	out.Metadata = ExplanationMetadata_FromProto(mapCtx, in.GetMetadata())
+	return out
+}
+func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec) *pb.ExplanationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationSpec{}
+	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
+	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
+	return out
+}
+func FeatureNoiseSigma_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma) *krm.FeatureNoiseSigma {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureNoiseSigma{}
+	out.NoiseSigma = direct.Slice_FromProto(mapCtx, in.NoiseSigma, FeatureNoiseSigma_NoiseSigmaForFeature_FromProto)
+	return out
+}
+func FeatureNoiseSigma_ToProto(mapCtx *direct.MapContext, in *krm.FeatureNoiseSigma) *pb.FeatureNoiseSigma {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureNoiseSigma{}
+	out.NoiseSigma = direct.Slice_ToProto(mapCtx, in.NoiseSigma, FeatureNoiseSigma_NoiseSigmaForFeature_ToProto)
+	return out
+}
+func FeatureNoiseSigma_NoiseSigmaForFeature_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma_NoiseSigmaForFeature) *krm.FeatureNoiseSigma_NoiseSigmaForFeature {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeatureNoiseSigma_NoiseSigmaForFeature{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Sigma = direct.LazyPtr(in.GetSigma())
+	return out
+}
+func FeatureNoiseSigma_NoiseSigmaForFeature_ToProto(mapCtx *direct.MapContext, in *krm.FeatureNoiseSigma_NoiseSigmaForFeature) *pb.FeatureNoiseSigma_NoiseSigmaForFeature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureNoiseSigma_NoiseSigmaForFeature{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Sigma = direct.ValueOf(in.Sigma)
 	return out
 }
 func GcsSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GcsSource {
@@ -2372,435 +2584,225 @@ func GcsSource_ToProto(mapCtx *direct.MapContext, in *krm.GcsSource) *pb.GcsSour
 	out.Uris = in.Uris
 	return out
 }
-func ModelDeploymentMonitoringBigQueryTable_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringBigQueryTable) *krm.ModelDeploymentMonitoringBigQueryTable {
+func IntegratedGradientsAttribution_FromProto(mapCtx *direct.MapContext, in *pb.IntegratedGradientsAttribution) *krm.IntegratedGradientsAttribution {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelDeploymentMonitoringBigQueryTable{}
-	out.LogSource = direct.Enum_FromProto(mapCtx, in.GetLogSource())
-	out.LogType = direct.Enum_FromProto(mapCtx, in.GetLogType())
-	out.BigqueryTablePath = direct.LazyPtr(in.GetBigqueryTablePath())
-	// MISSING: RequestResponseLoggingSchemaVersion
+	out := &krm.IntegratedGradientsAttribution{}
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, in.GetSmoothGradConfig())
+	out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, in.GetBlurBaselineConfig())
 	return out
 }
-func ModelDeploymentMonitoringBigQueryTable_ToProto(mapCtx *direct.MapContext, in *krm.ModelDeploymentMonitoringBigQueryTable) *pb.ModelDeploymentMonitoringBigQueryTable {
+func IntegratedGradientsAttribution_ToProto(mapCtx *direct.MapContext, in *krm.IntegratedGradientsAttribution) *pb.IntegratedGradientsAttribution {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelDeploymentMonitoringBigQueryTable{}
-	out.LogSource = direct.Enum_ToProto[pb.ModelDeploymentMonitoringBigQueryTable_LogSource](mapCtx, in.LogSource)
-	out.LogType = direct.Enum_ToProto[pb.ModelDeploymentMonitoringBigQueryTable_LogType](mapCtx, in.LogType)
-	out.BigqueryTablePath = direct.ValueOf(in.BigqueryTablePath)
-	// MISSING: RequestResponseLoggingSchemaVersion
+	out := &pb.IntegratedGradientsAttribution{}
+	out.StepCount = direct.ValueOf(in.StepCount)
+	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
+	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
-func ModelDeploymentMonitoringBigQueryTableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringBigQueryTable) *krm.ModelDeploymentMonitoringBigQueryTableObservedState {
+func ModelEvaluation_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.ModelEvaluation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelDeploymentMonitoringBigQueryTableObservedState{}
-	// MISSING: LogSource
-	// MISSING: LogType
-	// MISSING: BigqueryTablePath
-	out.RequestResponseLoggingSchemaVersion = direct.LazyPtr(in.GetRequestResponseLoggingSchemaVersion())
-	return out
-}
-func ModelDeploymentMonitoringBigQueryTableObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelDeploymentMonitoringBigQueryTableObservedState) *pb.ModelDeploymentMonitoringBigQueryTable {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelDeploymentMonitoringBigQueryTable{}
-	// MISSING: LogSource
-	// MISSING: LogType
-	// MISSING: BigqueryTablePath
-	out.RequestResponseLoggingSchemaVersion = direct.ValueOf(in.RequestResponseLoggingSchemaVersion)
-	return out
-}
-func ModelDeploymentMonitoringJob_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringJob) *krm.ModelDeploymentMonitoringJob {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelDeploymentMonitoringJob{}
+	out := &krm.ModelEvaluation{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Endpoint = direct.LazyPtr(in.GetEndpoint())
-	// MISSING: State
-	// MISSING: ScheduleState
-	// MISSING: LatestMonitoringPipelineMetadata
-	out.ModelDeploymentMonitoringObjectiveConfigs = direct.Slice_FromProto(mapCtx, in.ModelDeploymentMonitoringObjectiveConfigs, ModelDeploymentMonitoringObjectiveConfig_FromProto)
-	out.ModelDeploymentMonitoringScheduleConfig = ModelDeploymentMonitoringScheduleConfig_FromProto(mapCtx, in.GetModelDeploymentMonitoringScheduleConfig())
-	out.LoggingSamplingStrategy = SamplingStrategy_FromProto(mapCtx, in.GetLoggingSamplingStrategy())
-	out.ModelMonitoringAlertConfig = ModelMonitoringAlertConfig_FromProto(mapCtx, in.GetModelMonitoringAlertConfig())
-	out.PredictInstanceSchemaURI = direct.LazyPtr(in.GetPredictInstanceSchemaUri())
-	out.SamplePredictInstance = Value_FromProto(mapCtx, in.GetSamplePredictInstance())
-	out.AnalysisInstanceSchemaURI = direct.LazyPtr(in.GetAnalysisInstanceSchemaUri())
-	// MISSING: BigqueryTables
-	out.LogTtl = direct.StringDuration_FromProto(mapCtx, in.GetLogTtl())
-	out.Labels = in.Labels
+	out.MetricsSchemaURI = direct.LazyPtr(in.GetMetricsSchemaUri())
+	out.Metrics = Value_FromProto(mapCtx, in.GetMetrics())
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: NextScheduleTime
-	out.StatsAnomaliesBaseDirectory = GcsDestination_FromProto(mapCtx, in.GetStatsAnomaliesBaseDirectory())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.EnableMonitoringPipelineLogs = direct.LazyPtr(in.GetEnableMonitoringPipelineLogs())
-	// MISSING: Error
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
+	out.SliceDimensions = in.SliceDimensions
+	out.DataItemSchemaURI = direct.LazyPtr(in.GetDataItemSchemaUri())
+	out.AnnotationSchemaURI = direct.LazyPtr(in.GetAnnotationSchemaUri())
+	out.ModelExplanation = ModelExplanation_FromProto(mapCtx, in.GetModelExplanation())
+	out.ExplanationSpecs = direct.Slice_FromProto(mapCtx, in.ExplanationSpecs, ModelEvaluation_ModelEvaluationExplanationSpec_FromProto)
+	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
-func ModelDeploymentMonitoringJob_ToProto(mapCtx *direct.MapContext, in *krm.ModelDeploymentMonitoringJob) *pb.ModelDeploymentMonitoringJob {
+func ModelEvaluation_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluation) *pb.ModelEvaluation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelDeploymentMonitoringJob{}
+	out := &pb.ModelEvaluation{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Endpoint = direct.ValueOf(in.Endpoint)
-	// MISSING: State
-	// MISSING: ScheduleState
-	// MISSING: LatestMonitoringPipelineMetadata
-	out.ModelDeploymentMonitoringObjectiveConfigs = direct.Slice_ToProto(mapCtx, in.ModelDeploymentMonitoringObjectiveConfigs, ModelDeploymentMonitoringObjectiveConfig_ToProto)
-	out.ModelDeploymentMonitoringScheduleConfig = ModelDeploymentMonitoringScheduleConfig_ToProto(mapCtx, in.ModelDeploymentMonitoringScheduleConfig)
-	out.LoggingSamplingStrategy = SamplingStrategy_ToProto(mapCtx, in.LoggingSamplingStrategy)
-	out.ModelMonitoringAlertConfig = ModelMonitoringAlertConfig_ToProto(mapCtx, in.ModelMonitoringAlertConfig)
-	out.PredictInstanceSchemaUri = direct.ValueOf(in.PredictInstanceSchemaURI)
-	out.SamplePredictInstance = Value_ToProto(mapCtx, in.SamplePredictInstance)
-	out.AnalysisInstanceSchemaUri = direct.ValueOf(in.AnalysisInstanceSchemaURI)
-	// MISSING: BigqueryTables
-	out.LogTtl = direct.StringDuration_ToProto(mapCtx, in.LogTtl)
-	out.Labels = in.Labels
+	out.MetricsSchemaUri = direct.ValueOf(in.MetricsSchemaURI)
+	out.Metrics = Value_ToProto(mapCtx, in.Metrics)
 	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: NextScheduleTime
-	out.StatsAnomaliesBaseDirectory = GcsDestination_ToProto(mapCtx, in.StatsAnomaliesBaseDirectory)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	out.EnableMonitoringPipelineLogs = direct.ValueOf(in.EnableMonitoringPipelineLogs)
-	// MISSING: Error
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
+	out.SliceDimensions = in.SliceDimensions
+	out.DataItemSchemaUri = direct.ValueOf(in.DataItemSchemaURI)
+	out.AnnotationSchemaUri = direct.ValueOf(in.AnnotationSchemaURI)
+	out.ModelExplanation = ModelExplanation_ToProto(mapCtx, in.ModelExplanation)
+	out.ExplanationSpecs = direct.Slice_ToProto(mapCtx, in.ExplanationSpecs, ModelEvaluation_ModelEvaluationExplanationSpec_ToProto)
+	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
 	return out
 }
-func ModelDeploymentMonitoringJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringJob) *krm.ModelDeploymentMonitoringJobObservedState {
+func ModelEvaluationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation) *krm.ModelEvaluationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelDeploymentMonitoringJobObservedState{}
+	out := &krm.ModelEvaluationObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: DisplayName
-	// MISSING: Endpoint
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.ScheduleState = direct.Enum_FromProto(mapCtx, in.GetScheduleState())
-	out.LatestMonitoringPipelineMetadata = ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata_FromProto(mapCtx, in.GetLatestMonitoringPipelineMetadata())
-	// MISSING: ModelDeploymentMonitoringObjectiveConfigs
-	// MISSING: ModelDeploymentMonitoringScheduleConfig
-	// MISSING: LoggingSamplingStrategy
-	// MISSING: ModelMonitoringAlertConfig
-	// MISSING: PredictInstanceSchemaURI
-	// MISSING: SamplePredictInstance
-	// MISSING: AnalysisInstanceSchemaURI
-	out.BigqueryTables = direct.Slice_FromProto(mapCtx, in.BigqueryTables, ModelDeploymentMonitoringBigQueryTable_FromProto)
-	// MISSING: LogTtl
-	// MISSING: Labels
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.NextScheduleTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextScheduleTime())
-	// MISSING: StatsAnomaliesBaseDirectory
-	// MISSING: EncryptionSpec
-	// MISSING: EnableMonitoringPipelineLogs
-	out.Error = Status_FromProto(mapCtx, in.GetError())
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	// MISSING: SliceDimensions
+	// MISSING: DataItemSchemaURI
+	// MISSING: AnnotationSchemaURI
+	out.ModelExplanation = ModelExplanationObservedState_FromProto(mapCtx, in.GetModelExplanation())
+	// MISSING: ExplanationSpecs
+	// MISSING: Metadata
 	return out
 }
-func ModelDeploymentMonitoringJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelDeploymentMonitoringJobObservedState) *pb.ModelDeploymentMonitoringJob {
+func ModelEvaluationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluationObservedState) *pb.ModelEvaluation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelDeploymentMonitoringJob{}
+	out := &pb.ModelEvaluation{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: DisplayName
-	// MISSING: Endpoint
-	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
-	out.ScheduleState = direct.Enum_ToProto[pb.ModelDeploymentMonitoringJob_MonitoringScheduleState](mapCtx, in.ScheduleState)
-	out.LatestMonitoringPipelineMetadata = ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata_ToProto(mapCtx, in.LatestMonitoringPipelineMetadata)
-	// MISSING: ModelDeploymentMonitoringObjectiveConfigs
-	// MISSING: ModelDeploymentMonitoringScheduleConfig
-	// MISSING: LoggingSamplingStrategy
-	// MISSING: ModelMonitoringAlertConfig
-	// MISSING: PredictInstanceSchemaURI
-	// MISSING: SamplePredictInstance
-	// MISSING: AnalysisInstanceSchemaURI
-	out.BigqueryTables = direct.Slice_ToProto(mapCtx, in.BigqueryTables, ModelDeploymentMonitoringBigQueryTable_ToProto)
-	// MISSING: LogTtl
-	// MISSING: Labels
+	// MISSING: MetricsSchemaURI
+	// MISSING: Metrics
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.NextScheduleTime = direct.StringTimestamp_ToProto(mapCtx, in.NextScheduleTime)
-	// MISSING: StatsAnomaliesBaseDirectory
-	// MISSING: EncryptionSpec
-	// MISSING: EnableMonitoringPipelineLogs
-	out.Error = Status_ToProto(mapCtx, in.Error)
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	// MISSING: SliceDimensions
+	// MISSING: DataItemSchemaURI
+	// MISSING: AnnotationSchemaURI
+	out.ModelExplanation = ModelExplanationObservedState_ToProto(mapCtx, in.ModelExplanation)
+	// MISSING: ExplanationSpecs
+	// MISSING: Metadata
 	return out
 }
-func ModelDeploymentMonitoringObjectiveConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringObjectiveConfig) *krm.ModelDeploymentMonitoringObjectiveConfig {
+func ModelEvaluation_ModelEvaluationExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelEvaluation_ModelEvaluationExplanationSpec) *krm.ModelEvaluation_ModelEvaluationExplanationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelDeploymentMonitoringObjectiveConfig{}
-	out.DeployedModelID = direct.LazyPtr(in.GetDeployedModelId())
-	out.ObjectiveConfig = ModelMonitoringObjectiveConfig_FromProto(mapCtx, in.GetObjectiveConfig())
+	out := &krm.ModelEvaluation_ModelEvaluationExplanationSpec{}
+	out.ExplanationType = direct.LazyPtr(in.GetExplanationType())
+	out.ExplanationSpec = ExplanationSpec_FromProto(mapCtx, in.GetExplanationSpec())
 	return out
 }
-func ModelDeploymentMonitoringObjectiveConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelDeploymentMonitoringObjectiveConfig) *pb.ModelDeploymentMonitoringObjectiveConfig {
+func ModelEvaluation_ModelEvaluationExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelEvaluation_ModelEvaluationExplanationSpec) *pb.ModelEvaluation_ModelEvaluationExplanationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelDeploymentMonitoringObjectiveConfig{}
-	out.DeployedModelId = direct.ValueOf(in.DeployedModelID)
-	out.ObjectiveConfig = ModelMonitoringObjectiveConfig_ToProto(mapCtx, in.ObjectiveConfig)
+	out := &pb.ModelEvaluation_ModelEvaluationExplanationSpec{}
+	out.ExplanationType = direct.ValueOf(in.ExplanationType)
+	out.ExplanationSpec = ExplanationSpec_ToProto(mapCtx, in.ExplanationSpec)
 	return out
 }
-func ModelDeploymentMonitoringScheduleConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringScheduleConfig) *krm.ModelDeploymentMonitoringScheduleConfig {
+func ModelExplanation_FromProto(mapCtx *direct.MapContext, in *pb.ModelExplanation) *krm.ModelExplanation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelDeploymentMonitoringScheduleConfig{}
-	out.MonitorInterval = direct.StringDuration_FromProto(mapCtx, in.GetMonitorInterval())
-	out.MonitorWindow = direct.StringDuration_FromProto(mapCtx, in.GetMonitorWindow())
+	out := &krm.ModelExplanation{}
+	// MISSING: MeanAttributions
 	return out
 }
-func ModelDeploymentMonitoringScheduleConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelDeploymentMonitoringScheduleConfig) *pb.ModelDeploymentMonitoringScheduleConfig {
+func ModelExplanation_ToProto(mapCtx *direct.MapContext, in *krm.ModelExplanation) *pb.ModelExplanation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelDeploymentMonitoringScheduleConfig{}
-	out.MonitorInterval = direct.StringDuration_ToProto(mapCtx, in.MonitorInterval)
-	out.MonitorWindow = direct.StringDuration_ToProto(mapCtx, in.MonitorWindow)
+	out := &pb.ModelExplanation{}
+	// MISSING: MeanAttributions
 	return out
 }
-func ModelMonitoringAlertConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringAlertConfig) *krm.ModelMonitoringAlertConfig {
+func ModelExplanationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ModelExplanation) *krm.ModelExplanationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelMonitoringAlertConfig{}
-	out.EmailAlertConfig = ModelMonitoringAlertConfig_EmailAlertConfig_FromProto(mapCtx, in.GetEmailAlertConfig())
-	out.EnableLogging = direct.LazyPtr(in.GetEnableLogging())
-	out.NotificationChannels = in.NotificationChannels
+	out := &krm.ModelExplanationObservedState{}
+	out.MeanAttributions = direct.Slice_FromProto(mapCtx, in.MeanAttributions, Attribution_FromProto)
 	return out
 }
-func ModelMonitoringAlertConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringAlertConfig) *pb.ModelMonitoringAlertConfig {
+func ModelExplanationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelExplanationObservedState) *pb.ModelExplanation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelMonitoringAlertConfig{}
-	if oneof := ModelMonitoringAlertConfig_EmailAlertConfig_ToProto(mapCtx, in.EmailAlertConfig); oneof != nil {
-		out.Alert = &pb.ModelMonitoringAlertConfig_EmailAlertConfig_{EmailAlertConfig: oneof}
-	}
-	out.EnableLogging = direct.ValueOf(in.EnableLogging)
-	out.NotificationChannels = in.NotificationChannels
+	out := &pb.ModelExplanation{}
+	out.MeanAttributions = direct.Slice_ToProto(mapCtx, in.MeanAttributions, Attribution_ToProto)
 	return out
 }
-func ModelMonitoringAlertConfig_EmailAlertConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringAlertConfig_EmailAlertConfig) *krm.ModelMonitoringAlertConfig_EmailAlertConfig {
+func Presets_FromProto(mapCtx *direct.MapContext, in *pb.Presets) *krm.Presets {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelMonitoringAlertConfig_EmailAlertConfig{}
-	out.UserEmails = in.UserEmails
+	out := &krm.Presets{}
+	out.Query = direct.Enum_FromProto(mapCtx, in.GetQuery())
+	out.Modality = direct.Enum_FromProto(mapCtx, in.GetModality())
 	return out
 }
-func ModelMonitoringAlertConfig_EmailAlertConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringAlertConfig_EmailAlertConfig) *pb.ModelMonitoringAlertConfig_EmailAlertConfig {
+func Presets_ToProto(mapCtx *direct.MapContext, in *krm.Presets) *pb.Presets {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelMonitoringAlertConfig_EmailAlertConfig{}
-	out.UserEmails = in.UserEmails
+	out := &pb.Presets{}
+	if oneof := Presets_Query_ToProto(mapCtx, in.Query); oneof != nil {
+		out.Query = oneof
+	}
+	out.Modality = direct.Enum_ToProto[pb.Presets_Modality](mapCtx, in.Modality)
 	return out
 }
-func ModelMonitoringObjectiveConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringObjectiveConfig) *krm.ModelMonitoringObjectiveConfig {
+func SampledShapleyAttribution_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krm.SampledShapleyAttribution {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelMonitoringObjectiveConfig{}
-	out.TrainingDataset = ModelMonitoringObjectiveConfig_TrainingDataset_FromProto(mapCtx, in.GetTrainingDataset())
-	out.TrainingPredictionSkewDetectionConfig = ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig_FromProto(mapCtx, in.GetTrainingPredictionSkewDetectionConfig())
-	out.PredictionDriftDetectionConfig = ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig_FromProto(mapCtx, in.GetPredictionDriftDetectionConfig())
-	out.ExplanationConfig = ModelMonitoringObjectiveConfig_ExplanationConfig_FromProto(mapCtx, in.GetExplanationConfig())
+	out := &krm.SampledShapleyAttribution{}
+	out.PathCount = direct.LazyPtr(in.GetPathCount())
 	return out
 }
-func ModelMonitoringObjectiveConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveConfig) *pb.ModelMonitoringObjectiveConfig {
+func SampledShapleyAttribution_ToProto(mapCtx *direct.MapContext, in *krm.SampledShapleyAttribution) *pb.SampledShapleyAttribution {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelMonitoringObjectiveConfig{}
-	out.TrainingDataset = ModelMonitoringObjectiveConfig_TrainingDataset_ToProto(mapCtx, in.TrainingDataset)
-	out.TrainingPredictionSkewDetectionConfig = ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig_ToProto(mapCtx, in.TrainingPredictionSkewDetectionConfig)
-	out.PredictionDriftDetectionConfig = ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig_ToProto(mapCtx, in.PredictionDriftDetectionConfig)
-	out.ExplanationConfig = ModelMonitoringObjectiveConfig_ExplanationConfig_ToProto(mapCtx, in.ExplanationConfig)
+	out := &pb.SampledShapleyAttribution{}
+	out.PathCount = direct.ValueOf(in.PathCount)
 	return out
 }
-func ModelMonitoringObjectiveConfig_ExplanationConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringObjectiveConfig_ExplanationConfig) *krm.ModelMonitoringObjectiveConfig_ExplanationConfig {
+func SmoothGradConfig_FromProto(mapCtx *direct.MapContext, in *pb.SmoothGradConfig) *krm.SmoothGradConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelMonitoringObjectiveConfig_ExplanationConfig{}
-	out.EnableFeatureAttributes = direct.LazyPtr(in.GetEnableFeatureAttributes())
-	out.ExplanationBaseline = ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline_FromProto(mapCtx, in.GetExplanationBaseline())
+	out := &krm.SmoothGradConfig{}
+	out.NoiseSigma = direct.LazyPtr(in.GetNoiseSigma())
+	out.FeatureNoiseSigma = FeatureNoiseSigma_FromProto(mapCtx, in.GetFeatureNoiseSigma())
+	out.NoisySampleCount = direct.LazyPtr(in.GetNoisySampleCount())
 	return out
 }
-func ModelMonitoringObjectiveConfig_ExplanationConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveConfig_ExplanationConfig) *pb.ModelMonitoringObjectiveConfig_ExplanationConfig {
+func SmoothGradConfig_ToProto(mapCtx *direct.MapContext, in *krm.SmoothGradConfig) *pb.SmoothGradConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelMonitoringObjectiveConfig_ExplanationConfig{}
-	out.EnableFeatureAttributes = direct.ValueOf(in.EnableFeatureAttributes)
-	out.ExplanationBaseline = ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline_ToProto(mapCtx, in.ExplanationBaseline)
+	out := &pb.SmoothGradConfig{}
+	if oneof := SmoothGradConfig_NoiseSigma_ToProto(mapCtx, in.NoiseSigma); oneof != nil {
+		out.GradientNoiseSigma = oneof
+	}
+	if oneof := FeatureNoiseSigma_ToProto(mapCtx, in.FeatureNoiseSigma); oneof != nil {
+		out.GradientNoiseSigma = &pb.SmoothGradConfig_FeatureNoiseSigma{FeatureNoiseSigma: oneof}
+	}
+	out.NoisySampleCount = direct.ValueOf(in.NoisySampleCount)
 	return out
 }
-func ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline) *krm.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline {
+func XraiAttribution_FromProto(mapCtx *direct.MapContext, in *pb.XraiAttribution) *krm.XraiAttribution {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline{}
-	out.Gcs = GcsDestination_FromProto(mapCtx, in.GetGcs())
-	out.Bigquery = BigQueryDestination_FromProto(mapCtx, in.GetBigquery())
-	out.PredictionFormat = direct.Enum_FromProto(mapCtx, in.GetPredictionFormat())
+	out := &krm.XraiAttribution{}
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	out.SmoothGradConfig = SmoothGradConfig_FromProto(mapCtx, in.GetSmoothGradConfig())
+	out.BlurBaselineConfig = BlurBaselineConfig_FromProto(mapCtx, in.GetBlurBaselineConfig())
 	return out
 }
-func ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline) *pb.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline {
+func XraiAttribution_ToProto(mapCtx *direct.MapContext, in *krm.XraiAttribution) *pb.XraiAttribution {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline{}
-	if oneof := GcsDestination_ToProto(mapCtx, in.Gcs); oneof != nil {
-		out.Destination = &pb.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline_Gcs{Gcs: oneof}
-	}
-	if oneof := BigQueryDestination_ToProto(mapCtx, in.Bigquery); oneof != nil {
-		out.Destination = &pb.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline_Bigquery{Bigquery: oneof}
-	}
-	out.PredictionFormat = direct.Enum_ToProto[pb.ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline_PredictionFormat](mapCtx, in.PredictionFormat)
-	return out
-}
-func ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig) *krm.ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig{}
-	// MISSING: DriftThresholds
-	// MISSING: AttributionScoreDriftThresholds
-	out.DefaultDriftThreshold = ThresholdConfig_FromProto(mapCtx, in.GetDefaultDriftThreshold())
-	return out
-}
-func ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig) *pb.ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig{}
-	// MISSING: DriftThresholds
-	// MISSING: AttributionScoreDriftThresholds
-	out.DefaultDriftThreshold = ThresholdConfig_ToProto(mapCtx, in.DefaultDriftThreshold)
-	return out
-}
-func ModelMonitoringObjectiveConfig_TrainingDataset_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringObjectiveConfig_TrainingDataset) *krm.ModelMonitoringObjectiveConfig_TrainingDataset {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelMonitoringObjectiveConfig_TrainingDataset{}
-	out.Dataset = direct.LazyPtr(in.GetDataset())
-	out.GcsSource = GcsSource_FromProto(mapCtx, in.GetGcsSource())
-	out.BigquerySource = BigQuerySource_FromProto(mapCtx, in.GetBigquerySource())
-	out.DataFormat = direct.LazyPtr(in.GetDataFormat())
-	out.TargetField = direct.LazyPtr(in.GetTargetField())
-	out.LoggingSamplingStrategy = SamplingStrategy_FromProto(mapCtx, in.GetLoggingSamplingStrategy())
-	return out
-}
-func ModelMonitoringObjectiveConfig_TrainingDataset_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveConfig_TrainingDataset) *pb.ModelMonitoringObjectiveConfig_TrainingDataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelMonitoringObjectiveConfig_TrainingDataset{}
-	if oneof := ModelMonitoringObjectiveConfig_TrainingDataset_Dataset_ToProto(mapCtx, in.Dataset); oneof != nil {
-		out.DataSource = oneof
-	}
-	if oneof := GcsSource_ToProto(mapCtx, in.GcsSource); oneof != nil {
-		out.DataSource = &pb.ModelMonitoringObjectiveConfig_TrainingDataset_GcsSource{GcsSource: oneof}
-	}
-	if oneof := BigQuerySource_ToProto(mapCtx, in.BigquerySource); oneof != nil {
-		out.DataSource = &pb.ModelMonitoringObjectiveConfig_TrainingDataset_BigquerySource{BigquerySource: oneof}
-	}
-	out.DataFormat = direct.ValueOf(in.DataFormat)
-	out.TargetField = direct.ValueOf(in.TargetField)
-	out.LoggingSamplingStrategy = SamplingStrategy_ToProto(mapCtx, in.LoggingSamplingStrategy)
-	return out
-}
-func ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig) *krm.ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig{}
-	// MISSING: SkewThresholds
-	// MISSING: AttributionScoreSkewThresholds
-	out.DefaultSkewThreshold = ThresholdConfig_FromProto(mapCtx, in.GetDefaultSkewThreshold())
-	return out
-}
-func ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig) *pb.ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig{}
-	// MISSING: SkewThresholds
-	// MISSING: AttributionScoreSkewThresholds
-	out.DefaultSkewThreshold = ThresholdConfig_ToProto(mapCtx, in.DefaultSkewThreshold)
-	return out
-}
-func SamplingStrategy_FromProto(mapCtx *direct.MapContext, in *pb.SamplingStrategy) *krm.SamplingStrategy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SamplingStrategy{}
-	out.RandomSampleConfig = SamplingStrategy_RandomSampleConfig_FromProto(mapCtx, in.GetRandomSampleConfig())
-	return out
-}
-func SamplingStrategy_ToProto(mapCtx *direct.MapContext, in *krm.SamplingStrategy) *pb.SamplingStrategy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SamplingStrategy{}
-	out.RandomSampleConfig = SamplingStrategy_RandomSampleConfig_ToProto(mapCtx, in.RandomSampleConfig)
-	return out
-}
-func SamplingStrategy_RandomSampleConfig_FromProto(mapCtx *direct.MapContext, in *pb.SamplingStrategy_RandomSampleConfig) *krm.SamplingStrategy_RandomSampleConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SamplingStrategy_RandomSampleConfig{}
-	out.SampleRate = direct.LazyPtr(in.GetSampleRate())
-	return out
-}
-func SamplingStrategy_RandomSampleConfig_ToProto(mapCtx *direct.MapContext, in *krm.SamplingStrategy_RandomSampleConfig) *pb.SamplingStrategy_RandomSampleConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SamplingStrategy_RandomSampleConfig{}
-	out.SampleRate = direct.ValueOf(in.SampleRate)
-	return out
-}
-func ThresholdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdConfig) *krm.ThresholdConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ThresholdConfig{}
-	out.Value = direct.LazyPtr(in.GetValue())
-	return out
-}
-func ThresholdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ThresholdConfig) *pb.ThresholdConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ThresholdConfig{}
-	if oneof := ThresholdConfig_Value_ToProto(mapCtx, in.Value); oneof != nil {
-		out.Threshold = oneof
-	}
+	out := &pb.XraiAttribution{}
+	out.StepCount = direct.ValueOf(in.StepCount)
+	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
+	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
