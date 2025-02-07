@@ -15,208 +15,112 @@
 package beyondcorp
 
 import (
-	pb "cloud.google.com/go/beyondcorp/clientconnectorservices/apiv1/clientconnectorservicespb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/beyondcorp/clientgateways/apiv1/clientgatewayspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/beyondcorp/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func BeyondcorpClientConnectorServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService) *krm.BeyondcorpClientConnectorServiceObservedState {
+func BeyondcorpClientGatewayObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ClientGateway) *krm.BeyondcorpClientGatewayObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BeyondcorpClientConnectorServiceObservedState{}
+	out := &krm.BeyondcorpClientGatewayObservedState{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	// MISSING: Ingress
-	// MISSING: Egress
 	// MISSING: State
+	// MISSING: ID
+	// MISSING: ClientConnectorService
 	return out
 }
-func BeyondcorpClientConnectorServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BeyondcorpClientConnectorServiceObservedState) *pb.ClientConnectorService {
+func BeyondcorpClientGatewayObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BeyondcorpClientGatewayObservedState) *pb.ClientGateway {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ClientConnectorService{}
+	out := &pb.ClientGateway{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	// MISSING: Ingress
-	// MISSING: Egress
 	// MISSING: State
+	// MISSING: ID
+	// MISSING: ClientConnectorService
 	return out
 }
-func BeyondcorpClientConnectorServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService) *krm.BeyondcorpClientConnectorServiceSpec {
+func BeyondcorpClientGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.ClientGateway) *krm.BeyondcorpClientGatewaySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BeyondcorpClientConnectorServiceSpec{}
+	out := &krm.BeyondcorpClientGatewaySpec{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	// MISSING: Ingress
-	// MISSING: Egress
 	// MISSING: State
+	// MISSING: ID
+	// MISSING: ClientConnectorService
 	return out
 }
-func BeyondcorpClientConnectorServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.BeyondcorpClientConnectorServiceSpec) *pb.ClientConnectorService {
+func BeyondcorpClientGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.BeyondcorpClientGatewaySpec) *pb.ClientGateway {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ClientConnectorService{}
+	out := &pb.ClientGateway{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	// MISSING: Ingress
-	// MISSING: Egress
 	// MISSING: State
+	// MISSING: ID
+	// MISSING: ClientConnectorService
 	return out
 }
-func ClientConnectorService_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService) *krm.ClientConnectorService {
+func ClientGateway_FromProto(mapCtx *direct.MapContext, in *pb.ClientGateway) *krm.ClientGateway {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ClientConnectorService{}
+	out := &krm.ClientGateway{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Ingress = ClientConnectorService_Ingress_FromProto(mapCtx, in.GetIngress())
-	out.Egress = ClientConnectorService_Egress_FromProto(mapCtx, in.GetEgress())
 	// MISSING: State
+	// MISSING: ID
+	// MISSING: ClientConnectorService
 	return out
 }
-func ClientConnectorService_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectorService) *pb.ClientConnectorService {
+func ClientGateway_ToProto(mapCtx *direct.MapContext, in *krm.ClientGateway) *pb.ClientGateway {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ClientConnectorService{}
+	out := &pb.ClientGateway{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Ingress = ClientConnectorService_Ingress_ToProto(mapCtx, in.Ingress)
-	out.Egress = ClientConnectorService_Egress_ToProto(mapCtx, in.Egress)
 	// MISSING: State
+	// MISSING: ID
+	// MISSING: ClientConnectorService
 	return out
 }
-func ClientConnectorServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService) *krm.ClientConnectorServiceObservedState {
+func ClientGatewayObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ClientGateway) *krm.ClientGatewayObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ClientConnectorServiceObservedState{}
+	out := &krm.ClientGatewayObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: DisplayName
-	// MISSING: Ingress
-	// MISSING: Egress
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.ClientConnectorService = direct.LazyPtr(in.GetClientConnectorService())
 	return out
 }
-func ClientConnectorServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectorServiceObservedState) *pb.ClientConnectorService {
+func ClientGatewayObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ClientGatewayObservedState) *pb.ClientGateway {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ClientConnectorService{}
+	out := &pb.ClientGateway{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: DisplayName
-	// MISSING: Ingress
-	// MISSING: Egress
-	out.State = direct.Enum_ToProto[pb.ClientConnectorService_State](mapCtx, in.State)
-	return out
-}
-func ClientConnectorService_Egress_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService_Egress) *krm.ClientConnectorService_Egress {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ClientConnectorService_Egress{}
-	out.PeeredVpc = ClientConnectorService_Egress_PeeredVpc_FromProto(mapCtx, in.GetPeeredVpc())
-	return out
-}
-func ClientConnectorService_Egress_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectorService_Egress) *pb.ClientConnectorService_Egress {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientConnectorService_Egress{}
-	if oneof := ClientConnectorService_Egress_PeeredVpc_ToProto(mapCtx, in.PeeredVpc); oneof != nil {
-		out.DestinationType = &pb.ClientConnectorService_Egress_PeeredVpc_{PeeredVpc: oneof}
-	}
-	return out
-}
-func ClientConnectorService_Egress_PeeredVpc_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService_Egress_PeeredVpc) *krm.ClientConnectorService_Egress_PeeredVpc {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ClientConnectorService_Egress_PeeredVpc{}
-	out.NetworkVpc = direct.LazyPtr(in.GetNetworkVpc())
-	return out
-}
-func ClientConnectorService_Egress_PeeredVpc_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectorService_Egress_PeeredVpc) *pb.ClientConnectorService_Egress_PeeredVpc {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientConnectorService_Egress_PeeredVpc{}
-	out.NetworkVpc = direct.ValueOf(in.NetworkVpc)
-	return out
-}
-func ClientConnectorService_Ingress_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService_Ingress) *krm.ClientConnectorService_Ingress {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ClientConnectorService_Ingress{}
-	out.Config = ClientConnectorService_Ingress_Config_FromProto(mapCtx, in.GetConfig())
-	return out
-}
-func ClientConnectorService_Ingress_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectorService_Ingress) *pb.ClientConnectorService_Ingress {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientConnectorService_Ingress{}
-	if oneof := ClientConnectorService_Ingress_Config_ToProto(mapCtx, in.Config); oneof != nil {
-		out.IngressConfig = &pb.ClientConnectorService_Ingress_Config_{Config: oneof}
-	}
-	return out
-}
-func ClientConnectorService_Ingress_Config_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService_Ingress_Config) *krm.ClientConnectorService_Ingress_Config {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ClientConnectorService_Ingress_Config{}
-	out.TransportProtocol = direct.Enum_FromProto(mapCtx, in.GetTransportProtocol())
-	out.DestinationRoutes = direct.Slice_FromProto(mapCtx, in.DestinationRoutes, ClientConnectorService_Ingress_Config_DestinationRoute_FromProto)
-	return out
-}
-func ClientConnectorService_Ingress_Config_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectorService_Ingress_Config) *pb.ClientConnectorService_Ingress_Config {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientConnectorService_Ingress_Config{}
-	out.TransportProtocol = direct.Enum_ToProto[pb.ClientConnectorService_Ingress_Config_TransportProtocol](mapCtx, in.TransportProtocol)
-	out.DestinationRoutes = direct.Slice_ToProto(mapCtx, in.DestinationRoutes, ClientConnectorService_Ingress_Config_DestinationRoute_ToProto)
-	return out
-}
-func ClientConnectorService_Ingress_Config_DestinationRoute_FromProto(mapCtx *direct.MapContext, in *pb.ClientConnectorService_Ingress_Config_DestinationRoute) *krm.ClientConnectorService_Ingress_Config_DestinationRoute {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ClientConnectorService_Ingress_Config_DestinationRoute{}
-	out.Address = direct.LazyPtr(in.GetAddress())
-	out.Netmask = direct.LazyPtr(in.GetNetmask())
-	return out
-}
-func ClientConnectorService_Ingress_Config_DestinationRoute_ToProto(mapCtx *direct.MapContext, in *krm.ClientConnectorService_Ingress_Config_DestinationRoute) *pb.ClientConnectorService_Ingress_Config_DestinationRoute {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientConnectorService_Ingress_Config_DestinationRoute{}
-	out.Address = direct.ValueOf(in.Address)
-	out.Netmask = direct.ValueOf(in.Netmask)
+	out.State = direct.Enum_ToProto[pb.ClientGateway_State](mapCtx, in.State)
+	out.Id = direct.ValueOf(in.ID)
+	out.ClientConnectorService = direct.ValueOf(in.ClientConnectorService)
 	return out
 }
