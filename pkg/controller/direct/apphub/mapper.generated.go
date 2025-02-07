@@ -15,10 +15,10 @@
 package apphub
 
 import (
-	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
 )
 func ApphubApplicationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Application) *krm.ApphubApplicationObservedState {
 	if in == nil {
@@ -122,6 +122,46 @@ func ApphubDiscoveredServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Apph
 	// MISSING: Name
 	// MISSING: ServiceReference
 	// MISSING: ServiceProperties
+	return out
+}
+func ApphubDiscoveredWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.ApphubDiscoveredWorkloadObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApphubDiscoveredWorkloadObservedState{}
+	// MISSING: Name
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func ApphubDiscoveredWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApphubDiscoveredWorkloadObservedState) *pb.DiscoveredWorkload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredWorkload{}
+	// MISSING: Name
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func ApphubDiscoveredWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.ApphubDiscoveredWorkloadSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApphubDiscoveredWorkloadSpec{}
+	// MISSING: Name
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func ApphubDiscoveredWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApphubDiscoveredWorkloadSpec) *pb.DiscoveredWorkload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredWorkload{}
+	// MISSING: Name
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
 	return out
 }
 func ApphubServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ApphubServiceObservedState {
@@ -316,150 +356,44 @@ func ApphubWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApphubWorkloa
 	// MISSING: State
 	return out
 }
-func Attributes_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.Attributes {
+func DiscoveredWorkload_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.DiscoveredWorkload {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Attributes{}
-	out.Criticality = Criticality_FromProto(mapCtx, in.GetCriticality())
-	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
-	out.DeveloperOwners = direct.Slice_FromProto(mapCtx, in.DeveloperOwners, ContactInfo_FromProto)
-	out.OperatorOwners = direct.Slice_FromProto(mapCtx, in.OperatorOwners, ContactInfo_FromProto)
-	out.BusinessOwners = direct.Slice_FromProto(mapCtx, in.BusinessOwners, ContactInfo_FromProto)
-	return out
-}
-func Attributes_ToProto(mapCtx *direct.MapContext, in *krm.Attributes) *pb.Attributes {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Attributes{}
-	out.Criticality = Criticality_ToProto(mapCtx, in.Criticality)
-	out.Environment = Environment_ToProto(mapCtx, in.Environment)
-	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfo_ToProto)
-	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfo_ToProto)
-	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfo_ToProto)
-	return out
-}
-func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContactInfo{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Email = direct.LazyPtr(in.GetEmail())
-	return out
-}
-func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContactInfo{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Email = direct.ValueOf(in.Email)
-	return out
-}
-func Criticality_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.Criticality {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Criticality{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	return out
-}
-func Criticality_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Criticality {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Criticality{}
-	out.Type = direct.Enum_ToProto[pb.Criticality_Type](mapCtx, in.Type)
-	return out
-}
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	return out
-}
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	out.Type = direct.Enum_ToProto[pb.Environment_Type](mapCtx, in.Type)
-	return out
-}
-func Workload_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.Workload {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Workload{}
+	out := &krm.DiscoveredWorkload{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: WorkloadReference
 	// MISSING: WorkloadProperties
-	out.DiscoveredWorkload = direct.LazyPtr(in.GetDiscoveredWorkload())
-	out.Attributes = Attributes_FromProto(mapCtx, in.GetAttributes())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Uid
-	// MISSING: State
 	return out
 }
-func Workload_ToProto(mapCtx *direct.MapContext, in *krm.Workload) *pb.Workload {
+func DiscoveredWorkload_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredWorkload) *pb.DiscoveredWorkload {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload{}
+	out := &pb.DiscoveredWorkload{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
 	// MISSING: WorkloadReference
 	// MISSING: WorkloadProperties
-	out.DiscoveredWorkload = direct.ValueOf(in.DiscoveredWorkload)
-	out.Attributes = Attributes_ToProto(mapCtx, in.Attributes)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Uid
-	// MISSING: State
 	return out
 }
-func WorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.WorkloadObservedState {
+func DiscoveredWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.DiscoveredWorkloadObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkloadObservedState{}
+	out := &krm.DiscoveredWorkloadObservedState{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
 	out.WorkloadReference = WorkloadReference_FromProto(mapCtx, in.GetWorkloadReference())
 	out.WorkloadProperties = WorkloadProperties_FromProto(mapCtx, in.GetWorkloadProperties())
-	// MISSING: DiscoveredWorkload
-	// MISSING: Attributes
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func WorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadObservedState) *pb.Workload {
+func DiscoveredWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredWorkloadObservedState) *pb.DiscoveredWorkload {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workload{}
+	out := &pb.DiscoveredWorkload{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
 	out.WorkloadReference = WorkloadReference_ToProto(mapCtx, in.WorkloadReference)
 	out.WorkloadProperties = WorkloadProperties_ToProto(mapCtx, in.WorkloadProperties)
-	// MISSING: DiscoveredWorkload
-	// MISSING: Attributes
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Uid = direct.ValueOf(in.Uid)
-	out.State = direct.Enum_ToProto[pb.Workload_State](mapCtx, in.State)
 	return out
 }
 func WorkloadProperties_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadProperties {
