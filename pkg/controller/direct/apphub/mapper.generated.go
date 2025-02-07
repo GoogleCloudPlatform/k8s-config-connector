@@ -15,10 +15,10 @@
 package apphub
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func ApphubApplicationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Application) *krm.ApphubApplicationObservedState {
 	if in == nil {
@@ -82,6 +82,46 @@ func ApphubApplicationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApphubAppl
 	// MISSING: Scope
 	// MISSING: Uid
 	// MISSING: State
+	return out
+}
+func ApphubDiscoveredServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.ApphubDiscoveredServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApphubDiscoveredServiceObservedState{}
+	// MISSING: Name
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func ApphubDiscoveredServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApphubDiscoveredServiceObservedState) *pb.DiscoveredService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredService{}
+	// MISSING: Name
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func ApphubDiscoveredServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.ApphubDiscoveredServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApphubDiscoveredServiceSpec{}
+	// MISSING: Name
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func ApphubDiscoveredServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApphubDiscoveredServiceSpec) *pb.DiscoveredService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredService{}
+	// MISSING: Name
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
 	return out
 }
 func ApphubServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ApphubServiceObservedState {
@@ -156,150 +196,44 @@ func ApphubServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApphubServiceS
 	// MISSING: State
 	return out
 }
-func Attributes_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.Attributes {
+func DiscoveredService_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.DiscoveredService {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Attributes{}
-	out.Criticality = Criticality_FromProto(mapCtx, in.GetCriticality())
-	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
-	out.DeveloperOwners = direct.Slice_FromProto(mapCtx, in.DeveloperOwners, ContactInfo_FromProto)
-	out.OperatorOwners = direct.Slice_FromProto(mapCtx, in.OperatorOwners, ContactInfo_FromProto)
-	out.BusinessOwners = direct.Slice_FromProto(mapCtx, in.BusinessOwners, ContactInfo_FromProto)
-	return out
-}
-func Attributes_ToProto(mapCtx *direct.MapContext, in *krm.Attributes) *pb.Attributes {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Attributes{}
-	out.Criticality = Criticality_ToProto(mapCtx, in.Criticality)
-	out.Environment = Environment_ToProto(mapCtx, in.Environment)
-	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfo_ToProto)
-	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfo_ToProto)
-	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfo_ToProto)
-	return out
-}
-func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContactInfo{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Email = direct.LazyPtr(in.GetEmail())
-	return out
-}
-func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContactInfo{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Email = direct.ValueOf(in.Email)
-	return out
-}
-func Criticality_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.Criticality {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Criticality{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	return out
-}
-func Criticality_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Criticality {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Criticality{}
-	out.Type = direct.Enum_ToProto[pb.Criticality_Type](mapCtx, in.Type)
-	return out
-}
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	return out
-}
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	out.Type = direct.Enum_ToProto[pb.Environment_Type](mapCtx, in.Type)
-	return out
-}
-func Service_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.Service {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Service{}
+	out := &krm.DiscoveredService{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: ServiceReference
 	// MISSING: ServiceProperties
-	out.Attributes = Attributes_FromProto(mapCtx, in.GetAttributes())
-	out.DiscoveredService = direct.LazyPtr(in.GetDiscoveredService())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Uid
-	// MISSING: State
 	return out
 }
-func Service_ToProto(mapCtx *direct.MapContext, in *krm.Service) *pb.Service {
+func DiscoveredService_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredService) *pb.DiscoveredService {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Service{}
+	out := &pb.DiscoveredService{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
 	// MISSING: ServiceReference
 	// MISSING: ServiceProperties
-	out.Attributes = Attributes_ToProto(mapCtx, in.Attributes)
-	out.DiscoveredService = direct.ValueOf(in.DiscoveredService)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Uid
-	// MISSING: State
 	return out
 }
-func ServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceObservedState {
+func DiscoveredServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.DiscoveredServiceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ServiceObservedState{}
+	out := &krm.DiscoveredServiceObservedState{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
 	out.ServiceReference = ServiceReference_FromProto(mapCtx, in.GetServiceReference())
 	out.ServiceProperties = ServiceProperties_FromProto(mapCtx, in.GetServiceProperties())
-	// MISSING: Attributes
-	// MISSING: DiscoveredService
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func ServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceObservedState) *pb.Service {
+func DiscoveredServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredServiceObservedState) *pb.DiscoveredService {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Service{}
+	out := &pb.DiscoveredService{}
 	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
 	out.ServiceReference = ServiceReference_ToProto(mapCtx, in.ServiceReference)
 	out.ServiceProperties = ServiceProperties_ToProto(mapCtx, in.ServiceProperties)
-	// MISSING: Attributes
-	// MISSING: DiscoveredService
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Uid = direct.ValueOf(in.Uid)
-	out.State = direct.Enum_ToProto[pb.Service_State](mapCtx, in.State)
 	return out
 }
 func ServiceProperties_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krm.ServiceProperties {
