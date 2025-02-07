@@ -205,6 +205,90 @@ func BigqueryDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bigquer
 	// MISSING: DiscoveryType
 	return out
 }
+func BigqueryListingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krm.BigqueryListingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryListingObservedState{}
+	// MISSING: BigqueryDataset
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: PrimaryContact
+	// MISSING: Documentation
+	// MISSING: State
+	// MISSING: Icon
+	// MISSING: DataProvider
+	// MISSING: Categories
+	// MISSING: Publisher
+	// MISSING: RequestAccess
+	// MISSING: RestrictedExportConfig
+	// MISSING: DiscoveryType
+	return out
+}
+func BigqueryListingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryListingObservedState) *pb.Listing {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Listing{}
+	// MISSING: BigqueryDataset
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: PrimaryContact
+	// MISSING: Documentation
+	// MISSING: State
+	// MISSING: Icon
+	// MISSING: DataProvider
+	// MISSING: Categories
+	// MISSING: Publisher
+	// MISSING: RequestAccess
+	// MISSING: RestrictedExportConfig
+	// MISSING: DiscoveryType
+	return out
+}
+func BigqueryListingSpec_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krm.BigqueryListingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigqueryListingSpec{}
+	// MISSING: BigqueryDataset
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: PrimaryContact
+	// MISSING: Documentation
+	// MISSING: State
+	// MISSING: Icon
+	// MISSING: DataProvider
+	// MISSING: Categories
+	// MISSING: Publisher
+	// MISSING: RequestAccess
+	// MISSING: RestrictedExportConfig
+	// MISSING: DiscoveryType
+	return out
+}
+func BigqueryListingSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigqueryListingSpec) *pb.Listing {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Listing{}
+	// MISSING: BigqueryDataset
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: PrimaryContact
+	// MISSING: Documentation
+	// MISSING: State
+	// MISSING: Icon
+	// MISSING: DataProvider
+	// MISSING: Categories
+	// MISSING: Publisher
+	// MISSING: RequestAccess
+	// MISSING: RestrictedExportConfig
+	// MISSING: DiscoveryType
+	return out
+}
 func DataExchange_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krm.DataExchange {
 	if in == nil {
 		return nil
@@ -237,38 +321,6 @@ func DataExchange_ToProto(mapCtx *direct.MapContext, in *krm.DataExchange) *pb.D
 	if oneof := DataExchange_DiscoveryType_ToProto(mapCtx, in.DiscoveryType); oneof != nil {
 		out.DiscoveryType = oneof
 	}
-	return out
-}
-func DataExchangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krm.DataExchangeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataExchangeObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PrimaryContact
-	// MISSING: Documentation
-	out.ListingCount = direct.LazyPtr(in.GetListingCount())
-	// MISSING: Icon
-	out.SharingEnvironmentConfig = SharingEnvironmentConfigObservedState_FromProto(mapCtx, in.GetSharingEnvironmentConfig())
-	// MISSING: DiscoveryType
-	return out
-}
-func DataExchangeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataExchangeObservedState) *pb.DataExchange {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataExchange{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PrimaryContact
-	// MISSING: Documentation
-	out.ListingCount = direct.ValueOf(in.ListingCount)
-	// MISSING: Icon
-	out.SharingEnvironmentConfig = SharingEnvironmentConfigObservedState_ToProto(mapCtx, in.SharingEnvironmentConfig)
-	// MISSING: DiscoveryType
 	return out
 }
 func DataProvider_FromProto(mapCtx *direct.MapContext, in *pb.DataProvider) *krm.DataProvider {
@@ -333,6 +385,48 @@ func Listing_ToProto(mapCtx *direct.MapContext, in *krm.Listing) *pb.Listing {
 	if oneof := Listing_DiscoveryType_ToProto(mapCtx, in.DiscoveryType); oneof != nil {
 		out.DiscoveryType = oneof
 	}
+	return out
+}
+func ListingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Listing) *krm.ListingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ListingObservedState{}
+	// MISSING: BigqueryDataset
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: PrimaryContact
+	// MISSING: Documentation
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: Icon
+	// MISSING: DataProvider
+	// MISSING: Categories
+	// MISSING: Publisher
+	// MISSING: RequestAccess
+	out.RestrictedExportConfig = Listing_RestrictedExportConfigObservedState_FromProto(mapCtx, in.GetRestrictedExportConfig())
+	// MISSING: DiscoveryType
+	return out
+}
+func ListingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ListingObservedState) *pb.Listing {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Listing{}
+	// MISSING: BigqueryDataset
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: PrimaryContact
+	// MISSING: Documentation
+	out.State = direct.Enum_ToProto[pb.Listing_State](mapCtx, in.State)
+	// MISSING: Icon
+	// MISSING: DataProvider
+	// MISSING: Categories
+	// MISSING: Publisher
+	// MISSING: RequestAccess
+	out.RestrictedExportConfig = Listing_RestrictedExportConfigObservedState_ToProto(mapCtx, in.RestrictedExportConfig)
+	// MISSING: DiscoveryType
 	return out
 }
 func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.Listing_BigQueryDatasetSource) *krm.Listing_BigQueryDatasetSource {
@@ -411,6 +505,26 @@ func Listing_RestrictedExportConfig_ToProto(mapCtx *direct.MapContext, in *krm.L
 	out.Enabled = direct.ValueOf(in.Enabled)
 	out.RestrictDirectTableAccess = direct.ValueOf(in.RestrictDirectTableAccess)
 	out.RestrictQueryResult = direct.ValueOf(in.RestrictQueryResult)
+	return out
+}
+func Listing_RestrictedExportConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Listing_RestrictedExportConfig) *krm.Listing_RestrictedExportConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Listing_RestrictedExportConfigObservedState{}
+	// MISSING: Enabled
+	out.RestrictDirectTableAccess = direct.LazyPtr(in.GetRestrictDirectTableAccess())
+	// MISSING: RestrictQueryResult
+	return out
+}
+func Listing_RestrictedExportConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Listing_RestrictedExportConfigObservedState) *pb.Listing_RestrictedExportConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Listing_RestrictedExportConfig{}
+	// MISSING: Enabled
+	out.RestrictDirectTableAccess = direct.ValueOf(in.RestrictDirectTableAccess)
+	// MISSING: RestrictQueryResult
 	return out
 }
 func Publisher_FromProto(mapCtx *direct.MapContext, in *pb.Publisher) *krm.Publisher {
@@ -493,26 +607,6 @@ func SharingEnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.Sharing
 	}
 	return out
 }
-func SharingEnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SharingEnvironmentConfig) *krm.SharingEnvironmentConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SharingEnvironmentConfigObservedState{}
-	// MISSING: DefaultExchangeConfig
-	out.DcrExchangeConfig = SharingEnvironmentConfig_DcrExchangeConfigObservedState_FromProto(mapCtx, in.GetDcrExchangeConfig())
-	return out
-}
-func SharingEnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SharingEnvironmentConfigObservedState) *pb.SharingEnvironmentConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SharingEnvironmentConfig{}
-	// MISSING: DefaultExchangeConfig
-	if oneof := SharingEnvironmentConfig_DcrExchangeConfigObservedState_ToProto(mapCtx, in.DcrExchangeConfig); oneof != nil {
-		out.Environment = &pb.SharingEnvironmentConfig_DcrExchangeConfig_{DcrExchangeConfig: oneof}
-	}
-	return out
-}
 func SharingEnvironmentConfig_DcrExchangeConfig_FromProto(mapCtx *direct.MapContext, in *pb.SharingEnvironmentConfig_DcrExchangeConfig) *krm.SharingEnvironmentConfig_DcrExchangeConfig {
 	if in == nil {
 		return nil
@@ -523,24 +617,6 @@ func SharingEnvironmentConfig_DcrExchangeConfig_FromProto(mapCtx *direct.MapCont
 	return out
 }
 func SharingEnvironmentConfig_DcrExchangeConfig_ToProto(mapCtx *direct.MapContext, in *krm.SharingEnvironmentConfig_DcrExchangeConfig) *pb.SharingEnvironmentConfig_DcrExchangeConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SharingEnvironmentConfig_DcrExchangeConfig{}
-	out.SingleSelectedResourceSharingRestriction = in.SingleSelectedResourceSharingRestriction
-	out.SingleLinkedDatasetPerCleanroom = in.SingleLinkedDatasetPerCleanroom
-	return out
-}
-func SharingEnvironmentConfig_DcrExchangeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SharingEnvironmentConfig_DcrExchangeConfig) *krm.SharingEnvironmentConfig_DcrExchangeConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SharingEnvironmentConfig_DcrExchangeConfigObservedState{}
-	out.SingleSelectedResourceSharingRestriction = in.SingleSelectedResourceSharingRestriction
-	out.SingleLinkedDatasetPerCleanroom = in.SingleLinkedDatasetPerCleanroom
-	return out
-}
-func SharingEnvironmentConfig_DcrExchangeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SharingEnvironmentConfig_DcrExchangeConfigObservedState) *pb.SharingEnvironmentConfig_DcrExchangeConfig {
 	if in == nil {
 		return nil
 	}
