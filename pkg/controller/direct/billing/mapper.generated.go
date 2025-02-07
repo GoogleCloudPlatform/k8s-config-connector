@@ -116,47 +116,69 @@ func BillingProjectBillingInfoSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bi
 	// MISSING: BillingEnabled
 	return out
 }
-func ProjectBillingInfo_FromProto(mapCtx *direct.MapContext, in *pb.ProjectBillingInfo) *krm.ProjectBillingInfo {
+func BillingServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.BillingServiceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ProjectBillingInfo{}
+	out := &krm.BillingServiceObservedState{}
 	// MISSING: Name
-	// MISSING: ProjectID
-	out.BillingAccountName = direct.LazyPtr(in.GetBillingAccountName())
-	// MISSING: BillingEnabled
+	// MISSING: ServiceID
+	// MISSING: DisplayName
+	// MISSING: BusinessEntityName
 	return out
 }
-func ProjectBillingInfo_ToProto(mapCtx *direct.MapContext, in *krm.ProjectBillingInfo) *pb.ProjectBillingInfo {
+func BillingServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BillingServiceObservedState) *pb.Service {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ProjectBillingInfo{}
+	out := &pb.Service{}
 	// MISSING: Name
-	// MISSING: ProjectID
-	out.BillingAccountName = direct.ValueOf(in.BillingAccountName)
-	// MISSING: BillingEnabled
+	// MISSING: ServiceID
+	// MISSING: DisplayName
+	// MISSING: BusinessEntityName
 	return out
 }
-func ProjectBillingInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProjectBillingInfo) *krm.ProjectBillingInfoObservedState {
+func BillingServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.BillingServiceSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ProjectBillingInfoObservedState{}
+	out := &krm.BillingServiceSpec{}
+	// MISSING: Name
+	// MISSING: ServiceID
+	// MISSING: DisplayName
+	// MISSING: BusinessEntityName
+	return out
+}
+func BillingServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.BillingServiceSpec) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: ServiceID
+	// MISSING: DisplayName
+	// MISSING: BusinessEntityName
+	return out
+}
+func Service_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.Service {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Service{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	// MISSING: BillingAccountName
-	out.BillingEnabled = direct.LazyPtr(in.GetBillingEnabled())
+	out.ServiceID = direct.LazyPtr(in.GetServiceId())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.BusinessEntityName = direct.LazyPtr(in.GetBusinessEntityName())
 	return out
 }
-func ProjectBillingInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProjectBillingInfoObservedState) *pb.ProjectBillingInfo {
+func Service_ToProto(mapCtx *direct.MapContext, in *krm.Service) *pb.Service {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ProjectBillingInfo{}
+	out := &pb.Service{}
 	out.Name = direct.ValueOf(in.Name)
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	// MISSING: BillingAccountName
-	out.BillingEnabled = direct.ValueOf(in.BillingEnabled)
+	out.ServiceId = direct.ValueOf(in.ServiceID)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.BusinessEntityName = direct.ValueOf(in.BusinessEntityName)
 	return out
 }

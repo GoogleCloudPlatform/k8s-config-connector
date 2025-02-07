@@ -15,34 +15,24 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.billing.v1.ProjectBillingInfo
-type ProjectBillingInfo struct {
-
-	// The resource name of the billing account associated with the project, if
-	//  any. For example, `billingAccounts/012345-567890-ABCDEF`.
-	// +kcc:proto:field=google.cloud.billing.v1.ProjectBillingInfo.billing_account_name
-	BillingAccountName *string `json:"billingAccountName,omitempty"`
-}
-
-// +kcc:proto=google.cloud.billing.v1.ProjectBillingInfo
-type ProjectBillingInfoObservedState struct {
-	// Output only. The resource name for the `ProjectBillingInfo`; has the form
-	//  `projects/{project_id}/billingInfo`. For example, the resource name for the
-	//  billing information for project `tokyo-rain-123` would be
-	//  `projects/tokyo-rain-123/billingInfo`.
-	// +kcc:proto:field=google.cloud.billing.v1.ProjectBillingInfo.name
+// +kcc:proto=google.cloud.billing.v1.Service
+type Service struct {
+	// The resource name for the service.
+	//  Example: "services/6F81-5844-456A"
+	// +kcc:proto:field=google.cloud.billing.v1.Service.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. The ID of the project that this `ProjectBillingInfo`
-	//  represents, such as `tokyo-rain-123`. This is a convenience field so that
-	//  you don't need to parse the `name` field to obtain a project ID.
-	// +kcc:proto:field=google.cloud.billing.v1.ProjectBillingInfo.project_id
-	ProjectID *string `json:"projectID,omitempty"`
+	// The identifier for the service.
+	//  Example: "6F81-5844-456A"
+	// +kcc:proto:field=google.cloud.billing.v1.Service.service_id
+	ServiceID *string `json:"serviceID,omitempty"`
 
-	// Output only. True if the project is associated with an open billing
-	//  account, to which usage on the project is charged. False if the project is
-	//  associated with a closed billing account, or no billing account at all, and
-	//  therefore cannot use paid services.
-	// +kcc:proto:field=google.cloud.billing.v1.ProjectBillingInfo.billing_enabled
-	BillingEnabled *bool `json:"billingEnabled,omitempty"`
+	// A human readable display name for this service.
+	// +kcc:proto:field=google.cloud.billing.v1.Service.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The business under which the service is offered.
+	//  Ex. "businessEntities/GCP", "businessEntities/Maps"
+	// +kcc:proto:field=google.cloud.billing.v1.Service.business_entity_name
+	BusinessEntityName *string `json:"businessEntityName,omitempty"`
 }
