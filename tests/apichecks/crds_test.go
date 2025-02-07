@@ -468,7 +468,7 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 				// Check if field exists in any unstructured object
 				missing := true
 				for _, obj := range unstructs {
-					if hasField(obj.Object, fieldPath) {
+					if hasField(obj.Object, strings.TrimSuffix(fieldPath, "[]")) {
 						missing = false
 						break
 					}
