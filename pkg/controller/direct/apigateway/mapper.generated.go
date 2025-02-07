@@ -15,135 +15,11 @@
 package apigateway
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/apigateway/apiv1/apigatewaypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func ApiConfig_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig) *krm.ApiConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiConfig{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.GatewayServiceAccount = direct.LazyPtr(in.GetGatewayServiceAccount())
-	// MISSING: ServiceConfigID
-	// MISSING: State
-	out.OpenapiDocuments = direct.Slice_FromProto(mapCtx, in.OpenapiDocuments, ApiConfig_OpenApiDocument_FromProto)
-	out.GrpcServices = direct.Slice_FromProto(mapCtx, in.GrpcServices, ApiConfig_GrpcServiceDefinition_FromProto)
-	out.ManagedServiceConfigs = direct.Slice_FromProto(mapCtx, in.ManagedServiceConfigs, ApiConfig_File_FromProto)
-	return out
-}
-func ApiConfig_ToProto(mapCtx *direct.MapContext, in *krm.ApiConfig) *pb.ApiConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApiConfig{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.GatewayServiceAccount = direct.ValueOf(in.GatewayServiceAccount)
-	// MISSING: ServiceConfigID
-	// MISSING: State
-	out.OpenapiDocuments = direct.Slice_ToProto(mapCtx, in.OpenapiDocuments, ApiConfig_OpenApiDocument_ToProto)
-	out.GrpcServices = direct.Slice_ToProto(mapCtx, in.GrpcServices, ApiConfig_GrpcServiceDefinition_ToProto)
-	out.ManagedServiceConfigs = direct.Slice_ToProto(mapCtx, in.ManagedServiceConfigs, ApiConfig_File_ToProto)
-	return out
-}
-func ApiConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig) *krm.ApiConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiConfigObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: DisplayName
-	// MISSING: GatewayServiceAccount
-	out.ServiceConfigID = direct.LazyPtr(in.GetServiceConfigId())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: OpenapiDocuments
-	// MISSING: GrpcServices
-	// MISSING: ManagedServiceConfigs
-	return out
-}
-func ApiConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiConfigObservedState) *pb.ApiConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApiConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: DisplayName
-	// MISSING: GatewayServiceAccount
-	out.ServiceConfigId = direct.ValueOf(in.ServiceConfigID)
-	out.State = direct.Enum_ToProto[pb.ApiConfig_State](mapCtx, in.State)
-	// MISSING: OpenapiDocuments
-	// MISSING: GrpcServices
-	// MISSING: ManagedServiceConfigs
-	return out
-}
-func ApiConfig_File_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig_File) *krm.ApiConfig_File {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiConfig_File{}
-	out.Path = direct.LazyPtr(in.GetPath())
-	out.Contents = in.GetContents()
-	return out
-}
-func ApiConfig_File_ToProto(mapCtx *direct.MapContext, in *krm.ApiConfig_File) *pb.ApiConfig_File {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApiConfig_File{}
-	out.Path = direct.ValueOf(in.Path)
-	out.Contents = in.Contents
-	return out
-}
-func ApiConfig_GrpcServiceDefinition_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig_GrpcServiceDefinition) *krm.ApiConfig_GrpcServiceDefinition {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiConfig_GrpcServiceDefinition{}
-	out.FileDescriptorSet = ApiConfig_File_FromProto(mapCtx, in.GetFileDescriptorSet())
-	out.Source = direct.Slice_FromProto(mapCtx, in.Source, ApiConfig_File_FromProto)
-	return out
-}
-func ApiConfig_GrpcServiceDefinition_ToProto(mapCtx *direct.MapContext, in *krm.ApiConfig_GrpcServiceDefinition) *pb.ApiConfig_GrpcServiceDefinition {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApiConfig_GrpcServiceDefinition{}
-	out.FileDescriptorSet = ApiConfig_File_ToProto(mapCtx, in.FileDescriptorSet)
-	out.Source = direct.Slice_ToProto(mapCtx, in.Source, ApiConfig_File_ToProto)
-	return out
-}
-func ApiConfig_OpenApiDocument_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig_OpenApiDocument) *krm.ApiConfig_OpenApiDocument {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiConfig_OpenApiDocument{}
-	out.Document = ApiConfig_File_FromProto(mapCtx, in.GetDocument())
-	return out
-}
-func ApiConfig_OpenApiDocument_ToProto(mapCtx *direct.MapContext, in *krm.ApiConfig_OpenApiDocument) *pb.ApiConfig_OpenApiDocument {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApiConfig_OpenApiDocument{}
-	out.Document = ApiConfig_File_ToProto(mapCtx, in.Document)
-	return out
-}
 func ApigatewayApiConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiConfig) *krm.ApigatewayApiConfigObservedState {
 	if in == nil {
 		return nil
@@ -270,5 +146,125 @@ func ApigatewayApiSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApigatewayApiS
 	// MISSING: DisplayName
 	// MISSING: ManagedService
 	// MISSING: State
+	return out
+}
+func ApigatewayGatewayObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.ApigatewayGatewayObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigatewayGatewayObservedState{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ApiConfig
+	// MISSING: State
+	// MISSING: DefaultHostname
+	return out
+}
+func ApigatewayGatewayObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApigatewayGatewayObservedState) *pb.Gateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Gateway{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ApiConfig
+	// MISSING: State
+	// MISSING: DefaultHostname
+	return out
+}
+func ApigatewayGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.ApigatewayGatewaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigatewayGatewaySpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ApiConfig
+	// MISSING: State
+	// MISSING: DefaultHostname
+	return out
+}
+func ApigatewayGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.ApigatewayGatewaySpec) *pb.Gateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Gateway{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ApiConfig
+	// MISSING: State
+	// MISSING: DefaultHostname
+	return out
+}
+func Gateway_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.Gateway {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Gateway{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ApiConfig = direct.LazyPtr(in.GetApiConfig())
+	// MISSING: State
+	// MISSING: DefaultHostname
+	return out
+}
+func Gateway_ToProto(mapCtx *direct.MapContext, in *krm.Gateway) *pb.Gateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Gateway{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ApiConfig = direct.ValueOf(in.ApiConfig)
+	// MISSING: State
+	// MISSING: DefaultHostname
+	return out
+}
+func GatewayObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.GatewayObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GatewayObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ApiConfig
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.DefaultHostname = direct.LazyPtr(in.GetDefaultHostname())
+	return out
+}
+func GatewayObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GatewayObservedState) *pb.Gateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Gateway{}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: DisplayName
+	// MISSING: ApiConfig
+	out.State = direct.Enum_ToProto[pb.Gateway_State](mapCtx, in.State)
+	out.DefaultHostname = direct.ValueOf(in.DefaultHostname)
 	return out
 }
