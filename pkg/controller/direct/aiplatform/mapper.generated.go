@@ -3060,491 +3060,609 @@ func AiplatformPipelineJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Aiplat
 	// MISSING: PreflightValidations
 	return out
 }
-func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+func AiplatformPublisherModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel) *krm.AiplatformPublisherModelObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EncryptionSpec{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	return out
-}
-func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionSpec{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	return out
-}
-func PipelineJob_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.PipelineJob {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PipelineJob{}
+	out := &krm.AiplatformPublisherModelObservedState{}
 	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: CreateTime
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: UpdateTime
-	out.PipelineSpec = PipelineSpec_FromProto(mapCtx, in.GetPipelineSpec())
-	// MISSING: State
-	// MISSING: JobDetail
-	// MISSING: Error
-	out.Labels = in.Labels
-	out.RuntimeConfig = PipelineJob_RuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.ReservedIPRanges = in.ReservedIpRanges
-	out.TemplateURI = direct.LazyPtr(in.GetTemplateUri())
-	// MISSING: TemplateMetadata
-	// MISSING: ScheduleName
-	out.PreflightValidations = direct.LazyPtr(in.GetPreflightValidations())
+	// MISSING: VersionID
+	// MISSING: OpenSourceCategory
+	// MISSING: SupportedActions
+	// MISSING: Frameworks
+	// MISSING: LaunchStage
+	// MISSING: VersionState
+	// MISSING: PublisherModelTemplate
+	// MISSING: PredictSchemata
 	return out
 }
-func PipelineJob_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJob) *pb.PipelineJob {
+func AiplatformPublisherModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformPublisherModelObservedState) *pb.PublisherModel {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineJob{}
+	out := &pb.PublisherModel{}
 	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: CreateTime
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: UpdateTime
-	out.PipelineSpec = PipelineSpec_ToProto(mapCtx, in.PipelineSpec)
-	// MISSING: State
-	// MISSING: JobDetail
-	// MISSING: Error
-	out.Labels = in.Labels
-	out.RuntimeConfig = PipelineJob_RuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.Network = direct.ValueOf(in.Network)
-	out.ReservedIpRanges = in.ReservedIPRanges
-	out.TemplateUri = direct.ValueOf(in.TemplateURI)
-	// MISSING: TemplateMetadata
-	// MISSING: ScheduleName
-	out.PreflightValidations = direct.ValueOf(in.PreflightValidations)
+	// MISSING: VersionID
+	// MISSING: OpenSourceCategory
+	// MISSING: SupportedActions
+	// MISSING: Frameworks
+	// MISSING: LaunchStage
+	// MISSING: VersionState
+	// MISSING: PublisherModelTemplate
+	// MISSING: PredictSchemata
 	return out
 }
-func PipelineJobDetail_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJobDetail) *krm.PipelineJobDetail {
+func AiplatformPublisherModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel) *krm.AiplatformPublisherModelSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineJobDetail{}
-	// MISSING: PipelineContext
-	// MISSING: PipelineRunContext
-	// MISSING: TaskDetails
+	out := &krm.AiplatformPublisherModelSpec{}
+	// MISSING: Name
+	// MISSING: VersionID
+	// MISSING: OpenSourceCategory
+	// MISSING: SupportedActions
+	// MISSING: Frameworks
+	// MISSING: LaunchStage
+	// MISSING: VersionState
+	// MISSING: PublisherModelTemplate
+	// MISSING: PredictSchemata
 	return out
 }
-func PipelineJobDetail_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobDetail) *pb.PipelineJobDetail {
+func AiplatformPublisherModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AiplatformPublisherModelSpec) *pb.PublisherModel {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineJobDetail{}
-	// MISSING: PipelineContext
-	// MISSING: PipelineRunContext
-	// MISSING: TaskDetails
+	out := &pb.PublisherModel{}
+	// MISSING: Name
+	// MISSING: VersionID
+	// MISSING: OpenSourceCategory
+	// MISSING: SupportedActions
+	// MISSING: Frameworks
+	// MISSING: LaunchStage
+	// MISSING: VersionState
+	// MISSING: PublisherModelTemplate
+	// MISSING: PredictSchemata
 	return out
 }
-func PipelineJobDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJobDetail) *krm.PipelineJobDetailObservedState {
+func AutomaticResources_FromProto(mapCtx *direct.MapContext, in *pb.AutomaticResources) *krm.AutomaticResources {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineJobDetailObservedState{}
-	out.PipelineContext = Context_FromProto(mapCtx, in.GetPipelineContext())
-	out.PipelineRunContext = Context_FromProto(mapCtx, in.GetPipelineRunContext())
-	out.TaskDetails = direct.Slice_FromProto(mapCtx, in.TaskDetails, PipelineTaskDetail_FromProto)
+	out := &krm.AutomaticResources{}
+	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
 	return out
 }
-func PipelineJobDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobDetailObservedState) *pb.PipelineJobDetail {
+func AutomaticResources_ToProto(mapCtx *direct.MapContext, in *krm.AutomaticResources) *pb.AutomaticResources {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineJobDetail{}
-	out.PipelineContext = Context_ToProto(mapCtx, in.PipelineContext)
-	out.PipelineRunContext = Context_ToProto(mapCtx, in.PipelineRunContext)
-	out.TaskDetails = direct.Slice_ToProto(mapCtx, in.TaskDetails, PipelineTaskDetail_ToProto)
+	out := &pb.AutomaticResources{}
+	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
 	return out
 }
-func PipelineJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.PipelineJobObservedState {
+func AutoscalingMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingMetricSpec) *krm.AutoscalingMetricSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineJobObservedState{}
+	out := &krm.AutoscalingMetricSpec{}
+	out.MetricName = direct.LazyPtr(in.GetMetricName())
+	out.Target = direct.LazyPtr(in.GetTarget())
+	return out
+}
+func AutoscalingMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingMetricSpec) *pb.AutoscalingMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingMetricSpec{}
+	out.MetricName = direct.ValueOf(in.MetricName)
+	out.Target = direct.ValueOf(in.Target)
+	return out
+}
+func DedicatedResources_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedResources) *krm.DedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DedicatedResources{}
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
+	out.RequiredReplicaCount = direct.LazyPtr(in.GetRequiredReplicaCount())
+	out.AutoscalingMetricSpecs = direct.Slice_FromProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_FromProto)
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	return out
+}
+func DedicatedResources_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedResources) *pb.DedicatedResources {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DedicatedResources{}
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
+	out.RequiredReplicaCount = direct.ValueOf(in.RequiredReplicaCount)
+	out.AutoscalingMetricSpecs = direct.Slice_ToProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_ToProto)
+	out.Spot = direct.ValueOf(in.Spot)
+	return out
+}
+func EnvVar_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krm.EnvVar {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnvVar{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: PipelineSpec
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.JobDetail = PipelineJobDetail_FromProto(mapCtx, in.GetJobDetail())
-	out.Error = Status_FromProto(mapCtx, in.GetError())
-	// MISSING: Labels
-	// MISSING: RuntimeConfig
-	// MISSING: EncryptionSpec
-	// MISSING: ServiceAccount
-	// MISSING: Network
-	// MISSING: ReservedIPRanges
-	// MISSING: TemplateURI
-	out.TemplateMetadata = PipelineTemplateMetadata_FromProto(mapCtx, in.GetTemplateMetadata())
-	out.ScheduleName = direct.LazyPtr(in.GetScheduleName())
-	// MISSING: PreflightValidations
+	out.Value = direct.LazyPtr(in.GetValue())
 	return out
 }
-func PipelineJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobObservedState) *pb.PipelineJob {
+func EnvVar_ToProto(mapCtx *direct.MapContext, in *krm.EnvVar) *pb.EnvVar {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineJob{}
+	out := &pb.EnvVar{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: PipelineSpec
-	out.State = direct.Enum_ToProto[pb.PipelineState](mapCtx, in.State)
-	out.JobDetail = PipelineJobDetail_ToProto(mapCtx, in.JobDetail)
-	out.Error = Status_ToProto(mapCtx, in.Error)
-	// MISSING: Labels
-	// MISSING: RuntimeConfig
-	// MISSING: EncryptionSpec
-	// MISSING: ServiceAccount
-	// MISSING: Network
-	// MISSING: ReservedIPRanges
-	// MISSING: TemplateURI
-	out.TemplateMetadata = PipelineTemplateMetadata_ToProto(mapCtx, in.TemplateMetadata)
-	out.ScheduleName = direct.ValueOf(in.ScheduleName)
-	// MISSING: PreflightValidations
+	out.Value = direct.ValueOf(in.Value)
 	return out
 }
-func PipelineJob_RuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob_RuntimeConfig) *krm.PipelineJob_RuntimeConfig {
+func LargeModelReference_FromProto(mapCtx *direct.MapContext, in *pb.LargeModelReference) *krm.LargeModelReference {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineJob_RuntimeConfig{}
-	// MISSING: Parameters
-	out.GcsOutputDirectory = direct.LazyPtr(in.GetGcsOutputDirectory())
-	// MISSING: ParameterValues
-	out.FailurePolicy = direct.Enum_FromProto(mapCtx, in.GetFailurePolicy())
-	// MISSING: InputArtifacts
+	out := &krm.LargeModelReference{}
+	out.Name = direct.LazyPtr(in.GetName())
 	return out
 }
-func PipelineJob_RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJob_RuntimeConfig) *pb.PipelineJob_RuntimeConfig {
+func LargeModelReference_ToProto(mapCtx *direct.MapContext, in *krm.LargeModelReference) *pb.LargeModelReference {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineJob_RuntimeConfig{}
-	// MISSING: Parameters
-	out.GcsOutputDirectory = direct.ValueOf(in.GcsOutputDirectory)
-	// MISSING: ParameterValues
-	out.FailurePolicy = direct.Enum_ToProto[pb.PipelineFailurePolicy](mapCtx, in.FailurePolicy)
-	// MISSING: InputArtifacts
+	out := &pb.LargeModelReference{}
+	out.Name = direct.ValueOf(in.Name)
 	return out
 }
-func PipelineJob_RuntimeConfig_InputArtifact_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob_RuntimeConfig_InputArtifact) *krm.PipelineJob_RuntimeConfig_InputArtifact {
+func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineJob_RuntimeConfig_InputArtifact{}
-	out.ArtifactID = direct.LazyPtr(in.GetArtifactId())
+	out := &krm.MachineSpec{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
+	out.AcceleratorCount = direct.LazyPtr(in.GetAcceleratorCount())
+	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
 	return out
 }
-func PipelineJob_RuntimeConfig_InputArtifact_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJob_RuntimeConfig_InputArtifact) *pb.PipelineJob_RuntimeConfig_InputArtifact {
+func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineJob_RuntimeConfig_InputArtifact{}
-	if oneof := PipelineJob_RuntimeConfig_InputArtifact_ArtifactId_ToProto(mapCtx, in.ArtifactID); oneof != nil {
-		out.Kind = oneof
-	}
+	out := &pb.MachineSpec{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.AcceleratorType = direct.Enum_ToProto[pb.AcceleratorType](mapCtx, in.AcceleratorType)
+	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
+	out.TpuTopology = direct.ValueOf(in.TpuTopology)
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
 	return out
 }
-func PipelineTaskDetail_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail) *krm.PipelineTaskDetail {
+func ModelContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelContainerSpec) *krm.ModelContainerSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskDetail{}
-	// MISSING: TaskID
-	// MISSING: ParentTaskID
-	// MISSING: TaskName
-	// MISSING: CreateTime
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: ExecutorDetail
-	// MISSING: State
-	// MISSING: Execution
-	// MISSING: Error
-	// MISSING: PipelineTaskStatus
-	// MISSING: Inputs
-	// MISSING: Outputs
+	out := &krm.ModelContainerSpec{}
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
+	out.Ports = direct.Slice_FromProto(mapCtx, in.Ports, Port_FromProto)
+	out.PredictRoute = direct.LazyPtr(in.GetPredictRoute())
+	out.HealthRoute = direct.LazyPtr(in.GetHealthRoute())
+	out.GrpcPorts = direct.Slice_FromProto(mapCtx, in.GrpcPorts, Port_FromProto)
+	out.DeploymentTimeout = direct.StringDuration_FromProto(mapCtx, in.GetDeploymentTimeout())
+	out.SharedMemorySizeMb = direct.LazyPtr(in.GetSharedMemorySizeMb())
+	out.StartupProbe = Probe_FromProto(mapCtx, in.GetStartupProbe())
+	out.HealthProbe = Probe_FromProto(mapCtx, in.GetHealthProbe())
 	return out
 }
-func PipelineTaskDetail_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskDetail) *pb.PipelineTaskDetail {
+func ModelContainerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelContainerSpec) *pb.ModelContainerSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskDetail{}
-	// MISSING: TaskID
-	// MISSING: ParentTaskID
-	// MISSING: TaskName
-	// MISSING: CreateTime
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: ExecutorDetail
-	// MISSING: State
-	// MISSING: Execution
-	// MISSING: Error
-	// MISSING: PipelineTaskStatus
-	// MISSING: Inputs
-	// MISSING: Outputs
+	out := &pb.ModelContainerSpec{}
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
+	out.Ports = direct.Slice_ToProto(mapCtx, in.Ports, Port_ToProto)
+	out.PredictRoute = direct.ValueOf(in.PredictRoute)
+	out.HealthRoute = direct.ValueOf(in.HealthRoute)
+	out.GrpcPorts = direct.Slice_ToProto(mapCtx, in.GrpcPorts, Port_ToProto)
+	out.DeploymentTimeout = direct.StringDuration_ToProto(mapCtx, in.DeploymentTimeout)
+	out.SharedMemorySizeMb = direct.ValueOf(in.SharedMemorySizeMb)
+	out.StartupProbe = Probe_ToProto(mapCtx, in.StartupProbe)
+	out.HealthProbe = Probe_ToProto(mapCtx, in.HealthProbe)
 	return out
 }
-func PipelineTaskDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail) *krm.PipelineTaskDetailObservedState {
+func Port_FromProto(mapCtx *direct.MapContext, in *pb.Port) *krm.Port {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskDetailObservedState{}
-	out.TaskID = direct.LazyPtr(in.GetTaskId())
-	out.ParentTaskID = direct.LazyPtr(in.GetParentTaskId())
-	out.TaskName = direct.LazyPtr(in.GetTaskName())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.ExecutorDetail = PipelineTaskExecutorDetail_FromProto(mapCtx, in.GetExecutorDetail())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Execution = Execution_FromProto(mapCtx, in.GetExecution())
-	out.Error = Status_FromProto(mapCtx, in.GetError())
-	out.PipelineTaskStatus = direct.Slice_FromProto(mapCtx, in.PipelineTaskStatus, PipelineTaskDetail_PipelineTaskStatus_FromProto)
-	// MISSING: Inputs
-	// MISSING: Outputs
+	out := &krm.Port{}
+	out.ContainerPort = direct.LazyPtr(in.GetContainerPort())
 	return out
 }
-func PipelineTaskDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskDetailObservedState) *pb.PipelineTaskDetail {
+func Port_ToProto(mapCtx *direct.MapContext, in *krm.Port) *pb.Port {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskDetail{}
-	out.TaskId = direct.ValueOf(in.TaskID)
-	out.ParentTaskId = direct.ValueOf(in.ParentTaskID)
-	out.TaskName = direct.ValueOf(in.TaskName)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.ExecutorDetail = PipelineTaskExecutorDetail_ToProto(mapCtx, in.ExecutorDetail)
-	out.State = direct.Enum_ToProto[pb.PipelineTaskDetail_State](mapCtx, in.State)
-	out.Execution = Execution_ToProto(mapCtx, in.Execution)
-	out.Error = Status_ToProto(mapCtx, in.Error)
-	out.PipelineTaskStatus = direct.Slice_ToProto(mapCtx, in.PipelineTaskStatus, PipelineTaskDetail_PipelineTaskStatus_ToProto)
-	// MISSING: Inputs
-	// MISSING: Outputs
+	out := &pb.Port{}
+	out.ContainerPort = direct.ValueOf(in.ContainerPort)
 	return out
 }
-func PipelineTaskDetail_ArtifactList_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail_ArtifactList) *krm.PipelineTaskDetail_ArtifactList {
+func PredictSchemata_FromProto(mapCtx *direct.MapContext, in *pb.PredictSchemata) *krm.PredictSchemata {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskDetail_ArtifactList{}
-	// MISSING: Artifacts
+	out := &krm.PredictSchemata{}
+	out.InstanceSchemaURI = direct.LazyPtr(in.GetInstanceSchemaUri())
+	out.ParametersSchemaURI = direct.LazyPtr(in.GetParametersSchemaUri())
+	out.PredictionSchemaURI = direct.LazyPtr(in.GetPredictionSchemaUri())
 	return out
 }
-func PipelineTaskDetail_ArtifactList_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskDetail_ArtifactList) *pb.PipelineTaskDetail_ArtifactList {
+func PredictSchemata_ToProto(mapCtx *direct.MapContext, in *krm.PredictSchemata) *pb.PredictSchemata {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskDetail_ArtifactList{}
-	// MISSING: Artifacts
+	out := &pb.PredictSchemata{}
+	out.InstanceSchemaUri = direct.ValueOf(in.InstanceSchemaURI)
+	out.ParametersSchemaUri = direct.ValueOf(in.ParametersSchemaURI)
+	out.PredictionSchemaUri = direct.ValueOf(in.PredictionSchemaURI)
 	return out
 }
-func PipelineTaskDetail_PipelineTaskStatus_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail_PipelineTaskStatus) *krm.PipelineTaskDetail_PipelineTaskStatus {
+func Probe_FromProto(mapCtx *direct.MapContext, in *pb.Probe) *krm.Probe {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskDetail_PipelineTaskStatus{}
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: Error
+	out := &krm.Probe{}
+	out.Exec = Probe_ExecAction_FromProto(mapCtx, in.GetExec())
+	out.PeriodSeconds = direct.LazyPtr(in.GetPeriodSeconds())
+	out.TimeoutSeconds = direct.LazyPtr(in.GetTimeoutSeconds())
 	return out
 }
-func PipelineTaskDetail_PipelineTaskStatus_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskDetail_PipelineTaskStatus) *pb.PipelineTaskDetail_PipelineTaskStatus {
+func Probe_ToProto(mapCtx *direct.MapContext, in *krm.Probe) *pb.Probe {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskDetail_PipelineTaskStatus{}
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: Error
+	out := &pb.Probe{}
+	if oneof := Probe_ExecAction_ToProto(mapCtx, in.Exec); oneof != nil {
+		out.ProbeType = &pb.Probe_Exec{Exec: oneof}
+	}
+	out.PeriodSeconds = direct.ValueOf(in.PeriodSeconds)
+	out.TimeoutSeconds = direct.ValueOf(in.TimeoutSeconds)
 	return out
 }
-func PipelineTaskDetail_PipelineTaskStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail_PipelineTaskStatus) *krm.PipelineTaskDetail_PipelineTaskStatusObservedState {
+func Probe_ExecAction_FromProto(mapCtx *direct.MapContext, in *pb.Probe_ExecAction) *krm.Probe_ExecAction {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskDetail_PipelineTaskStatusObservedState{}
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Error = Status_FromProto(mapCtx, in.GetError())
+	out := &krm.Probe_ExecAction{}
+	out.Command = in.Command
 	return out
 }
-func PipelineTaskDetail_PipelineTaskStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskDetail_PipelineTaskStatusObservedState) *pb.PipelineTaskDetail_PipelineTaskStatus {
+func Probe_ExecAction_ToProto(mapCtx *direct.MapContext, in *krm.Probe_ExecAction) *pb.Probe_ExecAction {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskDetail_PipelineTaskStatus{}
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.State = direct.Enum_ToProto[pb.PipelineTaskDetail_State](mapCtx, in.State)
-	out.Error = Status_ToProto(mapCtx, in.Error)
+	out := &pb.Probe_ExecAction{}
+	out.Command = in.Command
 	return out
 }
-func PipelineTaskExecutorDetail_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail) *krm.PipelineTaskExecutorDetail {
+func PublisherModel_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel) *krm.PublisherModel {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskExecutorDetail{}
-	// MISSING: ContainerDetail
-	// MISSING: CustomJobDetail
+	out := &krm.PublisherModel{}
+	// MISSING: Name
+	// MISSING: VersionID
+	out.OpenSourceCategory = direct.Enum_FromProto(mapCtx, in.GetOpenSourceCategory())
+	out.SupportedActions = PublisherModel_CallToAction_FromProto(mapCtx, in.GetSupportedActions())
+	out.Frameworks = in.Frameworks
+	out.LaunchStage = direct.Enum_FromProto(mapCtx, in.GetLaunchStage())
+	out.VersionState = direct.Enum_FromProto(mapCtx, in.GetVersionState())
+	// MISSING: PublisherModelTemplate
+	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
 	return out
 }
-func PipelineTaskExecutorDetail_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetail) *pb.PipelineTaskExecutorDetail {
+func PublisherModel_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel) *pb.PublisherModel {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskExecutorDetail{}
-	// MISSING: ContainerDetail
-	// MISSING: CustomJobDetail
+	out := &pb.PublisherModel{}
+	// MISSING: Name
+	// MISSING: VersionID
+	out.OpenSourceCategory = direct.Enum_ToProto[pb.PublisherModel_OpenSourceCategory](mapCtx, in.OpenSourceCategory)
+	out.SupportedActions = PublisherModel_CallToAction_ToProto(mapCtx, in.SupportedActions)
+	out.Frameworks = in.Frameworks
+	out.LaunchStage = direct.Enum_ToProto[pb.PublisherModel_LaunchStage](mapCtx, in.LaunchStage)
+	out.VersionState = direct.Enum_ToProto[pb.PublisherModel_VersionState](mapCtx, in.VersionState)
+	// MISSING: PublisherModelTemplate
+	out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
 	return out
 }
-func PipelineTaskExecutorDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail) *krm.PipelineTaskExecutorDetailObservedState {
+func PublisherModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel) *krm.PublisherModelObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskExecutorDetailObservedState{}
-	out.ContainerDetail = PipelineTaskExecutorDetail_ContainerDetail_FromProto(mapCtx, in.GetContainerDetail())
-	out.CustomJobDetail = PipelineTaskExecutorDetail_CustomJobDetail_FromProto(mapCtx, in.GetCustomJobDetail())
+	out := &krm.PublisherModelObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.VersionID = direct.LazyPtr(in.GetVersionId())
+	// MISSING: OpenSourceCategory
+	// MISSING: SupportedActions
+	// MISSING: Frameworks
+	// MISSING: LaunchStage
+	// MISSING: VersionState
+	out.PublisherModelTemplate = direct.LazyPtr(in.GetPublisherModelTemplate())
+	// MISSING: PredictSchemata
 	return out
 }
-func PipelineTaskExecutorDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetailObservedState) *pb.PipelineTaskExecutorDetail {
+func PublisherModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModelObservedState) *pb.PublisherModel {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskExecutorDetail{}
-	if oneof := PipelineTaskExecutorDetail_ContainerDetail_ToProto(mapCtx, in.ContainerDetail); oneof != nil {
-		out.Details = &pb.PipelineTaskExecutorDetail_ContainerDetail_{ContainerDetail: oneof}
-	}
-	if oneof := PipelineTaskExecutorDetail_CustomJobDetail_ToProto(mapCtx, in.CustomJobDetail); oneof != nil {
-		out.Details = &pb.PipelineTaskExecutorDetail_CustomJobDetail_{CustomJobDetail: oneof}
-	}
+	out := &pb.PublisherModel{}
+	out.Name = direct.ValueOf(in.Name)
+	out.VersionId = direct.ValueOf(in.VersionID)
+	// MISSING: OpenSourceCategory
+	// MISSING: SupportedActions
+	// MISSING: Frameworks
+	// MISSING: LaunchStage
+	// MISSING: VersionState
+	out.PublisherModelTemplate = direct.ValueOf(in.PublisherModelTemplate)
+	// MISSING: PredictSchemata
 	return out
 }
-func PipelineTaskExecutorDetail_ContainerDetail_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail_ContainerDetail) *krm.PipelineTaskExecutorDetail_ContainerDetail {
+func PublisherModel_CallToAction_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_CallToAction) *krm.PublisherModel_CallToAction {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskExecutorDetail_ContainerDetail{}
-	// MISSING: MainJob
-	// MISSING: PreCachingCheckJob
-	// MISSING: FailedMainJobs
-	// MISSING: FailedPreCachingCheckJobs
+	out := &krm.PublisherModel_CallToAction{}
+	out.ViewRestApi = PublisherModel_CallToAction_ViewRestApi_FromProto(mapCtx, in.GetViewRestApi())
+	out.OpenNotebook = PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx, in.GetOpenNotebook())
+	out.OpenNotebooks = PublisherModel_CallToAction_OpenNotebooks_FromProto(mapCtx, in.GetOpenNotebooks())
+	out.CreateApplication = PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx, in.GetCreateApplication())
+	out.OpenFineTuningPipeline = PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx, in.GetOpenFineTuningPipeline())
+	out.OpenFineTuningPipelines = PublisherModel_CallToAction_OpenFineTuningPipelines_FromProto(mapCtx, in.GetOpenFineTuningPipelines())
+	out.OpenPromptTuningPipeline = PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx, in.GetOpenPromptTuningPipeline())
+	out.OpenGenie = PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx, in.GetOpenGenie())
+	out.Deploy = PublisherModel_CallToAction_Deploy_FromProto(mapCtx, in.GetDeploy())
+	out.DeployGke = PublisherModel_CallToAction_DeployGke_FromProto(mapCtx, in.GetDeployGke())
+	out.OpenGenerationAiStudio = PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx, in.GetOpenGenerationAiStudio())
+	out.RequestAccess = PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx, in.GetRequestAccess())
+	out.OpenEvaluationPipeline = PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx, in.GetOpenEvaluationPipeline())
 	return out
 }
-func PipelineTaskExecutorDetail_ContainerDetail_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetail_ContainerDetail) *pb.PipelineTaskExecutorDetail_ContainerDetail {
+func PublisherModel_CallToAction_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_CallToAction) *pb.PublisherModel_CallToAction {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskExecutorDetail_ContainerDetail{}
-	// MISSING: MainJob
-	// MISSING: PreCachingCheckJob
-	// MISSING: FailedMainJobs
-	// MISSING: FailedPreCachingCheckJobs
+	out := &pb.PublisherModel_CallToAction{}
+	out.ViewRestApi = PublisherModel_CallToAction_ViewRestApi_ToProto(mapCtx, in.ViewRestApi)
+	out.OpenNotebook = PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx, in.OpenNotebook)
+	if oneof := PublisherModel_CallToAction_OpenNotebooks_ToProto(mapCtx, in.OpenNotebooks); oneof != nil {
+		out.OpenNotebooks = &pb.PublisherModel_CallToAction_OpenNotebooks_{OpenNotebooks: oneof}
+	}
+	out.CreateApplication = PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx, in.CreateApplication)
+	out.OpenFineTuningPipeline = PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx, in.OpenFineTuningPipeline)
+	if oneof := PublisherModel_CallToAction_OpenFineTuningPipelines_ToProto(mapCtx, in.OpenFineTuningPipelines); oneof != nil {
+		out.OpenFineTuningPipelines = &pb.PublisherModel_CallToAction_OpenFineTuningPipelines_{OpenFineTuningPipelines: oneof}
+	}
+	out.OpenPromptTuningPipeline = PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx, in.OpenPromptTuningPipeline)
+	out.OpenGenie = PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx, in.OpenGenie)
+	out.Deploy = PublisherModel_CallToAction_Deploy_ToProto(mapCtx, in.Deploy)
+	out.DeployGke = PublisherModel_CallToAction_DeployGke_ToProto(mapCtx, in.DeployGke)
+	out.OpenGenerationAiStudio = PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx, in.OpenGenerationAiStudio)
+	out.RequestAccess = PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx, in.RequestAccess)
+	out.OpenEvaluationPipeline = PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx, in.OpenEvaluationPipeline)
 	return out
 }
-func PipelineTaskExecutorDetail_ContainerDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail_ContainerDetail) *krm.PipelineTaskExecutorDetail_ContainerDetailObservedState {
+func PublisherModel_CallToAction_Deploy_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_CallToAction_Deploy) *krm.PublisherModel_CallToAction_Deploy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskExecutorDetail_ContainerDetailObservedState{}
-	out.MainJob = direct.LazyPtr(in.GetMainJob())
-	out.PreCachingCheckJob = direct.LazyPtr(in.GetPreCachingCheckJob())
-	out.FailedMainJobs = in.FailedMainJobs
-	out.FailedPreCachingCheckJobs = in.FailedPreCachingCheckJobs
+	out := &krm.PublisherModel_CallToAction_Deploy{}
+	out.DedicatedResources = DedicatedResources_FromProto(mapCtx, in.GetDedicatedResources())
+	out.AutomaticResources = AutomaticResources_FromProto(mapCtx, in.GetAutomaticResources())
+	out.SharedResources = direct.LazyPtr(in.GetSharedResources())
+	out.ModelDisplayName = direct.LazyPtr(in.GetModelDisplayName())
+	out.LargeModelReference = LargeModelReference_FromProto(mapCtx, in.GetLargeModelReference())
+	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
+	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
+	out.DeployTaskName = in.DeployTaskName
+	out.DeployMetadata = PublisherModel_CallToAction_Deploy_DeployMetadata_FromProto(mapCtx, in.GetDeployMetadata())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.PublicArtifactURI = direct.LazyPtr(in.GetPublicArtifactUri())
 	return out
 }
-func PipelineTaskExecutorDetail_ContainerDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetail_ContainerDetailObservedState) *pb.PipelineTaskExecutorDetail_ContainerDetail {
+func PublisherModel_CallToAction_Deploy_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_CallToAction_Deploy) *pb.PublisherModel_CallToAction_Deploy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskExecutorDetail_ContainerDetail{}
-	out.MainJob = direct.ValueOf(in.MainJob)
-	out.PreCachingCheckJob = direct.ValueOf(in.PreCachingCheckJob)
-	out.FailedMainJobs = in.FailedMainJobs
-	out.FailedPreCachingCheckJobs = in.FailedPreCachingCheckJobs
+	out := &pb.PublisherModel_CallToAction_Deploy{}
+	if oneof := DedicatedResources_ToProto(mapCtx, in.DedicatedResources); oneof != nil {
+		out.PredictionResources = &pb.PublisherModel_CallToAction_Deploy_DedicatedResources{DedicatedResources: oneof}
+	}
+	if oneof := AutomaticResources_ToProto(mapCtx, in.AutomaticResources); oneof != nil {
+		out.PredictionResources = &pb.PublisherModel_CallToAction_Deploy_AutomaticResources{AutomaticResources: oneof}
+	}
+	if oneof := PublisherModel_CallToAction_Deploy_SharedResources_ToProto(mapCtx, in.SharedResources); oneof != nil {
+		out.PredictionResources = oneof
+	}
+	out.ModelDisplayName = direct.ValueOf(in.ModelDisplayName)
+	out.LargeModelReference = LargeModelReference_ToProto(mapCtx, in.LargeModelReference)
+	out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
+	out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
+	out.DeployTaskName = in.DeployTaskName
+	if oneof := PublisherModel_CallToAction_Deploy_DeployMetadata_ToProto(mapCtx, in.DeployMetadata); oneof != nil {
+		out.DeployMetadata = &pb.PublisherModel_CallToAction_Deploy_DeployMetadata_{DeployMetadata: oneof}
+	}
+	out.Title = direct.ValueOf(in.Title)
+	out.PublicArtifactUri = direct.ValueOf(in.PublicArtifactURI)
 	return out
 }
-func PipelineTaskExecutorDetail_CustomJobDetail_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail_CustomJobDetail) *krm.PipelineTaskExecutorDetail_CustomJobDetail {
+func PublisherModel_CallToAction_DeployGke_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_CallToAction_DeployGke) *krm.PublisherModel_CallToAction_DeployGke {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskExecutorDetail_CustomJobDetail{}
-	// MISSING: Job
-	// MISSING: FailedJobs
+	out := &krm.PublisherModel_CallToAction_DeployGke{}
+	out.GkeYamlConfigs = in.GkeYamlConfigs
 	return out
 }
-func PipelineTaskExecutorDetail_CustomJobDetail_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetail_CustomJobDetail) *pb.PipelineTaskExecutorDetail_CustomJobDetail {
+func PublisherModel_CallToAction_DeployGke_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_CallToAction_DeployGke) *pb.PublisherModel_CallToAction_DeployGke {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskExecutorDetail_CustomJobDetail{}
-	// MISSING: Job
-	// MISSING: FailedJobs
+	out := &pb.PublisherModel_CallToAction_DeployGke{}
+	out.GkeYamlConfigs = in.GkeYamlConfigs
 	return out
 }
-func PipelineTaskExecutorDetail_CustomJobDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail_CustomJobDetail) *krm.PipelineTaskExecutorDetail_CustomJobDetailObservedState {
+func PublisherModel_CallToAction_OpenFineTuningPipelines_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_CallToAction_OpenFineTuningPipelines) *krm.PublisherModel_CallToAction_OpenFineTuningPipelines {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineTaskExecutorDetail_CustomJobDetailObservedState{}
-	out.Job = direct.LazyPtr(in.GetJob())
-	out.FailedJobs = in.FailedJobs
+	out := &krm.PublisherModel_CallToAction_OpenFineTuningPipelines{}
+	out.FineTuningPipelines = direct.Slice_FromProto(mapCtx, in.FineTuningPipelines, PublisherModel_CallToAction_RegionalResourceReferences_FromProto)
 	return out
 }
-func PipelineTaskExecutorDetail_CustomJobDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetail_CustomJobDetailObservedState) *pb.PipelineTaskExecutorDetail_CustomJobDetail {
+func PublisherModel_CallToAction_OpenFineTuningPipelines_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_CallToAction_OpenFineTuningPipelines) *pb.PublisherModel_CallToAction_OpenFineTuningPipelines {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PipelineTaskExecutorDetail_CustomJobDetail{}
-	out.Job = direct.ValueOf(in.Job)
-	out.FailedJobs = in.FailedJobs
+	out := &pb.PublisherModel_CallToAction_OpenFineTuningPipelines{}
+	out.FineTuningPipelines = direct.Slice_ToProto(mapCtx, in.FineTuningPipelines, PublisherModel_CallToAction_RegionalResourceReferences_ToProto)
 	return out
 }
-func Value_FromProto(mapCtx *direct.MapContext, in *pb.Value) *krm.Value {
+func PublisherModel_CallToAction_OpenNotebooks_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_CallToAction_OpenNotebooks) *krm.PublisherModel_CallToAction_OpenNotebooks {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Value{}
-	out.IntValue = direct.LazyPtr(in.GetIntValue())
-	out.DoubleValue = direct.LazyPtr(in.GetDoubleValue())
-	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out := &krm.PublisherModel_CallToAction_OpenNotebooks{}
+	out.Notebooks = direct.Slice_FromProto(mapCtx, in.Notebooks, PublisherModel_CallToAction_RegionalResourceReferences_FromProto)
 	return out
 }
-func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *pb.Value {
+func PublisherModel_CallToAction_OpenNotebooks_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_CallToAction_OpenNotebooks) *pb.PublisherModel_CallToAction_OpenNotebooks {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Value{}
-	if oneof := Value_IntValue_ToProto(mapCtx, in.IntValue); oneof != nil {
-		out.Value = oneof
+	out := &pb.PublisherModel_CallToAction_OpenNotebooks{}
+	out.Notebooks = direct.Slice_ToProto(mapCtx, in.Notebooks, PublisherModel_CallToAction_RegionalResourceReferences_ToProto)
+	return out
+}
+func PublisherModel_CallToAction_RegionalResourceReferences_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_CallToAction_RegionalResourceReferences) *krm.PublisherModel_CallToAction_RegionalResourceReferences {
+	if in == nil {
+		return nil
 	}
-	if oneof := Value_DoubleValue_ToProto(mapCtx, in.DoubleValue); oneof != nil {
-		out.Value = oneof
+	out := &krm.PublisherModel_CallToAction_RegionalResourceReferences{}
+	// MISSING: References
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.ResourceTitle = in.ResourceTitle
+	out.ResourceUseCase = in.ResourceUseCase
+	out.ResourceDescription = in.ResourceDescription
+	return out
+}
+func PublisherModel_CallToAction_RegionalResourceReferences_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_CallToAction_RegionalResourceReferences) *pb.PublisherModel_CallToAction_RegionalResourceReferences {
+	if in == nil {
+		return nil
 	}
-	if oneof := Value_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
-		out.Value = oneof
+	out := &pb.PublisherModel_CallToAction_RegionalResourceReferences{}
+	// MISSING: References
+	out.Title = direct.ValueOf(in.Title)
+	out.ResourceTitle = in.ResourceTitle
+	out.ResourceUseCase = in.ResourceUseCase
+	out.ResourceDescription = in.ResourceDescription
+	return out
+}
+func PublisherModel_CallToAction_ViewRestApi_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_CallToAction_ViewRestApi) *krm.PublisherModel_CallToAction_ViewRestApi {
+	if in == nil {
+		return nil
 	}
+	out := &krm.PublisherModel_CallToAction_ViewRestApi{}
+	out.Documentations = direct.Slice_FromProto(mapCtx, in.Documentations, PublisherModel_Documentation_FromProto)
+	out.Title = direct.LazyPtr(in.GetTitle())
+	return out
+}
+func PublisherModel_CallToAction_ViewRestApi_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_CallToAction_ViewRestApi) *pb.PublisherModel_CallToAction_ViewRestApi {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublisherModel_CallToAction_ViewRestApi{}
+	out.Documentations = direct.Slice_ToProto(mapCtx, in.Documentations, PublisherModel_Documentation_ToProto)
+	out.Title = direct.ValueOf(in.Title)
+	return out
+}
+func PublisherModel_Documentation_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_Documentation) *krm.PublisherModel_Documentation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PublisherModel_Documentation{}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Content = direct.LazyPtr(in.GetContent())
+	return out
+}
+func PublisherModel_Documentation_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_Documentation) *pb.PublisherModel_Documentation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublisherModel_Documentation{}
+	out.Title = direct.ValueOf(in.Title)
+	out.Content = direct.ValueOf(in.Content)
+	return out
+}
+func PublisherModel_ResourceReference_FromProto(mapCtx *direct.MapContext, in *pb.PublisherModel_ResourceReference) *krm.PublisherModel_ResourceReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PublisherModel_ResourceReference{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.ResourceName = direct.LazyPtr(in.GetResourceName())
+	out.UseCase = direct.LazyPtr(in.GetUseCase())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func PublisherModel_ResourceReference_ToProto(mapCtx *direct.MapContext, in *krm.PublisherModel_ResourceReference) *pb.PublisherModel_ResourceReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublisherModel_ResourceReference{}
+	if oneof := PublisherModel_ResourceReference_Uri_ToProto(mapCtx, in.URI); oneof != nil {
+		out.Reference = oneof
+	}
+	if oneof := PublisherModel_ResourceReference_ResourceName_ToProto(mapCtx, in.ResourceName); oneof != nil {
+		out.Reference = oneof
+	}
+	if oneof := PublisherModel_ResourceReference_UseCase_ToProto(mapCtx, in.UseCase); oneof != nil {
+		out.Reference = oneof
+	}
+	if oneof := PublisherModel_ResourceReference_Description_ToProto(mapCtx, in.Description); oneof != nil {
+		out.Reference = oneof
+	}
+	return out
+}
+func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_FromProto(mapCtx, in.GetReservationAffinityType())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Values = in.Values
+	return out
+}
+func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationAffinity) *pb.ReservationAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationAffinity{}
+	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
+	out.Key = direct.ValueOf(in.Key)
+	out.Values = in.Values
 	return out
 }
