@@ -15,10 +15,10 @@
 package binaryauthorization
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/binaryauthorization/apiv1/binaryauthorizationpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/binaryauthorization/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/binaryauthorization/apiv1beta1/binaryauthorizationpb"
 )
 func AdmissionRule_FromProto(mapCtx *direct.MapContext, in *pb.AdmissionRule) *krm.AdmissionRule {
 	if in == nil {
@@ -54,74 +54,6 @@ func AdmissionWhitelistPattern_ToProto(mapCtx *direct.MapContext, in *krm.Admiss
 	}
 	out := &pb.AdmissionWhitelistPattern{}
 	out.NamePattern = direct.ValueOf(in.NamePattern)
-	return out
-}
-func BinaryauthorizationPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.BinaryauthorizationPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BinaryauthorizationPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: GlobalPolicyEvaluationMode
-	// MISSING: AdmissionWhitelistPatterns
-	// MISSING: ClusterAdmissionRules
-	// MISSING: KubernetesNamespaceAdmissionRules
-	// MISSING: KubernetesServiceAccountAdmissionRules
-	// MISSING: IstioServiceIdentityAdmissionRules
-	// MISSING: DefaultAdmissionRule
-	// MISSING: UpdateTime
-	return out
-}
-func BinaryauthorizationPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BinaryauthorizationPolicyObservedState) *pb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Policy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: GlobalPolicyEvaluationMode
-	// MISSING: AdmissionWhitelistPatterns
-	// MISSING: ClusterAdmissionRules
-	// MISSING: KubernetesNamespaceAdmissionRules
-	// MISSING: KubernetesServiceAccountAdmissionRules
-	// MISSING: IstioServiceIdentityAdmissionRules
-	// MISSING: DefaultAdmissionRule
-	// MISSING: UpdateTime
-	return out
-}
-func BinaryauthorizationPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.BinaryauthorizationPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BinaryauthorizationPolicySpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: GlobalPolicyEvaluationMode
-	// MISSING: AdmissionWhitelistPatterns
-	// MISSING: ClusterAdmissionRules
-	// MISSING: KubernetesNamespaceAdmissionRules
-	// MISSING: KubernetesServiceAccountAdmissionRules
-	// MISSING: IstioServiceIdentityAdmissionRules
-	// MISSING: DefaultAdmissionRule
-	// MISSING: UpdateTime
-	return out
-}
-func BinaryauthorizationPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.BinaryauthorizationPolicySpec) *pb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Policy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: GlobalPolicyEvaluationMode
-	// MISSING: AdmissionWhitelistPatterns
-	// MISSING: ClusterAdmissionRules
-	// MISSING: KubernetesNamespaceAdmissionRules
-	// MISSING: KubernetesServiceAccountAdmissionRules
-	// MISSING: IstioServiceIdentityAdmissionRules
-	// MISSING: DefaultAdmissionRule
-	// MISSING: UpdateTime
 	return out
 }
 func Policy_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.Policy {
