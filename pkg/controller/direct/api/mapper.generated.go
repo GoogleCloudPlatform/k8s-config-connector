@@ -15,296 +15,96 @@
 package api
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/api/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/cloudquotas/apiv1/cloudquotaspb"
 )
-func ApiQuotaInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaInfo) *krm.ApiQuotaInfoObservedState {
+func ApiQuotaAdjusterSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaAdjusterSettings) *krm.ApiQuotaAdjusterSettingsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiQuotaInfoObservedState{}
+	out := &krm.ApiQuotaAdjusterSettingsObservedState{}
 	// MISSING: Name
-	// MISSING: QuotaID
-	// MISSING: Metric
-	// MISSING: Service
-	// MISSING: IsPrecise
-	// MISSING: RefreshInterval
-	// MISSING: ContainerType
-	// MISSING: Dimensions
-	// MISSING: MetricDisplayName
-	// MISSING: QuotaDisplayName
-	// MISSING: MetricUnit
-	// MISSING: QuotaIncreaseEligibility
-	// MISSING: IsFixed
-	// MISSING: DimensionsInfos
-	// MISSING: IsConcurrent
-	// MISSING: ServiceRequestQuotaURI
-	return out
-}
-func ApiQuotaInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaInfoObservedState) *pb.QuotaInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.QuotaInfo{}
-	// MISSING: Name
-	// MISSING: QuotaID
-	// MISSING: Metric
-	// MISSING: Service
-	// MISSING: IsPrecise
-	// MISSING: RefreshInterval
-	// MISSING: ContainerType
-	// MISSING: Dimensions
-	// MISSING: MetricDisplayName
-	// MISSING: QuotaDisplayName
-	// MISSING: MetricUnit
-	// MISSING: QuotaIncreaseEligibility
-	// MISSING: IsFixed
-	// MISSING: DimensionsInfos
-	// MISSING: IsConcurrent
-	// MISSING: ServiceRequestQuotaURI
-	return out
-}
-func ApiQuotaInfoSpec_FromProto(mapCtx *direct.MapContext, in *pb.QuotaInfo) *krm.ApiQuotaInfoSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiQuotaInfoSpec{}
-	// MISSING: Name
-	// MISSING: QuotaID
-	// MISSING: Metric
-	// MISSING: Service
-	// MISSING: IsPrecise
-	// MISSING: RefreshInterval
-	// MISSING: ContainerType
-	// MISSING: Dimensions
-	// MISSING: MetricDisplayName
-	// MISSING: QuotaDisplayName
-	// MISSING: MetricUnit
-	// MISSING: QuotaIncreaseEligibility
-	// MISSING: IsFixed
-	// MISSING: DimensionsInfos
-	// MISSING: IsConcurrent
-	// MISSING: ServiceRequestQuotaURI
-	return out
-}
-func ApiQuotaInfoSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaInfoSpec) *pb.QuotaInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.QuotaInfo{}
-	// MISSING: Name
-	// MISSING: QuotaID
-	// MISSING: Metric
-	// MISSING: Service
-	// MISSING: IsPrecise
-	// MISSING: RefreshInterval
-	// MISSING: ContainerType
-	// MISSING: Dimensions
-	// MISSING: MetricDisplayName
-	// MISSING: QuotaDisplayName
-	// MISSING: MetricUnit
-	// MISSING: QuotaIncreaseEligibility
-	// MISSING: IsFixed
-	// MISSING: DimensionsInfos
-	// MISSING: IsConcurrent
-	// MISSING: ServiceRequestQuotaURI
-	return out
-}
-func ApiQuotaPreferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaPreference) *krm.ApiQuotaPreferenceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiQuotaPreferenceObservedState{}
-	// MISSING: Name
-	// MISSING: Dimensions
-	// MISSING: QuotaConfig
-	// MISSING: Etag
-	// MISSING: CreateTime
+	// MISSING: Enablement
 	// MISSING: UpdateTime
-	// MISSING: Service
-	// MISSING: QuotaID
-	// MISSING: Reconciling
-	// MISSING: Justification
-	// MISSING: ContactEmail
-	return out
-}
-func ApiQuotaPreferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaPreferenceObservedState) *pb.QuotaPreference {
-	if in == nil {
-		return nil
-	}
-	out := &pb.QuotaPreference{}
-	// MISSING: Name
-	// MISSING: Dimensions
-	// MISSING: QuotaConfig
 	// MISSING: Etag
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Service
-	// MISSING: QuotaID
-	// MISSING: Reconciling
-	// MISSING: Justification
-	// MISSING: ContactEmail
 	return out
 }
-func ApiQuotaPreferenceSpec_FromProto(mapCtx *direct.MapContext, in *pb.QuotaPreference) *krm.ApiQuotaPreferenceSpec {
+func ApiQuotaAdjusterSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaAdjusterSettingsObservedState) *pb.QuotaAdjusterSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApiQuotaPreferenceSpec{}
+	out := &pb.QuotaAdjusterSettings{}
 	// MISSING: Name
-	// MISSING: Dimensions
-	// MISSING: QuotaConfig
-	// MISSING: Etag
-	// MISSING: CreateTime
+	// MISSING: Enablement
 	// MISSING: UpdateTime
-	// MISSING: Service
-	// MISSING: QuotaID
-	// MISSING: Reconciling
-	// MISSING: Justification
-	// MISSING: ContactEmail
+	// MISSING: Etag
 	return out
 }
-func ApiQuotaPreferenceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaPreferenceSpec) *pb.QuotaPreference {
+func ApiQuotaAdjusterSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.QuotaAdjusterSettings) *krm.ApiQuotaAdjusterSettingsSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.QuotaPreference{}
+	out := &krm.ApiQuotaAdjusterSettingsSpec{}
 	// MISSING: Name
-	// MISSING: Dimensions
-	// MISSING: QuotaConfig
-	// MISSING: Etag
-	// MISSING: CreateTime
+	// MISSING: Enablement
 	// MISSING: UpdateTime
-	// MISSING: Service
-	// MISSING: QuotaID
-	// MISSING: Reconciling
-	// MISSING: Justification
-	// MISSING: ContactEmail
+	// MISSING: Etag
 	return out
 }
-func QuotaConfig_FromProto(mapCtx *direct.MapContext, in *pb.QuotaConfig) *krm.QuotaConfig {
+func ApiQuotaAdjusterSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaAdjusterSettingsSpec) *pb.QuotaAdjusterSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.QuotaConfig{}
-	out.PreferredValue = direct.LazyPtr(in.GetPreferredValue())
-	// MISSING: StateDetail
-	// MISSING: GrantedValue
-	// MISSING: TraceID
-	out.Annotations = in.Annotations
-	// MISSING: RequestOrigin
+	out := &pb.QuotaAdjusterSettings{}
+	// MISSING: Name
+	// MISSING: Enablement
+	// MISSING: UpdateTime
+	// MISSING: Etag
 	return out
 }
-func QuotaConfig_ToProto(mapCtx *direct.MapContext, in *krm.QuotaConfig) *pb.QuotaConfig {
+func QuotaAdjusterSettings_FromProto(mapCtx *direct.MapContext, in *pb.QuotaAdjusterSettings) *krm.QuotaAdjusterSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.QuotaConfig{}
-	out.PreferredValue = direct.ValueOf(in.PreferredValue)
-	// MISSING: StateDetail
-	// MISSING: GrantedValue
-	// MISSING: TraceID
-	out.Annotations = in.Annotations
-	// MISSING: RequestOrigin
-	return out
-}
-func QuotaConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaConfig) *krm.QuotaConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.QuotaConfigObservedState{}
-	// MISSING: PreferredValue
-	out.StateDetail = direct.LazyPtr(in.GetStateDetail())
-	out.GrantedValue = direct.Int64Value_FromProto(mapCtx, in.GetGrantedValue())
-	out.TraceID = direct.LazyPtr(in.GetTraceId())
-	// MISSING: Annotations
-	out.RequestOrigin = direct.Enum_FromProto(mapCtx, in.GetRequestOrigin())
-	return out
-}
-func QuotaConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QuotaConfigObservedState) *pb.QuotaConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.QuotaConfig{}
-	// MISSING: PreferredValue
-	out.StateDetail = direct.ValueOf(in.StateDetail)
-	out.GrantedValue = direct.Int64Value_ToProto(mapCtx, in.GrantedValue)
-	out.TraceId = direct.ValueOf(in.TraceID)
-	// MISSING: Annotations
-	out.RequestOrigin = direct.Enum_ToProto[pb.QuotaConfig_Origin](mapCtx, in.RequestOrigin)
-	return out
-}
-func QuotaPreference_FromProto(mapCtx *direct.MapContext, in *pb.QuotaPreference) *krm.QuotaPreference {
-	if in == nil {
-		return nil
-	}
-	out := &krm.QuotaPreference{}
+	out := &krm.QuotaAdjusterSettings{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Dimensions = in.Dimensions
-	out.QuotaConfig = QuotaConfig_FromProto(mapCtx, in.GetQuotaConfig())
+	out.Enablement = direct.Enum_FromProto(mapCtx, in.GetEnablement())
+	// MISSING: UpdateTime
 	out.Etag = direct.LazyPtr(in.GetEtag())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Service = direct.LazyPtr(in.GetService())
-	out.QuotaID = direct.LazyPtr(in.GetQuotaId())
-	// MISSING: Reconciling
-	out.Justification = direct.LazyPtr(in.GetJustification())
-	out.ContactEmail = direct.LazyPtr(in.GetContactEmail())
 	return out
 }
-func QuotaPreference_ToProto(mapCtx *direct.MapContext, in *krm.QuotaPreference) *pb.QuotaPreference {
+func QuotaAdjusterSettings_ToProto(mapCtx *direct.MapContext, in *krm.QuotaAdjusterSettings) *pb.QuotaAdjusterSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.QuotaPreference{}
+	out := &pb.QuotaAdjusterSettings{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Dimensions = in.Dimensions
-	out.QuotaConfig = QuotaConfig_ToProto(mapCtx, in.QuotaConfig)
-	out.Etag = direct.ValueOf(in.Etag)
-	// MISSING: CreateTime
+	out.Enablement = direct.Enum_ToProto[pb.QuotaAdjusterSettings_Enablement](mapCtx, in.Enablement)
 	// MISSING: UpdateTime
-	out.Service = direct.ValueOf(in.Service)
-	out.QuotaId = direct.ValueOf(in.QuotaID)
-	// MISSING: Reconciling
-	out.Justification = direct.ValueOf(in.Justification)
-	out.ContactEmail = direct.ValueOf(in.ContactEmail)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
-func QuotaPreferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaPreference) *krm.QuotaPreferenceObservedState {
+func QuotaAdjusterSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaAdjusterSettings) *krm.QuotaAdjusterSettingsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.QuotaPreferenceObservedState{}
+	out := &krm.QuotaAdjusterSettingsObservedState{}
 	// MISSING: Name
-	// MISSING: Dimensions
-	out.QuotaConfig = QuotaConfigObservedState_FromProto(mapCtx, in.GetQuotaConfig())
-	// MISSING: Etag
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: Enablement
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Service
-	// MISSING: QuotaID
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	// MISSING: Justification
-	// MISSING: ContactEmail
+	// MISSING: Etag
 	return out
 }
-func QuotaPreferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QuotaPreferenceObservedState) *pb.QuotaPreference {
+func QuotaAdjusterSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QuotaAdjusterSettingsObservedState) *pb.QuotaAdjusterSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.QuotaPreference{}
+	out := &pb.QuotaAdjusterSettings{}
 	// MISSING: Name
-	// MISSING: Dimensions
-	out.QuotaConfig = QuotaConfigObservedState_ToProto(mapCtx, in.QuotaConfig)
-	// MISSING: Etag
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: Enablement
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Service
-	// MISSING: QuotaID
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	// MISSING: Justification
-	// MISSING: ContactEmail
+	// MISSING: Etag
 	return out
 }
