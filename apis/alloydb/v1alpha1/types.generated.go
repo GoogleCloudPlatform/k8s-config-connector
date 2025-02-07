@@ -15,62 +15,62 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.alloydb.v1.SupportedDatabaseFlag
+// +kcc:proto=google.cloud.alloydb.v1beta.SupportedDatabaseFlag
 type SupportedDatabaseFlag struct {
 	// Restriction on STRING type value.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.string_restrictions
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.string_restrictions
 	StringRestrictions *SupportedDatabaseFlag_StringRestrictions `json:"stringRestrictions,omitempty"`
 
 	// Restriction on INTEGER type value.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.integer_restrictions
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.integer_restrictions
 	IntegerRestrictions *SupportedDatabaseFlag_IntegerRestrictions `json:"integerRestrictions,omitempty"`
 
 	// The name of the flag resource, following Google Cloud conventions, e.g.:
 	//   * projects/{project}/locations/{location}/flags/{flag}
 	//  This field currently has no semantic meaning.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.name
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.name
 	Name *string `json:"name,omitempty"`
 
 	// The name of the database flag, e.g. "max_allowed_packets".
 	//  The is a possibly key for the Instance.database_flags map field.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.flag_name
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.flag_name
 	FlagName *string `json:"flagName,omitempty"`
 
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.value_type
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.value_type
 	ValueType *string `json:"valueType,omitempty"`
 
 	// Whether the database flag accepts multiple values. If true,
 	//  a comma-separated list of stringified values may be specified.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.accepts_multiple_values
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.accepts_multiple_values
 	AcceptsMultipleValues *bool `json:"acceptsMultipleValues,omitempty"`
 
 	// Major database engine versions for which this flag is supported.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.supported_db_versions
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.supported_db_versions
 	SupportedDbVersions []string `json:"supportedDbVersions,omitempty"`
 
 	// Whether setting or updating this flag on an Instance requires a database
 	//  restart. If a flag that requires database restart is set, the backend
 	//  will automatically restart the database (making sure to satisfy any
 	//  availability SLO's).
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.requires_db_restart
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.requires_db_restart
 	RequiresDbRestart *bool `json:"requiresDbRestart,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1.SupportedDatabaseFlag.IntegerRestrictions
+// +kcc:proto=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions
 type SupportedDatabaseFlag_IntegerRestrictions struct {
 	// The minimum value that can be specified, if applicable.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.IntegerRestrictions.min_value
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions.min_value
 	MinValue *int64 `json:"minValue,omitempty"`
 
 	// The maximum value that can be specified, if applicable.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.IntegerRestrictions.max_value
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions.max_value
 	MaxValue *int64 `json:"maxValue,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1.SupportedDatabaseFlag.StringRestrictions
+// +kcc:proto=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.StringRestrictions
 type SupportedDatabaseFlag_StringRestrictions struct {
 	// The list of allowed values, if bounded. This field will be empty
 	//  if there is a unbounded number of allowed values.
-	// +kcc:proto:field=google.cloud.alloydb.v1.SupportedDatabaseFlag.StringRestrictions.allowed_values
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.SupportedDatabaseFlag.StringRestrictions.allowed_values
 	AllowedValues []string `json:"allowedValues,omitempty"`
 }
