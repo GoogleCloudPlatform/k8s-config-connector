@@ -15,158 +15,142 @@
 package v1alpha1
 
 
-// +kcc:proto=google.api.apikeys.v2.AndroidApplication
-type AndroidApplication struct {
-	// The SHA1 fingerprint of the application. For example, both sha1 formats are
-	//  acceptable : DA:39:A3:EE:5E:6B:4B:0D:32:55:BF:EF:95:60:18:90:AF:D8:07:09 or
-	//  DA39A3EE5E6B4B0D3255BFEF95601890AFD80709.
-	//  Output format is the latter.
-	// +kcc:proto:field=google.api.apikeys.v2.AndroidApplication.sha1_fingerprint
-	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
+// +kcc:proto=google.api.cloudquotas.v1.DimensionsInfo
+type DimensionsInfo struct {
+	// The map of dimensions for this dimensions info. The key of a map entry
+	//  is "region", "zone" or the name of a service specific dimension, and the
+	//  value of a map entry is the value of the dimension.  If a dimension does
+	//  not appear in the map of dimensions, the dimensions info applies to all
+	//  the dimension values except for those that have another DimenisonInfo
+	//  instance configured for the specific value.
+	//  Example: {"provider" : "Foo Inc"} where "provider" is a service specific
+	//  dimension of a quota.
+	// +kcc:proto:field=google.api.cloudquotas.v1.DimensionsInfo.dimensions
+	Dimensions map[string]string `json:"dimensions,omitempty"`
 
-	// The package name of the application.
-	// +kcc:proto:field=google.api.apikeys.v2.AndroidApplication.package_name
-	PackageName *string `json:"packageName,omitempty"`
+	// Quota details for the specified dimensions.
+	// +kcc:proto:field=google.api.cloudquotas.v1.DimensionsInfo.details
+	Details *QuotaDetails `json:"details,omitempty"`
+
+	// The applicable regions or zones of this dimensions info. The field will be
+	//  set to ['global'] for quotas that are not per region or per zone.
+	//  Otherwise, it will be set to the list of locations this dimension info is
+	//  applicable to.
+	// +kcc:proto:field=google.api.cloudquotas.v1.DimensionsInfo.applicable_locations
+	ApplicableLocations []string `json:"applicableLocations,omitempty"`
 }
 
-// +kcc:proto=google.api.apikeys.v2.AndroidKeyRestrictions
-type AndroidKeyRestrictions struct {
-	// A list of Android applications that are allowed to make API calls with
-	//  this key.
-	// +kcc:proto:field=google.api.apikeys.v2.AndroidKeyRestrictions.allowed_applications
-	AllowedApplications []AndroidApplication `json:"allowedApplications,omitempty"`
+// +kcc:proto=google.api.cloudquotas.v1.QuotaDetails
+type QuotaDetails struct {
+	// The value currently in effect and being enforced.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaDetails.value
+	Value *int64 `json:"value,omitempty"`
+
+	// Rollout information of this quota.
+	//  This field is present only if the effective limit will change due to the
+	//  ongoing rollout of the service config.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaDetails.rollout_info
+	RolloutInfo *RolloutInfo `json:"rolloutInfo,omitempty"`
 }
 
-// +kcc:proto=google.api.apikeys.v2.ApiTarget
-type ApiTarget struct {
-	// The service for this restriction. It should be the canonical
-	//  service name, for example: `translate.googleapis.com`.
-	//  You can use [`gcloud services list`](/sdk/gcloud/reference/services/list)
-	//  to get a list of services that are enabled in the project.
-	// +kcc:proto:field=google.api.apikeys.v2.ApiTarget.service
-	Service *string `json:"service,omitempty"`
+// +kcc:proto=google.api.cloudquotas.v1.QuotaIncreaseEligibility
+type QuotaIncreaseEligibility struct {
+	// Whether a higher quota value can be requested for the quota.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaIncreaseEligibility.is_eligible
+	IsEligible *bool `json:"isEligible,omitempty"`
 
-	// Optional. List of one or more methods that can be called.
-	//  If empty, all methods for the service are allowed. A wildcard
-	//  (*) can be used as the last symbol.
-	//  Valid examples:
-	//    `google.cloud.translate.v2.TranslateService.GetSupportedLanguage`
-	//    `TranslateText`
-	//    `Get*`
-	//    `translate.googleapis.com.Get*`
-	// +kcc:proto:field=google.api.apikeys.v2.ApiTarget.methods
-	Methods []string `json:"methods,omitempty"`
+	// The reason of why it is ineligible to request increased value of the quota.
+	//  If the is_eligible field is true, it defaults to
+	//  INELIGIBILITY_REASON_UNSPECIFIED.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaIncreaseEligibility.ineligibility_reason
+	IneligibilityReason *string `json:"ineligibilityReason,omitempty"`
 }
 
-// +kcc:proto=google.api.apikeys.v2.BrowserKeyRestrictions
-type BrowserKeyRestrictions struct {
-	// A list of regular expressions for the referrer URLs that are allowed
-	//  to make API calls with this key.
-	// +kcc:proto:field=google.api.apikeys.v2.BrowserKeyRestrictions.allowed_referrers
-	AllowedReferrers []string `json:"allowedReferrers,omitempty"`
-}
-
-// +kcc:proto=google.api.apikeys.v2.IosKeyRestrictions
-type IosKeyRestrictions struct {
-	// A list of bundle IDs that are allowed when making API calls with this key.
-	// +kcc:proto:field=google.api.apikeys.v2.IosKeyRestrictions.allowed_bundle_ids
-	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
-}
-
-// +kcc:proto=google.api.apikeys.v2.Key
-type Key struct {
-
-	// Human-readable display name of this key that you can modify.
-	//  The maximum length is 63 characters.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Annotations is an unstructured key-value map stored with a policy that
-	//  may be set by external tools to store and retrieve arbitrary metadata.
-	//  They are not queryable and should be preserved when modifying objects.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.annotations
-	Annotations map[string]string `json:"annotations,omitempty"`
-
-	// Key restrictions.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.restrictions
-	Restrictions *Restrictions `json:"restrictions,omitempty"`
-}
-
-// +kcc:proto=google.api.apikeys.v2.Restrictions
-type Restrictions struct {
-	// The HTTP referrers (websites) that are allowed to use the key.
-	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.browser_key_restrictions
-	BrowserKeyRestrictions *BrowserKeyRestrictions `json:"browserKeyRestrictions,omitempty"`
-
-	// The IP addresses of callers that are allowed to use the key.
-	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.server_key_restrictions
-	ServerKeyRestrictions *ServerKeyRestrictions `json:"serverKeyRestrictions,omitempty"`
-
-	// The Android apps that are allowed to use the key.
-	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.android_key_restrictions
-	AndroidKeyRestrictions *AndroidKeyRestrictions `json:"androidKeyRestrictions,omitempty"`
-
-	// The iOS apps that are allowed to use the key.
-	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.ios_key_restrictions
-	IosKeyRestrictions *IosKeyRestrictions `json:"iosKeyRestrictions,omitempty"`
-
-	// A restriction for a specific service and optionally one or
-	//  more specific methods. Requests are allowed if they
-	//  match any of these restrictions. If no restrictions are
-	//  specified, all targets are allowed.
-	// +kcc:proto:field=google.api.apikeys.v2.Restrictions.api_targets
-	ApiTargets []ApiTarget `json:"apiTargets,omitempty"`
-}
-
-// +kcc:proto=google.api.apikeys.v2.ServerKeyRestrictions
-type ServerKeyRestrictions struct {
-	// A list of the caller IP addresses that are allowed to make API calls
-	//  with this key.
-	// +kcc:proto:field=google.api.apikeys.v2.ServerKeyRestrictions.allowed_ips
-	AllowedIps []string `json:"allowedIps,omitempty"`
-}
-
-// +kcc:proto=google.api.apikeys.v2.Key
-type KeyObservedState struct {
-	// Output only. The resource name of the key.
-	//  The `name` has the form:
-	//  `projects/<PROJECT_NUMBER>/locations/global/keys/<KEY_ID>`.
-	//  For example:
-	//  `projects/123456867718/locations/global/keys/b7ff1f9f-8275-410a-94dd-3855ee9b5dd2`
-	//
-	//  NOTE: Key is a global resource; hence the only supported value for
-	//  location is `global`.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.name
+// +kcc:proto=google.api.cloudquotas.v1.QuotaInfo
+type QuotaInfo struct {
+	// Resource name of this QuotaInfo.
+	//  The ID component following "locations/" must be "global".
+	//  Example:
+	//  `projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion`
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. Unique id in UUID4 format.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.uid
-	Uid *string `json:"uid,omitempty"`
+	// The id of the quota, which is unquie within the service.
+	//  Example: `CpusPerProjectPerRegion`
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.quota_id
+	QuotaID *string `json:"quotaID,omitempty"`
 
-	// Output only. An encrypted and signed value held by this key.
-	//  This field can be accessed only through the `GetKeyString` method.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.key_string
-	KeyString *string `json:"keyString,omitempty"`
+	// The metric of the quota. It specifies the resources consumption the quota
+	//  is defined for.
+	//  Example: `compute.googleapis.com/cpus`
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.metric
+	Metric *string `json:"metric,omitempty"`
 
-	// Output only. A timestamp identifying the time this key was originally
-	//  created.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.create_time
-	CreateTime *string `json:"createTime,omitempty"`
+	// The name of the service in which the quota is defined.
+	//  Example: `compute.googleapis.com`
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.service
+	Service *string `json:"service,omitempty"`
 
-	// Output only. A timestamp identifying the time this key was last
-	//  updated.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
+	// Whether this is a precise quota. A precise quota is tracked with absolute
+	//  precision. In contrast, an imprecise quota is not tracked with precision.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.is_precise
+	IsPrecise *bool `json:"isPrecise,omitempty"`
 
-	// Output only. A timestamp when this key was deleted. If the resource is not
-	//  deleted, this must be empty.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.delete_time
-	DeleteTime *string `json:"deleteTime,omitempty"`
+	// The reset time interval for the quota. Refresh interval applies to rate
+	//  quota only.
+	//  Example: "minute" for per minute, "day" for per day, or "10 seconds" for
+	//  every 10 seconds.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.refresh_interval
+	RefreshInterval *string `json:"refreshInterval,omitempty"`
 
-	// Output only. A checksum computed by the server based on the current value
-	//  of the Key resource. This may be sent on update and delete requests to
-	//  ensure the client has an up-to-date value before proceeding. See
-	//  https://google.aip.dev/154.
-	// +kcc:proto:field=google.api.apikeys.v2.Key.etag
-	Etag *string `json:"etag,omitempty"`
+	// The container type of the QuotaInfo.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.container_type
+	ContainerType *string `json:"containerType,omitempty"`
+
+	// The dimensions the quota is defined on.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.dimensions
+	Dimensions []string `json:"dimensions,omitempty"`
+
+	// The display name of the quota metric
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.metric_display_name
+	MetricDisplayName *string `json:"metricDisplayName,omitempty"`
+
+	// The display name of the quota.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.quota_display_name
+	QuotaDisplayName *string `json:"quotaDisplayName,omitempty"`
+
+	// The unit in which the metric value is reported, e.g., "MByte".
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.metric_unit
+	MetricUnit *string `json:"metricUnit,omitempty"`
+
+	// Whether it is eligible to request a higher quota value for this quota.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.quota_increase_eligibility
+	QuotaIncreaseEligibility *QuotaIncreaseEligibility `json:"quotaIncreaseEligibility,omitempty"`
+
+	// Whether the quota value is fixed or adjustable
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.is_fixed
+	IsFixed *bool `json:"isFixed,omitempty"`
+
+	// The collection of dimensions info ordered by their dimensions from more
+	//  specific ones to less specific ones.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.dimensions_infos
+	DimensionsInfos []DimensionsInfo `json:"dimensionsInfos,omitempty"`
+
+	// Whether the quota is a concurrent quota. Concurrent quotas are enforced
+	//  on the total number of concurrent operations in flight at any given time.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.is_concurrent
+	IsConcurrent *bool `json:"isConcurrent,omitempty"`
+
+	// URI to the page where users can request more quota for the cloud
+	//  service—for example,
+	//  https://console.cloud.google.com/iam-admin/quotas.
+	// +kcc:proto:field=google.api.cloudquotas.v1.QuotaInfo.service_request_quota_uri
+	ServiceRequestQuotaURI *string `json:"serviceRequestQuotaURI,omitempty"`
+}
+
+// +kcc:proto=google.api.cloudquotas.v1.RolloutInfo
+type RolloutInfo struct {
+	// Whether there is an ongoing rollout for a quota or not.
+	// +kcc:proto:field=google.api.cloudquotas.v1.RolloutInfo.ongoing_rollout
+	OngoingRollout *bool `json:"ongoingRollout,omitempty"`
 }

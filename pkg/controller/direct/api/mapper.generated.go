@@ -16,356 +16,217 @@ package api
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apikeys/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "cloud.google.com/go/cloudquotas/apiv1/cloudquotaspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/api/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func APIKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krm.APIKeyObservedState {
+func ApiQuotaInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaInfo) *krm.ApiQuotaInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.APIKeyObservedState{}
+	out := &krm.ApiQuotaInfoObservedState{}
 	// MISSING: Name
-	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Annotations
-	// MISSING: Etag
+	// MISSING: QuotaID
+	// MISSING: Metric
+	// MISSING: Service
+	// MISSING: IsPrecise
+	// MISSING: RefreshInterval
+	// MISSING: ContainerType
+	// MISSING: Dimensions
+	// MISSING: MetricDisplayName
+	// MISSING: QuotaDisplayName
+	// MISSING: MetricUnit
+	// MISSING: QuotaIncreaseEligibility
+	// MISSING: IsFixed
+	// MISSING: DimensionsInfos
+	// MISSING: IsConcurrent
+	// MISSING: ServiceRequestQuotaURI
 	return out
 }
-func APIKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIKeyObservedState) *pb.Key {
+func ApiQuotaInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaInfoObservedState) *pb.QuotaInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Key{}
+	out := &pb.QuotaInfo{}
 	// MISSING: Name
-	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Annotations
-	// MISSING: Etag
+	// MISSING: QuotaID
+	// MISSING: Metric
+	// MISSING: Service
+	// MISSING: IsPrecise
+	// MISSING: RefreshInterval
+	// MISSING: ContainerType
+	// MISSING: Dimensions
+	// MISSING: MetricDisplayName
+	// MISSING: QuotaDisplayName
+	// MISSING: MetricUnit
+	// MISSING: QuotaIncreaseEligibility
+	// MISSING: IsFixed
+	// MISSING: DimensionsInfos
+	// MISSING: IsConcurrent
+	// MISSING: ServiceRequestQuotaURI
 	return out
 }
-func APIKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krm.APIKeySpec {
+func ApiQuotaInfoSpec_FromProto(mapCtx *direct.MapContext, in *pb.QuotaInfo) *krm.ApiQuotaInfoSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.APIKeySpec{}
+	out := &krm.ApiQuotaInfoSpec{}
 	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Annotations
-	out.Restrictions = Restrictions_FromProto(mapCtx, in.GetRestrictions())
-	// MISSING: Etag
+	// MISSING: QuotaID
+	// MISSING: Metric
+	// MISSING: Service
+	// MISSING: IsPrecise
+	// MISSING: RefreshInterval
+	// MISSING: ContainerType
+	// MISSING: Dimensions
+	// MISSING: MetricDisplayName
+	// MISSING: QuotaDisplayName
+	// MISSING: MetricUnit
+	// MISSING: QuotaIncreaseEligibility
+	// MISSING: IsFixed
+	// MISSING: DimensionsInfos
+	// MISSING: IsConcurrent
+	// MISSING: ServiceRequestQuotaURI
 	return out
 }
-func APIKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.APIKeySpec) *pb.Key {
+func ApiQuotaInfoSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiQuotaInfoSpec) *pb.QuotaInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Key{}
+	out := &pb.QuotaInfo{}
 	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Annotations
-	out.Restrictions = Restrictions_ToProto(mapCtx, in.Restrictions)
-	// MISSING: Etag
+	// MISSING: QuotaID
+	// MISSING: Metric
+	// MISSING: Service
+	// MISSING: IsPrecise
+	// MISSING: RefreshInterval
+	// MISSING: ContainerType
+	// MISSING: Dimensions
+	// MISSING: MetricDisplayName
+	// MISSING: QuotaDisplayName
+	// MISSING: MetricUnit
+	// MISSING: QuotaIncreaseEligibility
+	// MISSING: IsFixed
+	// MISSING: DimensionsInfos
+	// MISSING: IsConcurrent
+	// MISSING: ServiceRequestQuotaURI
 	return out
 }
-func AndroidApplication_FromProto(mapCtx *direct.MapContext, in *pb.AndroidApplication) *krm.AndroidApplication {
+func DimensionsInfo_FromProto(mapCtx *direct.MapContext, in *pb.DimensionsInfo) *krm.DimensionsInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AndroidApplication{}
-	out.Sha1Fingerprint = direct.LazyPtr(in.GetSha1Fingerprint())
-	out.PackageName = direct.LazyPtr(in.GetPackageName())
+	out := &krm.DimensionsInfo{}
+	out.Dimensions = in.Dimensions
+	out.Details = QuotaDetails_FromProto(mapCtx, in.GetDetails())
+	out.ApplicableLocations = in.ApplicableLocations
 	return out
 }
-func AndroidApplication_ToProto(mapCtx *direct.MapContext, in *krm.AndroidApplication) *pb.AndroidApplication {
+func DimensionsInfo_ToProto(mapCtx *direct.MapContext, in *krm.DimensionsInfo) *pb.DimensionsInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AndroidApplication{}
-	out.Sha1Fingerprint = direct.ValueOf(in.Sha1Fingerprint)
-	out.PackageName = direct.ValueOf(in.PackageName)
+	out := &pb.DimensionsInfo{}
+	out.Dimensions = in.Dimensions
+	out.Details = QuotaDetails_ToProto(mapCtx, in.Details)
+	out.ApplicableLocations = in.ApplicableLocations
 	return out
 }
-func AndroidKeyRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.AndroidKeyRestrictions) *krm.AndroidKeyRestrictions {
+func QuotaDetails_FromProto(mapCtx *direct.MapContext, in *pb.QuotaDetails) *krm.QuotaDetails {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AndroidKeyRestrictions{}
-	out.AllowedApplications = direct.Slice_FromProto(mapCtx, in.AllowedApplications, AndroidApplication_FromProto)
-	return out
-}
-func AndroidKeyRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.AndroidKeyRestrictions) *pb.AndroidKeyRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AndroidKeyRestrictions{}
-	out.AllowedApplications = direct.Slice_ToProto(mapCtx, in.AllowedApplications, AndroidApplication_ToProto)
-	return out
-}
-func ApiKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krm.ApiKeyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiKeyObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: DisplayName
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Annotations
-	// MISSING: Restrictions
-	// MISSING: Etag
-	return out
-}
-func ApiKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApiKeyObservedState) *pb.Key {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Key{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: DisplayName
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Annotations
-	// MISSING: Restrictions
-	// MISSING: Etag
-	return out
-}
-func ApiKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krm.ApiKeySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiKeySpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: DisplayName
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Annotations
-	// MISSING: Restrictions
-	// MISSING: Etag
-	return out
-}
-func ApiKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.ApiKeySpec) *pb.Key {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Key{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: DisplayName
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: Annotations
-	// MISSING: Restrictions
-	// MISSING: Etag
-	return out
-}
-func ApiTarget_FromProto(mapCtx *direct.MapContext, in *pb.ApiTarget) *krm.ApiTarget {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApiTarget{}
-	out.Service = direct.LazyPtr(in.GetService())
-	out.Methods = in.Methods
-	return out
-}
-func ApiTarget_ToProto(mapCtx *direct.MapContext, in *krm.ApiTarget) *pb.ApiTarget {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApiTarget{}
-	out.Service = direct.ValueOf(in.Service)
-	out.Methods = in.Methods
-	return out
-}
-func BrowserKeyRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.BrowserKeyRestrictions) *krm.BrowserKeyRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BrowserKeyRestrictions{}
-	out.AllowedReferrers = in.AllowedReferrers
-	return out
-}
-func BrowserKeyRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.BrowserKeyRestrictions) *pb.BrowserKeyRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BrowserKeyRestrictions{}
-	out.AllowedReferrers = in.AllowedReferrers
-	return out
-}
-func IosKeyRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.IosKeyRestrictions) *krm.IosKeyRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IosKeyRestrictions{}
-	out.AllowedBundleIds = in.AllowedBundleIds
-	return out
-}
-func IosKeyRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.IosKeyRestrictions) *pb.IosKeyRestrictions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IosKeyRestrictions{}
-	out.AllowedBundleIds = in.AllowedBundleIds
-	return out
-}
-func Key_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krm.Key {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Key{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	out.Annotations = in.Annotations
-	out.Restrictions = Restrictions_FromProto(mapCtx, in.GetRestrictions())
-	// MISSING: Etag
-	return out
-}
-func Key_ToProto(mapCtx *direct.MapContext, in *krm.Key) *pb.Key {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Key{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: KeyString
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	out.Annotations = in.Annotations
-	out.Restrictions = Restrictions_ToProto(mapCtx, in.Restrictions)
-	// MISSING: Etag
-	return out
-}
-func KeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krm.KeyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.KeyObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: DisplayName
-	out.KeyString = direct.LazyPtr(in.GetKeyString())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	// MISSING: Annotations
-	// MISSING: Restrictions
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
-func KeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KeyObservedState) *pb.Key {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Key{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: DisplayName
-	out.KeyString = direct.ValueOf(in.KeyString)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	// MISSING: Annotations
-	// MISSING: Restrictions
-	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
-func Key_AnnotationsEntry_FromProto(mapCtx *direct.MapContext, in *pb.Key_AnnotationsEntry) *krm.Key_AnnotationsEntry {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Key_AnnotationsEntry{}
-	out.Key = direct.LazyPtr(in.GetKey())
+	out := &krm.QuotaDetails{}
 	out.Value = direct.LazyPtr(in.GetValue())
+	out.RolloutInfo = RolloutInfo_FromProto(mapCtx, in.GetRolloutInfo())
 	return out
 }
-func Key_AnnotationsEntry_ToProto(mapCtx *direct.MapContext, in *krm.Key_AnnotationsEntry) *pb.Key_AnnotationsEntry {
+func QuotaDetails_ToProto(mapCtx *direct.MapContext, in *krm.QuotaDetails) *pb.QuotaDetails {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Key_AnnotationsEntry{}
-	out.Key = direct.ValueOf(in.Key)
+	out := &pb.QuotaDetails{}
 	out.Value = direct.ValueOf(in.Value)
+	out.RolloutInfo = RolloutInfo_ToProto(mapCtx, in.RolloutInfo)
 	return out
 }
-func Restrictions_FromProto(mapCtx *direct.MapContext, in *pb.Restrictions) *krm.Restrictions {
+func QuotaIncreaseEligibility_FromProto(mapCtx *direct.MapContext, in *pb.QuotaIncreaseEligibility) *krm.QuotaIncreaseEligibility {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Restrictions{}
-	out.BrowserKeyRestrictions = BrowserKeyRestrictions_FromProto(mapCtx, in.GetBrowserKeyRestrictions())
-	out.ServerKeyRestrictions = ServerKeyRestrictions_FromProto(mapCtx, in.GetServerKeyRestrictions())
-	out.AndroidKeyRestrictions = AndroidKeyRestrictions_FromProto(mapCtx, in.GetAndroidKeyRestrictions())
-	out.IosKeyRestrictions = IosKeyRestrictions_FromProto(mapCtx, in.GetIosKeyRestrictions())
-	out.ApiTargets = direct.Slice_FromProto(mapCtx, in.ApiTargets, ApiTarget_FromProto)
+	out := &krm.QuotaIncreaseEligibility{}
+	out.IsEligible = direct.LazyPtr(in.GetIsEligible())
+	out.IneligibilityReason = direct.Enum_FromProto(mapCtx, in.GetIneligibilityReason())
 	return out
 }
-func Restrictions_ToProto(mapCtx *direct.MapContext, in *krm.Restrictions) *pb.Restrictions {
+func QuotaIncreaseEligibility_ToProto(mapCtx *direct.MapContext, in *krm.QuotaIncreaseEligibility) *pb.QuotaIncreaseEligibility {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Restrictions{}
-	if oneof := BrowserKeyRestrictions_ToProto(mapCtx, in.BrowserKeyRestrictions); oneof != nil {
-		out.ClientRestrictions = &pb.Restrictions_BrowserKeyRestrictions{BrowserKeyRestrictions: oneof}
-	}
-	if oneof := ServerKeyRestrictions_ToProto(mapCtx, in.ServerKeyRestrictions); oneof != nil {
-		out.ClientRestrictions = &pb.Restrictions_ServerKeyRestrictions{ServerKeyRestrictions: oneof}
-	}
-	if oneof := AndroidKeyRestrictions_ToProto(mapCtx, in.AndroidKeyRestrictions); oneof != nil {
-		out.ClientRestrictions = &pb.Restrictions_AndroidKeyRestrictions{AndroidKeyRestrictions: oneof}
-	}
-	if oneof := IosKeyRestrictions_ToProto(mapCtx, in.IosKeyRestrictions); oneof != nil {
-		out.ClientRestrictions = &pb.Restrictions_IosKeyRestrictions{IosKeyRestrictions: oneof}
-	}
-	out.ApiTargets = direct.Slice_ToProto(mapCtx, in.ApiTargets, ApiTarget_ToProto)
+	out := &pb.QuotaIncreaseEligibility{}
+	out.IsEligible = direct.ValueOf(in.IsEligible)
+	out.IneligibilityReason = direct.Enum_ToProto[pb.QuotaIncreaseEligibility_IneligibilityReason](mapCtx, in.IneligibilityReason)
 	return out
 }
-func ServerKeyRestrictions_FromProto(mapCtx *direct.MapContext, in *pb.ServerKeyRestrictions) *krm.ServerKeyRestrictions {
+func QuotaInfo_FromProto(mapCtx *direct.MapContext, in *pb.QuotaInfo) *krm.QuotaInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ServerKeyRestrictions{}
-	out.AllowedIps = in.AllowedIps
+	out := &krm.QuotaInfo{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.QuotaID = direct.LazyPtr(in.GetQuotaId())
+	out.Metric = direct.LazyPtr(in.GetMetric())
+	out.Service = direct.LazyPtr(in.GetService())
+	out.IsPrecise = direct.LazyPtr(in.GetIsPrecise())
+	out.RefreshInterval = direct.LazyPtr(in.GetRefreshInterval())
+	out.ContainerType = direct.Enum_FromProto(mapCtx, in.GetContainerType())
+	out.Dimensions = in.Dimensions
+	out.MetricDisplayName = direct.LazyPtr(in.GetMetricDisplayName())
+	out.QuotaDisplayName = direct.LazyPtr(in.GetQuotaDisplayName())
+	out.MetricUnit = direct.LazyPtr(in.GetMetricUnit())
+	out.QuotaIncreaseEligibility = QuotaIncreaseEligibility_FromProto(mapCtx, in.GetQuotaIncreaseEligibility())
+	out.IsFixed = direct.LazyPtr(in.GetIsFixed())
+	out.DimensionsInfos = direct.Slice_FromProto(mapCtx, in.DimensionsInfos, DimensionsInfo_FromProto)
+	out.IsConcurrent = direct.LazyPtr(in.GetIsConcurrent())
+	out.ServiceRequestQuotaURI = direct.LazyPtr(in.GetServiceRequestQuotaUri())
 	return out
 }
-func ServerKeyRestrictions_ToProto(mapCtx *direct.MapContext, in *krm.ServerKeyRestrictions) *pb.ServerKeyRestrictions {
+func QuotaInfo_ToProto(mapCtx *direct.MapContext, in *krm.QuotaInfo) *pb.QuotaInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ServerKeyRestrictions{}
-	out.AllowedIps = in.AllowedIps
+	out := &pb.QuotaInfo{}
+	out.Name = direct.ValueOf(in.Name)
+	out.QuotaId = direct.ValueOf(in.QuotaID)
+	out.Metric = direct.ValueOf(in.Metric)
+	out.Service = direct.ValueOf(in.Service)
+	out.IsPrecise = direct.ValueOf(in.IsPrecise)
+	out.RefreshInterval = direct.ValueOf(in.RefreshInterval)
+	out.ContainerType = direct.Enum_ToProto[pb.QuotaInfo_ContainerType](mapCtx, in.ContainerType)
+	out.Dimensions = in.Dimensions
+	out.MetricDisplayName = direct.ValueOf(in.MetricDisplayName)
+	out.QuotaDisplayName = direct.ValueOf(in.QuotaDisplayName)
+	out.MetricUnit = direct.ValueOf(in.MetricUnit)
+	out.QuotaIncreaseEligibility = QuotaIncreaseEligibility_ToProto(mapCtx, in.QuotaIncreaseEligibility)
+	out.IsFixed = direct.ValueOf(in.IsFixed)
+	out.DimensionsInfos = direct.Slice_ToProto(mapCtx, in.DimensionsInfos, DimensionsInfo_ToProto)
+	out.IsConcurrent = direct.ValueOf(in.IsConcurrent)
+	out.ServiceRequestQuotaUri = direct.ValueOf(in.ServiceRequestQuotaURI)
+	return out
+}
+func RolloutInfo_FromProto(mapCtx *direct.MapContext, in *pb.RolloutInfo) *krm.RolloutInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RolloutInfo{}
+	out.OngoingRollout = direct.LazyPtr(in.GetOngoingRollout())
+	return out
+}
+func RolloutInfo_ToProto(mapCtx *direct.MapContext, in *krm.RolloutInfo) *pb.RolloutInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutInfo{}
+	out.OngoingRollout = direct.ValueOf(in.OngoingRollout)
 	return out
 }
