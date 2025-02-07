@@ -33,6 +33,7 @@ import (
 	_ "pkg/controller/direct/bigquery"
 	_ "pkg/controller/direct/bigtable"
 	_ "pkg/controller/direct/billing"
+	_ "pkg/controller/direct/binaryauthorization"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
