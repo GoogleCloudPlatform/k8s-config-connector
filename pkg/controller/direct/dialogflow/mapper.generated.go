@@ -15,51 +15,11 @@
 package dialogflow
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 )
-func DialogflowFlowValidationResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FlowValidationResult) *krm.DialogflowFlowValidationResultObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowFlowValidationResultObservedState{}
-	// MISSING: Name
-	// MISSING: ValidationMessages
-	// MISSING: UpdateTime
-	return out
-}
-func DialogflowFlowValidationResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFlowValidationResultObservedState) *pb.FlowValidationResult {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FlowValidationResult{}
-	// MISSING: Name
-	// MISSING: ValidationMessages
-	// MISSING: UpdateTime
-	return out
-}
-func DialogflowFlowValidationResultSpec_FromProto(mapCtx *direct.MapContext, in *pb.FlowValidationResult) *krm.DialogflowFlowValidationResultSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowFlowValidationResultSpec{}
-	// MISSING: Name
-	// MISSING: ValidationMessages
-	// MISSING: UpdateTime
-	return out
-}
-func DialogflowFlowValidationResultSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFlowValidationResultSpec) *pb.FlowValidationResult {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FlowValidationResult{}
-	// MISSING: Name
-	// MISSING: ValidationMessages
-	// MISSING: UpdateTime
-	return out
-}
 func FlowValidationResult_FromProto(mapCtx *direct.MapContext, in *pb.FlowValidationResult) *krm.FlowValidationResult {
 	if in == nil {
 		return nil
