@@ -15,58 +15,58 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Query
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Query
 type Query struct {
 	// Plain text.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Query.text
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Query.text
 	Text *string `json:"text,omitempty"`
 
 	// Unique Id for the query.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Query.query_id
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Query.query_id
 	QueryID *string `json:"queryID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Session
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Session
 type Session struct {
 	// Immutable. Fully qualified name
 	//  `projects/{project}/locations/global/collections/{collection}/engines/{engine}/sessions/*`
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.name
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Session.name
 	Name *string `json:"name,omitempty"`
 
 	// The state of the session.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.state
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Session.state
 	State *string `json:"state,omitempty"`
 
 	// A unique identifier for tracking users.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.user_pseudo_id
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Session.user_pseudo_id
 	UserPseudoID *string `json:"userPseudoID,omitempty"`
 
 	// Turns.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.turns
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Session.turns
 	Turns []Session_Turn `json:"turns,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Session.Turn
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Session.Turn
 type Session_Turn struct {
 	// The user query.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.query
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Session.Turn.query
 	Query *Query `json:"query,omitempty"`
 
 	// The resource name of the answer to the user query.
 	//
 	//  Only set if the answer generation (/answer API call) happened in this
 	//  turn.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.Turn.answer
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Session.Turn.answer
 	Answer *string `json:"answer,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Session
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Session
 type SessionObservedState struct {
 	// Output only. The time the session started.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.start_time
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Session.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Output only. The time the session finished.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Session.end_time
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Session.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
