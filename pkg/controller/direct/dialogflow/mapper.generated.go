@@ -15,10 +15,10 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AdvancedSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings) *krm.AdvancedSettings {
 	if in == nil {
@@ -276,66 +276,6 @@ func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreCon
 	out.DataStore = direct.ValueOf(in.DataStore)
 	return out
 }
-func DialogflowTestCaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TestCase) *krm.DialogflowTestCaseObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowTestCaseObservedState{}
-	// MISSING: Name
-	// MISSING: Tags
-	// MISSING: DisplayName
-	// MISSING: Notes
-	// MISSING: TestConfig
-	// MISSING: TestCaseConversationTurns
-	// MISSING: CreationTime
-	// MISSING: LastTestResult
-	return out
-}
-func DialogflowTestCaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowTestCaseObservedState) *pb.TestCase {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TestCase{}
-	// MISSING: Name
-	// MISSING: Tags
-	// MISSING: DisplayName
-	// MISSING: Notes
-	// MISSING: TestConfig
-	// MISSING: TestCaseConversationTurns
-	// MISSING: CreationTime
-	// MISSING: LastTestResult
-	return out
-}
-func DialogflowTestCaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.TestCase) *krm.DialogflowTestCaseSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowTestCaseSpec{}
-	// MISSING: Name
-	// MISSING: Tags
-	// MISSING: DisplayName
-	// MISSING: Notes
-	// MISSING: TestConfig
-	// MISSING: TestCaseConversationTurns
-	// MISSING: CreationTime
-	// MISSING: LastTestResult
-	return out
-}
-func DialogflowTestCaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowTestCaseSpec) *pb.TestCase {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TestCase{}
-	// MISSING: Name
-	// MISSING: Tags
-	// MISSING: DisplayName
-	// MISSING: Notes
-	// MISSING: TestConfig
-	// MISSING: TestCaseConversationTurns
-	// MISSING: CreationTime
-	// MISSING: LastTestResult
-	return out
-}
 func DtmfInput_FromProto(mapCtx *direct.MapContext, in *pb.DtmfInput) *krm.DtmfInput {
 	if in == nil {
 		return nil
@@ -364,6 +304,7 @@ func EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm
 	out.TriggerFulfillment = Fulfillment_FromProto(mapCtx, in.GetTriggerFulfillment())
 	out.TargetPage = direct.LazyPtr(in.GetTargetPage())
 	out.TargetFlow = direct.LazyPtr(in.GetTargetFlow())
+	out.TargetPlaybook = direct.LazyPtr(in.GetTargetPlaybook())
 	return out
 }
 func EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.EventHandler) *pb.EventHandler {
@@ -380,6 +321,9 @@ func EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.EventHandler) *pb.E
 	if oneof := EventHandler_TargetFlow_ToProto(mapCtx, in.TargetFlow); oneof != nil {
 		out.Target = oneof
 	}
+	if oneof := EventHandler_TargetPlaybook_ToProto(mapCtx, in.TargetPlaybook); oneof != nil {
+		out.Target = oneof
+	}
 	return out
 }
 func EventHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm.EventHandlerObservedState {
@@ -392,6 +336,7 @@ func EventHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Event
 	// MISSING: TriggerFulfillment
 	// MISSING: TargetPage
 	// MISSING: TargetFlow
+	// MISSING: TargetPlaybook
 	return out
 }
 func EventHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventHandlerObservedState) *pb.EventHandler {
@@ -404,6 +349,7 @@ func EventHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventH
 	// MISSING: TriggerFulfillment
 	// MISSING: TargetPage
 	// MISSING: TargetFlow
+	// MISSING: TargetPlaybook
 	return out
 }
 func EventInput_FromProto(mapCtx *direct.MapContext, in *pb.EventInput) *krm.EventInput {
@@ -944,6 +890,7 @@ func QueryInput_FromProto(mapCtx *direct.MapContext, in *pb.QueryInput) *krm.Que
 	out.Audio = AudioInput_FromProto(mapCtx, in.GetAudio())
 	out.Event = EventInput_FromProto(mapCtx, in.GetEvent())
 	out.Dtmf = DtmfInput_FromProto(mapCtx, in.GetDtmf())
+	out.ToolCallResult = ToolCallResult_FromProto(mapCtx, in.GetToolCallResult())
 	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
 	return out
 }
@@ -967,6 +914,9 @@ func QueryInput_ToProto(mapCtx *direct.MapContext, in *krm.QueryInput) *pb.Query
 	if oneof := DtmfInput_ToProto(mapCtx, in.Dtmf); oneof != nil {
 		out.Input = &pb.QueryInput_Dtmf{Dtmf: oneof}
 	}
+	if oneof := ToolCallResult_ToProto(mapCtx, in.ToolCallResult); oneof != nil {
+		out.Input = &pb.QueryInput_ToolCallResult{ToolCallResult: oneof}
+	}
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
 	return out
 }
@@ -985,7 +935,7 @@ func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage
 	// MISSING: MixedAudio
 	out.TelephonyTransferCall = ResponseMessage_TelephonyTransferCall_FromProto(mapCtx, in.GetTelephonyTransferCall())
 	out.KnowledgeInfoCard = ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx, in.GetKnowledgeInfoCard())
-	out.ResponseType = direct.Enum_FromProto(mapCtx, in.GetResponseType())
+	out.ToolCall = ToolCall_FromProto(mapCtx, in.GetToolCall())
 	out.Channel = direct.LazyPtr(in.GetChannel())
 	return out
 }
@@ -1020,7 +970,9 @@ func ResponseMessage_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage)
 	if oneof := ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx, in.KnowledgeInfoCard); oneof != nil {
 		out.Message = &pb.ResponseMessage_KnowledgeInfoCard_{KnowledgeInfoCard: oneof}
 	}
-	out.ResponseType = direct.Enum_ToProto[pb.ResponseMessage_ResponseType](mapCtx, in.ResponseType)
+	if oneof := ToolCall_ToProto(mapCtx, in.ToolCall); oneof != nil {
+		out.Message = &pb.ResponseMessage_ToolCall{ToolCall: oneof}
+	}
 	out.Channel = direct.ValueOf(in.Channel)
 	return out
 }
@@ -1039,7 +991,7 @@ func ResponseMessageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Re
 	out.MixedAudio = ResponseMessage_MixedAudio_FromProto(mapCtx, in.GetMixedAudio())
 	// MISSING: TelephonyTransferCall
 	// MISSING: KnowledgeInfoCard
-	// MISSING: ResponseType
+	// MISSING: ToolCall
 	// MISSING: Channel
 	return out
 }
@@ -1068,7 +1020,7 @@ func ResponseMessageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Res
 	}
 	// MISSING: TelephonyTransferCall
 	// MISSING: KnowledgeInfoCard
-	// MISSING: ResponseType
+	// MISSING: ToolCall
 	// MISSING: Channel
 	return out
 }
@@ -1478,6 +1430,68 @@ func TextInput_ToProto(mapCtx *direct.MapContext, in *krm.TextInput) *pb.TextInp
 	}
 	out := &pb.TextInput{}
 	out.Text = direct.ValueOf(in.Text)
+	return out
+}
+func ToolCall_FromProto(mapCtx *direct.MapContext, in *pb.ToolCall) *krm.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolCall{}
+	out.Tool = direct.LazyPtr(in.GetTool())
+	out.Action = direct.LazyPtr(in.GetAction())
+	out.InputParameters = InputParameters_FromProto(mapCtx, in.GetInputParameters())
+	return out
+}
+func ToolCall_ToProto(mapCtx *direct.MapContext, in *krm.ToolCall) *pb.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolCall{}
+	out.Tool = direct.ValueOf(in.Tool)
+	out.Action = direct.ValueOf(in.Action)
+	out.InputParameters = InputParameters_ToProto(mapCtx, in.InputParameters)
+	return out
+}
+func ToolCallResult_FromProto(mapCtx *direct.MapContext, in *pb.ToolCallResult) *krm.ToolCallResult {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolCallResult{}
+	out.Tool = direct.LazyPtr(in.GetTool())
+	out.Action = direct.LazyPtr(in.GetAction())
+	out.Error = ToolCallResult_Error_FromProto(mapCtx, in.GetError())
+	out.OutputParameters = OutputParameters_FromProto(mapCtx, in.GetOutputParameters())
+	return out
+}
+func ToolCallResult_ToProto(mapCtx *direct.MapContext, in *krm.ToolCallResult) *pb.ToolCallResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolCallResult{}
+	out.Tool = direct.ValueOf(in.Tool)
+	out.Action = direct.ValueOf(in.Action)
+	if oneof := ToolCallResult_Error_ToProto(mapCtx, in.Error); oneof != nil {
+		out.Result = &pb.ToolCallResult_Error_{Error: oneof}
+	}
+	if oneof := OutputParameters_ToProto(mapCtx, in.OutputParameters); oneof != nil {
+		out.Result = &pb.ToolCallResult_OutputParameters{OutputParameters: oneof}
+	}
+	return out
+}
+func ToolCallResult_Error_FromProto(mapCtx *direct.MapContext, in *pb.ToolCallResult_Error) *krm.ToolCallResult_Error {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolCallResult_Error{}
+	out.Message = direct.LazyPtr(in.GetMessage())
+	return out
+}
+func ToolCallResult_Error_ToProto(mapCtx *direct.MapContext, in *krm.ToolCallResult_Error) *pb.ToolCallResult_Error {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolCallResult_Error{}
+	out.Message = direct.ValueOf(in.Message)
 	return out
 }
 func TransitionRoute_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute) *krm.TransitionRoute {
