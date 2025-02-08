@@ -16,66 +16,10 @@ package documentai
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
+	pb "cloud.google.com/go/documentai/apiv1beta3/documentaipb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DocumentaiProcessorTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProcessorType) *krm.DocumentaiProcessorTypeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentaiProcessorTypeObservedState{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Category
-	// MISSING: AvailableLocations
-	// MISSING: AllowCreation
-	// MISSING: LaunchStage
-	// MISSING: SampleDocumentUris
-	return out
-}
-func DocumentaiProcessorTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DocumentaiProcessorTypeObservedState) *pb.ProcessorType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProcessorType{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Category
-	// MISSING: AvailableLocations
-	// MISSING: AllowCreation
-	// MISSING: LaunchStage
-	// MISSING: SampleDocumentUris
-	return out
-}
-func DocumentaiProcessorTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.ProcessorType) *krm.DocumentaiProcessorTypeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentaiProcessorTypeSpec{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Category
-	// MISSING: AvailableLocations
-	// MISSING: AllowCreation
-	// MISSING: LaunchStage
-	// MISSING: SampleDocumentUris
-	return out
-}
-func DocumentaiProcessorTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DocumentaiProcessorTypeSpec) *pb.ProcessorType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProcessorType{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Category
-	// MISSING: AvailableLocations
-	// MISSING: AllowCreation
-	// MISSING: LaunchStage
-	// MISSING: SampleDocumentUris
-	return out
-}
 func ProcessorType_FromProto(mapCtx *direct.MapContext, in *pb.ProcessorType) *krm.ProcessorType {
 	if in == nil {
 		return nil
