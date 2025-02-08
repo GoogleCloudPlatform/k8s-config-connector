@@ -15,10 +15,10 @@
 package config
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/config/apiv1/configpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/config/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func ConfigResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Resource) *krm.ConfigResourceObservedState {
 	if in == nil {
@@ -68,30 +68,6 @@ func ConfigResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigResourc
 	// MISSING: State
 	return out
 }
-func Resource_FromProto(mapCtx *direct.MapContext, in *pb.Resource) *krm.Resource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Resource{}
-	// MISSING: Name
-	// MISSING: TerraformInfo
-	// MISSING: CaiAssets
-	// MISSING: Intent
-	// MISSING: State
-	return out
-}
-func Resource_ToProto(mapCtx *direct.MapContext, in *krm.Resource) *pb.Resource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Resource{}
-	// MISSING: Name
-	// MISSING: TerraformInfo
-	// MISSING: CaiAssets
-	// MISSING: Intent
-	// MISSING: State
-	return out
-}
 func ResourceCAIInfo_FromProto(mapCtx *direct.MapContext, in *pb.ResourceCAIInfo) *krm.ResourceCAIInfo {
 	if in == nil {
 		return nil
@@ -106,30 +82,6 @@ func ResourceCAIInfo_ToProto(mapCtx *direct.MapContext, in *krm.ResourceCAIInfo)
 	}
 	out := &pb.ResourceCAIInfo{}
 	out.FullResourceName = direct.ValueOf(in.FullResourceName)
-	return out
-}
-func ResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Resource) *krm.ResourceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ResourceObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.TerraformInfo = ResourceTerraformInfo_FromProto(mapCtx, in.GetTerraformInfo())
-	// MISSING: CaiAssets
-	out.Intent = direct.Enum_FromProto(mapCtx, in.GetIntent())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	return out
-}
-func ResourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourceObservedState) *pb.Resource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Resource{}
-	out.Name = direct.ValueOf(in.Name)
-	out.TerraformInfo = ResourceTerraformInfo_ToProto(mapCtx, in.TerraformInfo)
-	// MISSING: CaiAssets
-	out.Intent = direct.Enum_ToProto[pb.Resource_Intent](mapCtx, in.Intent)
-	out.State = direct.Enum_ToProto[pb.Resource_State](mapCtx, in.State)
 	return out
 }
 func ResourceTerraformInfo_FromProto(mapCtx *direct.MapContext, in *pb.ResourceTerraformInfo) *krm.ResourceTerraformInfo {

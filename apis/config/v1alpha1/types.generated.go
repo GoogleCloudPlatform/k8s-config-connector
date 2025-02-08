@@ -15,10 +15,6 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.config.v1.Resource
-type Resource struct {
-}
-
 // +kcc:proto=google.cloud.config.v1.ResourceCAIInfo
 type ResourceCAIInfo struct {
 	// CAI resource name in the format following
@@ -41,29 +37,4 @@ type ResourceTerraformInfo struct {
 	// ID attribute of the TF resource
 	// +kcc:proto:field=google.cloud.config.v1.ResourceTerraformInfo.id
 	ID *string `json:"id,omitempty"`
-}
-
-// +kcc:proto=google.cloud.config.v1.Resource
-type ResourceObservedState struct {
-	// Output only. Resource name.
-	//  Format:
-	//  `projects/{project}/locations/{location}/deployments/{deployment}/revisions/{revision}/resources/{resource}`
-	// +kcc:proto:field=google.cloud.config.v1.Resource.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Terraform-specific info if this resource was created using
-	//  Terraform.
-	// +kcc:proto:field=google.cloud.config.v1.Resource.terraform_info
-	TerraformInfo *ResourceTerraformInfo `json:"terraformInfo,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-
-	// Output only. Intent of the resource.
-	// +kcc:proto:field=google.cloud.config.v1.Resource.intent
-	Intent *string `json:"intent,omitempty"`
-
-	// Output only. Current state of the resource.
-	// +kcc:proto:field=google.cloud.config.v1.Resource.state
-	State *string `json:"state,omitempty"`
 }
