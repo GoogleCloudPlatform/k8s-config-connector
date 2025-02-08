@@ -16,78 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowDocumentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.DialogflowDocumentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowDocumentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: MimeType
-	// MISSING: KnowledgeTypes
-	// MISSING: ContentURI
-	// MISSING: RawContent
-	// MISSING: EnableAutoReload
-	// MISSING: LatestReloadStatus
-	// MISSING: Metadata
-	// MISSING: State
-	return out
-}
-func DialogflowDocumentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowDocumentObservedState) *pb.Document {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Document{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: MimeType
-	// MISSING: KnowledgeTypes
-	// MISSING: ContentURI
-	// MISSING: RawContent
-	// MISSING: EnableAutoReload
-	// MISSING: LatestReloadStatus
-	// MISSING: Metadata
-	// MISSING: State
-	return out
-}
-func DialogflowDocumentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.DialogflowDocumentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowDocumentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: MimeType
-	// MISSING: KnowledgeTypes
-	// MISSING: ContentURI
-	// MISSING: RawContent
-	// MISSING: EnableAutoReload
-	// MISSING: LatestReloadStatus
-	// MISSING: Metadata
-	// MISSING: State
-	return out
-}
-func DialogflowDocumentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowDocumentSpec) *pb.Document {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Document{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: MimeType
-	// MISSING: KnowledgeTypes
-	// MISSING: ContentURI
-	// MISSING: RawContent
-	// MISSING: EnableAutoReload
-	// MISSING: LatestReloadStatus
-	// MISSING: Metadata
-	// MISSING: State
-	return out
-}
 func Document_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.Document {
 	if in == nil {
 		return nil
@@ -98,6 +30,7 @@ func Document_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.Documen
 	out.MimeType = direct.LazyPtr(in.GetMimeType())
 	out.KnowledgeTypes = direct.EnumSlice_FromProto(mapCtx, in.KnowledgeTypes)
 	out.ContentURI = direct.LazyPtr(in.GetContentUri())
+	out.Content = direct.LazyPtr(in.GetContent())
 	out.RawContent = in.GetRawContent()
 	out.EnableAutoReload = direct.LazyPtr(in.GetEnableAutoReload())
 	// MISSING: LatestReloadStatus
@@ -115,6 +48,9 @@ func Document_ToProto(mapCtx *direct.MapContext, in *krm.Document) *pb.Document 
 	out.MimeType = direct.ValueOf(in.MimeType)
 	out.KnowledgeTypes = direct.EnumSlice_ToProto[pb.Document_KnowledgeType](mapCtx, in.KnowledgeTypes)
 	if oneof := Document_ContentUri_ToProto(mapCtx, in.ContentURI); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := Document_Content_ToProto(mapCtx, in.Content); oneof != nil {
 		out.Source = oneof
 	}
 	if oneof := Document_RawContent_ToProto(mapCtx, in.RawContent); oneof != nil {
@@ -136,6 +72,7 @@ func DocumentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Document)
 	// MISSING: MimeType
 	// MISSING: KnowledgeTypes
 	// MISSING: ContentURI
+	// MISSING: Content
 	// MISSING: RawContent
 	// MISSING: EnableAutoReload
 	out.LatestReloadStatus = Document_ReloadStatus_FromProto(mapCtx, in.GetLatestReloadStatus())
@@ -153,6 +90,7 @@ func DocumentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DocumentOb
 	// MISSING: MimeType
 	// MISSING: KnowledgeTypes
 	// MISSING: ContentURI
+	// MISSING: Content
 	// MISSING: RawContent
 	// MISSING: EnableAutoReload
 	out.LatestReloadStatus = Document_ReloadStatus_ToProto(mapCtx, in.LatestReloadStatus)

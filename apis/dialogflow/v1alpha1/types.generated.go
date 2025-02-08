@@ -15,26 +15,26 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.v2.Document
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Document
 type Document struct {
 	// Optional. The document resource name.
 	//  The name must be empty when creating a document.
 	//  Format: `projects/<Project ID>/locations/<Location
 	//  ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. The display name of the document. The name must be 1024 bytes or
 	//  less; otherwise, the creation request fails.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.display_name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. The MIME type of this document.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.mime_type
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.mime_type
 	MimeType *string `json:"mimeType,omitempty"`
 
 	// Required. The knowledge type of document content.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.knowledge_types
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.knowledge_types
 	KnowledgeTypes []string `json:"knowledgeTypes,omitempty"`
 
 	// The URI where the file content is located.
@@ -46,12 +46,19 @@ type Document struct {
 	//  be indexed by Google Search. In particular, URLs for showing documents in
 	//  Google Cloud Storage (i.e. the URL in your browser) are not supported.
 	//  Instead use the `gs://` format URI described above.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.content_uri
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.content_uri
 	ContentURI *string `json:"contentURI,omitempty"`
 
 	// The raw content of the document. This field is only permitted for
 	//  EXTRACTIVE_QA and FAQ knowledge types.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.raw_content
+	//  Note: This field is in the process of being deprecated, please use
+	//  raw_content instead.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.content
+	Content *string `json:"content,omitempty"`
+
+	// The raw content of the document. This field is only permitted for
+	//  EXTRACTIVE_QA and FAQ knowledge types.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.raw_content
 	RawContent []byte `json:"rawContent,omitempty"`
 
 	// Optional. If true, we try to automatically reload the document every day
@@ -70,27 +77,27 @@ type Document struct {
 	//  system will not try to reload the document anymore. You need to manually
 	//  reload the document successfully by calling `ReloadDocument` and clear the
 	//  errors.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.enable_auto_reload
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.enable_auto_reload
 	EnableAutoReload *bool `json:"enableAutoReload,omitempty"`
 
 	// Optional. Metadata for the document. The metadata supports arbitrary
 	//  key-value pairs. Suggested use cases include storing a document's title,
 	//  an external URL distinct from the document's content_uri, etc.
 	//  The max size of a `key` or a `value` of the metadata is 1024 bytes.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.metadata
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.metadata
 	Metadata map[string]string `json:"metadata,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.Document.ReloadStatus
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Document.ReloadStatus
 type Document_ReloadStatus struct {
-	// The time of a reload attempt.
+	// Output only. The time of a reload attempt.
 	//  This reload may have been triggered automatically or manually and may
 	//  not have succeeded.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.ReloadStatus.time
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.ReloadStatus.time
 	Time *string `json:"time,omitempty"`
 
-	// The status of a reload attempt or the initial load.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.ReloadStatus.status
+	// Output only. The status of a reload attempt or the initial load.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.ReloadStatus.status
 	Status *Status `json:"status,omitempty"`
 }
 
@@ -151,15 +158,15 @@ type Status struct {
 	Details []Any `json:"details,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.Document
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Document
 type DocumentObservedState struct {
 	// Output only. The time and status of the latest reload.
 	//  This reload may have been triggered automatically or manually
 	//  and may not have succeeded.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.latest_reload_status
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.latest_reload_status
 	LatestReloadStatus *Document_ReloadStatus `json:"latestReloadStatus,omitempty"`
 
 	// Output only. The current state of the document.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.state
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Document.state
 	State *string `json:"state,omitempty"`
 }
