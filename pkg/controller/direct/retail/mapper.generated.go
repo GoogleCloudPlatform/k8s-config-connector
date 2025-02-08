@@ -16,7 +16,7 @@ package retail
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/retail/apiv2/retailpb"
+	pb "cloud.google.com/go/retail/apiv2beta/retailpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/retail/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -136,77 +136,5 @@ func CompletionDataInputConfig_ToProto(mapCtx *direct.MapContext, in *krm.Comple
 	if oneof := BigQuerySource_ToProto(mapCtx, in.BigQuerySource); oneof != nil {
 		out.Source = &pb.CompletionDataInputConfig_BigQuerySource{BigQuerySource: oneof}
 	}
-	return out
-}
-func RetailCompletionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CompletionConfig) *krm.RetailCompletionConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RetailCompletionConfigObservedState{}
-	// MISSING: Name
-	// MISSING: MatchingOrder
-	// MISSING: MaxSuggestions
-	// MISSING: MinPrefixLength
-	// MISSING: AutoLearning
-	// MISSING: SuggestionsInputConfig
-	// MISSING: LastSuggestionsImportOperation
-	// MISSING: DenylistInputConfig
-	// MISSING: LastDenylistImportOperation
-	// MISSING: AllowlistInputConfig
-	// MISSING: LastAllowlistImportOperation
-	return out
-}
-func RetailCompletionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RetailCompletionConfigObservedState) *pb.CompletionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CompletionConfig{}
-	// MISSING: Name
-	// MISSING: MatchingOrder
-	// MISSING: MaxSuggestions
-	// MISSING: MinPrefixLength
-	// MISSING: AutoLearning
-	// MISSING: SuggestionsInputConfig
-	// MISSING: LastSuggestionsImportOperation
-	// MISSING: DenylistInputConfig
-	// MISSING: LastDenylistImportOperation
-	// MISSING: AllowlistInputConfig
-	// MISSING: LastAllowlistImportOperation
-	return out
-}
-func RetailCompletionConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.CompletionConfig) *krm.RetailCompletionConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RetailCompletionConfigSpec{}
-	// MISSING: Name
-	// MISSING: MatchingOrder
-	// MISSING: MaxSuggestions
-	// MISSING: MinPrefixLength
-	// MISSING: AutoLearning
-	// MISSING: SuggestionsInputConfig
-	// MISSING: LastSuggestionsImportOperation
-	// MISSING: DenylistInputConfig
-	// MISSING: LastDenylistImportOperation
-	// MISSING: AllowlistInputConfig
-	// MISSING: LastAllowlistImportOperation
-	return out
-}
-func RetailCompletionConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.RetailCompletionConfigSpec) *pb.CompletionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CompletionConfig{}
-	// MISSING: Name
-	// MISSING: MatchingOrder
-	// MISSING: MaxSuggestions
-	// MISSING: MinPrefixLength
-	// MISSING: AutoLearning
-	// MISSING: SuggestionsInputConfig
-	// MISSING: LastSuggestionsImportOperation
-	// MISSING: DenylistInputConfig
-	// MISSING: LastDenylistImportOperation
-	// MISSING: AllowlistInputConfig
-	// MISSING: LastAllowlistImportOperation
 	return out
 }
