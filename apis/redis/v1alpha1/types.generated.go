@@ -15,29 +15,29 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.CertificateAuthority
 type CertificateAuthority struct {
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.CertificateAuthority.managed_server_ca
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.CertificateAuthority.managed_server_ca
 	ManagedServerCa *CertificateAuthority_ManagedCertificateAuthority `json:"managedServerCa,omitempty"`
 
 	// Identifier. Unique name of the resource in this scope including project,
 	//  location and cluster using the form:
 	//      `projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority`
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.CertificateAuthority.name
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.CertificateAuthority.name
 	Name *string `json:"name,omitempty"`
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority.ManagedCertificateAuthority
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.CertificateAuthority.ManagedCertificateAuthority
 type CertificateAuthority_ManagedCertificateAuthority struct {
 	// The PEM encoded CA certificate chains for redis managed
 	//  server authentication
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.CertificateAuthority.ManagedCertificateAuthority.ca_certs
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.CertificateAuthority.ManagedCertificateAuthority.ca_certs
 	CaCerts []CertificateAuthority_ManagedCertificateAuthority_CertChain `json:"caCerts,omitempty"`
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.CertificateAuthority.ManagedCertificateAuthority.CertChain
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.CertificateAuthority.ManagedCertificateAuthority.CertChain
 type CertificateAuthority_ManagedCertificateAuthority_CertChain struct {
 	// The certificates that form the CA chain, from leaf to root order.
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.CertificateAuthority.ManagedCertificateAuthority.CertChain.certificates
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.CertificateAuthority.ManagedCertificateAuthority.CertChain.certificates
 	Certificates []string `json:"certificates,omitempty"`
 }
