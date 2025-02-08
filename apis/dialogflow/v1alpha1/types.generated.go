@@ -15,24 +15,18 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.v2.Participant
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Participant
 type Participant struct {
 	// Optional. The unique identifier of this participant.
 	//  Format: `projects/<Project ID>/locations/<Location
 	//  ID>/conversations/<Conversation ID>/participants/<Participant ID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Participant.name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Participant.name
 	Name *string `json:"name,omitempty"`
 
 	// Immutable. The role this participant plays in the conversation. This field
 	//  must be set during participant creation and is then immutable.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Participant.role
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Participant.role
 	Role *string `json:"role,omitempty"`
-
-	// Optional. Label applied to streams representing this participant in SIPREC
-	//  XML metadata and SDP. This is used to assign transcriptions from that
-	//  media stream to this participant. This field can be updated.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Participant.sip_recording_media_label
-	SipRecordingMediaLabel *string `json:"sipRecordingMediaLabel,omitempty"`
 
 	// Optional. Obfuscated user id that should be associated with the created
 	//  participant.
@@ -40,25 +34,25 @@ type Participant struct {
 	//  You can specify a user id as follows:
 	//
 	//  1. If you set this field in
-	//     [CreateParticipantRequest][google.cloud.dialogflow.v2.CreateParticipantRequest.participant]
+	//     [CreateParticipantRequest][google.cloud.dialogflow.v2beta1.CreateParticipantRequest.participant]
 	//     or
-	//     [UpdateParticipantRequest][google.cloud.dialogflow.v2.UpdateParticipantRequest.participant],
+	//     [UpdateParticipantRequest][google.cloud.dialogflow.v2beta1.UpdateParticipantRequest.participant],
 	//     Dialogflow adds the obfuscated user id with the participant.
 	//
 	//  2. If you set this field in
-	//     [AnalyzeContent][google.cloud.dialogflow.v2.AnalyzeContentRequest.participant]
+	//     [AnalyzeContent][google.cloud.dialogflow.v2beta1.AnalyzeContentRequest.obfuscated_external_user_id]
 	//     or
-	//     [StreamingAnalyzeContent][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.participant],
+	//     [StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.obfuscated_external_user_id],
 	//     Dialogflow will update
-	//     [Participant.obfuscated_external_user_id][google.cloud.dialogflow.v2.Participant.obfuscated_external_user_id].
+	//     [Participant.obfuscated_external_user_id][google.cloud.dialogflow.v2beta1.Participant.obfuscated_external_user_id].
 	//
-	//  Dialogflow returns an error if you try to add a user id for a
-	//  non-[END_USER][google.cloud.dialogflow.v2.Participant.Role.END_USER]
-	//  participant.
+	//  Dialogflow uses this user id for billing and measurement. If a user with
+	//  the same obfuscated_external_user_id is created in a later conversation,
+	//  Dialogflow will know it's the same user.
 	//
-	//  Dialogflow uses this user id for billing and measurement purposes. For
-	//  example, Dialogflow determines whether a user in one conversation returned
-	//  in a later conversation.
+	//  Dialogflow also uses this user id for Agent Assist suggestion
+	//  personalization. For example, Dialogflow can use it to provide personalized
+	//  smart reply suggestions for this user.
 	//
 	//  Note:
 	//
@@ -67,16 +61,16 @@ type Participant struct {
 	//  * Dialogflow only accepts a UTF-8 encoded string, e.g., a hex digest of a
 	//    hash function like SHA-512.
 	//  * The length of the user id must be <= 256 characters.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Participant.obfuscated_external_user_id
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Participant.obfuscated_external_user_id
 	ObfuscatedExternalUserID *string `json:"obfuscatedExternalUserID,omitempty"`
 
 	// Optional. Key-value filters on the metadata of documents returned by
 	//  article suggestion. If specified, article suggestion only returns suggested
 	//  documents that match all filters in their
-	//  [Document.metadata][google.cloud.dialogflow.v2.Document.metadata]. Multiple
-	//  values for a metadata key should be concatenated by comma. For example,
-	//  filters to match all documents that have 'US' or 'CA' in their market
-	//  metadata values and 'agent' in their user metadata values will be
+	//  [Document.metadata][google.cloud.dialogflow.v2beta1.Document.metadata].
+	//  Multiple values for a metadata key should be concatenated by comma. For
+	//  example, filters to match all documents that have 'US' or 'CA' in their
+	//  market metadata values and 'agent' in their user metadata values will be
 	//  ```
 	//  documents_metadata_filters {
 	//    key: "market"
@@ -87,6 +81,6 @@ type Participant struct {
 	//    value: "agent"
 	//  }
 	//  ```
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Participant.documents_metadata_filters
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Participant.documents_metadata_filters
 	DocumentsMetadataFilters map[string]string `json:"documentsMetadataFilters,omitempty"`
 }
