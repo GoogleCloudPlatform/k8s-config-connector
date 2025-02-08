@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.EntityType.Entity
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.EntityType.Entity
 type EntityType_Entity struct {
 	// Required. The primary value associated with this entity entry.
 	//  For example, if the entity type is *vegetable*, the value could be
@@ -29,7 +29,7 @@ type EntityType_Entity struct {
 	//
 	//  *   A string that can contain references to other entity types (with or
 	//      without aliases).
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.Entity.value
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.Entity.value
 	Value *string `json:"value,omitempty"`
 
 	// Required. A collection of value synonyms. For example, if the entity type
@@ -39,11 +39,11 @@ type EntityType_Entity struct {
 	//  For `KIND_LIST` entity types:
 	//
 	//  *   This collection must contain exactly one synonym equal to `value`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.Entity.synonyms
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.Entity.synonyms
 	Synonyms []string `json:"synonyms,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.SessionEntityType
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.SessionEntityType
 type SessionEntityType struct {
 	// Required. The unique identifier of the session entity type.
 	//  Format:
@@ -52,16 +52,16 @@ type SessionEntityType struct {
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`.
 	//  If `Environment ID` is not specified, we assume default 'draft'
 	//  environment.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SessionEntityType.name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.SessionEntityType.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. Indicates whether the additional data should override or
 	//  supplement the custom entity type definition.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SessionEntityType.entity_override_mode
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.SessionEntityType.entity_override_mode
 	EntityOverrideMode *string `json:"entityOverrideMode,omitempty"`
 
 	// Required. The collection of entities to override or supplement the custom
 	//  entity type.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SessionEntityType.entities
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.SessionEntityType.entities
 	Entities []EntityType_Entity `json:"entities,omitempty"`
 }

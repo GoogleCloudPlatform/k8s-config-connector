@@ -15,51 +15,11 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 )
-func DialogflowSessionEntityTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SessionEntityType) *krm.DialogflowSessionEntityTypeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowSessionEntityTypeObservedState{}
-	// MISSING: Name
-	// MISSING: EntityOverrideMode
-	// MISSING: Entities
-	return out
-}
-func DialogflowSessionEntityTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSessionEntityTypeObservedState) *pb.SessionEntityType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SessionEntityType{}
-	// MISSING: Name
-	// MISSING: EntityOverrideMode
-	// MISSING: Entities
-	return out
-}
-func DialogflowSessionEntityTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.SessionEntityType) *krm.DialogflowSessionEntityTypeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowSessionEntityTypeSpec{}
-	// MISSING: Name
-	// MISSING: EntityOverrideMode
-	// MISSING: Entities
-	return out
-}
-func DialogflowSessionEntityTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSessionEntityTypeSpec) *pb.SessionEntityType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SessionEntityType{}
-	// MISSING: Name
-	// MISSING: EntityOverrideMode
-	// MISSING: Entities
-	return out
-}
 func SessionEntityType_FromProto(mapCtx *direct.MapContext, in *pb.SessionEntityType) *krm.SessionEntityType {
 	if in == nil {
 		return nil
