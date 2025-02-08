@@ -15,25 +15,25 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.speech.v1.CustomClass
+// +kcc:proto=google.cloud.speech.v1p1beta1.CustomClass
 type CustomClass struct {
 	// The resource name of the custom class.
-	// +kcc:proto:field=google.cloud.speech.v1.CustomClass.name
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.CustomClass.name
 	Name *string `json:"name,omitempty"`
 
 	// If this custom class is a resource, the custom_class_id is the resource id
 	//  of the CustomClass. Case sensitive.
-	// +kcc:proto:field=google.cloud.speech.v1.CustomClass.custom_class_id
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.CustomClass.custom_class_id
 	CustomClassID *string `json:"customClassID,omitempty"`
 
 	// A collection of class items.
-	// +kcc:proto:field=google.cloud.speech.v1.CustomClass.items
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.CustomClass.items
 	Items []CustomClass_ClassItem `json:"items,omitempty"`
 }
 
-// +kcc:proto=google.cloud.speech.v1.CustomClass.ClassItem
+// +kcc:proto=google.cloud.speech.v1p1beta1.CustomClass.ClassItem
 type CustomClass_ClassItem struct {
 	// The class item's value.
-	// +kcc:proto:field=google.cloud.speech.v1.CustomClass.ClassItem.value
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.CustomClass.ClassItem.value
 	Value *string `json:"value,omitempty"`
 }

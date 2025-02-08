@@ -16,7 +16,7 @@ package speech
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/speech/apiv1/speechpb"
+	pb "cloud.google.com/go/speech/apiv1p1beta1/speechpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -54,45 +54,5 @@ func CustomClass_ClassItem_ToProto(mapCtx *direct.MapContext, in *krm.CustomClas
 	}
 	out := &pb.CustomClass_ClassItem{}
 	out.Value = direct.ValueOf(in.Value)
-	return out
-}
-func SpeechCustomClassObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechCustomClassObservedState{}
-	// MISSING: Name
-	// MISSING: CustomClassID
-	// MISSING: Items
-	return out
-}
-func SpeechCustomClassObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechCustomClassObservedState) *pb.CustomClass {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomClass{}
-	// MISSING: Name
-	// MISSING: CustomClassID
-	// MISSING: Items
-	return out
-}
-func SpeechCustomClassSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechCustomClassSpec{}
-	// MISSING: Name
-	// MISSING: CustomClassID
-	// MISSING: Items
-	return out
-}
-func SpeechCustomClassSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechCustomClassSpec) *pb.CustomClass {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomClass{}
-	// MISSING: Name
-	// MISSING: CustomClassID
-	// MISSING: Items
 	return out
 }
