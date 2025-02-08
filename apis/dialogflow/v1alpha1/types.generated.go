@@ -15,23 +15,23 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.v2.KnowledgeBase
+// +kcc:proto=google.cloud.dialogflow.v2beta1.KnowledgeBase
 type KnowledgeBase struct {
 	// The knowledge base resource name.
 	//  The name must be empty when creating a knowledge base.
 	//  Format: `projects/<Project ID>/locations/<Location
 	//  ID>/knowledgeBases/<Knowledge Base ID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.KnowledgeBase.name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.KnowledgeBase.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. The display name of the knowledge base. The name must be 1024
 	//  bytes or less; otherwise, the creation request fails.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.KnowledgeBase.display_name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.KnowledgeBase.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Language which represents the KnowledgeBase. When the KnowledgeBase is
-	//  created/updated, expect this to be present for non en-us languages. When
-	//  unspecified, the default language code en-us applies.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.KnowledgeBase.language_code
+	//  created/updated, this is populated for all non en-us languages. If not
+	//  populated, the default language en-us applies.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.KnowledgeBase.language_code
 	LanguageCode *string `json:"languageCode,omitempty"`
 }

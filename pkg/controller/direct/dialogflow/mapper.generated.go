@@ -16,50 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowKnowledgeBaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeBase) *krm.DialogflowKnowledgeBaseObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowKnowledgeBaseObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowKnowledgeBaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowKnowledgeBaseObservedState) *pb.KnowledgeBase {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KnowledgeBase{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowKnowledgeBaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeBase) *krm.DialogflowKnowledgeBaseSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowKnowledgeBaseSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowKnowledgeBaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowKnowledgeBaseSpec) *pb.KnowledgeBase {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KnowledgeBase{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: LanguageCode
-	return out
-}
 func KnowledgeBase_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeBase) *krm.KnowledgeBase {
 	if in == nil {
 		return nil
