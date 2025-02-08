@@ -15,10 +15,10 @@
 package retail
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/retail/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/retail/apiv2/retailpb"
+	pb "cloud.google.com/go/retail/apiv2beta/retailpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/retail/v1alpha1"
 )
 func AttributesConfig_FromProto(mapCtx *direct.MapContext, in *pb.AttributesConfig) *krm.AttributesConfig {
 	if in == nil {
@@ -71,6 +71,7 @@ func CatalogAttribute_FromProto(mapCtx *direct.MapContext, in *pb.CatalogAttribu
 	out.IndexableOption = direct.Enum_FromProto(mapCtx, in.GetIndexableOption())
 	out.DynamicFacetableOption = direct.Enum_FromProto(mapCtx, in.GetDynamicFacetableOption())
 	out.SearchableOption = direct.Enum_FromProto(mapCtx, in.GetSearchableOption())
+	out.RecommendationsFilteringOption = direct.Enum_FromProto(mapCtx, in.GetRecommendationsFilteringOption())
 	out.ExactSearchableOption = direct.Enum_FromProto(mapCtx, in.GetExactSearchableOption())
 	out.RetrievableOption = direct.Enum_FromProto(mapCtx, in.GetRetrievableOption())
 	out.FacetConfig = CatalogAttribute_FacetConfig_FromProto(mapCtx, in.GetFacetConfig())
@@ -87,6 +88,7 @@ func CatalogAttribute_ToProto(mapCtx *direct.MapContext, in *krm.CatalogAttribut
 	out.IndexableOption = direct.Enum_ToProto[pb.CatalogAttribute_IndexableOption](mapCtx, in.IndexableOption)
 	out.DynamicFacetableOption = direct.Enum_ToProto[pb.CatalogAttribute_DynamicFacetableOption](mapCtx, in.DynamicFacetableOption)
 	out.SearchableOption = direct.Enum_ToProto[pb.CatalogAttribute_SearchableOption](mapCtx, in.SearchableOption)
+	out.RecommendationsFilteringOption = direct.Enum_ToProto[pb.RecommendationsFilteringOption](mapCtx, in.RecommendationsFilteringOption)
 	out.ExactSearchableOption = direct.Enum_ToProto[pb.CatalogAttribute_ExactSearchableOption](mapCtx, in.ExactSearchableOption)
 	out.RetrievableOption = direct.Enum_ToProto[pb.CatalogAttribute_RetrievableOption](mapCtx, in.RetrievableOption)
 	out.FacetConfig = CatalogAttribute_FacetConfig_ToProto(mapCtx, in.FacetConfig)
@@ -216,45 +218,5 @@ func Interval_ToProto(mapCtx *direct.MapContext, in *krm.Interval) *pb.Interval 
 	if oneof := Interval_ExclusiveMaximum_ToProto(mapCtx, in.ExclusiveMaximum); oneof != nil {
 		out.Max = oneof
 	}
-	return out
-}
-func RetailAttributesConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttributesConfig) *krm.RetailAttributesConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RetailAttributesConfigObservedState{}
-	// MISSING: Name
-	// MISSING: CatalogAttributes
-	// MISSING: AttributeConfigLevel
-	return out
-}
-func RetailAttributesConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RetailAttributesConfigObservedState) *pb.AttributesConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributesConfig{}
-	// MISSING: Name
-	// MISSING: CatalogAttributes
-	// MISSING: AttributeConfigLevel
-	return out
-}
-func RetailAttributesConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AttributesConfig) *krm.RetailAttributesConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RetailAttributesConfigSpec{}
-	// MISSING: Name
-	// MISSING: CatalogAttributes
-	// MISSING: AttributeConfigLevel
-	return out
-}
-func RetailAttributesConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.RetailAttributesConfigSpec) *pb.AttributesConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributesConfig{}
-	// MISSING: Name
-	// MISSING: CatalogAttributes
-	// MISSING: AttributeConfigLevel
 	return out
 }
