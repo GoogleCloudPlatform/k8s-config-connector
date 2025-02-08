@@ -16,54 +16,10 @@ package securitycenter
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv1beta1/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func SecuritycenterSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.SecuritycenterSourceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterSourceObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: CanonicalName
-	return out
-}
-func SecuritycenterSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterSourceObservedState) *pb.Source {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Source{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: CanonicalName
-	return out
-}
-func SecuritycenterSourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.SecuritycenterSourceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterSourceSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: CanonicalName
-	return out
-}
-func SecuritycenterSourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterSourceSpec) *pb.Source {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Source{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: CanonicalName
-	return out
-}
 func Source_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.Source {
 	if in == nil {
 		return nil
@@ -72,7 +28,6 @@ func Source_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.Source {
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.CanonicalName = direct.LazyPtr(in.GetCanonicalName())
 	return out
 }
 func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
@@ -83,6 +38,5 @@ func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.CanonicalName = direct.ValueOf(in.CanonicalName)
 	return out
 }

@@ -15,13 +15,13 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1.Source
+// +kcc:proto=google.cloud.securitycenter.v1beta1.Source
 type Source struct {
 	// The relative resource name of this source. See:
 	//  https://cloud.google.com/apis/design/resource_names#relative_resource_name
 	//  Example:
 	//  "organizations/{organization_id}/sources/{source_id}"
-	// +kcc:proto:field=google.cloud.securitycenter.v1.Source.name
+	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Source.name
 	Name *string `json:"name,omitempty"`
 
 	// The source's display name.
@@ -29,7 +29,7 @@ type Source struct {
 	//  two sources with the same parent can't share the same display name.
 	//  The display name must have a length between 1 and 64 characters
 	//  (inclusive).
-	// +kcc:proto:field=google.cloud.securitycenter.v1.Source.display_name
+	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Source.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The description of the source (max of 1024 characters).
@@ -38,16 +38,7 @@ type Source struct {
 	//  vulnerabilities in App Engine applications. It can automatically
 	//  scan and detect four common vulnerabilities, including cross-site-scripting
 	//  (XSS), Flash injection, mixed content (HTTP in HTTPS), and
-	//  outdated or insecure libraries."
-	// +kcc:proto:field=google.cloud.securitycenter.v1.Source.description
+	//  outdated/insecure libraries."
+	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Source.description
 	Description *string `json:"description,omitempty"`
-
-	// The canonical name of the finding source. It's either
-	//  "organizations/{organization_id}/sources/{source_id}",
-	//  "folders/{folder_id}/sources/{source_id}", or
-	//  "projects/{project_number}/sources/{source_id}",
-	//  depending on the closest CRM ancestor of the resource associated with the
-	//  finding.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.Source.canonical_name
-	CanonicalName *string `json:"canonicalName,omitempty"`
 }
