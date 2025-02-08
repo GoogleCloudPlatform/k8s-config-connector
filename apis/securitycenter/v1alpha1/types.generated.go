@@ -15,49 +15,49 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1.ResourceValueConfigMetadata
+// +kcc:proto=google.cloud.securitycenter.v2.ResourceValueConfigMetadata
 type ResourceValueConfigMetadata struct {
 	// Resource value config name
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfigMetadata.name
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfigMetadata.name
 	Name *string `json:"name,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1.ValuedResource
+// +kcc:proto=google.cloud.securitycenter.v2.ValuedResource
 type ValuedResource struct {
 	// Valued resource name, for example,
 	//   e.g.:
 	//   `organizations/123/simulations/456/valuedResources/789`
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ValuedResource.name
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ValuedResource.name
 	Name *string `json:"name,omitempty"`
 
 	// The
 	//  [full resource
 	//  name](https://cloud.google.com/apis/design/resource_names#full_resource_name)
 	//  of the valued resource.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ValuedResource.resource
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ValuedResource.resource
 	Resource *string `json:"resource,omitempty"`
 
 	// The [resource
 	//  type](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
 	//  of the valued resource.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ValuedResource.resource_type
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ValuedResource.resource_type
 	ResourceType *string `json:"resourceType,omitempty"`
 
 	// Human-readable name of the valued resource.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ValuedResource.display_name
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ValuedResource.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// How valuable this resource is.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ValuedResource.resource_value
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ValuedResource.resource_value
 	ResourceValue *string `json:"resourceValue,omitempty"`
 
 	// Exposed score for this valued resource. A value of 0 means no exposure was
 	//  detected exposure.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ValuedResource.exposed_score
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ValuedResource.exposed_score
 	ExposedScore *float64 `json:"exposedScore,omitempty"`
 
 	// List of resource value configurations' metadata used to determine the value
 	//  of this resource. Maximum of 100.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ValuedResource.resource_value_configs_used
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ValuedResource.resource_value_configs_used
 	ResourceValueConfigsUsed []ResourceValueConfigMetadata `json:"resourceValueConfigsUsed,omitempty"`
 }

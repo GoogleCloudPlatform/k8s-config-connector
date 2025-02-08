@@ -15,67 +15,11 @@
 package securitycenter
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func SecuritycenterValuedResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ValuedResource) *krm.SecuritycenterValuedResourceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterValuedResourceObservedState{}
-	// MISSING: Name
-	// MISSING: Resource
-	// MISSING: ResourceType
-	// MISSING: DisplayName
-	// MISSING: ResourceValue
-	// MISSING: ExposedScore
-	// MISSING: ResourceValueConfigsUsed
-	return out
-}
-func SecuritycenterValuedResourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterValuedResourceObservedState) *pb.ValuedResource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ValuedResource{}
-	// MISSING: Name
-	// MISSING: Resource
-	// MISSING: ResourceType
-	// MISSING: DisplayName
-	// MISSING: ResourceValue
-	// MISSING: ExposedScore
-	// MISSING: ResourceValueConfigsUsed
-	return out
-}
-func SecuritycenterValuedResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.ValuedResource) *krm.SecuritycenterValuedResourceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterValuedResourceSpec{}
-	// MISSING: Name
-	// MISSING: Resource
-	// MISSING: ResourceType
-	// MISSING: DisplayName
-	// MISSING: ResourceValue
-	// MISSING: ExposedScore
-	// MISSING: ResourceValueConfigsUsed
-	return out
-}
-func SecuritycenterValuedResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterValuedResourceSpec) *pb.ValuedResource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ValuedResource{}
-	// MISSING: Name
-	// MISSING: Resource
-	// MISSING: ResourceType
-	// MISSING: DisplayName
-	// MISSING: ResourceValue
-	// MISSING: ExposedScore
-	// MISSING: ResourceValueConfigsUsed
-	return out
-}
 func ValuedResource_FromProto(mapCtx *direct.MapContext, in *pb.ValuedResource) *krm.ValuedResource {
 	if in == nil {
 		return nil
