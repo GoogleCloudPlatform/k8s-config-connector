@@ -17,7 +17,7 @@ package dialogflow
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 )
 func Changelog_FromProto(mapCtx *direct.MapContext, in *pb.Changelog) *krm.Changelog {
@@ -48,65 +48,5 @@ func Changelog_ToProto(mapCtx *direct.MapContext, in *krm.Changelog) *pb.Changel
 	out.Resource = direct.ValueOf(in.Resource)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
-	return out
-}
-func DialogflowChangelogObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Changelog) *krm.DialogflowChangelogObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowChangelogObservedState{}
-	// MISSING: Name
-	// MISSING: UserEmail
-	// MISSING: DisplayName
-	// MISSING: Action
-	// MISSING: Type
-	// MISSING: Resource
-	// MISSING: CreateTime
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowChangelogObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowChangelogObservedState) *pb.Changelog {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Changelog{}
-	// MISSING: Name
-	// MISSING: UserEmail
-	// MISSING: DisplayName
-	// MISSING: Action
-	// MISSING: Type
-	// MISSING: Resource
-	// MISSING: CreateTime
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowChangelogSpec_FromProto(mapCtx *direct.MapContext, in *pb.Changelog) *krm.DialogflowChangelogSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowChangelogSpec{}
-	// MISSING: Name
-	// MISSING: UserEmail
-	// MISSING: DisplayName
-	// MISSING: Action
-	// MISSING: Type
-	// MISSING: Resource
-	// MISSING: CreateTime
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowChangelogSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowChangelogSpec) *pb.Changelog {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Changelog{}
-	// MISSING: Name
-	// MISSING: UserEmail
-	// MISSING: DisplayName
-	// MISSING: Action
-	// MISSING: Type
-	// MISSING: Resource
-	// MISSING: CreateTime
-	// MISSING: LanguageCode
 	return out
 }

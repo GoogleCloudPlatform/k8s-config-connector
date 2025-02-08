@@ -15,39 +15,39 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Changelog
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Changelog
 type Changelog struct {
 	// The unique identifier of the changelog.
 	//  Format:
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Changelog.name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Changelog.name
 	Name *string `json:"name,omitempty"`
 
 	// Email address of the authenticated user.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Changelog.user_email
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Changelog.user_email
 	UserEmail *string `json:"userEmail,omitempty"`
 
 	// The affected resource display name of the change.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Changelog.display_name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Changelog.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The action of the change.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Changelog.action
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Changelog.action
 	Action *string `json:"action,omitempty"`
 
 	// The affected resource type.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Changelog.type
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Changelog.type
 	Type *string `json:"type,omitempty"`
 
 	// The affected resource name of the change.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Changelog.resource
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Changelog.resource
 	Resource *string `json:"resource,omitempty"`
 
 	// The timestamp of the change.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Changelog.create_time
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Changelog.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// The affected language code of the change.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Changelog.language_code
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Changelog.language_code
 	LanguageCode *string `json:"languageCode,omitempty"`
 }
