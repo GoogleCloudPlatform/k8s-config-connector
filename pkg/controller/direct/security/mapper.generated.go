@@ -15,7 +15,7 @@
 package security
 
 import (
-	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
+	pb "cloud.google.com/go/security/privateca/apiv1beta1/privatecapb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/security/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -33,7 +33,6 @@ func CertificateRevocationList_FromProto(mapCtx *direct.MapContext, in *pb.Certi
 	// MISSING: State
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: RevisionID
 	out.Labels = in.Labels
 	return out
 }
@@ -50,7 +49,6 @@ func CertificateRevocationList_ToProto(mapCtx *direct.MapContext, in *krm.Certif
 	// MISSING: State
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: RevisionID
 	out.Labels = in.Labels
 	return out
 }
@@ -67,7 +65,6 @@ func CertificateRevocationListObservedState_FromProto(mapCtx *direct.MapContext,
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
 	// MISSING: Labels
 	return out
 }
@@ -84,7 +81,6 @@ func CertificateRevocationListObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.State = direct.Enum_ToProto[pb.CertificateRevocationList_State](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.RevisionId = direct.ValueOf(in.RevisionID)
 	// MISSING: Labels
 	return out
 }
@@ -106,73 +102,5 @@ func CertificateRevocationList_RevokedCertificate_ToProto(mapCtx *direct.MapCont
 	out.Certificate = direct.ValueOf(in.Certificate)
 	out.HexSerialNumber = direct.ValueOf(in.HexSerialNumber)
 	out.RevocationReason = direct.Enum_ToProto[pb.RevocationReason](mapCtx, in.RevocationReason)
-	return out
-}
-func SecurityCertificateRevocationListObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateRevocationList) *krm.SecurityCertificateRevocationListObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecurityCertificateRevocationListObservedState{}
-	// MISSING: Name
-	// MISSING: SequenceNumber
-	// MISSING: RevokedCertificates
-	// MISSING: PemCrl
-	// MISSING: AccessURL
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Labels
-	return out
-}
-func SecurityCertificateRevocationListObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecurityCertificateRevocationListObservedState) *pb.CertificateRevocationList {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CertificateRevocationList{}
-	// MISSING: Name
-	// MISSING: SequenceNumber
-	// MISSING: RevokedCertificates
-	// MISSING: PemCrl
-	// MISSING: AccessURL
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Labels
-	return out
-}
-func SecurityCertificateRevocationListSpec_FromProto(mapCtx *direct.MapContext, in *pb.CertificateRevocationList) *krm.SecurityCertificateRevocationListSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecurityCertificateRevocationListSpec{}
-	// MISSING: Name
-	// MISSING: SequenceNumber
-	// MISSING: RevokedCertificates
-	// MISSING: PemCrl
-	// MISSING: AccessURL
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Labels
-	return out
-}
-func SecurityCertificateRevocationListSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecurityCertificateRevocationListSpec) *pb.CertificateRevocationList {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CertificateRevocationList{}
-	// MISSING: Name
-	// MISSING: SequenceNumber
-	// MISSING: RevokedCertificates
-	// MISSING: PemCrl
-	// MISSING: AccessURL
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Labels
 	return out
 }

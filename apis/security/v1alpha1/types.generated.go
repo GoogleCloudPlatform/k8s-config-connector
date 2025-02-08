@@ -15,82 +15,64 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.security.privateca.v1.CertificateRevocationList
+// +kcc:proto=google.cloud.security.privateca.v1beta1.CertificateRevocationList
 type CertificateRevocationList struct {
 
 	// Optional. Labels with user-defined metadata.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.labels
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-// +kcc:proto=google.cloud.security.privateca.v1.CertificateRevocationList.RevokedCertificate
+// +kcc:proto=google.cloud.security.privateca.v1beta1.CertificateRevocationList.RevokedCertificate
 type CertificateRevocationList_RevokedCertificate struct {
-	// The resource name for the
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate] in the
-	//  format `projects/*/locations/*/caPools/*/certificates/*`.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.RevokedCertificate.certificate
+	// The resource path for the [Certificate][google.cloud.security.privateca.v1beta1.Certificate] in the format
+	//  `projects/*/locations/*/certificateAuthorities/*/certificates/*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.RevokedCertificate.certificate
 	Certificate *string `json:"certificate,omitempty"`
 
-	// The serial number of the
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate].
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.RevokedCertificate.hex_serial_number
+	// The serial number of the [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.RevokedCertificate.hex_serial_number
 	HexSerialNumber *string `json:"hexSerialNumber,omitempty"`
 
-	// The reason the
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was
-	//  revoked.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.RevokedCertificate.revocation_reason
+	// The reason the [Certificate][google.cloud.security.privateca.v1beta1.Certificate] was revoked.
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.RevokedCertificate.revocation_reason
 	RevocationReason *string `json:"revocationReason,omitempty"`
 }
 
-// +kcc:proto=google.cloud.security.privateca.v1.CertificateRevocationList
+// +kcc:proto=google.cloud.security.privateca.v1beta1.CertificateRevocationList
 type CertificateRevocationListObservedState struct {
-	// Output only. The resource name for this
-	//  [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]
-	//  in the format `projects/*/locations/*/caPools/*certificateAuthorities/*/
+	// Output only. The resource path for this [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] in
+	//  the format
+	//  `projects/*/locations/*/certificateAuthorities/*/
 	//     certificateRevocationLists/*`.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.name
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. The CRL sequence number that appears in pem_crl.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.sequence_number
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.sequence_number
 	SequenceNumber *int64 `json:"sequenceNumber,omitempty"`
 
 	// Output only. The revoked serial numbers that appear in pem_crl.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.revoked_certificates
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.revoked_certificates
 	RevokedCertificates []CertificateRevocationList_RevokedCertificate `json:"revokedCertificates,omitempty"`
 
 	// Output only. The PEM-encoded X.509 CRL.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.pem_crl
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.pem_crl
 	PemCrl *string `json:"pemCrl,omitempty"`
 
 	// Output only. The location where 'pem_crl' can be accessed.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.access_url
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.access_url
 	AccessURL *string `json:"accessURL,omitempty"`
 
-	// Output only. The
-	//  [State][google.cloud.security.privateca.v1.CertificateRevocationList.State]
-	//  for this
-	//  [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList].
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.state
+	// Output only. The [State][google.cloud.security.privateca.v1beta1.CertificateRevocationList.State] for this [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.state
 	State *string `json:"state,omitempty"`
 
-	// Output only. The time at which this
-	//  [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]
-	//  was created.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.create_time
+	// Output only. The time at which this [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] was created.
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The time at which this
-	//  [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]
-	//  was updated.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.update_time
+	// Output only. The time at which this [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] was updated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1beta1.CertificateRevocationList.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. The revision ID of this
-	//  [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList].
-	//  A new revision is committed whenever a new CRL is published. The format is
-	//  an 8-character hexadecimal string.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateRevocationList.revision_id
-	RevisionID *string `json:"revisionID,omitempty"`
 }
