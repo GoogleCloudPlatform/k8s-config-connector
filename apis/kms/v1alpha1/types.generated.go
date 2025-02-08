@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,56 +14,50 @@
 
 package v1alpha1
 
-import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-)
 
-// +kcc:proto=google.cloud.kms.v1.AutokeyConfig
-type AutokeyConfig struct {
-	// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+// +kcc:proto=google.cloud.kms.v1.PublicKey
+type PublicKey struct {
+	// The public key, encoded in PEM format. For more information, see the
+	//  [RFC 7468](https://tools.ietf.org/html/rfc7468) sections for
+	//  [General Considerations](https://tools.ietf.org/html/rfc7468#section-2) and
+	//  [Textual Encoding of Subject Public Key Info]
+	//  (https://tools.ietf.org/html/rfc7468#section-13).
+	// +kcc:proto:field=google.cloud.kms.v1.PublicKey.pem
+	Pem *string `json:"pem,omitempty"`
+
+	// The
+	//  [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
+	//  associated with this key.
+	// +kcc:proto:field=google.cloud.kms.v1.PublicKey.algorithm
+	Algorithm *string `json:"algorithm,omitempty"`
+
+	// Integrity verification field. A CRC32C checksum of the returned
+	//  [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem]. An integrity check of
+	//  [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem] can be performed by
+	//  computing the CRC32C checksum of
+	//  [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem] and comparing your
+	//  results to this field. Discard the response in case of non-matching
+	//  checksum values, and perform a limited number of retries. A persistent
+	//  mismatch may indicate an issue in your computation of the CRC32C checksum.
+	//  Note: This field is defined as int64 for reasons of compatibility across
+	//  different languages. However, it is a non-negative integer, which will
+	//  never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+	//  that support this type.
+	//
+	//  NOTE: This field is in Beta.
+	// +kcc:proto:field=google.cloud.kms.v1.PublicKey.pem_crc32c
+	PemCrc32c *int64 `json:"pemCrc32c,omitempty"`
+
+	// The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+	//  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key.
+	//  Provided here for verification.
+	//
+	//  NOTE: This field is in Beta.
+	// +kcc:proto:field=google.cloud.kms.v1.PublicKey.name
 	Name *string `json:"name,omitempty"`
 
-	// Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or
-	//  `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] when a
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] is created. On
-	//  [UpdateAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.UpdateAutokeyConfig],
-	//  the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on
-	//  this key project. Once configured, for Cloud KMS Autokey to function
-	//  properly, this key project must have the Cloud KMS API activated and the
-	//  Cloud KMS Service Agent for this key project must be granted the
-	//  `cloudkms.admin` role (or pertinent permissions). A request with an empty
-	//  key project field will clear the configuration.
-	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
-
-	// Output only. The state for the AutokeyConfig.
-	State *string `json:"state,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.KeyHandle
-type KeyHandle struct {
-	// Identifier. Name of the [KeyHandle][google.cloud.kms.v1.KeyHandle]
-	//  resource, e.g.
-	//  `projects/{PROJECT_ID}/locations/{LOCATION}/keyHandles/{KEY_HANDLE_ID}`.
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Name of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that has
-	//  been provisioned for Customer Managed Encryption Key (CMEK) use in the
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] project and location for the
-	//  requested resource type. The [CryptoKey][google.cloud.kms.v1.CryptoKey]
-	//  project will reflect the value configured in the
-	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] on the resource
-	//  project's ancestor folder at the time of the
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] creation. If more than one
-	//  ancestor folder has a configured
-	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig], the nearest of these
-	//  configurations is used.
-	KmsKey *string `json:"kmsKey,omitempty"`
-
-	// Required. Indicates the resource type that the resulting
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] is meant to protect, e.g.
-	//  `{SERVICE}.googleapis.com/{TYPE}`. See documentation for supported resource
-	//  types.
-	ResourceTypeSelector *string `json:"resourceTypeSelector,omitempty"`
+	// The [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of the
+	//  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key.
+	// +kcc:proto:field=google.cloud.kms.v1.PublicKey.protection_level
+	ProtectionLevel *string `json:"protectionLevel,omitempty"`
 }
