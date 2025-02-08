@@ -117,6 +117,7 @@ type Instance_InstanceNetworkConfig struct {
 }
 
 // AlloyDBInstanceStatus defines the config connector machine state of AlloyDBInstance
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance
 type AlloyDBInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
