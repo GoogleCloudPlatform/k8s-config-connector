@@ -16,7 +16,7 @@ package functions
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/functions/apiv2/functionspb"
+	pb "cloud.google.com/go/functions/apiv2beta/functionspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/functions/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -282,90 +282,6 @@ func FunctionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FunctionOb
 	// MISSING: KMSKeyName
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	return out
-}
-func FunctionsFunctionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Function) *krm.FunctionsFunctionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FunctionsFunctionObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: BuildConfig
-	// MISSING: ServiceConfig
-	// MISSING: EventTrigger
-	// MISSING: State
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: StateMessages
-	// MISSING: Environment
-	// MISSING: URL
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: CreateTime
-	return out
-}
-func FunctionsFunctionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FunctionsFunctionObservedState) *pb.Function {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Function{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: BuildConfig
-	// MISSING: ServiceConfig
-	// MISSING: EventTrigger
-	// MISSING: State
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: StateMessages
-	// MISSING: Environment
-	// MISSING: URL
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: CreateTime
-	return out
-}
-func FunctionsFunctionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Function) *krm.FunctionsFunctionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FunctionsFunctionSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: BuildConfig
-	// MISSING: ServiceConfig
-	// MISSING: EventTrigger
-	// MISSING: State
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: StateMessages
-	// MISSING: Environment
-	// MISSING: URL
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: CreateTime
-	return out
-}
-func FunctionsFunctionSpec_ToProto(mapCtx *direct.MapContext, in *krm.FunctionsFunctionSpec) *pb.Function {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Function{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: BuildConfig
-	// MISSING: ServiceConfig
-	// MISSING: EventTrigger
-	// MISSING: State
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: StateMessages
-	// MISSING: Environment
-	// MISSING: URL
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: CreateTime
 	return out
 }
 func OnDeployUpdatePolicy_FromProto(mapCtx *direct.MapContext, in *pb.OnDeployUpdatePolicy) *krm.OnDeployUpdatePolicy {
