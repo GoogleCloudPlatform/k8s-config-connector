@@ -16,7 +16,7 @@ package securitycenter
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1beta1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv1p1beta1/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -47,6 +47,7 @@ func OrganizationSettings_AssetDiscoveryConfig_FromProto(mapCtx *direct.MapConte
 	out := &krm.OrganizationSettings_AssetDiscoveryConfig{}
 	out.ProjectIds = in.ProjectIds
 	out.InclusionMode = direct.Enum_FromProto(mapCtx, in.GetInclusionMode())
+	out.FolderIds = in.FolderIds
 	return out
 }
 func OrganizationSettings_AssetDiscoveryConfig_ToProto(mapCtx *direct.MapContext, in *krm.OrganizationSettings_AssetDiscoveryConfig) *pb.OrganizationSettings_AssetDiscoveryConfig {
@@ -56,5 +57,6 @@ func OrganizationSettings_AssetDiscoveryConfig_ToProto(mapCtx *direct.MapContext
 	out := &pb.OrganizationSettings_AssetDiscoveryConfig{}
 	out.ProjectIds = in.ProjectIds
 	out.InclusionMode = direct.Enum_ToProto[pb.OrganizationSettings_AssetDiscoveryConfig_InclusionMode](mapCtx, in.InclusionMode)
+	out.FolderIds = in.FolderIds
 	return out
 }
