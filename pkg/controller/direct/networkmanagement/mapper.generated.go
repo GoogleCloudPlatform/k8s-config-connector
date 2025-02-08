@@ -15,10 +15,10 @@
 package networkmanagement
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/networkmanagement/apiv1beta1/networkmanagementpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 )
 func AbortInfo_FromProto(mapCtx *direct.MapContext, in *pb.AbortInfo) *krm.AbortInfo {
 	if in == nil {
@@ -830,94 +830,6 @@ func NetworkInfo_ToProto(mapCtx *direct.MapContext, in *krm.NetworkInfo) *pb.Net
 	out.MatchedSubnetUri = direct.ValueOf(in.MatchedSubnetURI)
 	out.MatchedIpRange = direct.ValueOf(in.MatchedIPRange)
 	out.Region = direct.ValueOf(in.Region)
-	return out
-}
-func NetworkmanagementConnectivityTestObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConnectivityTest) *krm.NetworkmanagementConnectivityTestObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkmanagementConnectivityTestObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Source
-	// MISSING: Destination
-	// MISSING: Protocol
-	// MISSING: RelatedProjects
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: ReachabilityDetails
-	// MISSING: ProbingDetails
-	// MISSING: RoundTrip
-	// MISSING: ReturnReachabilityDetails
-	// MISSING: BypassFirewallChecks
-	return out
-}
-func NetworkmanagementConnectivityTestObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkmanagementConnectivityTestObservedState) *pb.ConnectivityTest {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ConnectivityTest{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Source
-	// MISSING: Destination
-	// MISSING: Protocol
-	// MISSING: RelatedProjects
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: ReachabilityDetails
-	// MISSING: ProbingDetails
-	// MISSING: RoundTrip
-	// MISSING: ReturnReachabilityDetails
-	// MISSING: BypassFirewallChecks
-	return out
-}
-func NetworkmanagementConnectivityTestSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConnectivityTest) *krm.NetworkmanagementConnectivityTestSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkmanagementConnectivityTestSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Source
-	// MISSING: Destination
-	// MISSING: Protocol
-	// MISSING: RelatedProjects
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: ReachabilityDetails
-	// MISSING: ProbingDetails
-	// MISSING: RoundTrip
-	// MISSING: ReturnReachabilityDetails
-	// MISSING: BypassFirewallChecks
-	return out
-}
-func NetworkmanagementConnectivityTestSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkmanagementConnectivityTestSpec) *pb.ConnectivityTest {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ConnectivityTest{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Source
-	// MISSING: Destination
-	// MISSING: Protocol
-	// MISSING: RelatedProjects
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: ReachabilityDetails
-	// MISSING: ProbingDetails
-	// MISSING: RoundTrip
-	// MISSING: ReturnReachabilityDetails
-	// MISSING: BypassFirewallChecks
 	return out
 }
 func ProbingDetails_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails) *krm.ProbingDetails {
