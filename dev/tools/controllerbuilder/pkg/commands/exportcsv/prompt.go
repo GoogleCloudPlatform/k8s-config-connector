@@ -153,6 +153,10 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		return fmt.Errorf("running LLM inference: %w", err)
 	}
 
+	trimmed := trimCodeBlockMarkers(out.String())
+	out.Reset()
+	out.WriteString(trimmed)
+
 	if o.Output == "" {
 		fmt.Println(out)
 		return nil
@@ -171,4 +175,15 @@ func fileNamePattern(dataPoint *toolbot.DataPoint) string {
 		return strings.Replace(k, " ", "-", -1)
 	}
 	return ""
+}
+
+// trimCodeBlockMarkers removes markdown code block markers (```go and ```) from the input string if present.
+func trimCodeBlockMarkers(out string) string {
+	out = strings.TrimSpace(out)
+	if strings.HasPrefix(out, "```go") { // this is a Golang code block
+		out = strings.TrimPrefix(out, "```go")
+		out = strings.TrimSuffix(out, "```")
+	}
+	out = strings.TrimSpace(out)
+	return out
 }
