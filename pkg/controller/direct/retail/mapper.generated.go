@@ -15,10 +15,10 @@
 package retail
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/retail/apiv2beta/retailpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/retail/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/retail/apiv2/retailpb"
 )
 func Condition_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.Condition {
 	if in == nil {
@@ -81,6 +81,7 @@ func Control_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krm.Control {
 		return nil
 	}
 	out := &krm.Control{}
+	out.FacetSpec = SearchRequest_FacetSpec_FromProto(mapCtx, in.GetFacetSpec())
 	out.Rule = Rule_FromProto(mapCtx, in.GetRule())
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
@@ -94,6 +95,9 @@ func Control_ToProto(mapCtx *direct.MapContext, in *krm.Control) *pb.Control {
 		return nil
 	}
 	out := &pb.Control{}
+	if oneof := SearchRequest_FacetSpec_ToProto(mapCtx, in.FacetSpec); oneof != nil {
+		out.Control = &pb.Control_FacetSpec{FacetSpec: oneof}
+	}
 	if oneof := Rule_ToProto(mapCtx, in.Rule); oneof != nil {
 		out.Control = &pb.Control_Rule{Rule: oneof}
 	}
@@ -109,6 +113,7 @@ func ControlObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Control) *
 		return nil
 	}
 	out := &krm.ControlObservedState{}
+	// MISSING: FacetSpec
 	// MISSING: Rule
 	// MISSING: Name
 	// MISSING: DisplayName
@@ -122,6 +127,7 @@ func ControlObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ControlObse
 		return nil
 	}
 	out := &pb.Control{}
+	// MISSING: FacetSpec
 	// MISSING: Rule
 	// MISSING: Name
 	// MISSING: DisplayName
@@ -130,56 +136,34 @@ func ControlObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ControlObse
 	// MISSING: SearchSolutionUseCase
 	return out
 }
-func RetailControlObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krm.RetailControlObservedState {
+func Interval_FromProto(mapCtx *direct.MapContext, in *pb.Interval) *krm.Interval {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RetailControlObservedState{}
-	// MISSING: Rule
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: AssociatedServingConfigIds
-	// MISSING: SolutionTypes
-	// MISSING: SearchSolutionUseCase
+	out := &krm.Interval{}
+	out.Minimum = direct.LazyPtr(in.GetMinimum())
+	out.ExclusiveMinimum = direct.LazyPtr(in.GetExclusiveMinimum())
+	out.Maximum = direct.LazyPtr(in.GetMaximum())
+	out.ExclusiveMaximum = direct.LazyPtr(in.GetExclusiveMaximum())
 	return out
 }
-func RetailControlObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RetailControlObservedState) *pb.Control {
+func Interval_ToProto(mapCtx *direct.MapContext, in *krm.Interval) *pb.Interval {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Control{}
-	// MISSING: Rule
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: AssociatedServingConfigIds
-	// MISSING: SolutionTypes
-	// MISSING: SearchSolutionUseCase
-	return out
-}
-func RetailControlSpec_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krm.RetailControlSpec {
-	if in == nil {
-		return nil
+	out := &pb.Interval{}
+	if oneof := Interval_Minimum_ToProto(mapCtx, in.Minimum); oneof != nil {
+		out.Min = oneof
 	}
-	out := &krm.RetailControlSpec{}
-	// MISSING: Rule
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: AssociatedServingConfigIds
-	// MISSING: SolutionTypes
-	// MISSING: SearchSolutionUseCase
-	return out
-}
-func RetailControlSpec_ToProto(mapCtx *direct.MapContext, in *krm.RetailControlSpec) *pb.Control {
-	if in == nil {
-		return nil
+	if oneof := Interval_ExclusiveMinimum_ToProto(mapCtx, in.ExclusiveMinimum); oneof != nil {
+		out.Min = oneof
 	}
-	out := &pb.Control{}
-	// MISSING: Rule
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: AssociatedServingConfigIds
-	// MISSING: SolutionTypes
-	// MISSING: SearchSolutionUseCase
+	if oneof := Interval_Maximum_ToProto(mapCtx, in.Maximum); oneof != nil {
+		out.Max = oneof
+	}
+	if oneof := Interval_ExclusiveMaximum_ToProto(mapCtx, in.ExclusiveMaximum); oneof != nil {
+		out.Max = oneof
+	}
 	return out
 }
 func Rule_FromProto(mapCtx *direct.MapContext, in *pb.Rule) *krm.Rule {
