@@ -15,11 +15,95 @@
 package discoveryengine
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 )
+func DataStore_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DataStore {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStore{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.IndustryVertical = direct.Enum_FromProto(mapCtx, in.GetIndustryVertical())
+	out.SolutionTypes = direct.EnumSlice_FromProto(mapCtx, in.SolutionTypes)
+	// MISSING: DefaultSchemaID
+	out.ContentConfig = direct.Enum_FromProto(mapCtx, in.GetContentConfig())
+	// MISSING: CreateTime
+	out.LanguageInfo = LanguageInfo_FromProto(mapCtx, in.GetLanguageInfo())
+	out.NaturalLanguageQueryUnderstandingConfig = NaturalLanguageQueryUnderstandingConfig_FromProto(mapCtx, in.GetNaturalLanguageQueryUnderstandingConfig())
+	// MISSING: BillingEstimation
+	out.WorkspaceConfig = WorkspaceConfig_FromProto(mapCtx, in.GetWorkspaceConfig())
+	out.DocumentProcessingConfig = DocumentProcessingConfig_FromProto(mapCtx, in.GetDocumentProcessingConfig())
+	out.StartingSchema = Schema_FromProto(mapCtx, in.GetStartingSchema())
+	out.ServingConfigDataStore = DataStore_ServingConfigDataStore_FromProto(mapCtx, in.GetServingConfigDataStore())
+	return out
+}
+func DataStore_ToProto(mapCtx *direct.MapContext, in *krm.DataStore) *pb.DataStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStore{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.IndustryVertical = direct.Enum_ToProto[pb.IndustryVertical](mapCtx, in.IndustryVertical)
+	out.SolutionTypes = direct.EnumSlice_ToProto[pb.SolutionType](mapCtx, in.SolutionTypes)
+	// MISSING: DefaultSchemaID
+	out.ContentConfig = direct.Enum_ToProto[pb.DataStore_ContentConfig](mapCtx, in.ContentConfig)
+	// MISSING: CreateTime
+	out.LanguageInfo = LanguageInfo_ToProto(mapCtx, in.LanguageInfo)
+	out.NaturalLanguageQueryUnderstandingConfig = NaturalLanguageQueryUnderstandingConfig_ToProto(mapCtx, in.NaturalLanguageQueryUnderstandingConfig)
+	// MISSING: BillingEstimation
+	out.WorkspaceConfig = WorkspaceConfig_ToProto(mapCtx, in.WorkspaceConfig)
+	out.DocumentProcessingConfig = DocumentProcessingConfig_ToProto(mapCtx, in.DocumentProcessingConfig)
+	out.StartingSchema = Schema_ToProto(mapCtx, in.StartingSchema)
+	out.ServingConfigDataStore = DataStore_ServingConfigDataStore_ToProto(mapCtx, in.ServingConfigDataStore)
+	return out
+}
+func DataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DataStoreObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: IndustryVertical
+	// MISSING: SolutionTypes
+	out.DefaultSchemaID = direct.LazyPtr(in.GetDefaultSchemaId())
+	// MISSING: ContentConfig
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.LanguageInfo = LanguageInfoObservedState_FromProto(mapCtx, in.GetLanguageInfo())
+	// MISSING: NaturalLanguageQueryUnderstandingConfig
+	out.BillingEstimation = DataStore_BillingEstimation_FromProto(mapCtx, in.GetBillingEstimation())
+	// MISSING: WorkspaceConfig
+	// MISSING: DocumentProcessingConfig
+	// MISSING: StartingSchema
+	// MISSING: ServingConfigDataStore
+	return out
+}
+func DataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreObservedState) *pb.DataStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStore{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: IndustryVertical
+	// MISSING: SolutionTypes
+	out.DefaultSchemaId = direct.ValueOf(in.DefaultSchemaID)
+	// MISSING: ContentConfig
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.LanguageInfo = LanguageInfoObservedState_ToProto(mapCtx, in.LanguageInfo)
+	// MISSING: NaturalLanguageQueryUnderstandingConfig
+	out.BillingEstimation = DataStore_BillingEstimation_ToProto(mapCtx, in.BillingEstimation)
+	// MISSING: WorkspaceConfig
+	// MISSING: DocumentProcessingConfig
+	// MISSING: StartingSchema
+	// MISSING: ServingConfigDataStore
+	return out
+}
 func DataStore_BillingEstimation_FromProto(mapCtx *direct.MapContext, in *pb.DataStore_BillingEstimation) *krm.DataStore_BillingEstimation {
 	if in == nil {
 		return nil
@@ -46,218 +130,20 @@ func DataStore_BillingEstimation_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
 	return out
 }
-func DiscoveryEngineDataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DiscoveryEngineDataStoreObservedState {
+func DataStore_ServingConfigDataStore_FromProto(mapCtx *direct.MapContext, in *pb.DataStore_ServingConfigDataStore) *krm.DataStore_ServingConfigDataStore {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DiscoveryEngineDataStoreObservedState{}
-	// MISSING: Name
-	out.DefaultSchemaID = direct.LazyPtr(in.GetDefaultSchemaId())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.BillingEstimation = DataStore_BillingEstimation_FromProto(mapCtx, in.GetBillingEstimation())
-	// MISSING: DocumentProcessingConfig
-	// MISSING: StartingSchema
+	out := &krm.DataStore_ServingConfigDataStore{}
+	out.DisabledForServing = direct.LazyPtr(in.GetDisabledForServing())
 	return out
 }
-func DiscoveryEngineDataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataStoreObservedState) *pb.DataStore {
+func DataStore_ServingConfigDataStore_ToProto(mapCtx *direct.MapContext, in *krm.DataStore_ServingConfigDataStore) *pb.DataStore_ServingConfigDataStore {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataStore{}
-	// MISSING: Name
-	out.DefaultSchemaId = direct.ValueOf(in.DefaultSchemaID)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.BillingEstimation = DataStore_BillingEstimation_ToProto(mapCtx, in.BillingEstimation)
-	// MISSING: DocumentProcessingConfig
-	// MISSING: StartingSchema
-	return out
-}
-func DiscoveryEngineDataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DiscoveryEngineDataStoreSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiscoveryEngineDataStoreSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.IndustryVertical = direct.Enum_FromProto(mapCtx, in.GetIndustryVertical())
-	out.SolutionTypes = direct.EnumSlice_FromProto(mapCtx, in.SolutionTypes)
-	out.ContentConfig = direct.Enum_FromProto(mapCtx, in.GetContentConfig())
-	out.WorkspaceConfig = WorkspaceConfig_FromProto(mapCtx, in.GetWorkspaceConfig())
-	// MISSING: DocumentProcessingConfig
-	// MISSING: StartingSchema
-	return out
-}
-func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataStoreSpec) *pb.DataStore {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStore{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.IndustryVertical = direct.Enum_ToProto[pb.IndustryVertical](mapCtx, in.IndustryVertical)
-	out.SolutionTypes = direct.EnumSlice_ToProto[pb.SolutionType](mapCtx, in.SolutionTypes)
-	out.ContentConfig = direct.Enum_ToProto[pb.DataStore_ContentConfig](mapCtx, in.ContentConfig)
-	out.WorkspaceConfig = WorkspaceConfig_ToProto(mapCtx, in.WorkspaceConfig)
-	// MISSING: DocumentProcessingConfig
-	// MISSING: StartingSchema
-	return out
-}
-func DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite) *krm.DiscoveryEngineDataStoreTargetSiteObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiscoveryEngineDataStoreTargetSiteObservedState{}
-	// MISSING: Name
-	// MISSING: ProvidedURIPattern
-	// MISSING: GeneratedURIPattern
-	// (near miss): "GeneratedURIPattern" vs "GeneratedUriPattern"
-	// MISSING: RootDomainURI
-	// (near miss): "RootDomainURI" vs "RootDomainUri"
-	out.SiteVerificationInfo = SiteVerificationInfo_FromProto(mapCtx, in.GetSiteVerificationInfo())
-	out.IndexingStatus = direct.Enum_FromProto(mapCtx, in.GetIndexingStatus())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.FailureReason = TargetSite_FailureReason_FromProto(mapCtx, in.GetFailureReason())
-	return out
-}
-func DiscoveryEngineDataStoreTargetSiteObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataStoreTargetSiteObservedState) *pb.TargetSite {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TargetSite{}
-	// MISSING: Name
-	// MISSING: ProvidedURIPattern
-	// MISSING: GeneratedURIPattern
-	// (near miss): "GeneratedURIPattern" vs "GeneratedUriPattern"
-	// MISSING: RootDomainURI
-	// (near miss): "RootDomainURI" vs "RootDomainUri"
-	out.SiteVerificationInfo = SiteVerificationInfo_ToProto(mapCtx, in.SiteVerificationInfo)
-	out.IndexingStatus = direct.Enum_ToProto[pb.TargetSite_IndexingStatus](mapCtx, in.IndexingStatus)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.FailureReason = TargetSite_FailureReason_ToProto(mapCtx, in.FailureReason)
-	return out
-}
-func DiscoveryEngineDataStoreTargetSiteSpec_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite) *krm.DiscoveryEngineDataStoreTargetSiteSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiscoveryEngineDataStoreTargetSiteSpec{}
-	// MISSING: Name
-	// MISSING: ProvidedURIPattern
-	// (near miss): "ProvidedURIPattern" vs "ProvidedUriPattern"
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
-	// MISSING: GeneratedURIPattern
-	// MISSING: RootDomainURI
-	return out
-}
-func DiscoveryEngineDataStoreTargetSiteSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataStoreTargetSiteSpec) *pb.TargetSite {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TargetSite{}
-	// MISSING: Name
-	// MISSING: ProvidedURIPattern
-	// (near miss): "ProvidedURIPattern" vs "ProvidedUriPattern"
-	out.Type = direct.Enum_ToProto[pb.TargetSite_Type](mapCtx, in.Type)
-	out.ExactMatch = direct.ValueOf(in.ExactMatch)
-	// MISSING: GeneratedURIPattern
-	// MISSING: RootDomainURI
-	return out
-}
-func DiscoveryEngineEngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krm.DiscoveryEngineEngineObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiscoveryEngineEngineObservedState{}
-	// MISSING: ChatEngineMetadata
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DataStoreIds
-	return out
-}
-func DiscoveryEngineEngineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineEngineObservedState) *pb.Engine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Engine{}
-	// MISSING: ChatEngineMetadata
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DataStoreIds
-	return out
-}
-func DiscoveryengineDataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DiscoveryengineDataStoreObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiscoveryengineDataStoreObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IndustryVertical
-	// MISSING: SolutionTypes
-	// MISSING: DefaultSchemaID
-	// MISSING: ContentConfig
-	// MISSING: CreateTime
-	// MISSING: BillingEstimation
-	// MISSING: WorkspaceConfig
-	// MISSING: DocumentProcessingConfig
-	// MISSING: StartingSchema
-	return out
-}
-func DiscoveryengineDataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryengineDataStoreObservedState) *pb.DataStore {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStore{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IndustryVertical
-	// MISSING: SolutionTypes
-	// MISSING: DefaultSchemaID
-	// MISSING: ContentConfig
-	// MISSING: CreateTime
-	// MISSING: BillingEstimation
-	// MISSING: WorkspaceConfig
-	// MISSING: DocumentProcessingConfig
-	// MISSING: StartingSchema
-	return out
-}
-func DiscoveryengineDataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DiscoveryengineDataStoreSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiscoveryengineDataStoreSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IndustryVertical
-	// MISSING: SolutionTypes
-	// MISSING: DefaultSchemaID
-	// MISSING: ContentConfig
-	// MISSING: CreateTime
-	// MISSING: BillingEstimation
-	// MISSING: WorkspaceConfig
-	// MISSING: DocumentProcessingConfig
-	// MISSING: StartingSchema
-	return out
-}
-func DiscoveryengineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryengineDataStoreSpec) *pb.DataStore {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataStore{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IndustryVertical
-	// MISSING: SolutionTypes
-	// MISSING: DefaultSchemaID
-	// MISSING: ContentConfig
-	// MISSING: CreateTime
-	// MISSING: BillingEstimation
-	// MISSING: WorkspaceConfig
-	// MISSING: DocumentProcessingConfig
-	// MISSING: StartingSchema
+	out := &pb.DataStore_ServingConfigDataStore{}
+	out.DisabledForServing = direct.ValueOf(in.DisabledForServing)
 	return out
 }
 func DocumentProcessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig) *krm.DocumentProcessingConfig {
@@ -388,6 +274,66 @@ func DocumentProcessingConfig_ParsingConfig_OcrParsingConfig_ToProto(mapCtx *dir
 	out := &pb.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig{}
 	out.EnhancedDocumentElements = in.EnhancedDocumentElements
 	out.UseNativeText = direct.ValueOf(in.UseNativeText)
+	return out
+}
+func LanguageInfo_FromProto(mapCtx *direct.MapContext, in *pb.LanguageInfo) *krm.LanguageInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LanguageInfo{}
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	// MISSING: NormalizedLanguageCode
+	// MISSING: Language
+	// MISSING: Region
+	return out
+}
+func LanguageInfo_ToProto(mapCtx *direct.MapContext, in *krm.LanguageInfo) *pb.LanguageInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LanguageInfo{}
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	// MISSING: NormalizedLanguageCode
+	// MISSING: Language
+	// MISSING: Region
+	return out
+}
+func LanguageInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LanguageInfo) *krm.LanguageInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LanguageInfoObservedState{}
+	// MISSING: LanguageCode
+	out.NormalizedLanguageCode = direct.LazyPtr(in.GetNormalizedLanguageCode())
+	out.Language = direct.LazyPtr(in.GetLanguage())
+	out.Region = direct.LazyPtr(in.GetRegion())
+	return out
+}
+func LanguageInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LanguageInfoObservedState) *pb.LanguageInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LanguageInfo{}
+	// MISSING: LanguageCode
+	out.NormalizedLanguageCode = direct.ValueOf(in.NormalizedLanguageCode)
+	out.Language = direct.ValueOf(in.Language)
+	out.Region = direct.ValueOf(in.Region)
+	return out
+}
+func NaturalLanguageQueryUnderstandingConfig_FromProto(mapCtx *direct.MapContext, in *pb.NaturalLanguageQueryUnderstandingConfig) *krm.NaturalLanguageQueryUnderstandingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NaturalLanguageQueryUnderstandingConfig{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	return out
+}
+func NaturalLanguageQueryUnderstandingConfig_ToProto(mapCtx *direct.MapContext, in *krm.NaturalLanguageQueryUnderstandingConfig) *pb.NaturalLanguageQueryUnderstandingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NaturalLanguageQueryUnderstandingConfig{}
+	out.Mode = direct.Enum_ToProto[pb.NaturalLanguageQueryUnderstandingConfig_Mode](mapCtx, in.Mode)
 	return out
 }
 func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
