@@ -15,14 +15,18 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1p1beta1.SecurityMarks
+// +kcc:proto=google.cloud.securitycenter.v2.SecurityMarks
 type SecurityMarks struct {
 	// The relative resource name of the SecurityMarks. See:
 	//  https://cloud.google.com/apis/design/resource_names#relative_resource_name
-	//  Examples:
-	//  "organizations/{organization_id}/assets/{asset_id}/securityMarks"
-	//  "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
-	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.name
+	//  The following list shows some examples:
+	//
+	//  + `organizations/{organization_id}/assets/{asset_id}/securityMarks`
+	//  +
+	//  `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks`
+	//  +
+	//  `organizations/{organization_id}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks`
+	// +kcc:proto:field=google.cloud.securitycenter.v2.SecurityMarks.name
 	Name *string `json:"name,omitempty"`
 
 	// Mutable user specified security marks belonging to the parent resource.
@@ -33,17 +37,26 @@ type SecurityMarks struct {
 	//    * Keys must be letters, numbers, underscores, or dashes
 	//    * Values have leading and trailing whitespace trimmed, remaining
 	//      characters must be between 1 - 4096 characters (inclusive)
-	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.marks
+	// +kcc:proto:field=google.cloud.securitycenter.v2.SecurityMarks.marks
 	Marks map[string]string `json:"marks,omitempty"`
 
-	// The canonical name of the marks.
-	//  Examples:
-	//  "organizations/{organization_id}/assets/{asset_id}/securityMarks"
-	//  "folders/{folder_id}/assets/{asset_id}/securityMarks"
-	//  "projects/{project_number}/assets/{asset_id}/securityMarks"
-	//  "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
-	//  "folders/{folder_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
-	//  "projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks"
-	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.canonical_name
+	// The canonical name of the marks. The following list shows some examples:
+	//
+	//  + `organizations/{organization_id}/assets/{asset_id}/securityMarks`
+	//  +
+	//  `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks`
+	//  +
+	//  `organizations/{organization_id}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks`
+	//  + `folders/{folder_id}/assets/{asset_id}/securityMarks`
+	//  +
+	//  `folders/{folder_id}/sources/{source_id}/findings/{finding_id}/securityMarks`
+	//  +
+	//  `folders/{folder_id}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks`
+	//  + `projects/{project_number}/assets/{asset_id}/securityMarks`
+	//  +
+	//  `projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks`
+	//  +
+	//  `projects/{project_number}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks`
+	// +kcc:proto:field=google.cloud.securitycenter.v2.SecurityMarks.canonical_name
 	CanonicalName *string `json:"canonicalName,omitempty"`
 }
