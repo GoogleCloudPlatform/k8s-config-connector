@@ -16,7 +16,7 @@ package security
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/security/publicca/apiv1/publiccapb"
+	pb "cloud.google.com/go/security/publicca/apiv1beta1/publiccapb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/security/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -58,45 +58,5 @@ func ExternalAccountKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Name = direct.ValueOf(in.Name)
 	out.KeyId = direct.ValueOf(in.KeyID)
 	out.B64MacKey = in.B64MacKey
-	return out
-}
-func SecurityExternalAccountKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccountKey) *krm.SecurityExternalAccountKeyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecurityExternalAccountKeyObservedState{}
-	// MISSING: Name
-	// MISSING: KeyID
-	// MISSING: B64MacKey
-	return out
-}
-func SecurityExternalAccountKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecurityExternalAccountKeyObservedState) *pb.ExternalAccountKey {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExternalAccountKey{}
-	// MISSING: Name
-	// MISSING: KeyID
-	// MISSING: B64MacKey
-	return out
-}
-func SecurityExternalAccountKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccountKey) *krm.SecurityExternalAccountKeySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecurityExternalAccountKeySpec{}
-	// MISSING: Name
-	// MISSING: KeyID
-	// MISSING: B64MacKey
-	return out
-}
-func SecurityExternalAccountKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.SecurityExternalAccountKeySpec) *pb.ExternalAccountKey {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExternalAccountKey{}
-	// MISSING: Name
-	// MISSING: KeyID
-	// MISSING: B64MacKey
 	return out
 }
