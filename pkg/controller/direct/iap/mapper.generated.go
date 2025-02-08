@@ -15,155 +15,11 @@
 package iap
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/iap/apiv1/iappb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-
-func AccessDeniedPageSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessDeniedPageSettings) *krm.AccessDeniedPageSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AccessDeniedPageSettings{}
-	out.AccessDeniedPageURI = direct.StringValue_FromProto(mapCtx, in.GetAccessDeniedPageUri())
-	out.GenerateTroubleshootingURI = direct.BoolValue_FromProto(mapCtx, in.GetGenerateTroubleshootingUri())
-	out.RemediationTokenGenerationEnabled = direct.BoolValue_FromProto(mapCtx, in.GetRemediationTokenGenerationEnabled())
-	return out
-}
-func AccessSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessSettings) *krm.AccessSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AccessSettings{}
-	out.GcipSettings = GcipSettings_FromProto(mapCtx, in.GetGcipSettings())
-	out.CorsSettings = CorsSettings_FromProto(mapCtx, in.GetCorsSettings())
-	out.OauthSettings = OAuthSettings_FromProto(mapCtx, in.GetOauthSettings())
-	out.ReauthSettings = ReauthSettings_FromProto(mapCtx, in.GetReauthSettings())
-	out.AllowedDomainsSettings = AllowedDomainsSettings_FromProto(mapCtx, in.GetAllowedDomainsSettings())
-	return out
-}
-func AccessSettings_ToProto(mapCtx *direct.MapContext, in *krm.AccessSettings) *pb.AccessSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AccessSettings{}
-	out.GcipSettings = GcipSettings_ToProto(mapCtx, in.GcipSettings)
-	out.CorsSettings = CorsSettings_ToProto(mapCtx, in.CorsSettings)
-	out.OauthSettings = OAuthSettings_ToProto(mapCtx, in.OauthSettings)
-	out.ReauthSettings = ReauthSettings_ToProto(mapCtx, in.ReauthSettings)
-	out.AllowedDomainsSettings = AllowedDomainsSettings_ToProto(mapCtx, in.AllowedDomainsSettings)
-	return out
-}
-func AllowedDomainsSettings_FromProto(mapCtx *direct.MapContext, in *pb.AllowedDomainsSettings) *krm.AllowedDomainsSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AllowedDomainsSettings{}
-	out.Enable = in.Enable
-	out.Domains = in.Domains
-	return out
-}
-func AllowedDomainsSettings_ToProto(mapCtx *direct.MapContext, in *krm.AllowedDomainsSettings) *pb.AllowedDomainsSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllowedDomainsSettings{}
-	out.Enable = in.Enable
-	out.Domains = in.Domains
-	return out
-}
-func ApplicationSettings_FromProto(mapCtx *direct.MapContext, in *pb.ApplicationSettings) *krm.ApplicationSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ApplicationSettings{}
-	out.CsmSettings = CsmSettings_FromProto(mapCtx, in.GetCsmSettings())
-	out.AccessDeniedPageSettings = AccessDeniedPageSettings_FromProto(mapCtx, in.GetAccessDeniedPageSettings())
-	out.CookieDomain = direct.StringValue_FromProto(mapCtx, in.GetCookieDomain())
-	out.AttributePropagationSettings = AttributePropagationSettings_FromProto(mapCtx, in.GetAttributePropagationSettings())
-	return out
-}
-func ApplicationSettings_ToProto(mapCtx *direct.MapContext, in *krm.ApplicationSettings) *pb.ApplicationSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ApplicationSettings{}
-	out.CsmSettings = CsmSettings_ToProto(mapCtx, in.CsmSettings)
-	out.AccessDeniedPageSettings = AccessDeniedPageSettings_ToProto(mapCtx, in.AccessDeniedPageSettings)
-	out.CookieDomain = direct.StringValue_ToProto(mapCtx, in.CookieDomain)
-	out.AttributePropagationSettings = AttributePropagationSettings_ToProto(mapCtx, in.AttributePropagationSettings)
-	return out
-}
-func AttributePropagationSettings_FromProto(mapCtx *direct.MapContext, in *pb.AttributePropagationSettings) *krm.AttributePropagationSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttributePropagationSettings{}
-	out.Expression = in.Expression
-	out.OutputCredentials = direct.EnumSlice_FromProto(mapCtx, in.OutputCredentials)
-	out.Enable = in.Enable
-	return out
-}
-func AttributePropagationSettings_ToProto(mapCtx *direct.MapContext, in *krm.AttributePropagationSettings) *pb.AttributePropagationSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttributePropagationSettings{}
-	out.Expression = in.Expression
-	out.OutputCredentials = direct.EnumSlice_ToProto[pb.AttributePropagationSettings_OutputCredentials](mapCtx, in.OutputCredentials)
-	out.Enable = in.Enable
-	return out
-}
-func CorsSettings_FromProto(mapCtx *direct.MapContext, in *pb.CorsSettings) *krm.CorsSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CorsSettings{}
-	out.AllowHTTPOptions = direct.BoolValue_FromProto(mapCtx, in.GetAllowHttpOptions())
-	return out
-}
-func CorsSettings_ToProto(mapCtx *direct.MapContext, in *krm.CorsSettings) *pb.CorsSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CorsSettings{}
-	out.AllowHttpOptions = direct.BoolValue_ToProto(mapCtx, in.AllowHTTPOptions)
-	return out
-}
-func CsmSettings_FromProto(mapCtx *direct.MapContext, in *pb.CsmSettings) *krm.CsmSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CsmSettings{}
-	out.RctokenAud = direct.StringValue_FromProto(mapCtx, in.GetRctokenAud())
-	return out
-}
-func CsmSettings_ToProto(mapCtx *direct.MapContext, in *krm.CsmSettings) *pb.CsmSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CsmSettings{}
-	out.RctokenAud = direct.StringValue_ToProto(mapCtx, in.RctokenAud)
-	return out
-}
-func GcipSettings_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krm.GcipSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GcipSettings{}
-	out.TenantIds = in.TenantIds
-	out.LoginPageURI = direct.StringValue_FromProto(mapCtx, in.GetLoginPageUri())
-	return out
-}
-func GcipSettings_ToProto(mapCtx *direct.MapContext, in *krm.GcipSettings) *pb.GcipSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GcipSettings{}
-	out.TenantIds = in.TenantIds
-	out.LoginPageUri = direct.StringValue_ToProto(mapCtx, in.LoginPageURI)
-	return out
-}
 func IAPSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.IapSettings) *krm.IAPSettingsSpec {
 	if in == nil {
 		return nil
@@ -184,41 +40,63 @@ func IAPSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.IAPSettingsSpec)
 	out.ApplicationSettings = ApplicationSettings_ToProto(mapCtx, in.ApplicationSettings)
 	return out
 }
-func OAuthSettings_FromProto(mapCtx *direct.MapContext, in *pb.OAuthSettings) *krm.OAuthSettings {
+func IapTunnelDestGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TunnelDestGroup) *krm.IapTunnelDestGroupObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OAuthSettings{}
-	out.LoginHint = direct.StringValue_FromProto(mapCtx, in.GetLoginHint())
-	out.ProgrammaticClients = in.ProgrammaticClients
+	out := &krm.IapTunnelDestGroupObservedState{}
+	// MISSING: Name
+	// MISSING: Cidrs
+	// MISSING: Fqdns
 	return out
 }
-func OAuthSettings_ToProto(mapCtx *direct.MapContext, in *krm.OAuthSettings) *pb.OAuthSettings {
+func IapTunnelDestGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IapTunnelDestGroupObservedState) *pb.TunnelDestGroup {
 	if in == nil {
 		return nil
 	}
-	out := &pb.OAuthSettings{}
-	out.LoginHint = direct.StringValue_ToProto(mapCtx, in.LoginHint)
-	out.ProgrammaticClients = in.ProgrammaticClients
+	out := &pb.TunnelDestGroup{}
+	// MISSING: Name
+	// MISSING: Cidrs
+	// MISSING: Fqdns
 	return out
 }
-func ReauthSettings_FromProto(mapCtx *direct.MapContext, in *pb.ReauthSettings) *krm.ReauthSettings {
+func IapTunnelDestGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.TunnelDestGroup) *krm.IapTunnelDestGroupSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ReauthSettings{}
-	out.Method = direct.Enum_FromProto(mapCtx, in.GetMethod())
-	out.MaxAge = direct.StringDuration_FromProto(mapCtx, in.GetMaxAge())
-	out.PolicyType = direct.Enum_FromProto(mapCtx, in.GetPolicyType())
+	out := &krm.IapTunnelDestGroupSpec{}
+	// MISSING: Name
+	// MISSING: Cidrs
+	// MISSING: Fqdns
 	return out
 }
-func ReauthSettings_ToProto(mapCtx *direct.MapContext, in *krm.ReauthSettings) *pb.ReauthSettings {
+func IapTunnelDestGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.IapTunnelDestGroupSpec) *pb.TunnelDestGroup {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ReauthSettings{}
-	out.Method = direct.Enum_ToProto[pb.ReauthSettings_Method](mapCtx, in.Method)
-	out.MaxAge = direct.StringDuration_ToProto(mapCtx, in.MaxAge)
-	out.PolicyType = direct.Enum_ToProto[pb.ReauthSettings_PolicyType](mapCtx, in.PolicyType)
+	out := &pb.TunnelDestGroup{}
+	// MISSING: Name
+	// MISSING: Cidrs
+	// MISSING: Fqdns
+	return out
+}
+func TunnelDestGroup_FromProto(mapCtx *direct.MapContext, in *pb.TunnelDestGroup) *krm.TunnelDestGroup {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TunnelDestGroup{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Cidrs = in.Cidrs
+	out.Fqdns = in.Fqdns
+	return out
+}
+func TunnelDestGroup_ToProto(mapCtx *direct.MapContext, in *krm.TunnelDestGroup) *pb.TunnelDestGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TunnelDestGroup{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Cidrs = in.Cidrs
+	out.Fqdns = in.Fqdns
 	return out
 }
