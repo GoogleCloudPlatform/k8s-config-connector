@@ -15,10 +15,10 @@
 package datafusion
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datafusion/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/datafusion/apiv1/datafusionpb"
+	pb "cloud.google.com/go/datafusion/apiv1beta1/datafusionpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datafusion/v1alpha1"
 )
 func Accelerator_FromProto(mapCtx *direct.MapContext, in *pb.Accelerator) *krm.Accelerator {
 	if in == nil {
@@ -26,7 +26,6 @@ func Accelerator_FromProto(mapCtx *direct.MapContext, in *pb.Accelerator) *krm.A
 	}
 	out := &krm.Accelerator{}
 	out.AcceleratorType = direct.Enum_FromProto(mapCtx, in.GetAcceleratorType())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
 func Accelerator_ToProto(mapCtx *direct.MapContext, in *krm.Accelerator) *pb.Accelerator {
@@ -35,7 +34,6 @@ func Accelerator_ToProto(mapCtx *direct.MapContext, in *krm.Accelerator) *pb.Acc
 	}
 	out := &pb.Accelerator{}
 	out.AcceleratorType = direct.Enum_ToProto[pb.Accelerator_AcceleratorType](mapCtx, in.AcceleratorType)
-	out.State = direct.Enum_ToProto[pb.Accelerator_State](mapCtx, in.State)
 	return out
 }
 func CryptoKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKeyConfig) *krm.CryptoKeyConfig {
@@ -52,146 +50,6 @@ func CryptoKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.CryptoKeyConfig)
 	}
 	out := &pb.CryptoKeyConfig{}
 	out.KeyReference = direct.ValueOf(in.KeyReference)
-	return out
-}
-func DatafusionInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.DatafusionInstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatafusionInstanceObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Type
-	// MISSING: EnableStackdriverLogging
-	// MISSING: EnableStackdriverMonitoring
-	// MISSING: PrivateInstance
-	// MISSING: NetworkConfig
-	// MISSING: Labels
-	// MISSING: Options
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: ServiceEndpoint
-	// MISSING: Zone
-	// MISSING: Version
-	// MISSING: ServiceAccount
-	// MISSING: DisplayName
-	// MISSING: AvailableVersion
-	// MISSING: ApiEndpoint
-	// MISSING: GcsBucket
-	// MISSING: Accelerators
-	// MISSING: P4ServiceAccount
-	// MISSING: TenantProjectID
-	// MISSING: DataprocServiceAccount
-	// MISSING: EnableRbac
-	// MISSING: CryptoKeyConfig
-	// MISSING: DisabledReason
-	return out
-}
-func DatafusionInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatafusionInstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Type
-	// MISSING: EnableStackdriverLogging
-	// MISSING: EnableStackdriverMonitoring
-	// MISSING: PrivateInstance
-	// MISSING: NetworkConfig
-	// MISSING: Labels
-	// MISSING: Options
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: ServiceEndpoint
-	// MISSING: Zone
-	// MISSING: Version
-	// MISSING: ServiceAccount
-	// MISSING: DisplayName
-	// MISSING: AvailableVersion
-	// MISSING: ApiEndpoint
-	// MISSING: GcsBucket
-	// MISSING: Accelerators
-	// MISSING: P4ServiceAccount
-	// MISSING: TenantProjectID
-	// MISSING: DataprocServiceAccount
-	// MISSING: EnableRbac
-	// MISSING: CryptoKeyConfig
-	// MISSING: DisabledReason
-	return out
-}
-func DatafusionInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.DatafusionInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatafusionInstanceSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Type
-	// MISSING: EnableStackdriverLogging
-	// MISSING: EnableStackdriverMonitoring
-	// MISSING: PrivateInstance
-	// MISSING: NetworkConfig
-	// MISSING: Labels
-	// MISSING: Options
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: ServiceEndpoint
-	// MISSING: Zone
-	// MISSING: Version
-	// MISSING: ServiceAccount
-	// MISSING: DisplayName
-	// MISSING: AvailableVersion
-	// MISSING: ApiEndpoint
-	// MISSING: GcsBucket
-	// MISSING: Accelerators
-	// MISSING: P4ServiceAccount
-	// MISSING: TenantProjectID
-	// MISSING: DataprocServiceAccount
-	// MISSING: EnableRbac
-	// MISSING: CryptoKeyConfig
-	// MISSING: DisabledReason
-	return out
-}
-func DatafusionInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatafusionInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Type
-	// MISSING: EnableStackdriverLogging
-	// MISSING: EnableStackdriverMonitoring
-	// MISSING: PrivateInstance
-	// MISSING: NetworkConfig
-	// MISSING: Labels
-	// MISSING: Options
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: ServiceEndpoint
-	// MISSING: Zone
-	// MISSING: Version
-	// MISSING: ServiceAccount
-	// MISSING: DisplayName
-	// MISSING: AvailableVersion
-	// MISSING: ApiEndpoint
-	// MISSING: GcsBucket
-	// MISSING: Accelerators
-	// MISSING: P4ServiceAccount
-	// MISSING: TenantProjectID
-	// MISSING: DataprocServiceAccount
-	// MISSING: EnableRbac
-	// MISSING: CryptoKeyConfig
-	// MISSING: DisabledReason
 	return out
 }
 func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instance {
