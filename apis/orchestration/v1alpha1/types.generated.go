@@ -15,11 +15,11 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.orchestration.airflow.service.v1.UserWorkloadsSecret
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1beta1.UserWorkloadsSecret
 type UserWorkloadsSecret struct {
 	// Identifier. The resource name of the Secret, in the form:
 	//  "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsSecrets/{userWorkloadsSecretId}"
-	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.UserWorkloadsSecret.name
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1beta1.UserWorkloadsSecret.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. The "data" field of Kubernetes Secret, organized in key-value
@@ -33,6 +33,6 @@ type UserWorkloadsSecret struct {
 	//    "example": "ZXhhbXBsZV92YWx1ZQ==",
 	//    "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
 	//  }
-	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.UserWorkloadsSecret.data
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1beta1.UserWorkloadsSecret.data
 	Data map[string]string `json:"data,omitempty"`
 }

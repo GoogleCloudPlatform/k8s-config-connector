@@ -15,47 +15,11 @@
 package orchestration
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orchestration/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/orchestration/airflow/service/apiv1beta1/servicepb"
 )
-func OrchestrationUserWorkloadsSecretObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UserWorkloadsSecret) *krm.OrchestrationUserWorkloadsSecretObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OrchestrationUserWorkloadsSecretObservedState{}
-	// MISSING: Name
-	// MISSING: Data
-	return out
-}
-func OrchestrationUserWorkloadsSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OrchestrationUserWorkloadsSecretObservedState) *pb.UserWorkloadsSecret {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserWorkloadsSecret{}
-	// MISSING: Name
-	// MISSING: Data
-	return out
-}
-func OrchestrationUserWorkloadsSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.UserWorkloadsSecret) *krm.OrchestrationUserWorkloadsSecretSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OrchestrationUserWorkloadsSecretSpec{}
-	// MISSING: Name
-	// MISSING: Data
-	return out
-}
-func OrchestrationUserWorkloadsSecretSpec_ToProto(mapCtx *direct.MapContext, in *krm.OrchestrationUserWorkloadsSecretSpec) *pb.UserWorkloadsSecret {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserWorkloadsSecret{}
-	// MISSING: Name
-	// MISSING: Data
-	return out
-}
 func UserWorkloadsSecret_FromProto(mapCtx *direct.MapContext, in *pb.UserWorkloadsSecret) *krm.UserWorkloadsSecret {
 	if in == nil {
 		return nil
