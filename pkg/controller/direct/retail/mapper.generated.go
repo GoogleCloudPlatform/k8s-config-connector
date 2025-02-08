@@ -16,7 +16,7 @@ package retail
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/retail/apiv2/retailpb"
+	pb "cloud.google.com/go/retail/apiv2beta/retailpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/retail/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -156,93 +156,5 @@ func Model_ServingConfigList_ToProto(mapCtx *direct.MapContext, in *krm.Model_Se
 	}
 	out := &pb.Model_ServingConfigList{}
 	out.ServingConfigIds = in.ServingConfigIds
-	return out
-}
-func RetailModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.RetailModelObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RetailModelObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TrainingState
-	// MISSING: ServingState
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Type
-	// MISSING: OptimizationObjective
-	// MISSING: PeriodicTuningState
-	// MISSING: LastTuneTime
-	// MISSING: TuningOperation
-	// MISSING: DataState
-	// MISSING: FilteringOption
-	// MISSING: ServingConfigLists
-	// MISSING: ModelFeaturesConfig
-	return out
-}
-func RetailModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RetailModelObservedState) *pb.Model {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Model{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TrainingState
-	// MISSING: ServingState
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Type
-	// MISSING: OptimizationObjective
-	// MISSING: PeriodicTuningState
-	// MISSING: LastTuneTime
-	// MISSING: TuningOperation
-	// MISSING: DataState
-	// MISSING: FilteringOption
-	// MISSING: ServingConfigLists
-	// MISSING: ModelFeaturesConfig
-	return out
-}
-func RetailModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.RetailModelSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RetailModelSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TrainingState
-	// MISSING: ServingState
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Type
-	// MISSING: OptimizationObjective
-	// MISSING: PeriodicTuningState
-	// MISSING: LastTuneTime
-	// MISSING: TuningOperation
-	// MISSING: DataState
-	// MISSING: FilteringOption
-	// MISSING: ServingConfigLists
-	// MISSING: ModelFeaturesConfig
-	return out
-}
-func RetailModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.RetailModelSpec) *pb.Model {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Model{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TrainingState
-	// MISSING: ServingState
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Type
-	// MISSING: OptimizationObjective
-	// MISSING: PeriodicTuningState
-	// MISSING: LastTuneTime
-	// MISSING: TuningOperation
-	// MISSING: DataState
-	// MISSING: FilteringOption
-	// MISSING: ServingConfigLists
-	// MISSING: ModelFeaturesConfig
 	return out
 }
