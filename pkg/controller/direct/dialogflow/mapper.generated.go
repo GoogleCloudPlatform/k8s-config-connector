@@ -1,0 +1,82 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package dialogflow
+
+import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+func DialogflowKnowledgeBaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeBase) *krm.DialogflowKnowledgeBaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowKnowledgeBaseObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: LanguageCode
+	return out
+}
+func DialogflowKnowledgeBaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowKnowledgeBaseObservedState) *pb.KnowledgeBase {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KnowledgeBase{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: LanguageCode
+	return out
+}
+func DialogflowKnowledgeBaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeBase) *krm.DialogflowKnowledgeBaseSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowKnowledgeBaseSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: LanguageCode
+	return out
+}
+func DialogflowKnowledgeBaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowKnowledgeBaseSpec) *pb.KnowledgeBase {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KnowledgeBase{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: LanguageCode
+	return out
+}
+func KnowledgeBase_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeBase) *krm.KnowledgeBase {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KnowledgeBase{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	return out
+}
+func KnowledgeBase_ToProto(mapCtx *direct.MapContext, in *krm.KnowledgeBase) *pb.KnowledgeBase {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KnowledgeBase{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	return out
+}
