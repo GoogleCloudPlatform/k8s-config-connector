@@ -15,67 +15,11 @@
 package datacatalog
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/datacatalog/apiv1beta1/datacatalogpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 )
-func DatacatalogTaxonomyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy) *krm.DatacatalogTaxonomyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogTaxonomyObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PolicyTagCount
-	// MISSING: TaxonomyTimestamps
-	// MISSING: ActivatedPolicyTypes
-	// MISSING: Service
-	return out
-}
-func DatacatalogTaxonomyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogTaxonomyObservedState) *pb.Taxonomy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Taxonomy{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PolicyTagCount
-	// MISSING: TaxonomyTimestamps
-	// MISSING: ActivatedPolicyTypes
-	// MISSING: Service
-	return out
-}
-func DatacatalogTaxonomySpec_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy) *krm.DatacatalogTaxonomySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogTaxonomySpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PolicyTagCount
-	// MISSING: TaxonomyTimestamps
-	// MISSING: ActivatedPolicyTypes
-	// MISSING: Service
-	return out
-}
-func DatacatalogTaxonomySpec_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogTaxonomySpec) *pb.Taxonomy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Taxonomy{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: PolicyTagCount
-	// MISSING: TaxonomyTimestamps
-	// MISSING: ActivatedPolicyTypes
-	// MISSING: Service
-	return out
-}
 func SystemTimestamps_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krm.SystemTimestamps {
 	if in == nil {
 		return nil
