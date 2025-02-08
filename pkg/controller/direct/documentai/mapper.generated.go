@@ -15,10 +15,10 @@
 package documentai
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/documentai/apiv1beta3/documentaipb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 )
 func DocumentSchema_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema) *krm.DocumentSchema {
 	if in == nil {
@@ -50,8 +50,10 @@ func DocumentSchema_EntityType_FromProto(mapCtx *direct.MapContext, in *pb.Docum
 	out.EnumValues = DocumentSchema_EntityType_EnumValues_FromProto(mapCtx, in.GetEnumValues())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
 	out.BaseTypes = in.BaseTypes
 	out.Properties = direct.Slice_FromProto(mapCtx, in.Properties, DocumentSchema_EntityType_Property_FromProto)
+	out.EntityTypeMetadata = EntityTypeMetadata_FromProto(mapCtx, in.GetEntityTypeMetadata())
 	return out
 }
 func DocumentSchema_EntityType_ToProto(mapCtx *direct.MapContext, in *krm.DocumentSchema_EntityType) *pb.DocumentSchema_EntityType {
@@ -64,8 +66,10 @@ func DocumentSchema_EntityType_ToProto(mapCtx *direct.MapContext, in *krm.Docume
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
 	out.BaseTypes = in.BaseTypes
 	out.Properties = direct.Slice_ToProto(mapCtx, in.Properties, DocumentSchema_EntityType_Property_ToProto)
+	out.EntityTypeMetadata = EntityTypeMetadata_ToProto(mapCtx, in.EntityTypeMetadata)
 	return out
 }
 func DocumentSchema_EntityType_EnumValues_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_EntityType_EnumValues) *krm.DocumentSchema_EntityType_EnumValues {
@@ -90,9 +94,11 @@ func DocumentSchema_EntityType_Property_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.DocumentSchema_EntityType_Property{}
 	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ValueType = direct.LazyPtr(in.GetValueType())
 	out.OccurrenceType = direct.Enum_FromProto(mapCtx, in.GetOccurrenceType())
+	out.PropertyMetadata = PropertyMetadata_FromProto(mapCtx, in.GetPropertyMetadata())
 	return out
 }
 func DocumentSchema_EntityType_Property_ToProto(mapCtx *direct.MapContext, in *krm.DocumentSchema_EntityType_Property) *pb.DocumentSchema_EntityType_Property {
@@ -101,93 +107,11 @@ func DocumentSchema_EntityType_Property_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.DocumentSchema_EntityType_Property{}
 	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.ValueType = direct.ValueOf(in.ValueType)
 	out.OccurrenceType = direct.Enum_ToProto[pb.DocumentSchema_EntityType_Property_OccurrenceType](mapCtx, in.OccurrenceType)
-	return out
-}
-func DocumentaiProcessorVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProcessorVersion) *krm.DocumentaiProcessorVersionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentaiProcessorVersionObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DocumentSchema
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: LatestEvaluation
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	// MISSING: GoogleManaged
-	// MISSING: DeprecationInfo
-	// MISSING: ModelType
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: GenAiModelInfo
-	return out
-}
-func DocumentaiProcessorVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DocumentaiProcessorVersionObservedState) *pb.ProcessorVersion {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProcessorVersion{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DocumentSchema
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: LatestEvaluation
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	// MISSING: GoogleManaged
-	// MISSING: DeprecationInfo
-	// MISSING: ModelType
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: GenAiModelInfo
-	return out
-}
-func DocumentaiProcessorVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.ProcessorVersion) *krm.DocumentaiProcessorVersionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentaiProcessorVersionSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DocumentSchema
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: LatestEvaluation
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	// MISSING: GoogleManaged
-	// MISSING: DeprecationInfo
-	// MISSING: ModelType
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: GenAiModelInfo
-	return out
-}
-func DocumentaiProcessorVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DocumentaiProcessorVersionSpec) *pb.ProcessorVersion {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProcessorVersion{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DocumentSchema
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: LatestEvaluation
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	// MISSING: GoogleManaged
-	// MISSING: DeprecationInfo
-	// MISSING: ModelType
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: GenAiModelInfo
+	out.PropertyMetadata = PropertyMetadata_ToProto(mapCtx, in.PropertyMetadata)
 	return out
 }
 func EvaluationReference_FromProto(mapCtx *direct.MapContext, in *pb.EvaluationReference) *krm.EvaluationReference {
@@ -370,5 +294,23 @@ func ProcessorVersion_GenAiModelInfo_FoundationGenAiModelInfo_ToProto(mapCtx *di
 	out := &pb.ProcessorVersion_GenAiModelInfo_FoundationGenAiModelInfo{}
 	out.FinetuningAllowed = direct.ValueOf(in.FinetuningAllowed)
 	out.MinTrainLabeledDocuments = direct.ValueOf(in.MinTrainLabeledDocuments)
+	return out
+}
+func SummaryOptions_FromProto(mapCtx *direct.MapContext, in *pb.SummaryOptions) *krm.SummaryOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SummaryOptions{}
+	out.Length = direct.Enum_FromProto(mapCtx, in.GetLength())
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	return out
+}
+func SummaryOptions_ToProto(mapCtx *direct.MapContext, in *krm.SummaryOptions) *pb.SummaryOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SummaryOptions{}
+	out.Length = direct.Enum_ToProto[pb.SummaryOptions_Length](mapCtx, in.Length)
+	out.Format = direct.Enum_ToProto[pb.SummaryOptions_Format](mapCtx, in.Format)
 	return out
 }
