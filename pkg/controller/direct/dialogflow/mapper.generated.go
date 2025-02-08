@@ -15,10 +15,10 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AgentValidationResult_FromProto(mapCtx *direct.MapContext, in *pb.AgentValidationResult) *krm.AgentValidationResult {
 	if in == nil {
@@ -36,42 +36,6 @@ func AgentValidationResult_ToProto(mapCtx *direct.MapContext, in *krm.AgentValid
 	out := &pb.AgentValidationResult{}
 	out.Name = direct.ValueOf(in.Name)
 	out.FlowValidationResults = direct.Slice_ToProto(mapCtx, in.FlowValidationResults, FlowValidationResult_ToProto)
-	return out
-}
-func DialogflowAgentValidationResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AgentValidationResult) *krm.DialogflowAgentValidationResultObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowAgentValidationResultObservedState{}
-	// MISSING: Name
-	// MISSING: FlowValidationResults
-	return out
-}
-func DialogflowAgentValidationResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowAgentValidationResultObservedState) *pb.AgentValidationResult {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AgentValidationResult{}
-	// MISSING: Name
-	// MISSING: FlowValidationResults
-	return out
-}
-func DialogflowAgentValidationResultSpec_FromProto(mapCtx *direct.MapContext, in *pb.AgentValidationResult) *krm.DialogflowAgentValidationResultSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowAgentValidationResultSpec{}
-	// MISSING: Name
-	// MISSING: FlowValidationResults
-	return out
-}
-func DialogflowAgentValidationResultSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowAgentValidationResultSpec) *pb.AgentValidationResult {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AgentValidationResult{}
-	// MISSING: Name
-	// MISSING: FlowValidationResults
 	return out
 }
 func FlowValidationResult_FromProto(mapCtx *direct.MapContext, in *pb.FlowValidationResult) *krm.FlowValidationResult {

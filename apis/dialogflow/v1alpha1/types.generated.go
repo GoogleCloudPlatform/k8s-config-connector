@@ -15,66 +15,66 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.AgentValidationResult
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.AgentValidationResult
 type AgentValidationResult struct {
 	// The unique identifier of the agent validation result.
 	//  Format:
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AgentValidationResult.name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.AgentValidationResult.name
 	Name *string `json:"name,omitempty"`
 
 	// Contains all flow validation results.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AgentValidationResult.flow_validation_results
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.AgentValidationResult.flow_validation_results
 	FlowValidationResults []FlowValidationResult `json:"flowValidationResults,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.FlowValidationResult
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.FlowValidationResult
 type FlowValidationResult struct {
 	// The unique identifier of the flow validation result.
 	//  Format:
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.FlowValidationResult.name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.FlowValidationResult.name
 	Name *string `json:"name,omitempty"`
 
 	// Contains all validation messages.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.FlowValidationResult.validation_messages
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.FlowValidationResult.validation_messages
 	ValidationMessages []ValidationMessage `json:"validationMessages,omitempty"`
 
 	// Last time the flow was validated.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.FlowValidationResult.update_time
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.FlowValidationResult.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.ResourceName
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.ResourceName
 type ResourceName struct {
 	// Name.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResourceName.name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ResourceName.name
 	Name *string `json:"name,omitempty"`
 
 	// Display name.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResourceName.display_name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ResourceName.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.ValidationMessage
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.ValidationMessage
 type ValidationMessage struct {
 	// The type of the resources where the message is found.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ValidationMessage.resource_type
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ValidationMessage.resource_type
 	ResourceType *string `json:"resourceType,omitempty"`
 
 	// The names of the resources where the message is found.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ValidationMessage.resources
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ValidationMessage.resources
 	Resources []string `json:"resources,omitempty"`
 
 	// The resource names of the resources where the message is found.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ValidationMessage.resource_names
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ValidationMessage.resource_names
 	ResourceNames []ResourceName `json:"resourceNames,omitempty"`
 
 	// Indicates the severity of the message.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ValidationMessage.severity
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ValidationMessage.severity
 	Severity *string `json:"severity,omitempty"`
 
 	// The message detail.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ValidationMessage.detail
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ValidationMessage.detail
 	Detail *string `json:"detail,omitempty"`
 }
