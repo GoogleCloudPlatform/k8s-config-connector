@@ -15,10 +15,10 @@
 package recommender
 
 import (
-	pb "cloud.google.com/go/recommender/apiv1/recommenderpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/recommender/apiv1beta1/recommenderpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recommender/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func CostProjection_FromProto(mapCtx *direct.MapContext, in *pb.CostProjection) *krm.CostProjection {
 	if in == nil {
@@ -27,7 +27,6 @@ func CostProjection_FromProto(mapCtx *direct.MapContext, in *pb.CostProjection) 
 	out := &krm.CostProjection{}
 	out.Cost = Money_FromProto(mapCtx, in.GetCost())
 	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
-	out.CostInLocalCurrency = Money_FromProto(mapCtx, in.GetCostInLocalCurrency())
 	return out
 }
 func CostProjection_ToProto(mapCtx *direct.MapContext, in *krm.CostProjection) *pb.CostProjection {
@@ -37,7 +36,6 @@ func CostProjection_ToProto(mapCtx *direct.MapContext, in *krm.CostProjection) *
 	out := &pb.CostProjection{}
 	out.Cost = Money_ToProto(mapCtx, in.Cost)
 	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
-	out.CostInLocalCurrency = Money_ToProto(mapCtx, in.CostInLocalCurrency)
 	return out
 }
 func Impact_FromProto(mapCtx *direct.MapContext, in *pb.Impact) *krm.Impact {
@@ -49,7 +47,6 @@ func Impact_FromProto(mapCtx *direct.MapContext, in *pb.Impact) *krm.Impact {
 	out.CostProjection = CostProjection_FromProto(mapCtx, in.GetCostProjection())
 	out.SecurityProjection = SecurityProjection_FromProto(mapCtx, in.GetSecurityProjection())
 	out.SustainabilityProjection = SustainabilityProjection_FromProto(mapCtx, in.GetSustainabilityProjection())
-	out.ReliabilityProjection = ReliabilityProjection_FromProto(mapCtx, in.GetReliabilityProjection())
 	return out
 }
 func Impact_ToProto(mapCtx *direct.MapContext, in *krm.Impact) *pb.Impact {
@@ -66,9 +63,6 @@ func Impact_ToProto(mapCtx *direct.MapContext, in *krm.Impact) *pb.Impact {
 	}
 	if oneof := SustainabilityProjection_ToProto(mapCtx, in.SustainabilityProjection); oneof != nil {
 		out.Projection = &pb.Impact_SustainabilityProjection{SustainabilityProjection: oneof}
-	}
-	if oneof := ReliabilityProjection_ToProto(mapCtx, in.ReliabilityProjection); oneof != nil {
-		out.Projection = &pb.Impact_ReliabilityProjection{ReliabilityProjection: oneof}
 	}
 	return out
 }
@@ -214,100 +208,6 @@ func Recommendation_InsightReference_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Recommendation_InsightReference{}
 	out.Insight = direct.ValueOf(in.Insight)
-	return out
-}
-func RecommenderRecommendationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Recommendation) *krm.RecommenderRecommendationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecommenderRecommendationObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: RecommenderSubtype
-	// MISSING: LastRefreshTime
-	// MISSING: PrimaryImpact
-	// MISSING: AdditionalImpact
-	// MISSING: Priority
-	// MISSING: Content
-	// MISSING: StateInfo
-	// MISSING: Etag
-	// MISSING: AssociatedInsights
-	// MISSING: XorGroupID
-	return out
-}
-func RecommenderRecommendationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RecommenderRecommendationObservedState) *pb.Recommendation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Recommendation{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: RecommenderSubtype
-	// MISSING: LastRefreshTime
-	// MISSING: PrimaryImpact
-	// MISSING: AdditionalImpact
-	// MISSING: Priority
-	// MISSING: Content
-	// MISSING: StateInfo
-	// MISSING: Etag
-	// MISSING: AssociatedInsights
-	// MISSING: XorGroupID
-	return out
-}
-func RecommenderRecommendationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Recommendation) *krm.RecommenderRecommendationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecommenderRecommendationSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: RecommenderSubtype
-	// MISSING: LastRefreshTime
-	// MISSING: PrimaryImpact
-	// MISSING: AdditionalImpact
-	// MISSING: Priority
-	// MISSING: Content
-	// MISSING: StateInfo
-	// MISSING: Etag
-	// MISSING: AssociatedInsights
-	// MISSING: XorGroupID
-	return out
-}
-func RecommenderRecommendationSpec_ToProto(mapCtx *direct.MapContext, in *krm.RecommenderRecommendationSpec) *pb.Recommendation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Recommendation{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: RecommenderSubtype
-	// MISSING: LastRefreshTime
-	// MISSING: PrimaryImpact
-	// MISSING: AdditionalImpact
-	// MISSING: Priority
-	// MISSING: Content
-	// MISSING: StateInfo
-	// MISSING: Etag
-	// MISSING: AssociatedInsights
-	// MISSING: XorGroupID
-	return out
-}
-func ReliabilityProjection_FromProto(mapCtx *direct.MapContext, in *pb.ReliabilityProjection) *krm.ReliabilityProjection {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ReliabilityProjection{}
-	out.Risks = direct.EnumSlice_FromProto(mapCtx, in.Risks)
-	out.Details = Details_FromProto(mapCtx, in.GetDetails())
-	return out
-}
-func ReliabilityProjection_ToProto(mapCtx *direct.MapContext, in *krm.ReliabilityProjection) *pb.ReliabilityProjection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReliabilityProjection{}
-	out.Risks = direct.EnumSlice_ToProto[pb.ReliabilityProjection_RiskType](mapCtx, in.Risks)
-	out.Details = Details_ToProto(mapCtx, in.Details)
 	return out
 }
 func SecurityProjection_FromProto(mapCtx *direct.MapContext, in *pb.SecurityProjection) *krm.SecurityProjection {
