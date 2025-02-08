@@ -15,6 +15,64 @@
 package v1alpha1
 
 
+// +kcc:proto=google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory
+type WorkstationConfig_EphemeralDirectory struct {
+	// An EphemeralDirectory backed by a Compute Engine persistent disk.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.gce_pd
+	GCEPD *WorkstationConfig_EphemeralDirectory_GcePersistentDisk `json:"gcePD,omitempty"`
+
+	// Required. Location of this directory in the running workstation.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.mount_path
+	MountPath *string `json:"mountPath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk
+type WorkstationConfig_EphemeralDirectory_GcePersistentDisk struct {
+	// Optional. Type of the disk to use. Defaults to `"pd-standard"`.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Optional. Name of the snapshot to use as the source for the disk. Must
+	//  be empty if
+	//  [source_image][google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.source_image]
+	//  is set. Updating
+	//  [source_snapshot][google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.source_snapshot]
+	//  will update content in the ephemeral directory after the workstation is
+	//  restarted. This field is mutable.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.source_snapshot
+	SourceSnapshot *string `json:"sourceSnapshot,omitempty"`
+
+	// Optional. Name of the disk image to use as the source for the disk.
+	//  Must be empty if
+	//  [source_snapshot][google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.source_snapshot]
+	//  is set. Updating
+	//  [source_image][google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.source_image]
+	//  will update content in the ephemeral directory after the workstation is
+	//  restarted. This field is mutable.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.source_image
+	SourceImage *string `json:"sourceImage,omitempty"`
+
+	// Optional. Whether the disk is read only. If true, the disk may be
+	//  shared by multiple VMs and
+	//  [source_snapshot][google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.source_snapshot]
+	//  must be set.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationConfig.EphemeralDirectory.GcePersistentDisk.read_only
+	ReadOnly *bool `json:"readOnly,omitempty"`
+}
+
+// +kcc:proto=google.cloud.workstations.v1beta.WorkstationConfig.Host.GceInstance.Accelerator
+type WorkstationConfig_Host_GceInstance_Accelerator struct {
+	// Optional. Type of accelerator resource to attach to the instance, for
+	//  example,
+	//  `"nvidia-tesla-p100"`.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationConfig.Host.GceInstance.Accelerator.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Number of accelerator cards exposed to the instance.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationConfig.Host.GceInstance.Accelerator.count
+	Count *int32 `json:"count,omitempty"`
+}
+
 // +kcc:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
