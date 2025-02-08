@@ -16,7 +16,7 @@ package websecurityscanner
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/websecurityscanner/apiv1/websecurityscannerpb"
+	pb "cloud.google.com/go/websecurityscanner/apiv1beta/websecurityscannerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/websecurityscanner/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -27,7 +27,6 @@ func Finding_FromProto(mapCtx *direct.MapContext, in *pb.Finding) *krm.Finding {
 	out := &krm.Finding{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.FindingType = direct.LazyPtr(in.GetFindingType())
-	// MISSING: Severity
 	out.HTTPMethod = direct.LazyPtr(in.GetHttpMethod())
 	out.FuzzedURL = direct.LazyPtr(in.GetFuzzedUrl())
 	out.Body = direct.LazyPtr(in.GetBody())
@@ -42,7 +41,6 @@ func Finding_FromProto(mapCtx *direct.MapContext, in *pb.Finding) *krm.Finding {
 	out.VulnerableHeaders = VulnerableHeaders_FromProto(mapCtx, in.GetVulnerableHeaders())
 	out.VulnerableParameters = VulnerableParameters_FromProto(mapCtx, in.GetVulnerableParameters())
 	out.Xss = Xss_FromProto(mapCtx, in.GetXss())
-	// MISSING: Xxe
 	return out
 }
 func Finding_ToProto(mapCtx *direct.MapContext, in *krm.Finding) *pb.Finding {
@@ -52,7 +50,6 @@ func Finding_ToProto(mapCtx *direct.MapContext, in *krm.Finding) *pb.Finding {
 	out := &pb.Finding{}
 	out.Name = direct.ValueOf(in.Name)
 	out.FindingType = direct.ValueOf(in.FindingType)
-	// MISSING: Severity
 	out.HttpMethod = direct.ValueOf(in.HTTPMethod)
 	out.FuzzedUrl = direct.ValueOf(in.FuzzedURL)
 	out.Body = direct.ValueOf(in.Body)
@@ -67,57 +64,6 @@ func Finding_ToProto(mapCtx *direct.MapContext, in *krm.Finding) *pb.Finding {
 	out.VulnerableHeaders = VulnerableHeaders_ToProto(mapCtx, in.VulnerableHeaders)
 	out.VulnerableParameters = VulnerableParameters_ToProto(mapCtx, in.VulnerableParameters)
 	out.Xss = Xss_ToProto(mapCtx, in.Xss)
-	// MISSING: Xxe
-	return out
-}
-func FindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Finding) *krm.FindingObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FindingObservedState{}
-	// MISSING: Name
-	// MISSING: FindingType
-	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
-	// MISSING: HTTPMethod
-	// MISSING: FuzzedURL
-	// MISSING: Body
-	// MISSING: Description
-	// MISSING: ReproductionURL
-	// MISSING: FrameURL
-	// MISSING: FinalURL
-	// MISSING: TrackingID
-	// MISSING: Form
-	// MISSING: OutdatedLibrary
-	// MISSING: ViolatingResource
-	// MISSING: VulnerableHeaders
-	// MISSING: VulnerableParameters
-	// MISSING: Xss
-	out.Xxe = Xxe_FromProto(mapCtx, in.GetXxe())
-	return out
-}
-func FindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FindingObservedState) *pb.Finding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Finding{}
-	// MISSING: Name
-	// MISSING: FindingType
-	out.Severity = direct.Enum_ToProto[pb.Finding_Severity](mapCtx, in.Severity)
-	// MISSING: HTTPMethod
-	// MISSING: FuzzedURL
-	// MISSING: Body
-	// MISSING: Description
-	// MISSING: ReproductionURL
-	// MISSING: FrameURL
-	// MISSING: FinalURL
-	// MISSING: TrackingID
-	// MISSING: Form
-	// MISSING: OutdatedLibrary
-	// MISSING: ViolatingResource
-	// MISSING: VulnerableHeaders
-	// MISSING: VulnerableParameters
-	// MISSING: Xss
-	out.Xxe = Xxe_ToProto(mapCtx, in.Xxe)
 	return out
 }
 func Form_FromProto(mapCtx *direct.MapContext, in *pb.Form) *krm.Form {
@@ -228,106 +174,6 @@ func VulnerableParameters_ToProto(mapCtx *direct.MapContext, in *krm.VulnerableP
 	out.ParameterNames = in.ParameterNames
 	return out
 }
-func WebsecurityscannerFindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Finding) *krm.WebsecurityscannerFindingObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WebsecurityscannerFindingObservedState{}
-	// MISSING: Name
-	// MISSING: FindingType
-	// MISSING: Severity
-	// MISSING: HTTPMethod
-	// MISSING: FuzzedURL
-	// MISSING: Body
-	// MISSING: Description
-	// MISSING: ReproductionURL
-	// MISSING: FrameURL
-	// MISSING: FinalURL
-	// MISSING: TrackingID
-	// MISSING: Form
-	// MISSING: OutdatedLibrary
-	// MISSING: ViolatingResource
-	// MISSING: VulnerableHeaders
-	// MISSING: VulnerableParameters
-	// MISSING: Xss
-	// MISSING: Xxe
-	return out
-}
-func WebsecurityscannerFindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WebsecurityscannerFindingObservedState) *pb.Finding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Finding{}
-	// MISSING: Name
-	// MISSING: FindingType
-	// MISSING: Severity
-	// MISSING: HTTPMethod
-	// MISSING: FuzzedURL
-	// MISSING: Body
-	// MISSING: Description
-	// MISSING: ReproductionURL
-	// MISSING: FrameURL
-	// MISSING: FinalURL
-	// MISSING: TrackingID
-	// MISSING: Form
-	// MISSING: OutdatedLibrary
-	// MISSING: ViolatingResource
-	// MISSING: VulnerableHeaders
-	// MISSING: VulnerableParameters
-	// MISSING: Xss
-	// MISSING: Xxe
-	return out
-}
-func WebsecurityscannerFindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.Finding) *krm.WebsecurityscannerFindingSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WebsecurityscannerFindingSpec{}
-	// MISSING: Name
-	// MISSING: FindingType
-	// MISSING: Severity
-	// MISSING: HTTPMethod
-	// MISSING: FuzzedURL
-	// MISSING: Body
-	// MISSING: Description
-	// MISSING: ReproductionURL
-	// MISSING: FrameURL
-	// MISSING: FinalURL
-	// MISSING: TrackingID
-	// MISSING: Form
-	// MISSING: OutdatedLibrary
-	// MISSING: ViolatingResource
-	// MISSING: VulnerableHeaders
-	// MISSING: VulnerableParameters
-	// MISSING: Xss
-	// MISSING: Xxe
-	return out
-}
-func WebsecurityscannerFindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.WebsecurityscannerFindingSpec) *pb.Finding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Finding{}
-	// MISSING: Name
-	// MISSING: FindingType
-	// MISSING: Severity
-	// MISSING: HTTPMethod
-	// MISSING: FuzzedURL
-	// MISSING: Body
-	// MISSING: Description
-	// MISSING: ReproductionURL
-	// MISSING: FrameURL
-	// MISSING: FinalURL
-	// MISSING: TrackingID
-	// MISSING: Form
-	// MISSING: OutdatedLibrary
-	// MISSING: ViolatingResource
-	// MISSING: VulnerableHeaders
-	// MISSING: VulnerableParameters
-	// MISSING: Xss
-	// MISSING: Xxe
-	return out
-}
 func Xss_FromProto(mapCtx *direct.MapContext, in *pb.Xss) *krm.Xss {
 	if in == nil {
 		return nil
@@ -335,8 +181,6 @@ func Xss_FromProto(mapCtx *direct.MapContext, in *pb.Xss) *krm.Xss {
 	out := &krm.Xss{}
 	out.StackTraces = in.StackTraces
 	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
-	out.AttackVector = direct.Enum_FromProto(mapCtx, in.GetAttackVector())
-	out.StoredXssSeedingURL = direct.LazyPtr(in.GetStoredXssSeedingUrl())
 	return out
 }
 func Xss_ToProto(mapCtx *direct.MapContext, in *krm.Xss) *pb.Xss {
@@ -346,25 +190,5 @@ func Xss_ToProto(mapCtx *direct.MapContext, in *krm.Xss) *pb.Xss {
 	out := &pb.Xss{}
 	out.StackTraces = in.StackTraces
 	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
-	out.AttackVector = direct.Enum_ToProto[pb.Xss_AttackVector](mapCtx, in.AttackVector)
-	out.StoredXssSeedingUrl = direct.ValueOf(in.StoredXssSeedingURL)
-	return out
-}
-func Xxe_FromProto(mapCtx *direct.MapContext, in *pb.Xxe) *krm.Xxe {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Xxe{}
-	out.PayloadValue = direct.LazyPtr(in.GetPayloadValue())
-	out.PayloadLocation = direct.Enum_FromProto(mapCtx, in.GetPayloadLocation())
-	return out
-}
-func Xxe_ToProto(mapCtx *direct.MapContext, in *krm.Xxe) *pb.Xxe {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Xxe{}
-	out.PayloadValue = direct.ValueOf(in.PayloadValue)
-	out.PayloadLocation = direct.Enum_ToProto[pb.Xxe_Location](mapCtx, in.PayloadLocation)
 	return out
 }
