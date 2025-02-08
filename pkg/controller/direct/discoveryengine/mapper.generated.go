@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,35 +15,87 @@
 package discoveryengine
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-
-func DataStore_BillingEstimation_FromProto(mapCtx *direct.MapContext, in *pb.DataStore_BillingEstimation) *krm.DataStore_BillingEstimation {
+func Chunk_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.Chunk {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataStore_BillingEstimation{}
-	out.StructuredDataSize = direct.LazyPtr(in.GetStructuredDataSize())
-	out.UnstructuredDataSize = direct.LazyPtr(in.GetUnstructuredDataSize())
-	out.WebsiteDataSize = direct.LazyPtr(in.GetWebsiteDataSize())
-	out.StructuredDataUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStructuredDataUpdateTime())
-	out.UnstructuredDataUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUnstructuredDataUpdateTime())
-	out.WebsiteDataUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetWebsiteDataUpdateTime())
+	out := &krm.Chunk{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Content = direct.LazyPtr(in.GetContent())
+	// MISSING: RelevanceScore
+	out.DocumentMetadata = Chunk_DocumentMetadata_FromProto(mapCtx, in.GetDocumentMetadata())
+	// MISSING: DerivedStructData
+	out.PageSpan = Chunk_PageSpan_FromProto(mapCtx, in.GetPageSpan())
+	// MISSING: ChunkMetadata
 	return out
 }
-func DataStore_BillingEstimation_ToProto(mapCtx *direct.MapContext, in *krm.DataStore_BillingEstimation) *pb.DataStore_BillingEstimation {
+func Chunk_ToProto(mapCtx *direct.MapContext, in *krm.Chunk) *pb.Chunk {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DataStore_BillingEstimation{}
-	out.StructuredDataSize = direct.ValueOf(in.StructuredDataSize)
-	out.UnstructuredDataSize = direct.ValueOf(in.UnstructuredDataSize)
-	out.WebsiteDataSize = direct.ValueOf(in.WebsiteDataSize)
-	out.StructuredDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.StructuredDataUpdateTime)
-	out.UnstructuredDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UnstructuredDataUpdateTime)
-	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
+	out := &pb.Chunk{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Id = direct.ValueOf(in.ID)
+	out.Content = direct.ValueOf(in.Content)
+	// MISSING: RelevanceScore
+	out.DocumentMetadata = Chunk_DocumentMetadata_ToProto(mapCtx, in.DocumentMetadata)
+	// MISSING: DerivedStructData
+	out.PageSpan = Chunk_PageSpan_ToProto(mapCtx, in.PageSpan)
+	// MISSING: ChunkMetadata
+	return out
+}
+func ChunkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.ChunkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChunkObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Content
+	out.RelevanceScore = in.RelevanceScore
+	// MISSING: DocumentMetadata
+	out.DerivedStructData = DerivedStructData_FromProto(mapCtx, in.GetDerivedStructData())
+	// MISSING: PageSpan
+	out.ChunkMetadata = Chunk_ChunkMetadata_FromProto(mapCtx, in.GetChunkMetadata())
+	return out
+}
+func ChunkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChunkObservedState) *pb.Chunk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Chunk{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Content
+	out.RelevanceScore = in.RelevanceScore
+	// MISSING: DocumentMetadata
+	out.DerivedStructData = DerivedStructData_ToProto(mapCtx, in.DerivedStructData)
+	// MISSING: PageSpan
+	out.ChunkMetadata = Chunk_ChunkMetadata_ToProto(mapCtx, in.ChunkMetadata)
+	return out
+}
+func Chunk_PageSpan_FromProto(mapCtx *direct.MapContext, in *pb.Chunk_PageSpan) *krm.Chunk_PageSpan {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Chunk_PageSpan{}
+	out.PageStart = direct.LazyPtr(in.GetPageStart())
+	out.PageEnd = direct.LazyPtr(in.GetPageEnd())
+	return out
+}
+func Chunk_PageSpan_ToProto(mapCtx *direct.MapContext, in *krm.Chunk_PageSpan) *pb.Chunk_PageSpan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Chunk_PageSpan{}
+	out.PageStart = direct.ValueOf(in.PageStart)
+	out.PageEnd = direct.ValueOf(in.PageEnd)
 	return out
 }
 func DiscoveryEngineDataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krm.DiscoveryEngineDataStoreObservedState {
@@ -108,8 +160,11 @@ func DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx *direct.Ma
 	}
 	out := &krm.DiscoveryEngineDataStoreTargetSiteObservedState{}
 	// MISSING: Name
-	out.GeneratedUriPattern = direct.LazyPtr(in.GetGeneratedUriPattern())
-	out.RootDomainUri = direct.LazyPtr(in.GetRootDomainUri())
+	// MISSING: ProvidedURIPattern
+	// MISSING: GeneratedURIPattern
+	// (near miss): "GeneratedURIPattern" vs "GeneratedUriPattern"
+	// MISSING: RootDomainURI
+	// (near miss): "RootDomainURI" vs "RootDomainUri"
 	out.SiteVerificationInfo = SiteVerificationInfo_FromProto(mapCtx, in.GetSiteVerificationInfo())
 	out.IndexingStatus = direct.Enum_FromProto(mapCtx, in.GetIndexingStatus())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -122,8 +177,11 @@ func DiscoveryEngineDataStoreTargetSiteObservedState_ToProto(mapCtx *direct.MapC
 	}
 	out := &pb.TargetSite{}
 	// MISSING: Name
-	out.GeneratedUriPattern = direct.ValueOf(in.GeneratedUriPattern)
-	out.RootDomainUri = direct.ValueOf(in.RootDomainUri)
+	// MISSING: ProvidedURIPattern
+	// MISSING: GeneratedURIPattern
+	// (near miss): "GeneratedURIPattern" vs "GeneratedUriPattern"
+	// MISSING: RootDomainURI
+	// (near miss): "RootDomainURI" vs "RootDomainUri"
 	out.SiteVerificationInfo = SiteVerificationInfo_ToProto(mapCtx, in.SiteVerificationInfo)
 	out.IndexingStatus = direct.Enum_ToProto[pb.TargetSite_IndexingStatus](mapCtx, in.IndexingStatus)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -136,9 +194,12 @@ func DiscoveryEngineDataStoreTargetSiteSpec_FromProto(mapCtx *direct.MapContext,
 	}
 	out := &krm.DiscoveryEngineDataStoreTargetSiteSpec{}
 	// MISSING: Name
-	out.ProvidedUriPattern = direct.LazyPtr(in.GetProvidedUriPattern())
+	// MISSING: ProvidedURIPattern
+	// (near miss): "ProvidedURIPattern" vs "ProvidedUriPattern"
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
+	// MISSING: GeneratedURIPattern
+	// MISSING: RootDomainURI
 	return out
 }
 func DiscoveryEngineDataStoreTargetSiteSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataStoreTargetSiteSpec) *pb.TargetSite {
@@ -147,9 +208,12 @@ func DiscoveryEngineDataStoreTargetSiteSpec_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.TargetSite{}
 	// MISSING: Name
-	out.ProvidedUriPattern = direct.ValueOf(in.ProvidedUriPattern)
+	// MISSING: ProvidedURIPattern
+	// (near miss): "ProvidedURIPattern" vs "ProvidedUriPattern"
 	out.Type = direct.Enum_ToProto[pb.TargetSite_Type](mapCtx, in.Type)
 	out.ExactMatch = direct.ValueOf(in.ExactMatch)
+	// MISSING: GeneratedURIPattern
+	// MISSING: RootDomainURI
 	return out
 }
 func DiscoveryEngineEngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krm.DiscoveryEngineEngineObservedState {
@@ -176,305 +240,63 @@ func DiscoveryEngineEngineObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: DataStoreIds
 	return out
 }
-func DocumentProcessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig) *krm.DocumentProcessingConfig {
+func DiscoveryengineChunkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.DiscoveryengineChunkObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DocumentProcessingConfig{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.ChunkingConfig = DocumentProcessingConfig_ChunkingConfig_FromProto(mapCtx, in.GetChunkingConfig())
-	out.DefaultParsingConfig = DocumentProcessingConfig_ParsingConfig_FromProto(mapCtx, in.GetDefaultParsingConfig())
-	// MISSING: ParsingConfigOverrides
+	out := &krm.DiscoveryengineChunkObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Content
+	// MISSING: RelevanceScore
+	// MISSING: DocumentMetadata
+	// MISSING: DerivedStructData
+	// MISSING: PageSpan
+	// MISSING: ChunkMetadata
 	return out
 }
-func DocumentProcessingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DocumentProcessingConfig) *pb.DocumentProcessingConfig {
+func DiscoveryengineChunkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryengineChunkObservedState) *pb.Chunk {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DocumentProcessingConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	out.ChunkingConfig = DocumentProcessingConfig_ChunkingConfig_ToProto(mapCtx, in.ChunkingConfig)
-	out.DefaultParsingConfig = DocumentProcessingConfig_ParsingConfig_ToProto(mapCtx, in.DefaultParsingConfig)
-	// MISSING: ParsingConfigOverrides
+	out := &pb.Chunk{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Content
+	// MISSING: RelevanceScore
+	// MISSING: DocumentMetadata
+	// MISSING: DerivedStructData
+	// MISSING: PageSpan
+	// MISSING: ChunkMetadata
 	return out
 }
-func DocumentProcessingConfig_ChunkingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig_ChunkingConfig) *krm.DocumentProcessingConfig_ChunkingConfig {
+func DiscoveryengineChunkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Chunk) *krm.DiscoveryengineChunkSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DocumentProcessingConfig_ChunkingConfig{}
-	out.LayoutBasedChunkingConfig = DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig_FromProto(mapCtx, in.GetLayoutBasedChunkingConfig())
+	out := &krm.DiscoveryengineChunkSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Content
+	// MISSING: RelevanceScore
+	// MISSING: DocumentMetadata
+	// MISSING: DerivedStructData
+	// MISSING: PageSpan
+	// MISSING: ChunkMetadata
 	return out
 }
-func DocumentProcessingConfig_ChunkingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DocumentProcessingConfig_ChunkingConfig) *pb.DocumentProcessingConfig_ChunkingConfig {
+func DiscoveryengineChunkSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryengineChunkSpec) *pb.Chunk {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DocumentProcessingConfig_ChunkingConfig{}
-	if oneof := DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig_ToProto(mapCtx, in.LayoutBasedChunkingConfig); oneof != nil {
-		out.ChunkMode = &pb.DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig_{LayoutBasedChunkingConfig: oneof}
-	}
-	return out
-}
-func DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig) *krm.DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig{}
-	out.ChunkSize = direct.LazyPtr(in.GetChunkSize())
-	out.IncludeAncestorHeadings = direct.LazyPtr(in.GetIncludeAncestorHeadings())
-	return out
-}
-func DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig) *pb.DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DocumentProcessingConfig_ChunkingConfig_LayoutBasedChunkingConfig{}
-	out.ChunkSize = direct.ValueOf(in.ChunkSize)
-	out.IncludeAncestorHeadings = direct.ValueOf(in.IncludeAncestorHeadings)
-	return out
-}
-func DocumentProcessingConfig_ParsingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig_ParsingConfig) *krm.DocumentProcessingConfig_ParsingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentProcessingConfig_ParsingConfig{}
-	out.DigitalParsingConfig = DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig_FromProto(mapCtx, in.GetDigitalParsingConfig())
-	out.OcrParsingConfig = DocumentProcessingConfig_ParsingConfig_OcrParsingConfig_FromProto(mapCtx, in.GetOcrParsingConfig())
-	out.LayoutParsingConfig = DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig_FromProto(mapCtx, in.GetLayoutParsingConfig())
-	return out
-}
-func DocumentProcessingConfig_ParsingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DocumentProcessingConfig_ParsingConfig) *pb.DocumentProcessingConfig_ParsingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DocumentProcessingConfig_ParsingConfig{}
-	if oneof := DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig_ToProto(mapCtx, in.DigitalParsingConfig); oneof != nil {
-		out.TypeDedicatedConfig = &pb.DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig_{DigitalParsingConfig: oneof}
-	}
-	if oneof := DocumentProcessingConfig_ParsingConfig_OcrParsingConfig_ToProto(mapCtx, in.OcrParsingConfig); oneof != nil {
-		out.TypeDedicatedConfig = &pb.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig_{OcrParsingConfig: oneof}
-	}
-	if oneof := DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig_ToProto(mapCtx, in.LayoutParsingConfig); oneof != nil {
-		out.TypeDedicatedConfig = &pb.DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig_{LayoutParsingConfig: oneof}
-	}
-	return out
-}
-func DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig) *krm.DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig{}
-	return out
-}
-func DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig) *pb.DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig{}
-	return out
-}
-func DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig) *krm.DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig{}
-	return out
-}
-func DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig) *pb.DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig{}
-	return out
-}
-func DocumentProcessingConfig_ParsingConfig_OcrParsingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig) *krm.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig{}
-	out.EnhancedDocumentElements = in.EnhancedDocumentElements
-	out.UseNativeText = direct.LazyPtr(in.GetUseNativeText())
-	return out
-}
-func DocumentProcessingConfig_ParsingConfig_OcrParsingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig) *pb.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DocumentProcessingConfig_ParsingConfig_OcrParsingConfig{}
-	out.EnhancedDocumentElements = in.EnhancedDocumentElements
-	out.UseNativeText = direct.ValueOf(in.UseNativeText)
-	return out
-}
-func Engine_ChatEngineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_ChatEngineConfig) *krm.Engine_ChatEngineConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Engine_ChatEngineConfig{}
-	out.AgentCreationConfig = Engine_ChatEngineConfig_AgentCreationConfig_FromProto(mapCtx, in.GetAgentCreationConfig())
-	out.DialogflowAgentToLink = direct.LazyPtr(in.GetDialogflowAgentToLink())
-	return out
-}
-func Engine_ChatEngineConfig_ToProto(mapCtx *direct.MapContext, in *krm.Engine_ChatEngineConfig) *pb.Engine_ChatEngineConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Engine_ChatEngineConfig{}
-	out.AgentCreationConfig = Engine_ChatEngineConfig_AgentCreationConfig_ToProto(mapCtx, in.AgentCreationConfig)
-	out.DialogflowAgentToLink = direct.ValueOf(in.DialogflowAgentToLink)
-	return out
-}
-func Engine_ChatEngineConfig_AgentCreationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_ChatEngineConfig_AgentCreationConfig) *krm.Engine_ChatEngineConfig_AgentCreationConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Engine_ChatEngineConfig_AgentCreationConfig{}
-	out.Business = direct.LazyPtr(in.GetBusiness())
-	out.DefaultLanguageCode = direct.LazyPtr(in.GetDefaultLanguageCode())
-	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
-	out.Location = direct.LazyPtr(in.GetLocation())
-	return out
-}
-func Engine_ChatEngineConfig_AgentCreationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Engine_ChatEngineConfig_AgentCreationConfig) *pb.Engine_ChatEngineConfig_AgentCreationConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Engine_ChatEngineConfig_AgentCreationConfig{}
-	out.Business = direct.ValueOf(in.Business)
-	out.DefaultLanguageCode = direct.ValueOf(in.DefaultLanguageCode)
-	out.TimeZone = direct.ValueOf(in.TimeZone)
-	out.Location = direct.ValueOf(in.Location)
-	return out
-}
-func Engine_CommonConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_CommonConfig) *krm.Engine_CommonConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Engine_CommonConfig{}
-	out.CompanyName = direct.LazyPtr(in.GetCompanyName())
-	return out
-}
-func Engine_CommonConfig_ToProto(mapCtx *direct.MapContext, in *krm.Engine_CommonConfig) *pb.Engine_CommonConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Engine_CommonConfig{}
-	out.CompanyName = direct.ValueOf(in.CompanyName)
-	return out
-}
-func Engine_SearchEngineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_SearchEngineConfig) *krm.Engine_SearchEngineConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Engine_SearchEngineConfig{}
-	out.SearchTier = direct.Enum_FromProto(mapCtx, in.GetSearchTier())
-	out.SearchAddOns = direct.EnumSlice_FromProto(mapCtx, in.SearchAddOns)
-	return out
-}
-func Engine_SearchEngineConfig_ToProto(mapCtx *direct.MapContext, in *krm.Engine_SearchEngineConfig) *pb.Engine_SearchEngineConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Engine_SearchEngineConfig{}
-	out.SearchTier = direct.Enum_ToProto[pb.SearchTier](mapCtx, in.SearchTier)
-	out.SearchAddOns = direct.EnumSlice_ToProto[pb.SearchAddOn](mapCtx, in.SearchAddOns)
-	return out
-}
-func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Schema{}
-	out.StructSchema = StructSchema_FromProto(mapCtx, in.GetStructSchema())
-	out.JsonSchema = direct.LazyPtr(in.GetJsonSchema())
-	out.Name = direct.LazyPtr(in.GetName())
-	return out
-}
-func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Schema{}
-	if oneof := StructSchema_ToProto(mapCtx, in.StructSchema); oneof != nil {
-		out.Schema = &pb.Schema_StructSchema{StructSchema: oneof}
-	}
-	if oneof := Schema_JsonSchema_ToProto(mapCtx, in.JsonSchema); oneof != nil {
-		out.Schema = oneof
-	}
-	out.Name = direct.ValueOf(in.Name)
-	return out
-}
-func SiteVerificationInfo_FromProto(mapCtx *direct.MapContext, in *pb.SiteVerificationInfo) *krm.SiteVerificationInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SiteVerificationInfo{}
-	out.SiteVerificationState = direct.Enum_FromProto(mapCtx, in.GetSiteVerificationState())
-	out.VerifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVerifyTime())
-	return out
-}
-func SiteVerificationInfo_ToProto(mapCtx *direct.MapContext, in *krm.SiteVerificationInfo) *pb.SiteVerificationInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SiteVerificationInfo{}
-	out.SiteVerificationState = direct.Enum_ToProto[pb.SiteVerificationInfo_SiteVerificationState](mapCtx, in.SiteVerificationState)
-	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
-	return out
-}
-func TargetSite_FailureReason_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite_FailureReason) *krm.TargetSite_FailureReason {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TargetSite_FailureReason{}
-	out.QuotaFailure = TargetSite_FailureReason_QuotaFailure_FromProto(mapCtx, in.GetQuotaFailure())
-	return out
-}
-func TargetSite_FailureReason_ToProto(mapCtx *direct.MapContext, in *krm.TargetSite_FailureReason) *pb.TargetSite_FailureReason {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TargetSite_FailureReason{}
-	if oneof := TargetSite_FailureReason_QuotaFailure_ToProto(mapCtx, in.QuotaFailure); oneof != nil {
-		out.Failure = &pb.TargetSite_FailureReason_QuotaFailure_{QuotaFailure: oneof}
-	}
-	return out
-}
-func TargetSite_FailureReason_QuotaFailure_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite_FailureReason_QuotaFailure) *krm.TargetSite_FailureReason_QuotaFailure {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TargetSite_FailureReason_QuotaFailure{}
-	out.TotalRequiredQuota = direct.LazyPtr(in.GetTotalRequiredQuota())
-	return out
-}
-func TargetSite_FailureReason_QuotaFailure_ToProto(mapCtx *direct.MapContext, in *krm.TargetSite_FailureReason_QuotaFailure) *pb.TargetSite_FailureReason_QuotaFailure {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TargetSite_FailureReason_QuotaFailure{}
-	out.TotalRequiredQuota = direct.ValueOf(in.TotalRequiredQuota)
-	return out
-}
-func WorkspaceConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkspaceConfig) *krm.WorkspaceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkspaceConfig{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.DasherCustomerID = direct.LazyPtr(in.GetDasherCustomerId())
-	out.SuperAdminServiceAccount = direct.LazyPtr(in.GetSuperAdminServiceAccount())
-	out.SuperAdminEmailAddress = direct.LazyPtr(in.GetSuperAdminEmailAddress())
-	return out
-}
-func WorkspaceConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkspaceConfig) *pb.WorkspaceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkspaceConfig{}
-	out.Type = direct.Enum_ToProto[pb.WorkspaceConfig_Type](mapCtx, in.Type)
-	out.DasherCustomerId = direct.ValueOf(in.DasherCustomerID)
-	out.SuperAdminServiceAccount = direct.ValueOf(in.SuperAdminServiceAccount)
-	out.SuperAdminEmailAddress = direct.ValueOf(in.SuperAdminEmailAddress)
+	out := &pb.Chunk{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Content
+	// MISSING: RelevanceScore
+	// MISSING: DocumentMetadata
+	// MISSING: DerivedStructData
+	// MISSING: PageSpan
+	// MISSING: ChunkMetadata
 	return out
 }
