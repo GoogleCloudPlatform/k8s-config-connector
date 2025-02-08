@@ -16,7 +16,7 @@ package scheduler
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/scheduler/apiv1/schedulerpb"
+	pb "cloud.google.com/go/scheduler/apiv1beta1/schedulerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/scheduler/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -115,6 +115,7 @@ func Job_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Job {
 	out.LastAttemptTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastAttemptTime())
 	out.RetryConfig = RetryConfig_FromProto(mapCtx, in.GetRetryConfig())
 	out.AttemptDeadline = direct.StringDuration_FromProto(mapCtx, in.GetAttemptDeadline())
+	out.LegacyAppEngineCron = direct.LazyPtr(in.GetLegacyAppEngineCron())
 	return out
 }
 func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
@@ -142,6 +143,7 @@ func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
 	out.LastAttemptTime = direct.StringTimestamp_ToProto(mapCtx, in.LastAttemptTime)
 	out.RetryConfig = RetryConfig_ToProto(mapCtx, in.RetryConfig)
 	out.AttemptDeadline = direct.StringDuration_ToProto(mapCtx, in.AttemptDeadline)
+	out.LegacyAppEngineCron = direct.ValueOf(in.LegacyAppEngineCron)
 	return out
 }
 func OAuthToken_FromProto(mapCtx *direct.MapContext, in *pb.OAuthToken) *krm.OAuthToken {
@@ -222,89 +224,5 @@ func RetryConfig_ToProto(mapCtx *direct.MapContext, in *krm.RetryConfig) *pb.Ret
 	out.MinBackoffDuration = direct.StringDuration_ToProto(mapCtx, in.MinBackoffDuration)
 	out.MaxBackoffDuration = direct.StringDuration_ToProto(mapCtx, in.MaxBackoffDuration)
 	out.MaxDoublings = direct.ValueOf(in.MaxDoublings)
-	return out
-}
-func SchedulerJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.SchedulerJobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SchedulerJobObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: PubsubTarget
-	// MISSING: AppEngineHTTPTarget
-	// MISSING: HTTPTarget
-	// MISSING: Schedule
-	// MISSING: TimeZone
-	// MISSING: UserUpdateTime
-	// MISSING: State
-	// MISSING: Status
-	// MISSING: ScheduleTime
-	// MISSING: LastAttemptTime
-	// MISSING: RetryConfig
-	// MISSING: AttemptDeadline
-	return out
-}
-func SchedulerJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SchedulerJobObservedState) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: PubsubTarget
-	// MISSING: AppEngineHTTPTarget
-	// MISSING: HTTPTarget
-	// MISSING: Schedule
-	// MISSING: TimeZone
-	// MISSING: UserUpdateTime
-	// MISSING: State
-	// MISSING: Status
-	// MISSING: ScheduleTime
-	// MISSING: LastAttemptTime
-	// MISSING: RetryConfig
-	// MISSING: AttemptDeadline
-	return out
-}
-func SchedulerJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.SchedulerJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SchedulerJobSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: PubsubTarget
-	// MISSING: AppEngineHTTPTarget
-	// MISSING: HTTPTarget
-	// MISSING: Schedule
-	// MISSING: TimeZone
-	// MISSING: UserUpdateTime
-	// MISSING: State
-	// MISSING: Status
-	// MISSING: ScheduleTime
-	// MISSING: LastAttemptTime
-	// MISSING: RetryConfig
-	// MISSING: AttemptDeadline
-	return out
-}
-func SchedulerJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.SchedulerJobSpec) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: PubsubTarget
-	// MISSING: AppEngineHTTPTarget
-	// MISSING: HTTPTarget
-	// MISSING: Schedule
-	// MISSING: TimeZone
-	// MISSING: UserUpdateTime
-	// MISSING: State
-	// MISSING: Status
-	// MISSING: ScheduleTime
-	// MISSING: LastAttemptTime
-	// MISSING: RetryConfig
-	// MISSING: AttemptDeadline
 	return out
 }
