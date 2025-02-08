@@ -18,16 +18,16 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+
+	gcp "cloud.google.com/go/workstations/apiv1"
+	"cloud.google.com/go/workstations/apiv1/workstationspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-
-	gcp "cloud.google.com/go/workstations/apiv1"
-	"cloud.google.com/go/workstations/apiv1/workstationspb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -40,31 +40,41 @@ import (
 
 func init() {
 	registry.RegisterModel(krm.WorkstationGVK, NewWorkstationModel)
-	fuzztesting.RegisterKRMFuzzer(workstationFuzzer())
+
+	fuzztesting.RegisterFuzzer(workstationSpecFuzzer().FuzzSpec)
+	fuzztesting.RegisterFuzzer(workstationObservedStateFuzzer().FuzzObservedState)
 }
 
-func workstationFuzzer() fuzztesting.KRMFuzzer {
+var workstationKrmFields = fuzztesting.KRMFields{
+	UnimplementedFields: sets.New(".name",
+		".reconciling"),
+	SpecFields: sets.New(".display_name",
+		".annotations",
+		".labels"),
+	ObservedStateFields: sets.New(".create_time",
+		".uid",
+		".create_time",
+		".update_time",
+		".start_time",
+		".delete_time",
+		".etag",
+		".state",
+		".host"),
+}
+
+func workstationSpecFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&workstationspb.Workstation{},
 		WorkstationSpec_FromProto, WorkstationSpec_ToProto,
+	)
+	f.KRMFields = workstationKrmFields
+	return f
+}
+
+func workstationObservedStateFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&workstationspb.Workstation{},
 		WorkstationObservedState_FromProto, WorkstationObservedState_ToProto,
 	)
-
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".reconciling")
-
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".annotations")
-	f.SpecFields.Insert(".labels")
-
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".start_time")
-	f.StatusFields.Insert(".delete_time")
-	f.StatusFields.Insert(".etag")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".host")
-
+	f.KRMFields = workstationKrmFields
 	return f
 }
 

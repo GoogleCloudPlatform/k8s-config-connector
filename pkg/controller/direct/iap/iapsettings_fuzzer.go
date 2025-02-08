@@ -23,13 +23,12 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(iapsettingsFuzzer())
+	fuzztesting.RegisterFuzzer(iapsettingsSpecFuzzer().FuzzSpec)
 }
 
-func iapsettingsFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.IapSettings{},
+func iapsettingsSpecFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.IapSettings{},
 		IAPSettingsSpec_FromProto, IAPSettingsSpec_ToProto,
 	)
-
 	return f
 }

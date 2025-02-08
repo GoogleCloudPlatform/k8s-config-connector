@@ -20,31 +20,44 @@ package discoveryengine
 import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzDataStore())
+	fuzztesting.RegisterFuzzer(dataStoreSpecFuzzer().FuzzSpec)
+	fuzztesting.RegisterFuzzer(dataStoreObservedStateFuzzer().FuzzObservedState)
 }
 
-func fuzzDataStore() fuzztesting.KRMFuzzer {
+var dataStoreKrmFields = fuzztesting.KRMFields{
+	UnimplementedFields: sets.New(
+		".name",                       // special field
+		".document_processing_config", // complex map[string]object, so not implementing yet
+		".starting_schema",            // Tricky field, only on create
+	),
+	SpecFields: sets.New(
+		".display_name",
+		".industry_vertical",
+		".solution_types",
+		".content_config",
+		".workspace_config"),
+	ObservedStateFields: sets.New(
+		".default_schema_id",
+		".create_time",
+		".billing_estimation"),
+}
+
+func dataStoreSpecFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.DataStore{},
 		DiscoveryEngineDataStoreSpec_FromProto, DiscoveryEngineDataStoreSpec_ToProto,
+	)
+	f.KRMFields = dataStoreKrmFields
+	return f
+}
+
+func dataStoreObservedStateFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.DataStore{},
 		DiscoveryEngineDataStoreObservedState_FromProto, DiscoveryEngineDataStoreObservedState_ToProto,
 	)
-
-	f.UnimplementedFields.Insert(".name")                       // special field
-	f.UnimplementedFields.Insert(".document_processing_config") // complex map[string]object, so not implementing yet
-	f.UnimplementedFields.Insert(".starting_schema")            // Tricky field, only on create
-
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".industry_vertical")
-	f.SpecFields.Insert(".solution_types")
-	f.SpecFields.Insert(".content_config")
-	f.SpecFields.Insert(".workspace_config")
-
-	f.StatusFields.Insert(".default_schema_id")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".billing_estimation")
-
+	f.KRMFields = dataStoreKrmFields
 	return f
 }

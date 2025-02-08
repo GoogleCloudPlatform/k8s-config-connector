@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"k8s.io/apimachinery/pkg/util/sets"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -48,38 +50,44 @@ const (
 
 func init() {
 	registry.RegisterModel(krm.FirestoreDatabaseGVK, NewModel)
-	fuzztesting.RegisterKRMFuzzer(firestoreDatabaseFuzzer())
+	fuzztesting.RegisterFuzzer(firestoreDatabaseSpecFuzzer().FuzzSpec)
+	fuzztesting.RegisterFuzzer(firestoreDatabaseObservedStateFuzzer().FuzzObservedState)
 }
 
-func firestoreDatabaseFuzzer() fuzztesting.KRMFuzzer {
+var firestoreDatabaseKrmFields = fuzztesting.KRMFields{
+	UnimplementedFields: sets.New(".name",
+		".delete_time",
+		".key_prefix",
+		".cmek_config",
+		".previous_id",
+		".source_info",
+		".type",
+		".app_engine_integration_mode",
+		".delete_protection_state"),
+	SpecFields: sets.New(".location_id",
+		".concurrency_mode",
+		".point_in_time_recovery_enablement"),
+	ObservedStateFields: sets.New(".uid",
+		".create_time",
+		".update_time",
+		".version_retention_period",
+		".earliest_version_time",
+		".etag"),
+}
+
+func firestoreDatabaseSpecFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Database{},
 		FirestoreDatabaseSpec_FromProto, FirestoreDatabaseSpec_ToProto,
+	)
+	f.KRMFields = firestoreDatabaseKrmFields
+	return f
+}
+
+func firestoreDatabaseObservedStateFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Database{},
 		FirestoreDatabaseObservedState_FromProto, FirestoreDatabaseObservedState_ToProto,
 	)
-
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".delete_time")
-	f.UnimplementedFields.Insert(".key_prefix")
-	f.UnimplementedFields.Insert(".cmek_config")
-	f.UnimplementedFields.Insert(".previous_id")
-	f.UnimplementedFields.Insert(".source_info")
-
-	// Default value fields set by controller
-	f.UnimplementedFields.Insert(".type")
-	f.UnimplementedFields.Insert(".app_engine_integration_mode")
-	f.UnimplementedFields.Insert(".delete_protection_state")
-
-	f.SpecFields.Insert(".location_id")
-	f.SpecFields.Insert(".concurrency_mode")
-	f.SpecFields.Insert(".point_in_time_recovery_enablement")
-
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".version_retention_period")
-	f.StatusFields.Insert(".earliest_version_time")
-	f.StatusFields.Insert(".etag")
-
+	f.KRMFields = firestoreDatabaseKrmFields
 	return f
 }
 

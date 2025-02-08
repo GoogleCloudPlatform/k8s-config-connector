@@ -21,30 +21,40 @@ package managedkafka
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(managedKafkaClusterFuzzer())
+	fuzztesting.RegisterFuzzer(managedKafkaClusterSpecFuzzer().FuzzSpec)
+	fuzztesting.RegisterFuzzer(managedKafkaClusterObservedStateFuzzer().FuzzObservedState)
 }
 
-func managedKafkaClusterFuzzer() fuzztesting.KRMFuzzer {
+var managedKafkaClusterKrmFields = fuzztesting.KRMFields{
+	UnimplementedFields: sets.New(".name",
+		".satisfies_pzi",
+		".satisfies_pzs"),
+	SpecFields: sets.New(".labels",
+		".gcp_config",
+		".capacity_config",
+		".rebalance_config"),
+	ObservedStateFields: sets.New(".create_time",
+		".create_time",
+		".update_time",
+		".state"),
+}
+
+func managedKafkaClusterSpecFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Cluster{},
 		ManagedKafkaClusterSpec_FromProto, ManagedKafkaClusterSpec_ToProto,
+	)
+	f.KRMFields = managedKafkaClusterKrmFields
+	return f
+}
+
+func managedKafkaClusterObservedStateFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Cluster{},
 		ManagedKafkaClusterObservedState_FromProto, ManagedKafkaClusterObservedState_ToProto,
 	)
-
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".satisfies_pzi")
-	f.UnimplementedFields.Insert(".satisfies_pzs")
-
-	f.SpecFields.Insert(".labels")
-	f.SpecFields.Insert(".gcp_config")
-	f.SpecFields.Insert(".capacity_config")
-	f.SpecFields.Insert(".rebalance_config")
-
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".state")
-
+	f.KRMFields = managedKafkaClusterKrmFields
 	return f
 }

@@ -31,13 +31,17 @@ type FuzzFn func(t *testing.T, seed int64)
 
 var fuzzers []FuzzFn
 
-func RegisterKRMFuzzer(fuzzer KRMFuzzer) {
-	RegisterFuzzer(fuzzer.FuzzSpec)
-	RegisterFuzzer(fuzzer.FuzzStatus)
+type KRMFuzzer interface {
+	FuzzSpec(t *testing.T, seed int64)
+	FuzzStatus(t *testing.T, seed int64)
+	FuzzObservedState(t *testing.T, seed int64)
 }
 
-func RegisterKRMSpecFuzzer(fuzzer KRMFuzzer) {
-	RegisterFuzzer(fuzzer.FuzzSpec)
+type KRMFields struct {
+	UnimplementedFields sets.Set[string]
+	SpecFields          sets.Set[string]
+	StatusFields        sets.Set[string]
+	ObservedStateFields sets.Set[string]
 }
 
 func RegisterFuzzer(fuzzer FuzzFn) {
@@ -48,74 +52,50 @@ func ChooseFuzzer(n int64) FuzzFn {
 	return fuzzers[n%int64(len(fuzzers))]
 }
 
-type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
+type KRMTypedFuzzer[ProtoT proto.Message, KRMType any] struct {
 	ProtoType ProtoT
 
-	SpecFromProto func(ctx *direct.MapContext, in ProtoT) *SpecType
-	SpecToProto   func(ctx *direct.MapContext, in *SpecType) ProtoT
-
-	StatusFromProto func(ctx *direct.MapContext, in ProtoT) *StatusType
-	StatusToProto   func(ctx *direct.MapContext, in *StatusType) ProtoT
-
-	UnimplementedFields sets.Set[string]
-	SpecFields          sets.Set[string]
-	StatusFields        sets.Set[string]
+	FromProto func(ctx *direct.MapContext, in ProtoT) *KRMType
+	ToProto   func(ctx *direct.MapContext, in *KRMType) ProtoT
+	KRMFields
 }
 
-type KRMFuzzer interface {
-	FuzzSpec(t *testing.T, seed int64)
-	FuzzStatus(t *testing.T, seed int64)
-}
-
-func NewKRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any](
-	protoType ProtoT,
-	specFromProto func(ctx *direct.MapContext, in ProtoT) *SpecType, specToProto func(ctx *direct.MapContext, in *SpecType) ProtoT,
-	statusFromProto func(ctx *direct.MapContext, in ProtoT) *StatusType, statusToProto func(ctx *direct.MapContext, in *StatusType) ProtoT,
-) *KRMTypedFuzzer[ProtoT, SpecType, StatusType] {
-	return &KRMTypedFuzzer[ProtoT, SpecType, StatusType]{
-		ProtoType:           protoType,
-		SpecFromProto:       specFromProto,
-		SpecToProto:         specToProto,
-		StatusFromProto:     statusFromProto,
-		StatusToProto:       statusToProto,
-		UnimplementedFields: sets.New[string](),
-		SpecFields:          sets.New[string](),
-		StatusFields:        sets.New[string](),
-	}
-}
-
-func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, seed int64) {
-	fuzzer := NewFuzzTest(f.ProtoType, f.SpecFromProto, f.SpecToProto)
-	fuzzer.IgnoreFields = f.StatusFields
+func (f *KRMTypedFuzzer[ProtoT, KRMType]) FuzzSpec(t *testing.T, seed int64) {
+	fuzzer := NewFuzzTest(f.ProtoType, f.FromProto, f.ToProto)
+	fuzzer.IgnoreFields = f.StatusFields.Union(f.ObservedStateFields)
 	fuzzer.UnimplementedFields = f.UnimplementedFields
 	fuzzer.Fuzz(t, seed)
 }
 
-func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, seed int64) {
-	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)
-	fuzzer.IgnoreFields = f.SpecFields
+func (f *KRMTypedFuzzer[ProtoT, KRMType]) FuzzStatus(t *testing.T, seed int64) {
+	fuzzer := NewFuzzTest(f.ProtoType, f.FromProto, f.ToProto)
+	fuzzer.IgnoreFields = f.SpecFields.Union(f.ObservedStateFields)
 	fuzzer.UnimplementedFields = f.UnimplementedFields
 	fuzzer.Fuzz(t, seed)
 }
 
-type NoStatus struct{}
+func (f *KRMTypedFuzzer[ProtoT, KRMType]) FuzzObservedState(t *testing.T, seed int64) {
+	fuzzer := NewFuzzTest(f.ProtoType, f.FromProto, f.ToProto)
+	fuzzer.IgnoreFields = f.SpecFields.Union(f.StatusFields)
+	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Fuzz(t, seed)
+}
 
-// NewKRMTypedSpecFuzzer is a convenience function for creating a fuzzer that only
-// fuzzes the spec fields of a KRM type.
-func NewKRMTypedSpecFuzzer[ProtoT proto.Message, SpecType any](
+func NewKRMTypedFuzzer[ProtoT proto.Message, KRMType any](
 	protoType ProtoT,
-	specFromProto func(ctx *direct.MapContext, in ProtoT) *SpecType,
-	specToProto func(ctx *direct.MapContext, in *SpecType) ProtoT,
-) *KRMTypedFuzzer[ProtoT, SpecType, NoStatus] {
-	return &KRMTypedFuzzer[ProtoT, SpecType, NoStatus]{
-		ProtoType:           protoType,
-		SpecFromProto:       specFromProto,
-		SpecToProto:         specToProto,
-		StatusFromProto:     nil, // No status functions
-		StatusToProto:       nil, // No status functions
-		UnimplementedFields: sets.New[string](),
-		SpecFields:          sets.New[string](),
-		StatusFields:        sets.New[string](),
+	fromProto func(ctx *direct.MapContext, in ProtoT) *KRMType,
+	toProto func(ctx *direct.MapContext, in *KRMType) ProtoT,
+) *KRMTypedFuzzer[ProtoT, KRMType] {
+	return &KRMTypedFuzzer[ProtoT, KRMType]{
+		ProtoType: protoType,
+		FromProto: fromProto,
+		ToProto:   toProto,
+		KRMFields: KRMFields{
+			sets.New[string](),
+			sets.New[string](),
+			sets.New[string](),
+			sets.New[string](),
+		},
 	}
 }
 
@@ -148,6 +128,7 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	ignoreFields := sets.New[string]()
 	ignoreFields = ignoreFields.Union(f.IgnoreFields)
 	ignoreFields = ignoreFields.Union(f.UnimplementedFields)
+	t.Logf("ignored = %v", ignoreFields)
 
 	// Remove any output only or known-unimplemented fields
 	clearFields := &fuzz.ClearFields{

@@ -40,39 +40,46 @@ import (
 
 func init() {
 	registry.RegisterModel(krm.WorkstationConfigGVK, NewWorkstationConfigModel)
-	fuzztesting.RegisterKRMFuzzer(workstationConfigFuzzer())
+
+	fuzztesting.RegisterFuzzer(workstationConfigSpecFuzzer().FuzzSpec)
+	fuzztesting.RegisterFuzzer(workstationConfigObservedStateFuzzer().FuzzObservedState)
 }
 
-func workstationConfigFuzzer() fuzztesting.KRMFuzzer {
+var workstationConfigKrmFields = fuzztesting.KRMFields{
+	UnimplementedFields: sets.New(".name", ".reconciling", ".conditions"),
+	SpecFields: sets.New(".display_name",
+		".annotations",
+		".labels",
+		".idle_timeout",
+		".running_timeout",
+		".host",
+		".persistent_directories",
+		".container",
+		".encryption_key",
+		".readiness_checks",
+		".replica_zones"),
+	ObservedStateFields: sets.New(".uid",
+		".create_time",
+		".update_time",
+		".delete_time",
+		".etag",
+		".host.gce_instance.pooled_instances",
+		".degraded"),
+}
+
+func workstationConfigSpecFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.WorkstationConfig{},
 		WorkstationConfigSpec_FromProto, WorkstationConfigSpec_ToProto,
+	)
+	f.KRMFields = workstationConfigKrmFields
+	return f
+}
+
+func workstationConfigObservedStateFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.WorkstationConfig{},
 		WorkstationConfigObservedState_FromProto, WorkstationConfigObservedState_ToProto,
 	)
-
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".reconciling")
-	f.UnimplementedFields.Insert(".conditions")
-
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".annotations")
-	f.SpecFields.Insert(".labels")
-	f.SpecFields.Insert(".idle_timeout")
-	f.SpecFields.Insert(".running_timeout")
-	f.SpecFields.Insert(".host")
-	f.SpecFields.Insert(".persistent_directories")
-	f.SpecFields.Insert(".container")
-	f.SpecFields.Insert(".encryption_key")
-	f.SpecFields.Insert(".readiness_checks")
-	f.SpecFields.Insert(".replica_zones")
-
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".delete_time")
-	f.StatusFields.Insert(".etag")
-	f.StatusFields.Insert(".host.gce_instance.pooled_instances")
-	f.StatusFields.Insert(".degraded")
-
+	f.KRMFields = workstationConfigKrmFields
 	return f
 }
 

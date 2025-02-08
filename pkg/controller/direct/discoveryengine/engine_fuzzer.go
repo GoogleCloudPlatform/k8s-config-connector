@@ -20,35 +20,36 @@ package discoveryengine
 import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(engineFuzzer())
+	fuzztesting.RegisterFuzzer(engineSpecFuzzer().FuzzSpec)
 }
 
-func engineFuzzer() fuzztesting.KRMFuzzer {
+var engineKrmFields = fuzztesting.KRMFields{
+	UnimplementedFields: sets.New(
+		".chat_engine_metadata", // Could be status
+		".name",                 // special field
+		".create_time",          // Could be status
+		".update_time"),         // Could be status
+	SpecFields: sets.New(".display_name",
+		".common_config",
+		".chat_engine_config",
+		".search_engine_config",
+		".solution_type",
+		".data_store_ids",
+		".industry_vertical",
+		".disable_analytics"),
+	//ObservedStateFields: sets.New(
+	//".create_time",
+	//".update_time"),
+}
+
+func engineSpecFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Engine{},
 		DiscoveryEngineEngineSpec_FromProto, DiscoveryEngineEngineSpec_ToProto,
-		DiscoveryEngineEngineObservedState_FromProto, DiscoveryEngineEngineObservedState_ToProto,
 	)
-
-	f.UnimplementedFields.Insert(".chat_engine_metadata") // Could be status
-	f.UnimplementedFields.Insert(".create_time")          // Could be status
-	f.UnimplementedFields.Insert(".update_time")          // Could be status
-
-	f.UnimplementedFields.Insert(".name") // special field
-
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".common_config")
-	f.SpecFields.Insert(".chat_engine_config")
-	f.SpecFields.Insert(".search_engine_config")
-	f.SpecFields.Insert(".solution_type")
-	f.SpecFields.Insert(".data_store_ids")
-	f.SpecFields.Insert(".industry_vertical")
-	f.SpecFields.Insert(".disable_analytics")
-
-	// f.StatusFields.Insert(".create_time")
-	// f.StatusFields.Insert(".update_time")
-
+	f.KRMFields = engineKrmFields
 	return f
 }

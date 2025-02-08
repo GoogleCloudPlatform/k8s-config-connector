@@ -19,6 +19,7 @@ package privilegedaccessmanager
 
 import (
 	pb "cloud.google.com/go/privilegedaccessmanager/apiv1/privilegedaccessmanagerpb"
+	"k8s.io/apimachinery/pkg/util/sets"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privilegedaccessmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -26,30 +27,42 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzEntitlement())
+	fuzztesting.RegisterFuzzer(entitlementSpecFuzzer().FuzzSpec)
+	fuzztesting.RegisterFuzzer(entitlementObservedStateFuzzer().FuzzObservedState)
 }
 
-func fuzzEntitlement() fuzztesting.KRMFuzzer {
+var entitlementKrmFields = fuzztesting.KRMFields{
+	UnimplementedFields: sets.New(
+		".name", // special field
+		".privileged_access.gcp_iam_access.resource_type", // hidden duplicate field
+		".privileged_access.gcp_iam_access.resource",      // hidden duplicate field
+	),
+	SpecFields: sets.New(".eligible_users",
+		".approval_workflow",
+		".max_request_duration",
+		".privileged_access",
+		".requester_justification_config",
+		".additional_notification_targets"),
+	ObservedStateFields: sets.New(".create_time",
+		".update_time",
+		".etag",
+		".state"),
+}
+
+func entitlementSpecFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Entitlement{},
 		PrivilegedAccessManagerEntitlementSpec_FromProto, privilegedAccessManagerEntitlementSpec_ToProto,
+	)
+	f.KRMFields = entitlementKrmFields
+	return f
+}
+
+func entitlementObservedStateFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Entitlement{},
 		PrivilegedAccessManagerEntitlementObservedState_FromProto, PrivilegedAccessManagerEntitlementObservedState_ToProto,
 	)
+	f.KRMFields = entitlementKrmFields
 
-	f.UnimplementedFields.Insert(".name")                                           // special field
-	f.UnimplementedFields.Insert(".privileged_access.gcp_iam_access.resource_type") // hidden duplicate field
-	f.UnimplementedFields.Insert(".privileged_access.gcp_iam_access.resource")      // hidden duplicate field
-
-	f.SpecFields.Insert(".eligible_users")
-	f.SpecFields.Insert(".approval_workflow")
-	f.SpecFields.Insert(".max_request_duration")
-	f.SpecFields.Insert(".privileged_access")
-	f.SpecFields.Insert(".requester_justification_config")
-	f.SpecFields.Insert(".additional_notification_targets")
-
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".etag")
-	f.StatusFields.Insert(".state")
 	return f
 }
 

@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"k8s.io/apimachinery/pkg/util/sets"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -44,37 +46,45 @@ const (
 
 func init() {
 	registry.RegisterModel(krm.WorkstationClusterGVK, NewWorkstationClusterModel)
-	fuzztesting.RegisterKRMFuzzer(workstationclusterFuzzer())
+
+	fuzztesting.RegisterFuzzer(workstationClusterSpecFuzzer().FuzzSpec)
+	fuzztesting.RegisterFuzzer(workstationClusterObservedStateFuzzer().FuzzObservedState)
 }
 
-func workstationclusterFuzzer() fuzztesting.KRMFuzzer {
+var workstationClusterKrmFields = fuzztesting.KRMFields{
+	UnimplementedFields: sets.New(".name",
+		".labels",
+		".reconciling",
+		".degraded",
+		".conditions",
+		".private_cluster_config.cluster_hostname",
+		".private_cluster_config.service_attachment_uri"),
+	SpecFields: sets.New(".display_name",
+		".private_cluster_config",
+		".annotations",
+		".subnetwork",
+		".network"),
+	ObservedStateFields: sets.New(".create_time",
+		".delete_time",
+		".update_time",
+		".control_plane_ip",
+		".etag",
+		".uid"),
+}
+
+func workstationClusterSpecFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.WorkstationCluster{},
 		WorkstationClusterSpec_FromProto, WorkstationClusterSpec_ToProto,
+	)
+	f.KRMFields = workstationClusterKrmFields
+	return f
+}
+
+func workstationClusterObservedStateFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.WorkstationCluster{},
 		WorkstationClusterObservedState_FromProto, WorkstationClusterObservedState_ToProto,
 	)
-
-	f.UnimplementedFields.Insert(".name")
-
-	f.UnimplementedFields.Insert(".labels")
-	f.UnimplementedFields.Insert(".reconciling")
-	f.UnimplementedFields.Insert(".degraded")
-	f.UnimplementedFields.Insert(".conditions")
-	f.UnimplementedFields.Insert(".private_cluster_config.cluster_hostname")
-	f.UnimplementedFields.Insert(".private_cluster_config.service_attachment_uri")
-
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".private_cluster_config")
-	f.SpecFields.Insert(".annotations")
-	f.SpecFields.Insert(".subnetwork")
-	f.SpecFields.Insert(".network")
-
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".delete_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".control_plane_ip")
-	f.StatusFields.Insert(".etag")
-	f.StatusFields.Insert(".uid")
-
+	f.KRMFields = workstationClusterKrmFields
 	return f
 }
 
