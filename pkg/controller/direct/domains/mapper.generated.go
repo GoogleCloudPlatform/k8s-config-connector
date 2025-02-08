@@ -15,10 +15,10 @@
 package domains
 
 import (
-	pb "cloud.google.com/go/domains/apiv1/domainspb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/domains/apiv1beta1/domainspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/domains/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func ContactSettings_FromProto(mapCtx *direct.MapContext, in *pb.ContactSettings) *krm.ContactSettings {
 	if in == nil {
@@ -208,82 +208,6 @@ func DnsSettings_GoogleDomainsDnsObservedState_ToProto(mapCtx *direct.MapContext
 	out.NameServers = in.NameServers
 	// MISSING: DsState
 	out.DsRecords = direct.Slice_ToProto(mapCtx, in.DsRecords, DnsSettings_DsRecord_ToProto)
-	return out
-}
-func DomainsRegistrationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Registration) *krm.DomainsRegistrationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DomainsRegistrationObservedState{}
-	// MISSING: Name
-	// MISSING: DomainName
-	// MISSING: CreateTime
-	// MISSING: ExpireTime
-	// MISSING: State
-	// MISSING: Issues
-	// MISSING: Labels
-	// MISSING: ManagementSettings
-	// MISSING: DnsSettings
-	// MISSING: ContactSettings
-	// MISSING: PendingContactSettings
-	// MISSING: SupportedPrivacy
-	return out
-}
-func DomainsRegistrationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DomainsRegistrationObservedState) *pb.Registration {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Registration{}
-	// MISSING: Name
-	// MISSING: DomainName
-	// MISSING: CreateTime
-	// MISSING: ExpireTime
-	// MISSING: State
-	// MISSING: Issues
-	// MISSING: Labels
-	// MISSING: ManagementSettings
-	// MISSING: DnsSettings
-	// MISSING: ContactSettings
-	// MISSING: PendingContactSettings
-	// MISSING: SupportedPrivacy
-	return out
-}
-func DomainsRegistrationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Registration) *krm.DomainsRegistrationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DomainsRegistrationSpec{}
-	// MISSING: Name
-	// MISSING: DomainName
-	// MISSING: CreateTime
-	// MISSING: ExpireTime
-	// MISSING: State
-	// MISSING: Issues
-	// MISSING: Labels
-	// MISSING: ManagementSettings
-	// MISSING: DnsSettings
-	// MISSING: ContactSettings
-	// MISSING: PendingContactSettings
-	// MISSING: SupportedPrivacy
-	return out
-}
-func DomainsRegistrationSpec_ToProto(mapCtx *direct.MapContext, in *krm.DomainsRegistrationSpec) *pb.Registration {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Registration{}
-	// MISSING: Name
-	// MISSING: DomainName
-	// MISSING: CreateTime
-	// MISSING: ExpireTime
-	// MISSING: State
-	// MISSING: Issues
-	// MISSING: Labels
-	// MISSING: ManagementSettings
-	// MISSING: DnsSettings
-	// MISSING: ContactSettings
-	// MISSING: PendingContactSettings
-	// MISSING: SupportedPrivacy
 	return out
 }
 func ManagementSettings_FromProto(mapCtx *direct.MapContext, in *pb.ManagementSettings) *krm.ManagementSettings {
