@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,11 +15,12 @@
 package spanner
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1alpha1"
 )
-
 func AutoscalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingConfig) *krm.AutoscalingConfig {
 	if in == nil {
 		return nil
@@ -27,6 +28,7 @@ func AutoscalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingCo
 	out := &krm.AutoscalingConfig{}
 	out.AutoscalingLimits = AutoscalingConfig_AutoscalingLimits_FromProto(mapCtx, in.GetAutoscalingLimits())
 	out.AutoscalingTargets = AutoscalingConfig_AutoscalingTargets_FromProto(mapCtx, in.GetAutoscalingTargets())
+	// MISSING: AsymmetricAutoscalingOptions
 	return out
 }
 func AutoscalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingConfig) *pb.AutoscalingConfig {
@@ -36,6 +38,7 @@ func AutoscalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingCon
 	out := &pb.AutoscalingConfig{}
 	out.AutoscalingLimits = AutoscalingConfig_AutoscalingLimits_ToProto(mapCtx, in.AutoscalingLimits)
 	out.AutoscalingTargets = AutoscalingConfig_AutoscalingTargets_ToProto(mapCtx, in.AutoscalingTargets)
+	// MISSING: AsymmetricAutoscalingOptions
 	return out
 }
 func AutoscalingConfig_AsymmetricAutoscalingOption_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingConfig_AsymmetricAutoscalingOption) *krm.AutoscalingConfig_AsymmetricAutoscalingOption {
@@ -122,7 +125,7 @@ func AutoscalingConfig_AutoscalingTargets_ToProto(mapCtx *direct.MapContext, in 
 	out.StorageUtilizationPercent = direct.ValueOf(in.StorageUtilizationPercent)
 	return out
 }
-func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance, parent *string) *krm.Instance {
+func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instance {
 	if in == nil {
 		return nil
 	}
@@ -134,12 +137,15 @@ func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance, parent *stri
 	out.ProcessingUnits = direct.LazyPtr(in.GetProcessingUnits())
 	out.ReplicaComputeCapacity = direct.Slice_FromProto(mapCtx, in.ReplicaComputeCapacity, ReplicaComputeCapacity_FromProto)
 	out.AutoscalingConfig = AutoscalingConfig_FromProto(mapCtx, in.GetAutoscalingConfig())
-	out.State = State_FromProto(mapCtx, in)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Labels = in.Labels
+	// MISSING: InstanceType
 	out.EndpointUris = in.EndpointUris
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: FreeInstanceMetadata
 	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
+	out.DefaultBackupScheduleType = direct.Enum_FromProto(mapCtx, in.GetDefaultBackupScheduleType())
 	return out
 }
 func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance {
@@ -156,10 +162,89 @@ func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance 
 	out.AutoscalingConfig = AutoscalingConfig_ToProto(mapCtx, in.AutoscalingConfig)
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
 	out.Labels = in.Labels
+	// MISSING: InstanceType
 	out.EndpointUris = in.EndpointUris
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: FreeInstanceMetadata
 	out.Edition = direct.Enum_ToProto[pb.Instance_Edition](mapCtx, in.Edition)
+	out.DefaultBackupScheduleType = direct.Enum_ToProto[pb.Instance_DefaultBackupScheduleType](mapCtx, in.DefaultBackupScheduleType)
+	return out
+}
+func InstancePartition_FromProto(mapCtx *direct.MapContext, in *pb.InstancePartition) *krm.InstancePartition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstancePartition{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Config = direct.LazyPtr(in.GetConfig())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
+	out.ProcessingUnits = direct.LazyPtr(in.GetProcessingUnits())
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: ReferencingDatabases
+	// MISSING: ReferencingBackups
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func InstancePartition_ToProto(mapCtx *direct.MapContext, in *krm.InstancePartition) *pb.InstancePartition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstancePartition{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Config = direct.ValueOf(in.Config)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := InstancePartition_NodeCount_ToProto(mapCtx, in.NodeCount); oneof != nil {
+		out.ComputeCapacity = oneof
+	}
+	if oneof := InstancePartition_ProcessingUnits_ToProto(mapCtx, in.ProcessingUnits); oneof != nil {
+		out.ComputeCapacity = oneof
+	}
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: ReferencingDatabases
+	// MISSING: ReferencingBackups
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func InstancePartitionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstancePartition) *krm.InstancePartitionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InstancePartitionObservedState{}
+	// MISSING: Name
+	// MISSING: Config
+	// MISSING: DisplayName
+	// MISSING: NodeCount
+	// MISSING: ProcessingUnits
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ReferencingDatabases = in.ReferencingDatabases
+	out.ReferencingBackups = in.ReferencingBackups
+	// MISSING: Etag
+	return out
+}
+func InstancePartitionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstancePartitionObservedState) *pb.InstancePartition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstancePartition{}
+	// MISSING: Name
+	// MISSING: Config
+	// MISSING: DisplayName
+	// MISSING: NodeCount
+	// MISSING: ProcessingUnits
+	out.State = direct.Enum_ToProto[pb.InstancePartition_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ReferencingDatabases = in.ReferencingDatabases
+	out.ReferencingBackups = in.ReferencingBackups
+	// MISSING: Etag
 	return out
 }
 func ReplicaComputeCapacity_FromProto(mapCtx *direct.MapContext, in *pb.ReplicaComputeCapacity) *krm.ReplicaComputeCapacity {
@@ -200,5 +285,77 @@ func ReplicaSelection_ToProto(mapCtx *direct.MapContext, in *krm.ReplicaSelectio
 	}
 	out := &pb.ReplicaSelection{}
 	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+func SpannerInstancePartitionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstancePartition) *krm.SpannerInstancePartitionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpannerInstancePartitionObservedState{}
+	// MISSING: Name
+	// MISSING: Config
+	// MISSING: DisplayName
+	// MISSING: NodeCount
+	// MISSING: ProcessingUnits
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: ReferencingDatabases
+	// MISSING: ReferencingBackups
+	// MISSING: Etag
+	return out
+}
+func SpannerInstancePartitionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInstancePartitionObservedState) *pb.InstancePartition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstancePartition{}
+	// MISSING: Name
+	// MISSING: Config
+	// MISSING: DisplayName
+	// MISSING: NodeCount
+	// MISSING: ProcessingUnits
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: ReferencingDatabases
+	// MISSING: ReferencingBackups
+	// MISSING: Etag
+	return out
+}
+func SpannerInstancePartitionSpec_FromProto(mapCtx *direct.MapContext, in *pb.InstancePartition) *krm.SpannerInstancePartitionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpannerInstancePartitionSpec{}
+	// MISSING: Name
+	// MISSING: Config
+	// MISSING: DisplayName
+	// MISSING: NodeCount
+	// MISSING: ProcessingUnits
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: ReferencingDatabases
+	// MISSING: ReferencingBackups
+	// MISSING: Etag
+	return out
+}
+func SpannerInstancePartitionSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInstancePartitionSpec) *pb.InstancePartition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstancePartition{}
+	// MISSING: Name
+	// MISSING: Config
+	// MISSING: DisplayName
+	// MISSING: NodeCount
+	// MISSING: ProcessingUnits
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: ReferencingDatabases
+	// MISSING: ReferencingBackups
+	// MISSING: Etag
 	return out
 }
