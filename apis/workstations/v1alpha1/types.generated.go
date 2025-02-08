@@ -51,3 +51,22 @@ type Any struct {
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
+
+// +kcc:proto=google.cloud.workstations.v1beta.WorkstationCluster.PrivateClusterConfig
+type WorkstationCluster_PrivateClusterConfigObservedState struct {
+	// Output only. Hostname for the workstation cluster. This field will be
+	//  populated only when private endpoint is enabled. To access workstations
+	//  in the workstation cluster, create a new DNS zone mapping this domain
+	//  name to an internal IP address and a forwarding rule mapping that address
+	//  to the service attachment.
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationCluster.PrivateClusterConfig.cluster_hostname
+	ClusterHostname *string `json:"clusterHostname,omitempty"`
+
+	// Output only. Service attachment URI for the workstation cluster. The
+	//  service attachemnt is created when private endpoint is enabled. To access
+	//  workstations in the workstation cluster, configure access to the managed
+	//  service using [Private Service
+	//  Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services).
+	// +kcc:proto:field=google.cloud.workstations.v1beta.WorkstationCluster.PrivateClusterConfig.service_attachment_uri
+	ServiceAttachmentURI *string `json:"serviceAttachmentURI,omitempty"`
+}
