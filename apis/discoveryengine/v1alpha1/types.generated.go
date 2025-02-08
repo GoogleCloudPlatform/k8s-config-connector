@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.discoveryengine.v1.CustomTuningModel
+// +kcc:proto=google.cloud.discoveryengine.v1beta.CustomTuningModel
 type CustomTuningModel struct {
 	// Required. The fully qualified resource name of the model.
 	//
@@ -23,27 +23,27 @@ type CustomTuningModel struct {
 	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/customTuningModels/{custom_tuning_model}`.
 	//
 	//  Model must be an alpha-numerical string with limit of 40 characters.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CustomTuningModel.name
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.CustomTuningModel.name
 	Name *string `json:"name,omitempty"`
 
 	// The display name of the model.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CustomTuningModel.display_name
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.CustomTuningModel.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The version of the model.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CustomTuningModel.model_version
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.CustomTuningModel.model_version
 	ModelVersion *int64 `json:"modelVersion,omitempty"`
 
 	// The state that the model is in (e.g.`TRAINING` or `TRAINING_FAILED`).
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CustomTuningModel.model_state
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.CustomTuningModel.model_state
 	ModelState *string `json:"modelState,omitempty"`
 
 	// Deprecated: Timestamp the Model was created at.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CustomTuningModel.create_time
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.CustomTuningModel.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Timestamp the model training was initiated.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CustomTuningModel.training_start_time
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.CustomTuningModel.training_start_time
 	TrainingStartTime *string `json:"trainingStartTime,omitempty"`
 
 	// TODO: unsupported map type with key string and value double
@@ -51,6 +51,6 @@ type CustomTuningModel struct {
 
 	// Currently this is only populated if the model state is
 	//  `INPUT_VALIDATION_FAILED`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CustomTuningModel.error_message
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.CustomTuningModel.error_message
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
