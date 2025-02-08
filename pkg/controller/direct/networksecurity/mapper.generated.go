@@ -15,10 +15,10 @@
 package networksecurity
 
 import (
-	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func AuthorizationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.AuthorizationPolicy {
 	if in == nil {
@@ -152,61 +152,5 @@ func AuthorizationPolicy_Rule_Source_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.AuthorizationPolicy_Rule_Source{}
 	out.Principals = in.Principals
 	out.IpBlocks = in.IPBlocks
-	return out
-}
-func NetworksecurityAuthorizationPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworksecurityAuthorizationPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworksecurityAuthorizationPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
-	return out
-}
-func NetworksecurityAuthorizationPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworksecurityAuthorizationPolicyObservedState) *pb.AuthorizationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizationPolicy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
-	return out
-}
-func NetworksecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworksecurityAuthorizationPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworksecurityAuthorizationPolicySpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
-	return out
-}
-func NetworksecurityAuthorizationPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworksecurityAuthorizationPolicySpec) *pb.AuthorizationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizationPolicy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
 	return out
 }
