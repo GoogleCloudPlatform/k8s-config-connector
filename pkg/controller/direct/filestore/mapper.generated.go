@@ -16,7 +16,7 @@ package filestore
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/filestore/apiv1/filestorepb"
+	pb "cloud.google.com/go/filestore/apiv1beta1/filestorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -38,7 +38,7 @@ func Backup_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.Backup {
 	// MISSING: DownloadBytes
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
-	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
 	return out
 }
 func Backup_ToProto(mapCtx *direct.MapContext, in *krm.Backup) *pb.Backup {
@@ -59,7 +59,7 @@ func Backup_ToProto(mapCtx *direct.MapContext, in *krm.Backup) *pb.Backup {
 	// MISSING: DownloadBytes
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
-	out.KmsKey = direct.ValueOf(in.KMSKey)
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	return out
 }
 func BackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.BackupObservedState {
@@ -80,7 +80,7 @@ func BackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *kr
 	out.DownloadBytes = direct.LazyPtr(in.GetDownloadBytes())
 	out.SatisfiesPzs = direct.BoolValue_FromProto(mapCtx, in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	// MISSING: KMSKey
+	// MISSING: KMSKeyName
 	return out
 }
 func BackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupObservedState) *pb.Backup {
@@ -101,90 +101,6 @@ func BackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupObserv
 	out.DownloadBytes = direct.ValueOf(in.DownloadBytes)
 	out.SatisfiesPzs = direct.BoolValue_ToProto(mapCtx, in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
-	// MISSING: KMSKey
-	return out
-}
-func FilestoreBackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.FilestoreBackupObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FilestoreBackupObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: CapacityGB
-	// MISSING: StorageBytes
-	// MISSING: SourceInstance
-	// MISSING: SourceFileShare
-	// MISSING: SourceInstanceTier
-	// MISSING: DownloadBytes
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: KMSKey
-	return out
-}
-func FilestoreBackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FilestoreBackupObservedState) *pb.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Backup{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: CapacityGB
-	// MISSING: StorageBytes
-	// MISSING: SourceInstance
-	// MISSING: SourceFileShare
-	// MISSING: SourceInstanceTier
-	// MISSING: DownloadBytes
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: KMSKey
-	return out
-}
-func FilestoreBackupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.FilestoreBackupSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FilestoreBackupSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: CapacityGB
-	// MISSING: StorageBytes
-	// MISSING: SourceInstance
-	// MISSING: SourceFileShare
-	// MISSING: SourceInstanceTier
-	// MISSING: DownloadBytes
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: KMSKey
-	return out
-}
-func FilestoreBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.FilestoreBackupSpec) *pb.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Backup{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: CapacityGB
-	// MISSING: StorageBytes
-	// MISSING: SourceInstance
-	// MISSING: SourceFileShare
-	// MISSING: SourceInstanceTier
-	// MISSING: DownloadBytes
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: KMSKey
+	// MISSING: KMSKeyName
 	return out
 }
