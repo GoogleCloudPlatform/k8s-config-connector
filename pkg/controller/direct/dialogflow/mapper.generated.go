@@ -16,7 +16,7 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -126,74 +126,6 @@ func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreCon
 	out.DataStore = direct.ValueOf(in.DataStore)
 	return out
 }
-func DialogflowPageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Page) *krm.DialogflowPageObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowPageObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: EntryFulfillment
-	// MISSING: Form
-	// MISSING: TransitionRouteGroups
-	// MISSING: TransitionRoutes
-	// MISSING: EventHandlers
-	// MISSING: AdvancedSettings
-	// MISSING: KnowledgeConnectorSettings
-	return out
-}
-func DialogflowPageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPageObservedState) *pb.Page {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Page{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: EntryFulfillment
-	// MISSING: Form
-	// MISSING: TransitionRouteGroups
-	// MISSING: TransitionRoutes
-	// MISSING: EventHandlers
-	// MISSING: AdvancedSettings
-	// MISSING: KnowledgeConnectorSettings
-	return out
-}
-func DialogflowPageSpec_FromProto(mapCtx *direct.MapContext, in *pb.Page) *krm.DialogflowPageSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowPageSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: EntryFulfillment
-	// MISSING: Form
-	// MISSING: TransitionRouteGroups
-	// MISSING: TransitionRoutes
-	// MISSING: EventHandlers
-	// MISSING: AdvancedSettings
-	// MISSING: KnowledgeConnectorSettings
-	return out
-}
-func DialogflowPageSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPageSpec) *pb.Page {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Page{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: EntryFulfillment
-	// MISSING: Form
-	// MISSING: TransitionRouteGroups
-	// MISSING: TransitionRoutes
-	// MISSING: EventHandlers
-	// MISSING: AdvancedSettings
-	// MISSING: KnowledgeConnectorSettings
-	return out
-}
 func EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm.EventHandler {
 	if in == nil {
 		return nil
@@ -204,6 +136,7 @@ func EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm
 	out.TriggerFulfillment = Fulfillment_FromProto(mapCtx, in.GetTriggerFulfillment())
 	out.TargetPage = direct.LazyPtr(in.GetTargetPage())
 	out.TargetFlow = direct.LazyPtr(in.GetTargetFlow())
+	out.TargetPlaybook = direct.LazyPtr(in.GetTargetPlaybook())
 	return out
 }
 func EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.EventHandler) *pb.EventHandler {
@@ -220,6 +153,9 @@ func EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.EventHandler) *pb.E
 	if oneof := EventHandler_TargetFlow_ToProto(mapCtx, in.TargetFlow); oneof != nil {
 		out.Target = oneof
 	}
+	if oneof := EventHandler_TargetPlaybook_ToProto(mapCtx, in.TargetPlaybook); oneof != nil {
+		out.Target = oneof
+	}
 	return out
 }
 func EventHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm.EventHandlerObservedState {
@@ -232,6 +168,7 @@ func EventHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Event
 	// MISSING: TriggerFulfillment
 	// MISSING: TargetPage
 	// MISSING: TargetFlow
+	// MISSING: TargetPlaybook
 	return out
 }
 func EventHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventHandlerObservedState) *pb.EventHandler {
@@ -244,6 +181,7 @@ func EventHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventH
 	// MISSING: TriggerFulfillment
 	// MISSING: TargetPage
 	// MISSING: TargetFlow
+	// MISSING: TargetPlaybook
 	return out
 }
 func Form_FromProto(mapCtx *direct.MapContext, in *pb.Form) *krm.Form {
@@ -635,7 +573,7 @@ func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage
 	// MISSING: MixedAudio
 	out.TelephonyTransferCall = ResponseMessage_TelephonyTransferCall_FromProto(mapCtx, in.GetTelephonyTransferCall())
 	out.KnowledgeInfoCard = ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx, in.GetKnowledgeInfoCard())
-	out.ResponseType = direct.Enum_FromProto(mapCtx, in.GetResponseType())
+	out.ToolCall = ToolCall_FromProto(mapCtx, in.GetToolCall())
 	out.Channel = direct.LazyPtr(in.GetChannel())
 	return out
 }
@@ -670,7 +608,9 @@ func ResponseMessage_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage)
 	if oneof := ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx, in.KnowledgeInfoCard); oneof != nil {
 		out.Message = &pb.ResponseMessage_KnowledgeInfoCard_{KnowledgeInfoCard: oneof}
 	}
-	out.ResponseType = direct.Enum_ToProto[pb.ResponseMessage_ResponseType](mapCtx, in.ResponseType)
+	if oneof := ToolCall_ToProto(mapCtx, in.ToolCall); oneof != nil {
+		out.Message = &pb.ResponseMessage_ToolCall{ToolCall: oneof}
+	}
 	out.Channel = direct.ValueOf(in.Channel)
 	return out
 }
@@ -689,7 +629,7 @@ func ResponseMessageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Re
 	out.MixedAudio = ResponseMessage_MixedAudio_FromProto(mapCtx, in.GetMixedAudio())
 	// MISSING: TelephonyTransferCall
 	// MISSING: KnowledgeInfoCard
-	// MISSING: ResponseType
+	// MISSING: ToolCall
 	// MISSING: Channel
 	return out
 }
@@ -718,7 +658,7 @@ func ResponseMessageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Res
 	}
 	// MISSING: TelephonyTransferCall
 	// MISSING: KnowledgeInfoCard
-	// MISSING: ResponseType
+	// MISSING: ToolCall
 	// MISSING: Channel
 	return out
 }
@@ -990,6 +930,26 @@ func ResponseMessage_TextObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.ResponseMessage_Text{}
 	// MISSING: Text
 	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
+	return out
+}
+func ToolCall_FromProto(mapCtx *direct.MapContext, in *pb.ToolCall) *krm.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolCall{}
+	out.Tool = direct.LazyPtr(in.GetTool())
+	out.Action = direct.LazyPtr(in.GetAction())
+	out.InputParameters = InputParameters_FromProto(mapCtx, in.GetInputParameters())
+	return out
+}
+func ToolCall_ToProto(mapCtx *direct.MapContext, in *krm.ToolCall) *pb.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolCall{}
+	out.Tool = direct.ValueOf(in.Tool)
+	out.Action = direct.ValueOf(in.Action)
+	out.InputParameters = InputParameters_ToProto(mapCtx, in.InputParameters)
 	return out
 }
 func TransitionRoute_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute) *krm.TransitionRoute {
