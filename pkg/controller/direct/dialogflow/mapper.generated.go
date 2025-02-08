@@ -15,10 +15,10 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func ContinuousTestResult_FromProto(mapCtx *direct.MapContext, in *pb.ContinuousTestResult) *krm.ContinuousTestResult {
 	if in == nil {
@@ -40,49 +40,5 @@ func ContinuousTestResult_ToProto(mapCtx *direct.MapContext, in *krm.ContinuousT
 	out.Result = direct.Enum_ToProto[pb.ContinuousTestResult_AggregatedTestResult](mapCtx, in.Result)
 	out.TestCaseResults = in.TestCaseResults
 	out.RunTime = direct.StringTimestamp_ToProto(mapCtx, in.RunTime)
-	return out
-}
-func DialogflowContinuousTestResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ContinuousTestResult) *krm.DialogflowContinuousTestResultObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowContinuousTestResultObservedState{}
-	// MISSING: Name
-	// MISSING: Result
-	// MISSING: TestCaseResults
-	// MISSING: RunTime
-	return out
-}
-func DialogflowContinuousTestResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowContinuousTestResultObservedState) *pb.ContinuousTestResult {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContinuousTestResult{}
-	// MISSING: Name
-	// MISSING: Result
-	// MISSING: TestCaseResults
-	// MISSING: RunTime
-	return out
-}
-func DialogflowContinuousTestResultSpec_FromProto(mapCtx *direct.MapContext, in *pb.ContinuousTestResult) *krm.DialogflowContinuousTestResultSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowContinuousTestResultSpec{}
-	// MISSING: Name
-	// MISSING: Result
-	// MISSING: TestCaseResults
-	// MISSING: RunTime
-	return out
-}
-func DialogflowContinuousTestResultSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowContinuousTestResultSpec) *pb.ContinuousTestResult {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContinuousTestResult{}
-	// MISSING: Name
-	// MISSING: Result
-	// MISSING: TestCaseResults
-	// MISSING: RunTime
 	return out
 }

@@ -15,23 +15,23 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.ContinuousTestResult
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.ContinuousTestResult
 type ContinuousTestResult struct {
 	// The resource name for the continuous test result. Format:
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/continuousTestResults/<ContinuousTestResultID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ContinuousTestResult.name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ContinuousTestResult.name
 	Name *string `json:"name,omitempty"`
 
 	// The result of this continuous test run, i.e. whether all the tests in this
 	//  continuous test run pass or not.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ContinuousTestResult.result
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ContinuousTestResult.result
 	Result *string `json:"result,omitempty"`
 
 	// A list of individual test case results names in this continuous test run.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ContinuousTestResult.test_case_results
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ContinuousTestResult.test_case_results
 	TestCaseResults []string `json:"testCaseResults,omitempty"`
 
 	// Time when the continuous testing run starts.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ContinuousTestResult.run_time
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.ContinuousTestResult.run_time
 	RunTime *string `json:"runTime,omitempty"`
 }
