@@ -14,6 +14,7 @@
 
 package v1alpha1
 
+
 // +kcc:proto=google.cloud.managedkafka.v1.RebalanceConfig
 type RebalanceConfig struct {
 	// Optional. The rebalance behavior for the cluster.
