@@ -15,83 +15,11 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 )
-func DialogflowSecuritySettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.DialogflowSecuritySettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowSecuritySettingsObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: RedactionStrategy
-	// MISSING: RedactionScope
-	// MISSING: InspectTemplate
-	// MISSING: DeidentifyTemplate
-	// MISSING: RetentionWindowDays
-	// MISSING: RetentionStrategy
-	// MISSING: PurgeDataTypes
-	// MISSING: AudioExportSettings
-	// MISSING: InsightsExportSettings
-	return out
-}
-func DialogflowSecuritySettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSecuritySettingsObservedState) *pb.SecuritySettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SecuritySettings{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: RedactionStrategy
-	// MISSING: RedactionScope
-	// MISSING: InspectTemplate
-	// MISSING: DeidentifyTemplate
-	// MISSING: RetentionWindowDays
-	// MISSING: RetentionStrategy
-	// MISSING: PurgeDataTypes
-	// MISSING: AudioExportSettings
-	// MISSING: InsightsExportSettings
-	return out
-}
-func DialogflowSecuritySettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.DialogflowSecuritySettingsSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowSecuritySettingsSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: RedactionStrategy
-	// MISSING: RedactionScope
-	// MISSING: InspectTemplate
-	// MISSING: DeidentifyTemplate
-	// MISSING: RetentionWindowDays
-	// MISSING: RetentionStrategy
-	// MISSING: PurgeDataTypes
-	// MISSING: AudioExportSettings
-	// MISSING: InsightsExportSettings
-	return out
-}
-func DialogflowSecuritySettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSecuritySettingsSpec) *pb.SecuritySettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SecuritySettings{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: RedactionStrategy
-	// MISSING: RedactionScope
-	// MISSING: InspectTemplate
-	// MISSING: DeidentifyTemplate
-	// MISSING: RetentionWindowDays
-	// MISSING: RetentionStrategy
-	// MISSING: PurgeDataTypes
-	// MISSING: AudioExportSettings
-	// MISSING: InsightsExportSettings
-	return out
-}
 func SecuritySettings_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.SecuritySettings {
 	if in == nil {
 		return nil
