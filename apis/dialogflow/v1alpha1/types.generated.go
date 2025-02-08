@@ -15,37 +15,36 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.v2.Version
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Version
 type Version struct {
 
 	// Optional. The developer-provided description of this version.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Version.description
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Version.description
 	Description *string `json:"description,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.Version
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Version
 type VersionObservedState struct {
 	// Output only. The unique identifier of this agent version.
 	//  Supported formats:
-	//
 	//  - `projects/<Project ID>/agent/versions/<Version ID>`
 	//  - `projects/<Project ID>/locations/<Location ID>/agent/versions/<Version
 	//    ID>`
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Version.name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Version.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. The sequential number of this version. This field is read-only
 	//  which means it cannot be set by create and update methods.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Version.version_number
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Version.version_number
 	VersionNumber *int32 `json:"versionNumber,omitempty"`
 
 	// Output only. The creation time of this version. This field is read-only,
 	//  i.e., it cannot be set by create and update methods.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Version.create_time
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Version.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The status of this version. This field is read-only and cannot
 	//  be set by create and update methods.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Version.status
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Version.status
 	Status *string `json:"status,omitempty"`
 }
