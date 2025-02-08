@@ -15,11 +15,29 @@
 package filestore
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/filestore/apiv1/filestorepb"
+	pb "cloud.google.com/go/filestore/apiv1beta1/filestorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
+func DirectoryServicesConfig_FromProto(mapCtx *direct.MapContext, in *pb.DirectoryServicesConfig) *krm.DirectoryServicesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DirectoryServicesConfig{}
+	out.ManagedActiveDirectory = ManagedActiveDirectoryConfig_FromProto(mapCtx, in.GetManagedActiveDirectory())
+	return out
+}
+func DirectoryServicesConfig_ToProto(mapCtx *direct.MapContext, in *krm.DirectoryServicesConfig) *pb.DirectoryServicesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DirectoryServicesConfig{}
+	if oneof := ManagedActiveDirectoryConfig_ToProto(mapCtx, in.ManagedActiveDirectory); oneof != nil {
+		out.Config = &pb.DirectoryServicesConfig_ManagedActiveDirectory{ManagedActiveDirectory: oneof}
+	}
+	return out
+}
 func FileShareConfig_FromProto(mapCtx *direct.MapContext, in *pb.FileShareConfig) *krm.FileShareConfig {
 	if in == nil {
 		return nil
@@ -44,90 +62,6 @@ func FileShareConfig_ToProto(mapCtx *direct.MapContext, in *krm.FileShareConfig)
 	out.NfsExportOptions = direct.Slice_ToProto(mapCtx, in.NfsExportOptions, NfsExportOptions_ToProto)
 	return out
 }
-func FilestoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.FilestoreInstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FilestoreInstanceObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: CreateTime
-	// MISSING: Tier
-	// MISSING: Labels
-	// MISSING: FileShares
-	// MISSING: Networks
-	// MISSING: Etag
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: KMSKeyName
-	// MISSING: SuspensionReasons
-	return out
-}
-func FilestoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FilestoreInstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: CreateTime
-	// MISSING: Tier
-	// MISSING: Labels
-	// MISSING: FileShares
-	// MISSING: Networks
-	// MISSING: Etag
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: KMSKeyName
-	// MISSING: SuspensionReasons
-	return out
-}
-func FilestoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.FilestoreInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FilestoreInstanceSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: CreateTime
-	// MISSING: Tier
-	// MISSING: Labels
-	// MISSING: FileShares
-	// MISSING: Networks
-	// MISSING: Etag
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: KMSKeyName
-	// MISSING: SuspensionReasons
-	return out
-}
-func FilestoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.FilestoreInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: CreateTime
-	// MISSING: Tier
-	// MISSING: Labels
-	// MISSING: FileShares
-	// MISSING: Networks
-	// MISSING: Etag
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: KMSKeyName
-	// MISSING: SuspensionReasons
-	return out
-}
 func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instance {
 	if in == nil {
 		return nil
@@ -147,6 +81,13 @@ func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instanc
 	// MISSING: SatisfiesPzi
 	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
 	// MISSING: SuspensionReasons
+	// MISSING: MaxCapacityGB
+	// MISSING: CapacityStepSizeGB
+	out.MaxShareCount = direct.LazyPtr(in.GetMaxShareCount())
+	out.CapacityGB = direct.LazyPtr(in.GetCapacityGb())
+	out.MultiShareEnabled = direct.LazyPtr(in.GetMultiShareEnabled())
+	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
+	out.DirectoryServices = DirectoryServicesConfig_FromProto(mapCtx, in.GetDirectoryServices())
 	return out
 }
 func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance {
@@ -168,6 +109,13 @@ func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance 
 	// MISSING: SatisfiesPzi
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	// MISSING: SuspensionReasons
+	// MISSING: MaxCapacityGB
+	// MISSING: CapacityStepSizeGB
+	out.MaxShareCount = direct.ValueOf(in.MaxShareCount)
+	out.CapacityGb = direct.ValueOf(in.CapacityGB)
+	out.MultiShareEnabled = direct.ValueOf(in.MultiShareEnabled)
+	out.Protocol = direct.Enum_ToProto[pb.Instance_FileProtocol](mapCtx, in.Protocol)
+	out.DirectoryServices = DirectoryServicesConfig_ToProto(mapCtx, in.DirectoryServices)
 	return out
 }
 func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.InstanceObservedState {
@@ -189,6 +137,13 @@ func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	// MISSING: KMSKeyName
 	out.SuspensionReasons = direct.EnumSlice_FromProto(mapCtx, in.SuspensionReasons)
+	out.MaxCapacityGB = direct.LazyPtr(in.GetMaxCapacityGb())
+	out.CapacityStepSizeGB = direct.LazyPtr(in.GetCapacityStepSizeGb())
+	// MISSING: MaxShareCount
+	// MISSING: CapacityGB
+	// MISSING: MultiShareEnabled
+	// MISSING: Protocol
+	// MISSING: DirectoryServices
 	return out
 }
 func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedState) *pb.Instance {
@@ -210,6 +165,31 @@ func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceOb
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	// MISSING: KMSKeyName
 	out.SuspensionReasons = direct.EnumSlice_ToProto[pb.Instance_SuspensionReason](mapCtx, in.SuspensionReasons)
+	out.MaxCapacityGb = direct.ValueOf(in.MaxCapacityGB)
+	out.CapacityStepSizeGb = direct.ValueOf(in.CapacityStepSizeGB)
+	// MISSING: MaxShareCount
+	// MISSING: CapacityGB
+	// MISSING: MultiShareEnabled
+	// MISSING: Protocol
+	// MISSING: DirectoryServices
+	return out
+}
+func ManagedActiveDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.ManagedActiveDirectoryConfig) *krm.ManagedActiveDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ManagedActiveDirectoryConfig{}
+	out.Domain = direct.LazyPtr(in.GetDomain())
+	out.Computer = direct.LazyPtr(in.GetComputer())
+	return out
+}
+func ManagedActiveDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ManagedActiveDirectoryConfig) *pb.ManagedActiveDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagedActiveDirectoryConfig{}
+	out.Domain = direct.ValueOf(in.Domain)
+	out.Computer = direct.ValueOf(in.Computer)
 	return out
 }
 func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
@@ -270,6 +250,7 @@ func NfsExportOptions_FromProto(mapCtx *direct.MapContext, in *pb.NfsExportOptio
 	out.SquashMode = direct.Enum_FromProto(mapCtx, in.GetSquashMode())
 	out.AnonUid = direct.LazyPtr(in.GetAnonUid())
 	out.AnonGid = direct.LazyPtr(in.GetAnonGid())
+	out.SecurityFlavors = direct.EnumSlice_FromProto(mapCtx, in.SecurityFlavors)
 	return out
 }
 func NfsExportOptions_ToProto(mapCtx *direct.MapContext, in *krm.NfsExportOptions) *pb.NfsExportOptions {
@@ -282,5 +263,6 @@ func NfsExportOptions_ToProto(mapCtx *direct.MapContext, in *krm.NfsExportOption
 	out.SquashMode = direct.Enum_ToProto[pb.NfsExportOptions_SquashMode](mapCtx, in.SquashMode)
 	out.AnonUid = direct.ValueOf(in.AnonUid)
 	out.AnonGid = direct.ValueOf(in.AnonGid)
+	out.SecurityFlavors = direct.EnumSlice_ToProto[pb.NfsExportOptions_SecurityFlavor](mapCtx, in.SecurityFlavors)
 	return out
 }
