@@ -16,7 +16,7 @@ package tasks
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
+	pb "cloud.google.com/go/cloudtasks/apiv2beta2/cloudtaskspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tasks/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -42,22 +42,22 @@ func AppEngineRouting_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineRoutin
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
-func Attempt_FromProto(mapCtx *direct.MapContext, in *pb.Attempt) *krm.Attempt {
+func AttemptStatus_FromProto(mapCtx *direct.MapContext, in *pb.AttemptStatus) *krm.AttemptStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Attempt{}
+	out := &krm.AttemptStatus{}
 	out.ScheduleTime = direct.StringTimestamp_FromProto(mapCtx, in.GetScheduleTime())
 	out.DispatchTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDispatchTime())
 	out.ResponseTime = direct.StringTimestamp_FromProto(mapCtx, in.GetResponseTime())
 	out.ResponseStatus = Status_FromProto(mapCtx, in.GetResponseStatus())
 	return out
 }
-func Attempt_ToProto(mapCtx *direct.MapContext, in *krm.Attempt) *pb.Attempt {
+func AttemptStatus_ToProto(mapCtx *direct.MapContext, in *krm.AttemptStatus) *pb.AttemptStatus {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Attempt{}
+	out := &pb.AttemptStatus{}
 	out.ScheduleTime = direct.StringTimestamp_ToProto(mapCtx, in.ScheduleTime)
 	out.DispatchTime = direct.StringTimestamp_ToProto(mapCtx, in.DispatchTime)
 	out.ResponseTime = direct.StringTimestamp_ToProto(mapCtx, in.ResponseTime)
@@ -100,6 +100,24 @@ func OidcToken_ToProto(mapCtx *direct.MapContext, in *krm.OidcToken) *pb.OidcTok
 	out.Audience = direct.ValueOf(in.Audience)
 	return out
 }
+func PullMessage_FromProto(mapCtx *direct.MapContext, in *pb.PullMessage) *krm.PullMessage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PullMessage{}
+	out.Payload = in.GetPayload()
+	out.Tag = direct.LazyPtr(in.GetTag())
+	return out
+}
+func PullMessage_ToProto(mapCtx *direct.MapContext, in *krm.PullMessage) *pb.PullMessage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullMessage{}
+	out.Payload = in.Payload
+	out.Tag = direct.ValueOf(in.Tag)
+	return out
+}
 func Task_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.Task {
 	if in == nil {
 		return nil
@@ -107,14 +125,11 @@ func Task_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.Task {
 	out := &krm.Task{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.AppEngineHTTPRequest = AppEngineHttpRequest_FromProto(mapCtx, in.GetAppEngineHttpRequest())
+	out.PullMessage = PullMessage_FromProto(mapCtx, in.GetPullMessage())
 	out.HTTPRequest = HttpRequest_FromProto(mapCtx, in.GetHttpRequest())
 	out.ScheduleTime = direct.StringTimestamp_FromProto(mapCtx, in.GetScheduleTime())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.DispatchDeadline = direct.StringDuration_FromProto(mapCtx, in.GetDispatchDeadline())
-	out.DispatchCount = direct.LazyPtr(in.GetDispatchCount())
-	out.ResponseCount = direct.LazyPtr(in.GetResponseCount())
-	out.FirstAttempt = Attempt_FromProto(mapCtx, in.GetFirstAttempt())
-	out.LastAttempt = Attempt_FromProto(mapCtx, in.GetLastAttempt())
+	out.Status = TaskStatus_FromProto(mapCtx, in.GetStatus())
 	out.View = direct.Enum_FromProto(mapCtx, in.GetView())
 	return out
 }
@@ -125,90 +140,39 @@ func Task_ToProto(mapCtx *direct.MapContext, in *krm.Task) *pb.Task {
 	out := &pb.Task{}
 	out.Name = direct.ValueOf(in.Name)
 	if oneof := AppEngineHttpRequest_ToProto(mapCtx, in.AppEngineHTTPRequest); oneof != nil {
-		out.MessageType = &pb.Task_AppEngineHttpRequest{AppEngineHttpRequest: oneof}
+		out.PayloadType = &pb.Task_AppEngineHttpRequest{AppEngineHttpRequest: oneof}
+	}
+	if oneof := PullMessage_ToProto(mapCtx, in.PullMessage); oneof != nil {
+		out.PayloadType = &pb.Task_PullMessage{PullMessage: oneof}
 	}
 	if oneof := HttpRequest_ToProto(mapCtx, in.HTTPRequest); oneof != nil {
-		out.MessageType = &pb.Task_HttpRequest{HttpRequest: oneof}
+		out.PayloadType = &pb.Task_HttpRequest{HttpRequest: oneof}
 	}
 	out.ScheduleTime = direct.StringTimestamp_ToProto(mapCtx, in.ScheduleTime)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.DispatchDeadline = direct.StringDuration_ToProto(mapCtx, in.DispatchDeadline)
-	out.DispatchCount = direct.ValueOf(in.DispatchCount)
-	out.ResponseCount = direct.ValueOf(in.ResponseCount)
-	out.FirstAttempt = Attempt_ToProto(mapCtx, in.FirstAttempt)
-	out.LastAttempt = Attempt_ToProto(mapCtx, in.LastAttempt)
+	out.Status = TaskStatus_ToProto(mapCtx, in.Status)
 	out.View = direct.Enum_ToProto[pb.Task_View](mapCtx, in.View)
 	return out
 }
-func TasksTaskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.TasksTaskObservedState {
+func TaskStatus_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krm.TaskStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TasksTaskObservedState{}
-	// MISSING: Name
-	// MISSING: AppEngineHTTPRequest
-	// MISSING: HTTPRequest
-	// MISSING: ScheduleTime
-	// MISSING: CreateTime
-	// MISSING: DispatchDeadline
-	// MISSING: DispatchCount
-	// MISSING: ResponseCount
-	// MISSING: FirstAttempt
-	// MISSING: LastAttempt
-	// MISSING: View
+	out := &krm.TaskStatus{}
+	out.AttemptDispatchCount = direct.LazyPtr(in.GetAttemptDispatchCount())
+	out.AttemptResponseCount = direct.LazyPtr(in.GetAttemptResponseCount())
+	out.FirstAttemptStatus = AttemptStatus_FromProto(mapCtx, in.GetFirstAttemptStatus())
+	out.LastAttemptStatus = AttemptStatus_FromProto(mapCtx, in.GetLastAttemptStatus())
 	return out
 }
-func TasksTaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TasksTaskObservedState) *pb.Task {
+func TaskStatus_ToProto(mapCtx *direct.MapContext, in *krm.TaskStatus) *pb.TaskStatus {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Task{}
-	// MISSING: Name
-	// MISSING: AppEngineHTTPRequest
-	// MISSING: HTTPRequest
-	// MISSING: ScheduleTime
-	// MISSING: CreateTime
-	// MISSING: DispatchDeadline
-	// MISSING: DispatchCount
-	// MISSING: ResponseCount
-	// MISSING: FirstAttempt
-	// MISSING: LastAttempt
-	// MISSING: View
-	return out
-}
-func TasksTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.TasksTaskSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TasksTaskSpec{}
-	// MISSING: Name
-	// MISSING: AppEngineHTTPRequest
-	// MISSING: HTTPRequest
-	// MISSING: ScheduleTime
-	// MISSING: CreateTime
-	// MISSING: DispatchDeadline
-	// MISSING: DispatchCount
-	// MISSING: ResponseCount
-	// MISSING: FirstAttempt
-	// MISSING: LastAttempt
-	// MISSING: View
-	return out
-}
-func TasksTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.TasksTaskSpec) *pb.Task {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Task{}
-	// MISSING: Name
-	// MISSING: AppEngineHTTPRequest
-	// MISSING: HTTPRequest
-	// MISSING: ScheduleTime
-	// MISSING: CreateTime
-	// MISSING: DispatchDeadline
-	// MISSING: DispatchCount
-	// MISSING: ResponseCount
-	// MISSING: FirstAttempt
-	// MISSING: LastAttempt
-	// MISSING: View
+	out := &pb.TaskStatus{}
+	out.AttemptDispatchCount = direct.ValueOf(in.AttemptDispatchCount)
+	out.AttemptResponseCount = direct.ValueOf(in.AttemptResponseCount)
+	out.FirstAttemptStatus = AttemptStatus_ToProto(mapCtx, in.FirstAttemptStatus)
+	out.LastAttemptStatus = AttemptStatus_ToProto(mapCtx, in.LastAttemptStatus)
 	return out
 }
