@@ -15,64 +15,52 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
+// +kcc:proto=google.cloud.datacatalog.v1beta1.EntryGroup
 type EntryGroup struct {
-	// Identifier. The resource name of the entry group in URL format.
+	// Identifier. The resource name of the entry group in URL format. Example:
 	//
-	//  Note: The entry group itself and its child resources might not be
-	//  stored in the location specified in its name.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.name
+	//  * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+	//
+	//  Note that this EntryGroup and its child resources may not actually be
+	//  stored in the location in this name.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.EntryGroup.name
 	Name *string `json:"name,omitempty"`
 
 	// A short name to identify the entry group, for example,
 	//  "analytics data - jan 2011". Default value is an empty string.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.display_name
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.EntryGroup.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Entry group description. Can consist of several sentences or
-	//  paragraphs that describe the entry group contents.
-	//  Default value is an empty string.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.description
+	// Entry group description, which can consist of several sentences or
+	//  paragraphs that describe entry group contents. Default value is an empty
+	//  string.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.EntryGroup.description
 	Description *string `json:"description,omitempty"`
-
-	// Optional. When set to [true], it means DataCatalog EntryGroup was
-	//  transferred to Dataplex Catalog Service. It makes EntryGroup and its
-	//  Entries to be read-only in DataCatalog. However, new Tags on EntryGroup and
-	//  its Entries can be created. After setting the flag to [true] it cannot be
-	//  unset.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.transferred_to_dataplex
-	TransferredToDataplex *bool `json:"transferredToDataplex,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
+// +kcc:proto=google.cloud.datacatalog.v1beta1.SystemTimestamps
 type SystemTimestamps struct {
-	// Creation timestamp of the resource within the given system.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.create_time
+	// The creation time of the resource within the given system.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.SystemTimestamps.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Timestamp of the last modification of the resource or its metadata within
-	//  a given system.
-	//
-	//  Note: Depending on the source system, not every modification updates this
-	//  timestamp.
-	//  For example, BigQuery timestamps every metadata modification but not data
-	//  or permission changes.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.update_time
+	// The last-modified time of the resource within the given system.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.SystemTimestamps.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
+// +kcc:proto=google.cloud.datacatalog.v1beta1.EntryGroup
 type EntryGroupObservedState struct {
-	// Output only. Timestamps of the entry group. Default value is empty.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.data_catalog_timestamps
+	// Output only. Timestamps about this EntryGroup. Default value is empty
+	//  timestamps.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.EntryGroup.data_catalog_timestamps
 	DataCatalogTimestamps *SystemTimestamps `json:"dataCatalogTimestamps,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
+// +kcc:proto=google.cloud.datacatalog.v1beta1.SystemTimestamps
 type SystemTimestampsObservedState struct {
-	// Output only. Expiration timestamp of the resource within the given system.
-	//
-	//  Currently only applicable to BigQuery resources.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.expire_time
+	// Output only. The expiration time of the resource within the given system.
+	//  Currently only apllicable to BigQuery resources.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.SystemTimestamps.expire_time
 	ExpireTime *string `json:"expireTime,omitempty"`
 }

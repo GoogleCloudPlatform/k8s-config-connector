@@ -15,59 +15,11 @@
 package datacatalog
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/datacatalog/apiv1beta1/datacatalogpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 )
-func DatacatalogEntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DatacatalogEntryGroupObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogEntryGroupObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: DataCatalogTimestamps
-	// MISSING: TransferredToDataplex
-	return out
-}
-func DatacatalogEntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogEntryGroupObservedState) *pb.EntryGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntryGroup{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: DataCatalogTimestamps
-	// MISSING: TransferredToDataplex
-	return out
-}
-func DatacatalogEntryGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DatacatalogEntryGroupSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogEntryGroupSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: DataCatalogTimestamps
-	// MISSING: TransferredToDataplex
-	return out
-}
-func DatacatalogEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogEntryGroupSpec) *pb.EntryGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntryGroup{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: DataCatalogTimestamps
-	// MISSING: TransferredToDataplex
-	return out
-}
 func EntryGroup_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.EntryGroup {
 	if in == nil {
 		return nil
@@ -77,7 +29,6 @@ func EntryGroup_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.Ent
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: DataCatalogTimestamps
-	out.TransferredToDataplex = direct.LazyPtr(in.GetTransferredToDataplex())
 	return out
 }
 func EntryGroup_ToProto(mapCtx *direct.MapContext, in *krm.EntryGroup) *pb.EntryGroup {
@@ -89,7 +40,6 @@ func EntryGroup_ToProto(mapCtx *direct.MapContext, in *krm.EntryGroup) *pb.Entry
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: DataCatalogTimestamps
-	out.TransferredToDataplex = direct.ValueOf(in.TransferredToDataplex)
 	return out
 }
 func EntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.EntryGroupObservedState {
@@ -101,7 +51,6 @@ func EntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGr
 	// MISSING: DisplayName
 	// MISSING: Description
 	out.DataCatalogTimestamps = SystemTimestamps_FromProto(mapCtx, in.GetDataCatalogTimestamps())
-	// MISSING: TransferredToDataplex
 	return out
 }
 func EntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntryGroupObservedState) *pb.EntryGroup {
@@ -113,7 +62,6 @@ func EntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntryGro
 	// MISSING: DisplayName
 	// MISSING: Description
 	out.DataCatalogTimestamps = SystemTimestamps_ToProto(mapCtx, in.DataCatalogTimestamps)
-	// MISSING: TransferredToDataplex
 	return out
 }
 func SystemTimestamps_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krm.SystemTimestamps {
