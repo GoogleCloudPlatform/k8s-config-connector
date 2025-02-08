@@ -15,228 +15,199 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Environment
+// +kcc:proto=google.cloud.dialogflow.v2.Environment
 type Environment struct {
-	// The name of the environment.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.name
-	Name *string `json:"name,omitempty"`
 
-	// Required. The human-readable name of the environment (unique in an agent).
-	//  Limit of 64 characters.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The human-readable description of the environment. The maximum length is
-	//  500 characters. If exceeded, the request is rejected.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.description
+	// Optional. The developer-provided description for this environment.
+	//  The maximum length is 500 characters. If exceeded, the request is rejected.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Environment.description
 	Description *string `json:"description,omitempty"`
 
-	// A list of configurations for flow versions. You should include version
-	//  configs for all flows that are reachable from [`Start
-	//  Flow`][Agent.start_flow] in the agent. Otherwise, an error will be
-	//  returned.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.version_configs
-	VersionConfigs []Environment_VersionConfig `json:"versionConfigs,omitempty"`
+	// Optional. The agent version loaded into this environment.
+	//  Supported formats:
+	//
+	//  - `projects/<Project ID>/agent/versions/<Version ID>`
+	//  - `projects/<Project ID>/locations/<Location ID>/agent/versions/<Version
+	//    ID>`
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Environment.agent_version
+	AgentVersion *string `json:"agentVersion,omitempty"`
 
-	// The test cases config for continuous tests of this environment.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.test_cases_config
-	TestCasesConfig *Environment_TestCasesConfig `json:"testCasesConfig,omitempty"`
+	// Optional. Text to speech settings for this environment.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Environment.text_to_speech_settings
+	TextToSpeechSettings *TextToSpeechSettings `json:"textToSpeechSettings,omitempty"`
 
-	// The webhook configuration for this environment.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.webhook_config
-	WebhookConfig *Environment_WebhookConfig `json:"webhookConfig,omitempty"`
+	// Optional. The fulfillment settings to use for this environment.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Environment.fulfillment
+	Fulfillment *Fulfillment `json:"fulfillment,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Environment.TestCasesConfig
-type Environment_TestCasesConfig struct {
-	// A list of test case names to run. They should be under the same agent.
-	//  Format of each test case name:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.TestCasesConfig.test_cases
-	TestCases []string `json:"testCases,omitempty"`
-
-	// Whether to run test cases in
-	//  [TestCasesConfig.test_cases][google.cloud.dialogflow.cx.v3beta1.Environment.TestCasesConfig.test_cases]
-	//  periodically. Default false. If set to true, run once a day.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.TestCasesConfig.enable_continuous_run
-	EnableContinuousRun *bool `json:"enableContinuousRun,omitempty"`
-
-	// Whether to run test cases in
-	//  [TestCasesConfig.test_cases][google.cloud.dialogflow.cx.v3beta1.Environment.TestCasesConfig.test_cases]
-	//  before deploying a flow version to the environment. Default false.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.TestCasesConfig.enable_predeployment_run
-	EnablePredeploymentRun *bool `json:"enablePredeploymentRun,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Environment.VersionConfig
-type Environment_VersionConfig struct {
-	// Required. Both flow and playbook versions are supported.
-	//  Format for flow version:
-	//  projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>.
-	//  Format for playbook version:
-	//  projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.VersionConfig.version
-	Version *string `json:"version,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Environment.WebhookConfig
-type Environment_WebhookConfig struct {
-	// The list of webhooks to override for the agent environment. The webhook
-	//  must exist in the agent. You can override fields in
-	//  [`generic_web_service`][google.cloud.dialogflow.cx.v3beta1.Webhook.generic_web_service]
-	//  and
-	//  [`service_directory`][google.cloud.dialogflow.cx.v3beta1.Webhook.service_directory].
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.WebhookConfig.webhook_overrides
-	WebhookOverrides []Webhook `json:"webhookOverrides,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Webhook
-type Webhook struct {
-	// The unique identifier of the webhook.
-	//  Required for the
-	//  [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook]
-	//  method.
-	//  [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.CreateWebhook]
-	//  populates the name automatically. Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.name
+// +kcc:proto=google.cloud.dialogflow.v2.Fulfillment
+type Fulfillment struct {
+	// Required. The unique identifier of the fulfillment.
+	//  Supported formats:
+	//
+	//  - `projects/<Project ID>/agent/fulfillment`
+	//  - `projects/<Project ID>/locations/<Location ID>/agent/fulfillment`
+	//
+	//  This field is not used for Fulfillment in an Environment.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. The human-readable name of the webhook, unique within the agent.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.display_name
+	// Optional. The human-readable name of the fulfillment, unique within the
+	//  agent.
+	//
+	//  This field is not used for Fulfillment in an Environment.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Configuration for a generic web service.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.generic_web_service
-	GenericWebService *Webhook_GenericWebService `json:"genericWebService,omitempty"`
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.generic_web_service
+	GenericWebService *Fulfillment_GenericWebService `json:"genericWebService,omitempty"`
 
-	// Configuration for a [Service
-	//  Directory](https://cloud.google.com/service-directory) service.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.service_directory
-	ServiceDirectory *Webhook_ServiceDirectoryConfig `json:"serviceDirectory,omitempty"`
+	// Optional. Whether fulfillment is enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.enabled
+	Enabled *bool `json:"enabled,omitempty"`
 
-	// Webhook execution timeout. Execution is considered failed if Dialogflow
-	//  doesn't receive a response from webhook at the end of the timeout period.
-	//  Defaults to 5 seconds, maximum allowed timeout is 30 seconds.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.timeout
-	Timeout *string `json:"timeout,omitempty"`
-
-	// Indicates whether the webhook is disabled.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.disabled
-	Disabled *bool `json:"disabled,omitempty"`
+	// Optional. The field defines whether the fulfillment is enabled for certain
+	//  features.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.features
+	Features []Fulfillment_Feature `json:"features,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService
-type Webhook_GenericWebService struct {
-	// Required. The webhook URI for receiving POST requests. It must use https
-	//  protocol.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.uri
+// +kcc:proto=google.cloud.dialogflow.v2.Fulfillment.Feature
+type Fulfillment_Feature struct {
+	// The type of the feature that enabled for fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.Feature.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.Fulfillment.GenericWebService
+type Fulfillment_GenericWebService struct {
+	// Required. The fulfillment URI for receiving POST requests.
+	//  It must use https protocol.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.GenericWebService.uri
 	URI *string `json:"uri,omitempty"`
 
-	// The user name for HTTP Basic authentication.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.username
+	// Optional. The user name for HTTP Basic authentication.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.GenericWebService.username
 	Username *string `json:"username,omitempty"`
 
-	// The password for HTTP Basic authentication.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.password
+	// Optional. The password for HTTP Basic authentication.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.GenericWebService.password
 	Password *string `json:"password,omitempty"`
 
-	// The HTTP request headers to send together with webhook
+	// Optional. The HTTP request headers to send together with fulfillment
 	//  requests.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.request_headers
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.GenericWebService.request_headers
 	RequestHeaders map[string]string `json:"requestHeaders,omitempty"`
 
-	// Optional. Specifies a list of allowed custom CA certificates (in DER
-	//  format) for HTTPS verification. This overrides the default SSL trust
-	//  store. If this is empty or unspecified, Dialogflow will use Google's
-	//  default trust store to verify certificates. N.B. Make sure the HTTPS
-	//  server certificates are signed with "subject alt name". For instance a
-	//  certificate can be self-signed using the following command,
-	//  ```
-	//     openssl x509 -req -days 200 -in example.com.csr \
-	//       -signkey example.com.key \
-	//       -out example.com.crt \
-	//       -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
-	//  ```
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.allowed_ca_certs
-	AllowedCaCerts [][]byte `json:"allowedCaCerts,omitempty"`
-
-	// Optional. The OAuth configuration of the webhook. If specified,
-	//  Dialogflow will initiate the OAuth client credential flow to exchange an
-	//  access token from the 3rd party platform and put it in the auth header.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.oauth_config
-	OauthConfig *Webhook_GenericWebService_OAuthConfig `json:"oauthConfig,omitempty"`
-
-	// Optional. Indicate the auth token type generated from the [Diglogflow
-	//  service
-	//  agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
-	//  The generated token is sent in the Authorization header.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.service_agent_auth
-	ServiceAgentAuth *string `json:"serviceAgentAuth,omitempty"`
-
-	// Optional. Type of the webhook.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.webhook_type
-	WebhookType *string `json:"webhookType,omitempty"`
-
-	// Optional. HTTP method for the flexible webhook calls. Standard webhook
-	//  always uses POST.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.http_method
-	HTTPMethod *string `json:"httpMethod,omitempty"`
-
-	// Optional. Defines a custom JSON object as request body to send to
-	//  flexible webhook.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.request_body
-	RequestBody *string `json:"requestBody,omitempty"`
-
-	// Optional. Maps the values extracted from specific fields of the flexible
-	//  webhook response into session parameters.
-	//  - Key: session parameter name
-	//  - Value: field path in the webhook response
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.parameter_mapping
-	ParameterMapping map[string]string `json:"parameterMapping,omitempty"`
+	// Optional. Indicates if generic web service is created through Cloud
+	//  Functions integration. Defaults to false.
+	//
+	//  is_cloud_function is deprecated. Cloud functions can be configured by
+	//  its uri as a regular web service now.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Fulfillment.GenericWebService.is_cloud_function
+	IsCloudFunction *bool `json:"isCloudFunction,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.OAuthConfig
-type Webhook_GenericWebService_OAuthConfig struct {
-	// Required. The client ID provided by the 3rd party platform.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.OAuthConfig.client_id
-	ClientID *string `json:"clientID,omitempty"`
+// +kcc:proto=google.cloud.dialogflow.v2.SynthesizeSpeechConfig
+type SynthesizeSpeechConfig struct {
+	// Optional. Speaking rate/speed, in the range [0.25, 4.0]. 1.0 is the normal
+	//  native speed supported by the specific voice. 2.0 is twice as fast, and 0.5
+	//  is half as fast. If unset(0.0), defaults to the native 1.0 speed. Any other
+	//  values < 0.25 or > 4.0 will return an error.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SynthesizeSpeechConfig.speaking_rate
+	SpeakingRate *float64 `json:"speakingRate,omitempty"`
 
-	// Required. The client secret provided by the 3rd party platform.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.OAuthConfig.client_secret
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	// Optional. Speaking pitch, in the range [-20.0, 20.0]. 20 means increase 20
+	//  semitones from the original pitch. -20 means decrease 20 semitones from the
+	//  original pitch.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SynthesizeSpeechConfig.pitch
+	Pitch *float64 `json:"pitch,omitempty"`
 
-	// Required. The token endpoint provided by the 3rd party platform to
-	//  exchange an access token.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.OAuthConfig.token_endpoint
-	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+	// Optional. Volume gain (in dB) of the normal native volume supported by the
+	//  specific voice, in the range [-96.0, 16.0]. If unset, or set to a value of
+	//  0.0 (dB), will play at normal native signal amplitude. A value of -6.0 (dB)
+	//  will play at approximately half the amplitude of the normal native signal
+	//  amplitude. A value of +6.0 (dB) will play at approximately twice the
+	//  amplitude of the normal native signal amplitude. We strongly recommend not
+	//  to exceed +10 (dB) as there's usually no effective increase in loudness for
+	//  any value greater than that.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SynthesizeSpeechConfig.volume_gain_db
+	VolumeGainDb *float64 `json:"volumeGainDb,omitempty"`
 
-	// Optional. The OAuth scopes to grant.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.GenericWebService.OAuthConfig.scopes
-	Scopes []string `json:"scopes,omitempty"`
+	// Optional. An identifier which selects 'audio effects' profiles that are
+	//  applied on (post synthesized) text to speech. Effects are applied on top of
+	//  each other in the order they are given.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SynthesizeSpeechConfig.effects_profile_id
+	EffectsProfileID []string `json:"effectsProfileID,omitempty"`
+
+	// Optional. The desired voice of the synthesized audio.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SynthesizeSpeechConfig.voice
+	Voice *VoiceSelectionParams `json:"voice,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Webhook.ServiceDirectoryConfig
-type Webhook_ServiceDirectoryConfig struct {
-	// Required. The name of [Service
-	//  Directory](https://cloud.google.com/service-directory) service.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>`.
-	//  `Location ID` of the service directory must be the same as the location
-	//  of the agent.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.ServiceDirectoryConfig.service
-	Service *string `json:"service,omitempty"`
+// +kcc:proto=google.cloud.dialogflow.v2.TextToSpeechSettings
+type TextToSpeechSettings struct {
+	// Optional. Indicates whether text to speech is enabled. Even when this field
+	//  is false, other settings in this proto are still retained.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.TextToSpeechSettings.enable_text_to_speech
+	EnableTextToSpeech *bool `json:"enableTextToSpeech,omitempty"`
 
-	// Generic Service configuration of this webhook.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Webhook.ServiceDirectoryConfig.generic_web_service
-	GenericWebService *Webhook_GenericWebService `json:"genericWebService,omitempty"`
+	// Required. Audio encoding of the synthesized audio content.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.TextToSpeechSettings.output_audio_encoding
+	OutputAudioEncoding *string `json:"outputAudioEncoding,omitempty"`
+
+	// Optional. The synthesis sample rate (in hertz) for this audio. If not
+	//  provided, then the synthesizer will use the default sample rate based on
+	//  the audio encoding. If this is different from the voice's natural sample
+	//  rate, then the synthesizer will honor this request by converting to the
+	//  desired sample rate (which might result in worse audio quality).
+	// +kcc:proto:field=google.cloud.dialogflow.v2.TextToSpeechSettings.sample_rate_hertz
+	SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Environment
+// +kcc:proto=google.cloud.dialogflow.v2.VoiceSelectionParams
+type VoiceSelectionParams struct {
+	// Optional. The name of the voice. If not set, the service will choose a
+	//  voice based on the other parameters such as language_code and
+	//  [ssml_gender][google.cloud.dialogflow.v2.VoiceSelectionParams.ssml_gender].
+	// +kcc:proto:field=google.cloud.dialogflow.v2.VoiceSelectionParams.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The preferred gender of the voice. If not set, the service will
+	//  choose a voice based on the other parameters such as language_code and
+	//  [name][google.cloud.dialogflow.v2.VoiceSelectionParams.name]. Note that
+	//  this is only a preference, not requirement. If a voice of the appropriate
+	//  gender is not available, the synthesizer should substitute a voice with a
+	//  different gender rather than failing the request.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.VoiceSelectionParams.ssml_gender
+	SsmlGender *string `json:"ssmlGender,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.Environment
 type EnvironmentObservedState struct {
-	// Output only. Update time of this environment.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Environment.update_time
+	// Output only. The unique identifier of this agent environment.
+	//  Supported formats:
+	//
+	//  - `projects/<Project ID>/agent/environments/<Environment ID>`
+	//  - `projects/<Project ID>/locations/<Location
+	//    ID>/agent/environments/<Environment ID>`
+	//
+	//  The environment ID for the default environment is `-`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Environment.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The state of this environment. This field is read-only, i.e.,
+	//  it cannot be set by create and update methods.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Environment.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The last update time of this environment. This field is
+	//  read-only, i.e., it cannot be set by create and update methods.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Environment.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }

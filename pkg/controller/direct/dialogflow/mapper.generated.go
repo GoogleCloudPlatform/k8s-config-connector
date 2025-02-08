@@ -15,23 +15,23 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 )
 func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Environment{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.VersionConfigs = direct.Slice_FromProto(mapCtx, in.VersionConfigs, Environment_VersionConfig_FromProto)
+	out.AgentVersion = direct.LazyPtr(in.GetAgentVersion())
+	// MISSING: State
 	// MISSING: UpdateTime
-	out.TestCasesConfig = Environment_TestCasesConfig_FromProto(mapCtx, in.GetTestCasesConfig())
-	out.WebhookConfig = Environment_WebhookConfig_FromProto(mapCtx, in.GetWebhookConfig())
+	out.TextToSpeechSettings = TextToSpeechSettings_FromProto(mapCtx, in.GetTextToSpeechSettings())
+	out.Fulfillment = Fulfillment_FromProto(mapCtx, in.GetFulfillment())
 	return out
 }
 func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
@@ -39,13 +39,13 @@ func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Env
 		return nil
 	}
 	out := &pb.Environment{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	out.VersionConfigs = direct.Slice_ToProto(mapCtx, in.VersionConfigs, Environment_VersionConfig_ToProto)
+	out.AgentVersion = direct.ValueOf(in.AgentVersion)
+	// MISSING: State
 	// MISSING: UpdateTime
-	out.TestCasesConfig = Environment_TestCasesConfig_ToProto(mapCtx, in.TestCasesConfig)
-	out.WebhookConfig = Environment_WebhookConfig_ToProto(mapCtx, in.WebhookConfig)
+	out.TextToSpeechSettings = TextToSpeechSettings_ToProto(mapCtx, in.TextToSpeechSettings)
+	out.Fulfillment = Fulfillment_ToProto(mapCtx, in.Fulfillment)
 	return out
 }
 func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
@@ -53,13 +53,13 @@ func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Enviro
 		return nil
 	}
 	out := &krm.EnvironmentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
+	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: Description
-	// MISSING: VersionConfigs
+	// MISSING: AgentVersion
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: TestCasesConfig
-	// MISSING: WebhookConfig
+	// MISSING: TextToSpeechSettings
+	// MISSING: Fulfillment
 	return out
 }
 func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
@@ -67,170 +67,142 @@ func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Environ
 		return nil
 	}
 	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
+	out.Name = direct.ValueOf(in.Name)
 	// MISSING: Description
-	// MISSING: VersionConfigs
+	// MISSING: AgentVersion
+	out.State = direct.Enum_ToProto[pb.Environment_State](mapCtx, in.State)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: TestCasesConfig
-	// MISSING: WebhookConfig
+	// MISSING: TextToSpeechSettings
+	// MISSING: Fulfillment
 	return out
 }
-func Environment_TestCasesConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_TestCasesConfig) *krm.Environment_TestCasesConfig {
+func Fulfillment_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.Fulfillment {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Environment_TestCasesConfig{}
-	out.TestCases = in.TestCases
-	out.EnableContinuousRun = direct.LazyPtr(in.GetEnableContinuousRun())
-	out.EnablePredeploymentRun = direct.LazyPtr(in.GetEnablePredeploymentRun())
-	return out
-}
-func Environment_TestCasesConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_TestCasesConfig) *pb.Environment_TestCasesConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment_TestCasesConfig{}
-	out.TestCases = in.TestCases
-	out.EnableContinuousRun = direct.ValueOf(in.EnableContinuousRun)
-	out.EnablePredeploymentRun = direct.ValueOf(in.EnablePredeploymentRun)
-	return out
-}
-func Environment_VersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_VersionConfig) *krm.Environment_VersionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment_VersionConfig{}
-	out.Version = direct.LazyPtr(in.GetVersion())
-	return out
-}
-func Environment_VersionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_VersionConfig) *pb.Environment_VersionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment_VersionConfig{}
-	out.Version = direct.ValueOf(in.Version)
-	return out
-}
-func Environment_WebhookConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_WebhookConfig) *krm.Environment_WebhookConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment_WebhookConfig{}
-	out.WebhookOverrides = direct.Slice_FromProto(mapCtx, in.WebhookOverrides, Webhook_FromProto)
-	return out
-}
-func Environment_WebhookConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_WebhookConfig) *pb.Environment_WebhookConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment_WebhookConfig{}
-	out.WebhookOverrides = direct.Slice_ToProto(mapCtx, in.WebhookOverrides, Webhook_ToProto)
-	return out
-}
-func Webhook_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.Webhook {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Webhook{}
+	out := &krm.Fulfillment{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.GenericWebService = Webhook_GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
-	out.ServiceDirectory = Webhook_ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectory())
-	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
-	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.GenericWebService = Fulfillment_GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.Features = direct.Slice_FromProto(mapCtx, in.Features, Fulfillment_Feature_FromProto)
 	return out
 }
-func Webhook_ToProto(mapCtx *direct.MapContext, in *krm.Webhook) *pb.Webhook {
+func Fulfillment_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment) *pb.Fulfillment {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Webhook{}
+	out := &pb.Fulfillment{}
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	if oneof := Webhook_GenericWebService_ToProto(mapCtx, in.GenericWebService); oneof != nil {
-		out.Webhook = &pb.Webhook_GenericWebService_{GenericWebService: oneof}
+	if oneof := Fulfillment_GenericWebService_ToProto(mapCtx, in.GenericWebService); oneof != nil {
+		out.Fulfillment = &pb.Fulfillment_GenericWebService_{GenericWebService: oneof}
 	}
-	if oneof := Webhook_ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectory); oneof != nil {
-		out.Webhook = &pb.Webhook_ServiceDirectory{ServiceDirectory: oneof}
-	}
-	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
-	out.Disabled = direct.ValueOf(in.Disabled)
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.Features = direct.Slice_ToProto(mapCtx, in.Features, Fulfillment_Feature_ToProto)
 	return out
 }
-func Webhook_GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.Webhook_GenericWebService {
+func Fulfillment_Feature_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_Feature) *krm.Fulfillment_Feature {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Webhook_GenericWebService{}
+	out := &krm.Fulfillment_Feature{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Fulfillment_Feature_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_Feature) *pb.Fulfillment_Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_Feature{}
+	out.Type = direct.Enum_ToProto[pb.Fulfillment_Feature_Type](mapCtx, in.Type)
+	return out
+}
+func Fulfillment_GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_GenericWebService) *krm.Fulfillment_GenericWebService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_GenericWebService{}
 	out.URI = direct.LazyPtr(in.GetUri())
 	out.Username = direct.LazyPtr(in.GetUsername())
 	out.Password = direct.LazyPtr(in.GetPassword())
 	out.RequestHeaders = in.RequestHeaders
-	out.AllowedCaCerts = in.AllowedCaCerts
-	out.OauthConfig = Webhook_GenericWebService_OAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
-	out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
-	out.WebhookType = direct.Enum_FromProto(mapCtx, in.GetWebhookType())
-	out.HTTPMethod = direct.Enum_FromProto(mapCtx, in.GetHttpMethod())
-	out.RequestBody = direct.LazyPtr(in.GetRequestBody())
-	out.ParameterMapping = in.ParameterMapping
+	out.IsCloudFunction = direct.LazyPtr(in.GetIsCloudFunction())
 	return out
 }
-func Webhook_GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_GenericWebService) *pb.Webhook_GenericWebService {
+func Fulfillment_GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_GenericWebService) *pb.Fulfillment_GenericWebService {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Webhook_GenericWebService{}
+	out := &pb.Fulfillment_GenericWebService{}
 	out.Uri = direct.ValueOf(in.URI)
 	out.Username = direct.ValueOf(in.Username)
 	out.Password = direct.ValueOf(in.Password)
 	out.RequestHeaders = in.RequestHeaders
-	out.AllowedCaCerts = in.AllowedCaCerts
-	out.OauthConfig = Webhook_GenericWebService_OAuthConfig_ToProto(mapCtx, in.OauthConfig)
-	out.ServiceAgentAuth = direct.Enum_ToProto[pb.Webhook_GenericWebService_ServiceAgentAuth](mapCtx, in.ServiceAgentAuth)
-	out.WebhookType = direct.Enum_ToProto[pb.Webhook_GenericWebService_WebhookType](mapCtx, in.WebhookType)
-	out.HttpMethod = direct.Enum_ToProto[pb.Webhook_GenericWebService_HttpMethod](mapCtx, in.HTTPMethod)
-	out.RequestBody = direct.ValueOf(in.RequestBody)
-	out.ParameterMapping = in.ParameterMapping
+	out.IsCloudFunction = direct.ValueOf(in.IsCloudFunction)
 	return out
 }
-func Webhook_GenericWebService_OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService_OAuthConfig) *krm.Webhook_GenericWebService_OAuthConfig {
+func SynthesizeSpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.SynthesizeSpeechConfig) *krm.SynthesizeSpeechConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Webhook_GenericWebService_OAuthConfig{}
-	out.ClientID = direct.LazyPtr(in.GetClientId())
-	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
-	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
-	out.Scopes = in.Scopes
+	out := &krm.SynthesizeSpeechConfig{}
+	out.SpeakingRate = direct.LazyPtr(in.GetSpeakingRate())
+	out.Pitch = direct.LazyPtr(in.GetPitch())
+	out.VolumeGainDb = direct.LazyPtr(in.GetVolumeGainDb())
+	out.EffectsProfileID = in.EffectsProfileId
+	out.Voice = VoiceSelectionParams_FromProto(mapCtx, in.GetVoice())
 	return out
 }
-func Webhook_GenericWebService_OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_GenericWebService_OAuthConfig) *pb.Webhook_GenericWebService_OAuthConfig {
+func SynthesizeSpeechConfig_ToProto(mapCtx *direct.MapContext, in *krm.SynthesizeSpeechConfig) *pb.SynthesizeSpeechConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Webhook_GenericWebService_OAuthConfig{}
-	out.ClientId = direct.ValueOf(in.ClientID)
-	out.ClientSecret = direct.ValueOf(in.ClientSecret)
-	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
-	out.Scopes = in.Scopes
+	out := &pb.SynthesizeSpeechConfig{}
+	out.SpeakingRate = direct.ValueOf(in.SpeakingRate)
+	out.Pitch = direct.ValueOf(in.Pitch)
+	out.VolumeGainDb = direct.ValueOf(in.VolumeGainDb)
+	out.EffectsProfileId = in.EffectsProfileID
+	out.Voice = VoiceSelectionParams_ToProto(mapCtx, in.Voice)
 	return out
 }
-func Webhook_ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_ServiceDirectoryConfig) *krm.Webhook_ServiceDirectoryConfig {
+func TextToSpeechSettings_FromProto(mapCtx *direct.MapContext, in *pb.TextToSpeechSettings) *krm.TextToSpeechSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Webhook_ServiceDirectoryConfig{}
-	out.Service = direct.LazyPtr(in.GetService())
-	out.GenericWebService = Webhook_GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	out := &krm.TextToSpeechSettings{}
+	out.EnableTextToSpeech = direct.LazyPtr(in.GetEnableTextToSpeech())
+	out.OutputAudioEncoding = direct.Enum_FromProto(mapCtx, in.GetOutputAudioEncoding())
+	out.SampleRateHertz = direct.LazyPtr(in.GetSampleRateHertz())
+	// MISSING: SynthesizeSpeechConfigs
 	return out
 }
-func Webhook_ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_ServiceDirectoryConfig) *pb.Webhook_ServiceDirectoryConfig {
+func TextToSpeechSettings_ToProto(mapCtx *direct.MapContext, in *krm.TextToSpeechSettings) *pb.TextToSpeechSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Webhook_ServiceDirectoryConfig{}
-	out.Service = direct.ValueOf(in.Service)
-	out.GenericWebService = Webhook_GenericWebService_ToProto(mapCtx, in.GenericWebService)
+	out := &pb.TextToSpeechSettings{}
+	out.EnableTextToSpeech = direct.ValueOf(in.EnableTextToSpeech)
+	out.OutputAudioEncoding = direct.Enum_ToProto[pb.OutputAudioEncoding](mapCtx, in.OutputAudioEncoding)
+	out.SampleRateHertz = direct.ValueOf(in.SampleRateHertz)
+	// MISSING: SynthesizeSpeechConfigs
+	return out
+}
+func VoiceSelectionParams_FromProto(mapCtx *direct.MapContext, in *pb.VoiceSelectionParams) *krm.VoiceSelectionParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VoiceSelectionParams{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.SsmlGender = direct.Enum_FromProto(mapCtx, in.GetSsmlGender())
+	return out
+}
+func VoiceSelectionParams_ToProto(mapCtx *direct.MapContext, in *krm.VoiceSelectionParams) *pb.VoiceSelectionParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VoiceSelectionParams{}
+	out.Name = direct.ValueOf(in.Name)
+	out.SsmlGender = direct.Enum_ToProto[pb.SsmlVoiceGender](mapCtx, in.SsmlGender)
 	return out
 }
