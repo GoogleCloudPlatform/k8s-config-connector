@@ -16,7 +16,7 @@ package osconfig
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/osconfig/apiv1/osconfigpb"
+	pb "cloud.google.com/go/osconfig/apiv1beta/osconfigpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/osconfig/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -176,82 +176,6 @@ func OneTimeSchedule_ToProto(mapCtx *direct.MapContext, in *krm.OneTimeSchedule)
 	}
 	out := &pb.OneTimeSchedule{}
 	out.ExecuteTime = direct.StringTimestamp_ToProto(mapCtx, in.ExecuteTime)
-	return out
-}
-func OsconfigPatchDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PatchDeployment) *krm.OsconfigPatchDeploymentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OsconfigPatchDeploymentObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: InstanceFilter
-	// MISSING: PatchConfig
-	// MISSING: Duration
-	// MISSING: OneTimeSchedule
-	// MISSING: RecurringSchedule
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: LastExecuteTime
-	// MISSING: Rollout
-	// MISSING: State
-	return out
-}
-func OsconfigPatchDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OsconfigPatchDeploymentObservedState) *pb.PatchDeployment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PatchDeployment{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: InstanceFilter
-	// MISSING: PatchConfig
-	// MISSING: Duration
-	// MISSING: OneTimeSchedule
-	// MISSING: RecurringSchedule
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: LastExecuteTime
-	// MISSING: Rollout
-	// MISSING: State
-	return out
-}
-func OsconfigPatchDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.PatchDeployment) *krm.OsconfigPatchDeploymentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OsconfigPatchDeploymentSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: InstanceFilter
-	// MISSING: PatchConfig
-	// MISSING: Duration
-	// MISSING: OneTimeSchedule
-	// MISSING: RecurringSchedule
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: LastExecuteTime
-	// MISSING: Rollout
-	// MISSING: State
-	return out
-}
-func OsconfigPatchDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.OsconfigPatchDeploymentSpec) *pb.PatchDeployment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PatchDeployment{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: InstanceFilter
-	// MISSING: PatchConfig
-	// MISSING: Duration
-	// MISSING: OneTimeSchedule
-	// MISSING: RecurringSchedule
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: LastExecuteTime
-	// MISSING: Rollout
-	// MISSING: State
 	return out
 }
 func PatchConfig_FromProto(mapCtx *direct.MapContext, in *pb.PatchConfig) *krm.PatchConfig {

@@ -15,238 +15,237 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.osconfig.v1.AptSettings
+// +kcc:proto=google.cloud.osconfig.v1beta.AptSettings
 type AptSettings struct {
 	// By changing the type to DIST, the patching is performed
 	//  using `apt-get dist-upgrade` instead.
-	// +kcc:proto:field=google.cloud.osconfig.v1.AptSettings.type
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.AptSettings.type
 	Type *string `json:"type,omitempty"`
 
 	// List of packages to exclude from update. These packages will be excluded
-	// +kcc:proto:field=google.cloud.osconfig.v1.AptSettings.excludes
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.AptSettings.excludes
 	Excludes []string `json:"excludes,omitempty"`
 
 	// An exclusive list of packages to be updated. These are the only packages
 	//  that will be updated. If these packages are not installed, they will be
 	//  ignored. This field cannot be specified with any other patch configuration
 	//  fields.
-	// +kcc:proto:field=google.cloud.osconfig.v1.AptSettings.exclusive_packages
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.AptSettings.exclusive_packages
 	ExclusivePackages []string `json:"exclusivePackages,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.ExecStep
+// +kcc:proto=google.cloud.osconfig.v1beta.ExecStep
 type ExecStep struct {
 	// The ExecStepConfig for all Linux VMs targeted by the PatchJob.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ExecStep.linux_exec_step_config
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ExecStep.linux_exec_step_config
 	LinuxExecStepConfig *ExecStepConfig `json:"linuxExecStepConfig,omitempty"`
 
 	// The ExecStepConfig for all Windows VMs targeted by the PatchJob.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ExecStep.windows_exec_step_config
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ExecStep.windows_exec_step_config
 	WindowsExecStepConfig *ExecStepConfig `json:"windowsExecStepConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.ExecStepConfig
+// +kcc:proto=google.cloud.osconfig.v1beta.ExecStepConfig
 type ExecStepConfig struct {
 	// An absolute path to the executable on the VM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ExecStepConfig.local_path
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ExecStepConfig.local_path
 	LocalPath *string `json:"localPath,omitempty"`
 
-	// A Cloud Storage object containing the executable.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ExecStepConfig.gcs_object
+	// A Google Cloud Storage object containing the executable.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ExecStepConfig.gcs_object
 	GcsObject *GcsObject `json:"gcsObject,omitempty"`
 
 	// Defaults to [0]. A list of possible return values that the
 	//  execution can return to indicate a success.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ExecStepConfig.allowed_success_codes
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ExecStepConfig.allowed_success_codes
 	AllowedSuccessCodes []int32 `json:"allowedSuccessCodes,omitempty"`
 
 	// The script interpreter to use to run the script. If no interpreter is
 	//  specified the script will be executed directly, which will likely
 	//  only succeed for scripts with [shebang lines]
 	//  (https://en.wikipedia.org/wiki/Shebang_\(Unix\)).
-	// +kcc:proto:field=google.cloud.osconfig.v1.ExecStepConfig.interpreter
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ExecStepConfig.interpreter
 	Interpreter *string `json:"interpreter,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.FixedOrPercent
+// +kcc:proto=google.cloud.osconfig.v1beta.FixedOrPercent
 type FixedOrPercent struct {
 	// Specifies a fixed value.
-	// +kcc:proto:field=google.cloud.osconfig.v1.FixedOrPercent.fixed
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.FixedOrPercent.fixed
 	Fixed *int32 `json:"fixed,omitempty"`
 
 	// Specifies the relative value defined as a percentage, which will be
 	//  multiplied by a reference value.
-	// +kcc:proto:field=google.cloud.osconfig.v1.FixedOrPercent.percent
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.FixedOrPercent.percent
 	Percent *int32 `json:"percent,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.GcsObject
+// +kcc:proto=google.cloud.osconfig.v1beta.GcsObject
 type GcsObject struct {
-	// Required. Bucket of the Cloud Storage object.
-	// +kcc:proto:field=google.cloud.osconfig.v1.GcsObject.bucket
+	// Required. Bucket of the Google Cloud Storage object.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GcsObject.bucket
 	Bucket *string `json:"bucket,omitempty"`
 
-	// Required. Name of the Cloud Storage object.
-	// +kcc:proto:field=google.cloud.osconfig.v1.GcsObject.object
+	// Required. Name of the Google Cloud Storage object.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GcsObject.object
 	Object *string `json:"object,omitempty"`
 
-	// Required. Generation number of the Cloud Storage object. This is used to
+	// Required. Generation number of the Google Cloud Storage object. This is used to
 	//  ensure that the ExecStep specified by this PatchJob does not change.
-	// +kcc:proto:field=google.cloud.osconfig.v1.GcsObject.generation_number
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GcsObject.generation_number
 	GenerationNumber *int64 `json:"generationNumber,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.GooSettings
+// +kcc:proto=google.cloud.osconfig.v1beta.GooSettings
 type GooSettings struct {
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.MonthlySchedule
+// +kcc:proto=google.cloud.osconfig.v1beta.MonthlySchedule
 type MonthlySchedule struct {
 	// Required. Week day in a month.
-	// +kcc:proto:field=google.cloud.osconfig.v1.MonthlySchedule.week_day_of_month
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.MonthlySchedule.week_day_of_month
 	WeekDayOfMonth *WeekDayOfMonth `json:"weekDayOfMonth,omitempty"`
 
-	// Required. One day of the month. 1-31 indicates the 1st to the 31st day.
-	//  -1 indicates the last day of the month. Months without the target day
-	//  will be skipped. For example, a schedule to run "every month on the 31st"
-	//  will not run in February, April, June, etc.
-	// +kcc:proto:field=google.cloud.osconfig.v1.MonthlySchedule.month_day
+	// Required. One day of the month. 1-31 indicates the 1st to the 31st day. -1
+	//  indicates the last day of the month.
+	//  Months without the target day will be skipped. For example, a schedule to
+	//  run "every month on the 31st" will not run in February, April, June, etc.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.MonthlySchedule.month_day
 	MonthDay *int32 `json:"monthDay,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.OneTimeSchedule
+// +kcc:proto=google.cloud.osconfig.v1beta.OneTimeSchedule
 type OneTimeSchedule struct {
 	// Required. The desired patch job execution time.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OneTimeSchedule.execute_time
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.OneTimeSchedule.execute_time
 	ExecuteTime *string `json:"executeTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.PatchConfig
+// +kcc:proto=google.cloud.osconfig.v1beta.PatchConfig
 type PatchConfig struct {
 	// Post-patch reboot settings.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.reboot_config
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.reboot_config
 	RebootConfig *string `json:"rebootConfig,omitempty"`
 
 	// Apt update settings. Use this setting to override the default `apt` patch
 	//  rules.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.apt
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.apt
 	Apt *AptSettings `json:"apt,omitempty"`
 
 	// Yum update settings. Use this setting to override the default `yum` patch
 	//  rules.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.yum
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.yum
 	Yum *YumSettings `json:"yum,omitempty"`
 
 	// Goo update settings. Use this setting to override the default `goo` patch
 	//  rules.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.goo
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.goo
 	Goo *GooSettings `json:"goo,omitempty"`
 
 	// Zypper update settings. Use this setting to override the default `zypper`
 	//  patch rules.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.zypper
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.zypper
 	Zypper *ZypperSettings `json:"zypper,omitempty"`
 
 	// Windows update settings. Use this override the default windows patch rules.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.windows_update
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.windows_update
 	WindowsUpdate *WindowsUpdateSettings `json:"windowsUpdate,omitempty"`
 
 	// The `ExecStep` to run before the patch update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.pre_step
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.pre_step
 	PreStep *ExecStep `json:"preStep,omitempty"`
 
 	// The `ExecStep` to run after the patch update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.post_step
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.post_step
 	PostStep *ExecStep `json:"postStep,omitempty"`
 
 	// Allows the patch job to run on Managed instance groups (MIGs).
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchConfig.mig_instances_allowed
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchConfig.mig_instances_allowed
 	MigInstancesAllowed *bool `json:"migInstancesAllowed,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.PatchDeployment
+// +kcc:proto=google.cloud.osconfig.v1beta.PatchDeployment
 type PatchDeployment struct {
 	// Unique name for the patch deployment resource in a project. The patch
 	//  deployment name is in the form:
 	//  `projects/{project_id}/patchDeployments/{patch_deployment_id}`.
 	//  This field is ignored when you create a new patch deployment.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.name
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.name
 	Name *string `json:"name,omitempty"`
 
-	// Optional. Description of the patch deployment. Length of the description is
-	//  limited to 1024 characters.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.description
+	// Optional. Description of the patch deployment. Length of the description is limited
+	//  to 1024 characters.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.description
 	Description *string `json:"description,omitempty"`
 
 	// Required. VM instances to patch.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.instance_filter
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.instance_filter
 	InstanceFilter *PatchInstanceFilter `json:"instanceFilter,omitempty"`
 
 	// Optional. Patch configuration that is applied.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.patch_config
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.patch_config
 	PatchConfig *PatchConfig `json:"patchConfig,omitempty"`
 
-	// Optional. Duration of the patch. After the duration ends, the patch times
-	//  out.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.duration
+	// Optional. Duration of the patch. After the duration ends, the patch times out.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.duration
 	Duration *string `json:"duration,omitempty"`
 
 	// Required. Schedule a one-time execution.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.one_time_schedule
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.one_time_schedule
 	OneTimeSchedule *OneTimeSchedule `json:"oneTimeSchedule,omitempty"`
 
 	// Required. Schedule recurring executions.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.recurring_schedule
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.recurring_schedule
 	RecurringSchedule *RecurringSchedule `json:"recurringSchedule,omitempty"`
 
 	// Optional. Rollout strategy of the patch job.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.rollout
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.rollout
 	Rollout *PatchRollout `json:"rollout,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.PatchInstanceFilter
+// +kcc:proto=google.cloud.osconfig.v1beta.PatchInstanceFilter
 type PatchInstanceFilter struct {
 	// Target all VM instances in the project. If true, no other criteria is
 	//  permitted.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchInstanceFilter.all
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchInstanceFilter.all
 	All *bool `json:"all,omitempty"`
 
-	// Targets VM instances matching ANY of these GroupLabels. This allows
-	//  targeting of disparate groups of VM instances.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchInstanceFilter.group_labels
+	// Targets VM instances matching at least one of these label sets. This allows
+	//  targeting of disparate groups, for example "env=prod or env=staging".
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchInstanceFilter.group_labels
 	GroupLabels []PatchInstanceFilter_GroupLabel `json:"groupLabels,omitempty"`
 
 	// Targets VM instances in ANY of these zones. Leave empty to target VM
 	//  instances in any zone.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchInstanceFilter.zones
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchInstanceFilter.zones
 	Zones []string `json:"zones,omitempty"`
 
 	// Targets any of the VM instances specified. Instances are specified by their
 	//  URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME]`,
 	//  `projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]`, or
 	//  `https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]`
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchInstanceFilter.instances
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchInstanceFilter.instances
 	Instances []string `json:"instances,omitempty"`
 
 	// Targets VMs whose name starts with one of these prefixes. Similar to
 	//  labels, this is another way to group VMs when targeting configs, for
 	//  example prefix="prod-".
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchInstanceFilter.instance_name_prefixes
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchInstanceFilter.instance_name_prefixes
 	InstanceNamePrefixes []string `json:"instanceNamePrefixes,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.PatchInstanceFilter.GroupLabel
+// +kcc:proto=google.cloud.osconfig.v1beta.PatchInstanceFilter.GroupLabel
 type PatchInstanceFilter_GroupLabel struct {
-	// Compute Engine instance labels that must be present for a VM
-	//  instance to be targeted by this filter.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchInstanceFilter.GroupLabel.labels
+	// Compute Engine instance labels that must be present for a VM instance to
+	//  be targeted by this filter.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchInstanceFilter.GroupLabel.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.PatchRollout
+// +kcc:proto=google.cloud.osconfig.v1beta.PatchRollout
 type PatchRollout struct {
 	// Mode of the patch rollout.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchRollout.mode
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchRollout.mode
 	Mode *string `json:"mode,omitempty"`
 
 	// The maximum number (or percentage) of VMs per zone to disrupt at any given
@@ -272,143 +271,143 @@ type PatchRollout struct {
 	//  at a time until the zone is completed. When that zone is completed
 	//  successfully, patching begins with 10 VMs at a time in the next zone. If 10
 	//  VMs in the next zone fail to patch, the patch job stops.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchRollout.disruption_budget
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchRollout.disruption_budget
 	DisruptionBudget *FixedOrPercent `json:"disruptionBudget,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.RecurringSchedule
+// +kcc:proto=google.cloud.osconfig.v1beta.RecurringSchedule
 type RecurringSchedule struct {
 	// Required. Defines the time zone that `time_of_day` is relative to.
 	//  The rules for daylight saving time are determined by the chosen time zone.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.time_zone
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.time_zone
 	TimeZone *TimeZone `json:"timeZone,omitempty"`
 
 	// Optional. The time that the recurring schedule becomes effective.
 	//  Defaults to `create_time` of the patch deployment.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.start_time
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
-	// Optional. The end time at which a recurring patch deployment schedule is no
-	//  longer active.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.end_time
+	// Optional. The end time at which a recurring patch deployment schedule is no longer
+	//  active.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.end_time
 	EndTime *string `json:"endTime,omitempty"`
 
 	// Required. Time of the day to run a recurring deployment.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.time_of_day
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.time_of_day
 	TimeOfDay *TimeOfDay `json:"timeOfDay,omitempty"`
 
 	// Required. The frequency unit of this recurring schedule.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.frequency
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.frequency
 	Frequency *string `json:"frequency,omitempty"`
 
 	// Required. Schedule with weekly executions.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.weekly
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.weekly
 	Weekly *WeeklySchedule `json:"weekly,omitempty"`
 
 	// Required. Schedule with monthly executions.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.monthly
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.monthly
 	Monthly *MonthlySchedule `json:"monthly,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.WeekDayOfMonth
+// +kcc:proto=google.cloud.osconfig.v1beta.WeekDayOfMonth
 type WeekDayOfMonth struct {
-	// Required. Week number in a month. 1-4 indicates the 1st to 4th week of the
-	//  month. -1 indicates the last week of the month.
-	// +kcc:proto:field=google.cloud.osconfig.v1.WeekDayOfMonth.week_ordinal
+	// Required. Week number in a month. 1-4 indicates the 1st to 4th week of the month. -1
+	//  indicates the last week of the month.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.WeekDayOfMonth.week_ordinal
 	WeekOrdinal *int32 `json:"weekOrdinal,omitempty"`
 
 	// Required. A day of the week.
-	// +kcc:proto:field=google.cloud.osconfig.v1.WeekDayOfMonth.day_of_week
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.WeekDayOfMonth.day_of_week
 	DayOfWeek *string `json:"dayOfWeek,omitempty"`
 
-	// Optional. Represents the number of days before or after the given week day
-	//  of month that the patch deployment is scheduled for. For example if
-	//  `week_ordinal` and `day_of_week` values point to the second day of the
-	//  month and this `day_offset` value is set to `3`, the patch deployment takes
-	//  place three days after the second Tuesday of the month. If this value is
-	//  negative, for example -5, the patches are deployed five days before before
-	//  the second Tuesday of the month. Allowed values are in range [-30, 30].
-	// +kcc:proto:field=google.cloud.osconfig.v1.WeekDayOfMonth.day_offset
+	// Optional. Represents the number of days before or after the given week day of month
+	//  that the patch deployment is scheduled for. For example if `week_ordinal`
+	//  and `day_of_week` values point to the second day of the month and this
+	//  `day_offset` value is set to `3`, the patch deployment takes place three
+	//  days after the second Tuesday of the month. If this value is negative, for
+	//  example -5, the patches  are deployed five days before before the second
+	//  Tuesday of the month. Allowed values are in range `[-30, 30]`.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.WeekDayOfMonth.day_offset
 	DayOffset *int32 `json:"dayOffset,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.WeeklySchedule
+// +kcc:proto=google.cloud.osconfig.v1beta.WeeklySchedule
 type WeeklySchedule struct {
 	// Required. Day of the week.
-	// +kcc:proto:field=google.cloud.osconfig.v1.WeeklySchedule.day_of_week
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.WeeklySchedule.day_of_week
 	DayOfWeek *string `json:"dayOfWeek,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.WindowsUpdateSettings
+// +kcc:proto=google.cloud.osconfig.v1beta.WindowsUpdateSettings
 type WindowsUpdateSettings struct {
 	// Only apply updates of these windows update classifications. If empty, all
 	//  updates are applied.
-	// +kcc:proto:field=google.cloud.osconfig.v1.WindowsUpdateSettings.classifications
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.WindowsUpdateSettings.classifications
 	Classifications []string `json:"classifications,omitempty"`
 
 	// List of KBs to exclude from update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.WindowsUpdateSettings.excludes
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.WindowsUpdateSettings.excludes
 	Excludes []string `json:"excludes,omitempty"`
 
 	// An exclusive list of kbs to be updated. These are the only patches
 	//  that will be updated. This field must not be used with other
 	//  patch configurations.
-	// +kcc:proto:field=google.cloud.osconfig.v1.WindowsUpdateSettings.exclusive_patches
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.WindowsUpdateSettings.exclusive_patches
 	ExclusivePatches []string `json:"exclusivePatches,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.YumSettings
+// +kcc:proto=google.cloud.osconfig.v1beta.YumSettings
 type YumSettings struct {
 	// Adds the `--security` flag to `yum update`. Not supported on
 	//  all platforms.
-	// +kcc:proto:field=google.cloud.osconfig.v1.YumSettings.security
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.YumSettings.security
 	Security *bool `json:"security,omitempty"`
 
 	// Will cause patch to run `yum update-minimal` instead.
-	// +kcc:proto:field=google.cloud.osconfig.v1.YumSettings.minimal
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.YumSettings.minimal
 	Minimal *bool `json:"minimal,omitempty"`
 
 	// List of packages to exclude from update. These packages are excluded by
 	//  using the yum `--exclude` flag.
-	// +kcc:proto:field=google.cloud.osconfig.v1.YumSettings.excludes
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.YumSettings.excludes
 	Excludes []string `json:"excludes,omitempty"`
 
 	// An exclusive list of packages to be updated. These are the only packages
 	//  that will be updated. If these packages are not installed, they will be
 	//  ignored. This field must not be specified with any other patch
 	//  configuration fields.
-	// +kcc:proto:field=google.cloud.osconfig.v1.YumSettings.exclusive_packages
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.YumSettings.exclusive_packages
 	ExclusivePackages []string `json:"exclusivePackages,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.ZypperSettings
+// +kcc:proto=google.cloud.osconfig.v1beta.ZypperSettings
 type ZypperSettings struct {
 	// Adds the `--with-optional` flag to `zypper patch`.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ZypperSettings.with_optional
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperSettings.with_optional
 	WithOptional *bool `json:"withOptional,omitempty"`
 
 	// Adds the `--with-update` flag, to `zypper patch`.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ZypperSettings.with_update
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperSettings.with_update
 	WithUpdate *bool `json:"withUpdate,omitempty"`
 
 	// Install only patches with these categories.
 	//  Common categories include security, recommended, and feature.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ZypperSettings.categories
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperSettings.categories
 	Categories []string `json:"categories,omitempty"`
 
 	// Install only patches with these severities.
 	//  Common severities include critical, important, moderate, and low.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ZypperSettings.severities
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperSettings.severities
 	Severities []string `json:"severities,omitempty"`
 
 	// List of patches to exclude from update.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ZypperSettings.excludes
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperSettings.excludes
 	Excludes []string `json:"excludes,omitempty"`
 
 	// An exclusive list of patches to be updated. These are the only patches
 	//  that will be installed using 'zypper patch patch:<patch_name>' command.
 	//  This field must not be used with any other patch configuration fields.
-	// +kcc:proto:field=google.cloud.osconfig.v1.ZypperSettings.exclusive_patches
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperSettings.exclusive_patches
 	ExclusivePatches []string `json:"exclusivePatches,omitempty"`
 }
 
@@ -444,40 +443,40 @@ type TimeZone struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.PatchDeployment
+// +kcc:proto=google.cloud.osconfig.v1beta.PatchDeployment
 type PatchDeploymentObservedState struct {
 	// Required. Schedule recurring executions.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.recurring_schedule
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.recurring_schedule
 	RecurringSchedule *RecurringScheduleObservedState `json:"recurringSchedule,omitempty"`
 
 	// Output only. Time the patch deployment was created. Timestamp is in
 	//  [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.create_time
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Time the patch deployment was last updated. Timestamp is in
 	//  [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.update_time
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. The last time a patch job was started by this deployment.
 	//  Timestamp is in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text
 	//  format.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.last_execute_time
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.last_execute_time
 	LastExecuteTime *string `json:"lastExecuteTime,omitempty"`
 
 	// Output only. Current state of the patch deployment.
-	// +kcc:proto:field=google.cloud.osconfig.v1.PatchDeployment.state
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PatchDeployment.state
 	State *string `json:"state,omitempty"`
 }
 
-// +kcc:proto=google.cloud.osconfig.v1.RecurringSchedule
+// +kcc:proto=google.cloud.osconfig.v1beta.RecurringSchedule
 type RecurringScheduleObservedState struct {
 	// Output only. The time the last patch job ran successfully.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.last_execute_time
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.last_execute_time
 	LastExecuteTime *string `json:"lastExecuteTime,omitempty"`
 
 	// Output only. The time the next patch job is scheduled to run.
-	// +kcc:proto:field=google.cloud.osconfig.v1.RecurringSchedule.next_execute_time
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.RecurringSchedule.next_execute_time
 	NextExecuteTime *string `json:"nextExecuteTime,omitempty"`
 }
