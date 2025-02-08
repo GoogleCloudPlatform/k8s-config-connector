@@ -16,7 +16,7 @@ package securitycenter
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1beta1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv1p1beta1/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -28,6 +28,7 @@ func Source_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.Source {
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
+	out.CanonicalName = direct.LazyPtr(in.GetCanonicalName())
 	return out
 }
 func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
@@ -38,5 +39,6 @@ func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
+	out.CanonicalName = direct.ValueOf(in.CanonicalName)
 	return out
 }
