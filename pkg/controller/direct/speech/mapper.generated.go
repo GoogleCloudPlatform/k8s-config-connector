@@ -16,7 +16,7 @@ package speech
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/speech/apiv1p1beta1/speechpb"
+	pb "cloud.google.com/go/speech/apiv2/speechpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -25,9 +25,20 @@ func CustomClass_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.C
 		return nil
 	}
 	out := &krm.CustomClass{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.CustomClassID = direct.LazyPtr(in.GetCustomClassId())
+	// MISSING: Name
+	// MISSING: Uid
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Items = direct.Slice_FromProto(mapCtx, in.Items, CustomClass_ClassItem_FromProto)
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	out.Annotations = in.Annotations
+	// MISSING: Etag
+	// MISSING: Reconciling
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyVersionName
 	return out
 }
 func CustomClass_ToProto(mapCtx *direct.MapContext, in *krm.CustomClass) *pb.CustomClass {
@@ -35,9 +46,62 @@ func CustomClass_ToProto(mapCtx *direct.MapContext, in *krm.CustomClass) *pb.Cus
 		return nil
 	}
 	out := &pb.CustomClass{}
-	out.Name = direct.ValueOf(in.Name)
-	out.CustomClassId = direct.ValueOf(in.CustomClassID)
+	// MISSING: Name
+	// MISSING: Uid
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Items = direct.Slice_ToProto(mapCtx, in.Items, CustomClass_ClassItem_ToProto)
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	out.Annotations = in.Annotations
+	// MISSING: Etag
+	// MISSING: Reconciling
+	// MISSING: KMSKeyName
+	// MISSING: KMSKeyVersionName
+	return out
+}
+func CustomClassObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.CustomClassObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomClassObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: DisplayName
+	// MISSING: Items
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	// MISSING: Annotations
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
+	return out
+}
+func CustomClassObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomClassObservedState) *pb.CustomClass {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomClass{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: DisplayName
+	// MISSING: Items
+	out.State = direct.Enum_ToProto[pb.CustomClass_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	// MISSING: Annotations
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
 func CustomClass_ClassItem_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass_ClassItem) *krm.CustomClass_ClassItem {
