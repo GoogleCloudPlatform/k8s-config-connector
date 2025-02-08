@@ -15,10 +15,10 @@
 package talent
 
 import (
+	pb "cloud.google.com/go/talent/apiv4beta1/talentpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/talent/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/talent/apiv4/talentpb"
 )
 func CompensationInfo_FromProto(mapCtx *direct.MapContext, in *pb.CompensationInfo) *krm.CompensationInfo {
 	if in == nil {
@@ -354,153 +354,5 @@ func Location_ToProto(mapCtx *direct.MapContext, in *krm.Location) *pb.Location 
 	out.PostalAddress = PostalAddress_ToProto(mapCtx, in.PostalAddress)
 	out.LatLng = LatLng_ToProto(mapCtx, in.LatLng)
 	out.RadiusMiles = direct.ValueOf(in.RadiusMiles)
-	return out
-}
-func TalentJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.TalentJobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TalentJobObservedState{}
-	// MISSING: Name
-	// MISSING: Company
-	// MISSING: RequisitionID
-	// MISSING: Title
-	// MISSING: Description
-	// MISSING: Addresses
-	// MISSING: ApplicationInfo
-	// MISSING: JobBenefits
-	// MISSING: CompensationInfo
-	// MISSING: CustomAttributes
-	// MISSING: DegreeTypes
-	// MISSING: Department
-	// MISSING: EmploymentTypes
-	// MISSING: Incentives
-	// MISSING: LanguageCode
-	// MISSING: JobLevel
-	// MISSING: PromotionValue
-	// MISSING: Qualifications
-	// MISSING: Responsibilities
-	// MISSING: PostingRegion
-	// MISSING: Visibility
-	// MISSING: JobStartTime
-	// MISSING: JobEndTime
-	// MISSING: PostingPublishTime
-	// MISSING: PostingExpireTime
-	// MISSING: PostingCreateTime
-	// MISSING: PostingUpdateTime
-	// MISSING: CompanyDisplayName
-	// MISSING: DerivedInfo
-	// MISSING: ProcessingOptions
-	return out
-}
-func TalentJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TalentJobObservedState) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	// MISSING: Name
-	// MISSING: Company
-	// MISSING: RequisitionID
-	// MISSING: Title
-	// MISSING: Description
-	// MISSING: Addresses
-	// MISSING: ApplicationInfo
-	// MISSING: JobBenefits
-	// MISSING: CompensationInfo
-	// MISSING: CustomAttributes
-	// MISSING: DegreeTypes
-	// MISSING: Department
-	// MISSING: EmploymentTypes
-	// MISSING: Incentives
-	// MISSING: LanguageCode
-	// MISSING: JobLevel
-	// MISSING: PromotionValue
-	// MISSING: Qualifications
-	// MISSING: Responsibilities
-	// MISSING: PostingRegion
-	// MISSING: Visibility
-	// MISSING: JobStartTime
-	// MISSING: JobEndTime
-	// MISSING: PostingPublishTime
-	// MISSING: PostingExpireTime
-	// MISSING: PostingCreateTime
-	// MISSING: PostingUpdateTime
-	// MISSING: CompanyDisplayName
-	// MISSING: DerivedInfo
-	// MISSING: ProcessingOptions
-	return out
-}
-func TalentJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.TalentJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TalentJobSpec{}
-	// MISSING: Name
-	// MISSING: Company
-	// MISSING: RequisitionID
-	// MISSING: Title
-	// MISSING: Description
-	// MISSING: Addresses
-	// MISSING: ApplicationInfo
-	// MISSING: JobBenefits
-	// MISSING: CompensationInfo
-	// MISSING: CustomAttributes
-	// MISSING: DegreeTypes
-	// MISSING: Department
-	// MISSING: EmploymentTypes
-	// MISSING: Incentives
-	// MISSING: LanguageCode
-	// MISSING: JobLevel
-	// MISSING: PromotionValue
-	// MISSING: Qualifications
-	// MISSING: Responsibilities
-	// MISSING: PostingRegion
-	// MISSING: Visibility
-	// MISSING: JobStartTime
-	// MISSING: JobEndTime
-	// MISSING: PostingPublishTime
-	// MISSING: PostingExpireTime
-	// MISSING: PostingCreateTime
-	// MISSING: PostingUpdateTime
-	// MISSING: CompanyDisplayName
-	// MISSING: DerivedInfo
-	// MISSING: ProcessingOptions
-	return out
-}
-func TalentJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.TalentJobSpec) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	// MISSING: Name
-	// MISSING: Company
-	// MISSING: RequisitionID
-	// MISSING: Title
-	// MISSING: Description
-	// MISSING: Addresses
-	// MISSING: ApplicationInfo
-	// MISSING: JobBenefits
-	// MISSING: CompensationInfo
-	// MISSING: CustomAttributes
-	// MISSING: DegreeTypes
-	// MISSING: Department
-	// MISSING: EmploymentTypes
-	// MISSING: Incentives
-	// MISSING: LanguageCode
-	// MISSING: JobLevel
-	// MISSING: PromotionValue
-	// MISSING: Qualifications
-	// MISSING: Responsibilities
-	// MISSING: PostingRegion
-	// MISSING: Visibility
-	// MISSING: JobStartTime
-	// MISSING: JobEndTime
-	// MISSING: PostingPublishTime
-	// MISSING: PostingExpireTime
-	// MISSING: PostingCreateTime
-	// MISSING: PostingUpdateTime
-	// MISSING: CompanyDisplayName
-	// MISSING: DerivedInfo
-	// MISSING: ProcessingOptions
 	return out
 }

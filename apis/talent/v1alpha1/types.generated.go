@@ -15,83 +15,83 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.talent.v4.CompensationInfo
+// +kcc:proto=google.cloud.talent.v4beta1.CompensationInfo
 type CompensationInfo struct {
 	// Job compensation information.
 	//
 	//  At most one entry can be of type
-	//  [CompensationInfo.CompensationType.BASE][google.cloud.talent.v4.CompensationInfo.CompensationType.BASE],
+	//  [CompensationInfo.CompensationType.BASE][google.cloud.talent.v4beta1.CompensationInfo.CompensationType.BASE],
 	//  which is referred as **base compensation entry** for the job.
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.entries
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.entries
 	Entries []CompensationInfo_CompensationEntry `json:"entries,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.CompensationInfo.CompensationEntry
+// +kcc:proto=google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry
 type CompensationInfo_CompensationEntry struct {
 	// Compensation type.
 	//
 	//  Default is
-	//  [CompensationType.COMPENSATION_TYPE_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationType.COMPENSATION_TYPE_UNSPECIFIED].
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.CompensationEntry.type
+	//  [CompensationType.COMPENSATION_TYPE_UNSPECIFIED][google.cloud.talent.v4beta1.CompensationInfo.CompensationType.COMPENSATION_TYPE_UNSPECIFIED].
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.type
 	Type *string `json:"type,omitempty"`
 
 	// Frequency of the specified amount.
 	//
 	//  Default is
-	//  [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED].
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.CompensationEntry.unit
+	//  [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED].
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.unit
 	Unit *string `json:"unit,omitempty"`
 
 	// Compensation amount.
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.amount
 	Amount *Money `json:"amount,omitempty"`
 
 	// Compensation range.
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.CompensationEntry.range
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.range
 	Range *CompensationInfo_CompensationRange `json:"range,omitempty"`
 
 	// Compensation description.  For example, could
 	//  indicate equity terms or provide additional context to an estimated
 	//  bonus.
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.CompensationEntry.description
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.description
 	Description *string `json:"description,omitempty"`
 
 	// Expected number of units paid each year. If not specified, when
-	//  [Job.employment_types][google.cloud.talent.v4.Job.employment_types] is
-	//  FULLTIME, a default value is inferred based on
-	//  [unit][google.cloud.talent.v4.CompensationInfo.CompensationEntry.unit].
+	//  [Job.employment_types][google.cloud.talent.v4beta1.Job.employment_types]
+	//  is FULLTIME, a default value is inferred based on
+	//  [unit][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.unit].
 	//  Default values:
 	//  - HOURLY: 2080
 	//  - DAILY: 260
 	//  - WEEKLY: 52
 	//  - MONTHLY: 12
 	//  - ANNUAL: 1
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.expected_units_per_year
 	ExpectedUnitsPerYear *DoubleValue `json:"expectedUnitsPerYear,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.CompensationInfo.CompensationRange
+// +kcc:proto=google.cloud.talent.v4beta1.CompensationInfo.CompensationRange
 type CompensationInfo_CompensationRange struct {
 	// The maximum amount of compensation. If left empty, the value is set
 	//  to a maximal compensation value and the currency code is set to
 	//  match the [currency code][google.type.Money.currency_code] of
 	//  min_compensation.
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.CompensationRange.max_compensation
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.CompensationRange.max_compensation
 	MaxCompensation *Money `json:"maxCompensation,omitempty"`
 
 	// The minimum amount of compensation. If left empty, the value is set
 	//  to zero and the currency code is set to match the
 	//  [currency code][google.type.Money.currency_code] of max_compensation.
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.CompensationRange.min_compensation
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.CompensationRange.min_compensation
 	MinCompensation *Money `json:"minCompensation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.CustomAttribute
+// +kcc:proto=google.cloud.talent.v4beta1.CustomAttribute
 type CustomAttribute struct {
 	// Exactly one of
-	//  [string_values][google.cloud.talent.v4.CustomAttribute.string_values] or
-	//  [long_values][google.cloud.talent.v4.CustomAttribute.long_values] must be
-	//  specified.
+	//  [string_values][google.cloud.talent.v4beta1.CustomAttribute.string_values]
+	//  or [long_values][google.cloud.talent.v4beta1.CustomAttribute.long_values]
+	//  must be specified.
 	//
 	//  This field is used to perform a string match (`CASE_SENSITIVE_MATCH` or
 	//  `CASE_INSENSITIVE_MATCH`) search.
@@ -101,30 +101,30 @@ type CustomAttribute struct {
 	//  unfilterable `string_values` is 50KB.
 	//
 	//  Empty string isn't allowed.
-	// +kcc:proto:field=google.cloud.talent.v4.CustomAttribute.string_values
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CustomAttribute.string_values
 	StringValues []string `json:"stringValues,omitempty"`
 
 	// Exactly one of
-	//  [string_values][google.cloud.talent.v4.CustomAttribute.string_values] or
-	//  [long_values][google.cloud.talent.v4.CustomAttribute.long_values] must be
-	//  specified.
+	//  [string_values][google.cloud.talent.v4beta1.CustomAttribute.string_values]
+	//  or [long_values][google.cloud.talent.v4beta1.CustomAttribute.long_values]
+	//  must be specified.
 	//
 	//  This field is used to perform number range search.
 	//  (`EQ`, `GT`, `GE`, `LE`, `LT`) over filterable `long_value`.
 	//
 	//  Currently at most 1
-	//  [long_values][google.cloud.talent.v4.CustomAttribute.long_values] is
+	//  [long_values][google.cloud.talent.v4beta1.CustomAttribute.long_values] is
 	//  supported.
-	// +kcc:proto:field=google.cloud.talent.v4.CustomAttribute.long_values
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CustomAttribute.long_values
 	LongValues []int64 `json:"longValues,omitempty"`
 
 	// If the `filterable` flag is true, the custom field values may be used for
 	//  custom attribute filters
-	//  [JobQuery.custom_attribute_filter][google.cloud.talent.v4.JobQuery.custom_attribute_filter].
+	//  [JobQuery.custom_attribute_filter][google.cloud.talent.v4beta1.JobQuery.custom_attribute_filter].
 	//  If false, these values may not be used for custom attribute filters.
 	//
 	//  Default is false.
-	// +kcc:proto:field=google.cloud.talent.v4.CustomAttribute.filterable
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CustomAttribute.filterable
 	Filterable *bool `json:"filterable,omitempty"`
 
 	// If the `keyword_searchable` flag is true, the keywords in custom fields are
@@ -132,11 +132,11 @@ type CustomAttribute struct {
 	//  If false, the values are not searchable by keyword match.
 	//
 	//  Default is false.
-	// +kcc:proto:field=google.cloud.talent.v4.CustomAttribute.keyword_searchable
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CustomAttribute.keyword_searchable
 	KeywordSearchable *bool `json:"keywordSearchable,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Job
+// +kcc:proto=google.cloud.talent.v4beta1.Job
 type Job struct {
 	// Required during job update.
 	//
@@ -147,10 +147,13 @@ type Job struct {
 	//  "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For
 	//  example, "projects/foo/tenants/bar/jobs/baz".
 	//
+	//  If tenant id is unspecified, the default tenant is used. For
+	//  example, "projects/foo/jobs/bar".
+	//
 	//  Use of this field in job queries and API calls is preferred over the use of
-	//  [requisition_id][google.cloud.talent.v4.Job.requisition_id] since this
+	//  [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id] since this
 	//  value is unique.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.name
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. The resource name of the company listing the job.
@@ -158,39 +161,42 @@ type Job struct {
 	//  The format is
 	//  "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}". For
 	//  example, "projects/foo/tenants/bar/companies/baz".
-	// +kcc:proto:field=google.cloud.talent.v4.Job.company
+	//
+	//  If tenant id is unspecified, the default tenant is used. For
+	//  example, "projects/foo/companies/bar".
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.company
 	Company *string `json:"company,omitempty"`
 
 	// Required. The requisition ID, also referred to as the posting ID, is
 	//  assigned by the client to identify a job. This field is intended to be used
 	//  by clients for client identification and tracking of postings. A job isn't
 	//  allowed to be created if there is another job with the same
-	//  [company][google.cloud.talent.v4.Job.name],
-	//  [language_code][google.cloud.talent.v4.Job.language_code] and
-	//  [requisition_id][google.cloud.talent.v4.Job.requisition_id].
+	//  [company][google.cloud.talent.v4beta1.Job.name],
+	//  [language_code][google.cloud.talent.v4beta1.Job.language_code] and
+	//  [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id].
 	//
 	//  The maximum number of allowed characters is 255.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.requisition_id
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.requisition_id
 	RequisitionID *string `json:"requisitionID,omitempty"`
 
 	// Required. The title of the job, such as "Software Engineer"
 	//
 	//  The maximum number of allowed characters is 500.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.title
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.title
 	Title *string `json:"title,omitempty"`
 
 	// Required. The description of the job, which typically includes a
 	//  multi-paragraph description of the company and related information.
 	//  Separate fields are provided on the job object for
-	//  [responsibilities][google.cloud.talent.v4.Job.responsibilities],
-	//  [qualifications][google.cloud.talent.v4.Job.qualifications], and other job
-	//  characteristics. Use of these separate job fields is recommended.
+	//  [responsibilities][google.cloud.talent.v4beta1.Job.responsibilities],
+	//  [qualifications][google.cloud.talent.v4beta1.Job.qualifications], and other
+	//  job characteristics. Use of these separate job fields is recommended.
 	//
 	//  This field accepts and sanitizes HTML input, and also accepts
 	//  bold, italic, ordered list, and unordered list markup tags.
 	//
 	//  The maximum number of allowed characters is 100,000.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.description
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.description
 	Description *string `json:"description,omitempty"`
 
 	// Strongly recommended for the best service experience.
@@ -202,71 +208,59 @@ type Job struct {
 	//
 	//  At most 50 locations are allowed for best search performance. If a job has
 	//  more locations, it is suggested to split it into multiple jobs with unique
-	//  [requisition_id][google.cloud.talent.v4.Job.requisition_id]s (e.g. 'ReqA'
-	//  becomes 'ReqA-1', 'ReqA-2', and so on.) as multiple jobs with the same
-	//  [company][google.cloud.talent.v4.Job.company],
-	//  [language_code][google.cloud.talent.v4.Job.language_code] and
-	//  [requisition_id][google.cloud.talent.v4.Job.requisition_id] are not
+	//  [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id]s (e.g.
+	//  'ReqA' becomes 'ReqA-1', 'ReqA-2', and so on.) as multiple jobs with the
+	//  same [company][google.cloud.talent.v4beta1.Job.company],
+	//  [language_code][google.cloud.talent.v4beta1.Job.language_code] and
+	//  [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id] are not
 	//  allowed. If the original
-	//  [requisition_id][google.cloud.talent.v4.Job.requisition_id] must be
+	//  [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id] must be
 	//  preserved, a custom field should be used for storage. It is also suggested
 	//  to group the locations that close to each other in the same job for better
 	//  search experience.
 	//
-	//  Jobs with multiple addresses must have their addresses with the same
-	//  [LocationType][google.cloud.talent.v4.Location.LocationType] to allow
-	//  location filtering to work properly. (For example, a Job with addresses
-	//  "1600 Amphitheatre Parkway, Mountain View, CA, USA" and "London, UK" may
-	//  not have location filters applied correctly at search time since the first
-	//  is a
-	//  [LocationType.STREET_ADDRESS][google.cloud.talent.v4.Location.LocationType.STREET_ADDRESS]
-	//  and the second is a
-	//  [LocationType.LOCALITY][google.cloud.talent.v4.Location.LocationType.LOCALITY].)
-	//  If a job needs to have multiple addresses, it is suggested to split it into
-	//  multiple jobs with same LocationTypes.
-	//
 	//  The maximum number of allowed characters is 500.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.addresses
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.addresses
 	Addresses []string `json:"addresses,omitempty"`
 
 	// Job application information.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.application_info
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.application_info
 	ApplicationInfo *Job_ApplicationInfo `json:"applicationInfo,omitempty"`
 
 	// The benefits included with the job.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.job_benefits
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.job_benefits
 	JobBenefits []string `json:"jobBenefits,omitempty"`
 
 	// Job compensation information (a.k.a. "pay rate") i.e., the compensation
 	//  that will paid to the employee.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.compensation_info
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.compensation_info
 	CompensationInfo *CompensationInfo `json:"compensationInfo,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
 
 
 	// The desired education degrees for the job, such as Bachelors, Masters.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.degree_types
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.degree_types
 	DegreeTypes []string `json:"degreeTypes,omitempty"`
 
 	// The department or functional area within the company with the open
 	//  position.
 	//
 	//  The maximum number of allowed characters is 255.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.department
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.department
 	Department *string `json:"department,omitempty"`
 
 	// The employment type(s) of a job, for example,
-	//  [full time][google.cloud.talent.v4.EmploymentType.FULL_TIME] or
-	//  [part time][google.cloud.talent.v4.EmploymentType.PART_TIME].
-	// +kcc:proto:field=google.cloud.talent.v4.Job.employment_types
+	//  [full time][google.cloud.talent.v4beta1.EmploymentType.FULL_TIME] or
+	//  [part time][google.cloud.talent.v4beta1.EmploymentType.PART_TIME].
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.employment_types
 	EmploymentTypes []string `json:"employmentTypes,omitempty"`
 
 	// A description of bonus, commission, and other compensation
 	//  incentives associated with the job not including salary or pay.
 	//
 	//  The maximum number of allowed characters is 10,000.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.incentives
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.incentives
 	Incentives *string `json:"incentives,omitempty"`
 
 	// The language of the posting. This field is distinct from
@@ -278,15 +272,15 @@ type Job struct {
 	//  class="external" target="_blank" }.
 	//
 	//  If this field is unspecified and
-	//  [Job.description][google.cloud.talent.v4.Job.description] is present,
+	//  [Job.description][google.cloud.talent.v4beta1.Job.description] is present,
 	//  detected language code based on
-	//  [Job.description][google.cloud.talent.v4.Job.description] is assigned,
+	//  [Job.description][google.cloud.talent.v4beta1.Job.description] is assigned,
 	//  otherwise defaults to 'en_US'.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.language_code
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.language_code
 	LanguageCode *string `json:"languageCode,omitempty"`
 
 	// The experience level associated with the job, such as "Entry Level".
-	// +kcc:proto:field=google.cloud.talent.v4.Job.job_level
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.job_level
 	JobLevel *string `json:"jobLevel,omitempty"`
 
 	// A promotion value of the job, as determined by the client.
@@ -296,42 +290,43 @@ type Job struct {
 	//  jobs with a promotionValue >0 are returned in a FEATURED_JOB_SEARCH.
 	//
 	//  Default value is 0, and negative values are treated as 0.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.promotion_value
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.promotion_value
 	PromotionValue *int32 `json:"promotionValue,omitempty"`
 
 	// A description of the qualifications required to perform the
 	//  job. The use of this field is recommended
 	//  as an alternative to using the more general
-	//  [description][google.cloud.talent.v4.Job.description] field.
+	//  [description][google.cloud.talent.v4beta1.Job.description] field.
 	//
 	//  This field accepts and sanitizes HTML input, and also accepts
 	//  bold, italic, ordered list, and unordered list markup tags.
 	//
 	//  The maximum number of allowed characters is 10,000.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.qualifications
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.qualifications
 	Qualifications *string `json:"qualifications,omitempty"`
 
 	// A description of job responsibilities. The use of this field is
 	//  recommended as an alternative to using the more general
-	//  [description][google.cloud.talent.v4.Job.description] field.
+	//  [description][google.cloud.talent.v4beta1.Job.description] field.
 	//
 	//  This field accepts and sanitizes HTML input, and also accepts
 	//  bold, italic, ordered list, and unordered list markup tags.
 	//
 	//  The maximum number of allowed characters is 10,000.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.responsibilities
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.responsibilities
 	Responsibilities *string `json:"responsibilities,omitempty"`
 
-	// The job [PostingRegion][google.cloud.talent.v4.PostingRegion] (for example,
-	//  state, country) throughout which the job is available. If this field is
-	//  set, a [LocationFilter][google.cloud.talent.v4.LocationFilter] in a search
+	// The job [PostingRegion][google.cloud.talent.v4beta1.PostingRegion] (for
+	//  example, state, country) throughout which the job is available. If this
+	//  field is set, a
+	//  [LocationFilter][google.cloud.talent.v4beta1.LocationFilter] in a search
 	//  query within the job region finds this job posting if an exact location
 	//  match isn't specified. If this field is set to
-	//  [PostingRegion.NATION][google.cloud.talent.v4.PostingRegion.NATION] or
-	//  [PostingRegion.ADMINISTRATIVE_AREA][google.cloud.talent.v4.PostingRegion.ADMINISTRATIVE_AREA],
-	//  setting job [Job.addresses][google.cloud.talent.v4.Job.addresses] to the
-	//  same location level as this field is strongly recommended.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.posting_region
+	//  [PostingRegion.NATION][google.cloud.talent.v4beta1.PostingRegion.NATION] or
+	//  [PostingRegion.ADMINISTRATIVE_AREA][google.cloud.talent.v4beta1.PostingRegion.ADMINISTRATIVE_AREA],
+	//  setting job [Job.addresses][google.cloud.talent.v4beta1.Job.addresses] to
+	//  the same location level as this field is strongly recommended.
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.posting_region
 	PostingRegion *string `json:"postingRegion,omitempty"`
 
 	// Deprecated. The job is only visible to the owner.
@@ -339,25 +334,25 @@ type Job struct {
 	//  The visibility of the job.
 	//
 	//  Defaults to
-	//  [Visibility.ACCOUNT_ONLY][google.cloud.talent.v4.Visibility.ACCOUNT_ONLY]
+	//  [Visibility.ACCOUNT_ONLY][google.cloud.talent.v4beta1.Visibility.ACCOUNT_ONLY]
 	//  if not specified.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.visibility
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.visibility
 	Visibility *string `json:"visibility,omitempty"`
 
 	// The start timestamp of the job in UTC time zone. Typically this field
 	//  is used for contracting engagements. Invalid timestamps are ignored.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.job_start_time
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.job_start_time
 	JobStartTime *string `json:"jobStartTime,omitempty"`
 
 	// The end timestamp of the job. Typically this field is used for contracting
 	//  engagements. Invalid timestamps are ignored.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.job_end_time
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.job_end_time
 	JobEndTime *string `json:"jobEndTime,omitempty"`
 
 	// The timestamp this job posting was most recently published. The default
 	//  value is the time the request arrives at the server. Invalid timestamps are
 	//  ignored.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.posting_publish_time
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.posting_publish_time
 	PostingPublishTime *string `json:"postingPublishTime,omitempty"`
 
 	// Strongly recommended for the best service experience.
@@ -365,16 +360,17 @@ type Job struct {
 	//  The expiration timestamp of the job. After this timestamp, the
 	//  job is marked as expired, and it no longer appears in search results. The
 	//  expired job can't be listed by the
-	//  [ListJobs][google.cloud.talent.v4.JobService.ListJobs] API, but it can be
-	//  retrieved with the [GetJob][google.cloud.talent.v4.JobService.GetJob] API
-	//  or updated with the
-	//  [UpdateJob][google.cloud.talent.v4.JobService.UpdateJob] API or deleted
-	//  with the [DeleteJob][google.cloud.talent.v4.JobService.DeleteJob] API. An
+	//  [ListJobs][google.cloud.talent.v4beta1.JobService.ListJobs] API, but it can
+	//  be retrieved with the
+	//  [GetJob][google.cloud.talent.v4beta1.JobService.GetJob] API or updated with
+	//  the [UpdateJob][google.cloud.talent.v4beta1.JobService.UpdateJob] API or
+	//  deleted with the
+	//  [DeleteJob][google.cloud.talent.v4beta1.JobService.DeleteJob] API. An
 	//  expired job can be updated and opened again by using a future expiration
 	//  timestamp. Updating an expired job fails if there is another existing open
-	//  job with same [company][google.cloud.talent.v4.Job.company],
-	//  [language_code][google.cloud.talent.v4.Job.language_code] and
-	//  [requisition_id][google.cloud.talent.v4.Job.requisition_id].
+	//  job with same [company][google.cloud.talent.v4beta1.Job.company],
+	//  [language_code][google.cloud.talent.v4beta1.Job.language_code] and
+	//  [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id].
 	//
 	//  The expired jobs are retained in our system for 90 days. However, the
 	//  overall expired job count cannot exceed 3 times the maximum number of
@@ -388,14 +384,13 @@ type Job struct {
 	//  If the timestamp is before the instant request is made, the job
 	//  is treated as expired immediately on creation. This kind of job can
 	//  not be updated. And when creating a job with past timestamp, the
-	//  [posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
+	//  [posting_publish_time][google.cloud.talent.v4beta1.Job.posting_publish_time]
 	//  must be set before
-	//  [posting_expire_time][google.cloud.talent.v4.Job.posting_expire_time]. The
-	//  purpose of this feature is to allow other objects, such as
-	//  [ApplicationInfo][google.cloud.talent.v4.Job.ApplicationInfo], to refer a
-	//  job that didn't exist in the system prior to becoming expired. If you want
-	//  to modify a job that was expired on creation, delete it and create a new
-	//  one.
+	//  [posting_expire_time][google.cloud.talent.v4beta1.Job.posting_expire_time].
+	//  The purpose of this feature is to allow other objects, such as
+	//  [Application][google.cloud.talent.v4beta1.Application], to refer a job that
+	//  didn't exist in the system prior to becoming expired. If you want to modify
+	//  a job that was expired on creation, delete it and create a new one.
 	//
 	//  If this value isn't provided at the time of job creation or is invalid,
 	//  the job posting expires after 30 days from the job's creation time. For
@@ -404,27 +399,27 @@ type Job struct {
 	//
 	//  If this value isn't provided on job update, it depends on the field masks
 	//  set by
-	//  [UpdateJobRequest.update_mask][google.cloud.talent.v4.UpdateJobRequest.update_mask].
+	//  [UpdateJobRequest.update_mask][google.cloud.talent.v4beta1.UpdateJobRequest.update_mask].
 	//  If the field masks include
-	//  [job_end_time][google.cloud.talent.v4.Job.job_end_time], or the masks are
-	//  empty meaning that every field is updated, the job posting expires after 30
-	//  days from the job's last update time. Otherwise the expiration date isn't
-	//  updated.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.posting_expire_time
+	//  [job_end_time][google.cloud.talent.v4beta1.Job.job_end_time], or the masks
+	//  are empty meaning that every field is updated, the job posting expires
+	//  after 30 days from the job's last update time. Otherwise the expiration
+	//  date isn't updated.
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.posting_expire_time
 	PostingExpireTime *string `json:"postingExpireTime,omitempty"`
 
 	// Options for job processing.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.processing_options
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.processing_options
 	ProcessingOptions *Job_ProcessingOptions `json:"processingOptions,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Job.ApplicationInfo
+// +kcc:proto=google.cloud.talent.v4beta1.Job.ApplicationInfo
 type Job_ApplicationInfo struct {
 	// Use this field to specify email address(es) to which resumes or
 	//  applications can be sent.
 	//
 	//  The maximum number of allowed characters for each entry is 255.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.ApplicationInfo.emails
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.ApplicationInfo.emails
 	Emails []string `json:"emails,omitempty"`
 
 	// Use this field to provide instructions, such as "Mail your application
@@ -434,39 +429,41 @@ type Job_ApplicationInfo struct {
 	//  bold, italic, ordered list, and unordered list markup tags.
 	//
 	//  The maximum number of allowed characters is 3,000.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.ApplicationInfo.instruction
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.ApplicationInfo.instruction
 	Instruction *string `json:"instruction,omitempty"`
 
 	// Use this URI field to direct an applicant to a website, for example to
 	//  link to an online application form.
 	//
 	//  The maximum number of allowed characters for each entry is 2,000.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.ApplicationInfo.uris
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.ApplicationInfo.uris
 	Uris []string `json:"uris,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Job.DerivedInfo
+// +kcc:proto=google.cloud.talent.v4beta1.Job.DerivedInfo
 type Job_DerivedInfo struct {
 	// Structured locations of the job, resolved from
-	//  [Job.addresses][google.cloud.talent.v4.Job.addresses].
+	//  [Job.addresses][google.cloud.talent.v4beta1.Job.addresses].
 	//
-	//  [locations][google.cloud.talent.v4.Job.DerivedInfo.locations] are exactly
-	//  matched to [Job.addresses][google.cloud.talent.v4.Job.addresses] in the
-	//  same order.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.DerivedInfo.locations
+	//  [locations][google.cloud.talent.v4beta1.Job.DerivedInfo.locations] are
+	//  exactly matched to
+	//  [Job.addresses][google.cloud.talent.v4beta1.Job.addresses] in the same
+	//  order.
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.DerivedInfo.locations
 	Locations []Location `json:"locations,omitempty"`
 
-	// Job categories derived from [Job.title][google.cloud.talent.v4.Job.title]
-	//  and [Job.description][google.cloud.talent.v4.Job.description].
-	// +kcc:proto:field=google.cloud.talent.v4.Job.DerivedInfo.job_categories
+	// Job categories derived from
+	//  [Job.title][google.cloud.talent.v4beta1.Job.title] and
+	//  [Job.description][google.cloud.talent.v4beta1.Job.description].
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.DerivedInfo.job_categories
 	JobCategories []string `json:"jobCategories,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Job.ProcessingOptions
+// +kcc:proto=google.cloud.talent.v4beta1.Job.ProcessingOptions
 type Job_ProcessingOptions struct {
 	// If set to `true`, the service does not attempt to resolve a
 	//  more precise address for the job.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.ProcessingOptions.disable_street_address_resolution
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.ProcessingOptions.disable_street_address_resolution
 	DisableStreetAddressResolution *bool `json:"disableStreetAddressResolution,omitempty"`
 
 	// Option for job HTML content sanitization. Applied fields are:
@@ -481,31 +478,31 @@ type Job_ProcessingOptions struct {
 	//  disabled.
 	//
 	//  Defaults to
-	//  [HtmlSanitization.SIMPLE_FORMATTING_ONLY][google.cloud.talent.v4.HtmlSanitization.SIMPLE_FORMATTING_ONLY].
-	// +kcc:proto:field=google.cloud.talent.v4.Job.ProcessingOptions.html_sanitization
+	//  [HtmlSanitization.SIMPLE_FORMATTING_ONLY][google.cloud.talent.v4beta1.HtmlSanitization.SIMPLE_FORMATTING_ONLY].
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.ProcessingOptions.html_sanitization
 	HTMLSanitization *string `json:"htmlSanitization,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Location
+// +kcc:proto=google.cloud.talent.v4beta1.Location
 type Location struct {
 	// The type of a location, which corresponds to the address lines field of
 	//  [google.type.PostalAddress][google.type.PostalAddress]. For example,
 	//  "Downtown, Atlanta, GA, USA" has a type of
-	//  [LocationType.NEIGHBORHOOD][google.cloud.talent.v4.Location.LocationType.NEIGHBORHOOD],
+	//  [LocationType.NEIGHBORHOOD][google.cloud.talent.v4beta1.Location.LocationType.NEIGHBORHOOD],
 	//  and "Kansas City, KS, USA" has a type of
-	//  [LocationType.LOCALITY][google.cloud.talent.v4.Location.LocationType.LOCALITY].
-	// +kcc:proto:field=google.cloud.talent.v4.Location.location_type
+	//  [LocationType.LOCALITY][google.cloud.talent.v4beta1.Location.LocationType.LOCALITY].
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Location.location_type
 	LocationType *string `json:"locationType,omitempty"`
 
 	// Postal address of the location that includes human readable information,
 	//  such as postal delivery and payments addresses. Given a postal address,
 	//  a postal service can deliver items to a premises, P.O. Box, or other
 	//  delivery location.
-	// +kcc:proto:field=google.cloud.talent.v4.Location.postal_address
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Location.postal_address
 	PostalAddress *PostalAddress `json:"postalAddress,omitempty"`
 
 	// An object representing a latitude/longitude pair.
-	// +kcc:proto:field=google.cloud.talent.v4.Location.lat_lng
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Location.lat_lng
 	LatLng *LatLng `json:"latLng,omitempty"`
 
 	// Radius in miles of the job location. This value is derived from the
@@ -513,7 +510,7 @@ type Location struct {
 	//  centered from [google.type.LatLng][google.type.LatLng] covers the area
 	//  associated with the job location. For example, currently, "Mountain View,
 	//  CA, USA" has a radius of 6.17 miles.
-	// +kcc:proto:field=google.cloud.talent.v4.Location.radius_miles
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Location.radius_miles
 	RadiusMiles *float64 `json:"radiusMiles,omitempty"`
 }
 
@@ -661,53 +658,53 @@ type PostalAddress struct {
 	Organization *string `json:"organization,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.CompensationInfo
+// +kcc:proto=google.cloud.talent.v4beta1.CompensationInfo
 type CompensationInfoObservedState struct {
 	// Output only. Annualized base compensation range. Computed as base
 	//  compensation entry's
-	//  [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
+	//  [CompensationEntry.amount][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.amount]
 	//  times
-	//  [CompensationEntry.expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year].
+	//  [CompensationEntry.expected_units_per_year][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.expected_units_per_year].
 	//
 	//  See
-	//  [CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry]
+	//  [CompensationEntry][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry]
 	//  for explanation on compensation annualization.
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.annualized_base_compensation_range
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.annualized_base_compensation_range
 	AnnualizedBaseCompensationRange *CompensationInfo_CompensationRange `json:"annualizedBaseCompensationRange,omitempty"`
 
 	// Output only. Annualized total compensation range. Computed as all
 	//  compensation entries'
-	//  [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
+	//  [CompensationEntry.amount][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.amount]
 	//  times
-	//  [CompensationEntry.expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year].
+	//  [CompensationEntry.expected_units_per_year][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.expected_units_per_year].
 	//
 	//  See
-	//  [CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry]
+	//  [CompensationEntry][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry]
 	//  for explanation on compensation annualization.
-	// +kcc:proto:field=google.cloud.talent.v4.CompensationInfo.annualized_total_compensation_range
+	// +kcc:proto:field=google.cloud.talent.v4beta1.CompensationInfo.annualized_total_compensation_range
 	AnnualizedTotalCompensationRange *CompensationInfo_CompensationRange `json:"annualizedTotalCompensationRange,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Job
+// +kcc:proto=google.cloud.talent.v4beta1.Job
 type JobObservedState struct {
 	// Job compensation information (a.k.a. "pay rate") i.e., the compensation
 	//  that will paid to the employee.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.compensation_info
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.compensation_info
 	CompensationInfo *CompensationInfoObservedState `json:"compensationInfo,omitempty"`
 
 	// Output only. The timestamp when this job posting was created.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.posting_create_time
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.posting_create_time
 	PostingCreateTime *string `json:"postingCreateTime,omitempty"`
 
 	// Output only. The timestamp when this job posting was last updated.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.posting_update_time
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.posting_update_time
 	PostingUpdateTime *string `json:"postingUpdateTime,omitempty"`
 
 	// Output only. Display name of the company listing the job.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.company_display_name
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.company_display_name
 	CompanyDisplayName *string `json:"companyDisplayName,omitempty"`
 
 	// Output only. Derived details about the job posting.
-	// +kcc:proto:field=google.cloud.talent.v4.Job.derived_info
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Job.derived_info
 	DerivedInfo *Job_DerivedInfo `json:"derivedInfo,omitempty"`
 }
