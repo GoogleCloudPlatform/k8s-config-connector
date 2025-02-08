@@ -15,10 +15,10 @@
 package servicedirectory
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/servicedirectory/apiv1/servicedirectorypb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 )
 func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoint {
 	if in == nil {
@@ -28,8 +28,10 @@ func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoin
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Address = direct.LazyPtr(in.GetAddress())
 	out.Port = direct.LazyPtr(in.GetPort())
-	out.Annotations = in.Annotations
+	out.Metadata = in.Metadata
 	out.Network = direct.LazyPtr(in.GetNetwork())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	// MISSING: Uid
 	return out
 }
@@ -41,8 +43,10 @@ func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint 
 	out.Name = direct.ValueOf(in.Name)
 	out.Address = direct.ValueOf(in.Address)
 	out.Port = direct.ValueOf(in.Port)
-	out.Annotations = in.Annotations
+	out.Metadata = in.Metadata
 	out.Network = direct.ValueOf(in.Network)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	// MISSING: Uid
 	return out
 }
@@ -54,8 +58,10 @@ func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint)
 	// MISSING: Name
 	// MISSING: Address
 	// MISSING: Port
-	// MISSING: Annotations
+	// MISSING: Metadata
 	// MISSING: Network
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	return out
 }
@@ -67,60 +73,10 @@ func EndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EndpointOb
 	// MISSING: Name
 	// MISSING: Address
 	// MISSING: Port
-	// MISSING: Annotations
+	// MISSING: Metadata
 	// MISSING: Network
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Uid = direct.ValueOf(in.Uid)
-	return out
-}
-func ServicedirectoryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.ServicedirectoryEndpointObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServicedirectoryEndpointObservedState{}
-	// MISSING: Name
-	// MISSING: Address
-	// MISSING: Port
-	// MISSING: Annotations
-	// MISSING: Network
-	// MISSING: Uid
-	return out
-}
-func ServicedirectoryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServicedirectoryEndpointObservedState) *pb.Endpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Endpoint{}
-	// MISSING: Name
-	// MISSING: Address
-	// MISSING: Port
-	// MISSING: Annotations
-	// MISSING: Network
-	// MISSING: Uid
-	return out
-}
-func ServicedirectoryEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.ServicedirectoryEndpointSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServicedirectoryEndpointSpec{}
-	// MISSING: Name
-	// MISSING: Address
-	// MISSING: Port
-	// MISSING: Annotations
-	// MISSING: Network
-	// MISSING: Uid
-	return out
-}
-func ServicedirectoryEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServicedirectoryEndpointSpec) *pb.Endpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Endpoint{}
-	// MISSING: Name
-	// MISSING: Address
-	// MISSING: Port
-	// MISSING: Annotations
-	// MISSING: Network
-	// MISSING: Uid
 	return out
 }
