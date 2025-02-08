@@ -33,6 +33,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iap"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/ids"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/autokeyconfig"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/keyhandle"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
