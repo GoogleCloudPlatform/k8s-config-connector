@@ -20,46 +20,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func AlertPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy) *krm.AlertPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AlertPolicy{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Documentation = AlertPolicy_Documentation_FromProto(mapCtx, in.GetDocumentation())
-	out.UserLabels = in.UserLabels
-	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, AlertPolicy_Condition_FromProto)
-	out.Combiner = direct.Enum_FromProto(mapCtx, in.GetCombiner())
-	out.Enabled = direct.BoolValue_FromProto(mapCtx, in.GetEnabled())
-	out.Validity = Status_FromProto(mapCtx, in.GetValidity())
-	out.NotificationChannels = in.NotificationChannels
-	out.CreationRecord = MutationRecord_FromProto(mapCtx, in.GetCreationRecord())
-	out.MutationRecord = MutationRecord_FromProto(mapCtx, in.GetMutationRecord())
-	out.AlertStrategy = AlertPolicy_AlertStrategy_FromProto(mapCtx, in.GetAlertStrategy())
-	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
-	return out
-}
-func AlertPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AlertPolicy) *pb.AlertPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AlertPolicy{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Documentation = AlertPolicy_Documentation_ToProto(mapCtx, in.Documentation)
-	out.UserLabels = in.UserLabels
-	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, AlertPolicy_Condition_ToProto)
-	out.Combiner = direct.Enum_ToProto[pb.AlertPolicy_ConditionCombinerType](mapCtx, in.Combiner)
-	out.Enabled = direct.BoolValue_ToProto(mapCtx, in.Enabled)
-	out.Validity = Status_ToProto(mapCtx, in.Validity)
-	out.NotificationChannels = in.NotificationChannels
-	out.CreationRecord = MutationRecord_ToProto(mapCtx, in.CreationRecord)
-	out.MutationRecord = MutationRecord_ToProto(mapCtx, in.MutationRecord)
-	out.AlertStrategy = AlertPolicy_AlertStrategy_ToProto(mapCtx, in.AlertStrategy)
-	out.Severity = direct.Enum_ToProto[pb.AlertPolicy_Severity](mapCtx, in.Severity)
-	return out
-}
 func AlertPolicy_AlertStrategy_FromProto(mapCtx *direct.MapContext, in *pb.AlertPolicy_AlertStrategy) *krm.AlertPolicy_AlertStrategy {
 	if in == nil {
 		return nil
