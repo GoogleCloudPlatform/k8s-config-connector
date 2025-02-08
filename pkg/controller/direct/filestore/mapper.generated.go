@@ -15,63 +15,11 @@
 package filestore
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/filestore/apiv1beta1/filestorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/filestore/apiv1/filestorepb"
 )
-func FilestoreSnapshotObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.FilestoreSnapshotObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FilestoreSnapshotObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: FilesystemUsedBytes
-	return out
-}
-func FilestoreSnapshotObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FilestoreSnapshotObservedState) *pb.Snapshot {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Snapshot{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: FilesystemUsedBytes
-	return out
-}
-func FilestoreSnapshotSpec_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.FilestoreSnapshotSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FilestoreSnapshotSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: FilesystemUsedBytes
-	return out
-}
-func FilestoreSnapshotSpec_ToProto(mapCtx *direct.MapContext, in *krm.FilestoreSnapshotSpec) *pb.Snapshot {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Snapshot{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: FilesystemUsedBytes
-	return out
-}
 func Snapshot_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.Snapshot {
 	if in == nil {
 		return nil
