@@ -15,10 +15,10 @@
 package osconfig
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/osconfig/apiv1/osconfigpb"
+	pb "cloud.google.com/go/osconfig/apiv1beta/osconfigpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/osconfig/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func AptSettings_FromProto(mapCtx *direct.MapContext, in *pb.AptSettings) *krm.AptSettings {
 	if in == nil {
@@ -138,94 +138,6 @@ func GooSettings_ToProto(mapCtx *direct.MapContext, in *krm.GooSettings) *pb.Goo
 		return nil
 	}
 	out := &pb.GooSettings{}
-	return out
-}
-func OsconfigPatchJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PatchJob) *krm.OsconfigPatchJobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OsconfigPatchJobObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: InstanceFilter
-	// MISSING: PatchConfig
-	// MISSING: Duration
-	// MISSING: InstanceDetailsSummary
-	// MISSING: DryRun
-	// MISSING: ErrorMessage
-	// MISSING: PercentComplete
-	// MISSING: PatchDeployment
-	// MISSING: Rollout
-	return out
-}
-func OsconfigPatchJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OsconfigPatchJobObservedState) *pb.PatchJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PatchJob{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: InstanceFilter
-	// MISSING: PatchConfig
-	// MISSING: Duration
-	// MISSING: InstanceDetailsSummary
-	// MISSING: DryRun
-	// MISSING: ErrorMessage
-	// MISSING: PercentComplete
-	// MISSING: PatchDeployment
-	// MISSING: Rollout
-	return out
-}
-func OsconfigPatchJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.PatchJob) *krm.OsconfigPatchJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OsconfigPatchJobSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: InstanceFilter
-	// MISSING: PatchConfig
-	// MISSING: Duration
-	// MISSING: InstanceDetailsSummary
-	// MISSING: DryRun
-	// MISSING: ErrorMessage
-	// MISSING: PercentComplete
-	// MISSING: PatchDeployment
-	// MISSING: Rollout
-	return out
-}
-func OsconfigPatchJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.OsconfigPatchJobSpec) *pb.PatchJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PatchJob{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: InstanceFilter
-	// MISSING: PatchConfig
-	// MISSING: Duration
-	// MISSING: InstanceDetailsSummary
-	// MISSING: DryRun
-	// MISSING: ErrorMessage
-	// MISSING: PercentComplete
-	// MISSING: PatchDeployment
-	// MISSING: Rollout
 	return out
 }
 func PatchConfig_FromProto(mapCtx *direct.MapContext, in *pb.PatchConfig) *krm.PatchConfig {
