@@ -15,10 +15,10 @@
 package parallelstore
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/parallelstore/apiv1/parallelstorepb"
+	pb "cloud.google.com/go/parallelstore/apiv1beta/parallelstorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/parallelstore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instance {
 	if in == nil {
@@ -39,6 +39,7 @@ func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instanc
 	// MISSING: EffectiveReservedIPRange
 	out.FileStripeLevel = direct.Enum_FromProto(mapCtx, in.GetFileStripeLevel())
 	out.DirectoryStripeLevel = direct.Enum_FromProto(mapCtx, in.GetDirectoryStripeLevel())
+	out.DeploymentType = direct.Enum_FromProto(mapCtx, in.GetDeploymentType())
 	return out
 }
 func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance {
@@ -60,6 +61,7 @@ func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance 
 	// MISSING: EffectiveReservedIPRange
 	out.FileStripeLevel = direct.Enum_ToProto[pb.FileStripeLevel](mapCtx, in.FileStripeLevel)
 	out.DirectoryStripeLevel = direct.Enum_ToProto[pb.DirectoryStripeLevel](mapCtx, in.DirectoryStripeLevel)
+	out.DeploymentType = direct.Enum_ToProto[pb.DeploymentType](mapCtx, in.DeploymentType)
 	return out
 }
 func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.InstanceObservedState {
@@ -81,6 +83,7 @@ func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	out.EffectiveReservedIPRange = direct.LazyPtr(in.GetEffectiveReservedIpRange())
 	// MISSING: FileStripeLevel
 	// MISSING: DirectoryStripeLevel
+	// MISSING: DeploymentType
 	return out
 }
 func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedState) *pb.Instance {
@@ -102,89 +105,6 @@ func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceOb
 	out.EffectiveReservedIpRange = direct.ValueOf(in.EffectiveReservedIPRange)
 	// MISSING: FileStripeLevel
 	// MISSING: DirectoryStripeLevel
-	return out
-}
-func ParallelstoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ParallelstoreInstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ParallelstoreInstanceObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: CapacityGib
-	// MISSING: DaosVersion
-	// MISSING: AccessPoints
-	// MISSING: Network
-	// MISSING: ReservedIPRange
-	// MISSING: EffectiveReservedIPRange
-	// MISSING: FileStripeLevel
-	// MISSING: DirectoryStripeLevel
-	return out
-}
-func ParallelstoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParallelstoreInstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: CapacityGib
-	// MISSING: DaosVersion
-	// MISSING: AccessPoints
-	// MISSING: Network
-	// MISSING: ReservedIPRange
-	// MISSING: EffectiveReservedIPRange
-	// MISSING: FileStripeLevel
-	// MISSING: DirectoryStripeLevel
-	return out
-}
-func ParallelstoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.ParallelstoreInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ParallelstoreInstanceSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: CapacityGib
-	// MISSING: DaosVersion
-	// MISSING: AccessPoints
-	// MISSING: Network
-	// MISSING: ReservedIPRange
-	// MISSING: EffectiveReservedIPRange
-	// MISSING: FileStripeLevel
-	// MISSING: DirectoryStripeLevel
-	return out
-}
-func ParallelstoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ParallelstoreInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: CapacityGib
-	// MISSING: DaosVersion
-	// MISSING: AccessPoints
-	// MISSING: Network
-	// MISSING: ReservedIPRange
-	// MISSING: EffectiveReservedIPRange
-	// MISSING: FileStripeLevel
-	// MISSING: DirectoryStripeLevel
+	// MISSING: DeploymentType
 	return out
 }
