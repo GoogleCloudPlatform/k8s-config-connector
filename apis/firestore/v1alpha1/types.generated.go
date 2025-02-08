@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,80 +14,67 @@
 
 package v1alpha1
 
-/*
-// +kcc:proto=google.firestore.admin.v1.Database
-type Database struct {
-	// The resource name of the Database.
-	//  Format: `projects/{project}/databases/{database}`
+
+// +kcc:proto=google.firestore.admin.v1.Backup
+type Backup struct {
+}
+
+// +kcc:proto=google.firestore.admin.v1.Backup.Stats
+type Backup_Stats struct {
+}
+
+// +kcc:proto=google.firestore.admin.v1.Backup
+type BackupObservedState struct {
+	// Output only. The unique resource name of the Backup.
+	//
+	//  Format is `projects/{project}/locations/{location}/backups/{backup}`.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. The system-generated UUID4 for this Database.
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. The timestamp at which this database was created. Databases
-	//  created before 2016 do not populate create_time.
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The timestamp at which this database was most recently
-	//  updated. Note this only includes updates to the database resource and not
-	//  data contained by the database.
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// The location of the database. Available locations are listed at
-	//  https://cloud.google.com/firestore/docs/locations.
-	LocationID *string `json:"locationID,omitempty"`
-
-	// The type of the database.
-	//  See https://cloud.google.com/datastore/docs/firestore-or-datastore for
-	//  information about how to choose.
-	Type *string `json:"type,omitempty"`
-
-	// The concurrency control mode to use for this database.
-	ConcurrencyMode *string `json:"concurrencyMode,omitempty"`
-
-	// Output only. The period during which past versions of data are retained in
-	//  the database.
+	// Output only. Name of the Firestore database that the backup is from.
 	//
-	//  Any [read][google.firestore.v1.GetDocumentRequest.read_time]
-	//  or [query][google.firestore.v1.ListDocumentsRequest.read_time] can specify
-	//  a `read_time` within this window, and will read the state of the database
-	//  at that time.
+	//  Format is `projects/{project}/databases/{database}`.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.database
+	Database *string `json:"database,omitempty"`
+
+	// Output only. The system-generated UUID4 for the Firestore database that the
+	//  backup is from.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.database_uid
+	DatabaseUid *string `json:"databaseUid,omitempty"`
+
+	// Output only. The backup contains an externally consistent copy of the
+	//  database at this time.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.snapshot_time
+	SnapshotTime *string `json:"snapshotTime,omitempty"`
+
+	// Output only. The timestamp at which this backup expires.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Output only. Statistics about the backup.
 	//
-	//  If the PITR feature is enabled, the retention period is 7 days. Otherwise,
-	//  the retention period is 1 hour.
-	VersionRetentionPeriod *string `json:"versionRetentionPeriod,omitempty"`
+	//  This data only becomes available after the backup is fully materialized to
+	//  secondary storage. This field will be empty till then.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.stats
+	Stats *Backup_Stats `json:"stats,omitempty"`
 
-	// Output only. The earliest timestamp at which older versions of the data can
-	//  be read from the database. See [version_retention_period] above; this field
-	//  is populated with `now - version_retention_period`.
-	//
-	//  This value is continuously updated, and becomes stale the moment it is
-	//  queried. If you are using this value to recover data, make sure to account
-	//  for the time from the moment when the value is queried to the moment when
-	//  you initiate the recovery.
-	EarliestVersionTime *string `json:"earliestVersionTime,omitempty"`
-
-	// Whether to enable the PITR feature on this database.
-	PointInTimeRecoveryEnablement *string `json:"pointInTimeRecoveryEnablement,omitempty"`
-
-	// The App Engine integration mode to use for this database.
-	AppEngineIntegrationMode *string `json:"appEngineIntegrationMode,omitempty"`
-
-	// Output only. The key_prefix for this database. This key_prefix is used, in
-	//  combination with the project id ("<key prefix>~<project id>") to construct
-	//  the application id that is returned from the Cloud Datastore APIs in Google
-	//  App Engine first generation runtimes.
-	//
-	//  This value may be empty in which case the appid to use for URL-encoded keys
-	//  is the project_id (eg: foo instead of v~foo).
-	KeyPrefix *string `json:"keyPrefix,omitempty"`
-
-	// State of delete protection for the database.
-	DeleteProtectionState *string `json:"deleteProtectionState,omitempty"`
-
-	// This checksum is computed by the server based on the value of other
-	//  fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
-	Etag *string `json:"etag,omitempty"`
+	// Output only. The current state of the backup.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.state
+	State *string `json:"state,omitempty"`
 }
-*/
+
+// +kcc:proto=google.firestore.admin.v1.Backup.Stats
+type Backup_StatsObservedState struct {
+	// Output only. Summation of the size of all documents and index entries in
+	//  the backup, measured in bytes.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.Stats.size_bytes
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
+
+	// Output only. The total number of documents contained in the backup.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.Stats.document_count
+	DocumentCount *int64 `json:"documentCount,omitempty"`
+
+	// Output only. The total number of index entries contained in the backup.
+	// +kcc:proto:field=google.firestore.admin.v1.Backup.Stats.index_count
+	IndexCount *int64 `json:"indexCount,omitempty"`
+}
