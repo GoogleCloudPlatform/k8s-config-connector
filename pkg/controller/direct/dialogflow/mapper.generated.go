@@ -15,63 +15,11 @@
 package dialogflow
 
 import (
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 )
-func DialogflowVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.DialogflowVersionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowVersionObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: NluSettings
-	// MISSING: CreateTime
-	// MISSING: State
-	return out
-}
-func DialogflowVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowVersionObservedState) *pb.Version {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Version{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: NluSettings
-	// MISSING: CreateTime
-	// MISSING: State
-	return out
-}
-func DialogflowVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.DialogflowVersionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowVersionSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: NluSettings
-	// MISSING: CreateTime
-	// MISSING: State
-	return out
-}
-func DialogflowVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowVersionSpec) *pb.Version {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Version{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: NluSettings
-	// MISSING: CreateTime
-	// MISSING: State
-	return out
-}
 func NluSettings_FromProto(mapCtx *direct.MapContext, in *pb.NluSettings) *krm.NluSettings {
 	if in == nil {
 		return nil
