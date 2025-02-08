@@ -16,10 +16,26 @@ package gkehub
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/gkehub/apiv1/gkehubpb"
+	pb "cloud.google.com/go/gkehub/apiv1beta1/gkehubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+func ApplianceCluster_FromProto(mapCtx *direct.MapContext, in *pb.ApplianceCluster) *krm.ApplianceCluster {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApplianceCluster{}
+	out.ResourceLink = direct.LazyPtr(in.GetResourceLink())
+	return out
+}
+func ApplianceCluster_ToProto(mapCtx *direct.MapContext, in *krm.ApplianceCluster) *pb.ApplianceCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApplianceCluster{}
+	out.ResourceLink = direct.ValueOf(in.ResourceLink)
+	return out
+}
 func Authority_FromProto(mapCtx *direct.MapContext, in *pb.Authority) *krm.Authority {
 	if in == nil {
 		return nil
@@ -64,6 +80,22 @@ func AuthorityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Authority
 	// MISSING: OidcJwks
 	return out
 }
+func EdgeCluster_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCluster) *krm.EdgeCluster {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EdgeCluster{}
+	out.ResourceLink = direct.LazyPtr(in.GetResourceLink())
+	return out
+}
+func EdgeCluster_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCluster) *pb.EdgeCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EdgeCluster{}
+	out.ResourceLink = direct.ValueOf(in.ResourceLink)
+	return out
+}
 func GkeCluster_FromProto(mapCtx *direct.MapContext, in *pb.GkeCluster) *krm.GkeCluster {
 	if in == nil {
 		return nil
@@ -98,86 +130,6 @@ func GkeClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GkeClust
 	out := &pb.GkeCluster{}
 	// MISSING: ResourceLink
 	out.ClusterMissing = direct.ValueOf(in.ClusterMissing)
-	return out
-}
-func GkehubMembershipObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Membership) *krm.GkehubMembershipObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GkehubMembershipObservedState{}
-	// MISSING: Endpoint
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExternalID
-	// MISSING: LastConnectionTime
-	// MISSING: UniqueID
-	// MISSING: Authority
-	// MISSING: MonitoringConfig
-	return out
-}
-func GkehubMembershipObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GkehubMembershipObservedState) *pb.Membership {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Membership{}
-	// MISSING: Endpoint
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExternalID
-	// MISSING: LastConnectionTime
-	// MISSING: UniqueID
-	// MISSING: Authority
-	// MISSING: MonitoringConfig
-	return out
-}
-func GkehubMembershipSpec_FromProto(mapCtx *direct.MapContext, in *pb.Membership) *krm.GkehubMembershipSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GkehubMembershipSpec{}
-	// MISSING: Endpoint
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExternalID
-	// MISSING: LastConnectionTime
-	// MISSING: UniqueID
-	// MISSING: Authority
-	// MISSING: MonitoringConfig
-	return out
-}
-func GkehubMembershipSpec_ToProto(mapCtx *direct.MapContext, in *krm.GkehubMembershipSpec) *pb.Membership {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Membership{}
-	// MISSING: Endpoint
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExternalID
-	// MISSING: LastConnectionTime
-	// MISSING: UniqueID
-	// MISSING: Authority
-	// MISSING: MonitoringConfig
 	return out
 }
 func KubernetesResource_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesResource) *krm.KubernetesResource {
@@ -229,18 +181,19 @@ func Membership_FromProto(mapCtx *direct.MapContext, in *pb.Membership) *krm.Mem
 		return nil
 	}
 	out := &krm.Membership{}
-	out.Endpoint = MembershipEndpoint_FromProto(mapCtx, in.GetEndpoint())
 	// MISSING: Name
 	out.Labels = in.Labels
-	// MISSING: Description
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Endpoint = MembershipEndpoint_FromProto(mapCtx, in.GetEndpoint())
 	// MISSING: State
+	out.Authority = Authority_FromProto(mapCtx, in.GetAuthority())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: DeleteTime
 	out.ExternalID = direct.LazyPtr(in.GetExternalId())
 	// MISSING: LastConnectionTime
 	// MISSING: UniqueID
-	out.Authority = Authority_FromProto(mapCtx, in.GetAuthority())
+	out.InfrastructureType = direct.Enum_FromProto(mapCtx, in.GetInfrastructureType())
 	out.MonitoringConfig = MonitoringConfig_FromProto(mapCtx, in.GetMonitoringConfig())
 	return out
 }
@@ -249,20 +202,21 @@ func Membership_ToProto(mapCtx *direct.MapContext, in *krm.Membership) *pb.Membe
 		return nil
 	}
 	out := &pb.Membership{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
 	if oneof := MembershipEndpoint_ToProto(mapCtx, in.Endpoint); oneof != nil {
 		out.Type = &pb.Membership_Endpoint{Endpoint: oneof}
 	}
-	// MISSING: Name
-	out.Labels = in.Labels
-	// MISSING: Description
 	// MISSING: State
+	out.Authority = Authority_ToProto(mapCtx, in.Authority)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: DeleteTime
 	out.ExternalId = direct.ValueOf(in.ExternalID)
 	// MISSING: LastConnectionTime
 	// MISSING: UniqueID
-	out.Authority = Authority_ToProto(mapCtx, in.Authority)
+	out.InfrastructureType = direct.Enum_ToProto[pb.Membership_InfrastructureType](mapCtx, in.InfrastructureType)
 	out.MonitoringConfig = MonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
 	return out
 }
@@ -272,9 +226,12 @@ func MembershipEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.MembershipEn
 	}
 	out := &krm.MembershipEndpoint{}
 	out.GkeCluster = GkeCluster_FromProto(mapCtx, in.GetGkeCluster())
+	out.OnPremCluster = OnPremCluster_FromProto(mapCtx, in.GetOnPremCluster())
+	out.MultiCloudCluster = MultiCloudCluster_FromProto(mapCtx, in.GetMultiCloudCluster())
+	out.EdgeCluster = EdgeCluster_FromProto(mapCtx, in.GetEdgeCluster())
+	out.ApplianceCluster = ApplianceCluster_FromProto(mapCtx, in.GetApplianceCluster())
 	// MISSING: KubernetesMetadata
 	out.KubernetesResource = KubernetesResource_FromProto(mapCtx, in.GetKubernetesResource())
-	// MISSING: GoogleManaged
 	return out
 }
 func MembershipEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.MembershipEndpoint) *pb.MembershipEndpoint {
@@ -282,10 +239,23 @@ func MembershipEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.MembershipEnd
 		return nil
 	}
 	out := &pb.MembershipEndpoint{}
-	out.GkeCluster = GkeCluster_ToProto(mapCtx, in.GkeCluster)
+	if oneof := GkeCluster_ToProto(mapCtx, in.GkeCluster); oneof != nil {
+		out.Type = &pb.MembershipEndpoint_GkeCluster{GkeCluster: oneof}
+	}
+	if oneof := OnPremCluster_ToProto(mapCtx, in.OnPremCluster); oneof != nil {
+		out.Type = &pb.MembershipEndpoint_OnPremCluster{OnPremCluster: oneof}
+	}
+	if oneof := MultiCloudCluster_ToProto(mapCtx, in.MultiCloudCluster); oneof != nil {
+		out.Type = &pb.MembershipEndpoint_MultiCloudCluster{MultiCloudCluster: oneof}
+	}
+	if oneof := EdgeCluster_ToProto(mapCtx, in.EdgeCluster); oneof != nil {
+		out.Type = &pb.MembershipEndpoint_EdgeCluster{EdgeCluster: oneof}
+	}
+	if oneof := ApplianceCluster_ToProto(mapCtx, in.ApplianceCluster); oneof != nil {
+		out.Type = &pb.MembershipEndpoint_ApplianceCluster{ApplianceCluster: oneof}
+	}
 	// MISSING: KubernetesMetadata
 	out.KubernetesResource = KubernetesResource_ToProto(mapCtx, in.KubernetesResource)
-	// MISSING: GoogleManaged
 	return out
 }
 func MembershipEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MembershipEndpoint) *krm.MembershipEndpointObservedState {
@@ -294,9 +264,12 @@ func MembershipEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.MembershipEndpointObservedState{}
 	out.GkeCluster = GkeClusterObservedState_FromProto(mapCtx, in.GetGkeCluster())
+	out.OnPremCluster = OnPremClusterObservedState_FromProto(mapCtx, in.GetOnPremCluster())
+	out.MultiCloudCluster = MultiCloudClusterObservedState_FromProto(mapCtx, in.GetMultiCloudCluster())
+	// MISSING: EdgeCluster
+	// MISSING: ApplianceCluster
 	out.KubernetesMetadata = KubernetesMetadata_FromProto(mapCtx, in.GetKubernetesMetadata())
 	out.KubernetesResource = KubernetesResourceObservedState_FromProto(mapCtx, in.GetKubernetesResource())
-	out.GoogleManaged = direct.LazyPtr(in.GetGoogleManaged())
 	return out
 }
 func MembershipEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MembershipEndpointObservedState) *pb.MembershipEndpoint {
@@ -304,10 +277,19 @@ func MembershipEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.MembershipEndpoint{}
-	out.GkeCluster = GkeClusterObservedState_ToProto(mapCtx, in.GkeCluster)
+	if oneof := GkeClusterObservedState_ToProto(mapCtx, in.GkeCluster); oneof != nil {
+		out.Type = &pb.MembershipEndpoint_GkeCluster{GkeCluster: oneof}
+	}
+	if oneof := OnPremClusterObservedState_ToProto(mapCtx, in.OnPremCluster); oneof != nil {
+		out.Type = &pb.MembershipEndpoint_OnPremCluster{OnPremCluster: oneof}
+	}
+	if oneof := MultiCloudClusterObservedState_ToProto(mapCtx, in.MultiCloudCluster); oneof != nil {
+		out.Type = &pb.MembershipEndpoint_MultiCloudCluster{MultiCloudCluster: oneof}
+	}
+	// MISSING: EdgeCluster
+	// MISSING: ApplianceCluster
 	out.KubernetesMetadata = KubernetesMetadata_ToProto(mapCtx, in.KubernetesMetadata)
 	out.KubernetesResource = KubernetesResourceObservedState_ToProto(mapCtx, in.KubernetesResource)
-	out.GoogleManaged = direct.ValueOf(in.GoogleManaged)
 	return out
 }
 func MembershipObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Membership) *krm.MembershipObservedState {
@@ -315,18 +297,19 @@ func MembershipObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Members
 		return nil
 	}
 	out := &krm.MembershipObservedState{}
-	out.Endpoint = MembershipEndpointObservedState_FromProto(mapCtx, in.GetEndpoint())
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: Labels
-	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Description
+	out.Endpoint = MembershipEndpointObservedState_FromProto(mapCtx, in.GetEndpoint())
 	out.State = MembershipState_FromProto(mapCtx, in.GetState())
+	out.Authority = AuthorityObservedState_FromProto(mapCtx, in.GetAuthority())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
 	// MISSING: ExternalID
 	out.LastConnectionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastConnectionTime())
 	out.UniqueID = direct.LazyPtr(in.GetUniqueId())
-	out.Authority = AuthorityObservedState_FromProto(mapCtx, in.GetAuthority())
+	// MISSING: InfrastructureType
 	// MISSING: MonitoringConfig
 	return out
 }
@@ -335,20 +318,21 @@ func MembershipObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Membersh
 		return nil
 	}
 	out := &pb.Membership{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Labels
+	// MISSING: Description
 	if oneof := MembershipEndpointObservedState_ToProto(mapCtx, in.Endpoint); oneof != nil {
 		out.Type = &pb.Membership_Endpoint{Endpoint: oneof}
 	}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Labels
-	out.Description = direct.ValueOf(in.Description)
 	out.State = MembershipState_ToProto(mapCtx, in.State)
+	out.Authority = AuthorityObservedState_ToProto(mapCtx, in.Authority)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
 	// MISSING: ExternalID
 	out.LastConnectionTime = direct.StringTimestamp_ToProto(mapCtx, in.LastConnectionTime)
 	out.UniqueId = direct.ValueOf(in.UniqueID)
-	out.Authority = AuthorityObservedState_ToProto(mapCtx, in.Authority)
+	// MISSING: InfrastructureType
 	// MISSING: MonitoringConfig
 	return out
 }
@@ -358,6 +342,8 @@ func MembershipState_FromProto(mapCtx *direct.MapContext, in *pb.MembershipState
 	}
 	out := &krm.MembershipState{}
 	// MISSING: Code
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
 func MembershipState_ToProto(mapCtx *direct.MapContext, in *krm.MembershipState) *pb.MembershipState {
@@ -366,6 +352,8 @@ func MembershipState_ToProto(mapCtx *direct.MapContext, in *krm.MembershipState)
 	}
 	out := &pb.MembershipState{}
 	// MISSING: Code
+	out.Description = direct.ValueOf(in.Description)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func MembershipStateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MembershipState) *krm.MembershipStateObservedState {
@@ -374,6 +362,8 @@ func MembershipStateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Me
 	}
 	out := &krm.MembershipStateObservedState{}
 	out.Code = direct.Enum_FromProto(mapCtx, in.GetCode())
+	// MISSING: Description
+	// MISSING: UpdateTime
 	return out
 }
 func MembershipStateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MembershipStateObservedState) *pb.MembershipState {
@@ -382,6 +372,8 @@ func MembershipStateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Mem
 	}
 	out := &pb.MembershipState{}
 	out.Code = direct.Enum_ToProto[pb.MembershipState_Code](mapCtx, in.Code)
+	// MISSING: Description
+	// MISSING: UpdateTime
 	return out
 }
 func MonitoringConfig_FromProto(mapCtx *direct.MapContext, in *pb.MonitoringConfig) *krm.MonitoringConfig {
@@ -406,6 +398,86 @@ func MonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringConfi
 	out.Cluster = direct.ValueOf(in.Cluster)
 	out.KubernetesMetricsPrefix = direct.ValueOf(in.KubernetesMetricsPrefix)
 	out.ClusterHash = direct.ValueOf(in.ClusterHash)
+	return out
+}
+func MultiCloudCluster_FromProto(mapCtx *direct.MapContext, in *pb.MultiCloudCluster) *krm.MultiCloudCluster {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MultiCloudCluster{}
+	out.ResourceLink = direct.LazyPtr(in.GetResourceLink())
+	// MISSING: ClusterMissing
+	return out
+}
+func MultiCloudCluster_ToProto(mapCtx *direct.MapContext, in *krm.MultiCloudCluster) *pb.MultiCloudCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MultiCloudCluster{}
+	out.ResourceLink = direct.ValueOf(in.ResourceLink)
+	// MISSING: ClusterMissing
+	return out
+}
+func MultiCloudClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MultiCloudCluster) *krm.MultiCloudClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MultiCloudClusterObservedState{}
+	// MISSING: ResourceLink
+	out.ClusterMissing = direct.LazyPtr(in.GetClusterMissing())
+	return out
+}
+func MultiCloudClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MultiCloudClusterObservedState) *pb.MultiCloudCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MultiCloudCluster{}
+	// MISSING: ResourceLink
+	out.ClusterMissing = direct.ValueOf(in.ClusterMissing)
+	return out
+}
+func OnPremCluster_FromProto(mapCtx *direct.MapContext, in *pb.OnPremCluster) *krm.OnPremCluster {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnPremCluster{}
+	out.ResourceLink = direct.LazyPtr(in.GetResourceLink())
+	// MISSING: ClusterMissing
+	out.AdminCluster = direct.LazyPtr(in.GetAdminCluster())
+	out.ClusterType = direct.Enum_FromProto(mapCtx, in.GetClusterType())
+	return out
+}
+func OnPremCluster_ToProto(mapCtx *direct.MapContext, in *krm.OnPremCluster) *pb.OnPremCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OnPremCluster{}
+	out.ResourceLink = direct.ValueOf(in.ResourceLink)
+	// MISSING: ClusterMissing
+	out.AdminCluster = direct.ValueOf(in.AdminCluster)
+	out.ClusterType = direct.Enum_ToProto[pb.OnPremCluster_ClusterType](mapCtx, in.ClusterType)
+	return out
+}
+func OnPremClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OnPremCluster) *krm.OnPremClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OnPremClusterObservedState{}
+	// MISSING: ResourceLink
+	out.ClusterMissing = direct.LazyPtr(in.GetClusterMissing())
+	// MISSING: AdminCluster
+	// MISSING: ClusterType
+	return out
+}
+func OnPremClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OnPremClusterObservedState) *pb.OnPremCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OnPremCluster{}
+	// MISSING: ResourceLink
+	out.ClusterMissing = direct.ValueOf(in.ClusterMissing)
+	// MISSING: AdminCluster
+	// MISSING: ClusterType
 	return out
 }
 func ResourceManifest_FromProto(mapCtx *direct.MapContext, in *pb.ResourceManifest) *krm.ResourceManifest {
