@@ -16,58 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowGenerativeSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GenerativeSettings) *krm.DialogflowGenerativeSettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowGenerativeSettingsObservedState{}
-	// MISSING: Name
-	// MISSING: FallbackSettings
-	// MISSING: GenerativeSafetySettings
-	// MISSING: KnowledgeConnectorSettings
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowGenerativeSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowGenerativeSettingsObservedState) *pb.GenerativeSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GenerativeSettings{}
-	// MISSING: Name
-	// MISSING: FallbackSettings
-	// MISSING: GenerativeSafetySettings
-	// MISSING: KnowledgeConnectorSettings
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowGenerativeSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.GenerativeSettings) *krm.DialogflowGenerativeSettingsSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowGenerativeSettingsSpec{}
-	// MISSING: Name
-	// MISSING: FallbackSettings
-	// MISSING: GenerativeSafetySettings
-	// MISSING: KnowledgeConnectorSettings
-	// MISSING: LanguageCode
-	return out
-}
-func DialogflowGenerativeSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowGenerativeSettingsSpec) *pb.GenerativeSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GenerativeSettings{}
-	// MISSING: Name
-	// MISSING: FallbackSettings
-	// MISSING: GenerativeSafetySettings
-	// MISSING: KnowledgeConnectorSettings
-	// MISSING: LanguageCode
-	return out
-}
 func GenerativeSettings_FromProto(mapCtx *direct.MapContext, in *pb.GenerativeSettings) *krm.GenerativeSettings {
 	if in == nil {
 		return nil
@@ -78,6 +30,7 @@ func GenerativeSettings_FromProto(mapCtx *direct.MapContext, in *pb.GenerativeSe
 	out.GenerativeSafetySettings = SafetySettings_FromProto(mapCtx, in.GetGenerativeSafetySettings())
 	out.KnowledgeConnectorSettings = GenerativeSettings_KnowledgeConnectorSettings_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
 	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.LlmModelSettings = LlmModelSettings_FromProto(mapCtx, in.GetLlmModelSettings())
 	return out
 }
 func GenerativeSettings_ToProto(mapCtx *direct.MapContext, in *krm.GenerativeSettings) *pb.GenerativeSettings {
@@ -90,6 +43,7 @@ func GenerativeSettings_ToProto(mapCtx *direct.MapContext, in *krm.GenerativeSet
 	out.GenerativeSafetySettings = SafetySettings_ToProto(mapCtx, in.GenerativeSafetySettings)
 	out.KnowledgeConnectorSettings = GenerativeSettings_KnowledgeConnectorSettings_ToProto(mapCtx, in.KnowledgeConnectorSettings)
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	out.LlmModelSettings = LlmModelSettings_ToProto(mapCtx, in.LlmModelSettings)
 	return out
 }
 func GenerativeSettings_FallbackSettings_FromProto(mapCtx *direct.MapContext, in *pb.GenerativeSettings_FallbackSettings) *krm.GenerativeSettings_FallbackSettings {
@@ -156,11 +110,30 @@ func GenerativeSettings_KnowledgeConnectorSettings_ToProto(mapCtx *direct.MapCon
 	out.DisableDataStoreFallback = direct.ValueOf(in.DisableDataStoreFallback)
 	return out
 }
+func LlmModelSettings_FromProto(mapCtx *direct.MapContext, in *pb.LlmModelSettings) *krm.LlmModelSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LlmModelSettings{}
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.PromptText = direct.LazyPtr(in.GetPromptText())
+	return out
+}
+func LlmModelSettings_ToProto(mapCtx *direct.MapContext, in *krm.LlmModelSettings) *pb.LlmModelSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LlmModelSettings{}
+	out.Model = direct.ValueOf(in.Model)
+	out.PromptText = direct.ValueOf(in.PromptText)
+	return out
+}
 func SafetySettings_FromProto(mapCtx *direct.MapContext, in *pb.SafetySettings) *krm.SafetySettings {
 	if in == nil {
 		return nil
 	}
 	out := &krm.SafetySettings{}
+	out.DefaultBannedPhraseMatchStrategy = direct.Enum_FromProto(mapCtx, in.GetDefaultBannedPhraseMatchStrategy())
 	out.BannedPhrases = direct.Slice_FromProto(mapCtx, in.BannedPhrases, SafetySettings_Phrase_FromProto)
 	return out
 }
@@ -169,6 +142,7 @@ func SafetySettings_ToProto(mapCtx *direct.MapContext, in *krm.SafetySettings) *
 		return nil
 	}
 	out := &pb.SafetySettings{}
+	out.DefaultBannedPhraseMatchStrategy = direct.Enum_ToProto[pb.SafetySettings_PhraseMatchStrategy](mapCtx, in.DefaultBannedPhraseMatchStrategy)
 	out.BannedPhrases = direct.Slice_ToProto(mapCtx, in.BannedPhrases, SafetySettings_Phrase_ToProto)
 	return out
 }
