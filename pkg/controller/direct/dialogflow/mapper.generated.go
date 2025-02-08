@@ -15,59 +15,11 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func DialogflowGeneratorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.DialogflowGeneratorObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowGeneratorObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: PromptText
-	// MISSING: Placeholders
-	// MISSING: ModelParameter
-	return out
-}
-func DialogflowGeneratorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowGeneratorObservedState) *pb.Generator {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Generator{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: PromptText
-	// MISSING: Placeholders
-	// MISSING: ModelParameter
-	return out
-}
-func DialogflowGeneratorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.DialogflowGeneratorSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowGeneratorSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: PromptText
-	// MISSING: Placeholders
-	// MISSING: ModelParameter
-	return out
-}
-func DialogflowGeneratorSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowGeneratorSpec) *pb.Generator {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Generator{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: PromptText
-	// MISSING: Placeholders
-	// MISSING: ModelParameter
-	return out
-}
 func Generator_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.Generator {
 	if in == nil {
 		return nil
@@ -77,6 +29,7 @@ func Generator_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.Gener
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.PromptText = Phrase_FromProto(mapCtx, in.GetPromptText())
 	out.Placeholders = direct.Slice_FromProto(mapCtx, in.Placeholders, Generator_Placeholder_FromProto)
+	out.LlmModelSettings = LlmModelSettings_FromProto(mapCtx, in.GetLlmModelSettings())
 	out.ModelParameter = Generator_ModelParameter_FromProto(mapCtx, in.GetModelParameter())
 	return out
 }
@@ -89,6 +42,7 @@ func Generator_ToProto(mapCtx *direct.MapContext, in *krm.Generator) *pb.Generat
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.PromptText = Phrase_ToProto(mapCtx, in.PromptText)
 	out.Placeholders = direct.Slice_ToProto(mapCtx, in.Placeholders, Generator_Placeholder_ToProto)
+	out.LlmModelSettings = LlmModelSettings_ToProto(mapCtx, in.LlmModelSettings)
 	out.ModelParameter = Generator_ModelParameter_ToProto(mapCtx, in.ModelParameter)
 	return out
 }
@@ -130,6 +84,24 @@ func Generator_Placeholder_ToProto(mapCtx *direct.MapContext, in *krm.Generator_
 	out := &pb.Generator_Placeholder{}
 	out.Id = direct.ValueOf(in.ID)
 	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+func LlmModelSettings_FromProto(mapCtx *direct.MapContext, in *pb.LlmModelSettings) *krm.LlmModelSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LlmModelSettings{}
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.PromptText = direct.LazyPtr(in.GetPromptText())
+	return out
+}
+func LlmModelSettings_ToProto(mapCtx *direct.MapContext, in *krm.LlmModelSettings) *pb.LlmModelSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LlmModelSettings{}
+	out.Model = direct.ValueOf(in.Model)
+	out.PromptText = direct.ValueOf(in.PromptText)
 	return out
 }
 func Phrase_FromProto(mapCtx *direct.MapContext, in *pb.Phrase) *krm.Phrase {
