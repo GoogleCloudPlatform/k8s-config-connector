@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.memcache.v1.Instance
+// +kcc:proto=google.cloud.memcache.v1beta2.Instance
 type Instance struct {
 	// Required. Unique name of the resource in this scope including project and
 	//  location using the form:
@@ -24,41 +24,41 @@ type Instance struct {
 	//  Note: Memcached instances are managed and addressed at the regional level
 	//  so `location_id` here refers to a Google Cloud region; however, users may
 	//  choose which zones Memcached nodes should be provisioned in within an
-	//  instance. Refer to [zones][google.cloud.memcache.v1.Instance.zones] field for more details.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.name
+	//  instance. Refer to [zones][google.cloud.memcache.v1beta2.Instance.zones] field for more details.
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.name
 	Name *string `json:"name,omitempty"`
 
 	// User provided name for the instance, which is only used for display
 	//  purposes. Cannot be more than 80 characters.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.display_name
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Resource labels to represent user-provided metadata.
 	//  Refer to cloud documentation on labels for more details.
 	//  https://cloud.google.com/compute/docs/labeling-resources
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.labels
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// The full name of the Google Compute Engine
-	//  [network](/compute/docs/networks-and-firewalls#networks) to which the
+	//  [network](https://cloud.google.com/vpc/docs/vpc) to which the
 	//  instance is connected. If left unspecified, the `default` network
 	//  will be used.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.authorized_network
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.authorized_network
 	AuthorizedNetwork *string `json:"authorizedNetwork,omitempty"`
 
 	// Zones in which Memcached nodes should be provisioned.
 	//  Memcached nodes will be equally distributed across these zones. If not
 	//  provided, the service will by default create nodes in all zones in the
 	//  region for the instance.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.zones
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.zones
 	Zones []string `json:"zones,omitempty"`
 
 	// Required. Number of nodes in the Memcached instance.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.node_count
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.node_count
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 
 	// Required. Configuration for Memcached nodes.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.node_config
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.node_config
 	NodeConfig *Instance_NodeConfig `json:"nodeConfig,omitempty"`
 
 	// The major version of Memcached software.
@@ -66,94 +66,94 @@ type Instance struct {
 	//  latest supported major version is `MEMCACHE_1_5`.
 	//  The minor version will be automatically determined by our system based on
 	//  the latest supported minor version.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.memcache_version
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.memcache_version
 	MemcacheVersion *string `json:"memcacheVersion,omitempty"`
 
 	// User defined parameters to apply to the memcached process
 	//  on each node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.parameters
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.parameters
 	Parameters *MemcacheParameters `json:"parameters,omitempty"`
 
 	// List of messages that describe the current state of the Memcached instance.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.instance_messages
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.instance_messages
 	InstanceMessages []Instance_InstanceMessage `json:"instanceMessages,omitempty"`
 
 	// The maintenance policy for the instance. If not provided,
 	//  the maintenance event will be performed based on Memorystore
 	//  internal rollout schedule.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.maintenance_policy
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.maintenance_policy
 	MaintenancePolicy *MaintenancePolicy `json:"maintenancePolicy,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.Instance.InstanceMessage
+// +kcc:proto=google.cloud.memcache.v1beta2.Instance.InstanceMessage
 type Instance_InstanceMessage struct {
 	// A code that correspond to one type of user-facing message.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.InstanceMessage.code
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.InstanceMessage.code
 	Code *string `json:"code,omitempty"`
 
 	// Message on memcached instance which will be exposed to users.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.InstanceMessage.message
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.InstanceMessage.message
 	Message *string `json:"message,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.Instance.Node
+// +kcc:proto=google.cloud.memcache.v1beta2.Instance.Node
 type Instance_Node struct {
 
 	// User defined parameters currently applied to the node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.Node.parameters
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.Node.parameters
 	Parameters *MemcacheParameters `json:"parameters,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.Instance.NodeConfig
+// +kcc:proto=google.cloud.memcache.v1beta2.Instance.NodeConfig
 type Instance_NodeConfig struct {
 	// Required. Number of cpus per Memcached node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.NodeConfig.cpu_count
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.NodeConfig.cpu_count
 	CpuCount *int32 `json:"cpuCount,omitempty"`
 
 	// Required. Memory size in MiB for each Memcached node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.NodeConfig.memory_size_mb
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.NodeConfig.memory_size_mb
 	MemorySizeMb *int32 `json:"memorySizeMb,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.MaintenancePolicy
+// +kcc:proto=google.cloud.memcache.v1beta2.MaintenancePolicy
 type MaintenancePolicy struct {
 
 	// Description of what this policy is for. Create/Update methods
 	//  return INVALID_ARGUMENT if the length is greater than 512.
-	// +kcc:proto:field=google.cloud.memcache.v1.MaintenancePolicy.description
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MaintenancePolicy.description
 	Description *string `json:"description,omitempty"`
 
 	// Required. Maintenance window that is applied to resources covered by this
 	//  policy. Minimum 1. For the current version, the maximum number of
 	//  weekly_maintenance_windows is expected to be one.
-	// +kcc:proto:field=google.cloud.memcache.v1.MaintenancePolicy.weekly_maintenance_window
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MaintenancePolicy.weekly_maintenance_window
 	WeeklyMaintenanceWindow []WeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.MaintenanceSchedule
+// +kcc:proto=google.cloud.memcache.v1beta2.MaintenanceSchedule
 type MaintenanceSchedule struct {
 }
 
-// +kcc:proto=google.cloud.memcache.v1.MemcacheParameters
+// +kcc:proto=google.cloud.memcache.v1beta2.MemcacheParameters
 type MemcacheParameters struct {
 
 	// User defined set of parameters to use in the memcached process.
-	// +kcc:proto:field=google.cloud.memcache.v1.MemcacheParameters.params
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MemcacheParameters.params
 	Params map[string]string `json:"params,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.WeeklyMaintenanceWindow
+// +kcc:proto=google.cloud.memcache.v1beta2.WeeklyMaintenanceWindow
 type WeeklyMaintenanceWindow struct {
 	// Required. Allows to define schedule that runs specified day of the week.
-	// +kcc:proto:field=google.cloud.memcache.v1.WeeklyMaintenanceWindow.day
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.WeeklyMaintenanceWindow.day
 	Day *string `json:"day,omitempty"`
 
 	// Required. Start time of the window in UTC.
-	// +kcc:proto:field=google.cloud.memcache.v1.WeeklyMaintenanceWindow.start_time
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.WeeklyMaintenanceWindow.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 
 	// Required. Duration of the time window.
-	// +kcc:proto:field=google.cloud.memcache.v1.WeeklyMaintenanceWindow.duration
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.WeeklyMaintenanceWindow.duration
 	Duration *string `json:"duration,omitempty"`
 }
 
@@ -178,111 +178,119 @@ type TimeOfDay struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.Instance
+// +kcc:proto=google.cloud.memcache.v1beta2.Instance
 type InstanceObservedState struct {
 	// User defined parameters to apply to the memcached process
 	//  on each node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.parameters
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.parameters
 	Parameters *MemcacheParametersObservedState `json:"parameters,omitempty"`
 
 	// Output only. List of Memcached nodes.
-	//  Refer to [Node][google.cloud.memcache.v1.Instance.Node] message for more details.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.memcache_nodes
+	//  Refer to [Node][google.cloud.memcache.v1beta2.Instance.Node] message for more details.
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.memcache_nodes
 	MemcacheNodes []Instance_Node `json:"memcacheNodes,omitempty"`
 
 	// Output only. The time the instance was created.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.create_time
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The time the instance was updated.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.update_time
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. The state of this Memcached instance.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.state
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.state
 	State *string `json:"state,omitempty"`
 
 	// Output only. The full version of memcached server running on this instance.
 	//  System automatically determines the full memcached version for an instance
 	//  based on the input MemcacheVersion.
 	//  The full version format will be "memcached-1.5.16".
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.memcache_full_version
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.memcache_full_version
 	MemcacheFullVersion *string `json:"memcacheFullVersion,omitempty"`
 
 	// Output only. Endpoint for the Discovery API.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.discovery_endpoint
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.discovery_endpoint
 	DiscoveryEndpoint *string `json:"discoveryEndpoint,omitempty"`
+
+	// Output only. Returns true if there is an update waiting to be applied
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.update_available
+	UpdateAvailable *bool `json:"updateAvailable,omitempty"`
 
 	// The maintenance policy for the instance. If not provided,
 	//  the maintenance event will be performed based on Memorystore
 	//  internal rollout schedule.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.maintenance_policy
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.maintenance_policy
 	MaintenancePolicy *MaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
 
 	// Output only. Published maintenance schedule.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.maintenance_schedule
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.maintenance_schedule
 	MaintenanceSchedule *MaintenanceSchedule `json:"maintenanceSchedule,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.Instance.Node
+// +kcc:proto=google.cloud.memcache.v1beta2.Instance.Node
 type Instance_NodeObservedState struct {
 	// Output only. Identifier of the Memcached node. The node id does not
 	//  include project or location like the Memcached instance name.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.Node.node_id
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.Node.node_id
 	NodeID *string `json:"nodeID,omitempty"`
 
 	// Output only. Location (GCP Zone) for the Memcached node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.Node.zone
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.Node.zone
 	Zone *string `json:"zone,omitempty"`
 
 	// Output only. Current state of the Memcached node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.Node.state
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.Node.state
 	State *string `json:"state,omitempty"`
 
 	// Output only. Hostname or IP address of the Memcached node used by the
 	//  clients to connect to the Memcached server on this node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.Node.host
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.Node.host
 	Host *string `json:"host,omitempty"`
 
 	// Output only. The port number of the Memcached server on this node.
-	// +kcc:proto:field=google.cloud.memcache.v1.Instance.Node.port
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.Node.port
 	Port *int32 `json:"port,omitempty"`
+
+	// Output only. Returns true if there is an update waiting to be applied
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.Instance.Node.update_available
+	UpdateAvailable *bool `json:"updateAvailable,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.MaintenancePolicy
+// +kcc:proto=google.cloud.memcache.v1beta2.MaintenancePolicy
 type MaintenancePolicyObservedState struct {
 	// Output only. The time when the policy was created.
-	// +kcc:proto:field=google.cloud.memcache.v1.MaintenancePolicy.create_time
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MaintenancePolicy.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The time when the policy was updated.
-	// +kcc:proto:field=google.cloud.memcache.v1.MaintenancePolicy.update_time
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MaintenancePolicy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.MaintenanceSchedule
+// +kcc:proto=google.cloud.memcache.v1beta2.MaintenanceSchedule
 type MaintenanceScheduleObservedState struct {
 	// Output only. The start time of any upcoming scheduled maintenance for this instance.
-	// +kcc:proto:field=google.cloud.memcache.v1.MaintenanceSchedule.start_time
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MaintenanceSchedule.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Output only. The end time of any upcoming scheduled maintenance for this instance.
-	// +kcc:proto:field=google.cloud.memcache.v1.MaintenanceSchedule.end_time
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MaintenanceSchedule.end_time
 	EndTime *string `json:"endTime,omitempty"`
 
 	// Output only. The deadline that the maintenance schedule start time can not go beyond,
 	//  including reschedule.
-	// +kcc:proto:field=google.cloud.memcache.v1.MaintenanceSchedule.schedule_deadline_time
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MaintenanceSchedule.schedule_deadline_time
 	ScheduleDeadlineTime *string `json:"scheduleDeadlineTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.memcache.v1.MemcacheParameters
+// +kcc:proto=google.cloud.memcache.v1beta2.MemcacheParameters
 type MemcacheParametersObservedState struct {
 	// Output only. The unique ID associated with this set of parameters. Users
 	//  can use this id to determine if the parameters associated with the instance
 	//  differ from the parameters associated with the nodes. A discrepancy between
 	//  parameter ids can inform users that they may need to take action to apply
 	//  parameters on nodes.
-	// +kcc:proto:field=google.cloud.memcache.v1.MemcacheParameters.id
+	// +kcc:proto:field=google.cloud.memcache.v1beta2.MemcacheParameters.id
 	ID *string `json:"id,omitempty"`
 }

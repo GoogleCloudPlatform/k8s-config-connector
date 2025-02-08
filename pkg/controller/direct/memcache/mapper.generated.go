@@ -16,7 +16,7 @@ package memcache
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/memcache/apiv1/memcachepb"
+	pb "cloud.google.com/go/memcache/apiv1beta2/memcachepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memcache/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -41,6 +41,7 @@ func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instanc
 	// MISSING: MemcacheFullVersion
 	out.InstanceMessages = direct.Slice_FromProto(mapCtx, in.InstanceMessages, Instance_InstanceMessage_FromProto)
 	// MISSING: DiscoveryEndpoint
+	// MISSING: UpdateAvailable
 	out.MaintenancePolicy = MaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
 	// MISSING: MaintenanceSchedule
 	return out
@@ -66,6 +67,7 @@ func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance 
 	// MISSING: MemcacheFullVersion
 	out.InstanceMessages = direct.Slice_ToProto(mapCtx, in.InstanceMessages, Instance_InstanceMessage_ToProto)
 	// MISSING: DiscoveryEndpoint
+	// MISSING: UpdateAvailable
 	out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
 	// MISSING: MaintenanceSchedule
 	return out
@@ -91,6 +93,7 @@ func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	out.MemcacheFullVersion = direct.LazyPtr(in.GetMemcacheFullVersion())
 	// MISSING: InstanceMessages
 	out.DiscoveryEndpoint = direct.LazyPtr(in.GetDiscoveryEndpoint())
+	out.UpdateAvailable = direct.LazyPtr(in.GetUpdateAvailable())
 	out.MaintenancePolicy = MaintenancePolicyObservedState_FromProto(mapCtx, in.GetMaintenancePolicy())
 	out.MaintenanceSchedule = MaintenanceSchedule_FromProto(mapCtx, in.GetMaintenanceSchedule())
 	return out
@@ -116,6 +119,7 @@ func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceOb
 	out.MemcacheFullVersion = direct.ValueOf(in.MemcacheFullVersion)
 	// MISSING: InstanceMessages
 	out.DiscoveryEndpoint = direct.ValueOf(in.DiscoveryEndpoint)
+	out.UpdateAvailable = direct.ValueOf(in.UpdateAvailable)
 	out.MaintenancePolicy = MaintenancePolicyObservedState_ToProto(mapCtx, in.MaintenancePolicy)
 	out.MaintenanceSchedule = MaintenanceSchedule_ToProto(mapCtx, in.MaintenanceSchedule)
 	return out
@@ -149,6 +153,7 @@ func Instance_Node_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Node) *k
 	// MISSING: Host
 	// MISSING: Port
 	out.Parameters = MemcacheParameters_FromProto(mapCtx, in.GetParameters())
+	// MISSING: UpdateAvailable
 	return out
 }
 func Instance_Node_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Node) *pb.Instance_Node {
@@ -162,6 +167,7 @@ func Instance_Node_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Node) *pb
 	// MISSING: Host
 	// MISSING: Port
 	out.Parameters = MemcacheParameters_ToProto(mapCtx, in.Parameters)
+	// MISSING: UpdateAvailable
 	return out
 }
 func Instance_NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_NodeConfig) *krm.Instance_NodeConfig {
@@ -193,6 +199,7 @@ func Instance_NodeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Inst
 	out.Host = direct.LazyPtr(in.GetHost())
 	out.Port = direct.LazyPtr(in.GetPort())
 	// MISSING: Parameters
+	out.UpdateAvailable = direct.LazyPtr(in.GetUpdateAvailable())
 	return out
 }
 func Instance_NodeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_NodeObservedState) *pb.Instance_Node {
@@ -206,6 +213,7 @@ func Instance_NodeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Insta
 	out.Host = direct.ValueOf(in.Host)
 	out.Port = direct.ValueOf(in.Port)
 	// MISSING: Parameters
+	out.UpdateAvailable = direct.ValueOf(in.UpdateAvailable)
 	return out
 }
 func MaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePolicy) *krm.MaintenancePolicy {
@@ -290,106 +298,6 @@ func MaintenanceScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.ScheduleDeadlineTime = direct.StringTimestamp_ToProto(mapCtx, in.ScheduleDeadlineTime)
-	return out
-}
-func MemcacheInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemcacheInstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MemcacheInstanceObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: AuthorizedNetwork
-	// MISSING: Zones
-	// MISSING: NodeCount
-	// MISSING: NodeConfig
-	// MISSING: MemcacheVersion
-	// MISSING: Parameters
-	// MISSING: MemcacheNodes
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: MemcacheFullVersion
-	// MISSING: InstanceMessages
-	// MISSING: DiscoveryEndpoint
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
-	return out
-}
-func MemcacheInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MemcacheInstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: AuthorizedNetwork
-	// MISSING: Zones
-	// MISSING: NodeCount
-	// MISSING: NodeConfig
-	// MISSING: MemcacheVersion
-	// MISSING: Parameters
-	// MISSING: MemcacheNodes
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: MemcacheFullVersion
-	// MISSING: InstanceMessages
-	// MISSING: DiscoveryEndpoint
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
-	return out
-}
-func MemcacheInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemcacheInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MemcacheInstanceSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: AuthorizedNetwork
-	// MISSING: Zones
-	// MISSING: NodeCount
-	// MISSING: NodeConfig
-	// MISSING: MemcacheVersion
-	// MISSING: Parameters
-	// MISSING: MemcacheNodes
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: MemcacheFullVersion
-	// MISSING: InstanceMessages
-	// MISSING: DiscoveryEndpoint
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
-	return out
-}
-func MemcacheInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MemcacheInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: AuthorizedNetwork
-	// MISSING: Zones
-	// MISSING: NodeCount
-	// MISSING: NodeConfig
-	// MISSING: MemcacheVersion
-	// MISSING: Parameters
-	// MISSING: MemcacheNodes
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: MemcacheFullVersion
-	// MISSING: InstanceMessages
-	// MISSING: DiscoveryEndpoint
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
 	return out
 }
 func MemcacheParameters_FromProto(mapCtx *direct.MapContext, in *pb.MemcacheParameters) *krm.MemcacheParameters {
