@@ -15,10 +15,10 @@
 package config
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/config/apiv1/configpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/config/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/config/apiv1/configpb"
 )
 func ConfigTerraformVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformVersion) *krm.ConfigTerraformVersionObservedState {
 	if in == nil {
