@@ -16,7 +16,7 @@ package metastore
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
+	pb "cloud.google.com/go/metastore/apiv1beta/metastorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -38,6 +38,38 @@ func AuxiliaryVersionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Auxiliary
 	out.Version = direct.ValueOf(in.Version)
 	out.ConfigOverrides = in.ConfigOverrides
 	// MISSING: NetworkConfig
+	return out
+}
+func DataCatalogConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataCatalogConfig) *krm.DataCatalogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataCatalogConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func DataCatalogConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogConfig) *pb.DataCatalogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataCatalogConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+func DataplexConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataplexConfig) *krm.DataplexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexConfig{}
+	// MISSING: LakeResources
+	return out
+}
+func DataplexConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataplexConfig) *pb.DataplexConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataplexConfig{}
+	// MISSING: LakeResources
 	return out
 }
 func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
@@ -98,6 +130,22 @@ func KerberosConfig_ToProto(mapCtx *direct.MapContext, in *krm.KerberosConfig) *
 	out.Keytab = Secret_ToProto(mapCtx, in.Keytab)
 	out.Principal = direct.ValueOf(in.Principal)
 	out.Krb5ConfigGcsUri = direct.ValueOf(in.Krb5ConfigGcsURI)
+	return out
+}
+func Lake_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Lake{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+func Lake_ToProto(mapCtx *direct.MapContext, in *krm.Lake) *pb.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake{}
+	out.Name = direct.ValueOf(in.Name)
 	return out
 }
 func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krm.MaintenanceWindow {
@@ -168,6 +216,24 @@ func MetadataExportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Meta
 	out.DatabaseDumpType = direct.Enum_ToProto[pb.DatabaseDumpSpec_Type](mapCtx, in.DatabaseDumpType)
 	return out
 }
+func MetadataIntegration_FromProto(mapCtx *direct.MapContext, in *pb.MetadataIntegration) *krm.MetadataIntegration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataIntegration{}
+	out.DataCatalogConfig = DataCatalogConfig_FromProto(mapCtx, in.GetDataCatalogConfig())
+	out.DataplexConfig = DataplexConfig_FromProto(mapCtx, in.GetDataplexConfig())
+	return out
+}
+func MetadataIntegration_ToProto(mapCtx *direct.MapContext, in *krm.MetadataIntegration) *pb.MetadataIntegration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataIntegration{}
+	out.DataCatalogConfig = DataCatalogConfig_ToProto(mapCtx, in.DataCatalogConfig)
+	out.DataplexConfig = DataplexConfig_ToProto(mapCtx, in.DataplexConfig)
+	return out
+}
 func MetadataManagementActivity_FromProto(mapCtx *direct.MapContext, in *pb.MetadataManagementActivity) *krm.MetadataManagementActivity {
 	if in == nil {
 		return nil
@@ -204,124 +270,13 @@ func MetadataManagementActivityObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.Restores = direct.Slice_ToProto(mapCtx, in.Restores, Restore_ToProto)
 	return out
 }
-func MetastoreServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.MetastoreServiceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MetastoreServiceObservedState{}
-	// MISSING: HiveMetastoreConfig
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Network
-	// MISSING: EndpointURI
-	// MISSING: Port
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: ArtifactGcsURI
-	// MISSING: Tier
-	// MISSING: MaintenanceWindow
-	// MISSING: Uid
-	// MISSING: MetadataManagementActivity
-	// MISSING: ReleaseChannel
-	// MISSING: EncryptionConfig
-	// MISSING: NetworkConfig
-	// MISSING: DatabaseType
-	// MISSING: TelemetryConfig
-	// MISSING: ScalingConfig
-	return out
-}
-func MetastoreServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreServiceObservedState) *pb.Service {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Service{}
-	// MISSING: HiveMetastoreConfig
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Network
-	// MISSING: EndpointURI
-	// MISSING: Port
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: ArtifactGcsURI
-	// MISSING: Tier
-	// MISSING: MaintenanceWindow
-	// MISSING: Uid
-	// MISSING: MetadataManagementActivity
-	// MISSING: ReleaseChannel
-	// MISSING: EncryptionConfig
-	// MISSING: NetworkConfig
-	// MISSING: DatabaseType
-	// MISSING: TelemetryConfig
-	// MISSING: ScalingConfig
-	return out
-}
-func MetastoreServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.MetastoreServiceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MetastoreServiceSpec{}
-	// MISSING: HiveMetastoreConfig
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Network
-	// MISSING: EndpointURI
-	// MISSING: Port
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: ArtifactGcsURI
-	// MISSING: Tier
-	// MISSING: MaintenanceWindow
-	// MISSING: Uid
-	// MISSING: MetadataManagementActivity
-	// MISSING: ReleaseChannel
-	// MISSING: EncryptionConfig
-	// MISSING: NetworkConfig
-	// MISSING: DatabaseType
-	// MISSING: TelemetryConfig
-	// MISSING: ScalingConfig
-	return out
-}
-func MetastoreServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreServiceSpec) *pb.Service {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Service{}
-	// MISSING: HiveMetastoreConfig
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Network
-	// MISSING: EndpointURI
-	// MISSING: Port
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: ArtifactGcsURI
-	// MISSING: Tier
-	// MISSING: MaintenanceWindow
-	// MISSING: Uid
-	// MISSING: MetadataManagementActivity
-	// MISSING: ReleaseChannel
-	// MISSING: EncryptionConfig
-	// MISSING: NetworkConfig
-	// MISSING: DatabaseType
-	// MISSING: TelemetryConfig
-	// MISSING: ScalingConfig
-	return out
-}
 func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NetworkConfig{}
 	out.Consumers = direct.Slice_FromProto(mapCtx, in.Consumers, NetworkConfig_Consumer_FromProto)
+	out.CustomRoutesEnabled = direct.LazyPtr(in.GetCustomRoutesEnabled())
 	return out
 }
 func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
@@ -330,6 +285,7 @@ func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb
 	}
 	out := &pb.NetworkConfig{}
 	out.Consumers = direct.Slice_ToProto(mapCtx, in.Consumers, NetworkConfig_Consumer_ToProto)
+	out.CustomRoutesEnabled = direct.ValueOf(in.CustomRoutesEnabled)
 	return out
 }
 func NetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfigObservedState {
@@ -338,6 +294,7 @@ func NetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Netw
 	}
 	out := &krm.NetworkConfigObservedState{}
 	out.Consumers = direct.Slice_FromProto(mapCtx, in.Consumers, NetworkConfig_ConsumerObservedState_FromProto)
+	// MISSING: CustomRoutesEnabled
 	return out
 }
 func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfigObservedState) *pb.NetworkConfig {
@@ -346,6 +303,7 @@ func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Netwo
 	}
 	out := &pb.NetworkConfig{}
 	out.Consumers = direct.Slice_ToProto(mapCtx, in.Consumers, NetworkConfig_ConsumerObservedState_ToProto)
+	// MISSING: CustomRoutesEnabled
 	return out
 }
 func NetworkConfig_Consumer_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig_Consumer) *krm.NetworkConfig_Consumer {
@@ -499,6 +457,7 @@ func Service_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.Service {
 	// MISSING: StateMessage
 	// MISSING: ArtifactGcsURI
 	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
+	out.MetadataIntegration = MetadataIntegration_FromProto(mapCtx, in.GetMetadataIntegration())
 	out.MaintenanceWindow = MaintenanceWindow_FromProto(mapCtx, in.GetMaintenanceWindow())
 	// MISSING: Uid
 	// MISSING: MetadataManagementActivity
@@ -529,6 +488,7 @@ func Service_ToProto(mapCtx *direct.MapContext, in *krm.Service) *pb.Service {
 	// MISSING: StateMessage
 	// MISSING: ArtifactGcsURI
 	out.Tier = direct.Enum_ToProto[pb.Service_Tier](mapCtx, in.Tier)
+	out.MetadataIntegration = MetadataIntegration_ToProto(mapCtx, in.MetadataIntegration)
 	out.MaintenanceWindow = MaintenanceWindow_ToProto(mapCtx, in.MaintenanceWindow)
 	// MISSING: Uid
 	// MISSING: MetadataManagementActivity
@@ -557,6 +517,7 @@ func ServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
 	out.ArtifactGcsURI = direct.LazyPtr(in.GetArtifactGcsUri())
 	// MISSING: Tier
+	// MISSING: MetadataIntegration
 	// MISSING: MaintenanceWindow
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.MetadataManagementActivity = MetadataManagementActivity_FromProto(mapCtx, in.GetMetadataManagementActivity())
@@ -585,6 +546,7 @@ func ServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceObse
 	out.StateMessage = direct.ValueOf(in.StateMessage)
 	out.ArtifactGcsUri = direct.ValueOf(in.ArtifactGcsURI)
 	// MISSING: Tier
+	// MISSING: MetadataIntegration
 	// MISSING: MaintenanceWindow
 	out.Uid = direct.ValueOf(in.Uid)
 	out.MetadataManagementActivity = MetadataManagementActivity_ToProto(mapCtx, in.MetadataManagementActivity)
