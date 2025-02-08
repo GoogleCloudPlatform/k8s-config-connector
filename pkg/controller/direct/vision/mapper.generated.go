@@ -16,7 +16,7 @@ package vision
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/vision/v2/apiv1/visionpb"
+	pb "cloud.google.com/go/vision/apiv1p3beta1/visionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vision/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -92,45 +92,5 @@ func Vertex_ToProto(mapCtx *direct.MapContext, in *krm.Vertex) *pb.Vertex {
 	out := &pb.Vertex{}
 	out.X = direct.ValueOf(in.X)
 	out.Y = direct.ValueOf(in.Y)
-	return out
-}
-func VisionReferenceImageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceImage) *krm.VisionReferenceImageObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VisionReferenceImageObservedState{}
-	// MISSING: Name
-	// MISSING: URI
-	// MISSING: BoundingPolys
-	return out
-}
-func VisionReferenceImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VisionReferenceImageObservedState) *pb.ReferenceImage {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReferenceImage{}
-	// MISSING: Name
-	// MISSING: URI
-	// MISSING: BoundingPolys
-	return out
-}
-func VisionReferenceImageSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceImage) *krm.VisionReferenceImageSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VisionReferenceImageSpec{}
-	// MISSING: Name
-	// MISSING: URI
-	// MISSING: BoundingPolys
-	return out
-}
-func VisionReferenceImageSpec_ToProto(mapCtx *direct.MapContext, in *krm.VisionReferenceImageSpec) *pb.ReferenceImage {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReferenceImage{}
-	// MISSING: Name
-	// MISSING: URI
-	// MISSING: BoundingPolys
 	return out
 }
