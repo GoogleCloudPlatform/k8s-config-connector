@@ -16,7 +16,7 @@ package networksecurity
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
+	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -72,66 +72,6 @@ func GrpcEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.GrpcEndpoint) *pb.G
 	}
 	out := &pb.GrpcEndpoint{}
 	out.TargetUri = direct.ValueOf(in.TargetURI)
-	return out
-}
-func NetworksecurityServerTlsPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServerTlsPolicy) *krm.NetworksecurityServerTlsPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworksecurityServerTlsPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: AllowOpen
-	// MISSING: ServerCertificate
-	// MISSING: MtlsPolicy
-	return out
-}
-func NetworksecurityServerTlsPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworksecurityServerTlsPolicyObservedState) *pb.ServerTlsPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServerTlsPolicy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: AllowOpen
-	// MISSING: ServerCertificate
-	// MISSING: MtlsPolicy
-	return out
-}
-func NetworksecurityServerTlsPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.ServerTlsPolicy) *krm.NetworksecurityServerTlsPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworksecurityServerTlsPolicySpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: AllowOpen
-	// MISSING: ServerCertificate
-	// MISSING: MtlsPolicy
-	return out
-}
-func NetworksecurityServerTlsPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworksecurityServerTlsPolicySpec) *pb.ServerTlsPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServerTlsPolicy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: AllowOpen
-	// MISSING: ServerCertificate
-	// MISSING: MtlsPolicy
 	return out
 }
 func ServerTlsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.ServerTlsPolicy) *krm.ServerTlsPolicy {
