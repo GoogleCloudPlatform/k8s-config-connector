@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.iam.v3.PolicyBinding
+// +kcc:proto=google.iam.v3beta.PolicyBinding
 type PolicyBinding struct {
 	// Identifier. The name of the policy binding, in the format
 	//  `{binding_parent/locations/{location}/policyBindings/{policy_binding_id}`.
@@ -28,28 +28,28 @@ type PolicyBinding struct {
 	//  * `projects/{project_number}/locations/{location}/policyBindings/{policy_binding_id}`
 	//  * `folders/{folder_id}/locations/{location}/policyBindings/{policy_binding_id}`
 	//  * `organizations/{organization_id}/locations/{location}/policyBindings/{policy_binding_id}`
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.name
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. The etag for the policy binding.
 	//  If this is provided on update, it must match the server's etag.
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.etag
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.etag
 	Etag *string `json:"etag,omitempty"`
 
 	// Optional. The description of the policy binding. Must be less than or equal
 	//  to 63 characters.
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.display_name
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Optional. User defined annotations. See
 	//  https://google.aip.dev/148#annotations for more details such as format and
 	//  size limitations
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.annotations
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.annotations
 	Annotations map[string]string `json:"annotations,omitempty"`
 
 	// Required. Immutable. Target is the full resource name of the resource to
 	//  which the policy will be bound. Immutable once set.
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.target
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.target
 	Target *PolicyBinding_Target `json:"target,omitempty"`
 
 	// Immutable. The kind of the policy to attach in this binding. This field
@@ -57,13 +57,13 @@ type PolicyBinding struct {
 	//
 	//  - Left empty (will be automatically set to the policy kind)
 	//  - The input policy kind
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.policy_kind
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.policy_kind
 	PolicyKind *string `json:"policyKind,omitempty"`
 
 	// Required. Immutable. The resource name of the policy to be bound. The
 	//  binding parent and policy must belong to the same Organization (or
 	//  Project).
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.policy
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.policy
 	Policy *string `json:"policy,omitempty"`
 
 	// Optional. Condition can either be a principal condition or a resource
@@ -100,11 +100,11 @@ type PolicyBinding struct {
 	//  `principal.subject`. An example expression is: "principal.type ==
 	//  'iam.googleapis.com/ServiceAccount'" or "principal.subject ==
 	//  'bob@example.com'".
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.condition
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.condition
 	Condition *Expr `json:"condition,omitempty"`
 }
 
-// +kcc:proto=google.iam.v3.PolicyBinding.Target
+// +kcc:proto=google.iam.v3beta.PolicyBinding.Target
 type PolicyBinding_Target struct {
 	// Immutable. Full Resource Name used for principal access boundary policy
 	//  bindings Examples:
@@ -121,7 +121,7 @@ type PolicyBinding_Target struct {
 	//  `//iam.googleapis.com/locations/global/workforcePools/WORKFORCE_POOL_ID`
 	//  * Workspace Identity:
 	//  `//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID`
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.Target.principal_set
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.Target.principal_set
 	PrincipalSet *string `json:"principalSet,omitempty"`
 }
 
@@ -149,22 +149,22 @@ type Expr struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// +kcc:proto=google.iam.v3.PolicyBinding
+// +kcc:proto=google.iam.v3beta.PolicyBinding
 type PolicyBindingObservedState struct {
 	// Output only. The globally unique ID of the policy binding. Assigned when
 	//  the policy binding is created.
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.uid
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.uid
 	Uid *string `json:"uid,omitempty"`
 
 	// Output only. The globally unique ID of the policy to be bound.
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.policy_uid
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.policy_uid
 	PolicyUid *string `json:"policyUid,omitempty"`
 
 	// Output only. The time when the policy binding was created.
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.create_time
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The time when the policy binding was most recently updated.
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.update_time
+	// +kcc:proto:field=google.iam.v3beta.PolicyBinding.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }

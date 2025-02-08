@@ -15,87 +15,11 @@
 package iam
 
 import (
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/iam/apiv3/iampb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1alpha1"
+	pb "cloud.google.com/go/iam/apiv3beta/iampb"
 )
-func IamPolicyBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PolicyBinding) *krm.IamPolicyBindingObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyBindingObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Etag
-	// MISSING: DisplayName
-	// MISSING: Annotations
-	// MISSING: Target
-	// MISSING: PolicyKind
-	// MISSING: Policy
-	// MISSING: PolicyUid
-	// MISSING: Condition
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func IamPolicyBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyBindingObservedState) *pb.PolicyBinding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PolicyBinding{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Etag
-	// MISSING: DisplayName
-	// MISSING: Annotations
-	// MISSING: Target
-	// MISSING: PolicyKind
-	// MISSING: Policy
-	// MISSING: PolicyUid
-	// MISSING: Condition
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func IamPolicyBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicyBinding) *krm.IamPolicyBindingSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyBindingSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Etag
-	// MISSING: DisplayName
-	// MISSING: Annotations
-	// MISSING: Target
-	// MISSING: PolicyKind
-	// MISSING: Policy
-	// MISSING: PolicyUid
-	// MISSING: Condition
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func IamPolicyBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyBindingSpec) *pb.PolicyBinding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PolicyBinding{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Etag
-	// MISSING: DisplayName
-	// MISSING: Annotations
-	// MISSING: Target
-	// MISSING: PolicyKind
-	// MISSING: Policy
-	// MISSING: PolicyUid
-	// MISSING: Condition
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
 func PolicyBinding_FromProto(mapCtx *direct.MapContext, in *pb.PolicyBinding) *krm.PolicyBinding {
 	if in == nil {
 		return nil
