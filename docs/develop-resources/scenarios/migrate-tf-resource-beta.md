@@ -1,19 +1,24 @@
 # Migrate Terraform/DCL-based Beta to direct Beta
 
-Config Connector requires the Beta resource to be backward compatible. Thus, we
-have a higher bar on migrating the Beta resource compared to migrating an Alpha
-resource. - In the MockGCP step, we require the Mock GCP to reflect the real GCP
-cases where the current Terraform or DCL based approach uses or depend on to
-make sure the migration is backward compatible (i.e. assigning defaulting value
-to a field, same HTTP errors for matching, etc) - In the API and mapper step, we
-require the migration to happen in two stages: the first stage is to make sure
-all APIs and their behavior are exactly the same after migration (verifying via
-the golden logs). The second stage is to add new fields to make the resource
-up-to-date with what the current GCP service supports. - In the controller step,
-we do not require the direct controller and the Terraform/DCL based controller
-to behave exactly the same, but fixing the legacy or non Kubernetes-native
-problems like merging config back to `spec` (`state-into-spec:merge`), setting
-defaulting on-behalf of users.
+Config Connector requires the Beta resource to be backward compatible. We
+require the Mock GCP to reflect the real GCP  cases where the current Terraform
+or DCL based approach uses or depend on to make sure the migration is backward
+compatible. Example things to look out for:
+
+*   assigning defaulting value to a field
+*   having the same HTTP errors for matching
+
+In the API and mapper step, we require the migration to happen in two stages:
+
+*   The first stage is to make sure all APIs and their behavior are exactly the
+    same after migration (verifying via  the golden logs).
+*   The second stage is to add new fields to make the resource up-to-date with
+    what the current GCP service supports.
+
+In the controller step, we do not require the direct controller and the
+Terraform/DCL based controller  to behave exactly the same, but fixing the
+legacy or non Kubernetes-native  problems like merging config back to `spec`
+(`state-into-spec:merge`), setting defaulting on-behalf of users.
 
 To help the developer better manage the migration, we design the following steps
 to be self-validating and not restricted by the Config Connector release cycles.
@@ -78,7 +83,7 @@ compatible.
 
 *   Add `cnrm.cloud.google.com/dcl2crd: "true"` or
     `cnrm.cloud.google.com/tf2crd: "true"` to the API tag
-    [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92),
+    [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/v1.128.0/apis/alloydb/v1beta1/instance_types.go#L164),
     to continue using DCL-based or Terraform-based controllers.
 
 *   You may see some new fields added to the CRD. These are expected since the
