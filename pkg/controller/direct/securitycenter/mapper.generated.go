@@ -16,7 +16,7 @@ package securitycenter
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -108,77 +108,5 @@ func ResourceValueConfig_SensitiveDataProtectionMapping_ToProto(mapCtx *direct.M
 	out := &pb.ResourceValueConfig_SensitiveDataProtectionMapping{}
 	out.HighSensitivityMapping = direct.Enum_ToProto[pb.ResourceValue](mapCtx, in.HighSensitivityMapping)
 	out.MediumSensitivityMapping = direct.Enum_ToProto[pb.ResourceValue](mapCtx, in.MediumSensitivityMapping)
-	return out
-}
-func SecuritycenterResourceValueConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceValueConfig) *krm.SecuritycenterResourceValueConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterResourceValueConfigObservedState{}
-	// MISSING: Name
-	// MISSING: ResourceValue
-	// MISSING: TagValues
-	// MISSING: ResourceType
-	// MISSING: Scope
-	// MISSING: ResourceLabelsSelector
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CloudProvider
-	// MISSING: SensitiveDataProtectionMapping
-	return out
-}
-func SecuritycenterResourceValueConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterResourceValueConfigObservedState) *pb.ResourceValueConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ResourceValueConfig{}
-	// MISSING: Name
-	// MISSING: ResourceValue
-	// MISSING: TagValues
-	// MISSING: ResourceType
-	// MISSING: Scope
-	// MISSING: ResourceLabelsSelector
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CloudProvider
-	// MISSING: SensitiveDataProtectionMapping
-	return out
-}
-func SecuritycenterResourceValueConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceValueConfig) *krm.SecuritycenterResourceValueConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterResourceValueConfigSpec{}
-	// MISSING: Name
-	// MISSING: ResourceValue
-	// MISSING: TagValues
-	// MISSING: ResourceType
-	// MISSING: Scope
-	// MISSING: ResourceLabelsSelector
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CloudProvider
-	// MISSING: SensitiveDataProtectionMapping
-	return out
-}
-func SecuritycenterResourceValueConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterResourceValueConfigSpec) *pb.ResourceValueConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ResourceValueConfig{}
-	// MISSING: Name
-	// MISSING: ResourceValue
-	// MISSING: TagValues
-	// MISSING: ResourceType
-	// MISSING: Scope
-	// MISSING: ResourceLabelsSelector
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: CloudProvider
-	// MISSING: SensitiveDataProtectionMapping
 	return out
 }

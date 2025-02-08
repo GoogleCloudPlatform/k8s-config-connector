@@ -15,81 +15,82 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1.ResourceValueConfig
+// +kcc:proto=google.cloud.securitycenter.v2.ResourceValueConfig
 type ResourceValueConfig struct {
-	// Name for the resource value configuration
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.name
+	// Identifier. Name for the resource value configuration
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. Resource value level this expression represents
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.resource_value
+	// Resource value level this expression represents
+	//  Only required when there is no Sensitive Data Protection mapping in the
+	//  request
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.resource_value
 	ResourceValue *string `json:"resourceValue,omitempty"`
 
-	// Required. Tag values combined with `AND` to check against.
+	// Tag values combined with `AND` to check against.
 	//  Values in the form "tagValues/123"
 	//  Example: `[ "tagValues/123", "tagValues/456", "tagValues/789" ]`
 	//  https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.tag_values
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.tag_values
 	TagValues []string `json:"tagValues,omitempty"`
 
 	// Apply resource_value only to resources that match resource_type.
 	//  resource_type will be checked with `AND` of other resources.
 	//  For example, "storage.googleapis.com/Bucket" with resource_value "HIGH"
 	//  will apply "HIGH" value only to "storage.googleapis.com/Bucket" resources.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.resource_type
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.resource_type
 	ResourceType *string `json:"resourceType,omitempty"`
 
 	// Project or folder to scope this configuration to.
 	//  For example, "project/456" would apply this configuration only to resources
-	//  in "project/456" scope will be checked with `AND` of other
-	//  resources.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.scope
+	//  in "project/456" scope and will be checked with `AND` of other resources.
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.scope
 	Scope *string `json:"scope,omitempty"`
 
 	// List of resource labels to search for, evaluated with `AND`.
-	//  For example, `"resource_labels_selector": {"key": "value", "env": "prod"}`
+	//  For example, "resource_labels_selector": {"key": "value", "env": "prod"}
 	//  will match resources with labels "key": "value" `AND` "env":
 	//  "prod"
 	//  https://cloud.google.com/resource-manager/docs/creating-managing-labels
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.resource_labels_selector
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.resource_labels_selector
 	ResourceLabelsSelector map[string]string `json:"resourceLabelsSelector,omitempty"`
 
 	// Description of the resource value configuration.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.description
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.description
 	Description *string `json:"description,omitempty"`
 
 	// Cloud provider this configuration applies to
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.cloud_provider
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.cloud_provider
 	CloudProvider *string `json:"cloudProvider,omitempty"`
 
 	// A mapping of the sensitivity on Sensitive Data Protection finding to
 	//  resource values. This mapping can only be used in combination with a
 	//  resource_type that is related to BigQuery, e.g.
 	//  "bigquery.googleapis.com/Dataset".
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.sensitive_data_protection_mapping
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.sensitive_data_protection_mapping
 	SensitiveDataProtectionMapping *ResourceValueConfig_SensitiveDataProtectionMapping `json:"sensitiveDataProtectionMapping,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1.ResourceValueConfig.SensitiveDataProtectionMapping
+// +kcc:proto=google.cloud.securitycenter.v2.ResourceValueConfig.SensitiveDataProtectionMapping
 type ResourceValueConfig_SensitiveDataProtectionMapping struct {
 	// Resource value mapping for high-sensitivity Sensitive Data Protection
 	//  findings
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.SensitiveDataProtectionMapping.high_sensitivity_mapping
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.SensitiveDataProtectionMapping.high_sensitivity_mapping
 	HighSensitivityMapping *string `json:"highSensitivityMapping,omitempty"`
 
 	// Resource value mapping for medium-sensitivity Sensitive Data Protection
 	//  findings
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.SensitiveDataProtectionMapping.medium_sensitivity_mapping
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.SensitiveDataProtectionMapping.medium_sensitivity_mapping
 	MediumSensitivityMapping *string `json:"mediumSensitivityMapping,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1.ResourceValueConfig
+// +kcc:proto=google.cloud.securitycenter.v2.ResourceValueConfig
 type ResourceValueConfigObservedState struct {
 	// Output only. Timestamp this resource value configuration was created.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.create_time
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Timestamp this resource value configuration was last updated.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfig.update_time
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
