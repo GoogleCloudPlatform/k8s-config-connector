@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.vision.v1p3beta1.Product
+// +kcc:proto=google.cloud.vision.v1p4beta1.Product
 type Product struct {
 	// The resource name of the product.
 	//
@@ -23,24 +23,24 @@ type Product struct {
 	//  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
 	//
 	//  This field is ignored when creating a product.
-	// +kcc:proto:field=google.cloud.vision.v1p3beta1.Product.name
+	// +kcc:proto:field=google.cloud.vision.v1p4beta1.Product.name
 	Name *string `json:"name,omitempty"`
 
 	// The user-provided name for this Product. Must not be empty. Must be at most
 	//  4096 characters long.
-	// +kcc:proto:field=google.cloud.vision.v1p3beta1.Product.display_name
+	// +kcc:proto:field=google.cloud.vision.v1p4beta1.Product.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// User-provided metadata to be stored with this product. Must be at most 4096
 	//  characters long.
-	// +kcc:proto:field=google.cloud.vision.v1p3beta1.Product.description
+	// +kcc:proto:field=google.cloud.vision.v1p4beta1.Product.description
 	Description *string `json:"description,omitempty"`
 
-	// Immutable. The category for the product identified by the reference image. This should
-	//  be either "homegoods-v2", "apparel-v2", or "toys-v2". The legacy categories
-	//  "homegoods", "apparel", and "toys" are still supported, but these should
-	//  not be used for new products.
-	// +kcc:proto:field=google.cloud.vision.v1p3beta1.Product.product_category
+	// Immutable. The category for the product identified by the reference image.
+	//  This should be either "homegoods-v2", "apparel-v2", or "toys-v2". The
+	//  legacy categories "homegoods", "apparel", and "toys" are still supported,
+	//  but these should not be used for new products.
+	// +kcc:proto:field=google.cloud.vision.v1p4beta1.Product.product_category
 	ProductCategory *string `json:"productCategory,omitempty"`
 
 	// Key-value pairs that can be attached to a product. At query time,
@@ -51,20 +51,24 @@ type Product struct {
 	//  to be supported soon.
 	//
 	//  Multiple values can be assigned to the same key. One product may have up to
-	//  100 product_labels.
-	// +kcc:proto:field=google.cloud.vision.v1p3beta1.Product.product_labels
+	//  500 product_labels.
+	//
+	//  Notice that the total number of distinct product_labels over all products
+	//  in one ProductSet cannot exceed 1M, otherwise the product search pipeline
+	//  will refuse to work for that ProductSet.
+	// +kcc:proto:field=google.cloud.vision.v1p4beta1.Product.product_labels
 	ProductLabels []Product_KeyValue `json:"productLabels,omitempty"`
 }
 
-// +kcc:proto=google.cloud.vision.v1p3beta1.Product.KeyValue
+// +kcc:proto=google.cloud.vision.v1p4beta1.Product.KeyValue
 type Product_KeyValue struct {
 	// The key of the label attached to the product. Cannot be empty and cannot
 	//  exceed 128 bytes.
-	// +kcc:proto:field=google.cloud.vision.v1p3beta1.Product.KeyValue.key
+	// +kcc:proto:field=google.cloud.vision.v1p4beta1.Product.KeyValue.key
 	Key *string `json:"key,omitempty"`
 
 	// The value of the label attached to the product. Cannot be empty and
 	//  cannot exceed 128 bytes.
-	// +kcc:proto:field=google.cloud.vision.v1p3beta1.Product.KeyValue.value
+	// +kcc:proto:field=google.cloud.vision.v1p4beta1.Product.KeyValue.value
 	Value *string `json:"value,omitempty"`
 }

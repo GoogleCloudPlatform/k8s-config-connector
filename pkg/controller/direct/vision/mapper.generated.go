@@ -16,7 +16,7 @@ package vision
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/vision/apiv1p3beta1/visionpb"
+	pb "cloud.google.com/go/vision/apiv1p4beta1/visionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vision/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
