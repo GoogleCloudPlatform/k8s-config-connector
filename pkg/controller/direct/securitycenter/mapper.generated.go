@@ -15,10 +15,10 @@
 package securitycenter
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func OrgPolicy_FromProto(mapCtx *direct.MapContext, in *pb.OrgPolicy) *krm.OrgPolicy {
 	if in == nil {
@@ -34,37 +34,5 @@ func OrgPolicy_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicy) *pb.OrgPoli
 	}
 	out := &pb.OrgPolicy{}
 	out.Name = direct.ValueOf(in.Name)
-	return out
-}
-func SecuritycenterOrgPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OrgPolicy) *krm.SecuritycenterOrgPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterOrgPolicyObservedState{}
-	// MISSING: Name
-	return out
-}
-func SecuritycenterOrgPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterOrgPolicyObservedState) *pb.OrgPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OrgPolicy{}
-	// MISSING: Name
-	return out
-}
-func SecuritycenterOrgPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.OrgPolicy) *krm.SecuritycenterOrgPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterOrgPolicySpec{}
-	// MISSING: Name
-	return out
-}
-func SecuritycenterOrgPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterOrgPolicySpec) *pb.OrgPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OrgPolicy{}
-	// MISSING: Name
 	return out
 }

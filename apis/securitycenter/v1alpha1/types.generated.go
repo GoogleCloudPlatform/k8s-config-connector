@@ -15,11 +15,11 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1.OrgPolicy
+// +kcc:proto=google.cloud.securitycenter.v2.OrgPolicy
 type OrgPolicy struct {
 	// The resource name of the org policy.
 	//  Example:
 	//  "organizations/{organization_id}/policies/{constraint_name}"
-	// +kcc:proto:field=google.cloud.securitycenter.v1.OrgPolicy.name
+	// +kcc:proto:field=google.cloud.securitycenter.v2.OrgPolicy.name
 	Name *string `json:"name,omitempty"`
 }
