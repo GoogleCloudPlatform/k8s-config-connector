@@ -15,43 +15,40 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.datacatalog.v1.PolicyTag
+// +kcc:proto=google.cloud.datacatalog.v1beta1.PolicyTag
 type PolicyTag struct {
-	// Identifier. Resource name of this policy tag in the URL format.
-	//
-	//  The policy tag manager generates unique taxonomy IDs and policy tag IDs.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.name
+	// Identifier. Resource name of this policy tag, whose format is:
+	//  "projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{id}".
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.PolicyTag.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. User-defined name of this policy tag.
-	//
-	//  The name can't start or end with spaces and must be unique within the
-	//  parent taxonomy, contain only Unicode letters, numbers, underscores, dashes
-	//  and spaces, and be at most 200 bytes long when encoded in UTF-8.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.display_name
+	// Required. User defined name of this policy tag. It must: be unique within
+	//  the parent taxonomy; contain only unicode letters, numbers, underscores,
+	//  dashes and spaces; not start or end with spaces; and be at most 200 bytes
+	//  long when encoded in UTF-8.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.PolicyTag.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Description of this policy tag. If not set, defaults to empty.
-	//
-	//  The description must contain only Unicode characters,
-	//  tabs, newlines, carriage returns and page breaks, and be at most 2000 bytes
-	//  long when encoded in UTF-8.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.description
+	// Description of this policy tag. It must: contain only unicode characters,
+	//  tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes
+	//  long when encoded in UTF-8. If not set, defaults to an empty description.
+	//  If not set, defaults to an empty description.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.PolicyTag.description
 	Description *string `json:"description,omitempty"`
 
-	// Resource name of this policy tag's parent policy tag. If empty, this is a
-	//  top level tag. If not set, defaults to an empty string.
-	//
-	//  For example, for the "LatLong" policy tag in the example above, this field
-	//  contains the resource name of the "Geolocation" policy tag, and, for
-	//  "Geolocation", this field is empty.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.parent_policy_tag
+	// Resource name of this policy tag's parent policy tag (e.g. for the
+	//  "LatLong" policy tag in the example above, this field contains the
+	//  resource name of the "Geolocation" policy tag). If empty, it means this
+	//  policy tag is a top level policy tag (e.g. this field is empty for the
+	//  "Geolocation" policy tag in the example above). If not set, defaults to an
+	//  empty string.
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.PolicyTag.parent_policy_tag
 	ParentPolicyTag *string `json:"parentPolicyTag,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.PolicyTag
+// +kcc:proto=google.cloud.datacatalog.v1beta1.PolicyTag
 type PolicyTagObservedState struct {
 	// Output only. Resource names of child policy tags of this policy tag.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.child_policy_tags
+	// +kcc:proto:field=google.cloud.datacatalog.v1beta1.PolicyTag.child_policy_tags
 	ChildPolicyTags []string `json:"childPolicyTags,omitempty"`
 }

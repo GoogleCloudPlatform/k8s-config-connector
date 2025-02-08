@@ -15,59 +15,11 @@
 package datacatalog
 
 import (
-	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/datacatalog/apiv1beta1/datacatalogpb"
 )
-func DatacatalogPolicyTagObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PolicyTag) *krm.DatacatalogPolicyTagObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogPolicyTagObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ParentPolicyTag
-	// MISSING: ChildPolicyTags
-	return out
-}
-func DatacatalogPolicyTagObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogPolicyTagObservedState) *pb.PolicyTag {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PolicyTag{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ParentPolicyTag
-	// MISSING: ChildPolicyTags
-	return out
-}
-func DatacatalogPolicyTagSpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicyTag) *krm.DatacatalogPolicyTagSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogPolicyTagSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ParentPolicyTag
-	// MISSING: ChildPolicyTags
-	return out
-}
-func DatacatalogPolicyTagSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogPolicyTagSpec) *pb.PolicyTag {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PolicyTag{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ParentPolicyTag
-	// MISSING: ChildPolicyTags
-	return out
-}
 func PolicyTag_FromProto(mapCtx *direct.MapContext, in *pb.PolicyTag) *krm.PolicyTag {
 	if in == nil {
 		return nil
