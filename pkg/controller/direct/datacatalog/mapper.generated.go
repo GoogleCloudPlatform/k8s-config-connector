@@ -16,58 +16,10 @@ package datacatalog
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
+	pb "cloud.google.com/go/datacatalog/apiv1beta1/datacatalogpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DatacatalogTagTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krm.DatacatalogTagTemplateObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogTagTemplateObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IsPubliclyReadable
-	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
-func DatacatalogTagTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogTagTemplateObservedState) *pb.TagTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TagTemplate{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IsPubliclyReadable
-	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
-func DatacatalogTagTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krm.DatacatalogTagTemplateSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogTagTemplateSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IsPubliclyReadable
-	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
-func DatacatalogTagTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogTagTemplateSpec) *pb.TagTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TagTemplate{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IsPubliclyReadable
-	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
 func FieldType_FromProto(mapCtx *direct.MapContext, in *pb.FieldType) *krm.FieldType {
 	if in == nil {
 		return nil
@@ -129,9 +81,8 @@ func TagTemplate_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krm.T
 	out := &krm.TagTemplate{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.IsPubliclyReadable = direct.LazyPtr(in.GetIsPubliclyReadable())
 	// MISSING: Fields
-	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
+	// MISSING: DataplexTransferStatus
 	return out
 }
 func TagTemplate_ToProto(mapCtx *direct.MapContext, in *krm.TagTemplate) *pb.TagTemplate {
@@ -141,9 +92,8 @@ func TagTemplate_ToProto(mapCtx *direct.MapContext, in *krm.TagTemplate) *pb.Tag
 	out := &pb.TagTemplate{}
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
 	// MISSING: Fields
-	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
+	// MISSING: DataplexTransferStatus
 	return out
 }
 func TagTemplateField_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplateField) *krm.TagTemplateField {
@@ -151,7 +101,7 @@ func TagTemplateField_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplateFie
 		return nil
 	}
 	out := &krm.TagTemplateField{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Type = FieldType_FromProto(mapCtx, in.GetType())
 	out.IsRequired = direct.LazyPtr(in.GetIsRequired())
@@ -164,11 +114,33 @@ func TagTemplateField_ToProto(mapCtx *direct.MapContext, in *krm.TagTemplateFiel
 		return nil
 	}
 	out := &pb.TagTemplateField{}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Type = FieldType_ToProto(mapCtx, in.Type)
 	out.IsRequired = direct.ValueOf(in.IsRequired)
 	out.Description = direct.ValueOf(in.Description)
 	out.Order = direct.ValueOf(in.Order)
+	return out
+}
+func TagTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krm.TagTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TagTemplateObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Fields
+	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
+	return out
+}
+func TagTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagTemplateObservedState) *pb.TagTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagTemplate{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Fields
+	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
 	return out
 }
