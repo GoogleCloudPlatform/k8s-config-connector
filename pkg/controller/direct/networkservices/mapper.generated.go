@@ -15,7 +15,7 @@
 package networkservices
 
 import (
-	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
+	pb "cloud.google.com/go/networkservices/apiv1beta1/networkservicespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -97,7 +97,6 @@ func LbRouteExtension_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtensi
 	out.ForwardingRules = in.ForwardingRules
 	out.ExtensionChains = direct.Slice_FromProto(mapCtx, in.ExtensionChains, ExtensionChain_FromProto)
 	out.LoadBalancingScheme = direct.Enum_FromProto(mapCtx, in.GetLoadBalancingScheme())
-	out.Metadata = Metadata_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
 func LbRouteExtension_ToProto(mapCtx *direct.MapContext, in *krm.LbRouteExtension) *pb.LbRouteExtension {
@@ -113,7 +112,6 @@ func LbRouteExtension_ToProto(mapCtx *direct.MapContext, in *krm.LbRouteExtensio
 	out.ForwardingRules = in.ForwardingRules
 	out.ExtensionChains = direct.Slice_ToProto(mapCtx, in.ExtensionChains, ExtensionChain_ToProto)
 	out.LoadBalancingScheme = direct.Enum_ToProto[pb.LoadBalancingScheme](mapCtx, in.LoadBalancingScheme)
-	out.Metadata = Metadata_ToProto(mapCtx, in.Metadata)
 	return out
 }
 func LbRouteExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtension) *krm.LbRouteExtensionObservedState {
@@ -129,7 +127,6 @@ func LbRouteExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.L
 	// MISSING: ForwardingRules
 	// MISSING: ExtensionChains
 	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
 	return out
 }
 func LbRouteExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LbRouteExtensionObservedState) *pb.LbRouteExtension {
@@ -145,70 +142,5 @@ func LbRouteExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Lb
 	// MISSING: ForwardingRules
 	// MISSING: ExtensionChains
 	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
-	return out
-}
-func NetworkservicesLbRouteExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtension) *krm.NetworkservicesLbRouteExtensionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkservicesLbRouteExtensionObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: ForwardingRules
-	// MISSING: ExtensionChains
-	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
-	return out
-}
-func NetworkservicesLbRouteExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkservicesLbRouteExtensionObservedState) *pb.LbRouteExtension {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LbRouteExtension{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: ForwardingRules
-	// MISSING: ExtensionChains
-	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
-	return out
-}
-func NetworkservicesLbRouteExtensionSpec_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtension) *krm.NetworkservicesLbRouteExtensionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkservicesLbRouteExtensionSpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: ForwardingRules
-	// MISSING: ExtensionChains
-	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
-	return out
-}
-func NetworkservicesLbRouteExtensionSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkservicesLbRouteExtensionSpec) *pb.LbRouteExtension {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LbRouteExtension{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: ForwardingRules
-	// MISSING: ExtensionChains
-	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
 	return out
 }
