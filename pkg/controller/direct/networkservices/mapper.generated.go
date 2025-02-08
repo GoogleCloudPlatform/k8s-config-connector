@@ -15,10 +15,10 @@
 package networkservices
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/networkservices/apiv1beta1/networkservicespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 )
 func EndpointMatcher_FromProto(mapCtx *direct.MapContext, in *pb.EndpointMatcher) *krm.EndpointMatcher {
 	if in == nil {
@@ -136,78 +136,6 @@ func EndpointPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Endp
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: Type
-	// MISSING: AuthorizationPolicy
-	// MISSING: EndpointMatcher
-	// MISSING: TrafficPortSelector
-	// MISSING: Description
-	// MISSING: ServerTlsPolicy
-	// MISSING: ClientTlsPolicy
-	return out
-}
-func NetworkservicesEndpointPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EndpointPolicy) *krm.NetworkservicesEndpointPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkservicesEndpointPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Type
-	// MISSING: AuthorizationPolicy
-	// MISSING: EndpointMatcher
-	// MISSING: TrafficPortSelector
-	// MISSING: Description
-	// MISSING: ServerTlsPolicy
-	// MISSING: ClientTlsPolicy
-	return out
-}
-func NetworkservicesEndpointPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkservicesEndpointPolicyObservedState) *pb.EndpointPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EndpointPolicy{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Type
-	// MISSING: AuthorizationPolicy
-	// MISSING: EndpointMatcher
-	// MISSING: TrafficPortSelector
-	// MISSING: Description
-	// MISSING: ServerTlsPolicy
-	// MISSING: ClientTlsPolicy
-	return out
-}
-func NetworkservicesEndpointPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.EndpointPolicy) *krm.NetworkservicesEndpointPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkservicesEndpointPolicySpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Type
-	// MISSING: AuthorizationPolicy
-	// MISSING: EndpointMatcher
-	// MISSING: TrafficPortSelector
-	// MISSING: Description
-	// MISSING: ServerTlsPolicy
-	// MISSING: ClientTlsPolicy
-	return out
-}
-func NetworkservicesEndpointPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkservicesEndpointPolicySpec) *pb.EndpointPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EndpointPolicy{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: Type
 	// MISSING: AuthorizationPolicy
