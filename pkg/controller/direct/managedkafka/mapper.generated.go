@@ -15,11 +15,11 @@
 package managedkafka
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-
 func AccessConfig_FromProto(mapCtx *direct.MapContext, in *pb.AccessConfig) *krm.AccessConfig {
 	if in == nil {
 		return nil
@@ -52,6 +52,24 @@ func CapacityConfig_ToProto(mapCtx *direct.MapContext, in *krm.CapacityConfig) *
 	out := &pb.CapacityConfig{}
 	out.VcpuCount = direct.ValueOf(in.VcpuCount)
 	out.MemoryBytes = direct.ValueOf(in.MemoryBytes)
+	return out
+}
+func ConsumerGroup_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ConsumerGroup {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConsumerGroup{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Topics
+	return out
+}
+func ConsumerGroup_ToProto(mapCtx *direct.MapContext, in *krm.ConsumerGroup) *pb.ConsumerGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConsumerGroup{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Topics
 	return out
 }
 func ManagedKafkaClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.ManagedKafkaClusterObservedState {
@@ -132,19 +150,39 @@ func ManagedKafkaTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKaf
 	out.Configs = in.Configs
 	return out
 }
-func RebalanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.RebalanceConfig) *krm.RebalanceConfig {
+func ManagedkafkaConsumerGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedkafkaConsumerGroupObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RebalanceConfig{}
-	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out := &krm.ManagedkafkaConsumerGroupObservedState{}
+	// MISSING: Name
+	// MISSING: Topics
 	return out
 }
-func RebalanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.RebalanceConfig) *pb.RebalanceConfig {
+func ManagedkafkaConsumerGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagedkafkaConsumerGroupObservedState) *pb.ConsumerGroup {
 	if in == nil {
 		return nil
 	}
-	out := &pb.RebalanceConfig{}
-	out.Mode = direct.Enum_ToProto[pb.RebalanceConfig_Mode](mapCtx, in.Mode)
+	out := &pb.ConsumerGroup{}
+	// MISSING: Name
+	// MISSING: Topics
+	return out
+}
+func ManagedkafkaConsumerGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedkafkaConsumerGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ManagedkafkaConsumerGroupSpec{}
+	// MISSING: Name
+	// MISSING: Topics
+	return out
+}
+func ManagedkafkaConsumerGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedkafkaConsumerGroupSpec) *pb.ConsumerGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConsumerGroup{}
+	// MISSING: Name
+	// MISSING: Topics
 	return out
 }
