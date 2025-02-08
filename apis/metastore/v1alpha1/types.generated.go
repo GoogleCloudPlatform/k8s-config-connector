@@ -15,59 +15,59 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.metastore.v1.MetadataImport
+// +kcc:proto=google.cloud.metastore.v1beta.MetadataImport
 type MetadataImport struct {
 	// Immutable. A database dump from a pre-existing metastore's database.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.database_dump
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.database_dump
 	DatabaseDump *MetadataImport_DatabaseDump `json:"databaseDump,omitempty"`
 
 	// Immutable. The relative resource name of the metadata import, of the form:
 	//
 	//  `projects/{project_number}/locations/{location_id}/services/{service_id}/metadataImports/{metadata_import_id}`.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.name
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.name
 	Name *string `json:"name,omitempty"`
 
 	// The description of the metadata import.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.description
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.description
 	Description *string `json:"description,omitempty"`
 }
 
-// +kcc:proto=google.cloud.metastore.v1.MetadataImport.DatabaseDump
+// +kcc:proto=google.cloud.metastore.v1beta.MetadataImport.DatabaseDump
 type MetadataImport_DatabaseDump struct {
 	// The type of the database.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.DatabaseDump.database_type
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.DatabaseDump.database_type
 	DatabaseType *string `json:"databaseType,omitempty"`
 
 	// A Cloud Storage object or folder URI that specifies the source from which
 	//  to import metadata. It must begin with `gs://`.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.DatabaseDump.gcs_uri
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.DatabaseDump.gcs_uri
 	GcsURI *string `json:"gcsURI,omitempty"`
 
 	// The name of the source database.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.DatabaseDump.source_database
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.DatabaseDump.source_database
 	SourceDatabase *string `json:"sourceDatabase,omitempty"`
 
 	// Optional. The type of the database dump. If unspecified, defaults to
 	//  `MYSQL`.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.DatabaseDump.type
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.DatabaseDump.type
 	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.metastore.v1.MetadataImport
+// +kcc:proto=google.cloud.metastore.v1beta.MetadataImport
 type MetadataImportObservedState struct {
 	// Output only. The time when the metadata import was started.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.create_time
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The time when the metadata import was last updated.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.update_time
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. The time when the metadata import finished.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.end_time
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.end_time
 	EndTime *string `json:"endTime,omitempty"`
 
 	// Output only. The current state of the metadata import.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.state
+	// +kcc:proto:field=google.cloud.metastore.v1beta.MetadataImport.state
 	State *string `json:"state,omitempty"`
 }

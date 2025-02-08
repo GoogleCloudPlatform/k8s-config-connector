@@ -15,10 +15,10 @@
 package metastore
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
+	pb "cloud.google.com/go/metastore/apiv1beta/metastorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func MetadataImport_FromProto(mapCtx *direct.MapContext, in *pb.MetadataImport) *krm.MetadataImport {
 	if in == nil {
@@ -98,61 +98,5 @@ func MetadataImport_DatabaseDump_ToProto(mapCtx *direct.MapContext, in *krm.Meta
 	out.GcsUri = direct.ValueOf(in.GcsURI)
 	out.SourceDatabase = direct.ValueOf(in.SourceDatabase)
 	out.Type = direct.Enum_ToProto[pb.DatabaseDumpSpec_Type](mapCtx, in.Type)
-	return out
-}
-func MetastoreMetadataImportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataImport) *krm.MetastoreMetadataImportObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MetastoreMetadataImportObservedState{}
-	// MISSING: DatabaseDump
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: EndTime
-	// MISSING: State
-	return out
-}
-func MetastoreMetadataImportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreMetadataImportObservedState) *pb.MetadataImport {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MetadataImport{}
-	// MISSING: DatabaseDump
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: EndTime
-	// MISSING: State
-	return out
-}
-func MetastoreMetadataImportSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataImport) *krm.MetastoreMetadataImportSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MetastoreMetadataImportSpec{}
-	// MISSING: DatabaseDump
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: EndTime
-	// MISSING: State
-	return out
-}
-func MetastoreMetadataImportSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreMetadataImportSpec) *pb.MetadataImport {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MetadataImport{}
-	// MISSING: DatabaseDump
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: EndTime
-	// MISSING: State
 	return out
 }
