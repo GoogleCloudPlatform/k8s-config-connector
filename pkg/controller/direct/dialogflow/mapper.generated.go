@@ -16,7 +16,7 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -29,9 +29,9 @@ func Conversation_FromProto(mapCtx *direct.MapContext, in *pb.Conversation) *krm
 	// MISSING: LifecycleState
 	out.ConversationProfile = direct.LazyPtr(in.GetConversationProfile())
 	// MISSING: PhoneNumber
+	out.ConversationStage = direct.Enum_FromProto(mapCtx, in.GetConversationStage())
 	// MISSING: StartTime
 	// MISSING: EndTime
-	out.ConversationStage = direct.Enum_FromProto(mapCtx, in.GetConversationStage())
 	return out
 }
 func Conversation_ToProto(mapCtx *direct.MapContext, in *krm.Conversation) *pb.Conversation {
@@ -43,9 +43,9 @@ func Conversation_ToProto(mapCtx *direct.MapContext, in *krm.Conversation) *pb.C
 	// MISSING: LifecycleState
 	out.ConversationProfile = direct.ValueOf(in.ConversationProfile)
 	// MISSING: PhoneNumber
+	out.ConversationStage = direct.Enum_ToProto[pb.Conversation_ConversationStage](mapCtx, in.ConversationStage)
 	// MISSING: StartTime
 	// MISSING: EndTime
-	out.ConversationStage = direct.Enum_ToProto[pb.Conversation_ConversationStage](mapCtx, in.ConversationStage)
 	return out
 }
 func ConversationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Conversation) *krm.ConversationObservedState {
@@ -57,9 +57,9 @@ func ConversationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Conve
 	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifecycleState())
 	// MISSING: ConversationProfile
 	out.PhoneNumber = ConversationPhoneNumber_FromProto(mapCtx, in.GetPhoneNumber())
+	// MISSING: ConversationStage
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	// MISSING: ConversationStage
 	return out
 }
 func ConversationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConversationObservedState) *pb.Conversation {
@@ -71,9 +71,9 @@ func ConversationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Conver
 	out.LifecycleState = direct.Enum_ToProto[pb.Conversation_LifecycleState](mapCtx, in.LifecycleState)
 	// MISSING: ConversationProfile
 	out.PhoneNumber = ConversationPhoneNumber_ToProto(mapCtx, in.PhoneNumber)
+	// MISSING: ConversationStage
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	// MISSING: ConversationStage
 	return out
 }
 func ConversationPhoneNumber_FromProto(mapCtx *direct.MapContext, in *pb.ConversationPhoneNumber) *krm.ConversationPhoneNumber {

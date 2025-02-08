@@ -15,14 +15,14 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.v2.Conversation
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Conversation
 type Conversation struct {
 
 	// Required. The Conversation Profile to be used to configure this
 	//  Conversation. This field cannot be updated.
 	//  Format: `projects/<Project ID>/locations/<Location
 	//  ID>/conversationProfiles/<Conversation Profile ID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Conversation.conversation_profile
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Conversation.conversation_profile
 	ConversationProfile *string `json:"conversationProfile,omitempty"`
 
 	// Optional. The stage of a conversation. It indicates whether the virtual
@@ -30,54 +30,54 @@ type Conversation struct {
 	//
 	//  If the conversation is created with the conversation profile that has
 	//  Dialogflow config set, defaults to
-	//  [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE];
+	//  [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2beta1.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE];
 	//  Otherwise, defaults to
-	//  [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.HUMAN_ASSIST_STAGE].
+	//  [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2beta1.Conversation.ConversationStage.HUMAN_ASSIST_STAGE].
 	//
 	//  If the conversation is created with the conversation profile that has
 	//  Dialogflow config set but explicitly sets conversation_stage to
-	//  [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.HUMAN_ASSIST_STAGE],
+	//  [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2beta1.Conversation.ConversationStage.HUMAN_ASSIST_STAGE],
 	//  it skips
-	//  [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE]
+	//  [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2beta1.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE]
 	//  stage and directly goes to
-	//  [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.HUMAN_ASSIST_STAGE].
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Conversation.conversation_stage
+	//  [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2beta1.Conversation.ConversationStage.HUMAN_ASSIST_STAGE].
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Conversation.conversation_stage
 	ConversationStage *string `json:"conversationStage,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.ConversationPhoneNumber
+// +kcc:proto=google.cloud.dialogflow.v2beta1.ConversationPhoneNumber
 type ConversationPhoneNumber struct {
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.Conversation
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Conversation
 type ConversationObservedState struct {
 	// Output only. Identifier. The unique identifier of this conversation.
 	//  Format: `projects/<Project ID>/locations/<Location
 	//  ID>/conversations/<Conversation ID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Conversation.name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Conversation.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. The current state of the Conversation.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Conversation.lifecycle_state
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Conversation.lifecycle_state
 	LifecycleState *string `json:"lifecycleState,omitempty"`
 
-	// Output only. It will not be empty if the conversation is to be connected
-	//  over telephony.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Conversation.phone_number
+	// Output only. Required if the conversation is to be connected over
+	//  telephony.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Conversation.phone_number
 	PhoneNumber *ConversationPhoneNumber `json:"phoneNumber,omitempty"`
 
 	// Output only. The time the conversation was started.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Conversation.start_time
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Conversation.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Output only. The time the conversation was finished.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Conversation.end_time
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Conversation.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.ConversationPhoneNumber
+// +kcc:proto=google.cloud.dialogflow.v2beta1.ConversationPhoneNumber
 type ConversationPhoneNumberObservedState struct {
 	// Output only. The phone number to connect to this conversation.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationPhoneNumber.phone_number
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.ConversationPhoneNumber.phone_number
 	PhoneNumber *string `json:"phoneNumber,omitempty"`
 }
