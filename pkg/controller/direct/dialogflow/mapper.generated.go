@@ -15,63 +15,11 @@
 package dialogflow
 
 import (
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func DialogflowWebhookObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.DialogflowWebhookObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowWebhookObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: GenericWebService
-	// MISSING: ServiceDirectory
-	// MISSING: Timeout
-	// MISSING: Disabled
-	return out
-}
-func DialogflowWebhookObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowWebhookObservedState) *pb.Webhook {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Webhook{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: GenericWebService
-	// MISSING: ServiceDirectory
-	// MISSING: Timeout
-	// MISSING: Disabled
-	return out
-}
-func DialogflowWebhookSpec_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.DialogflowWebhookSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowWebhookSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: GenericWebService
-	// MISSING: ServiceDirectory
-	// MISSING: Timeout
-	// MISSING: Disabled
-	return out
-}
-func DialogflowWebhookSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowWebhookSpec) *pb.Webhook {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Webhook{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: GenericWebService
-	// MISSING: ServiceDirectory
-	// MISSING: Timeout
-	// MISSING: Disabled
-	return out
-}
 func Webhook_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.Webhook {
 	if in == nil {
 		return nil
