@@ -16,7 +16,7 @@ package notebooks
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
+	pb "cloud.google.com/go/notebooks/apiv1beta1/notebookspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -96,62 +96,6 @@ func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Environ
 	// MISSING: ContainerImage
 	// MISSING: PostStartupScript
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	return out
-}
-func NotebooksEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebooksEnvironmentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	// MISSING: CreateTime
-	return out
-}
-func NotebooksEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentObservedState) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	// MISSING: CreateTime
-	return out
-}
-func NotebooksEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebooksEnvironmentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	// MISSING: CreateTime
-	return out
-}
-func NotebooksEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentSpec) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	// MISSING: CreateTime
 	return out
 }
 func VmImage_FromProto(mapCtx *direct.MapContext, in *pb.VmImage) *krm.VmImage {
