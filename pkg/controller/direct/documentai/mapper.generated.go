@@ -16,82 +16,10 @@ package documentai
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
+	pb "cloud.google.com/go/documentai/apiv1beta3/documentaipb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DocumentaiProcessorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Processor) *krm.DocumentaiProcessorObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentaiProcessorObservedState{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: DefaultProcessorVersion
-	// MISSING: ProcessorVersionAliases
-	// MISSING: ProcessEndpoint
-	// MISSING: CreateTime
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func DocumentaiProcessorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DocumentaiProcessorObservedState) *pb.Processor {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Processor{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: DefaultProcessorVersion
-	// MISSING: ProcessorVersionAliases
-	// MISSING: ProcessEndpoint
-	// MISSING: CreateTime
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func DocumentaiProcessorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Processor) *krm.DocumentaiProcessorSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentaiProcessorSpec{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: DefaultProcessorVersion
-	// MISSING: ProcessorVersionAliases
-	// MISSING: ProcessEndpoint
-	// MISSING: CreateTime
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func DocumentaiProcessorSpec_ToProto(mapCtx *direct.MapContext, in *krm.DocumentaiProcessorSpec) *pb.Processor {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Processor{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: DefaultProcessorVersion
-	// MISSING: ProcessorVersionAliases
-	// MISSING: ProcessEndpoint
-	// MISSING: CreateTime
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
 func Processor_FromProto(mapCtx *direct.MapContext, in *pb.Processor) *krm.Processor {
 	if in == nil {
 		return nil
