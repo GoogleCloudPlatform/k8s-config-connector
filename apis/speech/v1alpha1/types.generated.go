@@ -15,14 +15,14 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.speech.v1.PhraseSet
+// +kcc:proto=google.cloud.speech.v1p1beta1.PhraseSet
 type PhraseSet struct {
 	// The resource name of the phrase set.
-	// +kcc:proto:field=google.cloud.speech.v1.PhraseSet.name
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.PhraseSet.name
 	Name *string `json:"name,omitempty"`
 
 	// A list of word and phrases.
-	// +kcc:proto:field=google.cloud.speech.v1.PhraseSet.phrases
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.PhraseSet.phrases
 	Phrases []PhraseSet_Phrase `json:"phrases,omitempty"`
 
 	// Hint Boost. Positive value will increase the probability that a specific
@@ -34,14 +34,14 @@ type PhraseSet struct {
 	//  values between 0 (exclusive) and 20. We recommend using a binary search
 	//  approach to finding the optimal value for your use case as well as adding
 	//  phrases both with and without boost to your requests.
-	// +kcc:proto:field=google.cloud.speech.v1.PhraseSet.boost
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.PhraseSet.boost
 	Boost *float32 `json:"boost,omitempty"`
 }
 
-// +kcc:proto=google.cloud.speech.v1.PhraseSet.Phrase
+// +kcc:proto=google.cloud.speech.v1p1beta1.PhraseSet.Phrase
 type PhraseSet_Phrase struct {
 	// The phrase itself.
-	// +kcc:proto:field=google.cloud.speech.v1.PhraseSet.Phrase.value
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.PhraseSet.Phrase.value
 	Value *string `json:"value,omitempty"`
 
 	// Hint Boost. Overrides the boost set at the phrase set level.
@@ -53,6 +53,6 @@ type PhraseSet_Phrase struct {
 	//  with values between 0 and 20. We recommend using a binary search approach
 	//  to finding the optimal value for your use case as well as adding
 	//  phrases both with and without boost to your requests.
-	// +kcc:proto:field=google.cloud.speech.v1.PhraseSet.Phrase.boost
+	// +kcc:proto:field=google.cloud.speech.v1p1beta1.PhraseSet.Phrase.boost
 	Boost *float32 `json:"boost,omitempty"`
 }

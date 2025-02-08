@@ -16,7 +16,7 @@ package speech
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/speech/apiv1/speechpb"
+	pb "cloud.google.com/go/speech/apiv1p1beta1/speechpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -56,45 +56,5 @@ func PhraseSet_Phrase_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSet_Phras
 	out := &pb.PhraseSet_Phrase{}
 	out.Value = direct.ValueOf(in.Value)
 	out.Boost = direct.ValueOf(in.Boost)
-	return out
-}
-func SpeechPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.SpeechPhraseSetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechPhraseSetObservedState{}
-	// MISSING: Name
-	// MISSING: Phrases
-	// MISSING: Boost
-	return out
-}
-func SpeechPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechPhraseSetObservedState) *pb.PhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PhraseSet{}
-	// MISSING: Name
-	// MISSING: Phrases
-	// MISSING: Boost
-	return out
-}
-func SpeechPhraseSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.SpeechPhraseSetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechPhraseSetSpec{}
-	// MISSING: Name
-	// MISSING: Phrases
-	// MISSING: Boost
-	return out
-}
-func SpeechPhraseSetSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechPhraseSetSpec) *pb.PhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PhraseSet{}
-	// MISSING: Name
-	// MISSING: Phrases
-	// MISSING: Boost
 	return out
 }
