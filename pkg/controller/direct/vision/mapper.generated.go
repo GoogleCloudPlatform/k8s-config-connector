@@ -15,10 +15,10 @@
 package vision
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/vision/v2/apiv1/visionpb"
+	pb "cloud.google.com/go/vision/apiv1p3beta1/visionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vision/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func Product_FromProto(mapCtx *direct.MapContext, in *pb.Product) *krm.Product {
 	if in == nil {
@@ -60,53 +60,5 @@ func Product_KeyValue_ToProto(mapCtx *direct.MapContext, in *krm.Product_KeyValu
 	out := &pb.Product_KeyValue{}
 	out.Key = direct.ValueOf(in.Key)
 	out.Value = direct.ValueOf(in.Value)
-	return out
-}
-func VisionProductObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Product) *krm.VisionProductObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VisionProductObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ProductCategory
-	// MISSING: ProductLabels
-	return out
-}
-func VisionProductObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VisionProductObservedState) *pb.Product {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Product{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ProductCategory
-	// MISSING: ProductLabels
-	return out
-}
-func VisionProductSpec_FromProto(mapCtx *direct.MapContext, in *pb.Product) *krm.VisionProductSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VisionProductSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ProductCategory
-	// MISSING: ProductLabels
-	return out
-}
-func VisionProductSpec_ToProto(mapCtx *direct.MapContext, in *krm.VisionProductSpec) *pb.Product {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Product{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: ProductCategory
-	// MISSING: ProductLabels
 	return out
 }
