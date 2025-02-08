@@ -16,7 +16,7 @@ package recommender
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/recommender/apiv1/recommenderpb"
+	pb "cloud.google.com/go/recommender/apiv1beta1/recommenderpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recommender/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -90,81 +90,5 @@ func Insight_RecommendationReference_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Insight_RecommendationReference{}
 	out.Recommendation = direct.ValueOf(in.Recommendation)
-	return out
-}
-func RecommenderInsightObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Insight) *krm.RecommenderInsightObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecommenderInsightObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: TargetResources
-	// MISSING: InsightSubtype
-	// MISSING: Content
-	// MISSING: LastRefreshTime
-	// MISSING: ObservationPeriod
-	// MISSING: StateInfo
-	// MISSING: Category
-	// MISSING: Severity
-	// MISSING: Etag
-	// MISSING: AssociatedRecommendations
-	return out
-}
-func RecommenderInsightObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RecommenderInsightObservedState) *pb.Insight {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Insight{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: TargetResources
-	// MISSING: InsightSubtype
-	// MISSING: Content
-	// MISSING: LastRefreshTime
-	// MISSING: ObservationPeriod
-	// MISSING: StateInfo
-	// MISSING: Category
-	// MISSING: Severity
-	// MISSING: Etag
-	// MISSING: AssociatedRecommendations
-	return out
-}
-func RecommenderInsightSpec_FromProto(mapCtx *direct.MapContext, in *pb.Insight) *krm.RecommenderInsightSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecommenderInsightSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: TargetResources
-	// MISSING: InsightSubtype
-	// MISSING: Content
-	// MISSING: LastRefreshTime
-	// MISSING: ObservationPeriod
-	// MISSING: StateInfo
-	// MISSING: Category
-	// MISSING: Severity
-	// MISSING: Etag
-	// MISSING: AssociatedRecommendations
-	return out
-}
-func RecommenderInsightSpec_ToProto(mapCtx *direct.MapContext, in *krm.RecommenderInsightSpec) *pb.Insight {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Insight{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: TargetResources
-	// MISSING: InsightSubtype
-	// MISSING: Content
-	// MISSING: LastRefreshTime
-	// MISSING: ObservationPeriod
-	// MISSING: StateInfo
-	// MISSING: Category
-	// MISSING: Severity
-	// MISSING: Etag
-	// MISSING: AssociatedRecommendations
 	return out
 }
