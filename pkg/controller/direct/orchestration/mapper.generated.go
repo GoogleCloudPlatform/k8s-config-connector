@@ -16,7 +16,7 @@ package orchestration
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
+	pb "cloud.google.com/go/orchestration/airflow/service/apiv1beta1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orchestration/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -59,8 +59,9 @@ func DataRetentionConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataRetenti
 		return nil
 	}
 	out := &krm.DataRetentionConfig{}
-	out.AirflowMetadataRetentionConfig = AirflowMetadataRetentionPolicyConfig_FromProto(mapCtx, in.GetAirflowMetadataRetentionConfig())
+	out.AirflowDatabaseRetentionDays = direct.LazyPtr(in.GetAirflowDatabaseRetentionDays())
 	out.TaskLogsRetentionConfig = TaskLogsRetentionConfig_FromProto(mapCtx, in.GetTaskLogsRetentionConfig())
+	out.AirflowMetadataRetentionConfig = AirflowMetadataRetentionPolicyConfig_FromProto(mapCtx, in.GetAirflowMetadataRetentionConfig())
 	return out
 }
 func DataRetentionConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataRetentionConfig) *pb.DataRetentionConfig {
@@ -68,8 +69,9 @@ func DataRetentionConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataRetentio
 		return nil
 	}
 	out := &pb.DataRetentionConfig{}
-	out.AirflowMetadataRetentionConfig = AirflowMetadataRetentionPolicyConfig_ToProto(mapCtx, in.AirflowMetadataRetentionConfig)
+	out.AirflowDatabaseRetentionDays = direct.ValueOf(in.AirflowDatabaseRetentionDays)
 	out.TaskLogsRetentionConfig = TaskLogsRetentionConfig_ToProto(mapCtx, in.TaskLogsRetentionConfig)
+	out.AirflowMetadataRetentionConfig = AirflowMetadataRetentionPolicyConfig_ToProto(mapCtx, in.AirflowMetadataRetentionConfig)
 	return out
 }
 func DatabaseConfig_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseConfig) *krm.DatabaseConfig {
@@ -113,10 +115,10 @@ func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.E
 	out := &krm.Environment{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Config = EnvironmentConfig_FromProto(mapCtx, in.GetConfig())
-	out.Uuid = direct.LazyPtr(in.GetUuid())
+	// MISSING: Uuid
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
@@ -130,10 +132,10 @@ func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Env
 	out := &pb.Environment{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Config = EnvironmentConfig_ToProto(mapCtx, in.Config)
-	out.Uuid = direct.ValueOf(in.Uuid)
+	// MISSING: Uuid
 	out.State = direct.Enum_ToProto[pb.Environment_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
@@ -145,8 +147,8 @@ func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentCo
 		return nil
 	}
 	out := &krm.EnvironmentConfig{}
-	out.GkeCluster = direct.LazyPtr(in.GetGkeCluster())
-	out.DagGcsPrefix = direct.LazyPtr(in.GetDagGcsPrefix())
+	// MISSING: GkeCluster
+	// MISSING: DagGcsPrefix
 	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
 	out.SoftwareConfig = SoftwareConfig_FromProto(mapCtx, in.GetSoftwareConfig())
 	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
@@ -154,16 +156,16 @@ func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentCo
 	out.WebServerNetworkAccessControl = WebServerNetworkAccessControl_FromProto(mapCtx, in.GetWebServerNetworkAccessControl())
 	out.DatabaseConfig = DatabaseConfig_FromProto(mapCtx, in.GetDatabaseConfig())
 	out.WebServerConfig = WebServerConfig_FromProto(mapCtx, in.GetWebServerConfig())
+	// MISSING: AirflowURI
+	// MISSING: AirflowByoidURI
 	out.EncryptionConfig = EncryptionConfig_FromProto(mapCtx, in.GetEncryptionConfig())
 	out.MaintenanceWindow = MaintenanceWindow_FromProto(mapCtx, in.GetMaintenanceWindow())
 	out.WorkloadsConfig = WorkloadsConfig_FromProto(mapCtx, in.GetWorkloadsConfig())
 	out.EnvironmentSize = direct.Enum_FromProto(mapCtx, in.GetEnvironmentSize())
-	out.AirflowURI = direct.LazyPtr(in.GetAirflowUri())
-	// MISSING: AirflowByoidURI
 	out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_FromProto(mapCtx, in.GetMasterAuthorizedNetworksConfig())
 	out.RecoveryConfig = RecoveryConfig_FromProto(mapCtx, in.GetRecoveryConfig())
-	out.ResilienceMode = direct.Enum_FromProto(mapCtx, in.GetResilienceMode())
 	out.DataRetentionConfig = DataRetentionConfig_FromProto(mapCtx, in.GetDataRetentionConfig())
+	out.ResilienceMode = direct.Enum_FromProto(mapCtx, in.GetResilienceMode())
 	return out
 }
 func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentConfig) *pb.EnvironmentConfig {
@@ -171,8 +173,8 @@ func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentCon
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	out.GkeCluster = direct.ValueOf(in.GkeCluster)
-	out.DagGcsPrefix = direct.ValueOf(in.DagGcsPrefix)
+	// MISSING: GkeCluster
+	// MISSING: DagGcsPrefix
 	out.NodeCount = direct.ValueOf(in.NodeCount)
 	out.SoftwareConfig = SoftwareConfig_ToProto(mapCtx, in.SoftwareConfig)
 	out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
@@ -180,16 +182,16 @@ func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentCon
 	out.WebServerNetworkAccessControl = WebServerNetworkAccessControl_ToProto(mapCtx, in.WebServerNetworkAccessControl)
 	out.DatabaseConfig = DatabaseConfig_ToProto(mapCtx, in.DatabaseConfig)
 	out.WebServerConfig = WebServerConfig_ToProto(mapCtx, in.WebServerConfig)
+	// MISSING: AirflowURI
+	// MISSING: AirflowByoidURI
 	out.EncryptionConfig = EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
 	out.MaintenanceWindow = MaintenanceWindow_ToProto(mapCtx, in.MaintenanceWindow)
 	out.WorkloadsConfig = WorkloadsConfig_ToProto(mapCtx, in.WorkloadsConfig)
 	out.EnvironmentSize = direct.Enum_ToProto[pb.EnvironmentConfig_EnvironmentSize](mapCtx, in.EnvironmentSize)
-	out.AirflowUri = direct.ValueOf(in.AirflowURI)
-	// MISSING: AirflowByoidURI
 	out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_ToProto(mapCtx, in.MasterAuthorizedNetworksConfig)
 	out.RecoveryConfig = RecoveryConfig_ToProto(mapCtx, in.RecoveryConfig)
-	out.ResilienceMode = direct.Enum_ToProto[pb.EnvironmentConfig_ResilienceMode](mapCtx, in.ResilienceMode)
 	out.DataRetentionConfig = DataRetentionConfig_ToProto(mapCtx, in.DataRetentionConfig)
+	out.ResilienceMode = direct.Enum_ToProto[pb.EnvironmentConfig_ResilienceMode](mapCtx, in.ResilienceMode)
 	return out
 }
 func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentConfig) *krm.EnvironmentConfigObservedState {
@@ -197,8 +199,8 @@ func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.EnvironmentConfigObservedState{}
-	// MISSING: GkeCluster
-	// MISSING: DagGcsPrefix
+	out.GkeCluster = direct.LazyPtr(in.GetGkeCluster())
+	out.DagGcsPrefix = direct.LazyPtr(in.GetDagGcsPrefix())
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
 	// MISSING: NodeConfig
@@ -206,16 +208,16 @@ func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: WebServerNetworkAccessControl
 	// MISSING: DatabaseConfig
 	// MISSING: WebServerConfig
+	out.AirflowURI = direct.LazyPtr(in.GetAirflowUri())
+	out.AirflowByoidURI = direct.LazyPtr(in.GetAirflowByoidUri())
 	// MISSING: EncryptionConfig
 	// MISSING: MaintenanceWindow
 	// MISSING: WorkloadsConfig
 	// MISSING: EnvironmentSize
-	// MISSING: AirflowURI
-	out.AirflowByoidURI = direct.LazyPtr(in.GetAirflowByoidUri())
 	// MISSING: MasterAuthorizedNetworksConfig
 	// MISSING: RecoveryConfig
-	// MISSING: ResilienceMode
 	// MISSING: DataRetentionConfig
+	// MISSING: ResilienceMode
 	return out
 }
 func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentConfigObservedState) *pb.EnvironmentConfig {
@@ -223,8 +225,8 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	// MISSING: GkeCluster
-	// MISSING: DagGcsPrefix
+	out.GkeCluster = direct.ValueOf(in.GkeCluster)
+	out.DagGcsPrefix = direct.ValueOf(in.DagGcsPrefix)
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
 	// MISSING: NodeConfig
@@ -232,16 +234,16 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 	// MISSING: WebServerNetworkAccessControl
 	// MISSING: DatabaseConfig
 	// MISSING: WebServerConfig
+	out.AirflowUri = direct.ValueOf(in.AirflowURI)
+	out.AirflowByoidUri = direct.ValueOf(in.AirflowByoidURI)
 	// MISSING: EncryptionConfig
 	// MISSING: MaintenanceWindow
 	// MISSING: WorkloadsConfig
 	// MISSING: EnvironmentSize
-	// MISSING: AirflowURI
-	out.AirflowByoidUri = direct.ValueOf(in.AirflowByoidURI)
 	// MISSING: MasterAuthorizedNetworksConfig
 	// MISSING: RecoveryConfig
-	// MISSING: ResilienceMode
 	// MISSING: DataRetentionConfig
+	// MISSING: ResilienceMode
 	return out
 }
 func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
@@ -251,10 +253,10 @@ func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Enviro
 	out := &krm.EnvironmentObservedState{}
 	// MISSING: Name
 	out.Config = EnvironmentConfigObservedState_FromProto(mapCtx, in.GetConfig())
-	// MISSING: Uuid
+	out.Uuid = direct.LazyPtr(in.GetUuid())
 	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
@@ -268,10 +270,10 @@ func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Environ
 	out := &pb.Environment{}
 	// MISSING: Name
 	out.Config = EnvironmentConfigObservedState_ToProto(mapCtx, in.Config)
-	// MISSING: Uuid
+	out.Uuid = direct.ValueOf(in.Uuid)
 	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
@@ -285,8 +287,8 @@ func IPAllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.IPAllocation
 	out := &krm.IPAllocationPolicy{}
 	out.UseIPAliases = direct.LazyPtr(in.GetUseIpAliases())
 	out.ClusterSecondaryRangeName = direct.LazyPtr(in.GetClusterSecondaryRangeName())
-	out.ClusterIpv4CidrBlock = direct.LazyPtr(in.GetClusterIpv4CidrBlock())
 	out.ServicesSecondaryRangeName = direct.LazyPtr(in.GetServicesSecondaryRangeName())
+	out.ClusterIpv4CidrBlock = direct.LazyPtr(in.GetClusterIpv4CidrBlock())
 	out.ServicesIpv4CidrBlock = direct.LazyPtr(in.GetServicesIpv4CidrBlock())
 	return out
 }
@@ -296,18 +298,10 @@ func IPAllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.IPAllocationP
 	}
 	out := &pb.IPAllocationPolicy{}
 	out.UseIpAliases = direct.ValueOf(in.UseIPAliases)
-	if oneof := IPAllocationPolicy_ClusterSecondaryRangeName_ToProto(mapCtx, in.ClusterSecondaryRangeName); oneof != nil {
-		out.ClusterIpAllocation = oneof
-	}
-	if oneof := IPAllocationPolicy_ClusterIpv4CidrBlock_ToProto(mapCtx, in.ClusterIpv4CidrBlock); oneof != nil {
-		out.ClusterIpAllocation = oneof
-	}
-	if oneof := IPAllocationPolicy_ServicesSecondaryRangeName_ToProto(mapCtx, in.ServicesSecondaryRangeName); oneof != nil {
-		out.ServicesIpAllocation = oneof
-	}
-	if oneof := IPAllocationPolicy_ServicesIpv4CidrBlock_ToProto(mapCtx, in.ServicesIpv4CidrBlock); oneof != nil {
-		out.ServicesIpAllocation = oneof
-	}
+	out.ClusterSecondaryRangeName = direct.ValueOf(in.ClusterSecondaryRangeName)
+	out.ServicesSecondaryRangeName = direct.ValueOf(in.ServicesSecondaryRangeName)
+	out.ClusterIpv4CidrBlock = direct.ValueOf(in.ClusterIpv4CidrBlock)
+	out.ServicesIpv4CidrBlock = direct.ValueOf(in.ServicesIpv4CidrBlock)
 	return out
 }
 func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krm.MaintenanceWindow {
@@ -396,6 +390,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
 	out.Tags = in.Tags
 	out.IPAllocationPolicy = IPAllocationPolicy_FromProto(mapCtx, in.GetIpAllocationPolicy())
+	out.MaxPodsPerNode = direct.LazyPtr(in.GetMaxPodsPerNode())
 	out.EnableIPMasqAgent = direct.LazyPtr(in.GetEnableIpMasqAgent())
 	out.ComposerNetworkAttachment = direct.LazyPtr(in.GetComposerNetworkAttachment())
 	out.ComposerInternalIpv4CidrBlock = direct.LazyPtr(in.GetComposerInternalIpv4CidrBlock())
@@ -415,77 +410,10 @@ func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeC
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	out.Tags = in.Tags
 	out.IpAllocationPolicy = IPAllocationPolicy_ToProto(mapCtx, in.IPAllocationPolicy)
+	out.MaxPodsPerNode = direct.ValueOf(in.MaxPodsPerNode)
 	out.EnableIpMasqAgent = direct.ValueOf(in.EnableIPMasqAgent)
 	out.ComposerNetworkAttachment = direct.ValueOf(in.ComposerNetworkAttachment)
 	out.ComposerInternalIpv4CidrBlock = direct.ValueOf(in.ComposerInternalIpv4CidrBlock)
-	return out
-}
-func OrchestrationEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.OrchestrationEnvironmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OrchestrationEnvironmentObservedState{}
-	// MISSING: Name
-	// MISSING: Config
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: StorageConfig
-	return out
-}
-func OrchestrationEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OrchestrationEnvironmentObservedState) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: Config
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: StorageConfig
-	return out
-}
-func OrchestrationEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.OrchestrationEnvironmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OrchestrationEnvironmentSpec{}
-	// MISSING: Name
-	// MISSING: Config
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: StorageConfig
-	return out
-}
-func OrchestrationEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.OrchestrationEnvironmentSpec) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: Config
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: StorageConfig
 	return out
 }
 func PrivateClusterConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivateClusterConfig) *krm.PrivateClusterConfig {
