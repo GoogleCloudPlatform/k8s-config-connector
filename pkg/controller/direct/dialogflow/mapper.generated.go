@@ -16,7 +16,7 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -122,6 +122,7 @@ func Agent_FromProto(mapCtx *direct.MapContext, in *pb.Agent) *krm.Agent {
 	out.AvatarURI = direct.LazyPtr(in.GetAvatarUri())
 	out.SpeechToTextSettings = SpeechToTextSettings_FromProto(mapCtx, in.GetSpeechToTextSettings())
 	out.StartFlow = direct.LazyPtr(in.GetStartFlow())
+	out.StartPlaybook = direct.LazyPtr(in.GetStartPlaybook())
 	out.SecuritySettings = direct.LazyPtr(in.GetSecuritySettings())
 	out.EnableStackdriverLogging = direct.LazyPtr(in.GetEnableStackdriverLogging())
 	out.EnableSpellCorrection = direct.LazyPtr(in.GetEnableSpellCorrection())
@@ -129,6 +130,7 @@ func Agent_FromProto(mapCtx *direct.MapContext, in *pb.Agent) *krm.Agent {
 	out.Locked = direct.LazyPtr(in.GetLocked())
 	out.AdvancedSettings = AdvancedSettings_FromProto(mapCtx, in.GetAdvancedSettings())
 	out.GitIntegrationSettings = Agent_GitIntegrationSettings_FromProto(mapCtx, in.GetGitIntegrationSettings())
+	out.BigqueryExportSettings = BigQueryExportSettings_FromProto(mapCtx, in.GetBigqueryExportSettings())
 	out.TextToSpeechSettings = TextToSpeechSettings_FromProto(mapCtx, in.GetTextToSpeechSettings())
 	out.GenAppBuilderSettings = Agent_GenAppBuilderSettings_FromProto(mapCtx, in.GetGenAppBuilderSettings())
 	out.AnswerFeedbackSettings = Agent_AnswerFeedbackSettings_FromProto(mapCtx, in.GetAnswerFeedbackSettings())
@@ -149,7 +151,12 @@ func Agent_ToProto(mapCtx *direct.MapContext, in *krm.Agent) *pb.Agent {
 	out.Description = direct.ValueOf(in.Description)
 	out.AvatarUri = direct.ValueOf(in.AvatarURI)
 	out.SpeechToTextSettings = SpeechToTextSettings_ToProto(mapCtx, in.SpeechToTextSettings)
-	out.StartFlow = direct.ValueOf(in.StartFlow)
+	if oneof := Agent_StartFlow_ToProto(mapCtx, in.StartFlow); oneof != nil {
+		out.SessionEntryResource = oneof
+	}
+	if oneof := Agent_StartPlaybook_ToProto(mapCtx, in.StartPlaybook); oneof != nil {
+		out.SessionEntryResource = oneof
+	}
 	out.SecuritySettings = direct.ValueOf(in.SecuritySettings)
 	out.EnableStackdriverLogging = direct.ValueOf(in.EnableStackdriverLogging)
 	out.EnableSpellCorrection = direct.ValueOf(in.EnableSpellCorrection)
@@ -157,6 +164,7 @@ func Agent_ToProto(mapCtx *direct.MapContext, in *krm.Agent) *pb.Agent {
 	out.Locked = direct.ValueOf(in.Locked)
 	out.AdvancedSettings = AdvancedSettings_ToProto(mapCtx, in.AdvancedSettings)
 	out.GitIntegrationSettings = Agent_GitIntegrationSettings_ToProto(mapCtx, in.GitIntegrationSettings)
+	out.BigqueryExportSettings = BigQueryExportSettings_ToProto(mapCtx, in.BigqueryExportSettings)
 	out.TextToSpeechSettings = TextToSpeechSettings_ToProto(mapCtx, in.TextToSpeechSettings)
 	if oneof := Agent_GenAppBuilderSettings_ToProto(mapCtx, in.GenAppBuilderSettings); oneof != nil {
 		out.GenAppBuilderSettings = &pb.Agent_GenAppBuilderSettings_{GenAppBuilderSettings: oneof}
@@ -276,116 +284,22 @@ func Agent_PersonalizationSettings_ToProto(mapCtx *direct.MapContext, in *krm.Ag
 	out.DefaultEndUserMetadata = DefaultEndUserMetadata_ToProto(mapCtx, in.DefaultEndUserMetadata)
 	return out
 }
-func DialogflowAgentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Agent) *krm.DialogflowAgentObservedState {
+func BigQueryExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryExportSettings) *krm.BigQueryExportSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DialogflowAgentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DefaultLanguageCode
-	// MISSING: SupportedLanguageCodes
-	// MISSING: TimeZone
-	// MISSING: Description
-	// MISSING: AvatarURI
-	// MISSING: SpeechToTextSettings
-	// MISSING: StartFlow
-	// MISSING: SecuritySettings
-	// MISSING: EnableStackdriverLogging
-	// MISSING: EnableSpellCorrection
-	// MISSING: EnableMultiLanguageTraining
-	// MISSING: Locked
-	// MISSING: AdvancedSettings
-	// MISSING: GitIntegrationSettings
-	// MISSING: TextToSpeechSettings
-	// MISSING: GenAppBuilderSettings
-	// MISSING: AnswerFeedbackSettings
-	// MISSING: PersonalizationSettings
-	// MISSING: ClientCertificateSettings
+	out := &krm.BigQueryExportSettings{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.BigqueryTable = direct.LazyPtr(in.GetBigqueryTable())
 	return out
 }
-func DialogflowAgentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowAgentObservedState) *pb.Agent {
+func BigQueryExportSettings_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryExportSettings) *pb.BigQueryExportSettings {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Agent{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DefaultLanguageCode
-	// MISSING: SupportedLanguageCodes
-	// MISSING: TimeZone
-	// MISSING: Description
-	// MISSING: AvatarURI
-	// MISSING: SpeechToTextSettings
-	// MISSING: StartFlow
-	// MISSING: SecuritySettings
-	// MISSING: EnableStackdriverLogging
-	// MISSING: EnableSpellCorrection
-	// MISSING: EnableMultiLanguageTraining
-	// MISSING: Locked
-	// MISSING: AdvancedSettings
-	// MISSING: GitIntegrationSettings
-	// MISSING: TextToSpeechSettings
-	// MISSING: GenAppBuilderSettings
-	// MISSING: AnswerFeedbackSettings
-	// MISSING: PersonalizationSettings
-	// MISSING: ClientCertificateSettings
-	return out
-}
-func DialogflowAgentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Agent) *krm.DialogflowAgentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowAgentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DefaultLanguageCode
-	// MISSING: SupportedLanguageCodes
-	// MISSING: TimeZone
-	// MISSING: Description
-	// MISSING: AvatarURI
-	// MISSING: SpeechToTextSettings
-	// MISSING: StartFlow
-	// MISSING: SecuritySettings
-	// MISSING: EnableStackdriverLogging
-	// MISSING: EnableSpellCorrection
-	// MISSING: EnableMultiLanguageTraining
-	// MISSING: Locked
-	// MISSING: AdvancedSettings
-	// MISSING: GitIntegrationSettings
-	// MISSING: TextToSpeechSettings
-	// MISSING: GenAppBuilderSettings
-	// MISSING: AnswerFeedbackSettings
-	// MISSING: PersonalizationSettings
-	// MISSING: ClientCertificateSettings
-	return out
-}
-func DialogflowAgentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowAgentSpec) *pb.Agent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Agent{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: DefaultLanguageCode
-	// MISSING: SupportedLanguageCodes
-	// MISSING: TimeZone
-	// MISSING: Description
-	// MISSING: AvatarURI
-	// MISSING: SpeechToTextSettings
-	// MISSING: StartFlow
-	// MISSING: SecuritySettings
-	// MISSING: EnableStackdriverLogging
-	// MISSING: EnableSpellCorrection
-	// MISSING: EnableMultiLanguageTraining
-	// MISSING: Locked
-	// MISSING: AdvancedSettings
-	// MISSING: GitIntegrationSettings
-	// MISSING: TextToSpeechSettings
-	// MISSING: GenAppBuilderSettings
-	// MISSING: AnswerFeedbackSettings
-	// MISSING: PersonalizationSettings
-	// MISSING: ClientCertificateSettings
+	out := &pb.BigQueryExportSettings{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.BigqueryTable = direct.ValueOf(in.BigqueryTable)
 	return out
 }
 func GcsDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krm.GcsDestination {
