@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,56 +14,65 @@
 
 package v1alpha1
 
-import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-)
 
-// +kcc:proto=google.cloud.kms.v1.AutokeyConfig
-type AutokeyConfig struct {
-	// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+// +kcc:proto=google.cloud.kms.inventory.v1.ProtectedResource
+type ProtectedResource struct {
+	// The full resource name of the resource.
+	//  Example:
+	//  `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.name
 	Name *string `json:"name,omitempty"`
 
-	// Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or
-	//  `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] when a
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] is created. On
-	//  [UpdateAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.UpdateAutokeyConfig],
-	//  the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on
-	//  this key project. Once configured, for Cloud KMS Autokey to function
-	//  properly, this key project must have the Cloud KMS API activated and the
-	//  Cloud KMS Service Agent for this key project must be granted the
-	//  `cloudkms.admin` role (or pertinent permissions). A request with an empty
-	//  key project field will clear the configuration.
-	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
+	// Format: `projects/{PROJECT_NUMBER}`.
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.project
+	Project *string `json:"project,omitempty"`
 
-	// Output only. The state for the AutokeyConfig.
-	State *string `json:"state,omitempty"`
+	// The ID of the project that owns the resource.
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// The Cloud product that owns the resource.
+	//  Example: `compute`
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.cloud_product
+	CloudProduct *string `json:"cloudProduct,omitempty"`
+
+	// Example: `compute.googleapis.com/Disk`
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Location can be `global`, regional like `us-east1`, or zonal like
+	//  `us-west1-b`.
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.location
+	Location *string `json:"location,omitempty"`
+
+	// A key-value pair of the resource's labels (v1) to their values.
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The name of the Cloud KMS
+	//  [CryptoKeyVersion](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions?hl=en)
+	//  used to protect this resource via CMEK. This field is empty if the
+	//  Google Cloud product owning the resource does not provide key version data
+	//  to Asset Inventory. If there are multiple key versions protecting the
+	//  resource, then this is same value as the first element of
+	//  crypto_key_versions.
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.crypto_key_version
+	CryptoKeyVersion *string `json:"cryptoKeyVersion,omitempty"`
+
+	// The names of the Cloud KMS
+	//  [CryptoKeyVersion](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions?hl=en)
+	//  used to protect this resource via CMEK. This field is empty if the
+	//  Google Cloud product owning the resource does not provide key versions data
+	//  to Asset Inventory. The first element of this field is stored in
+	//  crypto_key_version.
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.crypto_key_versions
+	CryptoKeyVersions []string `json:"cryptoKeyVersions,omitempty"`
 }
 
-// +kcc:proto=google.cloud.kms.v1.KeyHandle
-type KeyHandle struct {
-	// Identifier. Name of the [KeyHandle][google.cloud.kms.v1.KeyHandle]
-	//  resource, e.g.
-	//  `projects/{PROJECT_ID}/locations/{LOCATION}/keyHandles/{KEY_HANDLE_ID}`.
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Name of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that has
-	//  been provisioned for Customer Managed Encryption Key (CMEK) use in the
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] project and location for the
-	//  requested resource type. The [CryptoKey][google.cloud.kms.v1.CryptoKey]
-	//  project will reflect the value configured in the
-	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] on the resource
-	//  project's ancestor folder at the time of the
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] creation. If more than one
-	//  ancestor folder has a configured
-	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig], the nearest of these
-	//  configurations is used.
-	KmsKey *string `json:"kmsKey,omitempty"`
-
-	// Required. Indicates the resource type that the resulting
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] is meant to protect, e.g.
-	//  `{SERVICE}.googleapis.com/{TYPE}`. See documentation for supported resource
-	//  types.
-	ResourceTypeSelector *string `json:"resourceTypeSelector,omitempty"`
+// +kcc:proto=google.cloud.kms.inventory.v1.ProtectedResource
+type ProtectedResourceObservedState struct {
+	// Output only. The time at which this resource was created. The granularity
+	//  is in seconds. Timestamp.nanos will always be 0.
+	// +kcc:proto:field=google.cloud.kms.inventory.v1.ProtectedResource.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
