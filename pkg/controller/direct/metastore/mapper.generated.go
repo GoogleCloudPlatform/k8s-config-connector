@@ -16,7 +16,7 @@ package metastore
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
+	pb "cloud.google.com/go/metastore/apiv1beta/metastorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -104,73 +104,5 @@ func FederationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Federati
 	out.State = direct.Enum_ToProto[pb.Federation_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
 	out.Uid = direct.ValueOf(in.Uid)
-	return out
-}
-func MetastoreFederationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krm.MetastoreFederationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MetastoreFederationObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Version
-	// MISSING: BackendMetastores
-	// MISSING: EndpointURI
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: Uid
-	return out
-}
-func MetastoreFederationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreFederationObservedState) *pb.Federation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Federation{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Version
-	// MISSING: BackendMetastores
-	// MISSING: EndpointURI
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: Uid
-	return out
-}
-func MetastoreFederationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krm.MetastoreFederationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MetastoreFederationSpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Version
-	// MISSING: BackendMetastores
-	// MISSING: EndpointURI
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: Uid
-	return out
-}
-func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreFederationSpec) *pb.Federation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Federation{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Version
-	// MISSING: BackendMetastores
-	// MISSING: EndpointURI
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: Uid
 	return out
 }

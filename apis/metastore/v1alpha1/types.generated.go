@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.metastore.v1.BackendMetastore
+// +kcc:proto=google.cloud.metastore.v1beta.BackendMetastore
 type BackendMetastore struct {
 	// The relative resource name of the metastore that is being federated.
 	//  The formats of the relative resource names for the currently supported
@@ -25,60 +25,60 @@ type BackendMetastore struct {
 	//      * `projects/{project_id}`
 	//  * Dataproc Metastore
 	//      * `projects/{project_id}/locations/{location}/services/{service_id}`
-	// +kcc:proto:field=google.cloud.metastore.v1.BackendMetastore.name
+	// +kcc:proto:field=google.cloud.metastore.v1beta.BackendMetastore.name
 	Name *string `json:"name,omitempty"`
 
 	// The type of the backend metastore.
-	// +kcc:proto:field=google.cloud.metastore.v1.BackendMetastore.metastore_type
+	// +kcc:proto:field=google.cloud.metastore.v1beta.BackendMetastore.metastore_type
 	MetastoreType *string `json:"metastoreType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.metastore.v1.Federation
+// +kcc:proto=google.cloud.metastore.v1beta.Federation
 type Federation struct {
 	// Immutable. The relative resource name of the federation, of the
 	//  form:
 	//  projects/{project_number}/locations/{location_id}/federations/{federation_id}`.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.name
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.name
 	Name *string `json:"name,omitempty"`
 
 	// User-defined labels for the metastore federation.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.labels
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Immutable. The Apache Hive metastore version of the federation. All backend
 	//  metastore versions must be compatible with the federation version.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.version
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.version
 	Version *string `json:"version,omitempty"`
 
 	// TODO: unsupported map type with key int32 and value message
 
 }
 
-// +kcc:proto=google.cloud.metastore.v1.Federation
+// +kcc:proto=google.cloud.metastore.v1beta.Federation
 type FederationObservedState struct {
 	// Output only. The time when the metastore federation was created.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.create_time
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The time when the metastore federation was last updated.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.update_time
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. The federation endpoint.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.endpoint_uri
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.endpoint_uri
 	EndpointURI *string `json:"endpointURI,omitempty"`
 
 	// Output only. The current state of the federation.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.state
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.state
 	State *string `json:"state,omitempty"`
 
 	// Output only. Additional information about the current state of the
 	//  metastore federation, if available.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.state_message
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.state_message
 	StateMessage *string `json:"stateMessage,omitempty"`
 
 	// Output only. The globally unique resource identifier of the metastore
 	//  federation.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.uid
+	// +kcc:proto:field=google.cloud.metastore.v1beta.Federation.uid
 	Uid *string `json:"uid,omitempty"`
 }
