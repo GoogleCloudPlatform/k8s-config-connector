@@ -16,7 +16,7 @@ package recommender
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/recommender/apiv1/recommenderpb"
+	pb "cloud.google.com/go/recommender/apiv1beta1/recommenderpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recommender/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -90,61 +90,5 @@ func InsightTypeGenerationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Insi
 	}
 	out := &pb.InsightTypeGenerationConfig{}
 	out.Params = Params_ToProto(mapCtx, in.Params)
-	return out
-}
-func RecommenderInsightTypeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InsightTypeConfig) *krm.RecommenderInsightTypeConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecommenderInsightTypeConfigObservedState{}
-	// MISSING: Name
-	// MISSING: InsightTypeGenerationConfig
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Annotations
-	// MISSING: DisplayName
-	return out
-}
-func RecommenderInsightTypeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RecommenderInsightTypeConfigObservedState) *pb.InsightTypeConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InsightTypeConfig{}
-	// MISSING: Name
-	// MISSING: InsightTypeGenerationConfig
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Annotations
-	// MISSING: DisplayName
-	return out
-}
-func RecommenderInsightTypeConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.InsightTypeConfig) *krm.RecommenderInsightTypeConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecommenderInsightTypeConfigSpec{}
-	// MISSING: Name
-	// MISSING: InsightTypeGenerationConfig
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Annotations
-	// MISSING: DisplayName
-	return out
-}
-func RecommenderInsightTypeConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.RecommenderInsightTypeConfigSpec) *pb.InsightTypeConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InsightTypeConfig{}
-	// MISSING: Name
-	// MISSING: InsightTypeGenerationConfig
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Annotations
-	// MISSING: DisplayName
 	return out
 }
