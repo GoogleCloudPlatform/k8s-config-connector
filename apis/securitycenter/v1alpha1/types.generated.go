@@ -15,33 +15,33 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1.ResourceValueConfigMetadata
+// +kcc:proto=google.cloud.securitycenter.v2.ResourceValueConfigMetadata
 type ResourceValueConfigMetadata struct {
 	// Resource value config name
-	// +kcc:proto:field=google.cloud.securitycenter.v1.ResourceValueConfigMetadata.name
+	// +kcc:proto:field=google.cloud.securitycenter.v2.ResourceValueConfigMetadata.name
 	Name *string `json:"name,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1.Simulation
+// +kcc:proto=google.cloud.securitycenter.v2.Simulation
 type Simulation struct {
 	// Full resource name of the Simulation:
 	//  `organizations/123/simulations/456`
-	// +kcc:proto:field=google.cloud.securitycenter.v1.Simulation.name
+	// +kcc:proto:field=google.cloud.securitycenter.v2.Simulation.name
 	Name *string `json:"name,omitempty"`
 
 	// Resource value configurations' metadata used in this simulation. Maximum of
 	//  100.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.Simulation.resource_value_configs_metadata
+	// +kcc:proto:field=google.cloud.securitycenter.v2.Simulation.resource_value_configs_metadata
 	ResourceValueConfigsMetadata []ResourceValueConfigMetadata `json:"resourceValueConfigsMetadata,omitempty"`
 
 	// Indicates which cloud provider was used in this simulation.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.Simulation.cloud_provider
+	// +kcc:proto:field=google.cloud.securitycenter.v2.Simulation.cloud_provider
 	CloudProvider *string `json:"cloudProvider,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1.Simulation
+// +kcc:proto=google.cloud.securitycenter.v2.Simulation
 type SimulationObservedState struct {
 	// Output only. Time simulation was created
-	// +kcc:proto:field=google.cloud.securitycenter.v1.Simulation.create_time
+	// +kcc:proto:field=google.cloud.securitycenter.v2.Simulation.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 }

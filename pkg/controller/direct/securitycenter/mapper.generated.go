@@ -15,55 +15,11 @@
 package securitycenter
 
 import (
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func SecuritycenterSimulationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Simulation) *krm.SecuritycenterSimulationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterSimulationObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: ResourceValueConfigsMetadata
-	// MISSING: CloudProvider
-	return out
-}
-func SecuritycenterSimulationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterSimulationObservedState) *pb.Simulation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Simulation{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: ResourceValueConfigsMetadata
-	// MISSING: CloudProvider
-	return out
-}
-func SecuritycenterSimulationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Simulation) *krm.SecuritycenterSimulationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterSimulationSpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: ResourceValueConfigsMetadata
-	// MISSING: CloudProvider
-	return out
-}
-func SecuritycenterSimulationSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterSimulationSpec) *pb.Simulation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Simulation{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: ResourceValueConfigsMetadata
-	// MISSING: CloudProvider
-	return out
-}
 func Simulation_FromProto(mapCtx *direct.MapContext, in *pb.Simulation) *krm.Simulation {
 	if in == nil {
 		return nil
