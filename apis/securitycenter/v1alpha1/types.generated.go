@@ -15,21 +15,25 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1.BigQueryExport
+// +kcc:proto=google.cloud.securitycenter.v2.BigQueryExport
 type BigQueryExport struct {
-	// The relative resource name of this export. See:
+	// Identifier. The relative resource name of this export. See:
 	//  https://cloud.google.com/apis/design/resource_names#relative_resource_name.
-	//  Example format:
-	//  "organizations/{organization_id}/bigQueryExports/{export_id}" Example
-	//  format: "folders/{folder_id}/bigQueryExports/{export_id}" Example format:
-	//  "projects/{project_id}/bigQueryExports/{export_id}"
+	//  The following list shows some examples:
+	//
+	//  +
+	//  `organizations/{organization_id}/locations/{location_id}/bigQueryExports/{export_id}`
+	//  + `folders/{folder_id}/locations/{location_id}/bigQueryExports/{export_id}`
+	//  +
+	//  `projects/{project_id}/locations/{location_id}/bigQueryExports/{export_id}`
+	//
 	//  This field is provided in responses, and is ignored when provided in create
 	//  requests.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.BigQueryExport.name
+	// +kcc:proto:field=google.cloud.securitycenter.v2.BigQueryExport.name
 	Name *string `json:"name,omitempty"`
 
 	// The description of the export (max of 1024 characters).
-	// +kcc:proto:field=google.cloud.securitycenter.v1.BigQueryExport.description
+	// +kcc:proto:field=google.cloud.securitycenter.v2.BigQueryExport.description
 	Description *string `json:"description,omitempty"`
 
 	// Expression that defines the filter to apply across create/update events
@@ -52,39 +56,39 @@ type BigQueryExport struct {
 	//  * string literals in quotes.
 	//  * integer literals without quotes.
 	//  * boolean literals `true` and `false` without quotes.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.BigQueryExport.filter
+	// +kcc:proto:field=google.cloud.securitycenter.v2.BigQueryExport.filter
 	Filter *string `json:"filter,omitempty"`
 
 	// The dataset to write findings' updates to. Its format is
 	//  "projects/[project_id]/datasets/[bigquery_dataset_id]".
-	//  BigQuery Dataset unique ID  must contain only letters (a-z, A-Z), numbers
+	//  BigQuery dataset unique ID  must contain only letters (a-z, A-Z), numbers
 	//  (0-9), or underscores (_).
-	// +kcc:proto:field=google.cloud.securitycenter.v1.BigQueryExport.dataset
+	// +kcc:proto:field=google.cloud.securitycenter.v2.BigQueryExport.dataset
 	Dataset *string `json:"dataset,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1.BigQueryExport
+// +kcc:proto=google.cloud.securitycenter.v2.BigQueryExport
 type BigQueryExportObservedState struct {
 	// Output only. The time at which the BigQuery export was created.
 	//  This field is set by the server and will be ignored if provided on export
 	//  on creation.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.BigQueryExport.create_time
+	// +kcc:proto:field=google.cloud.securitycenter.v2.BigQueryExport.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The most recent time at which the BigQuery export was updated.
 	//  This field is set by the server and will be ignored if provided on export
 	//  creation or update.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.BigQueryExport.update_time
+	// +kcc:proto:field=google.cloud.securitycenter.v2.BigQueryExport.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Email address of the user who last edited the BigQuery export.
 	//  This field is set by the server and will be ignored if provided on export
 	//  creation or update.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.BigQueryExport.most_recent_editor
+	// +kcc:proto:field=google.cloud.securitycenter.v2.BigQueryExport.most_recent_editor
 	MostRecentEditor *string `json:"mostRecentEditor,omitempty"`
 
 	// Output only. The service account that needs permission to create table and
 	//  upload data to the BigQuery dataset.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.BigQueryExport.principal
+	// +kcc:proto:field=google.cloud.securitycenter.v2.BigQueryExport.principal
 	Principal *string `json:"principal,omitempty"`
 }

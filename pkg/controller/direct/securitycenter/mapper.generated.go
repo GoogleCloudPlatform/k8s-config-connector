@@ -15,10 +15,10 @@
 package securitycenter
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func BigQueryExport_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryExport) *krm.BigQueryExport {
 	if in == nil {
@@ -78,65 +78,5 @@ func BigQueryExportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQ
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.MostRecentEditor = direct.ValueOf(in.MostRecentEditor)
 	out.Principal = direct.ValueOf(in.Principal)
-	return out
-}
-func SecuritycenterBigQueryExportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryExport) *krm.SecuritycenterBigQueryExportObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterBigQueryExportObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Filter
-	// MISSING: Dataset
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: MostRecentEditor
-	// MISSING: Principal
-	return out
-}
-func SecuritycenterBigQueryExportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterBigQueryExportObservedState) *pb.BigQueryExport {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BigQueryExport{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Filter
-	// MISSING: Dataset
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: MostRecentEditor
-	// MISSING: Principal
-	return out
-}
-func SecuritycenterBigQueryExportSpec_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryExport) *krm.SecuritycenterBigQueryExportSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterBigQueryExportSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Filter
-	// MISSING: Dataset
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: MostRecentEditor
-	// MISSING: Principal
-	return out
-}
-func SecuritycenterBigQueryExportSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterBigQueryExportSpec) *pb.BigQueryExport {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BigQueryExport{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Filter
-	// MISSING: Dataset
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: MostRecentEditor
-	// MISSING: Principal
 	return out
 }
