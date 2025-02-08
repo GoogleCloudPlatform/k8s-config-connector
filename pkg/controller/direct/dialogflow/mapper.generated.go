@@ -15,10 +15,10 @@
 package dialogflow
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 )
 func AdvancedSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings) *krm.AdvancedSettings {
 	if in == nil {
@@ -106,46 +106,6 @@ func AdvancedSettings_SpeechSettings_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.NoSpeechTimeout = direct.StringDuration_ToProto(mapCtx, in.NoSpeechTimeout)
 	out.UseTimeoutBasedEndpointing = direct.ValueOf(in.UseTimeoutBasedEndpointing)
 	out.Models = in.Models
-	return out
-}
-func DialogflowTransitionRouteGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRouteGroup) *krm.DialogflowTransitionRouteGroupObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowTransitionRouteGroupObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TransitionRoutes
-	return out
-}
-func DialogflowTransitionRouteGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowTransitionRouteGroupObservedState) *pb.TransitionRouteGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TransitionRouteGroup{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TransitionRoutes
-	return out
-}
-func DialogflowTransitionRouteGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRouteGroup) *krm.DialogflowTransitionRouteGroupSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowTransitionRouteGroupSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TransitionRoutes
-	return out
-}
-func DialogflowTransitionRouteGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowTransitionRouteGroupSpec) *pb.TransitionRouteGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TransitionRouteGroup{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TransitionRoutes
 	return out
 }
 func Fulfillment_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.Fulfillment {
@@ -313,7 +273,7 @@ func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage
 	// MISSING: MixedAudio
 	out.TelephonyTransferCall = ResponseMessage_TelephonyTransferCall_FromProto(mapCtx, in.GetTelephonyTransferCall())
 	out.KnowledgeInfoCard = ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx, in.GetKnowledgeInfoCard())
-	out.ResponseType = direct.Enum_FromProto(mapCtx, in.GetResponseType())
+	out.ToolCall = ToolCall_FromProto(mapCtx, in.GetToolCall())
 	out.Channel = direct.LazyPtr(in.GetChannel())
 	return out
 }
@@ -348,7 +308,9 @@ func ResponseMessage_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage)
 	if oneof := ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx, in.KnowledgeInfoCard); oneof != nil {
 		out.Message = &pb.ResponseMessage_KnowledgeInfoCard_{KnowledgeInfoCard: oneof}
 	}
-	out.ResponseType = direct.Enum_ToProto[pb.ResponseMessage_ResponseType](mapCtx, in.ResponseType)
+	if oneof := ToolCall_ToProto(mapCtx, in.ToolCall); oneof != nil {
+		out.Message = &pb.ResponseMessage_ToolCall{ToolCall: oneof}
+	}
 	out.Channel = direct.ValueOf(in.Channel)
 	return out
 }
@@ -367,7 +329,7 @@ func ResponseMessageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Re
 	out.MixedAudio = ResponseMessage_MixedAudio_FromProto(mapCtx, in.GetMixedAudio())
 	// MISSING: TelephonyTransferCall
 	// MISSING: KnowledgeInfoCard
-	// MISSING: ResponseType
+	// MISSING: ToolCall
 	// MISSING: Channel
 	return out
 }
@@ -396,7 +358,7 @@ func ResponseMessageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Res
 	}
 	// MISSING: TelephonyTransferCall
 	// MISSING: KnowledgeInfoCard
-	// MISSING: ResponseType
+	// MISSING: ToolCall
 	// MISSING: Channel
 	return out
 }
@@ -668,6 +630,26 @@ func ResponseMessage_TextObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.ResponseMessage_Text{}
 	// MISSING: Text
 	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
+	return out
+}
+func ToolCall_FromProto(mapCtx *direct.MapContext, in *pb.ToolCall) *krm.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolCall{}
+	out.Tool = direct.LazyPtr(in.GetTool())
+	out.Action = direct.LazyPtr(in.GetAction())
+	out.InputParameters = InputParameters_FromProto(mapCtx, in.GetInputParameters())
+	return out
+}
+func ToolCall_ToProto(mapCtx *direct.MapContext, in *krm.ToolCall) *pb.ToolCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolCall{}
+	out.Tool = direct.ValueOf(in.Tool)
+	out.Action = direct.ValueOf(in.Action)
+	out.InputParameters = InputParameters_ToProto(mapCtx, in.InputParameters)
 	return out
 }
 func TransitionRoute_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute) *krm.TransitionRoute {
