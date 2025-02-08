@@ -15,13 +15,28 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.tpu.v1.AcceleratorType
+// +kcc:proto=google.cloud.tpu.v2.AcceleratorConfig
+type AcceleratorConfig struct {
+	// Required. Type of TPU.
+	// +kcc:proto:field=google.cloud.tpu.v2.AcceleratorConfig.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. Topology of TPU in chips.
+	// +kcc:proto:field=google.cloud.tpu.v2.AcceleratorConfig.topology
+	Topology *string `json:"topology,omitempty"`
+}
+
+// +kcc:proto=google.cloud.tpu.v2.AcceleratorType
 type AcceleratorType struct {
 	// The resource name.
-	// +kcc:proto:field=google.cloud.tpu.v1.AcceleratorType.name
+	// +kcc:proto:field=google.cloud.tpu.v2.AcceleratorType.name
 	Name *string `json:"name,omitempty"`
 
-	// the accelerator type.
-	// +kcc:proto:field=google.cloud.tpu.v1.AcceleratorType.type
+	// The accelerator type.
+	// +kcc:proto:field=google.cloud.tpu.v2.AcceleratorType.type
 	Type *string `json:"type,omitempty"`
+
+	// The accelerator config.
+	// +kcc:proto:field=google.cloud.tpu.v2.AcceleratorType.accelerator_configs
+	AcceleratorConfigs []AcceleratorConfig `json:"acceleratorConfigs,omitempty"`
 }
