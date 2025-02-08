@@ -15,18 +15,18 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1beta1.Asset
+// +kcc:proto=google.cloud.securitycenter.v1p1beta1.Asset
 type Asset struct {
 	// The relative resource name of this asset. See:
 	//  https://cloud.google.com/apis/design/resource_names#relative_resource_name
 	//  Example:
 	//  "organizations/{organization_id}/assets/{asset_id}".
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.name
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.name
 	Name *string `json:"name,omitempty"`
 
 	// Security Command Center managed properties. These properties are managed by
 	//  Security Command Center and cannot be modified by the user.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.security_center_properties
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.security_center_properties
 	SecurityCenterProperties *Asset_SecurityCenterProperties `json:"securityCenterProperties,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
@@ -34,57 +34,110 @@ type Asset struct {
 
 	// User specified security marks. These marks are entirely managed by the user
 	//  and come from the SecurityMarks resource that belongs to the asset.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.security_marks
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.security_marks
 	SecurityMarks *SecurityMarks `json:"securityMarks,omitempty"`
 
 	// The time at which the asset was created in Security Command Center.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.create_time
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// The time at which the asset was last updated, added, or deleted in Security
-	//  Command Center.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.update_time
+	// The time at which the asset was last updated or added in Cloud SCC.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Cloud IAM Policy information associated with the Google Cloud resource
+	//  described by the Security Command Center asset. This information is managed
+	//  and defined by the Google Cloud resource and cannot be modified by the
+	//  user.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.iam_policy
+	IamPolicy *Asset_IamPolicy `json:"iamPolicy,omitempty"`
+
+	// The canonical name of the resource. It's either
+	//  "organizations/{organization_id}/assets/{asset_id}",
+	//  "folders/{folder_id}/assets/{asset_id}" or
+	//  "projects/{project_number}/assets/{asset_id}", depending on the closest CRM
+	//  ancestor of the resource.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.canonical_name
+	CanonicalName *string `json:"canonicalName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties
+// +kcc:proto=google.cloud.securitycenter.v1p1beta1.Asset.IamPolicy
+type Asset_IamPolicy struct {
+	// The JSON representation of the Policy associated with the asset.
+	//  See https://cloud.google.com/iam/docs/reference/rest/v1/Policy for
+	//  format details.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.IamPolicy.policy_blob
+	PolicyBlob *string `json:"policyBlob,omitempty"`
+}
+
+// +kcc:proto=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties
 type Asset_SecurityCenterProperties struct {
-	// Immutable. The full resource name of the Google Cloud resource this asset
+	// The full resource name of the Google Cloud resource this asset
 	//  represents. This field is immutable after create time. See:
 	//  https://cloud.google.com/apis/design/resource_names#full_resource_name
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties.resource_name
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.resource_name
 	ResourceName *string `json:"resourceName,omitempty"`
 
 	// The type of the Google Cloud resource. Examples include: APPLICATION,
 	//  PROJECT, and ORGANIZATION. This is a case insensitive field defined by
 	//  Security Command Center and/or the producer of the resource and is
 	//  immutable after create time.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties.resource_type
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.resource_type
 	ResourceType *string `json:"resourceType,omitempty"`
 
 	// The full resource name of the immediate parent of the resource. See:
 	//  https://cloud.google.com/apis/design/resource_names#full_resource_name
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties.resource_parent
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.resource_parent
 	ResourceParent *string `json:"resourceParent,omitempty"`
 
 	// The full resource name of the project the resource belongs to. See:
 	//  https://cloud.google.com/apis/design/resource_names#full_resource_name
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties.resource_project
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.resource_project
 	ResourceProject *string `json:"resourceProject,omitempty"`
 
 	// Owners of the Google Cloud resource.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Asset.SecurityCenterProperties.resource_owners
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.resource_owners
 	ResourceOwners []string `json:"resourceOwners,omitempty"`
+
+	// The user defined display name for this resource.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.resource_display_name
+	ResourceDisplayName *string `json:"resourceDisplayName,omitempty"`
+
+	// The user defined display name for the parent of this resource.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.resource_parent_display_name
+	ResourceParentDisplayName *string `json:"resourceParentDisplayName,omitempty"`
+
+	// The user defined display name for the project of this resource.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.resource_project_display_name
+	ResourceProjectDisplayName *string `json:"resourceProjectDisplayName,omitempty"`
+
+	// Contains a Folder message for each folder in the assets ancestry.
+	//  The first folder is the deepest nested folder, and the last folder is the
+	//  folder directly under the Organization.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Asset.SecurityCenterProperties.folders
+	Folders []Folder `json:"folders,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1beta1.SecurityMarks
+// +kcc:proto=google.cloud.securitycenter.v1p1beta1.Folder
+type Folder struct {
+	// Full resource name of this folder. See:
+	//  https://cloud.google.com/apis/design/resource_names#full_resource_name
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Folder.resource_folder
+	ResourceFolder *string `json:"resourceFolder,omitempty"`
+
+	// The user defined display name for this folder.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Folder.resource_folder_display_name
+	ResourceFolderDisplayName *string `json:"resourceFolderDisplayName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.securitycenter.v1p1beta1.SecurityMarks
 type SecurityMarks struct {
 	// The relative resource name of the SecurityMarks. See:
 	//  https://cloud.google.com/apis/design/resource_names#relative_resource_name
 	//  Examples:
 	//  "organizations/{organization_id}/assets/{asset_id}/securityMarks"
 	//  "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.SecurityMarks.name
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.name
 	Name *string `json:"name,omitempty"`
 
 	// Mutable user specified security marks belonging to the parent resource.
@@ -95,8 +148,19 @@ type SecurityMarks struct {
 	//    * Keys must be letters, numbers, underscores, or dashes
 	//    * Values have leading and trailing whitespace trimmed, remaining
 	//      characters must be between 1 - 4096 characters (inclusive)
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.SecurityMarks.marks
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.marks
 	Marks map[string]string `json:"marks,omitempty"`
+
+	// The canonical name of the marks.
+	//  Examples:
+	//  "organizations/{organization_id}/assets/{asset_id}/securityMarks"
+	//  "folders/{folder_id}/assets/{asset_id}/securityMarks"
+	//  "projects/{project_number}/assets/{asset_id}/securityMarks"
+	//  "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
+	//  "folders/{folder_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
+	//  "projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks"
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.canonical_name
+	CanonicalName *string `json:"canonicalName,omitempty"`
 }
 
 // +kcc:proto=google.protobuf.ListValue

@@ -15,10 +15,10 @@
 package securitycenter
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1beta1/securitycenterpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/securitycenter/apiv1p1beta1/securitycenterpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 )
 func Asset_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.Asset {
 	if in == nil {
@@ -31,6 +31,8 @@ func Asset_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.Asset {
 	out.SecurityMarks = SecurityMarks_FromProto(mapCtx, in.GetSecurityMarks())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.IamPolicy = Asset_IamPolicy_FromProto(mapCtx, in.GetIamPolicy())
+	out.CanonicalName = direct.LazyPtr(in.GetCanonicalName())
 	return out
 }
 func Asset_ToProto(mapCtx *direct.MapContext, in *krm.Asset) *pb.Asset {
@@ -44,6 +46,24 @@ func Asset_ToProto(mapCtx *direct.MapContext, in *krm.Asset) *pb.Asset {
 	out.SecurityMarks = SecurityMarks_ToProto(mapCtx, in.SecurityMarks)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.IamPolicy = Asset_IamPolicy_ToProto(mapCtx, in.IamPolicy)
+	out.CanonicalName = direct.ValueOf(in.CanonicalName)
+	return out
+}
+func Asset_IamPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Asset_IamPolicy) *krm.Asset_IamPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_IamPolicy{}
+	out.PolicyBlob = direct.LazyPtr(in.GetPolicyBlob())
+	return out
+}
+func Asset_IamPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Asset_IamPolicy) *pb.Asset_IamPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_IamPolicy{}
+	out.PolicyBlob = direct.ValueOf(in.PolicyBlob)
 	return out
 }
 func Asset_SecurityCenterProperties_FromProto(mapCtx *direct.MapContext, in *pb.Asset_SecurityCenterProperties) *krm.Asset_SecurityCenterProperties {
@@ -56,6 +76,10 @@ func Asset_SecurityCenterProperties_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.ResourceParent = direct.LazyPtr(in.GetResourceParent())
 	out.ResourceProject = direct.LazyPtr(in.GetResourceProject())
 	out.ResourceOwners = in.ResourceOwners
+	out.ResourceDisplayName = direct.LazyPtr(in.GetResourceDisplayName())
+	out.ResourceParentDisplayName = direct.LazyPtr(in.GetResourceParentDisplayName())
+	out.ResourceProjectDisplayName = direct.LazyPtr(in.GetResourceProjectDisplayName())
+	out.Folders = direct.Slice_FromProto(mapCtx, in.Folders, Folder_FromProto)
 	return out
 }
 func Asset_SecurityCenterProperties_ToProto(mapCtx *direct.MapContext, in *krm.Asset_SecurityCenterProperties) *pb.Asset_SecurityCenterProperties {
@@ -68,6 +92,28 @@ func Asset_SecurityCenterProperties_ToProto(mapCtx *direct.MapContext, in *krm.A
 	out.ResourceParent = direct.ValueOf(in.ResourceParent)
 	out.ResourceProject = direct.ValueOf(in.ResourceProject)
 	out.ResourceOwners = in.ResourceOwners
+	out.ResourceDisplayName = direct.ValueOf(in.ResourceDisplayName)
+	out.ResourceParentDisplayName = direct.ValueOf(in.ResourceParentDisplayName)
+	out.ResourceProjectDisplayName = direct.ValueOf(in.ResourceProjectDisplayName)
+	out.Folders = direct.Slice_ToProto(mapCtx, in.Folders, Folder_ToProto)
+	return out
+}
+func Folder_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Folder{}
+	out.ResourceFolder = direct.LazyPtr(in.GetResourceFolder())
+	out.ResourceFolderDisplayName = direct.LazyPtr(in.GetResourceFolderDisplayName())
+	return out
+}
+func Folder_ToProto(mapCtx *direct.MapContext, in *krm.Folder) *pb.Folder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Folder{}
+	out.ResourceFolder = direct.ValueOf(in.ResourceFolder)
+	out.ResourceFolderDisplayName = direct.ValueOf(in.ResourceFolderDisplayName)
 	return out
 }
 func SecurityMarks_FromProto(mapCtx *direct.MapContext, in *pb.SecurityMarks) *krm.SecurityMarks {
@@ -77,6 +123,7 @@ func SecurityMarks_FromProto(mapCtx *direct.MapContext, in *pb.SecurityMarks) *k
 	out := &krm.SecurityMarks{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Marks = in.Marks
+	out.CanonicalName = direct.LazyPtr(in.GetCanonicalName())
 	return out
 }
 func SecurityMarks_ToProto(mapCtx *direct.MapContext, in *krm.SecurityMarks) *pb.SecurityMarks {
@@ -86,5 +133,6 @@ func SecurityMarks_ToProto(mapCtx *direct.MapContext, in *krm.SecurityMarks) *pb
 	out := &pb.SecurityMarks{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Marks = in.Marks
+	out.CanonicalName = direct.ValueOf(in.CanonicalName)
 	return out
 }
