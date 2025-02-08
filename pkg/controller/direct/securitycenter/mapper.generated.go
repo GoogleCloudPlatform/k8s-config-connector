@@ -16,7 +16,7 @@ package securitycenter
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -80,77 +80,5 @@ func ExternalSystem_TicketInfo_ToProto(mapCtx *direct.MapContext, in *krm.Extern
 	out.Uri = direct.ValueOf(in.URI)
 	out.Status = direct.ValueOf(in.Status)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
-func SecuritycenterExternalSystemObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalSystem) *krm.SecuritycenterExternalSystemObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterExternalSystemObservedState{}
-	// MISSING: Name
-	// MISSING: Assignees
-	// MISSING: ExternalUid
-	// MISSING: Status
-	// MISSING: ExternalSystemUpdateTime
-	// MISSING: CaseURI
-	// MISSING: CasePriority
-	// MISSING: CaseSla
-	// MISSING: CaseCreateTime
-	// MISSING: CaseCloseTime
-	// MISSING: TicketInfo
-	return out
-}
-func SecuritycenterExternalSystemObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterExternalSystemObservedState) *pb.ExternalSystem {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExternalSystem{}
-	// MISSING: Name
-	// MISSING: Assignees
-	// MISSING: ExternalUid
-	// MISSING: Status
-	// MISSING: ExternalSystemUpdateTime
-	// MISSING: CaseURI
-	// MISSING: CasePriority
-	// MISSING: CaseSla
-	// MISSING: CaseCreateTime
-	// MISSING: CaseCloseTime
-	// MISSING: TicketInfo
-	return out
-}
-func SecuritycenterExternalSystemSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExternalSystem) *krm.SecuritycenterExternalSystemSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterExternalSystemSpec{}
-	// MISSING: Name
-	// MISSING: Assignees
-	// MISSING: ExternalUid
-	// MISSING: Status
-	// MISSING: ExternalSystemUpdateTime
-	// MISSING: CaseURI
-	// MISSING: CasePriority
-	// MISSING: CaseSla
-	// MISSING: CaseCreateTime
-	// MISSING: CaseCloseTime
-	// MISSING: TicketInfo
-	return out
-}
-func SecuritycenterExternalSystemSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterExternalSystemSpec) *pb.ExternalSystem {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExternalSystem{}
-	// MISSING: Name
-	// MISSING: Assignees
-	// MISSING: ExternalUid
-	// MISSING: Status
-	// MISSING: ExternalSystemUpdateTime
-	// MISSING: CaseURI
-	// MISSING: CasePriority
-	// MISSING: CaseSla
-	// MISSING: CaseCreateTime
-	// MISSING: CaseCloseTime
-	// MISSING: TicketInfo
 	return out
 }
