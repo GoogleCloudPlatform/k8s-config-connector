@@ -15,10 +15,10 @@
 package securitycenter
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1p1beta1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func NotificationConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotificationConfig) *krm.NotificationConfig {
 	if in == nil {
@@ -27,7 +27,6 @@ func NotificationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Notification
 	out := &krm.NotificationConfig{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.EventType = direct.Enum_FromProto(mapCtx, in.GetEventType())
 	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
 	// MISSING: ServiceAccount
 	out.StreamingConfig = NotificationConfig_StreamingConfig_FromProto(mapCtx, in.GetStreamingConfig())
@@ -40,7 +39,6 @@ func NotificationConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotificationC
 	out := &pb.NotificationConfig{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
-	out.EventType = direct.Enum_ToProto[pb.NotificationConfig_EventType](mapCtx, in.EventType)
 	out.PubsubTopic = direct.ValueOf(in.PubsubTopic)
 	// MISSING: ServiceAccount
 	if oneof := NotificationConfig_StreamingConfig_ToProto(mapCtx, in.StreamingConfig); oneof != nil {
@@ -55,7 +53,6 @@ func NotificationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out := &krm.NotificationConfigObservedState{}
 	// MISSING: Name
 	// MISSING: Description
-	// MISSING: EventType
 	// MISSING: PubsubTopic
 	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
 	// MISSING: StreamingConfig
@@ -68,7 +65,6 @@ func NotificationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.NotificationConfig{}
 	// MISSING: Name
 	// MISSING: Description
-	// MISSING: EventType
 	// MISSING: PubsubTopic
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	// MISSING: StreamingConfig
