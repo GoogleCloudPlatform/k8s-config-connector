@@ -15,17 +15,17 @@
 package managedidentities
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/managedidentities/apiv1/managedidentitiespb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedidentities/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/managedidentities/apiv1beta1/managedidentitiespb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedidentities/v1alpha1"
 )
 func Domain_FromProto(mapCtx *direct.MapContext, in *pb.Domain) *krm.Domain {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Domain{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.Labels = in.Labels
 	out.AuthorizedNetworks = in.AuthorizedNetworks
 	out.ReservedIPRange = direct.LazyPtr(in.GetReservedIpRange())
@@ -44,7 +44,7 @@ func Domain_ToProto(mapCtx *direct.MapContext, in *krm.Domain) *pb.Domain {
 		return nil
 	}
 	out := &pb.Domain{}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.Labels = in.Labels
 	out.AuthorizedNetworks = in.AuthorizedNetworks
 	out.ReservedIpRange = direct.ValueOf(in.ReservedIPRange)
@@ -63,7 +63,7 @@ func DomainObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Domain) *kr
 		return nil
 	}
 	out := &krm.DomainObservedState{}
-	// MISSING: Name
+	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: Labels
 	// MISSING: AuthorizedNetworks
 	// MISSING: ReservedIPRange
@@ -82,7 +82,7 @@ func DomainObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DomainObserv
 		return nil
 	}
 	out := &pb.Domain{}
-	// MISSING: Name
+	out.Name = direct.ValueOf(in.Name)
 	// MISSING: Labels
 	// MISSING: AuthorizedNetworks
 	// MISSING: ReservedIPRange
@@ -94,82 +94,6 @@ func DomainObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DomainObserv
 	out.State = direct.Enum_ToProto[pb.Domain_State](mapCtx, in.State)
 	out.StatusMessage = direct.ValueOf(in.StatusMessage)
 	out.Trusts = direct.Slice_ToProto(mapCtx, in.Trusts, Trust_ToProto)
-	return out
-}
-func ManagedidentitiesDomainObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Domain) *krm.ManagedidentitiesDomainObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagedidentitiesDomainObservedState{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: AuthorizedNetworks
-	// MISSING: ReservedIPRange
-	// MISSING: Locations
-	// MISSING: Admin
-	// MISSING: Fqdn
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: Trusts
-	return out
-}
-func ManagedidentitiesDomainObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagedidentitiesDomainObservedState) *pb.Domain {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Domain{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: AuthorizedNetworks
-	// MISSING: ReservedIPRange
-	// MISSING: Locations
-	// MISSING: Admin
-	// MISSING: Fqdn
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: Trusts
-	return out
-}
-func ManagedidentitiesDomainSpec_FromProto(mapCtx *direct.MapContext, in *pb.Domain) *krm.ManagedidentitiesDomainSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagedidentitiesDomainSpec{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: AuthorizedNetworks
-	// MISSING: ReservedIPRange
-	// MISSING: Locations
-	// MISSING: Admin
-	// MISSING: Fqdn
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: Trusts
-	return out
-}
-func ManagedidentitiesDomainSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedidentitiesDomainSpec) *pb.Domain {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Domain{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: AuthorizedNetworks
-	// MISSING: ReservedIPRange
-	// MISSING: Locations
-	// MISSING: Admin
-	// MISSING: Fqdn
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: Trusts
 	return out
 }
 func Trust_FromProto(mapCtx *direct.MapContext, in *pb.Trust) *krm.Trust {
