@@ -15,10 +15,10 @@
 package gkehub
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/gkehub/apiv1/gkehubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/gkehub/apiv1beta/gkehubpb"
 )
 func CommonFeatureSpec_FromProto(mapCtx *direct.MapContext, in *pb.CommonFeatureSpec) *krm.CommonFeatureSpec {
 	if in == nil {
@@ -174,80 +174,14 @@ func FeatureState_ToProto(mapCtx *direct.MapContext, in *krm.FeatureState) *pb.F
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func GkehubFeatureObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.GkehubFeatureObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GkehubFeatureObservedState{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: ResourceState
-	// MISSING: Spec
-	// MISSING: MembershipSpecs
-	// MISSING: State
-	// MISSING: MembershipStates
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	return out
-}
-func GkehubFeatureObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GkehubFeatureObservedState) *pb.Feature {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Feature{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: ResourceState
-	// MISSING: Spec
-	// MISSING: MembershipSpecs
-	// MISSING: State
-	// MISSING: MembershipStates
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	return out
-}
-func GkehubFeatureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krm.GkehubFeatureSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GkehubFeatureSpec{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: ResourceState
-	// MISSING: Spec
-	// MISSING: MembershipSpecs
-	// MISSING: State
-	// MISSING: MembershipStates
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	return out
-}
-func GkehubFeatureSpec_ToProto(mapCtx *direct.MapContext, in *krm.GkehubFeatureSpec) *pb.Feature {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Feature{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: ResourceState
-	// MISSING: Spec
-	// MISSING: MembershipSpecs
-	// MISSING: State
-	// MISSING: MembershipStates
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	return out
-}
 func MembershipFeatureSpec_FromProto(mapCtx *direct.MapContext, in *pb.MembershipFeatureSpec) *krm.MembershipFeatureSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.MembershipFeatureSpec{}
 	out.Configmanagement = MembershipSpec_FromProto(mapCtx, in.GetConfigmanagement())
+	out.Mesh = MembershipSpec_FromProto(mapCtx, in.GetMesh())
+	out.Policycontroller = MembershipSpec_FromProto(mapCtx, in.GetPolicycontroller())
 	return out
 }
 func MembershipFeatureSpec_ToProto(mapCtx *direct.MapContext, in *krm.MembershipFeatureSpec) *pb.MembershipFeatureSpec {
@@ -258,6 +192,12 @@ func MembershipFeatureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Membership
 	if oneof := MembershipSpec_ToProto(mapCtx, in.Configmanagement); oneof != nil {
 		out.FeatureSpec = &pb.MembershipFeatureSpec_Configmanagement{Configmanagement: oneof}
 	}
+	if oneof := MembershipSpec_ToProto(mapCtx, in.Mesh); oneof != nil {
+		out.FeatureSpec = &pb.MembershipFeatureSpec_Mesh{Mesh: oneof}
+	}
+	if oneof := MembershipSpec_ToProto(mapCtx, in.Policycontroller); oneof != nil {
+		out.FeatureSpec = &pb.MembershipFeatureSpec_Policycontroller{Policycontroller: oneof}
+	}
 	return out
 }
 func MembershipFeatureState_FromProto(mapCtx *direct.MapContext, in *pb.MembershipFeatureState) *krm.MembershipFeatureState {
@@ -265,7 +205,10 @@ func MembershipFeatureState_FromProto(mapCtx *direct.MapContext, in *pb.Membersh
 		return nil
 	}
 	out := &krm.MembershipFeatureState{}
+	out.Servicemesh = MembershipState_FromProto(mapCtx, in.GetServicemesh())
+	out.Metering = MembershipState_FromProto(mapCtx, in.GetMetering())
 	out.Configmanagement = MembershipState_FromProto(mapCtx, in.GetConfigmanagement())
+	out.Policycontroller = MembershipState_FromProto(mapCtx, in.GetPolicycontroller())
 	out.State = FeatureState_FromProto(mapCtx, in.GetState())
 	return out
 }
@@ -274,8 +217,17 @@ func MembershipFeatureState_ToProto(mapCtx *direct.MapContext, in *krm.Membershi
 		return nil
 	}
 	out := &pb.MembershipFeatureState{}
+	if oneof := MembershipState_ToProto(mapCtx, in.Servicemesh); oneof != nil {
+		out.FeatureState = &pb.MembershipFeatureState_Servicemesh{Servicemesh: oneof}
+	}
+	if oneof := MembershipState_ToProto(mapCtx, in.Metering); oneof != nil {
+		out.FeatureState = &pb.MembershipFeatureState_Metering{Metering: oneof}
+	}
 	if oneof := MembershipState_ToProto(mapCtx, in.Configmanagement); oneof != nil {
 		out.FeatureState = &pb.MembershipFeatureState_Configmanagement{Configmanagement: oneof}
+	}
+	if oneof := MembershipState_ToProto(mapCtx, in.Policycontroller); oneof != nil {
+		out.FeatureState = &pb.MembershipFeatureState_Policycontroller{Policycontroller: oneof}
 	}
 	out.State = FeatureState_ToProto(mapCtx, in.State)
 	return out
