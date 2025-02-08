@@ -148,62 +148,6 @@ func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSour
 	out.Ref = in.Ref
 	return out
 }
-func Preview_FromProto(mapCtx *direct.MapContext, in *pb.Preview) *krm.Preview {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Preview{}
-	out.TerraformBlueprint = TerraformBlueprint_FromProto(mapCtx, in.GetTerraformBlueprint())
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CreateTime
-	out.Labels = in.Labels
-	// MISSING: State
-	out.Deployment = direct.LazyPtr(in.GetDeployment())
-	out.PreviewMode = direct.Enum_FromProto(mapCtx, in.GetPreviewMode())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.ArtifactsGcsBucket = in.ArtifactsGcsBucket
-	out.WorkerPool = in.WorkerPool
-	// MISSING: ErrorCode
-	// MISSING: ErrorStatus
-	// MISSING: Build
-	// MISSING: TfErrors
-	// MISSING: ErrorLogs
-	// MISSING: PreviewArtifacts
-	// MISSING: Logs
-	// MISSING: TfVersion
-	out.TfVersionConstraint = in.TfVersionConstraint
-	out.Annotations = in.Annotations
-	return out
-}
-func Preview_ToProto(mapCtx *direct.MapContext, in *krm.Preview) *pb.Preview {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Preview{}
-	if oneof := TerraformBlueprint_ToProto(mapCtx, in.TerraformBlueprint); oneof != nil {
-		out.Blueprint = &pb.Preview_TerraformBlueprint{TerraformBlueprint: oneof}
-	}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: CreateTime
-	out.Labels = in.Labels
-	// MISSING: State
-	out.Deployment = direct.ValueOf(in.Deployment)
-	out.PreviewMode = direct.Enum_ToProto[pb.Preview_PreviewMode](mapCtx, in.PreviewMode)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.ArtifactsGcsBucket = in.ArtifactsGcsBucket
-	out.WorkerPool = in.WorkerPool
-	// MISSING: ErrorCode
-	// MISSING: ErrorStatus
-	// MISSING: Build
-	// MISSING: TfErrors
-	// MISSING: ErrorLogs
-	// MISSING: PreviewArtifacts
-	// MISSING: Logs
-	// MISSING: TfVersion
-	out.TfVersionConstraint = in.TfVersionConstraint
-	out.Annotations = in.Annotations
-	return out
-}
 func PreviewArtifacts_FromProto(mapCtx *direct.MapContext, in *pb.PreviewArtifacts) *krm.PreviewArtifacts {
 	if in == nil {
 		return nil
@@ -238,60 +182,6 @@ func PreviewArtifactsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Pr
 	out := &pb.PreviewArtifacts{}
 	out.Content = direct.ValueOf(in.Content)
 	out.Artifacts = direct.ValueOf(in.Artifacts)
-	return out
-}
-func PreviewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Preview) *krm.PreviewObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PreviewObservedState{}
-	// MISSING: TerraformBlueprint
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: Labels
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: Deployment
-	// MISSING: PreviewMode
-	// MISSING: ServiceAccount
-	// MISSING: ArtifactsGcsBucket
-	// MISSING: WorkerPool
-	out.ErrorCode = direct.Enum_FromProto(mapCtx, in.GetErrorCode())
-	out.ErrorStatus = Status_FromProto(mapCtx, in.GetErrorStatus())
-	out.Build = direct.LazyPtr(in.GetBuild())
-	out.TfErrors = direct.Slice_FromProto(mapCtx, in.TfErrors, TerraformError_FromProto)
-	out.ErrorLogs = direct.LazyPtr(in.GetErrorLogs())
-	out.PreviewArtifacts = PreviewArtifacts_FromProto(mapCtx, in.GetPreviewArtifacts())
-	out.Logs = direct.LazyPtr(in.GetLogs())
-	out.TfVersion = direct.LazyPtr(in.GetTfVersion())
-	// MISSING: TfVersionConstraint
-	// MISSING: Annotations
-	return out
-}
-func PreviewObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PreviewObservedState) *pb.Preview {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Preview{}
-	// MISSING: TerraformBlueprint
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: Labels
-	out.State = direct.Enum_ToProto[pb.Preview_State](mapCtx, in.State)
-	// MISSING: Deployment
-	// MISSING: PreviewMode
-	// MISSING: ServiceAccount
-	// MISSING: ArtifactsGcsBucket
-	// MISSING: WorkerPool
-	out.ErrorCode = direct.Enum_ToProto[pb.Preview_ErrorCode](mapCtx, in.ErrorCode)
-	out.ErrorStatus = Status_ToProto(mapCtx, in.ErrorStatus)
-	out.Build = direct.ValueOf(in.Build)
-	out.TfErrors = direct.Slice_ToProto(mapCtx, in.TfErrors, TerraformError_ToProto)
-	out.ErrorLogs = direct.ValueOf(in.ErrorLogs)
-	out.PreviewArtifacts = PreviewArtifacts_ToProto(mapCtx, in.PreviewArtifacts)
-	out.Logs = direct.ValueOf(in.Logs)
-	out.TfVersion = direct.ValueOf(in.TfVersion)
-	// MISSING: TfVersionConstraint
-	// MISSING: Annotations
 	return out
 }
 func TerraformBlueprint_FromProto(mapCtx *direct.MapContext, in *pb.TerraformBlueprint) *krm.TerraformBlueprint {
