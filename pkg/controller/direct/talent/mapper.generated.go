@@ -15,10 +15,10 @@
 package talent
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/talent/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/talent/apiv4/talentpb"
+	pb "cloud.google.com/go/talent/apiv4beta1/talentpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/talent/v1alpha1"
 )
 func Company_FromProto(mapCtx *direct.MapContext, in *pb.Company) *krm.Company {
 	if in == nil {
@@ -136,85 +136,5 @@ func Location_ToProto(mapCtx *direct.MapContext, in *krm.Location) *pb.Location 
 	out.PostalAddress = PostalAddress_ToProto(mapCtx, in.PostalAddress)
 	out.LatLng = LatLng_ToProto(mapCtx, in.LatLng)
 	out.RadiusMiles = direct.ValueOf(in.RadiusMiles)
-	return out
-}
-func TalentCompanyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Company) *krm.TalentCompanyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TalentCompanyObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExternalID
-	// MISSING: Size
-	// MISSING: HeadquartersAddress
-	// MISSING: HiringAgency
-	// MISSING: EeoText
-	// MISSING: WebsiteURI
-	// MISSING: CareerSiteURI
-	// MISSING: ImageURI
-	// MISSING: KeywordSearchableJobCustomAttributes
-	// MISSING: DerivedInfo
-	// MISSING: Suspended
-	return out
-}
-func TalentCompanyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TalentCompanyObservedState) *pb.Company {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Company{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExternalID
-	// MISSING: Size
-	// MISSING: HeadquartersAddress
-	// MISSING: HiringAgency
-	// MISSING: EeoText
-	// MISSING: WebsiteURI
-	// MISSING: CareerSiteURI
-	// MISSING: ImageURI
-	// MISSING: KeywordSearchableJobCustomAttributes
-	// MISSING: DerivedInfo
-	// MISSING: Suspended
-	return out
-}
-func TalentCompanySpec_FromProto(mapCtx *direct.MapContext, in *pb.Company) *krm.TalentCompanySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TalentCompanySpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExternalID
-	// MISSING: Size
-	// MISSING: HeadquartersAddress
-	// MISSING: HiringAgency
-	// MISSING: EeoText
-	// MISSING: WebsiteURI
-	// MISSING: CareerSiteURI
-	// MISSING: ImageURI
-	// MISSING: KeywordSearchableJobCustomAttributes
-	// MISSING: DerivedInfo
-	// MISSING: Suspended
-	return out
-}
-func TalentCompanySpec_ToProto(mapCtx *direct.MapContext, in *krm.TalentCompanySpec) *pb.Company {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Company{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ExternalID
-	// MISSING: Size
-	// MISSING: HeadquartersAddress
-	// MISSING: HiringAgency
-	// MISSING: EeoText
-	// MISSING: WebsiteURI
-	// MISSING: CareerSiteURI
-	// MISSING: ImageURI
-	// MISSING: KeywordSearchableJobCustomAttributes
-	// MISSING: DerivedInfo
-	// MISSING: Suspended
 	return out
 }

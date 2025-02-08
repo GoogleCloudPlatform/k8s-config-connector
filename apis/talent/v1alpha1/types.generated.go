@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.talent.v4.Company
+// +kcc:proto=google.cloud.talent.v4beta1.Company
 type Company struct {
 	// Required during company update.
 	//
@@ -25,37 +25,40 @@ type Company struct {
 	//  The format is
 	//  "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for
 	//  example, "projects/foo/tenants/bar/companies/baz".
-	// +kcc:proto:field=google.cloud.talent.v4.Company.name
+	//
+	//  If tenant id is unspecified, the default tenant is used. For
+	//  example, "projects/foo/companies/bar".
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. The display name of the company, for example, "Google LLC".
-	// +kcc:proto:field=google.cloud.talent.v4.Company.display_name
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. Client side company identifier, used to uniquely identify the
 	//  company.
 	//
 	//  The maximum number of allowed characters is 255.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.external_id
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.external_id
 	ExternalID *string `json:"externalID,omitempty"`
 
 	// The employer's company size.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.size
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.size
 	Size *string `json:"size,omitempty"`
 
 	// The street address of the company's main headquarters, which may be
 	//  different from the job location. The service attempts
 	//  to geolocate the provided address, and populates a more specific
 	//  location wherever possible in
-	//  [DerivedInfo.headquarters_location][google.cloud.talent.v4.Company.DerivedInfo.headquarters_location].
-	// +kcc:proto:field=google.cloud.talent.v4.Company.headquarters_address
+	//  [DerivedInfo.headquarters_location][google.cloud.talent.v4beta1.Company.DerivedInfo.headquarters_location].
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.headquarters_address
 	HeadquartersAddress *string `json:"headquartersAddress,omitempty"`
 
 	// Set to true if it is the hiring agency that post jobs for other
 	//  employers.
 	//
 	//  Defaults to false if not provided.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.hiring_agency
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.hiring_agency
 	HiringAgency *bool `json:"hiringAgency,omitempty"`
 
 	// Equal Employment Opportunity legal disclaimer text to be
@@ -63,70 +66,70 @@ type Company struct {
 	//  roles.
 	//
 	//  The maximum number of allowed characters is 500.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.eeo_text
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.eeo_text
 	EeoText *string `json:"eeoText,omitempty"`
 
 	// The URI representing the company's primary web site or home page,
 	//  for example, "https://www.google.com".
 	//
 	//  The maximum number of allowed characters is 255.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.website_uri
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.website_uri
 	WebsiteURI *string `json:"websiteURI,omitempty"`
 
 	// The URI to employer's career site or careers page on the employer's web
 	//  site, for example, "https://careers.google.com".
-	// +kcc:proto:field=google.cloud.talent.v4.Company.career_site_uri
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.career_site_uri
 	CareerSiteURI *string `json:"careerSiteURI,omitempty"`
 
 	// A URI that hosts the employer's company logo.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.image_uri
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.image_uri
 	ImageURI *string `json:"imageURI,omitempty"`
 
 	// This field is deprecated. Please set the searchability of the custom
 	//  attribute in the
-	//  [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes] going
-	//  forward.
+	//  [Job.custom_attributes][google.cloud.talent.v4beta1.Job.custom_attributes]
+	//  going forward.
 	//
 	//  A list of keys of filterable
-	//  [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes],
+	//  [Job.custom_attributes][google.cloud.talent.v4beta1.Job.custom_attributes],
 	//  whose corresponding `string_values` are used in keyword searches. Jobs with
 	//  `string_values` under these specified field keys are returned if any
 	//  of the values match the search keyword. Custom field values with
 	//  parenthesis, brackets and special symbols are not searchable as-is,
 	//  and those keyword queries must be surrounded by quotes.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.keyword_searchable_job_custom_attributes
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.keyword_searchable_job_custom_attributes
 	KeywordSearchableJobCustomAttributes []string `json:"keywordSearchableJobCustomAttributes,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Company.DerivedInfo
+// +kcc:proto=google.cloud.talent.v4beta1.Company.DerivedInfo
 type Company_DerivedInfo struct {
 	// A structured headquarters location of the company, resolved from
-	//  [Company.headquarters_address][google.cloud.talent.v4.Company.headquarters_address]
+	//  [Company.headquarters_address][google.cloud.talent.v4beta1.Company.headquarters_address]
 	//  if provided.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.DerivedInfo.headquarters_location
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.DerivedInfo.headquarters_location
 	HeadquartersLocation *Location `json:"headquartersLocation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Location
+// +kcc:proto=google.cloud.talent.v4beta1.Location
 type Location struct {
 	// The type of a location, which corresponds to the address lines field of
 	//  [google.type.PostalAddress][google.type.PostalAddress]. For example,
 	//  "Downtown, Atlanta, GA, USA" has a type of
-	//  [LocationType.NEIGHBORHOOD][google.cloud.talent.v4.Location.LocationType.NEIGHBORHOOD],
+	//  [LocationType.NEIGHBORHOOD][google.cloud.talent.v4beta1.Location.LocationType.NEIGHBORHOOD],
 	//  and "Kansas City, KS, USA" has a type of
-	//  [LocationType.LOCALITY][google.cloud.talent.v4.Location.LocationType.LOCALITY].
-	// +kcc:proto:field=google.cloud.talent.v4.Location.location_type
+	//  [LocationType.LOCALITY][google.cloud.talent.v4beta1.Location.LocationType.LOCALITY].
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Location.location_type
 	LocationType *string `json:"locationType,omitempty"`
 
 	// Postal address of the location that includes human readable information,
 	//  such as postal delivery and payments addresses. Given a postal address,
 	//  a postal service can deliver items to a premises, P.O. Box, or other
 	//  delivery location.
-	// +kcc:proto:field=google.cloud.talent.v4.Location.postal_address
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Location.postal_address
 	PostalAddress *PostalAddress `json:"postalAddress,omitempty"`
 
 	// An object representing a latitude/longitude pair.
-	// +kcc:proto:field=google.cloud.talent.v4.Location.lat_lng
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Location.lat_lng
 	LatLng *LatLng `json:"latLng,omitempty"`
 
 	// Radius in miles of the job location. This value is derived from the
@@ -134,7 +137,7 @@ type Location struct {
 	//  centered from [google.type.LatLng][google.type.LatLng] covers the area
 	//  associated with the job location. For example, currently, "Mountain View,
 	//  CA, USA" has a radius of 6.17 miles.
-	// +kcc:proto:field=google.cloud.talent.v4.Location.radius_miles
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Location.radius_miles
 	RadiusMiles *float64 `json:"radiusMiles,omitempty"`
 }
 
@@ -254,15 +257,15 @@ type PostalAddress struct {
 	Organization *string `json:"organization,omitempty"`
 }
 
-// +kcc:proto=google.cloud.talent.v4.Company
+// +kcc:proto=google.cloud.talent.v4beta1.Company
 type CompanyObservedState struct {
 	// Output only. Derived details about the company.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.derived_info
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.derived_info
 	DerivedInfo *Company_DerivedInfo `json:"derivedInfo,omitempty"`
 
 	// Output only. Indicates whether a company is flagged to be suspended from
 	//  public availability by the service when job content appears suspicious,
 	//  abusive, or spammy.
-	// +kcc:proto:field=google.cloud.talent.v4.Company.suspended
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Company.suspended
 	Suspended *bool `json:"suspended,omitempty"`
 }
