@@ -15,14 +15,14 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Schema
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Schema
 type Schema struct {
 	// The structured representation of the schema.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.struct_schema
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Schema.struct_schema
 	StructSchema map[string]string `json:"structSchema,omitempty"`
 
 	// The JSON representation of the schema.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.json_schema
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Schema.json_schema
 	JsonSchema *string `json:"jsonSchema,omitempty"`
 
 	// Immutable. The full resource name of the schema, in the format of
@@ -30,6 +30,6 @@ type Schema struct {
 	//
 	//  This field must be a UTF-8 encoded string with a length limit of 1024
 	//  characters.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.name
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Schema.name
 	Name *string `json:"name,omitempty"`
 }
