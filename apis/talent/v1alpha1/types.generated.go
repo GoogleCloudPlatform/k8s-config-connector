@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.talent.v4.Tenant
+// +kcc:proto=google.cloud.talent.v4beta1.Tenant
 type Tenant struct {
 	// Required during tenant update.
 	//
@@ -24,13 +24,32 @@ type Tenant struct {
 	//
 	//  The format is "projects/{project_id}/tenants/{tenant_id}", for example,
 	//  "projects/foo/tenants/bar".
-	// +kcc:proto:field=google.cloud.talent.v4.Tenant.name
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Tenant.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. Client side tenant identifier, used to uniquely identify the
 	//  tenant.
 	//
 	//  The maximum number of allowed characters is 255.
-	// +kcc:proto:field=google.cloud.talent.v4.Tenant.external_id
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Tenant.external_id
 	ExternalID *string `json:"externalID,omitempty"`
+
+	// Indicates whether data owned by this tenant may be used to provide product
+	//  improvements across other tenants.
+	//
+	//  Defaults behavior is
+	//  [DataUsageType.ISOLATED][google.cloud.talent.v4beta1.Tenant.DataUsageType.ISOLATED]
+	//  if it's unset.
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Tenant.usage_type
+	UsageType *string `json:"usageType,omitempty"`
+
+	// A list of keys of filterable
+	//  [Profile.custom_attributes][google.cloud.talent.v4beta1.Profile.custom_attributes],
+	//  whose corresponding `string_values` are used in keyword searches. Profiles
+	//  with `string_values` under these specified field keys are returned if any
+	//  of the values match the search keyword. Custom field values with
+	//  parenthesis, brackets and special symbols are not searchable as-is,
+	//  and must be surrounded by quotes.
+	// +kcc:proto:field=google.cloud.talent.v4beta1.Tenant.keyword_searchable_profile_custom_attributes
+	KeywordSearchableProfileCustomAttributes []string `json:"keywordSearchableProfileCustomAttributes,omitempty"`
 }

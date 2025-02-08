@@ -15,47 +15,11 @@
 package talent
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/talent/apiv4/talentpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/talent/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/talent/apiv4beta1/talentpb"
 )
-func TalentTenantObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.TalentTenantObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TalentTenantObservedState{}
-	// MISSING: Name
-	// MISSING: ExternalID
-	return out
-}
-func TalentTenantObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TalentTenantObservedState) *pb.Tenant {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Tenant{}
-	// MISSING: Name
-	// MISSING: ExternalID
-	return out
-}
-func TalentTenantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.TalentTenantSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TalentTenantSpec{}
-	// MISSING: Name
-	// MISSING: ExternalID
-	return out
-}
-func TalentTenantSpec_ToProto(mapCtx *direct.MapContext, in *krm.TalentTenantSpec) *pb.Tenant {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Tenant{}
-	// MISSING: Name
-	// MISSING: ExternalID
-	return out
-}
 func Tenant_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.Tenant {
 	if in == nil {
 		return nil
@@ -63,6 +27,8 @@ func Tenant_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.Tenant {
 	out := &krm.Tenant{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.ExternalID = direct.LazyPtr(in.GetExternalId())
+	out.UsageType = direct.Enum_FromProto(mapCtx, in.GetUsageType())
+	out.KeywordSearchableProfileCustomAttributes = in.KeywordSearchableProfileCustomAttributes
 	return out
 }
 func Tenant_ToProto(mapCtx *direct.MapContext, in *krm.Tenant) *pb.Tenant {
@@ -72,5 +38,7 @@ func Tenant_ToProto(mapCtx *direct.MapContext, in *krm.Tenant) *pb.Tenant {
 	out := &pb.Tenant{}
 	out.Name = direct.ValueOf(in.Name)
 	out.ExternalId = direct.ValueOf(in.ExternalID)
+	out.UsageType = direct.Enum_ToProto[pb.Tenant_DataUsageType](mapCtx, in.UsageType)
+	out.KeywordSearchableProfileCustomAttributes = in.KeywordSearchableProfileCustomAttributes
 	return out
 }
