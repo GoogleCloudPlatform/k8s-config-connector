@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,104 +14,116 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.redis.cluster.v1.Cluster.StateInfo
-type Cluster_StateInfo struct {
-	// Describes ongoing update on the cluster when cluster state is UPDATING.
-	UpdateInfo *Cluster_StateInfo_UpdateInfo `json:"updateInfo,omitempty"`
+
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.Backup
+type Backup struct {
+	// Identifier. Full resource path of the backup. the last part of the name is
+	//  the backup id with the following format: [YYYYMMDDHHMMSS]_[Shorted Cluster
+	//  UID] OR customer specified while backup cluster. Example:
+	//  20240515123000_1234
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.name
+	Name *string `json:"name,omitempty"`
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.Cluster.StateInfo.UpdateInfo
-type Cluster_StateInfo_UpdateInfo struct {
-	// Target number of shards for redis cluster
-	TargetShardCount *int32 `json:"targetShardCount,omitempty"`
-
-	// Target number of replica nodes per shard.
-	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.BackupFile
+type BackupFile struct {
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig
-type ClusterPersistenceConfig struct {
-	// Optional. The mode of persistence.
-	Mode *string `json:"mode,omitempty"`
-
-	// Optional. RDB configuration. This field will be ignored if mode is not RDB.
-	RdbConfig *ClusterPersistenceConfig_RDBConfig `json:"rdbConfig,omitempty"`
-
-	// Optional. AOF configuration. This field will be ignored if mode is not AOF.
-	AofConfig *ClusterPersistenceConfig_AOFConfig `json:"aofConfig,omitempty"`
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.EncryptionInfo
+type EncryptionInfo struct {
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig.AOFConfig
-type ClusterPersistenceConfig_AOFConfig struct {
-	// Optional. fsync configuration.
-	AppendFsync *string `json:"appendFsync,omitempty"`
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.Backup
+type BackupObservedState struct {
+	// Output only. The time when the backup was created.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Cluster resource path of this backup.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.cluster
+	Cluster *string `json:"cluster,omitempty"`
+
+	// Output only. Cluster uid of this backup.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.cluster_uid
+	ClusterUid *string `json:"clusterUid,omitempty"`
+
+	// Output only. Total size of the backup in bytes.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.total_size_bytes
+	TotalSizeBytes *int64 `json:"totalSizeBytes,omitempty"`
+
+	// Output only. The time when the backup will expire.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Output only. redis-7.2, valkey-7.5
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.engine_version
+	EngineVersion *string `json:"engineVersion,omitempty"`
+
+	// Output only. List of backup files of the backup.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.backup_files
+	BackupFiles []BackupFile `json:"backupFiles,omitempty"`
+
+	// Output only. Node type of the cluster.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.node_type
+	NodeType *string `json:"nodeType,omitempty"`
+
+	// Output only. Number of replicas for the cluster.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.replica_count
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+
+	// Output only. Number of shards for the cluster.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.shard_count
+	ShardCount *int32 `json:"shardCount,omitempty"`
+
+	// Output only. Type of the backup.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.backup_type
+	BackupType *string `json:"backupType,omitempty"`
+
+	// Output only. State of the backup.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Encryption information of the backup.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.encryption_info
+	EncryptionInfo *EncryptionInfo `json:"encryptionInfo,omitempty"`
+
+	// Output only. System assigned unique identifier of the backup.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.Backup.uid
+	Uid *string `json:"uid,omitempty"`
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig.RDBConfig
-type ClusterPersistenceConfig_RDBConfig struct {
-	// Optional. Period between RDB snapshots.
-	RdbSnapshotPeriod *string `json:"rdbSnapshotPeriod,omitempty"`
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.BackupFile
+type BackupFileObservedState struct {
+	// Output only. e.g: <shard-id>.rdb
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.BackupFile.file_name
+	FileName *string `json:"fileName,omitempty"`
 
-	// Optional. The time that the first snapshot was/will be attempted, and to
-	//  which future snapshots will be aligned. If not provided, the current time
-	//  will be used.
-	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
+	// Output only. Size of the backup file in bytes.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.BackupFile.size_bytes
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
+
+	// Output only. The time when the backup file was created.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.BackupFile.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.redis.cluster.v1.DiscoveryEndpoint
-type DiscoveryEndpoint struct {
-	// Output only. Address of the exposed Redis endpoint used by clients to
-	//  connect to the service. The address could be either IP or hostname.
-	Address *string `json:"address,omitempty"`
+// +kcc:proto=google.cloud.redis.cluster.v1beta1.EncryptionInfo
+type EncryptionInfoObservedState struct {
+	// Output only. Type of encryption.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.EncryptionInfo.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
 
-	// Output only. The port number of the exposed Redis endpoint.
-	Port *int32 `json:"port,omitempty"`
+	// Output only. KMS key versions that are being used to protect the data
+	//  at-rest.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.EncryptionInfo.kms_key_versions
+	KMSKeyVersions []string `json:"kmsKeyVersions,omitempty"`
 
-	// Output only. Customer configuration for where the endpoint is created and
-	//  accessed from.
-	PscConfig *PscConfig `json:"pscConfig,omitempty"`
-}
+	// Output only. The state of the primary version of the KMS key perceived by
+	//  the system. This field is not populated in backups.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.EncryptionInfo.kms_key_primary_state
+	KMSKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
 
-// +kcc:proto=google.cloud.redis.cluster.v1.PscConfig
-type PscConfig struct {
-	// Required. The network where the IP address of the discovery endpoint will
-	//  be reserved, in the form of
-	//  projects/{network_project}/global/networks/{network_id}.
-	Network *string `json:"network,omitempty"`
-}
-
-// +kcc:proto=google.cloud.redis.cluster.v1.PscConnection
-type PscConnection struct {
-	// Output only. The PSC connection id of the forwarding rule connected to the
-	//  service attachment.
-	PscConnectionID *string `json:"pscConnectionID,omitempty"`
-
-	// Output only. The IP allocated on the consumer network for the PSC
-	//  forwarding rule.
-	Address *string `json:"address,omitempty"`
-
-	// Output only. The URI of the consumer side forwarding rule.
-	//  Example:
-	//  projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
-	ForwardingRule *string `json:"forwardingRule,omitempty"`
-
-	// Output only. The consumer project_id where the forwarding rule is created
-	//  from.
-	ProjectID *string `json:"projectID,omitempty"`
-
-	// The consumer network where the IP address resides, in the form of
-	//  projects/{project_id}/global/networks/{network_id}.
-	Network *string `json:"network,omitempty"`
-}
-
-// +kcc:proto=google.cloud.redis.cluster.v1.ZoneDistributionConfig
-type ZoneDistributionConfig struct {
-	// Optional. The mode of zone distribution. Defaults to MULTI_ZONE, when not
-	//  specified.
-	Mode *string `json:"mode,omitempty"`
-
-	// Optional. When SINGLE ZONE distribution is selected, zone field would be
-	//  used to allocate all resources in that zone. This is not applicable to
-	//  MULTI_ZONE, and would be ignored for MULTI_ZONE clusters.
-	Zone *string `json:"zone,omitempty"`
+	// Output only. The most recent time when the encryption info was updated.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1beta1.EncryptionInfo.last_update_time
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 }
