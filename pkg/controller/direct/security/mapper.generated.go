@@ -15,10 +15,10 @@
 package security
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/security/privateca/apiv1beta1/privatecapb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/security/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
 )
 func CertificateAuthority_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority) *krm.CertificateAuthority {
 	if in == nil {
@@ -27,11 +27,13 @@ func CertificateAuthority_FromProto(mapCtx *direct.MapContext, in *pb.Certificat
 	out := &krm.CertificateAuthority{}
 	// MISSING: Name
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
 	out.Config = CertificateConfig_FromProto(mapCtx, in.GetConfig())
 	out.Lifetime = direct.StringDuration_FromProto(mapCtx, in.GetLifetime())
 	out.KeySpec = CertificateAuthority_KeyVersionSpec_FromProto(mapCtx, in.GetKeySpec())
+	out.CertificatePolicy = CertificateAuthority_CertificateAuthorityPolicy_FromProto(mapCtx, in.GetCertificatePolicy())
+	out.IssuingOptions = CertificateAuthority_IssuingOptions_FromProto(mapCtx, in.GetIssuingOptions())
 	out.SubordinateConfig = SubordinateConfig_FromProto(mapCtx, in.GetSubordinateConfig())
-	// MISSING: Tier
 	// MISSING: State
 	// MISSING: PemCaCertificates
 	// MISSING: CaCertificateDescriptions
@@ -40,7 +42,6 @@ func CertificateAuthority_FromProto(mapCtx *direct.MapContext, in *pb.Certificat
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: DeleteTime
-	// MISSING: ExpireTime
 	out.Labels = in.Labels
 	return out
 }
@@ -51,11 +52,13 @@ func CertificateAuthority_ToProto(mapCtx *direct.MapContext, in *krm.Certificate
 	out := &pb.CertificateAuthority{}
 	// MISSING: Name
 	out.Type = direct.Enum_ToProto[pb.CertificateAuthority_Type](mapCtx, in.Type)
+	out.Tier = direct.Enum_ToProto[pb.CertificateAuthority_Tier](mapCtx, in.Tier)
 	out.Config = CertificateConfig_ToProto(mapCtx, in.Config)
 	out.Lifetime = direct.StringDuration_ToProto(mapCtx, in.Lifetime)
 	out.KeySpec = CertificateAuthority_KeyVersionSpec_ToProto(mapCtx, in.KeySpec)
+	out.CertificatePolicy = CertificateAuthority_CertificateAuthorityPolicy_ToProto(mapCtx, in.CertificatePolicy)
+	out.IssuingOptions = CertificateAuthority_IssuingOptions_ToProto(mapCtx, in.IssuingOptions)
 	out.SubordinateConfig = SubordinateConfig_ToProto(mapCtx, in.SubordinateConfig)
-	// MISSING: Tier
 	// MISSING: State
 	// MISSING: PemCaCertificates
 	// MISSING: CaCertificateDescriptions
@@ -64,7 +67,6 @@ func CertificateAuthority_ToProto(mapCtx *direct.MapContext, in *krm.Certificate
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: DeleteTime
-	// MISSING: ExpireTime
 	out.Labels = in.Labels
 	return out
 }
@@ -75,11 +77,13 @@ func CertificateAuthorityObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out := &krm.CertificateAuthorityObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: Type
+	// MISSING: Tier
 	// MISSING: Config
 	// MISSING: Lifetime
 	// MISSING: KeySpec
+	// MISSING: CertificatePolicy
+	// MISSING: IssuingOptions
 	// MISSING: SubordinateConfig
-	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.PemCaCertificates = in.PemCaCertificates
 	out.CaCertificateDescriptions = direct.Slice_FromProto(mapCtx, in.CaCertificateDescriptions, CertificateDescription_FromProto)
@@ -88,7 +92,6 @@ func CertificateAuthorityObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	// MISSING: Labels
 	return out
 }
@@ -99,11 +102,13 @@ func CertificateAuthorityObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.CertificateAuthority{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: Type
+	// MISSING: Tier
 	// MISSING: Config
 	// MISSING: Lifetime
 	// MISSING: KeySpec
+	// MISSING: CertificatePolicy
+	// MISSING: IssuingOptions
 	// MISSING: SubordinateConfig
-	out.Tier = direct.Enum_ToProto[pb.CaPool_Tier](mapCtx, in.Tier)
 	out.State = direct.Enum_ToProto[pb.CertificateAuthority_State](mapCtx, in.State)
 	out.PemCaCertificates = in.PemCaCertificates
 	out.CaCertificateDescriptions = direct.Slice_ToProto(mapCtx, in.CaCertificateDescriptions, CertificateDescription_ToProto)
@@ -112,7 +117,6 @@ func CertificateAuthorityObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	// MISSING: Labels
 	return out
 }
@@ -122,7 +126,7 @@ func CertificateAuthority_AccessUrls_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.CertificateAuthority_AccessUrls{}
 	out.CaCertificateAccessURL = direct.LazyPtr(in.GetCaCertificateAccessUrl())
-	out.CrlAccessUrls = in.CrlAccessUrls
+	out.CrlAccessURL = direct.LazyPtr(in.GetCrlAccessUrl())
 	return out
 }
 func CertificateAuthority_AccessUrls_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthority_AccessUrls) *pb.CertificateAuthority_AccessUrls {
@@ -131,7 +135,117 @@ func CertificateAuthority_AccessUrls_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.CertificateAuthority_AccessUrls{}
 	out.CaCertificateAccessUrl = direct.ValueOf(in.CaCertificateAccessURL)
-	out.CrlAccessUrls = in.CrlAccessUrls
+	out.CrlAccessUrl = direct.ValueOf(in.CrlAccessURL)
+	return out
+}
+func CertificateAuthority_CertificateAuthorityPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority_CertificateAuthorityPolicy) *krm.CertificateAuthority_CertificateAuthorityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateAuthority_CertificateAuthorityPolicy{}
+	out.AllowedConfigList = CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList_FromProto(mapCtx, in.GetAllowedConfigList())
+	out.OverwriteConfigValues = ReusableConfigWrapper_FromProto(mapCtx, in.GetOverwriteConfigValues())
+	out.AllowedLocationsAndOrganizations = direct.Slice_FromProto(mapCtx, in.AllowedLocationsAndOrganizations, Subject_FromProto)
+	out.AllowedCommonNames = in.AllowedCommonNames
+	out.AllowedSans = CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames_FromProto(mapCtx, in.GetAllowedSans())
+	out.MaximumLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaximumLifetime())
+	out.AllowedIssuanceModes = CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes_FromProto(mapCtx, in.GetAllowedIssuanceModes())
+	return out
+}
+func CertificateAuthority_CertificateAuthorityPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthority_CertificateAuthorityPolicy) *pb.CertificateAuthority_CertificateAuthorityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateAuthority_CertificateAuthorityPolicy{}
+	if oneof := CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList_ToProto(mapCtx, in.AllowedConfigList); oneof != nil {
+		out.ConfigPolicy = &pb.CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList_{AllowedConfigList: oneof}
+	}
+	if oneof := ReusableConfigWrapper_ToProto(mapCtx, in.OverwriteConfigValues); oneof != nil {
+		out.ConfigPolicy = &pb.CertificateAuthority_CertificateAuthorityPolicy_OverwriteConfigValues{OverwriteConfigValues: oneof}
+	}
+	out.AllowedLocationsAndOrganizations = direct.Slice_ToProto(mapCtx, in.AllowedLocationsAndOrganizations, Subject_ToProto)
+	out.AllowedCommonNames = in.AllowedCommonNames
+	out.AllowedSans = CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames_ToProto(mapCtx, in.AllowedSans)
+	out.MaximumLifetime = direct.StringDuration_ToProto(mapCtx, in.MaximumLifetime)
+	out.AllowedIssuanceModes = CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes_ToProto(mapCtx, in.AllowedIssuanceModes)
+	return out
+}
+func CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList) *krm.CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList{}
+	out.AllowedConfigValues = direct.Slice_FromProto(mapCtx, in.AllowedConfigValues, ReusableConfigWrapper_FromProto)
+	return out
+}
+func CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList) *pb.CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateAuthority_CertificateAuthorityPolicy_AllowedConfigList{}
+	out.AllowedConfigValues = direct.Slice_ToProto(mapCtx, in.AllowedConfigValues, ReusableConfigWrapper_ToProto)
+	return out
+}
+func CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames) *krm.CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames{}
+	out.AllowedDnsNames = in.AllowedDnsNames
+	out.AllowedUris = in.AllowedUris
+	out.AllowedEmailAddresses = in.AllowedEmailAddresses
+	out.AllowedIps = in.AllowedIps
+	out.AllowGlobbingDnsWildcards = direct.LazyPtr(in.GetAllowGlobbingDnsWildcards())
+	out.AllowCustomSans = direct.LazyPtr(in.GetAllowCustomSans())
+	return out
+}
+func CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames) *pb.CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateAuthority_CertificateAuthorityPolicy_AllowedSubjectAltNames{}
+	out.AllowedDnsNames = in.AllowedDnsNames
+	out.AllowedUris = in.AllowedUris
+	out.AllowedEmailAddresses = in.AllowedEmailAddresses
+	out.AllowedIps = in.AllowedIps
+	out.AllowGlobbingDnsWildcards = direct.ValueOf(in.AllowGlobbingDnsWildcards)
+	out.AllowCustomSans = direct.ValueOf(in.AllowCustomSans)
+	return out
+}
+func CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes) *krm.CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes{}
+	out.AllowCsrBasedIssuance = direct.LazyPtr(in.GetAllowCsrBasedIssuance())
+	out.AllowConfigBasedIssuance = direct.LazyPtr(in.GetAllowConfigBasedIssuance())
+	return out
+}
+func CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes) *pb.CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateAuthority_CertificateAuthorityPolicy_IssuanceModes{}
+	out.AllowCsrBasedIssuance = direct.ValueOf(in.AllowCsrBasedIssuance)
+	out.AllowConfigBasedIssuance = direct.ValueOf(in.AllowConfigBasedIssuance)
+	return out
+}
+func CertificateAuthority_IssuingOptions_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority_IssuingOptions) *krm.CertificateAuthority_IssuingOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateAuthority_IssuingOptions{}
+	out.IncludeCaCertURL = direct.LazyPtr(in.GetIncludeCaCertUrl())
+	out.IncludeCrlAccessURL = direct.LazyPtr(in.GetIncludeCrlAccessUrl())
+	return out
+}
+func CertificateAuthority_IssuingOptions_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthority_IssuingOptions) *pb.CertificateAuthority_IssuingOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateAuthority_IssuingOptions{}
+	out.IncludeCaCertUrl = direct.ValueOf(in.IncludeCaCertURL)
+	out.IncludeCrlAccessUrl = direct.ValueOf(in.IncludeCrlAccessURL)
 	return out
 }
 func CertificateAuthority_KeyVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority_KeyVersionSpec) *krm.CertificateAuthority_KeyVersionSpec {
@@ -162,9 +276,8 @@ func CertificateConfig_FromProto(mapCtx *direct.MapContext, in *pb.CertificateCo
 	}
 	out := &krm.CertificateConfig{}
 	out.SubjectConfig = CertificateConfig_SubjectConfig_FromProto(mapCtx, in.GetSubjectConfig())
-	out.X509Config = X509Parameters_FromProto(mapCtx, in.GetX509Config())
+	out.ReusableConfig = ReusableConfigWrapper_FromProto(mapCtx, in.GetReusableConfig())
 	out.PublicKey = PublicKey_FromProto(mapCtx, in.GetPublicKey())
-	out.SubjectKeyID = CertificateConfig_KeyId_FromProto(mapCtx, in.GetSubjectKeyId())
 	return out
 }
 func CertificateConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateConfig) *pb.CertificateConfig {
@@ -173,25 +286,8 @@ func CertificateConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateCon
 	}
 	out := &pb.CertificateConfig{}
 	out.SubjectConfig = CertificateConfig_SubjectConfig_ToProto(mapCtx, in.SubjectConfig)
-	out.X509Config = X509Parameters_ToProto(mapCtx, in.X509Config)
+	out.ReusableConfig = ReusableConfigWrapper_ToProto(mapCtx, in.ReusableConfig)
 	out.PublicKey = PublicKey_ToProto(mapCtx, in.PublicKey)
-	out.SubjectKeyId = CertificateConfig_KeyId_ToProto(mapCtx, in.SubjectKeyID)
-	return out
-}
-func CertificateConfig_KeyId_FromProto(mapCtx *direct.MapContext, in *pb.CertificateConfig_KeyId) *krm.CertificateConfig_KeyId {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CertificateConfig_KeyId{}
-	out.KeyID = direct.LazyPtr(in.GetKeyId())
-	return out
-}
-func CertificateConfig_KeyId_ToProto(mapCtx *direct.MapContext, in *krm.CertificateConfig_KeyId) *pb.CertificateConfig_KeyId {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CertificateConfig_KeyId{}
-	out.KeyId = direct.ValueOf(in.KeyID)
 	return out
 }
 func CertificateConfig_SubjectConfig_FromProto(mapCtx *direct.MapContext, in *pb.CertificateConfig_SubjectConfig) *krm.CertificateConfig_SubjectConfig {
@@ -200,6 +296,7 @@ func CertificateConfig_SubjectConfig_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.CertificateConfig_SubjectConfig{}
 	out.Subject = Subject_FromProto(mapCtx, in.GetSubject())
+	out.CommonName = direct.LazyPtr(in.GetCommonName())
 	out.SubjectAltName = SubjectAltNames_FromProto(mapCtx, in.GetSubjectAltName())
 	return out
 }
@@ -209,6 +306,7 @@ func CertificateConfig_SubjectConfig_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.CertificateConfig_SubjectConfig{}
 	out.Subject = Subject_ToProto(mapCtx, in.Subject)
+	out.CommonName = direct.ValueOf(in.CommonName)
 	out.SubjectAltName = SubjectAltNames_ToProto(mapCtx, in.SubjectAltName)
 	return out
 }
@@ -218,7 +316,7 @@ func CertificateDescription_FromProto(mapCtx *direct.MapContext, in *pb.Certific
 	}
 	out := &krm.CertificateDescription{}
 	out.SubjectDescription = CertificateDescription_SubjectDescription_FromProto(mapCtx, in.GetSubjectDescription())
-	out.X509Description = X509Parameters_FromProto(mapCtx, in.GetX509Description())
+	out.ConfigValues = ReusableConfigValues_FromProto(mapCtx, in.GetConfigValues())
 	out.PublicKey = PublicKey_FromProto(mapCtx, in.GetPublicKey())
 	out.SubjectKeyID = CertificateDescription_KeyId_FromProto(mapCtx, in.GetSubjectKeyId())
 	out.AuthorityKeyID = CertificateDescription_KeyId_FromProto(mapCtx, in.GetAuthorityKeyId())
@@ -233,7 +331,7 @@ func CertificateDescription_ToProto(mapCtx *direct.MapContext, in *krm.Certifica
 	}
 	out := &pb.CertificateDescription{}
 	out.SubjectDescription = CertificateDescription_SubjectDescription_ToProto(mapCtx, in.SubjectDescription)
-	out.X509Description = X509Parameters_ToProto(mapCtx, in.X509Description)
+	out.ConfigValues = ReusableConfigValues_ToProto(mapCtx, in.ConfigValues)
 	out.PublicKey = PublicKey_ToProto(mapCtx, in.PublicKey)
 	out.SubjectKeyId = CertificateDescription_KeyId_ToProto(mapCtx, in.SubjectKeyID)
 	out.AuthorityKeyId = CertificateDescription_KeyId_ToProto(mapCtx, in.AuthorityKeyID)
@@ -280,6 +378,7 @@ func CertificateDescription_SubjectDescription_FromProto(mapCtx *direct.MapConte
 	}
 	out := &krm.CertificateDescription_SubjectDescription{}
 	out.Subject = Subject_FromProto(mapCtx, in.GetSubject())
+	out.CommonName = direct.LazyPtr(in.GetCommonName())
 	out.SubjectAltName = SubjectAltNames_FromProto(mapCtx, in.GetSubjectAltName())
 	out.HexSerialNumber = direct.LazyPtr(in.GetHexSerialNumber())
 	out.Lifetime = direct.StringDuration_FromProto(mapCtx, in.GetLifetime())
@@ -293,6 +392,7 @@ func CertificateDescription_SubjectDescription_ToProto(mapCtx *direct.MapContext
 	}
 	out := &pb.CertificateDescription_SubjectDescription{}
 	out.Subject = Subject_ToProto(mapCtx, in.Subject)
+	out.CommonName = direct.ValueOf(in.CommonName)
 	out.SubjectAltName = SubjectAltNames_ToProto(mapCtx, in.SubjectAltName)
 	out.HexSerialNumber = direct.ValueOf(in.HexSerialNumber)
 	out.Lifetime = direct.StringDuration_ToProto(mapCtx, in.Lifetime)
@@ -399,8 +499,8 @@ func PublicKey_FromProto(mapCtx *direct.MapContext, in *pb.PublicKey) *krm.Publi
 		return nil
 	}
 	out := &krm.PublicKey{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Key = in.GetKey()
-	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
 	return out
 }
 func PublicKey_ToProto(mapCtx *direct.MapContext, in *krm.PublicKey) *pb.PublicKey {
@@ -408,104 +508,72 @@ func PublicKey_ToProto(mapCtx *direct.MapContext, in *krm.PublicKey) *pb.PublicK
 		return nil
 	}
 	out := &pb.PublicKey{}
+	out.Type = direct.Enum_ToProto[pb.PublicKey_KeyType](mapCtx, in.Type)
 	out.Key = in.Key
-	out.Format = direct.Enum_ToProto[pb.PublicKey_KeyFormat](mapCtx, in.Format)
 	return out
 }
-func SecurityCertificateAuthorityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority) *krm.SecurityCertificateAuthorityObservedState {
+func ReusableConfigValues_FromProto(mapCtx *direct.MapContext, in *pb.ReusableConfigValues) *krm.ReusableConfigValues {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SecurityCertificateAuthorityObservedState{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Config
-	// MISSING: Lifetime
-	// MISSING: KeySpec
-	// MISSING: SubordinateConfig
-	// MISSING: Tier
-	// MISSING: State
-	// MISSING: PemCaCertificates
-	// MISSING: CaCertificateDescriptions
-	// MISSING: GcsBucket
-	// MISSING: AccessUrls
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Labels
+	out := &krm.ReusableConfigValues{}
+	out.KeyUsage = KeyUsage_FromProto(mapCtx, in.GetKeyUsage())
+	out.CaOptions = ReusableConfigValues_CaOptions_FromProto(mapCtx, in.GetCaOptions())
+	out.PolicyIds = direct.Slice_FromProto(mapCtx, in.PolicyIds, ObjectId_FromProto)
+	out.AiaOcspServers = in.AiaOcspServers
+	out.AdditionalExtensions = direct.Slice_FromProto(mapCtx, in.AdditionalExtensions, X509Extension_FromProto)
 	return out
 }
-func SecurityCertificateAuthorityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecurityCertificateAuthorityObservedState) *pb.CertificateAuthority {
+func ReusableConfigValues_ToProto(mapCtx *direct.MapContext, in *krm.ReusableConfigValues) *pb.ReusableConfigValues {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CertificateAuthority{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Config
-	// MISSING: Lifetime
-	// MISSING: KeySpec
-	// MISSING: SubordinateConfig
-	// MISSING: Tier
-	// MISSING: State
-	// MISSING: PemCaCertificates
-	// MISSING: CaCertificateDescriptions
-	// MISSING: GcsBucket
-	// MISSING: AccessUrls
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Labels
+	out := &pb.ReusableConfigValues{}
+	out.KeyUsage = KeyUsage_ToProto(mapCtx, in.KeyUsage)
+	out.CaOptions = ReusableConfigValues_CaOptions_ToProto(mapCtx, in.CaOptions)
+	out.PolicyIds = direct.Slice_ToProto(mapCtx, in.PolicyIds, ObjectId_ToProto)
+	out.AiaOcspServers = in.AiaOcspServers
+	out.AdditionalExtensions = direct.Slice_ToProto(mapCtx, in.AdditionalExtensions, X509Extension_ToProto)
 	return out
 }
-func SecurityCertificateAuthoritySpec_FromProto(mapCtx *direct.MapContext, in *pb.CertificateAuthority) *krm.SecurityCertificateAuthoritySpec {
+func ReusableConfigValues_CaOptions_FromProto(mapCtx *direct.MapContext, in *pb.ReusableConfigValues_CaOptions) *krm.ReusableConfigValues_CaOptions {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SecurityCertificateAuthoritySpec{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Config
-	// MISSING: Lifetime
-	// MISSING: KeySpec
-	// MISSING: SubordinateConfig
-	// MISSING: Tier
-	// MISSING: State
-	// MISSING: PemCaCertificates
-	// MISSING: CaCertificateDescriptions
-	// MISSING: GcsBucket
-	// MISSING: AccessUrls
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Labels
+	out := &krm.ReusableConfigValues_CaOptions{}
+	out.IsCa = direct.BoolValue_FromProto(mapCtx, in.GetIsCa())
+	out.MaxIssuerPathLength = Int32Value_FromProto(mapCtx, in.GetMaxIssuerPathLength())
 	return out
 }
-func SecurityCertificateAuthoritySpec_ToProto(mapCtx *direct.MapContext, in *krm.SecurityCertificateAuthoritySpec) *pb.CertificateAuthority {
+func ReusableConfigValues_CaOptions_ToProto(mapCtx *direct.MapContext, in *krm.ReusableConfigValues_CaOptions) *pb.ReusableConfigValues_CaOptions {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CertificateAuthority{}
-	// MISSING: Name
-	// MISSING: Type
-	// MISSING: Config
-	// MISSING: Lifetime
-	// MISSING: KeySpec
-	// MISSING: SubordinateConfig
-	// MISSING: Tier
-	// MISSING: State
-	// MISSING: PemCaCertificates
-	// MISSING: CaCertificateDescriptions
-	// MISSING: GcsBucket
-	// MISSING: AccessUrls
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Labels
+	out := &pb.ReusableConfigValues_CaOptions{}
+	out.IsCa = direct.BoolValue_ToProto(mapCtx, in.IsCa)
+	out.MaxIssuerPathLength = Int32Value_ToProto(mapCtx, in.MaxIssuerPathLength)
+	return out
+}
+func ReusableConfigWrapper_FromProto(mapCtx *direct.MapContext, in *pb.ReusableConfigWrapper) *krm.ReusableConfigWrapper {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReusableConfigWrapper{}
+	out.ReusableConfig = direct.LazyPtr(in.GetReusableConfig())
+	out.ReusableConfigValues = ReusableConfigValues_FromProto(mapCtx, in.GetReusableConfigValues())
+	return out
+}
+func ReusableConfigWrapper_ToProto(mapCtx *direct.MapContext, in *krm.ReusableConfigWrapper) *pb.ReusableConfigWrapper {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReusableConfigWrapper{}
+	if oneof := ReusableConfigWrapper_ReusableConfig_ToProto(mapCtx, in.ReusableConfig); oneof != nil {
+		out.ConfigValues = oneof
+	}
+	if oneof := ReusableConfigValues_ToProto(mapCtx, in.ReusableConfigValues); oneof != nil {
+		out.ConfigValues = &pb.ReusableConfigWrapper_ReusableConfigValues{ReusableConfigValues: oneof}
+	}
 	return out
 }
 func Subject_FromProto(mapCtx *direct.MapContext, in *pb.Subject) *krm.Subject {
@@ -513,7 +581,6 @@ func Subject_FromProto(mapCtx *direct.MapContext, in *pb.Subject) *krm.Subject {
 		return nil
 	}
 	out := &krm.Subject{}
-	out.CommonName = direct.LazyPtr(in.GetCommonName())
 	out.CountryCode = direct.LazyPtr(in.GetCountryCode())
 	out.Organization = direct.LazyPtr(in.GetOrganization())
 	out.OrganizationalUnit = direct.LazyPtr(in.GetOrganizationalUnit())
@@ -528,7 +595,6 @@ func Subject_ToProto(mapCtx *direct.MapContext, in *krm.Subject) *pb.Subject {
 		return nil
 	}
 	out := &pb.Subject{}
-	out.CommonName = direct.ValueOf(in.CommonName)
 	out.CountryCode = direct.ValueOf(in.CountryCode)
 	out.Organization = direct.ValueOf(in.Organization)
 	out.OrganizationalUnit = direct.ValueOf(in.OrganizationalUnit)
@@ -618,81 +684,5 @@ func X509Extension_ToProto(mapCtx *direct.MapContext, in *krm.X509Extension) *pb
 	out.ObjectId = ObjectId_ToProto(mapCtx, in.ObjectID)
 	out.Critical = direct.ValueOf(in.Critical)
 	out.Value = in.Value
-	return out
-}
-func X509Parameters_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters) *krm.X509Parameters {
-	if in == nil {
-		return nil
-	}
-	out := &krm.X509Parameters{}
-	out.KeyUsage = KeyUsage_FromProto(mapCtx, in.GetKeyUsage())
-	out.CaOptions = X509Parameters_CaOptions_FromProto(mapCtx, in.GetCaOptions())
-	out.PolicyIds = direct.Slice_FromProto(mapCtx, in.PolicyIds, ObjectId_FromProto)
-	out.AiaOcspServers = in.AiaOcspServers
-	out.NameConstraints = X509Parameters_NameConstraints_FromProto(mapCtx, in.GetNameConstraints())
-	out.AdditionalExtensions = direct.Slice_FromProto(mapCtx, in.AdditionalExtensions, X509Extension_FromProto)
-	return out
-}
-func X509Parameters_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters) *pb.X509Parameters {
-	if in == nil {
-		return nil
-	}
-	out := &pb.X509Parameters{}
-	out.KeyUsage = KeyUsage_ToProto(mapCtx, in.KeyUsage)
-	out.CaOptions = X509Parameters_CaOptions_ToProto(mapCtx, in.CaOptions)
-	out.PolicyIds = direct.Slice_ToProto(mapCtx, in.PolicyIds, ObjectId_ToProto)
-	out.AiaOcspServers = in.AiaOcspServers
-	out.NameConstraints = X509Parameters_NameConstraints_ToProto(mapCtx, in.NameConstraints)
-	out.AdditionalExtensions = direct.Slice_ToProto(mapCtx, in.AdditionalExtensions, X509Extension_ToProto)
-	return out
-}
-func X509Parameters_CaOptions_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_CaOptions) *krm.X509Parameters_CaOptions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.X509Parameters_CaOptions{}
-	out.IsCa = in.IsCa
-	out.MaxIssuerPathLength = in.MaxIssuerPathLength
-	return out
-}
-func X509Parameters_CaOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters_CaOptions) *pb.X509Parameters_CaOptions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.X509Parameters_CaOptions{}
-	out.IsCa = in.IsCa
-	out.MaxIssuerPathLength = in.MaxIssuerPathLength
-	return out
-}
-func X509Parameters_NameConstraints_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_NameConstraints) *krm.X509Parameters_NameConstraints {
-	if in == nil {
-		return nil
-	}
-	out := &krm.X509Parameters_NameConstraints{}
-	out.Critical = direct.LazyPtr(in.GetCritical())
-	out.PermittedDnsNames = in.PermittedDnsNames
-	out.ExcludedDnsNames = in.ExcludedDnsNames
-	out.PermittedIPRanges = in.PermittedIpRanges
-	out.ExcludedIPRanges = in.ExcludedIpRanges
-	out.PermittedEmailAddresses = in.PermittedEmailAddresses
-	out.ExcludedEmailAddresses = in.ExcludedEmailAddresses
-	out.PermittedUris = in.PermittedUris
-	out.ExcludedUris = in.ExcludedUris
-	return out
-}
-func X509Parameters_NameConstraints_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters_NameConstraints) *pb.X509Parameters_NameConstraints {
-	if in == nil {
-		return nil
-	}
-	out := &pb.X509Parameters_NameConstraints{}
-	out.Critical = direct.ValueOf(in.Critical)
-	out.PermittedDnsNames = in.PermittedDnsNames
-	out.ExcludedDnsNames = in.ExcludedDnsNames
-	out.PermittedIpRanges = in.PermittedIPRanges
-	out.ExcludedIpRanges = in.ExcludedIPRanges
-	out.PermittedEmailAddresses = in.PermittedEmailAddresses
-	out.ExcludedEmailAddresses = in.ExcludedEmailAddresses
-	out.PermittedUris = in.PermittedUris
-	out.ExcludedUris = in.ExcludedUris
 	return out
 }
