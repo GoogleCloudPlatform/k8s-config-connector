@@ -15,12 +15,12 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.v2.EncryptionSpec
+// +kcc:proto=google.cloud.dialogflow.v2beta1.EncryptionSpec
 type EncryptionSpec struct {
 	// Immutable. The resource name of the encryption key specification resource.
 	//  Format:
 	//  projects/{project}/locations/{location}/encryptionSpec
-	// +kcc:proto:field=google.cloud.dialogflow.v2.EncryptionSpec.name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.EncryptionSpec.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. The name of customer-managed encryption key that is used to
@@ -28,6 +28,6 @@ type EncryptionSpec struct {
 	//  by the default Google encryption key. Only the key in the same location as
 	//  this resource is allowed to be used for encryption. Format:
 	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{key}`
-	// +kcc:proto:field=google.cloud.dialogflow.v2.EncryptionSpec.kms_key
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.EncryptionSpec.kms_key
 	KMSKey *string `json:"kmsKey,omitempty"`
 }

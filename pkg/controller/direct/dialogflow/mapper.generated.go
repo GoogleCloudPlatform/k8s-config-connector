@@ -16,46 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowEncryptionSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.DialogflowEncryptionSpecObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowEncryptionSpecObservedState{}
-	// MISSING: Name
-	// MISSING: KMSKey
-	return out
-}
-func DialogflowEncryptionSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEncryptionSpecObservedState) *pb.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionSpec{}
-	// MISSING: Name
-	// MISSING: KMSKey
-	return out
-}
-func DialogflowEncryptionSpecSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.DialogflowEncryptionSpecSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowEncryptionSpecSpec{}
-	// MISSING: Name
-	// MISSING: KMSKey
-	return out
-}
-func DialogflowEncryptionSpecSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEncryptionSpecSpec) *pb.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionSpec{}
-	// MISSING: Name
-	// MISSING: KMSKey
-	return out
-}
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
 	if in == nil {
 		return nil
