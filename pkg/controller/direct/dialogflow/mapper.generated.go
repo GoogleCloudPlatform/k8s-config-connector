@@ -15,10 +15,10 @@
 package dialogflow
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 )
 func AutomatedAgentConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedAgentConfig) *krm.AutomatedAgentConfig {
 	if in == nil {
@@ -116,98 +116,6 @@ func ConversationProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: DisplayName
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: AutomatedAgentConfig
-	// MISSING: HumanAgentAssistantConfig
-	// MISSING: HumanAgentHandoffConfig
-	// MISSING: NotificationConfig
-	// MISSING: LoggingConfig
-	// MISSING: NewMessageEventNotificationConfig
-	// MISSING: NewRecognitionResultNotificationConfig
-	// MISSING: SttConfig
-	// MISSING: LanguageCode
-	// MISSING: TimeZone
-	// MISSING: SecuritySettings
-	// MISSING: TtsConfig
-	return out
-}
-func DialogflowConversationProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversationProfile) *krm.DialogflowConversationProfileObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowConversationProfileObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: AutomatedAgentConfig
-	// MISSING: HumanAgentAssistantConfig
-	// MISSING: HumanAgentHandoffConfig
-	// MISSING: NotificationConfig
-	// MISSING: LoggingConfig
-	// MISSING: NewMessageEventNotificationConfig
-	// MISSING: NewRecognitionResultNotificationConfig
-	// MISSING: SttConfig
-	// MISSING: LanguageCode
-	// MISSING: TimeZone
-	// MISSING: SecuritySettings
-	// MISSING: TtsConfig
-	return out
-}
-func DialogflowConversationProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationProfileObservedState) *pb.ConversationProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ConversationProfile{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: AutomatedAgentConfig
-	// MISSING: HumanAgentAssistantConfig
-	// MISSING: HumanAgentHandoffConfig
-	// MISSING: NotificationConfig
-	// MISSING: LoggingConfig
-	// MISSING: NewMessageEventNotificationConfig
-	// MISSING: NewRecognitionResultNotificationConfig
-	// MISSING: SttConfig
-	// MISSING: LanguageCode
-	// MISSING: TimeZone
-	// MISSING: SecuritySettings
-	// MISSING: TtsConfig
-	return out
-}
-func DialogflowConversationProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConversationProfile) *krm.DialogflowConversationProfileSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowConversationProfileSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: AutomatedAgentConfig
-	// MISSING: HumanAgentAssistantConfig
-	// MISSING: HumanAgentHandoffConfig
-	// MISSING: NotificationConfig
-	// MISSING: LoggingConfig
-	// MISSING: NewMessageEventNotificationConfig
-	// MISSING: NewRecognitionResultNotificationConfig
-	// MISSING: SttConfig
-	// MISSING: LanguageCode
-	// MISSING: TimeZone
-	// MISSING: SecuritySettings
-	// MISSING: TtsConfig
-	return out
-}
-func DialogflowConversationProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationProfileSpec) *pb.ConversationProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ConversationProfile{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: AutomatedAgentConfig
 	// MISSING: HumanAgentAssistantConfig
 	// MISSING: HumanAgentHandoffConfig
@@ -495,7 +403,7 @@ func HumanAgentAssistantConfig_SuggestionTriggerSettings_FromProto(mapCtx *direc
 		return nil
 	}
 	out := &krm.HumanAgentAssistantConfig_SuggestionTriggerSettings{}
-	out.NoSmalltalk = direct.LazyPtr(in.GetNoSmalltalk())
+	out.NoSmallTalk = direct.LazyPtr(in.GetNoSmallTalk())
 	out.OnlyEndUser = direct.LazyPtr(in.GetOnlyEndUser())
 	return out
 }
@@ -504,7 +412,7 @@ func HumanAgentAssistantConfig_SuggestionTriggerSettings_ToProto(mapCtx *direct.
 		return nil
 	}
 	out := &pb.HumanAgentAssistantConfig_SuggestionTriggerSettings{}
-	out.NoSmalltalk = direct.ValueOf(in.NoSmalltalk)
+	out.NoSmallTalk = direct.ValueOf(in.NoSmallTalk)
 	out.OnlyEndUser = direct.ValueOf(in.OnlyEndUser)
 	return out
 }
