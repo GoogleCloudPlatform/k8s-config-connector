@@ -15,10 +15,10 @@
 package securitycenter
 
 import (
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/securitycenter/apiv1beta1/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func OrganizationSettings_FromProto(mapCtx *direct.MapContext, in *pb.OrganizationSettings) *krm.OrganizationSettings {
 	if in == nil {
@@ -47,7 +47,6 @@ func OrganizationSettings_AssetDiscoveryConfig_FromProto(mapCtx *direct.MapConte
 	out := &krm.OrganizationSettings_AssetDiscoveryConfig{}
 	out.ProjectIds = in.ProjectIds
 	out.InclusionMode = direct.Enum_FromProto(mapCtx, in.GetInclusionMode())
-	out.FolderIds = in.FolderIds
 	return out
 }
 func OrganizationSettings_AssetDiscoveryConfig_ToProto(mapCtx *direct.MapContext, in *krm.OrganizationSettings_AssetDiscoveryConfig) *pb.OrganizationSettings_AssetDiscoveryConfig {
@@ -57,46 +56,5 @@ func OrganizationSettings_AssetDiscoveryConfig_ToProto(mapCtx *direct.MapContext
 	out := &pb.OrganizationSettings_AssetDiscoveryConfig{}
 	out.ProjectIds = in.ProjectIds
 	out.InclusionMode = direct.Enum_ToProto[pb.OrganizationSettings_AssetDiscoveryConfig_InclusionMode](mapCtx, in.InclusionMode)
-	out.FolderIds = in.FolderIds
-	return out
-}
-func SecuritycenterOrganizationSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OrganizationSettings) *krm.SecuritycenterOrganizationSettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterOrganizationSettingsObservedState{}
-	// MISSING: Name
-	// MISSING: EnableAssetDiscovery
-	// MISSING: AssetDiscoveryConfig
-	return out
-}
-func SecuritycenterOrganizationSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterOrganizationSettingsObservedState) *pb.OrganizationSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OrganizationSettings{}
-	// MISSING: Name
-	// MISSING: EnableAssetDiscovery
-	// MISSING: AssetDiscoveryConfig
-	return out
-}
-func SecuritycenterOrganizationSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.OrganizationSettings) *krm.SecuritycenterOrganizationSettingsSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterOrganizationSettingsSpec{}
-	// MISSING: Name
-	// MISSING: EnableAssetDiscovery
-	// MISSING: AssetDiscoveryConfig
-	return out
-}
-func SecuritycenterOrganizationSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterOrganizationSettingsSpec) *pb.OrganizationSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OrganizationSettings{}
-	// MISSING: Name
-	// MISSING: EnableAssetDiscovery
-	// MISSING: AssetDiscoveryConfig
 	return out
 }
