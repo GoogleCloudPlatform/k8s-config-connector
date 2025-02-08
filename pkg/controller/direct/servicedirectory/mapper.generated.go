@@ -16,7 +16,7 @@ package servicedirectory
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/servicedirectory/apiv1/servicedirectorypb"
+	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -27,6 +27,8 @@ func Namespace_FromProto(mapCtx *direct.MapContext, in *pb.Namespace) *krm.Names
 	out := &krm.Namespace{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Labels = in.Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	// MISSING: Uid
 	return out
 }
@@ -37,6 +39,8 @@ func Namespace_ToProto(mapCtx *direct.MapContext, in *krm.Namespace) *pb.Namespa
 	out := &pb.Namespace{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Labels = in.Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	// MISSING: Uid
 	return out
 }
@@ -47,6 +51,8 @@ func NamespaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Namespac
 	out := &krm.NamespaceObservedState{}
 	// MISSING: Name
 	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	return out
 }
@@ -57,46 +63,8 @@ func NamespaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Namespace
 	out := &pb.Namespace{}
 	// MISSING: Name
 	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Uid = direct.ValueOf(in.Uid)
-	return out
-}
-func ServicedirectoryNamespaceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Namespace) *krm.ServicedirectoryNamespaceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServicedirectoryNamespaceObservedState{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Uid
-	return out
-}
-func ServicedirectoryNamespaceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServicedirectoryNamespaceObservedState) *pb.Namespace {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Namespace{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Uid
-	return out
-}
-func ServicedirectoryNamespaceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Namespace) *krm.ServicedirectoryNamespaceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServicedirectoryNamespaceSpec{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Uid
-	return out
-}
-func ServicedirectoryNamespaceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServicedirectoryNamespaceSpec) *pb.Namespace {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Namespace{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Uid
 	return out
 }

@@ -15,24 +15,32 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.servicedirectory.v1.Namespace
+// +kcc:proto=google.cloud.servicedirectory.v1beta1.Namespace
 type Namespace struct {
 	// Immutable. The resource name for the namespace in the format
 	//  `projects/*/locations/*/namespaces/*`.
-	// +kcc:proto:field=google.cloud.servicedirectory.v1.Namespace.name
+	// +kcc:proto:field=google.cloud.servicedirectory.v1beta1.Namespace.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Resource labels associated with this namespace.
 	//  No more than 64 user labels can be associated with a given resource. Label
 	//  keys and values can be no longer than 63 characters.
-	// +kcc:proto:field=google.cloud.servicedirectory.v1.Namespace.labels
+	// +kcc:proto:field=google.cloud.servicedirectory.v1beta1.Namespace.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-// +kcc:proto=google.cloud.servicedirectory.v1.Namespace
+// +kcc:proto=google.cloud.servicedirectory.v1beta1.Namespace
 type NamespaceObservedState struct {
-	// Output only. The globally unique identifier of the namespace in the UUID4
-	//  format.
-	// +kcc:proto:field=google.cloud.servicedirectory.v1.Namespace.uid
+	// Output only. The timestamp when the namespace was created.
+	// +kcc:proto:field=google.cloud.servicedirectory.v1beta1.Namespace.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the namespace was last updated.
+	// +kcc:proto:field=google.cloud.servicedirectory.v1beta1.Namespace.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. A globally unique identifier (in UUID4 format) for this
+	//  namespace.
+	// +kcc:proto:field=google.cloud.servicedirectory.v1beta1.Namespace.uid
 	Uid *string `json:"uid,omitempty"`
 }
