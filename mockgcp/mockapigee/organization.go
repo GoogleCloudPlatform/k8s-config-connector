@@ -14,6 +14,10 @@
 
 package mockapigee
 
+// +tool:mockgcp-support-apigee
+// proto.service: mockgcp.cloud.apigee.v1.OrganizationsServer
+// proto.message: mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization
+
 import (
 	"context"
 	"fmt"
