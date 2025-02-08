@@ -16,58 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowFulfillmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.DialogflowFulfillmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowFulfillmentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: GenericWebService
-	// MISSING: Enabled
-	// MISSING: Features
-	return out
-}
-func DialogflowFulfillmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFulfillmentObservedState) *pb.Fulfillment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Fulfillment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: GenericWebService
-	// MISSING: Enabled
-	// MISSING: Features
-	return out
-}
-func DialogflowFulfillmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.DialogflowFulfillmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowFulfillmentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: GenericWebService
-	// MISSING: Enabled
-	// MISSING: Features
-	return out
-}
-func DialogflowFulfillmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFulfillmentSpec) *pb.Fulfillment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Fulfillment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: GenericWebService
-	// MISSING: Enabled
-	// MISSING: Features
-	return out
-}
 func Fulfillment_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.Fulfillment {
 	if in == nil {
 		return nil
