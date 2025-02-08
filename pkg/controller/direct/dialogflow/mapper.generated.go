@@ -16,98 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowExperimentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Experiment) *krm.DialogflowExperimentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowExperimentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: Definition
-	// MISSING: RolloutConfig
-	// MISSING: RolloutState
-	// MISSING: RolloutFailureReason
-	// MISSING: Result
-	// MISSING: CreateTime
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: LastUpdateTime
-	// MISSING: ExperimentLength
-	// MISSING: VariantsHistory
-	return out
-}
-func DialogflowExperimentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowExperimentObservedState) *pb.Experiment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Experiment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: Definition
-	// MISSING: RolloutConfig
-	// MISSING: RolloutState
-	// MISSING: RolloutFailureReason
-	// MISSING: Result
-	// MISSING: CreateTime
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: LastUpdateTime
-	// MISSING: ExperimentLength
-	// MISSING: VariantsHistory
-	return out
-}
-func DialogflowExperimentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Experiment) *krm.DialogflowExperimentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowExperimentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: Definition
-	// MISSING: RolloutConfig
-	// MISSING: RolloutState
-	// MISSING: RolloutFailureReason
-	// MISSING: Result
-	// MISSING: CreateTime
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: LastUpdateTime
-	// MISSING: ExperimentLength
-	// MISSING: VariantsHistory
-	return out
-}
-func DialogflowExperimentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowExperimentSpec) *pb.Experiment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Experiment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: Definition
-	// MISSING: RolloutConfig
-	// MISSING: RolloutState
-	// MISSING: RolloutFailureReason
-	// MISSING: Result
-	// MISSING: CreateTime
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: LastUpdateTime
-	// MISSING: ExperimentLength
-	// MISSING: VariantsHistory
-	return out
-}
 func Experiment_FromProto(mapCtx *direct.MapContext, in *pb.Experiment) *krm.Experiment {
 	if in == nil {
 		return nil
