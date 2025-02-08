@@ -15,24 +15,23 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1.MuteConfig
+// +kcc:proto=google.cloud.securitycenter.v2.MuteConfig
 type MuteConfig struct {
-	// This field will be ignored if provided on config creation. Format
-	//  `organizations/{organization}/muteConfigs/{mute_config}`
-	//  `folders/{folder}/muteConfigs/{mute_config}`
-	//  `projects/{project}/muteConfigs/{mute_config}`
-	//  `organizations/{organization}/locations/global/muteConfigs/{mute_config}`
-	//  `folders/{folder}/locations/global/muteConfigs/{mute_config}`
-	//  `projects/{project}/locations/global/muteConfigs/{mute_config}`
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.name
+	// Identifier. This field will be ignored if provided on config creation. The
+	//  following list shows some examples of the format:
+	//
+	//  + `organizations/{organization}/muteConfigs/{mute_config}`
+	//  +
+	//  `organizations/{organization}locations/{location}//muteConfigs/{mute_config}`
+	//  + `folders/{folder}/muteConfigs/{mute_config}`
+	//  + `folders/{folder}/locations/{location}/muteConfigs/{mute_config}`
+	//  + `projects/{project}/muteConfigs/{mute_config}`
+	//  + `projects/{project}/locations/{location}/muteConfigs/{mute_config}`
+	// +kcc:proto:field=google.cloud.securitycenter.v2.MuteConfig.name
 	Name *string `json:"name,omitempty"`
 
-	// The human readable name to be displayed for the mute config.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
 	// A description of the mute config.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.description
+	// +kcc:proto:field=google.cloud.securitycenter.v2.MuteConfig.description
 	Description *string `json:"description,omitempty"`
 
 	// Required. An expression that defines the filter to apply across
@@ -55,40 +54,38 @@ type MuteConfig struct {
 	//  * finding_class: `=`, `:`
 	//  * indicator.ip_addresses: `=`, `:`
 	//  * indicator.domains: `=`, `:`
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.filter
+	// +kcc:proto:field=google.cloud.securitycenter.v2.MuteConfig.filter
 	Filter *string `json:"filter,omitempty"`
 
-	// Optional. The type of the mute config, which determines what type of mute
-	//  state the config affects. The static mute state takes precedence over the
-	//  dynamic mute state. Immutable after creation. STATIC by default if not set
-	//  during creation.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.type
+	// Required. The type of the mute config, which determines what type of mute
+	//  state the config affects. Immutable after creation.
+	// +kcc:proto:field=google.cloud.securitycenter.v2.MuteConfig.type
 	Type *string `json:"type,omitempty"`
 
 	// Optional. The expiry of the mute config. Only applicable for dynamic
 	//  configs. If the expiry is set, when the config expires, it is removed from
 	//  all findings.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.expiry_time
+	// +kcc:proto:field=google.cloud.securitycenter.v2.MuteConfig.expiry_time
 	ExpiryTime *string `json:"expiryTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1.MuteConfig
+// +kcc:proto=google.cloud.securitycenter.v2.MuteConfig
 type MuteConfigObservedState struct {
 	// Output only. The time at which the mute config was created.
 	//  This field is set by the server and will be ignored if provided on config
 	//  creation.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.create_time
+	// +kcc:proto:field=google.cloud.securitycenter.v2.MuteConfig.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The most recent time at which the mute config was updated.
 	//  This field is set by the server and will be ignored if provided on config
 	//  creation or update.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.update_time
+	// +kcc:proto:field=google.cloud.securitycenter.v2.MuteConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Email address of the user who last edited the mute config.
 	//  This field is set by the server and will be ignored if provided on config
 	//  creation or update.
-	// +kcc:proto:field=google.cloud.securitycenter.v1.MuteConfig.most_recent_editor
+	// +kcc:proto:field=google.cloud.securitycenter.v2.MuteConfig.most_recent_editor
 	MostRecentEditor *string `json:"mostRecentEditor,omitempty"`
 }

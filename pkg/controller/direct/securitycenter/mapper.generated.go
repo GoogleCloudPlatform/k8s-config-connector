@@ -15,10 +15,10 @@
 package securitycenter
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
 )
 func MuteConfig_FromProto(mapCtx *direct.MapContext, in *pb.MuteConfig) *krm.MuteConfig {
 	if in == nil {
@@ -26,7 +26,6 @@ func MuteConfig_FromProto(mapCtx *direct.MapContext, in *pb.MuteConfig) *krm.Mut
 	}
 	out := &krm.MuteConfig{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	// MISSING: CreateTime
@@ -42,7 +41,6 @@ func MuteConfig_ToProto(mapCtx *direct.MapContext, in *krm.MuteConfig) *pb.MuteC
 	}
 	out := &pb.MuteConfig{}
 	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Filter = direct.ValueOf(in.Filter)
 	// MISSING: CreateTime
@@ -58,7 +56,6 @@ func MuteConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MuteCon
 	}
 	out := &krm.MuteConfigObservedState{}
 	// MISSING: Name
-	// MISSING: DisplayName
 	// MISSING: Description
 	// MISSING: Filter
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -74,76 +71,11 @@ func MuteConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MuteConf
 	}
 	out := &pb.MuteConfig{}
 	// MISSING: Name
-	// MISSING: DisplayName
 	// MISSING: Description
 	// MISSING: Filter
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.MostRecentEditor = direct.ValueOf(in.MostRecentEditor)
-	// MISSING: Type
-	// MISSING: ExpiryTime
-	return out
-}
-func SecuritycenterMuteConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MuteConfig) *krm.SecuritycenterMuteConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterMuteConfigObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Filter
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: MostRecentEditor
-	// MISSING: Type
-	// MISSING: ExpiryTime
-	return out
-}
-func SecuritycenterMuteConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterMuteConfigObservedState) *pb.MuteConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MuteConfig{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Filter
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: MostRecentEditor
-	// MISSING: Type
-	// MISSING: ExpiryTime
-	return out
-}
-func SecuritycenterMuteConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.MuteConfig) *krm.SecuritycenterMuteConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterMuteConfigSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Filter
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: MostRecentEditor
-	// MISSING: Type
-	// MISSING: ExpiryTime
-	return out
-}
-func SecuritycenterMuteConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterMuteConfigSpec) *pb.MuteConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MuteConfig{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: Filter
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: MostRecentEditor
 	// MISSING: Type
 	// MISSING: ExpiryTime
 	return out
