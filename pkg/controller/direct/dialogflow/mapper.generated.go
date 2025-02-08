@@ -16,7 +16,7 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -50,6 +50,7 @@ func Intent_FromProto(mapCtx *direct.MapContext, in *pb.Intent) *krm.Intent {
 	out.WebhookState = direct.Enum_FromProto(mapCtx, in.GetWebhookState())
 	out.Priority = direct.LazyPtr(in.GetPriority())
 	out.IsFallback = direct.LazyPtr(in.GetIsFallback())
+	out.MlEnabled = direct.LazyPtr(in.GetMlEnabled())
 	out.MlDisabled = direct.LazyPtr(in.GetMlDisabled())
 	out.LiveAgentHandoff = direct.LazyPtr(in.GetLiveAgentHandoff())
 	out.EndInteraction = direct.LazyPtr(in.GetEndInteraction())
@@ -77,6 +78,7 @@ func Intent_ToProto(mapCtx *direct.MapContext, in *krm.Intent) *pb.Intent {
 	out.WebhookState = direct.Enum_ToProto[pb.Intent_WebhookState](mapCtx, in.WebhookState)
 	out.Priority = direct.ValueOf(in.Priority)
 	out.IsFallback = direct.ValueOf(in.IsFallback)
+	out.MlEnabled = direct.ValueOf(in.MlEnabled)
 	out.MlDisabled = direct.ValueOf(in.MlDisabled)
 	out.LiveAgentHandoff = direct.ValueOf(in.LiveAgentHandoff)
 	out.EndInteraction = direct.ValueOf(in.EndInteraction)
@@ -104,6 +106,7 @@ func IntentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Intent) *kr
 	// MISSING: WebhookState
 	// MISSING: Priority
 	// MISSING: IsFallback
+	// MISSING: MlEnabled
 	// MISSING: MlDisabled
 	// MISSING: LiveAgentHandoff
 	// MISSING: EndInteraction
@@ -131,6 +134,7 @@ func IntentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IntentObserv
 	// MISSING: WebhookState
 	// MISSING: Priority
 	// MISSING: IsFallback
+	// MISSING: MlEnabled
 	// MISSING: MlDisabled
 	// MISSING: LiveAgentHandoff
 	// MISSING: EndInteraction
@@ -182,6 +186,12 @@ func Intent_Message_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message) 
 	out.LinkOutSuggestion = Intent_Message_LinkOutSuggestion_FromProto(mapCtx, in.GetLinkOutSuggestion())
 	out.ListSelect = Intent_Message_ListSelect_FromProto(mapCtx, in.GetListSelect())
 	out.CarouselSelect = Intent_Message_CarouselSelect_FromProto(mapCtx, in.GetCarouselSelect())
+	out.TelephonyPlayAudio = Intent_Message_TelephonyPlayAudio_FromProto(mapCtx, in.GetTelephonyPlayAudio())
+	out.TelephonySynthesizeSpeech = Intent_Message_TelephonySynthesizeSpeech_FromProto(mapCtx, in.GetTelephonySynthesizeSpeech())
+	out.TelephonyTransferCall = Intent_Message_TelephonyTransferCall_FromProto(mapCtx, in.GetTelephonyTransferCall())
+	out.RbmText = Intent_Message_RbmText_FromProto(mapCtx, in.GetRbmText())
+	out.RbmStandaloneRichCard = Intent_Message_RbmStandaloneCard_FromProto(mapCtx, in.GetRbmStandaloneRichCard())
+	out.RbmCarouselRichCard = Intent_Message_RbmCarouselCard_FromProto(mapCtx, in.GetRbmCarouselRichCard())
 	out.BrowseCarouselCard = Intent_Message_BrowseCarouselCard_FromProto(mapCtx, in.GetBrowseCarouselCard())
 	out.TableCard = Intent_Message_TableCard_FromProto(mapCtx, in.GetTableCard())
 	out.MediaContent = Intent_Message_MediaContent_FromProto(mapCtx, in.GetMediaContent())
@@ -225,6 +235,24 @@ func Intent_Message_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message) *
 	}
 	if oneof := Intent_Message_CarouselSelect_ToProto(mapCtx, in.CarouselSelect); oneof != nil {
 		out.Message = &pb.Intent_Message_CarouselSelect_{CarouselSelect: oneof}
+	}
+	if oneof := Intent_Message_TelephonyPlayAudio_ToProto(mapCtx, in.TelephonyPlayAudio); oneof != nil {
+		out.Message = &pb.Intent_Message_TelephonyPlayAudio_{TelephonyPlayAudio: oneof}
+	}
+	if oneof := Intent_Message_TelephonySynthesizeSpeech_ToProto(mapCtx, in.TelephonySynthesizeSpeech); oneof != nil {
+		out.Message = &pb.Intent_Message_TelephonySynthesizeSpeech_{TelephonySynthesizeSpeech: oneof}
+	}
+	if oneof := Intent_Message_TelephonyTransferCall_ToProto(mapCtx, in.TelephonyTransferCall); oneof != nil {
+		out.Message = &pb.Intent_Message_TelephonyTransferCall_{TelephonyTransferCall: oneof}
+	}
+	if oneof := Intent_Message_RbmText_ToProto(mapCtx, in.RbmText); oneof != nil {
+		out.Message = &pb.Intent_Message_RbmText_{RbmText: oneof}
+	}
+	if oneof := Intent_Message_RbmStandaloneCard_ToProto(mapCtx, in.RbmStandaloneRichCard); oneof != nil {
+		out.Message = &pb.Intent_Message_RbmStandaloneRichCard{RbmStandaloneRichCard: oneof}
+	}
+	if oneof := Intent_Message_RbmCarouselCard_ToProto(mapCtx, in.RbmCarouselRichCard); oneof != nil {
+		out.Message = &pb.Intent_Message_RbmCarouselRichCard{RbmCarouselRichCard: oneof}
 	}
 	if oneof := Intent_Message_BrowseCarouselCard_ToProto(mapCtx, in.BrowseCarouselCard); oneof != nil {
 		out.Message = &pb.Intent_Message_BrowseCarouselCard_{BrowseCarouselCard: oneof}
@@ -594,6 +622,220 @@ func Intent_Message_QuickReplies_ToProto(mapCtx *direct.MapContext, in *krm.Inte
 	out.QuickReplies = in.QuickReplies
 	return out
 }
+func Intent_Message_RbmCardContent_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmCardContent) *krm.Intent_Message_RbmCardContent {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmCardContent{}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Media = Intent_Message_RbmCardContent_RbmMedia_FromProto(mapCtx, in.GetMedia())
+	out.Suggestions = direct.Slice_FromProto(mapCtx, in.Suggestions, Intent_Message_RbmSuggestion_FromProto)
+	return out
+}
+func Intent_Message_RbmCardContent_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmCardContent) *pb.Intent_Message_RbmCardContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmCardContent{}
+	out.Title = direct.ValueOf(in.Title)
+	out.Description = direct.ValueOf(in.Description)
+	out.Media = Intent_Message_RbmCardContent_RbmMedia_ToProto(mapCtx, in.Media)
+	out.Suggestions = direct.Slice_ToProto(mapCtx, in.Suggestions, Intent_Message_RbmSuggestion_ToProto)
+	return out
+}
+func Intent_Message_RbmCardContent_RbmMedia_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmCardContent_RbmMedia) *krm.Intent_Message_RbmCardContent_RbmMedia {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmCardContent_RbmMedia{}
+	out.FileURI = direct.LazyPtr(in.GetFileUri())
+	out.ThumbnailURI = direct.LazyPtr(in.GetThumbnailUri())
+	out.Height = direct.Enum_FromProto(mapCtx, in.GetHeight())
+	return out
+}
+func Intent_Message_RbmCardContent_RbmMedia_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmCardContent_RbmMedia) *pb.Intent_Message_RbmCardContent_RbmMedia {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmCardContent_RbmMedia{}
+	out.FileUri = direct.ValueOf(in.FileURI)
+	out.ThumbnailUri = direct.ValueOf(in.ThumbnailURI)
+	out.Height = direct.Enum_ToProto[pb.Intent_Message_RbmCardContent_RbmMedia_Height](mapCtx, in.Height)
+	return out
+}
+func Intent_Message_RbmCarouselCard_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmCarouselCard) *krm.Intent_Message_RbmCarouselCard {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmCarouselCard{}
+	out.CardWidth = direct.Enum_FromProto(mapCtx, in.GetCardWidth())
+	out.CardContents = direct.Slice_FromProto(mapCtx, in.CardContents, Intent_Message_RbmCardContent_FromProto)
+	return out
+}
+func Intent_Message_RbmCarouselCard_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmCarouselCard) *pb.Intent_Message_RbmCarouselCard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmCarouselCard{}
+	out.CardWidth = direct.Enum_ToProto[pb.Intent_Message_RbmCarouselCard_CardWidth](mapCtx, in.CardWidth)
+	out.CardContents = direct.Slice_ToProto(mapCtx, in.CardContents, Intent_Message_RbmCardContent_ToProto)
+	return out
+}
+func Intent_Message_RbmStandaloneCard_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmStandaloneCard) *krm.Intent_Message_RbmStandaloneCard {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmStandaloneCard{}
+	out.CardOrientation = direct.Enum_FromProto(mapCtx, in.GetCardOrientation())
+	out.ThumbnailImageAlignment = direct.Enum_FromProto(mapCtx, in.GetThumbnailImageAlignment())
+	out.CardContent = Intent_Message_RbmCardContent_FromProto(mapCtx, in.GetCardContent())
+	return out
+}
+func Intent_Message_RbmStandaloneCard_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmStandaloneCard) *pb.Intent_Message_RbmStandaloneCard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmStandaloneCard{}
+	out.CardOrientation = direct.Enum_ToProto[pb.Intent_Message_RbmStandaloneCard_CardOrientation](mapCtx, in.CardOrientation)
+	out.ThumbnailImageAlignment = direct.Enum_ToProto[pb.Intent_Message_RbmStandaloneCard_ThumbnailImageAlignment](mapCtx, in.ThumbnailImageAlignment)
+	out.CardContent = Intent_Message_RbmCardContent_ToProto(mapCtx, in.CardContent)
+	return out
+}
+func Intent_Message_RbmSuggestedAction_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmSuggestedAction) *krm.Intent_Message_RbmSuggestedAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmSuggestedAction{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.PostbackData = direct.LazyPtr(in.GetPostbackData())
+	out.Dial = Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial_FromProto(mapCtx, in.GetDial())
+	out.OpenURL = Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri_FromProto(mapCtx, in.GetOpenUrl())
+	out.ShareLocation = Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation_FromProto(mapCtx, in.GetShareLocation())
+	return out
+}
+func Intent_Message_RbmSuggestedAction_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmSuggestedAction) *pb.Intent_Message_RbmSuggestedAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmSuggestedAction{}
+	out.Text = direct.ValueOf(in.Text)
+	out.PostbackData = direct.ValueOf(in.PostbackData)
+	if oneof := Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial_ToProto(mapCtx, in.Dial); oneof != nil {
+		out.Action = &pb.Intent_Message_RbmSuggestedAction_Dial{Dial: oneof}
+	}
+	if oneof := Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri_ToProto(mapCtx, in.OpenURL); oneof != nil {
+		out.Action = &pb.Intent_Message_RbmSuggestedAction_OpenUrl{OpenUrl: oneof}
+	}
+	if oneof := Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation_ToProto(mapCtx, in.ShareLocation); oneof != nil {
+		out.Action = &pb.Intent_Message_RbmSuggestedAction_ShareLocation{ShareLocation: oneof}
+	}
+	return out
+}
+func Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial) *krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial{}
+	out.PhoneNumber = direct.LazyPtr(in.GetPhoneNumber())
+	return out
+}
+func Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial) *pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionDial{}
+	out.PhoneNumber = direct.ValueOf(in.PhoneNumber)
+	return out
+}
+func Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri) *krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri) *pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionOpenUri{}
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation) *krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation{}
+	return out
+}
+func Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation) *pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmSuggestedAction_RbmSuggestedActionShareLocation{}
+	return out
+}
+func Intent_Message_RbmSuggestedReply_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmSuggestedReply) *krm.Intent_Message_RbmSuggestedReply {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmSuggestedReply{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.PostbackData = direct.LazyPtr(in.GetPostbackData())
+	return out
+}
+func Intent_Message_RbmSuggestedReply_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmSuggestedReply) *pb.Intent_Message_RbmSuggestedReply {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmSuggestedReply{}
+	out.Text = direct.ValueOf(in.Text)
+	out.PostbackData = direct.ValueOf(in.PostbackData)
+	return out
+}
+func Intent_Message_RbmSuggestion_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmSuggestion) *krm.Intent_Message_RbmSuggestion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmSuggestion{}
+	out.Reply = Intent_Message_RbmSuggestedReply_FromProto(mapCtx, in.GetReply())
+	out.Action = Intent_Message_RbmSuggestedAction_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func Intent_Message_RbmSuggestion_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmSuggestion) *pb.Intent_Message_RbmSuggestion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmSuggestion{}
+	if oneof := Intent_Message_RbmSuggestedReply_ToProto(mapCtx, in.Reply); oneof != nil {
+		out.Suggestion = &pb.Intent_Message_RbmSuggestion_Reply{Reply: oneof}
+	}
+	if oneof := Intent_Message_RbmSuggestedAction_ToProto(mapCtx, in.Action); oneof != nil {
+		out.Suggestion = &pb.Intent_Message_RbmSuggestion_Action{Action: oneof}
+	}
+	return out
+}
+func Intent_Message_RbmText_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_RbmText) *krm.Intent_Message_RbmText {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_RbmText{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.RbmSuggestion = direct.Slice_FromProto(mapCtx, in.RbmSuggestion, Intent_Message_RbmSuggestion_FromProto)
+	return out
+}
+func Intent_Message_RbmText_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_RbmText) *pb.Intent_Message_RbmText {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_RbmText{}
+	out.Text = direct.ValueOf(in.Text)
+	out.RbmSuggestion = direct.Slice_ToProto(mapCtx, in.RbmSuggestion, Intent_Message_RbmSuggestion_ToProto)
+	return out
+}
 func Intent_Message_SelectItemInfo_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_SelectItemInfo) *krm.Intent_Message_SelectItemInfo {
 	if in == nil {
 		return nil
@@ -718,6 +960,60 @@ func Intent_Message_TableCardRow_ToProto(mapCtx *direct.MapContext, in *krm.Inte
 	out := &pb.Intent_Message_TableCardRow{}
 	out.Cells = direct.Slice_ToProto(mapCtx, in.Cells, Intent_Message_TableCardCell_ToProto)
 	out.DividerAfter = direct.ValueOf(in.DividerAfter)
+	return out
+}
+func Intent_Message_TelephonyPlayAudio_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_TelephonyPlayAudio) *krm.Intent_Message_TelephonyPlayAudio {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_TelephonyPlayAudio{}
+	out.AudioURI = direct.LazyPtr(in.GetAudioUri())
+	return out
+}
+func Intent_Message_TelephonyPlayAudio_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_TelephonyPlayAudio) *pb.Intent_Message_TelephonyPlayAudio {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_TelephonyPlayAudio{}
+	out.AudioUri = direct.ValueOf(in.AudioURI)
+	return out
+}
+func Intent_Message_TelephonySynthesizeSpeech_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_TelephonySynthesizeSpeech) *krm.Intent_Message_TelephonySynthesizeSpeech {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_TelephonySynthesizeSpeech{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.Ssml = direct.LazyPtr(in.GetSsml())
+	return out
+}
+func Intent_Message_TelephonySynthesizeSpeech_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_TelephonySynthesizeSpeech) *pb.Intent_Message_TelephonySynthesizeSpeech {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_TelephonySynthesizeSpeech{}
+	if oneof := Intent_Message_TelephonySynthesizeSpeech_Text_ToProto(mapCtx, in.Text); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := Intent_Message_TelephonySynthesizeSpeech_Ssml_ToProto(mapCtx, in.Ssml); oneof != nil {
+		out.Source = oneof
+	}
+	return out
+}
+func Intent_Message_TelephonyTransferCall_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_TelephonyTransferCall) *krm.Intent_Message_TelephonyTransferCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Intent_Message_TelephonyTransferCall{}
+	out.PhoneNumber = direct.LazyPtr(in.GetPhoneNumber())
+	return out
+}
+func Intent_Message_TelephonyTransferCall_ToProto(mapCtx *direct.MapContext, in *krm.Intent_Message_TelephonyTransferCall) *pb.Intent_Message_TelephonyTransferCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Intent_Message_TelephonyTransferCall{}
+	out.PhoneNumber = direct.ValueOf(in.PhoneNumber)
 	return out
 }
 func Intent_Message_Text_FromProto(mapCtx *direct.MapContext, in *pb.Intent_Message_Text) *krm.Intent_Message_Text {
