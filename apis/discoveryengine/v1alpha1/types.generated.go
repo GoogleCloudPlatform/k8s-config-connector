@@ -15,18 +15,18 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Document
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Document
 type Document struct {
 	// The structured JSON data for the document. It should conform to the
-	//  registered [Schema][google.cloud.discoveryengine.v1.Schema] or an
+	//  registered [Schema][google.cloud.discoveryengine.v1beta.Schema] or an
 	//  `INVALID_ARGUMENT` error is thrown.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.struct_data
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.struct_data
 	StructData map[string]string `json:"structData,omitempty"`
 
 	// The JSON string representation of the document. It should conform to the
-	//  registered [Schema][google.cloud.discoveryengine.v1.Schema] or an
+	//  registered [Schema][google.cloud.discoveryengine.v1beta.Schema] or an
 	//  `INVALID_ARGUMENT` error is thrown.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.json_data
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.json_data
 	JsonData *string `json:"jsonData,omitempty"`
 
 	// Immutable. The full resource name of the document.
@@ -35,24 +35,24 @@ type Document struct {
 	//
 	//  This field must be a UTF-8 encoded string with a length limit of 1024
 	//  characters.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.name
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.name
 	Name *string `json:"name,omitempty"`
 
 	// Immutable. The identifier of the document.
 	//
 	//  Id should conform to [RFC-1034](https://tools.ietf.org/html/rfc1034)
 	//  standard with a length limit of 63 characters.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.id
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.id
 	ID *string `json:"id,omitempty"`
 
 	// The identifier of the schema located in the same data store.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.schema_id
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.schema_id
 	SchemaID *string `json:"schemaID,omitempty"`
 
 	// The unstructured data linked to this document. Content must be set if this
 	//  document is under a
 	//  `CONTENT_REQUIRED` data store.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.content
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.content
 	Content *Document_Content `json:"content,omitempty"`
 
 	// The identifier of the parent document. Currently supports at most two level
@@ -60,11 +60,11 @@ type Document struct {
 	//
 	//  Id should conform to [RFC-1034](https://tools.ietf.org/html/rfc1034)
 	//  standard with a length limit of 63 characters.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.parent_document_id
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.parent_document_id
 	ParentDocumentID *string `json:"parentDocumentID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Document.Content
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Document.Content
 type Document_Content struct {
 	// The content represented as a stream of bytes. The maximum length is
 	//  1,000,000 bytes (1 MB / ~0.95 MiB).
@@ -74,13 +74,13 @@ type Document_Content struct {
 	//  example, `abc123!?$*&()'-=@~` should be represented as
 	//  `YWJjMTIzIT8kKiYoKSctPUB+` in JSON. See
 	//  https://developers.google.com/protocol-buffers/docs/proto3#json.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.Content.raw_bytes
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.Content.raw_bytes
 	RawBytes []byte `json:"rawBytes,omitempty"`
 
 	// The URI of the content. Only Cloud Storage URIs (e.g.
 	//  `gs://bucket-name/path/to/file`) are supported. The maximum file size
 	//  is 2.5 MB for text-based formats, 200 MB for other formats.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.Content.uri
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.Content.uri
 	URI *string `json:"uri,omitempty"`
 
 	// The MIME type of the content. Supported types:
@@ -92,20 +92,20 @@ type Document_Content struct {
 	//  * `text/plain` (TXT)
 	//
 	//  See https://www.iana.org/assignments/media-types/media-types.xhtml.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.Content.mime_type
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.Content.mime_type
 	MimeType *string `json:"mimeType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Document.IndexStatus
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Document.IndexStatus
 type Document_IndexStatus struct {
 	// The time when the document was indexed.
 	//  If this field is populated, it means the document has been indexed.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.IndexStatus.index_time
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.IndexStatus.index_time
 	IndexTime *string `json:"indexTime,omitempty"`
 
 	// A sample of errors encountered while indexing the document.
 	//  If this field is populated, the document is not indexed due to errors.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.IndexStatus.error_samples
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.IndexStatus.error_samples
 	ErrorSamples []Status `json:"errorSamples,omitempty"`
 }
 
@@ -166,11 +166,11 @@ type Status struct {
 	Details []Any `json:"details,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Document
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Document
 type DocumentObservedState struct {
 	// Output only. This field is OUTPUT_ONLY.
 	//  It contains derived data that are not in the original input document.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.derived_struct_data
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.derived_struct_data
 	DerivedStructData map[string]string `json:"derivedStructData,omitempty"`
 
 	// Output only. The last time the document was indexed. If this field is set,
@@ -178,7 +178,7 @@ type DocumentObservedState struct {
 	//
 	//  This field is OUTPUT_ONLY. If this field is not populated, it means the
 	//  document has never been indexed.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.index_time
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.index_time
 	IndexTime *string `json:"indexTime,omitempty"`
 
 	// Output only. The index status of the document.
@@ -187,6 +187,6 @@ type DocumentObservedState struct {
 	//  * Otherwise, if document is not indexed due to errors, the error_samples
 	//    field is populated.
 	//  * Otherwise, index_status is unset.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Document.index_status
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Document.index_status
 	IndexStatus *Document_IndexStatus `json:"indexStatus,omitempty"`
 }
