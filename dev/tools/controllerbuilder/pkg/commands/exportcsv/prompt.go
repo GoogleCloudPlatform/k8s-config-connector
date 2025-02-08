@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	kccio "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/io"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -42,6 +43,10 @@ type PromptOptions struct {
 	// StrictInputColumnKeys ensures that all input datapoints have this shape.
 	// This helps detect typos in the examples.
 	StrictInputColumnKeys []string
+
+	// Model configuration
+	ModelName string
+	// TODO: we can add more parameters here if needed
 }
 
 func (o *PromptOptions) InitDefaults() error {
@@ -57,6 +62,7 @@ func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.ProtoDir, "proto-dir", o.ProtoDir, "base directory for checkout of proto API definitions")
 	cmd.Flags().StringVar(&o.Output, "output", o.Output, "the directory to store the prompt outcome")
 	cmd.Flags().StringSliceVar(&o.StrictInputColumnKeys, "strict-input-columns", o.StrictInputColumnKeys, "return an error if we see an irregular datapoint for this tool")
+	cmd.Flags().StringVar(&o.ModelName, "model", llm.DefaultModelConfig().ModelName, "name of the VertexAI model to use")
 }
 
 // BuildPromptCommand builds the `prompt` command.
@@ -143,9 +149,8 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	log.Info("built data point", "dataPoint", dataPoint)
 
 	out := &bytes.Buffer{}
-	if err := x.RunGemini(ctx, dataPoint, out); err != nil {
+	if err := x.RunGemini(ctx, dataPoint, o.ModelName, out); err != nil {
 		return fmt.Errorf("running LLM inference: %w", err)
-
 	}
 
 	if o.Output == "" {

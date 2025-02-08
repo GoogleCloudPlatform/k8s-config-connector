@@ -27,8 +27,38 @@ import (
 	"k8s.io/klog/v2"
 )
 
-// BuildVertexAIClient builds a client for the VertexAI API.
-func BuildVertexAIClient(ctx context.Context) (*VertexAIClient, error) {
+// ModelConfig holds configuration for the VertexAI model
+type ModelConfig struct {
+	ModelName    string
+	Temperature  float32
+	TopK         int32
+	TopP         float32
+	MaxTokens    int32
+	ResponseType string
+}
+
+// DefaultModelConfig returns the default model configuration.
+func DefaultModelConfig() ModelConfig {
+	return ModelConfig{
+		// ModelName: "vertexai-1.5-flash"
+		// ModelName: "vertexai-exp-1206"
+		// ModelName: "gemini-2.0-flash-exp"
+		// ModelName: "gemini-2.0-pro-exp-02-05"
+		// ModelName: "gemma-2-27b-it"
+		// ModelName: "gemini-1.5-pro-002"
+		ModelName:   "gemini-2.0-pro-exp-02-05",
+		Temperature: 1.0,
+		TopK:        40,
+		TopP:        0.95,
+		MaxTokens:   8192,
+		// ResponseType: "text/plain"
+		// ResponseType: "application/json"
+		ResponseType: "text/plain",
+	}
+}
+
+// BuildVertexAIClientWithConfig builds a client for the VertexAI API with custom configuration
+func BuildVertexAIClientWithConfig(ctx context.Context, config ModelConfig) (*VertexAIClient, error) {
 	log := klog.FromContext(ctx)
 
 	var opts []option.ClientOption
@@ -60,11 +90,20 @@ func BuildVertexAIClient(ctx context.Context) (*VertexAIClient, error) {
 	if err != nil {
 		return nil, fmt.Errorf("building vertexai client: %w", err)
 	}
-	return &VertexAIClient{client: client}, nil
+	return &VertexAIClient{
+		client: client,
+		config: config,
+	}, nil
+}
+
+// BuildVertexAIClient builds a client with default configuration
+func BuildVertexAIClient(ctx context.Context) (*VertexAIClient, error) {
+	return BuildVertexAIClientWithConfig(ctx, DefaultModelConfig())
 }
 
 type VertexAIClient struct {
 	client *genai.Client
+	config ModelConfig
 }
 
 func (c *VertexAIClient) Close() error {
@@ -72,19 +111,13 @@ func (c *VertexAIClient) Close() error {
 }
 
 func (c *VertexAIClient) StartChat(systemPrompt string) Chat {
-	// model := c.client.GenerativeModel("vertexai-1.5-flash")
-	// model := c.client.GenerativeModel("vertexai-exp-1206")
-	// model := c.client.GenerativeModel("gemini-2.0-flash-exp")
-	model := c.client.GenerativeModel("gemini-2.0-pro-exp-02-05")
-	// model := c.client.GenerativeModel("gemma-2-27b-it")
-	// model := c.client.GenerativeModel("gemini-1.5-pro-002")
+	model := c.client.GenerativeModel(c.config.ModelName)
 
-	// Some values that are recommended by aistudio
-	model.SetTemperature(1)
-	model.SetTopK(40)
-	model.SetTopP(0.95)
-	model.SetMaxOutputTokens(8192)
-	model.ResponseMIMEType = "text/plain"
+	model.SetTemperature(c.config.Temperature)
+	model.SetTopK(c.config.TopK)
+	model.SetTopP(c.config.TopP)
+	model.SetMaxOutputTokens(c.config.MaxTokens)
+	model.ResponseMIMEType = c.config.ResponseType
 
 	if systemPrompt != "" {
 		model.SystemInstruction = &genai.Content{

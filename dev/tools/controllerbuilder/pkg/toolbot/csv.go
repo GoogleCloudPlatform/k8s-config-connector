@@ -190,10 +190,15 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, s
 }
 
 // RunGemini runs a prompt against Gemini, generating context based on the source code.
-func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Writer) error {
+func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, modelName string, out io.Writer) error {
 	log := klog.FromContext(ctx)
 
-	client, err := llm.BuildVertexAIClient(ctx)
+	config := llm.DefaultModelConfig()
+	if modelName != "" {
+		config.ModelName = modelName
+	}
+
+	client, err := llm.BuildVertexAIClientWithConfig(ctx, config)
 	if err != nil {
 		return fmt.Errorf("building gemini client: %w", err)
 	}
