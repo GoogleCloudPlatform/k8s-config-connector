@@ -15,22 +15,21 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.securitycenter.v1beta1.Finding
+// +kcc:proto=google.cloud.securitycenter.v1p1beta1.Finding
 type Finding struct {
 	// The relative resource name of this finding. See:
 	//  https://cloud.google.com/apis/design/resource_names#relative_resource_name
 	//  Example:
 	//  "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}"
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.name
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.name
 	Name *string `json:"name,omitempty"`
 
-	// Immutable. The relative resource name of the source the finding belongs to.
-	//  See:
+	// The relative resource name of the source the finding belongs to. See:
 	//  https://cloud.google.com/apis/design/resource_names#relative_resource_name
 	//  This field is immutable after creation time.
 	//  For example:
 	//  "organizations/{organization_id}/sources/{source_id}"
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.parent
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.parent
 	Parent *string `json:"parent,omitempty"`
 
 	// For findings on Google Cloud resources, the full resource
@@ -39,23 +38,23 @@ type Finding struct {
 	//  When the finding is for a non-Google Cloud resource, the resourceName can
 	//  be a customer or partner defined string. This field is immutable after
 	//  creation time.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.resource_name
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.resource_name
 	ResourceName *string `json:"resourceName,omitempty"`
 
 	// The state of the finding.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.state
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.state
 	State *string `json:"state,omitempty"`
 
 	// The additional taxonomy group within findings from a given source.
 	//  This field is immutable after creation time.
 	//  Example: "XSS_FLASH_INJECTION"
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.category
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.category
 	Category *string `json:"category,omitempty"`
 
 	// The URI that, if available, points to a web page outside of Security
 	//  Command Center where additional information about the finding can be found.
 	//  This field is guaranteed to be either empty or a well formed URL.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.external_uri
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.external_uri
 	ExternalURI *string `json:"externalURI,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
@@ -65,23 +64,38 @@ type Finding struct {
 	//  occurred. For example, if the finding represents an open firewall it would
 	//  capture the time the detector believes the firewall became open. The
 	//  accuracy is determined by the detector. If the finding were to be resolved
-	//  afterward, this time would reflect when the finding was resolved.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.event_time
+	//  afterward, this time would reflect when the finding was resolved. Must not
+	//  be set to a value greater than the current timestamp.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.event_time
 	EventTime *string `json:"eventTime,omitempty"`
 
 	// The time at which the finding was created in Security Command Center.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.create_time
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.create_time
 	CreateTime *string `json:"createTime,omitempty"`
+
+	// The severity of the finding. This field is managed by the source that
+	//  writes the finding.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// The canonical name of the finding. It's either
+	//  "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+	//  "folders/{folder_id}/sources/{source_id}/findings/{finding_id}" or
+	//  "projects/{project_number}/sources/{source_id}/findings/{finding_id}",
+	//  depending on the closest CRM ancestor of the resource associated with the
+	//  finding.
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.canonical_name
+	CanonicalName *string `json:"canonicalName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1beta1.SecurityMarks
+// +kcc:proto=google.cloud.securitycenter.v1p1beta1.SecurityMarks
 type SecurityMarks struct {
 	// The relative resource name of the SecurityMarks. See:
 	//  https://cloud.google.com/apis/design/resource_names#relative_resource_name
 	//  Examples:
 	//  "organizations/{organization_id}/assets/{asset_id}/securityMarks"
 	//  "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.SecurityMarks.name
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.name
 	Name *string `json:"name,omitempty"`
 
 	// Mutable user specified security marks belonging to the parent resource.
@@ -92,8 +106,19 @@ type SecurityMarks struct {
 	//    * Keys must be letters, numbers, underscores, or dashes
 	//    * Values have leading and trailing whitespace trimmed, remaining
 	//      characters must be between 1 - 4096 characters (inclusive)
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.SecurityMarks.marks
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.marks
 	Marks map[string]string `json:"marks,omitempty"`
+
+	// The canonical name of the marks.
+	//  Examples:
+	//  "organizations/{organization_id}/assets/{asset_id}/securityMarks"
+	//  "folders/{folder_id}/assets/{asset_id}/securityMarks"
+	//  "projects/{project_number}/assets/{asset_id}/securityMarks"
+	//  "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
+	//  "folders/{folder_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
+	//  "projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks"
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.SecurityMarks.canonical_name
+	CanonicalName *string `json:"canonicalName,omitempty"`
 }
 
 // +kcc:proto=google.protobuf.ListValue
@@ -130,11 +155,11 @@ type Value struct {
 	ListValue *ListValue `json:"listValue,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securitycenter.v1beta1.Finding
+// +kcc:proto=google.cloud.securitycenter.v1p1beta1.Finding
 type FindingObservedState struct {
 	// Output only. User specified security marks. These marks are entirely
 	//  managed by the user and come from the SecurityMarks resource that belongs
 	//  to the finding.
-	// +kcc:proto:field=google.cloud.securitycenter.v1beta1.Finding.security_marks
+	// +kcc:proto:field=google.cloud.securitycenter.v1p1beta1.Finding.security_marks
 	SecurityMarks *SecurityMarks `json:"securityMarks,omitempty"`
 }

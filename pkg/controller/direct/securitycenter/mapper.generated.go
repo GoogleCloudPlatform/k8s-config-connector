@@ -16,7 +16,7 @@ package securitycenter
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1beta1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv1p1beta1/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -35,6 +35,8 @@ func Finding_FromProto(mapCtx *direct.MapContext, in *pb.Finding) *krm.Finding {
 	// MISSING: SecurityMarks
 	out.EventTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEventTime())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.CanonicalName = direct.LazyPtr(in.GetCanonicalName())
 	return out
 }
 func Finding_ToProto(mapCtx *direct.MapContext, in *krm.Finding) *pb.Finding {
@@ -52,6 +54,8 @@ func Finding_ToProto(mapCtx *direct.MapContext, in *krm.Finding) *pb.Finding {
 	// MISSING: SecurityMarks
 	out.EventTime = direct.StringTimestamp_ToProto(mapCtx, in.EventTime)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Severity = direct.Enum_ToProto[pb.Finding_Severity](mapCtx, in.Severity)
+	out.CanonicalName = direct.ValueOf(in.CanonicalName)
 	return out
 }
 func FindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Finding) *krm.FindingObservedState {
@@ -69,6 +73,8 @@ func FindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Finding) *
 	out.SecurityMarks = SecurityMarks_FromProto(mapCtx, in.GetSecurityMarks())
 	// MISSING: EventTime
 	// MISSING: CreateTime
+	// MISSING: Severity
+	// MISSING: CanonicalName
 	return out
 }
 func FindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FindingObservedState) *pb.Finding {
@@ -86,6 +92,8 @@ func FindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FindingObse
 	out.SecurityMarks = SecurityMarks_ToProto(mapCtx, in.SecurityMarks)
 	// MISSING: EventTime
 	// MISSING: CreateTime
+	// MISSING: Severity
+	// MISSING: CanonicalName
 	return out
 }
 func SecurityMarks_FromProto(mapCtx *direct.MapContext, in *pb.SecurityMarks) *krm.SecurityMarks {
@@ -95,6 +103,7 @@ func SecurityMarks_FromProto(mapCtx *direct.MapContext, in *pb.SecurityMarks) *k
 	out := &krm.SecurityMarks{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Marks = in.Marks
+	out.CanonicalName = direct.LazyPtr(in.GetCanonicalName())
 	return out
 }
 func SecurityMarks_ToProto(mapCtx *direct.MapContext, in *krm.SecurityMarks) *pb.SecurityMarks {
@@ -104,5 +113,6 @@ func SecurityMarks_ToProto(mapCtx *direct.MapContext, in *krm.SecurityMarks) *pb
 	out := &pb.SecurityMarks{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Marks = in.Marks
+	out.CanonicalName = direct.ValueOf(in.CanonicalName)
 	return out
 }
