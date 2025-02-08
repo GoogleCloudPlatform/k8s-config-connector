@@ -16,94 +16,10 @@ package networkmanagement
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
+	pb "cloud.google.com/go/networkmanagement/apiv1beta1/networkmanagementpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func NetworkmanagementVpcFlowLogsConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpcFlowLogsConfig) *krm.NetworkmanagementVpcFlowLogsConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkmanagementVpcFlowLogsConfigObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: AggregationInterval
-	// MISSING: FlowSampling
-	// MISSING: Metadata
-	// MISSING: MetadataFields
-	// MISSING: FilterExpr
-	// MISSING: TargetResourceState
-	// MISSING: InterconnectAttachment
-	// MISSING: VpnTunnel
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func NetworkmanagementVpcFlowLogsConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkmanagementVpcFlowLogsConfigObservedState) *pb.VpcFlowLogsConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VpcFlowLogsConfig{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: AggregationInterval
-	// MISSING: FlowSampling
-	// MISSING: Metadata
-	// MISSING: MetadataFields
-	// MISSING: FilterExpr
-	// MISSING: TargetResourceState
-	// MISSING: InterconnectAttachment
-	// MISSING: VpnTunnel
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func NetworkmanagementVpcFlowLogsConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.VpcFlowLogsConfig) *krm.NetworkmanagementVpcFlowLogsConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkmanagementVpcFlowLogsConfigSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: AggregationInterval
-	// MISSING: FlowSampling
-	// MISSING: Metadata
-	// MISSING: MetadataFields
-	// MISSING: FilterExpr
-	// MISSING: TargetResourceState
-	// MISSING: InterconnectAttachment
-	// MISSING: VpnTunnel
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func NetworkmanagementVpcFlowLogsConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkmanagementVpcFlowLogsConfigSpec) *pb.VpcFlowLogsConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VpcFlowLogsConfig{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: AggregationInterval
-	// MISSING: FlowSampling
-	// MISSING: Metadata
-	// MISSING: MetadataFields
-	// MISSING: FilterExpr
-	// MISSING: TargetResourceState
-	// MISSING: InterconnectAttachment
-	// MISSING: VpnTunnel
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
 func VpcFlowLogsConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcFlowLogsConfig) *krm.VpcFlowLogsConfig {
 	if in == nil {
 		return nil
@@ -117,7 +33,6 @@ func VpcFlowLogsConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcFlowLogsCo
 	out.Metadata = direct.Enum_FromProto(mapCtx, in.GetMetadata())
 	out.MetadataFields = in.MetadataFields
 	out.FilterExpr = in.FilterExpr
-	// MISSING: TargetResourceState
 	out.InterconnectAttachment = direct.LazyPtr(in.GetInterconnectAttachment())
 	out.VpnTunnel = direct.LazyPtr(in.GetVpnTunnel())
 	out.Labels = in.Labels
@@ -144,7 +59,6 @@ func VpcFlowLogsConfig_ToProto(mapCtx *direct.MapContext, in *krm.VpcFlowLogsCon
 	}
 	out.MetadataFields = in.MetadataFields
 	out.FilterExpr = in.FilterExpr
-	// MISSING: TargetResourceState
 	if oneof := VpcFlowLogsConfig_InterconnectAttachment_ToProto(mapCtx, in.InterconnectAttachment); oneof != nil {
 		out.TargetResource = oneof
 	}
@@ -169,7 +83,6 @@ func VpcFlowLogsConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Metadata
 	// MISSING: MetadataFields
 	// MISSING: FilterExpr
-	out.TargetResourceState = direct.Enum_FromProto(mapCtx, in.GetTargetResourceState())
 	// MISSING: InterconnectAttachment
 	// MISSING: VpnTunnel
 	// MISSING: Labels
@@ -190,9 +103,6 @@ func VpcFlowLogsConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.V
 	// MISSING: Metadata
 	// MISSING: MetadataFields
 	// MISSING: FilterExpr
-	if oneof := VpcFlowLogsConfigObservedState_TargetResourceState_ToProto(mapCtx, in.TargetResourceState); oneof != nil {
-		out.TargetResourceState = oneof
-	}
 	// MISSING: InterconnectAttachment
 	// MISSING: VpnTunnel
 	// MISSING: Labels
