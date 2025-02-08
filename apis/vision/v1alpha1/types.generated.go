@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.vision.v1.ProductSet
+// +kcc:proto=google.cloud.vision.v1p3beta1.ProductSet
 type ProductSet struct {
 	// The resource name of the ProductSet.
 	//
@@ -23,12 +23,12 @@ type ProductSet struct {
 	//  `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`.
 	//
 	//  This field is ignored when creating a ProductSet.
-	// +kcc:proto:field=google.cloud.vision.v1.ProductSet.name
+	// +kcc:proto:field=google.cloud.vision.v1p3beta1.ProductSet.name
 	Name *string `json:"name,omitempty"`
 
 	// The user-provided name for this ProductSet. Must not be empty. Must be at
 	//  most 4096 characters long.
-	// +kcc:proto:field=google.cloud.vision.v1.ProductSet.display_name
+	// +kcc:proto:field=google.cloud.vision.v1p3beta1.ProductSet.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
@@ -89,21 +89,20 @@ type Status struct {
 	Details []Any `json:"details,omitempty"`
 }
 
-// +kcc:proto=google.cloud.vision.v1.ProductSet
+// +kcc:proto=google.cloud.vision.v1p3beta1.ProductSet
 type ProductSetObservedState struct {
 	// Output only. The time at which this ProductSet was last indexed. Query
 	//  results will reflect all updates before this time. If this ProductSet has
-	//  never been indexed, this timestamp is the default value
-	//  "1970-01-01T00:00:00Z".
+	//  never been indexed, this field is 0.
 	//
 	//  This field is ignored when creating a ProductSet.
-	// +kcc:proto:field=google.cloud.vision.v1.ProductSet.index_time
+	// +kcc:proto:field=google.cloud.vision.v1p3beta1.ProductSet.index_time
 	IndexTime *string `json:"indexTime,omitempty"`
 
 	// Output only. If there was an error with indexing the product set, the field
 	//  is populated.
 	//
 	//  This field is ignored when creating a ProductSet.
-	// +kcc:proto:field=google.cloud.vision.v1.ProductSet.index_error
+	// +kcc:proto:field=google.cloud.vision.v1p3beta1.ProductSet.index_error
 	IndexError *Status `json:"indexError,omitempty"`
 }

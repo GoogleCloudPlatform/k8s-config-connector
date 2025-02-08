@@ -16,7 +16,7 @@ package vision
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/vision/v2/apiv1/visionpb"
+	pb "cloud.google.com/go/vision/apiv1p3beta1/visionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vision/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -62,49 +62,5 @@ func ProductSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProductS
 	// MISSING: DisplayName
 	out.IndexTime = direct.StringTimestamp_ToProto(mapCtx, in.IndexTime)
 	out.IndexError = Status_ToProto(mapCtx, in.IndexError)
-	return out
-}
-func VisionProductSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProductSet) *krm.VisionProductSetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VisionProductSetObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IndexTime
-	// MISSING: IndexError
-	return out
-}
-func VisionProductSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VisionProductSetObservedState) *pb.ProductSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProductSet{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IndexTime
-	// MISSING: IndexError
-	return out
-}
-func VisionProductSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.ProductSet) *krm.VisionProductSetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VisionProductSetSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IndexTime
-	// MISSING: IndexError
-	return out
-}
-func VisionProductSetSpec_ToProto(mapCtx *direct.MapContext, in *krm.VisionProductSetSpec) *pb.ProductSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProductSet{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: IndexTime
-	// MISSING: IndexError
 	return out
 }
