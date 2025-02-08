@@ -15,42 +15,21 @@
 package dialogflow
 
 import (
-	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func NluSettings_FromProto(mapCtx *direct.MapContext, in *pb.NluSettings) *krm.NluSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NluSettings{}
-	out.ModelType = direct.Enum_FromProto(mapCtx, in.GetModelType())
-	out.ClassificationThreshold = direct.LazyPtr(in.GetClassificationThreshold())
-	out.ModelTrainingMode = direct.Enum_FromProto(mapCtx, in.GetModelTrainingMode())
-	return out
-}
-func NluSettings_ToProto(mapCtx *direct.MapContext, in *krm.NluSettings) *pb.NluSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NluSettings{}
-	out.ModelType = direct.Enum_ToProto[pb.NluSettings_ModelType](mapCtx, in.ModelType)
-	out.ClassificationThreshold = direct.ValueOf(in.ClassificationThreshold)
-	out.ModelTrainingMode = direct.Enum_ToProto[pb.NluSettings_ModelTrainingMode](mapCtx, in.ModelTrainingMode)
-	return out
-}
 func Version_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.Version {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Version{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: NluSettings
+	// MISSING: VersionNumber
 	// MISSING: CreateTime
-	// MISSING: State
+	// MISSING: Status
 	return out
 }
 func Version_ToProto(mapCtx *direct.MapContext, in *krm.Version) *pb.Version {
@@ -58,12 +37,11 @@ func Version_ToProto(mapCtx *direct.MapContext, in *krm.Version) *pb.Version {
 		return nil
 	}
 	out := &pb.Version{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: NluSettings
+	// MISSING: VersionNumber
 	// MISSING: CreateTime
-	// MISSING: State
+	// MISSING: Status
 	return out
 }
 func VersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.VersionObservedState {
@@ -71,12 +49,11 @@ func VersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Version) *
 		return nil
 	}
 	out := &krm.VersionObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
+	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: Description
-	out.NluSettings = NluSettings_FromProto(mapCtx, in.GetNluSettings())
+	out.VersionNumber = direct.LazyPtr(in.GetVersionNumber())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
 	return out
 }
 func VersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VersionObservedState) *pb.Version {
@@ -84,11 +61,10 @@ func VersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VersionObse
 		return nil
 	}
 	out := &pb.Version{}
-	// MISSING: Name
-	// MISSING: DisplayName
+	out.Name = direct.ValueOf(in.Name)
 	// MISSING: Description
-	out.NluSettings = NluSettings_ToProto(mapCtx, in.NluSettings)
+	out.VersionNumber = direct.ValueOf(in.VersionNumber)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.State = direct.Enum_ToProto[pb.Version_State](mapCtx, in.State)
+	out.Status = direct.Enum_ToProto[pb.Version_VersionStatus](mapCtx, in.Status)
 	return out
 }
