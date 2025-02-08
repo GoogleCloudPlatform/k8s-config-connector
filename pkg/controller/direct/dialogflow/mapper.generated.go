@@ -15,10 +15,10 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func Deployment_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.Deployment {
 	if in == nil {
@@ -62,57 +62,5 @@ func Deployment_Result_ToProto(mapCtx *direct.MapContext, in *krm.Deployment_Res
 	out := &pb.Deployment_Result{}
 	out.DeploymentTestResults = in.DeploymentTestResults
 	out.Experiment = direct.ValueOf(in.Experiment)
-	return out
-}
-func DialogflowDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.DialogflowDeploymentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowDeploymentObservedState{}
-	// MISSING: Name
-	// MISSING: FlowVersion
-	// MISSING: State
-	// MISSING: Result
-	// MISSING: StartTime
-	// MISSING: EndTime
-	return out
-}
-func DialogflowDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowDeploymentObservedState) *pb.Deployment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Deployment{}
-	// MISSING: Name
-	// MISSING: FlowVersion
-	// MISSING: State
-	// MISSING: Result
-	// MISSING: StartTime
-	// MISSING: EndTime
-	return out
-}
-func DialogflowDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.DialogflowDeploymentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowDeploymentSpec{}
-	// MISSING: Name
-	// MISSING: FlowVersion
-	// MISSING: State
-	// MISSING: Result
-	// MISSING: StartTime
-	// MISSING: EndTime
-	return out
-}
-func DialogflowDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowDeploymentSpec) *pb.Deployment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Deployment{}
-	// MISSING: Name
-	// MISSING: FlowVersion
-	// MISSING: State
-	// MISSING: Result
-	// MISSING: StartTime
-	// MISSING: EndTime
 	return out
 }
