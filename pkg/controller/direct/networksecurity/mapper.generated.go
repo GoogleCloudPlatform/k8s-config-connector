@@ -15,10 +15,10 @@
 package networksecurity
 
 import (
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
+	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 )
 func CertificateProvider_FromProto(mapCtx *direct.MapContext, in *pb.CertificateProvider) *krm.CertificateProvider {
 	if in == nil {
@@ -132,66 +132,6 @@ func GrpcEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.GrpcEndpoint) *pb.G
 	}
 	out := &pb.GrpcEndpoint{}
 	out.TargetUri = direct.ValueOf(in.TargetURI)
-	return out
-}
-func NetworksecurityClientTlsPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ClientTlsPolicy) *krm.NetworksecurityClientTlsPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworksecurityClientTlsPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Sni
-	// MISSING: ClientCertificate
-	// MISSING: ServerValidationCa
-	return out
-}
-func NetworksecurityClientTlsPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworksecurityClientTlsPolicyObservedState) *pb.ClientTlsPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientTlsPolicy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Sni
-	// MISSING: ClientCertificate
-	// MISSING: ServerValidationCa
-	return out
-}
-func NetworksecurityClientTlsPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.ClientTlsPolicy) *krm.NetworksecurityClientTlsPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworksecurityClientTlsPolicySpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Sni
-	// MISSING: ClientCertificate
-	// MISSING: ServerValidationCa
-	return out
-}
-func NetworksecurityClientTlsPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworksecurityClientTlsPolicySpec) *pb.ClientTlsPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ClientTlsPolicy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Sni
-	// MISSING: ClientCertificate
-	// MISSING: ServerValidationCa
 	return out
 }
 func ValidationCA_FromProto(mapCtx *direct.MapContext, in *pb.ValidationCA) *krm.ValidationCA {
