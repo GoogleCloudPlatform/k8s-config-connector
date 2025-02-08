@@ -15,10 +15,10 @@
 package memorystore
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 )
 func DiscoveryEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpoint {
 	if in == nil {
@@ -58,122 +58,6 @@ func DiscoveryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.Address = direct.ValueOf(in.Address)
 	out.Port = direct.ValueOf(in.Port)
 	out.Network = direct.ValueOf(in.Network)
-	return out
-}
-func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Instance{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	// MISSING: State
-	// MISSING: StateInfo
-	// MISSING: Uid
-	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
-	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
-	out.ShardCount = direct.LazyPtr(in.GetShardCount())
-	// MISSING: DiscoveryEndpoints
-	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
-	out.PersistenceConfig = PersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
-	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
-	out.EngineConfigs = in.EngineConfigs
-	// MISSING: NodeConfig
-	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
-	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.PscAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, PscAutoConnection_FromProto)
-	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
-	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	return out
-}
-func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	// MISSING: State
-	// MISSING: StateInfo
-	// MISSING: Uid
-	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_ToProto[pb.Instance_AuthorizationMode](mapCtx, in.AuthorizationMode)
-	out.TransitEncryptionMode = direct.Enum_ToProto[pb.Instance_TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
-	out.ShardCount = direct.ValueOf(in.ShardCount)
-	// MISSING: DiscoveryEndpoints
-	out.NodeType = direct.Enum_ToProto[pb.Instance_NodeType](mapCtx, in.NodeType)
-	out.PersistenceConfig = PersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
-	out.EngineVersion = direct.ValueOf(in.EngineVersion)
-	out.EngineConfigs = in.EngineConfigs
-	// MISSING: NodeConfig
-	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
-	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PscAutoConnections, PscAutoConnection_ToProto)
-	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
-	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
-	return out
-}
-func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.InstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InstanceObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StateInfo = Instance_StateInfo_FromProto(mapCtx, in.GetStateInfo())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: ReplicaCount
-	// MISSING: AuthorizationMode
-	// MISSING: TransitEncryptionMode
-	// MISSING: ShardCount
-	out.DiscoveryEndpoints = direct.Slice_FromProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpoint_FromProto)
-	// MISSING: NodeType
-	// MISSING: PersistenceConfig
-	// MISSING: EngineVersion
-	// MISSING: EngineConfigs
-	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
-	// MISSING: ZoneDistributionConfig
-	// MISSING: DeletionProtectionEnabled
-	out.PscAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, PscAutoConnectionObservedState_FromProto)
-	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
-	// MISSING: Mode
-	return out
-}
-func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
-	out.StateInfo = Instance_StateInfo_ToProto(mapCtx, in.StateInfo)
-	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: ReplicaCount
-	// MISSING: AuthorizationMode
-	// MISSING: TransitEncryptionMode
-	// MISSING: ShardCount
-	out.DiscoveryEndpoints = direct.Slice_ToProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpoint_ToProto)
-	// MISSING: NodeType
-	// MISSING: PersistenceConfig
-	// MISSING: EngineVersion
-	// MISSING: EngineConfigs
-	out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
-	// MISSING: ZoneDistributionConfig
-	// MISSING: DeletionProtectionEnabled
-	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PscAutoConnections, PscAutoConnectionObservedState_ToProto)
-	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
-	// MISSING: Mode
 	return out
 }
 func Instance_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krm.Instance_ConnectionDetail {
@@ -318,6 +202,64 @@ func Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx *direct.MapContex
 	out := &pb.Instance_StateInfo_UpdateInfo{}
 	out.TargetShardCount = in.TargetShardCount
 	out.TargetReplicaCount = in.TargetReplicaCount
+	return out
+}
+func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MemorystoreInstanceSpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: State
+	// MISSING: StateInfo
+	// MISSING: Uid
+	out.ReplicaCount = in.ReplicaCount
+	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
+	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
+	out.ShardCount = direct.LazyPtr(in.GetShardCount())
+	// MISSING: DiscoveryEndpoints
+	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
+	out.PersistenceConfig = PersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
+	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
+	out.EngineConfigs = in.EngineConfigs
+	// MISSING: NodeConfig
+	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
+	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	// MISSING: PscAutoConnections
+	// MISSING: Endpoints
+	// MISSING: Mode
+	return out
+}
+func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceSpec) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: State
+	// MISSING: StateInfo
+	// MISSING: Uid
+	out.ReplicaCount = in.ReplicaCount
+	out.AuthorizationMode = direct.Enum_ToProto[pb.Instance_AuthorizationMode](mapCtx, in.AuthorizationMode)
+	out.TransitEncryptionMode = direct.Enum_ToProto[pb.Instance_TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
+	out.ShardCount = direct.ValueOf(in.ShardCount)
+	// MISSING: DiscoveryEndpoints
+	out.NodeType = direct.Enum_ToProto[pb.Instance_NodeType](mapCtx, in.NodeType)
+	out.PersistenceConfig = PersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
+	out.EngineVersion = direct.ValueOf(in.EngineVersion)
+	out.EngineConfigs = in.EngineConfigs
+	// MISSING: NodeConfig
+	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
+	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	// MISSING: PscAutoConnections
+	// MISSING: Endpoints
+	// MISSING: Mode
 	return out
 }
 func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodeConfig {
