@@ -15,10 +15,10 @@
 package redis
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/redis/apiv1/redispb"
+	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1alpha1"
 )
 func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instance {
 	if in == nil {
@@ -55,11 +55,7 @@ func Instance_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.Instanc
 	// MISSING: ReadEndpoint
 	// MISSING: ReadEndpointPort
 	out.ReadReplicasMode = direct.Enum_FromProto(mapCtx, in.GetReadReplicasMode())
-	out.CustomerManagedKey = direct.LazyPtr(in.GetCustomerManagedKey())
 	out.PersistenceConfig = PersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
-	out.SuspensionReasons = direct.EnumSlice_FromProto(mapCtx, in.SuspensionReasons)
-	out.MaintenanceVersion = direct.LazyPtr(in.GetMaintenanceVersion())
-	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	return out
 }
 func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance {
@@ -97,11 +93,7 @@ func Instance_ToProto(mapCtx *direct.MapContext, in *krm.Instance) *pb.Instance 
 	// MISSING: ReadEndpoint
 	// MISSING: ReadEndpointPort
 	out.ReadReplicasMode = direct.Enum_ToProto[pb.Instance_ReadReplicasMode](mapCtx, in.ReadReplicasMode)
-	out.CustomerManagedKey = direct.ValueOf(in.CustomerManagedKey)
 	out.PersistenceConfig = PersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
-	out.SuspensionReasons = direct.EnumSlice_ToProto[pb.Instance_SuspensionReason](mapCtx, in.SuspensionReasons)
-	out.MaintenanceVersion = direct.ValueOf(in.MaintenanceVersion)
-	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
 	return out
 }
 func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.InstanceObservedState {
@@ -139,11 +131,7 @@ func InstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	out.ReadEndpoint = direct.LazyPtr(in.GetReadEndpoint())
 	out.ReadEndpointPort = direct.LazyPtr(in.GetReadEndpointPort())
 	// MISSING: ReadReplicasMode
-	// MISSING: CustomerManagedKey
 	out.PersistenceConfig = PersistenceConfigObservedState_FromProto(mapCtx, in.GetPersistenceConfig())
-	// MISSING: SuspensionReasons
-	// MISSING: MaintenanceVersion
-	// MISSING: AvailableMaintenanceVersions
 	return out
 }
 func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceObservedState) *pb.Instance {
@@ -181,11 +169,7 @@ func InstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceOb
 	out.ReadEndpoint = direct.ValueOf(in.ReadEndpoint)
 	out.ReadEndpointPort = direct.ValueOf(in.ReadEndpointPort)
 	// MISSING: ReadReplicasMode
-	// MISSING: CustomerManagedKey
 	out.PersistenceConfig = PersistenceConfigObservedState_ToProto(mapCtx, in.PersistenceConfig)
-	// MISSING: SuspensionReasons
-	// MISSING: MaintenanceVersion
-	// MISSING: AvailableMaintenanceVersions
 	return out
 }
 func MaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePolicy) *krm.MaintenancePolicy {
@@ -354,174 +338,6 @@ func PersistenceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.P
 	// MISSING: RdbSnapshotPeriod
 	out.RdbNextSnapshotTime = direct.StringTimestamp_ToProto(mapCtx, in.RdbNextSnapshotTime)
 	// MISSING: RdbSnapshotStartTime
-	return out
-}
-func RedisInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.RedisInstanceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RedisInstanceObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: LocationID
-	// MISSING: AlternativeLocationID
-	// MISSING: RedisVersion
-	// MISSING: ReservedIPRange
-	// MISSING: SecondaryIPRange
-	// MISSING: Host
-	// MISSING: Port
-	// MISSING: CurrentLocationID
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: RedisConfigs
-	// MISSING: Tier
-	// MISSING: MemorySizeGB
-	// MISSING: AuthorizedNetwork
-	// MISSING: PersistenceIamIdentity
-	// MISSING: ConnectMode
-	// MISSING: AuthEnabled
-	// MISSING: ServerCaCerts
-	// MISSING: TransitEncryptionMode
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
-	// MISSING: ReplicaCount
-	// MISSING: Nodes
-	// MISSING: ReadEndpoint
-	// MISSING: ReadEndpointPort
-	// MISSING: ReadReplicasMode
-	// MISSING: CustomerManagedKey
-	// MISSING: PersistenceConfig
-	// MISSING: SuspensionReasons
-	// MISSING: MaintenanceVersion
-	// MISSING: AvailableMaintenanceVersions
-	return out
-}
-func RedisInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisInstanceObservedState) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: LocationID
-	// MISSING: AlternativeLocationID
-	// MISSING: RedisVersion
-	// MISSING: ReservedIPRange
-	// MISSING: SecondaryIPRange
-	// MISSING: Host
-	// MISSING: Port
-	// MISSING: CurrentLocationID
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: RedisConfigs
-	// MISSING: Tier
-	// MISSING: MemorySizeGB
-	// MISSING: AuthorizedNetwork
-	// MISSING: PersistenceIamIdentity
-	// MISSING: ConnectMode
-	// MISSING: AuthEnabled
-	// MISSING: ServerCaCerts
-	// MISSING: TransitEncryptionMode
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
-	// MISSING: ReplicaCount
-	// MISSING: Nodes
-	// MISSING: ReadEndpoint
-	// MISSING: ReadEndpointPort
-	// MISSING: ReadReplicasMode
-	// MISSING: CustomerManagedKey
-	// MISSING: PersistenceConfig
-	// MISSING: SuspensionReasons
-	// MISSING: MaintenanceVersion
-	// MISSING: AvailableMaintenanceVersions
-	return out
-}
-func RedisInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.RedisInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RedisInstanceSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: LocationID
-	// MISSING: AlternativeLocationID
-	// MISSING: RedisVersion
-	// MISSING: ReservedIPRange
-	// MISSING: SecondaryIPRange
-	// MISSING: Host
-	// MISSING: Port
-	// MISSING: CurrentLocationID
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: RedisConfigs
-	// MISSING: Tier
-	// MISSING: MemorySizeGB
-	// MISSING: AuthorizedNetwork
-	// MISSING: PersistenceIamIdentity
-	// MISSING: ConnectMode
-	// MISSING: AuthEnabled
-	// MISSING: ServerCaCerts
-	// MISSING: TransitEncryptionMode
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
-	// MISSING: ReplicaCount
-	// MISSING: Nodes
-	// MISSING: ReadEndpoint
-	// MISSING: ReadEndpointPort
-	// MISSING: ReadReplicasMode
-	// MISSING: CustomerManagedKey
-	// MISSING: PersistenceConfig
-	// MISSING: SuspensionReasons
-	// MISSING: MaintenanceVersion
-	// MISSING: AvailableMaintenanceVersions
-	return out
-}
-func RedisInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: LocationID
-	// MISSING: AlternativeLocationID
-	// MISSING: RedisVersion
-	// MISSING: ReservedIPRange
-	// MISSING: SecondaryIPRange
-	// MISSING: Host
-	// MISSING: Port
-	// MISSING: CurrentLocationID
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: StatusMessage
-	// MISSING: RedisConfigs
-	// MISSING: Tier
-	// MISSING: MemorySizeGB
-	// MISSING: AuthorizedNetwork
-	// MISSING: PersistenceIamIdentity
-	// MISSING: ConnectMode
-	// MISSING: AuthEnabled
-	// MISSING: ServerCaCerts
-	// MISSING: TransitEncryptionMode
-	// MISSING: MaintenancePolicy
-	// MISSING: MaintenanceSchedule
-	// MISSING: ReplicaCount
-	// MISSING: Nodes
-	// MISSING: ReadEndpoint
-	// MISSING: ReadEndpointPort
-	// MISSING: ReadReplicasMode
-	// MISSING: CustomerManagedKey
-	// MISSING: PersistenceConfig
-	// MISSING: SuspensionReasons
-	// MISSING: MaintenanceVersion
-	// MISSING: AvailableMaintenanceVersions
 	return out
 }
 func TlsCertificate_FromProto(mapCtx *direct.MapContext, in *pb.TlsCertificate) *krm.TlsCertificate {
