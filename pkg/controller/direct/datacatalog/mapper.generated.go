@@ -15,63 +15,11 @@
 package datacatalog
 
 import (
-	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/datacatalog/apiv1beta1/datacatalogpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func DatacatalogTagTemplateFieldObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplateField) *krm.DatacatalogTagTemplateFieldObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogTagTemplateFieldObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Type
-	// MISSING: IsRequired
-	// MISSING: Description
-	// MISSING: Order
-	return out
-}
-func DatacatalogTagTemplateFieldObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogTagTemplateFieldObservedState) *pb.TagTemplateField {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TagTemplateField{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Type
-	// MISSING: IsRequired
-	// MISSING: Description
-	// MISSING: Order
-	return out
-}
-func DatacatalogTagTemplateFieldSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplateField) *krm.DatacatalogTagTemplateFieldSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogTagTemplateFieldSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Type
-	// MISSING: IsRequired
-	// MISSING: Description
-	// MISSING: Order
-	return out
-}
-func DatacatalogTagTemplateFieldSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogTagTemplateFieldSpec) *pb.TagTemplateField {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TagTemplateField{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Type
-	// MISSING: IsRequired
-	// MISSING: Description
-	// MISSING: Order
-	return out
-}
 func FieldType_FromProto(mapCtx *direct.MapContext, in *pb.FieldType) *krm.FieldType {
 	if in == nil {
 		return nil
@@ -131,7 +79,7 @@ func TagTemplateField_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplateFie
 		return nil
 	}
 	out := &krm.TagTemplateField{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Type = FieldType_FromProto(mapCtx, in.GetType())
 	out.IsRequired = direct.LazyPtr(in.GetIsRequired())
@@ -144,11 +92,37 @@ func TagTemplateField_ToProto(mapCtx *direct.MapContext, in *krm.TagTemplateFiel
 		return nil
 	}
 	out := &pb.TagTemplateField{}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Type = FieldType_ToProto(mapCtx, in.Type)
 	out.IsRequired = direct.ValueOf(in.IsRequired)
 	out.Description = direct.ValueOf(in.Description)
 	out.Order = direct.ValueOf(in.Order)
+	return out
+}
+func TagTemplateFieldObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplateField) *krm.TagTemplateFieldObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TagTemplateFieldObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	// MISSING: Type
+	// MISSING: IsRequired
+	// MISSING: Description
+	// MISSING: Order
+	return out
+}
+func TagTemplateFieldObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagTemplateFieldObservedState) *pb.TagTemplateField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagTemplateField{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	// MISSING: Type
+	// MISSING: IsRequired
+	// MISSING: Description
+	// MISSING: Order
 	return out
 }
