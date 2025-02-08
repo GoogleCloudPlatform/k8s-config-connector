@@ -15,30 +15,30 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Intent
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Intent
 type Intent struct {
 	// The unique identifier of the intent.
 	//  Required for the
-	//  [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3.Intents.UpdateIntent]
+	//  [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3beta1.Intents.UpdateIntent]
 	//  method.
-	//  [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent]
+	//  [Intents.CreateIntent][google.cloud.dialogflow.cx.v3beta1.Intents.CreateIntent]
 	//  populates the name automatically.
 	//  Format:
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. The human-readable name of the intent, unique within the agent.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.display_name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The collection of training phrases the agent is trained on to identify the
 	//  intent.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.training_phrases
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.training_phrases
 	TrainingPhrases []Intent_TrainingPhrase `json:"trainingPhrases,omitempty"`
 
 	// The collection of parameters associated with the intent.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.parameters
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.parameters
 	Parameters []Intent_Parameter `json:"parameters,omitempty"`
 
 	// The priority of this intent. Higher numbers represent higher
@@ -49,7 +49,7 @@ type Intent struct {
 	//    `Normal` priority in the console.
 	//  - If the supplied value is negative, the intent is ignored
 	//    in runtime detect intent requests.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.priority
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.priority
 	Priority *int32 `json:"priority,omitempty"`
 
 	// Indicates whether this is a fallback intent. Currently only default
@@ -58,7 +58,7 @@ type Intent struct {
 	//  Adding training phrases to fallback intent is useful in the case of
 	//  requests that are mistakenly matched, since training phrases assigned to
 	//  fallback intents act as negative examples that triggers no-match event.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.is_fallback
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.is_fallback
 	IsFallback *bool `json:"isFallback,omitempty"`
 
 	// The key/value metadata to label an intent. Labels can contain
@@ -72,23 +72,24 @@ type Intent struct {
 	//  * sys-head
 	//  * sys-contextual
 	//  The above labels do not require value. "sys-head" means the intent is a
-	//  head intent. "sys.contextual" means the intent is a contextual intent.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.labels
+	//  head intent. "sys-contextual" means the intent is a contextual intent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Human readable description for better understanding an intent like its
 	//  scope, content, result etc. Maximum character limit: 140 characters.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.description
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.description
 	Description *string `json:"description,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.Parameter
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Intent.Parameter
 type Intent_Parameter struct {
 	// Required. The unique identifier of the parameter. This field
 	//  is used by [training
-	//  phrases][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase] to annotate
-	//  their [parts][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part].
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.Parameter.id
+	//  phrases][google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase] to
+	//  annotate their
+	//  [parts][google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase.Part].
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.Parameter.id
 	ID *string `json:"id,omitempty"`
 
 	// Required. The entity type of the parameter.
@@ -98,11 +99,11 @@ type Intent_Parameter struct {
 	//  `projects/-/locations/-/agents/-/entityTypes/sys.date`), or
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`
 	//  for developer entity types.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.Parameter.entity_type
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.Parameter.entity_type
 	EntityType *string `json:"entityType,omitempty"`
 
 	// Indicates whether the parameter represents a list of values.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.Parameter.is_list
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.Parameter.is_list
 	IsList *bool `json:"isList,omitempty"`
 
 	// Indicates whether the parameter content should be redacted in log. If
@@ -110,15 +111,16 @@ type Intent_Parameter struct {
 	//  name during logging.
 	//  Note: the parameter content is subject to redaction if either parameter
 	//  level redaction or [entity type level
-	//  redaction][google.cloud.dialogflow.cx.v3.EntityType.redact] is enabled.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.Parameter.redact
+	//  redaction][google.cloud.dialogflow.cx.v3beta1.EntityType.redact] is
+	//  enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.Parameter.redact
 	Redact *bool `json:"redact,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase
 type Intent_TrainingPhrase struct {
 	// Output only. The unique identifier of the training phrase.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.id
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase.id
 	ID *string `json:"id,omitempty"`
 
 	// Required. The ordered list of training phrase parts.
@@ -132,7 +134,7 @@ type Intent_TrainingPhrase struct {
 	//
 	//  If the training phrase does not need to be annotated with parameters,
 	//  you just need a single part with only the
-	//  [Part.text][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part.text]
+	//  [Part.text][google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase.Part.text]
 	//  field set.
 	//
 	//  If you want to annotate the training phrase, you must create multiple
@@ -141,23 +143,23 @@ type Intent_TrainingPhrase struct {
 	//  -   `Part.text` is set to a part of the phrase that has no parameters.
 	//  -   `Part.text` is set to a part of the phrase that you want to annotate,
 	//      and the `parameter_id` field is set.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.parts
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase.parts
 	Parts []Intent_TrainingPhrase_Part `json:"parts,omitempty"`
 
 	// Indicates how many times this example was added to the intent.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.repeat_count
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase.repeat_count
 	RepeatCount *int32 `json:"repeatCount,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase.Part
 type Intent_TrainingPhrase_Part struct {
 	// Required. The text for this part.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part.text
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase.Part.text
 	Text *string `json:"text,omitempty"`
 
-	// The [parameter][google.cloud.dialogflow.cx.v3.Intent.Parameter] used to
-	//  annotate this part of the training phrase. This field is required for
-	//  annotated parts of the training phrase.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part.parameter_id
+	// The [parameter][google.cloud.dialogflow.cx.v3beta1.Intent.Parameter]
+	//  used to annotate this part of the training phrase. This field is
+	//  required for annotated parts of the training phrase.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Intent.TrainingPhrase.Part.parameter_id
 	ParameterID *string `json:"parameterID,omitempty"`
 }

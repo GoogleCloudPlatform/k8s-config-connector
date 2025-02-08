@@ -16,70 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowIntentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Intent) *krm.DialogflowIntentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowIntentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TrainingPhrases
-	// MISSING: Parameters
-	// MISSING: Priority
-	// MISSING: IsFallback
-	// MISSING: Labels
-	// MISSING: Description
-	return out
-}
-func DialogflowIntentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowIntentObservedState) *pb.Intent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Intent{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TrainingPhrases
-	// MISSING: Parameters
-	// MISSING: Priority
-	// MISSING: IsFallback
-	// MISSING: Labels
-	// MISSING: Description
-	return out
-}
-func DialogflowIntentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Intent) *krm.DialogflowIntentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowIntentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TrainingPhrases
-	// MISSING: Parameters
-	// MISSING: Priority
-	// MISSING: IsFallback
-	// MISSING: Labels
-	// MISSING: Description
-	return out
-}
-func DialogflowIntentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowIntentSpec) *pb.Intent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Intent{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: TrainingPhrases
-	// MISSING: Parameters
-	// MISSING: Priority
-	// MISSING: IsFallback
-	// MISSING: Labels
-	// MISSING: Description
-	return out
-}
 func Intent_FromProto(mapCtx *direct.MapContext, in *pb.Intent) *krm.Intent {
 	if in == nil {
 		return nil
