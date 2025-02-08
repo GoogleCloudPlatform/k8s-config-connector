@@ -15,13 +15,13 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.secretmanager.v1.Topic
+// +kcc:proto=google.cloud.secretmanager.v1beta2.Topic
 type Topic struct {
 	// Required. The resource name of the Pub/Sub topic that will be published to,
 	//  in the following format: `projects/*/topics/*`. For publication to succeed,
 	//  the Secret Manager service agent must have the `pubsub.topic.publish`
 	//  permission on the topic. The Pub/Sub Publisher role
 	//  (`roles/pubsub.publisher`) includes this permission.
-	// +kcc:proto:field=google.cloud.secretmanager.v1.Topic.name
+	// +kcc:proto:field=google.cloud.secretmanager.v1beta2.Topic.name
 	Name *string `json:"name,omitempty"`
 }
