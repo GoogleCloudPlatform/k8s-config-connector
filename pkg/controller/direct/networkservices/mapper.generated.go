@@ -15,10 +15,10 @@
 package networkservices
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/networkservices/apiv1beta1/networkservicespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 )
 func ExtensionChain_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain) *krm.ExtensionChain {
 	if in == nil {
@@ -97,7 +97,6 @@ func LbTrafficExtension_FromProto(mapCtx *direct.MapContext, in *pb.LbTrafficExt
 	out.ForwardingRules = in.ForwardingRules
 	out.ExtensionChains = direct.Slice_FromProto(mapCtx, in.ExtensionChains, ExtensionChain_FromProto)
 	out.LoadBalancingScheme = direct.Enum_FromProto(mapCtx, in.GetLoadBalancingScheme())
-	out.Metadata = Metadata_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
 func LbTrafficExtension_ToProto(mapCtx *direct.MapContext, in *krm.LbTrafficExtension) *pb.LbTrafficExtension {
@@ -113,7 +112,6 @@ func LbTrafficExtension_ToProto(mapCtx *direct.MapContext, in *krm.LbTrafficExte
 	out.ForwardingRules = in.ForwardingRules
 	out.ExtensionChains = direct.Slice_ToProto(mapCtx, in.ExtensionChains, ExtensionChain_ToProto)
 	out.LoadBalancingScheme = direct.Enum_ToProto[pb.LoadBalancingScheme](mapCtx, in.LoadBalancingScheme)
-	out.Metadata = Metadata_ToProto(mapCtx, in.Metadata)
 	return out
 }
 func LbTrafficExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LbTrafficExtension) *krm.LbTrafficExtensionObservedState {
@@ -129,7 +127,6 @@ func LbTrafficExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: ForwardingRules
 	// MISSING: ExtensionChains
 	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
 	return out
 }
 func LbTrafficExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LbTrafficExtensionObservedState) *pb.LbTrafficExtension {
@@ -145,70 +142,5 @@ func LbTrafficExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: ForwardingRules
 	// MISSING: ExtensionChains
 	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
-	return out
-}
-func NetworkservicesLbTrafficExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LbTrafficExtension) *krm.NetworkservicesLbTrafficExtensionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkservicesLbTrafficExtensionObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: ForwardingRules
-	// MISSING: ExtensionChains
-	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
-	return out
-}
-func NetworkservicesLbTrafficExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkservicesLbTrafficExtensionObservedState) *pb.LbTrafficExtension {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LbTrafficExtension{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: ForwardingRules
-	// MISSING: ExtensionChains
-	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
-	return out
-}
-func NetworkservicesLbTrafficExtensionSpec_FromProto(mapCtx *direct.MapContext, in *pb.LbTrafficExtension) *krm.NetworkservicesLbTrafficExtensionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkservicesLbTrafficExtensionSpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: ForwardingRules
-	// MISSING: ExtensionChains
-	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
-	return out
-}
-func NetworkservicesLbTrafficExtensionSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkservicesLbTrafficExtensionSpec) *pb.LbTrafficExtension {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LbTrafficExtension{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: ForwardingRules
-	// MISSING: ExtensionChains
-	// MISSING: LoadBalancingScheme
-	// MISSING: Metadata
 	return out
 }
