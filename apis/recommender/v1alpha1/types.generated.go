@@ -15,26 +15,26 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.recommender.v1.RecommenderConfig
+// +kcc:proto=google.cloud.recommender.v1beta1.RecommenderConfig
 type RecommenderConfig struct {
 	// Name of recommender config.
 	//  Eg,
 	//  projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config
-	// +kcc:proto:field=google.cloud.recommender.v1.RecommenderConfig.name
+	// +kcc:proto:field=google.cloud.recommender.v1beta1.RecommenderConfig.name
 	Name *string `json:"name,omitempty"`
 
 	// RecommenderGenerationConfig which configures the Generation of
 	//  recommendations for this recommender.
-	// +kcc:proto:field=google.cloud.recommender.v1.RecommenderConfig.recommender_generation_config
+	// +kcc:proto:field=google.cloud.recommender.v1beta1.RecommenderConfig.recommender_generation_config
 	RecommenderGenerationConfig *RecommenderGenerationConfig `json:"recommenderGenerationConfig,omitempty"`
 
 	// Fingerprint of the RecommenderConfig. Provides optimistic locking when
 	//  updating.
-	// +kcc:proto:field=google.cloud.recommender.v1.RecommenderConfig.etag
+	// +kcc:proto:field=google.cloud.recommender.v1beta1.RecommenderConfig.etag
 	Etag *string `json:"etag,omitempty"`
 
 	// Last time when the config was updated.
-	// +kcc:proto:field=google.cloud.recommender.v1.RecommenderConfig.update_time
+	// +kcc:proto:field=google.cloud.recommender.v1beta1.RecommenderConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Allows clients to store small amounts of arbitrary data. Annotations must
@@ -45,28 +45,28 @@ type RecommenderConfig struct {
 	//  Prefix must be a DNS subdomain.
 	//  Name must be 63 characters or less, begin and end with alphanumerics,
 	//  with dashes (-), underscores (_), dots (.), and alphanumerics between.
-	// +kcc:proto:field=google.cloud.recommender.v1.RecommenderConfig.annotations
+	// +kcc:proto:field=google.cloud.recommender.v1beta1.RecommenderConfig.annotations
 	Annotations map[string]string `json:"annotations,omitempty"`
 
 	// A user-settable field to provide a human-readable name to be used in user
 	//  interfaces.
-	// +kcc:proto:field=google.cloud.recommender.v1.RecommenderConfig.display_name
+	// +kcc:proto:field=google.cloud.recommender.v1beta1.RecommenderConfig.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.recommender.v1.RecommenderGenerationConfig
+// +kcc:proto=google.cloud.recommender.v1beta1.RecommenderGenerationConfig
 type RecommenderGenerationConfig struct {
 	// Parameters for this RecommenderGenerationConfig. These configs can be used
 	//  by or are applied to all subtypes.
-	// +kcc:proto:field=google.cloud.recommender.v1.RecommenderGenerationConfig.params
+	// +kcc:proto:field=google.cloud.recommender.v1beta1.RecommenderGenerationConfig.params
 	Params map[string]string `json:"params,omitempty"`
 }
 
-// +kcc:proto=google.cloud.recommender.v1.RecommenderConfig
+// +kcc:proto=google.cloud.recommender.v1beta1.RecommenderConfig
 type RecommenderConfigObservedState struct {
 	// Output only. Immutable. The revision ID of the config.
 	//  A new revision is committed whenever the config is changed in any way.
 	//  The format is an 8-character hexadecimal string.
-	// +kcc:proto:field=google.cloud.recommender.v1.RecommenderConfig.revision_id
+	// +kcc:proto:field=google.cloud.recommender.v1beta1.RecommenderConfig.revision_id
 	RevisionID *string `json:"revisionID,omitempty"`
 }

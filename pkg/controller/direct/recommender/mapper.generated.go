@@ -15,10 +15,10 @@
 package recommender
 
 import (
-	pb "cloud.google.com/go/recommender/apiv1/recommenderpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/recommender/apiv1beta1/recommenderpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recommender/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 func RecommenderConfig_FromProto(mapCtx *direct.MapContext, in *pb.RecommenderConfig) *krm.RecommenderConfig {
 	if in == nil {
@@ -90,61 +90,5 @@ func RecommenderGenerationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Reco
 	}
 	out := &pb.RecommenderGenerationConfig{}
 	out.Params = Params_ToProto(mapCtx, in.Params)
-	return out
-}
-func RecommenderRecommenderConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RecommenderConfig) *krm.RecommenderRecommenderConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecommenderRecommenderConfigObservedState{}
-	// MISSING: Name
-	// MISSING: RecommenderGenerationConfig
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Annotations
-	// MISSING: DisplayName
-	return out
-}
-func RecommenderRecommenderConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RecommenderRecommenderConfigObservedState) *pb.RecommenderConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RecommenderConfig{}
-	// MISSING: Name
-	// MISSING: RecommenderGenerationConfig
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Annotations
-	// MISSING: DisplayName
-	return out
-}
-func RecommenderRecommenderConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.RecommenderConfig) *krm.RecommenderRecommenderConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecommenderRecommenderConfigSpec{}
-	// MISSING: Name
-	// MISSING: RecommenderGenerationConfig
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Annotations
-	// MISSING: DisplayName
-	return out
-}
-func RecommenderRecommenderConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.RecommenderRecommenderConfigSpec) *pb.RecommenderConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RecommenderConfig{}
-	// MISSING: Name
-	// MISSING: RecommenderGenerationConfig
-	// MISSING: Etag
-	// MISSING: UpdateTime
-	// MISSING: RevisionID
-	// MISSING: Annotations
-	// MISSING: DisplayName
 	return out
 }
