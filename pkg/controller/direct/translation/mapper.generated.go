@@ -15,10 +15,10 @@
 package translation
 
 import (
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/translation/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/translate/apiv3/translatepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/translation/v1alpha1"
+	pb "cloud.google.com/go/translation/apiv3beta1/translationpb"
 )
 func GcsSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GcsSource {
 	if in == nil {
@@ -48,7 +48,6 @@ func Glossary_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.Glossar
 	// MISSING: EntryCount
 	// MISSING: SubmitTime
 	// MISSING: EndTime
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
 func Glossary_ToProto(mapCtx *direct.MapContext, in *krm.Glossary) *pb.Glossary {
@@ -67,7 +66,6 @@ func Glossary_ToProto(mapCtx *direct.MapContext, in *krm.Glossary) *pb.Glossary 
 	// MISSING: EntryCount
 	// MISSING: SubmitTime
 	// MISSING: EndTime
-	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
 func GlossaryInputConfig_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryInputConfig) *krm.GlossaryInputConfig {
@@ -100,7 +98,6 @@ func GlossaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Glossary)
 	out.EntryCount = direct.LazyPtr(in.GetEntryCount())
 	out.SubmitTime = direct.StringTimestamp_FromProto(mapCtx, in.GetSubmitTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	// MISSING: DisplayName
 	return out
 }
 func GlossaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryObservedState) *pb.Glossary {
@@ -115,7 +112,6 @@ func GlossaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryOb
 	out.EntryCount = direct.ValueOf(in.EntryCount)
 	out.SubmitTime = direct.StringTimestamp_ToProto(mapCtx, in.SubmitTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	// MISSING: DisplayName
 	return out
 }
 func Glossary_LanguageCodePair_FromProto(mapCtx *direct.MapContext, in *pb.Glossary_LanguageCodePair) *krm.Glossary_LanguageCodePair {
@@ -150,65 +146,5 @@ func Glossary_LanguageCodesSet_ToProto(mapCtx *direct.MapContext, in *krm.Glossa
 	}
 	out := &pb.Glossary_LanguageCodesSet{}
 	out.LanguageCodes = in.LanguageCodes
-	return out
-}
-func TranslationGlossaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.TranslationGlossaryObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TranslationGlossaryObservedState{}
-	// MISSING: Name
-	// MISSING: LanguagePair
-	// MISSING: LanguageCodesSet
-	// MISSING: InputConfig
-	// MISSING: EntryCount
-	// MISSING: SubmitTime
-	// MISSING: EndTime
-	// MISSING: DisplayName
-	return out
-}
-func TranslationGlossaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TranslationGlossaryObservedState) *pb.Glossary {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Glossary{}
-	// MISSING: Name
-	// MISSING: LanguagePair
-	// MISSING: LanguageCodesSet
-	// MISSING: InputConfig
-	// MISSING: EntryCount
-	// MISSING: SubmitTime
-	// MISSING: EndTime
-	// MISSING: DisplayName
-	return out
-}
-func TranslationGlossarySpec_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.TranslationGlossarySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TranslationGlossarySpec{}
-	// MISSING: Name
-	// MISSING: LanguagePair
-	// MISSING: LanguageCodesSet
-	// MISSING: InputConfig
-	// MISSING: EntryCount
-	// MISSING: SubmitTime
-	// MISSING: EndTime
-	// MISSING: DisplayName
-	return out
-}
-func TranslationGlossarySpec_ToProto(mapCtx *direct.MapContext, in *krm.TranslationGlossarySpec) *pb.Glossary {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Glossary{}
-	// MISSING: Name
-	// MISSING: LanguagePair
-	// MISSING: LanguageCodesSet
-	// MISSING: InputConfig
-	// MISSING: EntryCount
-	// MISSING: SubmitTime
-	// MISSING: EndTime
-	// MISSING: DisplayName
 	return out
 }

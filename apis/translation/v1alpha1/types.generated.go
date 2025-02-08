@@ -15,61 +15,57 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.translation.v3.GcsSource
+// +kcc:proto=google.cloud.translation.v3beta1.GcsSource
 type GcsSource struct {
 	// Required. Source data URI. For example, `gs://my_bucket/my_object`.
-	// +kcc:proto:field=google.cloud.translation.v3.GcsSource.input_uri
+	// +kcc:proto:field=google.cloud.translation.v3beta1.GcsSource.input_uri
 	InputURI *string `json:"inputURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.translation.v3.Glossary
+// +kcc:proto=google.cloud.translation.v3beta1.Glossary
 type Glossary struct {
 	// Required. The resource name of the glossary. Glossary names have the form
 	//  `projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}`.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.name
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.name
 	Name *string `json:"name,omitempty"`
 
 	// Used with unidirectional glossaries.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.language_pair
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.language_pair
 	LanguagePair *Glossary_LanguageCodePair `json:"languagePair,omitempty"`
 
 	// Used with equivalent term set glossaries.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.language_codes_set
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.language_codes_set
 	LanguageCodesSet *Glossary_LanguageCodesSet `json:"languageCodesSet,omitempty"`
 
 	// Required. Provides examples to build the glossary from.
 	//  Total glossary must not exceed 10M Unicode codepoints.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.input_config
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.input_config
 	InputConfig *GlossaryInputConfig `json:"inputConfig,omitempty"`
-
-	// Optional. The display name of the glossary.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.display_name
-	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.translation.v3.Glossary.LanguageCodePair
+// +kcc:proto=google.cloud.translation.v3beta1.Glossary.LanguageCodePair
 type Glossary_LanguageCodePair struct {
-	// Required. The ISO-639 language code of the input text, for example,
+	// Required. The BCP-47 language code of the input text, for example,
 	//  "en-US". Expected to be an exact match for GlossaryTerm.language_code.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.LanguageCodePair.source_language_code
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.LanguageCodePair.source_language_code
 	SourceLanguageCode *string `json:"sourceLanguageCode,omitempty"`
 
-	// Required. The ISO-639 language code for translation output, for example,
+	// Required. The BCP-47 language code for translation output, for example,
 	//  "zh-CN". Expected to be an exact match for GlossaryTerm.language_code.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.LanguageCodePair.target_language_code
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.LanguageCodePair.target_language_code
 	TargetLanguageCode *string `json:"targetLanguageCode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.translation.v3.Glossary.LanguageCodesSet
+// +kcc:proto=google.cloud.translation.v3beta1.Glossary.LanguageCodesSet
 type Glossary_LanguageCodesSet struct {
-	// The ISO-639 language code(s) for terms defined in the glossary.
+	// The BCP-47 language code(s) for terms defined in the glossary.
 	//  All entries are unique. The list contains at least two entries.
 	//  Expected to be an exact match for GlossaryTerm.language_code.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.LanguageCodesSet.language_codes
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.LanguageCodesSet.language_codes
 	LanguageCodes []string `json:"languageCodes,omitempty"`
 }
 
-// +kcc:proto=google.cloud.translation.v3.GlossaryInputConfig
+// +kcc:proto=google.cloud.translation.v3beta1.GlossaryInputConfig
 type GlossaryInputConfig struct {
 	// Required. Google Cloud Storage location of glossary data.
 	//  File format is determined based on the filename extension. API returns
@@ -79,10 +75,10 @@ type GlossaryInputConfig struct {
 	//
 	//  For unidirectional glossaries:
 	//
-	//  - TSV/CSV (`.tsv`/`.csv`): Two column file, tab- or comma-separated.
+	//  - TSV/CSV (`.tsv`/`.csv`): 2 column file, tab- or comma-separated.
 	//    The first column is source text. The second column is target text.
-	//    No headers in this file. The first row contains data and not column
-	//    names.
+	//    The file must not contain headers. That is, the first row is data, not
+	//    column names.
 	//
 	//  - TMX (`.tmx`): TMX file with parallel data defining source/target term
 	//  pairs.
@@ -92,21 +88,21 @@ type GlossaryInputConfig struct {
 	//  - CSV (`.csv`): Multi-column CSV file defining equivalent glossary terms
 	//    in multiple languages. See documentation for more information -
 	//    [glossaries](https://cloud.google.com/translate/docs/advanced/glossary).
-	// +kcc:proto:field=google.cloud.translation.v3.GlossaryInputConfig.gcs_source
+	// +kcc:proto:field=google.cloud.translation.v3beta1.GlossaryInputConfig.gcs_source
 	GcsSource *GcsSource `json:"gcsSource,omitempty"`
 }
 
-// +kcc:proto=google.cloud.translation.v3.Glossary
+// +kcc:proto=google.cloud.translation.v3beta1.Glossary
 type GlossaryObservedState struct {
 	// Output only. The number of entries defined in the glossary.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.entry_count
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.entry_count
 	EntryCount *int32 `json:"entryCount,omitempty"`
 
 	// Output only. When CreateGlossary was called.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.submit_time
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.submit_time
 	SubmitTime *string `json:"submitTime,omitempty"`
 
 	// Output only. When the glossary creation was finished.
-	// +kcc:proto:field=google.cloud.translation.v3.Glossary.end_time
+	// +kcc:proto:field=google.cloud.translation.v3beta1.Glossary.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
