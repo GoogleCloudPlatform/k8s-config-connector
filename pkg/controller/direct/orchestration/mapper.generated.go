@@ -15,47 +15,11 @@
 package orchestration
 
 import (
-	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/orchestration/airflow/service/apiv1beta1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orchestration/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func OrchestrationUserWorkloadsConfigMapObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UserWorkloadsConfigMap) *krm.OrchestrationUserWorkloadsConfigMapObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OrchestrationUserWorkloadsConfigMapObservedState{}
-	// MISSING: Name
-	// MISSING: Data
-	return out
-}
-func OrchestrationUserWorkloadsConfigMapObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OrchestrationUserWorkloadsConfigMapObservedState) *pb.UserWorkloadsConfigMap {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserWorkloadsConfigMap{}
-	// MISSING: Name
-	// MISSING: Data
-	return out
-}
-func OrchestrationUserWorkloadsConfigMapSpec_FromProto(mapCtx *direct.MapContext, in *pb.UserWorkloadsConfigMap) *krm.OrchestrationUserWorkloadsConfigMapSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OrchestrationUserWorkloadsConfigMapSpec{}
-	// MISSING: Name
-	// MISSING: Data
-	return out
-}
-func OrchestrationUserWorkloadsConfigMapSpec_ToProto(mapCtx *direct.MapContext, in *krm.OrchestrationUserWorkloadsConfigMapSpec) *pb.UserWorkloadsConfigMap {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UserWorkloadsConfigMap{}
-	// MISSING: Name
-	// MISSING: Data
-	return out
-}
 func UserWorkloadsConfigMap_FromProto(mapCtx *direct.MapContext, in *pb.UserWorkloadsConfigMap) *krm.UserWorkloadsConfigMap {
 	if in == nil {
 		return nil

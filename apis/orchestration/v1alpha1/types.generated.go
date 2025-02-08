@@ -15,11 +15,11 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.orchestration.airflow.service.v1.UserWorkloadsConfigMap
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1beta1.UserWorkloadsConfigMap
 type UserWorkloadsConfigMap struct {
 	// Identifier. The resource name of the ConfigMap, in the form:
 	//  "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsConfigMaps/{userWorkloadsConfigMapId}"
-	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.UserWorkloadsConfigMap.name
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1beta1.UserWorkloadsConfigMap.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. The "data" field of Kubernetes ConfigMap, organized in key-value
@@ -32,6 +32,6 @@ type UserWorkloadsConfigMap struct {
 	//    "example_key": "example_value",
 	//    "another_key": "another_value"
 	//  }
-	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.UserWorkloadsConfigMap.data
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1beta1.UserWorkloadsConfigMap.data
 	Data map[string]string `json:"data,omitempty"`
 }
