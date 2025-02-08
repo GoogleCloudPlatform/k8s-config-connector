@@ -15,72 +15,72 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.v2.ConversationContext
+// +kcc:proto=google.cloud.dialogflow.v2beta1.ConversationContext
 type ConversationContext struct {
 	// Optional. List of message transcripts in the conversation.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationContext.message_entries
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.ConversationContext.message_entries
 	MessageEntries []MessageEntry `json:"messageEntries,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.FewShotExample
+// +kcc:proto=google.cloud.dialogflow.v2beta1.FewShotExample
 type FewShotExample struct {
 	// Optional. Conversation transcripts.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.conversation_context
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.FewShotExample.conversation_context
 	ConversationContext *ConversationContext `json:"conversationContext,omitempty"`
 
 	// Optional. Key is the placeholder field name in input, value is the value of
 	//  the placeholder. E.g. instruction contains "@price", and ingested data has
 	//  <"price", "10">
-	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.extra_info
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.FewShotExample.extra_info
 	ExtraInfo map[string]string `json:"extraInfo,omitempty"`
 
 	// Summarization sections.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.summarization_section_list
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.FewShotExample.summarization_section_list
 	SummarizationSectionList *SummarizationSectionList `json:"summarizationSectionList,omitempty"`
 
 	// Required. Example output of the model.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.output
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.FewShotExample.output
 	Output *GeneratorSuggestion `json:"output,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.Generator
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Generator
 type Generator struct {
 
 	// Optional. Human readable description of the generator.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.description
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Generator.description
 	Description *string `json:"description,omitempty"`
 
-	// Input of prebuilt Summarization feature.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.summarization_context
+	// Input of Summarization feature.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Generator.summarization_context
 	SummarizationContext *SummarizationContext `json:"summarizationContext,omitempty"`
 
 	// Optional. Inference parameters for this generator.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.inference_parameter
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Generator.inference_parameter
 	InferenceParameter *InferenceParameter `json:"inferenceParameter,omitempty"`
 
 	// Optional. The trigger event of the generator. It defines when the generator
 	//  is triggered in a conversation.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.trigger_event
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Generator.trigger_event
 	TriggerEvent *string `json:"triggerEvent,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.GeneratorSuggestion
+// +kcc:proto=google.cloud.dialogflow.v2beta1.GeneratorSuggestion
 type GeneratorSuggestion struct {
 	// Optional. Suggested summary.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.summary_suggestion
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.GeneratorSuggestion.summary_suggestion
 	SummarySuggestion *SummarySuggestion `json:"summarySuggestion,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.InferenceParameter
+// +kcc:proto=google.cloud.dialogflow.v2beta1.InferenceParameter
 type InferenceParameter struct {
 	// Optional. Maximum number of the output tokens for the generator.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.max_output_tokens
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.InferenceParameter.max_output_tokens
 	MaxOutputTokens *int32 `json:"maxOutputTokens,omitempty"`
 
 	// Optional. Controls the randomness of LLM predictions.
 	//  Low temperature = less random. High temperature = more random.
 	//  If unset (or 0), uses a default value of 0.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.temperature
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.InferenceParameter.temperature
 	Temperature *float64 `json:"temperature,omitempty"`
 
 	// Optional. Top-k changes how the model selects tokens for output. A top-k of
@@ -92,7 +92,7 @@ type InferenceParameter struct {
 	//  based on topP with the final token selected using temperature sampling.
 	//  Specify a lower value for less random responses and a higher value for more
 	//  random responses. Acceptable value is [1, 40], default to 40.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.top_k
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.InferenceParameter.top_k
 	TopK *int32 `json:"topK,omitempty"`
 
 	// Optional. Top-p changes how the model selects tokens for output. Tokens are
@@ -103,107 +103,107 @@ type InferenceParameter struct {
 	//  temperature) and doesn't consider C. The default top-p value is 0.95.
 	//  Specify a lower value for less random responses and a higher value for more
 	//  random responses. Acceptable value is [0.0, 1.0], default to 0.95.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.top_p
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.InferenceParameter.top_p
 	TopP *float64 `json:"topP,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.MessageEntry
+// +kcc:proto=google.cloud.dialogflow.v2beta1.MessageEntry
 type MessageEntry struct {
 	// Optional. Participant role of the message.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.role
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.MessageEntry.role
 	Role *string `json:"role,omitempty"`
 
 	// Optional. Transcript content of the message.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.text
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.MessageEntry.text
 	Text *string `json:"text,omitempty"`
 
 	// Optional. The language of the text. See [Language
 	//  Support](https://cloud.google.com/dialogflow/docs/reference/language) for a
 	//  list of the currently supported language codes.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.language_code
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.MessageEntry.language_code
 	LanguageCode *string `json:"languageCode,omitempty"`
 
 	// Optional. Create time of the message entry.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.create_time
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.MessageEntry.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.SummarizationContext
+// +kcc:proto=google.cloud.dialogflow.v2beta1.SummarizationContext
 type SummarizationContext struct {
 	// Optional. List of sections. Note it contains both predefined section sand
 	//  customer defined sections.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.summarization_sections
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarizationContext.summarization_sections
 	SummarizationSections []SummarizationSection `json:"summarizationSections,omitempty"`
 
 	// Optional. List of few shot examples.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.few_shot_examples
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarizationContext.few_shot_examples
 	FewShotExamples []FewShotExample `json:"fewShotExamples,omitempty"`
 
 	// Optional. Version of the feature. If not set, default to latest version.
 	//  Current candidates are ["1.0"].
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.version
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarizationContext.version
 	Version *string `json:"version,omitempty"`
 
 	// Optional. The target language of the generated summary. The language code
 	//  for conversation will be used if this field is empty. Supported 2.0 and
 	//  later versions.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.output_language_code
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarizationContext.output_language_code
 	OutputLanguageCode *string `json:"outputLanguageCode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.SummarizationSection
+// +kcc:proto=google.cloud.dialogflow.v2beta1.SummarizationSection
 type SummarizationSection struct {
 	// Optional. Name of the section, for example, "situation".
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationSection.key
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarizationSection.key
 	Key *string `json:"key,omitempty"`
 
 	// Optional. Definition of the section, for example, "what the customer needs
 	//  help with or has question about."
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationSection.definition
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarizationSection.definition
 	Definition *string `json:"definition,omitempty"`
 
 	// Optional. Type of the summarization section.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationSection.type
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarizationSection.type
 	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.SummarizationSectionList
+// +kcc:proto=google.cloud.dialogflow.v2beta1.SummarizationSectionList
 type SummarizationSectionList struct {
 	// Optional. Summarization sections.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationSectionList.summarization_sections
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarizationSectionList.summarization_sections
 	SummarizationSections []SummarizationSection `json:"summarizationSections,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.SummarySuggestion
+// +kcc:proto=google.cloud.dialogflow.v2beta1.SummarySuggestion
 type SummarySuggestion struct {
 	// Required. All the parts of generated summary.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.summary_sections
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarySuggestion.summary_sections
 	SummarySections []SummarySuggestion_SummarySection `json:"summarySections,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection
+// +kcc:proto=google.cloud.dialogflow.v2beta1.SummarySuggestion.SummarySection
 type SummarySuggestion_SummarySection struct {
 	// Required. Name of the section.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.section
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarySuggestion.SummarySection.section
 	Section *string `json:"section,omitempty"`
 
 	// Required. Summary text for the section.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.summary
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SummarySuggestion.SummarySection.summary
 	Summary *string `json:"summary,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.Generator
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Generator
 type GeneratorObservedState struct {
 	// Output only. Identifier. The resource name of the generator. Format:
 	//  `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Generator.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. Creation time of this generator.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.create_time
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Generator.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Update time of this generator.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Generator.update_time
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Generator.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
