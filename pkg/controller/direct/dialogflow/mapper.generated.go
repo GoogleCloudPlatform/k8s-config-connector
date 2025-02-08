@@ -16,66 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DialogflowEnvironmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowEnvironmentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VersionConfigs
-	// MISSING: UpdateTime
-	// MISSING: TestCasesConfig
-	// MISSING: WebhookConfig
-	return out
-}
-func DialogflowEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEnvironmentObservedState) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VersionConfigs
-	// MISSING: UpdateTime
-	// MISSING: TestCasesConfig
-	// MISSING: WebhookConfig
-	return out
-}
-func DialogflowEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DialogflowEnvironmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowEnvironmentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VersionConfigs
-	// MISSING: UpdateTime
-	// MISSING: TestCasesConfig
-	// MISSING: WebhookConfig
-	return out
-}
-func DialogflowEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEnvironmentSpec) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VersionConfigs
-	// MISSING: UpdateTime
-	// MISSING: TestCasesConfig
-	// MISSING: WebhookConfig
-	return out
-}
 func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
 	if in == nil {
 		return nil
