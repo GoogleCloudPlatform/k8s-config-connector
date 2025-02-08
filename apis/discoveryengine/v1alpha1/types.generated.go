@@ -15,10 +15,10 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.discoveryengine.v1.SiteSearchEngine
+// +kcc:proto=google.cloud.discoveryengine.v1beta.SiteSearchEngine
 type SiteSearchEngine struct {
 	// The fully qualified resource name of the site search engine.
 	//  Format: `projects/*/locations/*/dataStores/*/siteSearchEngine`
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.SiteSearchEngine.name
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SiteSearchEngine.name
 	Name *string `json:"name,omitempty"`
 }
