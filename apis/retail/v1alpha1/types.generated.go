@@ -15,29 +15,29 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.retail.v2.SearchRequest.DynamicFacetSpec
+// +kcc:proto=google.cloud.retail.v2beta.SearchRequest.DynamicFacetSpec
 type SearchRequest_DynamicFacetSpec struct {
 	// Mode of the DynamicFacet feature.
 	//  Defaults to
-	//  [Mode.DISABLED][google.cloud.retail.v2.SearchRequest.DynamicFacetSpec.Mode.DISABLED]
+	//  [Mode.DISABLED][google.cloud.retail.v2beta.SearchRequest.DynamicFacetSpec.Mode.DISABLED]
 	//  if it's unset.
-	// +kcc:proto:field=google.cloud.retail.v2.SearchRequest.DynamicFacetSpec.mode
+	// +kcc:proto:field=google.cloud.retail.v2beta.SearchRequest.DynamicFacetSpec.mode
 	Mode *string `json:"mode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.retail.v2.SearchRequest.PersonalizationSpec
+// +kcc:proto=google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec
 type SearchRequest_PersonalizationSpec struct {
 	// Defaults to
-	//  [Mode.AUTO][google.cloud.retail.v2.SearchRequest.PersonalizationSpec.Mode.AUTO].
-	// +kcc:proto:field=google.cloud.retail.v2.SearchRequest.PersonalizationSpec.mode
+	//  [Mode.AUTO][google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec.Mode.AUTO].
+	// +kcc:proto:field=google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec.mode
 	Mode *string `json:"mode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.retail.v2.ServingConfig
+// +kcc:proto=google.cloud.retail.v2beta.ServingConfig
 type ServingConfig struct {
 	// Immutable. Fully qualified name
 	//  `projects/*/locations/global/catalogs/*/servingConfig/*`
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.name
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. The human readable serving config display name. Used in Retail
@@ -45,19 +45,21 @@ type ServingConfig struct {
 	//
 	//  This field must be a UTF-8 encoded string with a length limit of 128
 	//  characters. Otherwise, an INVALID_ARGUMENT error is returned.
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.display_name
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// The id of the model in the same [Catalog][google.cloud.retail.v2.Catalog]
-	//  to use at serving time. Currently only RecommendationModels are supported:
+	// The id of the model in the same
+	//  [Catalog][google.cloud.retail.v2beta.Catalog] to use at serving time.
+	//  Currently only RecommendationModels are supported:
 	//  https://cloud.google.com/retail/recommendations-ai/docs/create-models
 	//  Can be changed but only to a compatible model (e.g.
 	//  others-you-may-like CTR to others-you-may-like CVR).
 	//
 	//  Required when
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.model_id
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.model_id
 	ModelID *string `json:"modelID,omitempty"`
 
 	// How much price ranking we want in serving results.
@@ -76,32 +78,35 @@ type ServingConfig struct {
 	//  `no-price-reranking`.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.price_reranking_level
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.price_reranking_level
 	PriceRerankingLevel *string `json:"priceRerankingLevel,omitempty"`
 
 	// Facet specifications for faceted search. If empty, no facets are returned.
-	//  The ids refer to the ids of [Control][google.cloud.retail.v2.Control]
+	//  The ids refer to the ids of [Control][google.cloud.retail.v2beta.Control]
 	//  resources with only the Facet control set. These controls are assumed to be
-	//  in the same [Catalog][google.cloud.retail.v2.Catalog] as the
-	//  [ServingConfig][google.cloud.retail.v2.ServingConfig].
+	//  in the same [Catalog][google.cloud.retail.v2beta.Catalog] as the
+	//  [ServingConfig][google.cloud.retail.v2beta.ServingConfig].
 	//  A maximum of 100 values are allowed. Otherwise, an INVALID_ARGUMENT error
 	//  is returned.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.facet_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.facet_control_ids
 	FacetControlIds []string `json:"facetControlIds,omitempty"`
 
 	// The specification for dynamically generated facets. Notice that only
 	//  textual facets can be dynamically generated.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.dynamic_facet_spec
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.dynamic_facet_spec
 	DynamicFacetSpec *SearchRequest_DynamicFacetSpec `json:"dynamicFacetSpec,omitempty"`
 
 	// Condition boost specifications. If a product matches multiple conditions
@@ -110,17 +115,18 @@ type ServingConfig struct {
 	//  specifications is 100.
 	//
 	//  Notice that if both
-	//  [ServingConfig.boost_control_ids][google.cloud.retail.v2.ServingConfig.boost_control_ids]
+	//  [ServingConfig.boost_control_ids][google.cloud.retail.v2beta.ServingConfig.boost_control_ids]
 	//  and
-	//  [SearchRequest.boost_spec][google.cloud.retail.v2.SearchRequest.boost_spec]
+	//  [SearchRequest.boost_spec][google.cloud.retail.v2beta.SearchRequest.boost_spec]
 	//  are set, the boost conditions from both places are evaluated. If a search
 	//  request matches multiple boost conditions, the final boost score is equal
 	//  to the sum of the boost scores from all matched boost conditions.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.boost_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.boost_control_ids
 	BoostControlIds []string `json:"boostControlIds,omitempty"`
 
 	// Condition filter specifications. If a product matches multiple conditions
@@ -129,9 +135,10 @@ type ServingConfig struct {
 	//  specifications is 100.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.filter_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.filter_control_ids
 	FilterControlIds []string `json:"filterControlIds,omitempty"`
 
 	// Condition redirect specifications. Only the first triggered redirect action
@@ -139,9 +146,10 @@ type ServingConfig struct {
 	//  1000.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.redirect_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.redirect_control_ids
 	RedirectControlIds []string `json:"redirectControlIds,omitempty"`
 
 	// Condition synonyms specifications. If multiple syonyms conditions match,
@@ -150,9 +158,10 @@ type ServingConfig struct {
 	//  100.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.twoway_synonyms_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.twoway_synonyms_control_ids
 	TwowaySynonymsControlIds []string `json:"twowaySynonymsControlIds,omitempty"`
 
 	// Condition oneway synonyms specifications. If multiple oneway synonyms
@@ -161,9 +170,10 @@ type ServingConfig struct {
 	//  specifications is 100.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.oneway_synonyms_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.oneway_synonyms_control_ids
 	OnewaySynonymsControlIds []string `json:"onewaySynonymsControlIds,omitempty"`
 
 	// Condition do not associate specifications. If multiple do not associate
@@ -173,9 +183,10 @@ type ServingConfig struct {
 	//  - Maximum number of specifications is 100.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.do_not_associate_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.do_not_associate_control_ids
 	DoNotAssociateControlIds []string `json:"doNotAssociateControlIds,omitempty"`
 
 	// Condition replacement specifications.
@@ -184,9 +195,10 @@ type ServingConfig struct {
 	//  - Maximum number of specifications is 100.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.replacement_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.replacement_control_ids
 	ReplacementControlIds []string `json:"replacementControlIds,omitempty"`
 
 	// Condition ignore specifications. If multiple ignore
@@ -196,9 +208,10 @@ type ServingConfig struct {
 	//  - Maximum number of specifications is 100.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.ignore_control_ids
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.ignore_control_ids
 	IgnoreControlIds []string `json:"ignoreControlIds,omitempty"`
 
 	// How much diversity to use in recommendation model results e.g.
@@ -214,15 +227,16 @@ type ServingConfig struct {
 	//  type. Default value: `no-diversity`.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.diversity_level
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.diversity_level
 	DiversityLevel *string `json:"diversityLevel,omitempty"`
 
 	// What kind of diversity to use - data driven or rule based. If unset, the
 	//  server behavior defaults to
-	//  [RULE_BASED_DIVERSITY][google.cloud.retail.v2.ServingConfig.DiversityType.RULE_BASED_DIVERSITY].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.diversity_type
+	//  [RULE_BASED_DIVERSITY][google.cloud.retail.v2beta.ServingConfig.DiversityType.RULE_BASED_DIVERSITY].
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.diversity_type
 	DiversityType *string `json:"diversityType,omitempty"`
 
 	// Whether to add additional category filters on the `similar-items` model.
@@ -237,35 +251,37 @@ type ServingConfig struct {
 	//    will satisfy both conditions (user given and category match).
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.enable_category_filter_level
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.enable_category_filter_level
 	EnableCategoryFilterLevel *string `json:"enableCategoryFilterLevel,omitempty"`
 
 	// When the flag is enabled, the products in the denylist will not be filtered
 	//  out in the recommendation filtering results.
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.ignore_recs_denylist
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.ignore_recs_denylist
 	IgnoreRecsDenylist *bool `json:"ignoreRecsDenylist,omitempty"`
 
 	// The specification for personalization spec.
 	//
 	//  Can only be set if
-	//  [solution_types][google.cloud.retail.v2.ServingConfig.solution_types] is
+	//  [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+	//  is
 	//  [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
 	//
 	//  Notice that if both
-	//  [ServingConfig.personalization_spec][google.cloud.retail.v2.ServingConfig.personalization_spec]
+	//  [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec]
 	//  and
-	//  [SearchRequest.personalization_spec][google.cloud.retail.v2.SearchRequest.personalization_spec]
+	//  [SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec]
 	//  are set.
-	//  [SearchRequest.personalization_spec][google.cloud.retail.v2.SearchRequest.personalization_spec]
+	//  [SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec]
 	//  will override
-	//  [ServingConfig.personalization_spec][google.cloud.retail.v2.ServingConfig.personalization_spec].
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.personalization_spec
+	//  [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec].
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.personalization_spec
 	PersonalizationSpec *SearchRequest_PersonalizationSpec `json:"personalizationSpec,omitempty"`
 
 	// Required. Immutable. Specifies the solution types that a serving config can
 	//  be associated with. Currently we support setting only one type of solution.
-	// +kcc:proto:field=google.cloud.retail.v2.ServingConfig.solution_types
+	// +kcc:proto:field=google.cloud.retail.v2beta.ServingConfig.solution_types
 	SolutionTypes []string `json:"solutionTypes,omitempty"`
 }
