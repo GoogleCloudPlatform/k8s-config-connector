@@ -15,10 +15,10 @@
 package resourcemanager
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/resourcemanager/apiv2/resourcemanagerpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1alpha1"
 )
 func Folder_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.Folder {
 	if in == nil {
@@ -28,9 +28,11 @@ func Folder_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.Folder {
 	// MISSING: Name
 	out.Parent = direct.LazyPtr(in.GetParent())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: LifecycleState
+	// MISSING: State
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Etag
 	return out
 }
 func Folder_ToProto(mapCtx *direct.MapContext, in *krm.Folder) *pb.Folder {
@@ -41,9 +43,11 @@ func Folder_ToProto(mapCtx *direct.MapContext, in *krm.Folder) *pb.Folder {
 	// MISSING: Name
 	out.Parent = direct.ValueOf(in.Parent)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: LifecycleState
+	// MISSING: State
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Etag
 	return out
 }
 func FolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderObservedState {
@@ -54,9 +58,11 @@ func FolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *kr
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: Parent
 	// MISSING: DisplayName
-	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifecycleState())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func FolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FolderObservedState) *pb.Folder {
@@ -67,60 +73,10 @@ func FolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FolderObserv
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: Parent
 	// MISSING: DisplayName
-	out.LifecycleState = direct.Enum_ToProto[pb.Folder_LifecycleState](mapCtx, in.LifecycleState)
+	out.State = direct.Enum_ToProto[pb.Folder_State](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
-func ResourcemanagerFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.ResourcemanagerFolderObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ResourcemanagerFolderObservedState{}
-	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: DisplayName
-	// MISSING: LifecycleState
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func ResourcemanagerFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourcemanagerFolderObservedState) *pb.Folder {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Folder{}
-	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: DisplayName
-	// MISSING: LifecycleState
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func ResourcemanagerFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.ResourcemanagerFolderSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ResourcemanagerFolderSpec{}
-	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: DisplayName
-	// MISSING: LifecycleState
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func ResourcemanagerFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourcemanagerFolderSpec) *pb.Folder {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Folder{}
-	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: DisplayName
-	// MISSING: LifecycleState
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
