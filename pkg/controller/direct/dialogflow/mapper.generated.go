@@ -15,10 +15,10 @@
 package dialogflow
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 )
 func Context_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.Context {
 	if in == nil {
@@ -38,45 +38,5 @@ func Context_ToProto(mapCtx *direct.MapContext, in *krm.Context) *pb.Context {
 	out.Name = direct.ValueOf(in.Name)
 	out.LifespanCount = direct.ValueOf(in.LifespanCount)
 	out.Parameters = Parameters_ToProto(mapCtx, in.Parameters)
-	return out
-}
-func DialogflowContextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.DialogflowContextObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowContextObservedState{}
-	// MISSING: Name
-	// MISSING: LifespanCount
-	// MISSING: Parameters
-	return out
-}
-func DialogflowContextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowContextObservedState) *pb.Context {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Context{}
-	// MISSING: Name
-	// MISSING: LifespanCount
-	// MISSING: Parameters
-	return out
-}
-func DialogflowContextSpec_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.DialogflowContextSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowContextSpec{}
-	// MISSING: Name
-	// MISSING: LifespanCount
-	// MISSING: Parameters
-	return out
-}
-func DialogflowContextSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowContextSpec) *pb.Context {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Context{}
-	// MISSING: Name
-	// MISSING: LifespanCount
-	// MISSING: Parameters
 	return out
 }

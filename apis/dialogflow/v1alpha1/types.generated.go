@@ -15,12 +15,18 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.v2.Context
+// +kcc:proto=google.cloud.dialogflow.v2beta1.Context
 type Context struct {
-	// Required. The unique identifier of the context. Format:
-	//  `projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>`,
-	//  or `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-	//  ID>/sessions/<Session ID>/contexts/<Context ID>`.
+	// Required. The unique identifier of the context. Supported formats:
+	//  - `projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context
+	//    ID>`,
+	//  - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+	//    ID>/contexts/<Context ID>`,
+	//  - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+	//    ID>/sessions/<Session ID>/contexts/<Context ID>`,
+	//  - `projects/<Project ID>/locations/<Location
+	//    ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+	//    ID>/contexts/<Context ID>`,
 	//
 	//  The `Context ID` is always converted to lowercase, may only contain
 	//  characters in `a-zA-Z0-9_-%` and may be at most 250 bytes long.
@@ -34,14 +40,14 @@ type Context struct {
 	//  * `__system_counters__`
 	//  * `*_id_dialog_context`
 	//  * `*_dialog_params_size`
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Context.name
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Context.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. The number of conversational query requests after which the
 	//  context expires. The default is `0`. If set to `0`, the context expires
 	//  immediately. Contexts expire automatically after 20 minutes if there
 	//  are no matching queries.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Context.lifespan_count
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Context.lifespan_count
 	LifespanCount *int32 `json:"lifespanCount,omitempty"`
 
 	// Optional. The collection of parameters associated with this context.
@@ -58,6 +64,6 @@ type Context struct {
 	//  * MapValue value: If parameter's entity type is a composite entity then use
 	//  map from composite entity property names to property values, otherwise,
 	//  use parameter value.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.Context.parameters
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Context.parameters
 	Parameters map[string]string `json:"parameters,omitempty"`
 }
