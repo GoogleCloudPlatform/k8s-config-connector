@@ -16,62 +16,10 @@ package datacatalog
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
+	pb "cloud.google.com/go/datacatalog/apiv1beta1/datacatalogpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DatacatalogTagObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krm.DatacatalogTagObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogTagObservedState{}
-	// MISSING: Name
-	// MISSING: Template
-	// MISSING: TemplateDisplayName
-	// MISSING: Column
-	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
-func DatacatalogTagObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogTagObservedState) *pb.Tag {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Tag{}
-	// MISSING: Name
-	// MISSING: Template
-	// MISSING: TemplateDisplayName
-	// MISSING: Column
-	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
-func DatacatalogTagSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krm.DatacatalogTagSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DatacatalogTagSpec{}
-	// MISSING: Name
-	// MISSING: Template
-	// MISSING: TemplateDisplayName
-	// MISSING: Column
-	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
-func DatacatalogTagSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatacatalogTagSpec) *pb.Tag {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Tag{}
-	// MISSING: Name
-	// MISSING: Template
-	// MISSING: TemplateDisplayName
-	// MISSING: Column
-	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
-	return out
-}
 func Tag_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krm.Tag {
 	if in == nil {
 		return nil
@@ -82,7 +30,6 @@ func Tag_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krm.Tag {
 	// MISSING: TemplateDisplayName
 	out.Column = direct.LazyPtr(in.GetColumn())
 	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
 	return out
 }
 func Tag_ToProto(mapCtx *direct.MapContext, in *krm.Tag) *pb.Tag {
@@ -97,7 +44,6 @@ func Tag_ToProto(mapCtx *direct.MapContext, in *krm.Tag) *pb.Tag {
 		out.Scope = oneof
 	}
 	// MISSING: Fields
-	// MISSING: DataplexTransferStatus
 	return out
 }
 func TagField_FromProto(mapCtx *direct.MapContext, in *pb.TagField) *krm.TagField {
@@ -111,7 +57,6 @@ func TagField_FromProto(mapCtx *direct.MapContext, in *pb.TagField) *krm.TagFiel
 	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
 	out.TimestampValue = direct.StringTimestamp_FromProto(mapCtx, in.GetTimestampValue())
 	out.EnumValue = TagField_EnumValue_FromProto(mapCtx, in.GetEnumValue())
-	out.RichtextValue = direct.LazyPtr(in.GetRichtextValue())
 	// MISSING: Order
 	return out
 }
@@ -135,9 +80,6 @@ func TagField_ToProto(mapCtx *direct.MapContext, in *krm.TagField) *pb.TagField 
 	}
 	if oneof := TagField_EnumValue_ToProto(mapCtx, in.EnumValue); oneof != nil {
 		out.Kind = &pb.TagField_EnumValue_{EnumValue: oneof}
-	}
-	if oneof := TagField_RichtextValue_ToProto(mapCtx, in.RichtextValue); oneof != nil {
-		out.Kind = oneof
 	}
 	// MISSING: Order
 	return out
@@ -168,7 +110,6 @@ func TagObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krm.TagO
 	out.TemplateDisplayName = direct.LazyPtr(in.GetTemplateDisplayName())
 	// MISSING: Column
 	// MISSING: Fields
-	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
 	return out
 }
 func TagObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagObservedState) *pb.Tag {
@@ -181,6 +122,5 @@ func TagObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagObservedStat
 	out.TemplateDisplayName = direct.ValueOf(in.TemplateDisplayName)
 	// MISSING: Column
 	// MISSING: Fields
-	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
 	return out
 }
