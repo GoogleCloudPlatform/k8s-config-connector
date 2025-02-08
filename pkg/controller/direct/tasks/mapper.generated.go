@@ -16,23 +16,23 @@ package tasks
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/cloudtasks/apiv2beta2/cloudtaskspb"
+	pb "cloud.google.com/go/cloudtasks/apiv2beta3/cloudtaskspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tasks/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func AppEngineHttpTarget_FromProto(mapCtx *direct.MapContext, in *pb.AppEngineHttpTarget) *krm.AppEngineHttpTarget {
+func AppEngineHttpQueue_FromProto(mapCtx *direct.MapContext, in *pb.AppEngineHttpQueue) *krm.AppEngineHttpQueue {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppEngineHttpTarget{}
+	out := &krm.AppEngineHttpQueue{}
 	out.AppEngineRoutingOverride = AppEngineRouting_FromProto(mapCtx, in.GetAppEngineRoutingOverride())
 	return out
 }
-func AppEngineHttpTarget_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineHttpTarget) *pb.AppEngineHttpTarget {
+func AppEngineHttpQueue_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineHttpQueue) *pb.AppEngineHttpQueue {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AppEngineHttpTarget{}
+	out := &pb.AppEngineHttpQueue{}
 	out.AppEngineRoutingOverride = AppEngineRouting_ToProto(mapCtx, in.AppEngineRoutingOverride)
 	return out
 }
@@ -172,20 +172,6 @@ func PathOverride_ToProto(mapCtx *direct.MapContext, in *krm.PathOverride) *pb.P
 	out.Path = direct.ValueOf(in.Path)
 	return out
 }
-func PullTarget_FromProto(mapCtx *direct.MapContext, in *pb.PullTarget) *krm.PullTarget {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PullTarget{}
-	return out
-}
-func PullTarget_ToProto(mapCtx *direct.MapContext, in *krm.PullTarget) *pb.PullTarget {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PullTarget{}
-	return out
-}
 func QueryOverride_FromProto(mapCtx *direct.MapContext, in *pb.QueryOverride) *krm.QueryOverride {
 	if in == nil {
 		return nil
@@ -208,8 +194,7 @@ func Queue_FromProto(mapCtx *direct.MapContext, in *pb.Queue) *krm.Queue {
 	}
 	out := &krm.Queue{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.AppEngineHTTPTarget = AppEngineHttpTarget_FromProto(mapCtx, in.GetAppEngineHttpTarget())
-	out.PullTarget = PullTarget_FromProto(mapCtx, in.GetPullTarget())
+	out.AppEngineHTTPQueue = AppEngineHttpQueue_FromProto(mapCtx, in.GetAppEngineHttpQueue())
 	out.HTTPTarget = HttpTarget_FromProto(mapCtx, in.GetHttpTarget())
 	out.RateLimits = RateLimits_FromProto(mapCtx, in.GetRateLimits())
 	out.RetryConfig = RetryConfig_FromProto(mapCtx, in.GetRetryConfig())
@@ -217,6 +202,8 @@ func Queue_FromProto(mapCtx *direct.MapContext, in *pb.Queue) *krm.Queue {
 	out.PurgeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPurgeTime())
 	out.TaskTtl = direct.StringDuration_FromProto(mapCtx, in.GetTaskTtl())
 	out.TombstoneTtl = direct.StringDuration_FromProto(mapCtx, in.GetTombstoneTtl())
+	out.StackdriverLoggingConfig = StackdriverLoggingConfig_FromProto(mapCtx, in.GetStackdriverLoggingConfig())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	// MISSING: Stats
 	return out
 }
@@ -226,21 +213,18 @@ func Queue_ToProto(mapCtx *direct.MapContext, in *krm.Queue) *pb.Queue {
 	}
 	out := &pb.Queue{}
 	out.Name = direct.ValueOf(in.Name)
-	if oneof := AppEngineHttpTarget_ToProto(mapCtx, in.AppEngineHTTPTarget); oneof != nil {
-		out.TargetType = &pb.Queue_AppEngineHttpTarget{AppEngineHttpTarget: oneof}
+	if oneof := AppEngineHttpQueue_ToProto(mapCtx, in.AppEngineHTTPQueue); oneof != nil {
+		out.QueueType = &pb.Queue_AppEngineHttpQueue{AppEngineHttpQueue: oneof}
 	}
-	if oneof := PullTarget_ToProto(mapCtx, in.PullTarget); oneof != nil {
-		out.TargetType = &pb.Queue_PullTarget{PullTarget: oneof}
-	}
-	if oneof := HttpTarget_ToProto(mapCtx, in.HTTPTarget); oneof != nil {
-		out.TargetType = &pb.Queue_HttpTarget{HttpTarget: oneof}
-	}
+	out.HttpTarget = HttpTarget_ToProto(mapCtx, in.HTTPTarget)
 	out.RateLimits = RateLimits_ToProto(mapCtx, in.RateLimits)
 	out.RetryConfig = RetryConfig_ToProto(mapCtx, in.RetryConfig)
 	out.State = direct.Enum_ToProto[pb.Queue_State](mapCtx, in.State)
 	out.PurgeTime = direct.StringTimestamp_ToProto(mapCtx, in.PurgeTime)
 	out.TaskTtl = direct.StringDuration_ToProto(mapCtx, in.TaskTtl)
 	out.TombstoneTtl = direct.StringDuration_ToProto(mapCtx, in.TombstoneTtl)
+	out.StackdriverLoggingConfig = StackdriverLoggingConfig_ToProto(mapCtx, in.StackdriverLoggingConfig)
+	out.Type = direct.Enum_ToProto[pb.Queue_Type](mapCtx, in.Type)
 	// MISSING: Stats
 	return out
 }
@@ -250,8 +234,7 @@ func QueueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Queue) *krm.
 	}
 	out := &krm.QueueObservedState{}
 	// MISSING: Name
-	// MISSING: AppEngineHTTPTarget
-	// MISSING: PullTarget
+	// MISSING: AppEngineHTTPQueue
 	// MISSING: HTTPTarget
 	// MISSING: RateLimits
 	// MISSING: RetryConfig
@@ -259,6 +242,8 @@ func QueueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Queue) *krm.
 	// MISSING: PurgeTime
 	// MISSING: TaskTtl
 	// MISSING: TombstoneTtl
+	// MISSING: StackdriverLoggingConfig
+	// MISSING: Type
 	out.Stats = QueueStats_FromProto(mapCtx, in.GetStats())
 	return out
 }
@@ -268,8 +253,7 @@ func QueueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QueueObserved
 	}
 	out := &pb.Queue{}
 	// MISSING: Name
-	// MISSING: AppEngineHTTPTarget
-	// MISSING: PullTarget
+	// MISSING: AppEngineHTTPQueue
 	// MISSING: HTTPTarget
 	// MISSING: RateLimits
 	// MISSING: RetryConfig
@@ -277,6 +261,8 @@ func QueueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QueueObserved
 	// MISSING: PurgeTime
 	// MISSING: TaskTtl
 	// MISSING: TombstoneTtl
+	// MISSING: StackdriverLoggingConfig
+	// MISSING: Type
 	out.Stats = QueueStats_ToProto(mapCtx, in.Stats)
 	return out
 }
@@ -333,9 +319,9 @@ func RateLimits_FromProto(mapCtx *direct.MapContext, in *pb.RateLimits) *krm.Rat
 		return nil
 	}
 	out := &krm.RateLimits{}
-	out.MaxTasksDispatchedPerSecond = direct.LazyPtr(in.GetMaxTasksDispatchedPerSecond())
+	out.MaxDispatchesPerSecond = direct.LazyPtr(in.GetMaxDispatchesPerSecond())
 	out.MaxBurstSize = direct.LazyPtr(in.GetMaxBurstSize())
-	out.MaxConcurrentTasks = direct.LazyPtr(in.GetMaxConcurrentTasks())
+	out.MaxConcurrentDispatches = direct.LazyPtr(in.GetMaxConcurrentDispatches())
 	return out
 }
 func RateLimits_ToProto(mapCtx *direct.MapContext, in *krm.RateLimits) *pb.RateLimits {
@@ -343,9 +329,9 @@ func RateLimits_ToProto(mapCtx *direct.MapContext, in *krm.RateLimits) *pb.RateL
 		return nil
 	}
 	out := &pb.RateLimits{}
-	out.MaxTasksDispatchedPerSecond = direct.ValueOf(in.MaxTasksDispatchedPerSecond)
+	out.MaxDispatchesPerSecond = direct.ValueOf(in.MaxDispatchesPerSecond)
 	out.MaxBurstSize = direct.ValueOf(in.MaxBurstSize)
-	out.MaxConcurrentTasks = direct.ValueOf(in.MaxConcurrentTasks)
+	out.MaxConcurrentDispatches = direct.ValueOf(in.MaxConcurrentDispatches)
 	return out
 }
 func RetryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RetryConfig) *krm.RetryConfig {
@@ -354,7 +340,6 @@ func RetryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RetryConfig) *krm.R
 	}
 	out := &krm.RetryConfig{}
 	out.MaxAttempts = direct.LazyPtr(in.GetMaxAttempts())
-	out.UnlimitedAttempts = direct.LazyPtr(in.GetUnlimitedAttempts())
 	out.MaxRetryDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxRetryDuration())
 	out.MinBackoff = direct.StringDuration_FromProto(mapCtx, in.GetMinBackoff())
 	out.MaxBackoff = direct.StringDuration_FromProto(mapCtx, in.GetMaxBackoff())
@@ -366,16 +351,27 @@ func RetryConfig_ToProto(mapCtx *direct.MapContext, in *krm.RetryConfig) *pb.Ret
 		return nil
 	}
 	out := &pb.RetryConfig{}
-	if oneof := RetryConfig_MaxAttempts_ToProto(mapCtx, in.MaxAttempts); oneof != nil {
-		out.NumAttempts = oneof
-	}
-	if oneof := RetryConfig_UnlimitedAttempts_ToProto(mapCtx, in.UnlimitedAttempts); oneof != nil {
-		out.NumAttempts = oneof
-	}
+	out.MaxAttempts = direct.ValueOf(in.MaxAttempts)
 	out.MaxRetryDuration = direct.StringDuration_ToProto(mapCtx, in.MaxRetryDuration)
 	out.MinBackoff = direct.StringDuration_ToProto(mapCtx, in.MinBackoff)
 	out.MaxBackoff = direct.StringDuration_ToProto(mapCtx, in.MaxBackoff)
 	out.MaxDoublings = direct.ValueOf(in.MaxDoublings)
+	return out
+}
+func StackdriverLoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.StackdriverLoggingConfig) *krm.StackdriverLoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StackdriverLoggingConfig{}
+	out.SamplingRatio = direct.LazyPtr(in.GetSamplingRatio())
+	return out
+}
+func StackdriverLoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.StackdriverLoggingConfig) *pb.StackdriverLoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StackdriverLoggingConfig{}
+	out.SamplingRatio = direct.ValueOf(in.SamplingRatio)
 	return out
 }
 func UriOverride_FromProto(mapCtx *direct.MapContext, in *pb.UriOverride) *krm.UriOverride {
