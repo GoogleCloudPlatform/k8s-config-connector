@@ -15,7 +15,7 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.tasks.v2beta2.AppEngineHttpRequest
+// +kcc:proto=google.cloud.tasks.v2beta3.AppEngineHttpRequest
 type AppEngineHttpRequest struct {
 	// The HTTP method to use for the request. The default is POST.
 	//
@@ -25,33 +25,33 @@ type AppEngineHttpRequest struct {
 	//  handler](https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler)
 	//  and the App Engine documentation for your runtime on [How Requests are
 	//  Handled](https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled).
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineHttpRequest.http_method
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineHttpRequest.http_method
 	HTTPMethod *string `json:"httpMethod,omitempty"`
 
 	// Task-level setting for App Engine routing.
 	//
 	//  If set,
-	//  [app_engine_routing_override][google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override]
+	//  [app_engine_routing_override][google.cloud.tasks.v2beta3.AppEngineHttpQueue.app_engine_routing_override]
 	//  is used for all tasks in the queue, no matter what the setting is for the
 	//  [task-level
-	//  app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing
+	//  app_engine_routing][google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing].
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing
 	AppEngineRouting *AppEngineRouting `json:"appEngineRouting,omitempty"`
 
-	// The relative URL.
+	// The relative URI.
 	//
-	//  The relative URL must begin with "/" and must be a valid HTTP relative URL.
+	//  The relative URI must begin with "/" and must be a valid HTTP relative URI.
 	//  It can contain a path and query string arguments.
-	//  If the relative URL is empty, then the root path "/" will be used.
+	//  If the relative URI is empty, then the root path "/" will be used.
 	//  No spaces are allowed, and the maximum length allowed is 2083 characters.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative_url
-	RelativeURL *string `json:"relativeURL,omitempty"`
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineHttpRequest.relative_uri
+	RelativeURI *string `json:"relativeURI,omitempty"`
 
 	// HTTP request headers.
 	//
 	//  This map contains the header field names and values.
 	//  Headers can be set when the
-	//  [task is created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
+	//  [task is created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
 	//  Repeated headers are not supported but a header value can contain commas.
 	//
 	//  Cloud Tasks sets some headers to default values:
@@ -63,13 +63,13 @@ type AppEngineHttpRequest struct {
 	//    modified `User-Agent`.
 	//
 	//  If the task has a
-	//  [payload][google.cloud.tasks.v2beta2.AppEngineHttpRequest.payload], Cloud
-	//  Tasks sets the following headers:
+	//  [body][google.cloud.tasks.v2beta3.AppEngineHttpRequest.body], Cloud Tasks
+	//  sets the following headers:
 	//
 	//  * `Content-Type`: By default, the `Content-Type` header is set to
 	//    `"application/octet-stream"`. The default can be overridden by explicitly
 	//    setting `Content-Type` to a particular media type when the
-	//    [task is created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
+	//    [task is created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
 	//    For example, `Content-Type` can be set to `"application/json"`.
 	//  * `Content-Length`: This is computed by Cloud Tasks. This value is
 	//    output only.   It cannot be changed.
@@ -83,29 +83,28 @@ type AppEngineHttpRequest struct {
 	//  In addition, Cloud Tasks sets some headers when the task is dispatched,
 	//  such as headers containing information about the task; see
 	//  [request
-	//  headers](https://cloud.google.com/appengine/docs/python/taskqueue/push/creating-handlers#reading_request_headers).
+	//  headers](https://cloud.google.com/tasks/docs/creating-appengine-handlers#reading_request_headers).
 	//  These headers are set only when the task is dispatched, so they are not
 	//  visible when the task is returned in a Cloud Tasks response.
 	//
 	//  Although there is no specific limit for the maximum number of headers or
 	//  the size, there is a limit on the maximum size of the
-	//  [Task][google.cloud.tasks.v2beta2.Task]. For more information, see the
-	//  [CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask]
+	//  [Task][google.cloud.tasks.v2beta3.Task]. For more information, see the
+	//  [CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask]
 	//  documentation.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineHttpRequest.headers
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineHttpRequest.headers
 	Headers map[string]string `json:"headers,omitempty"`
 
-	// Payload.
+	// HTTP request body.
 	//
-	//  The payload will be sent as the HTTP message body. A message
-	//  body, and thus a payload, is allowed only if the HTTP method is
-	//  POST or PUT. It is an error to set a data payload on a task with
-	//  an incompatible [HttpMethod][google.cloud.tasks.v2beta2.HttpMethod].
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineHttpRequest.payload
-	Payload []byte `json:"payload,omitempty"`
+	//  A request body is allowed only if the HTTP method is POST or PUT. It is
+	//  an error to set a body on a task with an incompatible
+	//  [HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineHttpRequest.body
+	Body []byte `json:"body,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tasks.v2beta2.AppEngineRouting
+// +kcc:proto=google.cloud.tasks.v2beta3.AppEngineRouting
 type AppEngineRouting struct {
 	// App service.
 	//
@@ -113,19 +112,19 @@ type AppEngineRouting struct {
 	//  service when the task is attempted.
 	//
 	//  For some queues or tasks which were created using the App Engine
-	//  Task Queue API, [host][google.cloud.tasks.v2beta2.AppEngineRouting.host] is
+	//  Task Queue API, [host][google.cloud.tasks.v2beta3.AppEngineRouting.host] is
 	//  not parsable into
-	//  [service][google.cloud.tasks.v2beta2.AppEngineRouting.service],
-	//  [version][google.cloud.tasks.v2beta2.AppEngineRouting.version], and
-	//  [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]. For
+	//  [service][google.cloud.tasks.v2beta3.AppEngineRouting.service],
+	//  [version][google.cloud.tasks.v2beta3.AppEngineRouting.version], and
+	//  [instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance]. For
 	//  example, some tasks which were created using the App Engine SDK use a
 	//  custom domain name; custom domains are not parsed by Cloud Tasks. If
-	//  [host][google.cloud.tasks.v2beta2.AppEngineRouting.host] is not parsable,
-	//  then [service][google.cloud.tasks.v2beta2.AppEngineRouting.service],
-	//  [version][google.cloud.tasks.v2beta2.AppEngineRouting.version], and
-	//  [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] are the
+	//  [host][google.cloud.tasks.v2beta3.AppEngineRouting.host] is not parsable,
+	//  then [service][google.cloud.tasks.v2beta3.AppEngineRouting.service],
+	//  [version][google.cloud.tasks.v2beta3.AppEngineRouting.version], and
+	//  [instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance] are the
 	//  empty string.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineRouting.service
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineRouting.service
 	Service *string `json:"service,omitempty"`
 
 	// App version.
@@ -134,19 +133,19 @@ type AppEngineRouting struct {
 	//  version when the task is attempted.
 	//
 	//  For some queues or tasks which were created using the App Engine
-	//  Task Queue API, [host][google.cloud.tasks.v2beta2.AppEngineRouting.host] is
+	//  Task Queue API, [host][google.cloud.tasks.v2beta3.AppEngineRouting.host] is
 	//  not parsable into
-	//  [service][google.cloud.tasks.v2beta2.AppEngineRouting.service],
-	//  [version][google.cloud.tasks.v2beta2.AppEngineRouting.version], and
-	//  [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]. For
+	//  [service][google.cloud.tasks.v2beta3.AppEngineRouting.service],
+	//  [version][google.cloud.tasks.v2beta3.AppEngineRouting.version], and
+	//  [instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance]. For
 	//  example, some tasks which were created using the App Engine SDK use a
 	//  custom domain name; custom domains are not parsed by Cloud Tasks. If
-	//  [host][google.cloud.tasks.v2beta2.AppEngineRouting.host] is not parsable,
-	//  then [service][google.cloud.tasks.v2beta2.AppEngineRouting.service],
-	//  [version][google.cloud.tasks.v2beta2.AppEngineRouting.version], and
-	//  [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] are the
+	//  [host][google.cloud.tasks.v2beta3.AppEngineRouting.host] is not parsable,
+	//  then [service][google.cloud.tasks.v2beta3.AppEngineRouting.service],
+	//  [version][google.cloud.tasks.v2beta3.AppEngineRouting.version], and
+	//  [instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance] are the
 	//  empty string.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineRouting.version
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineRouting.version
 	Version *string `json:"version,omitempty"`
 
 	// App instance.
@@ -162,108 +161,55 @@ type AppEngineRouting struct {
 	//  routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)
 	//  and [App Engine Flex request
 	//  routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineRouting.instance
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineRouting.instance
 	Instance *string `json:"instance,omitempty"`
 
 	// Output only. The host that the task is sent to.
 	//
+	//  The host is constructed from the domain name of the app associated with
+	//  the queue's project ID (for example <app-id>.appspot.com), and the
+	//  [service][google.cloud.tasks.v2beta3.AppEngineRouting.service],
+	//  [version][google.cloud.tasks.v2beta3.AppEngineRouting.version], and
+	//  [instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance]. Tasks
+	//  which were created using the App Engine SDK might have a custom domain
+	//  name.
+	//
 	//  For more information, see
 	//  [How Requests are
 	//  Routed](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).
-	//
-	//  The host is constructed as:
-	//
-	//
-	//  * `host = [application_domain_name]`</br>
-	//    `| [service] + '.' + [application_domain_name]`</br>
-	//    `| [version] + '.' + [application_domain_name]`</br>
-	//    `| [version_dot_service]+ '.' + [application_domain_name]`</br>
-	//    `| [instance] + '.' + [application_domain_name]`</br>
-	//    `| [instance_dot_service] + '.' + [application_domain_name]`</br>
-	//    `| [instance_dot_version] + '.' + [application_domain_name]`</br>
-	//    `| [instance_dot_version_dot_service] + '.' + [application_domain_name]`
-	//
-	//  * `application_domain_name` = The domain name of the app, for
-	//    example <app-id>.appspot.com, which is associated with the
-	//    queue's project ID. Some tasks which were created using the App Engine
-	//    SDK use a custom domain name.
-	//
-	//  * `service =`
-	//  [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
-	//
-	//  * `version =`
-	//  [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
-	//
-	//  * `version_dot_service =`
-	//    [version][google.cloud.tasks.v2beta2.AppEngineRouting.version] `+ '.' +`
-	//    [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
-	//
-	//  * `instance =`
-	//  [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
-	//
-	//  * `instance_dot_service =`
-	//    [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] `+ '.'
-	//    +` [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
-	//
-	//  * `instance_dot_version =`
-	//    [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] `+ '.'
-	//    +` [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
-	//
-	//  * `instance_dot_version_dot_service =`
-	//    [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] `+ '.'
-	//    +` [version][google.cloud.tasks.v2beta2.AppEngineRouting.version] `+ '.'
-	//    +` [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
-	//
-	//  If [service][google.cloud.tasks.v2beta2.AppEngineRouting.service] is empty,
-	//  then the task will be sent to the service which is the default service when
-	//  the task is attempted.
-	//
-	//  If [version][google.cloud.tasks.v2beta2.AppEngineRouting.version] is empty,
-	//  then the task will be sent to the version which is the default version when
-	//  the task is attempted.
-	//
-	//  If [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] is
-	//  empty, then the task will be sent to an instance which is available when
-	//  the task is attempted.
-	//
-	//  If [service][google.cloud.tasks.v2beta2.AppEngineRouting.service],
-	//  [version][google.cloud.tasks.v2beta2.AppEngineRouting.version], or
-	//  [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] is
-	//  invalid, then the task will be sent to the default version of the default
-	//  service when the task is attempted.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AppEngineRouting.host
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.AppEngineRouting.host
 	Host *string `json:"host,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tasks.v2beta2.AttemptStatus
-type AttemptStatus struct {
+// +kcc:proto=google.cloud.tasks.v2beta3.Attempt
+type Attempt struct {
 	// Output only. The time that this attempt was scheduled.
 	//
 	//  `schedule_time` will be truncated to the nearest microsecond.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AttemptStatus.schedule_time
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Attempt.schedule_time
 	ScheduleTime *string `json:"scheduleTime,omitempty"`
 
 	// Output only. The time that this attempt was dispatched.
 	//
 	//  `dispatch_time` will be truncated to the nearest microsecond.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AttemptStatus.dispatch_time
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Attempt.dispatch_time
 	DispatchTime *string `json:"dispatchTime,omitempty"`
 
 	// Output only. The time that this attempt response was received.
 	//
 	//  `response_time` will be truncated to the nearest microsecond.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AttemptStatus.response_time
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Attempt.response_time
 	ResponseTime *string `json:"responseTime,omitempty"`
 
-	// Output only. The response from the target for this attempt.
+	// Output only. The response from the worker for this attempt.
 	//
-	//  If the task has not been attempted or the task is currently running
-	//  then the response status is unset.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.AttemptStatus.response_status
+	//  If `response_time` is unset, then the task has not been attempted or is
+	//  currently running and the `response_status` field is meaningless.
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Attempt.response_status
 	ResponseStatus *Status `json:"responseStatus,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tasks.v2beta2.HttpRequest
+// +kcc:proto=google.cloud.tasks.v2beta3.HttpRequest
 type HttpRequest struct {
 	// Required. The full url path that the request will be sent to.
 	//
@@ -274,19 +220,18 @@ type HttpRequest struct {
 	//
 	//  The `Location` header response from a redirect response [`300` - `399`]
 	//  may be followed. The redirect is not counted as a separate attempt.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.HttpRequest.url
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.HttpRequest.url
 	URL *string `json:"url,omitempty"`
 
 	// The HTTP method to use for the request. The default is POST.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.HttpRequest.http_method
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.HttpRequest.http_method
 	HTTPMethod *string `json:"httpMethod,omitempty"`
 
 	// HTTP request headers.
 	//
 	//  This map contains the header field names and values.
-	//  Headers can be set when running the
-	//  [task is created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask] or
-	//  [task is created][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
+	//  Headers can be set when the
+	//  [task is created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
 	//
 	//  These headers represent a subset of the headers that will accompany the
 	//  task's HTTP request. Some HTTP request headers will be ignored or replaced.
@@ -297,7 +242,7 @@ type HttpRequest struct {
 	//  as service header. Service headers define properties of the task and are
 	//  predefined in CloudTask.
 	//  * Host: This will be computed by Cloud Tasks and derived from
-	//    [HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url].
+	//    [HttpRequest.url][google.cloud.tasks.v2beta3.HttpRequest.url].
 	//  * Content-Length: This will be computed by Cloud Tasks.
 	//  * User-Agent: This will be set to `"Google-Cloud-Tasks"`.
 	//  * `X-Google-*`: Google use only.
@@ -313,16 +258,16 @@ type HttpRequest struct {
 	//  specified using comma-separated values.
 	//
 	//  The size of the headers must be less than 80KB.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.HttpRequest.headers
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.HttpRequest.headers
 	Headers map[string]string `json:"headers,omitempty"`
 
 	// HTTP request body.
 	//
 	//  A request body is allowed only if the
-	//  [HTTP method][google.cloud.tasks.v2beta2.HttpRequest.http_method] is POST,
+	//  [HTTP method][google.cloud.tasks.v2beta3.HttpRequest.http_method] is POST,
 	//  PUT, or PATCH. It is an error to set body on a task with an incompatible
-	//  [HttpMethod][google.cloud.tasks.v2beta2.HttpMethod].
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.HttpRequest.body
+	//  [HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.HttpRequest.body
 	Body []byte `json:"body,omitempty"`
 
 	// If specified, an
@@ -332,7 +277,7 @@ type HttpRequest struct {
 	//
 	//  This type of authorization should generally only be used when calling
 	//  Google APIs hosted on *.googleapis.com.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.HttpRequest.oauth_token
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.HttpRequest.oauth_token
 	OauthToken *OAuthToken `json:"oauthToken,omitempty"`
 
 	// If specified, an
@@ -343,77 +288,66 @@ type HttpRequest struct {
 	//  This type of authorization can be used for many scenarios, including
 	//  calling Cloud Run, or endpoints where you intend to validate the token
 	//  yourself.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.HttpRequest.oidc_token
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.HttpRequest.oidc_token
 	OidcToken *OidcToken `json:"oidcToken,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tasks.v2beta2.OAuthToken
+// +kcc:proto=google.cloud.tasks.v2beta3.OAuthToken
 type OAuthToken struct {
 	// [Service account email](https://cloud.google.com/iam/docs/service-accounts)
 	//  to be used for generating OAuth token.
 	//  The service account must be within the same project as the queue. The
 	//  caller must have iam.serviceAccounts.actAs permission for the service
 	//  account.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.OAuthToken.service_account_email
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.OAuthToken.service_account_email
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty"`
 
 	// OAuth scope to be used for generating OAuth access token.
 	//  If not specified, "https://www.googleapis.com/auth/cloud-platform"
 	//  will be used.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.OAuthToken.scope
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.OAuthToken.scope
 	Scope *string `json:"scope,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tasks.v2beta2.OidcToken
+// +kcc:proto=google.cloud.tasks.v2beta3.OidcToken
 type OidcToken struct {
 	// [Service account email](https://cloud.google.com/iam/docs/service-accounts)
 	//  to be used for generating OIDC token.
 	//  The service account must be within the same project as the queue. The
 	//  caller must have iam.serviceAccounts.actAs permission for the service
 	//  account.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.OidcToken.service_account_email
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.OidcToken.service_account_email
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty"`
 
 	// Audience to be used when generating OIDC token. If not specified, the URI
 	//  specified in target will be used.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.OidcToken.audience
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.OidcToken.audience
 	Audience *string `json:"audience,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tasks.v2beta2.PullMessage
+// +kcc:proto=google.cloud.tasks.v2beta3.PullMessage
 type PullMessage struct {
 	// A data payload consumed by the worker to execute the task.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.PullMessage.payload
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.PullMessage.payload
 	Payload []byte `json:"payload,omitempty"`
 
-	// The task's tag.
+	// The tasks's tag.
 	//
-	//  Tags allow similar tasks to be processed in a batch. If you label
-	//  tasks with a tag, your worker can
-	//  [lease tasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] with the
-	//  same tag using
-	//  [filter][google.cloud.tasks.v2beta2.LeaseTasksRequest.filter]. For example,
-	//  if you want to aggregate the events associated with a specific user once a
-	//  day, you could tag tasks with the user ID.
-	//
-	//  The task's tag can only be set when the
-	//  [task is created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
-	//
-	//  The tag must be less than 500 characters.
+	//  The tag is less than 500 characters.
 	//
 	//  SDK compatibility: Although the SDK allows tags to be either
 	//  string or
 	//  [bytes](https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/taskqueue/TaskOptions.html#tag-byte:A-),
 	//  only UTF-8 encoded tags can be used in Cloud Tasks. If a tag isn't UTF-8
 	//  encoded, the tag will be empty when the task is returned by Cloud Tasks.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.PullMessage.tag
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.PullMessage.tag
 	Tag *string `json:"tag,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tasks.v2beta2.Task
+// +kcc:proto=google.cloud.tasks.v2beta3.Task
 type Task struct {
 	// Optionally caller-specified in
-	//  [CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
+	//  [CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
 	//
 	//  The task name.
 	//
@@ -433,102 +367,112 @@ type Task struct {
 	//    hyphens (-). The maximum length is 100 characters.
 	//  * `TASK_ID` can contain only letters ([A-Za-z]), numbers ([0-9]),
 	//    hyphens (-), or underscores (_). The maximum length is 500 characters.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.Task.name
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.name
 	Name *string `json:"name,omitempty"`
 
-	// App Engine HTTP request that is sent to the task's target. Can
-	//  be set only if
-	//  [app_engine_http_target][google.cloud.tasks.v2beta2.Queue.app_engine_http_target]
-	//  is set on the queue.
+	// HTTP request that is sent to the App Engine app handler.
 	//
 	//  An App Engine task is a task that has
-	//  [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest]
+	//  [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
 	//  set.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.Task.app_engine_http_request
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.app_engine_http_request
 	AppEngineHTTPRequest *AppEngineHttpRequest `json:"appEngineHTTPRequest,omitempty"`
-
-	// [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] to process
-	//  the task. Can be set only if
-	//  [pull_target][google.cloud.tasks.v2beta2.Queue.pull_target] is set on the
-	//  queue.
-	//
-	//  A pull task is a task that has
-	//  [PullMessage][google.cloud.tasks.v2beta2.PullMessage] set.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.Task.pull_message
-	PullMessage *PullMessage `json:"pullMessage,omitempty"`
 
 	// HTTP request that is sent to the task's target.
 	//
 	//  An HTTP task is a task that has
-	//  [HttpRequest][google.cloud.tasks.v2beta2.HttpRequest] set.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.Task.http_request
+	//  [HttpRequest][google.cloud.tasks.v2beta3.HttpRequest] set.
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.http_request
 	HTTPRequest *HttpRequest `json:"httpRequest,omitempty"`
+
+	// Pull Message contained in a task in a
+	//  [PULL][google.cloud.tasks.v2beta3.Queue.type] queue type. This payload
+	//  type cannot be explicitly set through Cloud Tasks API. Its purpose,
+	//  currently is to provide backward compatibility with App Engine Task Queue
+	//  [pull](https://cloud.google.com/appengine/docs/standard/java/taskqueue/pull/)
+	//  queues to provide a way to inspect contents of pull tasks through the
+	//  [CloudTasks.GetTask][google.cloud.tasks.v2beta3.CloudTasks.GetTask].
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.pull_message
+	PullMessage *PullMessage `json:"pullMessage,omitempty"`
 
 	// The time when the task is scheduled to be attempted.
 	//
 	//  For App Engine queues, this is when the task will be attempted or retried.
 	//
-	//  For pull queues, this is the time when the task is available to
-	//  be leased; if a task is currently leased, this is the time when
-	//  the current lease expires, that is, the time that the task was
-	//  leased plus the
-	//  [lease_duration][google.cloud.tasks.v2beta2.LeaseTasksRequest.lease_duration].
-	//
 	//  `schedule_time` will be truncated to the nearest microsecond.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.Task.schedule_time
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.schedule_time
 	ScheduleTime *string `json:"scheduleTime,omitempty"`
 
 	// Output only. The time that the task was created.
 	//
 	//  `create_time` will be truncated to the nearest second.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.Task.create_time
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The task status.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.Task.status
-	Status *TaskStatus `json:"status,omitempty"`
+	// The deadline for requests sent to the worker. If the worker does not
+	//  respond by this deadline then the request is cancelled and the attempt
+	//  is marked as a `DEADLINE_EXCEEDED` failure. Cloud Tasks will retry the
+	//  task according to the
+	//  [RetryConfig][google.cloud.tasks.v2beta3.RetryConfig].
+	//
+	//  Note that when the request is cancelled, Cloud Tasks will stop listening
+	//  for the response, but whether the worker stops processing depends on the
+	//  worker. For example, if the worker is stuck, it may not react to cancelled
+	//  requests.
+	//
+	//  The default and maximum values depend on the type of request:
+	//
+	//  * For [HTTP tasks][google.cloud.tasks.v2beta3.HttpRequest], the default is
+	//  10 minutes. The deadline
+	//    must be in the interval [15 seconds, 30 minutes].
+	//
+	//  * For [App Engine tasks][google.cloud.tasks.v2beta3.AppEngineHttpRequest],
+	//  0 indicates that the
+	//    request has the default deadline. The default deadline depends on the
+	//    [scaling
+	//    type](https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling)
+	//    of the service: 10 minutes for standard apps with automatic scaling, 24
+	//    hours for standard apps with manual and basic scaling, and 60 minutes for
+	//    flex apps. If the request deadline is set, it must be in the interval [15
+	//    seconds, 24 hours 15 seconds]. Regardless of the task's
+	//    `dispatch_deadline`, the app handler will not run for longer than than
+	//    the service's timeout. We recommend setting the `dispatch_deadline` to
+	//    at most a few seconds more than the app handler's timeout. For more
+	//    information see
+	//    [Timeouts](https://cloud.google.com/tasks/docs/creating-appengine-handlers#timeouts).
+	//
+	//  `dispatch_deadline` will be truncated to the nearest millisecond. The
+	//  deadline is an approximate deadline.
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.dispatch_deadline
+	DispatchDeadline *string `json:"dispatchDeadline,omitempty"`
 
-	// Output only. The view specifies which subset of the
-	//  [Task][google.cloud.tasks.v2beta2.Task] has been returned.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.Task.view
-	View *string `json:"view,omitempty"`
-}
-
-// +kcc:proto=google.cloud.tasks.v2beta2.TaskStatus
-type TaskStatus struct {
 	// Output only. The number of attempts dispatched.
 	//
 	//  This count includes attempts which have been dispatched but haven't
 	//  received a response.
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.TaskStatus.attempt_dispatch_count
-	AttemptDispatchCount *int32 `json:"attemptDispatchCount,omitempty"`
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.dispatch_count
+	DispatchCount *int32 `json:"dispatchCount,omitempty"`
 
 	// Output only. The number of attempts which have received a response.
-	//
-	//  This field is not calculated for [pull
-	//  tasks][google.cloud.tasks.v2beta2.PullMessage].
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.TaskStatus.attempt_response_count
-	AttemptResponseCount *int32 `json:"attemptResponseCount,omitempty"`
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.response_count
+	ResponseCount *int32 `json:"responseCount,omitempty"`
 
 	// Output only. The status of the task's first attempt.
 	//
-	//  Only
-	//  [dispatch_time][google.cloud.tasks.v2beta2.AttemptStatus.dispatch_time]
-	//  will be set. The other
-	//  [AttemptStatus][google.cloud.tasks.v2beta2.AttemptStatus] information is
-	//  not retained by Cloud Tasks.
-	//
-	//  This field is not calculated for [pull
-	//  tasks][google.cloud.tasks.v2beta2.PullMessage].
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.TaskStatus.first_attempt_status
-	FirstAttemptStatus *AttemptStatus `json:"firstAttemptStatus,omitempty"`
+	//  Only [dispatch_time][google.cloud.tasks.v2beta3.Attempt.dispatch_time] will
+	//  be set. The other [Attempt][google.cloud.tasks.v2beta3.Attempt] information
+	//  is not retained by Cloud Tasks.
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.first_attempt
+	FirstAttempt *Attempt `json:"firstAttempt,omitempty"`
 
 	// Output only. The status of the task's last attempt.
-	//
-	//  This field is not calculated for [pull
-	//  tasks][google.cloud.tasks.v2beta2.PullMessage].
-	// +kcc:proto:field=google.cloud.tasks.v2beta2.TaskStatus.last_attempt_status
-	LastAttemptStatus *AttemptStatus `json:"lastAttemptStatus,omitempty"`
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.last_attempt
+	LastAttempt *Attempt `json:"lastAttempt,omitempty"`
+
+	// Output only. The view specifies which subset of the
+	//  [Task][google.cloud.tasks.v2beta3.Task] has been returned.
+	// +kcc:proto:field=google.cloud.tasks.v2beta3.Task.view
+	View *string `json:"view,omitempty"`
 }
 
 // +kcc:proto=google.protobuf.Any
