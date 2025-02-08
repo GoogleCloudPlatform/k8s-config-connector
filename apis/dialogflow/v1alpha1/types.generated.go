@@ -15,31 +15,31 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.EntityType
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.EntityType
 type EntityType struct {
 	// The unique identifier of the entity type.
 	//  Required for
-	//  [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType].
+	//  [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.UpdateEntityType].
 	//  Format:
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.name
 	Name *string `json:"name,omitempty"`
 
 	// Required. The human-readable name of the entity type, unique within the
 	//  agent.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.display_name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. Indicates the kind of entity type.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.kind
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.kind
 	Kind *string `json:"kind,omitempty"`
 
 	// Indicates whether the entity type can be automatically expanded.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.auto_expansion_mode
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.auto_expansion_mode
 	AutoExpansionMode *string `json:"autoExpansionMode,omitempty"`
 
 	// The collection of entity entries associated with the entity type.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.entities
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.entities
 	Entities []EntityType_Entity `json:"entities,omitempty"`
 
 	// Collection of exceptional words and phrases that shouldn't be matched.
@@ -47,21 +47,21 @@ type EntityType struct {
 	//  adjective), you might consider adding `giants`(a noun) as an exclusion.
 	//  If the kind of entity type is `KIND_MAP`, then the phrases specified by
 	//  entities and excluded phrases should be mutually exclusive.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.excluded_phrases
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.excluded_phrases
 	ExcludedPhrases []EntityType_ExcludedPhrase `json:"excludedPhrases,omitempty"`
 
 	// Enables fuzzy entity extraction during classification.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.enable_fuzzy_extraction
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.enable_fuzzy_extraction
 	EnableFuzzyExtraction *bool `json:"enableFuzzyExtraction,omitempty"`
 
 	// Indicates whether parameters of the entity type should be redacted in log.
 	//  If redaction is enabled, page parameters and intent parameters referring to
-	//  the entity type will be replaced by parameter name when logging.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.redact
+	//  the entity type will be replaced by parameter name during logging.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.redact
 	Redact *bool `json:"redact,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.EntityType.Entity
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.EntityType.Entity
 type EntityType_Entity struct {
 	// Required. The primary value associated with this entity entry.
 	//  For example, if the entity type is *vegetable*, the value could be
@@ -75,7 +75,7 @@ type EntityType_Entity struct {
 	//
 	//  *   A string that can contain references to other entity types (with or
 	//      without aliases).
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.Entity.value
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.Entity.value
 	Value *string `json:"value,omitempty"`
 
 	// Required. A collection of value synonyms. For example, if the entity type
@@ -85,13 +85,13 @@ type EntityType_Entity struct {
 	//  For `KIND_LIST` entity types:
 	//
 	//  *   This collection must contain exactly one synonym equal to `value`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.Entity.synonyms
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.Entity.synonyms
 	Synonyms []string `json:"synonyms,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.EntityType.ExcludedPhrase
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.EntityType.ExcludedPhrase
 type EntityType_ExcludedPhrase struct {
 	// Required. The word or phrase to be excluded.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.ExcludedPhrase.value
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.EntityType.ExcludedPhrase.value
 	Value *string `json:"value,omitempty"`
 }

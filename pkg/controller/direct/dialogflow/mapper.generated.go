@@ -16,70 +16,10 @@ package dialogflow
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
+	pb "cloud.google.com/go/dialogflow/cx/apiv3beta1/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func DialogflowEntityTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.DialogflowEntityTypeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowEntityTypeObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Kind
-	// MISSING: AutoExpansionMode
-	// MISSING: Entities
-	// MISSING: ExcludedPhrases
-	// MISSING: EnableFuzzyExtraction
-	// MISSING: Redact
-	return out
-}
-func DialogflowEntityTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEntityTypeObservedState) *pb.EntityType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntityType{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Kind
-	// MISSING: AutoExpansionMode
-	// MISSING: Entities
-	// MISSING: ExcludedPhrases
-	// MISSING: EnableFuzzyExtraction
-	// MISSING: Redact
-	return out
-}
-func DialogflowEntityTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.DialogflowEntityTypeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowEntityTypeSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Kind
-	// MISSING: AutoExpansionMode
-	// MISSING: Entities
-	// MISSING: ExcludedPhrases
-	// MISSING: EnableFuzzyExtraction
-	// MISSING: Redact
-	return out
-}
-func DialogflowEntityTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEntityTypeSpec) *pb.EntityType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntityType{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Kind
-	// MISSING: AutoExpansionMode
-	// MISSING: Entities
-	// MISSING: ExcludedPhrases
-	// MISSING: EnableFuzzyExtraction
-	// MISSING: Redact
-	return out
-}
 func EntityType_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.EntityType {
 	if in == nil {
 		return nil
