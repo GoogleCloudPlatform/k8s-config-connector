@@ -15,67 +15,11 @@
 package documentai
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/documentai/apiv1beta3/documentaipb"
 )
-func DocumentaiEvaluationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Evaluation) *krm.DocumentaiEvaluationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentaiEvaluationObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: DocumentCounters
-	// MISSING: AllEntitiesMetrics
-	// MISSING: EntityMetrics
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
-func DocumentaiEvaluationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DocumentaiEvaluationObservedState) *pb.Evaluation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Evaluation{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: DocumentCounters
-	// MISSING: AllEntitiesMetrics
-	// MISSING: EntityMetrics
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
-func DocumentaiEvaluationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Evaluation) *krm.DocumentaiEvaluationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DocumentaiEvaluationSpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: DocumentCounters
-	// MISSING: AllEntitiesMetrics
-	// MISSING: EntityMetrics
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
-func DocumentaiEvaluationSpec_ToProto(mapCtx *direct.MapContext, in *krm.DocumentaiEvaluationSpec) *pb.Evaluation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Evaluation{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: DocumentCounters
-	// MISSING: AllEntitiesMetrics
-	// MISSING: EntityMetrics
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
 func Evaluation_FromProto(mapCtx *direct.MapContext, in *pb.Evaluation) *krm.Evaluation {
 	if in == nil {
 		return nil
