@@ -15,71 +15,11 @@
 package iam
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/iam/apiv3/iampb"
+	pb "cloud.google.com/go/iam/apiv3beta/iampb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-func IamPrincipalAccessBoundaryPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrincipalAccessBoundaryPolicy) *krm.IamPrincipalAccessBoundaryPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPrincipalAccessBoundaryPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Etag
-	// MISSING: DisplayName
-	// MISSING: Annotations
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Details
-	return out
-}
-func IamPrincipalAccessBoundaryPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IamPrincipalAccessBoundaryPolicyObservedState) *pb.PrincipalAccessBoundaryPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrincipalAccessBoundaryPolicy{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Etag
-	// MISSING: DisplayName
-	// MISSING: Annotations
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Details
-	return out
-}
-func IamPrincipalAccessBoundaryPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.PrincipalAccessBoundaryPolicy) *krm.IamPrincipalAccessBoundaryPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPrincipalAccessBoundaryPolicySpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Etag
-	// MISSING: DisplayName
-	// MISSING: Annotations
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Details
-	return out
-}
-func IamPrincipalAccessBoundaryPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.IamPrincipalAccessBoundaryPolicySpec) *pb.PrincipalAccessBoundaryPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrincipalAccessBoundaryPolicy{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Etag
-	// MISSING: DisplayName
-	// MISSING: Annotations
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Details
-	return out
-}
 func PrincipalAccessBoundaryPolicy_FromProto(mapCtx *direct.MapContext, in *pb.PrincipalAccessBoundaryPolicy) *krm.PrincipalAccessBoundaryPolicy {
 	if in == nil {
 		return nil
