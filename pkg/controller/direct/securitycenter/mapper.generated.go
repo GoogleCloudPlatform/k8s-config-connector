@@ -15,10 +15,10 @@
 package securitycenter
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	pb "cloud.google.com/go/securitycenter/apiv2/securitycenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 func AttackPath_FromProto(mapCtx *direct.MapContext, in *pb.AttackPath) *krm.AttackPath {
 	if in == nil {
@@ -126,45 +126,5 @@ func AttackPath_AttackPathNode_PathNodeAssociatedFinding_ToProto(mapCtx *direct.
 	out.CanonicalFinding = direct.ValueOf(in.CanonicalFinding)
 	out.FindingCategory = direct.ValueOf(in.FindingCategory)
 	out.Name = direct.ValueOf(in.Name)
-	return out
-}
-func SecuritycenterAttackPathObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttackPath) *krm.SecuritycenterAttackPathObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterAttackPathObservedState{}
-	// MISSING: Name
-	// MISSING: PathNodes
-	// MISSING: Edges
-	return out
-}
-func SecuritycenterAttackPathObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterAttackPathObservedState) *pb.AttackPath {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttackPath{}
-	// MISSING: Name
-	// MISSING: PathNodes
-	// MISSING: Edges
-	return out
-}
-func SecuritycenterAttackPathSpec_FromProto(mapCtx *direct.MapContext, in *pb.AttackPath) *krm.SecuritycenterAttackPathSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecuritycenterAttackPathSpec{}
-	// MISSING: Name
-	// MISSING: PathNodes
-	// MISSING: Edges
-	return out
-}
-func SecuritycenterAttackPathSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterAttackPathSpec) *pb.AttackPath {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttackPath{}
-	// MISSING: Name
-	// MISSING: PathNodes
-	// MISSING: Edges
 	return out
 }
