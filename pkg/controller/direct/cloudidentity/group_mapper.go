@@ -80,7 +80,10 @@ func CloudIdentityGroupStatus_ToProto(mapCtx *direct.MapContext, in *krm.CloudId
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.Name = in.Name
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.AdditionalGroupKeys = CloudIdentityGroupObservedState_ToProto(mapCtx, in.ObservedState).AdditionalGroupKeys
+	observedState := CloudIdentityGroupObservedState_ToProto(mapCtx, in.ObservedState)
+	if observedState != nil {
+		out.AdditionalGroupKeys = observedState.AdditionalGroupKeys
+	}
 	return out
 }
 func EntityKey_FromProto(mapCtx *direct.MapContext, in *pb.EntityKey) *krm.EntityKey {
