@@ -1,0 +1,5 @@
+
+- exec: gcloud container vmware node-pools create test-${uniqueId} --cluster=test-cluster --location=us-west1 --image-type=ubuntu_containerd --replicas=1
+- exec: gcloud container vmware node-pools describe test-${uniqueId} --cluster=test-cluster --location=us-west1
+- exec: gcloud container vmware node-pools list --cluster=test-cluster --location=us-west1
+- exec: gcloud container vmware node-pools delete test-${uniqueId} --cluster=test-cluster --location=us-west1 --allow-missing
