@@ -1,0 +1,5 @@
+
+- exec: gcloud compute os-config patch-deployments create test-${uniqueId} --instance-filter-all --rollout-mode=CURRENT_ZONE
+- exec: gcloud compute os-config patch-deployments describe test-${uniqueId}
+- exec: gcloud compute os-config patch-deployments list
+- exec: gcloud compute os-config patch-deployments delete test-${uniqueId}
