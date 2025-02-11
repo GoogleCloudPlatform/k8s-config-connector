@@ -1,0 +1,4 @@
+
+- exec: gcloud bigtable instances create test-${uniqueId} --display-name=test-${uniqueId} --cluster-config=id=c1,zone=us-central1-a
+- exec: gcloud bigtable instances describe test-${uniqueId}
+- exec: gcloud bigtable instances delete test-${uniqueId}
