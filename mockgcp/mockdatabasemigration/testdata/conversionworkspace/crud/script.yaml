@@ -1,0 +1,5 @@
+
+- exec: gcloud database-migration conversion-workspaces create test-${uniqueId} --region=us-central1 --source-database-engine=ORACLE --source-database-version=19c --destination-database-engine=POSTGRESQL --destination-database-version=14
+- exec: gcloud database-migration conversion-workspaces describe test-${uniqueId} --region=us-central1
+- exec: gcloud database-migration conversion-workspaces list --region=us-central1
+- exec: gcloud database-migration conversion-workspaces delete test-${uniqueId} --region=us-central1 --quiet
