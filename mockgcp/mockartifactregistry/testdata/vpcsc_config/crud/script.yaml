@@ -1,0 +1,6 @@
+
+- exec: gcloud artifacts vpcsc-config describe --location=us-west1
+- exec: gcloud artifacts vpcsc-config allow --location=us-west1
+- exec: gcloud artifacts vpcsc-config describe --location=us-west1
+- exec: gcloud artifacts vpcsc-config deny --location=us-west1
+- exec: gcloud artifacts vpcsc-config describe --location=us-west1
