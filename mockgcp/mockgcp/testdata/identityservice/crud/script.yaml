@@ -1,0 +1,4 @@
+
+- exec: gcloud container hub identity-service enable
+- exec: gcloud container hub identity-service describe
+- exec: gcloud container hub identity-service disable
