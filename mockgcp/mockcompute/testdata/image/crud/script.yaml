@@ -1,0 +1,4 @@
+
+- exec: gcloud compute images create test-${uniqueId} --source-disk=test-disk --source-disk-zone=us-central1-a
+- exec: gcloud compute images describe test-${uniqueId}
+- exec: gcloud compute images delete test-${uniqueId} --quiet
