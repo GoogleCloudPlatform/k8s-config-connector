@@ -1,0 +1,6 @@
+
+- exec: gcloud compute interconnects attachments dedicated create test-${uniqueId} --region us-central1 --interconnect my-interconnect --router my-router --bandwidth 10g
+- exec: gcloud compute interconnects attachments describe test-${uniqueId} --region us-central1
+- exec: gcloud compute interconnects attachments list --filter="region:( us-central1 )"
+- exec: gcloud compute interconnects attachments dedicated update test-${uniqueId} --region us-central1 --bandwidth 50g
+- exec: gcloud compute interconnects attachments delete test-${uniqueId} --region us-central1
