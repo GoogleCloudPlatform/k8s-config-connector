@@ -1,0 +1,3 @@
+- exec: gcloud container hub ingress enable
+- exec: gcloud container hub ingress describe
+- exec: gcloud container hub ingress disable
