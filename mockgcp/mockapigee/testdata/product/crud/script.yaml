@@ -1,0 +1,4 @@
+- exec: gcloud apigee products create test-${uniqueId} --organization=${ORG}
+- exec: gcloud apigee products describe test-${uniqueId} --organization=${ORG}
+- exec: gcloud apigee products list --organization=${ORG}
+- exec: gcloud apigee products delete test-${uniqueId} --organization=${ORG}
