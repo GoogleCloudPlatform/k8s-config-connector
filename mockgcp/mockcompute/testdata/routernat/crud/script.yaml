@@ -1,0 +1,7 @@
+
+- exec: gcloud compute routers create router-test-${uniqueId} --region us-central1 --network default
+- exec: gcloud compute routers nats create nat-test-${uniqueId} --router=router-test-${uniqueId} --region=us-central1 --nat-all-subnet-ip-ranges --auto-allocate-nat-external-ips
+- exec: gcloud compute routers nats describe nat-test-${uniqueId} --router=router-test-${uniqueId} --region=us-central1
+- exec: gcloud compute routers nats update nat-test-${uniqueId} --router=router-test-${uniqueId} --region=us-central1 --add-subnets=default
+- exec: gcloud compute routers nats delete nat-test-${uniqueId} --router=router-test-${uniqueId} --region=us-central1
+- exec: gcloud compute routers delete router-test-${uniqueId} --region=us-central1
