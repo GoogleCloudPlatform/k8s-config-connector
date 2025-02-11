@@ -1,0 +1,6 @@
+
+- exec: gcloud compute instance-groups unmanaged create test-${uniqueId} --zone us-central1-a
+- exec: gcloud compute instance-groups unmanaged describe test-${uniqueId} --zone us-central1-a
+- exec: gcloud compute instance-groups unmanaged list --filter="name=(test-${uniqueId})" --zones=us-central1-a
+- exec: gcloud compute instance-groups unmanaged set-named-ports test-${uniqueId} --named-ports http:80,https:443 --zone us-central1-a
+- exec: gcloud compute instance-groups unmanaged delete test-${uniqueId} --zone us-central1-a
