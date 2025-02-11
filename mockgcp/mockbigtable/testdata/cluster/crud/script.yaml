@@ -1,0 +1,5 @@
+
+- exec: gcloud bigtable clusters create test-${uniqueId} --instance=test-instance --zone=us-central1-a --num-nodes=3
+- exec: gcloud bigtable clusters describe test-${uniqueId} --instance=test-instance
+- exec: gcloud bigtable clusters update test-${uniqueId} --instance=test-instance --num-nodes=5
+- exec: gcloud bigtable clusters delete test-${uniqueId} --instance=test-instance
