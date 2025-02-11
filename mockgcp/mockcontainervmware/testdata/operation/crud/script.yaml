@@ -1,0 +1,3 @@
+
+- exec: gcloud container vmware operations list --location=us-west1
+- exec: gcloud container vmware operations describe ${uniqueId} --location=us-west1
