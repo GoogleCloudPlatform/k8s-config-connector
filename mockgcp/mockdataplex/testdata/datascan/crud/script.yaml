@@ -1,0 +1,8 @@
+
+- exec: >
+    gcloud dataplex datascans create data-quality test-${uniqueId} --location=us-central1
+    --data-source-resource="//bigquery.googleapis.com/projects/test-project/datasets/test-dataset/tables/test-table"
+    --data-quality-spec-file=data-quality-spec.json
+- exec: gcloud dataplex datascans describe test-${uniqueId} --location=us-central1
+- exec: gcloud dataplex datascans list --location=us-central1
+- exec: gcloud dataplex datascans delete test-${uniqueId} --location=us-central1 --async
