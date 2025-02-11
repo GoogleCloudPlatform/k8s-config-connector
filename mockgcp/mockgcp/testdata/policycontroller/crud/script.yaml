@@ -1,0 +1,4 @@
+
+- exec: gcloud container hub policycontroller enable
+- exec: gcloud container hub policycontroller describe
+- exec: gcloud container hub policycontroller disable
