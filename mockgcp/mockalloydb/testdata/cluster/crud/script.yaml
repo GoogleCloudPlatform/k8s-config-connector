@@ -1,0 +1,5 @@
+
+- exec: gcloud alloydb clusters create test-${uniqueId} --region=us-central1 --project=test-project
+- exec: gcloud alloydb clusters list --region=us-central1 --project=test-project
+- exec: gcloud alloydb clusters describe test-${uniqueId} --region=us-central1 --project=test-project
+- exec: gcloud alloydb clusters delete test-${uniqueId} --region=us-central1 --project=test-project --quiet
