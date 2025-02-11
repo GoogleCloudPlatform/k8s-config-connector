@@ -1,0 +1,5 @@
+
+- exec: gcloud compute network-edge-security-services create test-${uniqueId} --region us-central1
+- exec: gcloud compute network-edge-security-services describe test-${uniqueId} --region us-central1
+- exec: gcloud compute network-edge-security-services list --region us-central1
+- exec: gcloud compute network-edge-security-services delete test-${uniqueId} --region us-central1
