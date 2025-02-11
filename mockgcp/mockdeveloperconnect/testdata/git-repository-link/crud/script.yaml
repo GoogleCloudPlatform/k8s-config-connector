@@ -1,0 +1,4 @@
+- exec: gcloud developer-connect connections git-repository-links create test-repo-link-${uniqueId} --connection=test-connection --location=us-central1 --clone-uri=https://github.com/test-org/test-repo.git
+- exec: gcloud developer-connect connections git-repository-links describe test-repo-link-${uniqueId} --connection=test-connection --location=us-central1
+- exec: gcloud developer-connect connections git-repository-links list --connection=test-connection --location=us-central1
+- exec: gcloud developer-connect connections git-repository-links delete test-repo-link-${uniqueId} --connection=test-connection --location=us-central1
