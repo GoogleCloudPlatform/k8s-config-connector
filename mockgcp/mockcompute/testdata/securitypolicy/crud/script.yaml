@@ -1,0 +1,5 @@
+
+- exec: gcloud compute security-policies create test-${uniqueId}
+- exec: gcloud compute security-policies describe test-${uniqueId}
+- exec: gcloud compute security-policies list --filter="name=test-${uniqueId}"
+- exec: gcloud compute security-policies delete test-${uniqueId}
