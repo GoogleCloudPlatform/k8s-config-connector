@@ -1,0 +1,6 @@
+
+- exec: gcloud compute instances create test-${uniqueId} --zone us-central1-a
+- exec: gcloud compute instances os-inventory describe test-${uniqueId} --zone us-central1-a
+- exec: gcloud compute instances describe test-${uniqueId} --zone us-central1-a --format="value(name,osInventory.state)" --filter="osInventory.state:AVAILABLE" 
+- exec: gcloud compute instances os-inventory list-instances --zone us-central1-a
+- exec: gcloud compute instances delete test-${uniqueId} --zone us-central1-a --quiet
