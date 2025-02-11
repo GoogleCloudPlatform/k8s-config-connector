@@ -1,0 +1,5 @@
+
+- exec: gcloud compute instances create test-vm-${uniqueId} --zone=us-central1-a
+- exec: gcloud compute os-config inventories list --location=us-central1-a
+- exec: gcloud compute os-config inventories describe test-vm-${uniqueId} --location=us-central1-a
+- exec: gcloud compute instances delete test-vm-${uniqueId} --zone=us-central1-a --quiet
