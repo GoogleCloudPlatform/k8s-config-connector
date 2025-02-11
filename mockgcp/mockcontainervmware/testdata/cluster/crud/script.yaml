@@ -1,0 +1,5 @@
+
+- exec: gcloud container vmware clusters create test-${uniqueId} --location=us-west1
+- exec: gcloud container vmware clusters describe test-${uniqueId} --location=us-west1
+- exec: gcloud container vmware clusters list --location=us-west1
+- exec: gcloud container vmware clusters delete test-${uniqueId} --location=us-west1 --force
