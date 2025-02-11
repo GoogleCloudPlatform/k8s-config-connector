@@ -1,0 +1,3688 @@
+POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/aiplatform.googleapis.com:generateServiceIdentity?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
+    "email": "service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com",
+    "uniqueId": "12345678"
+  }
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+        ],
+        "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+        ],
+        "role": "roles/compute.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+          "user:xiaoweim@google.com"
+        ],
+        "role": "roles/container.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.nodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containeranalysis.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containerregistry.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containerscanning.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+          "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+        ],
+        "role": "roles/editor"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+          "user:xiaoweim@google.com"
+        ],
+        "role": "roles/krmapihosting.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+        ],
+        "role": "roles/krmapihosting.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+        ],
+        "role": "roles/monitoring.metricWriter"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networkconnectivity.serviceAgent"
+      },
+      {
+        "members": [
+          "user:haoweic@google.com"
+        ],
+        "role": "roles/orgpolicy.policyViewer"
+      },
+      {
+        "members": [
+          "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+          "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+          "user:haoweic@google.com",
+          "user:xiaoweim@google.com"
+        ],
+        "role": "roles/owner"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/pubsub.serviceAgent"
+      },
+      {
+        "members": [
+          "user:haoweic@google.com"
+        ],
+        "role": "roles/resourcemanager.organizationAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+        ],
+        "role": "roles/resourcemanager.projectIamAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+        ],
+        "role": "roles/serviceusage.serviceUsageAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+        ],
+        "role": "roles/source.reader"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+          "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/viewer"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "CryptoKey projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "purpose": "ENCRYPT_DECRYPT"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested Metadata Store metadatastore${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores?alt=json&metadataStoreId=metadatastore${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Metadata Store 2"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateMetadataStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateMetadataStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.MetadataStore",
+    "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Metadata Store 2",
+  "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}",
+  "state": {
+    "diskUtilizationBytes": "1"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cryptoKeyVersions": [
+    {
+      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+  "protectionLevel": "SOFTWARE",
+  "state": "DESTROY_SCHEDULED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+        ],
+        "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+        ],
+        "role": "roles/compute.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+          "user:xiaoweim@google.com"
+        ],
+        "role": "roles/container.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.nodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containeranalysis.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containerregistry.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containerscanning.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+          "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+        ],
+        "role": "roles/editor"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+          "user:xiaoweim@google.com"
+        ],
+        "role": "roles/krmapihosting.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+        ],
+        "role": "roles/krmapihosting.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+        ],
+        "role": "roles/monitoring.metricWriter"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networkconnectivity.serviceAgent"
+      },
+      {
+        "members": [
+          "user:haoweic@google.com"
+        ],
+        "role": "roles/orgpolicy.policyViewer"
+      },
+      {
+        "members": [
+          "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+          "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+          "user:haoweic@google.com",
+          "user:xiaoweim@google.com"
+        ],
+        "role": "roles/owner"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/pubsub.serviceAgent"
+      },
+      {
+        "members": [
+          "user:haoweic@google.com"
+        ],
+        "role": "roles/resourcemanager.organizationAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+        ],
+        "role": "roles/resourcemanager.projectIamAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+        ],
+        "role": "roles/serviceusage.serviceUsageAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+        ],
+        "role": "roles/source.reader"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+          "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/viewer"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 1
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "organizations/${organizationID}433637338589/roles/delegated_project_creator"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cep-runner@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/krmapihosting.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[gatekeeper-system/gatekeeper-admin]"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/orgpolicy.policyViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com",
+        "user:haoweic@google.com",
+        "user:xiaoweim@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:haoweic@google.com"
+      ],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:testuser@krmapihosting-e2e-testing.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:config-sync-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cs-not-kcc-gsa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com"
+      ],
+      "role": "roles/source.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-test-yakima.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:test-scalability-cs@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/viewer"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
