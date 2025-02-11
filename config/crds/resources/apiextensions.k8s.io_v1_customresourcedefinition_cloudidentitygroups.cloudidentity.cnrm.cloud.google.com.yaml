@@ -167,7 +167,7 @@ spec:
                 description: The time when the `Group` was created.
                 type: string
               externalRef:
-                description: A unique specifier for the CloudIdentityGroup resource
+                description: A unique Config Connector specifier for the resource
                   in GCP.
                 type: string
               name:
