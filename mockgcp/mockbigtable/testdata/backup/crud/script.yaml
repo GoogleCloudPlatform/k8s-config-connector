@@ -1,0 +1,3 @@
+- exec: gcloud bigtable backups create test-${uniqueId} --instance=test-instance --cluster=test-cluster --table=test-table --retention-period=7d
+- exec: gcloud bigtable backups describe test-${uniqueId} --instance=test-instance --cluster=test-cluster
+- exec: gcloud bigtable backups delete test-${uniqueId} --instance=test-instance --cluster=test-cluster
