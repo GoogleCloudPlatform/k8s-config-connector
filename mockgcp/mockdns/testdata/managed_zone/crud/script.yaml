@@ -1,0 +1,6 @@
+
+- exec: gcloud dns managed-zones create test-${uniqueId} --dns-name=example.com. --description="Initial description."
+- exec: gcloud dns managed-zones describe test-${uniqueId}
+- exec: gcloud dns managed-zones update test-${uniqueId} --description="Updated description."
+- exec: gcloud dns managed-zones list
+- exec: gcloud dns managed-zones delete test-${uniqueId}
