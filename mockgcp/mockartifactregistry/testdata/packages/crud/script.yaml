@@ -1,0 +1,4 @@
+
+- exec: gcloud artifacts packages list --repository=${REPOSITORY} --location=${LOCATION}
+- exec: gcloud artifacts packages describe ${PACKAGE} --repository=${REPOSITORY} --location=${LOCATION}
+- exec: gcloud artifacts packages delete ${PACKAGE} --repository=${REPOSITORY} --location=${LOCATION} --async
