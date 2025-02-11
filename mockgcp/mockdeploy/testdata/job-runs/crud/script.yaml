@@ -1,0 +1,4 @@
+
+- exec: gcloud deploy job-runs list --delivery-pipeline=test-pipeline --release=test-release --rollout=test-rollout --region=us-central1 --project=test-project
+- exec: gcloud deploy job-runs describe test-job-run --delivery-pipeline=test-pipeline --release=test-release --rollout=test-rollout --region=us-central1 --project=test-project
+- exec: gcloud deploy job-runs terminate test-job-run --delivery-pipeline=test-pipeline --release=test-release --rollout=test-rollout --region=us-central1 --project=test-project
