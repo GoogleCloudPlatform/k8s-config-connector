@@ -1,0 +1,5 @@
+
+- exec: gcloud bms instances start --region=us-central1 test-${uniqueId}
+- exec: gcloud bms instances describe --region=us-central1 test-${uniqueId}
+- exec: gcloud bms instances update --region=us-central1 test-${uniqueId} --update-labels=testkey=testvalue
+- exec: gcloud bms instances reset --region=us-central1 test-${uniqueId}
