@@ -1,0 +1,5 @@
+
+- exec: gcloud active-directory domains create test-${uniqueId} --region us-central1 --reserved-ip-range=10.255.0.0/24 --authorized-networks=projects/cloud-sdk-dev/global/networks/default
+- exec: gcloud active-directory domains list --filter="name:test-${uniqueId}"
+- exec: gcloud active-directory domains describe test-${uniqueId}
+- exec: gcloud active-directory domains delete test-${uniqueId} --async
