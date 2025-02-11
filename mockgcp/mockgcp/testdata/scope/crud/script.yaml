@@ -1,0 +1,5 @@
+
+- exec: gcloud container hub scopes create test-${uniqueId}
+- exec: gcloud container hub scopes describe test-${uniqueId}
+- exec: gcloud container hub scopes list
+- exec: gcloud container hub scopes delete test-${uniqueId} --quiet
