@@ -21,15 +21,32 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-THIRD_PARTY=${REPO_ROOT}/.build/third_party
-mkdir -p ${THIRD_PARTY}/
-
 # We share the version with mockgcp, which is maybe a boundary violation, but is convenient.
 # (It would be confusing if these were out of sync!)
-GOOGLEAPI_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/mockgcp/git.versions | awk '{print $2}' )
+DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/mockgcp/git.versions | awk '{print $2}')
 
-cd ${REPO_ROOT}/.build/third_party
-git clone https://github.com/googleapis/googleapis.git ${THIRD_PARTY}/googleapis || (cd ${THIRD_PARTY}/googleapis && git reset --hard ${GOOGLEAPI_VERSION})
+# Take googleapi version as parameter, default to version from git.versions.
+# Use "HEAD" to get the latest from remote.
+GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
+
+# Take output path as parameter, default to .build/googleapis.pb
+OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
+
+THIRD_PARTY=${REPO_ROOT}/.build/third_party
+mkdir -p ${THIRD_PARTY}/
+cd ${THIRD_PARTY}
+
+if [ ! -d "googleapis" ]; then
+    git clone https://github.com/googleapis/googleapis.git
+fi
+
+cd googleapis
+git fetch
+if [ "${GOOGLEAPI_VERSION}" = "HEAD" ]; then
+    git reset --hard origin/master
+else
+    git reset --hard ${GOOGLEAPI_VERSION}
+fi
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -63,4 +80,4 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/monitoring/dashboard/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/devtools/cloudbuild/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/instance/v1/*.proto \
-    -o ${REPO_ROOT}/.build/googleapis.pb
+    -o ${OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
