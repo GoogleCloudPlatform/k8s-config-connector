@@ -847,6 +847,14 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.ReplacePath(".lastModifiedTime", "123456789")
 	}
 
+	// Workflows
+	{
+		visitor.ReplacePath(".revisionCreateTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".response.revisionCreateTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+	}
+
 	// Compute
 	{
 		visitor.sortSlices.Insert(".subnetworks")
