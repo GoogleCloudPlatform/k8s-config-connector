@@ -1,0 +1,4 @@
+- exec: gcloud app services list
+- exec: gcloud app services describe default
+- exec: gcloud app services update default --ingress=internal-only
+- exec: gcloud app services delete default --quiet
