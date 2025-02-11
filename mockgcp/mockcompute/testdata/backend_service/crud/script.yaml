@@ -1,0 +1,5 @@
+
+- exec: gcloud compute backend-services create test-${uniqueId} --global --protocol=HTTP --health-checks=health-check-http --timeout=40s
+- exec: gcloud compute backend-services describe test-${uniqueId} --global
+- exec: gcloud compute backend-services update test-${uniqueId} --global --timeout=50s
+- exec: gcloud compute backend-services delete test-${uniqueId} --global --quiet
