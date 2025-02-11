@@ -1,0 +1,6 @@
+
+- exec: gcloud access-context-manager policies create --organization=12345 --title=test-${uniqueId}
+- exec: gcloud access-context-manager policies describe test-${uniqueId}
+- exec: gcloud access-context-manager policies list --organization=12345
+- exec: gcloud access-context-manager policies update test-${uniqueId} --title=updated-test-${uniqueId}
+- exec: gcloud access-context-manager policies delete test-${uniqueId}
