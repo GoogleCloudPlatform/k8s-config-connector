@@ -1,0 +1,5 @@
+
+- exec: gcloud compute routes create test-${uniqueId} --destination-range=0.0.0.0/0 --next-hop-gateway=default-internet-gateway
+- exec: gcloud compute routes describe test-${uniqueId}
+- exec: gcloud compute routes list --filter=name~test-${uniqueId}
+- exec: gcloud compute routes delete test-${uniqueId} --quiet
