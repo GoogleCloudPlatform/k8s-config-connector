@@ -1,0 +1,3 @@
+- exec: gcloud edge-cache services list --location=global
+- exec: gcloud edge-cache services describe test-${uniqueId} --location=global
+- exec: gcloud edge-cache services delete test-${uniqueId} --location=global --async
