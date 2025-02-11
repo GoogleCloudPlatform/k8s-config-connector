@@ -1,0 +1,7 @@
+
+- exec: gcloud bms os-images list --project=${PROJECT_ID} --limit=1
+- exec: |-
+    if [ -n "$output" ]; then
+      image_name=$(echo "$output" | tail -n1 | awk '{print $1}');
+      gcloud bms os-images describe $image_name --project=${PROJECT_ID} --region=global
+    fi
