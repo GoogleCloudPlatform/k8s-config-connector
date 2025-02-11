@@ -1,0 +1,5 @@
+
+- exec: gcloud container node-pools create test-${uniqueId} --cluster=test-cluster-${uniqueId} --zone=us-central1-a
+- exec: gcloud container node-pools list --cluster=test-cluster-${uniqueId} --zone=us-central1-a
+- exec: gcloud container node-pools describe test-${uniqueId} --cluster=test-cluster-${uniqueId} --zone=us-central1-a
+- exec: gcloud container node-pools delete test-${uniqueId} --cluster=test-cluster-${uniqueId} --zone=us-central1-a --async
