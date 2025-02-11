@@ -1,0 +1,4 @@
+
+- exec: gcloud compute firewall-rules create test-${uniqueId} --allow tcp:80 --network default
+- exec: gcloud compute firewall-rules describe test-${uniqueId}
+- exec: gcloud compute firewall-rules delete test-${uniqueId} --quiet
