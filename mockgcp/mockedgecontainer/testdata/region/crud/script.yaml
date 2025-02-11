@@ -1,0 +1,7 @@
+
+- exec: gcloud edge-cloud container regions list --format=json
+- define: regions
+  value: ${0}
+- define: regionName
+  value: ${regions[0].name}
+- exec: gcloud edge-cloud container regions describe ${regionName}
