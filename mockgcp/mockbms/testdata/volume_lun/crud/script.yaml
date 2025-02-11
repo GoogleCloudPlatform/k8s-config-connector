@@ -1,0 +1,4 @@
+# NOTE: This test assumes a volume named "test-volume" and a LUN named "test-lun" already exist in the "us-central1" region.
+#       BMS LUN creation and deletion are not available through gcloud commands, so we can't create/delete them in this test.
+- exec: gcloud bms volumes luns list --volume=test-volume --region=us-central1
+- exec: gcloud bms volumes luns describe test-lun --volume=test-volume --region=us-central1
