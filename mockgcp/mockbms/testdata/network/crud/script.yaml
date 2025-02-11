@@ -1,0 +1,5 @@
+
+- exec: gcloud bms networks update my-network-${uniqueId} --region=us-central1 --add-ip-range-reservation=start_address=192.168.1.0,end_address=192.168.1.255,note="test reservation"
+- exec: gcloud bms networks describe my-network-${uniqueId} --region=us-central1
+- exec: gcloud bms networks list --region=us-central1
+- exec: gcloud bms networks update my-network-${uniqueId} --region=us-central1 --clear-ip-range-reservations
