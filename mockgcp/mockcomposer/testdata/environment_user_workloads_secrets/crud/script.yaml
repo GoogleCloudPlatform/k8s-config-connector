@@ -1,0 +1,6 @@
+
+- exec: gcloud composer environments user-workloads-secrets create --environment=test-env --location=us-central1 --secret-name=test-secret-${uniqueId} --secret-value=value1
+- exec: gcloud composer environments user-workloads-secrets list --environment=test-env --location=us-central1
+- exec: gcloud composer environments user-workloads-secrets describe --environment=test-env --location=us-central1 --secret-name=test-secret-${uniqueId}
+- exec: gcloud composer environments user-workloads-secrets update --environment=test-env --location=us-central1 --secret-name=test-secret-${uniqueId} --secret-value=value2
+- exec: gcloud composer environments user-workloads-secrets delete --environment=test-env --location=us-central1 --secret-name=test-secret-${uniqueId}
