@@ -1,0 +1,4 @@
+- exec: gcloud container clusters create test-${uniqueId} --platform=vmware --location=us-west1
+- exec: gcloud container vmware admin-clusters describe test-${uniqueId} --location=us-west1
+- exec: gcloud container vmware admin-clusters list --location=us-west1
+- exec: gcloud container clusters delete test-${uniqueId} --platform=vmware --location=us-west1 --async
