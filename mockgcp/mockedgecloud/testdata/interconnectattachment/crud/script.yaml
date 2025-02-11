@@ -1,0 +1,5 @@
+
+- exec: gcloud edge-cloud networking interconnects attachments dedicated create test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1 --interconnect=test-interconnect --network=test-net --vlan-id=100
+- exec: gcloud edge-cloud networking interconnects attachments describe test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1
+- exec: gcloud edge-cloud networking interconnects attachments list --location=us-central1
+- exec: gcloud edge-cloud networking interconnects attachments delete test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1 --async
