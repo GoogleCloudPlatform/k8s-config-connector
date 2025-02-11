@@ -1,0 +1,5 @@
+
+- exec: gcloud api-gateway gateways create test-gateway-${uniqueId} --location=us-central1 --api=test-api --api-config=test-api-config
+- exec: gcloud api-gateway gateways describe test-gateway-${uniqueId} --location=us-central1
+- exec: gcloud api-gateway gateways update test-gateway-${uniqueId} --location=us-central1 --display-name=new-display-name
+- exec: gcloud api-gateway gateways delete test-gateway-${uniqueId} --location=us-central1 --async
