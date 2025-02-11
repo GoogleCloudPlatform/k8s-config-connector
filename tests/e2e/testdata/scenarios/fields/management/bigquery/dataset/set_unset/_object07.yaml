@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 4
   name: bigquerydataset${uniqueId}
   namespace: ${projectId}
 spec:
@@ -28,6 +28,7 @@ spec:
   maxTimeTravelHours: "72"
   projectRef:
     external: ${projectId}
+  resourceID: bigquerydataset${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -39,7 +40,7 @@ status:
   etag: abcdef123456
   externalRef: projects/${projectId}/datasets/bigquerydataset${uniqueId}
   lastModifiedTime: "1970-01-01T00:00:00Z"
-  observedGeneration: 3
+  observedGeneration: 4
   observedState:
     location: US
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}
