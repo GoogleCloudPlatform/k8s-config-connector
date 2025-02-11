@@ -1,0 +1,5 @@
+
+- exec: gcloud colab runtimes create test-${uniqueId}
+- exec: gcloud colab runtimes describe test-${uniqueId}
+- exec: gcloud colab runtimes list
+- exec: gcloud colab runtimes delete test-${uniqueId} --quiet
