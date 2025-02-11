@@ -1,0 +1,5 @@
+
+- exec: gcloud access-context-manager cloud-bindings create --group-key=group-key-${uniqueId} --level=accessPolicies/policy-id/accessLevels/level-id --organization=123456789
+- exec: gcloud access-context-manager cloud-bindings describe --binding=binding-id --organization=123456789
+- exec: gcloud access-context-manager cloud-bindings list --organization=123456789
+- exec: gcloud access-context-manager cloud-bindings delete --binding=binding-id --organization=123456789
