@@ -1,0 +1,9 @@
+
+- exec: >
+    gcloud dataplex tasks create test-task-${uniqueId} --location=${location} --lake=${lake} \
+    --trigger-type=ON_DEMAND \
+    --execution-service-account=test-service-account@${project}.iam.gserviceaccount.com \
+    --spark-python-script-file=gs://test-bucket/test-script.py
+- exec: gcloud dataplex tasks jobs list --location=${location} --lake=${lake} --task=test-task-${uniqueId}
+- exec: gcloud dataplex tasks jobs describe ${job_id} --location=${location} --lake=${lake} --task=test-task-${uniqueId}
+- exec: gcloud dataplex tasks delete test-task-${uniqueId} --location=${location} --lake=${lake}
