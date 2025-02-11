@@ -1,0 +1,4 @@
+
+- exec: gcloud deploy targets list --region us-central1
+- exec: gcloud deploy targets describe test-${uniqueId} --region us-central1
+- exec: gcloud deploy targets delete test-${uniqueId} --region us-central1 -y
