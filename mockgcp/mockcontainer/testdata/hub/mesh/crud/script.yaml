@@ -1,0 +1,6 @@
+
+- exec: gcloud container hub mesh enable
+- exec: gcloud container hub mesh describe
+- exec: gcloud container hub mesh update --management automatic
+- exec: gcloud container hub mesh describe
+- exec: gcloud container hub mesh disable --force
