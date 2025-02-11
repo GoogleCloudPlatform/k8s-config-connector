@@ -1,0 +1,4 @@
+
+- exec: gcloud iam roles create test-${uniqueId} --project=test-project --title="Test Role" --description="Test Role Description" --permissions="iam.roles.list" --stage=ALPHA
+- exec: gcloud iam roles describe test-${uniqueId} --project=test-project
+- exec: gcloud iam roles delete test-${uniqueId} --project=test-project
