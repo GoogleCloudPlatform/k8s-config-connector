@@ -38,9 +38,23 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 }
 
 var Acronyms = []string{
-	"ID", "HTML", "URL", "URI", "HTTP", "HTTPS", "SSH",
-	"IP", "GB", "FS", "PD", "KMS", "GCE", "VTPM", "SSL",
-	"CA", "CPU", "SQL", "PSC", "DNS",
+	"API",
+	"BGP",
+	"CA", "CDN", "CIDR", "CPU",
+	"DNS",
+	"FS",
+	"GCE", "GB",
+	"HTML", "HTTP", "HTTPS",
+	"IAM", "IAP", "ID", "IP", "IPV4", "IPV6",
+	"KMS",
+	"NAT",
+	"OAUTH2", "OIDC", "OS",
+	"PD", "PSC",
+	"SQL", "SSH", "SSL", "SSO",
+	"TCP", "TLS",
+	"UDP", "URI", "URL",
+	"VTPM",
+	"X509",
 }
 
 // IsAcronym returns true if the given string is an acronym
