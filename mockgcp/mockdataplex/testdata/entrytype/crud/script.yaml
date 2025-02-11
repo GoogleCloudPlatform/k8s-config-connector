@@ -1,0 +1,4 @@
+
+- exec: gcloud dataplex entry-types create test-${uniqueId} --location=us-central1
+- exec: gcloud dataplex entry-types describe test-${uniqueId} --location=us-central1
+- exec: gcloud dataplex entry-types delete test-${uniqueId} --location=us-central1
