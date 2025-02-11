@@ -1,0 +1,4 @@
+
+- exec: gcloud compute commitments create test-${uniqueId} --plan 12-month --resources vcpu=1,memory=1GB --region us-central1
+- exec: gcloud compute commitments describe test-${uniqueId} --region us-central1
+- exec: gcloud compute commitments list
