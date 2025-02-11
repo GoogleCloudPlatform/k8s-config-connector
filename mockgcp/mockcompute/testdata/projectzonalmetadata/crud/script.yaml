@@ -1,0 +1,4 @@
+
+- exec: gcloud compute project-zonal-metadata add --metadata=test-key-${uniqueId}=test-value --zone=test-zone-${uniqueId}
+- exec: gcloud compute project-zonal-metadata describe --zone=test-zone-${uniqueId}
+- exec: gcloud compute project-zonal-metadata remove --keys=test-key-${uniqueId} --zone=test-zone-${uniqueId}
