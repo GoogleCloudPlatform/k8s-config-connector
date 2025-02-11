@@ -1,0 +1,6 @@
+
+- exec: gcloud artifacts repositories create test-repo-${uniqueId} --location=us-central1 --repository-format=npm
+- exec: gcloud artifacts packages create test-pkg-${uniqueId} --repository=test-repo-${uniqueId} --location=us-central1
+- exec: gcloud artifacts versions list --package=test-pkg-${uniqueId} --repository=test-repo-${uniqueId} --location=us-central1
+- exec: gcloud artifacts packages delete test-pkg-${uniqueId} --repository=test-repo-${uniqueId} --location=us-central1 --quiet
+- exec: gcloud artifacts repositories delete test-repo-${uniqueId} --location=us-central1 --quiet
