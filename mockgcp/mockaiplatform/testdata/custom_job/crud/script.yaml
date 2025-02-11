@@ -1,0 +1,12 @@
+
+- exec: >-
+    gcloud ai custom-jobs create
+    --region=us-central1
+    --display-name=test-${uniqueId}
+    --worker-pool-spec=replica-count=1,machine-type=n1-highmem-2,container-image-uri=gcr.io/ucaip-test/ucaip-training-test
+- exec: >-
+    gcloud ai custom-jobs list --region=us-central1 --filter=display_name=test-${uniqueId}
+- exec: >-
+    gcloud ai custom-jobs describe test-${uniqueId} --region=us-central1
+- exec: >-
+    gcloud ai custom-jobs cancel test-${uniqueId} --region=us-central1
