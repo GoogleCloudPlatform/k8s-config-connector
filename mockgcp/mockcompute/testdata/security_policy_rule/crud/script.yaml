@@ -1,0 +1,7 @@
+
+- exec: gcloud compute security-policies create test-policy-${uniqueId} --description "Test Policy"
+- exec: gcloud compute security-policies rules create 1000 --security-policy test-policy-${uniqueId} --description "Test Rule" --action allow
+- exec: gcloud compute security-policies rules describe 1000 --security-policy test-policy-${uniqueId}
+- exec: gcloud compute security-policies rules update 1000 --security-policy test-policy-${uniqueId} --description "Updated Rule"
+- exec: gcloud compute security-policies rules delete 1000 --security-policy test-policy-${uniqueId} --quiet
+- exec: gcloud compute security-policies delete test-policy-${uniqueId} --quiet
