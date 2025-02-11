@@ -133,7 +133,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -154,17 +154,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -175,7 +175,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "name": "computesubnetwork-${uniqueId}",
   "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "region": "projects/${projectId}/global/regions/us-west1"
+  "region": "projects/${projectId}/global/regions/us-east1"
 }
 
 200 OK
@@ -196,18 +196,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -229,18 +229,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -271,17 +271,17 @@ X-Xss-Protection: 0
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -311,14 +311,14 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters?%24alt=json%3Benum-encoding%3Dint&workstationClusterId=workstationcluster-${uniqueId}
+POST https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters?%24alt=json%3Benum-encoding%3Dint&workstationClusterId=workstationcluster-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east1
 
 {
   "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
-  "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}"
+  "subnetwork": "projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}"
 }
 
 200 OK
@@ -337,18 +337,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -368,19 +368,19 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.WorkstationCluster",
     "controlPlaneIp": "10.0.0.2",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}",
     "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
     "privateClusterConfig": {},
-    "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
+    "subnetwork": "projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -388,10 +388,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -421,14 +421,14 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs?%24alt=json%3Benum-encoding%3Dint&workstationConfigId=workstationconfig-${uniqueId}
+POST https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs?%24alt=json%3Benum-encoding%3Dint&workstationConfigId=workstationconfig-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}
 
 {
   "idleTimeout": "1200s",
-  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
   "runningTimeout": "43200s"
 }
 
@@ -448,18 +448,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -479,10 +479,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.WorkstationConfig",
     "container": {
@@ -500,7 +500,7 @@ X-Xss-Protection: 0
       }
     },
     "idleTimeout": "1200s",
-    "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "replicaZones": [
       "us-west1-a",
       "us-west1-b"
@@ -513,10 +513,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -546,10 +546,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations?%24alt=json%3Benum-encoding%3Dint&workstationId=workstation-${uniqueId}
+POST https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations?%24alt=json%3Benum-encoding%3Dint&workstationId=workstation-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
 
 {
   "annotations": {
@@ -559,7 +559,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1%2Fw
   "labels": {
     "l-key1": "l-value1"
   },
-  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}"
 }
 
 200 OK
@@ -578,18 +578,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -609,10 +609,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.Workstation",
     "annotations": {
@@ -624,7 +624,7 @@ X-Xss-Protection: 0
     "labels": {
       "l-key1": "l-value1"
     },
-    "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "state": "STATE_STOPPED",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -633,10 +633,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -659,7 +659,7 @@ X-Xss-Protection: 0
   "labels": {
     "l-key1": "l-value1"
   },
-  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
   "state": 4,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -667,10 +667,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CdisplayName%2Clabels
+PATCH https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CdisplayName%2Clabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: workstation.name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
+X-Goog-Request-Params: workstation.name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
 
 {
   "annotations": {
@@ -683,7 +683,7 @@ X-Goog-Request-Params: workstation.name=projects%2F${projectId}%2Flocations%2Fus
     "l-key1": "l-value1",
     "l-key2": "l-value2"
   },
-  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}"
 }
 
 200 OK
@@ -702,18 +702,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -732,10 +732,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.Workstation",
     "annotations": {
@@ -749,7 +749,7 @@ X-Xss-Protection: 0
       "l-key1": "l-value1",
       "l-key2": "l-value2"
     },
-    "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "state": "STATE_STOPPED",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -758,10 +758,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -786,7 +786,7 @@ X-Xss-Protection: 0
     "l-key1": "l-value1",
     "l-key2": "l-value2"
   },
-  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
   "state": 4,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -794,10 +794,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}%2Fworkstations%2Fworkstation-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -815,18 +815,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -846,10 +846,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}/workstations/workstation-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.Workstation"
   }
@@ -857,10 +857,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -889,7 +889,7 @@ X-Xss-Protection: 0
     }
   },
   "idleTimeout": "1200s",
-  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
   "replicaZones": [
     "us-west1-a",
     "us-west1-b"
@@ -901,10 +901,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}%2FworkstationConfigs%2Fworkstationconfig-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -922,18 +922,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -953,10 +953,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}/workstationConfigs/workstationconfig-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.WorkstationConfig"
   }
@@ -964,10 +964,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -984,20 +984,20 @@ X-Xss-Protection: 0
   "controlPlaneIp": "10.0.0.2",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}",
   "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
   "privateClusterConfig": {},
-  "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
+  "subnetwork": "projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2FworkstationClusters%2Fworkstationcluster-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -1015,18 +1015,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.workstations.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+GET https://workstations.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -1046,10 +1046,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west1/workstationClusters/workstationcluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/workstationClusters/workstationcluster-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workstations.v1.WorkstationCluster"
   }
@@ -1057,7 +1057,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1088,14 +1088,14 @@ X-Xss-Protection: 0
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1117,18 +1117,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1150,12 +1150,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/computesubnetwork-${uniqueId}",
   "user": "user@example.com"
 }
 
