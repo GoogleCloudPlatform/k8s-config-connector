@@ -1,0 +1,5 @@
+- exec: gcloud container hub memberships register test-${uniqueId} --gke-cluster=us-central1-a/test-${uniqueId} --location=us-central1
+- exec: gcloud container hub memberships support-access enable test-${uniqueId} --location=us-central1
+- exec: gcloud container hub memberships support-access describe test-${uniqueId} --location=us-central1
+- exec: gcloud container hub memberships support-access disable test-${uniqueId} --location=us-central1
+- exec: gcloud container hub memberships unregister test-${uniqueId} --gke-cluster=us-central1-a/test-${uniqueId} --location=us-central1
