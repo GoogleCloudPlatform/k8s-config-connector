@@ -1,0 +1,5 @@
+
+- exec: gcloud app domain-mappings create test-${uniqueId}.com --certificate-management=AUTOMATIC
+- exec: gcloud app domain-mappings describe test-${uniqueId}.com
+- exec: gcloud app domain-mappings list
+- exec: gcloud app domain-mappings delete test-${uniqueId}.com
