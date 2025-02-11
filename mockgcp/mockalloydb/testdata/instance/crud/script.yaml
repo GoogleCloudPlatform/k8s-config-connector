@@ -1,0 +1,4 @@
+
+- exec: gcloud alloydb instances create test-${uniqueId} --region=us-central1 --cluster=test-cluster --instance-type=PRIMARY
+- exec: gcloud alloydb instances describe test-${uniqueId} --region=us-central1 --cluster=test-cluster
+- exec: gcloud alloydb instances delete test-${uniqueId} --region=us-central1 --cluster=test-cluster --quiet
