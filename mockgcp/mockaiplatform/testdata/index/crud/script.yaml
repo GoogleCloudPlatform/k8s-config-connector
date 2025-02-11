@@ -1,0 +1,4 @@
+
+- exec: gcloud ai indexes create --display-name=test-${uniqueId} --metadata-schema-uri=gs://google-cloud-aiplatform/schema/matchingengine/metadata/nearest_neighbor_search_1.0.0.yaml --metadata-file="$(pwd)/mockaiplatform/testdata/index/crud/metadata.json" --region=us-central1
+- exec: gcloud ai indexes describe test-${uniqueId} --region=us-central1
+- exec: gcloud ai indexes delete test-${uniqueId} --region=us-central1
