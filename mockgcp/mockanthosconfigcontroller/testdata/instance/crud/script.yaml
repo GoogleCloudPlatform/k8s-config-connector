@@ -1,0 +1,3 @@
+- exec: gcloud anthos config controller create test-${uniqueId} --location=us-central1
+- exec: gcloud anthos config controller describe test-${uniqueId} --location=us-central1
+- exec: gcloud anthos config controller delete test-${uniqueId} --location=us-central1
