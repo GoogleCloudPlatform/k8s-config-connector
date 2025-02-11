@@ -1,0 +1,5 @@
+
+- exec: gcloud artifacts repositories create test-${uniqueId} --location=us-central1 --repository-format=docker
+- exec: gcloud artifacts repositories describe test-${uniqueId} --location=us-central1
+- exec: gcloud artifacts repositories update test-${uniqueId} --location=us-central1 --description="Updated description"
+- exec: gcloud artifacts repositories delete test-${uniqueId} --location=us-central1 --async
