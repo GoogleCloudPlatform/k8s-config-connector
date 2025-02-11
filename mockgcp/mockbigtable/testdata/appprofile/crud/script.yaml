@@ -1,0 +1,7 @@
+
+- exec: gcloud bigtable instances create test-instance-${uniqueId} --display-name=test-instance --cluster-config=id=test-cluster-${uniqueId},zone=us-central1-a,nodes=1 --instance-type=DEVELOPMENT
+- exec: gcloud bigtable app-profiles create test-app-profile-${uniqueId} --instance=test-instance-${uniqueId} --route-any --description="Test App Profile"
+- exec: gcloud bigtable app-profiles describe test-app-profile-${uniqueId} --instance=test-instance-${uniqueId}
+- exec: gcloud bigtable app-profiles update test-app-profile-${uniqueId} --instance=test-instance-${uniqueId} --description="Updated Test App Profile"
+- exec: gcloud bigtable app-profiles delete test-app-profile-${uniqueId} --instance=test-instance-${uniqueId} --force
+- exec: gcloud bigtable instances delete test-instance-${uniqueId}
