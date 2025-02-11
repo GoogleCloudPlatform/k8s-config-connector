@@ -1,0 +1,9 @@
+- exec: >-
+    gcloud artifacts docker images list \
+      us-central1-docker.pkg.dev/${PROJECT_ID}/test-repo/test-image-${uniqueId}
+- exec: >-
+    gcloud artifacts docker images describe \
+      us-central1-docker.pkg.dev/${PROJECT_ID}/test-repo/test-image-${uniqueId}:tag-${uniqueId}
+- exec: >-
+    gcloud artifacts docker images delete \
+      us-central1-docker.pkg.dev/${PROJECT_ID}/test-repo/test-image-${uniqueId}:tag-${uniqueId} --delete-tags
