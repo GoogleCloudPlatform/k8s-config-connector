@@ -1,0 +1,5 @@
+
+- exec: gcloud ai endpoints create --display-name=test-${uniqueId} --region=us-central1
+- exec: gcloud ai endpoints describe ${uniqueId} --region=us-central1
+- exec: gcloud ai endpoints list --region=us-central1
+- exec: gcloud ai endpoints delete ${uniqueId} --region=us-central1
