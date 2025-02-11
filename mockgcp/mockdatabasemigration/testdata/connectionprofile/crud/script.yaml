@@ -1,0 +1,4 @@
+
+- exec: gcloud database-migration connection-profiles create mysql test-${uniqueId} --region=us-central1 --host=1.2.3.4 --port=3306 --username=testuser --password=testpassword
+- exec: gcloud database-migration connection-profiles describe test-${uniqueId} --region=us-central1
+- exec: gcloud database-migration connection-profiles delete test-${uniqueId} --region=us-central1 --no-async
