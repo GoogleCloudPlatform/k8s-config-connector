@@ -1,0 +1,4 @@
+
+- exec: gcloud dataplex lakes create test-${uniqueId} --location=us-central1
+- exec: gcloud dataplex lakes describe test-${uniqueId} --location=us-central1
+- exec: gcloud dataplex lakes delete test-${uniqueId} --location=us-central1
