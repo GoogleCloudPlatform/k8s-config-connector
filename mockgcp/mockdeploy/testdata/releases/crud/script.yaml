@@ -1,0 +1,4 @@
+
+- exec: gcloud deploy releases create test-${uniqueId} --delivery-pipeline=test-pipeline --region=us-central1
+- exec: gcloud deploy releases describe test-${uniqueId} --delivery-pipeline=test-pipeline --region=us-central1
+- exec: gcloud deploy releases list --delivery-pipeline=test-pipeline --region=us-central1
