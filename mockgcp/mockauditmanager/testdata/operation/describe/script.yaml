@@ -1,0 +1,1 @@
+- exec: gcloud audit-manager operations describe op1 --folder=1234 --location=us-central1
