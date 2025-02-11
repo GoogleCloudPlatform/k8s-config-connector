@@ -1,0 +1,5 @@
+
+- exec: gcloud compute networks create test-${uniqueId}
+- exec: gcloud compute networks describe test-${uniqueId}
+- exec: gcloud compute networks update test-${uniqueId} --bgp-routing-mode=global
+- exec: gcloud compute networks delete test-${uniqueId}
