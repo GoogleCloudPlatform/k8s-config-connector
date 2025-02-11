@@ -1,0 +1,2 @@
+- exec: gcloud backup-dr data-sources list --backup-vault=test-backup-vault --location=us-central1
+- exec: gcloud backup-dr data-sources describe test-data-source --backup-vault=test-backup-vault --location=us-central1
