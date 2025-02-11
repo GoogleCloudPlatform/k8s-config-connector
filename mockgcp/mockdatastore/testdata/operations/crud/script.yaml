@@ -1,0 +1,4 @@
+
+- exec: gcloud datastore operations list
+- exec: gcloud datastore operations describe operation-id-${uniqueId}
+- exec: gcloud datastore operations delete operation-id-${uniqueId}
