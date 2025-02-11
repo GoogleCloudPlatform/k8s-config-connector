@@ -1,0 +1,8 @@
+
+- exec: gcloud artifacts repositories create test-${uniqueId} --location=us-central1 --repository-format=docker --description="Test repository" 
+- exec: gcloud artifacts repositories list --location=us-central1
+- exec: gcloud artifacts repositories describe test-${uniqueId} --location=us-central1
+- define: operationId
+  exec: gcloud artifacts repositories delete test-${uniqueId} --location=us-central1 --async
+  pattern: "Deleting repository [projects/.*/locations/us-central1/operations/(.*)]].*"
+- exec: gcloud artifacts operations describe ${operationId} --location=us-central1
