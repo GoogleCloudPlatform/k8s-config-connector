@@ -1,0 +1,4 @@
+
+- exec: gcloud ai models upload --container-image-uri="gcr.io/test/test-image:${uniqueId}" --display-name="test-${uniqueId}" --artifact-uri="gs://test-bucket-${uniqueId}" --region="us-central1" --model-id="test-${uniqueId}"
+- exec: gcloud ai models describe "test-${uniqueId}" --region="us-central1"
+- exec: gcloud ai models delete "test-${uniqueId}" --region="us-central1"
