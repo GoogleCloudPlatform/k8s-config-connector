@@ -1,0 +1,5 @@
+
+- exec: gcloud assured workloads create --location=${LOCATION} --billing-account=${BILLING_ACCOUNT} --external-id=${EXTERNAL_ID} --compliance-regime=${COMPLIANCE_REGIME} --display-name=test-${uniqueId} --organization=${ORG_ID}
+- exec: gcloud assured workloads list --location=${LOCATION} --organization=${ORG_ID}
+- exec: gcloud assured workloads describe test-${uniqueId} --location=${LOCATION} --organization=${ORG_ID}
+- exec: gcloud assured workloads delete test-${uniqueId} --location=${LOCATION} --organization=${ORG_ID}
