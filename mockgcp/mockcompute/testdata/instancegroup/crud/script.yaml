@@ -1,0 +1,4 @@
+
+- exec: gcloud compute instance-groups managed create test-${uniqueId} --size 1 --zone us-central1-a --template=projects/gcp-project/global/instanceTemplates/template
+- exec: gcloud compute instance-groups managed describe test-${uniqueId} --zone us-central1-a
+- exec: gcloud compute instance-groups managed delete test-${uniqueId} --zone us-central1-a
