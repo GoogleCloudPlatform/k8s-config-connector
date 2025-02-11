@@ -1,0 +1,4 @@
+
+- exec: gcloud database-migration operations list --region=us-central1
+- exec: gcloud database-migration operations describe ${OPERATION_ID} --region=us-central1
+- exec: gcloud database-migration operations delete ${OPERATION_ID} --region=us-central1 --force
