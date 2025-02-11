@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	gcp "cloud.google.com/go/bigquery/reservation/apiv1"
-	bigqueryreservationpb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
+	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -96,7 +96,7 @@ type ReservationAdapter struct {
 	id        *krm.ReservationIdentity
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryReservationReservation
-	actual    *bigqueryreservationpb.Reservation
+	actual    *pb.Reservation
 }
 
 var _ directbase.Adapter = &ReservationAdapter{}
@@ -109,7 +109,7 @@ func (a *ReservationAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Reservation", "name", a.id.String())
 
-	req := &bigqueryreservationpb.GetReservationRequest{Name: a.id.String()}
+	req := &pb.GetReservationRequest{Name: a.id.String()}
 	reservationpb, err := a.gcpClient.GetReservation(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -134,7 +134,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return mapCtx.Err()
 	}
 
-	req := &bigqueryreservationpb.CreateReservationRequest{
+	req := &pb.CreateReservationRequest{
 		Parent:        a.id.Parent().String(),
 		ReservationId: a.id.ID(),
 		Reservation:   desiredPb,
@@ -154,13 +154,37 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
+// The secondaryLocation is output-only, in the event of manual failover, skip the reconciliation of this field.
+func processSecondaryLocation(desired *pb.Reservation, actual *pb.Reservation, previouslyApplied *krm.BigQueryReservationReservationObservedState, specToApply *krm.BigQueryReservationReservationSpec) (*pb.Reservation, error) {
+	if previouslyApplied.SecondaryLocation != nil {
+		if desired.SecondaryLocation != "" {
+			// Changing the field intentionally
+			if !reflect.DeepEqual(desired.SecondaryLocation, *previouslyApplied.SecondaryLocation) {
+				return desired, fmt.Errorf("changing the secondary location of an existing failover reservation is not supported. Please remove the existing secondary location before setting a new secondary location")
+			}
+			// In the event of manual failover, skip the reconciliation
+			if !reflect.DeepEqual(*previouslyApplied.SecondaryLocation, actual.SecondaryLocation) {
+				desired.SecondaryLocation = actual.SecondaryLocation
+				return desired, nil
+			}
+		}
+		// Removing the secondaryLocation from spec makes it externally managed
+		// Rather than setting the field to an empty string, set it back to the previously applied.
+		if specToApply.SecondaryLocation == nil {
+			desired.SecondaryLocation = actual.SecondaryLocation
+		}
+	}
+	return desired, nil
+}
+
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Reservation", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := BigqueryReservationReservationSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredSpec := &a.desired.DeepCopy().Spec
+	desiredPb := BigqueryReservationReservationSpec_ToProto(mapCtx, desiredSpec)
 	desiredPb.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -168,19 +192,28 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	paths := []string{}
 
-	if a.desired.Spec.SlotCapacity != nil && !reflect.DeepEqual(*a.desired.Spec.SlotCapacity, a.actual.SlotCapacity) {
+	if !reflect.DeepEqual(desiredPb.SlotCapacity, a.actual.SlotCapacity) {
 		paths = append(paths, "slot_capacity")
 	}
-	if a.desired.Spec.IgnoreIdleSlots != nil && !reflect.DeepEqual(*a.desired.Spec.IgnoreIdleSlots, a.actual.IgnoreIdleSlots) {
+	if !reflect.DeepEqual(desiredPb.IgnoreIdleSlots, a.actual.IgnoreIdleSlots) {
 		paths = append(paths, "ignore_idle_slots")
 	}
-	if a.desired.Spec.Concurrency != nil && !reflect.DeepEqual(*a.desired.Spec.Concurrency, a.actual.Concurrency) {
+	if !reflect.DeepEqual(desiredPb.Concurrency, a.actual.Concurrency) {
 		paths = append(paths, "concurrency")
 	}
-	if a.desired.Spec.SecondaryLocation != nil && !reflect.DeepEqual(*a.desired.Spec.SecondaryLocation, a.actual.SecondaryLocation) {
+
+	desiredPb, err := processSecondaryLocation(desiredPb, a.actual, a.desired.Status.ObservedState, desiredSpec)
+	if err != nil {
+		return fmt.Errorf("updating Reservation %s: %w", a.id.String(), err)
+	}
+
+	if !reflect.DeepEqual(desiredPb.SecondaryLocation, a.actual.SecondaryLocation) {
+		if desiredPb.Edition != pb.Edition_ENTERPRISE_PLUS {
+			return fmt.Errorf("updating Reservation %s: %s", a.id.String(), "secondaryLocation is only available for ENTERPRISE_PLUS")
+		}
 		paths = append(paths, "secondary_location")
 	}
-	if a.desired.Spec.Autoscale != nil && !reflect.DeepEqual(*a.desired.Spec.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
+	if desiredPb.Autoscale != nil && !reflect.DeepEqual(desiredPb.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
 		paths = append(paths, "autoscale")
 	}
 
@@ -197,7 +230,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		Paths: paths,
 	}
 
-	req := &bigqueryreservationpb.UpdateReservationRequest{
+	req := &pb.UpdateReservationRequest{
 		UpdateMask:  updateMask,
 		Reservation: desiredPb,
 	}
@@ -248,7 +281,7 @@ func (a *ReservationAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Reservation", "name", a.id)
 
-	req := &bigqueryreservationpb.DeleteReservationRequest{Name: a.id.String()}
+	req := &pb.DeleteReservationRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteReservation(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting Reservation %s: %w", a.id.String(), err)
