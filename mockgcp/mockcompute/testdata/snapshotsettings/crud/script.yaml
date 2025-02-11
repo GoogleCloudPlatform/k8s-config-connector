@@ -1,0 +1,1 @@
+- exec: gcloud compute snapshot-settings describe
