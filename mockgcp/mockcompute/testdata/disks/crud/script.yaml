@@ -1,0 +1,5 @@
+
+- exec: gcloud compute disks create test-${uniqueId} --zone=us-central1-a --size=10GB
+- exec: gcloud compute disks describe test-${uniqueId} --zone=us-central1-a
+- exec: gcloud compute disks resize test-${uniqueId} --zone=us-central1-a --size=15GB
+- exec: gcloud compute disks delete test-${uniqueId} --zone=us-central1-a --quiet
