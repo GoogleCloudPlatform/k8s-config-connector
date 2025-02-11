@@ -1,0 +1,5 @@
+
+- exec: gcloud active-directory domains backups create test-${uniqueId} --domain=testdomain
+- exec: gcloud active-directory domains backups describe test-${uniqueId} --domain=testdomain
+- exec: gcloud active-directory domains backups list --domain=testdomain
+- exec: gcloud active-directory domains backups delete test-${uniqueId} --domain=testdomain
