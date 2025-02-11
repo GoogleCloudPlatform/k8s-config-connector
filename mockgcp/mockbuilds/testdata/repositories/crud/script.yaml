@@ -1,0 +1,4 @@
+
+- exec: gcloud builds repositories create test-${uniqueId} --remote-uri=https://github.com/test/test.git --connection=test-connection --region=us-central1
+- exec: gcloud builds repositories describe test-${uniqueId} --connection=test-connection --region=us-central1
+- exec: gcloud builds repositories delete test-${uniqueId} --connection=test-connection --region=us-central1 --async
