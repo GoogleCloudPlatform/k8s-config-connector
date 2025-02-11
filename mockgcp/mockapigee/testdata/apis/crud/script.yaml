@@ -1,0 +1,4 @@
+
+- exec: gcloud apigee apis list --organization=${ORG}
+- exec: gcloud apigee apis describe ${API} --organization=${ORG}
+- exec: gcloud apigee apis list --organization=${ORG}
