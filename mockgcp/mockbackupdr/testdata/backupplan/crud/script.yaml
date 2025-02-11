@@ -1,0 +1,5 @@
+
+- exec: gcloud backup-dr backup-plans create test-${uniqueId} --location=us-central1 --backup-rule="rule-id=test-rule,retention-days=1,recurrence=DAILY,backup-window-start=10,backup-window-end=16" --backup-vault=projects/$PROJECT_ID/locations/us-central1/backupVaults/test-bv --resource-type=compute.<UNIVERSE_DOMAIN>.com/Instance
+- exec: gcloud backup-dr backup-plans describe test-${uniqueId} --location=us-central1
+- exec: gcloud backup-dr backup-plans list --location=us-central1
+- exec: gcloud backup-dr backup-plans delete test-${uniqueId} --location=us-central1 --async
