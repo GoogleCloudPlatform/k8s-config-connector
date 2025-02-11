@@ -1,0 +1,2 @@
+- exec: gcloud edge-cloud container zones list --location=us-central1
+- exec: gcloud edge-cloud container zones describe ${zone} --location=us-central1
