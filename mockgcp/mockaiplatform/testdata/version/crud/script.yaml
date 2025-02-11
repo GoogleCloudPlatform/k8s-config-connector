@@ -1,0 +1,6 @@
+
+- exec: gcloud ai-platform models create test-model-${uniqueId} --region=global
+- exec: gcloud ai-platform versions create test-version-${uniqueId} --model=test-model-${uniqueId} --region=global --origin=gs://cloud-ml-us-central1-077744665448/model --runtime-version=2.11 --python-version=3.7
+- exec: gcloud ai-platform versions describe test-version-${uniqueId} --model=test-model-${uniqueId} --region=global
+- exec: gcloud ai-platform versions delete test-version-${uniqueId} --model=test-model-${uniqueId} --region=global
+- exec: gcloud ai-platform models delete test-model-${uniqueId} --region=global
