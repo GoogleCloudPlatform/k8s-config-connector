@@ -1,0 +1,4 @@
+
+- exec: gcloud developer-connect connections create test-${uniqueId} --location=us-central1
+- exec: gcloud developer-connect connections describe test-${uniqueId} --location=us-central1
+- exec: gcloud developer-connect connections delete test-${uniqueId} --location=us-central1 --quiet
