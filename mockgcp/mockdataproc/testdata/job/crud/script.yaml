@@ -1,0 +1,5 @@
+
+- exec: gcloud dataproc jobs submit pyspark --cluster=test-${uniqueId} --region=us-central1 mockdataproc/testdata/job/crud/hello.py
+- exec: gcloud dataproc jobs describe ${0} --region=us-central1
+- exec: gcloud dataproc jobs list --filter='clusterName=test-${uniqueId} AND status.state="DONE"' --region=us-central1
+- exec: gcloud dataproc jobs delete ${0} --region=us-central1
