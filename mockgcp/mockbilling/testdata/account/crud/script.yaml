@@ -1,0 +1,2 @@
+- exec: gcloud billing accounts list
+- exec: gcloud billing accounts describe ${ACCOUNT_ID}
