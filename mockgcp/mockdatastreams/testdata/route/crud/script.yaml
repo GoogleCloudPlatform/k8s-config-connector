@@ -1,0 +1,4 @@
+
+- exec: gcloud datastream routes create test-${uniqueId} --location=us-central1 --private-connection=test-private-connection --display-name=test-display-name --destination-address=10.0.0.1
+- exec: gcloud datastream routes describe test-${uniqueId} --location=us-central1
+- exec: gcloud datastream routes delete test-${uniqueId} --location=us-central1 --quiet
