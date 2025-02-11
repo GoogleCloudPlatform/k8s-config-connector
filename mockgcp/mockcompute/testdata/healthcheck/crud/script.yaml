@@ -1,0 +1,4 @@
+
+- exec: gcloud compute health-checks create http test-${uniqueId}
+- exec: gcloud compute health-checks describe test-${uniqueId}
+- exec: gcloud compute health-checks delete test-${uniqueId} --quiet
