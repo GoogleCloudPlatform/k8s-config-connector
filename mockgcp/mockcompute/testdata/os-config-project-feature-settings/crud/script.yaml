@@ -1,0 +1,6 @@
+
+- exec: gcloud compute os-config project-feature-settings update --patch-and-config-feature-set=full
+- exec: gcloud compute os-config project-feature-settings describe
+- exec: gcloud compute os-config project-feature-settings update --patch-and-config-feature-set=limited
+- exec: gcloud compute os-config project-feature-settings describe
+- exec: gcloud compute os-config project-feature-settings update --patch-and-config-feature-set=
