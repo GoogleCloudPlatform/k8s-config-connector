@@ -1,0 +1,3 @@
+- exec: gcloud container hub cloudrun enable
+- exec: gcloud container hub cloudrun describe
+- exec: gcloud container hub cloudrun disable --force
