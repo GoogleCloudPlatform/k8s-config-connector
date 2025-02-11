@@ -1,0 +1,5 @@
+---
+- exec: gcloud batch jobs create test-${uniqueId} --location us-central1
+- exec: gcloud batch jobs describe test-${uniqueId} --location us-central1
+- exec: gcloud batch jobs list --location us-central1
+- exec: gcloud batch jobs delete test-${uniqueId} --location us-central1
