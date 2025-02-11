@@ -1,0 +1,4 @@
+
+- exec: gcloud bigtable tables create test-${uniqueId} --instance=test-instance --column-families=cf1
+- exec: gcloud bigtable tables describe test-${uniqueId} --instance=test-instance
+- exec: gcloud bigtable tables delete test-${uniqueId} --instance=test-instance
