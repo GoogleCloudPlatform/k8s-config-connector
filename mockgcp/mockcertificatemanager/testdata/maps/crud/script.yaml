@@ -1,0 +1,6 @@
+
+- exec: gcloud certificate-manager maps create test-${uniqueId} --location=global --description="Test Description" --labels="test-key=test-value"
+- exec: gcloud certificate-manager maps describe test-${uniqueId} --location=global
+- exec: gcloud certificate-manager maps list --location=global
+- exec: gcloud certificate-manager maps update test-${uniqueId} --location=global --description="Updated Description" --update-labels="test-key=updated-value"
+- exec: gcloud certificate-manager maps delete test-${uniqueId} --location=global
