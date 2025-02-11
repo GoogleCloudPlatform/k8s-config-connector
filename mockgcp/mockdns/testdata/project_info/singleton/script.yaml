@@ -1,0 +1,1 @@
+- exec: gcloud dns project-info describe
