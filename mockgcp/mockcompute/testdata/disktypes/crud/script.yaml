@@ -1,0 +1,3 @@
+
+- exec: gcloud compute disk-types list
+- exec: gcloud compute disk-types describe hyperdisk-balanced-high-availability --zone us-central1-a
