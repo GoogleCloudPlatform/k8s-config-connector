@@ -1,0 +1,5 @@
+
+- exec: gcloud apphub applications services create test-${uniqueId} --application=test-app-${uniqueId} --location=us-east1
+- exec: gcloud apphub applications services describe test-${uniqueId} --application=test-app-${uniqueId} --location=us-east1
+- exec: gcloud apphub applications services list --application=test-app-${uniqueId} --location=us-east1
+- exec: gcloud apphub applications services delete test-${uniqueId} --application=test-app-${uniqueId} --location=us-east1 --async
