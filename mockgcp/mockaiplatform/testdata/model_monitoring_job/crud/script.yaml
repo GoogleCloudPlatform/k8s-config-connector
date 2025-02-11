@@ -1,0 +1,4 @@
+
+- exec: gcloud ai model-monitoring-jobs create --region=us-central1 --display-name=test-${uniqueId} --emails=test@example.com --endpoint=123 --prediction-sampling-rate=0.8
+- exec: gcloud ai model-monitoring-jobs describe ${0} --region=us-central1
+- exec: gcloud ai model-monitoring-jobs delete ${0} --region=us-central1
