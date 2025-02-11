@@ -1,0 +1,4 @@
+
+- exec: gcloud app instances list --service=default --version=v1
+- exec: gcloud app instances describe --service=default --version=v1 ${instanceId}
+- exec: gcloud app instances delete --service=default --version=v1 ${instanceId}
