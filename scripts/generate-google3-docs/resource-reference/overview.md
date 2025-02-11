@@ -639,6 +639,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/logging/logginglogview.md">LoggingLogView</a></td>
 </tr>
 <tr>
+  <td><a href="/managed-service-for-apache-kafka/docs">{{managedkafka_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/managedkafka/managedkafkacluster.md">ManagedKafkaCluster</a></td>
+</tr>
+<tr>
   <td><a href="/memorystore/docs/memcached/">{{memstore_memcache_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/memcache/memcacheinstance.md">MemcacheInstance</a></td>
 </tr>
