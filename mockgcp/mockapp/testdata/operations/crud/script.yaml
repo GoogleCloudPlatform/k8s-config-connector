@@ -1,0 +1,3 @@
+
+- exec: gcloud app operations list
+- exec: gcloud app operations describe ${0}
