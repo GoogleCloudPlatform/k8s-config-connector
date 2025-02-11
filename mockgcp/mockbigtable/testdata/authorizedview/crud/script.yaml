@@ -1,0 +1,3 @@
+- exec: gcloud bigtable authorized-views create test-view-${uniqueId} --instance=test-instance --table=test-table --definition-file=definition.yaml
+- exec: gcloud bigtable authorized-views describe test-view-${uniqueId} --instance=test-instance --table=test-table
+- exec: gcloud bigtable authorized-views delete test-view-${uniqueId} --instance=test-instance --table=test-table
