@@ -1,0 +1,6 @@
+
+- exec: >
+    gcloud dataplex entries create test-${uniqueId} --location=us-central1 --entry-group=test-entry-group \
+    --entry-type=projects/test-project/locations/us-central1/entryTypes/test-entry-type
+- exec: gcloud dataplex entries describe test-${uniqueId} --location=us-central1 --entry-group=test-entry-group
+- exec: gcloud dataplex entries delete test-${uniqueId} --location=us-central1 --entry-group=test-entry-group --quiet
