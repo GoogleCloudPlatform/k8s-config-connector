@@ -1,0 +1,3 @@
+
+- exec: gcloud compute machine-types list --filter="zone:us-central1-a"
+- exec: gcloud compute machine-types describe e2-medium --zone=us-central1-a
