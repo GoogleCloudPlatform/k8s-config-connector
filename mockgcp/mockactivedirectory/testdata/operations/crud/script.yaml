@@ -1,0 +1,3 @@
+- exec: gcloud active-directory operations list --region=global
+- exec: gcloud active-directory operations describe ${uniqueId} --region=global
+- exec: gcloud active-directory operations cancel ${uniqueId} --region=global
