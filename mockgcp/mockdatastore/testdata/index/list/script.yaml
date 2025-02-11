@@ -1,0 +1,1 @@
+- exec: gcloud datastore indexes list
