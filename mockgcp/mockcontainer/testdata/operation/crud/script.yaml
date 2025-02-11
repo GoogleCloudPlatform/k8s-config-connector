@@ -1,0 +1,4 @@
+
+- exec: gcloud container operations list --location=us-central1
+- exec: gcloud container operations describe OPERATION_ID --location=us-central1
+- exec: gcloud container operations cancel OPERATION_ID --location=us-central1
