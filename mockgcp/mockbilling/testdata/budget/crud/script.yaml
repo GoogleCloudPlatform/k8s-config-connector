@@ -1,0 +1,4 @@
+
+- exec: gcloud billing budgets create --billing-account=BILLING_ACCOUNT --display-name=test-${uniqueId} --budget-amount=100USD --threshold-rule=percent=0.5 --calendar-period=month
+- exec: gcloud billing budgets describe test-${uniqueId} --billing-account=BILLING_ACCOUNT
+- exec: gcloud billing budgets delete test-${uniqueId} --billing-account=BILLING_ACCOUNT
