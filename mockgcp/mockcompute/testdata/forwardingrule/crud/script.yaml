@@ -1,0 +1,4 @@
+
+- exec: gcloud compute forwarding-rules create test-${uniqueId} --region us-central1 --target-instance default --ip-protocol TCP --ports 80
+- exec: gcloud compute forwarding-rules describe test-${uniqueId} --region us-central1
+- exec: gcloud compute forwarding-rules delete test-${uniqueId} --region us-central1 --quiet
