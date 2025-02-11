@@ -1,0 +1,4 @@
+
+- exec: gcloud compute os-login ssh-keys add --key-file=key.pub
+- exec: gcloud compute os-login ssh-keys describe --key-file=key.pub
+- exec: gcloud compute os-login ssh-keys remove --key-file=key.pub
