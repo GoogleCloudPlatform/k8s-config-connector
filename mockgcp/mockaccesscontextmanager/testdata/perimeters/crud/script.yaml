@@ -1,0 +1,4 @@
+
+- exec: gcloud access-context-manager perimeters dry-run create test-${uniqueId} --policy=12345 --resources=projects/123456789 --access-levels=level1,level2 --restricted-services=storage.googleapis.com
+- exec: gcloud access-context-manager perimeters dry-run describe test-${uniqueId} --policy=12345
+- exec: gcloud access-context-manager perimeters dry-run delete test-${uniqueId} --policy=12345
