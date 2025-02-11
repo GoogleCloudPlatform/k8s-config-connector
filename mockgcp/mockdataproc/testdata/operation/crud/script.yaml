@@ -1,0 +1,6 @@
+
+- exec: gcloud dataproc operations list --region=${REGION} --format="value(name)"
+  out: |
+    OPERATION_ID=$(grep -oP '[a-z0-9-]+$' <<< "$output")
+- exec: gcloud dataproc operations describe ${OPERATION_ID} --region=${REGION}
+- exec: gcloud dataproc operations delete ${OPERATION_ID} --region=${REGION}
