@@ -1,0 +1,6 @@
+
+- exec: gcloud compute network-firewall-policies create test-policy-${uniqueId} --global-firewall-policy
+- exec: gcloud compute network-firewall-policies rules create 1000 --firewall-policy=test-policy-${uniqueId} --action=allow --direction=INGRESS --global-firewall-policy --src-ip-ranges="0.0.0.0/0" --description="test rule"
+- exec: gcloud compute network-firewall-policies rules describe 1000 --firewall-policy=test-policy-${uniqueId} --global-firewall-policy
+- exec: gcloud compute network-firewall-policies rules delete 1000 --firewall-policy=test-policy-${uniqueId} --global-firewall-policy
+- exec: gcloud compute network-firewall-policies delete test-policy-${uniqueId} --global-firewall-policy
