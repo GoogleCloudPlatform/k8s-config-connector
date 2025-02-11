@@ -1,0 +1,2 @@
+- exec: gcloud container hub operations list
+- exec: gcloud container hub operations describe ${operationId}
