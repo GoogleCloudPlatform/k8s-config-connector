@@ -1,0 +1,4 @@
+
+- exec: gcloud compute instance-groups managed create test-${uniqueId} --zone us-central1-a
+- exec: gcloud compute instance-groups managed describe test-${uniqueId} --zone us-central1-a
+- exec: gcloud compute instance-groups managed delete test-${uniqueId} --zone us-central1-a
