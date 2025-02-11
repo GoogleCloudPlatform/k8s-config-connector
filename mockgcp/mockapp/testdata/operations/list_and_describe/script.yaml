@@ -1,0 +1,2 @@
+- exec: gcloud apphub operations list
+- exec: gcloud apphub operations describe ${uniqueId}
