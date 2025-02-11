@@ -1,0 +1,6 @@
+
+- exec: gcloud container hub create
+- exec: gcloud container hub clusterupgrade create
+- exec: gcloud container hub clusterupgrade describe
+- exec: gcloud container hub clusterupgrade delete
+- exec: gcloud container hub delete
