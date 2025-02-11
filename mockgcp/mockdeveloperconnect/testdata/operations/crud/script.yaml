@@ -1,0 +1,3 @@
+- exec: gcloud developer-connect operations list
+- exec: gcloud developer-connect operations describe ${uniqueId}
+- exec: gcloud developer-connect operations delete ${uniqueId}
