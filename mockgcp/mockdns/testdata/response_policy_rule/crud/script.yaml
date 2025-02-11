@@ -1,0 +1,4 @@
+
+- exec: gcloud dns response-policies rules create testrule-${uniqueId} --response-policy=testpolicy --dns-name="example.com." --local-data=name=example.com.,type=A,ttl=21600,rrdatas=1.2.3.4
+- exec: gcloud dns response-policies rules describe testrule-${uniqueId} --response-policy=testpolicy
+- exec: gcloud dns response-policies rules delete testrule-${uniqueId} --response-policy=testpolicy
