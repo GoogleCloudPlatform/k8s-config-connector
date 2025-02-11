@@ -1,0 +1,9 @@
+
+- exec: >-
+    gcloud composer environments user-workloads-config-maps create test-${uniqueId} --environment=test-env --location=us-central1 --config-map-file-path=config_map.yaml
+- exec: >-
+    gcloud composer environments user-workloads-config-maps describe test-${uniqueId} --environment=test-env --location=us-central1
+- exec: >-
+    gcloud composer environments user-workloads-config-maps update test-${uniqueId} --environment=test-env --location=us-central1 --config-map-file-path=config_map.yaml
+- exec: >-
+    gcloud composer environments user-workloads-config-maps delete test-${uniqueId} --environment=test-env --location=us-central1 --quiet
