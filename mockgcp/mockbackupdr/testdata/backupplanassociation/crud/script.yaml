@@ -1,0 +1,5 @@
+
+- exec: gcloud backup-dr backup-plan-associations create test-${uniqueId} --location=us-central1 --backup-plan=projects/${PROJECT_ID}/locations/us-central1/backupPlans/test-backup-plan --resource=projects/${PROJECT_ID}/zones/us-central1-a/instances/test-instance --resource-type=compute.googleapis.com/Instance --workload-project=${PROJECT_ID}
+- exec: gcloud backup-dr backup-plan-associations describe test-${uniqueId} --location=us-central1 --workload-project=${PROJECT_ID}
+- exec: gcloud backup-dr backup-plan-associations list --location=us-central1
+- exec: gcloud backup-dr backup-plan-associations delete test-${uniqueId} --location=us-central1 --workload-project=${PROJECT_ID}
