@@ -1,0 +1,3 @@
+
+- exec: gcloud apphub discovered-services list --location=us-east1
+- exec: gcloud apphub discovered-services describe test-discovered-service --location=us-east1
