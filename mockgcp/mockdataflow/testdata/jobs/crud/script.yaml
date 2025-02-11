@@ -1,0 +1,5 @@
+
+- exec: gcloud dataflow jobs run test-${uniqueId} --region=us-central1 --staging-location=gs://dataflow-staging-us-central1-728965575249 --template-file-gcs-location=gs://dataflow-templates-us-central1/latest/Word_Count --parameters=inputFile=gs://dataflow-samples/shakespeare/kinglear.txt,output=gs://temp-storage-yuwenma/dataflow-job.out
+- exec: gcloud dataflow jobs describe test-${uniqueId} --region=us-central1
+- exec: gcloud dataflow jobs list --region=us-central1
+- exec: gcloud dataflow jobs cancel test-${uniqueId} --region=us-central1
