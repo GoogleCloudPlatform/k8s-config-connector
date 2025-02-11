@@ -1,0 +1,4 @@
+
+- exec: gcloud container hub multi-cluster-services enable
+- exec: gcloud container hub multi-cluster-services describe
+- exec: gcloud container hub multi-cluster-services disable
