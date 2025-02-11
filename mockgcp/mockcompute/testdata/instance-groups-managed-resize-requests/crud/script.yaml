@@ -1,0 +1,5 @@
+
+- exec: gcloud compute instance-groups managed resize-requests create my-mig --resize-request=resize-request-${uniqueId} --resize-by=1 --requested-run-duration=1h --zone=us-central1-a
+- exec: gcloud compute instance-groups managed resize-requests describe my-mig --resize-request=resize-request-${uniqueId} --zone=us-central1-a
+- exec: gcloud compute instance-groups managed resize-requests list my-mig --zone=us-central1-a
+- exec: gcloud compute instance-groups managed resize-requests delete my-mig --resize-request=resize-request-${uniqueId} --zone=us-central1-a
