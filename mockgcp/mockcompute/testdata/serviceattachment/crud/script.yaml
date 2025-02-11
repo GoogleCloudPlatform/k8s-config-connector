@@ -1,0 +1,6 @@
+
+- exec: gcloud compute service-attachments create test-${uniqueId} --region=us-central1 --producer-forwarding-rule=test-forwarding-rule --connection-preference=ACCEPT_AUTOMATIC --nat-subnets=test-subnet
+- exec: gcloud compute service-attachments describe test-${uniqueId} --region=us-central1
+- exec: gcloud compute service-attachments list --regions=us-central1
+- exec: gcloud compute service-attachments update test-${uniqueId} --region=us-central1 --description="updated description"
+- exec: gcloud compute service-attachments delete test-${uniqueId} --region=us-central1
