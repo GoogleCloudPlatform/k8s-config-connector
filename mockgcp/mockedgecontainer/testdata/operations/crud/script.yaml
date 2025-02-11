@@ -1,0 +1,1 @@
+- exec: gcloud edge-cloud container operations describe projects/test-project/locations/us-central1/operations/test-${uniqueId} --location us-central1
