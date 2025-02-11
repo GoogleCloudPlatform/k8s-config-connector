@@ -1,0 +1,6 @@
+
+- exec: gcloud compute routers create test-${uniqueId} --region us-central1 --network default
+- exec: gcloud compute routers describe test-${uniqueId} --region us-central1
+- exec: gcloud compute routers update test-${uniqueId} --region us-central1 --advertisement-mode=default
+- exec: gcloud compute routers list --region us-central1
+- exec: gcloud compute routers delete test-${uniqueId} --region us-central1 --quiet
