@@ -1,0 +1,6 @@
+
+- exec: gcloud compute networks vpc-access connectors create test-${uniqueId} --region us-central1 --network default --range 10.8.0.0/28
+- exec: gcloud compute networks vpc-access connectors describe test-${uniqueId} --region us-central1
+- exec: gcloud compute networks vpc-access connectors list --region us-central1
+- exec: gcloud compute networks vpc-access connectors update test-${uniqueId} --region us-central1 --max-throughput 400
+- exec: gcloud compute networks vpc-access connectors delete test-${uniqueId} --region us-central1 --async
