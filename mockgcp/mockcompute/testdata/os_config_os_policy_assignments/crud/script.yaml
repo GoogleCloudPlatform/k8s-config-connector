@@ -1,0 +1,6 @@
+
+- exec: gcloud compute os-config os-policy-assignments create test-${uniqueId} --location=us-central1-a --file=os-policy-assignment.yaml
+- exec: gcloud compute os-config os-policy-assignments describe test-${uniqueId} --location=us-central1-a
+- exec: gcloud compute os-config os-policy-assignments list --location=us-central1-a
+- exec: gcloud compute os-config os-policy-assignments update test-${uniqueId} --location=us-central1-a --file=os-policy-assignment.yaml
+- exec: gcloud compute os-config os-policy-assignments delete test-${uniqueId} --location=us-central1-a --quiet
