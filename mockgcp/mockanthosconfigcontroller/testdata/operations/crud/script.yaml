@@ -1,0 +1,2 @@
+
+- exec: gcloud anthos config operations list --location=us-central1
