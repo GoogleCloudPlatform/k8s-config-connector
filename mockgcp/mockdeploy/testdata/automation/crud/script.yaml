@@ -1,0 +1,5 @@
+
+- exec: gcloud deploy apply --file=mockdeploy/testdata/automation/crud/automation.yaml --region=us-central1 --project=${PROJECT_ID}
+- exec: gcloud deploy automations describe test-automation-${uniqueId} --region=us-central1 --project=${PROJECT_ID}
+- exec: gcloud deploy automations list --region=us-central1 --project=${PROJECT_ID} --filter="name=test-automation-${uniqueId}"
+- exec: gcloud deploy automations delete test-automation-${uniqueId} --region=us-central1 --project=${PROJECT_ID} --quiet
