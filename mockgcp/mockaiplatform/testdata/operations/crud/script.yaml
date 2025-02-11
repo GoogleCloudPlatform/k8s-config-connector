@@ -1,0 +1,4 @@
+
+- exec: gcloud ai-platform operations list --region us-central1
+- exec: gcloud ai-platform operations describe operation-${uniqueId} --region us-central1
+- exec: gcloud ai-platform operations cancel operation-${uniqueId} --region us-central1
