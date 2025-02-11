@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -172,7 +173,21 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	external := a.id.String()
 	status.ExternalRef = &external
-	return createOp.UpdateStatus(ctx, status, nil)
+	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
+		return err
+	}
+
+	// Write resourceID into spec.
+	tokens := strings.Split(createdMetadata.FullID, ":")
+	if len(tokens) == 2 {
+		resourceID := tokens[1]
+		if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, resourceID, "spec", "resourceID"); err != nil {
+			return fmt.Errorf("error setting spec.resourceID: %w", err)
+		}
+	} else {
+		return fmt.Errorf("Error getting resourceID: %s. The full ID of the created BigQueryDataset is expected to be in the format of projectID:datasetID", createdMetadata.FullID)
+	}
+	return nil
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -302,8 +317,17 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("deleting Dataset", "name", a.id.String())
 
 	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
-	if err := dsHandler.DeleteWithContents(ctx); err != nil {
-		return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+	annotations := deleteOp.GetUnstructured().GetAnnotations()
+
+	// Support the existing annotation on delete.
+	if annotations["cnrm.cloud.google.com/delete-contents-on-destroy"] == "true" {
+		if err := dsHandler.DeleteWithContents(ctx); err != nil {
+			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+		}
+	} else {
+		if err := dsHandler.Delete(ctx); err != nil {
+			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+		}
 	}
 	log.V(2).Info("successfully deleted Dataset", "name", a.id.ID())
 

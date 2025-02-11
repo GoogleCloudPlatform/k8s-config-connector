@@ -81,6 +81,10 @@ func BigQueryDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.DatasetMeta
 	out.MaxTimeTravelHours = direct.LazyPtr(maxTimeInHours)
 	out.IsCaseInsensitive = direct.LazyPtr(in.IsCaseInsensitive)
 	out.StorageBillingModel = direct.LazyPtr(in.StorageBillingModel)
+	tokens := strings.Split(in.FullID, ":")
+	if len(tokens) == 2 {
+		out.ResourceID = direct.LazyPtr(tokens[1])
+	}
 	return out
 }
 func BigQueryDatasetStatus_FromProto(mapCtx *direct.MapContext, in *pb.DatasetMetadata) *krm.BigQueryDatasetStatus {
