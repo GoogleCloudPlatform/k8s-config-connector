@@ -1,0 +1,3 @@
+
+- exec: gcloud compute accelerator-types list --filter="zone:( us-central1-a )" --format="value(name)"
+- exec: gcloud compute accelerator-types describe ${1} --zone=us-central1-a
