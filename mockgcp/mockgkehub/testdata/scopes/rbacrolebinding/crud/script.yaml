@@ -1,0 +1,6 @@
+
+- exec: gcloud container hub scopes rbacrolebindings create test-${uniqueId} --location=global --scope=test-scope-${uniqueId} --user=test-user@google.com --role=admin
+- exec: gcloud container hub scopes rbacrolebindings describe test-${uniqueId} --location=global --scope=test-scope-${uniqueId}
+- exec: gcloud container hub scopes rbacrolebindings list --location=global --scope=test-scope-${uniqueId}
+- exec: gcloud container hub scopes rbacrolebindings update test-${uniqueId} --location=global --scope=test-scope-${uniqueId} --role=view
+- exec: gcloud container hub scopes rbacrolebindings delete test-${uniqueId} --location=global --scope=test-scope-${uniqueId}
