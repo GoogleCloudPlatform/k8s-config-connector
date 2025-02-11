@@ -1,0 +1,6 @@
+
+- exec: gcloud dns record-sets transaction start --zone=MANAGED_ZONE
+- exec: gcloud dns record-sets transaction add --name RECORD_SET_NAME --ttl TTL --type TYPE DATA --zone=MANAGED_ZONE
+- exec: gcloud dns record-sets transaction remove --name RECORD_SET_NAME --ttl TTL --type TYPE DATA --zone=MANAGED_ZONE
+- exec: gcloud dns record-sets transaction describe --zone=MANAGED_ZONE
+- exec: gcloud dns record-sets transaction execute --zone=MANAGED_ZONE
