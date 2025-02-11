@@ -1,0 +1,5 @@
+
+- exec: gcloud access-context-manager levels create test-${uniqueId} --policy=my-policy --title=test-level --basic-level-spec=<(echo "")
+- exec: gcloud access-context-manager levels describe test-${uniqueId} --policy=my-policy
+- exec: gcloud access-context-manager levels update test-${uniqueId} --policy=my-policy --title=test-level-updated
+- exec: gcloud access-context-manager levels delete test-${uniqueId} --policy=my-policy
