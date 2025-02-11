@@ -1,0 +1,5 @@
+
+- exec: gcloud bms volumes snapshots create snap-${uniqueId} --volume=vol-${uniqueId} --region=us-central1
+- exec: gcloud bms volumes snapshots describe snap-${uniqueId} --volume=vol-${uniqueId} --region=us-central1
+- exec: gcloud bms volumes snapshots list --volume=vol-${uniqueId} --region=us-central1
+- exec: gcloud bms volumes snapshots delete snap-${uniqueId} --volume=vol-${uniqueId} --region=us-central1 --quiet
