@@ -1,0 +1,5 @@
+
+- exec: gcloud compute instances create test-${uniqueId} --zone=us-central1-a --image-family=debian-12 --image-project=debian-cloud
+- exec: gcloud compute instances describe test-${uniqueId} --zone=us-central1-a
+- exec: gcloud compute instances update test-${uniqueId} --zone=us-central1-a --update-labels=testkey=testvalue
+- exec: gcloud compute instances delete test-${uniqueId} --zone=us-central1-a --quiet
