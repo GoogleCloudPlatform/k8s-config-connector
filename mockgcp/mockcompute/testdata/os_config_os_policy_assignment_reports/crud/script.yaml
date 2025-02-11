@@ -1,0 +1,3 @@
+
+- exec: gcloud compute os-config os-policy-assignment-reports list --instance=${instance} --location=${location}
+- exec: gcloud compute os-config os-policy-assignment-reports describe ${instance_os_policy_assignment} --instance=${instance} --location=${location}
