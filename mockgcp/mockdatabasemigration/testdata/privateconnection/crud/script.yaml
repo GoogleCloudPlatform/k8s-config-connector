@@ -1,0 +1,5 @@
+
+- exec: gcloud database-migration private-connections create test-${uniqueId} --region=us-central1 --display-name=test-private-connection --vpc=default --subnet=10.0.0.0/29
+- exec: gcloud database-migration private-connections describe test-${uniqueId} --region=us-central1
+- exec: gcloud database-migration private-connections list --region=us-central1
+- exec: gcloud database-migration private-connections delete test-${uniqueId} --region=us-central1 --no-async
