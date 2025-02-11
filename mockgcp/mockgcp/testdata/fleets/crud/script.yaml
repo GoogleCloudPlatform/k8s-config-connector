@@ -1,0 +1,3 @@
+- exec: gcloud container hub create --display-name=test-${uniqueId}
+- exec: gcloud container hub describe
+- exec: gcloud container hub delete
