@@ -1,0 +1,5 @@
+
+- exec: gcloud dataplex entry-groups create test-${uniqueId} --location=us-central1
+- exec: gcloud dataplex entry-groups describe test-${uniqueId} --location=us-central1
+- exec: gcloud dataplex entry-groups list --location=us-central1
+- exec: gcloud dataplex entry-groups delete test-${uniqueId} --location=us-central1 --quiet
