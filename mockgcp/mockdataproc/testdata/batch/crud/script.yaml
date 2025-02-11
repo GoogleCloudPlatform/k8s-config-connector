@@ -1,0 +1,5 @@
+
+- exec: gcloud dataproc batches create test-${uniqueId} --region us-central1 --version 2.0-debian10 --subnet default --service-account default
+- exec: gcloud dataproc batches describe test-${uniqueId} --region us-central1
+- exec: gcloud dataproc batches list --region us-central1
+- exec: gcloud dataproc batches delete test-${uniqueId} --region us-central1
