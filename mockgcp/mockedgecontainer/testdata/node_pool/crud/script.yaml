@@ -1,0 +1,4 @@
+
+- exec: gcloud edge-cloud container clusters node-pools create test-${uniqueId} --cluster=test-cluster-${uniqueId} --location=us-central1 --node-location=us-central1-a --node-count=1
+- exec: gcloud edge-cloud container clusters node-pools describe test-${uniqueId} --cluster=test-cluster-${uniqueId} --location=us-central1
+- exec: gcloud edge-cloud container clusters node-pools delete test-${uniqueId} --cluster=test-cluster-${uniqueId} --location=us-central1 --async
