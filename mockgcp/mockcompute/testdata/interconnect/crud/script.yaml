@@ -1,0 +1,4 @@
+
+- exec: gcloud compute interconnects create test-${uniqueId} --interconnect-type=DEDICATED --link-type=LINK_TYPE_ETHERNET_10G_LR --location=iad-zone2-1 --requested-link-count=1 --customer-name="Test Customer" --description="Test Interconnect"
+- exec: gcloud compute interconnects describe test-${uniqueId}
+- exec: gcloud compute interconnects delete test-${uniqueId}
