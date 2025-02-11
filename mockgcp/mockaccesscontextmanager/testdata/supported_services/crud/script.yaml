@@ -1,0 +1,3 @@
+
+- exec: gcloud access-context-manager supported-services list
+- exec: gcloud access-context-manager supported-services describe bigquery.googleapis.com
