@@ -1,0 +1,6 @@
+
+- exec: gcloud app versions list --service=default
+- exec: gcloud app versions describe ${version} --service=default
+- exec: gcloud app versions start ${version} --service=default
+- exec: gcloud app versions stop ${version} --service=default
+- exec: gcloud app versions delete ${version} --service=default -q
