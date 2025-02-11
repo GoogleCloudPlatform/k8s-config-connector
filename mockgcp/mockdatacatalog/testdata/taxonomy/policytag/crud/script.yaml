@@ -1,0 +1,7 @@
+
+- exec: gcloud data-catalog taxonomies create test-taxonomy-${uniqueId} --location=us-central1 --display-name="Test Taxonomy" --description="A taxonomy for testing"
+- exec: gcloud data-catalog taxonomies policy-tags create test-policy-tag-${uniqueId} --taxonomy=projects/$PROJECT_ID/locations/us-central1/taxonomies/test-taxonomy-${uniqueId} --display-name="Test Policy Tag" --description="A policy tag for testing"
+- exec: gcloud data-catalog taxonomies policy-tags list --taxonomy=projects/$PROJECT_ID/locations/us-central1/taxonomies/test-taxonomy-${uniqueId}"
+- exec: gcloud data-catalog taxonomies policy-tags describe projects/$PROJECT_ID/locations/us-central1/taxonomies/test-taxonomy-${uniqueId}/policyTags/test-policy-tag-${uniqueId}
+- exec: gcloud data-catalog taxonomies policy-tags delete projects/$PROJECT_ID/locations/us-central1/taxonomies/test-taxonomy-${uniqueId}/policyTags/test-policy-tag-${uniqueId} -q
+- exec: gcloud data-catalog taxonomies delete projects/$PROJECT_ID/locations/us-central1/taxonomies/test-taxonomy-${uniqueId} -q
