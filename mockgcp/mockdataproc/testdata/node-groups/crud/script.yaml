@@ -1,0 +1,4 @@
+- exec: gcloud dataproc clusters create test-${uniqueId} --region us-central1 --single-node
+- exec: gcloud dataproc node-groups describe worker --cluster test-${uniqueId} --region us-central1
+- exec: gcloud dataproc node-groups resize worker --cluster test-${uniqueId} --region us-central1 --size 2
+- exec: gcloud dataproc clusters delete test-${uniqueId} --region us-central1
