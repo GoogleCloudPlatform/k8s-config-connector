@@ -1,0 +1,5 @@
+
+- exec: gcloud container hub fleetobservability enable
+- exec: gcloud container hub fleetobservability describe
+- exec: gcloud container hub fleetobservability update --logging-config=''
+- exec: gcloud container hub fleetobservability disable
