@@ -1,0 +1,5 @@
+
+- exec: gcloud certificate-manager trust-configs create test-${uniqueId} --location=global --trust-store=trust-anchors=ta.pem
+- exec: gcloud certificate-manager trust-configs describe test-${uniqueId} --location=global
+- exec: gcloud certificate-manager trust-configs list --location=global
+- exec: gcloud certificate-manager trust-configs delete test-${uniqueId} --location=global --async
