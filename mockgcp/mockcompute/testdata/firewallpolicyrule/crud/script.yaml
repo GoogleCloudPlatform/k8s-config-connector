@@ -1,0 +1,7 @@
+
+- exec: gcloud compute firewall-policies create ${uniqueId} --organization $(gcloud config get-value organization)  
+- exec: gcloud compute firewall-policies rules create 1000 --firewall-policy ${uniqueId} --action allow --direction INGRESS --organization $(gcloud config get-value organization) --description "test rule"
+- exec: gcloud compute firewall-policies rules describe 1000 --firewall-policy ${uniqueId} --organization $(gcloud config get-value organization)
+- exec: gcloud compute firewall-policies rules update 1000 --firewall-policy ${uniqueId} --action deny --description "test updated rule" --organization $(gcloud config get-value organization)
+- exec: gcloud compute firewall-policies rules delete 1000 --firewall-policy ${uniqueId} --organization $(gcloud config get-value organization)
+- exec: gcloud compute firewall-policies delete ${uniqueId} --organization $(gcloud config get-value organization)
