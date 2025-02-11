@@ -1,0 +1,4 @@
+
+- exec: gcloud compute backend-buckets create test-${uniqueId} --global
+- exec: gcloud compute backend-buckets describe test-${uniqueId} --global
+- exec: gcloud compute backend-buckets delete test-${uniqueId} --global --quiet
