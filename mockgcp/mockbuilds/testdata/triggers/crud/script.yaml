@@ -1,0 +1,5 @@
+
+- exec: gcloud builds triggers create manual --name=test-${uniqueId} --region=us-central1
+- exec: gcloud builds triggers describe test-${uniqueId} --region=us-central1
+- exec: gcloud builds triggers list --region=us-central1
+- exec: gcloud builds triggers delete test-${uniqueId} --region=us-central1
