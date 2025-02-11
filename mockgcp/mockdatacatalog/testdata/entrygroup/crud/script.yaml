@@ -1,0 +1,6 @@
+
+- exec: gcloud data-catalog entry-groups create test-${uniqueId} --location=us-central1 --display-name="Test Entry Group" --description="This is a test entry group."
+- exec: gcloud data-catalog entry-groups describe test-${uniqueId} --location=us-central1
+- exec: gcloud data-catalog entry-groups list --location=us-central1
+- exec: gcloud data-catalog entry-groups update test-${uniqueId} --location=us-central1 --description="Updated description."
+- exec: gcloud data-catalog entry-groups delete test-${uniqueId} --location=us-central1
