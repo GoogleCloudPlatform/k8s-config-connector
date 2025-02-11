@@ -1,0 +1,3 @@
+
+- exec: gcloud dns dns-keys list --zone=testzone
+- exec: gcloud dns dns-keys describe 0 --zone=testzone
