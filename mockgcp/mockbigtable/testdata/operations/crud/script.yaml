@@ -1,0 +1,5 @@
+
+- exec: gcloud bigtable instances create instance-${uniqueId} --display-name=test-instance --cluster-config=id=cluster-${uniqueId},zone=us-central1-a --async
+- exec: gcloud bigtable operations list --filter="name:instances/instance-${uniqueId}"
+- exec: gcloud bigtable operations describe ${operationId}
+- exec: gcloud bigtable instances delete instance-${uniqueId}
