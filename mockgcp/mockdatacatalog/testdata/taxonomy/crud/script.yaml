@@ -1,0 +1,3 @@
+
+- exec: gcloud alpha data-catalog taxonomies list --location=${location}
+- exec: gcloud data-catalog taxonomies describe ${uniqueId} --location=${location}
