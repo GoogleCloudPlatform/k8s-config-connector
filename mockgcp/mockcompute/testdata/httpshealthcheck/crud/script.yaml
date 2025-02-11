@@ -1,0 +1,5 @@
+
+- exec: gcloud compute https-health-checks create test-${uniqueId} --global
+- exec: gcloud compute https-health-checks describe test-${uniqueId} --global
+- exec: gcloud compute https-health-checks update test-${uniqueId} --global --description "new description"
+- exec: gcloud compute https-health-checks delete test-${uniqueId} --global --quiet
