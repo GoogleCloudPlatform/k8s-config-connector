@@ -1,0 +1,5 @@
+- exec: gcloud artifacts settings describe
+- exec: gcloud artifacts settings disable-upgrade-redirection
+- exec: gcloud artifacts settings describe
+- exec: gcloud artifacts settings enable-upgrade-redirection
+- exec: gcloud artifacts settings describe
