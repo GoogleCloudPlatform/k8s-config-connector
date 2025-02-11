@@ -1,0 +1,4 @@
+
+- exec: gcloud apphub applications workloads create test-${uniqueId} --application=test-application-${uniqueId} --location=us-central1 --discovered-workload=test-discovered-workload-${uniqueId}
+- exec: gcloud apphub applications workloads describe test-${uniqueId} --application=test-application-${uniqueId} --location=us-central1
+- exec: gcloud apphub applications workloads delete test-${uniqueId} --application=test-application-${uniqueId} --location=us-central1 --async
