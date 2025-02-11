@@ -1,0 +1,5 @@
+
+- exec: gcloud datastream private-connections create test-${uniqueId} --location=us-central1 --display-name=test-${uniqueId} --vpc=default --subnet=10.255.255.0/29
+- exec: gcloud datastream private-connections describe test-${uniqueId} --location=us-central1
+- exec: gcloud datastream private-connections list --location=us-central1
+- exec: gcloud datastream private-connections delete test-${uniqueId} --location=us-central1
