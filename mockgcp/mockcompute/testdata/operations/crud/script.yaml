@@ -1,0 +1,3 @@
+- exec: gcloud compute instances create test-instance --zone=us-central1-a
+- exec: gcloud compute operations list --zone=us-central1-a
+- exec: gcloud compute instances delete test-instance --zone=us-central1-a --quiet
