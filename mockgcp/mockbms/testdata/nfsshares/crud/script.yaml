@@ -1,0 +1,4 @@
+
+- exec: gcloud bms nfs-shares create test-${uniqueId} --location=us-east4 --nfs-share-id=test-${uniqueId}
+- exec: gcloud bms nfs-shares describe test-${uniqueId} --location=us-east4
+- exec: gcloud bms nfs-shares delete test-${uniqueId} --location=us-east4
