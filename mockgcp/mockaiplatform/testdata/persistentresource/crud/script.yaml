@@ -1,0 +1,3 @@
+- exec: gcloud ai persistent-resources create --region=us-central1 --display-name=test-${uniqueId}
+- exec: gcloud ai persistent-resources describe test-${uniqueId} --region=us-central1
+- exec: gcloud ai persistent-resources delete test-${uniqueId} --region=us-central1
