@@ -1,0 +1,10 @@
+- exec: gcloud batch jobs submit test-${uniqueId} --location us-central1 --config mockbatch/testdata/job/crud/job.json
+- exec: gcloud batch jobs describe test-${uniqueId} --location us-central1
+- exec: gcloud batch jobs list --location us-central1 --filter="name:test-${uniqueId}"
+- exec: gcloud batch tasks list --job test-${uniqueId} --location us-central1
+- script: |
+    output=$(gcloud batch tasks describe --job test-${uniqueId} --location us-central1 --task-group group0 --task 0 --format="value(name)")
+    IFS='/' read -ra NAMES <<< "$output"
+    TASK_ID=${NAMES[-1]}
+    gcloud batch tasks describe --job test-${uniqueId} --location us-central1 --task-group group0 --task $TASK_ID
+- exec: gcloud batch jobs delete test-${uniqueId} --location us-central1 --quiet
