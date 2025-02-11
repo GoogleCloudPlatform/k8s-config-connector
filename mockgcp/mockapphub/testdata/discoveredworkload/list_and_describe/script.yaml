@@ -1,0 +1,4 @@
+
+- exec: gcloud apphub discovered-workloads list --location=us-east1 > ${OUTPUT}
+- exec: |-
+    gcloud apphub discovered-workloads describe $(cat ${OUTPUT} | grep 'name:\\s' | head -1 | awk '{print $2}' | sed 's/.*discoveredWorkloads\///') --location=us-east1
