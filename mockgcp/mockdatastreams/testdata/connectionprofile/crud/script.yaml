@@ -1,0 +1,13 @@
+
+- exec: >
+    gcloud datastream connection-profiles create test-${uniqueId} \
+    --location=us-central1 \
+    --type=mysql \
+    --mysql-password=fakepassword \
+    --mysql-username=fakeuser \
+    --display-name=test-profile-${uniqueId} \
+    --mysql-hostname=35.188.150.50 \
+    --mysql-port=3306 \
+    --static-ip-connectivity
+- exec: gcloud datastream connection-profiles describe test-${uniqueId} --location=us-central1
+- exec: gcloud datastream connection-profiles delete test-${uniqueId} --location=us-central1 --force
