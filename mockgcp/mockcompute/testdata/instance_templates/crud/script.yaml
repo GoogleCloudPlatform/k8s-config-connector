@@ -1,0 +1,3 @@
+- exec: gcloud compute instance-templates create test-${uniqueId}
+- exec: gcloud compute instance-templates describe test-${uniqueId}
+- exec: gcloud compute instance-templates delete test-${uniqueId}
