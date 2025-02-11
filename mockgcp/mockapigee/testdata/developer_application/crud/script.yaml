@@ -1,0 +1,4 @@
+
+- exec: gcloud apigee developers applications create --organization=test-org --developer=test-developer@example.com --name=test-${uniqueId} --api-products="PRODUCT1,PRODUCT2"
+- exec: gcloud apigee developers applications describe --organization=test-org --developer=test-developer@example.com test-${uniqueId}
+- exec: gcloud apigee developers applications delete --organization=test-org --developer=test-developer@example.com --name=test-${uniqueId}
