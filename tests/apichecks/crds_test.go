@@ -16,11 +16,13 @@ package lint
 
 import (
 	"fmt"
+	"slices"
 	"sort"
 	"strings"
 	"testing"
 	"unicode"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
@@ -179,36 +181,7 @@ func TestCRDsAcronyms(t *testing.T) {
 				// Special cases for common acronyms
 				for i, token := range tokens {
 					isAcronym := false
-
-					switch strings.ToLower(token) {
-					case "http", "https", "ssh", "tls", "udp", "tcp":
-						isAcronym = true
-					case "api":
-						isAcronym = true
-
-					case "ipv4", "ipv6", "ip", "cidr", "bgp":
-						isAcronym = true
-
-					case "id":
-						isAcronym = true
-
-					case "url", "uri":
-						isAcronym = true
-					case "cdn":
-						isAcronym = true
-					case "nat":
-						isAcronym = true
-					case "x509":
-						isAcronym = true
-					case "sso":
-						isAcronym = true
-					case "oauth2", "oidc":
-						isAcronym = true
-					case "iap":
-						isAcronym = true
-					case "os":
-						isAcronym = true
-					case "iam":
+					if slices.Contains(codegen.Acronyms, strings.ToUpper(token)) {
 						isAcronym = true
 					}
 
