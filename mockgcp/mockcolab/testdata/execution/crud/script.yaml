@@ -1,0 +1,5 @@
+
+- exec: gcloud colab executions create --location=us-central1 --execution-template=test-template
+- exec: gcloud colab executions describe ${uniqueId} --location=us-central1
+- exec: gcloud colab executions list --location=us-central1
+- exec: gcloud colab executions delete ${uniqueId} --location=us-central1
