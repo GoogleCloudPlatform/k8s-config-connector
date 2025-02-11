@@ -1,0 +1,4 @@
+
+- exec: gcloud api-gateway operations list --location=us-central1 --project=${PROJECT_ID}
+- exec: gcloud api-gateway operations describe OPERATION_ID --location=us-central1 --project=${PROJECT_ID}
+- exec: gcloud api-gateway operations cancel OPERATION_ID --location=us-central1 --project=${PROJECT_ID}
