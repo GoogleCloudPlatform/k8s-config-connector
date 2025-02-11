@@ -1,0 +1,4 @@
+
+- exec: gcloud deployment-manager operations describe ${operation-name} --deployment ${deployment-name}
+- exec: gcloud deployment-manager operations list --deployment ${deployment-name}
+- exec: gcloud deployment-manager operations wait ${operation-name} --deployment ${deployment-name}
