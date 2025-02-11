@@ -1,0 +1,5 @@
+
+- exec: gcloud access-context-manager authorized-orgs create test-${uniqueId} --policy=${policyId} --orgs=organizations/12345 --authorization_type=authorization-type-trust --authorization_direction=authorization-direction-from --asset_type=asset-type-device
+- exec: gcloud access-context-manager authorized-orgs list --policy=${policyId}
+- exec: gcloud access-context-manager authorized-orgs describe test-${uniqueId} --policy=${policyId}
+- exec: gcloud access-context-manager authorized-orgs delete test-${uniqueId} --policy=${policyId} --async
