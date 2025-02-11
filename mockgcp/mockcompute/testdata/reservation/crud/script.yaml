@@ -1,0 +1,6 @@
+
+- exec: gcloud compute reservations create test-${uniqueId} --vm-count=1 --machine-type=n1-standard-1 --zone=us-central1-a
+- exec: gcloud compute reservations describe test-${uniqueId} --zone=us-central1-a
+- exec: gcloud compute reservations list --zone=us-central1-a
+- exec: gcloud compute reservations update test-${uniqueId} --vm-count=2 --zone=us-central1-a
+- exec: gcloud compute reservations delete test-${uniqueId} --zone=us-central1-a
