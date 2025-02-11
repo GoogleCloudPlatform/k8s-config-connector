@@ -1,0 +1,4 @@
+
+- exec: gcloud ai tensorboards create --display-name=test-${uniqueId} --region=us-central1
+- exec: gcloud ai tensorboards describe test-${uniqueId} --region=us-central1
+- exec: gcloud ai tensorboards delete test-${uniqueId} --region=us-central1
