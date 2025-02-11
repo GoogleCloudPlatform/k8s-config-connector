@@ -1,0 +1,3 @@
+- exec: gcloud container images list --repository=gcr.io/test-${uniqueId}
+- exec: gcloud container images describe gcr.io/test-${uniqueId}/testimage:tag1
+- exec: gcloud container images delete gcr.io/test-${uniqueId}/testimage:tag1 --force-delete-tags --quiet
