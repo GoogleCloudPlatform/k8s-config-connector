@@ -1,0 +1,4 @@
+
+- exec: gcloud dns record-sets create test-a-record --type=A --rrdatas=1.2.3.4 --ttl=300 --zone=test-zone
+- exec: gcloud dns record-sets describe test-a-record --type=A --zone=test-zone
+- exec: gcloud dns record-sets delete test-a-record --type=A --zone=test-zone -q
