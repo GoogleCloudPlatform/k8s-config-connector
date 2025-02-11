@@ -1,0 +1,4 @@
+
+- exec: gcloud edge-cache services create test-service-${uniqueId} --location=us-central1
+- exec: gcloud edge-cache services describe test-service-${uniqueId} --location=us-central1
+- exec: gcloud edge-cache services delete test-service-${uniqueId} --location=us-central1 --async
