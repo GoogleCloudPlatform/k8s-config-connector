@@ -1,0 +1,3 @@
+- exec: gcloud ai hp-tuning-jobs create --region=us-central1 --display-name=test-${uniqueId} --config=config.yaml
+- exec: gcloud ai hp-tuning-jobs describe test-${uniqueId} --region=us-central1
+- exec: gcloud ai hp-tuning-jobs delete test-${uniqueId} --region=us-central1
