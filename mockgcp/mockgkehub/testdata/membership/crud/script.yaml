@@ -1,0 +1,5 @@
+
+- exec: gcloud container hub memberships register my-membership-${uniqueId} --gke-cluster=us-central1-a/my-cluster --location=global
+- exec: gcloud container hub memberships describe my-membership-${uniqueId} --location=global
+- exec: gcloud container hub memberships update my-membership-${uniqueId} --update-labels=testkey=testvalue --location=global
+- exec: gcloud container hub memberships delete my-membership-${uniqueId} --async --location=global
