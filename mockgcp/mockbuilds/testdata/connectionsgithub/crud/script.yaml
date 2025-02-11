@@ -1,0 +1,4 @@
+
+- exec: gcloud builds connections create github test-${uniqueId} --region=us-central1
+- exec: gcloud builds connections describe test-${uniqueId} --region=us-central1
+- exec: gcloud builds connections delete test-${uniqueId} --region=us-central1 --async
