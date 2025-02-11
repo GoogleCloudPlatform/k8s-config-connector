@@ -1,0 +1,6 @@
+
+- exec: gcloud alloydb clusters create test-cluster-${uniqueId} --password=test --region=us-central1 --async
+  out: "(?P<operationId>projects/.*)"
+- exec: gcloud alloydb operations list --filter="name=${operationId}"
+- exec: gcloud alloydb operations describe ${operationId}
+- exec: gcloud alloydb operations delete ${operationId} --async
