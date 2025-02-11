@@ -1,0 +1,1 @@
+- exec: gcloud ai operations describe projects/test-project/locations/us-central1/operations/test-operation
