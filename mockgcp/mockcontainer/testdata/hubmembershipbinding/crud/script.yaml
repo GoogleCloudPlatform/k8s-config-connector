@@ -1,0 +1,5 @@
+- exec: gcloud container hub memberships bindings create test-${uniqueId} --membership=test-membership --role=roles/gkehub.viewer --project=test-project
+- exec: gcloud container hub memberships bindings list --membership=test-membership --project=test-project
+- exec: gcloud container hub memberships bindings describe test-${uniqueId} --membership=test-membership --project=test-project
+- exec: gcloud container hub memberships bindings update test-${uniqueId} --membership=test-membership --role=roles/gkehub.admin --project=test-project
+- exec: gcloud container hub memberships bindings delete test-${uniqueId} --membership=test-membership --project=test-project --quiet
