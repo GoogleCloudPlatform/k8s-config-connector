@@ -1,0 +1,3 @@
+
+- exec: gcloud deploy deploy-policies describe test-${uniqueId} --region=us-central1
+- exec: gcloud deploy deploy-policies delete test-${uniqueId} --region=us-central1 --async
