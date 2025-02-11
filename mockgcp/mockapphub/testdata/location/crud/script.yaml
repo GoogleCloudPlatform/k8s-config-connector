@@ -1,0 +1,3 @@
+
+- exec: gcloud apphub locations list
+- exec: gcloud apphub locations describe us-central1
