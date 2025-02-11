@@ -1,0 +1,3 @@
+
+- exec: gcloud artifacts files list --repository=test-repo --location=us-central1 --package=test-package --version=1.0.0
+- exec: gcloud artifacts files describe test-file --repository=test-repo --location=us-central1
