@@ -1,0 +1,5 @@
+
+- exec: gcloud compute instant-snapshots create test-${uniqueId} --source-disk=test-disk --zone=us-central1-a
+- exec: gcloud compute instant-snapshots describe test-${uniqueId} --zone=us-central1-a
+- exec: gcloud compute instant-snapshots add-labels test-${uniqueId} --labels=testkey=testvalue --zone=us-central1-a
+- exec: gcloud compute instant-snapshots delete test-${uniqueId} --zone=us-central1-a
