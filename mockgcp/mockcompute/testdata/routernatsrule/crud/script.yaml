@@ -1,0 +1,4 @@
+
+- exec: gcloud compute routers nats rules create ${uniqueId} --router=test-router --nat=test-nat --region=us-central1
+- exec: gcloud compute routers nats rules describe ${uniqueId} --router=test-router --nat=test-nat --region=us-central1
+- exec: gcloud compute routers nats rules delete ${uniqueId} --router=test-router --nat=test-nat --region=us-central1
