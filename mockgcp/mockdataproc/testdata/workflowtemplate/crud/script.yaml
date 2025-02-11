@@ -1,0 +1,5 @@
+
+- exec: gcloud dataproc workflow-templates create test-${uniqueId} --region=us-central1
+- exec: gcloud dataproc workflow-templates describe test-${uniqueId} --region=us-central1
+- exec: gcloud dataproc workflow-templates set-managed-cluster test-${uniqueId} --cluster-name=test-cluster --region=us-central1
+- exec: gcloud dataproc workflow-templates delete test-${uniqueId} --region=us-central1
