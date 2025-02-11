@@ -1,0 +1,5 @@
+
+- exec: gcloud deployment-manager deployments create test-${uniqueId} --config config.yaml
+- exec: gcloud deployment-manager deployments describe test-${uniqueId}
+- exec: gcloud deployment-manager deployments list --filter="name=test-${uniqueId}"
+- exec: gcloud deployment-manager deployments delete test-${uniqueId} --quiet
