@@ -1,0 +1,6 @@
+
+- exec: gcloud compute firewall-policies create --short-name=test-${uniqueId} --organization=org-id --description="Test firewall policy"
+- exec: gcloud compute firewall-policies describe test-${uniqueId} --organization=org-id
+- exec: gcloud compute firewall-policies list --organization=org-id
+- exec: gcloud compute firewall-policies update test-${uniqueId} --organization=org-id --description="Updated test firewall policy"
+- exec: gcloud compute firewall-policies delete test-${uniqueId} --organization=org-id
