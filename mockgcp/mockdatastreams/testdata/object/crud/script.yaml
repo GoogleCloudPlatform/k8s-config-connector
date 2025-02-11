@@ -1,0 +1,6 @@
+- exec: gcloud datastream streams create test-stream-${uniqueId} --location=us-central1 --display-name=test-stream --source-connection-profile=test-source --destination-connection-profile=test-destination --gcs-destination-config='{}'
+- exec: gcloud datastream streams list --location=us-central1
+- exec: gcloud datastream objects list --stream=test-stream-${uniqueId} --location=us-central1
+- exec: gcloud datastream objects lookup --stream=test-stream-${uniqueId} --location=us-central1 --source-object-identifier='{"oracleObjectIdentifier": {"schema": "testschema", "table": "testtable"}}'
+- exec: gcloud datastream streams describe test-stream-${uniqueId} --location=us-central1
+- exec: gcloud datastream streams delete test-stream-${uniqueId} --location=us-central1
