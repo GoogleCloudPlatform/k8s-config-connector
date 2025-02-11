@@ -3,6 +3,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -15,7 +16,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Requested Metadata Store metadatastore${uniqueId} not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "metadataStore \"projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "metadataStore \"projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -31,6 +39,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -58,6 +67,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -79,6 +89,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.MetadataStore",
+    "description": "Metadata Store",
     "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}"
   }
 }
@@ -90,6 +101,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -116,6 +128,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
