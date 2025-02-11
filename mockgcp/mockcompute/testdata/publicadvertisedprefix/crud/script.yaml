@@ -1,0 +1,5 @@
+
+- exec: gcloud compute public-advertised-prefixes create test-${uniqueId} --range=192.0.2.0/24 --dns-verification-ip=192.0.2.1
+- exec: gcloud compute public-advertised-prefixes describe test-${uniqueId}
+- exec: gcloud compute public-advertised-prefixes list
+- exec: gcloud compute public-advertised-prefixes delete test-${uniqueId}
