@@ -1,0 +1,1 @@
+- exec: gcloud compute networks vpc-access operations list --region=us-central1
