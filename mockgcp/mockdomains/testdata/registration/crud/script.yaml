@@ -1,0 +1,6 @@
+
+- exec: gcloud domains registrations register test-${uniqueId}.com --yearly-price="12.00 USD" --contact-data-from-file=contacts.yaml --contact-privacy=public-contact-data --notices=public-contact-data-acknowledgement
+- exec: gcloud domains registrations describe test-${uniqueId}.com
+- exec: gcloud domains registrations list --filter="domainName=test-${uniqueId}.com"
+- exec: gcloud domains registrations update test-${uniqueId}.com --update-labels="testkey=testvalue"
+- exec: gcloud domains registrations delete test-${uniqueId}.com
