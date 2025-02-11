@@ -1,0 +1,5 @@
+
+- exec: gcloud edge-cloud container clusters create test-${uniqueId} --location us-central1 --project my-project --cluster-ipv4-cidr 10.0.0.0/16
+- exec: gcloud edge-cloud container clusters list --location us-central1 --project my-project
+- exec: gcloud edge-cloud container clusters describe test-${uniqueId} --location us-central1 --project my-project
+- exec: gcloud edge-cloud container clusters delete test-${uniqueId} --location us-central1 --project my-project --quiet
