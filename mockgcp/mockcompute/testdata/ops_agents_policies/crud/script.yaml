@@ -1,0 +1,4 @@
+
+- exec: gcloud compute instances ops-agents policies create test-${uniqueId} --agent-rules="type=logging,version=current-major,package-state=installed" --group-gces="zones=us-central1-a" --description="test description"
+- exec: gcloud compute instances ops-agents policies describe test-${uniqueId}
+- exec: gcloud compute instances ops-agents policies delete test-${uniqueId} --quiet
