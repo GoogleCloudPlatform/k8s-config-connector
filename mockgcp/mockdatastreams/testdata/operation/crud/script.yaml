@@ -1,0 +1,3 @@
+- exec: gcloud datastream operations list --location=${location} --project=${project}
+- exec: gcloud datastream operations describe ${uniqueId} --location=${location} --project=${project}
+- exec: gcloud datastream operations delete ${uniqueId} --location=${location} --project=${project}
