@@ -1,0 +1,8 @@
+
+- exec: gcloud dns managed-zones create zone-${uniqueId} --description="Test zone" --dns-name="test.example.com."
+- exec: gcloud dns record-sets create test.example.com. --zone=zone-${uniqueId} --type=A --ttl=300 --rrdatas=1.2.3.4
+- exec: gcloud dns record-sets list --zone=zone-${uniqueId}
+- exec: gcloud dns record-sets describe test.example.com. --zone=zone-${uniqueId} --type=A
+- exec: gcloud dns record-sets update --zone=zone-${uniqueId} --name="test.example.com." --type=A --ttl=600 --rrdatas=5.6.7.8
+- exec: gcloud dns record-sets delete test.example.com. --zone=zone-${uniqueId} --type=A
+- exec: gcloud dns managed-zones delete zone-${uniqueId}
