@@ -193,12 +193,21 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, s
 // pickExamples returns the examples we should feed into the promp
 func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
 	var examples []*DataPoint
-	// We only include data points for the same tool as the input.
-	for _, dataPoint := range x.dataPoints {
-		if dataPoint.Type != input.Type {
-			continue
+	t := input.Type
+	scopes := strings.Split(t, "-")
+	// We find the data points for with the tool closest to input's tool.
+	// If none is found, we expand the scope of the search.
+	for i := len(scopes) - 1; i >= 0; i-- {
+		for _, dataPoint := range x.dataPoints {
+			if strings.HasPrefix(dataPoint.Type, t) {
+				examples = append(examples, dataPoint)
+			}
 		}
-		examples = append(examples, dataPoint)
+		if len(examples) != 0 {
+			klog.Infof("Input tool: %s, found %d examples with prefix: %s, ", input.Type, len(examples), t)
+			break
+		}
+		t = strings.TrimSuffix(t, "-"+scopes[i])
 	}
 	return examples
 }
