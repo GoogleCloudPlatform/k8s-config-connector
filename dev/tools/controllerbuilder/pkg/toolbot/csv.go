@@ -22,6 +22,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -189,8 +190,21 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, s
 	return dataPoints, nil
 }
 
-// RunGemini runs a prompt against Gemini, generating context based on the source code.
-func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Writer) error {
+// pickExamples returns the examples we should feed into the promp
+func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
+	var examples []*DataPoint
+	// We only include data points for the same tool as the input.
+	for _, dataPoint := range x.dataPoints {
+		if dataPoint.Type != input.Type {
+			continue
+		}
+		examples = append(examples, dataPoint)
+	}
+	return examples
+}
+
+// InferOutput_WithChat tries to infer an output value, using the Chat LLM APIs.
+func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, input *DataPoint, out io.Writer) error {
 	log := klog.FromContext(ctx)
 
 	client, err := llm.BuildVertexAIClient(ctx)
@@ -202,14 +216,12 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 	systemPrompt := "" // TODO
 	chat := client.StartChat(systemPrompt)
 
+	examples := x.pickExamples(input)
+
 	var userParts []string
 
 	// We only include data points for the same tool as the input.
-	for _, dataPoint := range x.dataPoints {
-		if dataPoint.Type != input.Type {
-			continue
-		}
-
+	for _, dataPoint := range examples {
 		inputColumnKeys := dataPoint.InputColumnKeys()
 		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
 			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
@@ -245,6 +257,88 @@ func (x *CSVExporter) RunGemini(ctx context.Context, input *DataPoint, out io.Wr
 			}
 		}
 	}
+
+	return nil
+}
+
+// InferOutput_WithCompletion tries to infer an output value, using the Completion LLM APIs.
+func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, input *DataPoint, out io.Writer) error {
+	log := klog.FromContext(ctx)
+
+	client, err := llm.BuildVertexAIClient(ctx)
+	if err != nil {
+		return fmt.Errorf("building gemini client: %w", err)
+	}
+	defer client.Close()
+
+	var prompt strings.Builder
+
+	fmt.Fprintf(&prompt, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:\n")
+
+	examples := x.pickExamples(input)
+
+	for _, dataPoint := range examples {
+		inputColumnKeys := dataPoint.InputColumnKeys()
+		if x.StrictInputColumnKeys != nil && !x.StrictInputColumnKeys.Equal(inputColumnKeys) {
+			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
+		}
+
+		s := dataPoint.ToGenAIFormat()
+		s = "<example>\n" + s + "\n</example>\n\n"
+		fmt.Fprintf(&prompt, "\n%s\n\n", s)
+	}
+
+	{
+		// Prompt with the input data point.
+		s := input.ToGenAIFormat()
+		// We also include the beginning of the output for Gemini to fill in.
+		s += "<out>\n```go\n"
+		s = "<example>\n" + s
+		fmt.Fprintf(&prompt, "\nCan you complete the item?  Don't output any additional commentary.\n\n%s", s)
+	}
+
+	log.Info("sending completion request", "prompt", prompt.String())
+
+	resp, err := client.GenerateCompletion(ctx, &llm.CompletionRequest{
+		Prompt: prompt.String(),
+	})
+	if err != nil {
+		return fmt.Errorf("generating content with gemini: %w", err)
+	}
+
+	// Print the usage metadata (includes token count i.e. cost)
+	klog.Infof("UsageMetadata: %+v", resp.UsageMetadata())
+
+	text := resp.Response()
+
+	lines := strings.Split(strings.TrimSpace(text), "\n")
+
+	// Remove some of the decoration
+	for len(lines) > 1 {
+		if lines[0] == "```go" {
+			lines = lines[1:]
+			continue
+		}
+
+		if lines[len(lines)-1] == "```" {
+			lines = lines[:len(lines)-1]
+			continue
+		}
+
+		if lines[len(lines)-1] == "</out>" {
+			lines = lines[:len(lines)-1]
+			continue
+		}
+
+		if lines[len(lines)-1] == "</example>" {
+			lines = lines[:len(lines)-1]
+			continue
+		}
+		break
+	}
+
+	text = strings.Join(lines, "\n")
+	out.Write([]byte(text + "\n"))
 
 	return nil
 }

@@ -139,11 +139,12 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	}
 
 	dataPoint := dataPoints[0]
+	dataPoint.Output = ""
 
 	log.Info("built data point", "dataPoint", dataPoint)
 
 	out := &bytes.Buffer{}
-	if err := x.RunGemini(ctx, dataPoint, out); err != nil {
+	if err := x.InferOutput_WithCompletion(ctx, dataPoint, out); err != nil {
 		return fmt.Errorf("running LLM inference: %w", err)
 
 	}
