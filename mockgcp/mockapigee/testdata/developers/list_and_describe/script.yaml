@@ -1,0 +1,2 @@
+- exec: gcloud apigee developers list --organization=test-org
+- exec: gcloud apigee developers describe test-developer@example.com --organization=test-org
