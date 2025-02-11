@@ -1,0 +1,6 @@
+
+- exec: gcloud container hub scopes namespaces create test-${uniqueId} --scope=test-scope-${uniqueId}
+- exec: gcloud container hub scopes namespaces describe test-${uniqueId} --scope=test-scope-${uniqueId}
+- exec: gcloud container hub scopes namespaces update test-${uniqueId} --scope=test-scope-${uniqueId} --update-labels=key1=value1
+- exec: gcloud container hub scopes namespaces list --scope=test-scope-${uniqueId}
+- exec: gcloud container hub scopes namespaces delete test-${uniqueId} --scope=test-scope-${uniqueId}
