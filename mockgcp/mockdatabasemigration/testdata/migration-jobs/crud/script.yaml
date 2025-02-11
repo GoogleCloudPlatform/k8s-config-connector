@@ -1,0 +1,4 @@
+
+- exec: gcloud database-migration migration-jobs create test-${uniqueId} --region=us-central1 --source=my-source --destination=my-destination --type=ONE_TIME
+- exec: gcloud database-migration migration-jobs describe test-${uniqueId} --region=us-central1
+- exec: gcloud database-migration migration-jobs delete test-${uniqueId} --region=us-central1
