@@ -1,0 +1,4 @@
+
+- exec: gcloud deployment-manager deployments create test-${uniqueId} --config config.yaml
+- exec: gcloud deployment-manager resources list --deployment test-${uniqueId}
+- exec: gcloud deployment-manager deployments delete test-${uniqueId} -q
