@@ -1,0 +1,6 @@
+
+- exec: gcloud data-catalog entries create test-${uniqueId} --location=us-central1 --entry-group=test-group --type=FILESET --gcs-file-patterns="gs://test-bucket/test-file.txt" --display-name="Test Entry"
+- exec: gcloud data-catalog entries describe test-${uniqueId} --location=us-central1 --entry-group=test-group
+- exec: gcloud data-catalog entries list --location=us-central1 --entry-group=test-group
+- exec: gcloud data-catalog entries update test-${uniqueId} --location=us-central1 --entry-group=test-group --display-name="Updated Test Entry"
+- exec: gcloud data-catalog entries delete test-${uniqueId} --location=us-central1 --entry-group=test-group
