@@ -1,0 +1,4 @@
+
+- exec: gcloud compute os-config patch-jobs execute --instance-filter-all --display-name=test-${uniqueId}
+- exec: gcloud compute os-config patch-jobs describe test-${uniqueId}
+- exec: gcloud compute os-config patch-jobs cancel test-${uniqueId}
