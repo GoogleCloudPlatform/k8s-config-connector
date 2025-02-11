@@ -1,0 +1,5 @@
+
+- exec: gcloud deployment-manager deployments create test-${uniqueId} --config mockdeploymentmanager/testdata/manifests/crud/config.yaml
+- exec: gcloud deployment-manager manifests list --deployment test-${uniqueId}
+- exec: gcloud deployment-manager manifests describe --deployment test-${uniqueId} $(gcloud deployment-manager manifests list --deployment test-${uniqueId} --simple-list | head -1)
+- exec: gcloud deployment-manager deployments delete test-${uniqueId} -q
