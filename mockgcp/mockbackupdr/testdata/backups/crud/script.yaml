@@ -1,0 +1,3 @@
+- exec: gcloud backup-dr backups list --location=${location} --backup-vault=${backup_vault} --data-source=${data_source}
+- exec: gcloud backup-dr backups describe ${backup_id} --location=${location} --backup-vault=${backup_vault} --data-source=${data_source}
+- exec: gcloud backup-dr backups delete ${backup_id} --location=${location} --backup-vault=${backup_vault} --data-source=${data_source} --async
