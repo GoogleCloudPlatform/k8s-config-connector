@@ -1,0 +1,3 @@
+- exec: gcloud app create --region=us-central --project=test-${uniqueId}
+- exec: gcloud app describe --project=test-${uniqueId}
+- exec: gcloud app update --split-health-checks --project=test-${uniqueId}
