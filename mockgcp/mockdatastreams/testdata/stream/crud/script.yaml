@@ -1,0 +1,6 @@
+
+- exec: gcloud datastream streams create test-${uniqueId} --location=us-central1 --display-name=test-stream --source=test-source --destination=test-destination --backfill-none
+- exec: gcloud datastream streams describe test-${uniqueId} --location=us-central1
+- exec: gcloud datastream streams list --location=us-central1
+- exec: gcloud datastream streams update test-${uniqueId} --location=us-central1 --display-name=test-stream-updated
+- exec: gcloud datastream streams delete test-${uniqueId} --location=us-central1
