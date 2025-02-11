@@ -1,0 +1,4 @@
+- exec: gcloud dns policies create test-${uniqueId} --description="Test policy" --networks=""
+- exec: gcloud dns policies describe test-${uniqueId}
+- exec: gcloud dns policies update test-${uniqueId} --description="Updated test policy"
+- exec: gcloud dns policies delete test-${uniqueId}
