@@ -1,0 +1,5 @@
+
+- exec: gcloud edge-cache origins create test-${uniqueId} --location=global --origin-address=gs://test-${uniqueId} --description="Test origin" 
+- exec: gcloud edge-cache origins describe test-${uniqueId} --location=global
+- exec: gcloud edge-cache origins list --location=global
+- exec: gcloud edge-cache origins delete test-${uniqueId} --location=global --async
