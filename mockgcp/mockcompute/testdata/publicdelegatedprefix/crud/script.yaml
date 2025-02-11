@@ -1,0 +1,5 @@
+
+- exec: gcloud compute public-delegated-prefixes create test-${uniqueId} --range=192.0.2.0/28 --global --prefix-length=28 --description="test description"
+- exec: gcloud compute public-delegated-prefixes describe test-${uniqueId} --global
+- exec: gcloud compute public-delegated-prefixes list --filter="name=test-${uniqueId}"
+- exec: gcloud compute public-delegated-prefixes delete test-${uniqueId} --global
