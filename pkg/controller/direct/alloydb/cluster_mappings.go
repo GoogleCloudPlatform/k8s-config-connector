@@ -24,6 +24,110 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func BackupSourceObservedStateArray_FromProto(mapCtx *direct.MapContext, in *pb.BackupSource) []*krm.BackupSourceObservedState {
+	backupSourceInfo := BackupSourceObservedState_FromProto(mapCtx, in)
+	return []*krm.BackupSourceObservedState{backupSourceInfo}
+}
+func ContinuousBackupInfoObservedStateArray_FromProto(mapCtx *direct.MapContext, in *pb.ContinuousBackupInfo) []*krm.ContinuousBackupInfoObservedState {
+	continuousBackupInfo := ContinuousBackupInfoObservedState_FromProto(mapCtx, in)
+	return []*krm.ContinuousBackupInfoObservedState{continuousBackupInfo}
+}
+func EncryptionInfoObservedStateArray_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) []*krm.EncryptionInfoObservedState {
+	encryptionInfo := EncryptionInfoObservedState_FromProto(mapCtx, in)
+	return []*krm.EncryptionInfoObservedState{encryptionInfo}
+}
+func MigrationSourceObservedStateArray_FromProto(mapCtx *direct.MapContext, in *pb.MigrationSource) []*krm.MigrationSourceObservedState {
+	migrationSource := MigrationSourceObservedState_FromProto(mapCtx, in)
+	return []*krm.MigrationSourceObservedState{migrationSource}
+}
+func AlloyDBClusterStatus_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.AlloyDBClusterStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDBClusterStatus{}
+	out.BackupSource = BackupSourceObservedStateArray_FromProto(mapCtx, in.GetBackupSource())
+	out.MigrationSource = MigrationSourceObservedStateArray_FromProto(mapCtx, in.GetMigrationSource())
+	// MISSING: CloudsqlBackupRunSource
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Labels
+	// MISSING: State
+	// MISSING: ClusterType
+	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
+	// MISSING: NetworkConfig
+	// MISSING: Network
+	// MISSING: Etag
+	// MISSING: Annotations
+	// MISSING: Reconciling
+	// MISSING: InitialUser
+	// MISSING: AutomatedBackupPolicy
+	// MISSING: SslConfig
+	// MISSING: EncryptionConfig
+	out.EncryptionInfo = EncryptionInfoObservedStateArray_FromProto(mapCtx, in.GetEncryptionInfo())
+	// MISSING: ContinuousBackupConfig
+	out.ContinuousBackupInfo = ContinuousBackupInfoObservedStateArray_FromProto(mapCtx, in.GetContinuousBackupInfo())
+	// MISSING: SecondaryConfig
+	// MISSING: PrimaryConfig
+	// MISSING: SatisfiesPzs
+	// MISSING: PscConfig
+	// MISSING: MaintenanceUpdatePolicy
+	// MISSING: MaintenanceSchedule
+	// MISSING: GeminiConfig
+	// MISSING: SubscriptionType
+	// MISSING: TrialMetadata
+	// MISSING: Tags
+	return out
+}
+func AlloyDBClusterStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterStatus) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	if oneof := BackupSourceObservedState_ToProto(mapCtx, in.BackupSource[0]); oneof != nil {
+		out.Source = &pb.Cluster_BackupSource{BackupSource: oneof}
+	}
+	if oneof := MigrationSourceObservedState_ToProto(mapCtx, in.MigrationSource[0]); oneof != nil {
+		out.Source = &pb.Cluster_MigrationSource{MigrationSource: oneof}
+	}
+	// MISSING: CloudsqlBackupRunSource
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Labels
+	// MISSING: State
+	// MISSING: ClusterType
+	out.DatabaseVersion = direct.Enum_ToProto[pb.DatabaseVersion](mapCtx, in.DatabaseVersion)
+	// MISSING: NetworkConfig
+	// MISSING: Network
+	// MISSING: Etag
+	// MISSING: Annotations
+	// MISSING: Reconciling
+	// MISSING: InitialUser
+	// MISSING: AutomatedBackupPolicy
+	// MISSING: SslConfig
+	// MISSING: EncryptionConfig
+	out.EncryptionInfo = EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo[0])
+	// MISSING: ContinuousBackupConfig
+	out.ContinuousBackupInfo = ContinuousBackupInfoObservedState_ToProto(mapCtx, in.ContinuousBackupInfo[0])
+	// MISSING: SecondaryConfig
+	// MISSING: PrimaryConfig
+	// MISSING: SatisfiesPzs
+	// MISSING: PscConfig
+	// MISSING: MaintenanceUpdatePolicy
+	// MISSING: MaintenanceSchedule
+	// MISSING: GeminiConfig
+	// MISSING: SubscriptionType
+	// MISSING: TrialMetadata
+	// MISSING: Tags
+	return out
+}
 func AutomatedBackupPolicy_WeeklySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupPolicy_WeeklySchedule) *krm.AutomatedBackupPolicy_WeeklySchedule {
 	if in == nil {
 		return nil
@@ -47,8 +151,7 @@ func ContinuousBackupInfoObservedState_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.ContinuousBackupInfoObservedState{}
-	encryptionInfo := EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
-	out.EncryptionInfo = []*krm.EncryptionInfoObservedState{encryptionInfo}
+	out.EncryptionInfo = EncryptionInfoObservedStateArray_FromProto(mapCtx, in.GetEncryptionInfo())
 	out.EnabledTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEnabledTime())
 	out.Schedule = direct.EnumSlice_FromProto(mapCtx, in.Schedule)
 	out.EarliestRestorableTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEarliestRestorableTime())

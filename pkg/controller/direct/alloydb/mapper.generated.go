@@ -175,6 +175,43 @@ func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBCluste
 	// MISSING: Tags
 	return out
 }
+func AlloyDBInstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBInstanceStatus) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: DeleteTime
+	// MISSING: Labels
+	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
+	// MISSING: InstanceType
+	// MISSING: MachineConfig
+	// MISSING: AvailabilityType
+	// MISSING: GCEZone
+	// MISSING: DatabaseFlags
+	// MISSING: WritableNode
+	// MISSING: Nodes
+	// MISSING: QueryInsightsConfig
+	// MISSING: ObservabilityConfig
+	// MISSING: ReadPoolConfig
+	out.IpAddress = direct.ValueOf(in.IPAddress)
+	out.PublicIpAddress = direct.ValueOf(in.PublicIPAddress)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	// MISSING: Etag
+	// MISSING: Annotations
+	// MISSING: UpdatePolicy
+	// MISSING: ClientConnectionConfig
+	// MISSING: SatisfiesPzs
+	// MISSING: PscInstanceConfig
+	// MISSING: NetworkConfig
+	// MISSING: GeminiConfig
+	out.OutboundPublicIpAddresses = in.OutboundPublicIPAddresses
+	return out
+}
 func AutomatedBackupPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupPolicy) *krm.AutomatedBackupPolicy {
 	if in == nil {
 		return nil
@@ -539,7 +576,8 @@ func Instance_ClientConnectionConfig_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.Instance_ClientConnectionConfig{}
 	out.RequireConnectors = direct.LazyPtr(in.GetRequireConnectors())
-	out.SSLConfig = SSLConfig_FromProto(mapCtx, in.GetSslConfig())
+	// MISSING: SslConfig
+	// (near miss): "SslConfig" vs "SSLConfig"
 	return out
 }
 func Instance_ClientConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ClientConnectionConfig) *pb.Instance_ClientConnectionConfig {
@@ -548,7 +586,8 @@ func Instance_ClientConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Instance_ClientConnectionConfig{}
 	out.RequireConnectors = direct.ValueOf(in.RequireConnectors)
-	out.SslConfig = SSLConfig_ToProto(mapCtx, in.SSLConfig)
+	// MISSING: SslConfig
+	// (near miss): "SslConfig" vs "SSLConfig"
 	return out
 }
 func Instance_InstanceNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceNetworkConfig) *krm.Instance_InstanceNetworkConfig {
@@ -592,7 +631,8 @@ func Instance_MachineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 		return nil
 	}
 	out := &krm.Instance_MachineConfig{}
-	out.CPUCount = direct.LazyPtr(in.GetCpuCount())
+	// MISSING: CpuCount
+	// (near miss): "CpuCount" vs "CPUCount"
 	return out
 }
 func Instance_MachineConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_MachineConfig) *pb.Instance_MachineConfig {
@@ -600,7 +640,8 @@ func Instance_MachineConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 		return nil
 	}
 	out := &pb.Instance_MachineConfig{}
-	out.CpuCount = direct.ValueOf(in.CPUCount)
+	// MISSING: CpuCount
+	// (near miss): "CpuCount" vs "CPUCount"
 	return out
 }
 func Instance_Node_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Node) *krm.Instance_Node {
