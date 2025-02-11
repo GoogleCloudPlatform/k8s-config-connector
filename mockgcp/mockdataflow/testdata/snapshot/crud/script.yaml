@@ -1,0 +1,5 @@
+- exec: gcloud dataflow jobs run test-job-${uniqueId} --region=us-central1 --gcs-location=gs://dataflow-staging-us-central1-750921751940/templates/wordcount --staging-location=gs://dataflow-staging-us-central1-750921751940/temp --parameters=inputFile=gs://dataflow-samples/shakespeare/kinglear.txt,output=gs://dataflow-staging-us-central1-750921751940/output
+- exec: gcloud dataflow snapshots create --job-id=$(gcloud dataflow jobs list --filter="name:test-job-${uniqueId}" --format="value(id)" --region=us-central1) --region=us-central1 --snapshot-ttl=1h
+- exec: gcloud dataflow snapshots describe $(gcloud dataflow snapshots list --job-id=$(gcloud dataflow jobs list --filter="name:test-job-${uniqueId}" --format="value(id)" --region=us-central1) --format="value(id)") --region=us-central1
+- exec: gcloud dataflow snapshots delete $(gcloud dataflow snapshots list --job-id=$(gcloud dataflow jobs list --filter="name:test-job-${uniqueId}" --format="value(id)" --region=us-central1) --format="value(id)") --region=us-central1
+- exec: gcloud dataflow jobs cancel test-job-${uniqueId} --region=us-central1
