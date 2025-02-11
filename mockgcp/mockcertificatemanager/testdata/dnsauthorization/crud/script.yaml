@@ -1,0 +1,3 @@
+- exec: gcloud certificate-manager dns-authorizations create test-${uniqueId} --domain=example.com --location=global
+- exec: gcloud certificate-manager dns-authorizations describe test-${uniqueId} --location=global
+- exec: gcloud certificate-manager dns-authorizations delete test-${uniqueId} --location=global
