@@ -1,0 +1,4 @@
+
+- exec: gcloud container hub dataplane-v2-encryption enable
+- exec: gcloud container hub dataplane-v2-encryption describe
+- exec: gcloud container hub dataplane-v2-encryption disable
