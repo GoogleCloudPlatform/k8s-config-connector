@@ -1,0 +1,4 @@
+
+- exec: gcloud api-gateway api-configs create test-${uniqueId} --api=testapi --display-name=testdisplayname
+- exec: gcloud api-gateway api-configs describe test-${uniqueId} --api=testapi
+- exec: gcloud api-gateway api-configs delete test-${uniqueId} --api=testapi --quiet
