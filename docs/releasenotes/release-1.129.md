@@ -34,6 +34,11 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
   * Added `spec.networkConfig.enableOutboundPublicIp` field.
   * Added `status.outboundPublicIpAddresses` field.
 
+* [`SAMPLE_GKEHubFeatureMembership`](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership) (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
+
+  * Added `spec.configmanagement.configSync.stopSyncing` field.
+
+
 ## Reconciliation Improvements
 
 We have added support for direct reconciliation to more resources, with opt-in behaviour.  The API is unchanged. To use the direct reconciler, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.  The following resources now have direct reconciliation support (and we list some of the issues that this fixes): 
