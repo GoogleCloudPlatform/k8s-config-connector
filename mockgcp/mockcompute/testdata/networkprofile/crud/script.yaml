@@ -1,0 +1,5 @@
+
+# Simulate creation. In a real scenario, we would need to create a
+# network profile first using the API or UI, as there is no gcloud create command
+# - exec: gcloud compute network-profiles list
+- exec: gcloud compute network-profiles describe ${NETWORK_PROFILE_NAME} --project=${PROJECT}
