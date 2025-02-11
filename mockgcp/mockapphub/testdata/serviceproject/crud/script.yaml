@@ -1,0 +1,5 @@
+
+- exec: gcloud apphub service-projects add test-${uniqueId} --location=global
+- exec: gcloud apphub service-projects describe test-${uniqueId} --location=global
+- exec: gcloud apphub service-projects list --location=global
+- exec: gcloud apphub service-projects remove test-${uniqueId} --location=global --async
