@@ -1,0 +1,5 @@
+
+- exec: gcloud certificate-manager certificates create test-${uniqueId} --location=global --certificate-file=cert.pem --private-key-file=key.pem
+- exec: gcloud certificate-manager certificates describe test-${uniqueId} --location=global
+- exec: gcloud certificate-manager certificates list --location=global
+- exec: gcloud certificate-manager certificates delete test-${uniqueId} --location=global --async
