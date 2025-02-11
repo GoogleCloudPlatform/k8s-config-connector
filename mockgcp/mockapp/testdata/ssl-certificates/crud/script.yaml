@@ -1,0 +1,6 @@
+
+- exec: gcloud app ssl-certificates create --certificate=cert.pem --display-name=test-${uniqueId} --private-key=key.pem
+  id_field: id
+- exec: gcloud app ssl-certificates describe ${id}
+- exec: gcloud app ssl-certificates list
+- exec: gcloud app ssl-certificates delete ${id}
