@@ -1,0 +1,6 @@
+
+- exec: gcloud dns response-policies create test-${uniqueId} --description="My Response Policy" --networks=""
+- exec: gcloud dns response-policies describe test-${uniqueId}
+- exec: gcloud dns response-policies list
+- exec: gcloud dns response-policies update test-${uniqueId} --description="My Updated Response Policy"
+- exec: gcloud dns response-policies delete test-${uniqueId}
