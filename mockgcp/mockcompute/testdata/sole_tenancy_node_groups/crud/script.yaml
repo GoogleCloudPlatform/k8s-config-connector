@@ -1,0 +1,5 @@
+
+- exec: gcloud compute sole-tenancy node-templates create test-template-${uniqueId} --region us-central1 --node-type n1-node-96-624
+- exec: gcloud compute sole-tenancy node-groups create test-group-${uniqueId} --zone us-central1-a --node-template test-template-${uniqueId} --target-size 1
+- exec: gcloud compute sole-tenancy node-groups describe test-group-${uniqueId} --zone us-central1-a
+- exec: gcloud compute sole-tenancy node-groups delete test-group-${uniqueId} --zone us-central1-a
