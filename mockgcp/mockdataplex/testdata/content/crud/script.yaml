@@ -1,0 +1,5 @@
+
+- exec: gcloud dataplex content create --location=us-central1 --lake=test-lake --data-text="print('hello')" --path=test-${uniqueId} --kernel-type=PYTHON3
+- exec: gcloud dataplex content describe test-${uniqueId} --location=us-central1 --lake=test-lake
+- exec: gcloud dataplex content list --location=us-central1 --lake=test-lake
+- exec: gcloud dataplex content delete test-${uniqueId} --location=us-central1 --lake=test-lake
