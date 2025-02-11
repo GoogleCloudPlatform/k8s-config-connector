@@ -1,0 +1,5 @@
+
+- exec: gcloud access-context-manager perimeters create test-${uniqueId} --title=test-${uniqueId} --policy=${policyId} --resources=projects/12345 --restricted-services=storage.googleapis.com
+- exec: gcloud access-context-manager perimeters describe test-${uniqueId} --policy=${policyId}
+- exec: gcloud access-context-manager perimeters list --policy=${policyId}
+- exec: gcloud access-context-manager perimeters delete test-${uniqueId} --policy=${policyId}
