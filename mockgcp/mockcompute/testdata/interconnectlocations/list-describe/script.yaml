@@ -1,0 +1,2 @@
+- exec: gcloud compute interconnects locations list
+- exec: gcloud compute interconnects locations describe --location=fra-zone3-1ic
