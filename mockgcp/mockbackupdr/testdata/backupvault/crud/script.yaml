@@ -1,0 +1,3 @@
+- exec: gcloud backup-dr backup-vaults create test-${uniqueId} --location=us-central1 --backup-min-enforced-retention="1d"
+- exec: gcloud backup-dr backup-vaults describe test-${uniqueId} --location=us-central1
+- exec: gcloud backup-dr backup-vaults delete test-${uniqueId} --location=us-central1 --allow-missing
