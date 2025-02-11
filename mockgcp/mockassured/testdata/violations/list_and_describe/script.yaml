@@ -1,0 +1,2 @@
+- exec: gcloud assured workloads violations list --organization=${ORGANIZATION} --location=${LOCATION} --workload=${WORKLOAD}
+- exec: gcloud assured workloads violations describe organizations/${ORGANIZATION}/locations/${LOCATION}/workloads/${WORKLOAD}/violations/${VIOLATION_ID}
