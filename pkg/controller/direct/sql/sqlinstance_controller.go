@@ -320,11 +320,13 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting SQLInstance", "actual", a.actual)
 
-	if a.resourceID == "" {
-		return false, nil
-	}
 	op, err := a.sqlInstancesClient.Delete(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent SQLInstance, assuming it was already deleted", "name", a.resourceID)
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting SQLInstance %s failed: %w", a.resourceID, err)
 	}
 	if err := a.pollForLROCompletion(ctx, op, "delete"); err != nil {
