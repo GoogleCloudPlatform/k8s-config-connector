@@ -1,0 +1,6 @@
+
+- exec: gcloud compute network-firewall-policies create test-${uniqueId} --global
+- exec: gcloud compute network-firewall-policies describe test-${uniqueId} --global
+- exec: gcloud compute network-firewall-policies list --filter="name=test-${uniqueId}"
+- exec: gcloud compute network-firewall-policies update test-${uniqueId} --global --description="updated description"
+- exec: gcloud compute network-firewall-policies delete test-${uniqueId} --global --quiet
