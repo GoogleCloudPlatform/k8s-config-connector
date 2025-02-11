@@ -1,0 +1,8 @@
+- exec: gcloud apigee deployments list --format=json
+# The following assumes that the list command gives at least one result.
+- exec: |
+    if [[ $(gcloud apigee deployments list --format=json | jq length) -gt 0 ]]; then
+      gcloud apigee deployments describe $(gcloud apigee deployments list --format=json | jq -r '.[0].name') --format=json
+    else
+      echo "No deployments to describe."
+    fi
