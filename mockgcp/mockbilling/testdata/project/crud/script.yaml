@@ -1,0 +1,3 @@
+- exec: gcloud billing projects link test-${uniqueId} --billing-account=0X0X0X-0X0X0X-0X0X0X
+- exec: gcloud billing projects describe test-${uniqueId}
+- exec: gcloud billing projects unlink test-${uniqueId}
