@@ -1,0 +1,4 @@
+
+- exec: gcloud certificate-manager maps entries create test-${uniqueId} --location=global --map=test-map-${uniqueId} --certificates=test-cert-${uniqueId} --hostname=test-${uniqueId}.example.com
+- exec: gcloud certificate-manager maps entries describe test-${uniqueId} --location=global --map=test-map-${uniqueId}
+- exec: gcloud certificate-manager maps entries delete test-${uniqueId} --location=global --map=test-map-${uniqueId} --async
