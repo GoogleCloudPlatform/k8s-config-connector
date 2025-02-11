@@ -1,0 +1,6 @@
+
+- exec: gcloud data-catalog tag-templates create test-${uniqueId} --location=us-central1 --field=id=testfield,type=string,display-name=TestField,required=true --display-name=TestTemplate
+- exec: gcloud data-catalog tag-templates describe test-${uniqueId} --location=us-central1
+- exec: gcloud data-catalog tag-templates update test-${uniqueId} --location=us-central1 --add-field=id=testfield2,type=string,display-name=TestField2,required=false
+- exec: gcloud data-catalog tag-templates describe test-${uniqueId} --location=us-central1
+- exec: gcloud data-catalog tag-templates delete test-${uniqueId} --location=us-central1
