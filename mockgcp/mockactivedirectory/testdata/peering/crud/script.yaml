@@ -1,0 +1,5 @@
+
+- exec: gcloud active-directory peerings create test-${uniqueId} --domain=projects/test-project/locations/global/domains/test-domain.com --authorized-network=projects/test-project/global/networks/test-network
+- exec: gcloud active-directory peerings describe test-${uniqueId}
+- exec: gcloud active-directory peerings list
+- exec: gcloud active-directory peerings delete test-${uniqueId}
