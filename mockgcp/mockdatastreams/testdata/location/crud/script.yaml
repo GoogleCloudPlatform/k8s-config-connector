@@ -1,0 +1,2 @@
+- exec: gcloud datastream locations list
+- exec: gcloud datastream locations describe us-central1
