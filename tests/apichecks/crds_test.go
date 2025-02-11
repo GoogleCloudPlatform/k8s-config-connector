@@ -515,11 +515,38 @@ func bytesToUnstructured(t *testing.T, bytes []byte) *unstructured.Unstructured 
 }
 
 // hasField checks if an unstructured object contains the given field path.
+// For list fields (indicated by [] in the path), it checks if any item in the list
+// contains the specified field. If the path ends with [], checks if the field exists
+// and is a non-empty list.
 func hasField(obj map[string]interface{}, fieldPath string) bool {
 	parts := strings.Split(strings.TrimPrefix(fieldPath, "."), ".")
 	current := obj
 
-	for _, part := range parts {
+	for i, part := range parts {
+		if strings.HasSuffix(part, "[]") {
+			listName := strings.TrimSuffix(part, "[]")
+			if next, ok := current[listName]; ok {
+				if items, ok := next.([]interface{}); ok {
+					// 1. If this is the last part, return true if the list exists
+					// For example, ".spec.automatedBackupPolicy.weeklySchedule.daysOfWeek[]"
+					if i == len(parts)-1 {
+						return true
+					}
+					// 2. Otherwise check remaining path in each item
+					// For example, ".spec.automatedBackupPolicy.weeklySchedule.startTimes[].hours"
+					remainingPath := strings.Join(parts[i+1:], ".")
+					for _, item := range items {
+						if itemMap, ok := item.(map[string]interface{}); ok {
+							if hasField(itemMap, remainingPath) {
+								return true // found the field in one of the items, we can stop searching
+							}
+						}
+					}
+				}
+			}
+			return false
+		}
+
 		if next, ok := current[part]; ok {
 			if nextMap, ok := next.(map[string]interface{}); ok {
 				current = nextMap
