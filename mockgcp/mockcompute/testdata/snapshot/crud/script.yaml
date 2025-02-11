@@ -1,0 +1,3 @@
+- exec: gcloud compute snapshots create test-${uniqueId} --source-disk=test-disk --source-disk-zone=us-central1-a
+- exec: gcloud compute snapshots describe test-${uniqueId}
+- exec: gcloud compute snapshots delete test-${uniqueId}
