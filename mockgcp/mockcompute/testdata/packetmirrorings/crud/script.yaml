@@ -1,0 +1,6 @@
+
+- exec: gcloud compute packet-mirrorings create test-${uniqueId} --collector-ilb=test-ilb --network=test-network --region=us-central1 --description "original description"
+- exec: gcloud compute packet-mirrorings describe test-${uniqueId} --region=us-central1
+- exec: gcloud compute packet-mirrorings update test-${uniqueId} --region=us-central1 --description "updated description"
+- exec: gcloud compute packet-mirrorings list --filter="name=( 'test-${uniqueId}' )" --region=us-central1
+- exec: gcloud compute packet-mirrorings delete test-${uniqueId} --region=us-central1
