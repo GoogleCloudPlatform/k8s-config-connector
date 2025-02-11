@@ -1,0 +1,6 @@
+
+- exec: gcloud app firewall-rules create 10 --source-range="*" --action=allow
+- exec: gcloud app firewall-rules describe 10
+- exec: gcloud app firewall-rules list
+- exec: gcloud app firewall-rules update 10 --source-range="192.168.1.1/32" --action=deny
+- exec: gcloud app firewall-rules delete 10
