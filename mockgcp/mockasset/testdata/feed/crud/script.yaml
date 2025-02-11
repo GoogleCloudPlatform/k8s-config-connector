@@ -1,0 +1,5 @@
+- exec: gcloud asset feeds create feed-${uniqueId} --project=test-project --pubsub-topic=projects/test-project/topics/test-topic --content-type=resource --asset-types=compute.googleapis.com/Disk
+- exec: gcloud asset feeds describe feed-${uniqueId} --project=test-project
+- exec: gcloud asset feeds update feed-${uniqueId} --project=test-project --add-asset-types=compute.googleapis.com/Network
+- exec: gcloud asset feeds list --project=test-project
+- exec: gcloud asset feeds delete feed-${uniqueId} --project=test-project
