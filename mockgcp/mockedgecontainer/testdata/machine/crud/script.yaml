@@ -1,0 +1,2 @@
+- exec: gcloud edge-cloud container machines list --location=us-central1
+- exec: gcloud edge-cloud container machines describe test-machine --location=us-central1
