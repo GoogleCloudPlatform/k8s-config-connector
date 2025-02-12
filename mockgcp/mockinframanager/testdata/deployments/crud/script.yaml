@@ -1,0 +1,7 @@
+
+- exec: gcloud infra-manager deployments apply test-${uniqueId} --location=us-central1 --gcs-source=gs://your-bucket-name/blueprint --input-values=project=your-project-id,region=us-central1
+- exec: gcloud infra-manager deployments list --location=us-central1
+- exec: gcloud infra-manager deployments describe test-${uniqueId} --location=us-central1
+- exec: gcloud infra-manager revisions list --location=us-central1 --deployment=test-${uniqueId}
+- exec: gcloud infra-manager revisions describe test-${uniqueId} --location=us-central1 --deployment=test-${uniqueId}
+- exec: gcloud infra-manager deployments delete test-${uniqueId} --location=us-central1 --async
