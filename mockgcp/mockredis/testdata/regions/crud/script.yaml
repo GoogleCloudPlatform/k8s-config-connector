@@ -1,0 +1,3 @@
+
+- exec: gcloud redis regions list
+- exec: gcloud redis regions describe us-east1
