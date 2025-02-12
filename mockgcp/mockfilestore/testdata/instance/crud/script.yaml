@@ -1,3 +1,6 @@
-- exec: gcloud filestore instances create test-${uniqueId} --zone=us-central1-a --file-share=name=testvol,capacity=1TB --network=name=default
-- exec: gcloud filestore instances describe test-${uniqueId} --zone=us-central1-a
-- exec: gcloud filestore instances delete test-${uniqueId} --zone=us-central1-a --force
+
+- exec: gcloud filestore instances create test-${uniqueId} --zone=us-central1-b --tier=BASIC_HDD --file-share=name=vol1,capacity=1TB --network=name=default
+- exec: gcloud filestore instances describe test-${uniqueId} --zone=us-central1-b
+- exec: gcloud filestore instances update test-${uniqueId} --zone=us-central1-b --description="Updated description"
+- exec: gcloud filestore instances list --zone=us-central1-b
+- exec: gcloud filestore instances delete test-${uniqueId} --zone=us-central1-b --async
