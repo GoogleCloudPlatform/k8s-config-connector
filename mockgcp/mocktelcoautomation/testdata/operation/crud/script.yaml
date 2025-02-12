@@ -1,0 +1,1 @@
+- exec: gcloud telco-automation operations describe test-operation-${uniqueId} --location=us-central1
