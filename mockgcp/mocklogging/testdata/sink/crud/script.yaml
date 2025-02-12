@@ -1,0 +1,5 @@
+
+- exec: gcloud logging sinks create test-${uniqueId} --log-filter="severity>=DEFAULT" --project=${PROJECT_ID} storage.googleapis.com/test-${uniqueId}
+- exec: gcloud logging sinks describe test-${uniqueId} --project=${PROJECT_ID}
+- exec: gcloud logging sinks update test-${uniqueId} --log-filter="severity>=INFO" --project=${PROJECT_ID}
+- exec: gcloud logging sinks delete test-${uniqueId} --project=${PROJECT_ID}
