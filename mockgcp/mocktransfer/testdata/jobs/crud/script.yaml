@@ -1,0 +1,6 @@
+
+- exec: gcloud transfer jobs create gs://test-source-${uniqueId} gs://test-destination-${uniqueId} --description="Test transfer job" --name=test-${uniqueId}
+- exec: gcloud transfer jobs describe test-${uniqueId}
+- exec: gcloud transfer jobs list --filter="name=test-${uniqueId}"
+- exec: gcloud transfer jobs update test-${uniqueId} --description="Updated description"
+- exec: gcloud transfer jobs delete test-${uniqueId} --no-async
