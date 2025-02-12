@@ -1,0 +1,5 @@
+
+- exec: gcloud vmware private-clouds create test-${uniqueId} --location=us-west2-a --cluster=test-cluster --node-type-config=type=standard-72,count=3 --management-range=192.168.0.0/24 --vmware-engine-network=test-network
+- exec: gcloud vmware private-clouds nsx credentials describe --private-cloud=test-${uniqueId} --location=us-west2-a
+- exec: gcloud vmware private-clouds nsx credentials reset --private-cloud=test-${uniqueId} --location=us-west2-a
+- exec: gcloud vmware private-clouds delete test-${uniqueId} --location=us-west2-a --async
