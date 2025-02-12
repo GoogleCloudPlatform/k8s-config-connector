@@ -1,0 +1,6 @@
+
+- exec: gcloud spanner backups create test-${uniqueId} --instance=test-instance --database=test-db --retention-period=7d
+- exec: gcloud spanner backups describe test-${uniqueId} --instance=test-instance
+- exec: gcloud spanner backups list --instance=test-instance --filter="name:test-${uniqueId}"
+- exec: gcloud spanner backups update-metadata test-${uniqueId} --instance=test-instance --retention-period=8d
+- exec: gcloud spanner backups delete test-${uniqueId} --instance=test-instance
