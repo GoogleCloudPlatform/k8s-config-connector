@@ -1,0 +1,4 @@
+
+- exec: gcloud firestore operations list --database="(default)"
+- exec: gcloud firestore operations describe ${operation_id} --database="(default)"
+- exec: gcloud firestore operations delete ${operation_id} --database="(default)"
