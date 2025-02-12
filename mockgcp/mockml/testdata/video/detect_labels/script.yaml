@@ -1,0 +1,2 @@
+- exec: gcloud ml video detect-labels gs://test-${uniqueId}/input.mp4 --async
+- exec: gcloud ml video operations describe ${1}
