@@ -1,0 +1,8 @@
+
+- exec: gcloud firestore indexes composite create --collection-group=MyCollection --field-config=field-path=field1,order=ascending
+- exec: gcloud firestore indexes composite list --collection-group=MyCollection
+
+- exec: INDEX_ID=$(${GCLOUD} firestore indexes composite create --collection-group=MyCollection --field-config=field-path=field1,order=ascending --format="value(name)" | cut -d"/" -f6)
+- exec: gcloud firestore indexes composite describe ${INDEX_ID}
+- exec: gcloud firestore indexes composite delete ${INDEX_ID} --quiet
+
