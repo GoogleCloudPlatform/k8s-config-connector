@@ -1,0 +1,5 @@
+
+- exec: gcloud identity groups create test-${uniqueId}@example.com --organization="example.com" --description="Test group" --display-name="Test Group"
+- exec: gcloud identity groups describe test-${uniqueId}@example.com
+- exec: gcloud identity groups update test-${uniqueId}@example.com --description="Updated description"
+- exec: gcloud identity groups delete test-${uniqueId}@example.com
