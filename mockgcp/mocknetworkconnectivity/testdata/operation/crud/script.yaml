@@ -1,0 +1,7 @@
+
+- exec: gcloud network-connectivity operations list --limit=1
+  out: |
+    - name: projects/test-project/locations/us-central1/operations/operation-1
+      metadata: {}
+- exec: gcloud network-connectivity operations describe projects/test-project/locations/us-central1/operations/operation-1
+- exec: gcloud network-connectivity operations delete projects/test-project/locations/us-central1/operations/operation-1
