@@ -1,0 +1,4 @@
+
+- exec: gcloud recommender insights list --project=test-project --location=us-central1 --insight-type=google.compute.firewall.Insight
+- exec: gcloud recommender insights describe dummy-insight-id --project=test-project --location=us-central1 --insight-type=google.compute.firewall.Insight
+- exec: gcloud recommender insights mark-accepted dummy-insight-id --project=test-project --location=us-central1 --insight-type=google.compute.firewall.Insight
