@@ -1,0 +1,6 @@
+
+- exec: gcloud gemini code-repository-indexes create test-${uniqueId} --location=us-central1
+- exec: gcloud gemini code-repository-indexes describe test-${uniqueId} --location=us-central1
+- exec: gcloud gemini code-repository-indexes update test-${uniqueId} --location=us-central1 --update-labels=testkey=testvalue
+- exec: gcloud gemini code-repository-indexes list --location=us-central1
+- exec: gcloud gemini code-repository-indexes delete test-${uniqueId} --location=us-central1
