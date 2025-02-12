@@ -1,0 +1,3 @@
+- exec: gcloud iam oauth-clients create test-${uniqueId} --location=global --allowed-grant-types=authorization-code-grant,refresh-token-grant --allowed-redirect-uris=https://example.com --allowed-scopes=https://www.googleapis.com/auth/cloud-platform,openid --client-type=confidential-client --display-name=test-client
+- exec: gcloud iam oauth-clients describe test-${uniqueId} --location=global
+- exec: gcloud iam oauth-clients delete test-${uniqueId} --location=global
