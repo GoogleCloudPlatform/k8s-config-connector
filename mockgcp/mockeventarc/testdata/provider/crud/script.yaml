@@ -1,0 +1,3 @@
+
+- exec: gcloud eventarc providers list --location=us-central1
+- exec: gcloud eventarc providers describe cloud-storage-provider --location=us-central1
