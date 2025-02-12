@@ -51,6 +51,19 @@ type ApigeeEnvgroupAttachmentStatus struct {
 	// A unique specifier for the EnvgroupAttachment resource.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *EnvgroupAttachmentObservedState `json:"observedState,omitempty"`
+}
+
+// EnvgroupAttachmentObservedState defines the desired state of ApigeeEnvgroupAttachment
+type EnvgroupAttachmentObservedState struct {
+	// Output only. The time at which the environment group attachment
+	// was created as milliseconds since epoch.
+	CreatedAt *string `json:"createdAt,omitempty"`
+
+	// Output only. ID of the environment group.
+	EnvironmentGroupID *string `json:"environmentGroupID,omitempty"`
 }
 
 // +genclient
