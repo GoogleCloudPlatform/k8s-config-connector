@@ -1,0 +1,3 @@
+- exec: gcloud logging settings describe --organization=1234567890
+- exec: gcloud logging settings update --organization=1234567890 --storage-location=us-central1
+- exec: gcloud logging settings describe --organization=1234567890
