@@ -1,0 +1,3 @@
+- exec: gcloud edge-cloud networking networks create test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1
+- exec: gcloud edge-cloud networking networks describe test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1
+- exec: gcloud edge-cloud networking networks delete test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1 --async
