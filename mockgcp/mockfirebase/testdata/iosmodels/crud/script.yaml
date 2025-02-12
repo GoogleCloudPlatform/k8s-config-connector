@@ -1,0 +1,2 @@
+- exec: gcloud firebase test ios models list
+- exec: gcloud firebase test ios models describe iphone13pro
