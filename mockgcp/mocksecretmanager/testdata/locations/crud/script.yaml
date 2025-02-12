@@ -1,0 +1,3 @@
+
+- exec: gcloud secrets locations list
+- exec: gcloud secrets locations describe us-central1
