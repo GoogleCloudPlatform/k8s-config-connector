@@ -1,0 +1,25 @@
+
+- exec: gcloud storage buckets create gs://source-${uniqueId}
+- exec: gcloud storage buckets create gs://dest-${uniqueId}
+- exec: |-
+    OUTPUT=$(\n      gcloud storage insights inventory-reports create gs://source-${uniqueId} \
+          --destination=gs://dest-${uniqueId} \
+          --display-name=test-report \
+          --schedule-repeats=daily \
+          --csv-separator="\\n" \
+          2>&1
+    )
+    echo "$OUTPUT"
+    if [[ $OUTPUT == *"Created"* ]]; then
+      NAME=$(echo "$OUTPUT" | awk '/Created/ {print $NF}')
+      IFS=/ read -r _ _ _ _ LOCATION _ REPORT_CONFIG_ID <<< "$NAME"
+      echo "REPORT_CONFIG_ID=$REPORT_CONFIG_ID"
+      echo "LOCATION=$LOCATION"
+    else
+      exit 1
+    fi
+- exec: gcloud storage insights inventory-reports list --source=gs://source-${uniqueId} --location=$LOCATION
+- exec: gcloud storage insights inventory-reports describe $REPORT_CONFIG_ID --location=$LOCATION
+- exec: gcloud storage insights inventory-reports delete $REPORT_CONFIG_ID --location=$LOCATION --force
+- exec: gcloud storage buckets delete gs://source-${uniqueId} --force
+- exec: gcloud storage buckets delete gs://dest-${uniqueId} --force
