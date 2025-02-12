@@ -1,0 +1,2 @@
+- exec: gcloud healthcare operations list --location=$LOCATION
+- exec: gcloud healthcare operations describe ${operationId} --location=$LOCATION
