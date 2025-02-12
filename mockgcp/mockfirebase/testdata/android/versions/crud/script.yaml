@@ -1,0 +1,2 @@
+- exec: gcloud firebase test android versions list
+- exec: gcloud firebase test android versions describe 30
