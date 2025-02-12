@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.cloud.aiplatform.v1beta1.MetadataService
+// proto.message: google.cloud.aiplatform.v1beta1.MetadataStore
+
 package mockaiplatform
 
 import (
