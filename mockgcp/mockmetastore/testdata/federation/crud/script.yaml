@@ -1,0 +1,6 @@
+
+- exec: gcloud metastore federations create test-${uniqueId} --location=us-central1 --backends=1=dpms:test-backend-${uniqueId}
+- exec: gcloud metastore federations list --location=us-central1
+- exec: gcloud metastore federations describe test-${uniqueId} --location=us-central1
+- exec: gcloud metastore federations update test-${uniqueId} --location=us-central1 --update-labels=test=test
+- exec: gcloud metastore federations delete test-${uniqueId} --location=us-central1 --async
