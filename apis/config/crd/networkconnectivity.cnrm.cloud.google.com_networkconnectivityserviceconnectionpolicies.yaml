@@ -1,0 +1,316 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: networkconnectivityserviceconnectionpolicies.networkconnectivity.cnrm.cloud.google.com
+spec:
+  group: networkconnectivity.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: NetworkConnectivityServiceConnectionPolicy
+    listKind: NetworkConnectivityServiceConnectionPolicyList
+    plural: networkconnectivityserviceconnectionpolicies
+    shortNames:
+    - gcpnetworkconnectivityserviceconnectionpolicy
+    - gcpnetworkconnectivityserviceconnectionpolicies
+    singular: networkconnectivityserviceconnectionpolicy
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NetworkConnectivityServiceConnectionPolicy is the Schema for
+          the NetworkConnectivityServiceConnectionPolicy API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NetworkConnectivityServiceConnectionPolicySpec defines the
+              desired state of NetworkConnectivityServiceConnectionPolicy
+            properties:
+              description:
+                description: A description of this resource.
+                type: string
+              location:
+                description: Immutable. Location of the resource.
+                type: string
+              networkRef:
+                description: 'The resource path of the consumer network. Example:
+                  - projects/{projectNumOrId}/global/networks/{resourceId}.'
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed Compute Network resource.
+                      Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                    type: string
+                  name:
+                    description: The `name` field of a `ComputeNetwork` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `ComputeNetwork` resource.
+                    type: string
+                type: object
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pscConfig:
+                description: Configuration used for Private Service Connect connections.
+                  Used when Infrastructure is PSC.
+                properties:
+                  limit:
+                    description: Optional. Max number of PSC connections for this
+                      policy.
+                    format: int64
+                    type: integer
+                  producerInstanceLocation:
+                    description: Required. ProducerInstanceLocation is used to specify
+                      which authorization mechanism to use to determine which projects
+                      the Producer instance can be within.
+                    type: string
+                  subnetworkRefs:
+                    description: 'The resource paths of subnetworks to use for IP
+                      address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.'
+                    items:
+                      properties:
+                        external:
+                          description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
+                            when not managed by Config Connector.
+                          type: string
+                        name:
+                          description: The `name` field of a `ComputeSubnetwork` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` field of a `ComputeSubnetwork`
+                            resource.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              resourceID:
+                description: The NetworkConnectivityServiceConnectionPolicy name.
+                  If not given, the metadata.name will be used.
+                type: string
+              serviceClass:
+                description: The service class identifier for which this ServiceConnectionPolicy
+                  is for. The service class identifier is a unique, symbolic representation
+                  of a ServiceClass. It is provided by the Service Producer. Google
+                  services have a prefix of gcp. For example, gcp-cloud-sql. 3rd party
+                  services do not. For example, test-service-a3dfcx.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: NetworkConnectivityServiceConnectionPolicyStatus defines
+              the config connector machine state of NetworkConnectivityServiceConnectionPolicy
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the NetworkConnectivityServiceConnectionPolicy
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time when the ServiceConnectionMap was
+                      created.
+                    type: string
+                  etag:
+                    description: Optional. The etag is computed by the server, and
+                      may be sent on update and delete requests to ensure the client
+                      has an up-to-date value before proceeding.
+                    type: string
+                  infrastructure:
+                    description: Output only. The type of underlying resources used
+                      to create the connection.
+                    type: string
+                  pscConnections:
+                    description: Output only. [Output only] Information about each
+                      Private Service Connect connection.
+                    items:
+                      properties:
+                        consumerAddress:
+                          description: The resource reference of the consumer address.
+                          type: string
+                        consumerForwardingRule:
+                          description: The resource reference of the PSC Forwarding
+                            Rule within the consumer VPC.
+                          type: string
+                        consumerTargetProject:
+                          description: The project where the PSC connection is created.
+                          type: string
+                        error:
+                          description: The most recent error during operating this
+                            connection.
+                          properties:
+                            code:
+                              description: The status code, which should be an enum
+                                value of google.rpc.Code.
+                              format: int32
+                              type: integer
+                            message:
+                              description: A developer-facing error message, which
+                                should be in English. Any user-facing error message
+                                should be localized and sent in the google.rpc.Status.details
+                                field, or localized by the client.
+                              type: string
+                          type: object
+                        errorInfo:
+                          description: Output only. The error info for the latest
+                            error during operating this connection.
+                          properties:
+                            domain:
+                              description: 'The logical grouping to which the "reason"
+                                belongs. The error domain is typically the registered
+                                service name of the tool or product that generates
+                                the error. Example: "pubsub.googleapis.com". If the
+                                error is generated by some common infrastructure,
+                                the error domain must be a globally unique value that
+                                identifies the infrastructure. For Google API infrastructure,
+                                the error domain is "googleapis.com".'
+                              type: string
+                            metadata:
+                              additionalProperties:
+                                type: string
+                              description: 'Additional structured details about this
+                                error. Keys must match /a-z+/ but should ideally be
+                                lowerCamelCase. Also they must be limited to 64 characters
+                                in length. When identifying the current value of an
+                                exceeded limit, the units should be contained in the
+                                key, not the value. For example, rather than {"instanceLimit":
+                                "100/request"}, should be returned as, {"instanceLimitPerRequest":
+                                "100"}, if the client exceeds the number of instances
+                                that can be created in a single (batch) request.'
+                              type: object
+                            reason:
+                              description: The reason of the error. This is a constant
+                                value that identifies the proximate cause of the error.
+                                Error reasons are unique within a particular domain
+                                of errors. This should be at most 63 characters and
+                                match a regular expression of `A-Z+[A-Z0-9]`, which
+                                represents UPPER_SNAKE_CASE.
+                              type: string
+                          type: object
+                        errorType:
+                          description: The error type indicates whether the error
+                            is consumer facing, producer facing or system internal.
+                          type: string
+                        gceOperation:
+                          description: The last Compute Engine operation to setup
+                            PSC connection.
+                          type: string
+                        producerInstanceID:
+                          description: Immutable. An immutable identifier for the
+                            producer instance.
+                          type: string
+                        pscConnectionID:
+                          description: The PSC connection id of the PSC forwarding
+                            rule.
+                          type: string
+                        selectedSubnetwork:
+                          description: Output only. The URI of the subnetwork selected
+                            to allocate IP address for this connection.
+                          type: string
+                        state:
+                          description: State of the PSC Connection
+                          type: string
+                      type: object
+                    type: array
+                  updateTime:
+                    description: Output only. Time when the ServiceConnectionMap was
+                      updated.
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

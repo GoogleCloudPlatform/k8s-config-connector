@@ -1,0 +1,253 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: apikeyskeys.apikeys.cnrm.cloud.google.com
+spec:
+  group: apikeys.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: APIKeysKey
+    listKind: APIKeysKeyList
+    plural: apikeyskeys
+    shortNames:
+    - gcpapikeyskey
+    - gcpapikeyskeys
+    singular: apikeyskey
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: APIKeysKey is the Schema for the APIKeys Key resource.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              displayName:
+                description: |-
+                  Human-readable display name of this key that you can modify.
+                   The maximum length is 63 characters.
+                type: string
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              restrictions:
+                description: Key restrictions.
+                properties:
+                  androidKeyRestrictions:
+                    description: The Android apps that are allowed to use the key.
+                    properties:
+                      allowedApplications:
+                        description: A list of Android applications that are allowed
+                          to make API calls with this key.
+                        items:
+                          properties:
+                            packageName:
+                              description: The package name of the application.
+                              type: string
+                            sha1Fingerprint:
+                              description: |-
+                                The SHA1 fingerprint of the application. For example, both sha1 formats are
+                                 acceptable : DA:39:A3:EE:5E:6B:4B:0D:32:55:BF:EF:95:60:18:90:AF:D8:07:09 or
+                                 DA39A3EE5E6B4B0D3255BFEF95601890AFD80709.
+                                 Output format is the latter.
+                              type: string
+                          required:
+                          - packageName
+                          - sha1Fingerprint
+                          type: object
+                        type: array
+                    required:
+                    - allowedApplications
+                    type: object
+                  apiTargets:
+                    description: |-
+                      A restriction for a specific service and optionally one or
+                       more specific methods. Requests are allowed if they
+                       match any of these restrictions. If no restrictions are
+                       specified, all targets are allowed.
+                    items:
+                      properties:
+                        methods:
+                          description: |-
+                            Optional. List of one or more methods that can be called.
+                             If empty, all methods for the service are allowed. A wildcard
+                             (*) can be used as the last symbol.
+                             Valid examples:
+                               `google.cloud.translate.v2.TranslateService.GetSupportedLanguage`
+                               `TranslateText`
+                               `Get*`
+                               `translate.googleapis.com.Get*`
+                          items:
+                            type: string
+                          type: array
+                        service:
+                          description: |-
+                            The service for this restriction. It should be the canonical
+                             service name, for example: `translate.googleapis.com`.
+                             You can use [`gcloud services list`](/sdk/gcloud/reference/services/list)
+                             to get a list of services that are enabled in the project.
+                          type: string
+                      required:
+                      - service
+                      type: object
+                    type: array
+                  browserKeyRestrictions:
+                    description: The HTTP referrers (websites) that are allowed to
+                      use the key.
+                    properties:
+                      allowedReferrers:
+                        description: |-
+                          A list of regular expressions for the referrer URLs that are allowed
+                           to make API calls with this key.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - allowedReferrers
+                    type: object
+                  iosKeyRestrictions:
+                    description: The iOS apps that are allowed to use the key.
+                    properties:
+                      allowedBundleIds:
+                        description: A list of bundle IDs that are allowed when making
+                          API calls with this key.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - allowedBundleIds
+                    type: object
+                  serverKeyRestrictions:
+                    description: The IP addresses of callers that are allowed to use
+                      the key.
+                    properties:
+                      allowedIps:
+                        description: |-
+                          A list of the caller IP addresses that are allowed to make API calls
+                           with this key.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - allowedIps
+                    type: object
+                type: object
+            required:
+            - projectRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  uid:
+                    description: Output only. Unique id in UUID4 format.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

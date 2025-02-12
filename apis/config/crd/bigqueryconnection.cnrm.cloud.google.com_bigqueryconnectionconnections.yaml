@@ -1,0 +1,902 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com
+spec:
+  group: bigqueryconnection.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: BigQueryConnectionConnection
+    listKind: BigQueryConnectionConnectionList
+    plural: bigqueryconnectionconnections
+    shortNames:
+    - gcpbigqueryconnectionconnection
+    - gcpbigqueryconnectionconnections
+    singular: bigqueryconnectionconnection
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: BigQueryConnectionConnection is the Schema for the BigQueryConnectionConnection
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BigQueryConnectionConnectionSpec defines the desired state
+              to connect BigQuery to external resources
+            properties:
+              aws:
+                description: Amazon Web Services (AWS) properties.
+                properties:
+                  accessRole:
+                    description: |-
+                      Authentication using Google owned service account to assume into
+                       customer's AWS IAM Role.
+                    properties:
+                      iamRoleID:
+                        description: |-
+                          The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
+                           Connection.
+                        type: string
+                    required:
+                    - iamRoleID
+                    type: object
+                required:
+                - accessRole
+                type: object
+              azure:
+                description: Azure properties.
+                properties:
+                  customerTenantID:
+                    description: The id of customer's directory that host the data.
+                    type: string
+                  federatedApplicationClientID:
+                    description: |-
+                      The client ID of the user's Azure Active Directory Application used for a
+                       federated connection.
+                    type: string
+                required:
+                - customerTenantID
+                type: object
+              cloudResource:
+                description: Use Cloud Resource properties.
+                type: object
+              cloudSQL:
+                description: Cloud SQL properties.
+                properties:
+                  credential:
+                    description: Cloud SQL credential.
+                    properties:
+                      secretRef:
+                        description: |-
+                          The Kubernetes Secret object that stores the "username" and "password" information.
+                          The Secret type has to be `kubernetes.io/basic-auth`.
+                        properties:
+                          name:
+                            description: The `metadata.name` field of a Kubernetes
+                              `Secret`
+                            type: string
+                          namespace:
+                            description: The `metadata.namespace` field of a Kubernetes
+                              `Secret`.
+                            type: string
+                        required:
+                        - name
+                        type: object
+                    type: object
+                  databaseRef:
+                    description: Reference to the SQL Database.
+                    properties:
+                      external:
+                        description: The SQL Database name, when not managed by Config
+                          Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLDatabase` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLDatabase` resource.
+                        type: string
+                    type: object
+                  instanceRef:
+                    description: Reference to the Cloud SQL instance ID.
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
+                  type:
+                    description: Type of the Cloud SQL database.
+                    type: string
+                required:
+                - credential
+                - databaseRef
+                - instanceRef
+                - type
+                type: object
+              cloudSpanner:
+                description: Cloud Spanner properties.
+                properties:
+                  databaseRef:
+                    description: Reference to a spanner database ID.
+                    properties:
+                      external:
+                        description: The Spanner Database selfLink, when not managed
+                          by Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SpannerDatabase` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SpannerDatabase`
+                          resource.
+                        type: string
+                    type: object
+                  databaseRole:
+                    description: |-
+                      Optional. Cloud Spanner database role for fine-grained access control.
+                       The Cloud Spanner admin should have provisioned the database role with
+                       appropriate permissions, such as `SELECT` and `INSERT`. Other users should
+                       only use roles provided by their Cloud Spanner admins.
+
+                       For more details, see [About fine-grained access control]
+                       (https://cloud.google.com/spanner/docs/fgac-about).
+
+                       REQUIRES: The database role name must start with a letter, and can only
+                       contain letters, numbers, and underscores.
+                    type: string
+                  maxParallelism:
+                    description: |-
+                      Allows setting max parallelism per query when executing on Spanner
+                       independent compute resources. If unspecified, default values of
+                       parallelism are chosen that are dependent on the Cloud Spanner instance
+                       configuration.
+
+                       REQUIRES: `use_parallelism` must be set.
+                       REQUIRES: Either `use_data_boost` or `use_serverless_analytics` must be
+                       set.
+                    format: int32
+                    type: integer
+                  useDataBoost:
+                    description: |-
+                      If set, the request will be executed via Spanner independent compute
+                       resources.
+                       REQUIRES: `use_parallelism` must be set.
+
+                       NOTE: `use_serverless_analytics` will be deprecated. Prefer
+                       `use_data_boost` over `use_serverless_analytics`.
+                    type: boolean
+                  useParallelism:
+                    description: If parallelism should be used when reading from Cloud
+                      Spanner
+                    type: boolean
+                  useServerlessAnalytics:
+                    description: |-
+                      If the serverless analytics service should be used to read data from Cloud
+                       Spanner.
+                       Note: `use_parallelism` must be set when using serverless analytics.
+                    type: boolean
+                required:
+                - databaseRef
+                type: object
+              description:
+                description: User provided description.
+                type: string
+              friendlyName:
+                description: User provided display name for the connection.
+                type: string
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: |-
+                  Immutable. Optional.
+                  The BigQuery Connection ID used for resource creation or acquisition.
+                  For creation: If specified, this value is used as the connection ID. If not provided, a UUID will be generated and assigned as the connection ID.
+                  For acquisition: This field must be provided to identify the connection resource to acquire.
+                type: string
+              spark:
+                description: Spark properties.
+                properties:
+                  metastoreService:
+                    description: Optional. Dataproc Metastore Service configuration
+                      for the connection.
+                    properties:
+                      metastoreServiceRef:
+                        description: |-
+                          Optional. Resource name of an existing Dataproc Metastore service.
+
+                           Example:
+
+                           * `projects/[project_id]/locations/[region]/services/[service_id]`
+                        properties:
+                          external:
+                            description: The self-link of an existing Dataproc Metastore
+                              service , when not managed by Config Connector.
+                            type: string
+                        required:
+                        - external
+                        type: object
+                    type: object
+                  sparkHistoryServer:
+                    description: Optional. Spark History Server configuration for
+                      the connection.
+                    properties:
+                      dataprocClusterRef:
+                        description: |-
+                          Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+                           History Server for the connection.
+
+                           Example:
+
+                           * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+                        properties:
+                          external:
+                            description: The self-link of an existing Dataproc Cluster
+                              to act as a Spark History Server for the connection
+                              , when not managed by Config Connector.
+                            type: string
+                          name:
+                            description: The `name` field of a Dataproc Cluster.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a Dataproc Cluster.
+                            type: string
+                        type: object
+                    type: object
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: BigQueryConnectionConnectionStatus defines the config connector
+              machine state of BigQueryConnectionConnection
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the BigQueryConnectionConnection
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  aws:
+                    properties:
+                      accessRole:
+                        properties:
+                          identity:
+                            description: |-
+                              A unique Google-owned and Google-generated identity for the Connection.
+                               This identity will be used to access the user's AWS IAM Role.
+                            type: string
+                        type: object
+                    type: object
+                  azure:
+                    properties:
+                      application:
+                        description: The name of the Azure Active Directory Application.
+                        type: string
+                      clientID:
+                        description: The client id of the Azure Active Directory Application.
+                        type: string
+                      identity:
+                        description: |-
+                          A unique Google-owned and Google-generated identity for the
+                           Connection. This identity will be used to access the user's Azure Active
+                           Directory Application.
+                        type: string
+                      objectID:
+                        description: The object id of the Azure Active Directory Application.
+                        type: string
+                      redirectUri:
+                        description: |-
+                          The URL user will be redirected to after granting consent during connection
+                           setup.
+                        type: string
+                    type: object
+                  cloudResource:
+                    properties:
+                      serviceAccountID:
+                        description: |2-
+                           The account ID of the service created for the purpose of this
+                           connection.
+
+                           The service account does not have any permissions associated with it
+                           when it is created. After creation, customers delegate permissions
+                           to the service account. When the connection is used in the context of an
+                           operation in BigQuery, the service account will be used to connect to the
+                           desired resources in GCP.
+
+                           The account ID is in the form of:
+                             <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
+                        type: string
+                    type: object
+                  cloudSQL:
+                    properties:
+                      serviceAccountID:
+                        description: |-
+                          The account ID of the service used for the purpose of this connection.
+
+                           When the connection is used in the context of an operation in
+                           BigQuery, this service account will serve as the identity being used for
+                           connecting to the CloudSQL instance specified in this connection.
+                        type: string
+                    type: object
+                  description:
+                    description: The description for the connection.
+                    type: string
+                  friendlyName:
+                    description: The display name for the connection.
+                    type: string
+                  hasCredential:
+                    description: Output only. True, if credential is configured for
+                      this connection.
+                    type: boolean
+                  spark:
+                    properties:
+                      serviceAccountID:
+                        description: |2-
+                           The account ID of the service created for the purpose of this
+                           connection.
+
+                           The service account does not have any permissions associated with it when
+                           it is created. After creation, customers delegate permissions to the
+                           service account. When the connection is used in the context of a stored
+                           procedure for Apache Spark in BigQuery, the service account is used to
+                           connect to the desired resources in Google Cloud.
+
+                           The account ID is in the form of:
+                           bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
+                        type: string
+                    type: object
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: BigQueryConnectionConnection is the Schema for the BigQueryConnectionConnection
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BigQueryConnectionConnectionSpec defines the desired state
+              to connect BigQuery to external resources
+            properties:
+              aws:
+                description: Amazon Web Services (AWS) properties.
+                properties:
+                  accessRole:
+                    description: |-
+                      Authentication using Google owned service account to assume into
+                       customer's AWS IAM Role.
+                    properties:
+                      iamRoleID:
+                        description: |-
+                          The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
+                           Connection.
+                        type: string
+                    required:
+                    - iamRoleID
+                    type: object
+                required:
+                - accessRole
+                type: object
+              azure:
+                description: Azure properties.
+                properties:
+                  customerTenantID:
+                    description: The id of customer's directory that host the data.
+                    type: string
+                  federatedApplicationClientID:
+                    description: |-
+                      The client ID of the user's Azure Active Directory Application used for a
+                       federated connection.
+                    type: string
+                required:
+                - customerTenantID
+                type: object
+              cloudResource:
+                description: Use Cloud Resource properties.
+                type: object
+              cloudSQL:
+                description: Cloud SQL properties.
+                properties:
+                  credential:
+                    description: Cloud SQL credential.
+                    properties:
+                      secretRef:
+                        description: |-
+                          The Kubernetes Secret object that stores the "username" and "password" information.
+                          The Secret type has to be `kubernetes.io/basic-auth`.
+                        properties:
+                          name:
+                            description: The `metadata.name` field of a Kubernetes
+                              `Secret`
+                            type: string
+                          namespace:
+                            description: The `metadata.namespace` field of a Kubernetes
+                              `Secret`.
+                            type: string
+                        required:
+                        - name
+                        type: object
+                    type: object
+                  databaseRef:
+                    description: Reference to the SQL Database.
+                    properties:
+                      external:
+                        description: The SQL Database name, when not managed by Config
+                          Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLDatabase` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLDatabase` resource.
+                        type: string
+                    type: object
+                  instanceRef:
+                    description: Reference to the Cloud SQL instance ID.
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
+                  type:
+                    description: Type of the Cloud SQL database.
+                    type: string
+                required:
+                - credential
+                - databaseRef
+                - instanceRef
+                - type
+                type: object
+              cloudSpanner:
+                description: Cloud Spanner properties.
+                properties:
+                  databaseRef:
+                    description: Reference to a spanner database ID.
+                    properties:
+                      external:
+                        description: The Spanner Database selfLink, when not managed
+                          by Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SpannerDatabase` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SpannerDatabase`
+                          resource.
+                        type: string
+                    type: object
+                  databaseRole:
+                    description: |-
+                      Optional. Cloud Spanner database role for fine-grained access control.
+                       The Cloud Spanner admin should have provisioned the database role with
+                       appropriate permissions, such as `SELECT` and `INSERT`. Other users should
+                       only use roles provided by their Cloud Spanner admins.
+
+                       For more details, see [About fine-grained access control]
+                       (https://cloud.google.com/spanner/docs/fgac-about).
+
+                       REQUIRES: The database role name must start with a letter, and can only
+                       contain letters, numbers, and underscores.
+                    type: string
+                  maxParallelism:
+                    description: |-
+                      Allows setting max parallelism per query when executing on Spanner
+                       independent compute resources. If unspecified, default values of
+                       parallelism are chosen that are dependent on the Cloud Spanner instance
+                       configuration.
+
+                       REQUIRES: `use_parallelism` must be set.
+                       REQUIRES: Either `use_data_boost` or `use_serverless_analytics` must be
+                       set.
+                    format: int32
+                    type: integer
+                  useDataBoost:
+                    description: |-
+                      If set, the request will be executed via Spanner independent compute
+                       resources.
+                       REQUIRES: `use_parallelism` must be set.
+
+                       NOTE: `use_serverless_analytics` will be deprecated. Prefer
+                       `use_data_boost` over `use_serverless_analytics`.
+                    type: boolean
+                  useParallelism:
+                    description: If parallelism should be used when reading from Cloud
+                      Spanner
+                    type: boolean
+                  useServerlessAnalytics:
+                    description: |-
+                      If the serverless analytics service should be used to read data from Cloud
+                       Spanner.
+                       Note: `use_parallelism` must be set when using serverless analytics.
+                    type: boolean
+                required:
+                - databaseRef
+                type: object
+              description:
+                description: User provided description.
+                type: string
+              friendlyName:
+                description: User provided display name for the connection.
+                type: string
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: |-
+                  Immutable. Optional.
+                  The BigQuery Connection ID used for resource creation or acquisition.
+                  For creation: If specified, this value is used as the connection ID. If not provided, a UUID will be generated and assigned as the connection ID.
+                  For acquisition: This field must be provided to identify the connection resource to acquire.
+                type: string
+              spark:
+                description: Spark properties.
+                properties:
+                  metastoreService:
+                    description: Optional. Dataproc Metastore Service configuration
+                      for the connection.
+                    properties:
+                      metastoreServiceRef:
+                        description: |-
+                          Optional. Resource name of an existing Dataproc Metastore service.
+
+                           Example:
+
+                           * `projects/[project_id]/locations/[region]/services/[service_id]`
+                        properties:
+                          external:
+                            description: The self-link of an existing Dataproc Metastore
+                              service , when not managed by Config Connector.
+                            type: string
+                        required:
+                        - external
+                        type: object
+                    type: object
+                  sparkHistoryServer:
+                    description: Optional. Spark History Server configuration for
+                      the connection.
+                    properties:
+                      dataprocClusterRef:
+                        description: |-
+                          Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+                           History Server for the connection.
+
+                           Example:
+
+                           * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+                        properties:
+                          external:
+                            description: The self-link of an existing Dataproc Cluster
+                              to act as a Spark History Server for the connection
+                              , when not managed by Config Connector.
+                            type: string
+                          name:
+                            description: The `name` field of a Dataproc Cluster.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a Dataproc Cluster.
+                            type: string
+                        type: object
+                    type: object
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: BigQueryConnectionConnectionStatus defines the config connector
+              machine state of BigQueryConnectionConnection
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the BigQueryConnectionConnection
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  aws:
+                    properties:
+                      accessRole:
+                        properties:
+                          identity:
+                            description: |-
+                              A unique Google-owned and Google-generated identity for the Connection.
+                               This identity will be used to access the user's AWS IAM Role.
+                            type: string
+                        type: object
+                    type: object
+                  azure:
+                    properties:
+                      application:
+                        description: The name of the Azure Active Directory Application.
+                        type: string
+                      clientID:
+                        description: The client id of the Azure Active Directory Application.
+                        type: string
+                      identity:
+                        description: |-
+                          A unique Google-owned and Google-generated identity for the
+                           Connection. This identity will be used to access the user's Azure Active
+                           Directory Application.
+                        type: string
+                      objectID:
+                        description: The object id of the Azure Active Directory Application.
+                        type: string
+                      redirectUri:
+                        description: |-
+                          The URL user will be redirected to after granting consent during connection
+                           setup.
+                        type: string
+                    type: object
+                  cloudResource:
+                    properties:
+                      serviceAccountID:
+                        description: |2-
+                           The account ID of the service created for the purpose of this
+                           connection.
+
+                           The service account does not have any permissions associated with it
+                           when it is created. After creation, customers delegate permissions
+                           to the service account. When the connection is used in the context of an
+                           operation in BigQuery, the service account will be used to connect to the
+                           desired resources in GCP.
+
+                           The account ID is in the form of:
+                             <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
+                        type: string
+                    type: object
+                  cloudSQL:
+                    properties:
+                      serviceAccountID:
+                        description: |-
+                          The account ID of the service used for the purpose of this connection.
+
+                           When the connection is used in the context of an operation in
+                           BigQuery, this service account will serve as the identity being used for
+                           connecting to the CloudSQL instance specified in this connection.
+                        type: string
+                    type: object
+                  description:
+                    description: The description for the connection.
+                    type: string
+                  friendlyName:
+                    description: The display name for the connection.
+                    type: string
+                  hasCredential:
+                    description: Output only. True, if credential is configured for
+                      this connection.
+                    type: boolean
+                  spark:
+                    properties:
+                      serviceAccountID:
+                        description: |2-
+                           The account ID of the service created for the purpose of this
+                           connection.
+
+                           The service account does not have any permissions associated with it when
+                           it is created. After creation, customers delegate permissions to the
+                           service account. When the connection is used in the context of a stored
+                           procedure for Apache Spark in BigQuery, the service account is used to
+                           connect to the desired resources in Google Cloud.
+
+                           The account ID is in the form of:
+                           bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
+                        type: string
+                    type: object
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

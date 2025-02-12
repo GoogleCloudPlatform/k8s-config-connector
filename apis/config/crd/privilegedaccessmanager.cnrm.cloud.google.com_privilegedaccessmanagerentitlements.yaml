@@ -1,0 +1,759 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: privilegedaccessmanagerentitlements.privilegedaccessmanager.cnrm.cloud.google.com
+spec:
+  group: privilegedaccessmanager.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: PrivilegedAccessManagerEntitlement
+    listKind: PrivilegedAccessManagerEntitlementList
+    plural: privilegedaccessmanagerentitlements
+    shortNames:
+    - gcpprivilegedaccessmanagerentitlement
+    - gcpprivilegedaccessmanagerentitlements
+    singular: privilegedaccessmanagerentitlement
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          PrivilegedAccessManagerEntitlement is the Schema for the
+          PrivilegedAccessManagerEntitlement API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              PrivilegedAccessManagerEntitlementSpec defines the desired state of
+              PrivilegedAccessManagerEntitlement.
+            properties:
+              additionalNotificationTargets:
+                description: Optional. Additional email addresses to be notified based
+                  on actions taken.
+                properties:
+                  adminEmailRecipients:
+                    description: |-
+                      Optional. Additional email addresses to be notified when a principal
+                      (requester) is granted access.
+                    items:
+                      type: string
+                    type: array
+                  requesterEmailRecipients:
+                    description: |-
+                      Optional. Additional email address to be notified about an eligible
+                      entitlement.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              approvalWorkflow:
+                description: |-
+                  Optional. The approvals needed before access are granted to a requester.
+                  No approvals are needed if this field is null.
+                properties:
+                  manualApprovals:
+                    description: |-
+                      An approval workflow where users designated as approvers review and act
+                      on the grants.
+                    properties:
+                      requireApproverJustification:
+                        description: |-
+                          Optional. Whether the approvers need to provide a justification for their
+                          actions.
+                        type: boolean
+                      steps:
+                        description: |-
+                          Optional. List of approval steps in this workflow. These steps are followed
+                          in the specified order sequentially. Only 1 step is supported.
+                        items:
+                          description: Step represents a logical step in a manual
+                            approval workflow.
+                          properties:
+                            approvalsNeeded:
+                              description: |-
+                                Required. How many users from the above list need to approve. If there
+                                aren't enough distinct users in the list, then the workflow indefinitely
+                                blocks. Should always be greater than 0. 1 is the only supported value.
+                              format: int32
+                              type: integer
+                            approverEmailRecipients:
+                              description: |-
+                                Optional. Additional email addresses to be notified when a grant is
+                                pending approval.
+                              items:
+                                type: string
+                              type: array
+                            approvers:
+                              description: |-
+                                Optional. The potential set of approvers in this step. This list must
+                                contain at most one entry.
+                              items:
+                                description: AccessControlEntry is used to control
+                                  who can do some operation.
+                                properties:
+                                  principals:
+                                    description: |-
+                                      Optional. Users who are allowed for the operation. Each entry should be a
+                                      valid v1 IAM principal identifier. The format for these is documented at:
+                                      https://cloud.google.com/iam/docs/principal-identifiers#v1
+                                    items:
+                                      type: string
+                                    type: array
+                                required:
+                                - principals
+                                type: object
+                              type: array
+                          required:
+                          - approvalsNeeded
+                          type: object
+                        type: array
+                    type: object
+                required:
+                - manualApprovals
+                type: object
+              eligibleUsers:
+                description: |-
+                  Who can create grants using this entitlement. This list should
+                  contain at most one entry.
+                items:
+                  description: AccessControlEntry is used to control who can do some
+                    operation.
+                  properties:
+                    principals:
+                      description: |-
+                        Optional. Users who are allowed for the operation. Each entry should be a
+                        valid v1 IAM principal identifier. The format for these is documented at:
+                        https://cloud.google.com/iam/docs/principal-identifiers#v1
+                      items:
+                        type: string
+                      type: array
+                  required:
+                  - principals
+                  type: object
+                type: array
+              folderRef:
+                description: |-
+                  Immutable. The Folder that this resource belongs to.
+                  One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
+                  be set.
+                properties:
+                  external:
+                    description: |-
+                      The 'name' field of a folder, when not managed by Config Connector.
+                      This field must be set when 'name' field is not set.
+                    type: string
+                  name:
+                    description: |-
+                      The 'name' field of a 'Folder' resource.
+                      This field must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: |-
+                      The 'namespace' field of a 'Folder' resource.
+                      If unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              location:
+                description: Immutable. Location of the resource.
+                type: string
+              maxRequestDuration:
+                description: |-
+                  Required. The maximum amount of time that access is granted for a request.
+                  A requester can ask for a duration less than this, but never more.
+                type: string
+              organizationRef:
+                description: |-
+                  Immutable. The Organization that this resource belongs to.
+                  One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
+                  be set.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              privilegedAccess:
+                description: The access granted to a requester on successful approval.
+                properties:
+                  gcpIAMAccess:
+                    description: Access to a Google Cloud resource through IAM.
+                    properties:
+                      roleBindings:
+                        description: Required. Role bindings that are created on successful
+                          grant.
+                        items:
+                          description: |-
+                            RoleBinding represents IAM role bindings that are created after a successful
+                            grant.
+                          properties:
+                            conditionExpression:
+                              description: |-
+                                Optional. The expression field of the IAM condition to be associated
+                                with the role. If specified, a user with an active grant for this
+                                entitlement is able to access the resource only if this condition
+                                evaluates to true for their request.
+
+                                This field uses the same CEL format as IAM and supports all attributes
+                                that IAM supports, except tags. More details can be found at
+                                https://cloud.google.com/iam/docs/conditions-overview#attributes.
+                              type: string
+                            role:
+                              description: |-
+                                Required. IAM role to be granted. More details can be found at
+                                https://cloud.google.com/iam/docs/roles-overview.
+                              type: string
+                          required:
+                          - role
+                          type: object
+                        type: array
+                    required:
+                    - roleBindings
+                    type: object
+                required:
+                - gcpIAMAccess
+                type: object
+              projectRef:
+                description: |-
+                  Immutable. The Project that this resource belongs to.
+                  One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
+                  be set.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              requesterJustificationConfig:
+                description: |-
+                  Required. The manner in which the requester should provide a justification
+                  for requesting access.
+                properties:
+                  notMandatory:
+                    description: |-
+                      NotMandatory justification type means the justification isn't required
+                      and can be provided in any of the supported formats. The user must
+                      explicitly opt out using this field if a justification from the requester
+                      isn't mandatory.
+                      The only accepted value is `{}` (empty struct).
+                      Either 'notMandatory' or 'unstructured' field must be set.
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                  unstructured:
+                    description: |-
+                      Unstructured justification type means the justification is in the format
+                      of a string. If this is set, the server allows the requester to provide a
+                      justification but doesn't validate it.
+                      The only accepted value is `{}` (empty struct).
+                      Either 'notMandatory' or 'unstructured' field must be set.
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                type: object
+              resourceID:
+                description: |-
+                  The PrivilegedAccessManagerEntitlement name. If not given, the
+                  'metadata.name' will be used.
+                type: string
+            required:
+            - eligibleUsers
+            - location
+            - maxRequestDuration
+            - privilegedAccess
+            - requesterJustificationConfig
+            type: object
+          status:
+            description: |-
+              PrivilegedAccessManagerEntitlementStatus defines the config connector machine
+              state of PrivilegedAccessManagerEntitlement.
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: |-
+                  A unique specifier for the PrivilegedAccessManagerEntitlement resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the generation of the resource that was most
+                  recently observed by the Config Connector controller. If this is equal to
+                  'metadata.generation', then that means that the current reported status
+                  reflects the most recent desired state of the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: |-
+                  ObservedState is the state of the resource as most recently observed in
+                  GCP.
+                properties:
+                  createTime:
+                    description: Output only. Create time stamp.
+                    type: string
+                  etag:
+                    description: |-
+                      An 'etag' is used for optimistic concurrency control as a way to prevent
+                      simultaneous updates to the same entitlement. An 'etag' is returned in the
+                      response to 'GetEntitlement' and the caller should put the 'etag' in the
+                      request to 'UpdateEntitlement' so that their change is applied on
+                      the same version. If this field is omitted or if there is a mismatch while
+                      updating an entitlement, then the server rejects the request.
+                    type: string
+                  state:
+                    description: Output only. Current state of this entitlement.
+                    type: string
+                  updateTime:
+                    description: Output only. Update time stamp.
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          PrivilegedAccessManagerEntitlement is the Schema for the
+          PrivilegedAccessManagerEntitlement API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              PrivilegedAccessManagerEntitlementSpec defines the desired state of
+              PrivilegedAccessManagerEntitlement.
+            properties:
+              additionalNotificationTargets:
+                description: Optional. Additional email addresses to be notified based
+                  on actions taken.
+                properties:
+                  adminEmailRecipients:
+                    description: |-
+                      Optional. Additional email addresses to be notified when a principal
+                      (requester) is granted access.
+                    items:
+                      type: string
+                    type: array
+                  requesterEmailRecipients:
+                    description: |-
+                      Optional. Additional email address to be notified about an eligible
+                      entitlement.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              approvalWorkflow:
+                description: |-
+                  Optional. The approvals needed before access are granted to a requester.
+                  No approvals are needed if this field is null.
+                properties:
+                  manualApprovals:
+                    description: |-
+                      An approval workflow where users designated as approvers review and act
+                      on the grants.
+                    properties:
+                      requireApproverJustification:
+                        description: |-
+                          Optional. Whether the approvers need to provide a justification for their
+                          actions.
+                        type: boolean
+                      steps:
+                        description: |-
+                          Optional. List of approval steps in this workflow. These steps are followed
+                          in the specified order sequentially. Only 1 step is supported.
+                        items:
+                          description: Step represents a logical step in a manual
+                            approval workflow.
+                          properties:
+                            approvalsNeeded:
+                              description: |-
+                                Required. How many users from the above list need to approve. If there
+                                aren't enough distinct users in the list, then the workflow indefinitely
+                                blocks. Should always be greater than 0. 1 is the only supported value.
+                              format: int32
+                              type: integer
+                            approverEmailRecipients:
+                              description: |-
+                                Optional. Additional email addresses to be notified when a grant is
+                                pending approval.
+                              items:
+                                type: string
+                              type: array
+                            approvers:
+                              description: |-
+                                Optional. The potential set of approvers in this step. This list must
+                                contain at most one entry.
+                              items:
+                                description: AccessControlEntry is used to control
+                                  who can do some operation.
+                                properties:
+                                  principals:
+                                    description: |-
+                                      Optional. Users who are allowed for the operation. Each entry should be a
+                                      valid v1 IAM principal identifier. The format for these is documented at:
+                                      https://cloud.google.com/iam/docs/principal-identifiers#v1
+                                    items:
+                                      type: string
+                                    type: array
+                                required:
+                                - principals
+                                type: object
+                              type: array
+                          required:
+                          - approvalsNeeded
+                          type: object
+                        type: array
+                    type: object
+                required:
+                - manualApprovals
+                type: object
+              eligibleUsers:
+                description: |-
+                  Who can create grants using this entitlement. This list should
+                  contain at most one entry.
+                items:
+                  description: AccessControlEntry is used to control who can do some
+                    operation.
+                  properties:
+                    principals:
+                      description: |-
+                        Optional. Users who are allowed for the operation. Each entry should be a
+                        valid v1 IAM principal identifier. The format for these is documented at:
+                        https://cloud.google.com/iam/docs/principal-identifiers#v1
+                      items:
+                        type: string
+                      type: array
+                  required:
+                  - principals
+                  type: object
+                type: array
+              folderRef:
+                description: |-
+                  Immutable. The Folder that this resource belongs to.
+                  One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
+                  be set.
+                properties:
+                  external:
+                    description: |-
+                      The 'name' field of a folder, when not managed by Config Connector.
+                      This field must be set when 'name' field is not set.
+                    type: string
+                  name:
+                    description: |-
+                      The 'name' field of a 'Folder' resource.
+                      This field must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: |-
+                      The 'namespace' field of a 'Folder' resource.
+                      If unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              location:
+                description: Immutable. Location of the resource.
+                type: string
+              maxRequestDuration:
+                description: |-
+                  Required. The maximum amount of time that access is granted for a request.
+                  A requester can ask for a duration less than this, but never more.
+                type: string
+              organizationRef:
+                description: |-
+                  Immutable. The Organization that this resource belongs to.
+                  One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
+                  be set.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              privilegedAccess:
+                description: The access granted to a requester on successful approval.
+                properties:
+                  gcpIAMAccess:
+                    description: Access to a Google Cloud resource through IAM.
+                    properties:
+                      roleBindings:
+                        description: Required. Role bindings that are created on successful
+                          grant.
+                        items:
+                          description: |-
+                            RoleBinding represents IAM role bindings that are created after a successful
+                            grant.
+                          properties:
+                            conditionExpression:
+                              description: |-
+                                Optional. The expression field of the IAM condition to be associated
+                                with the role. If specified, a user with an active grant for this
+                                entitlement is able to access the resource only if this condition
+                                evaluates to true for their request.
+
+                                This field uses the same CEL format as IAM and supports all attributes
+                                that IAM supports, except tags. More details can be found at
+                                https://cloud.google.com/iam/docs/conditions-overview#attributes.
+                              type: string
+                            role:
+                              description: |-
+                                Required. IAM role to be granted. More details can be found at
+                                https://cloud.google.com/iam/docs/roles-overview.
+                              type: string
+                          required:
+                          - role
+                          type: object
+                        type: array
+                    required:
+                    - roleBindings
+                    type: object
+                required:
+                - gcpIAMAccess
+                type: object
+              projectRef:
+                description: |-
+                  Immutable. The Project that this resource belongs to.
+                  One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
+                  be set.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              requesterJustificationConfig:
+                description: |-
+                  Required. The manner in which the requester should provide a justification
+                  for requesting access.
+                properties:
+                  notMandatory:
+                    description: |-
+                      NotMandatory justification type means the justification isn't required
+                      and can be provided in any of the supported formats. The user must
+                      explicitly opt out using this field if a justification from the requester
+                      isn't mandatory.
+                      The only accepted value is `{}` (empty struct).
+                      Either 'notMandatory' or 'unstructured' field must be set.
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                  unstructured:
+                    description: |-
+                      Unstructured justification type means the justification is in the format
+                      of a string. If this is set, the server allows the requester to provide a
+                      justification but doesn't validate it.
+                      The only accepted value is `{}` (empty struct).
+                      Either 'notMandatory' or 'unstructured' field must be set.
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                type: object
+              resourceID:
+                description: |-
+                  Immutable.
+                  The PrivilegedAccessManagerEntitlement name. If not given, the
+                  'metadata.name' will be used.
+                type: string
+            required:
+            - eligibleUsers
+            - location
+            - maxRequestDuration
+            - privilegedAccess
+            - requesterJustificationConfig
+            type: object
+          status:
+            description: |-
+              PrivilegedAccessManagerEntitlementStatus defines the config connector machine
+              state of PrivilegedAccessManagerEntitlement.
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: |-
+                  A unique specifier for the PrivilegedAccessManagerEntitlement resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the generation of the resource that was most
+                  recently observed by the Config Connector controller. If this is equal to
+                  'metadata.generation', then that means that the current reported status
+                  reflects the most recent desired state of the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: |-
+                  ObservedState is the state of the resource as most recently observed in
+                  GCP.
+                properties:
+                  createTime:
+                    description: Output only. Create time stamp.
+                    type: string
+                  etag:
+                    description: |-
+                      An 'etag' is used for optimistic concurrency control as a way to prevent
+                      simultaneous updates to the same entitlement. An 'etag' is returned in the
+                      response to 'GetEntitlement' and the caller should put the 'etag' in the
+                      request to 'UpdateEntitlement' so that their change is applied on
+                      the same version. If this field is omitted or if there is a mismatch while
+                      updating an entitlement, then the server rejects the request.
+                    type: string
+                  state:
+                    description: Output only. Current state of this entitlement.
+                    type: string
+                  updateTime:
+                    description: Output only. Update time stamp.
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
