@@ -1,0 +1,11 @@
+
+- exec: >
+    gcloud privateca certificates create test-${uniqueId} --issuer-pool=test-pool --issuer-location=us-west1 --csr=./csr.pem --cert-output-file=./cert.pem --validity=P30D
+- exec: >
+    gcloud privateca certificates describe test-${uniqueId} --issuer-pool=test-pool --issuer-location=us-west1
+- exec: >
+    gcloud privateca certificates list --issuer-pool=test-pool --issuer-location=us-west1
+- exec: >
+    gcloud privateca certificates update test-${uniqueId} --issuer-pool=test-pool --issuer-location=us-west1 --update-labels=testkey=testvalue
+- exec: >
+    gcloud privateca certificates revoke test-${uniqueId} --issuer-pool=test-pool --issuer-location=us-west1
