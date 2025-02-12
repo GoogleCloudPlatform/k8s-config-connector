@@ -1,0 +1,1 @@
+- exec: gcloud recommender insight-type-config describe google-cloud-recommender-insight-type-config --project=test-${uniqueId} --location=us-central1
