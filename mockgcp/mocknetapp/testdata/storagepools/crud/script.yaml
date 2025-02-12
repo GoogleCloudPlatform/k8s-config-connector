@@ -1,0 +1,5 @@
+
+- exec: gcloud netapp storage-pools create test-${uniqueId} --location=us-central1 --service-level=premium --capacity=2048 --network=name=default
+- exec: gcloud netapp storage-pools describe test-${uniqueId} --location=us-central1
+- exec: gcloud netapp storage-pools update test-${uniqueId} --location=us-central1 --update-labels=testkey=testvalue
+- exec: gcloud netapp storage-pools delete test-${uniqueId} --location=us-central1 --async
