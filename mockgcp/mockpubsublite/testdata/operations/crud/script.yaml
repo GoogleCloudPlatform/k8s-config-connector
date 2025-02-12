@@ -1,0 +1,6 @@
+- exec: gcloud pubsub lite-operations list --location=us-central1
+- exec: |
+    OPERATION_NAME=$(gcloud pubsub lite-operations list --location=us-central1 --format='value(name)' | head -n 1)
+    if [ -n "$OPERATION_NAME" ]; then
+      gcloud pubsub lite-operations describe $OPERATION_NAME --location=us-central1
+    fi
