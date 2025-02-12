@@ -1,0 +1,4 @@
+
+- exec: gcloud privateca pools create test-${uniqueId} --location=us-west1
+- exec: gcloud privateca pools describe test-${uniqueId} --location=us-west1
+- exec: gcloud privateca pools delete test-${uniqueId} --location=us-west1
