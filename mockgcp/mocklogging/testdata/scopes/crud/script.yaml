@@ -1,0 +1,1 @@
+- exec: gcloud logging scopes list
