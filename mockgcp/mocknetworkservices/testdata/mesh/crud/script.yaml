@@ -1,0 +1,4 @@
+
+- exec: gcloud network-services meshes list --location=global
+- exec: gcloud network-services meshes describe test-${uniqueId} --location=global
+- exec: gcloud network-services meshes delete test-${uniqueId} --location=global --async
