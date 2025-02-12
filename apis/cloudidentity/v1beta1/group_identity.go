@@ -30,7 +30,7 @@ type GroupIdentity struct {
 }
 
 func (i *GroupIdentity) String() string {
-	return "/groups/" + i.id
+	return "groups/" + i.id
 }
 
 func (i *GroupIdentity) ID() string {
@@ -50,15 +50,18 @@ func NewGroupIdentity(ctx context.Context, reader client.Reader, obj *CloudIdent
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	actualResourceID := ""
+	var err error
 	if externalRef != "" {
 		// Validate desired with actual
-		actualResourceID, err := ParseGroupExternal(externalRef)
+		actualResourceID, err = ParseGroupExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
 		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+			return &GroupIdentity{
+				id: actualResourceID,
+			}, nil
 		}
 	}
 	return &GroupIdentity{
