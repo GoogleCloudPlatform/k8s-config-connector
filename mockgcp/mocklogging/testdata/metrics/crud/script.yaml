@@ -1,0 +1,3 @@
+- exec: gcloud logging metrics create test-${uniqueId} --description=test-description --log-filter=resource.type=gae_app
+- exec: gcloud logging metrics describe test-${uniqueId}
+- exec: gcloud logging metrics delete test-${uniqueId}
