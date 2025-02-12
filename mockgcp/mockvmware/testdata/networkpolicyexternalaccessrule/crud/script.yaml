@@ -1,0 +1,12 @@
+
+- exec: >-
+    gcloud vmware network-policies external-access-rules create test-${uniqueId} \
+    --location=us-west2 --network-policy=test-netpolicy-${uniqueId} \
+    --destination-ranges=0.0.0.0/0 --ip-protocol=TCP --priority=100 \
+    --source-ranges=1.2.3.4/32 --action=ALLOW --description="Test rule"
+- exec: >-
+    gcloud vmware network-policies external-access-rules describe test-${uniqueId} \
+    --location=us-west2 --network-policy=test-netpolicy-${uniqueId}
+- exec: >-
+    gcloud vmware network-policies external-access-rules delete test-${uniqueId} \
+    --location=us-west2 --network-policy=test-netpolicy-${uniqueId} --async
