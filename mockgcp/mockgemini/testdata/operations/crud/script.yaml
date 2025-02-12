@@ -1,0 +1,4 @@
+
+- exec: gcloud gemini operations list
+- exec: gcloud gemini operations describe ${OPERATIONS_ID}
+- exec: gcloud gemini operations delete ${OPERATIONS_ID}
