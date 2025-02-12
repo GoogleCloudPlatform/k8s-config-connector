@@ -1,0 +1,5 @@
+
+- exec: gcloud scc posture-deployments create organizations/123/locations/global/postureDeployments/test-${uniqueId} --posture-name=organizations/123/locations/global/postures/posture-foo --posture-revision-id=posture-foo-rev --target-resource=projects/456 --location=global --organization=123
+- exec: gcloud scc posture-deployments describe organizations/123/locations/global/postureDeployments/test-${uniqueId} --location=global --organization=123
+- exec: gcloud scc posture-deployments list --location=global --organization=123
+- exec: gcloud scc posture-deployments delete organizations/123/locations/global/postureDeployments/test-${uniqueId} --location=global --organization=123 --async
