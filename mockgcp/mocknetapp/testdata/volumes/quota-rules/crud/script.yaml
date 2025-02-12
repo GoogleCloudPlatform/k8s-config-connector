@@ -1,0 +1,6 @@
+
+- exec: gcloud netapp volumes quota-rules create test-${uniqueId} --location us-central1 --volume=test-vol-${uniqueId} --type=DEFAULT_USER_QUOTA --disk-limit-mib=200
+- exec: gcloud netapp volumes quota-rules describe test-${uniqueId} --location us-central1 --volume=test-vol-${uniqueId}
+- exec: gcloud netapp volumes quota-rules list --location us-central1 --volume=test-vol-${uniqueId}
+- exec: gcloud netapp volumes quota-rules update test-${uniqueId} --location us-central1 --volume=test-vol-${uniqueId} --disk-limit-mib=300
+- exec: gcloud netapp volumes quota-rules delete test-${uniqueId} --location us-central1 --volume=test-vol-${uniqueId} --async
