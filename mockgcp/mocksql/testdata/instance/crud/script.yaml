@@ -1,0 +1,4 @@
+
+- exec: gcloud sql instances create test-${uniqueId}
+- exec: gcloud sql instances describe test-${uniqueId}
+- exec: gcloud sql instances delete test-${uniqueId} --async
