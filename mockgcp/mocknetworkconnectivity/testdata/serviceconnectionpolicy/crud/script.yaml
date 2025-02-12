@@ -1,0 +1,6 @@
+
+- exec: gcloud network-connectivity service-connection-policies create test-${uniqueId} --network=projects/project-id/global/networks/default --service-class=gke-alias-ranges --region=us-central1 --subnets=projects/project-id/regions/us-central1/subnetworks/default
+- exec: gcloud network-connectivity service-connection-policies list --region=us-central1
+- exec: gcloud network-connectivity service-connection-policies describe test-${uniqueId} --region=us-central1
+- exec: gcloud network-connectivity service-connection-policies update test-${uniqueId} --region=us-central1 --description="updated description"
+- exec: gcloud network-connectivity service-connection-policies delete test-${uniqueId} --region=us-central1 --async
