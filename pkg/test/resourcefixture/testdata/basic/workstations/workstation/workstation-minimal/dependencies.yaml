@@ -26,7 +26,7 @@ metadata:
   name: computesubnetwork-${uniqueId}
 spec:
   ipCidrRange: 10.0.0.0/24
-  region: us-west1
+  region: us-east1
   networkRef:
     name: computenetwork-${uniqueId}
 ---
@@ -37,7 +37,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-west1
+  location: us-east1
   networkRef:
     name: computenetwork-${uniqueId}
   subnetworkRef:
