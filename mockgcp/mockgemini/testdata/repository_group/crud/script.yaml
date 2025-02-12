@@ -1,0 +1,23 @@
+
+- exec: >
+    gcloud gemini code-repository-indexes repository-groups create test-group-${uniqueId}
+    --code-repository-index=test-index
+    --location=us-central1
+    --project=test-project
+    --repositories=branchPattern=main,resource=developerconnect.googleapis.com/projects/test-project/locations/us-central1/connections/test-connection/gitRepositoryLinks/test-repository
+- exec: >
+    gcloud gemini code-repository-indexes repository-groups describe test-group-${uniqueId}
+    --code-repository-index=test-index
+    --location=us-central1
+    --project=test-project
+- exec: >
+    gcloud gemini code-repository-indexes repository-groups list
+    --code-repository-index=test-index
+    --location=us-central1
+    --project=test-project
+- exec: >
+    gcloud gemini code-repository-indexes repository-groups delete test-group-${uniqueId}
+    --code-repository-index=test-index
+    --location=us-central1
+    --project=test-project
+    --async
