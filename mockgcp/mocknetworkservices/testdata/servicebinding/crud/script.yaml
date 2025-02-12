@@ -1,0 +1,5 @@
+
+- exec: gcloud network-services service-bindings create test-${uniqueId} --location=global --service-directory-region=us-central1 --service-directory-namespace=test-namespace --service-directory-service=test-service
+- exec: gcloud network-services service-bindings describe test-${uniqueId} --location=global
+- exec: gcloud network-services service-bindings list --location=global
+- exec: gcloud network-services service-bindings delete test-${uniqueId} --location=global --async
