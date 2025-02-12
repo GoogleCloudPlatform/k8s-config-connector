@@ -1,0 +1,2 @@
+- exec: gcloud spanner operations list --instance=test-${uniqueId} --type=INSTANCE
+- exec: gcloud spanner operations describe ${output} --instance=test-${uniqueId}
