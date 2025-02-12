@@ -1,0 +1,5 @@
+- exec: gcloud iam service-accounts create test-${uniqueId} --display-name="Test Service Account ${uniqueId}" --project=yuwenma-gke-playground
+- exec: gcloud iam service-accounts describe test-${uniqueId}@yuwenma-gke-playground.iam.gserviceaccount.com --project=yuwenma-gke-playground
+- exec: gcloud iam service-accounts update test-${uniqueId}@yuwenma-gke-playground.iam.gserviceaccount.com --display-name="Updated Test Service Account ${uniqueId}" --project=yuwenma-gke-playground
+- exec: gcloud iam service-accounts list --filter="email:test-${uniqueId}*" --project=yuwenma-gke-playground
+- exec: gcloud iam service-accounts delete test-${uniqueId}@yuwenma-gke-playground.iam.gserviceaccount.com --project=yuwenma-gke-playground --quiet
