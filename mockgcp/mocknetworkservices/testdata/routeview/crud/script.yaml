@@ -1,0 +1,3 @@
+
+- exec: gcloud network-services route-views list --mesh=projects/${PROJECT_ID}/locations/us-central1/meshes/test-mesh --location=us-central1
+- exec: gcloud network-services route-views describe --mesh=projects/${PROJECT_ID}/locations/us-central1/meshes/test-mesh --location=us-central1 --route-view=test-route-view
