@@ -1,0 +1,5 @@
+
+- exec: gcloud telco-automation orchestration-cluster create test-${uniqueId} --location us-central1 --master-ipv4-cidr-block 192.168.0.0/28
+- exec: gcloud telco-automation orchestration-cluster describe test-${uniqueId} --location us-central1
+- exec: gcloud telco-automation orchestration-cluster list --location us-central1
+- exec: gcloud telco-automation orchestration-cluster delete test-${uniqueId} --location us-central1 --async
