@@ -34,6 +34,11 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
   * Added `spec.networkConfig.enableOutboundPublicIp` field.
   * Added `status.outboundPublicIpAddresses` field.
 
+* [`SAMPLE_GKEHubFeatureMembership`](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership) (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
+
+  * Added `spec.configmanagement.configSync.stopSyncing` field.
+
+
 ## Reconciliation Improvements
 
 * [`SQLInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance)
