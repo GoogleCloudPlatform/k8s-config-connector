@@ -1,0 +1,6 @@
+
+- exec: gcloud firestore backups schedules create --database=test-${uniqueId} --recurrence=daily --retention=7d
+- exec: gcloud firestore backups schedules list --database=test-${uniqueId}
+- exec: gcloud firestore backups schedules describe --database=test-${uniqueId} --backup-schedule=${resourceId}
+- exec: gcloud firestore backups schedules update --database=test-${uniqueId} --backup-schedule=${resourceId} --retention=14d
+- exec: gcloud firestore backups schedules delete --database=test-${uniqueId} --backup-schedule=${resourceId}
