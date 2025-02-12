@@ -1,0 +1,3 @@
+- exec: gcloud transfer agent-pools create test-${uniqueId}
+- exec: gcloud transfer agent-pools describe test-${uniqueId}
+- exec: gcloud transfer agent-pools delete test-${uniqueId}
