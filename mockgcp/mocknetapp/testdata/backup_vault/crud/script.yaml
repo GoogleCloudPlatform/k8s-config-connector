@@ -1,0 +1,6 @@
+
+- exec: gcloud netapp backup-vaults create test-${uniqueId} --location=us-central1 --description="Test description" --labels="testkey=testvalue"
+- exec: gcloud netapp backup-vaults describe test-${uniqueId} --location=us-central1
+- exec: gcloud netapp backup-vaults update test-${uniqueId} --location=us-central1 --description="Updated description"
+- exec: gcloud netapp backup-vaults list --location=us-central1
+- exec: gcloud netapp backup-vaults delete test-${uniqueId} --location=us-central1 --async
