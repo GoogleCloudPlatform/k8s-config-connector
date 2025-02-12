@@ -23,20 +23,6 @@ spec:
     external: ${projectId}
   resourceID: aiplatform.googleapis.com
 ---
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicyMember
-metadata:
-  name: iampolicymember-${uniqueId}
-spec:
-  memberFrom:
-    serviceIdentityRef:
-      name: serviceidentity-${uniqueId}
-  role: roles/cloudkms.cryptoKeyEncrypterDecrypter # required by vertex AI service agent to access KMS keys
-  resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-    kind: Project
-    external: projects/${projectId}
----
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
@@ -52,3 +38,17 @@ spec:
   keyRingRef:
     name: kmskeyring-${uniqueId}
   purpose: ENCRYPT_DECRYPT
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-${uniqueId}
+spec:
+  memberFrom:
+    serviceIdentityRef:
+      name: serviceidentity-${uniqueId}
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter # required by vertex AI service agent to access KMS keys
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: kmscryptokey-${uniqueId}

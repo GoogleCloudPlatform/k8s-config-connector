@@ -13,8 +13,9 @@ metadata:
   name: metadatastore${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: Metadata Store 2
-  encryptionSpec: {}
+  description: An encrypted metadata store
+  encryptionSpec:
+    kmsKeyName: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
   projectRef:
     external: ${projectId}
   region: us-central1
