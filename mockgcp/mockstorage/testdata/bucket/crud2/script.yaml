@@ -1,0 +1,4 @@
+
+- exec: gcloud storage buckets create gs://test-${uniqueId}
+- exec: gcloud storage buckets describe gs://test-${uniqueId}
+- exec: gcloud storage buckets delete gs://test-${uniqueId} --quiet
