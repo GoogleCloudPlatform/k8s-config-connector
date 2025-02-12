@@ -1,0 +1,2 @@
+- exec: gcloud immersive-stream xr operations list
+- exec: gcloud immersive-stream xr operations describe ${uniqueId}
