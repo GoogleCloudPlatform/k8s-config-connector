@@ -1,0 +1,7 @@
+
+- exec: gcloud identity groups create test-group-${uniqueId}@example.com
+- exec: gcloud identity groups memberships add --group-email=test-group-${uniqueId}@example.com --member-email=test-member-${uniqueId}@example.com
+- exec: gcloud identity groups memberships describe --group-email=test-group-${uniqueId}@example.com --member-email=test-member-${uniqueId}@example.com
+- exec: gcloud identity groups memberships list --group-email=test-group-${uniqueId}@example.com
+- exec: gcloud identity groups memberships delete --group-email=test-group-${uniqueId}@example.com --member-email=test-member-${uniqueId}@example.com
+- exec: gcloud identity groups delete test-group-${uniqueId}@example.com
