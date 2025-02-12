@@ -1,0 +1,5 @@
+
+- exec: gcloud eventarc triggers create test-${uniqueId} --location=us-central1 --event-filters="type=google.cloud.pubsub.topic.v1.messagePublished" --destination-run-service=test-service --destination-run-region=us-central1
+- exec: gcloud eventarc triggers list --location=us-central1
+- exec: gcloud eventarc triggers describe test-${uniqueId} --location=us-central1
+- exec: gcloud eventarc triggers delete test-${uniqueId} --location=us-central1 --async
