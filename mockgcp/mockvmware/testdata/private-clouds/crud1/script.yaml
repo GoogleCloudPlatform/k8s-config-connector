@@ -1,0 +1,7 @@
+
+- exec: gcloud vmware private-clouds create test-${uniqueId} --location=us-west2-a --cluster=my-management-cluster --node-type-config=type=standard-72,count=3 --management-range=192.168.0.0/24 --vmware-engine-network=my-network
+- exec: gcloud vmware private-clouds describe test-${uniqueId} --location=us-west2-a
+- exec: gcloud vmware private-clouds dns-forwarding describe --location=us-west2-a --private-cloud=test-${uniqueId}
+- exec: gcloud vmware private-clouds list --filter="location:us-west2-a"
+- exec: gcloud vmware private-clouds update test-${uniqueId} --location=us-west2-a --description="test update"
+- exec: gcloud vmware private-clouds delete test-${uniqueId} --location=us-west2-a --async
