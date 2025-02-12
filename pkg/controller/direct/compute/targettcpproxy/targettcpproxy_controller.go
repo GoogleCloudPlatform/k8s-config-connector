@@ -261,9 +261,6 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 
-	op := &gcp.Operation{}
-	updated := &computepb.TargetTcpProxy{}
-
 	parent := a.id.Parent()
 	tokens := strings.Split(a.id.String(), "/")
 
@@ -272,10 +269,9 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	targetTCPProxy.Id = a.actual.Id
 	targetTCPProxy.SelfLink = a.actual.SelfLink
 	targetTCPProxy.Kind = a.actual.Kind
-	// Convert `europe-west4` to `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4`
-	parts := strings.Split(a.actual.GetRegion(), "/")
-	parts[len(parts)-1] = targetTCPProxy.GetRegion()
-	targetTCPProxy.Region = direct.LazyPtr(strings.Join(parts, "/"))
+	// Convert region `europe-west4` to proto region format `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4`
+	// Prevent diff when comparing with proto message
+	targetTCPProxy.Region = direct.LazyPtr(fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", parent))
 	targetTCPProxy.Name = direct.LazyPtr(a.id.ID())
 
 	paths, err := common.CompareProtoMessage(targetTCPProxy, a.actual, common.BasicDiff)
@@ -293,6 +289,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		return fmt.Errorf("update operation not supported for regional ComputeTargetTCPProxy")
 	}
 
+	op := &gcp.Operation{}
 	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
 		setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
 			Project: parent.ProjectID,
@@ -332,7 +329,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 
 	// Get the updated resource
-	updated, err = a.get(ctx)
+	updated, err := a.get(ctx)
 	if err != nil {
 		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id, err)
 	}
