@@ -1,0 +1,6 @@
+
+- exec: gcloud netapp volumes create test-${uniqueId} --location us-central1 --capacity 100Gi --protocols NFSV3 --share-name test-share --storage-pool test-pool
+- exec: gcloud netapp volumes describe test-${uniqueId} --location us-central1
+- exec: gcloud netapp volumes update test-${uniqueId} --location us-central1 --description "Updated description"
+- exec: gcloud netapp volumes describe test-${uniqueId} --location us-central1
+- exec: gcloud netapp volumes delete test-${uniqueId} --location us-central1 --async
