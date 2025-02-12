@@ -1,0 +1,4 @@
+
+- exec: gcloud monitoring uptime create test-${uniqueId} --resource-type=uptime-url --resource-labels=host=google.com,project_id=${PROJECT_ID}
+- exec: gcloud monitoring uptime describe test-${uniqueId}
+- exec: gcloud monitoring uptime delete test-${uniqueId}
