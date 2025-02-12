@@ -75,9 +75,19 @@ func (r *GroupRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	if actualExternalRef == "" {
+	if actualExternalRef != "" {
+		r.External = actualExternalRef
+	}
+
+	name, _, _ := unstructured.NestedString(u.Object, "status", "name")
+	if name == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
+
+	if _, err := ParseGroupExternal(name); err != nil {
+		r.External = fmt.Sprintf("groups/%s", name)
+	}
+	r.External = name
+
 	return r.External, nil
 }
