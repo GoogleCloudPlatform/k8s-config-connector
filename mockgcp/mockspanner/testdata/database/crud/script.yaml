@@ -1,0 +1,6 @@
+
+- exec: gcloud spanner databases create test-${uniqueId} --instance=test-instance
+- exec: gcloud spanner databases list --instance=test-instance
+- exec: gcloud spanner databases describe test-${uniqueId} --instance=test-instance
+- exec: gcloud spanner databases update test-${uniqueId} --instance=test-instance --enable-drop-protection
+- exec: gcloud spanner databases delete test-${uniqueId} --instance=test-instance
