@@ -1,0 +1,5 @@
+
+- exec: gcloud filestore instances create test-${uniqueId} --zone=us-central1-b --file-share=name=vol1,capacity=1TB --network=name=default
+- exec: gcloud filestore instances describe test-${uniqueId} --zone=us-central1-b
+- exec: gcloud filestore instances list --zone=us-central1-b
+- exec: gcloud filestore instances delete test-${uniqueId} --zone=us-central1-b --async
