@@ -1,0 +1,5 @@
+
+- exec: gcloud service-directory namespaces create test-${uniqueId} --location=us-east1
+- exec: gcloud service-directory namespaces describe test-${uniqueId} --location=us-east1
+- exec: gcloud service-directory namespaces list --location=us-east1
+- exec: gcloud service-directory namespaces delete test-${uniqueId} --location=us-east1 --quiet
