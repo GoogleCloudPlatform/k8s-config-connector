@@ -1,0 +1,6 @@
+
+- exec: gcloud storage buckets create gs://test-bucket-a123
+- exec: gcloud storage cp test.txt gs://test-bucket-${uniqueId}
+- exec: gcloud storage operations list gs://test-${uniqueId}
+- exec: gcloud storage buckets delete gs://test-bucket-a123 -r
+- exec: gcloud storage buckets delete gs://test-${uniqueId} --force
