@@ -26,6 +26,7 @@ var BigQueryDataTransferConfigGVK = GroupVersion.WithKind("BigQueryDataTransferC
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration
 type EncryptionConfiguration struct {
 	// The KMS key used for encrypting BigQuery data.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration.kms_key_name
 	KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
@@ -54,6 +55,7 @@ type Status struct {
 type EventDrivenSchedule struct {
 	// Pub/Sub subscription used to receive events.
 	//  Only Google Cloud Storage data source support this option.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.EventDrivenSchedule.pubsub_subscription
 	PubSubSubscriptionRef *refv1beta1.PubSubSubscriptionRef `json:"pubSubSubscriptionRef,omitempty"`
 }
 
@@ -80,6 +82,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// The BigQuery target dataset id.
 	// +required
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.destination_dataset_id
 	DatasetRef *bigquery.DatasetRef `json:"datasetRef,omitempty"`
 
 	// Is this config disabled. When set to true, no runs will be scheduled for
@@ -106,6 +109,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// Pub/Sub topic where notifications will be sent after transfer runs
 	//  associated with this transfer config finish.
+	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.notification_pubsub_topic
 	PubSubTopicRef *refv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
 
 	// +required
