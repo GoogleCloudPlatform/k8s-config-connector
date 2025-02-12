@@ -1,0 +1,5 @@
+
+- exec: gcloud iam workforce-pools create test-${uniqueId} --location=global --organization=12345 --display-name="Original Name"
+- exec: gcloud iam workforce-pools describe test-${uniqueId} --location=global
+- exec: gcloud iam workforce-pools update test-${uniqueId} --location=global --display-name="Updated Name"
+- exec: gcloud iam workforce-pools delete test-${uniqueId} --location=global
