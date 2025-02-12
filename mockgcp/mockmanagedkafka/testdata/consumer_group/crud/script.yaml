@@ -1,0 +1,3 @@
+
+- exec: gcloud managed-kafka consumer-groups describe test-${uniqueId} --cluster=test-cluster --location=us-central1
+- exec: gcloud managed-kafka consumer-groups delete test-${uniqueId} --cluster=test-cluster --location=us-central1
