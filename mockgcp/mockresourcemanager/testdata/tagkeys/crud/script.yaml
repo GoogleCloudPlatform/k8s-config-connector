@@ -1,0 +1,4 @@
+
+- exec: gcloud resource-manager tags keys create test-${uniqueId} --parent=organizations/123
+- exec: gcloud resource-manager tags keys describe organizations/123/test-${uniqueId}
+- exec: gcloud resource-manager tags keys delete organizations/123/test-${uniqueId}
