@@ -1,0 +1,4 @@
+
+- exec: gcloud network-services tls-routes create test-${uniqueId} --description="test description" --rules.matches.sni_hosts=test.example.com --rules.matches.alpn=grpc --rules.action.destinations.hostname=10.0.0.1 --rules.action.destinations.port=8080 --gateways=test-gateway
+- exec: gcloud network-services tls-routes describe test-${uniqueId}
+- exec: gcloud network-services tls-routes delete test-${uniqueId}
