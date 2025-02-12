@@ -1,0 +1,4 @@
+
+- exec: gcloud resource-manager org-policies describe constraints/serviceuser.services --organization=${ORG_ID}
+- exec: gcloud resource-manager org-policies list --organization=${ORG_ID}
+- exec: gcloud resource-manager org-policies delete constraints/serviceuser.services --organization=${ORG_ID}
