@@ -1,0 +1,14 @@
+
+- exec: >-
+    gcloud pam grants create --entitlement=projects/test-project/locations/us-central1/entitlements/test-entitlement-${uniqueId}
+    --requested-duration=60s
+    --justification="test"
+- exec: >-
+    gcloud pam grants list --entitlement=projects/test-project/locations/us-central1/entitlements/test-entitlement-${uniqueId}
+    --format="value(name)"
+- script: |
+    export GRANT_NAME=$(cat)
+- exec: >-
+    gcloud pam grants describe ${GRANT_NAME}
+- exec: >-
+    gcloud pam grants revoke ${GRANT_NAME} --reason="test completed"
