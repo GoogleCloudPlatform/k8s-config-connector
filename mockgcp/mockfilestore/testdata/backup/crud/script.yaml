@@ -1,0 +1,4 @@
+
+- exec: gcloud filestore backups create test-${uniqueId} --location=us-central1 --source-instance=test-instance --source-file-share=test-share
+- exec: gcloud filestore backups describe test-${uniqueId} --location=us-central1
+- exec: gcloud filestore backups delete test-${uniqueId} --location=us-central1 --quiet
