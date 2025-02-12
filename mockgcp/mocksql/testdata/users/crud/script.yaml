@@ -1,0 +1,6 @@
+
+- exec: gcloud sql users create test-${uniqueId} --instance=test-instance --password=test-password
+- exec: gcloud sql users list --instance=test-instance
+- exec: gcloud sql users describe test-${uniqueId} --instance=test-instance
+- exec: gcloud sql users set-password test-${uniqueId} --instance=test-instance --password=new-test-password
+- exec: gcloud sql users delete test-${uniqueId} --instance=test-instance
