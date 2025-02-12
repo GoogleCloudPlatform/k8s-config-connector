@@ -1,0 +1,2 @@
+- exec: gcloud firebase test android models list
+- exec: gcloud firebase test android models describe Pixel2
