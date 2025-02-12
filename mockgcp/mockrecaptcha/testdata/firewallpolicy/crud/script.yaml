@@ -1,0 +1,5 @@
+
+- exec: gcloud recaptcha firewall-policies create --path=/testpath/* --condition=true --actions=allow
+- exec: gcloud recaptcha firewall-policies list
+- exec: gcloud recaptcha firewall-policies describe ${POLICY_ID}
+- exec: gcloud recaptcha firewall-policies delete ${POLICY_ID}
