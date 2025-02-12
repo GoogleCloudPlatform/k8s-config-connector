@@ -1,0 +1,12 @@
+
+- exec: >
+    gcloud iam workforce-pools providers create-oidc PROVIDER_ID \
+    --location="global" \
+    --workforce-pool="WORKFORCE_POOL_ID" \
+    --client-id="CLIENT_ID" \
+    --issuer-uri="https://accounts.example.com" \
+    --attribute-mapping="google.subject=assertion.sub" \
+    --web-sso-response-type="code" \
+    --web-sso-assertion-claims-behavior="only-id-token-claims"
+- exec: gcloud iam workforce-pools providers describe PROVIDER_ID --location="global" --workforce-pool="WORKFORCE_POOL_ID"
+- exec: gcloud iam workforce-pools providers delete PROVIDER_ID --location="global" --workforce-pool="WORKFORCE_POOL_ID" --async
