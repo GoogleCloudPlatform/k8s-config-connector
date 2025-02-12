@@ -36,15 +36,15 @@ type MembershipIdentity struct {
 }
 
 func (i *MembershipIdentity) String() string {
-	return i.parent.String() + "/memberships/" + i.id
+	return i.Parent() + "/memberships/" + i.id
 }
 
 func (i *MembershipIdentity) ID() string {
 	return i.id
 }
 
-func (i *MembershipIdentity) Parent() *GroupIdentity {
-	return i.parent
+func (i *MembershipIdentity) Parent() string {
+	return i.parent.String()
 }
 
 // New builds a MembershipIdentity from the Config Connector Membership object.
@@ -61,12 +61,6 @@ func NewMembershipIdentity(ctx context.Context, reader client.Reader, obj *Cloud
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -79,10 +73,11 @@ func NewMembershipIdentity(ctx context.Context, reader client.Reader, obj *Cloud
 		if actualParent.id != groupID {
 			return nil, fmt.Errorf("spec.groupRef changed, expect %s, got %s", actualParent.id, groupID)
 		}
-		if actualResourceID != resourceID {
+		if resourceID != "" && actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
+		resourceID = actualResourceID
 	}
 	return &MembershipIdentity{
 		parent: &GroupIdentity{
