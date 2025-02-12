@@ -1,0 +1,4 @@
+
+- exec: gcloud spanner databases ddl update test-db --database-dialect=POSTGRESQL --ddl='CREATE TABLE test_table (test_column INT64) PRIMARY KEY(test_column)'
+- exec: gcloud spanner databases ddl describe test-db --database-dialect=POSTGRESQL
+- exec: gcloud spanner databases ddl update test-db --database-dialect=POSTGRESQL --ddl='DROP TABLE test_table'
