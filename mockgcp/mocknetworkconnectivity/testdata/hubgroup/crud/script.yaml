@@ -1,0 +1,4 @@
+
+- exec: gcloud network-connectivity hubs groups list --hub=my-hub --location=global
+- exec: gcloud network-connectivity hubs groups describe my-group --hub=my-hub --location=global
+- exec: gcloud network-connectivity hubs groups update my-group --hub=my-hub --location=global --description="new description"
