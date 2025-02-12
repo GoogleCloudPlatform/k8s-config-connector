@@ -1,0 +1,4 @@
+
+- exec: gcloud kms ekm-connections create test-${uniqueId} --location=us-central1 --service-directory-service="projects/gcp-project-id/locations/us-central1/namespaces/test-namespace/services/test-service" --hostname="test-hostname" --server-certificates-files=../../../../testdata/server_cert.pem
+- exec: gcloud kms ekm-connections describe test-${uniqueId} --location=us-central1
+- exec: gcloud kms ekm-connections list --location=us-central1
