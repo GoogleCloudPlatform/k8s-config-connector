@@ -1,0 +1,6 @@
+- exec: gcloud storage buckets create gs://test-bucket-${uniqueId} --enable-object-retention --location=us-central1
+- exec: gcloud storage folders create gs://test-bucket-${uniqueId}/test-folder-${uniqueId}/
+- exec: gcloud storage folders describe gs://test-bucket-${uniqueId}/test-folder-${uniqueId}/
+- exec: gcloud storage folders list gs://test-bucket-${uniqueId}/test-folder-${uniqueId}/
+- exec: gcloud storage folders delete gs://test-bucket-${uniqueId}/test-folder-${uniqueId}/
+- exec: gcloud storage buckets delete gs://test-bucket-${uniqueId}
