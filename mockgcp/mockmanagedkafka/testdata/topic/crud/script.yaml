@@ -1,0 +1,3 @@
+- exec: gcloud managed-kafka topics create --cluster=test-cluster --region=test-region test-${uniqueId}
+- exec: gcloud managed-kafka topics describe --cluster=test-cluster --region=test-region test-${uniqueId}
+- exec: gcloud managed-kafka topics delete --cluster=test-cluster --region=test-region test-${uniqueId}
