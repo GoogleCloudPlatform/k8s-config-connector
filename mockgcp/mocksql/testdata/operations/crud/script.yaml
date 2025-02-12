@@ -1,0 +1,5 @@
+
+- exec: gcloud sql instances create test-${uniqueId} --region=us-central1 --database-version=MYSQL_8_0
+- exec: gcloud sql operations list --instance test-${uniqueId}
+- exec: gcloud sql operations describe ${operations[0].name} --instance test-${uniqueId}
+- exec: gcloud sql instances delete test-${uniqueId} --quiet
