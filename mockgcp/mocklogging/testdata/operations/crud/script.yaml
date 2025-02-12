@@ -1,0 +1,3 @@
+
+- exec: gcloud logging operations list --location=us-central1
+- exec: gcloud logging operations describe OPERATION_ID_PLACEHOLDER --location=us-central1
