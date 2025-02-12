@@ -1,0 +1,10 @@
+
+- exec: gcloud sql instances create test-instance-${uniqueId} --tier=db-n1-standard-1 --region=us-central1
+- exec: gcloud sql backups create --instance test-instance-${uniqueId}
+- exec: >-
+    BACKUP_ID=$(gcloud sql backups list --instance test-instance-${uniqueId} --format='value(id)' --limit=1)\
+    && gcloud sql backups describe ${BACKUP_ID} --instance test-instance-${uniqueId}
+- exec: >-
+    BACKUP_ID=$(gcloud sql backups list --instance test-instance-${uniqueId} --format='value(id)' --limit=1)\
+    && gcloud sql backups delete ${BACKUP_ID} --instance test-instance-${uniqueId} --async
+- exec: gcloud sql instances delete test-instance-${uniqueId} --async
