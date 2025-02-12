@@ -1,0 +1,7 @@
+
+- exec: gcloud storage buckets notifications create gs://test-${uniqueId} --topic=test-${uniqueId}
+- exec: gcloud storage buckets notifications list gs://test-${uniqueId} > notification_list.txt
+- shell: 'grep -oP '(?<=id: ).*' notification_list.txt | head -n 1 > notification_id.txt'
+- shell: cat notification_id.txt
+- exec: gcloud storage buckets notifications describe gs://test-${uniqueId} $(cat notification_id.txt)
+- exec: gcloud storage buckets notifications delete gs://test-${uniqueId} $(cat notification_id.txt)
