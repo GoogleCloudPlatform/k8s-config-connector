@@ -1,0 +1,3 @@
+- exec: gcloud healthcare fhir-stores create test-${uniqueId} --dataset=test-dataset --location=us-central1 --version=r4
+- exec: gcloud healthcare fhir-stores describe test-${uniqueId} --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare fhir-stores delete test-${uniqueId} --dataset=test-dataset --location=us-central1
