@@ -334,6 +334,12 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, input *Dat
 			lines = lines[:len(lines)-1]
 			continue
 		}
+
+		if strings.HasPrefix(lines[0], "out:") {
+			lines[0] = strings.TrimPrefix(lines[0], "out:")
+			continue
+		}
+
 		break
 	}
 
