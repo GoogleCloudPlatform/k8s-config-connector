@@ -1,0 +1,3 @@
+- exec: gcloud scc iac-validation-reports create organizations/123/locations/global --tf-plan-file=plan.json
+- exec: gcloud scc iac-validation-reports describe organizations/123/locations/global/reports/test-report-${uniqueId}
+- exec: gcloud scc iac-validation-reports list organizations/123/locations/global
