@@ -1,0 +1,4 @@
+
+- exec: gcloud org-policies set-policy policy.yaml
+- exec: gcloud org-policies describe CONSTRAINT_NAME --project=PROJECT_ID
+- exec: gcloud org-policies delete CONSTRAINT_NAME --project=PROJECT_ID
