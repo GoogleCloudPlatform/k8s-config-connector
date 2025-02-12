@@ -1,0 +1,3 @@
+
+- exec: gcloud recommender recommender-config describe ${RECOMMENDER} --project=${PROJECT_ID} --location=${LOCATION} --etag="123"
+- exec: gcloud recommender recommender-config update ${RECOMMENDER} --project=${PROJECT_ID} --location=${LOCATION} --config-file=config.yaml --etag="123"
