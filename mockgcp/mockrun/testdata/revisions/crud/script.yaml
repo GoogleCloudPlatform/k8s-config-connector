@@ -1,0 +1,3 @@
+
+- exec: gcloud run revisions describe test-revision --region=us-central1
+- exec: gcloud run revisions delete test-revision --region=us-central1
