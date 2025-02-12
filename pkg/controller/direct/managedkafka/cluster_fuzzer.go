@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.managedkafka.v1.Cluster
-// krm.kind: ManagedKafkaCluster
 
 package managedkafka
 
@@ -33,12 +32,12 @@ func managedKafkaClusterFuzzer() fuzztesting.KRMFuzzer {
 		ManagedKafkaClusterObservedState_FromProto, ManagedKafkaClusterObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".satisfies_pzi")
-	f.UnimplementedFields.Insert(".satisfies_pzs")
+	f.UnimplementedFields.Insert(".name")          // special field
+	f.UnimplementedFields.Insert(".satisfies_pzi") // NOTYET
+	f.UnimplementedFields.Insert(".satisfies_pzs") // NOTYET
 
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".gcp_config")
+	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".capacity_config")
 	f.SpecFields.Insert(".rebalance_config")
 
