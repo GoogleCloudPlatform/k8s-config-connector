@@ -1,0 +1,4 @@
+
+- exec: gcloud transfer operations list
+- exec: gcloud transfer operations describe transferOperations/transferJobs-${uniqueId}
+- exec: gcloud transfer operations cancel transferOperations/transferJobs-${uniqueId}
