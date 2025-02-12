@@ -1,0 +1,4 @@
+
+- exec: gcloud privateca subordinates create test-${uniqueId} --location us-west1 --pool default --issuer-pool default --issuer-location us-west1
+- exec: gcloud privateca subordinates describe test-${uniqueId} --location us-west1 --pool default
+- exec: gcloud privateca subordinates delete test-${uniqueId} --location us-west1 --pool default --skip-grace-period
