@@ -292,7 +292,8 @@ func (a *WorkstationConfigAdapter) Delete(ctx context.Context, deleteOp *directb
 	op, err := a.gcpClient.DeleteWorkstationConfig(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			// Return success if workstation is not found (assume it was already deleted).
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent WorkstationConfig, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting WorkstationConfig %s: %w", a.id.String(), err)
