@@ -1,0 +1,13 @@
+
+- exec: >-
+    gcloud scc manage custom-modules sha create
+    --organization=123
+    --display-name="test-${uniqueId}"
+    --enablement-state="ENABLED"
+    --custom-config-from-file=custom_config.yaml
+- exec: >-
+    gcloud scc manage custom-modules sha describe ${uniqueId}
+    --organization=123
+- exec: >-
+    gcloud scc manage custom-modules sha delete ${uniqueId}
+    --organization=123
