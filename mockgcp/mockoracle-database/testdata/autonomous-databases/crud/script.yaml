@@ -1,0 +1,5 @@
+
+- exec: gcloud oracle-database autonomous-databases create test-${uniqueId} --location=us-central1 --cidr=10.0.0.0/16 --network=projects/my-project/global/networks/default --admin-password=testpassword --database=testdb --display-name=testdisplayname
+- exec: gcloud oracle-database autonomous-databases describe test-${uniqueId} --location=us-central1
+- exec: gcloud oracle-database autonomous-databases list --location=us-central1
+- exec: gcloud oracle-database autonomous-databases delete test-${uniqueId} --location=us-central1
