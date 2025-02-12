@@ -1,0 +1,4 @@
+
+- exec: gcloud privateca roots create test-${uniqueId} --location=us-central1
+- exec: gcloud privateca roots describe test-${uniqueId} --location=us-central1
+- exec: gcloud privateca roots delete test-${uniqueId} --location=us-central1 --yes
