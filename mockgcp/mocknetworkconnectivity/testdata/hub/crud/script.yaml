@@ -1,0 +1,6 @@
+
+- exec: gcloud network-connectivity hubs create test-${uniqueId} --description="test hub"
+- exec: gcloud network-connectivity hubs describe test-${uniqueId}
+- exec: gcloud network-connectivity hubs update test-${uniqueId} --description="updated test hub"
+- exec: gcloud network-connectivity hubs list --filter="name=test-${uniqueId}"
+- exec: gcloud network-connectivity hubs delete test-${uniqueId} --async
