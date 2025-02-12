@@ -1,0 +1,5 @@
+
+- exec: gcloud eventarc channel-connections create test-${uniqueId} --location=us-central1 --channel=projects/test-project/locations/us-central1/channels/test-channel --activation-token=test-token
+- exec: gcloud eventarc channel-connections describe test-${uniqueId} --location=us-central1
+- exec: gcloud eventarc channel-connections list --location=us-central1
+- exec: gcloud eventarc channel-connections delete test-${uniqueId} --location=us-central1 --async
