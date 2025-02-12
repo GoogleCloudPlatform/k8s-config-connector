@@ -1,0 +1,4 @@
+
+- exec: gcloud vmware private-clouds subnets list --location=us-central1 --private-cloud=test-pc
+- exec: gcloud vmware private-clouds subnets describe test-subnet --location=us-central1 --private-cloud=test-pc
+- exec: gcloud vmware private-clouds subnets update test-subnet --location=us-central1 --private-cloud=test-pc --vlan-id=1234
