@@ -1,0 +1,1 @@
+- exec: gcloud scc posture-operations describe operation-1234
