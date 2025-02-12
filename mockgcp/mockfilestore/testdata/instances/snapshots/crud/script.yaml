@@ -1,0 +1,4 @@
+
+- exec: gcloud filestore instances snapshots create test-${uniqueId} --instance=test-instance --instance-region=us-central1
+- exec: gcloud filestore instances snapshots describe test-${uniqueId} --instance=test-instance --instance-region=us-central1
+- exec: gcloud filestore instances snapshots delete test-${uniqueId} --instance=test-instance --instance-region=us-central1 --async
