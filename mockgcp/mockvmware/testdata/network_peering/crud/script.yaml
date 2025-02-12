@@ -1,0 +1,6 @@
+
+- exec: gcloud vmware network-peerings create test-${uniqueId} --location=global --peer-network-type=VMWARE_ENGINE_NETWORK --vmware-engine-network=projects/${project}/locations/global/vmwareEngineNetworks/test-wen-nw --peer-network=projects/${project}/locations/global/vmwareEngineNetworks/test-wen-peer-nw
+- exec: gcloud vmware network-peerings describe test-${uniqueId} --location=global
+- exec: gcloud vmware network-peerings list --location=global
+- exec: gcloud vmware network-peerings update test-${uniqueId} --location=global --description=test-desc
+- exec: gcloud vmware network-peerings delete test-${uniqueId} --location=global --async
