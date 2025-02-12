@@ -1,0 +1,23 @@
+- exec: >
+    gcloud iam workload-identity-pools providers keys create test-key-${uniqueId}
+    --location="global"
+    --workload-identity-pool="test-pool-${uniqueId}"
+    --provider="test-provider-${uniqueId}"
+    --use="ENCRYPTION"
+    --spec="RSA_4096"
+- exec: >
+    gcloud iam workload-identity-pools providers keys list
+    --location="global"
+    --workload-identity-pool="test-pool-${uniqueId}"
+    --provider="test-provider-${uniqueId}"
+    --show-deleted
+- exec: >
+    gcloud iam workload-identity-pools providers keys describe test-key-${uniqueId}
+    --location="global"
+    --workload-identity-pool="test-pool-${uniqueId}"
+    --provider="test-provider-${uniqueId}"
+- exec: >
+    gcloud iam workload-identity-pools providers keys delete test-key-${uniqueId}
+    --location="global"
+    --workload-identity-pool="test-pool-${uniqueId}"
+    --provider="test-provider-${uniqueId}"
