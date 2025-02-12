@@ -1,0 +1,6 @@
+
+- exec: gcloud managed-kafka clusters create test-${uniqueId} --location=us-central1 --cpu=3 --memory=3GiB --subnets=projects/gcp-project-id/regions/us-central1/subnetworks/default
+- exec: gcloud managed-kafka clusters describe test-${uniqueId} --location=us-central1
+- exec: gcloud managed-kafka clusters list --location=us-central1
+- exec: gcloud managed-kafka clusters update test-${uniqueId} --location=us-central1 --cpu=4
+- exec: gcloud managed-kafka clusters delete test-${uniqueId} --location=us-central1 --async
