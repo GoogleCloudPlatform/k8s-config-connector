@@ -1,0 +1,4 @@
+- exec: gcloud functions deploy test-${uniqueId} --region=us-central1 --trigger-http --runtime=nodejs16
+- exec: gcloud functions describe test-${uniqueId} --region=us-central1
+- exec: gcloud functions list --filter="name:test-${uniqueId}" --region=us-central1
+- exec: gcloud functions delete test-${uniqueId} --region=us-central1
