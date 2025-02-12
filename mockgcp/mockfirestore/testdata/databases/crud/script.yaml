@@ -1,0 +1,4 @@
+
+- exec: gcloud firestore databases create --location=us-east1 --database=test-${uniqueId}
+- exec: gcloud firestore databases describe --database=test-${uniqueId}
+- exec: gcloud firestore databases delete --database=test-${uniqueId}
