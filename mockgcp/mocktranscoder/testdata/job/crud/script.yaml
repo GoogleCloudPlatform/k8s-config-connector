@@ -1,0 +1,5 @@
+
+- exec: gcloud transcoder jobs create --location=us-central1 --input-uri=gs://my-bucket/input.mp4 --output-uri=gs://my-bucket/output/ --template-id=preset/web-hd test-${uniqueId}
+- exec: gcloud transcoder jobs describe test-${uniqueId} --location=us-central1
+- exec: gcloud transcoder jobs list --location=us-central1
+- exec: gcloud transcoder jobs delete test-${uniqueId} --location=us-central1
