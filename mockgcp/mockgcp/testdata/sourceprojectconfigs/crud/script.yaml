@@ -1,0 +1,5 @@
+- exec: gcloud source project-configs describe
+- exec: gcloud source project-configs update --enable-pushblock
+- exec: gcloud source project-configs describe
+- exec: gcloud source project-configs update --disable-pushblock
+- exec: gcloud source project-configs describe
