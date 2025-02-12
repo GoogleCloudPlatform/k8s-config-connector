@@ -1,0 +1,3 @@
+- exec: gcloud pubsub subscriptions create test-${uniqueId} --topic=test-topic
+- exec: gcloud pubsub subscriptions describe test-${uniqueId}
+- exec: gcloud pubsub subscriptions delete test-${uniqueId}
