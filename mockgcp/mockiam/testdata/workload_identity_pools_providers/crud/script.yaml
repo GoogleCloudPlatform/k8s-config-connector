@@ -1,0 +1,13 @@
+
+- exec: >
+    gcloud iam workload-identity-pools providers create-oidc test-provider-${uniqueId} \
+    --location="global" \
+    --workload-identity-pool="test-pool-${uniqueId}" \
+    --display-name="Test Provider" \
+    --description="Test Provider Description" \
+    --issuer-uri="https://test-idp.com" \
+    --allowed-audiences="https://test-audience.com" \
+    --attribute-mapping="google.subject=assertion.sub"
+- exec: gcloud iam workload-identity-pools providers describe test-provider-${uniqueId} --location="global" --workload-identity-pool="test-pool-${uniqueId}"
+- exec: gcloud iam workload-identity-pools providers list --location="global" --workload-identity-pool="test-pool-${uniqueId}"
+- exec: gcloud iam workload-identity-pools providers delete test-provider-${uniqueId} --location="global" --workload-identity-pool="test-pool-${uniqueId}" -q
