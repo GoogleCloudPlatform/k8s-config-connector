@@ -1,0 +1,6 @@
+
+- exec: gcloud iam roles create test-${uniqueId} --project=${PROJECT_ID} --title="Test Role ${uniqueId}" --description="Test Role Description" --permissions="resourcemanager.projects.get" --stage=GA
+- exec: gcloud iam roles describe test-${uniqueId} --project=${PROJECT_ID}
+- exec: gcloud iam roles list --project=${PROJECT_ID}
+- exec: gcloud iam roles update test-${uniqueId} --project=${PROJECT_ID} --add-permissions="resourcemanager.organizations.get"
+- exec: gcloud iam roles delete test-${uniqueId} --project=${PROJECT_ID}
