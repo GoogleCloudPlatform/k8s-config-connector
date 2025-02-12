@@ -1,0 +1,5 @@
+
+- exec: gcloud privateca templates create test-${uniqueId} --location=us-central1 --copy-subject --copy-sans
+- exec: gcloud privateca templates describe test-${uniqueId} --location=us-central1
+- exec: gcloud privateca templates list --location=us-central1
+- exec: gcloud privateca templates delete test-${uniqueId} --location=us-central1
