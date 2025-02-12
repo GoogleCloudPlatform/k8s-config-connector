@@ -1,0 +1,11 @@
+
+- exec: >
+    gcloud monitoring dashboards create --config='''
+    displayName: test-${uniqueId}
+    gridLayout:
+      widgets:
+      - text:
+          content: Hello
+    '''
+- exec: gcloud monitoring dashboards describe test-${uniqueId}
+- exec: gcloud monitoring dashboards delete test-${uniqueId}
