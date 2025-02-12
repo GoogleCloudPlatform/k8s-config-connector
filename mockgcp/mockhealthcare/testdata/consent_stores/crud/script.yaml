@@ -1,0 +1,5 @@
+
+- exec: gcloud healthcare consent-stores create test-${uniqueId} --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare consent-stores describe test-${uniqueId} --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare consent-stores list --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare consent-stores delete test-${uniqueId} --dataset=test-dataset --location=us-central1
