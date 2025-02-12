@@ -1,0 +1,5 @@
+
+- exec: gcloud scc manage services update sha --organization=123 --update-mask=state --state=ENABLED
+- exec: gcloud scc manage services list --organization=123
+- exec: gcloud scc manage services describe sha --organization=123
+- exec: gcloud scc manage services update sha --organization=123 --update-mask=state --state=DISABLED
