@@ -1,0 +1,6 @@
+- exec: gcloud ml-engine models create test-model-${uniqueId} --region=global
+- exec: gcloud ml-engine versions create test-version-${uniqueId} --model=test-model-${uniqueId} --origin=gs://cloud-ml-data-test-public/test-model --region=global
+- exec: gcloud ml-engine versions describe test-version-${uniqueId} --model=test-model-${uniqueId} --region=global
+- exec: gcloud ml-engine versions list --model=test-model-${uniqueId} --region=global
+- exec: gcloud ml-engine versions delete test-version-${uniqueId} --model=test-model-${uniqueId} --region=global
+- exec: gcloud ml-engine models delete test-model-${uniqueId} --region=global
