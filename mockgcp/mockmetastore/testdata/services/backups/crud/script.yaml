@@ -1,0 +1,4 @@
+- exec: gcloud metastore services backups create test-${uniqueId} --location=us-central1 --service=test-service
+- exec: gcloud metastore services backups describe test-${uniqueId} --location=us-central1 --service=test-service
+- exec: gcloud metastore services backups list --location=us-central1 --service=test-service --format=json
+- exec: gcloud metastore services backups delete test-${uniqueId} --location=us-central1 --service=test-service
