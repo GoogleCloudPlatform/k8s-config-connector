@@ -1,0 +1,7 @@
+
+- exec: gcloud iam workload-identity-pools create test-pool-${uniqueId} --location="global"
+- exec: gcloud iam workload-identity-pools providers create-oidc test-provider-${uniqueId} --location="global" --workload-identity-pool="test-pool-${uniqueId}" --issuer-uri="https://accounts.google.com" --allowed-audiences="accounts.google.com"
+- exec: gcloud iam workload-identity-pools providers list --location="global" --workload-identity-pool="test-pool-${uniqueId}"
+- exec: gcloud iam workload-identity-pools providers describe test-provider-${uniqueId} --location="global" --workload-identity-pool="test-pool-${uniqueId}"
+- exec: gcloud iam workload-identity-pools providers delete test-provider-${uniqueId} --location="global" --workload-identity-pool="test-pool-${uniqueId}"
+- exec: gcloud iam workload-identity-pools delete test-pool-${uniqueId} --location="global"
