@@ -1,0 +1,4 @@
+- exec: gcloud ml-engine jobs submit training test-${uniqueId} --staging-bucket=gs://test-${uniqueId} --region=us-central1 --module-name=trainer.task --job-dir=gs://test-${uniqueId}/job-dir --package-path=mockml/testdata/jobs/trainer --packages=mockml/testdata/jobs/trainer/trainer-0.1.tar.gz
+- exec: gcloud ml-engine jobs describe test-${uniqueId}
+- exec: gcloud ml-engine jobs list --filter=jobId:test-${uniqueId}
+- exec: gcloud ml-engine jobs cancel test-${uniqueId}
