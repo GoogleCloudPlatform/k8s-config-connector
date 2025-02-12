@@ -1,0 +1,5 @@
+
+- exec: gcloud immersive-stream xr contents create test-${uniqueId} --location=global --bucket=test-bucket
+- exec: gcloud immersive-stream xr contents describe test-${uniqueId} --location=global
+- exec: gcloud immersive-stream xr contents list --location=global
+- exec: gcloud immersive-stream xr contents delete test-${uniqueId} --location=global
