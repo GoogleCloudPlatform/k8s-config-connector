@@ -1,0 +1,271 @@
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/locations?alt=json&pageSize=100
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "locations": [
+    {
+      "displayName": "Milan",
+      "locationId": "europe-west8",
+      "name": "projects/${projectNumber}/locations/europe-west8"
+    },
+    {
+      "displayName": "Paris",
+      "locationId": "europe-west9",
+      "name": "projects/${projectNumber}/locations/europe-west9"
+    },
+    {
+      "displayName": "Madrid",
+      "locationId": "europe-southwest1",
+      "name": "projects/${projectNumber}/locations/europe-southwest1"
+    },
+    {
+      "displayName": "Day0 (Alabama)",
+      "locationId": "us-east7",
+      "name": "projects/${projectNumber}/locations/us-east7"
+    },
+    {
+      "displayName": "Columbus",
+      "locationId": "us-east5",
+      "name": "projects/${projectNumber}/locations/us-east5"
+    },
+    {
+      "displayName": "Dallas",
+      "locationId": "us-south1",
+      "name": "projects/${projectNumber}/locations/us-south1"
+    },
+    {
+      "displayName": "Taiwan",
+      "locationId": "asia-east1",
+      "name": "projects/${projectNumber}/locations/asia-east1"
+    },
+    {
+      "displayName": "Hong Kong",
+      "locationId": "asia-east2",
+      "name": "projects/${projectNumber}/locations/asia-east2"
+    },
+    {
+      "displayName": "Tokyo",
+      "locationId": "asia-northeast1",
+      "name": "projects/${projectNumber}/locations/asia-northeast1"
+    },
+    {
+      "displayName": "Osaka",
+      "locationId": "asia-northeast2",
+      "name": "projects/${projectNumber}/locations/asia-northeast2"
+    },
+    {
+      "displayName": "Seoul",
+      "locationId": "asia-northeast3",
+      "name": "projects/${projectNumber}/locations/asia-northeast3"
+    },
+    {
+      "displayName": "Mumbai",
+      "locationId": "asia-south1",
+      "name": "projects/${projectNumber}/locations/asia-south1"
+    },
+    {
+      "displayName": "Delhi",
+      "locationId": "asia-south2",
+      "name": "projects/${projectNumber}/locations/asia-south2"
+    },
+    {
+      "displayName": "Singapore",
+      "locationId": "asia-southeast1",
+      "name": "projects/${projectNumber}/locations/asia-southeast1"
+    },
+    {
+      "displayName": "Jakarta",
+      "locationId": "asia-southeast2",
+      "name": "projects/${projectNumber}/locations/asia-southeast2"
+    },
+    {
+      "displayName": "Sydney",
+      "locationId": "australia-southeast1",
+      "name": "projects/${projectNumber}/locations/australia-southeast1"
+    },
+    {
+      "displayName": "Melbourne",
+      "locationId": "australia-southeast2",
+      "name": "projects/${projectNumber}/locations/australia-southeast2"
+    },
+    {
+      "displayName": "Warsaw",
+      "locationId": "europe-central2",
+      "name": "projects/${projectNumber}/locations/europe-central2"
+    },
+    {
+      "displayName": "Finland",
+      "locationId": "europe-north1",
+      "name": "projects/${projectNumber}/locations/europe-north1"
+    },
+    {
+      "displayName": "Belgium",
+      "locationId": "europe-west1",
+      "name": "projects/${projectNumber}/locations/europe-west1"
+    },
+    {
+      "displayName": "London",
+      "locationId": "europe-west2",
+      "name": "projects/${projectNumber}/locations/europe-west2"
+    },
+    {
+      "displayName": "Frankfurt",
+      "locationId": "europe-west3",
+      "name": "projects/${projectNumber}/locations/europe-west3"
+    },
+    {
+      "displayName": "Netherlands",
+      "locationId": "europe-west4",
+      "name": "projects/${projectNumber}/locations/europe-west4"
+    },
+    {
+      "displayName": "Zurich",
+      "locationId": "europe-west6",
+      "name": "projects/${projectNumber}/locations/europe-west6"
+    },
+    {
+      "displayName": "Montréal",
+      "locationId": "northamerica-northeast1",
+      "name": "projects/${projectNumber}/locations/northamerica-northeast1"
+    },
+    {
+      "displayName": "Toronto",
+      "locationId": "northamerica-northeast2",
+      "name": "projects/${projectNumber}/locations/northamerica-northeast2"
+    },
+    {
+      "displayName": "São Paulo",
+      "locationId": "southamerica-east1",
+      "name": "projects/${projectNumber}/locations/southamerica-east1"
+    },
+    {
+      "displayName": "Santiago",
+      "locationId": "southamerica-west1",
+      "name": "projects/${projectNumber}/locations/southamerica-west1"
+    },
+    {
+      "displayName": "Iowa",
+      "locationId": "us-central1",
+      "name": "projects/${projectNumber}/locations/us-central1"
+    },
+    {
+      "displayName": "Oklahoma",
+      "locationId": "us-central2",
+      "name": "projects/${projectNumber}/locations/us-central2"
+    },
+    {
+      "displayName": "South Carolina",
+      "locationId": "us-east1",
+      "name": "projects/${projectNumber}/locations/us-east1"
+    },
+    {
+      "displayName": "Northern Virginia",
+      "locationId": "us-east4",
+      "name": "projects/${projectNumber}/locations/us-east4"
+    },
+    {
+      "displayName": "Oregon",
+      "locationId": "us-west1",
+      "name": "projects/${projectNumber}/locations/us-west1"
+    },
+    {
+      "displayName": "Los Angeles",
+      "locationId": "us-west2",
+      "name": "projects/${projectNumber}/locations/us-west2"
+    },
+    {
+      "displayName": "Salt Lake City",
+      "locationId": "us-west3",
+      "name": "projects/${projectNumber}/locations/us-west3"
+    },
+    {
+      "displayName": "Las Vegas",
+      "locationId": "us-west4",
+      "name": "projects/${projectNumber}/locations/us-west4"
+    },
+    {
+      "displayName": "Tel Aviv",
+      "locationId": "me-west1",
+      "name": "projects/${projectNumber}/locations/me-west1"
+    },
+    {
+      "displayName": "Turin",
+      "locationId": "europe-west12",
+      "name": "projects/${projectNumber}/locations/europe-west12"
+    },
+    {
+      "displayName": "Doha",
+      "locationId": "me-central1",
+      "name": "projects/${projectNumber}/locations/me-central1"
+    },
+    {
+      "displayName": "Berlin",
+      "locationId": "europe-west10",
+      "name": "projects/${projectNumber}/locations/europe-west10"
+    },
+    {
+      "displayName": "Dammam",
+      "locationId": "me-central2",
+      "name": "projects/${projectNumber}/locations/me-central2"
+    },
+    {
+      "displayName": "Johannesburg",
+      "locationId": "africa-south1",
+      "name": "projects/${projectNumber}/locations/africa-south1"
+    },
+    {
+      "displayName": "Phoenix",
+      "locationId": "us-west8",
+      "name": "projects/${projectNumber}/locations/us-west8"
+    },
+    {
+      "displayName": "Mexico",
+      "locationId": "northamerica-south1",
+      "name": "projects/${projectNumber}/locations/northamerica-south1"
+    },
+    {
+      "displayName": "Stockholm",
+      "locationId": "europe-north2",
+      "name": "projects/${projectNumber}/locations/europe-north2"
+    }
+  ]
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/locations/us-central1?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Iowa",
+  "locationId": "us-central1",
+  "name": "projects/${projectNumber}/locations/us-central1"
+}
