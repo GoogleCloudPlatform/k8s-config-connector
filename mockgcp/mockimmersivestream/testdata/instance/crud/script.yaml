@@ -1,0 +1,5 @@
+
+- exec: gcloud immersive-stream xr instances create test-${uniqueId} --location=global --content=projects/test-project/locations/global/content/test-content --version=test-version --add-region=region=us-central1,capacity=1
+- exec: gcloud immersive-stream xr instances describe test-${uniqueId} --location=global
+- exec: gcloud immersive-stream xr instances update test-${uniqueId} --location=global --fallback-url="https://www.google.com"
+- exec: gcloud immersive-stream xr instances delete test-${uniqueId} --location=global --async
