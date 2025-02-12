@@ -1,0 +1,4 @@
+
+- exec: gcloud network-connectivity regional-endpoints create test-${uniqueId} --region=us-central1 --network=projects/gcp-project-id/global/networks/test-vpc
+- exec: gcloud network-connectivity regional-endpoints describe test-${uniqueId} --region=us-central1
+- exec: gcloud network-connectivity regional-endpoints delete test-${uniqueId} --region=us-central1
