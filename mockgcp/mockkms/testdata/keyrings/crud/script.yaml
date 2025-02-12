@@ -1,0 +1,2 @@
+- exec: gcloud kms keyrings create test-${uniqueId} --location=us-central1
+- exec: gcloud kms keyrings describe test-${uniqueId} --location=us-central1
