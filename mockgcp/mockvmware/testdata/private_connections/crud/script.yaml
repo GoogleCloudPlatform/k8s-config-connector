@@ -1,0 +1,4 @@
+
+- exec: gcloud vmware private-connections create test-${uniqueId} --location=us-west1 --vmware-engine-network=us-west1-default --type=PRIVATE_SERVICE_ACCESS --service-project=test-project
+- exec: gcloud vmware private-connections describe test-${uniqueId} --location=us-west1
+- exec: gcloud vmware private-connections delete test-${uniqueId} --location=us-west1 --async
