@@ -1,0 +1,4 @@
+
+- exec: gcloud kms ekm-config describe --location=${LOCATION}
+- exec: gcloud kms ekm-config update --location=${LOCATION} --default-ekm-connection="projects/$PROJECT/locations/$LOCATION/ekmConnections/test-connection"
+- exec: gcloud kms ekm-config describe --location=${LOCATION}
