@@ -1,0 +1,5 @@
+
+- exec: gcloud run deploy test-${uniqueId} --image=us-docker.pkg.dev/cloudrun/container/hello --allow-unauthenticated --region=us-central1
+- exec: gcloud run services describe test-${uniqueId} --region=us-central1
+- exec: gcloud run services list --region=us-central1
+- exec: gcloud run services delete test-${uniqueId} --region=us-central1
