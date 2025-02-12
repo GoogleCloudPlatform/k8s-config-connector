@@ -1,0 +1,3 @@
+- exec: gcloud endpoints services list
+- exec: gcloud endpoints services describe test-${uniqueId}
+- exec: gcloud endpoints services delete test-${uniqueId}
