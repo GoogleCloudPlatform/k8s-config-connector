@@ -1,0 +1,6 @@
+
+- exec: gcloud workstations configs create test-${uniqueId} --cluster=test-cluster --region=us-central1 --machine-type=e2-standard-2 --container-predefined-image=codeoss
+- exec: gcloud workstations configs describe test-${uniqueId} --cluster=test-cluster --region=us-central1
+- exec: gcloud workstations configs list --cluster=test-cluster --region=us-central1
+- exec: gcloud workstations configs update test-${uniqueId} --cluster=test-cluster --region=us-central1 --labels=testkey=testvalue
+- exec: gcloud workstations configs delete test-${uniqueId} --cluster=test-cluster --region=us-central1 --async
