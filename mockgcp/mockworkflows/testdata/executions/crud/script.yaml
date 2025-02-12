@@ -1,0 +1,3 @@
+- exec: gcloud workflows run test-${uniqueId} --location=us-central1
+- exec: gcloud workflows executions describe ${executionId} --workflow=test-${uniqueId} --location=us-central1
+- exec: gcloud workflows executions cancel ${executionId} --workflow=test-${uniqueId} --location=us-central1
