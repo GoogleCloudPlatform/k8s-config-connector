@@ -1,0 +1,4 @@
+- exec: gcloud metastore operations list --location=us-central1 --format="value(name)"
+  out: operations
+- exec: gcloud metastore operations describe ${operations.split('\n')[0]} --location=us-central1
+- exec: gcloud metastore operations delete ${operations.split('\n')[0]} --location=us-central1
