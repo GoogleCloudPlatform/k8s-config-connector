@@ -1,0 +1,3 @@
+- exec: gcloud metastore services create test-${uniqueId} --location=us-central1
+- exec: gcloud metastore services describe test-${uniqueId} --location=us-central1
+- exec: gcloud metastore services delete test-${uniqueId} --location=us-central1
