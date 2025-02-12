@@ -1,0 +1,4 @@
+
+- exec: gcloud netapp backup-vaults backups create test-${uniqueId} --location us-central1 --backup-vault test-bv-${uniqueId} --source-volume test-vol-${uniqueId}
+- exec: gcloud netapp backup-vaults backups describe test-${uniqueId} --location us-central1 --backup-vault test-bv-${uniqueId}
+- exec: gcloud netapp backup-vaults backups delete test-${uniqueId} --location us-central1 --backup-vault test-bv-${uniqueId} --async
