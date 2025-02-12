@@ -1,0 +1,4 @@
+
+- exec: gcloud netapp active-directories create test-${uniqueId} --location us-central1 --domain example.com --dns 1.2.3.4 --username user --password password --net-bios-prefix TEST
+- exec: gcloud netapp active-directories describe test-${uniqueId} --location us-central1
+- exec: gcloud netapp active-directories delete test-${uniqueId} --location us-central1 --async
