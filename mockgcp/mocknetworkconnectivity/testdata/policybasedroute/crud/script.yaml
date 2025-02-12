@@ -1,0 +1,5 @@
+
+- exec: gcloud network-connectivity policy-based-routes create test-${uniqueId} --network=projects/my-project/global/networks/default --next-hop-ilb-ip=10.0.0.1
+- exec: gcloud network-connectivity policy-based-routes describe test-${uniqueId}
+- exec: gcloud network-connectivity policy-based-routes list --filter="name=test-${uniqueId}"
+- exec: gcloud network-connectivity policy-based-routes delete test-${uniqueId} --async
