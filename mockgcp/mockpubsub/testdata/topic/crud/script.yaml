@@ -1,3 +1,4 @@
 - exec: gcloud pubsub topics create test-${uniqueId}
 - exec: gcloud pubsub topics describe test-${uniqueId}
+- exec: gcloud pubsub topics list --filter="name~test-${uniqueId}"
 - exec: gcloud pubsub topics delete test-${uniqueId}
