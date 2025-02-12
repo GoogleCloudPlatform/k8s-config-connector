@@ -1,0 +1,22 @@
+
+- exec: >-
+    gcloud network-security security-profile-groups create test-${uniqueId}
+    --organization=1234567890
+    --location=global
+    --threat-prevention-profile=organizations/1234567890/locations/global/securityProfiles/test-profile-${uniqueId}
+    --description="Initial description"
+- exec: >-
+    gcloud network-security security-profile-groups describe test-${uniqueId}
+    --organization=1234567890
+    --location=global
+- exec: >-
+    gcloud network-security security-profile-groups update test-${uniqueId}
+    --organization=1234567890
+    --location=global
+    --threat-prevention-profile=organizations/1234567890/locations/global/securityProfiles/test-profile-updated-${uniqueId}
+    --description="Updated description"
+- exec: >-
+    gcloud network-security security-profile-groups delete test-${uniqueId}
+    --organization=1234567890
+    --location=global
+    --async
