@@ -1,0 +1,3 @@
+
+- exec: gcloud spanner instance-configs list
+- exec: gcloud spanner instance-configs describe regional-us-central1
