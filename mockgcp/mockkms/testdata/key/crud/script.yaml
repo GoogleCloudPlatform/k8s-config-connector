@@ -1,0 +1,7 @@
+
+- exec: gcloud kms keys create test-${uniqueId} --location=us-central1 --keyring=test-keyring-${uniqueId} --purpose=encryption
+- exec: gcloud kms keys describe test-${uniqueId} --location=us-central1 --keyring=test-keyring-${uniqueId}
+- exec: gcloud kms keys list --location=us-central1 --keyring=test-keyring-${uniqueId}
+- exec: gcloud kms keys update test-${uniqueId} --location=us-central1 --keyring=test-keyring-${uniqueId} --update-labels=test=true
+# There is no delete command for keys, keys cannot be deleted, so we comment the deletion here.
+# - exec: gcloud kms keys delete test-${uniqueId} --location=us-central1 --keyring=test-keyring-${uniqueId}
