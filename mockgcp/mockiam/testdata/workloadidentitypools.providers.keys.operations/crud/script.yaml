@@ -1,0 +1,11 @@
+
+- exec: >
+    gcloud iam workload-identity-pools providers keys create test-key-${uniqueId} \
+      --location="global" \
+      --workload-identity-pool="test-pool-${uniqueId}" \
+      --provider="test-provider-${uniqueId}" \
+      --use="ENCRYPTION" \
+      --spec="RSA_4096" \
+      --async
+- exec: >
+    gcloud iam workload-identity-pools providers keys operations describe projects/$PROJECT_ID/locations/global/workloadIdentityPools/test-pool-${uniqueId}/providers/test-provider-${uniqueId}/keys/test-key-${uniqueId}/operations/${uniqueId}
