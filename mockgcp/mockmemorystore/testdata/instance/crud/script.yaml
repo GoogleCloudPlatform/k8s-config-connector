@@ -1,0 +1,5 @@
+
+- exec: gcloud memorystore instances create test-${uniqueId} --location=us-central1 --psc-auto-connections="network=NETWORK,projectId=PROJECT_ID" --shard-count=3
+- exec: gcloud memorystore instances describe test-${uniqueId} --location=us-central1
+- exec: gcloud memorystore instances update test-${uniqueId} --location=us-central1 --shard-count=2
+- exec: gcloud memorystore instances delete test-${uniqueId} --location=us-central1
