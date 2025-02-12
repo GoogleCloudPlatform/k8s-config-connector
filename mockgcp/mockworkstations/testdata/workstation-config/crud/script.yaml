@@ -1,0 +1,7 @@
+
+- exec: gcloud workstations clusters create test-cluster-${uniqueId} --region=us-central1 --project=k8s-config-connector-test
+- exec: gcloud workstations configs create test-config-${uniqueId} --cluster=test-cluster-${uniqueId} --region=us-central1 --project=k8s-config-connector-test --machine-type=e2-standard-2 --container-predefined-image=codeoss
+- exec: gcloud workstations configs describe test-config-${uniqueId} --cluster=test-cluster-${uniqueId} --region=us-central1 --project=k8s-config-connector-test
+- exec: gcloud workstations configs update test-config-${uniqueId} --cluster=test-cluster-${uniqueId} --region=us-central1 --project=k8s-config-connector-test --machine-type=e2-small
+- exec: gcloud workstations configs delete test-config-${uniqueId} --cluster=test-cluster-${uniqueId} --region=us-central1 --project=k8s-config-connector-test --async
+- exec: gcloud workstations clusters delete test-cluster-${uniqueId} --region=us-central1 --project=k8s-config-connector-test --async
