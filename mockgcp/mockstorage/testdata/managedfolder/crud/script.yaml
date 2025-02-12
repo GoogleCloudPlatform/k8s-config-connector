@@ -1,0 +1,3 @@
+- exec: gcloud storage managed-folders create gs://test-${uniqueId}/folder 
+- exec: gcloud storage managed-folders describe gs://test-${uniqueId}/folder
+- exec: gcloud storage managed-folders delete gs://test-${uniqueId}/folder --recursive
