@@ -1,0 +1,5 @@
+
+- exec: gcloud ids endpoints create test-${uniqueId} --network=default --zone=us-central1-a --severity=INFORMATIONAL
+- exec: gcloud ids endpoints describe test-${uniqueId} --zone=us-central1-a
+- exec: gcloud ids endpoints list --zone=us-central1-a
+- exec: gcloud ids endpoints delete test-${uniqueId} --zone=us-central1-a --async
