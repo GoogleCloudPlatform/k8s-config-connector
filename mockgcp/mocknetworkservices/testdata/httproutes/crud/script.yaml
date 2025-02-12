@@ -1,0 +1,3 @@
+- exec: gcloud network-services http-routes create test-${uniqueId} --location=global
+- exec: gcloud network-services http-routes describe test-${uniqueId} --location=global
+- exec: gcloud network-services http-routes delete test-${uniqueId} --location=global --async
