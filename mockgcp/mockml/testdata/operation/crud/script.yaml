@@ -1,0 +1,13 @@
+
+- exec: gcloud ml-engine operations list --filter="metadata.type:TRAINING"  # List existing training operations
+- exec: |-
+    gcloud ml-engine jobs submit training job-${uniqueId} \
+        --module-name trainer.task \
+        --staging-bucket gs://test-${uniqueId} \
+        --job-dir gs://test-${uniqueId}/output \
+        --package-path trainer \
+        --region us-central1 \
+        --scale-tier BASIC
+- exec: gcloud ml-engine operations list --filter="metadata.type:TRAINING"  # List training operations, including the created one.
+- exec: gcloud ml-engine operations describe ${operationId}  # Describe operation.
+- exec: gcloud ml-engine operations cancel ${operationId}
