@@ -1,0 +1,5 @@
+
+- exec: gcloud vmware network-policies create test-${uniqueId} --location=us-west2 --edge-services-cidr=192.168.0.0/26 --vmware-engine-network=test-network --project=test-project
+- exec: gcloud vmware network-policies describe test-${uniqueId} --location=us-west2 --project=test-project
+- exec: gcloud vmware network-policies list --location=us-west2 --project=test-project
+- exec: gcloud vmware network-policies delete test-${uniqueId} --location=us-west2 --async --project=test-project
