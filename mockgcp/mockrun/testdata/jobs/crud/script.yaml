@@ -1,0 +1,6 @@
+
+- exec: gcloud run jobs create test-${uniqueId} --image us-docker.pkg.dev/cloudrun/container/job:latest --region us-central1
+- exec: gcloud run jobs describe test-${uniqueId} --region us-central1
+- exec: gcloud run jobs list --region us-central1
+- exec: gcloud run jobs update test-${uniqueId} --image us-docker.pkg.dev/cloudrun/container/job:latest --region us-central1
+- exec: gcloud run jobs delete test-${uniqueId} --region us-central1 --async
