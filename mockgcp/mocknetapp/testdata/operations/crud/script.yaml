@@ -1,0 +1,2 @@
+- exec: gcloud netapp operations list --location=us-central1
+- exec: gcloud netapp operations describe operation-123 --location=us-central1
