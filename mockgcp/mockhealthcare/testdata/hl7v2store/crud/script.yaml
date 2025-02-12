@@ -1,0 +1,6 @@
+
+- exec: gcloud healthcare hl7v2-stores create test-${uniqueId} --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare hl7v2-stores describe test-${uniqueId} --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare hl7v2-stores list --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare hl7v2-stores update test-${uniqueId} --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare hl7v2-stores delete test-${uniqueId} --dataset=test-dataset --location=us-central1
