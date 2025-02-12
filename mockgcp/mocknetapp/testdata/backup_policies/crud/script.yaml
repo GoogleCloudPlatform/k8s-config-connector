@@ -1,0 +1,6 @@
+
+- exec: gcloud netapp backup-policies create test-${uniqueId} --location=us-central1 --description="A test backup policy" --daily-backup-limit=1 --weekly-backup-limit=0 --monthly-backup-limit=0
+- exec: gcloud netapp backup-policies list --location=us-central1
+- exec: gcloud netapp backup-policies describe test-${uniqueId} --location=us-central1
+- exec: gcloud netapp backup-policies update test-${uniqueId} --location=us-central1 --daily-backup-limit=2
+- exec: gcloud netapp backup-policies delete test-${uniqueId} --location=us-central1 --quiet
