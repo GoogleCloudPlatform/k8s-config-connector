@@ -1,0 +1,4 @@
+
+- exec: gcloud network-connectivity spokes create test-${uniqueId} --hub=projects/gcp-project-id/locations/global/hubs/hub-id --network=projects/gcp-project-id/global/networks/network-id --location=us-east1
+- exec: gcloud network-connectivity spokes describe test-${uniqueId} --location=us-east1
+- exec: gcloud network-connectivity spokes delete test-${uniqueId} --location=us-east1
