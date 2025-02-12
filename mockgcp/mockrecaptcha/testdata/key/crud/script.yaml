@@ -1,0 +1,4 @@
+
+- exec: gcloud recaptcha keys create --display-name=test-${uniqueId} --web --allow-all-domains
+- exec: gcloud recaptcha keys describe test-${uniqueId}
+- exec: gcloud recaptcha keys delete test-${uniqueId}
