@@ -1,0 +1,5 @@
+
+- exec: gcloud redis operations list --region=us-central1 --format="value(name)"
+  out: |
+    OPERATION_NAME
+- exec: gcloud redis operations describe ${OPERATION_NAME} --region=us-central1
