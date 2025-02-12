@@ -1,0 +1,4 @@
+
+- exec: gcloud workspace-add-ons deployments create test-${uniqueId} --deployment-object='{}'
+- exec: gcloud workspace-add-ons deployments describe test-${uniqueId}
+- exec: gcloud workspace-add-ons deployments delete test-${uniqueId}
