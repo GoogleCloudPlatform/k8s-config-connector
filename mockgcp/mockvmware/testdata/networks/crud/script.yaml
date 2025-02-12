@@ -1,0 +1,3 @@
+- exec: gcloud vmware networks create test-${uniqueId} --location=global --type=STANDARD
+- exec: gcloud vmware networks describe test-${uniqueId} --location=global
+- exec: gcloud vmware networks delete test-${uniqueId} --location=global --async
