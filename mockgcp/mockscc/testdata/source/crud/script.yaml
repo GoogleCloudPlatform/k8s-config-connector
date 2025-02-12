@@ -1,0 +1,3 @@
+- exec: gcloud scc sources create test-${uniqueId} --organization=organizations/12345 --display-name=test-source
+- exec: gcloud scc sources describe test-${uniqueId} --organization=organizations/12345
+- exec: gcloud scc sources delete test-${uniqueId} --organization=organizations/12345
