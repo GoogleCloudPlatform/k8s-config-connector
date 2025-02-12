@@ -1,0 +1,5 @@
+
+- exec: gcloud network-security firewall-endpoints create test-${uniqueId} --organization=1234 --zone=us-central1-a --billing-project=my-project
+- exec: gcloud network-security firewall-endpoints describe test-${uniqueId} --organization=1234 --zone=us-central1-a --billing-project=my-project
+- exec: gcloud network-security firewall-endpoints list --organization=1234 --zone=us-central1-a --billing-project=my-project
+- exec: gcloud network-security firewall-endpoints delete test-${uniqueId} --organization=1234 --zone=us-central1-a --billing-project=my-project --async
