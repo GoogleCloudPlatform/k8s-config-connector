@@ -1,0 +1,4 @@
+
+- exec: gcloud healthcare datasets create test-${uniqueId} --location=us-central1
+- exec: gcloud healthcare datasets describe test-${uniqueId} --location=us-central1
+- exec: gcloud healthcare datasets delete test-${uniqueId} --location=us-central1 --async
