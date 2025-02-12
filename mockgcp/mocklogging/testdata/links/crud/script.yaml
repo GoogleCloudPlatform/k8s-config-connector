@@ -1,0 +1,5 @@
+
+- exec: gcloud logging links create test-${uniqueId} --location=global --bucket=test-${uniqueId} --project=${PROJECT_ID}
+- exec: gcloud logging links describe test-${uniqueId} --location=global --bucket=test-${uniqueId} --project=${PROJECT_ID}
+- exec: gcloud logging links list --location=global --bucket=test-${uniqueId} --project=${PROJECT_ID}
+- exec: gcloud logging links delete test-${uniqueId} --location=global --bucket=test-${uniqueId} --project=${PROJECT_ID}
