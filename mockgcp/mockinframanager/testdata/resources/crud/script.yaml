@@ -1,0 +1,2 @@
+- exec: gcloud infra-manager resources list --revision=projects/test-project/locations/us-central1/deployments/test-deployment/revisions/test-revision
+- exec: gcloud infra-manager resources describe projects/test-project/locations/us-central1/deployments/test-deployment/revisions/test-revision/resources/test-resource
