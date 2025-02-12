@@ -1,0 +1,7 @@
+
+- exec: gcloud network-connectivity hubs create test-${uniqueId} --description="Test Hub" --project=gcp-project-id
+- exec: gcloud network-connectivity hubs route-tables list --hub=test-${uniqueId} --project=gcp-project-id
+- exec: gcloud network-connectivity hubs route-tables describe non-existent-rt --hub=test-${uniqueId} --project=gcp-project-id
+- exec: gcloud network-connectivity hubs route-tables routes list --route-table=route-tables/default --hub=test-${uniqueId} --project=gcp-project-id
+- exec: gcloud network-connectivity hubs route-tables describe route-tables/default --hub=test-${uniqueId} --project=gcp-project-id
+- exec: gcloud network-connectivity hubs delete test-${uniqueId} --project=gcp-project-id --async --quiet
