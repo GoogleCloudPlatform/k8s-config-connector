@@ -1,0 +1,5 @@
+
+- exec: gcloud logging views create test-${uniqueId} --bucket=test-${uniqueId} --location=global
+- exec: gcloud logging views describe test-${uniqueId} --bucket=test-${uniqueId} --location=global
+- exec: gcloud logging views list --bucket=test-${uniqueId} --location=global
+- exec: gcloud logging views delete test-${uniqueId} --bucket=test-${uniqueId} --location=global
