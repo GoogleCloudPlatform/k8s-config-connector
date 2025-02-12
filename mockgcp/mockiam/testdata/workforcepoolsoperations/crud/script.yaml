@@ -1,0 +1,1 @@
+- exec: gcloud iam workforce-pools operations describe operation-id --location=global --workforce-pool=workforce-pool-id
