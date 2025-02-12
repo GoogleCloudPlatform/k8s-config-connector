@@ -1,0 +1,3 @@
+- exec: gcloud ml speech recognize-long-running gs://test-${uniqueId}/audio.flac --language-code=en-US --async --output-uri=gs://test-${uniqueId}/output.txt
+- exec: gcloud ml speech operations describe ${1}
+- exec: gcloud ml speech operations delete ${1} # Placeholder, as there is no delete operation
