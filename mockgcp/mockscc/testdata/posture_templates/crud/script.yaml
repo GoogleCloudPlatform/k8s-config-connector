@@ -1,0 +1,3 @@
+
+- exec: gcloud scc posture-templates list --organization=${ORGANIZATION_ID}
+- exec: gcloud scc posture-templates describe projects/test-project/locations/global/postureTemplates/test-template --organization=${ORGANIZATION_ID}
