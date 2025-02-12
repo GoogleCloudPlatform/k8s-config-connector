@@ -1,0 +1,2 @@
+- exec: gcloud firebase test ios versions list
+- exec: gcloud firebase test ios versions describe 14.1
