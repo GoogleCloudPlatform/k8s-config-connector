@@ -1,0 +1,4 @@
+
+- exec: gcloud scc manage custom-modules etd create --organization=organizations/433637338588 --display-name="test-${uniqueId}" --enablement-state="ENABLED" --module-type="CONFIGURABLE_BAD_IP" --custom-config-file=config.json
+- exec: gcloud scc manage custom-modules etd describe "${custom_module_name}" --organization=433637338588
+- exec: gcloud scc manage custom-modules etd delete "${custom_module_name}" --organization=433637338588 --quiet
