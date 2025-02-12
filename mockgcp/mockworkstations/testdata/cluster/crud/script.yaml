@@ -1,0 +1,4 @@
+
+- exec: gcloud workstations clusters create test-${uniqueId} --region=us-central1
+- exec: gcloud workstations clusters describe test-${uniqueId} --region=us-central1
+- exec: gcloud workstations clusters delete test-${uniqueId} --region=us-central1 --async
