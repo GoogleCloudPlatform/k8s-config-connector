@@ -1,0 +1,2 @@
+- exec: gcloud endpoints configs list --service=test-${uniqueId}
+- exec: gcloud endpoints configs describe test-config-id --service=test-${uniqueId}
