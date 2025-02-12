@@ -1,0 +1,8 @@
+
+- exec: >-
+    gcloud network-management vpc-flow-logs-configs create test-${uniqueId} \
+    --location=global \
+    --vpn-tunnel="projects/my-project/regions/us-central1/vpnTunnels/test-tunnel" 
+- exec: gcloud network-management vpc-flow-logs-configs describe test-${uniqueId} --location=global
+- exec: gcloud network-management vpc-flow-logs-configs list --location=global
+- exec: gcloud network-management vpc-flow-logs-configs delete test-${uniqueId} --location=global --async
