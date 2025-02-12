@@ -1,0 +1,4 @@
+
+- exec: gcloud pubsub lite-topics create test-${uniqueId} --location=us-central1-a --partitions=1 --per-partition-bytes=30GiB
+- exec: gcloud pubsub lite-topics describe test-${uniqueId} --location=us-central1-a
+- exec: gcloud pubsub lite-topics delete test-${uniqueId} --location=us-central1-a
