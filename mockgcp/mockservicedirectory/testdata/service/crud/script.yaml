@@ -1,0 +1,8 @@
+
+- exec: gcloud service-directory namespaces create test-namespace-${uniqueId} --location=us-east1
+- exec: gcloud service-directory services create test-service-${uniqueId} --namespace=test-namespace-${uniqueId} --location=us-east1
+- exec: gcloud service-directory services describe test-service-${uniqueId} --namespace=test-namespace-${uniqueId} --location=us-east1
+- exec: gcloud service-directory services list --namespace=test-namespace-${uniqueId} --location=us-east1
+- exec: gcloud service-directory services update test-service-${uniqueId} --namespace=test-namespace-${uniqueId} --location=us-east1 --annotations=foo=bar
+- exec: gcloud service-directory services delete test-service-${uniqueId} --namespace=test-namespace-${uniqueId} --location=us-east1 --quiet
+- exec: gcloud service-directory namespaces delete test-namespace-${uniqueId} --location=us-east1 --quiet
