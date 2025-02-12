@@ -1,0 +1,5 @@
+
+- exec: gcloud edge-cloud networking routers create test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1 --network=my-network --asn=65555
+- exec: gcloud edge-cloud networking routers describe test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1
+- exec: gcloud edge-cloud networking routers list --location=us-central1 --zone=us-central1-edge-den1
+- exec: gcloud edge-cloud networking routers delete test-${uniqueId} --location=us-central1 --zone=us-central1-edge-den1 --async
