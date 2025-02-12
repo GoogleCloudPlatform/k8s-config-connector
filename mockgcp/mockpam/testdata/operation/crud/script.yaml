@@ -1,0 +1,4 @@
+
+- exec: gcloud pam operations list --location=global --filter="name:operations/test-${uniqueId}" --limit=1 --format="value(name)"
+- exec: gcloud pam operations describe operations/test-${uniqueId} --location=global
+- exec: gcloud pam operations delete operations/test-${uniqueId} --location=global
