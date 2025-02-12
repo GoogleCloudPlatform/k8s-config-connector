@@ -1,0 +1,6 @@
+
+- exec: gcloud looker instances create test-${uniqueId} --region us-central1 --edition core-standard --oauth-client-id='looker' --oauth-client-secret='looker' --async
+- exec: gcloud looker instances describe test-${uniqueId} --region us-central1
+- exec: gcloud looker instances update test-${uniqueId} --region us-central1 --maintenance-window-day=sunday --maintenance-window-time=01:00 --async
+- exec: gcloud looker instances describe test-${uniqueId} --region us-central1
+- exec: gcloud looker instances delete test-${uniqueId} --region us-central1 --async
