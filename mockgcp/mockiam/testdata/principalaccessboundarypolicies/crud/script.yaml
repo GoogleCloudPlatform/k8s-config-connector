@@ -1,0 +1,4 @@
+
+- exec: gcloud iam principal-access-boundary-policies create test-${uniqueId} --organization=123456789 --location=global
+- exec: gcloud iam principal-access-boundary-policies describe test-${uniqueId} --organization=123456789 --location=global
+- exec: gcloud iam principal-access-boundary-policies delete test-${uniqueId} --organization=123456789 --location=global
