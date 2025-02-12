@@ -1,0 +1,5 @@
+
+- exec: gcloud netapp volumes replications create test-${uniqueId} --location us-central1 --volume=test-vol-${uniqueId} --replication-schedule=EVERY_10_MINUTES --destination-volume-parameters='storage_pool=test-sp-${uniqueId},volume_id=test-dest-vol-${uniqueId},share_name=test-share-${uniqueId}'
+- exec: gcloud netapp volumes replications describe test-${uniqueId} --location=us-central1
+- exec: gcloud netapp volumes replications update test-${uniqueId} --location=us-central1 --description="new description"
+- exec: gcloud netapp volumes replications delete test-${uniqueId} --location=us-central1 --async
