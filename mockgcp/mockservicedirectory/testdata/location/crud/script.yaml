@@ -1,0 +1,2 @@
+- exec: gcloud service-directory locations list
+- exec: gcloud service-directory locations describe us-central1 --project=${PROJECT_ID}
