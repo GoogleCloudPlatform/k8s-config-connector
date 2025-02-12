@@ -1,0 +1,5 @@
+
+- exec: gcloud pubsub lite-subscriptions create test-${uniqueId} --location=us-central1-a --topic=test-topic-${uniqueId}
+- exec: gcloud pubsub lite-subscriptions describe test-${uniqueId} --location=us-central1-a
+- exec: gcloud pubsub lite-subscriptions list --location=us-central1-a
+- exec: gcloud pubsub lite-subscriptions delete test-${uniqueId} --location=us-central1-a
