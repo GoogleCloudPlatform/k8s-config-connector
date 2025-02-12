@@ -1,0 +1,6 @@
+
+- exec: gcloud healthcare dicom-stores create test-${uniqueId} --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare dicom-stores describe test-${uniqueId} --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare dicom-stores list --dataset=test-dataset --location=us-central1
+- exec: gcloud healthcare dicom-stores update test-${uniqueId} --dataset=test-dataset --location=us-central1 --pubsub-topic=projects/my-project/topics/test-pubsub-topic
+- exec: gcloud healthcare dicom-stores delete test-${uniqueId} --dataset=test-dataset --location=us-central1
