@@ -1,0 +1,5 @@
+
+- exec: gcloud scc postures create organizations/12345/locations/global/postures/test-${uniqueId} --posture-from-file=posture.yaml
+- exec: gcloud scc postures list organizations/12345/locations/global
+- exec: gcloud scc postures describe organizations/12345/locations/global/postures/test-${uniqueId}
+- exec: gcloud scc postures delete organizations/12345/locations/global/postures/test-${uniqueId}
