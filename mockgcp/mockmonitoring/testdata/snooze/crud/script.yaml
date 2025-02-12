@@ -1,0 +1,4 @@
+
+- exec: gcloud monitoring snoozes create --snooze-from-file=mockmonitoring/testdata/snooze/crud/snooze.yaml --project=test-project
+- exec: gcloud monitoring snoozes describe ${CREATED_RESOURCE_NAME} --project=test-project
+- exec: gcloud monitoring snoozes delete ${CREATED_RESOURCE_NAME} --project=test-project
