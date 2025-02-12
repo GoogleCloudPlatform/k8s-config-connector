@@ -1,0 +1,5 @@
+
+- exec: gcloud sql databases create test-${uniqueId} --instance=test-instance-${uniqueId}
+- exec: gcloud sql databases list --instance=test-instance-${uniqueId}
+- exec: gcloud sql databases describe test-${uniqueId} --instance=test-instance-${uniqueId}
+- exec: gcloud sql databases delete test-${uniqueId} --instance=test-instance-${uniqueId}
