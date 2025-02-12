@@ -1,0 +1,5 @@
+
+- exec: gcloud iap tcp dest-groups create test-${uniqueId} --region us-central1
+- exec: gcloud iap tcp dest-groups describe test-${uniqueId} --region us-central1
+- exec: gcloud iap tcp dest-groups update test-${uniqueId} --region us-central1 --ip-range-list="1.2.3.4/32"
+- exec: gcloud iap tcp dest-groups delete test-${uniqueId} --region us-central1
