@@ -1,0 +1,4 @@
+
+- exec: gcloud firestore backups list --location=us-east1
+- exec: gcloud firestore backups describe --backup=test-backup-${uniqueId} --location=us-east1
+- exec: gcloud firestore backups delete --backup=test-backup-${uniqueId} --location=us-east1
