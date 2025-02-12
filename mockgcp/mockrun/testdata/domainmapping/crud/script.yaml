@@ -1,0 +1,5 @@
+
+- exec: gcloud run domain-mappings create --service test-service-${uniqueId} --domain test-${uniqueId}.example.com --namespace default
+- exec: gcloud run domain-mappings describe --domain test-${uniqueId}.example.com --namespace default
+- exec: gcloud run domain-mappings list --namespace default
+- exec: gcloud run domain-mappings delete --domain test-${uniqueId}.example.com --namespace default
