@@ -1,0 +1,4 @@
+
+- exec: gcloud network-services gateways list --location=global
+- exec: gcloud network-services gateways describe test-${uniqueId} --location=global
+- exec: gcloud network-services gateways delete test-${uniqueId} --location=global --async
