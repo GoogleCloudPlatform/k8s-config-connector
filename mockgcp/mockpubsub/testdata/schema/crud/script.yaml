@@ -1,0 +1,5 @@
+
+- exec: gcloud pubsub schemas create test-${uniqueId} --type=PROTOCOL_BUFFER --definition="syntax = 'proto3'; message Message { optional string key = 1; }" 
+- exec: gcloud pubsub schemas describe test-${uniqueId}
+- exec: gcloud pubsub schemas list --filter="name:test-${uniqueId}"
+- exec: gcloud pubsub schemas delete test-${uniqueId}
