@@ -1,0 +1,3 @@
+- exec: gcloud network-services endpoint-policies import test-${uniqueId} --location=global --source=mocknetworkservices/testdata/endpointpolicy/crud/endpoint_policy.yaml
+- exec: gcloud network-services endpoint-policies describe test-${uniqueId} --location=global
+- exec: gcloud network-services endpoint-policies delete test-${uniqueId} --location=global --async
