@@ -1,0 +1,3 @@
+- exec: gcloud preview config configurations create test-${uniqueId}
+- exec: gcloud preview config configurations describe test-${uniqueId}
+- exec: gcloud preview config configurations delete test-${uniqueId}
