@@ -1,0 +1,2 @@
+- exec: gcloud firebase test android locales list
+- exec: gcloud firebase test android locales describe en_US
