@@ -1,0 +1,4 @@
+
+- exec: ${GCLOUD_COMMAND} create test-snapshot-${uniqueId} --location=${location} --volume=test-volume-${uniqueId}
+- exec: ${GCLOUD_COMMAND} describe test-snapshot-${uniqueId} --location=${location} --volume=test-volume-${uniqueId}
+- exec: ${GCLOUD_COMMAND} delete test-snapshot-${uniqueId} --location=${location} --volume=test-volume-${uniqueId} -q
