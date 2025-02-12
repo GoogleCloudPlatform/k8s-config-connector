@@ -1,0 +1,5 @@
+
+- exec: gcloud infra-manager previews create test-${uniqueId} --location=us-central1 --gcs-source=gs://kcc-ci-test-yuwenma/test-tf-config --input-values="project=test-project,region=us-central1"
+- exec: gcloud infra-manager previews list --location=us-central1
+- exec: gcloud infra-manager previews describe test-${uniqueId} --location=us-central1
+- exec: gcloud infra-manager previews delete test-${uniqueId} --location=us-central1 --async
