@@ -1,0 +1,6 @@
+
+- exec: gcloud kms keyrings create my-keyring-${uniqueId} --location us-central1
+- exec: gcloud kms keys create my-key --location us-central1 --keyring my-keyring-${uniqueId} --purpose encryption --default-algorithm google-symmetric-encryption
+- exec: gcloud kms keys versions create --location us-central1 --keyring my-keyring-${uniqueId} --key my-key
+- exec: gcloud kms keys versions describe 1 --location us-central1 --keyring my-keyring-${uniqueId} --key my-key
+- exec: gcloud kms keys versions destroy 1 --location us-central1 --keyring my-keyring-${uniqueId} --key my-key
