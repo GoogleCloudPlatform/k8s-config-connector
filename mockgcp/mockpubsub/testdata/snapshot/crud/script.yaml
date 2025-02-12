@@ -1,0 +1,3 @@
+- exec: gcloud pubsub snapshots create test-${uniqueId} --subscription=test-sub
+- exec: gcloud pubsub snapshots describe test-${uniqueId}
+- exec: gcloud pubsub snapshots delete test-${uniqueId}
