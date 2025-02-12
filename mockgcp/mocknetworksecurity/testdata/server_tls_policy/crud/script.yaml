@@ -1,0 +1,4 @@
+- exec: gcloud network-security server-tls-policies import test-${uniqueId} --source=server-tls-policy.yaml --location=global
+- exec: gcloud network-security server-tls-policies describe test-${uniqueId} --location=global
+- exec: gcloud network-security server-tls-policies list --location=global
+- exec: gcloud network-security server-tls-policies delete test-${uniqueId} --location=global --async
