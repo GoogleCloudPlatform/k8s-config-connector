@@ -1,0 +1,5 @@
+
+- exec: gcloud firestore indexes fields update myField${uniqueId} --collection-group=myCollection${uniqueId} --database=(default) --index=order=ASCENDING
+- exec: gcloud firestore indexes fields list --collection-group=myCollection${uniqueId} --database=(default)
+- exec: gcloud firestore indexes fields describe myField${uniqueId} --collection-group=myCollection${uniqueId} --database=(default)
+- exec: gcloud firestore indexes fields update myField${uniqueId} --collection-group=myCollection${uniqueId} --database=(default) --clear-exemption
