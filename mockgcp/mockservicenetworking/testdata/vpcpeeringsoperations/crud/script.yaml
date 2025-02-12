@@ -1,0 +1,2 @@
+
+- exec: gcloud services vpc-peerings operations describe operation-123 --service=peered-service.example.com
