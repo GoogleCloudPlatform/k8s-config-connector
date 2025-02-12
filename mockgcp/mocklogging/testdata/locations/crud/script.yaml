@@ -1,0 +1,3 @@
+
+- exec: gcloud logging locations list
+- exec: gcloud logging locations describe us-central1
