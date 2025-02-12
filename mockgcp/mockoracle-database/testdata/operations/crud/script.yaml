@@ -1,0 +1,3 @@
+- exec: gcloud oracle-database operations list --location=us-central1 --filter="name:test-${uniqueId}"
+- exec: gcloud oracle-database operations describe test-${uniqueId} --location=us-central1
+- exec: gcloud oracle-database operations delete test-${uniqueId} --location=us-central1
