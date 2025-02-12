@@ -1,0 +1,2 @@
+- exec: gcloud firebase test network-profiles list
+- exec: gcloud firebase test network-profiles describe LTE
