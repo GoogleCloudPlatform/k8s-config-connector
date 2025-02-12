@@ -1,0 +1,5 @@
+
+- exec: gcloud redis instances create test-${uniqueId} --region=us-east1 --size=1
+- exec: gcloud redis instances describe test-${uniqueId} --region=us-east1
+- exec: gcloud redis instances update test-${uniqueId} --region=us-east1 --display-name=updated-test-${uniqueId}
+- exec: gcloud redis instances delete test-${uniqueId} --region=us-east1
