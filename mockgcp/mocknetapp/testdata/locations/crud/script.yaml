@@ -1,0 +1,2 @@
+- exec: gcloud netapp locations list
+- exec: gcloud netapp locations describe us-central1
