@@ -1,0 +1,4 @@
+
+- exec: gcloud pam entitlements create test-${uniqueId} --location=global --entitlement-file=<(echo '{}')
+- exec: gcloud pam entitlements describe test-${uniqueId} --location=global
+- exec: gcloud pam entitlements delete test-${uniqueId} --location=global
