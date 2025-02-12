@@ -1,0 +1,2 @@
+- exec: gcloud recommender recommendations list --project=${PROJECT_ID} --location=${LOCATION} --recommender=${RECOMMENDER}
+- exec: gcloud recommender recommendations describe ${RECOMMENDATION_ID} --project=${PROJECT_ID} --location=${LOCATION} --recommender=${RECOMMENDER}
