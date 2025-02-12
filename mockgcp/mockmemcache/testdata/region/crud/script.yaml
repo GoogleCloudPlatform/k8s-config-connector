@@ -1,0 +1,2 @@
+- exec: gcloud memcache regions list
+- exec: gcloud memcache regions describe us-central1
