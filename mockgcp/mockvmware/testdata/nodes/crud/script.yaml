@@ -1,0 +1,3 @@
+
+- exec: gcloud vmware private-clouds clusters nodes list --location=${location} --project=${project} --private-cloud=${private_cloud} --cluster=${cluster}
+- exec: gcloud vmware private-clouds clusters nodes describe ${node} --location=${location} --project=${project} --private-cloud=${private_cloud} --cluster=${cluster}
