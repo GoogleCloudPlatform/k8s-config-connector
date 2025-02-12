@@ -1,0 +1,4 @@
+
+- exec: gcloud scc notifications create test-${uniqueId} --organization=123456789 --pubsub-topic=projects/gcp-project-id/topics/test-topic --filter=\"state=\\\"ACTIVE\\\"\"
+- exec: gcloud scc notifications describe test-${uniqueId} --organization=123456789
+- exec: gcloud scc notifications delete test-${uniqueId} --organization=123456789
