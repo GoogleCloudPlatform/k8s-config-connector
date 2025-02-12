@@ -1,0 +1,4 @@
+- exec: gcloud notebooks environments create test-${uniqueId} --location=us-central1 --vm-image-family=common-cpu
+- exec: gcloud notebooks environments list --location=us-central1
+- exec: gcloud notebooks environments describe test-${uniqueId} --location=us-central1
+- exec: gcloud notebooks environments delete test-${uniqueId} --location=us-central1
