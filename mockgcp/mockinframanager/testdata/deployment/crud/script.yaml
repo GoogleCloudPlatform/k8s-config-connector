@@ -1,0 +1,4 @@
+- exec: gcloud infra-manager deployments apply test-${uniqueId} --location=us-central1 --config=config.tf
+- exec: gcloud infra-manager deployments list --location=us-central1
+- exec: gcloud infra-manager deployments describe test-${uniqueId} --location=us-central1
+- exec: gcloud infra-manager deployments delete test-${uniqueId} --location=us-central1
