@@ -1,0 +1,3 @@
+- exec: gcloud service-extensions lb-traffic-extensions import test-${uniqueId} --location=us-central1 --source=lb-traffic-extension.yaml
+- exec: gcloud service-extensions lb-traffic-extensions describe test-${uniqueId} --location=us-central1
+- exec: gcloud service-extensions lb-traffic-extensions delete test-${uniqueId} --location=us-central1 --async
