@@ -1,0 +1,4 @@
+
+- exec: gcloud vmware private-clouds hcx activationkeys create test-${uniqueId} --location=us-west2-a --private-cloud=my-private-cloud
+- exec: gcloud vmware private-clouds hcx activationkeys describe test-${uniqueId} --location=us-west2-a --private-cloud=my-private-cloud
+- exec: gcloud vmware private-clouds hcx activationkeys list --location=us-west2-a --private-cloud=my-private-cloud
