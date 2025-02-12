@@ -1,0 +1,4 @@
+
+- exec: gcloud network-services grpc-routes import test-${uniqueId} --location=global --source=grpc-route.yaml --project=test-project
+- exec: gcloud network-services grpc-routes describe test-${uniqueId} --location=global --project=test-project
+- exec: gcloud network-services grpc-routes delete test-${uniqueId} --location=global --project=test-project --async
