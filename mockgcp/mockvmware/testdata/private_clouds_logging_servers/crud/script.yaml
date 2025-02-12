@@ -1,0 +1,4 @@
+
+- exec: gcloud vmware private-clouds logging-servers create test-${uniqueId} --location=us-west2-a --private-cloud=test-private-cloud --hostname=test-hostname --port=514 --protocol=UDP --source-type=ESXI
+- exec: gcloud vmware private-clouds logging-servers describe test-${uniqueId} --location=us-west2-a --private-cloud=test-private-cloud
+- exec: gcloud vmware private-clouds logging-servers delete test-${uniqueId} --location=us-west2-a --private-cloud=test-private-cloud --async
