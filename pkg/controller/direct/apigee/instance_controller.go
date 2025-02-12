@@ -21,7 +21,6 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -250,7 +249,7 @@ func (a *ApigeeInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.OrganizationRef = &refs.ApigeeOrganizationRef{External: a.id.Parent().String()}
+	obj.Spec.OrganizationRef = &krm.OrganizationRef{External: a.id.Parent().String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

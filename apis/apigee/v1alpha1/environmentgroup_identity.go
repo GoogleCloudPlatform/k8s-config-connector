@@ -19,8 +19,9 @@ import (
 	"fmt"
 	"strings"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -64,7 +65,7 @@ func NewEnvironmentGroupIdentity(ctx context.Context, reader client.Reader, obj 
 		return nil, fmt.Errorf("cannot resolve organization: %w", err)
 	}
 
-	org, err := refs.ParseApigeeOrganizationExternal(orgExternal)
+	org, err := apigeev1beta1.ParseOrganizationExternal(orgExternal)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse external organization: %w", err)
 	}
