@@ -1,0 +1,3 @@
+
+- exec: gcloud vmware operations list --location=us-central1
+- exec: gcloud vmware operations describe operation-${uniqueId} --location=us-central1
