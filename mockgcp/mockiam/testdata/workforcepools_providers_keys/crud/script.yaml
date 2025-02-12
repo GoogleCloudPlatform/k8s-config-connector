@@ -1,0 +1,5 @@
+
+- exec: gcloud iam workforce-pools providers keys create test-key-${uniqueId} --location="global" --workforce-pool="test-pool-${uniqueId}" --provider="test-provider-${uniqueId}" --spec="RSA_4096" --use="ENCRYPTION"
+- exec: gcloud iam workforce-pools providers keys list --location="global" --workforce-pool="test-pool-${uniqueId}" --provider="test-provider-${uniqueId}"
+- exec: gcloud iam workforce-pools providers keys describe test-key-${uniqueId} --location="global" --workforce-pool="test-pool-${uniqueId}" --provider="test-provider-${uniqueId}"
+- exec: gcloud iam workforce-pools providers keys delete test-key-${uniqueId} --location="global" --workforce-pool="test-pool-${uniqueId}" --provider="test-provider-${uniqueId}" --quiet
