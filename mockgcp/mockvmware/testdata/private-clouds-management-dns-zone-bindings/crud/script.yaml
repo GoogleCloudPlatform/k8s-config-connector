@@ -1,0 +1,6 @@
+
+- exec: gcloud vmware private-clouds management-dns-zone-bindings create test-${uniqueId} --location=us-east2-b --private-cloud=my-private-cloud --vmware-engine-network=sample-vmware-engine-network
+- exec: gcloud vmware private-clouds management-dns-zone-bindings describe test-${uniqueId} --location=us-east2-b --private-cloud=my-private-cloud
+- exec: gcloud vmware private-clouds management-dns-zone-bindings update test-${uniqueId} --location=us-east2-b --private-cloud=my-private-cloud --description="Updated Description"
+- exec: gcloud vmware private-clouds management-dns-zone-bindings list --location=us-east2-b --private-cloud=my-private-cloud --filter="name=test-${uniqueId}"
+- exec: gcloud vmware private-clouds management-dns-zone-bindings delete test-${uniqueId} --location=us-east2-b --private-cloud=my-private-cloud --async
