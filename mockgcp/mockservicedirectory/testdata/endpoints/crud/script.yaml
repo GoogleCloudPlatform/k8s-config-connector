@@ -1,0 +1,4 @@
+- exec: gcloud service-directory endpoints create test-${uniqueId} --location=us-east1 --namespace=test-namespace --service=test-service --address=1.2.3.4 --port=8080
+- exec: gcloud service-directory endpoints describe test-${uniqueId} --location=us-east1 --namespace=test-namespace --service=test-service
+- exec: gcloud service-directory endpoints list --location=us-east1 --namespace=test-namespace --service=test-service
+- exec: gcloud service-directory endpoints delete test-${uniqueId} --location=us-east1 --namespace=test-namespace --service=test-service
