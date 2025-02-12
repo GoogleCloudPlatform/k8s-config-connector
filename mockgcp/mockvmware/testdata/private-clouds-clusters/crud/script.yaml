@@ -1,0 +1,5 @@
+
+- exec: gcloud vmware private-clouds clusters create test-${uniqueId} --location=us-west2-a --private-cloud=test-private-cloud --node-type-config=type=standard-72,count=3
+- exec: gcloud vmware private-clouds clusters describe test-${uniqueId} --location=us-west2-a --private-cloud=test-private-cloud
+- exec: gcloud vmware private-clouds clusters list --location=us-west2-a --private-cloud=test-private-cloud
+- exec: gcloud vmware private-clouds clusters delete test-${uniqueId} --location=us-west2-a --private-cloud=test-private-cloud --async
