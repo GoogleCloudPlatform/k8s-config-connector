@@ -1,0 +1,5 @@
+
+- exec: gcloud migration vms machine-image-imports create test-${uniqueId} --source-uri=gs://stub-bucket/stub-object --os=stub-os
+- exec: gcloud migration vms machine-image-imports list
+- exec: gcloud migration vms machine-image-imports describe test-${uniqueId}
+- exec: gcloud migration vms machine-image-imports delete test-${uniqueId}
