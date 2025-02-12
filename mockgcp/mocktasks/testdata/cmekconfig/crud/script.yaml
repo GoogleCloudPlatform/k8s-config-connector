@@ -1,0 +1,6 @@
+
+- exec: gcloud tasks cmek-config describe --location=${location}
+- exec: gcloud tasks cmek-config update --location=${location} --kms-key-name=projects/${kms_project}/locations/${location}/keyRings/${kms_keyring}/cryptoKeys/${kms_key}
+- exec: gcloud tasks cmek-config describe --location=${location}
+- exec: gcloud tasks cmek-config update --location=${location} --clear-kms-key
+- exec: gcloud tasks cmek-config describe --location=${location}
