@@ -1,0 +1,2 @@
+- exec: gcloud metastore locations list
+- exec: gcloud metastore locations describe us-central1
