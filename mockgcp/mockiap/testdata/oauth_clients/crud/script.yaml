@@ -1,0 +1,3 @@
+- exec: gcloud iap oauth-clients create projects/${PROJECT_NUMBER}/brands/${BRAND_ID} --display_name=test-${uniqueId}
+- exec: gcloud iap oauth-clients describe test-${uniqueId} --brand=projects/${PROJECT_NUMBER}/brands/${BRAND_ID}
+- exec: gcloud iap oauth-clients delete test-${uniqueId} --brand=projects/${PROJECT_NUMBER}/brands/${BRAND_ID}
