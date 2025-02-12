@@ -1,0 +1,5 @@
+
+- exec: gcloud network-management operations list
+- define: operationId
+  exec: gcloud network-management operations list --format='value(name)' | head -n 1
+- exec: gcloud network-management operations describe ${operationId}
