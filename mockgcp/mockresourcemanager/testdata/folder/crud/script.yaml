@@ -1,0 +1,4 @@
+- exec: gcloud resource-manager folders create --display-name=test-${uniqueId} --organization=${ORG_ID}
+- exec: gcloud resource-manager folders describe ${uniqueId}
+- exec: gcloud resource-manager folders update ${uniqueId} --display-name=test-updated-${uniqueId}
+- exec: gcloud resource-manager folders delete ${uniqueId}
