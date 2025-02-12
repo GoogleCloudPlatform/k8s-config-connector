@@ -1,0 +1,5 @@
+
+- exec: gcloud network-services service-lb-policies create test-${uniqueId} --location=global
+- exec: gcloud network-services service-lb-policies describe test-${uniqueId} --location=global
+- exec: gcloud network-services service-lb-policies list --location=global
+- exec: gcloud network-services service-lb-policies delete test-${uniqueId} --location=global --async
