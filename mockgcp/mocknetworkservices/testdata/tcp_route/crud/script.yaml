@@ -1,0 +1,3 @@
+- exec: gcloud network-services tcp-routes import test-${uniqueId} --source=tcp_route.yaml --location=global
+- exec: gcloud network-services tcp-routes describe test-${uniqueId} --location=global
+- exec: gcloud network-services tcp-routes delete test-${uniqueId} --location=global --async
