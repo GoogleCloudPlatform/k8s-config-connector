@@ -1,0 +1,2 @@
+- exec: gcloud network-connectivity locations list
+- exec: gcloud network-connectivity locations describe us-central1
