@@ -1,0 +1,5 @@
+
+- exec: gcloud iam workforce-pools create test-${uniqueId} --location=global --organization=433637338589
+- exec: gcloud iam workforce-pools describe test-${uniqueId} --location=global --organization=433637338589
+- exec: gcloud iam workforce-pools delete test-${uniqueId} --location=global --organization=433637338589
+- exec: gcloud iam workforce-pools operations describe $(gcloud iam workforce-pools delete test-${uniqueId} --location=global --organization=433637338589 --format="value(name)")
