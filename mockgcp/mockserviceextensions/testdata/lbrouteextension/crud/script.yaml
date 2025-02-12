@@ -1,0 +1,4 @@
+
+- exec: gcloud service-extensions lb-route-extensions import test-${uniqueId} --location=us-central1 --source=resource.yaml
+- exec: gcloud service-extensions lb-route-extensions describe test-${uniqueId} --location=us-central1
+- exec: gcloud service-extensions lb-route-extensions delete test-${uniqueId} --location=us-central1 --async
