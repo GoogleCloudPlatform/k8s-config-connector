@@ -1,0 +1,3 @@
+- exec: gcloud migration vms image-imports create test-${uniqueId} --location=us-central1 --source-file=gs://test-bucket-${uniqueId}/test-image.vmdk --target-project=projects/my-project/locations/global/targetProjects/my-target-project
+- exec: gcloud migration vms image-imports describe test-${uniqueId} --location=us-central1
+- exec: gcloud migration vms image-imports delete test-${uniqueId} --location=us-central1
