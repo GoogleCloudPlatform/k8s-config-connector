@@ -1,0 +1,3 @@
+
+- exec: gcloud filestore locations list
+- exec: gcloud filestore locations describe us-central1-a
