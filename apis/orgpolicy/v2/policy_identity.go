@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type PolicyIdentity struct {
 	parent *PolicyParent
-	id string
+	id     string
 }
 
 func (i *PolicyIdentity) String() string {
-	return  i.parent.String() + "/policys/" + i.id
+	return i.parent.String() + "/policys/" + i.id
 }
 
 func (i *PolicyIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *PolicyIdentity) ID() string {
 }
 
 func (i *PolicyIdentity) Parent() *PolicyParent {
-	return  i.parent
+	return i.parent
 }
 
 type PolicyParent struct {
@@ -51,7 +51,6 @@ type PolicyParent struct {
 func (p *PolicyParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a PolicyIdentity from the Config Connector Policy object.
 func NewPolicyIdentity(ctx context.Context, reader client.Reader, obj *OrgpolicyPolicy) (*PolicyIdentity, error) {

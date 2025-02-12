@@ -14,7 +14,6 @@
 
 package v2
 
-
 // +kcc:proto=google.cloud.orgpolicy.v2.AlternatePolicySpec
 type AlternatePolicySpec struct {
 	// Reference to the launch that will be used while audit logging and to
