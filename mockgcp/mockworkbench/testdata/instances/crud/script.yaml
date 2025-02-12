@@ -1,0 +1,6 @@
+
+- exec: gcloud workbench instances create test-${uniqueId} --location=us-central1-a --machine-type=n1-standard-1
+- exec: gcloud workbench instances describe test-${uniqueId} --location=us-central1-a
+- exec: gcloud workbench instances list --location=us-central1-a
+- exec: gcloud workbench instances update test-${uniqueId} --location=us-central1-a --machine-type=n1-standard-2
+- exec: gcloud workbench instances delete test-${uniqueId} --location=us-central1-a
