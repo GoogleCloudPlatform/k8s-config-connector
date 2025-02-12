@@ -1,0 +1,2 @@
+- exec: gcloud scheduler locations list
+- exec: gcloud scheduler locations describe us-central1
