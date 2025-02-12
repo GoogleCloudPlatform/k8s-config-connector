@@ -1,0 +1,3 @@
+- exec: gcloud eventarc channels create test-${uniqueId} --location us-central1
+- exec: gcloud eventarc channels describe test-${uniqueId} --location us-central1
+- exec: gcloud eventarc channels delete test-${uniqueId} --location us-central1
