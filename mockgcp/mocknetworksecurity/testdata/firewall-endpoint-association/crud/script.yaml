@@ -1,0 +1,13 @@
+
+- exec: >-
+    gcloud network-security firewall-endpoint-associations create test-${uniqueId}
+    --network=projects/my-project/global/networks/my-network
+    --endpoint=organizations/1234/locations/us-central1-a/firewallEndpoints/my-endpoint
+    --zone=us-central1-a
+    --organization=1234
+- exec: >-
+    gcloud network-security firewall-endpoint-associations describe test-${uniqueId}
+    --zone=us-central1-a
+- exec: >-
+    gcloud network-security firewall-endpoint-associations delete test-${uniqueId}
+    --zone=us-central1-a --async
