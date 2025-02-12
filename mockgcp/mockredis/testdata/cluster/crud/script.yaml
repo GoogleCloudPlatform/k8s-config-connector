@@ -1,0 +1,5 @@
+
+- exec: gcloud redis clusters create test-${uniqueId} --region=us-central1 --shard-count=3 --network=projects/cloud-config-connector/global/networks/default
+- exec: gcloud redis clusters describe test-${uniqueId} --region=us-central1
+- exec: gcloud redis clusters update test-${uniqueId} --region=us-central1 --shard-count=5
+- exec: gcloud redis clusters delete test-${uniqueId} --region=us-central1
