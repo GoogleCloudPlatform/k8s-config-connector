@@ -1,0 +1,4 @@
+
+- exec: gcloud network-security address-groups create test-${uniqueId} --location=global --type=IPV4 --capacity=100
+- exec: gcloud network-security address-groups describe test-${uniqueId} --location=global
+- exec: gcloud network-security address-groups delete test-${uniqueId} --location=global
