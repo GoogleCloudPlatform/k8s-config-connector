@@ -1,0 +1,2 @@
+- exec: gcloud firebase test ios locales list
+- exec: gcloud firebase test ios locales describe en
