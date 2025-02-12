@@ -1,0 +1,2 @@
+- exec: gcloud tasks locations list
+- exec: gcloud tasks locations describe us-central1
