@@ -1,0 +1,5 @@
+
+- exec: gcloud iam policy-bindings create test-${uniqueId} --organization=12345 --location=global --policy=organizations/12345/locations/global/principalAccessBoundaryPolicies/my-policy --target-principal-set=//cloudresourcemanager.googleapis.com/organizations/12345
+- exec: gcloud iam policy-bindings describe test-${uniqueId} --organization=12345 --location=global
+- exec: gcloud iam policy-bindings list --organization=12345 --location=global
+- exec: gcloud iam policy-bindings delete test-${uniqueId} --organization=12345 --location=global
