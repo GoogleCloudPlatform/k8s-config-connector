@@ -1,0 +1,10 @@
+
+- exec: gcloud essential-contacts create --email=test-${uniqueId}@example.com --notification-categories=technical,billing --language=en --project=yuwenma-gke-playground
+- exec: gcloud essential-contacts list --project=yuwenma-gke-playground
+- declare: ID
+  regex: "projects/\\d+/contacts/(\\d+)"
+  source: output
+  matchIndex: 0
+- exec: gcloud essential-contacts describe ${ID} --project=yuwenma-gke-playground
+- exec: gcloud essential-contacts update ${ID} --notification-categories=security,suspension --project=yuwenma-gke-playground
+- exec: gcloud essential-contacts delete ${ID} --project=yuwenma-gke-playground
