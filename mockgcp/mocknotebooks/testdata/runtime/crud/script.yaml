@@ -1,0 +1,3 @@
+- exec: gcloud notebooks runtimes create test-${uniqueId} --location=us-central1 --runtime-access-type=SINGLE_USER --runtime-owner=test@test.com
+- exec: gcloud notebooks runtimes describe test-${uniqueId} --location=us-central1
+- exec: gcloud notebooks runtimes delete test-${uniqueId} --location=us-central1
