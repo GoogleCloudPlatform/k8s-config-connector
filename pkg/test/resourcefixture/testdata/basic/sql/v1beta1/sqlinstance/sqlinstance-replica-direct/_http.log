@@ -400,10 +400,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "masterInstanceName": "${projectId}:sqlinstance-master-direct-${uniqueId}",
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "region": "us-central1",
-  "replicaConfiguration": {
-    "failoverTarget": true,
-    "kind": "sql#replicaConfiguration"
-  },
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
@@ -527,10 +523,6 @@ X-Xss-Protection: 0
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": {
-    "failoverTarget": true,
-    "kind": "sql#replicaConfiguration"
-  },
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -764,10 +756,6 @@ X-Xss-Protection: 0
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": {
-    "failoverTarget": true,
-    "kind": "sql#replicaConfiguration"
-  },
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",

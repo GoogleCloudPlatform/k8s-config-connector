@@ -18,8 +18,6 @@ spec:
   masterInstanceRef:
     name: sqlinstance-master-direct-${uniqueId}
   region: us-central1
-  replicaConfiguration:
-    failoverTarget: true
   settings:
     locationPreference:
       zone: us-central1-b
