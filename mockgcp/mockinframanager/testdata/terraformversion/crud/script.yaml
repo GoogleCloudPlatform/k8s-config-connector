@@ -1,0 +1,3 @@
+
+- exec: gcloud infra-manager terraform-versions list --location="global" 
+- exec: gcloud infra-manager terraform-versions describe 1.2.9 --location="global"
