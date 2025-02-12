@@ -1,0 +1,6 @@
+
+- exec: gcloud network-security org-address-groups create test-${uniqueId} --location=global --organization=1234 --type=IPV4 --capacity=100
+- exec: gcloud network-security org-address-groups describe test-${uniqueId} --location=global --organization=1234
+- exec: gcloud network-security org-address-groups list --location=global --organization=1234
+- exec: gcloud network-security org-address-groups update test-${uniqueId} --location=global --organization=1234 --description="updated description"
+- exec: gcloud network-security org-address-groups delete test-${uniqueId} --location=global --organization=1234
