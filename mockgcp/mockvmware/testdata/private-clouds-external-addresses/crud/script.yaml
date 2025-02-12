@@ -1,0 +1,5 @@
+
+- exec: gcloud vmware private-clouds external-addresses create test-${uniqueId} --private-cloud=test-private-cloud --location=us-central1 --internal-ip=192.168.1.1
+- exec: gcloud vmware private-clouds external-addresses describe test-${uniqueId} --private-cloud=test-private-cloud --location=us-central1
+- exec: gcloud vmware private-clouds external-addresses list --private-cloud=test-private-cloud --location=us-central1
+- exec: gcloud vmware private-clouds external-addresses delete test-${uniqueId} --private-cloud=test-private-cloud --location=us-central1 --async
