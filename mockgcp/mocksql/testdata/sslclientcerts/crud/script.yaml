@@ -1,0 +1,5 @@
+
+- exec: gcloud sql ssl client-certs create test-cert-${uniqueId} cert-${uniqueId}.pem --instance test-instance-${uniqueId}
+- exec: gcloud sql ssl client-certs list --instance test-instance-${uniqueId}
+- exec: gcloud sql ssl client-certs describe test-cert-${uniqueId} --instance test-instance-${uniqueId}
+- exec: gcloud sql ssl client-certs delete test-cert-${uniqueId} --instance test-instance-${uniqueId}
