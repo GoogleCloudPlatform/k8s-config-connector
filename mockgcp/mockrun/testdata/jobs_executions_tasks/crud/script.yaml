@@ -1,0 +1,15 @@
+
+- exec: gcloud run jobs create test-job-${uniqueId} --image=us-docker.pkg.dev/cloudrun/container/job --region=us-central1
+- exec: gcloud run jobs execute test-job-${uniqueId} --region=us-central1 --wait
+- exec: gcloud run jobs executions list --job=test-job-${uniqueId} --region=us-central1
+- script: |
+    output=$(gcloud run jobs executions list --job=test-job-${uniqueId} --region=us-central1 --format='value(metadata.name)')
+    execution_id=$(echo "$output" | head -n 1)
+    gcloud run jobs executions tasks list --execution=$execution_id --region=us-central1
+- script: |
+    output=$(gcloud run jobs executions list --job=test-job-${uniqueId} --region=us-central1 --format='value(metadata.name)')
+    execution_id=$(echo "$output" | head -n 1)
+    output_tasks=$(gcloud run jobs executions tasks list --execution=$execution_id --region=us-central1 --format='value(metadata.name)')
+    task_id=$(echo "$output_tasks" | head -n 1)
+    gcloud run jobs executions tasks describe $task_id --execution=$execution_id --region=us-central1
+- exec: gcloud run jobs delete test-job-${uniqueId} --region=us-central1
