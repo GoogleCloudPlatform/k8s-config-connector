@@ -1,0 +1,6 @@
+
+- exec: gcloud memcache instances create test-instance --region=us-central1 --node-count=1 --node-memory=1024MB --maintenance-window-any-time
+- exec: gcloud memcache operations list --region=us-central1
+- exec: gcloud memcache operations describe test-instance --region=us-central1
+- exec: gcloud memcache operations delete test-instance --region=us-central1
+- exec: gcloud memcache instances delete test-instance --region=us-central1
