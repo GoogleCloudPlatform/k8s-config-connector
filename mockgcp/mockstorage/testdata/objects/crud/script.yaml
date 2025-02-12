@@ -1,0 +1,6 @@
+
+- exec: gcloud storage buckets create gs://test-${uniqueId}
+- exec: gcloud storage cp test_file.txt gs://test-${uniqueId}/test-object
+- exec: gcloud storage objects describe gs://test-${uniqueId}/test-object
+- exec: gcloud storage objects delete gs://test-${uniqueId}/test-object
+- exec: gcloud storage buckets delete gs://test-${uniqueId}
