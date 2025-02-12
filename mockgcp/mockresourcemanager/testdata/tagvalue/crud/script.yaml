@@ -1,0 +1,4 @@
+- exec: gcloud resource-manager tags values create test-${uniqueId} --parent=tagKeys/12345
+- exec: gcloud resource-manager tags values describe test-${uniqueId} --parent=tagKeys/12345
+- exec: gcloud resource-manager tags values list --parent=tagKeys/12345
+- exec: gcloud resource-manager tags values delete test-${uniqueId} --parent=tagKeys/12345
