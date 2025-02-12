@@ -1,0 +1,7 @@
+
+- exec: gcloud memcache instances create test-${uniqueId} --region us-central1 --node-count=1 --node-cpu=1 --node-memory=1024MB
+- exec: gcloud memcache instances describe test-${uniqueId} --region us-central1
+- exec: gcloud memcache instances list --region us-central1
+- exec: gcloud memcache instances update test-${uniqueId} --region us-central1 --display-name=updated-test-${uniqueId}
+- exec: gcloud memcache instances describe test-${uniqueId} --region us-central1
+- exec: gcloud memcache instances delete test-${uniqueId} --region us-central1
