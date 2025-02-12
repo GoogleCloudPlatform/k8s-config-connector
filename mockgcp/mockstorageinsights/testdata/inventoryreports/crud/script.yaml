@@ -1,0 +1,8 @@
+
+- exec: gcloud storage insights inventory-reports create gs://test-${uniqueId} --destination=gs://test-${uniqueId}/reports --schedule-repeats=daily --csv-delimiter="," --csv-header
+- exec: gcloud storage insights inventory-reports list --source=gs://test-${uniqueId}
+- exec: gcloud storage insights inventory-reports describe ${uniqueId} --location=us-central1
+- exec: gcloud storage insights inventory-reports update ${uniqueId} --location=us-central1 --display-name=updated-name
+- exec: gcloud storage insights inventory-reports details list ${uniqueId} --location=us-central1
+- exec: gcloud storage insights inventory-reports details describe ${reportDetailId} --report-config=${uniqueId} --location=us-central1
+- exec: gcloud storage insights inventory-reports delete ${uniqueId} --location=us-central1 --force
