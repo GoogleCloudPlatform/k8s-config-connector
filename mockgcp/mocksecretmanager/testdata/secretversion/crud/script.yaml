@@ -1,0 +1,7 @@
+
+- exec: gcloud secrets create test-${uniqueId} --replication-policy=automatic
+- exec: gcloud secrets versions add test-${uniqueId} --data=test-data
+- exec: gcloud secrets versions describe 1 --secret=test-${uniqueId}
+- exec: gcloud secrets versions list test-${uniqueId}
+- exec: gcloud secrets versions destroy 1 --secret=test-${uniqueId} --quiet
+- exec: gcloud secrets delete test-${uniqueId} --quiet
