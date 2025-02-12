@@ -1,0 +1,5 @@
+
+- exec: gcloud workflows deploy test-${uniqueId} --location us-central1 --source workflow.yaml
+- exec: gcloud workflows describe test-${uniqueId} --location us-central1
+- exec: gcloud workflows list --location us-central1
+- exec: gcloud workflows delete test-${uniqueId} --location us-central1 --async
