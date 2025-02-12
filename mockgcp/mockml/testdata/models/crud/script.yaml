@@ -1,0 +1,5 @@
+
+- exec: gcloud ml-engine models create test-${uniqueId} --region us-central1
+- exec: gcloud ml-engine models describe test-${uniqueId} --region us-central1
+- exec: gcloud ml-engine models list --region us-central1 --filter="name:test-${uniqueId}"
+- exec: gcloud ml-engine models delete test-${uniqueId} --region us-central1 --quiet
