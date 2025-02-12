@@ -1,0 +1,4 @@
+
+- exec: gcloud vmware dns-bind-permission grant --user=test-user-${uniqueId}@example.com
+- exec: gcloud vmware dns-bind-permission describe
+- exec: gcloud vmware dns-bind-permission revoke --user=test-user-${uniqueId}@example.com
