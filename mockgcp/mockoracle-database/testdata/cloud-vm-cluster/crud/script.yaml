@@ -1,0 +1,5 @@
+
+- exec: gcloud oracle-database cloud-vm-clusters create test-${uniqueId} --location=us-east4 --exadata-infrastructure=projects/test-project/locations/us-east4/cloudExadataInfrastuctures/test-exadata-infra --network=projects/test-project/locations/global/networks/test-network --backup-subnet-cidr=10.2.0.0/24 --cidr=10.1.0.0/24 --properties-cpu-core-count=4 --properties-gi-version=xx.0.0.0 --properties-hostname-prefix=hostprefix
+- exec: gcloud oracle-database cloud-vm-clusters describe test-${uniqueId} --location=us-east4
+- exec: gcloud oracle-database cloud-vm-clusters list --location=us-east4
+- exec: gcloud oracle-database cloud-vm-clusters delete test-${uniqueId} --location=us-east4 --async
