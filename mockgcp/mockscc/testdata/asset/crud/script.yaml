@@ -1,0 +1,3 @@
+
+- exec: gcloud scc assets list organizations/1234567890
+- exec: gcloud scc assets update-marks organizations/1234567890/assets/000 --security-marks="mark1=value1"
