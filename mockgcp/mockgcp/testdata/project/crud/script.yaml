@@ -1,0 +1,4 @@
+
+- exec: gcloud projects create test-${uniqueId}
+- exec: gcloud projects describe test-${uniqueId}
+- exec: gcloud projects delete test-${uniqueId}
