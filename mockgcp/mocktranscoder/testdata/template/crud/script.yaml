@@ -1,0 +1,4 @@
+- exec: gcloud transcoder templates create test-${uniqueId} --location us-central1 --file template.json
+- exec: gcloud transcoder templates describe test-${uniqueId} --location us-central1
+- exec: gcloud transcoder templates list --location us-central1
+- exec: gcloud transcoder templates delete test-${uniqueId} --location us-central1
