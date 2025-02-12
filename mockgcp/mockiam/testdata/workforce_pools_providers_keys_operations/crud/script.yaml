@@ -1,0 +1,15 @@
+
+- exec: 'gcloud iam workforce-pools create my-workforce-pool-${uniqueId} --location="global"'
+- exec: 'gcloud iam workforce-pools providers create my-provider-${uniqueId} --workforce-pool="my-workforce-pool-${uniqueId}" --location="global"'
+- exec: 'gcloud iam workforce-pools providers keys create my-key-${uniqueId} --workforce-pool="my-workforce-pool-${uniqueId}" --provider="my-provider-${uniqueId}" --location="global"'
+- wait: true
+- exec: 'gcloud iam workforce-pools providers keys describe my-key-${uniqueId} --workforce-pool="my-workforce-pool-${uniqueId}" --provider="my-provider-${uniqueId}" --location="global"'
+- exec: 'gcloud iam workforce-pools providers keys list --workforce-pool="my-workforce-pool-${uniqueId}" --provider="my-provider-${uniqueId}" --location="global"'
+- getOutput: operation_name
+- exec: 'gcloud iam workforce-pools providers keys operations describe ${operation_name} --workforce-pool="my-workforce-pool-${uniqueId}" --provider="my-provider-${uniqueId}" --key="my-key-${uniqueId}" --location="global"'
+- exec: 'gcloud iam workforce-pools providers keys delete my-key-${uniqueId} --workforce-pool="my-workforce-pool-${uniqueId}" --provider="my-provider-${uniqueId}" --location="global"'
+- wait: true
+- getOutput: operation_name
+- exec: 'gcloud iam workforce-pools providers keys operations describe ${operation_name} --workforce-pool="my-workforce-pool-${uniqueId}" --provider="my-provider-${uniqueId}" --key="my-key-${uniqueId}" --location="global"'
+- exec: 'gcloud iam workforce-pools providers delete my-provider-${uniqueId} --workforce-pool="my-workforce-pool-${uniqueId}" --location="global"'
+- exec: 'gcloud iam workforce-pools delete my-workforce-pool-${uniqueId} --location="global"'
