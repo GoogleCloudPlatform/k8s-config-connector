@@ -1,0 +1,4 @@
+
+- exec: gcloud netapp kms-configs create test-${uniqueId} --location=us-central1 --kms-location=us-central1 --kms-project=test-project --kms-keyring=test-keyring --kms-key=test-key
+- exec: gcloud netapp kms-configs describe test-${uniqueId} --location=us-central1
+- exec: gcloud netapp kms-configs delete test-${uniqueId} --location=us-central1 --async
