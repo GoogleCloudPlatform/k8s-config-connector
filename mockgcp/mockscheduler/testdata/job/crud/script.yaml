@@ -1,0 +1,4 @@
+
+- exec: gcloud scheduler jobs create http test-${uniqueId} --location=us-central1 --schedule="0 */3 * * *" --uri="http://example.com/path" --http-method=GET
+- exec: gcloud scheduler jobs describe test-${uniqueId} --location=us-central1
+- exec: gcloud scheduler jobs delete test-${uniqueId} --location=us-central1
