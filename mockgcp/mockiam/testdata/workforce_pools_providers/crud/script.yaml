@@ -1,0 +1,6 @@
+- exec: gcloud iam workforce-pools create test-pool-${uniqueId} --location=global
+- exec: gcloud iam workforce-pools providers create-oidc test-provider-${uniqueId} --workforce-pool=test-pool-${uniqueId} --location=global --attribute-mapping="google.subject=assertion.sub" --client-id=my-client-id --issuer-uri=https://example.com
+- exec: gcloud iam workforce-pools providers list --workforce-pool=test-pool-${uniqueId} --location=global
+- exec: gcloud iam workforce-pools providers describe test-provider-${uniqueId} --workforce-pool=test-pool-${uniqueId} --location=global
+- exec: gcloud iam workforce-pools providers delete test-provider-${uniqueId} --workforce-pool=test-pool-${uniqueId} --location=global --quiet
+- exec: gcloud iam workforce-pools delete test-pool-${uniqueId} --location=global --quiet
