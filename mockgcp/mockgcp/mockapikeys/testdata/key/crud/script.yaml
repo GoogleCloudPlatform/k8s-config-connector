@@ -1,0 +1,6 @@
+
+- exec: gcloud services api-keys create --display-name="test-${uniqueId}"
+- exec: gcloud services api-keys list --format=json
+- exec: gcloud services api-keys describe $(jq -r '.[0].name' <<<"${output}")
+- exec: gcloud services api-keys update $(jq -r '.[0].name' <<<"${output}") --display-name="updated-test-${uniqueId}"
+- exec: gcloud services api-keys delete $(jq -r '.[0].name' <<<"${output}")
