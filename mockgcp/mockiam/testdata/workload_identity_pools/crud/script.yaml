@@ -1,0 +1,5 @@
+
+- exec: gcloud iam workload-identity-pools create test-${uniqueId} --location="global"
+- exec: gcloud iam workload-identity-pools describe test-${uniqueId} --location="global"
+- exec: gcloud iam workload-identity-pools list --location="global"
+- exec: gcloud iam workload-identity-pools delete test-${uniqueId} --location="global"
