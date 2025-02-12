@@ -1,0 +1,3 @@
+
+- exec: gcloud organizations list --format="value(name)"
+- exec: gcloud organizations describe ${0}
