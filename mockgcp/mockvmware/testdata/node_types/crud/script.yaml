@@ -1,0 +1,2 @@
+- exec: gcloud vmware node-types list --location=us-central1
+- exec: gcloud vmware node-types describe standard-72 --location=us-central1
