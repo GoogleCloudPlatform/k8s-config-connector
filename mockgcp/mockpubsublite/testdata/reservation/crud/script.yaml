@@ -1,0 +1,4 @@
+- exec: gcloud pubsub lite-reservations create test-${uniqueId} --location=us-central1 --throughput-capacity=2
+- exec: gcloud pubsub lite-reservations describe test-${uniqueId} --location=us-central1
+- exec: gcloud pubsub lite-reservations list --location=us-central1
+- exec: gcloud pubsub lite-reservations delete test-${uniqueId} --location=us-central1
