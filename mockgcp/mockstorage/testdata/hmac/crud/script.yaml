@@ -1,0 +1,6 @@
+
+- exec: gcloud storage hmac create test-${uniqueId}@test-project.iam.gserviceaccount.com
+- exec: gcloud storage hmac list --user-project test-project --service-account test-${uniqueId}@test-project.iam.gserviceaccount.com
+- exec: gcloud storage hmac describe ${accessId}
+- exec: gcloud storage hmac update -s INACTIVE ${accessId}
+- exec: gcloud storage hmac delete ${accessId}
