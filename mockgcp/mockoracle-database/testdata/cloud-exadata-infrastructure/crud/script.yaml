@@ -1,0 +1,5 @@
+
+- exec: gcloud oracle-database cloud-exadata-infrastructures create test-${uniqueId} --location=us-central1 --properties-shape=Exadata.C1M.1 --properties-compute-count=2 --properties-storage-count=3
+- exec: gcloud oracle-database cloud-exadata-infrastructures describe test-${uniqueId} --location=us-central1
+- exec: gcloud oracle-database cloud-exadata-infrastructures list --location=us-central1
+- exec: gcloud oracle-database cloud-exadata-infrastructures delete test-${uniqueId} --location=us-central1 --force
