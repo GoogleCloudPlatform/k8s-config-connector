@@ -21,7 +21,7 @@ import (
 
 var CloudIdentityGroupGVK = GroupVersion.WithKind("CloudIdentityGroup")
 
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.EntityKey
+// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.EntityKey
 type EntityKey struct {
 	// Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.
 	// +required
@@ -32,7 +32,7 @@ type EntityKey struct {
 }
 
 // CloudIdentityGroupSpec defines the desired state of CloudIdentityGroup
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.Group
+// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.Group
 type CloudIdentityGroupSpec struct {
 	// An extended description to help users determine the purpose of a `Group`. Must not be longer than 4,096 characters.
 	Description *string `json:"description,omitempty"`
@@ -62,7 +62,7 @@ type CloudIdentityGroupSpec struct {
 }
 
 // CloudIdentityGroupStatus defines the config connector machine state of CloudIdentityGroup
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.Group
+// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.Group
 type CloudIdentityGroupStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 
@@ -83,7 +83,7 @@ type CloudIdentityGroupStatus struct {
 }
 
 // CloudIdentityGroupObservedState is the state of the CloudIdentityGroup resource as most recently observed in GCP.
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.Group
+// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.Group
 type CloudIdentityGroupObservedState struct {
 	// Additional group keys associated with the Group.
 	AdditionalGroupKeys []EntityKey `json:"additionalGroupKeys,omitempty"`
