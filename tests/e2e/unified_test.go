@@ -679,11 +679,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					})
 					// Specific to BigQuery
 					addSetStringReplacement(".access[].userByEmail", "user@google.com")
-					for _, event := range events {
-						if event.Request.Method == "PATCH" && strings.Contains(event.Request.URL, "bigquery.googleapis.com/bigquery/v2/") {
-							event.Request.ReplaceHeader("If-Match", "abcdef0123A=")
-						}
-					}
 
 					// Specific to BigTable
 					addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")

@@ -730,13 +730,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	// Compute resources
 	visitor.sortSlices.Insert(".subnetworks")
 
-	// BigQuery resource
-	for _, event := range events {
-		if event.Request.Method == "PATCH" && strings.Contains(event.Request.URL, "bigquery.googleapis.com/bigquery/v2/") {
-			event.Request.ReplaceHeader("If-Match", "abcdef0123A=")
-		}
-	}
-
 	// Specific to Apigee
 	visitor.replacePaths[".response.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	visitor.replacePaths[".response.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
