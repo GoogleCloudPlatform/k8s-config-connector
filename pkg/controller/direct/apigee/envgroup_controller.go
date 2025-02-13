@@ -62,7 +62,7 @@ func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, reader clien
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewEnvironmentGroupIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, reader clien
 		return nil, mapCtx.Err()
 	}
 
-	desired.Name = id.ID()
+	desired.Name = id.ResourceID
 
 	return &Adapter{
 		id:               id,
@@ -89,7 +89,7 @@ func (m *modelApigeeEnvgroup) AdapterForURL(ctx context.Context, url string) (di
 }
 
 type Adapter struct {
-	id               *krm.EnvironmentGroupIdentity
+	id               *krm.EnvgroupIdentity
 	desired          *krm.ApigeeEnvgroup
 	actual           *api.GoogleCloudApigeeV1EnvironmentGroup
 	envgroupsClient  *api.OrganizationsEnvgroupsService
@@ -129,7 +129,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
-	op, err := a.envgroupsClient.Create(a.id.Parent().String(), req).Context(ctx).Do()
+	op, err := a.envgroupsClient.Create(a.id.ParentID.String(), req).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating ApigeeEnvgroup %s: %w", a.fullyQualifiedName(), err)
 	}
@@ -218,13 +218,13 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.Parent.OrganizationRef = &krm.OrganizationRef{External: a.id.Parent().String()}
+	obj.Spec.Parent.OrganizationRef = &krm.OrganizationRef{External: a.id.ParentID.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.ResourceID)
 	u.SetGroupVersionKind(krm.ApigeeEnvgroupGVK)
 
 	u.Object = uObj

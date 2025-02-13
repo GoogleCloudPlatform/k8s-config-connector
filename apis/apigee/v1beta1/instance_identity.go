@@ -23,48 +23,57 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// InstanceIdentity defines the resource reference to ApigeeInstance, which "External" field
-// holds the GCP identifier for the KRM object.
+const (
+	InstanceIDToken  = "instances"
+	InstanceIDFormat = OrganizationIDFormat + "/" + InstanceIDToken + "/{{instanceID}}"
+)
+
+// InstanceIdentity uniquely defines a ApigeeInstance object.
 type InstanceIdentity struct {
-	parent *InstanceParent
-	id     string
+	ParentID   *OrganizationIdentity
+	ResourceID string
 }
 
 func (i *InstanceIdentity) String() string {
-	return i.parent.String() + "/instances/" + i.id
+	return i.ParentID.String() + "/" + InstanceIDToken + "/" + i.ResourceID
 }
 
-func (i *InstanceIdentity) ID() string {
-	return i.id
+// NewInstanceIdentity parses a string-format ApigeeInstance reference into a InstanceIdentity object.
+func NewInstanceIdentity(ref string) (*InstanceIdentity, error) {
+	requiredTokens := len(strings.Split(InstanceIDFormat, "/"))
+
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != requiredTokens || tokens[len(tokens)-2] != InstanceIDToken {
+		return nil, fmt.Errorf("format of ApigeeInstance ref=%q was not known (use %q)", ref, InstanceIDFormat)
+	}
+
+	parentID, err := NewOrganizationIdentity(strings.Join(tokens[:len(tokens)-2], "/"))
+	if err != nil {
+		return nil, fmt.Errorf("format of ApigeeInstance ref=%q was not known (use %q)", ref, InstanceIDFormat)
+	}
+
+	resourceID := tokens[len(tokens)-1]
+
+	id := &InstanceIdentity{
+		ParentID:   parentID,
+		ResourceID: resourceID,
+	}
+
+	return id, nil
 }
 
-func (i *InstanceIdentity) Parent() *InstanceParent {
-	return i.parent
-}
-
-type InstanceParent struct {
-	OrganizationID string
-}
-
-func (p *InstanceParent) String() string {
-	return "organizations/" + p.OrganizationID
-}
-
-// New builds a InstanceIdentity from the Config Connector Instance object.
-func NewApigeeInstanceIdentity(ctx context.Context, reader client.Reader, obj *ApigeeInstance) (*InstanceIdentity, error) {
-
-	// Get Parent
-	orgExternal, err := obj.Spec.OrganizationRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+// GetIdentity reads the identity from the ApigeeInstance resource.
+func (obj *ApigeeInstance) GetIdentity(ctx context.Context, reader client.Reader) (*InstanceIdentity, error) {
+	// Normalize parent reference
+	if err := obj.Spec.OrganizationRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	// Get parent identity
+	parentID, err := NewOrganizationIdentity(obj.Spec.OrganizationRef.External)
 	if err != nil {
 		return nil, err
 	}
-	if orgExternal == "" {
-		return nil, fmt.Errorf("cannot resolve organization")
-	}
-	orgID, err := ParseOrganizationExternal(orgExternal)
-	if err != nil {
-		return nil, err
-	}
+
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
@@ -74,38 +83,22 @@ func NewApigeeInstanceIdentity(ctx context.Context, reader client.Reader, obj *A
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	id := &InstanceIdentity{
+		ParentID:   parentID,
+		ResourceID: resourceID,
+	}
+
+	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseInstanceExternal(externalRef)
+		previousID, err := NewInstanceIdentity(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.OrganizationID != orgID {
-			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, orgID)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if id.String() != previousID.String() {
+			return nil, fmt.Errorf("cannot update ApigeeInstance identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
 		}
 	}
-	return &InstanceIdentity{
-		parent: &InstanceParent{
-			OrganizationID: orgID,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseInstanceExternal(external string) (parent *InstanceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "instances" {
-		return nil, "", fmt.Errorf("format of ApigeeInstance external=%q was not known (use organizations/{{organizationID}}/instances/{{instanceID}})", external)
-	}
-	parent = &InstanceParent{
-		OrganizationID: tokens[1],
-	}
-	resourceID = tokens[3]
-	return parent, resourceID, nil
+	return id, nil
 }

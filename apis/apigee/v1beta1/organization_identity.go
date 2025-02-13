@@ -23,23 +23,41 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// OrganizationIdentity defines the resource reference to ApigeeOrganization, which "External" field
-// holds the GCP identifier for the KRM object.
+const (
+	OrganizationIDToken  = "organizations"
+	OrganizationIDFormat = OrganizationIDToken + "/{{organizationID}}"
+)
+
+// OrganizationIdentity uniquely defines a ApigeeOrganization object.
 type OrganizationIdentity struct {
-	id string
+	ResourceID string
 }
 
 func (i *OrganizationIdentity) String() string {
-	return "/organizations/" + i.id
+	return OrganizationIDToken + "/" + i.ResourceID
 }
 
-func (i *OrganizationIdentity) ID() string {
-	return i.id
+// NewOrganizationIdentity parses a string-format ApigeeOrganization reference into a OrganizationIdentity object.
+func NewOrganizationIdentity(ref string) (*OrganizationIdentity, error) {
+	requiredTokens := len(strings.Split(OrganizationIDFormat, "/"))
+
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != requiredTokens || tokens[len(tokens)-2] != OrganizationIDToken {
+		return nil, fmt.Errorf("format of ApigeeOrganization ref=%q was not known (use %q)", ref, OrganizationIDFormat)
+	}
+
+	resourceID := tokens[len(tokens)-1]
+
+	id := &OrganizationIdentity{
+		ResourceID: resourceID,
+	}
+
+	return id, nil
 }
 
-// New builds a OrganizationIdentity from the Config Connector Organization object.
-func NewOrganizationIdentity(ctx context.Context, reader client.Reader, obj *ApigeeOrganization) (*OrganizationIdentity, error) {
-	// Get desired ID
+// GetIdentity reads the identity from the ApigeeOrganization resource.
+func (obj *ApigeeOrganization) GetIdentity(ctx context.Context, reader client.Reader) (*OrganizationIdentity, error) {
+	// Get resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -47,43 +65,21 @@ func NewOrganizationIdentity(ctx context.Context, reader client.Reader, obj *Api
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
+	id := &OrganizationIdentity{
+		ResourceID: resourceID,
+	}
 
-	// Use approved External
+	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualResourceID, err := ParseOrganizationExternal(externalRef)
+		previousID, err := NewOrganizationIdentity(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if id.String() != previousID.String() {
+			return nil, fmt.Errorf("cannot update ApigeeOrganization identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
 		}
 	}
-	return &OrganizationIdentity{
-		id: resourceID,
-	}, nil
-}
 
-// NewOrganizationIdentityFromNormalizedExternal builds an OrganizationIdentity from
-// the normalized string format of an Organization external reference.
-func NewOrganizationIdentityFromNormalizedExternal(externalRef string) (*OrganizationIdentity, error) {
-	id, err := ParseOrganizationExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	orgID := &OrganizationIdentity{
-		id: id,
-	}
-	return orgID, nil
-}
-
-func ParseOrganizationExternal(external string) (resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 2 || tokens[0] != "organizations" {
-		return "", fmt.Errorf("format of ApigeeOrganization external=%q was not known (use organizations/{{organizationID}})", external)
-	}
-	resourceID = tokens[1]
-	return resourceID, nil
+	return id, nil
 }

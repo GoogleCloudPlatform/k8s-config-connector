@@ -55,7 +55,7 @@ func (m *modelApigeeInstance) AdapterForObject(ctx context.Context, reader clien
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewApigeeInstanceIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -127,9 +127,9 @@ func (a *ApigeeInstanceAdapter) Create(ctx context.Context, createOp *directbase
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = a.id.ID()
+	resource.Name = a.id.ResourceID
 
-	op, err := a.instancesClient.Create(a.id.Parent().String(), resource).Context(ctx).Do()
+	op, err := a.instancesClient.Create(a.id.ParentID.String(), resource).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating ApigeeInstance %s: %w", a.id, err)
 	}
@@ -249,13 +249,13 @@ func (a *ApigeeInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.OrganizationRef = &krm.OrganizationRef{External: a.id.Parent().String()}
+	obj.Spec.OrganizationRef = &krm.OrganizationRef{External: a.id.ParentID.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.ResourceID)
 	u.SetGroupVersionKind(krm.ApigeeInstanceGVK)
 
 	u.Object = uObj
