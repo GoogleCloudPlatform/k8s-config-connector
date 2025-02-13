@@ -91,10 +91,6 @@ type CloudSQLBackupRunSource struct {
 	BackupRunID *int64 `json:"backupRunID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
-type Cluster_PrimaryConfig struct {
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.TrialMetadata
 type Cluster_TrialMetadata struct {
 	// start time of the trial cluster.
@@ -132,22 +128,6 @@ type ContinuousBackupConfig struct {
 	//  protect the user data.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.ContinuousBackupConfig.encryption_config
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.ContinuousBackupInfo
-type ContinuousBackupInfo struct {
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
-type EncryptionInfo struct {
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
-type GeminiClusterConfig struct {
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.GeminiInstanceConfig
-type GeminiInstanceConfig struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
@@ -261,19 +241,11 @@ type Instance_UpdatePolicy struct {
 	Mode *string `json:"mode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule
-type MaintenanceSchedule struct {
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy
 type MaintenanceUpdatePolicy struct {
 	// Preferred windows to perform maintenance. Currently limited to 1.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.maintenance_windows
 	MaintenanceWindows []MaintenanceUpdatePolicy_MaintenanceWindow `json:"maintenanceWindows,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.MigrationSource
-type MigrationSource struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
