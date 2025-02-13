@@ -62,9 +62,8 @@ spec:
             description: ApigeeEnvgroupAttachmentSpec defines the desired state of
               EnvgroupAttachment
             properties:
-              envgroup:
-                description: Immutable. The Apigee environment group which will host
-                  the environment.
+              envgroupRef:
+                description: Reference to parent ApigeeEnvgroup.
                 oneOf:
                 - not:
                     required:
@@ -82,7 +81,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed ApigeeEnvgroup
-                      resource. Should be in the format "organizations/{{organization}}/envgroups/{{envgroup}}".
+                      resource. Should be in the format "organizations/{{organizationID}}/envgroups/{{envgroupID}}".
                     type: string
                   name:
                     description: The name of a ApigeeEnvgroup resource.
@@ -91,8 +90,8 @@ spec:
                     description: The namespace of a ApigeeEnvgroup resource.
                     type: string
                 type: object
-              environment:
-                description: Immutable. The Apigee environment to attach to.
+              environmentRef:
+                description: The Apigee environment to attach to.
                 oneOf:
                 - not:
                     required:
@@ -119,43 +118,13 @@ spec:
                     description: The namespace of a ApigeeEnvironment resource.
                     type: string
                 type: object
-              organizationRef:
-                description: OrganizationRef defines the resource reference to ApigeeOrganization,
-                  which "External" field holds the GCP identifier for the KRM object.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed ApigeeOrganization
-                      resource. Should be in the format "organizations/{{organizationID}}".
-                    type: string
-                  name:
-                    description: The name of a ApigeeOrganization resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a ApigeeOrganization resource.
-                    type: string
-                type: object
               resourceID:
                 description: The EnvgroupAttachment name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
-            - envgroup
-            - environment
-            - organizationRef
+            - envgroupRef
+            - environmentRef
             type: object
           status:
             description: ApigeeEnvgroupAttachmentStatus defines the observed state
@@ -205,9 +174,6 @@ spec:
                   createdAt:
                     description: Output only. The time at which the environment group
                       attachment was created as milliseconds since epoch.
-                    type: string
-                  environmentGroupID:
-                    description: Output only. ID of the environment group.
                     type: string
                 type: object
             type: object

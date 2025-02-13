@@ -23,38 +23,58 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EnvironmentIdentity defines the resource reference to ApigeeEnvironment, which "External" field
-// holds the GCP identifier for the KRM object.
+const (
+	EnvironmentIDToken  = "environments"
+	EnvironmentIDFormat = OrganizationIDFormat + "/" + EnvironmentIDToken + "/{{environmentID}}"
+)
+
+// OrganizationIdentity uniquely defines a ApigeeEnvironment object.
 type EnvironmentIdentity struct {
-	parent *OrganizationIdentity
-	id     string
+	ParentID   *OrganizationIdentity
+	ResourceID string
 }
 
 func (i *EnvironmentIdentity) String() string {
-	return i.parent.String() + "/environments/" + i.id
+	return i.ParentID.String() + "/" + EnvironmentIDToken + "/" + i.ResourceID
 }
 
-func (i *EnvironmentIdentity) ID() string {
-	return i.id
+// NewEnvironmentIdentity parses a string-format ApigeeEnvironment reference into a EnvironmentIdentity object.
+func NewEnvironmentIdentity(ref string) (*EnvironmentIdentity, error) {
+	requiredTokens := len(strings.Split(EnvironmentIDFormat, "/"))
+
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != requiredTokens || tokens[len(tokens)-2] != EnvironmentIDToken {
+		return nil, fmt.Errorf("format of ApigeeEnvironment ref=%q was not known (use %q)", ref, EnvironmentIDFormat)
+	}
+
+	parentID, err := NewOrganizationIdentity(strings.Join(tokens[:len(tokens)-2], "/"))
+	if err != nil {
+		return nil, fmt.Errorf("format of ApigeeEnvironment ref=%q was not known (use %q)", ref, EnvironmentIDFormat)
+	}
+
+	resourceID := tokens[len(tokens)-1]
+
+	id := &EnvironmentIdentity{
+		ParentID:   parentID,
+		ResourceID: resourceID,
+	}
+
+	return id, nil
 }
 
-func (i *EnvironmentIdentity) Parent() *OrganizationIdentity {
-	return i.parent
-}
-
-// New builds a EnvironmentIdentity from the Config Connector Environment object.
-func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *ApigeeEnvironment) (*EnvironmentIdentity, error) {
-	// Get Parent
-	orgExternal, err := obj.Spec.ApigeeOrganizationRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+// GetIdentity reads the identity from the ApigeeEnvironment resource.
+func (obj *ApigeeEnvironment) GetIdentity(ctx context.Context, reader client.Reader) (*EnvironmentIdentity, error) {
+	// Normalize parent reference
+	if err := obj.Spec.ApigeeOrganizationRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	// Get parent identity
+	parentID, err := NewOrganizationIdentity(obj.Spec.ApigeeOrganizationRef.External)
 	if err != nil {
 		return nil, err
 	}
-	parentOrgID, err := NewOrganizationIdentityFromNormalizedExternal(orgExternal)
-	if err != nil {
-		return nil, err
-	}
 
-	// Get desired ID
+	// Get resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -63,37 +83,22 @@ func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *Apig
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	id := &EnvironmentIdentity{
+		ParentID:   parentID,
+		ResourceID: resourceID,
+	}
+
+	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseEnvironmentExternal(externalRef)
+		previousID, err := NewEnvironmentIdentity(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.String() != parentOrgID.String() {
-			return nil, fmt.Errorf("parent organization (spec.apigeeOrganizationRef) changed, expected %s, got %s", actualParent.String(), parentOrgID.String())
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if id.String() != previousID.String() {
+			return nil, fmt.Errorf("cannot update ApigeeEnvironment identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
 		}
 	}
-	return &EnvironmentIdentity{
-		parent: parentOrgID,
-		id:     resourceID,
-	}, nil
-}
 
-func ParseEnvironmentExternal(external string) (parent *OrganizationIdentity, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "environments" {
-		return nil, "", fmt.Errorf("format of ApigeeEnvironment external=%q was not known (use organizations/{{organizationID}}/environments/{{environmentID}})", external)
-	}
-	parent, err = NewOrganizationIdentityFromNormalizedExternal(strings.Join(tokens[:2], "/"))
-	if err != nil {
-		return nil, "", err
-	}
-	resourceID = tokens[3]
-	return parent, resourceID, nil
+	return id, nil
 }
