@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1
+// +kcc:proto=google.apps.cloudidentity.groups.v1beta1
 package v1beta1
