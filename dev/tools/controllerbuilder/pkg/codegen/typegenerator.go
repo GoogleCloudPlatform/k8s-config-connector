@@ -230,11 +230,13 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotation, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 
+	writtenFieldsCount := 0 // Keep track of the field count because fields might be split into two go structs
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
 			// Only write non-output fields.
-			WriteField(out, field, msg, i, false)
+			WriteField(out, field, msg, writtenFieldsCount, false)
+			writtenFieldsCount++
 		}
 	}
 	fmt.Fprintf(out, "}\n")
@@ -248,13 +250,16 @@ func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails) {
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotation, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 
-	for i, field := range msgDetails.OutputFields {
+	writtenFieldsCount := 0 // Keep track of the field count because fields might be split into two go structs
+	for _, field := range msgDetails.OutputFields {
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
 			// If field is not explicitly listed as an output, but it appears in OutputMessageDetails,
 			// then it must be a parent message that contains a child message with an output.
-			WriteField(out, field, msg, i, true)
+			WriteField(out, field, msg, writtenFieldsCount, true)
+			writtenFieldsCount++
 		} else {
-			WriteField(out, field, msg, i, false)
+			WriteField(out, field, msg, writtenFieldsCount, false)
+			writtenFieldsCount++
 		}
 	}
 	fmt.Fprintf(out, "}\n")
