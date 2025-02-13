@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -165,11 +166,13 @@ func (g *generatorBase) findTypeDeclaration(goTypeName string, srcDir string, sk
 	return nil, nil
 }
 
-func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
+// findTypeDeclarationWithProtoTag returns all the matched Go struct names in existing code for a given proto tag
+func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) ([]string, error) {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
 	}
+	var structNames []string
 
 	for _, f := range files {
 		p := filepath.Join(srcDir, f.Name())
@@ -184,18 +187,25 @@ func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir 
 			return nil, fmt.Errorf("reading file %q: %w", p, err)
 		}
 
-		for _, line := range strings.Split(string(b), "\n") {
-			line = strings.TrimSpace(line)
+		lines := strings.Split(string(b), "\n")
+		for i := 0; i < len(lines)-1; i++ { // Use len(lines)-1 to safely check next line
+			line := strings.TrimSpace(lines[i])
 			line = strings.TrimPrefix(line, "//")
 			line = strings.TrimSpace(line)
-			line += " "
+			line += " " // Add " " to avoid matching to a child proto message
 			if strings.HasPrefix(line, "+kcc:proto="+protoTag+" ") {
-				return &line, nil
+				// Get the next line which should be the struct definition
+				nextLine := strings.TrimSpace(lines[i+1])
+				// Extract the struct name
+				re := regexp.MustCompile(`type\s+(\w+)\s+struct\s*{`)
+				if matches := re.FindStringSubmatch(nextLine); len(matches) > 1 {
+					structNames = append(structNames, matches[1]) // Found a match!
+				}
 			}
 		}
 	}
 
-	return nil, nil
+	return structNames, nil
 }
 
 func (g *generatorBase) findFuncDeclaration(goFuncName string, srcDir string, skipGenerated bool) *string {
