@@ -59,8 +59,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfilestore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfilestore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
@@ -95,6 +96,8 @@ type mockRoundTripper struct {
 
 	iamPolicies *mockIAMPolicies
 
+	registeredServices *mockgcpregistry.Services
+
 	services []registeredService
 
 	server *grpc.Server
@@ -103,7 +106,7 @@ type mockRoundTripper struct {
 type registeredService struct {
 	hostRegexes []*regexp.Regexp
 	handler     http.Handler
-	impl        MockService
+	impl        mockgcpregistry.MockService
 }
 
 func (h *registeredService) MatchesHost(host string) (http.Handler, bool) {
@@ -113,19 +116,6 @@ func (h *registeredService) MatchesHost(host string) (http.Handler, bool) {
 		}
 	}
 	return nil, false
-}
-
-// MockService is the interface implemented by all services
-type MockService interface {
-	// Register initializes the service, normally registering the GRPC service.
-	Register(grpcServer *grpc.Server)
-
-	// NewHTTPMux creates an HTTP mux for serving http traffic
-	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error)
-
-	// ExpectedHosts is the hostname(s) we serve on e.g. foo.googleapis.com
-	// We also support patterns like `{region}-foo.googleapis.com`
-	ExpectedHosts() []string
 }
 
 type Interface interface {
@@ -169,9 +159,20 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
 
-	var services []MockService
+	var services []mockgcpregistry.MockService
 
 	services = append(services, resourcemanagerService)
+
+	registeredServices, err := mockgcpregistry.BuildAllServices(env, storage)
+	if err != nil {
+		return nil, err
+	}
+	mockRoundTripper.registeredServices = registeredServices
+
+	for _, service := range registeredServices.Services {
+		services = append(services, service)
+	}
+
 	services = append(services, mockaiplatform.New(env, storage))
 	services = append(services, mockapikeys.New(env, storage))
 	services = append(services, mockbigquery.New(env, storage))
@@ -218,7 +219,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockworkstations.New(env, storage))
 	services = append(services, mockbigquerydatatransfer.New(env, storage))
 	services = append(services, mockbigqueryanalyticshub.New(env, storage))
-	services = append(services, mockfilestore.New(env, storage))
 	services = append(services, mockvpcaccess.New(env, storage))
 	services = append(services, mockapigee.New(env, storage))
 	services = append(services, mockbigqueryreservation.New(env, storage))
@@ -285,6 +285,10 @@ func NewMockRoundTripperForTest(t *testing.T, k8sClient client.Client, storage s
 	}()
 
 	return mockRoundTripper
+}
+
+func (m *mockRoundTripper) ConfigureVisitor(requestURL string, visitor mockgcpregistry.NormalizingVisitor) {
+	m.registeredServices.ConfigureVisitor(requestURL, visitor)
 }
 
 func (m *mockRoundTripper) Run(ctx context.Context) error {
