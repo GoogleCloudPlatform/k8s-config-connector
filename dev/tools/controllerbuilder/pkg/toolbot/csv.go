@@ -273,7 +273,13 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, input *Dat
 
 	var prompt strings.Builder
 
-	fmt.Fprintf(&prompt, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:\n")
+	switch input.Type {
+	case "mockgcp-service",
+		"mockgcp-support":
+		fmt.Fprintf(&prompt, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:\n")
+	case "fuzz-gen":
+		fmt.Fprintf(&prompt, "I'm implementing a fuzzer for a proto message.  I need to configure the fuzzer with the appropriate fields. Please only reference the exisitng mappers, do not create any new mapper.  Here are some examples:\n")
+	}
 
 	examples := x.pickExamples(input)
 
