@@ -56,14 +56,22 @@ func (t *CreateFile) Run(ctx context.Context, c *Chat, args map[string]any) (*Cr
 	p := filepath.Join(c.baseDir, t.Filename)
 	if _, err := os.Stat(p); err == nil {
 		return nil, fmt.Errorf("file %q already exists", t.Filename)
+	} else {
+		err = os.MkdirAll(filepath.Dir(p), 0755)
+		if err != nil {
+			return nil, fmt.Errorf("creating dir %s: %w", filepath.Dir(p), err)
+		}
 	}
+	f, err := os.Create(p)
+	if err != nil {
+		return nil, fmt.Errorf("creating file %s: %w", p, err)
+	}
+	defer f.Close()
 
 	if t.Contents == "" {
 		return nil, fmt.Errorf("the contents argument is requiremnt")
 	}
-
-	newContents := []byte(t.Contents)
-	if err := os.WriteFile(p, newContents, 0644); err != nil {
+	if _, err := f.WriteString(t.Contents); err != nil {
 		return nil, fmt.Errorf("writing file %q: %w", p, err)
 	}
 
