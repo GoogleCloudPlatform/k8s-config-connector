@@ -120,6 +120,11 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
+		if hasOnlyOutputFields(msg) {
+			klog.Infof("skipping generation of %q as it only contains output fields", msg.FullName())
+			continue
+		}
+
 		krmVersion := filepath.Base(g.goPackage)
 
 		k := generatedFileKey{
@@ -195,6 +200,17 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		WriteOutputMessage(&out.body, msgDetails)
 	}
 	return errors.Join(g.errors...)
+}
+
+// hasOnlyOutputFields returns true if the message only contains output fields, false otherwise.
+func hasOnlyOutputFields(msg protoreflect.MessageDescriptor) bool {
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			return false
+		}
+	}
+	return true
 }
 
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
