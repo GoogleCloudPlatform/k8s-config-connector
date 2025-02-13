@@ -19,7 +19,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-west1
+  location: us-central1
   displayName: workstationcluster-${uniqueId}-displayname
   annotations:
     - key: a-key1

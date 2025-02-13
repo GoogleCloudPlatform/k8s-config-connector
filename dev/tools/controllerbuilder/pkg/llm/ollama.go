@@ -41,15 +41,22 @@ func BuildOllamaClient(ctx context.Context) (*OllamaClient, error) {
 	}
 	klog.Infof("using ollama with base url %v", baseURL.String())
 
+	model := os.Getenv("OLLAMA_MODEL")
+	if model == "" {
+		klog.Fatalf("OLLAMA_MODEL not set")
+	}
+
 	return &OllamaClient{
 		baseURL:    baseURL,
 		httpClient: http.DefaultClient,
+		model:      model,
 	}, nil
 }
 
 type OllamaClient struct {
 	baseURL    *url.URL
 	httpClient *http.Client
+	model      string
 }
 
 func (c *OllamaClient) Close() error {
@@ -57,13 +64,9 @@ func (c *OllamaClient) Close() error {
 }
 
 func (c *OllamaClient) StartChat(systemPrompt string) Chat {
-	session := &chatRequest{}
-
-	model := os.Getenv("OLLAMA_MODEL")
-	if model == "" {
-		klog.Fatalf("OLLAMA_MODEL not set")
+	session := &chatRequest{
+		Model: c.model,
 	}
-	session.Model = model
 
 	// HACK: Setting the system prompt seems to really mess up some ollama models
 	// session.Messages = append(session.Messages, chatMessage{
@@ -112,6 +115,51 @@ type chatResponse struct {
 	PromptEvalDuration int64        `json:"prompt_eval_duration"`
 	EvalCount          int64        `json:"eval_count"`
 	EvalDuration       int64        `json:"eval_duration"`
+}
+
+type completionRequest struct {
+	// model: (required) the model name
+	Model string `json:"model,omitempty"`
+	// prompt: the prompt to generate a response for
+	Prompt string `json:"prompt,omitempty"`
+
+	// suffix: the text after the model response
+
+	// images: (optional) a list of base64-encoded images (for multimodal models such as llava)
+
+	// format: the format to return a response in. Format can be json or a JSON schema
+
+	// options: additional model parameters listed in the documentation for the Modelfile such as temperature
+	Options map[string]any `json:"options,omitempty"`
+
+	// system: system message to (overrides what is defined in the Modelfile)
+
+	// template: the prompt template to use (overrides what is defined in the Modelfile)
+
+	// stream: if false the response will be returned as a single response object, rather than a stream of objects
+	Stream *bool `json:"stream,omitempty"`
+
+	// raw: if true no formatting will be applied to the prompt. You may choose to use the raw parameter if you are specifying a full templated prompt in your request to the API
+
+	// keep_alive: controls how long the model will stay loaded into memory following the request (default: 5m)
+
+	// context (deprecated): the context parameter returned from a previous request to /generate, this can be used to keep a short conversational memory
+}
+
+type completionResponse struct {
+	Model     string `json:"model"`
+	CreatedAt string `json:"created_at"`
+	Response  string `json:"response"`
+	Done      bool   `json:"done"`
+
+	//  "context": [1, 2, 3],
+
+	TotalDuration      int64 `json:"total_duration"`
+	LoadDuration       int64 `json:"load_duration"`
+	PromptEvalCount    int64 `json:"prompt_eval_count"`
+	PromptEvalDuration int64 `json:"prompt_eval_duration"`
+	EvalCount          int64 `json:"eval_count"`
+	EvalDuration       int64 `json:"eval_duration"`
 }
 
 type chatMessage struct {
@@ -196,7 +244,9 @@ func (c *OllamaChat) SendMessage(ctx context.Context, parts ...string) (Response
 			Role:    "user",
 			Content: part,
 		})
+		klog.Infof("sending user:\n%v", part)
 	}
+
 	ollamaResponse, err := c.client.doChat(ctx, c.session)
 	if err != nil {
 		return nil, err
@@ -213,6 +263,68 @@ func (c *OllamaChat) SendMessage(ctx context.Context, parts ...string) (Response
 	return response, nil
 }
 
+func (c *OllamaClient) GenerateCompletion(ctx context.Context, request *CompletionRequest) (CompletionResponse, error) {
+	ollamaRequest := &completionRequest{
+		Model:  c.model,
+		Prompt: request.Prompt,
+		Options: map[string]any{
+			"num_ctx": 128 * 1024,
+		},
+	}
+
+	ollamaResponse, err := c.doCompletion(ctx, ollamaRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	if ollamaResponse.Response == "" {
+		return nil, fmt.Errorf("no response returned from ollama")
+	}
+
+	response := &OllamaCompletionResponse{ollamaResponse: ollamaResponse}
+	return response, nil
+}
+
+func (c *OllamaClient) doCompletion(ctx context.Context, req *completionRequest) (*completionResponse, error) {
+	stream := false
+	req.Stream = &stream
+
+	body, err := json.Marshal(req)
+	if err != nil {
+		return nil, fmt.Errorf("building json body: %w", err)
+	}
+	u := c.baseURL.JoinPath("api", "generate")
+	klog.V(2).Infof("sending POST request to %v: %v", u.String(), string(body))
+	httpRequest, err := http.NewRequestWithContext(ctx, "POST", u.String(), bytes.NewReader(body))
+	if err != nil {
+		return nil, fmt.Errorf("building http request: %w", err)
+	}
+	httpRequest.Header.Set("Content-Type", "application/json")
+
+	httpResponse, err := c.httpClient.Do(httpRequest)
+	if err != nil {
+		return nil, fmt.Errorf("performing http request: %w", err)
+	}
+	defer httpResponse.Body.Close()
+
+	b, err := io.ReadAll(httpResponse.Body)
+	if err != nil {
+		return nil, fmt.Errorf("reading response body: %w", err)
+	}
+
+	klog.Infof("response is: %v", string(b))
+
+	if httpResponse.StatusCode != 200 {
+		return nil, fmt.Errorf("unexpected http status: %q with response %q", httpResponse.Status, string(b))
+	}
+
+	completionResponse := &completionResponse{}
+	if err := json.Unmarshal(b, completionResponse); err != nil {
+		return nil, fmt.Errorf("unmarshalling json response: %w", err)
+	}
+	return completionResponse, nil
+}
+
 func (c *OllamaClient) doChat(ctx context.Context, req *chatRequest) (*chatResponse, error) {
 	stream := false
 	req.Stream = &stream
@@ -222,7 +334,7 @@ func (c *OllamaClient) doChat(ctx context.Context, req *chatRequest) (*chatRespo
 		return nil, fmt.Errorf("building json body: %w", err)
 	}
 	u := c.baseURL.JoinPath("api", "chat")
-	klog.Infof("sending POST request to %v: %v", u.String(), string(body))
+	klog.V(2).Infof("sending POST request to %v: %v", u.String(), string(body))
 	httpRequest, err := http.NewRequestWithContext(ctx, "POST", u.String(), bytes.NewReader(body))
 	if err != nil {
 		return nil, fmt.Errorf("building http request: %w", err)
@@ -322,4 +434,18 @@ func (p *OllamaPart) AsFunctionCalls() ([]FunctionCall, bool) {
 		}
 	}
 	return functionCalls, true
+}
+
+type OllamaCompletionResponse struct {
+	ollamaResponse *completionResponse
+}
+
+var _ CompletionResponse = &OllamaCompletionResponse{}
+
+func (r *OllamaCompletionResponse) Response() string {
+	return r.ollamaResponse.Response
+}
+
+func (r *OllamaCompletionResponse) UsageMetadata() any {
+	return r.ollamaResponse
 }

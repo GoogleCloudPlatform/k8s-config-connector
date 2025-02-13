@@ -505,7 +505,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					jsonMutators := []test.JSONMutator{}
 					addReplacement := func(path string, newValue string) {
 						tokens := strings.Split(path, ".")
-						jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 							_, found, _ := unstructured.NestedString(obj, tokens...)
 							if found {
 								if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
@@ -516,7 +516,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 
 					addSetStringReplacement := func(path string, newValue string) {
-						jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 							if err := setStringAtPath(obj, path, newValue); err != nil {
 								t.Fatalf("FAIL: error from setStringAtPath(%+v): %v", obj, err)
 							}
@@ -613,7 +613,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("response.ipAddress", "10.1.2.3")
 					addReplacement("primary.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("primary.generateTime", "2024-04-01T12:34:56.123456Z")
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if val, found, _ := unstructured.NestedString(obj, "name"); found {
 							if strings.Contains(val, "clusters/alloydb") ||
 								strings.Contains(val, "instances/alloydb") ||
@@ -637,7 +637,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					})
 					// Boolean fields in LRO are omitted when false so we need
 					// to add them back.
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if _, found, _ := unstructured.NestedMap(obj, "metadata"); found {
 							if val, found, err := unstructured.NestedString(obj, "metadata", "@type"); err == nil && found && val == "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata" {
 								if _, found, err := unstructured.NestedString(obj, "done"); err == nil && !found {
@@ -684,7 +684,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to Firestore
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if _, found, _ := unstructured.NestedMap(obj, "response"); found {
 							// Only run this mutator for firestore database objects.
 							if val, found, err := unstructured.NestedString(obj, "response", "@type"); err == nil && found && val == "type.googleapis.com/google.firestore.admin.v1.Database" {
@@ -703,7 +703,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to PAM
 					// Boolean fields in LRO are omitted when false so we need
 					// to add them back.
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if _, found, _ := unstructured.NestedMap(obj, "metadata"); found {
 							if val, found, err := unstructured.NestedString(obj, "metadata", "@type"); err == nil && found && val == "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata" {
 								if _, found, err := unstructured.NestedString(obj, "done"); err == nil && !found {
@@ -738,7 +738,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Specific to CertificateManager
 					addReplacement("response.dnsResourceRecord.data", uniqueID)
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {
 							// Only run this mutator for sql instance objects.
 							return
@@ -782,7 +782,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							}
 						}
 					})
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#usersList" {
 							// Only run this mutator for sql users list objects.
 							return
@@ -827,7 +827,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// 	+    "@type": "type.googleapis.com/google.protobuf.Empty",
 					// 	+    "value": {}
 					// 	   }
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						response := obj["response"]
 						if responseMap, ok := response.(map[string]any); ok {
 							if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {
@@ -847,7 +847,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("nextRunTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("ownerInfo.email", "user@google.com")
 					addReplacement("userId", "0000000000000000000")
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if _, found, err := unstructured.NestedString(obj, "destinationDatasetId"); err != nil || !found {
 							// This is a hack to only run this mutator for BigQueryDataTransferConfig objects.
 							return
@@ -867,7 +867,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					})
 
 					// Specific to IAPSettings
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if val, found, _ := unstructured.NestedString(obj, "name"); found {
 							tokens := strings.Split(val, "/")
 							// e.g. "projects/project-id/iap_web/compute-us-central1/services/service-id"
@@ -881,7 +881,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					})
 
 					// Remove error details which can contain confidential information
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						response := obj["error"]
 						if responseMap, ok := response.(map[string]any); ok {
 							delete(responseMap, "details")
@@ -892,7 +892,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					events.PrettifyJSON(jsonMutators...)
 
-					NormalizeHTTPLog(t, events, project, uniqueID, testgcp.TestFolderID.Get(), testgcp.TestOrgID.Get())
+					NormalizeHTTPLog(t, events, h.RegisteredServices(), project, uniqueID, testgcp.TestFolderID.Get(), testgcp.TestOrgID.Get())
 
 					events = RemoveExtraEvents(events)
 

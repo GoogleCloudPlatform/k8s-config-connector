@@ -29,13 +29,12 @@ import (
 
 type GenerateControllerOptions struct {
 	*options.GenerateOptions
-	Kind      string
-	ProtoName string
+
+	Resource options.Resource
 }
 
 func (o *GenerateControllerOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVarP(&o.ProtoName, "proto-resource", "p", "", "the GCP resource proto name. It should match the name in the proto apis. i.e. For resource google.storage.v1.bucket, the `--proto-resource` should be `Bucket`.")
-	cmd.Flags().StringVarP(&o.Kind, "kind", "k", "", "the KCC resource Kind. requires `--proto-resource`.")
+	cmd.Flags().Var(&o.Resource, "resource", "the KRM Kind and the equivalent proto resource separated with a colon.  e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`.")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -47,11 +46,8 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Use:   "generate-controller",
 		Short: "generate the direct controller",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if opt.Kind == "" {
-				return fmt.Errorf("--kind is required")
-			}
-			if opt.ProtoName == "" {
-				return fmt.Errorf("--proto-resource is required")
+			if opt.Resource == (options.Resource{}) {
+				return fmt.Errorf("--resource flag is required")
 			}
 
 			if baseOptions.APIVersion == "" {
@@ -92,8 +88,8 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 	cArgs := &cctemplate.ControllerArgs{
 		KCCService:    serviceName,
 		KCCVersion:    gv.Version,
-		Kind:          o.Kind,
-		ProtoResource: o.ProtoName,
+		Kind:          o.Resource.Kind,
+		ProtoResource: o.Resource.ProtoName,
 		ProtoVersion:  version,
 	}
 	root, err := options.RepoRoot()
@@ -101,7 +97,7 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 		return err
 	}
 
-	c := scaffold.NewControllerBuilder(root, serviceName, o.ProtoName)
+	c := scaffold.NewControllerBuilder(root, serviceName, o.Resource.ProtoName)
 	err = errors.Join(err, c.GenerateController(cArgs))
 	err = errors.Join(err, c.RegisterController())
 	return err

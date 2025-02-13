@@ -22,7 +22,6 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -219,7 +218,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.Parent.OrganizationRef = &refs.ApigeeOrganizationRef{External: a.id.Parent().String()}
+	obj.Spec.Parent.OrganizationRef = &krm.OrganizationRef{External: a.id.Parent().String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -241,7 +240,8 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 
 	if err != nil {
 		if direct.IsNotFound(err) {
-			// Return success if envgroup is not found (assume it was already deleted)
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent ApigeeEnvgroup, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting ApigeeEnvgroup %s: %w", a.id, err)

@@ -400,3 +400,13 @@ operator-e2e-tests:
 	export TEST_ORG_ID=${ORG_ID}
 	export TEST_BILLING_ACCOUNT_ID=${BILLING_ACCOUNT}
 	cd operator/tests/e2e/ && go test --project-id=${PROJECT_ID}
+
+# Generate Go types for direct resources specified in the config files located under `dev/tools/controllerbuilder/config`.
+.PHONY: generate-types
+generate-types:
+	cd dev/tools/controllerbuilder && \
+	./generate-proto.sh && \
+	for config in config/*.yaml; do \
+		go run . generate-types --config $$config; \
+	done
+	dev/tasks/fix-gofmt 

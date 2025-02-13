@@ -68,22 +68,10 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Use:   "generate-mapper",
 		Short: "generate mapper functions for a proto service",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if opt.ServiceName == "" {
-				return fmt.Errorf("ServiceName is required")
+			if err := opt.loadAndApplyConfig(); err != nil {
+				return err
 			}
-			if opt.GenerateOptions.ProtoSourcePath == "" {
-				return fmt.Errorf("ProtoSourcePath is required")
-			}
-			if opt.APIGoPackagePath == "" {
-				return fmt.Errorf("GoPackagePath is required")
-			}
-			if opt.OutputMapperDirectory == "" {
-				return fmt.Errorf("OutputMapperDirectory is required")
-			}
-			if opt.APIVersion == "" {
-				return fmt.Errorf("APIVersion is required")
-			}
-			return nil
+			return opt.validate()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
@@ -153,4 +141,44 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 
 	return nil
 
+}
+
+func (o *GenerateMapperOptions) loadAndApplyConfig() error {
+	if o.ConfigFilePath == "" {
+		return nil
+	}
+	config, err := codegen.LoadConfig(o.ConfigFilePath)
+	if err != nil {
+		return fmt.Errorf("loading service config: %w", err)
+	}
+	if config == nil {
+		return nil
+	}
+
+	if !config.GenerateMapper {
+		return fmt.Errorf("mapper generation is disabled for this service in config file %s", o.ConfigFilePath)
+	}
+
+	o.ServiceName = config.Service
+	o.APIVersion = config.APIVersion
+	return nil
+}
+
+func (o *GenerateMapperOptions) validate() error {
+	if o.ServiceName == "" {
+		return fmt.Errorf("ServiceName is required")
+	}
+	if o.GenerateOptions.ProtoSourcePath == "" {
+		return fmt.Errorf("ProtoSourcePath is required")
+	}
+	if o.APIGoPackagePath == "" {
+		return fmt.Errorf("GoPackagePath is required")
+	}
+	if o.OutputMapperDirectory == "" {
+		return fmt.Errorf("OutputMapperDirectory is required")
+	}
+	if o.APIVersion == "" {
+		return fmt.Errorf("APIVersion is required")
+	}
+	return nil
 }

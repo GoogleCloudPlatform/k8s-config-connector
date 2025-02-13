@@ -111,7 +111,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}OrganizationRef defines the resource reference to ApigeeOrganization, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -121,7 +121,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ApigeeOrganization selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed ApigeeOrganization resource. Should be in the format "organizations/{{organizationID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of an `ApigeeOrganization` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ApigeeOrganization resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -141,7 +141,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of an `ApigeeOrganization` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ApigeeOrganization resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

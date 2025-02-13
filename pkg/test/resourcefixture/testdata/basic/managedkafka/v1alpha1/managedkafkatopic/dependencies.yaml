@@ -29,7 +29,7 @@ spec:
     name: computenetwork-${uniqueId}
   ipCidrRange: 10.0.0.0/24
 ---
-apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+apiVersion: managedkafka.cnrm.cloud.google.com/v1beta1
 kind: ManagedKafkaCluster
 metadata:
   name: managedkafkacluster-${uniqueId}

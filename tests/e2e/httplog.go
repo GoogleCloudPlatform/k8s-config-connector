@@ -122,7 +122,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	jsonMutators := []test.JSONMutator{}
 	addReplacement := func(path string, newValue string) {
 		tokens := strings.Split(path, ".")
-		jsonMutators = append(jsonMutators, func(obj map[string]any) {
+		jsonMutators = append(jsonMutators, func(url string, obj map[string]any) {
 			_, found, _ := unstructured.NestedString(obj, tokens...)
 			if found {
 				if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
@@ -133,7 +133,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	}
 
 	addSetStringReplacement := func(path string, newValue string) {
-		jsonMutators = append(jsonMutators, func(obj map[string]any) {
+		jsonMutators = append(jsonMutators, func(url string, obj map[string]any) {
 			if err := setStringAtPath(obj, path, newValue); err != nil {
 				klog.Fatalf("error from setStringAtPath(%+v): %v", obj, err)
 			}
@@ -196,7 +196,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	// 	+    "@type": "type.googleapis.com/google.protobuf.Empty",
 	// 	+    "value": {}
 	// 	   }
-	jsonMutators = append(jsonMutators, func(obj map[string]any) {
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 		response := obj["response"]
 		if responseMap, ok := response.(map[string]any); ok {
 			if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {

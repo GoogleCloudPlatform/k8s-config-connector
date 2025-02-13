@@ -15,8 +15,9 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -25,13 +26,13 @@ var EnvgroupAttachmentGVK = GroupVersion.WithKind("ApigeeEnvgroupAttachment")
 // ApigeeEnvgroupAttachmentSpec defines the desired state of EnvgroupAttachment
 type ApigeeEnvgroupAttachmentSpec struct {
 	// +required
-	OrganizationRef *refs.ApigeeOrganizationRef `json:"organizationRef"`
+	OrganizationRef *apigeev1beta1.OrganizationRef `json:"organizationRef"`
 
 	// Immutable. The Apigee environment group which will host the environment.
 	EnvgroupRef *EnvironmentGroupRef `json:"envgroup"`
 
 	// Immutable. The Apigee environment to attach to.
-	EnvironmentRef *EnvironmentRef `json:"environment"`
+	EnvironmentRef *apigeev1beta1.EnvironmentRef `json:"environment"`
 
 	// The EnvgroupAttachment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -50,6 +51,19 @@ type ApigeeEnvgroupAttachmentStatus struct {
 	// A unique specifier for the EnvgroupAttachment resource.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *EnvgroupAttachmentObservedState `json:"observedState,omitempty"`
+}
+
+// EnvgroupAttachmentObservedState defines the desired state of ApigeeEnvgroupAttachment
+type EnvgroupAttachmentObservedState struct {
+	// Output only. The time at which the environment group attachment
+	// was created as milliseconds since epoch.
+	CreatedAt *string `json:"createdAt,omitempty"`
+
+	// Output only. ID of the environment group.
+	EnvironmentGroupID *string `json:"environmentGroupID,omitempty"`
 }
 
 // +genclient

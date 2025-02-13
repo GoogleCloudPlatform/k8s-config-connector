@@ -107,6 +107,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"KMSKeyHandle",
 		"SecureSourceManagerInstance",
 		"SecureSourceManagerRepository",
+		"ManagedKafkaCluster",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }

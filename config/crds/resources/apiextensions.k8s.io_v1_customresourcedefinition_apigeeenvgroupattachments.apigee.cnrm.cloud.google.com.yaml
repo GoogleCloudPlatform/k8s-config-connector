@@ -120,6 +120,8 @@ spec:
                     type: string
                 type: object
               organizationRef:
+                description: OrganizationRef defines the resource reference to ApigeeOrganization,
+                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -136,15 +138,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ApigeeOrganization selfLink, when not managed
-                      by Config Connector.
+                    description: A reference to an externally managed ApigeeOrganization
+                      resource. Should be in the format "organizations/{{organizationID}}".
                     type: string
                   name:
-                    description: The `name` field of an `ApigeeOrganization` resource.
+                    description: The name of a ApigeeOrganization resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of an `ApigeeOrganization`
-                      resource.
+                    description: The namespace of a ApigeeOrganization resource.
                     type: string
                 type: object
               resourceID:
@@ -197,6 +198,18 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createdAt:
+                    description: Output only. The time at which the environment group
+                      attachment was created as milliseconds since epoch.
+                    type: string
+                  environmentGroupID:
+                    description: Output only. ID of the environment group.
+                    type: string
+                type: object
             type: object
         type: object
     served: true

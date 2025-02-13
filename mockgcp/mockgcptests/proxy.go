@@ -115,7 +115,7 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 	// We need to register services to use http, to stop gcloud trying to use TUNNEL with our proxy
 
 	// We need a hard-coded list, because we don't always mockgcp available
-	services := []string{
+	apiEndpointOverrides := []string{
 		"accessapproval.googleapis.com",
 		"accesscontextmanager.googleapis.com",
 		"ai.googleapis.com",
@@ -226,14 +226,9 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 		"workflows.googleapis.com",
 		"workstations.googleapis.com",
 	}
-	for _, service := range services {
-		if strings.HasSuffix(service, ".googleapis.com") {
-			key := strings.TrimSuffix(service, ".googleapis.com")
-			config.AddConfig(fmt.Sprintf("api_endpoint_overrides/%v", key), fmt.Sprintf("http://%s.googleapis.com/", key))
-		} else {
-			// Probably not actually fatal, but unexpected (today)
-			klog.Fatalf("unhandled host %q", service)
-		}
+
+	for _, apiEndpointOverride := range apiEndpointOverrides {
+		config.AddConfig(fmt.Sprintf("api_endpoint_overrides/%v", apiEndpointOverride), fmt.Sprintf("http://%s.googleapis.com/", apiEndpointOverride))
 	}
 
 	return config

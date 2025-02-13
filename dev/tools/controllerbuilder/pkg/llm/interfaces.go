@@ -22,6 +22,8 @@ import (
 type Client interface {
 	io.Closer
 	StartChat(systemPrompt string) Chat
+
+	GenerateCompletion(ctx context.Context, req *CompletionRequest) (CompletionResponse, error)
 }
 
 type Chat interface {
@@ -43,4 +45,13 @@ type Candidate interface {
 type Part interface {
 	AsText() (string, bool)
 	AsFunctionCalls() ([]FunctionCall, bool)
+}
+
+type CompletionRequest struct {
+	Prompt string
+}
+
+type CompletionResponse interface {
+	Response() string
+	UsageMetadata() any
 }

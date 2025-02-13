@@ -36,12 +36,10 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 
 ## Reconciliation Improvements
 
-We have added support for direct reconciliation to more resources, with opt-in behaviour.  The API is unchanged. To use the direct reconciler, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.  The following resources now have direct reconciliation support (and we list some of the issues that this fixes): 
+* [`SQLInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance)
 
-* [`SAMPLE_SQLInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance) (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
-
-    * Fix the upgrade and downgrade issue between ENTERPRISE and ENTERPRISE_PLUS.
-    * Supports "creating from clone" via `spec.cloneSource`
+    * All SQLInstance types are now reconciled using the new direct controller (instead of the legacy Terraform-based controller). The previous "opt-in" annotation (documented [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/docs/features/optin.md)) no longer applies. Users no longer need to apply the "opt-in" annotation to SQLInstance resources to enable the direct controller. Regardless of the presence (or absence) of an opt-in annotation on SQLInstance resources, the direct reconciler will be used.
+    * This change enables all SQLInstance resources to switch from edition ENTERPRISE -> ENTERPRISE_PLUS and fixes [this bug](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2907).
 
 
 ## New features:

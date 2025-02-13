@@ -349,18 +349,17 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting FirestoreDatabase", "name", a.id.FullyQualifiedName())
 
-	if a.id.firestoredatabase == "" {
-		return false, nil
-	}
-	if a.actual == nil {
-		return false, fmt.Errorf("FirestoreDatabase %s not found in GCP", a.id.FullyQualifiedName())
-	}
 	req := &firestorepb.DeleteDatabaseRequest{
 		Name: a.id.FullyQualifiedName(),
 		Etag: a.actual.Etag,
 	}
 	op, err := a.firestoreAdminClient.DeleteDatabase(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent FirestoreDatabase, assuming it was already deleted", "name", a.id.FullyQualifiedName())
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting FirestoreDatabase %s: %w", a.id.FullyQualifiedName(), err)
 	}
 	log.V(2).Info("successfully deleted FirestoreDatabase", "name", a.id.FullyQualifiedName())

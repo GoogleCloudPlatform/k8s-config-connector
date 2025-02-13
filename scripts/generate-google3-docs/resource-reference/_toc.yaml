@@ -449,6 +449,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership.md
   - title: "GKEHubMembership"
     path: /config-connector/docs/reference/resource-docs/gkehub/gkehubmembership.md
+- title: "Managed Kafka"
+  section:
+  - title: "ManagedKafkaCluster"
+    path: /config-connector/docs/reference/resource-docs/managedkafka/managedkafkacluster.md
 - title: "Memorystore (Redis)"
   section:
   - title: "RedisCluster"

@@ -115,7 +115,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to parent Apigee Organization.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -125,9 +125,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The apigee organization for the resource
-
-Allowed value: The Google Cloud resource name of an `ApigeeOrganization` resource (format: `organizations/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed ApigeeOrganization resource. Should be in the format "organizations/{{organizationID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -137,7 +135,7 @@ Allowed value: The Google Cloud resource name of an `ApigeeOrganization` resourc
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ApigeeOrganization resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -147,7 +145,7 @@ Allowed value: The Google Cloud resource name of an `ApigeeOrganization` resourc
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ApigeeOrganization resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -187,7 +185,7 @@ Allowed value: The Google Cloud resource name of an `ApigeeOrganization` resourc
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The ApigeeEnvironment name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -205,8 +203,10 @@ conditions:
   status: string
   type: string
 createdAt: integer
+externalRef: string
 lastModifiedAt: integer
 observedGeneration: integer
+observedState: {}
 state: string
 ```
 
@@ -221,7 +221,7 @@ state: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -274,6 +274,13 @@ state: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the ApigeeEnvironment resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>lastModifiedAt</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -288,10 +295,17 @@ state: string
         </td>
     </tr>
     <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. State of the environment. Values other than ACTIVE means the resource is not ready to use. Possible values: STATE_UNSPECIFIED, CREATING, ACTIVE, DELETING{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. State of the environment. Values other than ACTIVE means the resource is not ready to use.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

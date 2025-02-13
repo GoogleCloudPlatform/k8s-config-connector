@@ -39,7 +39,7 @@ type VerifyCodeResponse struct {
 	Errors  []string
 }
 
-func (t *VerifyCode) Run(ctx context.Context, c *Chat, args map[string]any) (*VerifyCodeResponse, error) {
+func (t *VerifyCode) Run(ctx context.Context, c *Chat, args map[string]any) (any, error) {
 	b, err := json.Marshal(args)
 	if err != nil {
 		return nil, fmt.Errorf("converting to json: %w", err)

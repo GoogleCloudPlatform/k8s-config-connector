@@ -15,8 +15,7 @@ go run . generate-mapper \
 
 # To scaffold generate the SecretManagerSecretVersion controller
 go run . generate-direct-reconciler \
-  --kind SecretManagerSecretVersion \
-  --proto-resource SecretVersion \
+  --resource SecretManagerSecretVersion:SecretVersion \
   --api-version  "secretmanager.cnrm.cloud.google.com/v1beta1" \
   --service "google.cloud.secretmanager.v1"
 

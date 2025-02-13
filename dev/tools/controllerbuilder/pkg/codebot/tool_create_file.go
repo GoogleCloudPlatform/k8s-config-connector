@@ -38,7 +38,7 @@ type CreateFileResults struct {
 	Success bool `json:"success"`
 }
 
-func (t *CreateFile) Run(ctx context.Context, c *Chat, args map[string]any) (*CreateFileResults, error) {
+func (t *CreateFile) Run(ctx context.Context, c *Chat, args map[string]any) (any, error) {
 	b, err := json.Marshal(args)
 	if err != nil {
 		return nil, fmt.Errorf("converting to json: %w", err)
