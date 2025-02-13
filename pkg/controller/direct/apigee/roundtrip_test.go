@@ -15,7 +15,6 @@
 package apigee
 
 import (
-	"encoding/json"
 	"reflect"
 	"testing"
 	"time"
@@ -26,6 +25,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/fuzz"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
@@ -44,13 +44,13 @@ func FuzzApigeeEnvgroupSpec(f *testing.F) {
 		ctx := &direct.MapContext{}
 		apiObj := ApigeeEnvgroupSpec_ToApi(ctx, k1, *k1.ResourceID)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting KRM to API obj: %v \n KRM: %s", ctx.Err(), prettyPrint(t, k1))
+			t.Fatalf("error converting KRM to API obj: %v \n KRM: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		// Back to KRM
 		k2 := ApigeeEnvgroupSpec_FromApi(ctx, apiObj)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting API obj to KRM: %v \n API: %s", ctx.Err(), prettyPrint(t, apiObj))
+			t.Fatalf("error converting API obj to KRM: %v \n API: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		// Using cmpopts.IgnoreFields to ignore OrganizationRef
@@ -81,13 +81,13 @@ func FuzzApigeeEnvgroupObservedState(f *testing.F) {
 		ctx := &direct.MapContext{}
 		apiObj := ApigeeEnvgroupObservedState_ToApi(ctx, k1)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting from KRM to API obj: %v \n KRM: %s", ctx.Err(), prettyPrint(t, k1))
+			t.Fatalf("error converting from KRM to API obj: %v \n KRM: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		// Back to KRM
 		k2 := ApigeeEnvgroupObservedState_FromApi(ctx, apiObj)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting from API obj to KRM: %v \n API: %s", ctx.Err(), prettyPrint(t, apiObj))
+			t.Fatalf("error converting from API obj to KRM: %v \n API: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		// Compare
@@ -98,15 +98,6 @@ func FuzzApigeeEnvgroupObservedState(f *testing.F) {
 		}
 
 	})
-}
-
-func prettyPrint(t *testing.T, k any) string {
-	encoded, err := json.MarshalIndent(k, "", " ")
-	if err != nil {
-		t.Fatalf("error encoding to json: %v", err)
-	}
-
-	return string(encoded)
 }
 
 func FuzzApigeeInstanceSpec(f *testing.F) {
@@ -121,13 +112,13 @@ func FuzzApigeeInstanceSpec(f *testing.F) {
 		ctx := &direct.MapContext{}
 		apiObj := ApigeeInstanceSpec_ToAPI(ctx, k1)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), prettyPrint(t, k1))
+			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), test.PrettyPrintJSON(t, k1))
 		}
 
 		// API -> KRM
 		k2 := ApigeeInstanceSpec_FromAPI(ctx, apiObj)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), prettyPrint(t, apiObj))
+			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		// Ignore Parent, ResourceID, and ref Name+Namespace fields during comparison
@@ -157,13 +148,13 @@ func FuzzApigeeInstanceObservedState(f *testing.F) {
 		ctx := &direct.MapContext{}
 		apiObj := ApigeeInstanceObservedState_ToAPI(ctx, k1)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), prettyPrint(t, k1))
+			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), test.PrettyPrintJSON(t, k1))
 		}
 
 		// API -> KRM
 		k2 := ApigeeInstanceObservedState_FromAPI(ctx, apiObj)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), prettyPrint(t, apiObj))
+			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		// Compare
@@ -188,13 +179,13 @@ func FuzzEnvgroupAttachmentSpec(f *testing.F) {
 		ctx := &direct.MapContext{}
 		apiObj := EnvgroupAttachmentSpec_ToAPI(ctx, k1)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting KRM to API obj: %v \n KRM: %s", ctx.Err(), prettyPrint(t, k1))
+			t.Fatalf("error converting KRM to API obj: %v \n KRM: %s", ctx.Err(), test.PrettyPrintJSON(t, k1))
 		}
 
 		// Back to KRM
 		k2 := EnvgroupAttachmentSpec_FromAPI(ctx, apiObj)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting API obj to KRM: %v \n API: %s", ctx.Err(), prettyPrint(t, apiObj))
+			t.Fatalf("error converting API obj to KRM: %v \n API: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		opts := cmp.Options{
@@ -236,13 +227,13 @@ func FuzzEnvgroupAttachmentObservedState(f *testing.F) {
 		ctx := &direct.MapContext{}
 		apiObj := EnvgroupAttachmentObservedState_ToAPI(ctx, k1)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), prettyPrint(t, k1))
+			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), test.PrettyPrintJSON(t, k1))
 		}
 
 		// API -> KRM
 		k2 := EnvgroupAttachmentObservedState_FromAPI(ctx, apiObj)
 		if ctx.Err() != nil {
-			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), prettyPrint(t, apiObj))
+			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		// Compare
