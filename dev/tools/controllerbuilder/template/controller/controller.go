@@ -143,9 +143,9 @@ var _ directbase.Adapter = &{{.ProtoResource}}Adapter{}
 // Return a non-nil error requeues the requests. 
 func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting {{.ProtoResource}}", "name", a.id.String())
+	log.V(2).Info("getting {{.ProtoResource}}", "name", a.id)
 
-	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id}
+	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.String()}
 	{{.ProtoResource | ToLower }}pb, err := a.gcpClient.Get{{.ProtoResource}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
