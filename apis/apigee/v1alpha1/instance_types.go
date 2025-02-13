@@ -40,7 +40,7 @@ type AccessLoggingConfig struct {
 type ApigeeInstanceSpec struct {
 	// Reference to parent Apigee Organization.
 	// +required
-	OrganizationRef *apigeev1beta1.OrganizationRef `json:"organizationRef"`
+	OrganizationRef *apigeev1beta1.ApigeeOrganizationRef `json:"organizationRef"`
 
 	// The ApigeeInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

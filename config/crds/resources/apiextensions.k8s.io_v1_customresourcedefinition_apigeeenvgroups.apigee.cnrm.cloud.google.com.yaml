@@ -65,8 +65,8 @@ spec:
                   type: string
                 type: array
               organizationRef:
-                description: OrganizationRef defines the resource reference to ApigeeOrganization,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: ApigeeOrganizationRef is a reference to a ApigeeOrganization
+                  resource.
                 oneOf:
                 - not:
                     required:
@@ -214,8 +214,8 @@ spec:
                   type: string
                 type: array
               organizationRef:
-                description: OrganizationRef defines the resource reference to ApigeeOrganization,
-                  which "External" field holds the GCP identifier for the KRM object.
+                description: ApigeeOrganizationRef is a reference to a ApigeeOrganization
+                  resource.
                 oneOf:
                 - not:
                     required:

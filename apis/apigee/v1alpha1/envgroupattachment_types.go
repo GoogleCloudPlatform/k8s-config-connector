@@ -21,18 +21,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var EnvgroupAttachmentGVK = GroupVersion.WithKind("ApigeeEnvgroupAttachment")
+var ApigeeEnvgroupAttachmentGVK = GroupVersion.WithKind("ApigeeEnvgroupAttachment")
 
 // ApigeeEnvgroupAttachmentSpec defines the desired state of EnvgroupAttachment
 type ApigeeEnvgroupAttachmentSpec struct {
+	// Reference to parent ApigeeEnvgroup.
 	// +required
-	OrganizationRef *apigeev1beta1.OrganizationRef `json:"organizationRef"`
+	EnvgroupRef *ApigeeEnvgroupRef `json:"envgroupRef"`
 
-	// Immutable. The Apigee environment group which will host the environment.
-	EnvgroupRef *EnvironmentGroupRef `json:"envgroupRef"`
-
-	// Immutable. The Apigee environment to attach to.
-	EnvironmentRef *apigeev1beta1.EnvironmentRef `json:"environmentRef"`
+	// The Apigee environment to attach to.
+	// +required
+	EnvironmentRef *apigeev1beta1.ApigeeEnvironmentRef `json:"environmentRef"`
 
 	// The EnvgroupAttachment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -61,9 +60,6 @@ type EnvgroupAttachmentObservedState struct {
 	// Output only. The time at which the environment group attachment
 	// was created as milliseconds since epoch.
 	CreatedAt *string `json:"createdAt,omitempty"`
-
-	// Output only. ID of the environment group.
-	EnvironmentGroupID *string `json:"environmentGroupID,omitempty"`
 }
 
 // +genclient

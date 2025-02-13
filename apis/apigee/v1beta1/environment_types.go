@@ -29,7 +29,7 @@ type ApigeeEnvironmentSpec struct {
 
 	// Reference to parent Apigee Organization.
 	// +required
-	ApigeeOrganizationRef *OrganizationRef `json:"apigeeOrganizationRef,omitempty"`
+	ApigeeOrganizationRef *ApigeeOrganizationRef `json:"apigeeOrganizationRef,omitempty"`
 
 	/* NOTYET: Add this once direct controller is implemented
 	// Optional. API Proxy type supported by the environment. The type can be set when creating the Environment and cannot be changed.

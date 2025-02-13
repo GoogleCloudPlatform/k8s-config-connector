@@ -55,10 +55,11 @@ func (m *modelApigeeInstance) AdapterForObject(ctx context.Context, reader clien
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewApigeeInstanceIdentity(ctx, reader, obj)
+	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := i.(*krm.ApigeeInstanceIdentity)
 
 	// Get apigee GCP client
 	gcpClient, err := newGCPClient(ctx, m.config)
@@ -80,7 +81,7 @@ func (m *modelApigeeInstance) AdapterForURL(ctx context.Context, url string) (di
 }
 
 type ApigeeInstanceAdapter struct {
-	id               *krm.InstanceIdentity
+	id               *krm.ApigeeInstanceIdentity
 	k8sClient        client.Reader
 	instancesClient  *api.OrganizationsInstancesService
 	operationsClient *api.OrganizationsOperationsService
@@ -127,9 +128,9 @@ func (a *ApigeeInstanceAdapter) Create(ctx context.Context, createOp *directbase
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = a.id.ID()
+	resource.Name = a.id.ResourceID
 
-	op, err := a.instancesClient.Create(a.id.Parent().String(), resource).Context(ctx).Do()
+	op, err := a.instancesClient.Create(a.id.ParentID.String(), resource).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating ApigeeInstance %s: %w", a.id, err)
 	}
@@ -249,13 +250,13 @@ func (a *ApigeeInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.OrganizationRef = &krm.OrganizationRef{External: a.id.Parent().String()}
+	obj.Spec.OrganizationRef = &krm.ApigeeOrganizationRef{External: a.id.ParentID.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(a.id.ResourceID)
 	u.SetGroupVersionKind(krm.ApigeeInstanceGVK)
 
 	u.Object = uObj
