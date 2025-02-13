@@ -143,9 +143,9 @@ var _ directbase.Adapter = &{{.ProtoResource}}Adapter{}
 // Return a non-nil error requeues the requests. 
 func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting {{.ProtoResource}}", "name", a.id.String())
+	log.V(2).Info("getting {{.ProtoResource}}", "name", a.id)
 
-	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id}
+	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.String()}
 	{{.ProtoResource | ToLower }}pb, err := a.gcpClient.Get{{.ProtoResource}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -226,7 +226,7 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 
 
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.String())
+		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
 	updateMask := &fieldmaskpb.FieldMask{
@@ -241,13 +241,13 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	}
 	op, err := a.gcpClient.Update{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id.String(), err)
+		return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id, err)
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id.String(), err)
+		return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id, err)
 	}
-	log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id.String())
+	log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id)
 
 	status := &krm.{{.Kind}}Status{}
 	status.ObservedState = {{.Kind}}ObservedState_FromProto(mapCtx, updated)
@@ -294,7 +294,7 @@ func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *direct
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent {{.ProtoResource}}, assuming it was already deleted", "name", a.id.String())
+			log.V(2).Info("skipping delete for non-existent {{.ProtoResource}}, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id, err)
