@@ -28,7 +28,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "response": {
-    "@type": "type.googleapis.com/mockgcp.cloud.cloudidentity.groups.v1beta1.Group",
+    "@type": "type.googleapis.com/google.apps.cloudidentity.groups.v1beta1.Group",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "This is a test CloudIdentityGroup. It should be modified before use as a sample.",
     "displayName": "Cloud Identity Group Name",
@@ -152,7 +152,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "response": {
-    "@type": "type.googleapis.com/mockgcp.cloud.cloudidentity.groups.v1beta1.Membership",
+    "@type": "type.googleapis.com/google.apps.cloudidentity.groups.v1beta1.Membership",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deliverySetting": "DIGEST",
     "name": "groups/${groupID}/memberships/${membershipID}",
