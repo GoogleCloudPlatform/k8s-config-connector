@@ -96,7 +96,7 @@ func (d *FieldDetector) expandToIncludeNestedMessages(initialTargets sets.String
 			return nil, fmt.Errorf("unexpected descriptor type: %T", desc)
 		}
 
-		deps, err := codegen.FindDependenciesForMessage(message, d.opts.IgnoredFields)
+		deps, err := codegen.FindDependenciesForMessage(message, d.ignoredFields)
 		if err != nil {
 			return nil, fmt.Errorf("failed to find dependencies for message %s: %w", name, err)
 		}

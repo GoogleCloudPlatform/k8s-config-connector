@@ -19,18 +19,7 @@ $ go run . detect-new-fields \
 
 # Ignore specific fields using a config file
 $ go run . detect-new-fields \
-  --ignored-fields-file=config/ignored_fields.yaml
-```
-
-An example ignored_fields.yaml
-```yaml
-google.cloud.bigquery.connection.v1:
-  Connection:
-    - salesforceDataCloud
-google.api.apikeys.v2:
-  Key:
-    - createTime
-    - updateTime
+  --config-dir=config/
 ```
 
 ## Example Output

@@ -82,9 +82,9 @@ func runFieldInserter(_ context.Context, opt *insertFieldOptions) error {
 		ProtoSourcePath:       opt.GenerateOptions.ProtoSourcePath,
 		ParentMessageFullName: opt.parent,
 		FieldToInsert:         opt.field,
-		IgnoredFields:         opt.ignoredFields,
 		APIDirectory:          opt.apiDirectory,
 		GoPackagePath:         opt.apiGoPackagePath,
+		ConfigDir:             opt.configDir,
 	})
 	return fieldInserter.Run()
 }

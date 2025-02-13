@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/newfieldsdetector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
+
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
@@ -31,29 +32,20 @@ import (
 type DetectNewFieldsOptions struct {
 	*options.GenerateOptions
 
-	targetMessages    string // comma-separated list of proto message names
-	ignoredFieldsFile string // path to ignored fields YAML file
-	outputFormat      string // optional: json, yaml, or text
+	targetMessages string // comma-separated list of proto message names
+	outputFormat   string // optional: json, yaml, or text
+	ConfigDir      string // path to service config files
 }
 
 func (o *DetectNewFieldsOptions) InitDefaults() error {
 	o.outputFormat = "text"
-
-	// Set default ignored fields file path
-	_, err := options.RepoRoot()
-	if err != nil {
-		return err
-	}
-	// TODO: create this file
-	// o.ignoredFieldsFile = filepath.Join(repoRoot, "dev", "tools", "controllerbuilder", "config", "ignored_fields.yaml")
-
 	return nil
 }
 
 func (o *DetectNewFieldsOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.targetMessages, "target-messages", o.targetMessages, "Comma-separated list of target fully qualified proto message names to check")
-	cmd.Flags().StringVar(&o.ignoredFieldsFile, "ignored-fields-file", o.ignoredFieldsFile, "Path to YAML file containing ignored fields configuration")
 	cmd.Flags().StringVar(&o.outputFormat, "output-format", o.outputFormat, "Output format: text, json, or yaml")
+	cmd.Flags().StringVar(&o.ConfigDir, "config-dir", o.ConfigDir, "Path to service config files")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -86,26 +78,22 @@ The pinned version is determined by the version specified in mockgcp/git.version
 }
 
 func runNewFieldDetector(ctx context.Context, opt *DetectNewFieldsOptions) error {
-	ignoredFields, err := newfieldsdetector.LoadIgnoredFields(opt.ignoredFieldsFile)
-	if err != nil {
-		return fmt.Errorf("loading ignored fields: %w", err)
-	}
-
 	targetMessages := sets.NewString()
 	if opt.targetMessages != "" {
-		targetMessages = sets.NewString(strings.Split(opt.targetMessages, ",")...)
-	}
-	newFieldDetector, err := newfieldsdetector.NewFieldDetector(&newfieldsdetector.DetectorOptions{
-		TargetMessages: targetMessages,
-		IgnoredFields:  ignoredFields,
-	})
-	if err != nil {
-		return fmt.Errorf("creating new field detector: %w", err)
+		targetMessages.Insert(strings.Split(opt.targetMessages, ",")...)
 	}
 
-	diffs, err := newFieldDetector.DetectNewFields()
+	detector, err := newfieldsdetector.NewFieldDetector(&newfieldsdetector.DetectorOptions{
+		TargetMessages: targetMessages,
+		ConfigDir:      opt.ConfigDir,
+	})
 	if err != nil {
-		return fmt.Errorf("detecting new fields: %w", err)
+		return err
+	}
+
+	diffs, err := detector.DetectNewFields()
+	if err != nil {
+		return err
 	}
 
 	return outputResults(diffs, opt.outputFormat)

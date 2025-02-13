@@ -19,3 +19,5 @@ resources:
   - kind: BigQueryDataTransferConfig
     protoName: TransferConfig
     skipScaffoldFiles: true # files were scaffolded using a previous template, making them incompatible with the new scaffolding template.
+    ignoredFields:
+      - error.details # NOTYET
