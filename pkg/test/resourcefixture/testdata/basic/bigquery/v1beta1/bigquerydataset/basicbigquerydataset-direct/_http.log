@@ -152,7 +152,6 @@ X-Xss-Protection: 0
 
 PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 Content-Type: application/json
-If-Match: abcdef0123A=
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
