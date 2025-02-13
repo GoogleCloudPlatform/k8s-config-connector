@@ -10,7 +10,7 @@ require (
 	github.com/gobuffalo/flect v1.0.2
 	github.com/google/cel-go v0.17.7
 	github.com/google/go-cmp v0.6.0
-	github.com/google/safetext v0.0.0-20240104143208-7a7d9b3d812f
+	github.com/google/safetext v0.0.0-20240722112252-5a72de7e7962
 	github.com/onsi/ginkgo/v2 v2.14.0
 	github.com/onsi/gomega v1.30.0
 	github.com/wzshiming/easycel v0.5.0
