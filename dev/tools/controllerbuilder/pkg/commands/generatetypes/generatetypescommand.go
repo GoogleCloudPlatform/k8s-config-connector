@@ -178,10 +178,10 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 }
 
 func (o *GenerateCRDOptions) loadAndApplyConfig() error {
-	if o.ConfigFilePath == "" {
+	if o.ConfigFile == "" {
 		return nil
 	}
-	config, err := codegen.LoadConfig(o.ConfigFilePath)
+	config, err := codegen.LoadConfig(o.ConfigFile)
 	if err != nil {
 		return fmt.Errorf("loading service config: %w", err)
 	}

@@ -144,10 +144,10 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 }
 
 func (o *GenerateMapperOptions) loadAndApplyConfig() error {
-	if o.ConfigFilePath == "" {
+	if o.ConfigFile == "" {
 		return nil
 	}
-	config, err := codegen.LoadConfig(o.ConfigFilePath)
+	config, err := codegen.LoadConfig(o.ConfigFile)
 	if err != nil {
 		return fmt.Errorf("loading service config: %w", err)
 	}
@@ -156,7 +156,7 @@ func (o *GenerateMapperOptions) loadAndApplyConfig() error {
 	}
 
 	if !config.GenerateMapper {
-		return fmt.Errorf("mapper generation is disabled for this service in config file %s", o.ConfigFilePath)
+		return fmt.Errorf("mapper generation is disabled for this service in config file %s", o.ConfigFile)
 	}
 
 	o.ServiceName = config.Service

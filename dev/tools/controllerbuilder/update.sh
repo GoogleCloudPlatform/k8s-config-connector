@@ -25,7 +25,6 @@ go run . update-types insert \
     --parent "google.monitoring.dashboard.v1.Dashboard" \
     --field "row_layout" \
     --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1 \
-    --ignored-fields "google.monitoring.dashboard.v1.PickTimeSeriesFilter.interval"
 
 # example usage of syncing a message with all of its dependencies from proto package
 go run . update-types sync \

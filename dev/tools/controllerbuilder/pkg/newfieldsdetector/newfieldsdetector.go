@@ -20,11 +20,13 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog"
 )
 
 type MessageDiff struct { // This structure tracks the difference in fields for a given proto message
@@ -42,13 +44,14 @@ type FieldChange struct {
 
 type DetectorOptions struct {
 	TargetMessages sets.String
-	IgnoredFields  sets.String
+	ConfigDir      string
 }
 
 type FieldDetector struct {
-	opts     *DetectorOptions
-	oldFiles *protoregistry.Files // proto files that are generated with the pinned version
-	newFiles *protoregistry.Files // proto files that are generated from the remote HEAD
+	opts          *DetectorOptions
+	oldFiles      *protoregistry.Files // proto files that are generated with the pinned version
+	newFiles      *protoregistry.Files // proto files that are generated from the remote HEAD
+	ignoredFields sets.String
 }
 
 // NewFieldDetector detects any proto field changes between the current pinned and the HEAD.
@@ -77,10 +80,17 @@ func NewFieldDetector(opts *DetectorOptions) (*FieldDetector, error) {
 		return nil, fmt.Errorf("loading new proto: %w", err)
 	}
 
+	// load ignored fields
+	ignoredFields, err := codegen.LoadIgnoredFields(opts.ConfigDir)
+	if err != nil {
+		return nil, fmt.Errorf("loading ignored fields: %w", err)
+	}
+
 	return &FieldDetector{
-		opts:     opts,
-		oldFiles: old.Files(),
-		newFiles: new.Files(),
+		opts:          opts,
+		oldFiles:      old.Files(),
+		newFiles:      new.Files(),
+		ignoredFields: ignoredFields,
 	}, nil
 }
 
@@ -142,9 +152,11 @@ func (d *FieldDetector) compareMessage(oldFiles, newFiles *protoregistry.Files, 
 	if oldMsg == nil {
 		newFields := getMessageFields(newMsg)
 		for fieldName := range newFields {
-			if !IsFieldIgnored(d.opts.IgnoredFields, messageName, fieldName) {
-				diff.NewFields = append(diff.NewFields, fieldName)
+			if codegen.IsFieldIgnored(d.ignoredFields, messageName, fieldName) {
+				klog.Warningf("new field %s in message %s is ignored", fieldName, messageName)
+				continue
 			}
+			diff.NewFields = append(diff.NewFields, fieldName)
 		}
 		return diff, nil
 	}
@@ -153,9 +165,11 @@ func (d *FieldDetector) compareMessage(oldFiles, newFiles *protoregistry.Files, 
 	if newMsg == nil {
 		oldFields := getMessageFields(oldMsg)
 		for fieldName := range oldFields {
-			if !IsFieldIgnored(d.opts.IgnoredFields, messageName, fieldName) {
-				diff.RemovedFields = append(diff.RemovedFields, fieldName)
+			if codegen.IsFieldIgnored(d.ignoredFields, messageName, fieldName) {
+				klog.Warningf("removed field %s in message %s is ignored", fieldName, messageName)
+				continue
 			}
+			diff.RemovedFields = append(diff.RemovedFields, fieldName)
 		}
 		return diff, nil
 	}
@@ -166,7 +180,8 @@ func (d *FieldDetector) compareMessage(oldFiles, newFiles *protoregistry.Files, 
 
 	// 3.1 Find new and changed fields
 	for fieldName, newField := range newFields {
-		if IsFieldIgnored(d.opts.IgnoredFields, messageName, fieldName) {
+		if codegen.IsFieldIgnored(d.ignoredFields, messageName, fieldName) {
+			klog.Warningf("new field %s in message %s is ignored", fieldName, messageName)
 			continue
 		}
 
@@ -184,9 +199,11 @@ func (d *FieldDetector) compareMessage(oldFiles, newFiles *protoregistry.Files, 
 			}
 		}
 	}
+
 	// 3.2 Find removed fields
 	for fieldName := range oldFields {
-		if IsFieldIgnored(d.opts.IgnoredFields, messageName, fieldName) {
+		if codegen.IsFieldIgnored(d.ignoredFields, messageName, fieldName) {
+			klog.Warningf("removed field %s in message %s is ignored", fieldName, messageName)
 			continue
 		}
 
