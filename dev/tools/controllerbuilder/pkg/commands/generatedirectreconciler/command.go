@@ -29,9 +29,7 @@ import (
 
 type GenerateBasicReconcilerOptions struct {
 	*options.GenerateOptions
-	Kind      string
-	ProtoName string
-	//	OutputAPIDirectory string
+	Resource options.Resource
 
 	APIGoPackagePath      string
 	APIDirectory          string
@@ -39,9 +37,7 @@ type GenerateBasicReconcilerOptions struct {
 }
 
 func (o *GenerateBasicReconcilerOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVarP(&o.ProtoName, "proto-resource", "p", "", "the GCP resource proto name. It should match the name in the proto apis. i.e. For resource google.storage.v1.bucket, the `--proto-resource` should be `bucket`. If `--kind` is not given, the `--proto-resource` value will also be used as the kind name with a capital letter `Storage`.")
-	cmd.Flags().StringVarP(&o.Kind, "kind", "k", "", "the KCC resource Kind. requires `--proto-resource`.")
-	//	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
+	cmd.Flags().Var(&o.Resource, "resource", "the KRM Kind and the equivalent proto resource separated with a colon. e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`")
 	cmd.Flags().StringVar(&o.APIGoPackagePath, "api-go-package-path", o.APIGoPackagePath, "package path")
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
 	cmd.Flags().StringVar(&o.OutputMapperDirectory, "output-dir", o.OutputMapperDirectory, "base directory for writing mappers")
@@ -73,12 +69,10 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Use:   "generate-direct-reconciler",
 		Short: "[ALPHA] generate a basic direct reconciler that is up and run",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if opt.Kind == "" {
-				return fmt.Errorf("--kind is required")
+			if opt.Resource == (options.Resource{}) {
+				return fmt.Errorf("--resource flag is required")
 			}
-			if opt.ProtoName == "" {
-				return fmt.Errorf("--proto-resource is required")
-			}
+
 			if baseOptions.APIVersion == "" {
 				return fmt.Errorf("--api-version is required")
 			}
@@ -109,9 +103,7 @@ func RunGenerateBasicReconciler(ctx context.Context, o *GenerateBasicReconcilerO
 	crdOps := &generatetypes.GenerateCRDOptions{
 		GenerateOptions:    o.GenerateOptions,
 		OutputAPIDirectory: o.APIDirectory,
-		Resources: generatetypes.ResourceList{
-			generatetypes.Resource{Kind: o.Kind, ProtoName: o.ProtoName},
-		},
+		Resources:          options.ResourceList{o.Resource},
 	}
 	if err := generatetypes.RunGenerateCRD(ctx, crdOps); err != nil {
 		return fmt.Errorf("generate types: %w", err)
@@ -127,8 +119,7 @@ func RunGenerateBasicReconciler(ctx context.Context, o *GenerateBasicReconcilerO
 	}
 	controllerOps := &generatecontroller.GenerateControllerOptions{
 		GenerateOptions: o.GenerateOptions,
-		Kind:            o.Kind,
-		ProtoName:       o.ProtoName,
+		Resource:        o.Resource,
 	}
 	if err := generatecontroller.RunController(ctx, controllerOps); err != nil {
 		return fmt.Errorf("generate controller: %w", err)
