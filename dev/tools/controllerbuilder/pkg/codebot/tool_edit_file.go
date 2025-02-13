@@ -41,7 +41,7 @@ type EditFileResults struct {
 	Success bool `json:"success"`
 }
 
-func (t *EditFile) Run(ctx context.Context, c *Chat, args map[string]any) (*EditFileResults, error) {
+func (t *EditFile) Run(ctx context.Context, c *Chat, args map[string]any) (any, error) {
 	b, err := json.Marshal(args)
 	if err != nil {
 		return nil, fmt.Errorf("converting to json: %w", err)

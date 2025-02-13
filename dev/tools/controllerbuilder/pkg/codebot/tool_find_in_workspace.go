@@ -34,7 +34,12 @@ type FindInWorkspace struct {
 	FindText string `json:"find_text"`
 }
 
-func (t *FindInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any) (map[string]any, error) {
+type FindInWorkspaceResult struct {
+	Matches []*Match `json:"matches"`
+	Result  string   `json:"result"`
+}
+
+func (t *FindInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any) (any, error) {
 	b, err := json.Marshal(args)
 	if err != nil {
 		return nil, fmt.Errorf("converting to json: %w", err)
@@ -43,7 +48,7 @@ func (t *FindInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any)
 		return nil, fmt.Errorf("unmarshalling %T: %w", t, err)
 	}
 
-	result := make(map[string]any)
+	result := &FindInWorkspaceResult{}
 
 	klog.V(2).Infof("%T: %+v", t, t)
 
@@ -52,8 +57,8 @@ func (t *FindInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any)
 		return nil, fmt.Errorf("finding in files: %w", err)
 	}
 
-	result["matches"] = matches
-	result["result"] = "success"
+	result.Matches = matches
+	result.Result = "success"
 
 	return result, nil
 }

@@ -15,6 +15,8 @@
 package codebot
 
 import (
+	"context"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 )
 
@@ -26,8 +28,10 @@ var tools []Tool
 
 type Tool interface {
 	BuildFunctionDefinition() *llm.FunctionDefinition
+
+	Run(ctx context.Context, c *Chat, args map[string]any) (any, error)
 }
 
-func GetTools() []Tool {
+func GetAllTools() []Tool {
 	return tools
 }
