@@ -49,6 +49,20 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
+  validate-generated-types:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # This is to get all the commits in order to validate them
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Validate Generated Go Types"
+        run: |
+          dev/ci/presubmits/validate-generated-types.sh
   unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 60
