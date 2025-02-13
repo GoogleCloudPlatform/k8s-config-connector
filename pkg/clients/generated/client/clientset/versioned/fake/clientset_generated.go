@@ -175,6 +175,8 @@ import (
 	fakekmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1/fake"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
 	fakekmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1/fake"
+	loggingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1alpha1"
+	fakeloggingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1alpha1/fake"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
 	fakeloggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1/fake"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
@@ -704,6 +706,11 @@ func (c *Clientset) KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface {
 // KmsV1beta1 retrieves the KmsV1beta1Client
 func (c *Clientset) KmsV1beta1() kmsv1beta1.KmsV1beta1Interface {
 	return &fakekmsv1beta1.FakeKmsV1beta1{Fake: &c.Fake}
+}
+
+// LoggingV1alpha1 retrieves the LoggingV1alpha1Client
+func (c *Clientset) LoggingV1alpha1() loggingv1alpha1.LoggingV1alpha1Interface {
+	return &fakeloggingv1alpha1.FakeLoggingV1alpha1{Fake: &c.Fake}
 }
 
 // LoggingV1beta1 retrieves the LoggingV1beta1Client

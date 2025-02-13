@@ -267,6 +267,7 @@ func IsBadRequest(err error) bool {
 
 // HasHTTPCode returns true if the given error is an HTTP response with the given code.
 func HasHTTPCode(err error, code int) bool {
+
 	if err == nil {
 		return false
 	}

@@ -101,6 +101,7 @@ import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
+	loggingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1alpha1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
@@ -231,6 +232,7 @@ type Interface interface {
 	K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface
 	KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface
 	KmsV1beta1() kmsv1beta1.KmsV1beta1Interface
+	LoggingV1alpha1() loggingv1alpha1.LoggingV1alpha1Interface
 	LoggingV1beta1() loggingv1beta1.LoggingV1beta1Interface
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
 	MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface
@@ -359,6 +361,7 @@ type Clientset struct {
 	k8sV1alpha1                    *k8sv1alpha1.K8sV1alpha1Client
 	kmsV1alpha1                    *kmsv1alpha1.KmsV1alpha1Client
 	kmsV1beta1                     *kmsv1beta1.KmsV1beta1Client
+	loggingV1alpha1                *loggingv1alpha1.LoggingV1alpha1Client
 	loggingV1beta1                 *loggingv1beta1.LoggingV1beta1Client
 	memcacheV1beta1                *memcachev1beta1.MemcacheV1beta1Client
 	mlengineV1alpha1               *mlenginev1alpha1.MlengineV1alpha1Client
@@ -786,6 +789,11 @@ func (c *Clientset) KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface {
 // KmsV1beta1 retrieves the KmsV1beta1Client
 func (c *Clientset) KmsV1beta1() kmsv1beta1.KmsV1beta1Interface {
 	return c.kmsV1beta1
+}
+
+// LoggingV1alpha1 retrieves the LoggingV1alpha1Client
+func (c *Clientset) LoggingV1alpha1() loggingv1alpha1.LoggingV1alpha1Interface {
+	return c.loggingV1alpha1
 }
 
 // LoggingV1beta1 retrieves the LoggingV1beta1Client
@@ -1371,6 +1379,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.loggingV1alpha1, err = loggingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.loggingV1beta1, err = loggingv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1656,6 +1668,7 @@ func New(c rest.Interface) *Clientset {
 	cs.k8sV1alpha1 = k8sv1alpha1.New(c)
 	cs.kmsV1alpha1 = kmsv1alpha1.New(c)
 	cs.kmsV1beta1 = kmsv1beta1.New(c)
+	cs.loggingV1alpha1 = loggingv1alpha1.New(c)
 	cs.loggingV1beta1 = loggingv1beta1.New(c)
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
 	cs.mlengineV1alpha1 = mlenginev1alpha1.New(c)
