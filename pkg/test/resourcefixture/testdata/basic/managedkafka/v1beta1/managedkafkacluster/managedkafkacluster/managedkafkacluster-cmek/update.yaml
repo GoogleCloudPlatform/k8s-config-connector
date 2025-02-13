@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+apiVersion: managedkafka.cnrm.cloud.google.com/v1beta1
 kind: ManagedKafkaCluster
 metadata:
   name: managedkafkacluster-${uniqueId}
@@ -27,8 +27,8 @@ spec:
     accessConfig:
       networkConfigs:
       - subnetworkRef:
-          name: computesubnetwork-${uniqueId}-1
-      - subnetworkRef:
-          name: computesubnetwork-${uniqueId}-2 # 1 subnetwork -> 2 subnetworks
+          name: computesubnetwork-${uniqueId}
+    kmsKeyRef:
+      name: kmscryptokey-${uniqueId}
   rebalanceConfig:
     mode: AUTO_REBALANCE_ON_SCALE_UP # NO_REBALANCE -> AUTO_REBALANCE_ON_SCALE_UP

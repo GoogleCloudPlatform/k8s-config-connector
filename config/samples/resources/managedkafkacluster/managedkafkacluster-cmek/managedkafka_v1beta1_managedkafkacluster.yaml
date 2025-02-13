@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+apiVersion: managedkafka.cnrm.cloud.google.com/v1beta1
 kind: ManagedKafkaCluster
 metadata:
-  name: managedkafkacluster-${uniqueId}
+  name: managedkafkacluster-sample-cmek
 spec:
   projectRef:
-    external: ${projectId}
+    # Replace ${PROJECT_ID?} with your project ID
+    external: ${PROJECT_ID?}
   location: us-central1
   capacityConfig:
     vcpuCount: 3
@@ -27,6 +28,8 @@ spec:
     accessConfig:
       networkConfigs:
       - subnetworkRef:
-          name: computesubnetwork-${uniqueId}-1
+          name: managedkafkacluster-dep-cmek
+    kmsKeyRef:
+      name: managedkafkacluster-dep-cmek
   rebalanceConfig:
     mode: NO_REBALANCE

@@ -12,30 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetwork
-metadata:
-  name: computenetwork-${uniqueId}
-spec:
-  autoCreateSubnetworks: false
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeSubnetwork
-metadata:
-  name: computesubnetwork-${uniqueId}
-spec:
-  region: us-central1
-  networkRef:
-    name: computenetwork-${uniqueId}
-  ipCidrRange: 10.0.0.0/24
----
 apiVersion: managedkafka.cnrm.cloud.google.com/v1beta1
 kind: ManagedKafkaCluster
 metadata:
-  name: managedkafkacluster-${uniqueId}
+  name: managedkafkacluster-sample
 spec:
   projectRef:
-    external: ${projectId}
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
   location: us-central1
   capacityConfig:
     vcpuCount: 3
@@ -44,6 +28,6 @@ spec:
     accessConfig:
       networkConfigs:
       - subnetworkRef:
-          name: computesubnetwork-${uniqueId}
+          name: managedkafkacluster-dep
   rebalanceConfig:
     mode: NO_REBALANCE
