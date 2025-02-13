@@ -95,14 +95,6 @@ type CloudSQLBackupRunSource struct {
 type Cluster_PrimaryConfig struct {
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PscConfig
-type Cluster_PSCConfig struct {
-	// Optional. Create an instance that allows connections from Private Service
-	//  Connect endpoints to the instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PscConfig.psc_enabled
-	PSCEnabled *bool `json:"pscEnabled,omitempty"`
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.TrialMetadata
 type Cluster_TrialMetadata struct {
 	// start time of the trial cluster.
@@ -158,30 +150,11 @@ type GeminiClusterConfig struct {
 type GeminiInstanceConfig struct {
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ClientConnectionConfig
-type Instance_ClientConnectionConfig struct {
-	// Optional. Configuration to enforce connectors only (ex: AuthProxy)
-	//  connections to the database.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ClientConnectionConfig.require_connectors
-	RequireConnectors *bool `json:"requireConnectors,omitempty"`
-
-	// Optional. SSL configuration option for this instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ClientConnectionConfig.ssl_config
-	SSLConfig *SSLConfig `json:"sslConfig,omitempty"`
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
 type Instance_InstanceNetworkConfig_AuthorizedNetwork struct {
 	// CIDR range for one authorzied network of the instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork.cidr_range
 	CidrRange *string `json:"cidrRange,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.MachineConfig
-type Instance_MachineConfig struct {
-	// The number of CPU's in the VM instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.MachineConfig.cpu_count
-	CPUCount *int32 `json:"cpuCount,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.Node
@@ -250,15 +223,6 @@ type Instance_ObservabilityInstanceConfig struct {
 	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
-type Instance_PSCInstanceConfig struct {
-
-	// Optional. List of consumer projects that are allowed to create
-	//  PSC endpoints to service-attachments to this instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.allowed_consumer_projects
-	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
 type Instance_QueryInsightsInstanceConfig struct {
 	// Record application tags for an instance.
@@ -312,18 +276,6 @@ type MaintenanceUpdatePolicy struct {
 type MigrationSource struct {
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.SslConfig
-type SSLConfig struct {
-	// Optional. SSL mode. Specifies client-server SSL/TLS connection behavior.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.SslConfig.ssl_mode
-	SSLMode *string `json:"sslMode,omitempty"`
-
-	// Optional. Certificate Authority (CA) source. Only CA_SOURCE_MANAGED is
-	//  supported currently, and is the default value.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.SslConfig.ca_source
-	CASource *string `json:"caSource,omitempty"`
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
 type Cluster_PrimaryConfigObservedState struct {
 	// Output only. Names of the clusters that are replicating from this
@@ -372,21 +324,6 @@ type Instance_ObservabilityInstanceConfigObservedState struct {
 	//  read-only flag and only modifiable by producer API.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_wait_event_types
 	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
-type Instance_PSCInstanceConfigObservedState struct {
-	// Output only. The service attachment created when Private
-	//  Service Connect (PSC) is enabled for the instance.
-	//  The name of the resource will be in the format of
-	//  `projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>`
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.service_attachment_link
-	ServiceAttachmentLink *string `json:"serviceAttachmentLink,omitempty"`
-
-	// Output only. The DNS name of the instance for PSC connectivity.
-	//  Name convention: <uid>.<uid>.<region>.alloydb-psc.goog
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_dns_name
-	PSCDNSName *string `json:"pscDNSName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule
