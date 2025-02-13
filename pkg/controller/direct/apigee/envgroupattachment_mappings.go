@@ -32,20 +32,20 @@ func EnvgroupAttachmentSpec_FromAPI(mapCtx *direct.MapContext, in *api.GoogleClo
 	return out
 }
 
-func EnvgroupAttachmentSpec_EnvgroupRef_FromAPI(mapCtx *direct.MapContext, in string) *krm.EnvironmentGroupRef {
+func EnvgroupAttachmentSpec_EnvgroupRef_FromAPI(mapCtx *direct.MapContext, in string) *krm.ApigeeEnvgroupRef {
 	if in == "" {
 		return nil
 	}
 
-	return &krm.EnvironmentGroupRef{External: in}
+	return &krm.ApigeeEnvgroupRef{External: in}
 }
 
-func EnvgroupAttachmentSpec_EnvironmentRef_FromAPI(mapCtx *direct.MapContext, in string) *krmv1beta1.EnvironmentRef {
+func EnvgroupAttachmentSpec_EnvironmentRef_FromAPI(mapCtx *direct.MapContext, in string) *krmv1beta1.ApigeeEnvironmentRef {
 	if in == "" {
 		return nil
 	}
 
-	return &krmv1beta1.EnvironmentRef{External: in}
+	return &krmv1beta1.ApigeeEnvironmentRef{External: in}
 }
 
 func EnvgroupAttachmentSpec_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeEnvgroupAttachmentSpec) *api.GoogleCloudApigeeV1EnvironmentGroupAttachment {
@@ -59,14 +59,14 @@ func EnvgroupAttachmentSpec_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeEnvgr
 	return out
 }
 
-func EnvgroupAttachmentSpec_EnvironmentGroupRef_ToAPI(mapCtx *direct.MapContext, in *krm.EnvironmentGroupRef) string {
+func EnvgroupAttachmentSpec_EnvironmentGroupRef_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeEnvgroupRef) string {
 	if in == nil {
 		return ""
 	}
 	return in.External
 }
 
-func EnvgroupAttachmentSpec_EnvironmentRef_ToAPI(mapCtx *direct.MapContext, in *krmv1beta1.EnvironmentRef) string {
+func EnvgroupAttachmentSpec_EnvironmentRef_ToAPI(mapCtx *direct.MapContext, in *krmv1beta1.ApigeeEnvironmentRef) string {
 	if in == nil {
 		return ""
 	}
@@ -79,7 +79,6 @@ func EnvgroupAttachmentObservedState_FromAPI(mapCtx *direct.MapContext, in *api.
 	}
 	out := &krm.EnvgroupAttachmentObservedState{}
 	out.CreatedAt = direct.LazyPtr(ConvertEpochMillisToTimestamp(in.CreatedAt))
-	out.EnvironmentGroupID = direct.LazyPtr(in.EnvironmentGroupId)
 
 	return out
 }
@@ -95,7 +94,6 @@ func EnvgroupAttachmentObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.En
 	} else {
 		out.CreatedAt = i
 	}
-	out.EnvironmentGroupId = direct.ValueOf(in.EnvironmentGroupID)
 
 	return out
 }

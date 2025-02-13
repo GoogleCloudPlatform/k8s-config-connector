@@ -111,7 +111,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}OrganizationRef defines the resource reference to ApigeeOrganization, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
+            <p>{% verbatim %}ApigeeOrganizationRef is a reference to a ApigeeOrganization resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
