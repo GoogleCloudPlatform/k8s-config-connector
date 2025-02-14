@@ -14,7 +14,6 @@
 
 package v1beta1
 
-
 // +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.ExpiryDetail
 type ExpiryDetail struct {
 	// The time at which the `MembershipRole` will expire.

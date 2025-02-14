@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type MembershipIdentity struct {
 	parent *MembershipParent
-	id string
+	id     string
 }
 
 func (i *MembershipIdentity) String() string {
-	return  i.parent.String() + "/memberships/" + i.id
+	return i.parent.String() + "/memberships/" + i.id
 }
 
 func (i *MembershipIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *MembershipIdentity) ID() string {
 }
 
 func (i *MembershipIdentity) Parent() *MembershipParent {
-	return  i.parent
+	return i.parent
 }
 
 type MembershipParent struct {
@@ -51,7 +51,6 @@ type MembershipParent struct {
 func (p *MembershipParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a MembershipIdentity from the Config Connector Membership object.
 func NewMembershipIdentity(ctx context.Context, reader client.Reader, obj *CloudIdentityMembership) (*MembershipIdentity, error) {
