@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-namespace: configconnector-operator-system
-commonLabels:
-  cnrm.cloud.google.com/operator-system: "true"
-commonAnnotations:
-  cnrm.cloud.google.com/operator-version: "1.128.0"
-resources:
-  - ../../../../operator/config/rbac
-  - ../../../../operator/config/crd
-  - ../../../../operator/config/manager
+set -o errexit
+set -o nounset
+set -o pipefail
+
+echo "Start creating the release bundle"
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# build release manifest
+source ${REPO_ROOT}/dev/tasks/deploy-release-manifest
+
