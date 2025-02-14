@@ -143,10 +143,15 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 
 	log.Info("built data point", "dataPoint", dataPoint)
 
-	out := &bytes.Buffer{}
-	if err := x.InferOutput_WithCompletion(ctx, dataPoint, out); err != nil {
-		return fmt.Errorf("running LLM inference: %w", err)
+	model := os.Getenv("LLM_MODEL")
+	if model == "" {
+		model = "gemini-2.0-pro-exp-02-05"
+	}
+	log.Info("using model", "model", model)
 
+	out := &bytes.Buffer{}
+	if err := x.InferOutput_WithCompletion(ctx, model, dataPoint, out); err != nil {
+		return fmt.Errorf("running LLM inference: %w", err)
 	}
 
 	if o.Output == "" {
