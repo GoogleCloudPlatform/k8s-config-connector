@@ -21,11 +21,15 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 
      * Manage [connections](https://cloud.google.com/bigquery/docs/working-with-connections) to connect to Google services and external data sources
 
+* [`ManagedKafkaCluster`](https://cloud.google.com/config-connector/docs/reference/resource-docs/managedkafka/managedkafkacluster)
+
 ## New Alpha Resources (Direct Reconciler):
 
 * `SAMPLE_KMSAutokeyConfig` (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
  
     * Manage the [KMS auto key](https://cloud.google.com/kms/docs/autokey-overview) which simplifies the CMEKs provisioning and assignment. 
+
+* `ManagedKafkaTopic`
  
 ## New Fields:
 
