@@ -1,0 +1,16 @@
+I'm writing go structure. You should help me.
+run ```
+controllerbuilder prompt --src-dir ${REPO_ROOT} --proto-dir ${REPO_ROOT}/.build/third_party/googleapis/ <<EOF
+// +kcc:proto=${PROTO}
+// kind: ${KIND}
+EOF
+```
+
+You should parse the go code from the result.
+The go code should have at least a `${KIND}Spec` go struct. If not, rerun the command, you should run at most 3 times. 
+
+Once you get ${KIND}Spec, write the go code to ${REPO_ROOT}/apis/${SERVICE}/v1alpha1/${PROTO,,}_type.go
+
+Some suggestions:
+
+* Use the EditFile command to edit the ${REPO_ROOT}/apis/${SERVICE}/v1alpha1/${PROTO,,}_type.go file. If there is already a `${KIND}Spec` go struct, you should replace it.
