@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -26,8 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	clone "github.com/huandu/go-clone"
-	api "google.golang.org/api/bigquery/v2"
+	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -56,13 +56,13 @@ type model struct {
 	config config.ControllerConfig
 }
 
-func (m *model) service(ctx context.Context) (*api.Service, error) {
+func (m *model) service(ctx context.Context, projectID string) (*bigquery.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpService, err := api.NewService(ctx, opts...)
+	gcpService, err := bigquery.NewClient(ctx, projectID, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Dataset client: %w", err)
 	}
@@ -80,8 +80,13 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, err
 	}
 
+	projectID := id.Parent().ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project ID")
+	}
+
 	// Get bigquery GCP client
-	gcpService, err := m.service(ctx)
+	gcpService, err := m.service(ctx, projectID)
 	if err != nil {
 		return nil, err
 	}
@@ -100,9 +105,9 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 
 type Adapter struct {
 	id         *krm.DatasetIdentity
-	gcpService *api.Service
+	gcpService *bigquery.Client
 	desired    *krm.BigQueryDataset
-	actual     *api.Dataset
+	actual     *bigquery.DatasetMetadata
 	reader     client.Reader
 }
 
@@ -112,8 +117,8 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting BigQueryDataset", "name", a.id.String())
 
-	datasetGetCall := a.gcpService.Datasets.Get(a.id.Parent().ProjectID, a.id.ID())
-	datasetpb, err := datasetGetCall.Do()
+	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	datasetpb, err := dsHandler.Metadata(ctx)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -130,7 +135,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("creating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	desiredDataset := BigQueryDatasetSpec_ToAPI(mapCtx, &a.desired.Spec, a.desired.Name)
+	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
 	desiredDataset.Labels = make(map[string]string)
 	for k, v := range a.desired.GetObjectMeta().GetLabels() {
 		desiredDataset.Labels[k] = v
@@ -143,24 +148,46 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		if err != nil {
 			return err
 		}
-		desiredDataset.DefaultEncryptionConfiguration.KmsKeyName = kmsRef.External
+		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
 	}
-	insertDatasetCall := a.gcpService.Datasets.Insert(a.id.Parent().ProjectID, desiredDataset)
-	inserted, err := insertDatasetCall.Do()
-	if err != nil {
-		return fmt.Errorf("inserting Dataset %s: %w", a.id.String(), err)
+	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
+		return fmt.Errorf("Error creating Dataset %s: %w", a.id.ID(), err)
 	}
-	log.V(2).Info("successfully inserted Dataset", "name", a.id.String())
+	log.V(2).Info("successfully created Dataset", "name", a.id.ID())
 
+	// The bigquery go client Create() does not return the created dataset.
+	// Fetching the dataset metadata
+	createdMetadata, err := dsHandler.Metadata(ctx)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return nil
+		}
+		return fmt.Errorf("Error getting the created BigQueryDataset %q: %w", a.id.ID(), err)
+	}
 	status := &krm.BigQueryDatasetStatus{}
-	status = BigQueryDatasetStatus_FromAPI(mapCtx, inserted)
+	status = BigQueryDatasetStatus_FromProto(mapCtx, createdMetadata)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	external := a.id.String()
 	status.ExternalRef = &external
-	return createOp.UpdateStatus(ctx, status, nil)
+	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
+		return err
+	}
+
+	// Write resourceID into spec.
+	tokens := strings.Split(createdMetadata.FullID, ":")
+	if len(tokens) == 2 {
+		resourceID := tokens[1]
+		if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, resourceID, "spec", "resourceID"); err != nil {
+			return fmt.Errorf("error setting spec.resourceID: %w", err)
+		}
+	} else {
+		return fmt.Errorf("Error getting resourceID: %s. The full ID of the created BigQueryDataset is expected to be in the format of projectID:datasetID", createdMetadata.FullID)
+	}
+	return nil
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -172,87 +199,90 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	// Convert KRM object to proto message
 	desiredKRM := a.desired.DeepCopy()
-	desired := BigQueryDatasetSpec_ToAPI(mapCtx, &desiredKRM.Spec, desiredKRM.Name)
+	desired := BigQueryDatasetSpec_ToProto(mapCtx, &desiredKRM.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	resource := clone.Clone(a.actual).(*api.Dataset)
-
+	resource := cloneBigQueryDatasetMetadate(a.actual)
 	// Check for immutable fields
-	if desired.Location != "" && !reflect.DeepEqual(desired.Location, resource.Location) {
+	if desiredKRM.Spec.Location != nil && !reflect.DeepEqual(desired.Location, resource.Location) {
 		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
 	}
-
 	// Find diff
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(desired.Description, resource.Description) {
+	if desired.Description != "" && !reflect.DeepEqual(desired.Description, resource.Description) {
 		resource.Description = desired.Description
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
-	if !reflect.DeepEqual(desired.FriendlyName, resource.FriendlyName) {
-		resource.FriendlyName = desired.FriendlyName
+	if desired.Name != "" && !reflect.DeepEqual(desired.Name, resource.Name) {
+		resource.Name = desired.Name
 		updateMask.Paths = append(updateMask.Paths, "friendly_name")
 	}
-	if !reflect.DeepEqual(desired.DefaultPartitionExpirationMs, resource.DefaultPartitionExpirationMs) {
-		resource.DefaultPartitionExpirationMs = desired.DefaultPartitionExpirationMs
-		updateMask.Paths = append(updateMask.Paths, "default_partition_expirationMs")
+	if desired.DefaultPartitionExpiration != 0 && !reflect.DeepEqual(desired.DefaultPartitionExpiration, resource.DefaultPartitionExpiration) {
+		resource.DefaultPartitionExpiration = desired.DefaultPartitionExpiration
+		updateMask.Paths = append(updateMask.Paths, "default_partition_expiration")
 	}
-	if !reflect.DeepEqual(desired.DefaultTableExpirationMs, resource.DefaultTableExpirationMs) {
-		resource.DefaultTableExpirationMs = desired.DefaultTableExpirationMs
-		updateMask.Paths = append(updateMask.Paths, "default_table_expirationMs")
+	if desired.DefaultTableExpiration != 0 && !reflect.DeepEqual(desired.DefaultTableExpiration, resource.DefaultTableExpiration) {
+		resource.DefaultTableExpiration = desired.DefaultTableExpiration
+		updateMask.Paths = append(updateMask.Paths, "default_table_expiration")
 	}
-	if !reflect.DeepEqual(desired.DefaultCollation, resource.DefaultCollation) {
+	if desired.DefaultCollation != "" && !reflect.DeepEqual(desired.DefaultCollation, resource.DefaultCollation) {
 		resource.DefaultCollation = desired.DefaultCollation
 		updateMask.Paths = append(updateMask.Paths, "default_collation")
 	}
-	if desired.DefaultEncryptionConfiguration != nil && resource.DefaultEncryptionConfiguration != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfiguration, resource.DefaultEncryptionConfiguration) {
+	if desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
 		// Resolve KMS key reference
 		if a.desired.Spec.DefaultEncryptionConfiguration != nil {
 			kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
 			if err != nil {
 				return err
 			}
-			desired.DefaultEncryptionConfiguration.KmsKeyName = kmsRef.External
+			desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
 		}
-		resource.DefaultEncryptionConfiguration.KmsKeyName = desired.DefaultEncryptionConfiguration.KmsKeyName
+		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
 		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
 	}
-	if !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
+	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
 		resource.IsCaseInsensitive = desired.IsCaseInsensitive
 		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
 	}
-	if !reflect.DeepEqual(desired.MaxTimeTravelHours, resource.MaxTimeTravelHours) {
-		resource.MaxTimeTravelHours = desired.MaxTimeTravelHours
-		updateMask.Paths = append(updateMask.Paths, "max_time_interval_hours")
+	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
+		resource.StorageBillingModel = desired.StorageBillingModel
+		updateMask.Paths = append(updateMask.Paths, "storage_billing_model")
+	}
+	// If we do not set a value, the GCP service defaults to 168
+	// If the existing value is 168, it means that we did not set this field at creation and it defaults to 168.
+	// So if the desired value is 0, it means that we do not intend to update this field.
+	if desired.MaxTimeTravel != 0 && !reflect.DeepEqual(desired.MaxTimeTravel, resource.MaxTimeTravel) && (resource.MaxTimeTravel != 168 && desired.MaxTimeTravel != 0) {
+		resource.MaxTimeTravel = desired.MaxTimeTravel
+		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
 	}
 	if desired.Access != nil && resource.Access != nil && len(desired.Access) > 0 && !reflect.DeepEqual(desired.Access, resource.Access) {
 		for _, access := range desired.Access {
 			resource.Access = append(resource.Access, access)
 		}
-		updateMask.Paths = append(updateMask.Paths, "access")
 	}
-	if !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
-		resource.StorageBillingModel = desired.StorageBillingModel
-		updateMask.Paths = append(updateMask.Paths, "storage_billing_model")
-	}
-
 	if len(updateMask.Paths) == 0 {
 		return nil
 	}
 
-	if desired.Access == nil || len(desired.Access) == 0 {
-		resource.Access = a.actual.Access
+	// Compute the dataset metadate for update request
+	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
+	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+		datasetMetadataToUpdate.SetLabel(k, v)
 	}
-	updateDatasetCall := a.gcpService.Datasets.Update(a.id.Parent().ProjectID, a.id.ID(), resource)
-	updated, err := updateDatasetCall.Do()
+	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
+	// Call update
+	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
 	if err != nil {
 		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated Dataset", "name", a.id.String())
 
 	status := &krm.BigQueryDatasetStatus{}
-	status = BigQueryDatasetStatus_FromAPI(mapCtx, updated)
+	status = BigQueryDatasetStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -267,7 +297,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.BigQueryDataset{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigQueryDatasetSpec_FromAPI(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigQueryDatasetSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -286,12 +316,20 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting Dataset", "name", a.id.String())
 
-	deleteDatasetCall := a.gcpService.Datasets.Delete(a.id.Parent().ProjectID, a.id.ID())
-	err := deleteDatasetCall.Do()
-	if err != nil {
-		return false, fmt.Errorf("deleting Dataset %s: %w", a.id.String(), err)
+	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	annotations := deleteOp.GetUnstructured().GetAnnotations()
+
+	// Support the existing annotation on delete.
+	if annotations["cnrm.cloud.google.com/delete-contents-on-destroy"] == "true" {
+		if err := dsHandler.DeleteWithContents(ctx); err != nil {
+			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+		}
+	} else {
+		if err := dsHandler.Delete(ctx); err != nil {
+			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+		}
 	}
-	log.V(2).Info("successfully deleted Dataset", "name", a.id.String())
+	log.V(2).Info("successfully deleted Dataset", "name", a.id.ID())
 
 	return true, nil
 }

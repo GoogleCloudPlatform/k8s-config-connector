@@ -15,6 +15,7 @@ spec:
     specialGroup: projectOwners
   - role: OWNER
     userByEmail: user@google.com
+  defaultCollation: und:ci
   defaultEncryptionConfiguration:
     kmsKeyRef:
       external: projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
