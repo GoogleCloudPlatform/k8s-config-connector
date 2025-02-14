@@ -68,7 +68,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Use:   "generate-types",
 		Short: "generate KRM types for a proto service",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if err := opt.loadAndApplyConfig(); err != nil {
+			if err := opt.loadAndApplyMetadata(); err != nil {
 				return err
 			}
 			return opt.validate()
@@ -177,21 +177,21 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	return nil
 }
 
-func (o *GenerateCRDOptions) loadAndApplyConfig() error {
-	if o.ConfigFile == "" {
+func (o *GenerateCRDOptions) loadAndApplyMetadata() error {
+	if o.MetadataFile == "" {
 		return nil
 	}
-	config, err := codegen.LoadConfig(o.ConfigFile)
+	serviceMetadata, err := codegen.LoadServiceMetadata(o.MetadataFile)
 	if err != nil {
-		return fmt.Errorf("loading service config: %w", err)
+		return fmt.Errorf("loading service metadata: %w", err)
 	}
-	if config == nil {
+	if serviceMetadata == nil {
 		return nil
 	}
 
-	o.ServiceName = config.Service
-	o.APIVersion = config.APIVersion
-	for _, res := range config.Resources {
+	o.ServiceName = serviceMetadata.Service
+	o.APIVersion = serviceMetadata.APIVersion
+	for _, res := range serviceMetadata.Resources {
 		o.Resources = append(o.Resources, options.Resource{
 			Kind:              res.Kind,
 			ProtoName:         res.ProtoName,

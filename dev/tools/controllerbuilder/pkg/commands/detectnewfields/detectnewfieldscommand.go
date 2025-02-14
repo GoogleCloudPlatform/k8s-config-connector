@@ -34,7 +34,7 @@ type DetectNewFieldsOptions struct {
 
 	targetMessages string // comma-separated list of proto message names
 	outputFormat   string // optional: json, yaml, or text
-	ConfigDir      string // path to service config files
+	MetadataDir    string // path to service metadata files
 }
 
 func (o *DetectNewFieldsOptions) InitDefaults() error {
@@ -45,7 +45,7 @@ func (o *DetectNewFieldsOptions) InitDefaults() error {
 func (o *DetectNewFieldsOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.targetMessages, "target-messages", o.targetMessages, "Comma-separated list of target fully qualified proto message names to check")
 	cmd.Flags().StringVar(&o.outputFormat, "output-format", o.outputFormat, "Output format: text, json, or yaml")
-	cmd.Flags().StringVar(&o.ConfigDir, "config-dir", o.ConfigDir, "Path to service config files")
+	cmd.Flags().StringVar(&o.MetadataDir, "metadata-dir", o.MetadataDir, "Path to service metadata files")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -85,7 +85,7 @@ func runNewFieldDetector(ctx context.Context, opt *DetectNewFieldsOptions) error
 
 	detector, err := newfieldsdetector.NewFieldDetector(&newfieldsdetector.DetectorOptions{
 		TargetMessages: targetMessages,
-		ConfigDir:      opt.ConfigDir,
+		MetadataDir:    opt.MetadataDir,
 	})
 	if err != nil {
 		return err
