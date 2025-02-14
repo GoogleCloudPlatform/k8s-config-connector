@@ -262,7 +262,7 @@ func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, input *DataPoint
 }
 
 // InferOutput_WithCompletion tries to infer an output value, using the Completion LLM APIs.
-func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, input *DataPoint, out io.Writer) error {
+func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model string, input *DataPoint, out io.Writer) error {
 	log := klog.FromContext(ctx)
 
 	client, err := llm.BuildVertexAIClient(ctx)
@@ -270,6 +270,10 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, input *Dat
 		return fmt.Errorf("building gemini client: %w", err)
 	}
 	defer client.Close()
+
+	if model != "" {
+		client.WithModel(model)
+	}
 
 	var prompt strings.Builder
 

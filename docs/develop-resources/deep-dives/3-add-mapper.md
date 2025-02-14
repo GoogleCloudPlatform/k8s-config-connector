@@ -48,6 +48,7 @@ Note: For Beta resources, a fuzzer test is required for both the `Spec` and `Sta
 export REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT/dev/tools/controllerbuilder
 
+LLM_MODEL="gemini-2.0-flash-exp" \
 go run main.go prompt \
   <<EOF > $REPO_ROOT/pkg/controller/direct/managedkafka/cluster_fuzzer.go
 // +tool:fuzz-gen
