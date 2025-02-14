@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -102,7 +103,7 @@ func NewSecureSourceManagerRepositoryRef(ctx context.Context, reader client.Read
 	id.parent = &SecureSourceManagerRepositoryParent{ProjectID: projectID, Location: location}
 
 	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -111,7 +112,7 @@ func NewSecureSourceManagerRepositoryRef(ctx context.Context, reader client.Read
 	}
 
 	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
+	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
 		id.External = asSecureSourceManagerRepositoryExternal(id.parent, resourceID)
 		return id, nil

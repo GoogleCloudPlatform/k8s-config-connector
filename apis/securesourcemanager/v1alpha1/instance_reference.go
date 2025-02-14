@@ -47,31 +47,31 @@ type SecureSourceManagerInstanceRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-func ParseSecureSourceManagerInstanceRef(url string) (*SecureSourceManagerInstanceRef, error) {
-	parent, resourceID, err := parseSecureSourceManagerExternal(url)
+func ParseSecureSourceManagerInstanceUrl(url string) (*InstanceIdentity, error) {
+	id, err := parseSecureSourceManagerInstanceExternal(url)
 	if err != nil {
 		return nil, err
 	}
-	external := parent.String() + "/instances/" + resourceID
-	return &SecureSourceManagerInstanceRef{External: external}, nil
+	return &InstanceIdentity{
+		parent: id.parent,
+		id:     id.id,
+	}, nil
 }
 
-func parseSecureSourceManagerExternal(external string) (*ProjectIDAndLocation, string, error) {
+func parseSecureSourceManagerInstanceExternal(external string) (*InstanceIdentity, error) {
 	s := external
 	s = strings.TrimPrefix(s, "/")
 	s = strings.TrimPrefix(s, "securesourcemanager.googleapis.com/")
 
 	tokens := strings.Split(s, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" {
-		parent := &ProjectIDAndLocation{
-			ProjectID: tokens[1],
-			Location:  tokens[3],
-		}
-		resourceID := tokens[5]
-		return parent, resourceID, nil
+		return &InstanceIdentity{
+			parent: &InstanceParent{ProjectID: tokens[1], Location: tokens[3]},
+			id:     tokens[5],
+		}, nil
 	}
 
-	return nil, "", fmt.Errorf("format of SecureSourceManagerInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
+	return nil, fmt.Errorf("format of SecureSourceManagerInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
 }
 
 // ConvertToProjectNumber converts the external reference to use a project number.
@@ -79,8 +79,12 @@ func (r *SecureSourceManagerInstanceRef) ConvertToProjectNumber(ctx context.Cont
 	if r == nil {
 		return nil
 	}
-
-	parent, id, err := parseSecureSourceManagerExternal(r.External)
+	instanceIdentity, err := parseSecureSourceManagerInstanceExternal(r.External)
+	if err != nil {
+		return err
+	}
+	id := instanceIdentity.id
+	parent := instanceIdentity.parent
 
 	// Check if the project number is already a valid integer
 	// If not, we need to look it up
@@ -135,102 +139,5 @@ func (r *SecureSourceManagerInstanceRef) NormalizedExternal(ctx context.Context,
 		}
 		r.External = actualExternalRef
 	}
-
-	if _, err := ParseSecureSourceManagerInstanceRef(r.External); err != nil {
-		return "", err
-	}
 	return r.External, nil
-}
-
-// New builds a SecureSourceManagerInstanceRef from the Config Connector SecureSourceManagerInstance object.
-func NewSecureSourceManagerInstanceRef(ctx context.Context, reader client.Reader, obj *SecureSourceManagerInstance) (*SecureSourceManagerInstanceRef, error) {
-	id := &SecureSourceManagerInstanceRef{}
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-	parent := &ProjectIDAndLocation{ProjectID: projectID, Location: location}
-
-	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = parent.String() + "/instances/" + resourceID
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, actualResourceID, err := parseSecureSourceManagerExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-	if actualParent.Location != location {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-	}
-	if actualResourceID != resourceID {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
-	}
-	id.External = externalRef
-	return id, nil
-}
-
-func (r *SecureSourceManagerInstanceRef) Parent() (*ProjectIDAndLocation, error) {
-	if r.External == "" {
-		return nil, fmt.Errorf("reference has not been normalized (external is empty)")
-	}
-
-	parent, _, err := parseSecureSourceManagerExternal(r.External)
-	if err != nil {
-		return nil, err
-	}
-	return parent, nil
-}
-
-func (r *SecureSourceManagerInstanceRef) ResourceID() (string, error) {
-	if r.External == "" {
-		return "", fmt.Errorf("reference has not been normalized (external is empty)")
-	}
-
-	_, resourceID, err := parseSecureSourceManagerExternal(r.External)
-	if err != nil {
-		return "", err
-	}
-	return resourceID, nil
-}
-
-// +k8s:deepcopy-gen=false
-type ProjectIDAndLocation struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *ProjectIDAndLocation) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-func valueOf[T any](t *T) T {
-	var zeroVal T
-	if t == nil {
-		return zeroVal
-	}
-	return *t
 }
