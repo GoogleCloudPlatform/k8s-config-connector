@@ -44,7 +44,7 @@ type FieldChange struct {
 
 type DetectorOptions struct {
 	TargetMessages sets.String
-	ConfigDir      string
+	MetadataDir    string
 }
 
 type FieldDetector struct {
@@ -81,7 +81,7 @@ func NewFieldDetector(opts *DetectorOptions) (*FieldDetector, error) {
 	}
 
 	// load ignored fields
-	ignoredFields, err := codegen.LoadIgnoredFields(opts.ConfigDir)
+	ignoredFields, err := codegen.LoadIgnoredFields(opts.MetadataDir)
 	if err != nil {
 		return nil, fmt.Errorf("loading ignored fields: %w", err)
 	}

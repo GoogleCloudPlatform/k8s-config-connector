@@ -17,9 +17,9 @@ $ go run . detect-new-fields
 $ go run . detect-new-fields \
   --target-messages="google.cloud.bigquery.datatransfer.v1.TransferConfig"
 
-# Ignore specific fields using a config file
+# Ignore specific fields using configurations from metadata file
 $ go run . detect-new-fields \
-  --config-dir=config/
+  --metadata-dir=metadata/
 ```
 
 ## Example Output

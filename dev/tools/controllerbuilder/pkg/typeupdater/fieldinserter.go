@@ -35,7 +35,7 @@ type InsertFieldOptions struct {
 	ProtoSourcePath       string
 	APIDirectory          string
 	GoPackagePath         string
-	ConfigDir             string
+	MetadataDir           string
 }
 
 type FieldInserter struct {
@@ -46,7 +46,7 @@ type FieldInserter struct {
 	// key: fully qualified name of proto message
 	// value: internal representation of the messages to be inserted
 	dependentMessages map[string]newMessage
-	// ignoredFields is a set of fields that are ignored in the config file
+	// ignoredFields is a set of fields that are ignored in the metadata files
 	ignoredFields sets.String
 }
 
@@ -62,9 +62,9 @@ type newMessage struct {
 }
 
 func NewFieldInserter(opts *InsertFieldOptions) *FieldInserter {
-	ignoredFields, err := codegen.LoadIgnoredFields(opts.ConfigDir)
+	ignoredFields, err := codegen.LoadIgnoredFields(opts.MetadataDir)
 	if err != nil {
-		klog.Fatalf("failed to load config files in directory %s: %v", opts.ConfigDir, err)
+		klog.Fatalf("failed to load metadata files in directory %s: %v", opts.MetadataDir, err)
 	}
 
 	return &FieldInserter{

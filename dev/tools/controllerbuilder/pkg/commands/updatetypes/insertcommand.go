@@ -84,7 +84,7 @@ func runFieldInserter(_ context.Context, opt *insertFieldOptions) error {
 		FieldToInsert:         opt.field,
 		APIDirectory:          opt.apiDirectory,
 		GoPackagePath:         opt.apiGoPackagePath,
-		ConfigDir:             opt.configDir,
+		MetadataDir:           opt.metadataDir,
 	})
 	return fieldInserter.Run()
 }

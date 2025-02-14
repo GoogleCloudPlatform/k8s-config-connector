@@ -68,7 +68,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Use:   "generate-mapper",
 		Short: "generate mapper functions for a proto service",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if err := opt.loadAndApplyConfig(); err != nil {
+			if err := opt.loadAndApplyMetadata(); err != nil {
 				return err
 			}
 			return opt.validate()
@@ -143,24 +143,24 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 
 }
 
-func (o *GenerateMapperOptions) loadAndApplyConfig() error {
-	if o.ConfigFile == "" {
+func (o *GenerateMapperOptions) loadAndApplyMetadata() error {
+	if o.MetadataFile == "" {
 		return nil
 	}
-	config, err := codegen.LoadConfig(o.ConfigFile)
+	serviceMetadata, err := codegen.LoadServiceMetadata(o.MetadataFile)
 	if err != nil {
-		return fmt.Errorf("loading service config: %w", err)
+		return fmt.Errorf("loading service metadata: %w", err)
 	}
-	if config == nil {
+	if serviceMetadata == nil {
 		return nil
 	}
 
-	if !config.GenerateMapper {
-		return fmt.Errorf("mapper generation is disabled for this service in config file %s", o.ConfigFile)
+	if !serviceMetadata.GenerateMapper {
+		return fmt.Errorf("mapper generation is disabled for this service in metadata file %s", o.MetadataFile)
 	}
 
-	o.ServiceName = config.Service
-	o.APIVersion = config.APIVersion
+	o.ServiceName = serviceMetadata.Service
+	o.APIVersion = serviceMetadata.APIVersion
 	return nil
 }
 

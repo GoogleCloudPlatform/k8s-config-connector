@@ -28,7 +28,7 @@ type baseUpdateTypeOptions struct {
 
 	apiDirectory     string
 	apiGoPackagePath string
-	configDir        string // path to service config files
+	metadataDir      string // path to service metadata files
 }
 
 func (o *baseUpdateTypeOptions) InitDefaults() error {
@@ -38,7 +38,7 @@ func (o *baseUpdateTypeOptions) InitDefaults() error {
 	}
 	o.apiDirectory = root + "/apis/"
 	o.apiGoPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
-	o.configDir = root + "/dev/tools/controllerbuilder/config"
+	o.metadataDir = root + "/dev/tools/controllerbuilder/metadata"
 	return nil
 }
 
@@ -46,7 +46,7 @@ func (o *baseUpdateTypeOptions) BindFlags(cmd *cobra.Command) {
 	// TODO: Update this flag to accept a file path pointing to the ignored fields YAML file.
 	cmd.Flags().StringVar(&o.apiDirectory, "api-dir", o.apiDirectory, "Base directory for APIs")
 	cmd.Flags().StringVar(&o.apiGoPackagePath, "api-go-package-path", o.apiGoPackagePath, "API Go package path")
-	cmd.Flags().StringVar(&o.configDir, "config-dir", o.configDir, "Path to service config files")
+	cmd.Flags().StringVar(&o.metadataDir, "metadata-dir", o.metadataDir, "Path to service metadata files")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {

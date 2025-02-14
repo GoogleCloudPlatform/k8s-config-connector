@@ -24,7 +24,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . update-types insert \
     --parent "google.monitoring.dashboard.v1.Dashboard" \
     --field "row_layout" \
-    --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1 \
+    --api-dir ${REPO_ROOT}/apis/monitoring/v1beta1
 
 # example usage of syncing a message with all of its dependencies from proto package
 go run . update-types sync \
