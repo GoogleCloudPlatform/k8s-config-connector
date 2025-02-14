@@ -155,6 +155,8 @@ func (s *groupsServer) PatchGroup(ctx context.Context, req *pb.PatchGroupRequest
 			obj.DisplayName = req.GetGroup().DisplayName
 		case "description":
 			obj.Description = req.GetGroup().Description
+		case "labels":
+			obj.Labels = req.GetGroup().Labels
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
