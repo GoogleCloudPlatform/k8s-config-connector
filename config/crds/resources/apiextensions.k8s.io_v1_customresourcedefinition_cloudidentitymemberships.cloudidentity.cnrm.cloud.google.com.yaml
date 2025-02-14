@@ -5,7 +5,9 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com
 spec:
@@ -61,18 +63,135 @@ spec:
             description: CloudIdentityMembershipSpec defines the desired state of
               CloudIdentityMembership
             properties:
+              groupRef:
+                description: Immutable.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'The group for the resource Allowed value: The Google
+                      Cloud resource name of a `CloudIdentityGroup` resource (format:
+                      `groups/{{name}}`).'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              memberKey:
+                description: Immutable. The `EntityKey` of the member. Either `member_key`
+                  or `preferred_member_key` must be set when calling MembershipsService.CreateMembership
+                  but not both; both shall be set when returned.
+                properties:
+                  id:
+                    description: The ID of the entity. For Google-managed entities,
+                      the `id` must be the email address of an existing group or user.
+                      For external-identity-mapped entities, the `id` must be a string
+                      conforming to the Identity Source's requirements. Must be unique
+                      within a `namespace`.
+                    type: string
+                  namespace:
+                    description: The namespace in which the entity exists. If not
+                      specified, the `EntityKey` represents a Google-managed entity
+                      such as a Google user or a Google Group. If specified, the `EntityKey`
+                      represents an external-identity-mapped group. The namespace
+                      must correspond to an identity source created in Admin Console
+                      and must be in the form of `identitysources/{identity_source_id}`.
+                    type: string
+                type: object
+              preferredMemberKey:
+                description: Immutable. Required. Immutable. The `EntityKey` of the
+                  member.
+                properties:
+                  id:
+                    description: Immutable. The ID of the entity. For Google-managed
+                      entities, the `id` must be the email address of a group or user.
+                      For external-identity-mapped entities, the `id` must be a string
+                      conforming to the Identity Source's requirements. Must be unique
+                      within a `namespace`.
+                    type: string
+                  namespace:
+                    description: Immutable. The namespace in which the entity exists.
+                      If not specified, the `EntityKey` represents a Google-managed
+                      entity such as a Google user or a Google Group. If specified,
+                      the `EntityKey` represents an external-identity-mapped group.
+                      The namespace must correspond to an identity source created
+                      in Admin Console and must be in the form of `identitysources/{identity_source_id}`.
+                    type: string
+                required:
+                - id
+                type: object
               resourceID:
-                description: The CloudIdentityMembership name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
+              roles:
+                description: The `MembershipRole`s that apply to the `Membership`.
+                  If unspecified, defaults to a single `MembershipRole` with `name`
+                  `MEMBER`. Must not contain duplicate `MembershipRole`s with the
+                  same `name`.
+                items:
+                  properties:
+                    expiryDetail:
+                      description: The expiry details of the `MembershipRole`. Expiry
+                        details are only supported for `MEMBER` `MembershipRoles`.
+                        May be set if `name` is `MEMBER`. Must not be set if `name`
+                        is any other value.
+                      properties:
+                        expireTime:
+                          description: The time at which the `MembershipRole` will
+                            expire.
+                          type: string
+                      type: object
+                    name:
+                      type: string
+                    restrictionEvaluations:
+                      description: Evaluations of restrictions applied to parent group
+                        on this membership.
+                      properties:
+                        memberRestrictionEvaluation:
+                          description: Evaluation of the member restriction applied
+                            to this membership. Empty if the user lacks permission
+                            to view the restriction evaluation.
+                          properties:
+                            state:
+                              description: 'Output only. The current state of the
+                                restriction Possible values: ENCRYPTION_STATE_UNSPECIFIED,
+                                UNSUPPORTED_BY_DEVICE, ENCRYPTED, NOT_ENCRYPTED'
+                              type: string
+                          type: object
+                      type: object
+                  required:
+                  - name
+                  type: object
+                type: array
+            required:
+            - groupRef
+            - preferredMemberKey
+            - roles
             type: object
           status:
             description: CloudIdentityMembershipStatus defines the config connector
               machine state of CloudIdentityMembership
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the object's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -96,6 +215,29 @@ spec:
                       type: string
                   type: object
                 type: array
+              createTime:
+                description: Output only. The time when the `Membership` was created.
+                type: string
+              deliverySetting:
+                description: 'Output only. Delivery setting associated with the membership.
+                  Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST,
+                  DAILY, NONE, DISABLED'
+                type: string
+              displayName:
+                description: Output only. The display name of this member, if available
+                properties:
+                  familyName:
+                    description: Output only. Member's family name
+                    type: string
+                  fullName:
+                    description: Output only. Localized UTF-16 full name for the member.
+                      Localization is done based on the language in the request and
+                      the language of the stored display name.
+                    type: string
+                  givenName:
+                    description: Output only. Member's given name
+                    type: string
+                type: object
               externalRef:
                 description: A unique specifier for the CloudIdentityMembership resource
                   in GCP.
@@ -111,7 +253,20 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  name:
+                    description: The name of the Membership resource in GCP. Server
+                      generated. Shall be of the form `groups/{group_id}/memberships/{membership_id}`.
+                    type: string
                 type: object
+              type:
+                description: 'Output only. The type of the membership. Possible values:
+                  OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER'
+                type: string
+              updateTime:
+                description: Output only. The time when the `Membership` was last
+                  updated.
+                type: string
             type: object
         required:
         - spec
