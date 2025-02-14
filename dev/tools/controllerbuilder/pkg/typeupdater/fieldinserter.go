@@ -18,7 +18,6 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
@@ -33,10 +32,10 @@ import (
 type InsertFieldOptions struct {
 	ParentMessageFullName string
 	FieldToInsert         string
-	IgnoredFields         string
 	ProtoSourcePath       string
 	APIDirectory          string
 	GoPackagePath         string
+	MetadataDir           string
 }
 
 type FieldInserter struct {
@@ -47,6 +46,8 @@ type FieldInserter struct {
 	// key: fully qualified name of proto message
 	// value: internal representation of the messages to be inserted
 	dependentMessages map[string]newMessage
+	// ignoredFields is a set of fields that are ignored in the metadata files
+	ignoredFields sets.String
 }
 
 type newField struct {
@@ -61,8 +62,14 @@ type newMessage struct {
 }
 
 func NewFieldInserter(opts *InsertFieldOptions) *FieldInserter {
+	ignoredFields, err := codegen.LoadIgnoredFields(opts.MetadataDir)
+	if err != nil {
+		klog.Fatalf("failed to load metadata files in directory %s: %v", opts.MetadataDir, err)
+	}
+
 	return &FieldInserter{
-		opts: opts,
+		opts:          opts,
+		ignoredFields: ignoredFields,
 	}
 }
 
@@ -101,7 +108,7 @@ func (u *FieldInserter) analyze() error {
 	}
 
 	// find the dependent proto messags of this new field
-	msgs, err := findDependentMsgs(newProtoField, sets.NewString(strings.Split(u.opts.IgnoredFields, ",")...))
+	msgs, err := findDependentMsgs(newProtoField, u.ignoredFields)
 	if err != nil {
 		return err
 	}
