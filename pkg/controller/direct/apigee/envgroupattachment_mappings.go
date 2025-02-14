@@ -81,7 +81,6 @@ func EnvgroupAttachmentObservedState_FromAPI(mapCtx *direct.MapContext, in *api.
 	return out
 }
 
-
 func EnvgroupAttachmentObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.EnvgroupAttachmentObservedState) *api.GoogleCloudApigeeV1EnvironmentGroupAttachment {
 	out := &api.GoogleCloudApigeeV1EnvironmentGroupAttachment{}
 	i, err := ConvertTimestampToEpochMillis(direct.ValueOf(in.CreatedAt))
