@@ -67,12 +67,15 @@ protoc --include_imports --include_source_info \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/cloudidentity/groups/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/bigquery/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/dataflow/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/firestore/admin/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/iam/v1/*.proto \
