@@ -24,3 +24,5 @@ spec:
   parent: customers/C00qzcxfe
   labels:
     cloudidentity.googleapis.com/groups.discussion_forum: ""
+    # The security label cannot be removed once added.
+    cloudidentity.googleapis.com/groups.security: ""
