@@ -36,9 +36,6 @@ type GroupRef struct {
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `CloudIdentityGroup` resource. */
 	Namespace string `json:"namespace,omitempty"`
-	// The kind of the Group resource; optional but must be `CloudIdentityGroup` if provided.
-	// +optional
-	Kind string `json:"kind,omitempty"`
 }
 
 // AsGroupRef converts a generic ResourceRef into a GroupRef
@@ -50,7 +47,6 @@ func AsGroupRef(in *v1alpha1.ResourceRef) *GroupRef {
 		Namespace: in.Namespace,
 		Name:      in.Name,
 		External:  in.External,
-		Kind:      in.Kind,
 	}
 }
 
@@ -62,12 +58,6 @@ type Group struct {
 func ResolveGroup(ctx context.Context, reader client.Reader, otherNamespace string, ref *GroupRef) (*Group, error) {
 	if ref == nil {
 		return nil, nil
-	}
-
-	if ref.Kind != "" {
-		if ref.Kind != "CloudIdentityGroup" {
-			return nil, fmt.Errorf("kind is optional on group reference, but must be \"CloudIdentityGroup\" if provided")
-		}
 	}
 
 	if ref.External != "" {
@@ -101,7 +91,6 @@ func ResolveGroup(ctx context.Context, reader client.Reader, otherNamespace stri
 	group.SetGroupVersionKind(schema.GroupVersionKind{
 		Group:   "cloudidentity.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "CloudIdentityGroup",
 	})
 	if err := reader.Get(ctx, key, group); err != nil {
 		if apierrors.IsNotFound(err) {
