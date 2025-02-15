@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -50,17 +49,14 @@ func (i *MembershipIdentity) Parent() *GroupIdentity {
 
 // New builds a MembershipIdentity from the Config Connector Membership object.
 func NewMembershipIdentity(ctx context.Context, reader client.Reader, obj *CloudIdentityMembership) (*MembershipIdentity, error) {
-
 	// Get Parent
-	// Implement something similar to:
-	// projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	groupRef, err := refsv1beta1.ResolveGroup(ctx, reader, obj.GetNamespace(), &obj.Spec.GroupRef)
+	groupExternal, err := obj.Spec.GroupRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	groupID := groupRef.GroupID
-	if groupID == "" {
-		return nil, fmt.Errorf("cannot resolve group")
+	groupID, err := ParseGroupExternal(groupExternal)
+	if err != nil {
+		return nil, err
 	}
 
 	// Get desired ID
