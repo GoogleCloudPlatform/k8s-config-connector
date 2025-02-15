@@ -94,6 +94,9 @@ func SpannerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInsta
 	out.NodeCount = direct.ValueOf(in.NumNodes)
 	out.ProcessingUnits = direct.ValueOf(in.ProcessingUnits)
 	out.Edition = direct.Enum_ToProto[pb.Instance_Edition](mapCtx, in.Edition)
+	if out.Edition == pb.Instance_EDITION_UNSPECIFIED {
+		out.Edition = pb.Instance_STANDARD
+	}
 	out.AutoscalingConfig = AutoscalingConfig_ToProto(mapCtx, in.AutoscalingConfig)
 	return out
 }
