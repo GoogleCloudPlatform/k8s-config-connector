@@ -15,8 +15,7 @@
 package v1beta1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -30,7 +29,7 @@ type CloudIdentityMembershipSpec struct {
 
 	// Immutable.
 	// +required
-	GroupRef refsv1beta1.GroupRef `json:"groupRef"`
+	GroupRef GroupRef `json:"groupRef"`
 
 	// Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.
 	MemberKey *MembershipMemberKey `json:"memberKey,omitempty"`
@@ -46,19 +45,13 @@ type CloudIdentityMembershipSpec struct {
 
 // CloudIdentityMembershipStatus defines the config connector machine state of CloudIdentityMembership
 type CloudIdentityMembershipStatus struct {
-	/* Conditions represent the latest available observation of the resource's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	// A unique specifier for the CloudIdentityMembership resource in GCP.
-	ExternalRef *string `json:"externalRef,omitempty"`
+	commonv1alpha1.CommonStatus `json:",inline"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
 
 	// Output only. The time when the `Membership` was created.
+	// +kubebuilder:validation:Format=date-time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	/* Output only. Delivery setting associated with the membership. Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST, DAILY, NONE, DISABLED */
@@ -73,6 +66,7 @@ type CloudIdentityMembershipStatus struct {
 	Type *string `json:"type,omitempty"`
 
 	// Output only. The time when the `Membership` was last updated.
+	// +kubebuilder:validation:Format=date-time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
@@ -98,6 +92,7 @@ type CloudIdentityMembershipObservedState struct {
 
 type MembershipExpiryDetail struct {
 	// The time at which the `MembershipRole` will expire.
+	// +kubebuilder:validation:Format=date-time
 	ExpireTime *string `json:"expireTime,omitempty"`
 }
 

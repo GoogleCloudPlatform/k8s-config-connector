@@ -81,15 +81,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The group for the resource Allowed value: The Google
-                      Cloud resource name of a `CloudIdentityGroup` resource (format:
-                      `groups/{{name}}`).'
+                    description: A reference to an externally managed CloudIdentityGroup
+                      resource. Should be in the format "groups/{{groupID}}".
                     type: string
                   name:
-                    description: The `name` field of a `CloudIdentityGroup` resource.
+                    description: The name of a CloudIdentityGroup resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `CloudIdentityGroup` resource.
+                    description: The namespace of a CloudIdentityGroup resource.
                     type: string
                 type: object
               memberKey:
@@ -156,6 +155,7 @@ spec:
                         expireTime:
                           description: The time at which the `MembershipRole` will
                             expire.
+                          format: date-time
                           type: string
                       type: object
                     name:
@@ -190,8 +190,8 @@ spec:
               machine state of CloudIdentityMembership
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -217,6 +217,7 @@ spec:
                 type: array
               createTime:
                 description: Output only. The time when the `Membership` was created.
+                format: date-time
                 type: string
               deliverySetting:
                 description: 'Output only. Delivery setting associated with the membership.
@@ -239,7 +240,7 @@ spec:
                     type: string
                 type: object
               externalRef:
-                description: A unique specifier for the CloudIdentityMembership resource
+                description: A unique Config Connector specifier for the resource
                   in GCP.
                 type: string
               observedGeneration:
@@ -266,6 +267,7 @@ spec:
               updateTime:
                 description: Output only. The time when the `Membership` was last
                   updated.
+                format: date-time
                 type: string
             type: object
         required:
