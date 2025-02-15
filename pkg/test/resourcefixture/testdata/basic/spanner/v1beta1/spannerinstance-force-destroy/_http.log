@@ -4,6 +4,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -45,6 +46,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -61,7 +63,6 @@ X-Xss-Protection: 0
       "defaultBackupScheduleType": 2,
       "displayName": "Instance Sample",
       "edition": 1,
-      "instanceType": 1,
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
@@ -78,7 +79,6 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "resourceLocation": "us-west1",
       "state": 2
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -94,6 +94,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -110,11 +111,9 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Instance Sample",
       "edition": "STANDARD",
-      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
@@ -123,15 +122,6 @@ X-Xss-Protection: 0
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 1,
       "processingUnits": 1000,
-      "replicaComputeCapacity": [
-        {
-          "nodeCount": 1,
-          "replicaSelection": {
-            "location": "us-west1"
-          }
-        }
-      ],
-      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -145,7 +135,6 @@ X-Xss-Protection: 0
     "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Instance Sample",
     "edition": "STANDARD",
-    "instanceType": "PROVISIONED",
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
@@ -154,15 +143,6 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 1,
     "processingUnits": 1000,
-    "replicaComputeCapacity": [
-      {
-        "nodeCount": 1,
-        "replicaSelection": {
-          "location": "us-west1"
-        }
-      }
-    ],
-    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -176,6 +156,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -190,7 +171,6 @@ X-Xss-Protection: 0
   "defaultBackupScheduleType": 2,
   "displayName": "Instance Sample",
   "edition": 1,
-  "instanceType": 1,
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -199,15 +179,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 1,
   "processingUnits": 1000,
-  "replicaComputeCapacity": [
-    {
-      "nodeCount": 1,
-      "replicaSelection": {
-        "location": "us-west1"
-      }
-    }
-  ],
-  "resourceLocation": "us-west1",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -235,6 +206,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -252,24 +224,20 @@ X-Xss-Protection: 0
       "defaultBackupScheduleType": 2,
       "displayName": "Updated Instance Sample",
       "edition": 1,
-      "instanceType": 1,
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-      "nodeCount": 1,
-      "processingUnits": 1000,
       "replicaComputeCapacity": [
         {
-          "nodeCount": 1,
+          "nodeCount": 0,
           "replicaSelection": {
             "location": "us-west1"
           }
         }
       ],
-      "resourceLocation": "us-west1",
       "state": 2,
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -286,6 +254,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -306,24 +275,12 @@ X-Xss-Protection: 0
       "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Updated Instance Sample",
       "edition": "STANDARD",
-      "instanceType": "PROVISIONED",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-      "nodeCount": 1,
-      "processingUnits": 1000,
-      "replicaComputeCapacity": [
-        {
-          "nodeCount": 1,
-          "replicaSelection": {
-            "location": "us-west1"
-          }
-        }
-      ],
-      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -337,24 +294,12 @@ X-Xss-Protection: 0
     "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Updated Instance Sample",
     "edition": "STANDARD",
-    "instanceType": "PROVISIONED",
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-    "nodeCount": 1,
-    "processingUnits": 1000,
-    "replicaComputeCapacity": [
-      {
-        "nodeCount": 1,
-        "replicaSelection": {
-          "location": "us-west1"
-        }
-      }
-    ],
-    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -368,6 +313,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -382,24 +328,12 @@ X-Xss-Protection: 0
   "defaultBackupScheduleType": 2,
   "displayName": "Updated Instance Sample",
   "edition": 1,
-  "instanceType": 1,
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-  "nodeCount": 1,
-  "processingUnits": 1000,
-  "replicaComputeCapacity": [
-    {
-      "nodeCount": 1,
-      "replicaSelection": {
-        "location": "us-west1"
-      }
-    }
-  ],
-  "resourceLocation": "us-west1",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -411,6 +345,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -429,6 +364,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
