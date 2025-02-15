@@ -71,12 +71,15 @@ spec:
                     - external
                   required:
                   - name
+                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
+                    - required:
+                      - kind
                   required:
                   - external
                 properties:
@@ -85,11 +88,15 @@ spec:
                       Cloud resource name of a `CloudIdentityGroup` resource (format:
                       `groups/{{name}}`).'
                     type: string
+                  kind:
+                    description: The kind of the Group resource; optional but must
+                      be `CloudIdentityGroup` if provided.
+                    type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `CloudIdentityGroup` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `CloudIdentityGroup` resource.
                     type: string
                 type: object
               memberKey:
