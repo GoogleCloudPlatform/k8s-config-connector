@@ -66,7 +66,6 @@
 ```yaml
 groupRef:
   external: string
-  kind: string
   name: string
   namespace: string
 memberKey:
@@ -110,16 +109,6 @@ roles:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The group for the resource Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource (format: `groups/{{name}}`).{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>groupRef.kind</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The kind of the Group resource; optional but must be `CloudIdentityGroup` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
