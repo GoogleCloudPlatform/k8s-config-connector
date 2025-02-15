@@ -7,19 +7,19 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com
+  name: orgpolicypolicies.orgpolicy.cnrm.cloud.google.com
 spec:
   group: orgpolicy.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: OrgpolicyCustomConstraint
-    listKind: OrgpolicyCustomConstraintList
-    plural: orgpolicycustomconstraints
+    kind: OrgpolicyPolicy
+    listKind: OrgpolicyPolicyList
+    plural: orgpolicypolicies
     shortNames:
-    - gcporgpolicycustomconstraint
-    - gcporgpolicycustomconstraints
-    singular: orgpolicycustomconstraint
+    - gcporgpolicypolicy
+    - gcporgpolicypolicys
+    singular: orgpolicypolicy
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -42,8 +42,7 @@ spec:
     name: v2
     schema:
       openAPIV3Schema:
-        description: OrgpolicyCustomConstraint is the Schema for the OrgpolicyCustomConstraint
-          API
+        description: OrgpolicyPolicy is the Schema for the OrgpolicyPolicy API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,17 +57,16 @@ spec:
           metadata:
             type: object
           spec:
-            description: OrgpolicyCustomConstraintSpec defines the desired state of
-              OrgpolicyCustomConstraint
+            description: OrgpolicyPolicySpec defines the desired state of OrgpolicyPolicy
             properties:
               resourceID:
-                description: The OrgpolicyCustomConstraint name. If not given, the
-                  metadata.name will be used.
+                description: The OrgpolicyPolicy name. If not given, the metadata.name
+                  will be used.
                 type: string
             type: object
           status:
-            description: OrgpolicyCustomConstraintStatus defines the config connector
-              machine state of OrgpolicyCustomConstraint
+            description: OrgpolicyPolicyStatus defines the config connector machine
+              state of OrgpolicyPolicy
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -97,8 +95,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the OrgpolicyCustomConstraint
-                  resource in GCP.
+                description: A unique specifier for the OrgpolicyPolicy resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
