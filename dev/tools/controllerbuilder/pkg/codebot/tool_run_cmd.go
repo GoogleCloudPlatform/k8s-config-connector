@@ -65,6 +65,8 @@ func (t *RunTerminalCommand) Run(ctx context.Context, c *Chat, args map[string]a
 		cmd = exec.CommandContext(ctx, "make", tokens[1:]...)
 	case "gcloud":
 		cmd = exec.CommandContext(ctx, "gcloud", tokens[1:]...)
+	case "controllerbuilder":
+		cmd = exec.CommandContext(ctx, "controllerbuilder", tokens[1:]...)
 	default:
 		cmd = exec.CommandContext(ctx, "bash", "-c", t.Command)
 	}
