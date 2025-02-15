@@ -24,10 +24,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// type: "cloudidentity.googleapis.com/Membership"
+// pattern: "groups/{group_id}/memberships/{member_id}"
+// parent_type: "cloudidentity.googleapis.com/Group"
+// parent_name_extractor: "groups/{group_id}"
+
 // MembershipIdentity defines the resource reference to CloudIdentityMembership, which "External" field
 // holds the GCP identifier for the KRM object.
 type MembershipIdentity struct {
-	parent *MembershipParent
+	parent *GroupIdentity
 	id     string
 }
 
@@ -39,32 +44,24 @@ func (i *MembershipIdentity) ID() string {
 	return i.id
 }
 
-func (i *MembershipIdentity) Parent() *MembershipParent {
+func (i *MembershipIdentity) Parent() *GroupIdentity {
 	return i.parent
-}
-
-type MembershipParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *MembershipParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
 // New builds a MembershipIdentity from the Config Connector Membership object.
 func NewMembershipIdentity(ctx context.Context, reader client.Reader, obj *CloudIdentityMembership) (*MembershipIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	// Implement something similar to:
+	// projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	groupRef, err := refsv1beta1.ResolveGroup(ctx, reader, obj.GetNamespace(), &obj.Spec.GroupRef)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	groupID := groupRef.GroupID
+	if groupID == "" {
+		return nil, fmt.Errorf("cannot resolve group")
 	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +80,8 @@ func NewMembershipIdentity(ctx context.Context, reader client.Reader, obj *Cloud
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.id != groupID {
+			return nil, fmt.Errorf("spec.groupRef changed, expect %s, got %s", actualParent.id, groupID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -95,23 +89,21 @@ func NewMembershipIdentity(ctx context.Context, reader client.Reader, obj *Cloud
 		}
 	}
 	return &MembershipIdentity{
-		parent: &MembershipParent{
-			ProjectID: projectID,
-			Location:  location,
+		parent: &GroupIdentity{
+			id: groupID,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseMembershipExternal(external string) (parent *MembershipParent, resourceID string, err error) {
+func ParseMembershipExternal(external string) (parent *GroupIdentity, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "memberships" {
-		return nil, "", fmt.Errorf("format of CloudIdentityMembership external=%q was not known (use projects/{{projectID}}/locations/{{location}}/memberships/{{membershipID}})", external)
+	if len(tokens) != 4 || tokens[0] != "groups" || tokens[2] != "memberships" {
+		return nil, "", fmt.Errorf("format of CloudIdentityMembership external=%q was not known (use groups/{{groupID}}/memberships/{{membershipID}})", external)
 	}
-	parent = &MembershipParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+	parent = &GroupIdentity{
+		id: tokens[1],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
