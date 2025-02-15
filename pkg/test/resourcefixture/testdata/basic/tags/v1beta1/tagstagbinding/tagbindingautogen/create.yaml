@@ -18,6 +18,7 @@ metadata:
   name: tagstagbinding-${uniqueId}
 spec:
   parentRef:
-    name: project-${uniqueId}
+    # TODO: projectId should work
+    external: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
   tagValueRef:
     name: tagstagvalue-${uniqueId}
