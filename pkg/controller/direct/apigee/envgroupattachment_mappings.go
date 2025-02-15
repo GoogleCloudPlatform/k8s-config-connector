@@ -22,9 +22,6 @@ import (
 )
 
 func EnvgroupAttachmentSpec_FromAPI(mapCtx *direct.MapContext, in *api.GoogleCloudApigeeV1EnvironmentGroupAttachment) *krm.ApigeeEnvgroupAttachmentSpec {
-	if in == nil {
-		return nil
-	}
 	out := &krm.ApigeeEnvgroupAttachmentSpec{}
 	out.EnvironmentRef = EnvgroupAttachmentSpec_EnvironmentRef_FromAPI(mapCtx, in.Environment)
 	out.EnvgroupRef = EnvgroupAttachmentSpec_EnvgroupRef_FromAPI(mapCtx, in.EnvironmentGroupId)
@@ -85,9 +82,6 @@ func EnvgroupAttachmentObservedState_FromAPI(mapCtx *direct.MapContext, in *api.
 }
 
 func EnvgroupAttachmentObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.EnvgroupAttachmentObservedState) *api.GoogleCloudApigeeV1EnvironmentGroupAttachment {
-	if in == nil {
-		return nil
-	}
 	out := &api.GoogleCloudApigeeV1EnvironmentGroupAttachment{}
 	i, err := ConvertTimestampToEpochMillis(direct.ValueOf(in.CreatedAt))
 	if err != nil {
