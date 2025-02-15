@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &MembershipRef{}
 // holds the GCP identifier for the KRM object.
 type MembershipRef struct {
 	// A reference to an externally managed CloudIdentityMembership resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/memberships/{{membershipID}}".
+	// Should be in the format "groups/{{groupID}}/memberships/{{membershipID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a CloudIdentityMembership resource.

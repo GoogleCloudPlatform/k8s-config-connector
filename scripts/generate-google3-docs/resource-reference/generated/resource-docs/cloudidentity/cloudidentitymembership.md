@@ -66,6 +66,7 @@
 ```yaml
 groupRef:
   external: string
+  kind: string
   name: string
   namespace: string
 memberKey:
@@ -108,9 +109,17 @@ roles:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The group for the resource
-
-Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource (format: `groups/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The group for the resource Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource (format: `groups/{{name}}`).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>groupRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Group resource; optional but must be `CloudIdentityGroup` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -120,7 +129,7 @@ Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `CloudIdentityGroup` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -130,7 +139,7 @@ Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `CloudIdentityGroup` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -303,7 +312,10 @@ displayName:
   familyName: string
   fullName: string
   givenName: string
+externalRef: string
 observedGeneration: integer
+observedState:
+  name: string
 type: string
 updateTime: string
 ```
@@ -407,10 +419,31 @@ updateTime: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the CloudIdentityMembership resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of the Membership resource in GCP. Server generated. Shall be of the form `groups/{group_id}/memberships/{membership_id}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

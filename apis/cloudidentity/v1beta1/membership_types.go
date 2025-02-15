@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -29,7 +30,7 @@ type CloudIdentityMembershipSpec struct {
 
 	// Immutable.
 	// +required
-	GroupRef GroupResourceRef `json:"groupRef"`
+	GroupRef refsv1beta1.GroupRef `json:"groupRef"`
 
 	// Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.
 	MemberKey *MembershipMemberKey `json:"memberKey,omitempty"`
@@ -94,24 +95,6 @@ type CloudIdentityMembershipObservedState struct {
 	// Not sure if we need to build an array copying everything from the spec here.
 	// []MembershipMemberRestrictionEvaluation.State
 }
-
-// GroupResourceRef is a reference to a Group resource.
-type GroupResourceRef struct {
-	//
-	//  The group for the resource
-	//  Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource (format: `groups/{{name}}`).
-	External string `json:"external,omitempty"`
-
-	///* Kind of the referent. */
-	//Kind string `json:"kind,omitempty"`
-
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	Name string `json:"name,omitempty"`
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	Namespace string `json:"namespace,omitempty"`
-}
-
-// We also need to add the supporting types from the existing file:
 
 type MembershipExpiryDetail struct {
 	// The time at which the `MembershipRole` will expire.
