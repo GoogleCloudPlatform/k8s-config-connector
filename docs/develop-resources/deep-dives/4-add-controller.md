@@ -16,7 +16,7 @@ The controller template has implemented the model interface` find, create, updat
 
 ## 4.2 Resolve resource references
 
-Most Config Connector resource need references like `spec.projectRef. `You should add those references in `AdapterForObject` using functions `Resolve<RefResource>`
+Most Config Connector resource need references like `spec.projectRef. `You should add those references in `AdapterForObject` using functions `Resolve<RefResource>`
 
 if there is no previous reference method, You may need to add a new` Resolve<RefResource> `
 
