@@ -20,13 +20,14 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // InstanceIdentity defines the resource reference to ApigeeInstance, which "External" field
 // holds the GCP identifier for the KRM object.
 type InstanceIdentity struct {
-	parent *InstanceParent
+	parent *OrganizationIdentity
 	id     string
 }
 
@@ -38,16 +39,8 @@ func (i *InstanceIdentity) ID() string {
 	return i.id
 }
 
-func (i *InstanceIdentity) Parent() *InstanceParent {
+func (i *InstanceIdentity) Parent() *OrganizationIdentity {
 	return i.parent
-}
-
-type InstanceParent struct {
-	OrganizationID string
-}
-
-func (p *InstanceParent) String() string {
-	return "organizations/" + p.OrganizationID
 }
 
 // New builds a InstanceIdentity from the Config Connector Instance object.
@@ -58,13 +51,11 @@ func NewApigeeInstanceIdentity(ctx context.Context, reader client.Reader, obj *A
 	if err != nil {
 		return nil, err
 	}
-	if orgExternal == "" {
-		return nil, fmt.Errorf("cannot resolve organization")
-	}
-	orgID, err := ParseOrganizationExternal(orgExternal)
+	parentOrgID, err := NewOrganizationIdentityFromNormalizedExternal(orgExternal)
 	if err != nil {
 		return nil, err
 	}
+
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
@@ -82,8 +73,8 @@ func NewApigeeInstanceIdentity(ctx context.Context, reader client.Reader, obj *A
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.OrganizationID != orgID {
-			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, orgID)
+		if actualParent.String() != parentOrgID.String() {
+			return nil, fmt.Errorf("parent organization (spec.organizationRef) changed, expected %s, got %s", actualParent.String(), parentOrgID.String())
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -91,20 +82,33 @@ func NewApigeeInstanceIdentity(ctx context.Context, reader client.Reader, obj *A
 		}
 	}
 	return &InstanceIdentity{
-		parent: &InstanceParent{
-			OrganizationID: orgID,
-		},
-		id: resourceID,
+		parent: parentOrgID,
+		id:     resourceID,
 	}, nil
 }
 
-func ParseInstanceExternal(external string) (parent *InstanceParent, resourceID string, err error) {
+// NewInstanceIdentityFromNormalizedExternal builds an InstanceIdentity from
+// the normalized string format of an Instance external reference.
+func NewInstanceIdentityFromNormalizedExternal(externalRef string) (*InstanceIdentity, error) {
+	parent, id, err := ParseInstanceExternal(externalRef)
+	if err != nil {
+		return nil, err
+	}
+	instanceID := &InstanceIdentity{
+		parent: parent,
+		id:     id,
+	}
+	return instanceID, nil
+}
+
+func ParseInstanceExternal(external string) (parent *OrganizationIdentity, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "instances" {
 		return nil, "", fmt.Errorf("format of ApigeeInstance external=%q was not known (use organizations/{{organizationID}}/instances/{{instanceID}})", external)
 	}
-	parent = &InstanceParent{
-		OrganizationID: tokens[1],
+	parent, err = NewOrganizationIdentityFromNormalizedExternal(strings.Join(tokens[:2], "/"))
+	if err != nil {
+		return nil, "", err
 	}
 	resourceID = tokens[3]
 	return parent, resourceID, nil
