@@ -104,7 +104,7 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 		}
 		obj.UrlMap = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
 	}
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/${projectId}/regions/%s", name.Region)))
+	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

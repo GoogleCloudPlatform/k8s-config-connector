@@ -136,7 +136,7 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 	// network field is only used for global internal load balancing.
 	// If neither subnetwork nor network field is specified, the default network will be used.
 	if obj.Network == nil && obj.Subnetwork == nil && obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme != "EXTERNAL" {
-		obj.Network = PtrTo(buildComputeSelfLink(ctx, "projects/${projectId}/global/networks/default"))
+		obj.Network = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/default", name.Project.ID)))
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

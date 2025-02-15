@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -63,7 +64,7 @@ func (s *RegionalTargetTcpProxyV1) Insert(ctx context.Context, req *pb.InsertReg
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetTcpProxy")
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, "projects/${projectId}/regions/"+req.GetRegion()))
+	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", req.GetProject(), req.GetRegion())))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
