@@ -580,6 +580,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+					addReplacement("state.diskUtilizationBytes", "1")
 					for _, event := range events {
 						responseBody := event.Response.ParseBody()
 						if responseBody == nil {

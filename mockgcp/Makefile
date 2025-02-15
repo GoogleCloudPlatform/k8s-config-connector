@@ -61,6 +61,12 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/dataset*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/encryption_spec.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/api_auth.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/artifact.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/lineage_subgraph.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/context.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/execution.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/event.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/metadata*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/io.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/operation.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/saved_query.proto \
