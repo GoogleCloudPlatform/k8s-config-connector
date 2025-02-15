@@ -210,5 +210,16 @@ go run . generate-types \
     --api-version apigee.cnrm.cloud.google.com/v1alpha1 \
     --resource ApigeeInstance:GoogleCloudApigeeV1Instance
 
+# AlloyDB
+go run main.go generate-types \
+     --service google.cloud.alloydb.v1beta \
+     --api-version alloydb.cnrm.cloud.google.com/v1alpha1 \
+     --resource AlloyDBCluster:Cluster \
+     --resource AlloyDBInstance:Instance
+
+go run . generate-mapper \
+   --service google.cloud.alloydb.v1beta  \
+   --api-version alloydb.cnrm.cloud.google.com/v1alpha1
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

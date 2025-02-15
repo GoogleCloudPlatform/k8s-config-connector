@@ -305,6 +305,7 @@ type Cluster_SecondaryConfig struct {
 }
 
 // AlloyDBClusterStatus defines the config connector machine state of AlloyDBCluster
+// +kcc:proto=google.cloud.alloydb.v1beta.Cluster
 type AlloyDBClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
