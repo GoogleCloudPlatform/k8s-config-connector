@@ -71,15 +71,12 @@ spec:
                     - external
                   required:
                   - name
-                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
-                    - required:
-                      - kind
                   required:
                   - external
                 properties:
@@ -87,10 +84,6 @@ spec:
                     description: 'The group for the resource Allowed value: The Google
                       Cloud resource name of a `CloudIdentityGroup` resource (format:
                       `groups/{{name}}`).'
-                    type: string
-                  kind:
-                    description: The kind of the Group resource; optional but must
-                      be `CloudIdentityGroup` if provided.
                     type: string
                   name:
                     description: The `name` field of a `CloudIdentityGroup` resource.
