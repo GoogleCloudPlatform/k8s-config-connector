@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: VPCAccessConnector
+    listKind: VPCAccessConnectorList
     plural: vpcaccessconnectors
     shortNames:
     - gcpvpcaccessconnector
@@ -43,29 +44,31 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: VPCAccessConnector is the Schema for the VPCAccessConnector API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: VPCAccessConnectorSpec defines the desired state of VPCAccessConnector
             properties:
               ipCidrRange:
                 description: 'Immutable. The range of internal addresses that follows
-                  RFC 4632 notation. Example: ''10.132.0.0/28''.'
+                  RFC 4632 notation. Example: `10.132.0.0/28`.'
                 type: string
               location:
                 description: 'Location represents the geographical location of the
-                  VPCAccessConnector. Specify a region name. Reference: GCP definition
-                  of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
+                  VPCAccessConnector. Specify a region name or "global" for global
+                  resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               machineType:
                 description: Immutable. Machine type of VM Instance underlying connector.
@@ -74,22 +77,26 @@ spec:
               maxInstances:
                 description: Immutable. Maximum value of instances in autoscaling
                   group underlying the connector.
+                format: int32
                 type: integer
               maxThroughput:
-                description: Immutable. Maximum throughput of the connector in Mbps,
-                  must be greater than 'min_throughput'. Default is 300.
+                description: Immutable. Maximum throughput of the connector in Mbps.
+                  Default is 300, max is 1000.
+                format: int32
                 type: integer
               minInstances:
                 description: Immutable. Minimum value of instances in autoscaling
                   group underlying the connector.
+                format: int32
                 type: integer
               minThroughput:
                 description: Immutable. Minimum throughput of the connector in Mbps.
                   Default and min is 200.
+                format: int32
                 type: integer
               networkRef:
-                description: Immutable. Name or self_link of the VPC network. Required
-                  if 'ip_cidr_range' is set.
+                description: Immutable. Name of a VPC network.  Required if ipCidrRange
+                  is set
                 oneOf:
                 - not:
                     required:
@@ -106,18 +113,18 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
-                      resource.'
+                    description: A reference to an externally managed Compute Network
+                      resource. Should be in the format `projects/<projectID>/global/networks/<network>`.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `ComputeNetwork` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `ComputeNetwork` resource.
                     type: string
                 type: object
               projectRef:
-                description: Immutable. The project that this resource belongs to.
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -134,27 +141,30 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: Immutable. The VPCAccessConnector name. If not given,
+                  the metadata.name will be used.
                 type: string
               subnet:
-                description: Immutable. The subnet in which to house the connector.
+                description: Immutable.  The subnet in which to house the VPC Access
+                  Connector.
                 properties:
                   nameRef:
-                    description: |-
-                      Immutable. Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is
-                      https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be {subnetName}"
+                    description: Immutable. The subnet in which to house the connector.
                     oneOf:
                     - not:
                         required:
@@ -171,14 +181,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of a `ComputeSubnetwork`
-                          resource.'
+                        description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
+                          when not managed by Config Connector.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` field of a `ComputeSubnetwork` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` field of a `ComputeSubnetwork`
+                          resource.
                         type: string
                     type: object
                   projectRef:
@@ -191,36 +202,45 @@ spec:
                         - external
                       required:
                       - name
+                      - kind
                     - not:
                         anyOf:
                         - required:
                           - name
                         - required:
                           - namespace
+                        - required:
+                          - kind
                       required:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `name` field of a `Project`
-                          resource.'
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` field of a `Project` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` field of a `Project` resource.
                         type: string
                     type: object
                 type: object
             required:
             - location
-            - projectRef
+            - networkRef
             type: object
           status:
+            description: VPCAccessConnectorStatus defines the config connector machine
+              state of VPCAccessConnector
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -245,7 +265,7 @@ spec:
                   type: object
                 type: array
               connectedProjects:
-                description: List of projects using the connector.
+                description: Output only. List of projects using the connector.
                 items:
                   type: string
                 type: array
@@ -255,6 +275,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               selfLink:
                 description: The fully qualified name of this VPC connector.
@@ -270,9 +291,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
