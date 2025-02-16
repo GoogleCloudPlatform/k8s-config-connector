@@ -76,6 +76,11 @@ func (c *VertexAIClient) Close() error {
 	return c.client.Close()
 }
 
+func (c *VertexAIClient) WithModel(model string) *VertexAIClient {
+	c.model = model
+	return c
+}
+
 func (c *VertexAIClient) StartChat(systemPrompt string) Chat {
 	model := c.client.GenerativeModel(c.model)
 

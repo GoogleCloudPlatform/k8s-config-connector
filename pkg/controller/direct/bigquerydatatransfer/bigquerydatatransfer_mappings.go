@@ -156,6 +156,8 @@ func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status 
 	out := &statuspb.Status{}
 	out.Code = direct.ValueOf(in.Code)
 	out.Message = direct.ValueOf(in.Message)
+	// NOTYET
+	// out.Details
 	return out
 }
 func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
@@ -165,6 +167,8 @@ func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Statu
 	out := &krm.Status{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
+	// NOTYET
+	// out.Details
 	return out
 }
 func EventDrivenSchedule_FromProto(mapCtx *direct.MapContext, in *pb.EventDrivenSchedule) *krm.EventDrivenSchedule {

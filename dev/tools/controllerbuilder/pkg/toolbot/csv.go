@@ -198,6 +198,9 @@ func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
 		if dataPoint.Type != input.Type {
 			continue
 		}
+		if dataPoint.Type == "fuzz-gen" && dataPoint.Input["api.group"] == "" { // Hack to only include data points with "api.group" marker
+			continue
+		}
 		examples = append(examples, dataPoint)
 	}
 	return examples
@@ -262,7 +265,7 @@ func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, input *DataPoint
 }
 
 // InferOutput_WithCompletion tries to infer an output value, using the Completion LLM APIs.
-func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, input *DataPoint, out io.Writer) error {
+func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model string, input *DataPoint, out io.Writer) error {
 	log := klog.FromContext(ctx)
 
 	client, err := llm.BuildVertexAIClient(ctx)
@@ -271,9 +274,35 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, input *Dat
 	}
 	defer client.Close()
 
+	if model != "" {
+		client.WithModel(model)
+	}
+
 	var prompt strings.Builder
 
-	fmt.Fprintf(&prompt, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:\n")
+	switch input.Type {
+	case "mockgcp-service",
+		"mockgcp-support":
+		fmt.Fprintf(&prompt, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:\n")
+	case "fuzz-gen":
+		fmt.Fprintf(&prompt,
+			"Create a fuzzer function for testing KRM (Kubernetes Resource Model) type conversions.\n\n"+
+				"Function signature:\n"+
+				"func <resourceName>Fuzzer() fuzztesting.KRMFuzzer\n\n"+
+				"The function should:\n"+
+				"1. Create a new fuzzer with fuzztesting.NewKRMTypedFuzzer() using:\n"+
+				"   - Proto message type (&pb.YourType{})\n"+
+				"   - Top-level mapping functions (Spec_FromProto, Spec_ToProto, and if exists: ObservedState_FromProto, ObservedState_ToProto, or Status_FromProto, Status_ToProto)\n\n"+
+				"2. Configure field sets:\n"+
+				"   - UnimplementedFields: fields to exclude from fuzzing (e.g., NOTYET fields, a field that is not included in the mapping function of its parent message)\n"+
+				"   - SpecFields: fields in the resource spec\n"+
+				"   - StatusFields: fields in the resource status\n\n"+
+				"Context:\n"+
+				"- All mapper functions for the resource are provided for reference\n"+
+				"- Nested mapper functions can help identify which fields should be marked as unimplemented\n"+
+				"- Only top-level mapper functions are needed in the fuzzer initialization\n\n"+
+				"Examples:\n")
+	}
 
 	examples := x.pickExamples(input)
 
