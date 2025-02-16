@@ -34,3 +34,11 @@ go run main.go generate-fuzzer \
   --llm-model "gemini-2.0-flash-exp" \
   --max-attempts 5
 ```
+
+```bash
+go run main.go generate-fuzzer \
+  --message "google.cloud.securesourcemanager.v1.Repository" \
+  --api-version "securesourcemanager.cnrm.cloud.google.com/v1alpha1" \
+  --llm-model "gemini-2.0-flash-exp" \
+  --max-attempts 5
+```
