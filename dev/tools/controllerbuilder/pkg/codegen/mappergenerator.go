@@ -385,6 +385,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		}
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
+	} else {
+		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_FromProto")
 	}
 
 	if v.findFuncDeclaration(goTypeName+"_ToProto", srcDir, true) == nil {
@@ -628,6 +630,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		}
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
+	} else {
+		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
 	}
 
 }
