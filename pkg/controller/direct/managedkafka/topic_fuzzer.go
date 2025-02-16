@@ -14,6 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.managedkafka.v1.Topic
+// api.group: managedkafka.cnrm.cloud.google.com
 
 package managedkafka
 
