@@ -1,0 +1,2 @@
+run `go build ${REPO_ROOT}/pkg/controller/direct/${SERVICE}/...` and fix the given `go build` error.
+Retry until the go build succeeds 
