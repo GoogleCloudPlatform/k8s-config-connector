@@ -16,7 +16,7 @@
 // proto.message: google.cloud.redis.cluster.v1.Cluster
 // api.group: redis.cnrm.cloud.google.com
 
-package redis
+package cluster
 
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
