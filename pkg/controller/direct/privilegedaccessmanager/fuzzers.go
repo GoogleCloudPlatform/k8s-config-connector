@@ -14,6 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.privilegedaccessmanager.v1.Entitlement
+// api.group: privilegedaccessmanager.cnrm.cloud.google.com
 
 package privilegedaccessmanager
 
