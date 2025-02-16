@@ -282,7 +282,23 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 		"mockgcp-support":
 		fmt.Fprintf(&prompt, "I'm implementing a mock for a proto API.  I need to implement go code that implements the proto service.  Here are some examples:\n")
 	case "fuzz-gen":
-		fmt.Fprintf(&prompt, "I'm implementing a fuzzer for a proto message.  I need to configure the fuzzer with the appropriate fields. Please only reference the exisitng mappers, do not create any new mapper.  Here are some examples:\n")
+		fmt.Fprintf(&prompt,
+			"Create a fuzzer function for testing KRM (Kubernetes Resource Model) type conversions.\n\n"+
+				"Function signature:\n"+
+				"func <resourceName>Fuzzer() fuzztesting.KRMFuzzer\n\n"+
+				"The function should:\n"+
+				"1. Create a new fuzzer with fuzztesting.NewKRMTypedFuzzer() using:\n"+
+				"   - Proto message type (&pb.YourType{})\n"+
+				"   - Top-level mapping functions (Spec_FromProto, Spec_ToProto, and if exists: ObservedState_FromProto, ObservedState_ToProto, or Status_FromProto, Status_ToProto)\n\n"+
+				"2. Configure field sets:\n"+
+				"   - UnimplementedFields: fields to exclude from fuzzing (e.g., NOTYET fields, a field that is not included in the mapping function of its parent message)\n"+
+				"   - SpecFields: fields in the resource spec\n"+
+				"   - StatusFields: fields in the resource status\n\n"+
+				"Context:\n"+
+				"- All mapper functions for the resource are provided for reference\n"+
+				"- Nested mapper functions can help identify which fields should be marked as unimplemented\n"+
+				"- Only top-level mapper functions are needed in the fuzzer initialization\n\n"+
+				"Examples:\n")
 	}
 
 	examples := x.pickExamples(input)
