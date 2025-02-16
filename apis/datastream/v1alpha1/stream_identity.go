@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type StreamIdentity struct {
 	parent *StreamParent
-	id string
+	id     string
 }
 
 func (i *StreamIdentity) String() string {
-	return  i.parent.String() + "/streams/" + i.id
+	return i.parent.String() + "/streams/" + i.id
 }
 
 func (i *StreamIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *StreamIdentity) ID() string {
 }
 
 func (i *StreamIdentity) Parent() *StreamParent {
-	return  i.parent
+	return i.parent
 }
 
 type StreamParent struct {
@@ -52,12 +52,15 @@ func (p *StreamParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-
 // New builds a StreamIdentity from the Config Connector Stream object.
 func NewStreamIdentity(ctx context.Context, reader client.Reader, obj *DatastreamStream) (*StreamIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), &refsv1beta1.ProjectRef{
+		Name:      obj.Spec.ProjectRef.Name,
+		Namespace: obj.Spec.ProjectRef.Namespace,
+		External:  obj.Spec.ProjectRef.External,
+	})
 	if err != nil {
 		return nil, err
 	}

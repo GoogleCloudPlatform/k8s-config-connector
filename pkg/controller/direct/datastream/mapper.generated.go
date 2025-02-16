@@ -15,11 +15,11 @@
 package datastream
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func AvroFileFormat_FromProto(mapCtx *direct.MapContext, in *pb.AvroFileFormat) *krm.AvroFileFormat {
 	if in == nil {
 		return nil
@@ -956,90 +956,6 @@ func SqlServerTransactionLogs_ToProto(mapCtx *direct.MapContext, in *krm.SqlServ
 		return nil
 	}
 	out := &pb.SqlServerTransactionLogs{}
-	return out
-}
-func Stream_FromProto(mapCtx *direct.MapContext, in *pb.Stream) *krm.Stream {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Stream{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.SourceConfig = SourceConfig_FromProto(mapCtx, in.GetSourceConfig())
-	out.DestinationConfig = DestinationConfig_FromProto(mapCtx, in.GetDestinationConfig())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.BackfillAll = Stream_BackfillAllStrategy_FromProto(mapCtx, in.GetBackfillAll())
-	out.BackfillNone = Stream_BackfillNoneStrategy_FromProto(mapCtx, in.GetBackfillNone())
-	// MISSING: Errors
-	out.CustomerManagedEncryptionKey = in.CustomerManagedEncryptionKey
-	// MISSING: LastRecoveryTime
-	return out
-}
-func Stream_ToProto(mapCtx *direct.MapContext, in *krm.Stream) *pb.Stream {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Stream{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.SourceConfig = SourceConfig_ToProto(mapCtx, in.SourceConfig)
-	out.DestinationConfig = DestinationConfig_ToProto(mapCtx, in.DestinationConfig)
-	out.State = direct.Enum_ToProto[pb.Stream_State](mapCtx, in.State)
-	if oneof := Stream_BackfillAllStrategy_ToProto(mapCtx, in.BackfillAll); oneof != nil {
-		out.BackfillStrategy = &pb.Stream_BackfillAll{BackfillAll: oneof}
-	}
-	if oneof := Stream_BackfillNoneStrategy_ToProto(mapCtx, in.BackfillNone); oneof != nil {
-		out.BackfillStrategy = &pb.Stream_BackfillNone{BackfillNone: oneof}
-	}
-	// MISSING: Errors
-	out.CustomerManagedEncryptionKey = in.CustomerManagedEncryptionKey
-	// MISSING: LastRecoveryTime
-	return out
-}
-func StreamObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Stream) *krm.StreamObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StreamObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: DisplayName
-	// MISSING: SourceConfig
-	// MISSING: DestinationConfig
-	// MISSING: State
-	// MISSING: BackfillAll
-	// MISSING: BackfillNone
-	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, Error_FromProto)
-	// MISSING: CustomerManagedEncryptionKey
-	out.LastRecoveryTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastRecoveryTime())
-	return out
-}
-func StreamObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StreamObservedState) *pb.Stream {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Stream{}
-	out.Name = direct.ValueOf(in.Name)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: DisplayName
-	// MISSING: SourceConfig
-	// MISSING: DestinationConfig
-	// MISSING: State
-	// MISSING: BackfillAll
-	// MISSING: BackfillNone
-	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, Error_ToProto)
-	// MISSING: CustomerManagedEncryptionKey
-	out.LastRecoveryTime = direct.StringTimestamp_ToProto(mapCtx, in.LastRecoveryTime)
 	return out
 }
 func Stream_BackfillAllStrategy_FromProto(mapCtx *direct.MapContext, in *pb.Stream_BackfillAllStrategy) *krm.Stream_BackfillAllStrategy {

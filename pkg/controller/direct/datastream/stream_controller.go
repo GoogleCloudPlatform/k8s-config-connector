@@ -17,10 +17,10 @@ package datastream
 import (
 	"context"
 	"fmt"
-	"reflect"
+
+	k8s_config_connector_k8s_v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -31,7 +31,7 @@ import (
 	gcp "cloud.google.com/go/datastream/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	datastreampb "cloud.google.com/go/datastream/v1/datastreampb"
+	datastreampb "cloud.google.com/go/datastream/apiv1/datastreampb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -114,7 +114,7 @@ func (a *StreamAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Stream", "name", a.id)
 
-	req := &datastreampb.GetStreamRequest{Name: a.id}
+	req := &datastreampb.GetStreamRequest{Name: a.id.String()}
 	streampb, err := a.gcpClient.GetStream(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -159,7 +159,7 @@ func (a *StreamAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -174,9 +174,7 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return mapCtx.Err()
 	}
 
-	paths := []string{}
-	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
-	// TODO(contributor): If choosing this option, remove the "Option 2" code.
+	paths := sets.New[string]()
 	{
 		var err error
 		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
@@ -184,17 +182,8 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 			return err
 		}
 	}
-
-	// Option 2: manually add all mutable fields.
-	// TODO(contributor): If choosing this option, remove the "Option 1" code.
-	{
-		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-			paths = append(paths, "display_name")
-		}
-	}
-
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.External)
+	if paths.Len() == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.DatastreamStreamStatus{}
 		status.ObservedState = DatastreamStreamObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
@@ -203,23 +192,24 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+		Paths: sets.List(paths),
+	}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &datastreampb.UpdateStreamRequest{
-		Name:       a.id.External,
 		UpdateMask: updateMask,
 		Stream:     desiredPb,
 	}
+	req.Stream.Name = a.actual.Name
 	op, err := a.gcpClient.UpdateStream(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating Stream %s: %w", a.id.External, err)
+		return fmt.Errorf("updating Stream %s: %w", a.id, err)
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Stream %s waiting update: %w", a.id.External, err)
+		return fmt.Errorf("Stream %s waiting update: %w", a.id, err)
 	}
-	log.V(2).Info("successfully updated Stream", "name", a.id.External)
+	log.V(2).Info("successfully updated Stream", "name", a.id)
 
 	status := &krm.DatastreamStreamStatus{}
 	status.ObservedState = DatastreamStreamObservedState_FromProto(mapCtx, updated)
@@ -242,14 +232,14 @@ func (a *StreamAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.ProjectRef = k8s_config_connector_k8s_v1alpha1.ResourceRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.DatastreamStreamGVK)
 
 	u.Object = uObj
@@ -264,6 +254,11 @@ func (a *StreamAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	req := &datastreampb.DeleteStreamRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteStream(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent Stream, assuming it was already deleted", "name", a.id.String())
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting Stream %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted Stream", "name", a.id)

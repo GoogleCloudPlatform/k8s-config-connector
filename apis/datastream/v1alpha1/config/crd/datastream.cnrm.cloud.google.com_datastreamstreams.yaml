@@ -1,12 +1,25 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 0.0.0-dev
+    controller-gen.kubebuilder.io/version: v0.6.2
   creationTimestamp: null
-  labels:
-    cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/system: "true"
   name: datastreamstreams.datastream.cnrm.cloud.google.com
 spec:
   group: datastream.cnrm.cloud.google.com
@@ -20,7 +33,6 @@ spec:
     - gcpdatastreamstream
     - gcpdatastreamstreams
     singular: datastreamstream
-  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -64,34 +76,6 @@ spec:
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
               resourceID:
                 description: The DatastreamStream name. If not given, the metadata.name
                   will be used.
@@ -105,8 +89,8 @@ spec:
               state of DatastreamStream
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the object's current state.
+                description: " Conditions represent the latest available observations
+                  of the \t   object's current state."
                 items:
                   properties:
                     lastTransitionTime:
@@ -147,10 +131,14 @@ spec:
                   observed in GCP.
                 type: object
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

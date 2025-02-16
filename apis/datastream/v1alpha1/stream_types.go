@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:generate go run sigs.k8s.io/controller-tools/cmd/controller-gen crd:trivialVersions=true rbac:roleName=manager-role object:headerFile="hack/boilerplate.go.txt" paths="./..."
+
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -24,6 +26,12 @@ var DatastreamStreamGVK = GroupVersion.WithKind("DatastreamStream")
 // DatastreamStreamSpec defines the desired state of DatastreamStream
 // +kcc:proto=google.cloud.datastream.v1.Stream
 type DatastreamStreamSpec struct {
+	// The project that this resource belongs to.
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+
+	// The name of the location this resource is located in.
+	Location string `json:"location"`
+
 	// The DatastreamStream name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
