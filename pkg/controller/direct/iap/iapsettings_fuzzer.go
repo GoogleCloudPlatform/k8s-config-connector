@@ -14,6 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.iap.v1.IapSettings
+// api.group: iap.cnrm.cloud.google.com
 
 package iap
 
