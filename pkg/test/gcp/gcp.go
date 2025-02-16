@@ -268,6 +268,11 @@ func ResourceSupportsDeletion(resourceKind string) bool {
 		"ResourceManagerPolicy",
 		"SecretManagerSecretVersion":
 		return false
+
+	case "IAPSettings":
+		// IAPSettings does not have a delete method. IAPSettings controller deletes the resource by resetting all the IAP configuration on the resource.
+		return false
+
 	default:
 		return true
 	}
