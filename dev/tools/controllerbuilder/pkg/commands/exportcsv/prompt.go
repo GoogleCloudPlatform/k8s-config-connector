@@ -109,7 +109,12 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	if err != nil {
 		return err
 	}
-	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addGoStruct)
+	mapperDir := o.SrcDir + "/pkg/controller/direct/" // direct controller directory contains all mapper functions
+	addMapperFunctions, err := toolbot.NewEnhanceWithMappers(mapperDir)
+	if err != nil {
+		return err
+	}
+	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addGoStruct, addMapperFunctions)
 	if err != nil {
 		return err
 	}

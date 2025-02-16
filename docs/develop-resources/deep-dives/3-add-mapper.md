@@ -50,9 +50,10 @@ cd $REPO_ROOT/dev/tools/controllerbuilder
 
 LLM_MODEL="gemini-2.0-flash-exp" \
 go run main.go prompt \
-  <<EOF > $REPO_ROOT/pkg/controller/direct/managedkafka/cluster_fuzzer.go
+  <<EOF > $REPO_ROOT/pkg/controller/direct/bigquerydatatransfer/transferconfig_fuzzer.go
 // +tool:fuzz-gen
-// proto.message: google.cloud.managedkafka.v1.Cluster
+// proto.message: google.cloud.bigquery.datatransfer.v1.TransferConfig
+// api.group: bigquerydatatransfer.cnrm.cloud.google.com
 EOF
 ```
 

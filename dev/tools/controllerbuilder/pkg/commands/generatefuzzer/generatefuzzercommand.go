@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/spf13/cobra"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 type generateFuzzerOptions struct {
@@ -32,11 +33,13 @@ type generateFuzzerOptions struct {
 	message     string
 	apiVersion  string
 	maxAttempts int
+	llmModel    string
 }
 
 func (o *generateFuzzerOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.message, "message", o.message, "Proto message to generate fuzzer for")
 	cmd.Flags().StringVar(&o.apiVersion, "api-version", o.apiVersion, "API version to generate fuzzer for")
+	cmd.Flags().StringVar(&o.llmModel, "llm-model", o.llmModel, "LLM model to use for fuzzer generation")
 	cmd.Flags().IntVar(&o.maxAttempts, "max-attempts", 5, "Maximum number of attempts to generate a valid fuzzer")
 }
 
@@ -81,8 +84,12 @@ func RunGenerateFuzzer(ctx context.Context, opt *generateFuzzerOptions) error {
 		return fmt.Errorf("failed to get repo root: %v", err)
 	}
 
-	goPackage := strings.Split(opt.apiVersion, ".")[0]                               // first token is Go package name which is also the subfolder name
-	resource := strings.ToLower(opt.message[strings.LastIndex(opt.message, ".")+1:]) // last token is the proto resource name
+	gv, err := schema.ParseGroupVersion(opt.apiVersion)
+	if err != nil {
+		return fmt.Errorf("failed to parse api version: %v", err)
+	}
+	goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")              // e.g. bigquerydatatransfer.cnrm.cloud.google.com -> bigquerydatatransfer
+	resource := strings.ToLower(opt.message[strings.LastIndex(opt.message, ".")+1:]) // e.g. google.cloud.bigquery.datatransfer.v1.TransferConfig -> transferconfig
 
 	attempts := 0
 	for attempts < opt.maxAttempts {
@@ -100,9 +107,11 @@ func RunGenerateFuzzer(ctx context.Context, opt *generateFuzzerOptions) error {
 		cmd := exec.CommandContext(ctx, "go", "run", "main.go", "prompt")
 		cmd.Dir = filepath.Join(root, "dev/tools/controllerbuilder")
 		cmd.Env = append(os.Environ(), fmt.Sprintf("REPO_ROOT=%s", root))
-		// TODO: let user choose which LLM model to use via command flag, and pass it to the prompt command via env var
+		if opt.llmModel != "" {
+			cmd.Env = append(cmd.Env, fmt.Sprintf("LLM_MODEL=%s", opt.llmModel))
+		}
 
-		input := fmt.Sprintf("// +tool:fuzz-gen\n// proto.message: %s\n", opt.message)
+		input := fmt.Sprintf("// +tool:fuzz-gen\n// proto.message: %s\n// api.group: %s\n", opt.message, gv.Group)
 		cmd.Stdin = strings.NewReader(input)
 
 		outputFile := filepath.Join(root, "pkg/controller/direct", goPackage, fmt.Sprintf("%s_fuzzer.go", resource))

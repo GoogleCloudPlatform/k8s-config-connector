@@ -198,6 +198,9 @@ func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
 		if dataPoint.Type != input.Type {
 			continue
 		}
+		if dataPoint.Type == "fuzz-gen" && dataPoint.Input["api.group"] == "" { // Hack to only include data points with "api.group" marker
+			continue
+		}
 		examples = append(examples, dataPoint)
 	}
 	return examples
