@@ -12,19 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: iap.cnrm.cloud.google.com/v1alpha1
+apiVersion: iap.cnrm.cloud.google.com/v1beta1
 kind: IAPSettings
 metadata:
   name: iapsettings-${uniqueId}
 spec:
-  # format: projects/{projects_id}/iap_web/compute-{region}/services/{service_id}
-  name: projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}
+  name: projects/${projectId}
   accessSettings:
     corsSettings:
       allowHTTPOptions: true
     reauthSettings:
-      method: "SECURE_KEY"
-      maxAge: "305s"
-      policyType: "MINIMUM"
+      method: LOGIN
+      maxAge: 300s
+      policyType: DEFAULT
   applicationSettings:
-    cookieDomain: "test.abc.com"
+    cookieDomain: .example.com
