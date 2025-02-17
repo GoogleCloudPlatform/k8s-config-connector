@@ -121,6 +121,7 @@ var preferredSampleForResource = map[string]string{
 	"kmsautokeyconfig":                   "kmsautokeyconfig",
 	"kmskeyhandle":                       "kmskeyhandle",
 	"managedkafkacluster":                "managedkafkacluster-cmek",
+	"iapsettings":                        "regionalbackendserviceiapsettings",
 }
 
 type Snippet struct {

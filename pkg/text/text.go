@@ -22,6 +22,11 @@ import (
 
 // TODO: there must be some package out there that does this well
 func Pluralize(singular string) string {
+	// special case for IAPSettings, as "settings" is already a plural of "setting", adding another "es" would be unnecessary
+	if singular == "IAPSettings" {
+		return "IAPSettings"
+	}
+
 	var plural string
 	if strings.HasSuffix(singular, "y") {
 		if strings.HasSuffix(singular, "ay") || strings.HasSuffix(singular, "ey") {
