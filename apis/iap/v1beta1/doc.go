@@ -13,4 +13,4 @@
 // limitations under the License.
 
 // +kcc:proto=google.cloud.iap.v1
-package v1alpha1
+package v1beta1
