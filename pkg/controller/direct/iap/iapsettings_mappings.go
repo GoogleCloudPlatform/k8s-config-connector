@@ -16,7 +16,7 @@ package iap
 
 import (
 	pb "cloud.google.com/go/iap/apiv1/iappb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 

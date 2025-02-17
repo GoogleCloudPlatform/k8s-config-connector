@@ -21,7 +21,7 @@ import (
 
 	gcp "cloud.google.com/go/iap/apiv1"
 	pb "cloud.google.com/go/iap/apiv1/iappb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
