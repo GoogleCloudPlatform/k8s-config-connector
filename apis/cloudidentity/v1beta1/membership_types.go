@@ -51,7 +51,7 @@ type CloudIdentityMembershipStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
+	// ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
 
 	// Output only. The time when the `Membership` was created.
 	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership.create_time
@@ -78,11 +78,10 @@ type CloudIdentityMembershipStatus struct {
 }
 
 // CloudIdentityMembershipObservedState is the state of the CloudIdentityMembership resource as most recently observed in GCP.
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership
 type CloudIdentityMembershipObservedState struct {
 	// The name of the Membership resource in GCP. Server generated.
 	// Shall be of the form `groups/{group_id}/memberships/{membership_id}`.
-	Name string `json:"name,omitempty"`
+	//Name string `json:"name,omitempty"`
 
 	// These fields exist in the old dcl generated status struct.
 	// So not adding them here:

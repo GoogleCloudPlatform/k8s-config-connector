@@ -305,8 +305,6 @@ displayName:
   givenName: string
 externalRef: string
 observedGeneration: integer
-observedState:
-  name: string
 type: string
 updateTime: string
 ```
@@ -421,20 +419,6 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.name</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the Membership resource in GCP. Server generated. Shall be of the form `groups/{group_id}/memberships/{membership_id}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
