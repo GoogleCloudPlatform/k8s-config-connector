@@ -13,39 +13,3 @@
 // limitations under the License.
 
 package v1beta1
-
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.ExpiryDetail
-type ExpiryDetail struct {
-	// The time at which the `MembershipRole` will expire.
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.ExpiryDetail.expire_time
-	ExpireTime *string `json:"expireTime,omitempty"`
-}
-
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRole
-type MembershipRole struct {
-	// The expiry details of the `MembershipRole`. Expiry details are only supported for `MEMBER` `MembershipRoles`. May be set if `name` is `MEMBER`. Must not be set if `name` is any other value.
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRole.expiry_detail
-	ExpiryDetail *ExpiryDetail `json:"expiryDetail,omitempty"`
-
-	// The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`.
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRole.name
-	Name *string `json:"name,omitempty"`
-
-	// Evaluations of restrictions applied to parent group on this membership.
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRole.restriction_evaluations
-	RestrictionEvaluations *RestrictionEvaluations `json:"restrictionEvaluations,omitempty"`
-}
-
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRoleRestrictionEvaluation
-type MembershipRoleRestrictionEvaluation struct {
-	// Output only. The current state of the restriction
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRoleRestrictionEvaluation.state
-	State *string `json:"state,omitempty"`
-}
-
-// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.RestrictionEvaluations
-type RestrictionEvaluations struct {
-	// Evaluation of the member restriction applied to this membership. Empty if the user lacks permission to view the restriction evaluation.
-	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.RestrictionEvaluations.member_restriction_evaluation
-	MemberRestrictionEvaluation *MembershipRoleRestrictionEvaluation `json:"memberRestrictionEvaluation,omitempty"`
-}

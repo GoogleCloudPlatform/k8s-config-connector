@@ -144,11 +144,11 @@ roles:
     <tr>
         <td>
             <p><code>memberKey.id</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ roles:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -168,7 +168,7 @@ roles:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Required. Immutable. The `EntityKey` of the member.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -178,7 +178,7 @@ roles:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of a group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +248,7 @@ roles:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -278,12 +278,14 @@ roles:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The current state of the restriction Possible values: ENCRYPTION_STATE_UNSPECIFIED, UNSUPPORTED_BY_DEVICE, ENCRYPTED, NOT_ENCRYPTED{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The current state of the restriction{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
 
+
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

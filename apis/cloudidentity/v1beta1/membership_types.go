@@ -32,13 +32,16 @@ type CloudIdentityMembershipSpec struct {
 	GroupRef GroupRef `json:"groupRef"`
 
 	// Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.
-	MemberKey *MembershipMemberKey `json:"memberKey,omitempty"`
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership.member_key
+	MemberKey *EntityKey `json:"memberKey,omitempty"`
 
-	// Immutable. Required. Immutable. The `EntityKey` of the member.
+	// Required. Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership.preferred_member_key
 	// +required
-	PreferredMemberKey MembershipPreferredMemberKey `json:"preferredMemberKey"`
+	PreferredMemberKey *EntityKey `json:"preferredMemberKey,omitempty"`
 
 	// The `MembershipRole`s that apply to the `Membership`. If unspecified, defaults to a single `MembershipRole` with `name` `MEMBER`. Must not contain duplicate `MembershipRole`s with the same `name`.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership.roles
 	// +required
 	Roles []MembershipRoles `json:"roles"`
 }
@@ -51,10 +54,12 @@ type CloudIdentityMembershipStatus struct {
 	ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
 
 	// Output only. The time when the `Membership` was created.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership.create_time
 	// +kubebuilder:validation:Format=date-time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	/* Output only. Delivery setting associated with the membership. Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST, DAILY, NONE, DISABLED */
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership.delivery_setting
 	DeliverySetting *string `json:"deliverySetting,omitempty"`
 
 	// displayName: This field does not exist in the v1/v1beta1/v1alpha1 proto defn.
@@ -62,10 +67,12 @@ type CloudIdentityMembershipStatus struct {
 	// Output only. The display name of this member, if available
 	DisplayName *MembershipDisplayNameStatus `json:"displayName,omitempty"`
 
-	/* Output only. The type of the membership. Possible values: OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER */
+	// Output only. The type of the membership. Possible values: OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership.type
 	Type *string `json:"type,omitempty"`
 
 	// Output only. The time when the `Membership` was last updated.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.Membership.update_time
 	// +kubebuilder:validation:Format=date-time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
@@ -90,47 +97,41 @@ type CloudIdentityMembershipObservedState struct {
 	// []MembershipMemberRestrictionEvaluation.State
 }
 
+// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.ExpiryDetail
 type MembershipExpiryDetail struct {
 	// The time at which the `MembershipRole` will expire.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.ExpiryDetail.expire_time
 	// +kubebuilder:validation:Format=date-time
 	ExpireTime *string `json:"expireTime,omitempty"`
 }
 
-type MembershipMemberKey struct {
-	/* The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
-	Id *string `json:"id,omitempty"`
-
-	/* The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
-	Namespace *string `json:"namespace,omitempty"`
-}
-
-type MembershipMemberRestrictionEvaluation struct {
-	/* Output only. The current state of the restriction Possible values: ENCRYPTION_STATE_UNSPECIFIED, UNSUPPORTED_BY_DEVICE, ENCRYPTED, NOT_ENCRYPTED */
+// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRoleRestrictionEvaluation
+type MembershipRoleRestrictionEvaluation struct {
+	// Output only. The current state of the restriction
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRoleRestrictionEvaluation.state
 	State *string `json:"state,omitempty"`
 }
 
-type MembershipPreferredMemberKey struct {
-	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of a group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
-	// +required
-	Id string `json:"id"`
-
-	/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
-	Namespace *string `json:"namespace,omitempty"`
-}
-
+// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.RestrictionEvaluations
 type MembershipRestrictionEvaluations struct {
-	/* Evaluation of the member restriction applied to this membership. Empty if the user lacks permission to view the restriction evaluation. */
-	MemberRestrictionEvaluation *MembershipMemberRestrictionEvaluation `json:"memberRestrictionEvaluation,omitempty"`
+	// Evaluation of the member restriction applied to this membership. Empty if the user lacks permission to view the restriction evaluation.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.RestrictionEvaluations.member_restriction_evaluation
+	MemberRestrictionEvaluation *MembershipRoleRestrictionEvaluation `json:"memberRestrictionEvaluation,omitempty"`
 }
 
+// +kcc:proto=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRole
 type MembershipRoles struct {
-	/* The expiry details of the `MembershipRole`. Expiry details are only supported for `MEMBER` `MembershipRoles`. May be set if `name` is `MEMBER`. Must not be set if `name` is any other value. */
+	// The expiry details of the `MembershipRole`. Expiry details are only supported for `MEMBER` `MembershipRoles`. May be set if `name` is `MEMBER`. Must not be set if `name` is any other value.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRole.expiry_detail
 	ExpiryDetail *MembershipExpiryDetail `json:"expiryDetail,omitempty"`
 
+	// The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRole.name
 	// +required
-	Name string `json:"name"`
+	Name *string `json:"name"`
 
-	/* Evaluations of restrictions applied to parent group on this membership. */
+	// Evaluations of restrictions applied to parent group on this membership.
+	// +kcc:proto:field=mockgcp.cloud.cloudidentity.groups.v1beta1.MembershipRole.restriction_evaluations
 	RestrictionEvaluations *MembershipRestrictionEvaluations `json:"restrictionEvaluations,omitempty"`
 }
 
