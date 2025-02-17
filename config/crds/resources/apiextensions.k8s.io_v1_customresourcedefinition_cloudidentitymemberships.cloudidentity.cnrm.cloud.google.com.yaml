@@ -255,15 +255,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                properties:
-                  name:
-                    description: The name of the Membership resource in GCP. Server
-                      generated. Shall be of the form `groups/{group_id}/memberships/{membership_id}`.
-                    type: string
-                type: object
               type:
                 description: 'Output only. The type of the membership. Possible values:
                   OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER'

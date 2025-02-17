@@ -307,11 +307,6 @@ func (in *CloudIdentityMembershipSpec) DeepCopy() *CloudIdentityMembershipSpec {
 func (in *CloudIdentityMembershipStatus) DeepCopyInto(out *CloudIdentityMembershipStatus) {
 	*out = *in
 	in.CommonStatus.DeepCopyInto(&out.CommonStatus)
-	if in.ObservedState != nil {
-		in, out := &in.ObservedState, &out.ObservedState
-		*out = new(CloudIdentityMembershipObservedState)
-		**out = **in
-	}
 	if in.CreateTime != nil {
 		in, out := &in.CreateTime, &out.CreateTime
 		*out = new(string)
