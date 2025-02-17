@@ -19,6 +19,7 @@ spec:
     id: ${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}
   labels:
     cloudidentity.googleapis.com/groups.discussion_forum: ""
+    cloudidentity.googleapis.com/groups.security: ""
   parent: customers/C00qzcxfe
   resourceID: ${groupID}
 status:

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto
+// source: google/apps/cloudidentity/groups/v1beta1/service.proto
 
 package groupspb
 
@@ -61,11 +61,11 @@ func RegisterCustomersServerServer(s grpc.ServiceRegistrar, srv CustomersServerS
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CustomersServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.CustomersServer",
 	HandlerType: (*CustomersServerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
-	Metadata:    "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata:    "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // CustomersUserinvitationsServerClient is the client API for CustomersUserinvitationsServer service.
@@ -94,7 +94,7 @@ func NewCustomersUserinvitationsServerClient(cc grpc.ClientConnInterface) Custom
 
 func (c *customersUserinvitationsServerClient) CancelCustomersUserinvitation(ctx context.Context, in *CancelCustomersUserinvitationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/CancelCustomersUserinvitation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/CancelCustomersUserinvitation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (c *customersUserinvitationsServerClient) CancelCustomersUserinvitation(ctx
 
 func (c *customersUserinvitationsServerClient) GetCustomersUserinvitation(ctx context.Context, in *GetCustomersUserinvitationRequest, opts ...grpc.CallOption) (*UserInvitation, error) {
 	out := new(UserInvitation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/GetCustomersUserinvitation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/GetCustomersUserinvitation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (c *customersUserinvitationsServerClient) GetCustomersUserinvitation(ctx co
 
 func (c *customersUserinvitationsServerClient) IsInvitableUserCustomersUserinvitation(ctx context.Context, in *IsInvitableUserCustomersUserinvitationRequest, opts ...grpc.CallOption) (*IsInvitableUserResponse, error) {
 	out := new(IsInvitableUserResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/IsInvitableUserCustomersUserinvitation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/IsInvitableUserCustomersUserinvitation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +121,7 @@ func (c *customersUserinvitationsServerClient) IsInvitableUserCustomersUserinvit
 
 func (c *customersUserinvitationsServerClient) ListCustomersUserinvitations(ctx context.Context, in *ListCustomersUserinvitationsRequest, opts ...grpc.CallOption) (*ListUserInvitationsResponse, error) {
 	out := new(ListUserInvitationsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/ListCustomersUserinvitations", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/ListCustomersUserinvitations", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (c *customersUserinvitationsServerClient) ListCustomersUserinvitations(ctx 
 
 func (c *customersUserinvitationsServerClient) SendCustomersUserinvitation(ctx context.Context, in *SendCustomersUserinvitationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/SendCustomersUserinvitation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/SendCustomersUserinvitation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +197,7 @@ func _CustomersUserinvitationsServer_CancelCustomersUserinvitation_Handler(srv i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/CancelCustomersUserinvitation",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/CancelCustomersUserinvitation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CustomersUserinvitationsServerServer).CancelCustomersUserinvitation(ctx, req.(*CancelCustomersUserinvitationRequest))
@@ -215,7 +215,7 @@ func _CustomersUserinvitationsServer_GetCustomersUserinvitation_Handler(srv inte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/GetCustomersUserinvitation",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/GetCustomersUserinvitation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CustomersUserinvitationsServerServer).GetCustomersUserinvitation(ctx, req.(*GetCustomersUserinvitationRequest))
@@ -233,7 +233,7 @@ func _CustomersUserinvitationsServer_IsInvitableUserCustomersUserinvitation_Hand
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/IsInvitableUserCustomersUserinvitation",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/IsInvitableUserCustomersUserinvitation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CustomersUserinvitationsServerServer).IsInvitableUserCustomersUserinvitation(ctx, req.(*IsInvitableUserCustomersUserinvitationRequest))
@@ -251,7 +251,7 @@ func _CustomersUserinvitationsServer_ListCustomersUserinvitations_Handler(srv in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/ListCustomersUserinvitations",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/ListCustomersUserinvitations",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CustomersUserinvitationsServerServer).ListCustomersUserinvitations(ctx, req.(*ListCustomersUserinvitationsRequest))
@@ -269,7 +269,7 @@ func _CustomersUserinvitationsServer_SendCustomersUserinvitation_Handler(srv int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/SendCustomersUserinvitation",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer/SendCustomersUserinvitation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CustomersUserinvitationsServerServer).SendCustomersUserinvitation(ctx, req.(*SendCustomersUserinvitationRequest))
@@ -281,7 +281,7 @@ func _CustomersUserinvitationsServer_SendCustomersUserinvitation_Handler(srv int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CustomersUserinvitationsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.CustomersUserinvitationsServer",
 	HandlerType: (*CustomersUserinvitationsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -306,7 +306,7 @@ var CustomersUserinvitationsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // DevicesServerClient is the client API for DevicesServer service.
@@ -337,7 +337,7 @@ func NewDevicesServerClient(cc grpc.ClientConnInterface) DevicesServerClient {
 
 func (c *devicesServerClient) CancelWipeDevice(ctx context.Context, in *CancelWipeDeviceServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/CancelWipeDevice", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/CancelWipeDevice", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -346,7 +346,7 @@ func (c *devicesServerClient) CancelWipeDevice(ctx context.Context, in *CancelWi
 
 func (c *devicesServerClient) CreateDevice(ctx context.Context, in *CreateDeviceServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/CreateDevice", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/CreateDevice", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -355,7 +355,7 @@ func (c *devicesServerClient) CreateDevice(ctx context.Context, in *CreateDevice
 
 func (c *devicesServerClient) DeleteDevice(ctx context.Context, in *DeleteDeviceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/DeleteDevice", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/DeleteDevice", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -364,7 +364,7 @@ func (c *devicesServerClient) DeleteDevice(ctx context.Context, in *DeleteDevice
 
 func (c *devicesServerClient) GetDevice(ctx context.Context, in *GetDeviceRequest, opts ...grpc.CallOption) (*Device, error) {
 	out := new(Device)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/GetDevice", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/GetDevice", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -373,7 +373,7 @@ func (c *devicesServerClient) GetDevice(ctx context.Context, in *GetDeviceReques
 
 func (c *devicesServerClient) ListDevices(ctx context.Context, in *ListDevicesRequest, opts ...grpc.CallOption) (*ListDevicesResponse, error) {
 	out := new(ListDevicesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/ListDevices", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/ListDevices", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -382,7 +382,7 @@ func (c *devicesServerClient) ListDevices(ctx context.Context, in *ListDevicesRe
 
 func (c *devicesServerClient) WipeDevice(ctx context.Context, in *WipeDeviceServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/WipeDevice", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/WipeDevice", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -453,7 +453,7 @@ func _DevicesServer_CancelWipeDevice_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/CancelWipeDevice",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/CancelWipeDevice",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesServerServer).CancelWipeDevice(ctx, req.(*CancelWipeDeviceServiceRequest))
@@ -471,7 +471,7 @@ func _DevicesServer_CreateDevice_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/CreateDevice",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/CreateDevice",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesServerServer).CreateDevice(ctx, req.(*CreateDeviceServiceRequest))
@@ -489,7 +489,7 @@ func _DevicesServer_DeleteDevice_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/DeleteDevice",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/DeleteDevice",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesServerServer).DeleteDevice(ctx, req.(*DeleteDeviceRequest))
@@ -507,7 +507,7 @@ func _DevicesServer_GetDevice_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/GetDevice",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/GetDevice",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesServerServer).GetDevice(ctx, req.(*GetDeviceRequest))
@@ -525,7 +525,7 @@ func _DevicesServer_ListDevices_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/ListDevices",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/ListDevices",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesServerServer).ListDevices(ctx, req.(*ListDevicesRequest))
@@ -543,7 +543,7 @@ func _DevicesServer_WipeDevice_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer/WipeDevice",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesServer/WipeDevice",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesServerServer).WipeDevice(ctx, req.(*WipeDeviceServiceRequest))
@@ -555,7 +555,7 @@ func _DevicesServer_WipeDevice_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var DevicesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.DevicesServer",
 	HandlerType: (*DevicesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -584,7 +584,7 @@ var DevicesServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // DevicesDeviceUsersServerClient is the client API for DevicesDeviceUsersServer service.
@@ -619,7 +619,7 @@ func NewDevicesDeviceUsersServerClient(cc grpc.ClientConnInterface) DevicesDevic
 
 func (c *devicesDeviceUsersServerClient) ApproveDevicesDeviceUser(ctx context.Context, in *ApproveDevicesDeviceUserRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/ApproveDevicesDeviceUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/ApproveDevicesDeviceUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -628,7 +628,7 @@ func (c *devicesDeviceUsersServerClient) ApproveDevicesDeviceUser(ctx context.Co
 
 func (c *devicesDeviceUsersServerClient) BlockDevicesDeviceUser(ctx context.Context, in *BlockDevicesDeviceUserRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/BlockDevicesDeviceUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/BlockDevicesDeviceUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -637,7 +637,7 @@ func (c *devicesDeviceUsersServerClient) BlockDevicesDeviceUser(ctx context.Cont
 
 func (c *devicesDeviceUsersServerClient) CancelWipeDevicesDeviceUser(ctx context.Context, in *CancelWipeDevicesDeviceUserRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/CancelWipeDevicesDeviceUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/CancelWipeDevicesDeviceUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -646,7 +646,7 @@ func (c *devicesDeviceUsersServerClient) CancelWipeDevicesDeviceUser(ctx context
 
 func (c *devicesDeviceUsersServerClient) DeleteDevicesDeviceUser(ctx context.Context, in *DeleteDevicesDeviceUserRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/DeleteDevicesDeviceUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/DeleteDevicesDeviceUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -655,7 +655,7 @@ func (c *devicesDeviceUsersServerClient) DeleteDevicesDeviceUser(ctx context.Con
 
 func (c *devicesDeviceUsersServerClient) GetDevicesDeviceUser(ctx context.Context, in *GetDevicesDeviceUserRequest, opts ...grpc.CallOption) (*DeviceUser, error) {
 	out := new(DeviceUser)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/GetDevicesDeviceUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/GetDevicesDeviceUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -664,7 +664,7 @@ func (c *devicesDeviceUsersServerClient) GetDevicesDeviceUser(ctx context.Contex
 
 func (c *devicesDeviceUsersServerClient) ListDevicesDeviceUsers(ctx context.Context, in *ListDevicesDeviceUsersRequest, opts ...grpc.CallOption) (*ListDeviceUsersResponse, error) {
 	out := new(ListDeviceUsersResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/ListDevicesDeviceUsers", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/ListDevicesDeviceUsers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -673,7 +673,7 @@ func (c *devicesDeviceUsersServerClient) ListDevicesDeviceUsers(ctx context.Cont
 
 func (c *devicesDeviceUsersServerClient) LookupDevicesDeviceUser(ctx context.Context, in *LookupDevicesDeviceUserRequest, opts ...grpc.CallOption) (*LookupSelfDeviceUsersResponse, error) {
 	out := new(LookupSelfDeviceUsersResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/LookupDevicesDeviceUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/LookupDevicesDeviceUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -682,7 +682,7 @@ func (c *devicesDeviceUsersServerClient) LookupDevicesDeviceUser(ctx context.Con
 
 func (c *devicesDeviceUsersServerClient) WipeDevicesDeviceUser(ctx context.Context, in *WipeDevicesDeviceUserRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/WipeDevicesDeviceUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/WipeDevicesDeviceUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -764,7 +764,7 @@ func _DevicesDeviceUsersServer_ApproveDevicesDeviceUser_Handler(srv interface{},
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/ApproveDevicesDeviceUser",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/ApproveDevicesDeviceUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersServerServer).ApproveDevicesDeviceUser(ctx, req.(*ApproveDevicesDeviceUserRequest))
@@ -782,7 +782,7 @@ func _DevicesDeviceUsersServer_BlockDevicesDeviceUser_Handler(srv interface{}, c
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/BlockDevicesDeviceUser",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/BlockDevicesDeviceUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersServerServer).BlockDevicesDeviceUser(ctx, req.(*BlockDevicesDeviceUserRequest))
@@ -800,7 +800,7 @@ func _DevicesDeviceUsersServer_CancelWipeDevicesDeviceUser_Handler(srv interface
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/CancelWipeDevicesDeviceUser",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/CancelWipeDevicesDeviceUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersServerServer).CancelWipeDevicesDeviceUser(ctx, req.(*CancelWipeDevicesDeviceUserRequest))
@@ -818,7 +818,7 @@ func _DevicesDeviceUsersServer_DeleteDevicesDeviceUser_Handler(srv interface{}, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/DeleteDevicesDeviceUser",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/DeleteDevicesDeviceUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersServerServer).DeleteDevicesDeviceUser(ctx, req.(*DeleteDevicesDeviceUserRequest))
@@ -836,7 +836,7 @@ func _DevicesDeviceUsersServer_GetDevicesDeviceUser_Handler(srv interface{}, ctx
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/GetDevicesDeviceUser",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/GetDevicesDeviceUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersServerServer).GetDevicesDeviceUser(ctx, req.(*GetDevicesDeviceUserRequest))
@@ -854,7 +854,7 @@ func _DevicesDeviceUsersServer_ListDevicesDeviceUsers_Handler(srv interface{}, c
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/ListDevicesDeviceUsers",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/ListDevicesDeviceUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersServerServer).ListDevicesDeviceUsers(ctx, req.(*ListDevicesDeviceUsersRequest))
@@ -872,7 +872,7 @@ func _DevicesDeviceUsersServer_LookupDevicesDeviceUser_Handler(srv interface{}, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/LookupDevicesDeviceUser",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/LookupDevicesDeviceUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersServerServer).LookupDevicesDeviceUser(ctx, req.(*LookupDevicesDeviceUserRequest))
@@ -890,7 +890,7 @@ func _DevicesDeviceUsersServer_WipeDevicesDeviceUser_Handler(srv interface{}, ct
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/WipeDevicesDeviceUser",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer/WipeDevicesDeviceUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersServerServer).WipeDevicesDeviceUser(ctx, req.(*WipeDevicesDeviceUserRequest))
@@ -902,7 +902,7 @@ func _DevicesDeviceUsersServer_WipeDevicesDeviceUser_Handler(srv interface{}, ct
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var DevicesDeviceUsersServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersServer",
 	HandlerType: (*DevicesDeviceUsersServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -939,7 +939,7 @@ var DevicesDeviceUsersServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // DevicesDeviceUsersClientStatesServerClient is the client API for DevicesDeviceUsersClientStatesServer service.
@@ -962,7 +962,7 @@ func NewDevicesDeviceUsersClientStatesServerClient(cc grpc.ClientConnInterface) 
 
 func (c *devicesDeviceUsersClientStatesServerClient) GetDevicesDeviceUsersClientState(ctx context.Context, in *GetDevicesDeviceUsersClientStateRequest, opts ...grpc.CallOption) (*ClientState, error) {
 	out := new(ClientState)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer/GetDevicesDeviceUsersClientState", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer/GetDevicesDeviceUsersClientState", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -971,7 +971,7 @@ func (c *devicesDeviceUsersClientStatesServerClient) GetDevicesDeviceUsersClient
 
 func (c *devicesDeviceUsersClientStatesServerClient) PatchDevicesDeviceUsersClientState(ctx context.Context, in *PatchDevicesDeviceUsersClientStateRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer/PatchDevicesDeviceUsersClientState", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer/PatchDevicesDeviceUsersClientState", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1023,7 +1023,7 @@ func _DevicesDeviceUsersClientStatesServer_GetDevicesDeviceUsersClientState_Hand
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer/GetDevicesDeviceUsersClientState",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer/GetDevicesDeviceUsersClientState",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersClientStatesServerServer).GetDevicesDeviceUsersClientState(ctx, req.(*GetDevicesDeviceUsersClientStateRequest))
@@ -1041,7 +1041,7 @@ func _DevicesDeviceUsersClientStatesServer_PatchDevicesDeviceUsersClientState_Ha
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer/PatchDevicesDeviceUsersClientState",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer/PatchDevicesDeviceUsersClientState",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesDeviceUsersClientStatesServerServer).PatchDevicesDeviceUsersClientState(ctx, req.(*PatchDevicesDeviceUsersClientStateRequest))
@@ -1053,7 +1053,7 @@ func _DevicesDeviceUsersClientStatesServer_PatchDevicesDeviceUsersClientState_Ha
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var DevicesDeviceUsersClientStatesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.DevicesDeviceUsersClientStatesServer",
 	HandlerType: (*DevicesDeviceUsersClientStatesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1066,7 +1066,7 @@ var DevicesDeviceUsersClientStatesServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // GroupsServerClient is the client API for GroupsServer service.
@@ -1103,7 +1103,7 @@ func NewGroupsServerClient(cc grpc.ClientConnInterface) GroupsServerClient {
 
 func (c *groupsServerClient) CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/CreateGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/CreateGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1112,7 +1112,7 @@ func (c *groupsServerClient) CreateGroup(ctx context.Context, in *CreateGroupReq
 
 func (c *groupsServerClient) DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/DeleteGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/DeleteGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1121,7 +1121,7 @@ func (c *groupsServerClient) DeleteGroup(ctx context.Context, in *DeleteGroupReq
 
 func (c *groupsServerClient) GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*Group, error) {
 	out := new(Group)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/GetGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/GetGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1130,7 +1130,7 @@ func (c *groupsServerClient) GetGroup(ctx context.Context, in *GetGroupRequest, 
 
 func (c *groupsServerClient) GetSecuritySettingsGroup(ctx context.Context, in *GetSecuritySettingsGroupRequest, opts ...grpc.CallOption) (*SecuritySettings, error) {
 	out := new(SecuritySettings)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/GetSecuritySettingsGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/GetSecuritySettingsGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1139,7 +1139,7 @@ func (c *groupsServerClient) GetSecuritySettingsGroup(ctx context.Context, in *G
 
 func (c *groupsServerClient) ListGroups(ctx context.Context, in *ListGroupsRequest, opts ...grpc.CallOption) (*ListGroupsResponse, error) {
 	out := new(ListGroupsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/ListGroups", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/ListGroups", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1148,7 +1148,7 @@ func (c *groupsServerClient) ListGroups(ctx context.Context, in *ListGroupsReque
 
 func (c *groupsServerClient) LookupGroup(ctx context.Context, in *LookupGroupRequest, opts ...grpc.CallOption) (*LookupGroupNameResponse, error) {
 	out := new(LookupGroupNameResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/LookupGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/LookupGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1157,7 +1157,7 @@ func (c *groupsServerClient) LookupGroup(ctx context.Context, in *LookupGroupReq
 
 func (c *groupsServerClient) PatchGroup(ctx context.Context, in *PatchGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/PatchGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/PatchGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1166,7 +1166,7 @@ func (c *groupsServerClient) PatchGroup(ctx context.Context, in *PatchGroupReque
 
 func (c *groupsServerClient) SearchGroup(ctx context.Context, in *SearchGroupRequest, opts ...grpc.CallOption) (*SearchGroupsResponse, error) {
 	out := new(SearchGroupsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/SearchGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/SearchGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1175,7 +1175,7 @@ func (c *groupsServerClient) SearchGroup(ctx context.Context, in *SearchGroupReq
 
 func (c *groupsServerClient) UpdateSecuritySettingsGroup(ctx context.Context, in *UpdateSecuritySettingsGroupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/UpdateSecuritySettingsGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/UpdateSecuritySettingsGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1261,7 +1261,7 @@ func _GroupsServer_CreateGroup_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/CreateGroup",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/CreateGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).CreateGroup(ctx, req.(*CreateGroupRequest))
@@ -1279,7 +1279,7 @@ func _GroupsServer_DeleteGroup_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/DeleteGroup",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/DeleteGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).DeleteGroup(ctx, req.(*DeleteGroupRequest))
@@ -1297,7 +1297,7 @@ func _GroupsServer_GetGroup_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/GetGroup",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/GetGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).GetGroup(ctx, req.(*GetGroupRequest))
@@ -1315,7 +1315,7 @@ func _GroupsServer_GetSecuritySettingsGroup_Handler(srv interface{}, ctx context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/GetSecuritySettingsGroup",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/GetSecuritySettingsGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).GetSecuritySettingsGroup(ctx, req.(*GetSecuritySettingsGroupRequest))
@@ -1333,7 +1333,7 @@ func _GroupsServer_ListGroups_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/ListGroups",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/ListGroups",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).ListGroups(ctx, req.(*ListGroupsRequest))
@@ -1351,7 +1351,7 @@ func _GroupsServer_LookupGroup_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/LookupGroup",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/LookupGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).LookupGroup(ctx, req.(*LookupGroupRequest))
@@ -1369,7 +1369,7 @@ func _GroupsServer_PatchGroup_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/PatchGroup",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/PatchGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).PatchGroup(ctx, req.(*PatchGroupRequest))
@@ -1387,7 +1387,7 @@ func _GroupsServer_SearchGroup_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/SearchGroup",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/SearchGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).SearchGroup(ctx, req.(*SearchGroupRequest))
@@ -1405,7 +1405,7 @@ func _GroupsServer_UpdateSecuritySettingsGroup_Handler(srv interface{}, ctx cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer/UpdateSecuritySettingsGroup",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsServer/UpdateSecuritySettingsGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsServerServer).UpdateSecuritySettingsGroup(ctx, req.(*UpdateSecuritySettingsGroupRequest))
@@ -1417,7 +1417,7 @@ func _GroupsServer_UpdateSecuritySettingsGroup_Handler(srv interface{}, ctx cont
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var GroupsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.GroupsServer",
 	HandlerType: (*GroupsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1458,7 +1458,7 @@ var GroupsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // GroupsMembershipsServerClient is the client API for GroupsMembershipsServer service.
@@ -1499,7 +1499,7 @@ func NewGroupsMembershipsServerClient(cc grpc.ClientConnInterface) GroupsMembers
 
 func (c *groupsMembershipsServerClient) CheckTransitiveMembershipGroupsMembership(ctx context.Context, in *CheckTransitiveMembershipGroupsMembershipRequest, opts ...grpc.CallOption) (*CheckTransitiveMembershipResponse, error) {
 	out := new(CheckTransitiveMembershipResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/CheckTransitiveMembershipGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/CheckTransitiveMembershipGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1508,7 +1508,7 @@ func (c *groupsMembershipsServerClient) CheckTransitiveMembershipGroupsMembershi
 
 func (c *groupsMembershipsServerClient) CreateGroupsMembership(ctx context.Context, in *CreateGroupsMembershipRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/CreateGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/CreateGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1517,7 +1517,7 @@ func (c *groupsMembershipsServerClient) CreateGroupsMembership(ctx context.Conte
 
 func (c *groupsMembershipsServerClient) DeleteGroupsMembership(ctx context.Context, in *DeleteGroupsMembershipRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/DeleteGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/DeleteGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1526,7 +1526,7 @@ func (c *groupsMembershipsServerClient) DeleteGroupsMembership(ctx context.Conte
 
 func (c *groupsMembershipsServerClient) GetGroupsMembership(ctx context.Context, in *GetGroupsMembershipRequest, opts ...grpc.CallOption) (*Membership, error) {
 	out := new(Membership)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/GetGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/GetGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1535,7 +1535,7 @@ func (c *groupsMembershipsServerClient) GetGroupsMembership(ctx context.Context,
 
 func (c *groupsMembershipsServerClient) GetMembershipGraphGroupsMembership(ctx context.Context, in *GetMembershipGraphGroupsMembershipRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/GetMembershipGraphGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/GetMembershipGraphGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1544,7 +1544,7 @@ func (c *groupsMembershipsServerClient) GetMembershipGraphGroupsMembership(ctx c
 
 func (c *groupsMembershipsServerClient) ListGroupsMemberships(ctx context.Context, in *ListGroupsMembershipsRequest, opts ...grpc.CallOption) (*ListMembershipsResponse, error) {
 	out := new(ListMembershipsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/ListGroupsMemberships", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/ListGroupsMemberships", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1553,7 +1553,7 @@ func (c *groupsMembershipsServerClient) ListGroupsMemberships(ctx context.Contex
 
 func (c *groupsMembershipsServerClient) LookupGroupsMembership(ctx context.Context, in *LookupGroupsMembershipRequest, opts ...grpc.CallOption) (*LookupMembershipNameResponse, error) {
 	out := new(LookupMembershipNameResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/LookupGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/LookupGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1562,7 +1562,7 @@ func (c *groupsMembershipsServerClient) LookupGroupsMembership(ctx context.Conte
 
 func (c *groupsMembershipsServerClient) ModifyMembershipRolesGroupsMembership(ctx context.Context, in *ModifyMembershipRolesGroupsMembershipRequest, opts ...grpc.CallOption) (*ModifyMembershipRolesResponse, error) {
 	out := new(ModifyMembershipRolesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/ModifyMembershipRolesGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/ModifyMembershipRolesGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1571,7 +1571,7 @@ func (c *groupsMembershipsServerClient) ModifyMembershipRolesGroupsMembership(ct
 
 func (c *groupsMembershipsServerClient) SearchDirectGroupsGroupsMembership(ctx context.Context, in *SearchDirectGroupsGroupsMembershipRequest, opts ...grpc.CallOption) (*SearchDirectGroupsResponse, error) {
 	out := new(SearchDirectGroupsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchDirectGroupsGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchDirectGroupsGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1580,7 +1580,7 @@ func (c *groupsMembershipsServerClient) SearchDirectGroupsGroupsMembership(ctx c
 
 func (c *groupsMembershipsServerClient) SearchTransitiveGroupsGroupsMembership(ctx context.Context, in *SearchTransitiveGroupsGroupsMembershipRequest, opts ...grpc.CallOption) (*SearchTransitiveGroupsResponse, error) {
 	out := new(SearchTransitiveGroupsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchTransitiveGroupsGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchTransitiveGroupsGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1589,7 +1589,7 @@ func (c *groupsMembershipsServerClient) SearchTransitiveGroupsGroupsMembership(c
 
 func (c *groupsMembershipsServerClient) SearchTransitiveMembershipsGroupsMembership(ctx context.Context, in *SearchTransitiveMembershipsGroupsMembershipRequest, opts ...grpc.CallOption) (*SearchTransitiveMembershipsResponse, error) {
 	out := new(SearchTransitiveMembershipsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchTransitiveMembershipsGroupsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchTransitiveMembershipsGroupsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1686,7 +1686,7 @@ func _GroupsMembershipsServer_CheckTransitiveMembershipGroupsMembership_Handler(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/CheckTransitiveMembershipGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/CheckTransitiveMembershipGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).CheckTransitiveMembershipGroupsMembership(ctx, req.(*CheckTransitiveMembershipGroupsMembershipRequest))
@@ -1704,7 +1704,7 @@ func _GroupsMembershipsServer_CreateGroupsMembership_Handler(srv interface{}, ct
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/CreateGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/CreateGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).CreateGroupsMembership(ctx, req.(*CreateGroupsMembershipRequest))
@@ -1722,7 +1722,7 @@ func _GroupsMembershipsServer_DeleteGroupsMembership_Handler(srv interface{}, ct
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/DeleteGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/DeleteGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).DeleteGroupsMembership(ctx, req.(*DeleteGroupsMembershipRequest))
@@ -1740,7 +1740,7 @@ func _GroupsMembershipsServer_GetGroupsMembership_Handler(srv interface{}, ctx c
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/GetGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/GetGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).GetGroupsMembership(ctx, req.(*GetGroupsMembershipRequest))
@@ -1758,7 +1758,7 @@ func _GroupsMembershipsServer_GetMembershipGraphGroupsMembership_Handler(srv int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/GetMembershipGraphGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/GetMembershipGraphGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).GetMembershipGraphGroupsMembership(ctx, req.(*GetMembershipGraphGroupsMembershipRequest))
@@ -1776,7 +1776,7 @@ func _GroupsMembershipsServer_ListGroupsMemberships_Handler(srv interface{}, ctx
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/ListGroupsMemberships",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/ListGroupsMemberships",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).ListGroupsMemberships(ctx, req.(*ListGroupsMembershipsRequest))
@@ -1794,7 +1794,7 @@ func _GroupsMembershipsServer_LookupGroupsMembership_Handler(srv interface{}, ct
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/LookupGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/LookupGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).LookupGroupsMembership(ctx, req.(*LookupGroupsMembershipRequest))
@@ -1812,7 +1812,7 @@ func _GroupsMembershipsServer_ModifyMembershipRolesGroupsMembership_Handler(srv 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/ModifyMembershipRolesGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/ModifyMembershipRolesGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).ModifyMembershipRolesGroupsMembership(ctx, req.(*ModifyMembershipRolesGroupsMembershipRequest))
@@ -1830,7 +1830,7 @@ func _GroupsMembershipsServer_SearchDirectGroupsGroupsMembership_Handler(srv int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchDirectGroupsGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchDirectGroupsGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).SearchDirectGroupsGroupsMembership(ctx, req.(*SearchDirectGroupsGroupsMembershipRequest))
@@ -1848,7 +1848,7 @@ func _GroupsMembershipsServer_SearchTransitiveGroupsGroupsMembership_Handler(srv
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchTransitiveGroupsGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchTransitiveGroupsGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).SearchTransitiveGroupsGroupsMembership(ctx, req.(*SearchTransitiveGroupsGroupsMembershipRequest))
@@ -1866,7 +1866,7 @@ func _GroupsMembershipsServer_SearchTransitiveMembershipsGroupsMembership_Handle
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchTransitiveMembershipsGroupsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer/SearchTransitiveMembershipsGroupsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GroupsMembershipsServerServer).SearchTransitiveMembershipsGroupsMembership(ctx, req.(*SearchTransitiveMembershipsGroupsMembershipRequest))
@@ -1878,7 +1878,7 @@ func _GroupsMembershipsServer_SearchTransitiveMembershipsGroupsMembership_Handle
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var GroupsMembershipsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.GroupsMembershipsServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.GroupsMembershipsServer",
 	HandlerType: (*GroupsMembershipsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1927,7 +1927,7 @@ var GroupsMembershipsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // InboundSamlSsoProfilesServerClient is the client API for InboundSamlSsoProfilesServer service.
@@ -1956,7 +1956,7 @@ func NewInboundSamlSsoProfilesServerClient(cc grpc.ClientConnInterface) InboundS
 
 func (c *inboundSamlSsoProfilesServerClient) CreateInboundSamlSsoProfile(ctx context.Context, in *CreateInboundSamlSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/CreateInboundSamlSsoProfile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/CreateInboundSamlSsoProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1965,7 +1965,7 @@ func (c *inboundSamlSsoProfilesServerClient) CreateInboundSamlSsoProfile(ctx con
 
 func (c *inboundSamlSsoProfilesServerClient) DeleteInboundSamlSsoProfile(ctx context.Context, in *DeleteInboundSamlSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/DeleteInboundSamlSsoProfile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/DeleteInboundSamlSsoProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1974,7 +1974,7 @@ func (c *inboundSamlSsoProfilesServerClient) DeleteInboundSamlSsoProfile(ctx con
 
 func (c *inboundSamlSsoProfilesServerClient) GetInboundSamlSsoProfile(ctx context.Context, in *GetInboundSamlSsoProfileRequest, opts ...grpc.CallOption) (*InboundSamlSsoProfile, error) {
 	out := new(InboundSamlSsoProfile)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/GetInboundSamlSsoProfile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/GetInboundSamlSsoProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1983,7 +1983,7 @@ func (c *inboundSamlSsoProfilesServerClient) GetInboundSamlSsoProfile(ctx contex
 
 func (c *inboundSamlSsoProfilesServerClient) ListInboundSamlSsoProfiles(ctx context.Context, in *ListInboundSamlSsoProfilesRequest, opts ...grpc.CallOption) (*ListInboundSamlSsoProfilesResponse, error) {
 	out := new(ListInboundSamlSsoProfilesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/ListInboundSamlSsoProfiles", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/ListInboundSamlSsoProfiles", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1992,7 +1992,7 @@ func (c *inboundSamlSsoProfilesServerClient) ListInboundSamlSsoProfiles(ctx cont
 
 func (c *inboundSamlSsoProfilesServerClient) PatchInboundSamlSsoProfile(ctx context.Context, in *PatchInboundSamlSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/PatchInboundSamlSsoProfile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/PatchInboundSamlSsoProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2059,7 +2059,7 @@ func _InboundSamlSsoProfilesServer_CreateInboundSamlSsoProfile_Handler(srv inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/CreateInboundSamlSsoProfile",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/CreateInboundSamlSsoProfile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesServerServer).CreateInboundSamlSsoProfile(ctx, req.(*CreateInboundSamlSsoProfileRequest))
@@ -2077,7 +2077,7 @@ func _InboundSamlSsoProfilesServer_DeleteInboundSamlSsoProfile_Handler(srv inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/DeleteInboundSamlSsoProfile",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/DeleteInboundSamlSsoProfile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesServerServer).DeleteInboundSamlSsoProfile(ctx, req.(*DeleteInboundSamlSsoProfileRequest))
@@ -2095,7 +2095,7 @@ func _InboundSamlSsoProfilesServer_GetInboundSamlSsoProfile_Handler(srv interfac
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/GetInboundSamlSsoProfile",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/GetInboundSamlSsoProfile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesServerServer).GetInboundSamlSsoProfile(ctx, req.(*GetInboundSamlSsoProfileRequest))
@@ -2113,7 +2113,7 @@ func _InboundSamlSsoProfilesServer_ListInboundSamlSsoProfiles_Handler(srv interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/ListInboundSamlSsoProfiles",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/ListInboundSamlSsoProfiles",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesServerServer).ListInboundSamlSsoProfiles(ctx, req.(*ListInboundSamlSsoProfilesRequest))
@@ -2131,7 +2131,7 @@ func _InboundSamlSsoProfilesServer_PatchInboundSamlSsoProfile_Handler(srv interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/PatchInboundSamlSsoProfile",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer/PatchInboundSamlSsoProfile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesServerServer).PatchInboundSamlSsoProfile(ctx, req.(*PatchInboundSamlSsoProfileRequest))
@@ -2143,7 +2143,7 @@ func _InboundSamlSsoProfilesServer_PatchInboundSamlSsoProfile_Handler(srv interf
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var InboundSamlSsoProfilesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesServer",
 	HandlerType: (*InboundSamlSsoProfilesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -2168,7 +2168,7 @@ var InboundSamlSsoProfilesServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // InboundSamlSsoProfilesIdpCredentialsServerClient is the client API for InboundSamlSsoProfilesIdpCredentialsServer service.
@@ -2195,7 +2195,7 @@ func NewInboundSamlSsoProfilesIdpCredentialsServerClient(cc grpc.ClientConnInter
 
 func (c *inboundSamlSsoProfilesIdpCredentialsServerClient) AddInboundSamlSsoProfilesIdpCredential(ctx context.Context, in *AddInboundSamlSsoProfilesIdpCredentialRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/AddInboundSamlSsoProfilesIdpCredential", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/AddInboundSamlSsoProfilesIdpCredential", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2204,7 +2204,7 @@ func (c *inboundSamlSsoProfilesIdpCredentialsServerClient) AddInboundSamlSsoProf
 
 func (c *inboundSamlSsoProfilesIdpCredentialsServerClient) DeleteInboundSamlSsoProfilesIdpCredential(ctx context.Context, in *DeleteInboundSamlSsoProfilesIdpCredentialRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/DeleteInboundSamlSsoProfilesIdpCredential", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/DeleteInboundSamlSsoProfilesIdpCredential", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2213,7 +2213,7 @@ func (c *inboundSamlSsoProfilesIdpCredentialsServerClient) DeleteInboundSamlSsoP
 
 func (c *inboundSamlSsoProfilesIdpCredentialsServerClient) GetInboundSamlSsoProfilesIdpCredential(ctx context.Context, in *GetInboundSamlSsoProfilesIdpCredentialRequest, opts ...grpc.CallOption) (*IdpCredential, error) {
 	out := new(IdpCredential)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/GetInboundSamlSsoProfilesIdpCredential", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/GetInboundSamlSsoProfilesIdpCredential", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2222,7 +2222,7 @@ func (c *inboundSamlSsoProfilesIdpCredentialsServerClient) GetInboundSamlSsoProf
 
 func (c *inboundSamlSsoProfilesIdpCredentialsServerClient) ListInboundSamlSsoProfilesIdpCredentials(ctx context.Context, in *ListInboundSamlSsoProfilesIdpCredentialsRequest, opts ...grpc.CallOption) (*ListIdpCredentialsResponse, error) {
 	out := new(ListIdpCredentialsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/ListInboundSamlSsoProfilesIdpCredentials", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/ListInboundSamlSsoProfilesIdpCredentials", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2284,7 +2284,7 @@ func _InboundSamlSsoProfilesIdpCredentialsServer_AddInboundSamlSsoProfilesIdpCre
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/AddInboundSamlSsoProfilesIdpCredential",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/AddInboundSamlSsoProfilesIdpCredential",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesIdpCredentialsServerServer).AddInboundSamlSsoProfilesIdpCredential(ctx, req.(*AddInboundSamlSsoProfilesIdpCredentialRequest))
@@ -2302,7 +2302,7 @@ func _InboundSamlSsoProfilesIdpCredentialsServer_DeleteInboundSamlSsoProfilesIdp
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/DeleteInboundSamlSsoProfilesIdpCredential",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/DeleteInboundSamlSsoProfilesIdpCredential",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesIdpCredentialsServerServer).DeleteInboundSamlSsoProfilesIdpCredential(ctx, req.(*DeleteInboundSamlSsoProfilesIdpCredentialRequest))
@@ -2320,7 +2320,7 @@ func _InboundSamlSsoProfilesIdpCredentialsServer_GetInboundSamlSsoProfilesIdpCre
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/GetInboundSamlSsoProfilesIdpCredential",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/GetInboundSamlSsoProfilesIdpCredential",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesIdpCredentialsServerServer).GetInboundSamlSsoProfilesIdpCredential(ctx, req.(*GetInboundSamlSsoProfilesIdpCredentialRequest))
@@ -2338,7 +2338,7 @@ func _InboundSamlSsoProfilesIdpCredentialsServer_ListInboundSamlSsoProfilesIdpCr
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/ListInboundSamlSsoProfilesIdpCredentials",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer/ListInboundSamlSsoProfilesIdpCredentials",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSamlSsoProfilesIdpCredentialsServerServer).ListInboundSamlSsoProfilesIdpCredentials(ctx, req.(*ListInboundSamlSsoProfilesIdpCredentialsRequest))
@@ -2350,7 +2350,7 @@ func _InboundSamlSsoProfilesIdpCredentialsServer_ListInboundSamlSsoProfilesIdpCr
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var InboundSamlSsoProfilesIdpCredentialsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.InboundSamlSsoProfilesIdpCredentialsServer",
 	HandlerType: (*InboundSamlSsoProfilesIdpCredentialsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -2371,7 +2371,7 @@ var InboundSamlSsoProfilesIdpCredentialsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // InboundSsoAssignmentsServerClient is the client API for InboundSsoAssignmentsServer service.
@@ -2400,7 +2400,7 @@ func NewInboundSsoAssignmentsServerClient(cc grpc.ClientConnInterface) InboundSs
 
 func (c *inboundSsoAssignmentsServerClient) CreateInboundSsoAssignment(ctx context.Context, in *CreateInboundSsoAssignmentRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/CreateInboundSsoAssignment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/CreateInboundSsoAssignment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2409,7 +2409,7 @@ func (c *inboundSsoAssignmentsServerClient) CreateInboundSsoAssignment(ctx conte
 
 func (c *inboundSsoAssignmentsServerClient) DeleteInboundSsoAssignment(ctx context.Context, in *DeleteInboundSsoAssignmentRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/DeleteInboundSsoAssignment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/DeleteInboundSsoAssignment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2418,7 +2418,7 @@ func (c *inboundSsoAssignmentsServerClient) DeleteInboundSsoAssignment(ctx conte
 
 func (c *inboundSsoAssignmentsServerClient) GetInboundSsoAssignment(ctx context.Context, in *GetInboundSsoAssignmentRequest, opts ...grpc.CallOption) (*InboundSsoAssignment, error) {
 	out := new(InboundSsoAssignment)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/GetInboundSsoAssignment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/GetInboundSsoAssignment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2427,7 +2427,7 @@ func (c *inboundSsoAssignmentsServerClient) GetInboundSsoAssignment(ctx context.
 
 func (c *inboundSsoAssignmentsServerClient) ListInboundSsoAssignments(ctx context.Context, in *ListInboundSsoAssignmentsRequest, opts ...grpc.CallOption) (*ListInboundSsoAssignmentsResponse, error) {
 	out := new(ListInboundSsoAssignmentsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/ListInboundSsoAssignments", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/ListInboundSsoAssignments", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2436,7 +2436,7 @@ func (c *inboundSsoAssignmentsServerClient) ListInboundSsoAssignments(ctx contex
 
 func (c *inboundSsoAssignmentsServerClient) PatchInboundSsoAssignment(ctx context.Context, in *PatchInboundSsoAssignmentRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/PatchInboundSsoAssignment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/PatchInboundSsoAssignment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2503,7 +2503,7 @@ func _InboundSsoAssignmentsServer_CreateInboundSsoAssignment_Handler(srv interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/CreateInboundSsoAssignment",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/CreateInboundSsoAssignment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSsoAssignmentsServerServer).CreateInboundSsoAssignment(ctx, req.(*CreateInboundSsoAssignmentRequest))
@@ -2521,7 +2521,7 @@ func _InboundSsoAssignmentsServer_DeleteInboundSsoAssignment_Handler(srv interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/DeleteInboundSsoAssignment",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/DeleteInboundSsoAssignment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSsoAssignmentsServerServer).DeleteInboundSsoAssignment(ctx, req.(*DeleteInboundSsoAssignmentRequest))
@@ -2539,7 +2539,7 @@ func _InboundSsoAssignmentsServer_GetInboundSsoAssignment_Handler(srv interface{
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/GetInboundSsoAssignment",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/GetInboundSsoAssignment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSsoAssignmentsServerServer).GetInboundSsoAssignment(ctx, req.(*GetInboundSsoAssignmentRequest))
@@ -2557,7 +2557,7 @@ func _InboundSsoAssignmentsServer_ListInboundSsoAssignments_Handler(srv interfac
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/ListInboundSsoAssignments",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/ListInboundSsoAssignments",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSsoAssignmentsServerServer).ListInboundSsoAssignments(ctx, req.(*ListInboundSsoAssignmentsRequest))
@@ -2575,7 +2575,7 @@ func _InboundSsoAssignmentsServer_PatchInboundSsoAssignment_Handler(srv interfac
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/PatchInboundSsoAssignment",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer/PatchInboundSsoAssignment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InboundSsoAssignmentsServerServer).PatchInboundSsoAssignment(ctx, req.(*PatchInboundSsoAssignmentRequest))
@@ -2587,7 +2587,7 @@ func _InboundSsoAssignmentsServer_PatchInboundSsoAssignment_Handler(srv interfac
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var InboundSsoAssignmentsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.InboundSsoAssignmentsServer",
 	HandlerType: (*InboundSsoAssignmentsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -2612,7 +2612,7 @@ var InboundSsoAssignmentsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // OrgUnitsServerClient is the client API for OrgUnitsServer service.
@@ -2657,11 +2657,11 @@ func RegisterOrgUnitsServerServer(s grpc.ServiceRegistrar, srv OrgUnitsServerSer
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var OrgUnitsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.OrgUnitsServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.OrgUnitsServer",
 	HandlerType: (*OrgUnitsServerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
-	Metadata:    "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata:    "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // OrgUnitsMembershipsServerClient is the client API for OrgUnitsMembershipsServer service.
@@ -2684,7 +2684,7 @@ func NewOrgUnitsMembershipsServerClient(cc grpc.ClientConnInterface) OrgUnitsMem
 
 func (c *orgUnitsMembershipsServerClient) ListOrgUnitsMemberships(ctx context.Context, in *ListOrgUnitsMembershipsRequest, opts ...grpc.CallOption) (*ListOrgMembershipsResponse, error) {
 	out := new(ListOrgMembershipsResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer/ListOrgUnitsMemberships", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer/ListOrgUnitsMemberships", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2693,7 +2693,7 @@ func (c *orgUnitsMembershipsServerClient) ListOrgUnitsMemberships(ctx context.Co
 
 func (c *orgUnitsMembershipsServerClient) MoveOrgUnitsMembership(ctx context.Context, in *MoveOrgUnitsMembershipRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer/MoveOrgUnitsMembership", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer/MoveOrgUnitsMembership", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2745,7 +2745,7 @@ func _OrgUnitsMembershipsServer_ListOrgUnitsMemberships_Handler(srv interface{},
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer/ListOrgUnitsMemberships",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer/ListOrgUnitsMemberships",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrgUnitsMembershipsServerServer).ListOrgUnitsMemberships(ctx, req.(*ListOrgUnitsMembershipsRequest))
@@ -2763,7 +2763,7 @@ func _OrgUnitsMembershipsServer_MoveOrgUnitsMembership_Handler(srv interface{}, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer/MoveOrgUnitsMembership",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer/MoveOrgUnitsMembership",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrgUnitsMembershipsServerServer).MoveOrgUnitsMembership(ctx, req.(*MoveOrgUnitsMembershipRequest))
@@ -2775,7 +2775,7 @@ func _OrgUnitsMembershipsServer_MoveOrgUnitsMembership_Handler(srv interface{}, 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var OrgUnitsMembershipsServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.OrgUnitsMembershipsServer",
 	HandlerType: (*OrgUnitsMembershipsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -2788,7 +2788,7 @@ var OrgUnitsMembershipsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
 
 // PoliciesServerClient is the client API for PoliciesServer service.
@@ -2811,7 +2811,7 @@ func NewPoliciesServerClient(cc grpc.ClientConnInterface) PoliciesServerClient {
 
 func (c *policiesServerClient) GetPolicy(ctx context.Context, in *GetPolicyRequest, opts ...grpc.CallOption) (*Policy, error) {
 	out := new(Policy)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.PoliciesServer/GetPolicy", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.PoliciesServer/GetPolicy", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2820,7 +2820,7 @@ func (c *policiesServerClient) GetPolicy(ctx context.Context, in *GetPolicyReque
 
 func (c *policiesServerClient) ListPolicies(ctx context.Context, in *ListPoliciesRequest, opts ...grpc.CallOption) (*ListPoliciesResponse, error) {
 	out := new(ListPoliciesResponse)
-	err := c.cc.Invoke(ctx, "/mockgcp.cloud.cloudidentity.groups.v1beta1.PoliciesServer/ListPolicies", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.groups.v1beta1.PoliciesServer/ListPolicies", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2871,7 +2871,7 @@ func _PoliciesServer_GetPolicy_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.PoliciesServer/GetPolicy",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.PoliciesServer/GetPolicy",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PoliciesServerServer).GetPolicy(ctx, req.(*GetPolicyRequest))
@@ -2889,7 +2889,7 @@ func _PoliciesServer_ListPolicies_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.cloud.cloudidentity.groups.v1beta1.PoliciesServer/ListPolicies",
+		FullMethod: "/google.apps.cloudidentity.groups.v1beta1.PoliciesServer/ListPolicies",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PoliciesServerServer).ListPolicies(ctx, req.(*ListPoliciesRequest))
@@ -2901,7 +2901,7 @@ func _PoliciesServer_ListPolicies_Handler(srv interface{}, ctx context.Context, 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PoliciesServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.cloud.cloudidentity.groups.v1beta1.PoliciesServer",
+	ServiceName: "google.apps.cloudidentity.groups.v1beta1.PoliciesServer",
 	HandlerType: (*PoliciesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -2914,5 +2914,5 @@ var PoliciesServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "mockgcp/cloud/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
 }
