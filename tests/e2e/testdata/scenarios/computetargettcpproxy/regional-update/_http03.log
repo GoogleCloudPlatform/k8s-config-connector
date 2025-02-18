@@ -1,0 +1,87 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&target_tcp_proxy=${targetTcpProxyID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "test target tcp proxy",
+  "id": "000000000000000000000",
+  "kind": "compute#targetTcpProxy",
+  "name": "computetargettcpproxy-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&target_tcp_proxy=${targetTcpProxyID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "test target tcp proxy",
+  "id": "000000000000000000000",
+  "kind": "compute#targetTcpProxy",
+  "name": "computetargettcpproxy-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&target_tcp_proxy=${targetTcpProxyID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "test target tcp proxy",
+  "id": "000000000000000000000",
+  "kind": "compute#targetTcpProxy",
+  "name": "computetargettcpproxy-${uniqueId}",
+  "proxyHeader": "NONE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}"
+}

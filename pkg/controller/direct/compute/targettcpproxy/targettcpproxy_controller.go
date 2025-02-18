@@ -20,7 +20,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 
 	"google.golang.org/api/option"
 
@@ -261,20 +261,35 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 
-	op := &gcp.Operation{}
-	updated := &computepb.TargetTcpProxy{}
-
 	parent := a.id.Parent()
+	tokens := strings.Split(a.id.String(), "/")
 
-	// Regional API does not support Update
-	if parent.Location != "global" {
-		return fmt.Errorf("update operation not supported for resource %v %v",
-			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
+	// Assign API output-only values
+	targetTCPProxy.CreationTimestamp = a.actual.CreationTimestamp
+	targetTCPProxy.Id = a.actual.Id
+	targetTCPProxy.SelfLink = a.actual.SelfLink
+	targetTCPProxy.Kind = a.actual.Kind
+	// Convert region `europe-west4` to proto region format `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4`
+	// Prevent diff when comparing with proto message
+	targetTCPProxy.Region = direct.LazyPtr(fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", parent))
+	targetTCPProxy.Name = direct.LazyPtr(a.id.ID())
+
+	paths, err := common.CompareProtoMessage(targetTCPProxy, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+		return nil
 	}
 
-	tokens := strings.Split(a.id.String(), "/")
-	targetTCPProxy.Name = direct.LazyPtr(tokens[len(tokens)-1])
+	// Changes on resource spec are detected
+	if parent.Location != "global" {
+		// Regional ComputeTargetTCPProxy API does not support Update
+		return fmt.Errorf("update operation not supported for regional ComputeTargetTCPProxy")
+	}
 
+	op := &gcp.Operation{}
 	if !reflect.DeepEqual(targetTCPProxy.ProxyHeader, a.actual.ProxyHeader) {
 		setProxyHeaderReq := &computepb.SetProxyHeaderTargetTcpProxyRequest{
 			Project: parent.ProjectID,
@@ -311,11 +326,10 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 			}
 		}
 		log.V(2).Info("successfully updated ComputeTargetTCPProxy backend service", "name", a.id)
-
 	}
 
 	// Get the updated resource
-	updated, err = a.get(ctx)
+	updated, err := a.get(ctx)
 	if err != nil {
 		return fmt.Errorf("getting ComputeTargetTCPProxy %s: %w", a.id, err)
 	}
