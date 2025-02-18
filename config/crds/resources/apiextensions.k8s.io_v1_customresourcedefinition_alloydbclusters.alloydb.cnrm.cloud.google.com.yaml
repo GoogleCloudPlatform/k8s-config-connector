@@ -568,15 +568,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of a AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of a AlloyDBCluster resource.
                         type: string
                     type: object
                   pointInTime:
@@ -610,15 +609,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of a AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of a AlloyDBCluster resource.
                         type: string
                     type: object
                 required:
@@ -724,6 +722,10 @@ spec:
                       type: array
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the AlloyDBCluster resource in
+                  GCP.
+                type: string
               migrationSource:
                 description: Output only. Cluster created via DMS migration.
                 items:
@@ -768,6 +770,54 @@ spec:
                       by which RPC was used to create the cluster (i.e. `CreateCluster`
                       vs. `CreateSecondaryCluster`
                     type: string
+                  deletionPolicy:
+                    description: Observed policy to determine if the cluster should
+                      be deleted forcefully. Deleting a cluster forcefully, deletes
+                      the cluster and all its associated instances within the cluster.
+                      Deleting a Secondary cluster with a secondary instance REQUIRES
+                      setting deletion_policy = "FORCE" otherwise an error is returned.
+                      This is needed as there is no support to delete just the secondary
+                      instance, and the only way to delete secondary instance is to
+                      delete the associated secondary cluster forcefully which also
+                      deletes the secondary instance.
+                    type: string
+                  displayName:
+                    description: Observed display name for the Cluster.
+                    type: string
+                  initialUser:
+                    description: Observed initial user to setup during cluster creation.
+                    properties:
+                      password:
+                        description: The initial password for the user.
+                        properties:
+                          value:
+                            description: Value of the field. Cannot be used if 'valueFrom'
+                              is specified.
+                            type: string
+                          valueFrom:
+                            description: Source for the field's value. Cannot be used
+                              if 'value' is specified.
+                            properties:
+                              secretKeyRef:
+                                description: Observed stae of the reference to a value
+                                  with the given key in the given Secret in the resource's
+                                  namespace.
+                                properties:
+                                  key:
+                                    description: Key that identifies the value to
+                                      be extracted.
+                                    type: string
+                                  name:
+                                    description: Name of the observed Secret to extract
+                                      a value from.
+                                    type: string
+                                  version:
+                                    description: Version of the observed Secret.
+                                    type: string
+                                type: object
+                            type: object
+                        type: object
+                    type: object
                 type: object
               uid:
                 description: Output only. The system-generated UID of the resource.
@@ -1162,10 +1212,10 @@ spec:
                       is intended to be consistent with Cloud SQL.'
                     type: string
                   networkRef:
-                    description: 'Optional. The resource link for the VPC network
-                      in which cluster resources are created and from which they are
-                      accessible via Private IP. The network must belong to the same
-                      project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`.
+                    description: 'The resource link for the VPC network in which cluster
+                      resources are created and from which they are accessible via
+                      Private IP. The network must belong to the same project as the
+                      cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`.
                       This is required to create a cluster.'
                     oneOf:
                     - not:
@@ -1195,10 +1245,10 @@ spec:
                     type: object
                 type: object
               networkRef:
-                description: 'Required. The resource link for the VPC network in which
-                  cluster resources are created and from which they are accessible
-                  via Private IP. The network must belong to the same project as the
-                  cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`.
+                description: 'The resource link for the VPC network in which cluster
+                  resources are created and from which they are accessible via Private
+                  IP. The network must belong to the same project as the cluster.
+                  It is specified in the form: `projects/{project}/global/networks/{network_id}`.
                   This is required to create a cluster. Deprecated, use network_config.network
                   instead.'
                 oneOf:
@@ -1324,15 +1374,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of a AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of a AlloyDBCluster resource.
                         type: string
                     type: object
                   pointInTime:
@@ -1366,15 +1415,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of a AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of a AlloyDBCluster resource.
                         type: string
                     type: object
                 required:
@@ -1480,6 +1528,10 @@ spec:
                       type: array
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the AlloyDBCluster resource in
+                  GCP.
+                type: string
               migrationSource:
                 description: Output only. Cluster created via DMS migration.
                 items:
@@ -1524,6 +1576,54 @@ spec:
                       by which RPC was used to create the cluster (i.e. `CreateCluster`
                       vs. `CreateSecondaryCluster`
                     type: string
+                  deletionPolicy:
+                    description: Observed policy to determine if the cluster should
+                      be deleted forcefully. Deleting a cluster forcefully, deletes
+                      the cluster and all its associated instances within the cluster.
+                      Deleting a Secondary cluster with a secondary instance REQUIRES
+                      setting deletion_policy = "FORCE" otherwise an error is returned.
+                      This is needed as there is no support to delete just the secondary
+                      instance, and the only way to delete secondary instance is to
+                      delete the associated secondary cluster forcefully which also
+                      deletes the secondary instance.
+                    type: string
+                  displayName:
+                    description: Observed display name for the Cluster.
+                    type: string
+                  initialUser:
+                    description: Observed initial user to setup during cluster creation.
+                    properties:
+                      password:
+                        description: The initial password for the user.
+                        properties:
+                          value:
+                            description: Value of the field. Cannot be used if 'valueFrom'
+                              is specified.
+                            type: string
+                          valueFrom:
+                            description: Source for the field's value. Cannot be used
+                              if 'value' is specified.
+                            properties:
+                              secretKeyRef:
+                                description: Observed stae of the reference to a value
+                                  with the given key in the given Secret in the resource's
+                                  namespace.
+                                properties:
+                                  key:
+                                    description: Key that identifies the value to
+                                      be extracted.
+                                    type: string
+                                  name:
+                                    description: Name of the observed Secret to extract
+                                      a value from.
+                                    type: string
+                                  version:
+                                    description: Version of the observed Secret.
+                                    type: string
+                                type: object
+                            type: object
+                        type: object
+                    type: object
                 type: object
               uid:
                 description: Output only. The system-generated UID of the resource.

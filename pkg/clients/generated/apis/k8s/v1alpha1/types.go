@@ -87,3 +87,17 @@ type SecretKeyRef struct {
 	/* Name of the Secret to extract a value from. */
 	Name string `json:"name"`
 }
+
+type SecretKeyRefObservedState struct {
+	/* Key that identifies the value to be extracted. */
+	// +optional
+	Key string `json:"key"`
+
+	/* Name of the observed Secret to extract a value from. */
+	// +optional
+	Name string `json:"name"`
+
+	/* Version of the observed Secret. */
+	// +optional
+	Version string `json:"version"`
+}

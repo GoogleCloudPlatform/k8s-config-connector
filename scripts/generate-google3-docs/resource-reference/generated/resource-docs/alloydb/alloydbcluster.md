@@ -778,7 +778,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`. This is required to create a cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`. This is required to create a cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -818,7 +818,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`. This is required to create a cluster. Deprecated, use network_config.network instead.{% endverbatim %}</p>
+            <p>{% verbatim %}The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`. This is required to create a cluster. Deprecated, use network_config.network instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -988,7 +988,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed AlloyDBCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -998,7 +998,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1008,7 +1008,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1048,7 +1048,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed AlloyDBCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1058,7 +1058,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1068,7 +1068,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1103,6 +1103,7 @@ encryptionInfo:
 - encryptionType: string
   kmsKeyVersions:
   - string
+externalRef: string
 migrationSource:
 - hostPort: string
   referenceId: string
@@ -1111,6 +1112,16 @@ name: string
 observedGeneration: integer
 observedState:
   clusterType: string
+  deletionPolicy: string
+  displayName: string
+  initialUser:
+    password:
+      value: string
+      valueFrom:
+        secretKeyRef:
+          key: string
+          name: string
+          version: string
 uid: string
 ```
 
@@ -1311,6 +1322,13 @@ uid: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the AlloyDBCluster resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>migrationSource</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -1371,6 +1389,76 @@ uid: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The type of the cluster. This is an output-only field and it's populated at the Cluster creation time or the Cluster promotion time. The cluster type is determined by which RPC was used to create the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.deletionPolicy</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Observed policy to determine if the cluster should be deleted forcefully. Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster. Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.displayName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Observed display name for the Cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Observed initial user to setup during cluster creation.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser.password</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The initial password for the user.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser.password.value</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser.password.valueFrom</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser.password.valueFrom.secretKeyRef</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Observed stae of the reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser.password.valueFrom.secretKeyRef.key</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Key that identifies the value to be extracted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser.password.valueFrom.secretKeyRef.name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the observed Secret to extract a value from.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser.password.valueFrom.secretKeyRef.version</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Version of the observed Secret.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

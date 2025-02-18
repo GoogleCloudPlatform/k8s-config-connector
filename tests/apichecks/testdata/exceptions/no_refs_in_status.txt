@@ -1,0 +1,2 @@
+[no_refs_in_status] crd=alloydbclusters.alloydb.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.initialUser.password.valueFrom.secretKeyRef" should not be in status
+[no_refs_in_status] crd=alloydbclusters.alloydb.cnrm.cloud.google.com version=v1beta1: reference field ".status.observedState.initialUser.password.valueFrom.secretKeyRef" should not be in status

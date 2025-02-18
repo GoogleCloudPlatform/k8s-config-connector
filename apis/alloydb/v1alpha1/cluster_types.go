@@ -212,6 +212,14 @@ type UserPassword struct {
 	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.UserPassword
+type UserPasswordObservedState struct {
+	// The initial password for the user.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.UserPassword.password
+	// +optional
+	Password *refsv1beta1secret.LegacyObservedState `json:"password,omitempty"`
+}
+
 // +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.MaintenanceWindow
 type MaintenanceUpdatePolicy_MaintenanceWindow struct {
 	// TODO: Verify if "// +required" marker is needed for Day after using direct controller.
@@ -286,7 +294,7 @@ type BackupSource struct {
 type RestoreContinuousBackupSource struct {
 	// (Required) The name of the source cluster that this cluster is restored from.
 	// +required
-	ClusterRef *refs.AlloyDBClusterRef `json:"clusterRef,omitempty"`
+	ClusterRef *ClusterRef `json:"clusterRef,omitempty"`
 
 	// Immutable. The point in time that this cluster is restored to, in RFC 3339 format.
 	// +required
@@ -301,10 +309,11 @@ type Cluster_SecondaryConfig struct {
 	//  * projects/{project}/locations/{region}/clusters/{cluster_id}
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.SecondaryConfig.primary_cluster_name
 	// +required
-	PrimaryClusterNameRef *refs.AlloyDBClusterRef `json:"primaryClusterNameRef,omitempty"`
+	PrimaryClusterNameRef *ClusterRef `json:"primaryClusterNameRef,omitempty"`
 }
 
 // AlloyDBClusterStatus defines the config connector machine state of AlloyDBCluster
+// +kcc:proto=google.cloud.alloydb.v1beta.Cluster
 type AlloyDBClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
@@ -313,10 +322,8 @@ type AlloyDBClusterStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/*
-		// A unique specifier for the AlloyDBCluster resource in GCP.
-		ExternalRef *string `json:"externalRef,omitempty"`
-	*/
+	// A unique specifier for the AlloyDBCluster resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Output only. Cluster created from backup.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.backup_source
@@ -423,6 +430,24 @@ type AlloyDBClusterObservedState struct {
 	//  the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.cluster_type
 	ClusterType *string `json:"clusterType,omitempty"`
+
+	// Observed initial user to setup during cluster creation.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.initial_user
+	InitialUser *UserPasswordObservedState `json:"initialUser,omitempty"`
+
+	// Observed policy to determine if the cluster should be deleted forcefully.
+	// Deleting a cluster forcefully, deletes the cluster and all its associated
+	// instances within the cluster.
+	// Deleting a Secondary cluster with a secondary instance REQUIRES setting
+	// deletion_policy = "FORCE" otherwise an error is returned. This is needed
+	// as there is no support to delete just the secondary instance, and the only
+	// way to delete secondary instance is to delete the associated secondary
+	// cluster forcefully which also deletes the secondary instance.
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+
+	// Observed display name for the Cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 /* NOTYET
@@ -483,7 +508,6 @@ type ClusterObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpalloydbcluster;gcpalloydbclusters
 // +kubebuilder:subresource:status// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
