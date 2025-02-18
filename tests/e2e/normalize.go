@@ -121,6 +121,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to VertexAI
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
+	visitor.replacePaths[".status.state[].diskUtilizationBytes"] = "1"
 
 	// Specific to Monitoring
 	visitor.replacePaths[".status.creationRecord[].mutateTime"] = "1970-01-01T00:00:00Z"
