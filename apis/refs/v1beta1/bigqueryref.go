@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -85,6 +86,13 @@ func ResolveBigQueryDataset(ctx context.Context, reader client.Reader, src clien
 			return nil, fmt.Errorf("referenced BigQueryDataset %v not found", nn)
 		}
 		return nil, fmt.Errorf("error reading referenced BigQueryDataset %v: %w", nn, err)
+	}
+	resource, err := k8s.NewResource(dataset)
+	if err != nil {
+		return nil, fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return nil, k8s.NewReferenceNotReadyError(dataset.GroupVersionKind(), nn)
 	}
 	projectID, err := ResolveProjectID(ctx, reader, dataset)
 	if err != nil {

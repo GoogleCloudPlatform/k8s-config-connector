@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -91,6 +92,14 @@ func ResolveAlloyDBCluster(ctx context.Context, reader client.Reader, src client
 		}
 		return nil, fmt.Errorf("error reading referenced AlloyDBCluster %v: %w", nn, err)
 	}
+	resource, err := k8s.NewResource(cluster)
+	if err != nil {
+		return nil, fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return nil, k8s.NewReferenceNotReadyError(cluster.GroupVersionKind(), nn)
+	}
+
 	projectID, err := ResolveProjectID(ctx, reader, cluster)
 	if err != nil {
 		return nil, err

@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -112,6 +113,13 @@ func ResolveFolder(ctx context.Context, reader client.Reader, src client.Object,
 			return nil, fmt.Errorf("referenced Folder %v not found", key)
 		}
 		return nil, fmt.Errorf("error reading referenced Folder %v: %w", key, err)
+	}
+	resource, err := k8s.NewResource(folder)
+	if err != nil {
+		return nil, fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return nil, k8s.NewReferenceNotReadyError(folder.GroupVersionKind(), key)
 	}
 
 	folderID, err := GetResourceID(folder)
