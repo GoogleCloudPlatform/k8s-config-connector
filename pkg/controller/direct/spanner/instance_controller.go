@@ -16,6 +16,7 @@ package spanner
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"reflect"
 
@@ -321,7 +322,7 @@ func (a *SpannerInstanceAdapter) DeleteBackup(ctx context.Context) error {
 	it := a.backupClient.ListBackups(ctx, &databasepb.ListBackupsRequest{Parent: a.id.String()})
 	for {
 		backup, err := it.Next()
-		if err == iterator.Done {
+		if errors.Is(err, iterator.Done) {
 			break
 		}
 		if err != nil {
