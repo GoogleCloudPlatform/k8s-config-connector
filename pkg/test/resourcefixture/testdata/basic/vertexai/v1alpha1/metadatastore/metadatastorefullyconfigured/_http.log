@@ -320,10 +320,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "description": "An encrypted metadata store",
-  "encryptionSpec": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  }
+  "description": "An encrypted metadata store"
 }
 
 200 OK
@@ -376,9 +373,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.MetadataStore",
     "description": "An encrypted metadata store",
-    "encryptionSpec": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
     "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}"
   }
 }
@@ -402,9 +396,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An encrypted metadata store",
-  "encryptionSpec": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
   "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}",
   "state": {
     "diskUtilizationBytes": "1"
