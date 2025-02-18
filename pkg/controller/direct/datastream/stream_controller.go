@@ -30,13 +30,12 @@ import (
 	gcp "cloud.google.com/go/datastream/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	datastreampb "cloud.google.com/go/datastream/v1/datastreampb"
+	datastreampb "cloud.google.com/go/datastream/apiv1/datastreampb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -176,11 +175,13 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	paths := []string{}
 	{
 		var err error
-		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+		pathsSet, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 		if err != nil {
 			return err
 		}
+                paths = pathsSet.UnsortedList()
 	}
+
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.DatastreamStreamStatus{}
@@ -191,11 +192,10 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+		Paths: paths}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &datastreampb.UpdateStreamRequest{
-		Name:       a.id,
 		UpdateMask: updateMask,
 		Stream:     desiredPb,
 	}
@@ -237,7 +237,7 @@ func (a *StreamAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.DatastreamStreamGVK)
 
 	u.Object = uObj

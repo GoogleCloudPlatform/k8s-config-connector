@@ -15,7 +15,6 @@
 package datastream
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
