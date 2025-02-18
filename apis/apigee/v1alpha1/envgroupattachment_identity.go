@@ -72,6 +72,15 @@ func (obj *ApigeeEnvgroupAttachment) GetIdentity(ctx context.Context, reader cli
 		return nil, err
 	}
 
+	environmentRef := obj.Spec.EnvironmentRef
+	if environmentRef == nil {
+		return nil, fmt.Errorf("no environment reference")
+	}
+	err = environmentRef.Normalize(ctx, reader, obj.Namespace)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve environment: %w", err)
+	}
+
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
