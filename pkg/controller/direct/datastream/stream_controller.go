@@ -179,7 +179,7 @@ func (a *StreamAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		if err != nil {
 			return err
 		}
-                paths = pathsSet.UnsortedList()
+		paths = pathsSet.UnsortedList()
 	}
 
 	if len(paths) == 0 {

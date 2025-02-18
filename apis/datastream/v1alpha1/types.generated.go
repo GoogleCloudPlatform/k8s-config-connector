@@ -641,46 +641,6 @@ type SqlServerTable struct {
 type SqlServerTransactionLogs struct {
 }
 
-// +kcc:proto=google.cloud.datastream.v1.Stream
-type Stream struct {
-
-	// Labels.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Required. Display name.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Required. Source connection profile configuration.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.source_config
-	SourceConfig *SourceConfig `json:"sourceConfig,omitempty"`
-
-	// Required. Destination connection profile configuration.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.destination_config
-	DestinationConfig *DestinationConfig `json:"destinationConfig,omitempty"`
-
-	// The state of the stream.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.state
-	State *string `json:"state,omitempty"`
-
-	// Automatically backfill objects included in the stream source
-	//  configuration. Specific objects can be excluded.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.backfill_all
-	BackfillAll *Stream_BackfillAllStrategy `json:"backfillAll,omitempty"`
-
-	// Do not automatically backfill any objects.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.backfill_none
-	BackfillNone *Stream_BackfillNoneStrategy `json:"backfillNone,omitempty"`
-
-	// Immutable. A reference to a KMS encryption key.
-	//  If provided, it will be used to encrypt the data.
-	//  If left blank, data will be encrypted using an internal Stream-specific
-	//  encryption key provisioned through KMS.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.customer_managed_encryption_key
-	CustomerManagedEncryptionKey *string `json:"customerManagedEncryptionKey,omitempty"`
-}
-
 // +kcc:proto=google.cloud.datastream.v1.Stream.BackfillAllStrategy
 type Stream_BackfillAllStrategy struct {
 	// Oracle data source objects to avoid backfilling.
@@ -702,28 +662,4 @@ type Stream_BackfillAllStrategy struct {
 
 // +kcc:proto=google.cloud.datastream.v1.Stream.BackfillNoneStrategy
 type Stream_BackfillNoneStrategy struct {
-}
-
-// +kcc:proto=google.cloud.datastream.v1.Stream
-type StreamObservedState struct {
-	// Output only. The stream's name.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The creation time of the stream.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The last update time of the stream.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Errors on the Stream.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.errors
-	Errors []Error `json:"errors,omitempty"`
-
-	// Output only. If the stream was recovered, the time of the last recovery.
-	//  Note: This field is currently experimental.
-	// +kcc:proto:field=google.cloud.datastream.v1.Stream.last_recovery_time
-	LastRecoveryTime *string `json:"lastRecoveryTime,omitempty"`
 }

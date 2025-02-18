@@ -90,7 +90,10 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
-require cloud.google.com/go/datastream v1.13.0 // indirect
+require (
+	cloud.google.com/go/datastream v1.13.0
+	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
+)
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
