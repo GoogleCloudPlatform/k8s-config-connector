@@ -62,7 +62,7 @@ spec:
             description: ApigeeEnvgroupAttachmentSpec defines the desired state of
               EnvgroupAttachment
             properties:
-              envgroup:
+              envgroupRef:
                 description: Immutable. The Apigee environment group which will host
                   the environment.
                 oneOf:
@@ -91,7 +91,7 @@ spec:
                     description: The namespace of a ApigeeEnvgroup resource.
                     type: string
                 type: object
-              environment:
+              environmentRef:
                 description: Immutable. The Apigee environment to attach to.
                 oneOf:
                 - not:
@@ -153,8 +153,8 @@ spec:
                   will be used.
                 type: string
             required:
-            - envgroup
-            - environment
+            - envgroupRef
+            - environmentRef
             - organizationRef
             type: object
           status:
