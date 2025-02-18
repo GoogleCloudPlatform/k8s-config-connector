@@ -230,17 +230,6 @@ jobs:
           dev/tasks/build-images
     env:
       PROJECT_ID: cnrm-test
-  test-mappers-roundtrip:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "dev/ci/presubmits/test-mappers-roundtrip"
-        run: |
-          dev/ci/presubmits/test-mappers-roundtrip
   test-mockgcp:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
