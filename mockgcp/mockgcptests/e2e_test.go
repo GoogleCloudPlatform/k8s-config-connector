@@ -52,7 +52,9 @@ func TestScripts(t *testing.T) {
 				ProjectID: "testproject-1",
 			}
 
-			script := loadScript(t, filepath.Join(baseDir, scriptPath), uniqueID, project)
+			testDir := filepath.Join(baseDir, scriptPath)
+
+			script := loadScript(t, testDir, uniqueID, project)
 			h := NewHarness(t)
 
 			h.Init()
@@ -76,6 +78,7 @@ func TestScripts(t *testing.T) {
 					gcloudConfig := h.proxy.BuildGcloudConfig(h.ProxyEndpoint, h.MockGCP)
 					cmd.Env = append(cmd.Env, "CLOUDSDK_CORE_PROJECT="+h.Project.ProjectID)
 					cmd.Env = append(cmd.Env, gcloudConfig.EnvVars...)
+					cmd.Dir = testDir
 
 					t.Logf("executing step command %q", step.Exec)
 					if err := cmd.Run(); err != nil {
