@@ -15,6 +15,7 @@
 package test
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -241,4 +242,33 @@ func CompareGoldenObject(t *testing.T, p string, got []byte) {
 		}
 		t.Logf("wrote updated golden output to %s", p)
 	}
+}
+
+func PrettyPrintJSON[T any](t *testing.T, k T) string {
+	encoded, err := json.MarshalIndent(k, "", " ")
+	if err != nil {
+		t.Fatalf("error encoding to json: %v", err)
+	}
+
+	return string(encoded)
+}
+
+func PrettyPrintYAML[T any](t *testing.T, k T) string {
+	encoded, err := json.MarshalIndent(k, "", " ")
+	if err != nil {
+		t.Fatalf("error encoding to json: %v", err)
+	}
+
+	otherK := new(T)
+	err = json.Unmarshal(encoded, &otherK)
+	if err != nil {
+		t.Fatalf("error decoding from json: %v", err)
+	}
+
+	yEncoded, err := yaml.Marshal(otherK)
+	if err != nil {
+		t.Fatalf("error encoding to yaml: %v", err)
+	}
+
+	return string(yEncoded)
 }
