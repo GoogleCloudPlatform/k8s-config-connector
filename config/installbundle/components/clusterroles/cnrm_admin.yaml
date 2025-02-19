@@ -812,6 +812,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - migrationcenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - mlengine.cnrm.cloud.google.com
   resources:
   - '*'
