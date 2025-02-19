@@ -38,6 +38,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/keyhandle"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/managedkafka"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/migrationcenter"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkconnectivity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/privateca"
