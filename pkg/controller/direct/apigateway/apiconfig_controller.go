@@ -172,9 +172,10 @@ func (a *ApiConfigAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.id.String()
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -192,7 +193,6 @@ func (a *ApiConfigAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apigatewaypb.UpdateApiConfigRequest{
-		Name:       a.id,
 		UpdateMask: updateMask,
 		ApiConfig:  desiredPb,
 	}
@@ -234,7 +234,7 @@ func (a *ApiConfigAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.APIGatewayAPIConfigGVK)
 
 	u.Object = uObj
