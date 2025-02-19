@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ApiVersionIdentity struct {
 	parent *ApiVersionParent
-	id string
+	id     string
 }
 
 func (i *ApiVersionIdentity) String() string {
-	return  i.parent.String() + "/apiversions/" + i.id
+	return i.parent.String() + "/apiversions/" + i.id
 }
 
 func (i *ApiVersionIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ApiVersionIdentity) ID() string {
 }
 
 func (i *ApiVersionIdentity) Parent() *ApiVersionParent {
-	return  i.parent
+	return i.parent
 }
 
 type ApiVersionParent struct {
@@ -51,7 +51,6 @@ type ApiVersionParent struct {
 func (p *ApiVersionParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ApiVersionIdentity from the Config Connector ApiVersion object.
 func NewApiVersionIdentity(ctx context.Context, reader client.Reader, obj *ApigeeregistryApiVersion) (*ApiVersionIdentity, error) {
