@@ -166,6 +166,20 @@ spec:
                       description: The name of the `MembershipRole`. Must be one of
                         `OWNER`, `MANAGER`, `MEMBER`.
                       type: string
+                    restrictionEvaluations:
+                      description: Evaluations of restrictions applied to parent group
+                        on this membership.
+                      properties:
+                        memberRestrictionEvaluation:
+                          description: Evaluation of the member restriction applied
+                            to this membership. Empty if the user lacks permission
+                            to view the restriction evaluation.
+                          properties:
+                            state:
+                              description: Output only. The current state of the restriction
+                              type: string
+                          type: object
+                      type: object
                   required:
                   - name
                   type: object
@@ -246,6 +260,7 @@ spec:
                   observed in GCP.
                 properties:
                   roles:
+                    description: The `MembershipRole`s that apply to the `Membership`.
                     items:
                       properties:
                         restrictionEvaluations:
