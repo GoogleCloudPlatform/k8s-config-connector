@@ -33,7 +33,6 @@ import (
 
 	"google.golang.org/api/option"
 
-
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 
@@ -129,6 +128,7 @@ func (a *ServiceProjectAttachmentAdapter) Find(ctx context.Context) (bool, error
 func (a *ServiceProjectAttachmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	return createOp.UpdateStatus(ctx, nil, nil)
 }
+
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ServiceProjectAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	return updateOp.UpdateStatus(ctx, nil, nil)
