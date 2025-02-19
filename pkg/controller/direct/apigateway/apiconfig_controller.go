@@ -30,7 +30,7 @@ import (
 	gcp "cloud.google.com/go/apigateway/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apigatewaypb "cloud.google.com/go/apigateway/v1/apigatewaypb"
+	apigatewaypb "cloud.google.com/go/apigateway/apiv1/apigatewaypb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
