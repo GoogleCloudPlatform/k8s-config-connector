@@ -27,10 +27,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/apigeeregistry/apiv1"
+	apigeeregistry "cloud.google.com/go/apigeeregistry/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apigeeregistrypb "cloud.google.com/go/apigeeregistry/v1/apigeeregistrypb"
+	apigeeregistrypb "cloud.google.com/go/apigeeregistry/apiv1/apigeeregistrypb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -55,13 +55,13 @@ type modelApiVersion struct {
 	config config.ControllerConfig
 }
 
-func (m *modelApiVersion) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelApiVersion) client(ctx context.Context) (*apigeeregistry.RegistryClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := apigeeregistry.NewRegistryClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building ApiVersion client: %w", err)
 	}
@@ -98,7 +98,7 @@ func (m *modelApiVersion) AdapterForURL(ctx context.Context, url string) (direct
 
 type ApiVersionAdapter struct {
 	id        *krm.ApiVersionIdentity
-	gcpClient *gcp.Client
+	gcpClient *apigeeregistry.RegistryClient
 	desired   *krm.ApigeeregistryApiVersion
 	actual    *apigeeregistrypb.ApiVersion
 }
@@ -143,13 +143,9 @@ func (a *ApiVersionAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		Parent:     a.id.Parent().String(),
 		ApiVersion: resource,
 	}
-	op, err := a.gcpClient.CreateApiVersion(ctx, req)
+	created, err := a.gcpClient.CreateApiVersion(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating ApiVersion %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("ApiVersion %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created ApiVersion", "name", a.id)
 
@@ -174,7 +170,7 @@ func (a *ApiVersionAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -192,17 +188,12 @@ func (a *ApiVersionAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apigeeregistrypb.UpdateApiVersionRequest{
-		Name:       a.id,
-		UpdateMask: updateMask,
 		ApiVersion: desiredPb,
+		UpdateMask: updateMask,
 	}
-	op, err := a.gcpClient.UpdateApiVersion(ctx, req)
+	updated, err := a.gcpClient.UpdateApiVersion(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating ApiVersion %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("ApiVersion %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated ApiVersion", "name", a.id)
 
@@ -234,7 +225,7 @@ func (a *ApiVersionAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.ApigeeregistryApiVersionGVK)
 
 	u.Object = uObj
@@ -247,7 +238,7 @@ func (a *ApiVersionAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	log.V(2).Info("deleting ApiVersion", "name", a.id)
 
 	req := &apigeeregistrypb.DeleteApiVersionRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteApiVersion(ctx, req)
+	err := a.gcpClient.DeleteApiVersion(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -257,10 +248,5 @@ func (a *ApiVersionAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 		return false, fmt.Errorf("deleting ApiVersion %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted ApiVersion", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete ApiVersion %s: %w", a.id, err)
-	}
 	return true, nil
 }
