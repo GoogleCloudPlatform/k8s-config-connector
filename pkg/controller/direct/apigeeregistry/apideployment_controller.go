@@ -27,10 +27,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/apigeeregistry/apiv1"
+	apiv1 "cloud.google.com/go/apigeeregistry/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apigeeregistrypb "cloud.google.com/go/apigeeregistry/v0.9.3/apigeeregistrypb"
+	apigeeregistrypb "cloud.google.com/go/apigeeregistry/apiv1/apigeeregistrypb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -55,13 +55,13 @@ type modelApiDeployment struct {
 	config config.ControllerConfig
 }
 
-func (m *modelApiDeployment) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelApiDeployment) client(ctx context.Context) (*apiv1.RegistryClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := apiv1.NewRegistryClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building ApiDeployment client: %w", err)
 	}
@@ -98,7 +98,7 @@ func (m *modelApiDeployment) AdapterForURL(ctx context.Context, url string) (dir
 
 type ApiDeploymentAdapter struct {
 	id        *krm.ApiDeploymentIdentity
-	gcpClient *gcp.Client
+	gcpClient *apiv1.RegistryClient
 	desired   *krm.ApigeeregistryApiDeployment
 	actual    *apigeeregistrypb.ApiDeployment
 }
@@ -143,13 +143,9 @@ func (a *ApiDeploymentAdapter) Create(ctx context.Context, createOp *directbase.
 		Parent:        a.id.Parent().String(),
 		ApiDeployment: resource,
 	}
-	op, err := a.gcpClient.CreateApiDeployment(ctx, req)
+	created, err := a.gcpClient.CreateApiDeployment(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating ApiDeployment %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("ApiDeployment %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created ApiDeployment", "name", a.id)
 
@@ -174,7 +170,7 @@ func (a *ApiDeploymentAdapter) Update(ctx context.Context, updateOp *directbase.
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -192,17 +188,12 @@ func (a *ApiDeploymentAdapter) Update(ctx context.Context, updateOp *directbase.
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apigeeregistrypb.UpdateApiDeploymentRequest{
-		Name:          a.id,
-		UpdateMask:    updateMask,
 		ApiDeployment: desiredPb,
+		UpdateMask:    updateMask,
 	}
-	op, err := a.gcpClient.UpdateApiDeployment(ctx, req)
+	updated, err := a.gcpClient.UpdateApiDeployment(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating ApiDeployment %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("ApiDeployment %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated ApiDeployment", "name", a.id)
 
@@ -234,7 +225,7 @@ func (a *ApiDeploymentAdapter) Export(ctx context.Context) (*unstructured.Unstru
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.ApigeeregistryApiDeploymentGVK)
 
 	u.Object = uObj
@@ -247,7 +238,7 @@ func (a *ApiDeploymentAdapter) Delete(ctx context.Context, deleteOp *directbase.
 	log.V(2).Info("deleting ApiDeployment", "name", a.id)
 
 	req := &apigeeregistrypb.DeleteApiDeploymentRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteApiDeployment(ctx, req)
+	err := a.gcpClient.DeleteApiDeployment(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -257,10 +248,5 @@ func (a *ApiDeploymentAdapter) Delete(ctx context.Context, deleteOp *directbase.
 		return false, fmt.Errorf("deleting ApiDeployment %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted ApiDeployment", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete ApiDeployment %s: %w", a.id, err)
-	}
 	return true, nil
 }
