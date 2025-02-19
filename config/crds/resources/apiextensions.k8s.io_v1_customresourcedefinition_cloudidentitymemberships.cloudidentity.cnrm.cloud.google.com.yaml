@@ -166,20 +166,6 @@ spec:
                       description: The name of the `MembershipRole`. Must be one of
                         `OWNER`, `MANAGER`, `MEMBER`.
                       type: string
-                    restrictionEvaluations:
-                      description: Evaluations of restrictions applied to parent group
-                        on this membership.
-                      properties:
-                        memberRestrictionEvaluation:
-                          description: Evaluation of the member restriction applied
-                            to this membership. Empty if the user lacks permission
-                            to view the restriction evaluation.
-                          properties:
-                            state:
-                              description: Output only. The current state of the restriction
-                              type: string
-                          type: object
-                      type: object
                   required:
                   - name
                   type: object
@@ -255,6 +241,31 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  roles:
+                    items:
+                      properties:
+                        restrictionEvaluations:
+                          description: Evaluations of restrictions applied to parent
+                            group on this membership.
+                          properties:
+                            memberRestrictionEvaluation:
+                              description: Evaluation of the member restriction applied
+                                to this membership. Empty if the user lacks permission
+                                to view the restriction evaluation.
+                              properties:
+                                state:
+                                  description: Output only. The current state of the
+                                    restriction
+                                  type: string
+                              type: object
+                          type: object
+                      type: object
+                    type: array
+                type: object
               type:
                 description: 'Output only. The type of the membership. Possible values:
                   OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER'

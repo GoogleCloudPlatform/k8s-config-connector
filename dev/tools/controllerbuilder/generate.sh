@@ -222,12 +222,12 @@ go run . generate-mapper \
 
 # CloudIdentity : Membership
 go run . generate-types \
-     --service mockgcp.cloud.cloudidentity.groups.v1beta1 \
+     --service google.apps.cloudidentity.groups.v1beta1 \
      --resource CloudIdentityMembership:Membership \
      --api-version "cloudidentity.cnrm.cloud.google.com/v1beta1"
 
 go run . generate-mapper \
-     --service mockgcp.cloud.cloudidentity.groups.v1beta1 \
+     --service google.apps.cloudidentity.groups.v1beta1 \
      --api-version cloudidentity.cnrm.cloud.google.com/v1beta1
 
 # Fix up formatting
