@@ -19,4 +19,6 @@ metadata:
 spec:
   location: us-central1
   projectRef:
-    external: projects/${PROJECT_ID?}
+    external: projects/epang-test
+  kmsKeyRef:
+    name: securesourcemanagerinstance-dep

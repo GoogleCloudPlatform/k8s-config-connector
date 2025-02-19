@@ -12,14 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicyMember
+apiVersion: securesourcemanager.cnrm.cloud.google.com/v1beta1
+kind: SecureSourceManagerInstance
 metadata:
-  name: securesourcemanagerinstance-dep
+  name: securesourcemanagerinstance-sample
 spec:
-  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-sourcemanager.iam.gserviceaccount.com
-  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
-  resourceRef:
-    apiVersion: kms.cnrm.cloud.google.com/v1beta1
-    kind: KMSCryptoKey
-    name: securesourcemanagerinstance-dep
+  location: us-central1
+  projectRef:
+    external: projects/epang-test
