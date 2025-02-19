@@ -30,7 +30,7 @@ import (
 	gcp "cloud.google.com/go/apihub/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apihubpb "cloud.google.com/go/apihub/v1/apihubpb"
+	apihubpb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -147,7 +147,7 @@ func (a *ApiAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	if err != nil {
 		return fmt.Errorf("creating Api %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
+        created, err := direct.Wait(ctx, op, a.gcpClient)
 	if err != nil {
 		return fmt.Errorf("Api %s waiting creation: %w", a.id, err)
 	}
@@ -174,7 +174,7 @@ func (a *ApiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -192,15 +192,15 @@ func (a *ApiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apihubpb.UpdateApiRequest{
-		Name:       a.id,
 		UpdateMask: updateMask,
 		Api:        desiredPb,
 	}
+	desiredPb.Name = a.id.String()
 	op, err := a.gcpClient.UpdateApi(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Api %s: %w", a.id, err)
 	}
-	updated, err := op.Wait(ctx)
+        updated, err := direct.Wait(ctx, op, a.gcpClient)
 	if err != nil {
 		return fmt.Errorf("Api %s waiting update: %w", a.id, err)
 	}
@@ -234,7 +234,7 @@ func (a *ApiAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.ApihubApiGVK)
 
 	u.Object = uObj
@@ -247,7 +247,7 @@ func (a *ApiAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 	log.V(2).Info("deleting Api", "name", a.id)
 
 	req := &apihubpb.DeleteApiRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteApi(ctx, req)
+	err := a.gcpClient.DeleteApi(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -257,10 +257,5 @@ func (a *ApiAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 		return false, fmt.Errorf("deleting Api %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted Api", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete Api %s: %w", a.id, err)
-	}
 	return true, nil
 }
