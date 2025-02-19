@@ -28,9 +28,7 @@ import (
 
 	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/apphub/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apphubpb "cloud.google.com/go/apphub/v1/apphubpb"
+	apphubpb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -174,6 +172,7 @@ func (a *WorkloadAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	var err error
+	var paths sets.Set[string]
 	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -192,9 +191,8 @@ func (a *WorkloadAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apphubpb.UpdateWorkloadRequest{
-		Name:       a.id,
-		UpdateMask: updateMask,
 		Workload:   desiredPb,
+		UpdateMask: updateMask,
 	}
 	op, err := a.gcpClient.UpdateWorkload(ctx, req)
 	if err != nil {
@@ -234,7 +232,7 @@ func (a *WorkloadAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.ApphubWorkloadGVK)
 
 	u.Object = uObj
