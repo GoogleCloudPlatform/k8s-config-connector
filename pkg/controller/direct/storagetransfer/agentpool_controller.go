@@ -185,7 +185,7 @@ func (a *AgentPoolAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
-        }
+	}
 
 	desiredPb.Name = a.id.String()
 	req := &storagetransferpb.UpdateAgentPoolRequest{
