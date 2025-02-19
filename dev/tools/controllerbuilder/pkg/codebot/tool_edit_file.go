@@ -15,26 +15,25 @@
 package codebot
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
 
-// edit_file seems less robust than ast_edit; it keeps only doing a single-line find...
 func init() {
 	RegisterTool(&EditFile{})
 }
 
 type EditFile struct {
-	Find     string `json:"existing_text"`
-	Replace  string `json:"new_text"`
-	Filename string `json:"filename"`
+	ExistingText string `json:"existing_text"`
+	NewText      string `json:"new_text"`
+	Filename     string `json:"filename"`
 }
 
 type EditFileResults struct {
@@ -64,22 +63,47 @@ func (t *EditFile) BuildFunctionDefinition() *llm.FunctionDefinition {
 		Name: "EditFile",
 		Description: `
 Make a change to an existing file in the user's workspace, by replacing existing_text with new_text.  This tool only applies the first replacement.
+
+For example, given the following function:
+
+<file>example.go
+func a() error {
+  return fmt.Errorf("oops")
+}
+
+func b() error {
+  a()
+  return nil
+}
+</file>
+
+If you wanted to add error handling to the function "b", you could call EditFile with these parameters:
+
+<filename>example.go</filename>
+<new_text>
+func b() error {
+  if err := a(); err != nil {
+    return fmt.Errorf("error calling b: %w", err")
+  }
+  return nil
+</new_text>
+<existing_text>
+func b() error {
+  a()
+  return nil
+</existing_text>
 `,
 		Parameters: &llm.Schema{
 			Type:     llm.TypeObject,
-			Required: []string{"existing_text", "new_text", "filename"},
+			Required: []string{"new_text", "existing_text", "filename"},
 			Properties: map[string]*llm.Schema{
 				"existing_text": {
-					Type: llm.TypeString,
-					Description: `
-The text to find, which will be replaced with the contents of the new_text argument.  Provide all the lines of the existing content you want to replace.
-`,
+					Type:        llm.TypeString,
+					Description: `The text to find, which will be replaced with the contents of the new_text argument.  Provide all the lines of the existing content you want to replace.`,
 				},
 				"new_text": {
-					Type: llm.TypeString,
-					Description: `
-The text that should replace the contents of the existing_text argument.
-`,
+					Type:        llm.TypeString,
+					Description: `The new content of the file, with a few lines of context. Separate chunks of content with ... on its own line.`,
 				},
 				"filename": {
 					Type:        llm.TypeString,
@@ -99,22 +123,99 @@ func (t *EditFile) runEditFile(ctx context.Context, baseDir string) (*EditFileRe
 		return nil, fmt.Errorf("reading file %q: %w", p, err)
 	}
 
-	if t.Find == "" {
-		return nil, fmt.Errorf("the find argument is requiremnt")
+	if t.ExistingText == "" {
+		return nil, fmt.Errorf("the existing_text argument is requiremnt")
 	}
 
-	ix := bytes.Index(fileContents, []byte(t.Find))
-	if ix == -1 {
-		return nil, fmt.Errorf("could not find the `find` string %q in the file %q", t.Find, p)
+	var f fuzzyFile
+	f.SetContents(string(fileContents))
+
+	verbose := true
+	if verbose {
+		klog.Infof("Before edit:")
+		for i, line := range f.lines {
+			klog.Infof("%d | %s", i, line)
+		}
+
+		klog.Infof("ExistingText:")
+		for i, line := range strings.Split(t.ExistingText, "\n") {
+			klog.Infof("%d | %s", i, line)
+		}
+
+		klog.Infof("NewText:")
+		for i, line := range strings.Split(t.NewText, "\n") {
+			klog.Infof("%d | %s", i, line)
+		}
 	}
 
-	newContents := bytes.Replace(fileContents, []byte(t.Find), []byte(t.Replace), 1)
-	if err := os.WriteFile(p, newContents, 0644); err != nil {
+	if err := f.FindAndReplace(t.ExistingText, t.NewText); err != nil {
+		return nil, err
+	}
+
+	if verbose {
+		klog.Infof("After edit:")
+		for i, line := range f.lines {
+			klog.Infof("%d | %s", i, line)
+		}
+	}
+
+	newContents := f.Contents()
+	if err := os.WriteFile(p, []byte(newContents), 0644); err != nil {
 		return nil, fmt.Errorf("writing file %q: %w", p, err)
 	}
 
-	klog.Infof("wrote %v: %v", p, string(newContents))
+	klog.V(2).Infof("wrote %v: %v", p, string(newContents))
 	return &EditFileResults{
 		Success: true,
 	}, nil
+}
+
+type fuzzyFile struct {
+	lines []string
+}
+
+func (f *fuzzyFile) SetContents(contents string) {
+	f.lines = strings.Split(contents, "\n")
+}
+
+func (f *fuzzyFile) Contents() string {
+	return strings.Join(f.lines, "\n")
+}
+
+func (f *fuzzyFile) FindAndReplace(find string, replace string) error {
+	contents := f.Contents()
+
+	// Check for an exact match first
+	ix := strings.Index(contents, find)
+	if ix != -1 {
+		contents = contents[:ix] + replace + contents[ix+len(find):]
+		f.SetContents(contents)
+		return nil
+	}
+
+	// Look for a fuzzy match, where the lines match ignoring whitespace
+	findLines := strings.Split(find, "\n")
+	for i := range findLines {
+		findLines[i] = strings.TrimSpace(findLines[i])
+	}
+	for i := range f.lines {
+		match := true
+		// TODO: Hold on ... this is an exact match comparison!  We could do this with strings.Index!
+		for j := 0; j < len(findLines) && i+j < len(f.lines); j++ {
+			if strings.TrimSpace(f.lines[i+j]) != findLines[j] {
+				match = false
+				break
+			}
+		}
+		if match {
+			replaceLines := strings.Split(replace, "\n")
+			newLines := make([]string, 0, len(f.lines)+len(replaceLines))
+			newLines = append(newLines, f.lines[:i]...)
+			newLines = append(newLines, replaceLines...)
+			newLines = append(newLines, f.lines[i+len(findLines):]...)
+			f.lines = newLines
+			return nil
+		}
+	}
+	return fmt.Errorf("could not find the `existing_text` string %q", find)
 }
