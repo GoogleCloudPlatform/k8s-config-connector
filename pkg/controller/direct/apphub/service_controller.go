@@ -28,7 +28,7 @@ import (
 
 	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/apphub/apiv1"
-pb "cloud.google.com/go/apphub/apiv1/apphubpb"
+	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -176,7 +176,7 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if err != nil {
 		return err
 	}
-        paths = pathSet.UnsortedList()
+	paths = pathSet.UnsortedList()
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.AppHubServiceStatus{}
