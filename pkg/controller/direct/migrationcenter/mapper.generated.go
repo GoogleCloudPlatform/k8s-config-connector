@@ -122,58 +122,6 @@ func MigrationcenterPreferenceSetSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: VirtualMachinePreferences
 	return out
 }
-func PreferenceSet_FromProto(mapCtx *direct.MapContext, in *pb.PreferenceSet) *krm.PreferenceSet {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PreferenceSet{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.VirtualMachinePreferences = VirtualMachinePreferences_FromProto(mapCtx, in.GetVirtualMachinePreferences())
-	return out
-}
-func PreferenceSet_ToProto(mapCtx *direct.MapContext, in *krm.PreferenceSet) *pb.PreferenceSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PreferenceSet{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.VirtualMachinePreferences = VirtualMachinePreferences_ToProto(mapCtx, in.VirtualMachinePreferences)
-	return out
-}
-func PreferenceSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PreferenceSet) *krm.PreferenceSetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PreferenceSetObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VirtualMachinePreferences
-	return out
-}
-func PreferenceSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PreferenceSetObservedState) *pb.PreferenceSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PreferenceSet{}
-	out.Name = direct.ValueOf(in.Name)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VirtualMachinePreferences
-	return out
-}
 func RegionPreferences_FromProto(mapCtx *direct.MapContext, in *pb.RegionPreferences) *krm.RegionPreferences {
 	if in == nil {
 		return nil

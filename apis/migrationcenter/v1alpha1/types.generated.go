@@ -44,22 +44,6 @@ type MachineSeries struct {
 	Code *string `json:"code,omitempty"`
 }
 
-// +kcc:proto=google.cloud.migrationcenter.v1.PreferenceSet
-type PreferenceSet struct {
-
-	// User-friendly display name. Maximum length is 63 characters.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// A description of the preference set.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.description
-	Description *string `json:"description,omitempty"`
-
-	// A set of preferences that applies to all virtual machines in the context.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.virtual_machine_preferences
-	VirtualMachinePreferences *VirtualMachinePreferences `json:"virtualMachinePreferences,omitempty"`
-}
-
 // +kcc:proto=google.cloud.migrationcenter.v1.RegionPreferences
 type RegionPreferences struct {
 	// A list of preferred regions,
@@ -176,19 +160,4 @@ type VmwareEnginePreferences struct {
 	//  good value to start with.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.VmwareEnginePreferences.commitment_plan
 	CommitmentPlan *string `json:"commitmentPlan,omitempty"`
-}
-
-// +kcc:proto=google.cloud.migrationcenter.v1.PreferenceSet
-type PreferenceSetObservedState struct {
-	// Output only. Name of the preference set.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The timestamp when the preference set was created.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The timestamp when the preference set was last updated.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
