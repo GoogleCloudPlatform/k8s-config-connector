@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -87,16 +88,12 @@ func (r *TargetTCPProxyRef) NormalizedExternal(ctx context.Context, reader clien
 func parseTargetTCPProxyExternal(external string) (*TargetTCPProxyIdentity, error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "targetTcpProxies" {
-		return &TargetTCPProxyIdentity{
-			parent: &TargetTCPProxyParent{ProjectID: tokens[1], Location: "global"},
-			id:     tokens[4],
-		}, nil
-	} else if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "targetTcpProxies" {
-		return &TargetTCPProxyIdentity{
-			parent: &TargetTCPProxyParent{ProjectID: tokens[1], Location: tokens[3]},
-			id:     tokens[5],
-		}, nil
+	p, err := parent.ParseComputeParent(strings.Join(tokens[:len(tokens)-2], "/"))
+	if err != nil {
+		return nil, err
 	}
-	return nil, fmt.Errorf("format of ComputeTargetTCPProxy external=%q was not known (use projects/{{projectID}}/global/targetTcpProxies/{{targettcpproxyID}} or projects/{{projectID}}/regions/{{region}}/targetTcpProxies/{{targettcpproxyID}})", external)
+	if tokens[len(tokens)-2] == "targetTcpProxies" {
+		return &TargetTCPProxyIdentity{parent: p, id: tokens[len(tokens)-1]}, nil
+	}
+	return nil, fmt.Errorf("format of ComputeTargetTCPProxy external=%q was not known (use %s/targetTcpProxies/{{targettcpproxyID}}", external, p)
 }
