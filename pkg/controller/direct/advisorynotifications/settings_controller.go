@@ -33,7 +33,6 @@ import (
 	advisorynotificationspb "cloud.google.com/go/advisorynotifications/apiv1/advisorynotificationspb"
 	"google.golang.org/api/option"
 
-
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -183,7 +182,6 @@ func (a *SettingsAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
-
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &advisorynotificationspb.UpdateSettingsRequest{
