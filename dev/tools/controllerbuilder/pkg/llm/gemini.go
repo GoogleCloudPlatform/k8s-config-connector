@@ -23,6 +23,7 @@ import (
 	"github.com/google/generative-ai-go/genai"
 	"github.com/googleapis/gax-go/v2"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc/codes"
 	"k8s.io/klog/v2"
 )
 
@@ -144,35 +145,29 @@ func toGenaiSchema(schema *Schema) (*genai.Schema, error) {
 	return ret, nil
 }
 
-// func (c *GeminiChat) AdditionalUserInput(s string) {
-// 	// c.model.SystemInstruction.Parts = append(c.model.SystemInstruction.Parts, genai.Text(s))
-// 	c.chat.History = append(c.chat.History, &genai.Content{
-// 		Role:  "user",
-// 		Parts: []genai.Part{genai.Text(s)},
-// 	})
-// }
-
-func (c *GeminiChat) retryWithJitter(ctx context.Context, geminiParts ...genai.Part) (*genai.GenerateContentResponse, error) {
-	for {
-		geminiResponse, err := c.chat.SendMessage(ctx, geminiParts...)
-
-		if err == nil {
-			return geminiResponse, nil
-		}
-		if !IsResourceExhausted(err) {
-			return nil, err
-		}
-
-		backoff := gax.Backoff{
+//	func (c *GeminiChat) AdditionalUserInput(s string) {
+//		// c.model.SystemInstruction.Parts = append(c.model.SystemInstruction.Parts, genai.Text(s))
+//		c.chat.History = append(c.chat.History, &genai.Content{
+//			Role:  "user",
+//			Parts: []genai.Part{genai.Text(s)},
+//		})
+//	}
+func (c *GeminiChat) sendMessageWithRetries(ctx context.Context, geminiParts ...genai.Part) (*genai.GenerateContentResponse, error) {
+	opt := gax.WithRetry(func() gax.Retryer {
+		// https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429
+		return gax.OnCodes([]codes.Code{codes.ResourceExhausted}, gax.Backoff{
 			Initial:    5 * time.Second,
 			Max:        10 * time.Minute,
 			Multiplier: 2,
-		}
-
-		if err := gax.Sleep(ctx, backoff.Pause()); err != nil {
-			return nil, fmt.Errorf("waiting for next Gemini retry due to resource exhausted failed: %w", err)
-		}
-	}
+		})
+	})
+	var resp *genai.GenerateContentResponse
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = c.chat.SendMessage(ctx, geminiParts...)
+		return err
+	}, opt)
+	return resp, err
 }
 
 func (c *GeminiChat) SendMessage(ctx context.Context, parts ...string) (Response, error) {
@@ -183,7 +178,7 @@ func (c *GeminiChat) SendMessage(ctx context.Context, parts ...string) (Response
 	}
 	log.Info("sending LLM request", "user", parts)
 
-	geminiResponse, err := c.retryWithJitter(ctx, geminiParts...)
+	geminiResponse, err := c.sendMessageWithRetries(ctx, geminiParts...)
 	if err != nil {
 		return nil, err
 	}
@@ -199,7 +194,7 @@ func (c *GeminiChat) SendFunctionResults(ctx context.Context, functionResults []
 		})
 	}
 
-	geminiResponse, err := c.retryWithJitter(ctx, geminiFunctionResults...)
+	geminiResponse, err := c.sendMessageWithRetries(ctx, geminiFunctionResults...)
 	if err != nil {
 		return nil, err
 	}
