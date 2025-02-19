@@ -30,7 +30,7 @@ import (
 	gcp "cloud.google.com/go/apigateway/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apigatewaypb "cloud.google.com/go/apigateway/v1/apigatewaypb"
+	apigatewaypb "cloud.google.com/go/apigateway/apiv1/apigatewaypb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -174,6 +174,7 @@ func (a *ApiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	}
 
 	var err error
+	var paths sets.Set[string]
 	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -192,9 +193,8 @@ func (a *ApiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apigatewaypb.UpdateApiRequest{
-		Name:       a.id,
 		UpdateMask: updateMask,
-		Api:        desiredPb,
+		Api: desiredPb,
 	}
 	op, err := a.gcpClient.UpdateApi(ctx, req)
 	if err != nil {
@@ -234,7 +234,7 @@ func (a *ApiAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.id.String())
 	u.SetGroupVersionKind(krm.APIGatewayAPIGVK)
 
 	u.Object = uObj
