@@ -147,7 +147,7 @@ func (a *ApiAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	if err != nil {
 		return fmt.Errorf("creating Api %s: %w", a.id, err)
 	}
-        created, err := direct.Wait(ctx, op, a.gcpClient)
+	created, err := direct.Wait(ctx, op, a.gcpClient)
 	if err != nil {
 		return fmt.Errorf("Api %s waiting creation: %w", a.id, err)
 	}
@@ -200,7 +200,7 @@ func (a *ApiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	if err != nil {
 		return fmt.Errorf("updating Api %s: %w", a.id, err)
 	}
-        updated, err := direct.Wait(ctx, op, a.gcpClient)
+	updated, err := direct.Wait(ctx, op, a.gcpClient)
 	if err != nil {
 		return fmt.Errorf("Api %s waiting update: %w", a.id, err)
 	}
