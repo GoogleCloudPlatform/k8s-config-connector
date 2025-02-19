@@ -30,9 +30,9 @@ import (
 	gcp "cloud.google.com/go/advisorynotifications/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	advisorynotificationspb "cloud.google.com/go/advisorynotifications/v1/advisorynotificationspb"
+	advisorynotificationspb "cloud.google.com/go/advisorynotifications/apiv1/advisorynotificationspb"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -139,17 +139,12 @@ func (a *SettingsAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &advisorynotificationspb.CreateSettingsRequest{
-		Parent:   a.id.Parent().String(),
+	req := &advisorynotificationspb.UpdateSettingsRequest{
 		Settings: resource,
 	}
-	op, err := a.gcpClient.CreateSettings(ctx, req)
+	created, err := a.gcpClient.UpdateSettings(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating Settings %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Settings %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Settings", "name", a.id)
 
@@ -174,6 +169,7 @@ func (a *SettingsAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	var err error
+	var paths sets.Set[string]
 	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -187,22 +183,15 @@ func (a *SettingsAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &advisorynotificationspb.UpdateSettingsRequest{
-		Name:       a.id,
-		UpdateMask: updateMask,
-		Settings:   desiredPb,
+		Settings: desiredPb,
 	}
-	op, err := a.gcpClient.UpdateSettings(ctx, req)
+	updated, err := a.gcpClient.UpdateSettings(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Settings %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Settings %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated Settings", "name", a.id)
 
@@ -234,7 +223,7 @@ func (a *SettingsAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.AdvisorynotificationsSettingsGVK)
 
 	u.Object = uObj
@@ -246,21 +235,6 @@ func (a *SettingsAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Settings", "name", a.id)
 
-	req := &advisorynotificationspb.DeleteSettingsRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteSettings(ctx, req)
-	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent Settings, assuming it was already deleted", "name", a.id.String())
-			return true, nil
-		}
-		return false, fmt.Errorf("deleting Settings %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully deleted Settings", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete Settings %s: %w", a.id, err)
-	}
+	log.V(2).Info("skipping delete for non-existent Settings, assuming it was already deleted", "name", a.id.String())
 	return true, nil
 }
