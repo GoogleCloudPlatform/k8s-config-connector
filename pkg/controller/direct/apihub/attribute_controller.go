@@ -30,7 +30,7 @@ import (
 	gcp "cloud.google.com/go/apihub/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apihubpb "cloud.google.com/go/apihub/v1/apihubpb"
+	apihubpb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -143,13 +143,9 @@ func (a *AttributeAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		Parent:    a.id.Parent().String(),
 		Attribute: resource,
 	}
-	op, err := a.gcpClient.CreateAttribute(ctx, req)
+	created, err := a.gcpClient.CreateAttribute(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating Attribute %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Attribute %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Attribute", "name", a.id)
 
@@ -174,7 +170,7 @@ func (a *AttributeAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -192,17 +188,12 @@ func (a *AttributeAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apihubpb.UpdateAttributeRequest{
-		Name:       a.id,
 		UpdateMask: updateMask,
 		Attribute:  desiredPb,
 	}
-	op, err := a.gcpClient.UpdateAttribute(ctx, req)
+	updated, err := a.gcpClient.UpdateAttribute(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Attribute %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Attribute %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated Attribute", "name", a.id)
 
@@ -234,7 +225,7 @@ func (a *AttributeAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.id.String())
 	u.SetGroupVersionKind(krm.ApihubAttributeGVK)
 
 	u.Object = uObj
@@ -247,7 +238,7 @@ func (a *AttributeAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	log.V(2).Info("deleting Attribute", "name", a.id)
 
 	req := &apihubpb.DeleteAttributeRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteAttribute(ctx, req)
+	err := a.gcpClient.DeleteAttribute(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -257,10 +248,5 @@ func (a *AttributeAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 		return false, fmt.Errorf("deleting Attribute %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted Attribute", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete Attribute %s: %w", a.id, err)
-	}
 	return true, nil
 }
