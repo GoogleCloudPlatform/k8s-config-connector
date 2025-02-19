@@ -91,6 +91,8 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
+require cloud.google.com/go/storagetransfer v1.12.1 // indirect
+
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cel.dev/expr v0.16.0 // indirect

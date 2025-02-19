@@ -30,7 +30,7 @@ import (
 	gcp "cloud.google.com/go/storagetransfer/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	storagetransferpb "cloud.google.com/go/storagetransfer/v1/storagetransferpb"
+	storagetransferpb "cloud.google.com/go/storagetransfer/apiv1/storagetransferpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -140,16 +140,12 @@ func (a *AgentPoolAdapter) Create(ctx context.Context, createOp *directbase.Crea
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &storagetransferpb.CreateAgentPoolRequest{
-		Parent:    a.id.Parent().String(),
+		ProjectId: a.id.Parent().ProjectID,
 		AgentPool: resource,
 	}
-	op, err := a.gcpClient.CreateAgentPool(ctx, req)
+	created, err := a.gcpClient.CreateAgentPool(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating AgentPool %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("AgentPool %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created AgentPool", "name", a.id)
 
@@ -174,7 +170,7 @@ func (a *AgentPoolAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -188,21 +184,17 @@ func (a *AgentPoolAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+		Paths: sets.List(paths),
+        }
 
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
+	desiredPb.Name = a.id.String()
 	req := &storagetransferpb.UpdateAgentPoolRequest{
-		Name:       a.id,
-		UpdateMask: updateMask,
 		AgentPool:  desiredPb,
+		UpdateMask: updateMask,
 	}
-	op, err := a.gcpClient.UpdateAgentPool(ctx, req)
+	updated, err := a.gcpClient.UpdateAgentPool(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating AgentPool %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("AgentPool %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated AgentPool", "name", a.id)
 
@@ -234,7 +226,7 @@ func (a *AgentPoolAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.StorageTransferAgentPoolGVK)
 
 	u.Object = uObj
@@ -247,7 +239,7 @@ func (a *AgentPoolAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	log.V(2).Info("deleting AgentPool", "name", a.id)
 
 	req := &storagetransferpb.DeleteAgentPoolRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteAgentPool(ctx, req)
+	err := a.gcpClient.DeleteAgentPool(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -258,9 +250,5 @@ func (a *AgentPoolAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	}
 	log.V(2).Info("successfully deleted AgentPool", "name", a.id)
 
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete AgentPool %s: %w", a.id, err)
-	}
 	return true, nil
 }
