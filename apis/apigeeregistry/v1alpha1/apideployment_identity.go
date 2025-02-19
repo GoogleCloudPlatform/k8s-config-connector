@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ApiDeploymentIdentity struct {
 	parent *ApiDeploymentParent
-	id string
+	id     string
 }
 
 func (i *ApiDeploymentIdentity) String() string {
-	return  i.parent.String() + "/apideployments/" + i.id
+	return i.parent.String() + "/apideployments/" + i.id
 }
 
 func (i *ApiDeploymentIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ApiDeploymentIdentity) ID() string {
 }
 
 func (i *ApiDeploymentIdentity) Parent() *ApiDeploymentParent {
-	return  i.parent
+	return i.parent
 }
 
 type ApiDeploymentParent struct {
@@ -51,7 +51,6 @@ type ApiDeploymentParent struct {
 func (p *ApiDeploymentParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ApiDeploymentIdentity from the Config Connector ApiDeployment object.
 func NewApiDeploymentIdentity(ctx context.Context, reader client.Reader, obj *ApigeeregistryApiDeployment) (*ApiDeploymentIdentity, error) {
