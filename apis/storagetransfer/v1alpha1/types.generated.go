@@ -14,35 +14,10 @@
 
 package v1alpha1
 
-// +kcc:proto=google.storagetransfer.v1.AgentPool
-type AgentPool struct {
-	// Required. Specifies a unique string that identifies the agent pool.
-	//
-	//  Format: `projects/{project_id}/agentPools/{agent_pool_id}`
-	// +kcc:proto:field=google.storagetransfer.v1.AgentPool.name
-	Name *string `json:"name,omitempty"`
-
-	// Specifies the client-specified AgentPool description.
-	// +kcc:proto:field=google.storagetransfer.v1.AgentPool.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Specifies the bandwidth limit details. If this field is unspecified, the
-	//  default value is set as 'No Limit'.
-	// +kcc:proto:field=google.storagetransfer.v1.AgentPool.bandwidth_limit
-	BandwidthLimit *AgentPool_BandwidthLimit `json:"bandwidthLimit,omitempty"`
-}
-
 // +kcc:proto=google.storagetransfer.v1.AgentPool.BandwidthLimit
 type AgentPool_BandwidthLimit struct {
 	// Bandwidth rate in megabytes per second, distributed across all the agents
 	//  in the pool.
 	// +kcc:proto:field=google.storagetransfer.v1.AgentPool.BandwidthLimit.limit_mbps
 	LimitMbps *int64 `json:"limitMbps,omitempty"`
-}
-
-// +kcc:proto=google.storagetransfer.v1.AgentPool
-type AgentPoolObservedState struct {
-	// Output only. Specifies the state of the AgentPool.
-	// +kcc:proto:field=google.storagetransfer.v1.AgentPool.state
-	State *string `json:"state,omitempty"`
 }
