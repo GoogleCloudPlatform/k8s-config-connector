@@ -52,7 +52,7 @@ type CloudIdentityMembershipStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	// ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
+	ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
 
 	// Output only. The time when the `Membership` was created.
 	// +kcc:proto:field=google.apps.cloudidentity.groups.v1beta1.Membership.create_time
@@ -94,9 +94,9 @@ type CloudIdentityMembershipObservedState struct {
 	// DeliverySetting
 
 	// The state output field is in a list
-	// .spec.[]roles.restrictionEvaluations.memberRestrictionEvaluationstate
-	// Not sure if we need to build an array copying everything from the spec here.
-	// []MembershipMemberRestrictionEvaluation.State
+	// .spec.[]roles.restrictionEvaluations.memberRestrictionEvaluation.state
+
+	Roles []*MembershipRolesObservedState `json:"roles,omitempty"`
 }
 
 // +kcc:proto=google.apps.cloudidentity.groups.v1beta1.ExpiryDetail
@@ -131,7 +131,9 @@ type MembershipRoles struct {
 	// +kcc:proto:field=google.apps.cloudidentity.groups.v1beta1.MembershipRole.name
 	// +required
 	Name *string `json:"name"`
+}
 
+type MembershipRolesObservedState struct {
 	// Evaluations of restrictions applied to parent group on this membership.
 	// +kcc:proto:field=google.apps.cloudidentity.groups.v1beta1.MembershipRole.restriction_evaluations
 	RestrictionEvaluations *MembershipRestrictionEvaluations `json:"restrictionEvaluations,omitempty"`
