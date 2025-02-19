@@ -15,12 +15,12 @@
 package apphub
 
 import (
-	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	// pb "cloud.google.com/go/apphub/apiv1/apphubpb"
+	// krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
+	// "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AppHubServiceProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krm.AppHubServiceProjectAttachmentObservedState {
+/*func AppHubServiceProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krm.AppHubServiceProjectAttachmentObservedState {
 	if in == nil {
 		return nil
 	}
@@ -31,8 +31,8 @@ func AppHubServiceProjectAttachmentObservedState_FromProto(mapCtx *direct.MapCon
 	// MISSING: Uid
 	// MISSING: State
 	return out
-}
-func AppHubServiceProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubServiceProjectAttachmentObservedState) *pb.ServiceProjectAttachment {
+}*/
+/*func AppHubServiceProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubServiceProjectAttachmentObservedState) *pb.ServiceProjectAttachment {
 	if in == nil {
 		return nil
 	}
@@ -43,8 +43,8 @@ func AppHubServiceProjectAttachmentObservedState_ToProto(mapCtx *direct.MapConte
 	// MISSING: Uid
 	// MISSING: State
 	return out
-}
-func AppHubServiceProjectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krm.AppHubServiceProjectAttachmentSpec {
+}*/
+/*func AppHubServiceProjectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krm.AppHubServiceProjectAttachmentSpec {
 	if in == nil {
 		return nil
 	}
@@ -55,8 +55,8 @@ func AppHubServiceProjectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: Uid
 	// MISSING: State
 	return out
-}
-func AppHubServiceProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubServiceProjectAttachmentSpec) *pb.ServiceProjectAttachment {
+}*/
+/*func AppHubServiceProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubServiceProjectAttachmentSpec) *pb.ServiceProjectAttachment {
 	if in == nil {
 		return nil
 	}
@@ -67,8 +67,8 @@ func AppHubServiceProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Uid
 	// MISSING: State
 	return out
-}
-func ServiceProjectAttachment_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krm.ServiceProjectAttachment {
+}*/
+/*func ServiceProjectAttachment_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krm.ServiceProjectAttachment {
 	if in == nil {
 		return nil
 	}
@@ -79,8 +79,8 @@ func ServiceProjectAttachment_FromProto(mapCtx *direct.MapContext, in *pb.Servic
 	// MISSING: Uid
 	// MISSING: State
 	return out
-}
-func ServiceProjectAttachment_ToProto(mapCtx *direct.MapContext, in *krm.ServiceProjectAttachment) *pb.ServiceProjectAttachment {
+}*/
+/*func ServiceProjectAttachment_ToProto(mapCtx *direct.MapContext, in *krm.ServiceProjectAttachment) *pb.ServiceProjectAttachment {
 	if in == nil {
 		return nil
 	}
@@ -91,8 +91,8 @@ func ServiceProjectAttachment_ToProto(mapCtx *direct.MapContext, in *krm.Service
 	// MISSING: Uid
 	// MISSING: State
 	return out
-}
-func ServiceProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krm.ServiceProjectAttachmentObservedState {
+}*/
+/*func ServiceProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProjectAttachment) *krm.ServiceProjectAttachmentObservedState {
 	if in == nil {
 		return nil
 	}
@@ -103,8 +103,8 @@ func ServiceProjectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
-}
-func ServiceProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceProjectAttachmentObservedState) *pb.ServiceProjectAttachment {
+}*/
+/*func ServiceProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceProjectAttachmentObservedState) *pb.ServiceProjectAttachment {
 	if in == nil {
 		return nil
 	}
@@ -115,4 +115,4 @@ func ServiceProjectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Uid = direct.ValueOf(in.Uid)
 	out.State = direct.Enum_ToProto[pb.ServiceProjectAttachment_State](mapCtx, in.State)
 	return out
-}
+}*/

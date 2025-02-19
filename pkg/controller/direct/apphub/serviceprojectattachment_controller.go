@@ -22,7 +22,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -30,13 +30,13 @@ import (
 	gcp "cloud.google.com/go/apphub/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apphubpb "cloud.google.com/go/apphub/v1/apphubpb"
+
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
+
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -100,7 +100,7 @@ type ServiceProjectAttachmentAdapter struct {
 	id        *krm.ServiceProjectAttachmentIdentity
 	gcpClient *gcp.Client
 	desired   *krm.AppHubServiceProjectAttachment
-	actual    *apphubpb.ServiceProjectAttachment
+	// actual    *apphubpb.ServiceProjectAttachment
 }
 
 var _ directbase.Adapter = &ServiceProjectAttachmentAdapter{}
@@ -113,117 +113,37 @@ func (a *ServiceProjectAttachmentAdapter) Find(ctx context.Context) (bool, error
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ServiceProjectAttachment", "name", a.id)
 
-	req := &apphubpb.GetServiceProjectAttachmentRequest{Name: a.id.String()}
-	serviceprojectattachmentpb, err := a.gcpClient.GetServiceProjectAttachment(ctx, req)
-	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
-		return false, fmt.Errorf("getting ServiceProjectAttachment %q: %w", a.id, err)
-	}
+	// req := &apphubpb.GetServiceProjectAttachmentRequest{Name: a.id.String()}
+	// serviceprojectattachmentpb, err := a.gcpClient.GetServiceProjectAttachment(ctx, req)
+	// if err != nil {
+	//	if direct.IsNotFound(err) {
+	//		return false, nil
+	//	}
+	//	return false, fmt.Errorf("getting ServiceProjectAttachment %q: %w", a.id, err)
+	// }
 
-	a.actual = serviceprojectattachmentpb
-	return true, nil
+	// a.actual = serviceprojectattachmentpb
+	return false, nil
 }
 
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ServiceProjectAttachmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ServiceProjectAttachment", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := AppHubServiceProjectAttachmentSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &apphubpb.CreateServiceProjectAttachmentRequest{
-		Parent:                   a.id.Parent().String(),
-		ServiceProjectAttachment: resource,
-	}
-	op, err := a.gcpClient.CreateServiceProjectAttachment(ctx, req)
-	if err != nil {
-		return fmt.Errorf("creating ServiceProjectAttachment %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("ServiceProjectAttachment %s waiting creation: %w", a.id, err)
-	}
-	log.V(2).Info("successfully created ServiceProjectAttachment", "name", a.id)
-
-	status := &krm.AppHubServiceProjectAttachmentStatus{}
-	status.ObservedState = AppHubServiceProjectAttachmentObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return createOp.UpdateStatus(ctx, nil, nil)
 }
-
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ServiceProjectAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("updating ServiceProjectAttachment", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desiredPb := AppHubServiceProjectAttachmentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-	if err != nil {
-		return err
-	}
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		status := &krm.AppHubServiceProjectAttachmentStatus{}
-		status.ObservedState = AppHubServiceProjectAttachmentObservedState_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		return updateOp.UpdateStatus(ctx, status, nil)
-	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
-
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &apphubpb.UpdateServiceProjectAttachmentRequest{
-		Name:                     a.id,
-		UpdateMask:               updateMask,
-		ServiceProjectAttachment: desiredPb,
-	}
-	op, err := a.gcpClient.UpdateServiceProjectAttachment(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating ServiceProjectAttachment %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("ServiceProjectAttachment %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated ServiceProjectAttachment", "name", a.id)
-
-	status := &krm.AppHubServiceProjectAttachmentStatus{}
-	status.ObservedState = AppHubServiceProjectAttachmentObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return updateOp.UpdateStatus(ctx, nil, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *ServiceProjectAttachmentAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	if a.actual == nil {
+	/*if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
-	}
+	}*/
 	u := &unstructured.Unstructured{}
 
 	obj := &krm.AppHubServiceProjectAttachment{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(AppHubServiceProjectAttachmentSpec_FromProto(mapCtx, a.actual))
+	// obj.Spec = direct.ValueOf(AppHubServiceProjectAttachmentSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -234,7 +154,7 @@ func (a *ServiceProjectAttachmentAdapter) Export(ctx context.Context) (*unstruct
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	// u.SetName(a.actual.Id)
 	u.SetGroupVersionKind(krm.AppHubServiceProjectAttachmentGVK)
 
 	u.Object = uObj
@@ -246,21 +166,21 @@ func (a *ServiceProjectAttachmentAdapter) Delete(ctx context.Context, deleteOp *
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ServiceProjectAttachment", "name", a.id)
 
-	req := &apphubpb.DeleteServiceProjectAttachmentRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteServiceProjectAttachment(ctx, req)
-	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent ServiceProjectAttachment, assuming it was already deleted", "name", a.id.String())
-			return true, nil
-		}
-		return false, fmt.Errorf("deleting ServiceProjectAttachment %s: %w", a.id, err)
-	}
+	// req := &apphubpb.DeleteServiceProjectAttachmentRequest{Name: a.id.String()}
+	// op, err := a.gcpClient.DeleteServiceProjectAttachment(ctx, req)
+	// if err != nil {
+	//	if direct.IsNotFound(err) {
+	//		// Return success if not found (assume it was already deleted).
+	//		log.V(2).Info("skipping delete for non-existent ServiceProjectAttachment, assuming it was already deleted", "name", a.id.String())
+	//		return true, nil
+	//	}
+	//	return false, fmt.Errorf("deleting ServiceProjectAttachment %s: %w", a.id, err)
+	// }
 	log.V(2).Info("successfully deleted ServiceProjectAttachment", "name", a.id)
 
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete ServiceProjectAttachment %s: %w", a.id, err)
-	}
+	// err = op.Wait(ctx)
+	// if err != nil {
+	//	return false, fmt.Errorf("waiting delete ServiceProjectAttachment %s: %w", a.id, err)
+	// }
 	return true, nil
 }
