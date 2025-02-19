@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type SettingsIdentity struct {
 	parent *SettingsParent
-	id string
+	id     string
 }
 
 func (i *SettingsIdentity) String() string {
-	return  i.parent.String() + "/settingss/" + i.id
+	return i.parent.String() + "/settingss/" + i.id
 }
 
 func (i *SettingsIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *SettingsIdentity) ID() string {
 }
 
 func (i *SettingsIdentity) Parent() *SettingsParent {
-	return  i.parent
+	return i.parent
 }
 
 type SettingsParent struct {
@@ -51,7 +51,6 @@ type SettingsParent struct {
 func (p *SettingsParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a SettingsIdentity from the Config Connector Settings object.
 func NewSettingsIdentity(ctx context.Context, reader client.Reader, obj *AdvisorynotificationsSettings) (*SettingsIdentity, error) {

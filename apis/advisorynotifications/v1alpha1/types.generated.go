@@ -20,22 +20,3 @@ type NotificationSettings struct {
 	// +kcc:proto:field=google.cloud.advisorynotifications.v1.NotificationSettings.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
-
-// +kcc:proto=google.cloud.advisorynotifications.v1.Settings
-type Settings struct {
-	// Identifier. The resource name of the settings to retrieve.
-	//  Format:
-	//  organizations/{organization}/locations/{location}/settings or
-	//  projects/{projects}/locations/{location}/settings.
-	// +kcc:proto:field=google.cloud.advisorynotifications.v1.Settings.name
-	Name *string `json:"name,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-	// Required. Fingerprint for optimistic concurrency returned in Get requests.
-	//  Must be provided for Update requests. If the value provided does not match
-	//  the value known to the server, ABORTED will be thrown, and the client
-	//  should retry the read-modify-write cycle.
-	// +kcc:proto:field=google.cloud.advisorynotifications.v1.Settings.etag
-	Etag *string `json:"etag,omitempty"`
-}

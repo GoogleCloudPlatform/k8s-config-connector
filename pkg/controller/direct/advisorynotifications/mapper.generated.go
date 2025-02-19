@@ -76,23 +76,3 @@ func NotificationSettings_ToProto(mapCtx *direct.MapContext, in *krm.Notificatio
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
-func Settings_FromProto(mapCtx *direct.MapContext, in *pb.Settings) *krm.Settings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Settings{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: NotificationSettings
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
-func Settings_ToProto(mapCtx *direct.MapContext, in *krm.Settings) *pb.Settings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Settings{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: NotificationSettings
-	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
