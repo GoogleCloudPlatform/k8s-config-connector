@@ -30,7 +30,7 @@ import (
 	gcp "cloud.google.com/go/apigeeregistry/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apigeeregistrypb "cloud.google.com/go/apigeeregistry/v1/apigeeregistrypb"
+	apigeeregistrypb "cloud.google.com/go/apigeeregistry/v0.9.3/apigeeregistrypb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
