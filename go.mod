@@ -91,7 +91,7 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
-require cloud.google.com/go/apigateway v1.7.3 // indirect
+require cloud.google.com/go/apigateway v1.7.3
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect

@@ -194,7 +194,7 @@ func (a *ApiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apigatewaypb.UpdateApiRequest{
 		UpdateMask: updateMask,
-		Api: desiredPb,
+		Api:        desiredPb,
 	}
 	op, err := a.gcpClient.UpdateApi(ctx, req)
 	if err != nil {
