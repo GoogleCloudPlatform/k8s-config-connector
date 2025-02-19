@@ -18,8 +18,10 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/google/generative-ai-go/genai"
+	"github.com/googleapis/gax-go/v2"
 	"google.golang.org/api/option"
 	"k8s.io/klog/v2"
 )
@@ -150,6 +152,29 @@ func toGenaiSchema(schema *Schema) (*genai.Schema, error) {
 // 	})
 // }
 
+func (c *GeminiChat) retryWithJitter(ctx context.Context, geminiParts ...genai.Part) (*genai.GenerateContentResponse, error) {
+	for {
+		geminiResponse, err := c.chat.SendMessage(ctx, geminiParts...)
+
+		if err == nil {
+			return geminiResponse, nil
+		}
+		if !IsResourceExhausted(err) {
+			return nil, err
+		}
+
+		backoff := gax.Backoff{
+			Initial:    5 * time.Second,
+			Max:        10 * time.Minute,
+			Multiplier: 2,
+		}
+
+		if err := gax.Sleep(ctx, backoff.Pause()); err != nil {
+			return nil, fmt.Errorf("waiting for next Gemini retry due to resource exhausted failed: %w", err)
+		}
+	}
+}
+
 func (c *GeminiChat) SendMessage(ctx context.Context, parts ...string) (Response, error) {
 	log := klog.FromContext(ctx)
 	var geminiParts []genai.Part
@@ -157,7 +182,8 @@ func (c *GeminiChat) SendMessage(ctx context.Context, parts ...string) (Response
 		geminiParts = append(geminiParts, genai.Text(part))
 	}
 	log.Info("sending LLM request", "user", parts)
-	geminiResponse, err := c.chat.SendMessage(ctx, geminiParts...)
+
+	geminiResponse, err := c.retryWithJitter(ctx, geminiParts...)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +199,7 @@ func (c *GeminiChat) SendFunctionResults(ctx context.Context, functionResults []
 		})
 	}
 
-	geminiResponse, err := c.chat.SendMessage(ctx, geminiFunctionResults...)
+	geminiResponse, err := c.retryWithJitter(ctx, geminiFunctionResults...)
 	if err != nil {
 		return nil, err
 	}
