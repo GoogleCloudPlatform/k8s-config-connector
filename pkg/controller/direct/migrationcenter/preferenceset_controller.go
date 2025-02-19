@@ -29,8 +29,7 @@ import (
 	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/migrationcenter/apiv1"
 
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	migrationcenterpb "cloud.google.com/go/migrationcenter/v1/migrationcenterpb"
+	migrationcenterpb "cloud.google.com/go/migrationcenter/apiv1/migrationcenterpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -174,11 +173,12 @@ func (a *PreferenceSetAdapter) Update(ctx context.Context, updateOp *directbase.
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
-	if len(paths) == 0 {
+	pathsSet := paths
+	if pathsSet.Len() == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.MigrationcenterPreferenceSetStatus{}
 		status.ObservedState = MigrationcenterPreferenceSetObservedState_FromProto(mapCtx, a.actual)
@@ -188,13 +188,12 @@ func (a *PreferenceSetAdapter) Update(ctx context.Context, updateOp *directbase.
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+		Paths: sets.List(pathsSet)}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &migrationcenterpb.UpdatePreferenceSetRequest{
-		Name:          a.id,
-		UpdateMask:    updateMask,
 		PreferenceSet: desiredPb,
+		UpdateMask:    updateMask,
 	}
 	op, err := a.gcpClient.UpdatePreferenceSet(ctx, req)
 	if err != nil {
@@ -234,7 +233,7 @@ func (a *PreferenceSetAdapter) Export(ctx context.Context) (*unstructured.Unstru
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.MigrationcenterPreferenceSetGVK)
 
 	u.Object = uObj
