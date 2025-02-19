@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type AttributeIdentity struct {
 	parent *AttributeParent
-	id string
+	id     string
 }
 
 func (i *AttributeIdentity) String() string {
-	return  i.parent.String() + "/attributes/" + i.id
+	return i.parent.String() + "/attributes/" + i.id
 }
 
 func (i *AttributeIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *AttributeIdentity) ID() string {
 }
 
 func (i *AttributeIdentity) Parent() *AttributeParent {
-	return  i.parent
+	return i.parent
 }
 
 type AttributeParent struct {
@@ -51,7 +51,6 @@ type AttributeParent struct {
 func (p *AttributeParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a AttributeIdentity from the Config Connector Attribute object.
 func NewAttributeIdentity(ctx context.Context, reader client.Reader, obj *ApihubAttribute) (*AttributeIdentity, error) {
