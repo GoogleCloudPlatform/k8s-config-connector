@@ -79,6 +79,9 @@ roles:
 - expiryDetail:
     expireTime: string
   name: string
+  restrictionEvaluations:
+    memberRestrictionEvaluation:
+      state: string
 ```
 
 <table class="properties responsive">
@@ -248,6 +251,36 @@ roles:
             <p>{% verbatim %}The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`.{% endverbatim %}</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>roles[].restrictionEvaluations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Evaluations of restrictions applied to parent group on this membership.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>roles[].restrictionEvaluations.memberRestrictionEvaluation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Evaluation of the member restriction applied to this membership. Empty if the user lacks permission to view the restriction evaluation.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>roles[].restrictionEvaluations.memberRestrictionEvaluation.state</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The current state of the restriction{% endverbatim %}</p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -404,7 +437,7 @@ updateTime: string
         <td><code>observedState.roles</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The `MembershipRole`s that apply to the `Membership`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
