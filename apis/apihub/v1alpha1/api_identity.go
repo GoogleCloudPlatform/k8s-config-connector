@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ApiIdentity struct {
 	parent *ApiParent
-	id string
+	id     string
 }
 
 func (i *ApiIdentity) String() string {
-	return  i.parent.String() + "/apis/" + i.id
+	return i.parent.String() + "/apis/" + i.id
 }
 
 func (i *ApiIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ApiIdentity) ID() string {
 }
 
 func (i *ApiIdentity) Parent() *ApiParent {
-	return  i.parent
+	return i.parent
 }
 
 type ApiParent struct {
@@ -51,7 +51,6 @@ type ApiParent struct {
 func (p *ApiParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ApiIdentity from the Config Connector Api object.
 func NewApiIdentity(ctx context.Context, reader client.Reader, obj *ApihubApi) (*ApiIdentity, error) {
