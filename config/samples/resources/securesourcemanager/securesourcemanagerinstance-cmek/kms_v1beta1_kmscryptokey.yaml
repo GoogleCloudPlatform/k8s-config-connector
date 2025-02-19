@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: securesourcemanager.cnrm.cloud.google.com/v1beta1
-kind: SecureSourceManagerInstance
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
 metadata:
-  name: securesourcemanagerinstance-sample
+  name: securesourcemanagerinstance-dep
+  annotations:
+    cnrm.cloud.google.com/project-id: epang-test
 spec:
-  location: us-central1
-  projectRef:
-    external: projects/${PROJECT_ID?}
-  kmsKeyRef:
+  keyRingRef:
     name: securesourcemanagerinstance-dep
