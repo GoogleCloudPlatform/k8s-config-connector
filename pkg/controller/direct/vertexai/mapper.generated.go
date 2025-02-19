@@ -16,60 +16,10 @@ package vertexai
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionSpec{
-		KMSKeyRef: &v1beta1.KMSCryptoKeyRef{
-			External: in.KmsKeyName,
-		},
-	}
-	return out
-}
-func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionSpec{}
-	if in.KMSKeyRef != nil {
-		out.KmsKeyName = in.KMSKeyRef.External
-	}
-	return out
-}
-func MetadataStore_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.MetadataStore {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MetadataStore{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: State
-	out.DataplexConfig = MetadataStore_DataplexConfig_FromProto(mapCtx, in.GetDataplexConfig())
-	return out
-}
-func MetadataStore_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore) *pb.MetadataStore {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MetadataStore{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: State
-	out.DataplexConfig = MetadataStore_DataplexConfig_ToProto(mapCtx, in.DataplexConfig)
-	return out
-}
 func MetadataStore_DataplexConfig_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_DataplexConfig) *krm.MetadataStore_DataplexConfig {
 	if in == nil {
 		return nil

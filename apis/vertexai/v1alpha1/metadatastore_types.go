@@ -25,14 +25,18 @@ var VertexAIMetadataStoreGVK = GroupVersion.WithKind("VertexAIMetadataStore")
 // VertexAIMetadataStoreSpec defines the desired state of VertexAIMetadataStore
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore
 type VertexAIMetadataStoreSpec struct {
-	// Customer-managed encryption key spec for a MetadataStore.
-	// If set, this MetadataStore and all sub-resources of this MetadataStore will be secured by this key.
+	// Customer-managed encryption key spec for a Metadata Store. If set, this
+	// Metadata Store and all sub-resources of this Metadata Store are secured
+	// using this key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.encryption_spec
 	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
 
-	// Dataplex integration settings.
+	// Optional. Dataplex integration settings.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.dataplex_config
 	DataplexConfig *MetadataStore_DataplexConfig `json:"dataplexConfig,omitempty"`
 
 	// Description of the MetadataStore.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.description
 	Description string `json:"description,omitempty"`
 
 	// The region of the Metadata Store. eg us-central1.
@@ -79,6 +83,17 @@ type VertexAIMetadataStoreObservedState struct {
 	// Output only. State information of the MetadataStore.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.state
 	State *MetadataStore_MetadataStoreState `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
+type EncryptionSpec struct {
+	// Required. The Cloud KMS resource identifier of the customer managed
+	//  encryption key used to protect a resource. Has the form:
+	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+	//  The key needs to be in the same region as where the compute resource is
+	//  created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EncryptionSpec.kms_key_name
+	KMSKeyNameRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
 }
 
 // +genclient
