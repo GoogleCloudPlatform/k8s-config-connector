@@ -28,12 +28,12 @@ import (
 
 	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/apphub/apiv1"
+pb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -97,7 +97,7 @@ type ServiceAdapter struct {
 	id        *krm.ServiceIdentity
 	gcpClient *gcp.Client
 	desired   *krm.AppHubService
-	actual    *apphubpb.Service
+	actual    *pb.Service
 }
 
 var _ directbase.Adapter = &ServiceAdapter{}
@@ -110,7 +110,7 @@ func (a *ServiceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Service", "name", a.id)
 
-	req := &gcp.GetServiceRequest{Name: a.id.String()}
+	req := &pb.GetServiceRequest{Name: a.id.String()}
 	servicepb, err := a.gcpClient.GetService(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -136,7 +136,7 @@ func (a *ServiceAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &gcp.CreateServiceRequest{
+	req := &pb.CreateServiceRequest{
 		Parent:  a.id.Parent().String(),
 		Service: resource,
 	}
@@ -172,10 +172,11 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	var err error
 	var paths []string
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	pathSet, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
+        paths = pathSet.UnsortedList()
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.AppHubServiceStatus{}
@@ -186,11 +187,10 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+		Paths: paths}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &gcp.UpdateServiceRequest{
-		Name:       a.id.String(),
+	req := &pb.UpdateServiceRequest{
 		UpdateMask: updateMask,
 		Service:    desiredPb,
 	}
@@ -232,7 +232,7 @@ func (a *ServiceAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.GetName())
 	u.SetGroupVersionKind(krm.AppHubServiceGVK)
 
 	u.Object = uObj
@@ -244,7 +244,7 @@ func (a *ServiceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Service", "name", a.id)
 
-	req := &gcp.DeleteServiceRequest{Name: a.id.String()}
+	req := &pb.DeleteServiceRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteService(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
