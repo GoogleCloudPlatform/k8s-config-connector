@@ -1,0 +1,312 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package apphub
+
+import (
+	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func AppHubServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.AppHubServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppHubServiceObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	// MISSING: Attributes
+	// MISSING: DiscoveredService
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	// MISSING: State
+	return out
+}
+func AppHubServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubServiceObservedState) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	// MISSING: Attributes
+	// MISSING: DiscoveredService
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	// MISSING: State
+	return out
+}
+func AppHubServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.AppHubServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppHubServiceSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	// MISSING: Attributes
+	// MISSING: DiscoveredService
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	// MISSING: State
+	return out
+}
+func AppHubServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubServiceSpec) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	// MISSING: Attributes
+	// MISSING: DiscoveredService
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	// MISSING: State
+	return out
+}
+func Attributes_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.Attributes {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Attributes{}
+	out.Criticality = Criticality_FromProto(mapCtx, in.GetCriticality())
+	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
+	out.DeveloperOwners = direct.Slice_FromProto(mapCtx, in.DeveloperOwners, ContactInfo_FromProto)
+	out.OperatorOwners = direct.Slice_FromProto(mapCtx, in.OperatorOwners, ContactInfo_FromProto)
+	out.BusinessOwners = direct.Slice_FromProto(mapCtx, in.BusinessOwners, ContactInfo_FromProto)
+	return out
+}
+func Attributes_ToProto(mapCtx *direct.MapContext, in *krm.Attributes) *pb.Attributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attributes{}
+	out.Criticality = Criticality_ToProto(mapCtx, in.Criticality)
+	out.Environment = Environment_ToProto(mapCtx, in.Environment)
+	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfo_ToProto)
+	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfo_ToProto)
+	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfo_ToProto)
+	return out
+}
+func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContactInfo{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContactInfo{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Email = direct.ValueOf(in.Email)
+	return out
+}
+func Criticality_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.Criticality {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Criticality{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Criticality_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Criticality {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Criticality{}
+	out.Type = direct.Enum_ToProto[pb.Criticality_Type](mapCtx, in.Type)
+	return out
+}
+func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	out.Type = direct.Enum_ToProto[pb.Environment_Type](mapCtx, in.Type)
+	return out
+}
+func Service_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.Service {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Service{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	out.Attributes = Attributes_FromProto(mapCtx, in.GetAttributes())
+	out.DiscoveredService = direct.LazyPtr(in.GetDiscoveredService())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	// MISSING: State
+	return out
+}
+func Service_ToProto(mapCtx *direct.MapContext, in *krm.Service) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	out.Attributes = Attributes_ToProto(mapCtx, in.Attributes)
+	out.DiscoveredService = direct.ValueOf(in.DiscoveredService)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Uid
+	// MISSING: State
+	return out
+}
+func ServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.ServiceReference = ServiceReference_FromProto(mapCtx, in.GetServiceReference())
+	out.ServiceProperties = ServiceProperties_FromProto(mapCtx, in.GetServiceProperties())
+	// MISSING: Attributes
+	// MISSING: DiscoveredService
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func ServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceObservedState) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Description
+	out.ServiceReference = ServiceReference_ToProto(mapCtx, in.ServiceReference)
+	out.ServiceProperties = ServiceProperties_ToProto(mapCtx, in.ServiceProperties)
+	// MISSING: Attributes
+	// MISSING: DiscoveredService
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.State = direct.Enum_ToProto[pb.Service_State](mapCtx, in.State)
+	return out
+}
+func ServiceProperties_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krm.ServiceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceProperties{}
+	// MISSING: GcpProject
+	// MISSING: Location
+	// MISSING: Zone
+	return out
+}
+func ServiceProperties_ToProto(mapCtx *direct.MapContext, in *krm.ServiceProperties) *pb.ServiceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceProperties{}
+	// MISSING: GcpProject
+	// MISSING: Location
+	// MISSING: Zone
+	return out
+}
+func ServicePropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krm.ServicePropertiesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServicePropertiesObservedState{}
+	out.GcpProject = direct.LazyPtr(in.GetGcpProject())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	return out
+}
+func ServicePropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServicePropertiesObservedState) *pb.ServiceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceProperties{}
+	out.GcpProject = direct.ValueOf(in.GcpProject)
+	out.Location = direct.ValueOf(in.Location)
+	out.Zone = direct.ValueOf(in.Zone)
+	return out
+}
+func ServiceReference_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krm.ServiceReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceReference{}
+	// MISSING: URI
+	return out
+}
+func ServiceReference_ToProto(mapCtx *direct.MapContext, in *krm.ServiceReference) *pb.ServiceReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceReference{}
+	// MISSING: URI
+	return out
+}
+func ServiceReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krm.ServiceReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceReferenceObservedState{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func ServiceReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceReferenceObservedState) *pb.ServiceReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceReference{}
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
