@@ -28,9 +28,6 @@ import (
 
 	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/apphub/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	apphubpb "cloud.google.com/go/apphub/v1/apphubpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -113,7 +110,7 @@ func (a *ServiceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Service", "name", a.id)
 
-	req := &apphubpb.GetServiceRequest{Name: a.id.String()}
+	req := &gcp.GetServiceRequest{Name: a.id.String()}
 	servicepb, err := a.gcpClient.GetService(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -139,7 +136,7 @@ func (a *ServiceAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &apphubpb.CreateServiceRequest{
+	req := &gcp.CreateServiceRequest{
 		Parent:  a.id.Parent().String(),
 		Service: resource,
 	}
@@ -174,6 +171,7 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	var err error
+	var paths []string
 	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -191,8 +189,8 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		Paths: sets.List(paths)}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &apphubpb.UpdateServiceRequest{
-		Name:       a.id,
+	req := &gcp.UpdateServiceRequest{
+		Name:       a.id.String(),
 		UpdateMask: updateMask,
 		Service:    desiredPb,
 	}
@@ -246,7 +244,7 @@ func (a *ServiceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Service", "name", a.id)
 
-	req := &apphubpb.DeleteServiceRequest{Name: a.id.String()}
+	req := &gcp.DeleteServiceRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteService(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
