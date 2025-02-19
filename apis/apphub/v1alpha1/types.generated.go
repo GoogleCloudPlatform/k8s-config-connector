@@ -64,68 +64,12 @@ type Environment struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apphub.v1.Service
-type Service struct {
-	// Identifier. The resource name of a Service. Format:
-	//  "projects/{host-project-id}/locations/{location}/applications/{application-id}/services/{service-id}"
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. User-defined name for the Service.
-	//  Can have a maximum length of 63 characters.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. User-defined description of a Service.
-	//  Can have a maximum length of 2048 characters.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. Consumer provided attributes.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.attributes
-	Attributes *Attributes `json:"attributes,omitempty"`
-
-	// Required. Immutable. The resource name of the original discovered service.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.discovered_service
-	DiscoveredService *string `json:"discoveredService,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apphub.v1.ServiceProperties
 type ServiceProperties struct {
 }
 
 // +kcc:proto=google.cloud.apphub.v1.ServiceReference
 type ServiceReference struct {
-}
-
-// +kcc:proto=google.cloud.apphub.v1.Service
-type ServiceObservedState struct {
-	// Output only. Reference to an underlying networking resource that can
-	//  comprise a Service. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.service_reference
-	ServiceReference *ServiceReference `json:"serviceReference,omitempty"`
-
-	// Output only. Properties of an underlying compute resource that can comprise
-	//  a Service. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.service_properties
-	ServiceProperties *ServiceProperties `json:"serviceProperties,omitempty"`
-
-	// Output only. Create time.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Update time.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. A universally unique identifier (UUID) for the `Service` in
-	//  the UUID4 format.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Service state.
-	// +kcc:proto:field=google.cloud.apphub.v1.Service.state
-	State *string `json:"state,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apphub.v1.ServiceProperties
