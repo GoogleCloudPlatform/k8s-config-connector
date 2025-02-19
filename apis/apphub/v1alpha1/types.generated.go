@@ -64,68 +64,12 @@ type Environment struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apphub.v1.Workload
-type Workload struct {
-	// Identifier. The resource name of the Workload. Format:
-	//  "projects/{host-project-id}/locations/{location}/applications/{application-id}/workloads/{workload-id}"
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. User-defined name for the Workload.
-	//  Can have a maximum length of 63 characters.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. User-defined description of a Workload.
-	//  Can have a maximum length of 2048 characters.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. Immutable. The resource name of the original discovered workload.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.discovered_workload
-	DiscoveredWorkload *string `json:"discoveredWorkload,omitempty"`
-
-	// Optional. Consumer provided attributes.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.attributes
-	Attributes *Attributes `json:"attributes,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apphub.v1.WorkloadProperties
 type WorkloadProperties struct {
 }
 
 // +kcc:proto=google.cloud.apphub.v1.WorkloadReference
 type WorkloadReference struct {
-}
-
-// +kcc:proto=google.cloud.apphub.v1.Workload
-type WorkloadObservedState struct {
-	// Output only. Reference of an underlying compute resource represented by the
-	//  Workload. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.workload_reference
-	WorkloadReference *WorkloadReference `json:"workloadReference,omitempty"`
-
-	// Output only. Properties of an underlying compute resource represented by
-	//  the Workload. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.workload_properties
-	WorkloadProperties *WorkloadProperties `json:"workloadProperties,omitempty"`
-
-	// Output only. Create time.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Update time.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. A universally unique identifier (UUID) for the `Workload` in
-	//  the UUID4 format.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Workload state.
-	// +kcc:proto:field=google.cloud.apphub.v1.Workload.state
-	State *string `json:"state,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apphub.v1.WorkloadProperties
