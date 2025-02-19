@@ -14,55 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.apigateway.v1.ApiConfig
-type ApiConfig struct {
-
-	// Optional. Resource labels to represent user-provided metadata.
-	//  Refer to cloud documentation on labels for more details.
-	//  https://cloud.google.com/compute/docs/labeling-resources
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. Display name.
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Immutable. The Google Cloud IAM Service Account that Gateways serving this config
-	//  should use to authenticate to other services. This may either be the
-	//  Service Account's email
-	//  (`{ACCOUNT_ID}@{PROJECT}.iam.gserviceaccount.com`) or its full resource
-	//  name (`projects/{PROJECT}/accounts/{UNIQUE_ID}`). This is most often used
-	//  when the service is a GCP resource such as a Cloud Run Service or an
-	//  IAP-secured service.
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.gateway_service_account
-	GatewayServiceAccount *string `json:"gatewayServiceAccount,omitempty"`
-
-	// Optional. OpenAPI specification documents. If specified, grpc_services and
-	//  managed_service_configs must not be included.
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.openapi_documents
-	OpenapiDocuments []ApiConfig_OpenApiDocument `json:"openapiDocuments,omitempty"`
-
-	// Optional. gRPC service definition files. If specified, openapi_documents must
-	//  not be included.
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.grpc_services
-	GrpcServices []ApiConfig_GrpcServiceDefinition `json:"grpcServices,omitempty"`
-
-	// Optional. Service Configuration files. At least one must be included when using gRPC
-	//  service definitions. See
-	//  https://cloud.google.com/endpoints/docs/grpc/grpc-service-config#service_configuration_overview
-	//  for the expected file contents.
-	//
-	//  If multiple files are specified, the files are merged with the following
-	//  rules:
-	//  * All singular scalar fields are merged using "last one wins" semantics in
-	//  the order of the files uploaded.
-	//  * Repeated fields are concatenated.
-	//  * Singular embedded messages are merged using these rules for nested
-	//  fields.
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.managed_service_configs
-	ManagedServiceConfigs []ApiConfig_File `json:"managedServiceConfigs,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apigateway.v1.ApiConfig.File
 type ApiConfig_File struct {
 	// The file path (full or relative path). This is typically the path of the
@@ -100,29 +51,4 @@ type ApiConfig_OpenApiDocument struct {
 	// The OpenAPI Specification document file.
 	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.OpenApiDocument.document
 	Document *ApiConfig_File `json:"document,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apigateway.v1.ApiConfig
-type ApiConfigObservedState struct {
-	// Output only. Resource name of the API Config.
-	//  Format: projects/{project}/locations/global/apis/{api}/configs/{api_config}
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Created time.
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Updated time.
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. The ID of the associated Service Config (
-	//  https://cloud.google.com/service-infrastructure/docs/glossary#config).
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.service_config_id
-	ServiceConfigID *string `json:"serviceConfigID,omitempty"`
-
-	// Output only. State of the API Config.
-	// +kcc:proto:field=google.cloud.apigateway.v1.ApiConfig.state
-	State *string `json:"state,omitempty"`
 }
