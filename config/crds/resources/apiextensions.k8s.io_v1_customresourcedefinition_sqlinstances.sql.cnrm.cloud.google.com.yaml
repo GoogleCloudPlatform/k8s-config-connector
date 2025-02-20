@@ -8,6 +8,7 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: sqlinstances.sql.cnrm.cloud.google.com
 spec:
   group: sql.cnrm.cloud.google.com
@@ -15,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: SQLInstance
-    listKind: SQLInstanceList
     plural: sqlinstances
     shortNames:
     - gcpsqlinstance
@@ -43,80 +43,23 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: SQLInstance is the Schema for the sql API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
             properties:
-              cloneSource:
-                description: Create this database as a clone of a source instance.
-                  Immutable.
-                properties:
-                  binLogCoordinates:
-                    description: Binary log coordinates, if specified, identify the
-                      position up to which the source instance is cloned. If not specified,
-                      the source instance is cloned up to the most recent binary log
-                      coordinates.
-                    properties:
-                      binLogFileName:
-                        description: Name of the binary log file for a Cloud SQL instance.
-                        type: string
-                      binLogPosition:
-                        description: Position (offset) within the binary log file.
-                        format: int64
-                        type: integer
-                    type: object
-                  databaseNames:
-                    description: (SQL Server only) Clone only the specified databases
-                      from the source instance. Clone all databases if empty.
-                    items:
-                      type: string
-                    type: array
-                  pointInTime:
-                    description: Timestamp, if specified, identifies the time to which
-                      the source instance is cloned.
-                    type: string
-                  sqlInstanceRef:
-                    description: The source SQLInstance to clone
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The SQLInstance selfLink, when not managed by
-                          Config Connector.
-                        type: string
-                      name:
-                        description: The `name` field of a `SQLInstance` resource.
-                        type: string
-                      namespace:
-                        description: The `namespace` field of a `SQLInstance` resource.
-                        type: string
-                    type: object
-                type: object
               databaseVersion:
+                default: MYSQL_5_6
                 description: The MySQL, PostgreSQL or SQL Server (beta) version to
                   use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6,
                   POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14,
@@ -141,14 +84,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed KMSCryptoKey.
-                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` of a `KMSCryptoKey` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               instanceType:
@@ -175,14 +118,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The SQLInstance selfLink, when not managed by Config
-                      Connector.
+                    description: 'Allowed value: The `name` field of a `SQLInstance`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` field of a `SQLInstance` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `SQLInstance` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               region:
@@ -212,7 +155,6 @@ spec:
                   connectRetryInterval:
                     description: Immutable. The number of seconds between connect
                       retries. MySQL's default is 60 seconds.
-                    format: int64
                     type: integer
                   dumpFilePath:
                     description: Immutable. Path to a SQL file in Google Cloud Storage
@@ -227,10 +169,20 @@ spec:
                     type: boolean
                   masterHeartbeatPeriod:
                     description: Immutable. Time in ms between replication heartbeats.
-                    format: int64
                     type: integer
                   password:
                     description: Immutable. Password for the replication connection.
+                    oneOf:
+                    - not:
+                        required:
+                        - valueFrom
+                      required:
+                      - value
+                    - not:
+                        required:
+                        - value
+                      required:
+                      - valueFrom
                     properties:
                       value:
                         description: Value of the field. Cannot be used if 'valueFrom'
@@ -252,8 +204,8 @@ spec:
                                   from.
                                 type: string
                             required:
-                            - key
                             - name
+                            - key
                             type: object
                         type: object
                     type: object
@@ -275,6 +227,17 @@ spec:
                 type: string
               rootPassword:
                 description: Initial root password. Required for MS SQL Server.
+                oneOf:
+                - not:
+                    required:
+                    - valueFrom
+                  required:
+                  - value
+                - not:
+                    required:
+                    - value
+                  required:
+                  - valueFrom
                 properties:
                   value:
                     description: Value of the field. Cannot be used if 'valueFrom'
@@ -295,8 +258,8 @@ spec:
                             description: Name of the Secret to extract a value from.
                             type: string
                         required:
-                        - key
                         - name
+                        - key
                         type: object
                     type: object
                 type: object
@@ -322,25 +285,22 @@ spec:
                       threadsPerCore:
                         description: The number of threads per physical core. Can
                           be 1 or 2.
-                        format: int64
                         type: integer
                     type: object
                   authorizedGaeApplications:
-                    description: DEPRECATED. This property is only applicable to First
-                      Generation instances, and First Generation instances are now
-                      deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice
-                      for information on how to upgrade to Second Generation instances.
-                      Specifying this field has no-ops; it's recommended to remove
-                      this field from your configuration.
+                    description: |-
+                      DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     items:
                       type: string
                     type: array
                   availabilityType:
-                    description: The availability type of the Cloud SQL instance,
-                      high availability (REGIONAL) or single zone (ZONAL). For all
-                      instances, ensure that settings.backup_configuration.enabled
-                      is set to true. For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled
-                      is set to true. For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
+                    description: |-
+                      The availability type of the Cloud SQL instance, high availability
+                      (REGIONAL) or single zone (ZONAL). For all instances, ensure that
+                      settings.backup_configuration.enabled is set to true.
+                      For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true.
+                      For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
                       is set to true. Defaults to ZONAL.
                     type: string
                   backupConfiguration:
@@ -349,7 +309,6 @@ spec:
                         properties:
                           retainedBackups:
                             description: Number of backups to retain.
-                            format: int64
                             type: integer
                           retentionUnit:
                             description: The unit that 'retainedBackups' represents.
@@ -379,7 +338,6 @@ spec:
                         description: The number of days of transaction logs we retain
                           for point in time restore, from 1-7. (For PostgreSQL Enterprise
                           Plus instances, from 1 to 35.).
-                        format: int64
                         type: integer
                     type: object
                   collation:
@@ -389,12 +347,9 @@ spec:
                     description: Specifies if connections must use Cloud SQL connectors.
                     type: string
                   crashSafeReplication:
-                    description: DEPRECATED. This property is only applicable to First
-                      Generation instances, and First Generation instances are now
-                      deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice
-                      for information on how to upgrade to Second Generation instances.
-                      Specifying this field has no-ops; it's recommended to remove
-                      this field from your configuration.
+                    description: |-
+                      DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     type: boolean
                   dataCacheConfig:
                     description: Data cache configurations.
@@ -451,13 +406,11 @@ spec:
                     description: The maximum size, in GB, to which storage capacity
                       can be automatically increased. The default value is 0, which
                       specifies that there is no limit.
-                    format: int64
                     type: integer
                   diskSize:
                     description: The size of data disk, in GB. Size of a running instance
                       cannot be reduced but can be increased. The minimum value is
                       10GB.
-                    format: int64
                     type: integer
                   diskType:
                     description: 'Immutable. The type of data disk: PD_SSD or PD_HDD.
@@ -477,12 +430,10 @@ spec:
                         description: Number of query execution plans captured by Insights
                           per minute for all queries combined. Between 0 and 20. Default
                           to 5.
-                        format: int64
                         type: integer
                       queryStringLength:
                         description: Maximum query length stored in bytes. Between
                           256 and 4500. Default to 1024.
-                        format: int64
                         type: integer
                       recordApplicationTags:
                         description: True if Query Insights will record application
@@ -544,15 +495,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: A reference to an externally managed Compute
-                              Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                            description: 'Allowed value: The `selfLink` field of a
+                              `ComputeNetwork` resource.'
                             type: string
                           name:
-                            description: The `name` field of a `ComputeNetwork` resource.
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                             type: string
                           namespace:
-                            description: The `namespace` field of a `ComputeNetwork`
-                              resource.
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                             type: string
                         type: object
                       pscConfig:
@@ -605,11 +555,9 @@ spec:
                     properties:
                       day:
                         description: Day of week (1-7), starting on Monday.
-                        format: int64
                         type: integer
                       hour:
                         description: Hour of day (0-23), ignored if day not set.
-                        format: int64
                         type: integer
                       updateTrack:
                         description: Receive updates earlier (canary) or later (stable).
@@ -628,7 +576,6 @@ spec:
                         type: boolean
                       minLength:
                         description: Minimum number of characters allowed.
-                        format: int64
                         type: integer
                       passwordChangeInterval:
                         description: Minimum interval after which the password can
@@ -636,7 +583,6 @@ spec:
                         type: string
                       reuseInterval:
                         description: Number of previous passwords that cannot be reused.
-                        format: int64
                         type: integer
                     required:
                     - enablePasswordPolicy
@@ -645,12 +591,9 @@ spec:
                     description: Pricing plan for this instance, can only be PER_USE.
                     type: string
                   replicationType:
-                    description: DEPRECATED. This property is only applicable to First
-                      Generation instances, and First Generation instances are now
-                      deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice
-                      for information on how to upgrade to Second Generation instances.
-                      Specifying this field has no-ops; it's recommended to remove
-                      this field from your configuration.
+                    description: |-
+                      DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
+                      Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     type: string
                   sqlServerAuditConfig:
                     properties:
@@ -672,15 +615,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The StorageBucket selfLink, when not managed
-                              by Config Connector.
+                            description: 'Allowed value: The `url` field of a `StorageBucket`
+                              resource.'
                             type: string
                           name:
-                            description: The `name` field of a `StorageBucket` resource.
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                             type: string
                           namespace:
-                            description: The `namespace` field of a `StorageBucket`
-                              resource.
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                             type: string
                         type: object
                       retentionInterval:
@@ -720,8 +662,8 @@ spec:
                   type: string
                 type: array
               conditions:
-                description: Conditions represent the latest available observations
-                  of the SQLInstance's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -775,7 +717,6 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               privateIpAddress:
                 type: string
@@ -817,3 +758,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

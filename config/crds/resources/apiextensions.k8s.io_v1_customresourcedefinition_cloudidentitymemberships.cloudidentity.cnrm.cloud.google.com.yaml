@@ -16,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: CloudIdentityMembership
-    listKind: CloudIdentityMembershipList
     plural: cloudidentitymemberships
     shortNames:
     - gcpcloudidentitymembership
@@ -44,24 +43,20 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: CloudIdentityMembership is the Schema for the CloudIdentityMembership
-          API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            description: CloudIdentityMembershipSpec defines the desired state of
-              CloudIdentityMembership
             properties:
               groupRef:
                 description: Immutable.
@@ -81,14 +76,16 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed CloudIdentityGroup
-                      resource. Should be in the format "groups/{{groupID}}".
+                    description: |-
+                      The group for the resource
+
+                      Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource (format: `groups/{{name}}`).
                     type: string
                   name:
-                    description: The name of a CloudIdentityGroup resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The namespace of a CloudIdentityGroup resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               memberKey:
@@ -97,35 +94,31 @@ spec:
                   but not both; both shall be set when returned.
                 properties:
                   id:
-                    description: Immutable. The ID of the entity. For Google-managed
-                      entities, the `id` must be the email address of an existing
-                      group or user. For external-identity-mapped entities, the `id`
-                      must be a string conforming to the Identity Source's requirements.
-                      Must be unique within a `namespace`.
+                    description: The ID of the entity. For Google-managed entities,
+                      the `id` must be the email address of an existing group or user.
+                      For external-identity-mapped entities, the `id` must be a string
+                      conforming to the Identity Source's requirements. Must be unique
+                      within a `namespace`.
                     type: string
                   namespace:
-                    description: Immutable. The namespace in which the entity exists.
-                      If not specified, the `EntityKey` represents a Google-managed
-                      entity such as a Google user or a Google Group. If specified,
-                      the `EntityKey` represents an external-identity-mapped group.
-                      The namespace must correspond to an identity source created
-                      in Admin Console and must be in the form of `identitysources/{identity_source_id}`.
+                    description: The namespace in which the entity exists. If not
+                      specified, the `EntityKey` represents a Google-managed entity
+                      such as a Google user or a Google Group. If specified, the `EntityKey`
+                      represents an external-identity-mapped group. The namespace
+                      must correspond to an identity source created in Admin Console
+                      and must be in the form of `identitysources/{identity_source_id}`.
                     type: string
-                required:
-                - id
                 type: object
               preferredMemberKey:
-                description: Required. Immutable. The `EntityKey` of the member. Either
-                  `member_key` or `preferred_member_key` must be set when calling
-                  MembershipsService.CreateMembership but not both; both shall be
-                  set when returned.
+                description: Immutable. Required. Immutable. The `EntityKey` of the
+                  member.
                 properties:
                   id:
                     description: Immutable. The ID of the entity. For Google-managed
-                      entities, the `id` must be the email address of an existing
-                      group or user. For external-identity-mapped entities, the `id`
-                      must be a string conforming to the Identity Source's requirements.
-                      Must be unique within a `namespace`.
+                      entities, the `id` must be the email address of a group or user.
+                      For external-identity-mapped entities, the `id` must be a string
+                      conforming to the Identity Source's requirements. Must be unique
+                      within a `namespace`.
                     type: string
                   namespace:
                     description: Immutable. The namespace in which the entity exists.
@@ -163,8 +156,6 @@ spec:
                           type: string
                       type: object
                     name:
-                      description: The name of the `MembershipRole`. Must be one of
-                        `OWNER`, `MANAGER`, `MEMBER`.
                       type: string
                     restrictionEvaluations:
                       description: Evaluations of restrictions applied to parent group
@@ -176,7 +167,9 @@ spec:
                             to view the restriction evaluation.
                           properties:
                             state:
-                              description: Output only. The current state of the restriction
+                              description: 'Output only. The current state of the
+                                restriction Possible values: ENCRYPTION_STATE_UNSPECIFIED,
+                                UNSUPPORTED_BY_DEVICE, ENCRYPTED, NOT_ENCRYPTED'
                               type: string
                           type: object
                       type: object
@@ -190,12 +183,10 @@ spec:
             - roles
             type: object
           status:
-            description: CloudIdentityMembershipStatus defines the config connector
-              machine state of CloudIdentityMembership
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the object's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -243,17 +234,12 @@ spec:
                     description: Output only. Member's given name
                     type: string
                 type: object
-              externalRef:
-                description: A unique Config Connector specifier for the resource
-                  in GCP.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               type:
                 description: 'Output only. The type of the membership. Possible values:
@@ -272,3 +258,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

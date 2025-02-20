@@ -8,6 +8,7 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: apigeeenvgroupattachments.apigee.cnrm.cloud.google.com
 spec:
   group: apigee.cnrm.cloud.google.com
@@ -15,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: ApigeeEnvgroupAttachment
-    listKind: ApigeeEnvgroupAttachmentList
     plural: apigeeenvgroupattachments
     shortNames:
     - gcpapigeeenvgroupattachment
@@ -43,127 +43,43 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ApigeeEnvgroupAttachment is the Schema for the EnvgroupAttachments
-          API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            description: ApigeeEnvgroupAttachmentSpec defines the desired state of
-              EnvgroupAttachment
             properties:
-              envgroup:
-                description: Immutable. The Apigee environment group which will host
-                  the environment.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed ApigeeEnvgroup
-                      resource. Should be in the format "organizations/{{organization}}/envgroups/{{envgroup}}".
-                    type: string
-                  name:
-                    description: The name of a ApigeeEnvgroup resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a ApigeeEnvgroup resource.
-                    type: string
-                type: object
+              envgroupId:
+                description: |-
+                  Immutable. The Apigee environment group associated with the Apigee environment,
+                  in the format 'organizations/{{org_name}}/envgroups/{{envgroup_name}}'.
+                type: string
               environment:
-                description: Immutable. The Apigee environment to attach to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed ApigeeEnvironment
-                      resource. Should be in the format "organizations/{{organizationID}}/environments/{{environmentID}}".
-                    type: string
-                  name:
-                    description: The name of a ApigeeEnvironment resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a ApigeeEnvironment resource.
-                    type: string
-                type: object
-              organizationRef:
-                description: OrganizationRef defines the resource reference to ApigeeOrganization,
-                  which "External" field holds the GCP identifier for the KRM object.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed ApigeeOrganization
-                      resource. Should be in the format "organizations/{{organizationID}}".
-                    type: string
-                  name:
-                    description: The name of a ApigeeOrganization resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a ApigeeOrganization resource.
-                    type: string
-                type: object
+                description: Immutable. The resource ID of the environment.
+                type: string
               resourceID:
-                description: The EnvgroupAttachment name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
             required:
-            - envgroup
+            - envgroupId
             - environment
-            - organizationRef
             type: object
           status:
-            description: ApigeeEnvgroupAttachmentStatus defines the observed state
-              of EnvgroupAttachment
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the EnvgroupAttachment's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -187,8 +103,8 @@ spec:
                       type: string
                   type: object
                 type: array
-              externalRef:
-                description: A unique specifier for the EnvgroupAttachment resource.
+              name:
+                description: The name of the newly created  attachment (output parameter).
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -196,23 +112,18 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                properties:
-                  createdAt:
-                    description: Output only. The time at which the environment group
-                      attachment was created as milliseconds since epoch.
-                    type: string
-                  environmentGroupID:
-                    description: Output only. ID of the environment group.
-                    type: string
-                type: object
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

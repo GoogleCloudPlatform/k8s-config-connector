@@ -5,6 +5,7 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -15,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: LoggingLogMetric
-    listKind: LoggingLogMetricList
     plural: logginglogmetrics
     shortNames:
     - gcplogginglogmetric
@@ -43,17 +43,16 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: LoggingLogMetric is the Schema for the logging API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -70,8 +69,8 @@ spec:
                     properties:
                       bounds:
                         description: The values must be monotonically increasing.
-                        format: double
                         items:
+                          format: double
                           type: number
                         type: array
                     type: object
@@ -137,44 +136,6 @@ spec:
                   for a boolean label its `false`. Note that there are upper bounds
                   on the maximum number of labels and the number of active time series
                   that are allowed in a project.
-                type: object
-              loggingLogBucketRef:
-                description: The reference to the Log Bucket that owns the Log Metric.
-                  Only Log Buckets in projects are supported. The bucket has to be
-                  in the same project as the metric. For example:projects/my-project/locations/global/buckets/my-bucket
-                  If empty, then the Log Metric is considered a non-Bucket Log Metric.
-                  Only `external` field is supported to configure the reference for
-                  now.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                  - kind
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                    - required:
-                      - kind
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
                 type: object
               metricDescriptor:
                 description: Optional. The metric descriptor associated with the logs-based
@@ -334,18 +295,16 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: |-
+                      The resource name of the project in which to create the metric.
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               resourceID:
@@ -377,8 +336,8 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the LoggingLogMetric's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -453,3 +412,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
