@@ -256,15 +256,6 @@ type ComputeAddressRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type ComputeBackendServiceRef struct {
-	/* The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}" or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}" when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeBackendService` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeBackendService` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
-
 type ComputeServiceAttachmentRef struct {
 	/* The ComputeServiceAttachment selflink in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`

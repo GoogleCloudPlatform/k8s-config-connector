@@ -238,7 +238,7 @@ internal load balancer.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}" or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}" when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed ComputeBackendService resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +248,7 @@ internal load balancer.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ComputeBackendService resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -258,7 +258,7 @@ internal load balancer.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ComputeBackendService resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
