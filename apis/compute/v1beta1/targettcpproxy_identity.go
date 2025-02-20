@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -26,32 +27,19 @@ import (
 
 type TargetTCPProxyIdentity struct {
 	id     string
-	parent *TargetTCPProxyParent
+	parent *parent.ComputeParent
 }
 
 func (i *TargetTCPProxyIdentity) String() string {
 	return i.parent.String() + "/targetTcpProxies/" + i.id
 }
 
-func (r *TargetTCPProxyIdentity) Parent() *TargetTCPProxyParent {
-	return r.parent
+func (i *TargetTCPProxyIdentity) Parent() *parent.ComputeParent {
+	return i.parent
 }
 
-func (r *TargetTCPProxyIdentity) ID() string {
-	return r.id
-}
-
-type TargetTCPProxyParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *TargetTCPProxyParent) String() string {
-	if p.Location == "global" {
-		return "projects/" + p.ProjectID + "/global"
-	} else {
-		return "projects/" + p.ProjectID + "/regions/" + p.Location
-	}
+func (i *TargetTCPProxyIdentity) ID() string {
+	return i.id
 }
 
 func NewTargetTCPProxyIdentity(ctx context.Context, reader client.Reader, obj *ComputeTargetTCPProxy, u *unstructured.Unstructured) (*TargetTCPProxyIdentity, error) {
@@ -68,7 +56,7 @@ func NewTargetTCPProxyIdentity(ctx context.Context, reader client.Reader, obj *C
 		location = common.ValueOf(obj.Spec.Location)
 	}
 
-	// Get desired ID
+	// Get resourceID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -87,6 +75,9 @@ func NewTargetTCPProxyIdentity(ctx context.Context, reader client.Reader, obj *C
 		if actualIdentity.parent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
 		}
+		if actualIdentity.parent.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualIdentity.parent.Location, location)
+		}
 		if actualIdentity.id != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualIdentity.id)
@@ -94,7 +85,7 @@ func NewTargetTCPProxyIdentity(ctx context.Context, reader client.Reader, obj *C
 	}
 
 	return &TargetTCPProxyIdentity{
-		parent: &TargetTCPProxyParent{ProjectID: projectID, Location: location},
+		parent: &parent.ComputeParent{ProjectID: projectID, Location: location},
 		id:     resourceID,
 	}, nil
 }
