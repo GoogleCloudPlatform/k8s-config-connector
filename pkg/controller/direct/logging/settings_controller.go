@@ -30,7 +30,7 @@ import (
 	gcp "cloud.google.com/go/logging/apiv1"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	loggingpb "cloud.google.com/go/logging/v2/loggingpb"
+	loggingpb "cloud.google.com/go/logging/apiv1/loggingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
