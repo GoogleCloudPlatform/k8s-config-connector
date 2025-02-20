@@ -26,11 +26,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
 	// TODO(contributor): Update the import with the google cloud client
 
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -55,13 +53,13 @@ type modelService struct {
 	config config.ControllerConfig
 }
 
-func (m *modelService) client(ctx context.Context) (*monitoring.Client, error) {
+func (m *modelService) client(ctx context.Context) (*pb.ServiceClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := monitoring.NewClient(ctx, opts...)
+	gcpClient, err := pb.NewServiceClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Service client: %w", err)
 	}
@@ -98,9 +96,9 @@ func (m *modelService) AdapterForURL(ctx context.Context, url string) (directbas
 
 type ServiceAdapter struct {
 	id        *krm.ServiceIdentity
-	gcpClientX *monitoring.Client
+	gcpClient *pb.ServiceClient
 	desired   *krm.MonitoringService
-	actual    *monitoringpb.Service
+	actual    *pb.Service
 }
 
 var _ directbase.Adapter = &ServiceAdapter{}
@@ -113,7 +111,7 @@ func (a *ServiceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Service", "name", a.id)
 
-	req := &monitoringpb.GetServiceRequest{Name: a.id.String()}
+	req := &pb.GetServiceRequest{Name: a.id.String()}
 	servicepb, err := a.gcpClient.GetService(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -139,22 +137,19 @@ func (a *ServiceAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &monitoringpb.CreateServiceRequest{
+	req := &pb.CreateServiceRequest{
 		Parent:  a.id.Parent().String(),
 		Service: resource,
 	}
-	op, err := a.gcpClient.CreateService(ctx, req)
+	service, err := a.gcpClient.CreateService(ctx, req)
+
 	if err != nil {
 		return fmt.Errorf("creating Service %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Service %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Service", "name", a.id)
 
 	status := &krm.MonitoringServiceStatus{}
-	status.ObservedState = MonitoringServiceObservedState_FromProto(mapCtx, created)
+	status.ObservedState = MonitoringServiceObservedState_FromProto(mapCtx, service)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -192,22 +187,19 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		Paths: sets.List(paths)}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &monitoringpb.UpdateServiceRequest{
+	req := &pb.UpdateServiceRequest{
 		Service:       desiredPb,
 		UpdateMask: updateMask,
 	}
-	op, err := a.gcpClient.UpdateService(ctx, req)
+	service, err := a.gcpClient.UpdateService(ctx, req)
+
 	if err != nil {
 		return fmt.Errorf("updating Service %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Service %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated Service", "name", a.id)
 
 	status := &krm.MonitoringServiceStatus{}
-	status.ObservedState = MonitoringServiceObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = MonitoringServiceObservedState_FromProto(mapCtx, service)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -246,8 +238,8 @@ func (a *ServiceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Service", "name", a.id)
 
-	req := &monitoringpb.DeleteServiceRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteService(ctx, req)
+	req := &pb.DeleteServiceRequest{Name: a.id.String()}
+	_, err := a.gcpClient.DeleteService(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -258,9 +250,6 @@ func (a *ServiceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	}
 	log.V(2).Info("successfully deleted Service", "name", a.id)
 
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete Service %s: %w", a.id, err)
-	}
+
 	return true, nil
 }
