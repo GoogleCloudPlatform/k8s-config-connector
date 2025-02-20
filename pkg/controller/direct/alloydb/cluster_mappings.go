@@ -52,6 +52,79 @@ func MigrationSourceObservedStateArray_FromProto(mapCtx *direct.MapContext, in *
 	}
 	return []*krm.MigrationSourceObservedState{migrationSource}
 }
+
+func AlloyDBClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.AlloyDBClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDBClusterObservedState{}
+	// MISSING: BackupSource
+	// MISSING: MigrationSource
+	// MISSING: CloudsqlBackupRunSource
+	// MISSING: Name
+	// DisplayName is unreadable.
+	// MISSING: DisplayName
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Labels
+	// MISSING: State
+	out.ClusterType = direct.Enum_FromProto(mapCtx, in.GetClusterType())
+	// MISSING: DatabaseVersion
+	// MISSING: Etag
+	// MISSING: Annotations
+	// MISSING: Reconciling
+	// Only the unreadable Password in InitialUser is observed here.
+	// MISSING: InitialUser
+	// MISSING: SSLConfig
+	// MISSING: EncryptionInfo
+	// MISSING: ContinuousBackupInfo
+	// MISSING: PrimaryConfig
+	// MISSING: SatisfiesPzs
+	// MISSING: PSCConfig
+	// MISSING: MaintenanceSchedule
+	// MISSING: GeminiConfig
+	// MISSING: SubscriptionType
+	// MISSING: TrialMetadata
+	// MISSING: Tags
+	return out
+}
+func AlloyDBClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterObservedState) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	// MISSING: BackupSource
+	// MISSING: MigrationSource
+	// MISSING: CloudsqlBackupRunSource
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: Labels
+	// MISSING: State
+	out.ClusterType = direct.Enum_ToProto[pb.Cluster_ClusterType](mapCtx, in.ClusterType)
+	// MISSING: DatabaseVersion
+	// MISSING: Etag
+	// MISSING: Annotations
+	// MISSING: Reconciling
+	out.InitialUser = UserPasswordObservedState_ToProto(mapCtx, in.InitialUser)
+	// MISSING: SSLConfig
+	// MISSING: EncryptionInfo
+	// MISSING: ContinuousBackupInfo
+	// MISSING: PrimaryConfig
+	// MISSING: SatisfiesPzs
+	// MISSING: PSCConfig
+	// MISSING: MaintenanceSchedule
+	// MISSING: GeminiConfig
+	// MISSING: SubscriptionType
+	// MISSING: TrialMetadata
+	// MISSING: Tags
+	return out
+}
 func AlloyDBClusterStatus_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.AlloyDBClusterStatus {
 	if in == nil {
 		return nil
@@ -92,6 +165,7 @@ func AlloyDBClusterStatus_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// MISSING: SubscriptionType
 	// MISSING: TrialMetadata
 	// MISSING: Tags
+	out.ObservedState = AlloyDBClusterObservedState_FromProto(mapCtx, in)
 	return out
 }
 func AlloyDBClusterStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterStatus) *pb.Cluster {
@@ -296,5 +370,16 @@ func Cluster_SecondaryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_
 	if in.PrimaryClusterNameRef != nil {
 		out.PrimaryClusterName = in.PrimaryClusterNameRef.External
 	}
+	return out
+}
+func ContinuousBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.RestoreContinuousBackupSource) *pb.ContinuousBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContinuousBackupSource{}
+	if in.ClusterRef != nil {
+		out.Cluster = in.ClusterRef.External
+	}
+	out.PointInTime = direct.StringTimestamp_ToProto(mapCtx, in.PointInTime)
 	return out
 }
