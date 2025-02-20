@@ -113,16 +113,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}"
-                      or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}"
-                      when not managed by Config Connector.
+                    description: The value of an externally managed ComputeBackendService
+                      resource.
                     type: string
                   name:
-                    description: The `name` field of a `ComputeBackendService` resource.
+                    description: The name of a ComputeBackendService resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeBackendService`
-                      resource.
+                    description: The namespace of a ComputeBackendService resource.
                     type: string
                 type: object
               description:

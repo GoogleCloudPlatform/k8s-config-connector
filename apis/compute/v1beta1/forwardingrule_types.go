@@ -144,7 +144,7 @@ type ComputeForwardingRuleSpec struct {
 	/* A ComputeBackendService to receive the matched traffic. This is
 	used only for internal load balancing. */
 	// +optional
-	BackendServiceRef *refs.ComputeBackendServiceRef `json:"backendServiceRef,omitempty"`
+	BackendServiceRef *ComputeBackendServiceRef `json:"backendServiceRef,omitempty"`
 
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. */

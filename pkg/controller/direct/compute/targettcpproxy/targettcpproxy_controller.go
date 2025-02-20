@@ -407,3 +407,16 @@ func (a *targetTCPProxyAdapter) get(ctx context.Context) (*computepb.TargetTcpPr
 		return a.regionalTargetTcpProxiesClient.Get(ctx, getReq)
 	}
 }
+
+func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeTargetTCPProxy) error {
+	// Get backend service
+	if obj.Spec.BackendServiceRef != nil {
+		normalizedExternal, err := obj.Spec.BackendServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return err
+
+		}
+		obj.Spec.BackendServiceRef.External = normalizedExternal
+	}
+	return nil
+}
