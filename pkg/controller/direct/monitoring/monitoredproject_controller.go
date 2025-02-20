@@ -26,12 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/monitoring/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	monitoringpb "cloud.google.com/go/monitoring/v1/monitoringpb"
-	"google.golang.org/api/option"
+	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
+        "google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -55,13 +51,14 @@ type modelMonitoredProject struct {
 	config config.ControllerConfig
 }
 
-func (m *modelMonitoredProject) client(ctx context.Context) (*gcp.Client, error) {
+
+func (m *modelMonitoredProject) client(ctx context.Context) (*monitoringpb.MetricsScopesClient, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := monitoringpb.NewMetricsScopesClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building MonitoredProject client: %w", err)
 	}
@@ -98,9 +95,9 @@ func (m *modelMonitoredProject) AdapterForURL(ctx context.Context, url string) (
 
 type MonitoredProjectAdapter struct {
 	id        *krm.MonitoredProjectIdentity
-	gcpClient *gcp.Client
+	gcpClient *monitoringpb.MetricsScopesClient
 	desired   *krm.MonitoringMonitoredProject
-	actual    *monitoringpb.MonitoredProject
+	actual    *monitoringpb.MetricsScope
 }
 
 var _ directbase.Adapter = &MonitoredProjectAdapter{}
@@ -113,8 +110,8 @@ func (a *MonitoredProjectAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting MonitoredProject", "name", a.id)
 
-	req := &monitoringpb.GetMonitoredProjectRequest{Name: a.id.String()}
-	monitoredprojectpb, err := a.gcpClient.GetMonitoredProject(ctx, req)
+	req := &monitoringpb.GetMetricsScopeRequest{Name: a.id.String()}
+	monitoredprojectpb, err := a.gcpClient.GetMetricsScope(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -139,11 +136,11 @@ func (a *MonitoredProjectAdapter) Create(ctx context.Context, createOp *directba
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &monitoringpb.CreateMonitoredProjectRequest{
+	req := &monitoringpb.CreateMetricsScopeRequest{
 		Parent:           a.id.Parent().String(),
-		MonitoredProject: resource,
+		MetricsScope: resource,
 	}
-	op, err := a.gcpClient.CreateMonitoredProject(ctx, req)
+	op, err := a.gcpClient.CreateMetricsScope(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating MonitoredProject %s: %w", a.id, err)
 	}
@@ -174,7 +171,7 @@ func (a *MonitoredProjectAdapter) Update(ctx context.Context, updateOp *directba
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -191,12 +188,12 @@ func (a *MonitoredProjectAdapter) Update(ctx context.Context, updateOp *directba
 		Paths: sets.List(paths)}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &monitoringpb.UpdateMonitoredProjectRequest{
-		Name:             a.id,
+	req := &monitoringpb.UpdateMetricsScopeRequest{
+		Name:             a.id.String(),
 		UpdateMask:       updateMask,
-		MonitoredProject: desiredPb,
+		MetricsScope: desiredPb,
 	}
-	op, err := a.gcpClient.UpdateMonitoredProject(ctx, req)
+	op, err := a.gcpClient.UpdateMetricsScope(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating MonitoredProject %s: %w", a.id, err)
 	}
@@ -246,8 +243,8 @@ func (a *MonitoredProjectAdapter) Delete(ctx context.Context, deleteOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting MonitoredProject", "name", a.id)
 
-	req := &monitoringpb.DeleteMonitoredProjectRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteMonitoredProject(ctx, req)
+	req := &monitoringpb.DeleteMetricsScopeRequest{Name: a.id.String()}
+	op, err := a.gcpClient.DeleteMetricsScope(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
