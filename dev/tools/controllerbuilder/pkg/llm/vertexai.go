@@ -20,10 +20,13 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
+	"time"
 
 	"cloud.google.com/go/vertexai/genai"
+	"github.com/googleapis/gax-go/v2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc/codes"
 	"k8s.io/klog/v2"
 )
 
@@ -228,6 +231,24 @@ func (c *VertexAIClient) GenerateCompletion(ctx context.Context, request *Comple
 	return &VertexAICompletionResponse{vertexaiResponse: vertexaiResponse, text: response.String()}, nil
 }
 
+func (c *VertexAIChat) sendMessageWithRetries(ctx context.Context, geminiParts ...genai.Part) (*genai.GenerateContentResponse, error) {
+	opt := gax.WithRetry(func() gax.Retryer {
+		// https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429
+		return gax.OnCodes([]codes.Code{codes.ResourceExhausted}, gax.Backoff{
+			Initial:    5 * time.Second,
+			Max:        10 * time.Minute,
+			Multiplier: 2,
+		})
+	})
+	var resp *genai.GenerateContentResponse
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = c.chat.SendMessage(ctx, geminiParts...)
+		return err
+	}, opt)
+	return resp, err
+}
+
 func (c *VertexAIChat) SendMessage(ctx context.Context, parts ...string) (Response, error) {
 	log := klog.FromContext(ctx)
 	var vertexaiParts []genai.Part
@@ -235,7 +256,7 @@ func (c *VertexAIChat) SendMessage(ctx context.Context, parts ...string) (Respon
 		vertexaiParts = append(vertexaiParts, genai.Text(part))
 	}
 	log.Info("sending LLM request", "user", parts)
-	vertexaiResponse, err := c.chat.SendMessage(ctx, vertexaiParts...)
+	vertexaiResponse, err := c.sendMessageWithRetries(ctx, vertexaiParts...)
 	if err != nil {
 		return nil, err
 	}
@@ -251,7 +272,7 @@ func (c *VertexAIChat) SendFunctionResults(ctx context.Context, functionResults 
 		})
 	}
 
-	vertexaiResponse, err := c.chat.SendMessage(ctx, vertexaiFunctionResults...)
+	vertexaiResponse, err := c.sendMessageWithRetries(ctx, vertexaiFunctionResults...)
 	if err != nil {
 		return nil, err
 	}
