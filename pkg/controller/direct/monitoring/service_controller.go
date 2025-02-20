@@ -29,8 +29,10 @@ import (
 	// TODO(contributor): Update the import with the google cloud client
 
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
-	"google.golang.org/api/option"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+        "google.golang.org/grpc"
+
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -53,17 +55,15 @@ type modelService struct {
 	config config.ControllerConfig
 }
 
-func (m *modelService) client(ctx context.Context) (*pb.ServiceClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+func (m *modelService) client(ctx context.Context) (pb.ServiceMonitoringServiceClient, error) {
+	grpcOpts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+
+	conn, err := grpc.DialContext(ctx, "monitoring.googleapis.com:443", grpcOpts...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("dialing grpc connection: %w", err)
 	}
-	gcpClient, err := pb.NewServiceClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building Service client: %w", err)
-	}
-	return gcpClient, err
+	gcpClient := pb.NewServiceMonitoringServiceClient(conn)
+	return gcpClient, nil
 }
 
 func (m *modelService) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -96,7 +96,7 @@ func (m *modelService) AdapterForURL(ctx context.Context, url string) (directbas
 
 type ServiceAdapter struct {
 	id        *krm.ServiceIdentity
-	gcpClient *pb.ServiceClient
+	gcpClient pb.ServiceMonitoringServiceClient
 	desired   *krm.MonitoringService
 	actual    *pb.Service
 }
@@ -142,7 +142,6 @@ func (a *ServiceAdapter) Create(ctx context.Context, createOp *directbase.Create
 		Service: resource,
 	}
 	service, err := a.gcpClient.CreateService(ctx, req)
-
 	if err != nil {
 		return fmt.Errorf("creating Service %s: %w", a.id, err)
 	}
@@ -192,7 +191,6 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		UpdateMask: updateMask,
 	}
 	service, err := a.gcpClient.UpdateService(ctx, req)
-
 	if err != nil {
 		return fmt.Errorf("updating Service %s: %w", a.id, err)
 	}
