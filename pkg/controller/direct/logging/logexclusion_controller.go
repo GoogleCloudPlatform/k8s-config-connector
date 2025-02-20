@@ -26,13 +26,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/logging/apiv2"
+
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+        "google.golang.org/grpc"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -56,16 +56,22 @@ type modelLogExclusion struct {
 }
 
 func (m *modelLogExclusion) client(ctx context.Context) (*loggingpb.ConfigServiceV2Client, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error getting GRPC options: %w", err)
 	}
-	gcpClient, err := loggingpb.NewConfigServiceV2Client(ctx, opts)
+        var grpcOpts []grpc.DialOption
+        for _, o := range opts {
+          if opt, ok := o.(option.WithGRPCDialOption); ok {
+            grpcOpts = append(grpcOpts, opt.DialOption())
+          }
+        }
+	conn, err := grpc.DialContext(ctx, "logging.googleapis.com:443", grpcOpts...)
 	if err != nil {
-		return nil, fmt.Errorf("building LogExclusion client: %w", err)
+		return nil, fmt.Errorf("error creating GRPC connection: %w", err)
 	}
-	return gcpClient, nil
+	client := loggingpb.NewConfigServiceV2Client(conn)
+        return client, nil
 }
 
 func (m *modelLogExclusion) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -79,14 +85,9 @@ func (m *modelLogExclusion) AdapterForObject(ctx context.Context, reader client.
 		return nil, err
 	}
 
-	// Get logging GCP client
-	gcpClient, err := m.client(ctx)
-	if err != nil {
-		return nil, err
-	}
 	return &LogExclusionAdapter{
 		id:        id,
-		gcpClient: gcpClient,
+                config: m.config,
 		desired:   obj,
 	}, nil
 }
@@ -98,7 +99,7 @@ func (m *modelLogExclusion) AdapterForURL(ctx context.Context, url string) (dire
 
 type LogExclusionAdapter struct {
 	id        *krm.LogExclusionIdentity
-	gcpClient *loggingpb.ConfigServiceV2Client
+        config config.ControllerConfig
 	desired   *krm.LoggingLogExclusion
 	actual    *loggingpb.LogExclusion
 }
@@ -110,11 +111,15 @@ var _ directbase.Adapter = &LogExclusionAdapter{}
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *LogExclusionAdapter) Find(ctx context.Context) (bool, error) {
+        client, err := a.config.GetLoggingClient(ctx)
+        if err != nil {
+                return false, fmt.Errorf("error getting logging client: %w", err)
+        }
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting LogExclusion", "name", a.id)
 
-	req := &loggingpb.GetExclusionRequest{Name: a.id.String()}
-	logexclusionpb, err := a.gcpClient.GetExclusion(ctx, req)
+	req := &loggingpb.GetLogExclusionRequest{Name: a.id.String()}
+	logexclusionpb, err := client.GetLogExclusion(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -128,6 +133,10 @@ func (a *LogExclusionAdapter) Find(ctx context.Context) (bool, error) {
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogExclusionAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+        client, err := a.config.GetLoggingClient(ctx)
+        if err != nil {
+                return fmt.Errorf("error getting logging client: %w", err)
+        }
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating LogExclusion", "name", a.id)
 	mapCtx := &direct.MapContext{}
@@ -139,11 +148,11 @@ func (a *LogExclusionAdapter) Create(ctx context.Context, createOp *directbase.C
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &loggingpb.CreateExclusionRequest{
+	req := &loggingpb.CreateLogExclusionRequest{
 		Parent:       a.id.Parent().String(),
-		Exclusion: resource,
+		LogExclusion: resource,
 	}
-if _, err := a.gcpClient.CreateExclusion(ctx, req); err != nil {
+if _, err = client.CreateLogExclusion(ctx, req); err != nil {
 		return fmt.Errorf("creating LogExclusion %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created LogExclusion", "name", a.id)
@@ -159,6 +168,10 @@ if _, err := a.gcpClient.CreateExclusion(ctx, req); err != nil {
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogExclusionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+        client, err := a.config.GetLoggingClient(ctx)
+        if err != nil {
+                return fmt.Errorf("error getting logging client: %w", err)
+        }
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating LogExclusion", "name", a.id)
 	mapCtx := &direct.MapContext{}
@@ -189,9 +202,9 @@ func (a *LogExclusionAdapter) Update(ctx context.Context, updateOp *directbase.U
 	req := &loggingpb.UpdateLogExclusionRequest{
 		Name:         a.id.String(),
 		UpdateMask:   updateMask,
-		Exclusion: desiredPb,
+		LogExclusion: desiredPb,
 	}
-if _, err = a.gcpClient.UpdateExclusion(ctx, req); err != nil {
+if _, err = client.UpdateLogExclusion(ctx, req); err != nil {
 		return fmt.Errorf("updating LogExclusion %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated LogExclusion", "name", a.id)
@@ -238,13 +251,13 @@ func (a *LogExclusionAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 	log.V(2).Info("deleting LogExclusion", "name", a.id)
 
 	req := &loggingpb.DeleteExclusionRequest{Name: a.id.String()}
-if _, err := a.gcpClient.DeleteExclusion(ctx, req); err != nil {
+if _, err := a.gcpClient.DeleteLogExclusion(ctx, req); err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
 			log.V(2).Info("skipping delete for non-existent LogExclusion, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
-		return fmt.Errorf("deleting LogExclusion %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting LogExclusion %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted LogExclusion", "name", a.id)
         return true, nil
