@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: logginglogsinks.logging.cnrm.cloud.google.com
 spec:
   group: logging.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: LoggingLogSink
+    listKind: LoggingLogSinkList
     plural: logginglogsinks
     shortNames:
     - gcplogginglogsink
@@ -40,273 +39,34 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: LoggingLogSink is the Schema for the LoggingLogSink API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: LoggingLogSinkSpec defines the desired state of LoggingLogSink
             properties:
-              bigqueryOptions:
-                description: Options that affect sinks exporting data to BigQuery.
-                properties:
-                  usePartitionedTables:
-                    description: Whether to use BigQuery's partition tables. By default,
-                      Logging creates dated tables based on the log entries' timestamps,
-                      e.g. syslog_20170523. With partitioned tables the date suffix
-                      is no longer present and special query syntax has to be used
-                      instead. In both cases, tables are sharded based on UTC timezone.
-                    type: boolean
-                required:
-                - usePartitionedTables
-                type: object
-              description:
-                description: A description of this sink. The maximum length of the
-                  description is 8000 characters.
+              location:
+                description: Immutable.
                 type: string
-              destination:
-                oneOf:
-                - required:
-                  - bigQueryDatasetRef
-                - required:
-                  - loggingLogBucketRef
-                - required:
-                  - pubSubTopicRef
-                - required:
-                  - storageBucketRef
-                properties:
-                  bigQueryDatasetRef:
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: 'Allowed value: string of the format `bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}`,
-                          where {{value}} is the `name` field of a `BigQueryDataset`
-                          resource.'
-                        type: string
-                      name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                        type: string
-                      namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                        type: string
-                    type: object
-                  loggingLogBucketRef:
-                    description: Only `external` field is supported to configure the
-                      reference.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: 'Allowed value: string of the format `logging.googleapis.com/projects/{{project}}/locations/{{location}}/buckets/{{value}}`,
-                          where {{value}} is the `name` field of a `LoggingLogBucket`
-                          resource.'
-                        type: string
-                      name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                        type: string
-                      namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                        type: string
-                    type: object
-                  pubSubTopicRef:
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: 'Allowed value: string of the format `pubsub.googleapis.com/projects/{{project}}/topics/{{value}}`,
-                          where {{value}} is the `name` field of a `PubSubTopic` resource.'
-                        type: string
-                      name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                        type: string
-                      namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                        type: string
-                    type: object
-                  storageBucketRef:
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: 'Allowed value: string of the format `storage.googleapis.com/{{value}}`,
-                          where {{value}} is the `name` field of a `StorageBucket`
-                          resource.'
-                        type: string
-                      name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                        type: string
-                      namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                        type: string
-                    type: object
-                type: object
-              disabled:
-                description: If set to True, then this sink is disabled and it does
-                  not export any log entries.
-                type: boolean
-              exclusions:
-                description: Log entries that match any of the exclusion filters will
-                  not be exported. If a log entry is matched by both filter and one
-                  of exclusion's filters, it will not be exported.
-                items:
-                  properties:
-                    description:
-                      description: A description of this exclusion.
-                      type: string
-                    disabled:
-                      description: If set to True, then this exclusion is disabled
-                        and it does not exclude any log entries.
-                      type: boolean
-                    filter:
-                      description: An advanced logs filter that matches the log entries
-                        to be excluded. By using the sample function, you can exclude
-                        less than 100% of the matching log entries.
-                      type: string
-                    name:
-                      description: A client-assigned identifier, such as "load-balancer-exclusion".
-                        Identifiers are limited to 100 characters and can include
-                        only letters, digits, underscores, hyphens, and periods. First
-                        character has to be alphanumeric.
-                      type: string
-                  required:
-                  - filter
-                  - name
-                  type: object
-                type: array
-              filter:
-                description: The filter to apply when exporting logs. Only log entries
-                  that match the filter are exported.
-                type: string
-              folderRef:
-                description: |-
-                  The folder in which to create the sink. Only one of projectRef,
-                  folderRef, or organizationRef may be specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The `folderId` field of a `Folder`
-                      resource.'
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
-              includeChildren:
-                description: Immutable. Whether or not to include children organizations
-                  in the sink export. If true, logs associated with child projects
-                  are also exported; otherwise only logs relating to the provided
-                  organization are included.
-                type: boolean
-              organizationRef:
-                description: |-
-                  The organization in which to create the sink. Only one of projectRef,
-                  folderRef, or organizationRef may be specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The `name` field of an `Organization`
-                      resource.'
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               projectRef:
-                description: |-
-                  The project in which to create the sink. Only one of projectRef,
-                  folderRef, or organizationRef may be specified.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -323,36 +83,35 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The LoggingLogSink name. If not given, the metadata.name
+                  will be used.
                 type: string
-              uniqueWriterIdentity:
-                description: Whether or not to create a unique identity associated
-                  with this sink. If false (the default), then the writer_identity
-                  used is serviceAccount:cloud-logs@system.gserviceaccount.com. If
-                  true, then a unique service account is created and used for this
-                  sink. If you wish to publish logs across projects, you must set
-                  unique_writer_identity to true.
-                type: boolean
             required:
-            - destination
+            - location
+            - projectRef
             type: object
           status:
+            description: LoggingLogSinkStatus defines the config connector machine
+              state of LoggingLogSink
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -376,17 +135,22 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the LoggingLogSink resource in
+                  GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              writerIdentity:
-                description: The identity associated with this sink. This identity
-                  must be granted write access to the configured destination.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -395,9 +159,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
