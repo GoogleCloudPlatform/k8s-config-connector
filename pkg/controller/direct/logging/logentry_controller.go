@@ -27,7 +27,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gcp"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
@@ -55,17 +54,8 @@ type modelLogEntry struct {
 	config config.ControllerConfig
 }
 
-func (m *modelLogEntry) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building LogEntry client: %w", err)
-	}
-	return gcpClient, err
+func (m *modelLogEntry) client(ctx context.Context) (interface{}, error) {
+	return nil, nil
 }
 
 func (m *modelLogEntry) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -98,9 +88,9 @@ func (m *modelLogEntry) AdapterForURL(ctx context.Context, url string) (directba
 
 type LogEntryAdapter struct {
 	id        *krm.LogEntryIdentity
-	gcpClient *gcp.Client
+	gcpClient interface{}
 	desired   *krm.LoggingLogEntry
-	actual    *loggingpb.LogEntry
+	actual    *unstructured.Unstructured
 }
 
 var _ directbase.Adapter = &LogEntryAdapter{}
@@ -113,17 +103,13 @@ func (a *LogEntryAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting LogEntry", "name", a.id)
 
-	req := &loggingpb.GetLogEntryRequest{Name: a.id.String()}
-	logentrypb, err := a.gcpClient.GetLogEntry(ctx, req)
+	//req := &loggingpb.GetLogEntryRequest{Name: a.id.String()}
+	_, err := fmt.Println("Not implemented")
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
-		return false, fmt.Errorf("getting LogEntry %q: %w", a.id, err)
+		return false, fmt.Errorf("Not implemented: %w", err)
 	}
-
-	a.actual = logentrypb
-	return true, nil
+	a.actual = &unstructured.Unstructured{}
+	return false, nil
 }
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -132,34 +118,22 @@ func (a *LogEntryAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log.V(2).Info("creating LogEntry", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := LoggingLogEntrySpec_ToProto(mapCtx, &desired.Spec)
+	//desired := a.desired.DeepCopy()
+	//resource := LoggingLogEntrySpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &loggingpb.CreateLogEntryRequest{
-		Parent:   a.id.Parent().String(),
-		LogEntry: resource,
-	}
-	op, err := a.gcpClient.CreateLogEntry(ctx, req)
+	//req := &loggingpb.CreateLogEntryRequest{
+		//Parent:   a.id.Parent().String(),
+		//LogEntry: resource,
+	//}
+	_, err := fmt.Println("Not implemented")
 	if err != nil {
 		return fmt.Errorf("creating LogEntry %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("LogEntry %s waiting creation: %w", a.id, err)
-	}
-	log.V(2).Info("successfully created LogEntry", "name", a.id)
-
-	status := &krm.LoggingLogEntryStatus{}
-	status.ObservedState = LoggingLogEntryObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return createOp.UpdateStatus(ctx, nil, nil)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -168,77 +142,45 @@ func (a *LogEntryAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("updating LogEntry", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := LoggingLogEntrySpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	//desiredPb := LoggingLogEntrySpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	//paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
-	if len(paths) == 0 {
+	//if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		status := &krm.LoggingLogEntryStatus{}
-		status.ObservedState = LoggingLogEntryObservedState_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		return updateOp.UpdateStatus(ctx, status, nil)
-	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+		//status := &krm.LoggingLogEntryStatus{}
+		//status.ObservedState = LoggingLogEntryObservedState_FromProto(mapCtx, a.actual)
+		//if mapCtx.Err() != nil {
+		//	return mapCtx.Err()
+		//}
+		return updateOp.UpdateStatus(ctx, nil, nil)
+	//}
+	//updateMask := &fieldmaskpb.FieldMask{
+	//	Paths: sets.List(paths)}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &loggingpb.UpdateLogEntryRequest{
-		Name:       a.id,
-		UpdateMask: updateMask,
-		LogEntry:   desiredPb,
+		//Name:       "Not implemented",
+		//UpdateMask: updateMask,
+		//LogEntry:   desiredPb,
 	}
-	op, err := a.gcpClient.UpdateLogEntry(ctx, req)
+	_, err := fmt.Println("Not implemented")
 	if err != nil {
 		return fmt.Errorf("updating LogEntry %s: %w", a.id, err)
 	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("LogEntry %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated LogEntry", "name", a.id)
+	return updateOp.UpdateStatus(ctx, nil, nil)
 
-	status := &krm.LoggingLogEntryStatus{}
-	status.ObservedState = LoggingLogEntryObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *LogEntryAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	if a.actual == nil {
-		return nil, fmt.Errorf("Find() not called")
-	}
-	u := &unstructured.Unstructured{}
-
-	obj := &krm.LoggingLogEntry{}
-	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(LoggingLogEntrySpec_FromProto(mapCtx, a.actual))
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
-	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
-	if err != nil {
-		return nil, err
-	}
-
-	u.SetName(a.actual.Id)
-	u.SetGroupVersionKind(krm.LoggingLogEntryGVK)
-
-	u.Object = uObj
-	return u, nil
+	return nil, fmt.Errorf("not implemented")
 }
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
@@ -246,21 +188,11 @@ func (a *LogEntryAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting LogEntry", "name", a.id)
 
-	req := &loggingpb.DeleteLogEntryRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteLogEntry(ctx, req)
+	//req := &loggingpb.DeleteLogEntryRequest{Name: a.id.String()}
+	_, err := fmt.Println("Not implemented")
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
 			log.V(2).Info("skipping delete for non-existent LogEntry, assuming it was already deleted", "name", a.id.String())
 			return true, nil
-		}
-		return false, fmt.Errorf("deleting LogEntry %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully deleted LogEntry", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete LogEntry %s: %w", a.id, err)
 	}
 	return true, nil
 }
