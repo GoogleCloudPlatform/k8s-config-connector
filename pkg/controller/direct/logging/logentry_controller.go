@@ -19,23 +19,15 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
-	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
-
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -100,11 +92,12 @@ var _ directbase.Adapter = &LogEntryAdapter{}
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *LogEntryAdapter) Find(ctx context.Context) (bool, error) {
+	var err error
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting LogEntry", "name", a.id)
 
 	//req := &loggingpb.GetLogEntryRequest{Name: a.id.String()}
-	_, err := fmt.Println("Not implemented")
+	fmt.Println("Not implemented")
 	if err != nil {
 		return false, fmt.Errorf("Not implemented: %w", err)
 	}
@@ -165,12 +158,8 @@ func (a *LogEntryAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	//	Paths: sets.List(paths)}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &loggingpb.UpdateLogEntryRequest{
-		//Name:       "Not implemented",
-		//UpdateMask: updateMask,
-		//LogEntry:   desiredPb,
-	}
-	_, err := fmt.Println("Not implemented")
+	_ = loggingpb.LogEntry{}
+	fmt.Println("Not implemented")
 	if err != nil {
 		return fmt.Errorf("updating LogEntry %s: %w", a.id, err)
 	}
