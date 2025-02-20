@@ -26,7 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-        loggingapiv2 "cloud.google.com/go/logging/apiv2"
+	loggingapiv2 "cloud.google.com/go/logging/apiv2"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -82,9 +82,9 @@ func (m *modelLogBucket) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, err
 	}
 	return &LogBucketAdapter{
-		id:        id,
-		client: client,
-		desired:   obj,
+		id:      id,
+		client:  client,
+		desired: obj,
 	}, nil
 }
 
@@ -94,10 +94,10 @@ func (m *modelLogBucket) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type LogBucketAdapter struct {
-        id        *krm.LogBucketIdentity
-        client *loggingapiv2.ConfigClient
-        desired   *krm.LoggingLogBucket
-        actual    *loggingpb.LogBucket
+	id      *krm.LogBucketIdentity
+	client  *loggingapiv2.ConfigClient
+	desired *krm.LoggingLogBucket
+	actual  *loggingpb.LogBucket
 }
 
 var _ directbase.Adapter = &LogBucketAdapter{}
@@ -136,9 +136,9 @@ func (a *LogBucketAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 
 	req := &loggingpb.CreateBucketRequest{
-		Parent:    a.id.Parent().String(),
-		Bucket: resource,
-		BucketId:  a.id.ID(),
+		Parent:   a.id.Parent().String(),
+		Bucket:   resource,
+		BucketId: a.id.ID(),
 	}
 	created, err := a.client.CreateBucket(ctx, req)
 	if err != nil {
@@ -170,9 +170,9 @@ func (a *LogBucketAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	var err error
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-        if err != nil {
-               return err
-        }
+	if err != nil {
+		return err
+	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.LoggingLogBucketStatus{}
@@ -188,7 +188,7 @@ func (a *LogBucketAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	req := &loggingpb.UpdateBucketRequest{
 		Name:       a.id.String(),
 		UpdateMask: updateMask,
-		Bucket:  desiredPb,
+		Bucket:     desiredPb,
 	}
 	updated, err := a.client.UpdateBucket(ctx, req)
 	if err != nil {
