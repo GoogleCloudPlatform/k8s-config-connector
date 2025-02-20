@@ -110,7 +110,7 @@ func (a *LogBucketAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting LogBucket", "name", a.id)
 
-	req := &loggingpb.GetLogBucketRequest{Name: a.id.String()}
+	req := &loggingpb.GetBucketRequest{Name: a.id.String()}
 	logbucket, err := a.client.GetBucket(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -135,10 +135,10 @@ func (a *LogBucketAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		return mapCtx.Err()
 	}
 
-	req := &loggingpb.CreateLogBucketRequest{
+	req := &loggingpb.CreateBucketRequest{
 		Parent:    a.id.Parent().String(),
-		LogBucket: resource,
-		BucketId:  a.id.ID,
+		Bucket: resource,
+		BucketId:  a.id.ID(),
 	}
 	created, err := a.client.CreateBucket(ctx, req)
 	if err != nil {
@@ -185,10 +185,10 @@ func (a *LogBucketAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths)}
 
-	req := &loggingpb.UpdateLogBucketRequest{
+	req := &loggingpb.UpdateBucketRequest{
 		Name:       a.id.String(),
 		UpdateMask: updateMask,
-		LogBucket:  desiredPb,
+		Bucket:  desiredPb,
 	}
 	updated, err := a.client.UpdateBucket(ctx, req)
 	if err != nil {
@@ -236,7 +236,7 @@ func (a *LogBucketAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting LogBucket", "name", a.id)
 
-	req := &loggingpb.DeleteLogBucketRequest{Name: a.id.String()}
+	req := &loggingpb.DeleteBucketRequest{Name: a.id.String()}
 	err := a.client.DeleteBucket(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
