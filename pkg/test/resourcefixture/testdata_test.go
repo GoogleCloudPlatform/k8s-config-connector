@@ -39,14 +39,13 @@ var (
 		"namespacepolicytoclusterpolicy": true,
 		"serviceidentitypolicytoserviceaccountpolicy":               true,
 		"privateserviceconnectioncomputeregionnetworkendpointgroup": true,
-		"computeserviceattachment":                                  true,
-		"acmfeature":                                                true,
-		"mcifeature":                                                true,
-		"mcsdfeature":                                               true,
-		"iapidentityawareproxyclient":                               true,
-		"networksecurityclienttlspolicy":                            true,
-		"subnetconnector":                                           true,
-		"oauth2clientidcomputebackendservice":                       true,
+		"acmfeature":                          true,
+		"mcifeature":                          true,
+		"mcsdfeature":                         true,
+		"iapidentityawareproxyclient":         true,
+		"networksecurityclienttlspolicy":      true,
+		"subnetconnector":                     true,
+		"oauth2clientidcomputebackendservice": true,
 	}
 )
 
