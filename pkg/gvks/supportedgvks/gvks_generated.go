@@ -3264,6 +3264,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "logging.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "LoggingLogEntry",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "logging.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "LoggingLogExclusion",
 	}: {

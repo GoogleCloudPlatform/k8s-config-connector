@@ -18,8 +18,8 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -119,8 +119,8 @@ func (a *LogEntryAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	//req := &loggingpb.CreateLogEntryRequest{
-		//Parent:   a.id.Parent().String(),
-		//LogEntry: resource,
+	//Parent:   a.id.Parent().String(),
+	//LogEntry: resource,
 	//}
 	_, err := fmt.Println("Not implemented")
 	if err != nil {
@@ -146,13 +146,13 @@ func (a *LogEntryAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return err
 	}
 	//if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		//status := &krm.LoggingLogEntryStatus{}
-		//status.ObservedState = LoggingLogEntryObservedState_FromProto(mapCtx, a.actual)
-		//if mapCtx.Err() != nil {
-		//	return mapCtx.Err()
-		//}
-		return updateOp.UpdateStatus(ctx, nil, nil)
+	log.V(2).Info("no field needs update", "name", a.id)
+	//status := &krm.LoggingLogEntryStatus{}
+	//status.ObservedState = LoggingLogEntryObservedState_FromProto(mapCtx, a.actual)
+	//if mapCtx.Err() != nil {
+	//	return mapCtx.Err()
+	//}
+	return updateOp.UpdateStatus(ctx, nil, nil)
 	//}
 	//updateMask := &fieldmaskpb.FieldMask{
 	//	Paths: sets.List(paths)}
@@ -180,8 +180,8 @@ func (a *LogEntryAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	//req := &loggingpb.DeleteLogEntryRequest{Name: a.id.String()}
 	_, err := fmt.Println("Not implemented")
 	if err != nil {
-			log.V(2).Info("skipping delete for non-existent LogEntry, assuming it was already deleted", "name", a.id.String())
-			return true, nil
+		log.V(2).Info("skipping delete for non-existent LogEntry, assuming it was already deleted", "name", a.id.String())
+		return true, nil
 	}
 	return true, nil
 }
