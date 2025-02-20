@@ -52,13 +52,13 @@ type modelLogBucket struct {
 	config config.ControllerConfig
 }
 
-func (m *modelLogBucket) client(ctx context.Context) (*loggingapiv2.Client, error) {
+func (m *modelLogBucket) client(ctx context.Context) (*loggingapiv2.ConfigClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := loggingapiv2.NewClient(ctx, opts...)
+	client, err := loggingapiv2.NewConfigClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building logbucket client: %w", err)
 	}
@@ -95,7 +95,7 @@ func (m *modelLogBucket) AdapterForURL(ctx context.Context, url string) (directb
 
 type LogBucketAdapter struct {
         id        *krm.LogBucketIdentity
-        client *loggingapiv2.Client
+        client *loggingapiv2.ConfigClient
         desired   *krm.LoggingLogBucket
         actual    *loggingpb.LogBucket
 }
@@ -111,7 +111,7 @@ func (a *LogBucketAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting LogBucket", "name", a.id)
 
 	req := &loggingpb.GetLogBucketRequest{Name: a.id.String()}
-	logbucket, err := a.client.GetLogBucket(ctx, req)
+	logbucket, err := a.client.GetBucket(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -140,7 +140,7 @@ func (a *LogBucketAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		LogBucket: resource,
 		BucketId:  a.id.ID,
 	}
-	created, err := a.client.CreateLogBucket(ctx, req)
+	created, err := a.client.CreateBucket(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating LogBucket %s: %w", a.id, err)
 	}
@@ -190,7 +190,7 @@ func (a *LogBucketAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		UpdateMask: updateMask,
 		LogBucket:  desiredPb,
 	}
-	updated, err := a.client.UpdateLogBucket(ctx, req)
+	updated, err := a.client.UpdateBucket(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating LogBucket %s: %w", a.id, err)
 	}
@@ -237,7 +237,7 @@ func (a *LogBucketAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	log.V(2).Info("deleting LogBucket", "name", a.id)
 
 	req := &loggingpb.DeleteLogBucketRequest{Name: a.id.String()}
-	err := a.client.DeleteLogBucket(ctx, req)
+	err := a.client.DeleteBucket(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
