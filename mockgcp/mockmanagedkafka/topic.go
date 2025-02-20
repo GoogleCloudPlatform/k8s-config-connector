@@ -43,7 +43,7 @@ func (s *managedKafka) GetTopic(ctx context.Context, req *pb.GetTopicRequest) (*
 	obj := &pb.Topic{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%v' was not found", name)
+			return nil, status.Errorf(codes.NotFound, "org.apache.kafka.common.errors.UnknownTopicOrPartitionException: This server does not host this topic-partition.")
 		}
 		return nil, err
 	}
