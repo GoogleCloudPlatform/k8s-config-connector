@@ -421,7 +421,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}' was not found",
+    "message": "org.apache.kafka.common.errors.UnknownTopicOrPartitionException: This server does not host this topic-partition.",
     "status": "NOT_FOUND"
   }
 }
