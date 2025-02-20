@@ -19,7 +19,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
@@ -54,11 +53,8 @@ func (t *RunTerminalCommand) Run(ctx context.Context, c *Chat, args map[string]a
 
 	klog.V(2).Infof("RunTerminalCommand: %+v", t)
 
-	var cmd *exec.Cmd
-
-	cmd = exec.CommandContext(ctx, "/bin/bash", "-c", t.Command)
+	cmd := exec.CommandContext(ctx, "/bin/bash", "-c", t.Command + " " + t.Args)
 	cmd.Dir = c.baseDir
-	cmd.Args = []string{t.Command, t.Args}
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
