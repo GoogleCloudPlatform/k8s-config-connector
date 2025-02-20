@@ -91,7 +91,7 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
-require cloud.google.com/go/logging v1.13.0 // indirect
+require cloud.google.com/go/logging v1.13.0
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect

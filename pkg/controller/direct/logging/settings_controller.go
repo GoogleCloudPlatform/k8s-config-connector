@@ -139,14 +139,14 @@ func (a *SettingsAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &loggingpb.UpdateSettingsRequest{
-		Name: a.id.String(),
+		Name:     a.id.String(),
 		Settings: resource,
 	}
 	created, err := a.gcpClient.UpdateSettings(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating Settings %s: %w", a.id, err)
 	}
-	
+
 	if err != nil {
 		return fmt.Errorf("Settings %s waiting creation: %w", a.id, err)
 	}
@@ -199,7 +199,7 @@ func (a *SettingsAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if err != nil {
 		return fmt.Errorf("updating Settings %s: %w", a.id, err)
 	}
-	
+
 	if err != nil {
 		return fmt.Errorf("Settings %s waiting update: %w", a.id, err)
 	}
@@ -242,5 +242,5 @@ func (a *SettingsAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *SettingsAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-        return true, nil
+	return true, nil
 }
