@@ -17,7 +17,7 @@ package logging
 import (
 	"context"
 	"fmt"
-	"google.golang.org/grpc"
+
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -62,11 +62,11 @@ func (m *modelLogSink) client(ctx context.Context) (loggingpb.ConfigServiceV2Cli
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building LogSink client: %w", err)
 	}
-        client := loggingpb.NewConfigServiceV2Client(gcpClient)
+        client := loggingpb.NewConfigServiceV2Client(gcpClient.Connection())
 	return client, err
 }
 
@@ -145,13 +145,9 @@ func (a *LogSinkAdapter) Create(ctx context.Context, createOp *directbase.Create
 		Parent:  a.id.Parent().String(),
 		Sink: resource,
 	}
-	op, err := a.gcpClient.CreateSink(ctx, req)
+	created, err := a.gcpClient.CreateSink(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating LogSink %s: %w", a.id, err)
-	}
-	created, err := a.gcpClient.CreateSink(ctx,req)
-	if err != nil {
-		return fmt.Errorf("LogSink %s creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created LogSink", "name", a.id)
 
@@ -198,13 +194,9 @@ func (a *LogSinkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		UpdateMask: updateMask,
 		Sink:    desiredPb,
 	}
-	op, err := a.gcpClient.UpdateSink(ctx, req)
+	updated, err := a.gcpClient.UpdateSink(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating LogSink %s: %w", a.id, err)
-	}
-	updated, err := a.gcpClient.UpdateSink(ctx,req)
-	if err != nil {
-		return fmt.Errorf("LogSink %s update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated LogSink", "name", a.id)
 
@@ -249,19 +241,13 @@ func (a *LogSinkAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	log.V(2).Info("deleting LogSink", "name", a.id)
 
 	req := &loggingpb.DeleteSinkRequest{SinkName: a.id.String()}
-	op, err := a.gcpClient.DeleteSink(ctx, req)
+	_, err := a.gcpClient.DeleteSink(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
 			log.V(2).Info("skipping delete for non-existent LogSink, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting LogSink %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully deleted LogSink", "name", a.id)
-
-	_, err = a.gcpClient.DeleteSink(ctx,req)
-	if err != nil {
 		return false, fmt.Errorf("deleting LogSink %s: %w", a.id, err)
 	}
 	return true, nil
