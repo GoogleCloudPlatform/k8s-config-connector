@@ -19,8 +19,8 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -69,7 +69,7 @@ func (in *Instance_PrivateConfig) DeepCopyInto(out *Instance_PrivateConfig) {
 	}
 	if in.CaPoolRef != nil {
 		in, out := &in.CaPoolRef, &out.CaPoolRef
-		*out = new(v1beta1.PrivateCACAPoolRef)
+		*out = new(refsv1beta1.PrivateCACAPoolRef)
 		**out = **in
 	}
 }
@@ -333,7 +333,7 @@ func (in *SecureSourceManagerInstanceSpec) DeepCopyInto(out *SecureSourceManager
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -350,7 +350,7 @@ func (in *SecureSourceManagerInstanceSpec) DeepCopyInto(out *SecureSourceManager
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
+		*out = new(refsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.PrivateConfig != nil {
@@ -375,7 +375,7 @@ func (in *SecureSourceManagerInstanceStatus) DeepCopyInto(out *SecureSourceManag
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
@@ -524,7 +524,7 @@ func (in *SecureSourceManagerRepositorySpec) DeepCopyInto(out *SecureSourceManag
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -559,7 +559,7 @@ func (in *SecureSourceManagerRepositoryStatus) DeepCopyInto(out *SecureSourceMan
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
