@@ -27,11 +27,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/logging/apiv1"
-	loggingpb "cloud.google.com/go/logging/apiv1/loggingpb"
+	gcp "cloud.google.com/go/logging/apiv2"
+	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	loggingpb "cloud.google.com/go/logging/apiv1/loggingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -56,13 +54,13 @@ type modelSettings struct {
 	config config.ControllerConfig
 }
 
-func (m *modelSettings) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelSettings) client(ctx context.Context) (*gcp.ConfigClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewConfigClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Settings client: %w", err)
 	}
@@ -99,7 +97,7 @@ func (m *modelSettings) AdapterForURL(ctx context.Context, url string) (directba
 
 type SettingsAdapter struct {
 	id        *krm.SettingsIdentity
-	gcpClient *gcp.Client
+	gcpClient *gcp.ConfigClient
 	desired   *krm.LoggingSettings
 	actual    *loggingpb.Settings
 }
@@ -140,15 +138,15 @@ func (a *SettingsAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &loggingpb.CreateSettingsRequest{
-		Parent:   a.id.Parent().String(),
+	req := &loggingpb.UpdateSettingsRequest{
+		Name: a.id.String(),
 		Settings: resource,
 	}
-	op, err := a.gcpClient.CreateSettings(ctx, req)
+	created, err := a.gcpClient.UpdateSettings(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating Settings %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
+	
 	if err != nil {
 		return fmt.Errorf("Settings %s waiting creation: %w", a.id, err)
 	}
@@ -175,7 +173,7 @@ func (a *SettingsAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -193,15 +191,15 @@ func (a *SettingsAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &loggingpb.UpdateSettingsRequest{
-		Name:       a.id,
+		Name:       a.id.String(),
 		UpdateMask: updateMask,
 		Settings:   desiredPb,
 	}
-	op, err := a.gcpClient.UpdateSettings(ctx, req)
+	updated, err := a.gcpClient.UpdateSettings(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Settings %s: %w", a.id, err)
 	}
-	updated, err := op.Wait(ctx)
+	
 	if err != nil {
 		return fmt.Errorf("Settings %s waiting update: %w", a.id, err)
 	}
@@ -235,7 +233,7 @@ func (a *SettingsAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.LoggingSettingsGVK)
 
 	u.Object = uObj
@@ -244,24 +242,5 @@ func (a *SettingsAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *SettingsAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Settings", "name", a.id)
-
-	req := &loggingpb.DeleteSettingsRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteSettings(ctx, req)
-	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent Settings, assuming it was already deleted", "name", a.id.String())
-			return true, nil
-		}
-		return false, fmt.Errorf("deleting Settings %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully deleted Settings", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete Settings %s: %w", a.id, err)
-	}
-	return true, nil
+        return true, nil
 }
