@@ -102,7 +102,7 @@ func (p *MemorystoreInstanceParent) String() string {
 func ParseMemorystoreInstanceExternal(external string) (*MemoryStoreInstanceIdentity, error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instance" {
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instances" {
 		return nil, fmt.Errorf("format of MemorystoreInstance external=%q was not known (use projects/{{projectId}}/locations/{{location}}/instances/{{instanceID}})", external)
 	}
 	return &MemoryStoreInstanceIdentity{
