@@ -781,7 +781,9 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}",
     "privateConfig": {
       "caPool": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
-      "isPrivate": true
+      "httpServiceAttachment": "projects/tp-project/regions/us-central1/serviceAttachments/httpAttachment",
+      "isPrivate": true,
+      "sshServiceAttachment": "projects/tp-project/regions/us-central1/serviceAttachments/sshAttachment"
     },
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -817,7 +819,9 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}",
   "privateConfig": {
     "caPool": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
-    "isPrivate": true
+    "httpServiceAttachment": "projects/tp-project/regions/us-central1/serviceAttachments/httpAttachment",
+    "isPrivate": true,
+    "sshServiceAttachment": "projects/tp-project/regions/us-central1/serviceAttachments/sshAttachment"
   },
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"

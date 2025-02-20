@@ -57,6 +57,10 @@
 </tbody>
 </table>
 
+## Prerequisites
+
+Secure Source Manager is generally available (GA) by invitation only. To use Secure Source Manager, contact your Google Account team.
+
 ## Custom Resource Definition Properties
 
 
