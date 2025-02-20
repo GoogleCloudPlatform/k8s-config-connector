@@ -406,7 +406,5 @@ operator-e2e-tests:
 generate-types:
 	cd dev/tools/controllerbuilder && \
 	./generate-proto.sh && \
-	for config in config/*.yaml; do \
-		go run . generate-types --config $$config; \
-	done
+	find config -name "*.yaml" -type f | xargs -I {} go run . generate-types --config {}
 	dev/tasks/fix-gofmt 
