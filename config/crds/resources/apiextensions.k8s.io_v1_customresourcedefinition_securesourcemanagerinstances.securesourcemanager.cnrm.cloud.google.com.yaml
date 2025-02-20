@@ -127,17 +127,9 @@ spec:
                         description: The `namespace` of a `PrivateCACAPool` resource.
                         type: string
                     type: object
-                  httpServiceAttachment:
-                    description: Output only. Service Attachment for HTTP, resource
-                      is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
-                    type: string
                   isPrivate:
                     description: Required. Immutable. Indicate if it's private instance.
                     type: boolean
-                  sshServiceAttachment:
-                    description: Output only. Service Attachment for SSH, resource
-                      is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
-                    type: string
                 type: object
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
