@@ -1,4 +1,4 @@
-apiVersion: securesourcemanager.cnrm.cloud.google.com/v1alpha1
+apiVersion: securesourcemanager.cnrm.cloud.google.com/v1beta1
 kind: SecureSourceManagerInstance
 metadata:
   finalizers:

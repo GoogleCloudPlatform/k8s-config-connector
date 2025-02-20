@@ -113,6 +113,7 @@ type Instance_PrivateConfig struct {
 
 // SecureSourceManagerInstance is the Schema for the SecureSourceManagerInstance API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type SecureSourceManagerInstance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
