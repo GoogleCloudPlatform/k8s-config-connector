@@ -26,7 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	monitoringpb "cloud.google.com/go/monitoring/apiv3/monitoringpb"
+	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
+	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -51,13 +52,13 @@ type modelNotificationChannel struct {
 	config config.ControllerConfig
 }
 
-func (m *modelNotificationChannel) client(ctx context.Context) (*monitoringpb.NotificationChannelServiceV3Client, error) {
+func (m *modelNotificationChannel) client(ctx context.Context) (*monitoring.NotificationChannelClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := monitoringpb.NewNotificationChannelServiceV3Client(ctx, opts...)
+	gcpClient, err := monitoring.NewNotificationChannelClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building NotificationChannel client: %w", err)
 	}
@@ -94,7 +95,7 @@ func (m *modelNotificationChannel) AdapterForURL(ctx context.Context, url string
 
 type NotificationChannelAdapter struct {
 	id        *krm.NotificationChannelIdentity
-	gcpClient *monitoringpb.NotificationChannelServiceV3Client
+	gcpClient *monitoring.NotificationChannelClient
 	desired   *krm.MonitoringNotificationChannel
 	actual    *monitoringpb.NotificationChannel
 }
@@ -143,10 +144,8 @@ func (a *NotificationChannelAdapter) Create(ctx context.Context, createOp *direc
 	if err != nil {
 		return fmt.Errorf("creating NotificationChannel %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("NotificationChannel %s waiting creation: %w", a.id, err)
-	}
+	created := op
+
 	log.V(2).Info("successfully created NotificationChannel", "name", a.id)
 
 	status := &krm.MonitoringNotificationChannelStatus{}
@@ -198,10 +197,7 @@ func (a *NotificationChannelAdapter) Update(ctx context.Context, updateOp *direc
 	if err != nil {
 		return fmt.Errorf("updating NotificationChannel %s: %w", a.id, err)
 	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("NotificationChannel %s waiting update: %w", a.id, err)
-	}
+	updated := op
 	log.V(2).Info("successfully updated NotificationChannel", "name", a.id)
 
 	status := &krm.MonitoringNotificationChannelStatus{}
@@ -245,7 +241,7 @@ func (a *NotificationChannelAdapter) Delete(ctx context.Context, deleteOp *direc
 	log.V(2).Info("deleting NotificationChannel", "name", a.id)
 
 	req := &monitoringpb.DeleteNotificationChannelRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteNotificationChannel(ctx, req)
+	err := a.gcpClient.DeleteNotificationChannel(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -255,10 +251,5 @@ func (a *NotificationChannelAdapter) Delete(ctx context.Context, deleteOp *direc
 		return false, fmt.Errorf("deleting NotificationChannel %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted NotificationChannel", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete NotificationChannel %s: %w", a.id, err)
-	}
 	return true, nil
 }
