@@ -28,6 +28,7 @@ import (
 
 	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/logging/apiv1"
+	loggingpb "cloud.google.com/go/logging/apiv1/loggingpb"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
 	loggingpb "cloud.google.com/go/logging/apiv1/loggingpb"
