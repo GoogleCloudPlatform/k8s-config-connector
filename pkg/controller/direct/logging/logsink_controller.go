@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -66,7 +65,7 @@ func (m *modelLogSink) client(ctx context.Context) (loggingpb.ConfigServiceV2Cli
 	if err != nil {
 		return nil, fmt.Errorf("building LogSink client: %w", err)
 	}
-        client := loggingpb.NewConfigServiceV2Client(gcpClient.Connection())
+	client := loggingpb.NewConfigServiceV2Client(gcpClient.Connection())
 	return client, err
 }
 
@@ -142,8 +141,8 @@ func (a *LogSinkAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &loggingpb.CreateSinkRequest{
-		Parent:  a.id.Parent().String(),
-		Sink: resource,
+		Parent: a.id.Parent().String(),
+		Sink:   resource,
 	}
 	created, err := a.gcpClient.CreateSink(ctx, req)
 	if err != nil {
@@ -190,9 +189,9 @@ func (a *LogSinkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &loggingpb.UpdateSinkRequest{
-		SinkName:       a.id.String(),
+		SinkName:   a.id.String(),
 		UpdateMask: updateMask,
-		Sink:    desiredPb,
+		Sink:       desiredPb,
 	}
 	updated, err := a.gcpClient.UpdateSink(ctx, req)
 	if err != nil {

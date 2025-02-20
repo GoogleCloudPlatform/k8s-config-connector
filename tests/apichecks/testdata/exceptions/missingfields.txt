@@ -1964,12 +1964,6 @@
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.rotationPeriod" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.skipInitialVersionCreation" is not set in unstructured objects
 [missing_field] crd=logginglogbuckets.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.enableAnalytics" is not set in unstructured objects
-[missing_field] crd=logginglogsinks.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.bigqueryOptions.usePartitionedTables" is not set in unstructured objects
-[missing_field] crd=logginglogsinks.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.destination.loggingLogBucketRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=logginglogsinks.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.exclusions[].description" is not set in unstructured objects
-[missing_field] crd=logginglogsinks.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.exclusions[].disabled" is not set in unstructured objects
-[missing_field] crd=logginglogsinks.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.exclusions[].filter" is not set in unstructured objects
-[missing_field] crd=logginglogsinks.logging.cnrm.cloud.google.com version=v1beta1: field ".spec.exclusions[].name" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.createTime" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.description" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.updateTime" is not set in unstructured objects
