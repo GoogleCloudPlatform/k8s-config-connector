@@ -139,8 +139,8 @@ func (a *GroupAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &monitoringpb.CreateGroupRequest{
-		Name: a.id.Parent().String(),
-		Group:  resource,
+		Name:  a.id.Parent().String(),
+		Group: resource,
 	}
 	created, err := a.gcpClient.CreateGroup(ctx, req)
 	if err != nil {
@@ -173,7 +173,7 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	if err != nil {
 		return err
 	}
-        var pathSet sets.Set[string]
+	var pathSet sets.Set[string]
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.MonitoringGroupStatus{}
@@ -183,16 +183,15 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
-        pathSet = sets.New[string]()
+	pathSet = sets.New[string]()
 	for p := range paths {
 		pathSet.Insert(p)
 	}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &monitoringpb.UpdateGroupRequest{
-		Group:      desiredPb,
-                ValidateOnly: false,
-
+		Group:        desiredPb,
+		ValidateOnly: false,
 	}
 	updated, err := a.gcpClient.UpdateGroup(ctx, req)
 	if err != nil {
@@ -241,7 +240,7 @@ func (a *GroupAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 	log.V(2).Info("deleting Group", "name", a.id)
 
 	req := &monitoringpb.DeleteGroupRequest{Name: a.id.String()}
-err := a.gcpClient.DeleteGroup(ctx, req)
+	err := a.gcpClient.DeleteGroup(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
