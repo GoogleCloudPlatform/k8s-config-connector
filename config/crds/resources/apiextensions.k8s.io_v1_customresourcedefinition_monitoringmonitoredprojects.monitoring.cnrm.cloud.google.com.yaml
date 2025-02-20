@@ -5,9 +5,7 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: monitoringmonitoredprojects.monitoring.cnrm.cloud.google.com
 spec:
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: MonitoringMonitoredProject
+    listKind: MonitoringMonitoredProjectList
     plural: monitoringmonitoredprojects
     shortNames:
     - gcpmonitoringmonitoredproject
@@ -40,41 +39,81 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: MonitoringMonitoredProject is the Schema for the MonitoringMonitoredProject
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: MonitoringMonitoredProjectSpec defines the desired state
+              of MonitoringMonitoredProject
             properties:
-              metricsScope:
-                description: 'Immutable. Required. The resource name of the existing
-                  Metrics Scope that will monitor this project. Example: locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}'
+              location:
+                description: Immutable.
                 type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The MonitoringMonitoredProject name. If not given, the
+                  metadata.name will be used.
                 type: string
             required:
-            - metricsScope
+            - location
+            - projectRef
             type: object
           status:
+            description: MonitoringMonitoredProjectStatus defines the config connector
+              machine state of MonitoringMonitoredProject
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -98,10 +137,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Output only. The time when this `MonitoredProject` was
-                  created.
-                format: date-time
+              externalRef:
+                description: A unique specifier for the MonitoringMonitoredProject
+                  resource in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -109,7 +147,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -118,9 +161,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
