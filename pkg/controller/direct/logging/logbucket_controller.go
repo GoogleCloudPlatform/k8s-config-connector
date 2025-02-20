@@ -26,11 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/logging/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	loggingpb "cloud.google.com/go/logging/v2/loggingpb"
+        loggingapiv2 "cloud.google.com/go/logging/apiv2"
+	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -55,17 +52,17 @@ type modelLogBucket struct {
 	config config.ControllerConfig
 }
 
-func (m *modelLogBucket) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelLogBucket) client(ctx context.Context) (*loggingapiv2.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	client, err := loggingapiv2.NewClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building LogBucket client: %w", err)
+		return nil, fmt.Errorf("building logbucket client: %w", err)
 	}
-	return gcpClient, err
+	return client, nil
 }
 
 func (m *modelLogBucket) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -80,13 +77,13 @@ func (m *modelLogBucket) AdapterForObject(ctx context.Context, reader client.Rea
 	}
 
 	// Get logging GCP client
-	gcpClient, err := m.client(ctx)
+	client, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &LogBucketAdapter{
 		id:        id,
-		gcpClient: gcpClient,
+		client: client,
 		desired:   obj,
 	}, nil
 }
@@ -97,10 +94,10 @@ func (m *modelLogBucket) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type LogBucketAdapter struct {
-	id        *krm.LogBucketIdentity
-	gcpClient *gcp.Client
-	desired   *krm.LoggingLogBucket
-	actual    *loggingpb.LogBucket
+        id        *krm.LogBucketIdentity
+        client *loggingapiv2.Client
+        desired   *krm.LoggingLogBucket
+        actual    *loggingpb.LogBucket
 }
 
 var _ directbase.Adapter = &LogBucketAdapter{}
@@ -114,7 +111,7 @@ func (a *LogBucketAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting LogBucket", "name", a.id)
 
 	req := &loggingpb.GetLogBucketRequest{Name: a.id.String()}
-	logbucketpb, err := a.gcpClient.GetLogBucket(ctx, req)
+	logbucket, err := a.client.GetLogBucket(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -122,7 +119,7 @@ func (a *LogBucketAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting LogBucket %q: %w", a.id, err)
 	}
 
-	a.actual = logbucketpb
+	a.actual = logbucket
 	return true, nil
 }
 
@@ -138,19 +135,16 @@ func (a *LogBucketAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		return mapCtx.Err()
 	}
 
-	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &loggingpb.CreateLogBucketRequest{
 		Parent:    a.id.Parent().String(),
 		LogBucket: resource,
+		BucketId:  a.id.ID,
 	}
-	op, err := a.gcpClient.CreateLogBucket(ctx, req)
+	created, err := a.client.CreateLogBucket(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating LogBucket %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("LogBucket %s waiting creation: %w", a.id, err)
-	}
+
 	log.V(2).Info("successfully created LogBucket", "name", a.id)
 
 	status := &krm.LoggingLogBucketStatus{}
@@ -160,6 +154,7 @@ func (a *LogBucketAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
+
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -174,10 +169,10 @@ func (a *LogBucketAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-	if err != nil {
-		return err
-	}
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+        if err != nil {
+               return err
+        }
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.LoggingLogBucketStatus{}
@@ -190,19 +185,14 @@ func (a *LogBucketAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths)}
 
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &loggingpb.UpdateLogBucketRequest{
-		Name:       a.id,
+		Name:       a.id.String(),
 		UpdateMask: updateMask,
 		LogBucket:  desiredPb,
 	}
-	op, err := a.gcpClient.UpdateLogBucket(ctx, req)
+	updated, err := a.client.UpdateLogBucket(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating LogBucket %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("LogBucket %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated LogBucket", "name", a.id)
 
@@ -234,7 +224,7 @@ func (a *LogBucketAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.GetName())
 	u.SetGroupVersionKind(krm.LoggingLogBucketGVK)
 
 	u.Object = uObj
@@ -247,7 +237,7 @@ func (a *LogBucketAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	log.V(2).Info("deleting LogBucket", "name", a.id)
 
 	req := &loggingpb.DeleteLogBucketRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteLogBucket(ctx, req)
+	err := a.client.DeleteLogBucket(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -257,10 +247,5 @@ func (a *LogBucketAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 		return false, fmt.Errorf("deleting LogBucket %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted LogBucket", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete LogBucket %s: %w", a.id, err)
-	}
 	return true, nil
 }
