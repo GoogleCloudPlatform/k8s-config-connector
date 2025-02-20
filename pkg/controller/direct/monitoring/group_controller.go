@@ -27,10 +27,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/monitoring/apiv1"
+	gcp "cloud.google.com/go/monitoring/apiv3/v2"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	monitoringpb "cloud.google.com/go/monitoring/v3/monitoringpb"
+	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -55,13 +55,13 @@ type modelGroup struct {
 	config config.ControllerConfig
 }
 
-func (m *modelGroup) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelGroup) client(ctx context.Context) (*gcp.GroupClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewGroupClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Group client: %w", err)
 	}
@@ -98,7 +98,7 @@ func (m *modelGroup) AdapterForURL(ctx context.Context, url string) (directbase.
 
 type GroupAdapter struct {
 	id        *krm.GroupIdentity
-	gcpClient *gcp.Client
+	gcpClient *gcp.GroupClient
 	desired   *krm.MonitoringGroup
 	actual    *monitoringpb.Group
 }
@@ -140,16 +140,12 @@ func (a *GroupAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &monitoringpb.CreateGroupRequest{
-		Parent: a.id.Parent().String(),
+		Name: a.id.Parent().String(),
 		Group:  resource,
 	}
-	op, err := a.gcpClient.CreateGroup(ctx, req)
+	created, err := a.gcpClient.CreateGroup(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating Group %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Group %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Group", "name", a.id)
 
@@ -174,10 +170,11 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
+        var pathSet sets.Set[string]
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.MonitoringGroupStatus{}
@@ -187,22 +184,25 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+        pathSet = sets.New[string]()
+	for p := range paths {
+		pathSet.Insert(p)
+	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+		Paths: pathSet.UnsortedList()}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &monitoringpb.UpdateGroupRequest{
-		Name:       a.id,
+		Group:      desiredPb,
 		UpdateMask: updateMask,
 		Group:      desiredPb,
+                ValidateOnly: false,
+                ValidateOnly: false,
+
 	}
-	op, err := a.gcpClient.UpdateGroup(ctx, req)
+	updated, err := a.gcpClient.UpdateGroup(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Group %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Group %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated Group", "name", a.id)
 
@@ -234,7 +234,7 @@ func (a *GroupAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.MonitoringGroupGVK)
 
 	u.Object = uObj
@@ -247,7 +247,7 @@ func (a *GroupAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 	log.V(2).Info("deleting Group", "name", a.id)
 
 	req := &monitoringpb.DeleteGroupRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteGroup(ctx, req)
+err := a.gcpClient.DeleteGroup(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
