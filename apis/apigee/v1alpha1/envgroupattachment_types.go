@@ -29,10 +29,10 @@ type ApigeeEnvgroupAttachmentSpec struct {
 	OrganizationRef *apigeev1beta1.OrganizationRef `json:"organizationRef"`
 
 	// Immutable. The Apigee environment group which will host the environment.
-	EnvgroupRef *EnvironmentGroupRef `json:"envgroup"`
+	EnvgroupRef *EnvironmentGroupRef `json:"envgroupRef"`
 
 	// Immutable. The Apigee environment to attach to.
-	EnvironmentRef *apigeev1beta1.EnvironmentRef `json:"environment"`
+	EnvironmentRef *apigeev1beta1.EnvironmentRef `json:"environmentRef"`
 
 	// The EnvgroupAttachment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
