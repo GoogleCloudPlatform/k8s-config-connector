@@ -26,16 +26,28 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
-        "google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	monitoringpb "cloud.google.com/go/monitoring/metricsscope/apiv1/metricsscopepb"
+
+        "google.golang.org/grpc"
+	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+func convertOptions(opts []option.ClientOption) []grpc.DialOption {
+	var grpcOpts []grpc.DialOption
+	for _, opt := range opts {
+		switch opt := opt.(type) {
+                case grpc.DialOption:
+                        grpcOpts = append(grpcOpts, opt)
+		default:
+		}
+	}
+	return grpcOpts
+}
 
 func init() {
 	registry.RegisterModel(krm.MonitoringMonitoredProjectGVK, NewMonitoredProjectModel)
@@ -52,17 +64,18 @@ type modelMonitoredProject struct {
 }
 
 
-func (m *modelMonitoredProject) client(ctx context.Context) (*monitoringpb.MetricsScopesClient, error) {
+func (m *modelMonitoredProject) client(ctx context.Context) (monitoringpb.MetricsScopesClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := monitoringpb.NewMetricsScopesClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building MonitoredProject client: %w", err)
-	}
-	return gcpClient, err
+	conn, err := grpc.DialContext(ctx, "monitoring.googleapis.com:443", convertOptions(opts)...)
+        if err != nil {
+                return nil, fmt.Errorf("failed to dial monitoring.googleapis.com: %w", err)
+        }
+	gcpClient := monitoringpb.NewMetricsScopesClient(conn)
+	return gcpClient, nil
 }
 
 func (m *modelMonitoredProject) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -95,7 +108,7 @@ func (m *modelMonitoredProject) AdapterForURL(ctx context.Context, url string) (
 
 type MonitoredProjectAdapter struct {
 	id        *krm.MonitoredProjectIdentity
-	gcpClient *monitoringpb.MetricsScopesClient
+	gcpClient monitoringpb.MetricsScopesClient
 	desired   *krm.MonitoringMonitoredProject
 	actual    *monitoringpb.MetricsScope
 }
@@ -123,6 +136,7 @@ func (a *MonitoredProjectAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *MonitoredProjectAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
@@ -130,24 +144,21 @@ func (a *MonitoredProjectAdapter) Create(ctx context.Context, createOp *directba
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := MonitoringMonitoredProjectSpec_ToProto(mapCtx, &desired.Spec)
+	_ = MonitoringMonitoredProjectSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &monitoringpb.CreateMetricsScopeRequest{
+	req := &monitoringpb.CreateMonitoredProjectRequest{
 		Parent:           a.id.Parent().String(),
-		MetricsScope: resource,
+		MonitoredProject: &monitoringpb.MonitoredProject{Name: a.id.String()},
 	}
-	op, err := a.gcpClient.CreateMetricsScope(ctx, req)
+	_, err := a.gcpClient.CreateMonitoredProject(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating MonitoredProject %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("MonitoredProject %s waiting creation: %w", a.id, err)
-	}
+        created := &monitoringpb.MonitoredProject{}
 	log.V(2).Info("successfully created MonitoredProject", "name", a.id)
 
 	status := &krm.MonitoringMonitoredProjectStatus{}
@@ -178,37 +189,18 @@ func (a *MonitoredProjectAdapter) Update(ctx context.Context, updateOp *directba
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.MonitoringMonitoredProjectStatus{}
-		status.ObservedState = MonitoringMonitoredProjectObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = MonitoringMonitoredProjectObservedState_FromProto(mapCtx, &monitoringpb.MonitoredProject{Name: a.actual.Name})
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths)}
+	//updateMask := &fieldmaskpb.FieldMask{
+	//	Paths: sets.List(paths)}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &monitoringpb.UpdateMetricsScopeRequest{
-		Name:             a.id.String(),
-		UpdateMask:       updateMask,
-		MetricsScope: desiredPb,
-	}
-	op, err := a.gcpClient.UpdateMetricsScope(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating MonitoredProject %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("MonitoredProject %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated MonitoredProject", "name", a.id)
-
-	status := &krm.MonitoringMonitoredProjectStatus{}
-	status.ObservedState = MonitoringMonitoredProjectObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	// Update is not supported
+	return fmt.Errorf("Update is not supported")
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -220,7 +212,7 @@ func (a *MonitoredProjectAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krm.MonitoringMonitoredProject{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(MonitoringMonitoredProjectSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(MonitoringMonitoredProjectSpec_FromProto(mapCtx, &monitoringpb.MonitoredProject{Name: a.actual.Name}))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -231,7 +223,7 @@ func (a *MonitoredProjectAdapter) Export(ctx context.Context) (*unstructured.Uns
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.MonitoringMonitoredProjectGVK)
 
 	u.Object = uObj
@@ -243,8 +235,8 @@ func (a *MonitoredProjectAdapter) Delete(ctx context.Context, deleteOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting MonitoredProject", "name", a.id)
 
-	req := &monitoringpb.DeleteMetricsScopeRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteMetricsScope(ctx, req)
+	req := &monitoringpb.DeleteMonitoredProjectRequest{Name: a.id.String()}
+	_, err := a.gcpClient.DeleteMonitoredProject(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -255,7 +247,6 @@ func (a *MonitoredProjectAdapter) Delete(ctx context.Context, deleteOp *directba
 	}
 	log.V(2).Info("successfully deleted MonitoredProject", "name", a.id)
 
-	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete MonitoredProject %s: %w", a.id, err)
 	}
