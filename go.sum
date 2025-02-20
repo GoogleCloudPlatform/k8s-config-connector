@@ -130,8 +130,6 @@ github.com/Azure/go-autorest/tracing v0.5.0/go.mod h1:r/s2XiOKccPW3HrqB+W0TQzfbt
 github.com/Azure/go-autorest/tracing v0.6.0/go.mod h1:+vhtPC754Xsa23ID7GlGsrdKBpUA79WCAKPPZVC2DeU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0 h1:s4Y6r6RrYLBnqosGXLwR0h1Gqr0VT3wgd6rqvHsD9OE=
-github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0/go.mod h1:pL2Qt5HT+x6xrTd806oMiM3awW6kNIXB/iiuClz6m6k=
 github.com/GoogleCloudPlatform/declarative-resource-client-library v1.77.0 h1:fCJw7h8lc8oVQAhoMABdsWAGWF8E6+4A5HvDHe5OsVM=
 github.com/GoogleCloudPlatform/declarative-resource-client-library v1.77.0/go.mod h1:pL2Qt5HT+x6xrTd806oMiM3awW6kNIXB/iiuClz6m6k=
 github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20250208024142-7cd1b21e1d1e h1:VgZ4N3GV9G0mcxON/mPVrfDUPhNYiYBb1DFr5iuGJX0=
