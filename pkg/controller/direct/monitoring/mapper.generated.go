@@ -106,37 +106,3 @@ func MutationRecord_ToProto(mapCtx *direct.MapContext, in *krm.MutationRecord) *
 	out.MutatedBy = direct.ValueOf(in.MutatedBy)
 	return out
 }
-func NotificationChannel_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krm.NotificationChannel {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotificationChannel{}
-	out.Type = direct.LazyPtr(in.GetType())
-	out.Name = direct.LazyPtr(in.GetName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.UserLabels = in.UserLabels
-	out.VerificationStatus = direct.Enum_FromProto(mapCtx, in.GetVerificationStatus())
-	out.Enabled = direct.BoolValue_FromProto(mapCtx, in.GetEnabled())
-	out.CreationRecord = MutationRecord_FromProto(mapCtx, in.GetCreationRecord())
-	out.MutationRecords = direct.Slice_FromProto(mapCtx, in.MutationRecords, MutationRecord_FromProto)
-	return out
-}
-func NotificationChannel_ToProto(mapCtx *direct.MapContext, in *krm.NotificationChannel) *pb.NotificationChannel {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotificationChannel{}
-	out.Type = direct.ValueOf(in.Type)
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.UserLabels = in.UserLabels
-	out.VerificationStatus = direct.Enum_ToProto[pb.NotificationChannel_VerificationStatus](mapCtx, in.VerificationStatus)
-	out.Enabled = direct.BoolValue_ToProto(mapCtx, in.Enabled)
-	out.CreationRecord = MutationRecord_ToProto(mapCtx, in.CreationRecord)
-	out.MutationRecords = direct.Slice_ToProto(mapCtx, in.MutationRecords, MutationRecord_ToProto)
-	return out
-}

@@ -28,7 +28,6 @@ import (
 
 	monitoringpb "cloud.google.com/go/monitoring/apiv3/monitoringpb"
 	"google.golang.org/api/option"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
