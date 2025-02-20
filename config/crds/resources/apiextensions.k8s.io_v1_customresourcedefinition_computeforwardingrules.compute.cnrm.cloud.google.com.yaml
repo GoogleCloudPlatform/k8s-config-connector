@@ -16,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: ComputeForwardingRule
-    listKind: ComputeForwardingRuleList
     plural: computeforwardingrules
     shortNames:
     - gcpcomputeforwardingrule
@@ -44,17 +43,16 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: ComputeForwardingRule is the Schema for the compute API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -95,8 +93,9 @@ spec:
                   whether the PSC endpoint can be accessed from another region.
                 type: boolean
               backendServiceRef:
-                description: A ComputeBackendService to receive the matched traffic.
-                  This is used only for internal load balancing.
+                description: |-
+                  A ComputeBackendService to receive the matched traffic. This is
+                  used only for internal load balancing.
                 oneOf:
                 - not:
                     required:
@@ -113,21 +112,20 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}"
-                      or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}"
-                      when not managed by Config Connector.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeBackendService`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` field of a `ComputeBackendService` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeBackendService`
-                      resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               description:
-                description: Immutable. An optional description of this resource.
-                  Provide this property when you create the resource.
+                description: |-
+                  Immutable. An optional description of this resource. Provide this property when
+                  you create the resource.
                 type: string
               ipAddress:
                 description: |-
@@ -150,6 +148,11 @@ spec:
                   forwarding rule. By default, if this field is empty, an ephemeral
                   internal IP address will be automatically allocated from the IP
                   range of the subnet or network configured for this forwarding rule.
+                oneOf:
+                - required:
+                  - addressRef
+                - required:
+                  - ip
                 properties:
                   addressRef:
                     oneOf:
@@ -168,14 +171,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
-                          when not managed by Config Connector.
+                        description: 'Allowed value: The `address` field of a `ComputeAddress`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` field of a `ComputeAddress` resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeAddress` resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
                   ip:
@@ -257,12 +260,14 @@ spec:
                       items:
                         properties:
                           name:
-                            description: Immutable. Name of the metadata label. The
-                              length must be between 1 and 1024 characters, inclusive.
+                            description: |-
+                              Immutable. Name of the metadata label. The length must be between
+                              1 and 1024 characters, inclusive.
                             type: string
                           value:
-                            description: Immutable. The value that the label must
-                              match. The value has a maximum length of 1024 characters.
+                            description: |-
+                              Immutable. The value that the label must match. The value has a maximum
+                              length of 1024 characters.
                             type: string
                         required:
                         - name
@@ -285,10 +290,11 @@ spec:
                   type: object
                 type: array
               networkRef:
-                description: This field is not used for external load balancing. For
-                  internal load balancing, this field identifies the network that
-                  the load balanced IP should belong to for this forwarding rule.
-                  If this field is not specified, the default network will be used.
+                description: |-
+                  This field is not used for external load balancing. For internal
+                  load balancing, this field identifies the network that the load
+                  balanced IP should belong to for this forwarding rule. If this
+                  field is not specified, the default network will be used.
                 oneOf:
                 - not:
                     required:
@@ -305,14 +311,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed Compute Network
-                      resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` field of a `ComputeNetwork` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeNetwork` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               networkTier:
@@ -346,6 +352,7 @@ spec:
                   [port specifications](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications)
                   for details.
 
+
                   Only packets addressed to ports in the specified range will be forwarded to
                   the backends configured with this forwarding rule.
 
@@ -366,6 +373,7 @@ spec:
                   * If 'IPProtocol' is one of TCP, UDP, or SCTP.
                   * By internal TCP/UDP load balancers, backend service-based network load
                   balancers, internal protocol forwarding and when protocol is not L3_DEFAULT.
+
 
                   You can specify a list of up to five ports by number, separated by commas.
                   The ports can be contiguous or discontiguous. Only packets addressed to
@@ -457,24 +465,38 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                      when not managed by Config Connector.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeSubnetwork`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` field of a `ComputeSubnetwork` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeSubnetwork` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               target:
-                description: The target resource to receive the matched traffic. The
-                  forwarded traffic must be of a type appropriate to the target object.
-                  For INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
+                description: |-
+                  The target resource to receive the matched traffic. The forwarded
+                  traffic must be of a type appropriate to the target object. For
+                  INTERNAL_SELF_MANAGED load balancing, only HTTP and HTTPS targets
                   are valid.
+                oneOf:
+                - required:
+                  - serviceAttachmentRef
+                - required:
+                  - targetGRPCProxyRef
+                - required:
+                  - targetHTTPProxyRef
+                - required:
+                  - targetHTTPSProxyRef
+                - required:
+                  - targetSSLProxyRef
+                - required:
+                  - targetTCPProxyRef
+                - required:
+                  - targetVPNGatewayRef
                 properties:
-                  googleAPIsBundle:
-                    type: string
                   serviceAttachmentRef:
                     oneOf:
                     - not:
@@ -492,17 +514,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeServiceAttachment selflink in the
-                          form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
-                          when not managed by Config Connector.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeServiceAttachment`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` field of a `ComputeServiceAttachment`
-                          resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeServiceAttachment`
-                          resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
                   targetGRPCProxyRef:
@@ -522,17 +541,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeTargetGrpcProxy selflink in the form
-                          "projects/{{project}}/global/targetGrpcProxies/{{name}}"
-                          when not managed by Config Connector.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetGRPCProxy`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` field of a `ComputeTargetGrpcProxy`
-                          resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeTargetGrpcProxy`
-                          resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
                   targetHTTPProxyRef:
@@ -552,18 +568,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeTargetHTTPProxy selflink in the form
-                          "projects/{{project}}/global/targetHttpProxies/{{name}}"
-                          or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}"
-                          when not managed by Config Connector.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetHTTPProxy`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` field of a `ComputeTargetHTTPProxy`
-                          resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeTargetHTTPProxy`
-                          resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
                   targetHTTPSProxyRef:
@@ -583,18 +595,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeTargetHTTPSProxy selflink in the form
-                          "projects/{{project}}/global/targetHttpProxies/{{name}}"
-                          or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}"
-                          when not managed by Config Connector.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetHTTPSProxy`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` field of a `ComputeTargetHTTPSProxy`
-                          resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeTargetHTTPSProxy`
-                          resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
                   targetSSLProxyRef:
@@ -614,17 +622,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeTargetSSLProxy selflink in the form
-                          "projects/{{project}}/global/targetSslProxies/{{name}}"
-                          when not managed by Config Connector.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetSSLProxy`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` field of a `ComputeTargetSSLProxy`
-                          resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeTargetSSLProxy`
-                          resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
                   targetTCPProxyRef:
@@ -644,18 +649,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeTargetTCPProxy selflink in the form
-                          "projects/{{project}}/global/targetTcpProxies/{{name}}"
-                          or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}"
-                          when not managed by Config Connector.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetTCPProxy`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` field of a `ComputeTargetTCPProxy`
-                          resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeTargetTCPProxy`
-                          resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
                   targetVPNGatewayRef:
@@ -675,17 +676,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeTargetVPNGateway selflink in the form
-                          "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}"
-                          when not managed by Config Connector.
+                        description: 'Allowed value: The `selfLink` field of a `ComputeTargetVPNGateway`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` field of a `ComputeTargetVPNGateway`
-                          resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeTargetVPNGateway`
-                          resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
                 type: object
@@ -702,8 +700,8 @@ spec:
                   if the current Forwarding Rule does not have sourceIPRanges specified.'
                 type: string
               conditions:
-                description: Conditions represent the latest available observations
-                  of the object's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -730,12 +728,9 @@ spec:
               creationTimestamp:
                 description: Creation timestamp in RFC3339 text format.
                 type: string
-              externalRef:
-                description: A unique Config Connector specifier for the resource
-                  in GCP.
-                type: string
               labelFingerprint:
-                description: The fingerprint used for optimistic locking of this resource.  Used
+                description: |-
+                  The fingerprint used for optimistic locking of this resource.  Used
                   internally during updates.
                 type: string
               observedGeneration:
@@ -744,7 +739,6 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               pscConnectionId:
                 description: The PSC connection id of the PSC Forwarding Rule.
@@ -763,8 +757,16 @@ spec:
                   This field is only used for INTERNAL load balancing.
                 type: string
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

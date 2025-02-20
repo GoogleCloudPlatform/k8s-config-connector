@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type LogMetricIdentity struct {
 	parent *LogMetricParent
-	id string
+	id     string
 }
 
 func (i *LogMetricIdentity) String() string {
-	return  i.parent.String() + "/logmetrics/" + i.id
+	return i.parent.String() + "/logmetrics/" + i.id
 }
 
 func (i *LogMetricIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *LogMetricIdentity) ID() string {
 }
 
 func (i *LogMetricIdentity) Parent() *LogMetricParent {
-	return  i.parent
+	return i.parent
 }
 
 type LogMetricParent struct {
@@ -51,7 +51,6 @@ type LogMetricParent struct {
 func (p *LogMetricParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a LogMetricIdentity from the Config Connector LogMetric object.
 func NewLogMetricIdentity(ctx context.Context, reader client.Reader, obj *LoggingLogMetric) (*LogMetricIdentity, error) {

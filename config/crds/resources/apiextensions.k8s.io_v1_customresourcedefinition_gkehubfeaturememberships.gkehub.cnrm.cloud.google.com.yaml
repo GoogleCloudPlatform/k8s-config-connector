@@ -5,6 +5,7 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -15,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: GKEHubFeatureMembership
-    listKind: GKEHubFeatureMembershipList
     plural: gkehubfeaturememberships
     shortNames:
     - gcpgkehubfeaturemembership
@@ -43,17 +43,16 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: GKEHubFeatureMembership is the Schema for the gkehub API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -92,8 +91,10 @@ spec:
                               - external
                             properties:
                               external:
-                                description: The `email` field of an `IAMServiceAccount`
-                                  resource.
+                                description: |-
+                                  The GCP Service Account Email used for auth when secretType is gcpServiceAccount.
+
+                                  Allowed value: The `email` field of an `IAMServiceAccount` resource.
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -152,14 +153,10 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'The Email of the Google Cloud Service Account
-                              (GSA) used for exporting Config Sync metrics to Cloud
-                              Monitoring. The GSA should have the Monitoring Metric
-                              Writer(roles/monitoring.metricWriter) IAM role. The
-                              Kubernetes ServiceAccount `default` in the namespace
-                              `config-management-monitoring` should be bound to the
-                              GSA. Allowed value: The `email` field of an `IAMServiceAccount`
-                              resource.'
+                            description: |-
+                              The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA.
+
+                              Allowed value: The `email` field of an `IAMServiceAccount` resource.
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -187,8 +184,10 @@ spec:
                               - external
                             properties:
                               external:
-                                description: The `email` field of an `IAMServiceAccount`
-                                  resource.
+                                description: "The GCP Service Account Email used for
+                                  auth when secret_type is gcpserviceaccount. \n\nAllowed
+                                  value: The `email` field of an `IAMServiceAccount`
+                                  resource."
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -226,16 +225,9 @@ spec:
                         description: Specifies whether the Config Sync Repo is in
                           "hierarchical" or "unstructured" mode.
                         type: string
-                      stopSyncing:
-                        description: 'Set to true to stop syncing configurations for
-                          a single cluster. This field is only available on clusters
-                          using Config Sync auto-upgrades or on Config Sync version
-                          1.20.0 or later. Defaults: false.'
-                        type: boolean
                     type: object
                   hierarchyController:
-                    description: Hierarchy Controller is no longer available. Use
-                      https://github.com/kubernetes-sigs/hierarchical-namespaces instead.
+                    description: Hierarchy Controller configuration for the cluster.
                     properties:
                       enableHierarchicalResourceQuota:
                         description: Whether hierarchical resource quota is enabled
@@ -249,17 +241,8 @@ spec:
                           cluster.
                         type: boolean
                     type: object
-                  management:
-                    description: Optional. Whether to automatically manage the configmanagement
-                      Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED
-                      means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC
-                      means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL
-                      means that users should manage the Feature for the cluster.
-                    type: string
                   policyController:
-                    description: '**DEPRECATED** Configuring Policy Controller through
-                      the configmanagement feature is no longer recommended. Use the
-                      policycontroller feature instead.'
+                    description: Policy Controller configuration for the cluster.
                     properties:
                       auditIntervalSeconds:
                         description: Sets the interval for Policy Controller Audit
@@ -288,9 +271,9 @@ spec:
                           "prometheus"]'
                         properties:
                           backends:
-                            description: Specifies the list of backends Policy Controller
+                            description: ' Specifies the list of backends Policy Controller
                               will export to. Specifying an empty value `[]` disables
-                              metrics export.
+                              metrics export.'
                             items:
                               type: string
                             type: array
@@ -333,8 +316,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The name of the feature. Allowed value: The Google
-                      Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).'
+                    description: |-
+                      The name of the feature
+
+                      Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -367,9 +352,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The name of the membership. Allowed value: The Google
-                      Cloud resource name of a `GKEHubMembership` resource (format:
-                      `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).'
+                    description: |-
+                      The name of the membership
+
+                      Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -433,9 +419,9 @@ spec:
                           "prometheus"]'
                         properties:
                           backends:
-                            description: Specifies the list of backends Policy Controller
+                            description: ' Specifies the list of backends Policy Controller
                               will export to. Specifying an empty value `[]` disables
-                              metrics export.
+                              metrics export.'
                             items:
                               type: string
                             type: array
@@ -489,8 +475,10 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The project of the feature. Allowed value: The Google
-                      Cloud resource name of a `Project` resource (format: `projects/{{name}}`).'
+                    description: |-
+                      The project of the feature
+
+                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -508,8 +496,8 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the GKEHubFeatureMembership's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -539,7 +527,6 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
             type: object
         required:
@@ -549,3 +536,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

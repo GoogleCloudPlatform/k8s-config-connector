@@ -16,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: BigQueryDataset
-    listKind: BigQueryDatasetList
     plural: bigquerydatasets
     shortNames:
     - gcpbigquerydataset
@@ -44,22 +43,20 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: BigQueryDataset is the Schema for the BigQueryDataset API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            description: BigQueryDatasetSpec defines the desired state of BigQueryDataset
             properties:
               access:
                 description: An array of objects that define dataset access for one
@@ -67,32 +64,26 @@ spec:
                 items:
                   properties:
                     dataset:
-                      description: '[Pick one] A grant authorizing all resources of
-                        a particular type in a particular dataset access to this dataset.
-                        Only views are supported for now. The role field is not required
-                        when this field is set. If that dataset is deleted and re-created,
-                        its access needs to be granted again via an update operation.'
+                      description: Grants all resources of particular types in a particular
+                        dataset read access to the current dataset.
                       properties:
                         dataset:
                           description: The dataset this entry applies to.
                           properties:
                             datasetId:
-                              description: A unique Id for this dataset, without the
-                                project name. The Id must contain only letters (a-z,
-                                A-Z), numbers (0-9), or underscores (_). The maximum
-                                length is 1,024 characters.
+                              description: The ID of the dataset containing this table.
                               type: string
                             projectId:
-                              description: The ID of the project containing this dataset.
+                              description: The ID of the project containing this table.
                               type: string
                           required:
                           - datasetId
                           - projectId
                           type: object
                         targetTypes:
-                          description: Which resources in the dataset this entry applies
-                            to. Currently, only views are supported, but additional
-                            target types may be added in the future.
+                          description: |-
+                            Which resources in the dataset this entry applies to. Currently, only views are supported,
+                            but additional target types may be added in the future. Possible values: VIEWS.
                           items:
                             type: string
                           type: array
@@ -101,53 +92,46 @@ spec:
                       - targetTypes
                       type: object
                     domain:
-                      description: '[Pick one] A domain to grant access to. Any users
-                        signed in with the domain specified will be granted the specified
-                        access. Example: "example.com". Maps to IAM policy member
-                        "domain:DOMAIN".'
+                      description: |-
+                        A domain to grant access to. Any users signed in with the
+                        domain specified will be granted the specified access.
                       type: string
                     groupByEmail:
-                      description: '[Pick one] An email address of a Google Group
-                        to grant access to. Maps to IAM policy member "group:GROUP".'
+                      description: An email address of a Google Group to grant access
+                        to.
                       type: string
                     iamMember:
-                      description: '[Pick one] Some other type of member that appears
-                        in the IAM Policy but isn''t a user, group, domain, or special
-                        group.'
+                      description: |-
+                        Some other type of member that appears in the IAM Policy but isn't a user,
+                        group, domain, or special group. For example: 'allUsers'.
                       type: string
                     role:
                       description: |-
-                        An IAM role ID that should be granted to the user, group,
-                         or domain specified in this access entry.
-                         The following legacy mappings will be applied:
-
-                         * `OWNER`: `roles/bigquery.dataOwner`
-                         * `WRITER`: `roles/bigquery.dataEditor`
-                         * `READER`: `roles/bigquery.dataViewer`
-
-                         This field will accept any of the above formats, but will return only
-                         the legacy format. For example, if you set this field to
-                         "roles/bigquery.dataOwner", it will be returned back as "OWNER".
+                        Describes the rights granted to the user specified by the other
+                        member of the access object. Basic, predefined, and custom roles
+                        are supported. Predefined roles that have equivalent basic roles
+                        are swapped by the API to their basic counterparts. See
+                        [official docs](https://cloud.google.com/bigquery/docs/access-control).
                       type: string
                     routine:
-                      description: '[Pick one] A routine from a different dataset
-                        to grant access to. Queries executed against that routine
-                        will have read access to views/tables/routines in this dataset.
-                        Only UDF is supported for now. The role field is not required
-                        when this field is set. If that routine is updated by any
-                        user, access to the routine needs to be granted again via
-                        an update operation.'
+                      description: |-
+                        A routine from a different dataset to grant access to. Queries
+                        executed against that routine will have read access to tables in
+                        this dataset. The role field is not required when this field is
+                        set. If that routine is updated by any user, access to the routine
+                        needs to be granted again via an update operation.
                       properties:
                         datasetId:
-                          description: The ID of the dataset containing this routine.
+                          description: The ID of the dataset containing this table.
                           type: string
                         projectId:
-                          description: The ID of the project containing this routine.
+                          description: The ID of the project containing this table.
                           type: string
                         routineId:
-                          description: The Id of the routine. The Id must contain
-                            only letters (a-z, A-Z), numbers (0-9), or underscores
-                            (_). The maximum length is 256 characters.
+                          description: |-
+                            The ID of the routine. The ID must contain only letters (a-z,
+                            A-Z), numbers (0-9), or underscores (_). The maximum length
+                            is 256 characters.
                           type: string
                       required:
                       - datasetId
@@ -156,27 +140,32 @@ spec:
                       type: object
                     specialGroup:
                       description: |-
-                        [Pick one] A special group to grant access to. Possible values include:
+                        A special group to grant access to. Possible values include:
 
-                           * projectOwners: Owners of the enclosing project.
-                           * projectReaders: Readers of the enclosing project.
-                           * projectWriters: Writers of the enclosing project.
-                           * allAuthenticatedUsers: All authenticated BigQuery users.
 
-                         Maps to similarly-named IAM members.
+                        * 'projectOwners': Owners of the enclosing project.
+
+
+                        * 'projectReaders': Readers of the enclosing project.
+
+
+                        * 'projectWriters': Writers of the enclosing project.
+
+
+                        * 'allAuthenticatedUsers': All authenticated BigQuery users.
                       type: string
                     userByEmail:
-                      description: '[Pick one] An email address of a user to grant
-                        access to. For example: fred@example.com. Maps to IAM policy
-                        member "user:EMAIL" or "serviceAccount:EMAIL".'
+                      description: |-
+                        An email address of a user to grant access to. For example:
+                        fred@example.com.
                       type: string
                     view:
-                      description: '[Pick one] A view from a different dataset to
-                        grant access to. Queries executed against that view will have
-                        read access to views/tables/routines in this dataset. The
-                        role field is not required when this field is set. If that
-                        view is updated by any user, access to the view needs to be
-                        granted again via an update operation.'
+                      description: |-
+                        A view from a different dataset to grant access to. Queries
+                        executed against that view will have read access to tables in
+                        this dataset. The role field is not required when this field is
+                        set. If that view is updated by any user, access to the view
+                        needs to be granted again via an update operation.
                       properties:
                         datasetId:
                           description: The ID of the dataset containing this table.
@@ -185,13 +174,10 @@ spec:
                           description: The ID of the project containing this table.
                           type: string
                         tableId:
-                          description: The Id of the table. The Id can contain Unicode
-                            characters in category L (letter), M (mark), N (number),
-                            Pc (connector, including underscore), Pd (dash), and Zs
-                            (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category).
-                            The maximum length is 1,024 characters.  Certain operations
-                            allow suffixing of the table Id with a partition decorator,
-                            such as `sample_table$20190123`.
+                          description: |-
+                            The ID of the table. The ID must contain only letters (a-z,
+                            A-Z), numbers (0-9), or underscores (_). The maximum length
+                            is 1,024 characters.
                           type: string
                       required:
                       - datasetId
@@ -202,27 +188,27 @@ spec:
                 type: array
               defaultCollation:
                 description: |-
-                  Optional. Defines the default collation specification of future tables
-                   created in the dataset. If a table is created in this dataset without
-                   table-level default collation, then the table inherits the dataset default
-                   collation, which is applied to the string fields that do not have explicit
-                   collation specified. A change to this field affects only tables created
-                   afterwards, and does not alter the existing tables.
-                   The following values are supported:
+                  Defines the default collation specification of future tables created
+                  in the dataset. If a table is created in this dataset without table-level
+                  default collation, then the table inherits the dataset default collation,
+                  which is applied to the string fields that do not have explicit collation
+                  specified. A change to this field affects only tables created afterwards,
+                  and does not alter the existing tables.
 
-                   * 'und:ci': undetermined locale, case-insensitive.
-                   * '': empty string. Default to case-sensitive behavior.
+                  The following values are supported:
+                  - 'und:ci': undetermined locale, case insensitive.
+                  - '': empty string. Default to case-sensitive behavior.
                 type: string
               defaultEncryptionConfiguration:
-                description: The default encryption key for all tables in the dataset.
-                  After this property is set, the encryption key of all newly-created
-                  tables in the dataset is set to this value unless the table creation
-                  request or query explicitly overrides the key.
+                description: |-
+                  The default encryption key for all tables in the dataset. Once this property is set,
+                  all newly-created partitioned tables in the dataset will have encryption key set to
+                  this value, unless table creation request (or query) overrides the key.
                 properties:
                   kmsKeyRef:
-                    description: Optional. Describes the Cloud KMS encryption key
-                      that will be used to protect destination BigQuery table. The
-                      BigQuery Service Account associated with your project requires
+                    description: |-
+                      Describes the Cloud KMS encryption key that will be used to protect destination
+                      BigQuery table. The BigQuery Service Account associated with your project requires
                       access to this encryption key.
                     oneOf:
                     - not:
@@ -240,71 +226,86 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed KMSCryptoKey.
-                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
+                          resource.'
                         type: string
                       name:
-                        description: The `name` of a `KMSCryptoKey` resource.
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                         type: string
                       namespace:
-                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
+                required:
+                - kmsKeyRef
                 type: object
               defaultPartitionExpirationMs:
                 description: |-
-                  This default partition expiration, expressed in milliseconds.
+                  The default partition expiration for all partitioned tables in
+                  the dataset, in milliseconds.
 
-                   When new time-partitioned tables are created in a dataset where this
-                   property is set, the table will inherit this value, propagated as the
-                   `TimePartitioning.expirationMs` property on the new table.  If you set
-                   `TimePartitioning.expirationMs` explicitly when creating a table,
-                   the `defaultPartitionExpirationMs` of the containing dataset is ignored.
 
-                   When creating a partitioned table, if `defaultPartitionExpirationMs`
-                   is set, the `defaultTableExpirationMs` value is ignored and the table
-                   will not be inherit a table expiration deadline.
-                format: int64
+                  Once this property is set, all newly-created partitioned tables in
+                  the dataset will have an 'expirationMs' property in the 'timePartitioning'
+                  settings set to this value, and changing the value will only
+                  affect new tables, not existing ones. The storage in a partition will
+                  have an expiration time of its partition time plus this value.
+                  Setting this property overrides the use of 'defaultTableExpirationMs'
+                  for partitioned tables: only one of 'defaultTableExpirationMs' and
+                  'defaultPartitionExpirationMs' will be used for any new partitioned
+                  table. If you provide an explicit 'timePartitioning.expirationMs' when
+                  creating or updating a partitioned table, that value takes precedence
+                  over the default partition expiration time indicated by this property.
                 type: integer
               defaultTableExpirationMs:
-                description: Optional. The default lifetime of all tables in the dataset,
-                  in milliseconds. The minimum lifetime value is 3600000 milliseconds
-                  (one hour). To clear an existing default expiration with a PATCH
-                  request, set to 0. Once this property is set, all newly-created
-                  tables in the dataset will have an expirationTime property set to
-                  the creation time plus the value in this property, and changing
-                  the value will only affect new tables, not existing ones. When the
-                  expirationTime for a given table is reached, that table will be
-                  deleted automatically. If a table's expirationTime is modified or
-                  removed before the table expires, or if you provide an explicit
-                  expirationTime when creating a table, that value takes precedence
-                  over the default expiration time indicated by this property.
-                format: int64
+                description: |-
+                  The default lifetime of all tables in the dataset, in milliseconds.
+                  The minimum value is 3600000 milliseconds (one hour).
+
+
+                  Once this property is set, all newly-created tables in the dataset
+                  will have an 'expirationTime' property set to the creation time plus
+                  the value in this property, and changing the value will only affect
+                  new tables, not existing ones. When the 'expirationTime' for a given
+                  table is reached, that table will be deleted automatically.
+                  If a table's 'expirationTime' is modified or removed before the
+                  table expires, or if you provide an explicit 'expirationTime' when
+                  creating a table, that value takes precedence over the default
+                  expiration time indicated by this property.
                 type: integer
               description:
-                description: Optional. A user-friendly description of the dataset.
+                description: A user-friendly description of the dataset.
                 type: string
               friendlyName:
-                description: Optional. A descriptive name for the dataset.
+                description: A descriptive name for the dataset.
                 type: string
               isCaseInsensitive:
-                description: Optional. TRUE if the dataset and its table names are
-                  case-insensitive, otherwise FALSE. By default, this is FALSE, which
-                  means the dataset and its table names are case-sensitive. This field
-                  does not affect routine references.
+                description: |-
+                  TRUE if the dataset and its table names are case-insensitive, otherwise FALSE.
+                  By default, this is FALSE, which means the dataset and its table names are
+                  case-sensitive. This field does not affect routine references.
                 type: boolean
               location:
-                description: Optional. The geographic location where the dataset should
-                  reside. See https://cloud.google.com/bigquery/docs/locations for
-                  supported locations.
+                description: |-
+                  Immutable. The geographic location where the dataset should reside.
+                  See [official docs](https://cloud.google.com/bigquery/docs/dataset-locations).
+
+
+                  There are two types of locations, regional or multi-regional. A regional
+                  location is a specific geographic place, such as Tokyo, and a multi-regional
+                  location is a large geographic area, such as the United States, that
+                  contains at least two geographic places.
+
+
+                  The default value is multi-regional location 'US'.
+                  Changing this forces a new resource to be created.
                 type: string
               maxTimeTravelHours:
-                description: Optional. Defines the time travel window in hours. The
-                  value can be from 48 to 168 hours (2 to 7 days). The default value
-                  is 168 hours if this is not set.
+                description: Defines the time travel window in hours. The value can
+                  be from 48 to 168 hours (2 to 7 days).
                 type: string
               projectRef:
-                description: ' Optional. The project that this resource belongs to.'
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -321,35 +322,34 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               resourceID:
-                description: The BigQueryDataset name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The datasetId of the resource. Used
+                  for creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
               storageBillingModel:
-                description: Optional. Updates storage_billing_model for the dataset.
+                description: |-
+                  Specifies the storage billing model for the dataset.
+                  Set this flag value to LOGICAL to use logical bytes for storage billing,
+                  or to PHYSICAL to use physical bytes instead.
+
+                  LOGICAL is the default if this flag isn't specified.
                 type: string
             type: object
           status:
-            description: BigQueryDatasetStatus defines the config connector machine
-              state of BigQueryDataset
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the object's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -374,21 +374,17 @@ spec:
                   type: object
                 type: array
               creationTime:
-                description: Output only. The time when this dataset was created,
-                  in milliseconds since the epoch.
-                format: int64
+                description: |-
+                  The time when this dataset was created, in milliseconds since the
+                  epoch.
                 type: integer
               etag:
-                description: Output only. A hash of the resource.
-                type: string
-              externalRef:
-                description: A unique specifier for the BigQueryAnalyticsHubDataExchangeListing
-                  resource in GCP.
+                description: A hash of the resource.
                 type: string
               lastModifiedTime:
-                description: Output only. The date when this dataset was last modified,
-                  in milliseconds since the epoch.
-                format: int64
+                description: |-
+                  The date when this dataset or any of its tables was last modified, in
+                  milliseconds since the epoch.
                 type: integer
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -396,21 +392,8 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                properties:
-                  location:
-                    description: Optional. If the location is not specified in the
-                      spec, the GCP server defaults to a location and will be captured
-                      here.
-                    type: string
-                type: object
               selfLink:
-                description: Output only. A URL that can be used to access the resource
-                  again. You can use this URL in Get or Update requests to the resource.
                 type: string
             type: object
         type: object
@@ -418,3 +401,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

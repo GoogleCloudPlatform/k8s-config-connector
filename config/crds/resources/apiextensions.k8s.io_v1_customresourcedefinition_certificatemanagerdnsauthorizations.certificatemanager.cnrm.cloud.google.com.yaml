@@ -8,6 +8,7 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: certificatemanagerdnsauthorizations.certificatemanager.cnrm.cloud.google.com
 spec:
   group: certificatemanager.cnrm.cloud.google.com
@@ -15,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: CertificateManagerDNSAuthorization
-    listKind: CertificateManagerDNSAuthorizationList
     plural: certificatemanagerdnsauthorizations
     shortNames:
     - gcpcertificatemanagerdnsauthorization
@@ -40,40 +40,33 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
-        description: CertificateManagerDNSAuthorization is the Schema for the CertificateManagerDNSAuthorization
-          API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            description: CertificateManagerDNSAuthorizationSpec defines the desired
-              state of CertificateManagerDNSAuthorization
             properties:
               description:
                 description: A human-readable description of the resource.
                 type: string
               domain:
-                description: Immutable. A domain which is being authorized. A DnsAuthorization
-                  resource covers a single domain and its wildcard, e.g. authorization
-                  for "example.com" can be used to issue certificates for "example.com"
-                  and "*.example.com".
+                description: |-
+                  Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
+                  single domain and its wildcard, e.g. authorization for "example.com" can
+                  be used to issue certificates for "example.com" and "*.example.com".
                 type: string
-                x-kubernetes-validations:
-                - message: Domain field is immutable
-                  rule: self == oldSelf
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -92,36 +85,29 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               resourceID:
-                description: Optional. The name of the resource. Used for creation
-                  and acquisition. When unset, the value of `metadata.name` is used
-                  as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
             required:
             - domain
             - projectRef
             type: object
           status:
-            description: CertificateManagerDNSAuthorizationStatus defines the config
-              connector machine state of CertificateManagerDNSAuthorization
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the CertificateManagerDNSAuthorization's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -146,16 +132,18 @@ spec:
                   type: object
                 type: array
               dnsResourceRecord:
-                description: The structure describing the DNS Resource Record that
-                  needs to be added to DNS configuration for the authorization to
-                  be usable by certificate.
+                description: |-
+                  The structure describing the DNS Resource Record that needs to be added
+                  to DNS configuration for the authorization to be usable by
+                  certificate.
                 items:
                   properties:
                     data:
                       description: Data of the DNS Resource Record.
                       type: string
                     name:
-                      description: Fully qualified name of the DNS Resource Record.
+                      description: |-
+                        Fully qualified name of the DNS Resource Record.
                         E.g. '_acme-challenge.example.com'.
                       type: string
                     type:
@@ -169,7 +157,6 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
             type: object
         required:
@@ -195,44 +182,32 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: CertificateManagerDNSAuthorization is the Schema for the CertificateManagerDNSAuthorization
-          API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            description: CertificateManagerDNSAuthorizationSpec defines the desired
-              state of CertificateManagerDNSAuthorization
             properties:
               description:
                 description: A human-readable description of the resource.
                 type: string
               domain:
-                description: Immutable. A domain which is being authorized. A DnsAuthorization
-                  resource covers a single domain and its wildcard, e.g. authorization
-                  for "example.com" can be used to issue certificates for "example.com"
-                  and "*.example.com".
-                type: string
-                x-kubernetes-validations:
-                - message: Domain field is immutable
-                  rule: self == oldSelf
-              location:
-                description: Immutable. Optional. Location represents the geographical
-                  location of the DnsAuthorization. If not specified, "global" is
-                  used.
+                description: |-
+                  Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
+                  single domain and its wildcard, e.g. authorization for "example.com" can
+                  be used to issue certificates for "example.com" and "*.example.com".
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -252,36 +227,29 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               resourceID:
-                description: Optional. The name of the resource. Used for creation
-                  and acquisition. When unset, the value of `metadata.name` is used
-                  as the default.
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
                 type: string
             required:
             - domain
             - projectRef
             type: object
           status:
-            description: CertificateManagerDNSAuthorizationStatus defines the config
-              connector machine state of CertificateManagerDNSAuthorization
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the CertificateManagerDNSAuthorization's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -306,35 +274,31 @@ spec:
                   type: object
                 type: array
               dnsResourceRecord:
-                description: The structure describing the DNS Resource Record that
-                  needs to be added to DNS configuration for the authorization to
-                  be usable by certificate.
+                description: |-
+                  The structure describing the DNS Resource Record that needs to be added
+                  to DNS configuration for the authorization to be usable by
+                  certificate.
                 items:
                   properties:
                     data:
-                      description: Output only. Data of the DNS Resource Record.
+                      description: Data of the DNS Resource Record.
                       type: string
                     name:
-                      description: Output only. Fully qualified name of the DNS Resource
-                        Record. e.g. `_acme-challenge.example.com`
+                      description: |-
+                        Fully qualified name of the DNS Resource Record.
+                        E.g. '_acme-challenge.example.com'.
                       type: string
                     type:
-                      description: Output only. Type of the DNS Resource Record. Currently
-                        always set to "CNAME".
+                      description: Type of the DNS Resource Record.
                       type: string
                   type: object
                 type: array
-              externalRef:
-                description: A unique specifier for the CertificateManagerDNSAuthorization
-                  resource in GCP.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
             type: object
         required:
@@ -344,3 +308,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

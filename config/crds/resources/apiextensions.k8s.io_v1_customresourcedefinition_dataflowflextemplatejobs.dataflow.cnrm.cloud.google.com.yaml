@@ -16,7 +16,6 @@ spec:
     categories:
     - gcp
     kind: DataflowFlexTemplateJob
-    listKind: DataflowFlexTemplateJobList
     plural: dataflowflextemplatejobs
     shortNames:
     - gcpdataflowflextemplatejob
@@ -44,45 +43,42 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: DataflowFlexTemplateJob is the Schema for the DataflowFlexTemplateJob
-          API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            description: DataflowFlexTemplateJobSpec defines the desired state of
-              DataflowFlexTemplateJob
             properties:
               additionalExperiments:
-                description: Additional experiment flags for the job.
+                description: List of experiments that should be used by the job. An
+                  example value is ["enable_stackdriver_agent_metrics"].
                 items:
                   type: string
                 type: array
               autoscalingAlgorithm:
-                description: The algorithm to use for autoscaling
+                description: The algorithm to use for autoscaling.
                 type: string
               containerSpecGcsPath:
-                description: Cloud Storage path to a file with json serialized ContainerSpec
-                  as content.
                 type: string
               enableStreamingEngine:
-                description: Whether to enable Streaming Engine for the job.
+                description: Immutable. Indicates if the job should use the streaming
+                  engine feature.
                 type: boolean
               ipConfiguration:
-                description: Configuration for VM IPs.
+                description: The configuration for VM IPs. Options are "WORKER_IP_PUBLIC"
+                  or "WORKER_IP_PRIVATE".
                 type: string
               kmsKeyNameRef:
-                description: The Cloud KMS key for the job.
+                description: The name for the Cloud KMS key for the job.
                 oneOf:
                 - not:
                     required:
@@ -99,14 +95,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed KMSCryptoKey.
-                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` of a `KMSCryptoKey` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               launcherMachineType:
@@ -114,18 +110,14 @@ spec:
                   is n1-standard-1.
                 type: string
               machineType:
-                description: The machine type to use for the job. Defaults to the
-                  value from the template if not specified.
+                description: The machine type to use for the job.
                 type: string
               maxWorkers:
-                description: The maximum number of Google Compute Engine instances
-                  to be made available to your pipeline during execution, from 1 to
-                  1000.
-                format: int32
+                description: Immutable. The maximum number of Google Compute Engine
+                  instances to be made available to your pipeline during execution,
+                  from 1 to 1000.
                 type: integer
               networkRef:
-                description: Network to which VMs will be assigned.  If empty or unspecified,
-                  the service will use the network "default".
                 oneOf:
                 - not:
                     required:
@@ -142,23 +134,21 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed Compute Network
-                      resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` field of a `ComputeNetwork` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeNetwork` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               numWorkers:
-                description: The initial number of Google Compute Engine instances
-                  for the job.
-                format: int32
+                description: Immutable. The initial number of Google Compute Engine
+                  instances for the job.
                 type: integer
               parameters:
-                description: The parameters for FlexTemplate. Ex. {"num_workers":"5"}
                 type: object
                 x-kubernetes-preserve-unknown-fields: true
               region:
@@ -171,8 +161,6 @@ spec:
                   the SDK. Note this field is only valid for portable pipelines.
                 type: string
               serviceAccountEmailRef:
-                description: The email address of the service account to run the job
-                  as.
                 oneOf:
                 - not:
                     required:
@@ -189,7 +177,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `email` field of an `IAMServiceAccount` resource.
+                    description: 'Allowed value: The `email` field of an `IAMServiceAccount`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -199,15 +188,10 @@ spec:
                     type: string
                 type: object
               stagingLocation:
-                description: The Cloud Storage path for staging local files. Must
-                  be a valid Cloud Storage URL, beginning with `gs://`.
+                description: The Cloud Storage path to use for staging files. Must
+                  be a valid Cloud Storage URL, beginning with gs://.
                 type: string
               subnetworkRef:
-                description: Subnetwork to which VMs will be assigned, if desired.
-                  You can specify a subnetwork using either a complete URL or an abbreviated
-                  path. Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
-                  or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is
-                  located in a Shared VPC network, you must use the complete URL.
                 oneOf:
                 - not:
                     required:
@@ -224,36 +208,34 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                      when not managed by Config Connector.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeSubnetwork`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` field of a `ComputeSubnetwork` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeSubnetwork` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               tempLocation:
                 description: The Cloud Storage path to use for temporary files. Must
-                  be a valid Cloud Storage URL, beginning with `gs://`.
+                  be a valid Cloud Storage URL, beginning with gs://.
                 type: string
               transformNameMapping:
-                description: Map of transform name prefixes of the job to be replaced
-                  with the corresponding name prefixes of the new job. Only applicable
-                  when updating a pipeline.
+                description: Only applicable when updating a pipeline. Map of transform
+                  name prefixes of the job to be replaced with the corresponding name
+                  prefixes of the new job.
                 type: object
                 x-kubernetes-preserve-unknown-fields: true
             required:
             - containerSpecGcsPath
             type: object
           status:
-            description: DataflowFlexTemplateJobStatus defines the config connector
-              machine state of DataflowFlexTemplateJob
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the object's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -285,24 +267,11 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               state:
-                description: |-
-                  The current state of the job.
-
-                   Jobs are created in the `JOB_STATE_STOPPED` state unless otherwise
-                   specified.
-
-                   A job in the `JOB_STATE_RUNNING` state may asynchronously enter a
-                   terminal state. After a job has reached a terminal state, no
-                   further state updates may be made.
-
-                   This field may be mutated by the Cloud Dataflow service;
-                   callers cannot mutate it.
                 type: string
               type:
-                description: The type of Cloud Dataflow job.
+                description: The type of this job, selected from the JobType enum.
                 type: string
             type: object
         required:
@@ -312,3 +281,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
