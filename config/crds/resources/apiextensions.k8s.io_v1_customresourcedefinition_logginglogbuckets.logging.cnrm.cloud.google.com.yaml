@@ -5,9 +5,7 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: logginglogbuckets.logging.cnrm.cloud.google.com
 spec:
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: LoggingLogBucket
+    listKind: LoggingLogBucketList
     plural: logginglogbuckets
     shortNames:
     - gcplogginglogbucket
@@ -40,149 +39,34 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: LoggingLogBucket is the Schema for the LoggingLogBucket API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            oneOf:
-            - required:
-              - billingAccountRef
-            - required:
-              - folderRef
-            - required:
-              - organizationRef
-            - required:
-              - projectRef
+            description: LoggingLogBucketSpec defines the desired state of LoggingLogBucket
             properties:
-              billingAccountRef:
-                description: Immutable. The BillingAccount that this resource belongs
-                  to. Only one of [billingAccountRef, folderRef, organizationRef,
-                  projectRef] may be specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a Google Cloud Billing Account (format: `billingAccounts/{{name}}`).'
-                    type: string
-                  name:
-                    description: |-
-                      [WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
-                      Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
-              description:
-                description: Describes this bucket.
-                type: string
-              enableAnalytics:
-                description: ' Whether or not Log Analytics is enabled. Logs for buckets
-                  with Log Analytics enabled can be queried in the Log Analytics page
-                  using SQL queries. Cannot be disabled once enabled.'
-                type: boolean
-              folderRef:
-                description: Immutable. The Folder that this resource belongs to.
-                  Only one of [billingAccountRef, folderRef, organizationRef, projectRef]
-                  may be specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a `Folder` resource (format: `folders/{{name}}`).'
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
               location:
-                description: 'Immutable. The location of the resource. The supported
-                  locations are: global, us-central1, us-east1, us-west1, asia-east1,
-                  europe-west1.'
+                description: Immutable.
                 type: string
-              locked:
-                description: Whether the bucket has been locked. The retention period
-                  on a locked bucket may not be changed. Locked buckets may only be
-                  deleted if they are empty.
-                type: boolean
-              organizationRef:
-                description: Immutable. The Organization that this resource belongs
-                  to. Only one of [billingAccountRef, folderRef, organizationRef,
-                  projectRef] may be specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a Google Cloud Organization (format: `organizations/{{name}}`).'
-                    type: string
-                  name:
-                    description: |-
-                      [WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
-                      Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
-                  Only one of [billingAccountRef, folderRef, organizationRef, projectRef]
-                  may be specified.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -199,36 +83,35 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a `Project` resource (format: `projects/{{name}}`).'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The LoggingLogBucket name. If not given, the metadata.name
+                  will be used.
                 type: string
-              retentionDays:
-                description: Logs will be retained by default for this amount of time,
-                  after which they will automatically be deleted. The minimum retention
-                  period is 1 day. If this value is set to zero at bucket creation
-                  time, the default time of 30 days will be used.
-                format: int64
-                type: integer
             required:
             - location
+            - projectRef
             type: object
           status:
+            description: LoggingLogBucketStatus defines the config connector machine
+              state of LoggingLogBucket
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -252,14 +135,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Output only. The creation timestamp of the bucket. This
-                  is not set for any of the default buckets.
-                format: date-time
-                type: string
-              lifecycleState:
-                description: 'Output only. The bucket lifecycle state. Possible values:
-                  LIFECYCLE_STATE_UNSPECIFIED, ACTIVE, DELETE_REQUESTED'
+              externalRef:
+                description: A unique specifier for the LoggingLogBucket resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -267,11 +145,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              updateTime:
-                description: Output only. The last update timestamp of the bucket.
-                format: date-time
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -280,9 +159,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
