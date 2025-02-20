@@ -32,7 +32,6 @@ import (
 	// TODO(contributor): Update the import with the google cloud client api protobuf
 	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -188,15 +187,10 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	for p := range paths {
 		pathSet.Insert(p)
 	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: pathSet.UnsortedList()}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &monitoringpb.UpdateGroupRequest{
 		Group:      desiredPb,
-		UpdateMask: updateMask,
-		Group:      desiredPb,
-                ValidateOnly: false,
                 ValidateOnly: false,
 
 	}
@@ -258,7 +252,6 @@ err := a.gcpClient.DeleteGroup(ctx, req)
 	}
 	log.V(2).Info("successfully deleted Group", "name", a.id)
 
-	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete Group %s: %w", a.id, err)
 	}
