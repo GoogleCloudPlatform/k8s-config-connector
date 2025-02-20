@@ -17,6 +17,7 @@ package logging
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -27,10 +28,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/logging/apiv1"
+	gcp "cloud.google.com/go/logging/apiv2"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	loggingpb "cloud.google.com/go/logging/v2/loggingpb"
+	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -55,7 +56,7 @@ type modelLogSink struct {
 	config config.ControllerConfig
 }
 
-func (m *modelLogSink) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelLogSink) client(ctx context.Context) (loggingpb.ConfigServiceV2Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -65,7 +66,8 @@ func (m *modelLogSink) client(ctx context.Context) (*gcp.Client, error) {
 	if err != nil {
 		return nil, fmt.Errorf("building LogSink client: %w", err)
 	}
-	return gcpClient, err
+        client := loggingpb.NewConfigServiceV2Client(gcpClient)
+	return client, err
 }
 
 func (m *modelLogSink) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -98,7 +100,7 @@ func (m *modelLogSink) AdapterForURL(ctx context.Context, url string) (directbas
 
 type LogSinkAdapter struct {
 	id        *krm.LogSinkIdentity
-	gcpClient *gcp.Client
+	gcpClient loggingpb.ConfigServiceV2Client
 	desired   *krm.LoggingLogSink
 	actual    *loggingpb.LogSink
 }
@@ -113,8 +115,8 @@ func (a *LogSinkAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting LogSink", "name", a.id)
 
-	req := &loggingpb.GetLogSinkRequest{Name: a.id.String()}
-	logsinkpb, err := a.gcpClient.GetLogSink(ctx, req)
+	req := &loggingpb.GetSinkRequest{SinkName: a.id.String()}
+	logsinkpb, err := a.gcpClient.GetSink(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -139,17 +141,17 @@ func (a *LogSinkAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &loggingpb.CreateLogSinkRequest{
+	req := &loggingpb.CreateSinkRequest{
 		Parent:  a.id.Parent().String(),
-		LogSink: resource,
+		Sink: resource,
 	}
-	op, err := a.gcpClient.CreateLogSink(ctx, req)
+	op, err := a.gcpClient.CreateSink(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating LogSink %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
+	created, err := a.gcpClient.CreateSink(ctx,req)
 	if err != nil {
-		return fmt.Errorf("LogSink %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("LogSink %s creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created LogSink", "name", a.id)
 
@@ -174,7 +176,7 @@ func (a *LogSinkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -191,18 +193,18 @@ func (a *LogSinkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		Paths: sets.List(paths)}
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &loggingpb.UpdateLogSinkRequest{
-		Name:       a.id,
+	req := &loggingpb.UpdateSinkRequest{
+		SinkName:       a.id.String(),
 		UpdateMask: updateMask,
-		LogSink:    desiredPb,
+		Sink:    desiredPb,
 	}
-	op, err := a.gcpClient.UpdateLogSink(ctx, req)
+	op, err := a.gcpClient.UpdateSink(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating LogSink %s: %w", a.id, err)
 	}
-	updated, err := op.Wait(ctx)
+	updated, err := a.gcpClient.UpdateSink(ctx,req)
 	if err != nil {
-		return fmt.Errorf("LogSink %s waiting update: %w", a.id, err)
+		return fmt.Errorf("LogSink %s update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated LogSink", "name", a.id)
 
@@ -234,7 +236,7 @@ func (a *LogSinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.LoggingLogSinkGVK)
 
 	u.Object = uObj
@@ -246,8 +248,8 @@ func (a *LogSinkAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting LogSink", "name", a.id)
 
-	req := &loggingpb.DeleteLogSinkRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteLogSink(ctx, req)
+	req := &loggingpb.DeleteSinkRequest{SinkName: a.id.String()}
+	op, err := a.gcpClient.DeleteSink(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -258,9 +260,9 @@ func (a *LogSinkAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	}
 	log.V(2).Info("successfully deleted LogSink", "name", a.id)
 
-	err = op.Wait(ctx)
+	_, err = a.gcpClient.DeleteSink(ctx,req)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete LogSink %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting LogSink %s: %w", a.id, err)
 	}
 	return true, nil
 }
