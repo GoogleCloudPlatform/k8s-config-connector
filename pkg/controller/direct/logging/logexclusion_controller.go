@@ -17,8 +17,7 @@ package logging
 import (
 	"context"
 	"fmt"
-   "google.golang.org/grpc"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -27,6 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -53,13 +54,13 @@ func (m *modelLogExclusion) client(ctx context.Context) (loggingpb.ConfigService
 	if err != nil {
 		return nil, fmt.Errorf("error getting GRPC options: %w", err)
 	}
-        grpcOpts := []grpc.DialOption{grpc.WithInsecure()}
-        for _, o := range opts {
-          grpcOpts = append(grpcOpts, o.(grpc.DialOption))
-        }
+	grpcOpts := []grpc.DialOption{grpc.WithInsecure()}
+	for _, o := range opts {
+		grpcOpts = append(grpcOpts, o.(grpc.DialOption))
+	}
 	conn, err := grpc.DialContext(ctx, "logging.googleapis.com:443", grpcOpts...)
 	if err != nil {
-	 return nil, fmt.Errorf("error dial context: %w", err)
+		return nil, fmt.Errorf("error dial context: %w", err)
 	}
 
 	client := loggingpb.NewConfigServiceV2Client(conn)
@@ -67,10 +68,10 @@ func (m *modelLogExclusion) client(ctx context.Context) (loggingpb.ConfigService
 }
 
 func (m *modelLogExclusion) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-        client, err := m.client(ctx)
-        if err != nil {
-                return nil, fmt.Errorf("error getting logging client: %w", err)
-        }
+	client, err := m.client(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error getting logging client: %w", err)
+	}
 	obj := &krm.LoggingLogExclusion{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -85,7 +86,7 @@ func (m *modelLogExclusion) AdapterForObject(ctx context.Context, reader client.
 		id:      id,
 		config:  m.config,
 		desired: obj,
-                client: client,
+		client:  client,
 	}, nil
 }
 
@@ -95,11 +96,11 @@ func (m *modelLogExclusion) AdapterForURL(ctx context.Context, url string) (dire
 }
 
 type LogExclusionAdapter struct {
-	id        *krm.LogExclusionIdentity
-        config config.ControllerConfig
-	desired   *krm.LoggingLogExclusion
-	actual    *loggingpb.LogExclusion
-        client    loggingpb.ConfigServiceV2Client
+	id      *krm.LogExclusionIdentity
+	config  config.ControllerConfig
+	desired *krm.LoggingLogExclusion
+	actual  *loggingpb.LogExclusion
+	client  loggingpb.ConfigServiceV2Client
 }
 
 var _ directbase.Adapter = &LogExclusionAdapter{}
@@ -138,7 +139,7 @@ func (a *LogExclusionAdapter) Create(ctx context.Context, createOp *directbase.C
 	}
 
 	req := &loggingpb.CreateExclusionRequest{
-		Parent:  a.id.Parent().String(),
+		Parent:    a.id.Parent().String(),
 		Exclusion: resource,
 	}
 	if _, localerr := a.client.CreateExclusion(ctx, req); localerr != nil {
@@ -183,7 +184,7 @@ func (a *LogExclusionAdapter) Update(ctx context.Context, updateOp *directbase.U
 		Paths: sets.List(paths)}
 
 	req := &loggingpb.UpdateExclusionRequest{
-		Name:      a.id.String(),
+		Name:       a.id.String(),
 		UpdateMask: updateMask,
 		Exclusion:  desiredPb,
 	}
