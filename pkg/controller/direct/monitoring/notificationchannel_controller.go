@@ -26,11 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/monitoring/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	monitoringpb "cloud.google.com/go/monitoring/v3/monitoringpb"
+	monitoringpb "cloud.google.com/go/monitoring/apiv3/monitoringpb"
+	"google.golang.org/api/option"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -55,13 +52,13 @@ type modelNotificationChannel struct {
 	config config.ControllerConfig
 }
 
-func (m *modelNotificationChannel) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelNotificationChannel) client(ctx context.Context) (*monitoringpb.NotificationChannelServiceV3Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := monitoringpb.NewNotificationChannelServiceV3Client(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building NotificationChannel client: %w", err)
 	}
@@ -98,7 +95,7 @@ func (m *modelNotificationChannel) AdapterForURL(ctx context.Context, url string
 
 type NotificationChannelAdapter struct {
 	id        *krm.NotificationChannelIdentity
-	gcpClient *gcp.Client
+	gcpClient *monitoringpb.NotificationChannelServiceV3Client
 	desired   *krm.MonitoringNotificationChannel
 	actual    *monitoringpb.NotificationChannel
 }
@@ -140,7 +137,7 @@ func (a *NotificationChannelAdapter) Create(ctx context.Context, createOp *direc
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &monitoringpb.CreateNotificationChannelRequest{
-		Parent:              a.id.Parent().String(),
+		Name:              a.id.Parent().String(),
 		NotificationChannel: resource,
 	}
 	op, err := a.gcpClient.CreateNotificationChannel(ctx, req)
@@ -173,6 +170,7 @@ func (a *NotificationChannelAdapter) Update(ctx context.Context, updateOp *direc
 		return mapCtx.Err()
 	}
 
+	var paths sets.Set[string]
 	var err error
 	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
@@ -192,10 +190,11 @@ func (a *NotificationChannelAdapter) Update(ctx context.Context, updateOp *direc
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &monitoringpb.UpdateNotificationChannelRequest{
-		Name:                a.id,
 		UpdateMask:          updateMask,
 		NotificationChannel: desiredPb,
 	}
+	req.NotificationChannel.Name = a.id.String()
+
 	op, err := a.gcpClient.UpdateNotificationChannel(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating NotificationChannel %s: %w", a.id, err)
@@ -234,7 +233,7 @@ func (a *NotificationChannelAdapter) Export(ctx context.Context) (*unstructured.
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.MonitoringNotificationChannelGVK)
 
 	u.Object = uObj
