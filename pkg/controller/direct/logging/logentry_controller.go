@@ -27,10 +27,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/logging/apiv1"
+	gcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gcp"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	loggingpb "cloud.google.com/go/logging/v2/loggingpb"
+	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
