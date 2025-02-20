@@ -74,6 +74,13 @@ func (s *secureSourceManagerServer) CreateInstance(ctx context.Context, req *pb.
 		obj.KmsKey = req.GetInstance().GetKmsKey()
 	}
 
+	if req.GetInstance().GetPrivateConfig() != nil {
+		obj.PrivateConfig.IsPrivate = req.GetInstance().GetPrivateConfig().GetIsPrivate()
+		obj.PrivateConfig.CaPool = req.GetInstance().GetPrivateConfig().GetCaPool()
+		obj.PrivateConfig.HttpServiceAttachment = fmt.Sprintf("projects/tp-project/regions/%s/serviceAttachments/httpAttachment", name.Location)
+		obj.PrivateConfig.SshServiceAttachment = fmt.Sprintf("projects/tp-project/regions/%s/serviceAttachments/sshAttachment", name.Location)
+	}
+
 	// TODO: Only fill in when ACTIVE
 	prefix := fmt.Sprintf("%s-%d", name.InstanceID, name.Project.Number)
 	domain := "." + name.Location + ".sourcemanager.dev"
