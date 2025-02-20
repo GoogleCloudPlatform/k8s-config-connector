@@ -26,8 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
+	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/monitoring/apiv3/v2"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
 	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
@@ -55,13 +55,13 @@ type modelService struct {
 	config config.ControllerConfig
 }
 
-func (m *modelService) client(ctx context.Context) (*monitoring.ServiceClient, error) {
+func (m *modelService) client(ctx context.Context) (*monitoring.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := monitoring.NewServiceClient(ctx, opts...)
+	gcpClient, err := monitoring.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Service client: %w", err)
 	}
@@ -98,7 +98,7 @@ func (m *modelService) AdapterForURL(ctx context.Context, url string) (directbas
 
 type ServiceAdapter struct {
 	id        *krm.ServiceIdentity
-	gcpClient *monitoring.ServiceClient
+	gcpClientX *monitoring.Client
 	desired   *krm.MonitoringService
 	actual    *monitoringpb.Service
 }

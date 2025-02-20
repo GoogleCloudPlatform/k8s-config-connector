@@ -14,81 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.monitoring.v3.Service
-type Service struct {
-	// Identifier. Resource name for this Service. The format is:
-	//
-	//      projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
-	// +kcc:proto:field=google.monitoring.v3.Service.name
-	Name *string `json:"name,omitempty"`
-
-	// Name used for UI elements listing this Service.
-	// +kcc:proto:field=google.monitoring.v3.Service.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Custom service type.
-	// +kcc:proto:field=google.monitoring.v3.Service.custom
-	Custom *Service_Custom `json:"custom,omitempty"`
-
-	// Type used for App Engine services.
-	// +kcc:proto:field=google.monitoring.v3.Service.app_engine
-	AppEngine *Service_AppEngine `json:"appEngine,omitempty"`
-
-	// Type used for Cloud Endpoints services.
-	// +kcc:proto:field=google.monitoring.v3.Service.cloud_endpoints
-	CloudEndpoints *Service_CloudEndpoints `json:"cloudEndpoints,omitempty"`
-
-	// Type used for Istio services that live in a Kubernetes cluster.
-	// +kcc:proto:field=google.monitoring.v3.Service.cluster_istio
-	ClusterIstio *Service_ClusterIstio `json:"clusterIstio,omitempty"`
-
-	// Type used for Istio services scoped to an Istio mesh.
-	// +kcc:proto:field=google.monitoring.v3.Service.mesh_istio
-	MeshIstio *Service_MeshIstio `json:"meshIstio,omitempty"`
-
-	// Type used for canonical services scoped to an Istio mesh.
-	//  Metrics for Istio are
-	//  [documented here](https://istio.io/latest/docs/reference/config/metrics/)
-	// +kcc:proto:field=google.monitoring.v3.Service.istio_canonical_service
-	IstioCanonicalService *Service_IstioCanonicalService `json:"istioCanonicalService,omitempty"`
-
-	// Type used for Cloud Run services.
-	// +kcc:proto:field=google.monitoring.v3.Service.cloud_run
-	CloudRun *Service_CloudRun `json:"cloudRun,omitempty"`
-
-	// Type used for GKE Namespaces.
-	// +kcc:proto:field=google.monitoring.v3.Service.gke_namespace
-	GkeNamespace *Service_GkeNamespace `json:"gkeNamespace,omitempty"`
-
-	// Type used for GKE Workloads.
-	// +kcc:proto:field=google.monitoring.v3.Service.gke_workload
-	GkeWorkload *Service_GkeWorkload `json:"gkeWorkload,omitempty"`
-
-	// Type used for GKE Services (the Kubernetes concept of a service).
-	// +kcc:proto:field=google.monitoring.v3.Service.gke_service
-	GkeService *Service_GkeService `json:"gkeService,omitempty"`
-
-	// Message that contains the service type and service labels of this service
-	//  if it is a basic service.
-	//  Documentation and examples
-	//  [here](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/api-structures#basic-svc-w-basic-sli).
-	// +kcc:proto:field=google.monitoring.v3.Service.basic_service
-	BasicService *Service_BasicService `json:"basicService,omitempty"`
-
-	// Configuration for how to query telemetry on a Service.
-	// +kcc:proto:field=google.monitoring.v3.Service.telemetry
-	Telemetry *Service_Telemetry `json:"telemetry,omitempty"`
-
-	// Labels which have been used to annotate the service. Label keys must start
-	//  with a letter. Label keys and values may contain lowercase letters,
-	//  numbers, underscores, and dashes. Label keys and values have a maximum
-	//  length of 63 characters, and must be less than 128 bytes in size. Up to 64
-	//  label entries may be stored. For labels which do not have a semantic value,
-	//  the empty string may be supplied for the label value.
-	// +kcc:proto:field=google.monitoring.v3.Service.user_labels
-	UserLabels map[string]string `json:"userLabels,omitempty"`
-}
-
 // +kcc:proto=google.monitoring.v3.Service.AppEngine
 type Service_AppEngine struct {
 	// The ID of the App Engine module underlying this service. Corresponds to
@@ -275,21 +200,6 @@ type Service_Telemetry struct {
 	//  described in https://cloud.google.com/apis/design/resource_names.
 	// +kcc:proto:field=google.monitoring.v3.Service.Telemetry.resource_name
 	ResourceName *string `json:"resourceName,omitempty"`
-}
-
-// +kcc:proto=google.monitoring.v3.Service
-type ServiceObservedState struct {
-	// Type used for GKE Namespaces.
-	// +kcc:proto:field=google.monitoring.v3.Service.gke_namespace
-	GkeNamespace *Service_GkeNamespaceObservedState `json:"gkeNamespace,omitempty"`
-
-	// Type used for GKE Workloads.
-	// +kcc:proto:field=google.monitoring.v3.Service.gke_workload
-	GkeWorkload *Service_GkeWorkloadObservedState `json:"gkeWorkload,omitempty"`
-
-	// Type used for GKE Services (the Kubernetes concept of a service).
-	// +kcc:proto:field=google.monitoring.v3.Service.gke_service
-	GkeService *Service_GkeServiceObservedState `json:"gkeService,omitempty"`
 }
 
 // +kcc:proto=google.monitoring.v3.Service.GkeNamespace
