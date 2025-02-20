@@ -4,7 +4,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
         krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
         metric "google.golang.org/genproto/googleapis/api/metric"
-        pb "cloud.google.com/go/logging/apiv2/loggingpb"
+        pb "google.golang.org/genproto/googleapis/api/distribution"
 )
 
 func MetricDescriptor_FromProto(mapCtx *direct.MapContext, in interface{}) *krm.MetricDescriptor {
