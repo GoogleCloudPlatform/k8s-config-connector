@@ -27,10 +27,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/monitoring/apiv1"
+	gcp "cloud.google.com/go/monitoring/apiv3/v2"
 
 	// TODO(contributor): Update the import with the google cloud client api protobuf
-	monitoringpb "cloud.google.com/go/monitoring/v3/monitoringpb"
+	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -55,13 +55,13 @@ type modelService struct {
 	config config.ControllerConfig
 }
 
-func (m *modelService) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelService) client(ctx context.Context) (*monitoring.ServiceClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := monitoring.NewServiceClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Service client: %w", err)
 	}
@@ -98,7 +98,7 @@ func (m *modelService) AdapterForURL(ctx context.Context, url string) (directbas
 
 type ServiceAdapter struct {
 	id        *krm.ServiceIdentity
-	gcpClient *gcp.Client
+	gcpClient *monitoring.ServiceClient
 	desired   *krm.MonitoringService
 	actual    *monitoringpb.Service
 }
@@ -174,6 +174,7 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	var err error
+	var paths sets.Set[string]
 	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -192,9 +193,8 @@ func (a *ServiceAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &monitoringpb.UpdateServiceRequest{
-		Name:       a.id,
+		Service:       desiredPb,
 		UpdateMask: updateMask,
-		Service:    desiredPb,
 	}
 	op, err := a.gcpClient.UpdateService(ctx, req)
 	if err != nil {
@@ -234,7 +234,7 @@ func (a *ServiceAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.MonitoringServiceGVK)
 
 	u.Object = uObj
