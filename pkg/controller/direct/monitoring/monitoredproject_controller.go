@@ -28,8 +28,8 @@ import (
 
 	monitoringpb "cloud.google.com/go/monitoring/metricsscope/apiv1/metricsscopepb"
 
-        "google.golang.org/grpc"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -41,8 +41,8 @@ func convertOptions(opts []option.ClientOption) []grpc.DialOption {
 	var grpcOpts []grpc.DialOption
 	for _, opt := range opts {
 		switch opt := opt.(type) {
-                case grpc.DialOption:
-                        grpcOpts = append(grpcOpts, opt)
+		case grpc.DialOption:
+			grpcOpts = append(grpcOpts, opt)
 		default:
 		}
 	}
@@ -63,7 +63,6 @@ type modelMonitoredProject struct {
 	config config.ControllerConfig
 }
 
-
 func (m *modelMonitoredProject) client(ctx context.Context) (monitoringpb.MetricsScopesClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
@@ -71,9 +70,9 @@ func (m *modelMonitoredProject) client(ctx context.Context) (monitoringpb.Metric
 		return nil, err
 	}
 	conn, err := grpc.DialContext(ctx, "monitoring.googleapis.com:443", convertOptions(opts)...)
-        if err != nil {
-                return nil, fmt.Errorf("failed to dial monitoring.googleapis.com: %w", err)
-        }
+	if err != nil {
+		return nil, fmt.Errorf("failed to dial monitoring.googleapis.com: %w", err)
+	}
 	gcpClient := monitoringpb.NewMetricsScopesClient(conn)
 	return gcpClient, nil
 }
@@ -136,7 +135,6 @@ func (a *MonitoredProjectAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *MonitoredProjectAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
@@ -158,7 +156,7 @@ func (a *MonitoredProjectAdapter) Create(ctx context.Context, createOp *directba
 	if err != nil {
 		return fmt.Errorf("creating MonitoredProject %s: %w", a.id, err)
 	}
-        created := &monitoringpb.MonitoredProject{}
+	created := &monitoringpb.MonitoredProject{}
 	log.V(2).Info("successfully created MonitoredProject", "name", a.id)
 
 	status := &krm.MonitoringMonitoredProjectStatus{}
