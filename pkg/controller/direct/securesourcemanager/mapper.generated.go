@@ -52,6 +52,7 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	if in.GetCaPool() != "" {
 		out.CaPoolRef = &refs.PrivateCACAPoolRef{External: in.GetCaPool()}
 	}
+	// MISSING: PscAllowedProjects
 	return out
 }
 func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
@@ -63,6 +64,7 @@ func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 	if in.CaPoolRef != nil {
 		out.CaPool = in.CaPoolRef.External
 	}
+	// MISSING: PscAllowedProjects
 	return out
 }
 func Instance_PrivateConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfigObservedState {
@@ -72,6 +74,7 @@ func Instance_PrivateConfigObservedState_FromProto(mapCtx *direct.MapContext, in
 	out := &krm.Instance_PrivateConfigObservedState{}
 	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
 	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
+	// MISSING: PscAllowedProjects
 	return out
 }
 func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfigObservedState) *pb.Instance_PrivateConfig {
@@ -81,6 +84,7 @@ func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out := &pb.Instance_PrivateConfig{}
 	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
 	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
+	// MISSING: PscAllowedProjects
 	return out
 }
 func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
@@ -134,6 +138,7 @@ func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *direct.MapContex
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
+	out.PrivateConfig = Instance_PrivateConfigObservedState_FromProto(mapCtx, in.GetPrivateConfig())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateNote = direct.Enum_FromProto(mapCtx, in.GetStateNote())
 	out.HostConfig = Instance_HostConfigObservedState_FromProto(mapCtx, in.GetHostConfig())
@@ -148,6 +153,7 @@ func SecureSourceManagerInstanceObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
+	out.PrivateConfig = Instance_PrivateConfigObservedState_ToProto(mapCtx, in.PrivateConfig)
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
 	out.StateNote = direct.Enum_ToProto[pb.Instance_StateNote](mapCtx, in.StateNote)
 	out.HostConfig = Instance_HostConfigObservedState_ToProto(mapCtx, in.HostConfig)
