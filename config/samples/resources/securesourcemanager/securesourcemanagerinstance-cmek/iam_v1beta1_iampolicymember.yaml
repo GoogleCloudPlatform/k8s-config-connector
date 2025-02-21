@@ -17,7 +17,7 @@ kind: IAMPolicyMember
 metadata:
   name: securesourcemanagerinstance-dep
 spec:
-  member: serviceAccount:service-1003565643644@gcp-sa-sourcemanager.iam.gserviceaccount.com
+  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-sourcemanager.iam.gserviceaccount.com
   role: roles/cloudkms.cryptoKeyEncrypterDecrypter
   resourceRef:
     apiVersion: kms.cnrm.cloud.google.com/v1beta1
