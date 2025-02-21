@@ -109,20 +109,6 @@ func Repository_InitialConfig_ToProto(mapCtx *direct.MapContext, in *krm.Reposit
 	out.Readme = direct.ValueOf(in.Readme)
 	return out
 }
-func Repository_URIs_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs) *krm.Repository_URIs {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Repository_URIs{}
-	return out
-}
-func Repository_URIs_ToProto(mapCtx *direct.MapContext, in *krm.Repository_URIs) *pb.Repository_URIs {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Repository_URIs{}
-	return out
-}
 func Repository_URIsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs) *krm.Repository_URIsObservedState {
 	if in == nil {
 		return nil
