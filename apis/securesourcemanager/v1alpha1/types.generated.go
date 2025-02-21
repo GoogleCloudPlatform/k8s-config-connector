@@ -15,10 +15,6 @@
 package v1alpha1
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
-type Instance_HostConfig struct {
-}
-
-// +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfigObservedState struct {
 	// Output only. HTML hostname.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.HostConfig.html
