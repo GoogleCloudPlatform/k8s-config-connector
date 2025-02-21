@@ -241,6 +241,11 @@ func (in *VertexAIMetadataStoreSpec) DeepCopyInto(out *VertexAIMetadataStoreSpec
 		*out = new(MetadataStore_DataplexConfig)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Description != nil {
+		in, out := &in.Description, &out.Description
+		*out = new(string)
+		**out = **in
+	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
 		*out = new(v1beta1.ProjectRef)

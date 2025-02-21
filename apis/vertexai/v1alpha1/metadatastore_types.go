@@ -37,7 +37,7 @@ type VertexAIMetadataStoreSpec struct {
 
 	// Description of the MetadataStore.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.description
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 
 	// The region of the Metadata Store. eg us-central1.
 	Region string `json:"region,omitempty"`
@@ -101,7 +101,7 @@ type EncryptionSpec struct {
 // TODO(user): make sure the pluralizaiton below is correct"
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaimetadatastore;gcpvertexaimetadatastores
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

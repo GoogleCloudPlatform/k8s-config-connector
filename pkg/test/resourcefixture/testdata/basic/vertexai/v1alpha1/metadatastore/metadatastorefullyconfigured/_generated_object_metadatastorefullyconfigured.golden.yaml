@@ -3,21 +3,22 @@ kind: VertexAIMetadataStore
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: metadatastore${uniqueId}
   namespace: ${uniqueId}
 spec:
   description: An encrypted metadata store
+  encryptionSpec:
+    kmsKeyNameRef:
+      name: kmscryptokey-${uniqueId}
   projectRef:
     external: ${projectId}
   region: us-central1
-  resourceID: metadatastore${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -25,4 +26,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  externalRef: projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}
+  observedGeneration: 1
+  observedState:
+    name: projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}
+    state:
+      diskUtilizationBytes: 1
