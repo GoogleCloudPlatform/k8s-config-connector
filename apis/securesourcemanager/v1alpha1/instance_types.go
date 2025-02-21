@@ -37,10 +37,8 @@ type SecureSourceManagerInstanceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* NOTYET
 	// Optional. Labels as key value pairs.
 	Labels map[string]string `json:"labels,omitempty"`
-	*/
 
 	// Optional. Immutable. Customer-managed encryption key name.
 	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
@@ -71,11 +69,11 @@ type SecureSourceManagerInstanceStatus struct {
 // SecureSourceManagerInstanceSpec defines the desired state of SecureSourceManagerInstance
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance
 type SecureSourceManagerInstanceObservedState struct {
-	// // Output only. Create timestamp.
-	// CreateTime *string `json:"createTime,omitempty"`
+	// Output only. Create timestamp.
+	CreateTime *string `json:"createTime,omitempty"`
 
-	// // Output only. Update timestamp.
-	// UpdateTime *string `json:"updateTime,omitempty"`
+	// Output only. Update timestamp.
+	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Current state of the instance.
 	State *string `json:"state,omitempty"`
