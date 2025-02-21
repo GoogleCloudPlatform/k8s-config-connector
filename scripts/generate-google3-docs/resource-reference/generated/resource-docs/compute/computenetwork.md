@@ -332,6 +332,8 @@ metadata:
 spec:
   routingMode: REGIONAL
   autoCreateSubnetworks: true
+  # ULA internal ipv6 is not supported for auto mode network
+  enableUlaInternalIpv6: false
 ```
 
 
