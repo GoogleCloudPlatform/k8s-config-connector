@@ -86,6 +86,9 @@ type SecureSourceManagerInstanceObservedState struct {
 
 	// Output only. A list of hostnames for this instance.
 	HostConfig *Instance_HostConfigObservedState `json:"hostConfig,omitempty"`
+
+	// Optional. PrivateConfig includes settings for private instance.
+	PrivateConfig *Instance_PrivateConfigObservedState `json:"privateConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig
