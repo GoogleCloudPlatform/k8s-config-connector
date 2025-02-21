@@ -47,50 +47,10 @@ type Instance_PrivateConfigObservedState struct {
 	SSHServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securesourcemanager.v1.Repository
-type Repository struct {
-	// Optional. A unique identifier for a repository. The name should be of the
-	//  format:
-	//  `projects/{project}/locations/{location_id}/repositories/{repository_id}`
-	Name *string `json:"name,omitempty"`
-
-	// Optional. Description of the repository, which cannot exceed 500
-	//  characters.
-	Description *string `json:"description,omitempty"`
-
-	// Optional. The name of the instance in which the repository is hosted,
-	//  formatted as
-	//  `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
-	//  When creating repository via
-	//  securesourcemanager.googleapis.com (Control Plane API), this field is used
-	//  as input. When creating repository via *.sourcemanager.dev (Data Plane
-	//  API), this field is output only.
-	Instance *string `json:"instance,omitempty"`
-
-	// Output only. Unique identifier of the repository.
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Create timestamp.
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Update timestamp.
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Optional. This checksum is computed by the server based on the value of
-	//  other fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
-	Etag *string `json:"etag,omitempty"`
-
-	// Output only. URIs for the repository.
-	Uris *Repository_URIs `json:"uris,omitempty"`
-
-	// Input only. Initial configurations for the repository.
-	InitialConfig *Repository_InitialConfig `json:"initialConfig,omitempty"`
-}
-
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.InitialConfig
 type Repository_InitialConfig struct {
 	// Default branch name of the repository.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.InitialConfig.default_branch
 	DefaultBranch *string `json:"defaultBranch,omitempty"`
 
 	// List of gitignore template names user can choose from.
@@ -126,6 +86,7 @@ type Repository_InitialConfig struct {
 	//  virtual-env, virtuoso, visual-studio, visual-studio-code, vue, vvvv, waf,
 	//  web-methods, windows, word-press, xcode, xilinx, xilinx-ise, xojo,
 	//  yeoman, yii, zend-framework, zephir.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.InitialConfig.gitignores
 	Gitignores []string `json:"gitignores,omitempty"`
 
 	// License template name user can choose from.
@@ -220,22 +181,31 @@ type Repository_InitialConfig struct {
 	//  wxwindows-exception-3-1, x11, xerox, xfree86-1-1, xinetd, xnet, xpp,
 	//  xskat, ypl-1-0, ypl-1-1, zed, zend-2-0, zimbra-1-3, zimbra-1-4, zlib,
 	//  zlib-acknowledgement, zpl-1-1, zpl-2-0, zpl-2-1.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.InitialConfig.license
 	License *string `json:"license,omitempty"`
 
 	// README template name.
 	//  Valid template name(s) are: default.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.InitialConfig.readme
 	Readme *string `json:"readme,omitempty"`
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
 type Repository_URIs struct {
+}
+
+// +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
+type Repository_URIsObservedState struct {
 	// Output only. HTML is the URI for user to view the repository in a
 	//  browser.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.URIs.html
 	HTML *string `json:"html,omitempty"`
 
 	// Output only. git_https is the git HTTPS URI for git operations.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.URIs.git_https
 	GitHTTPS *string `json:"gitHTTPS,omitempty"`
 
 	// Output only. API is the URI for API access.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.URIs.api
 	Api *string `json:"api,omitempty"`
 }
