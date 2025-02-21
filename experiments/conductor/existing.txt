@@ -1,0 +1,360 @@
+    cnrm.cloud.google.com/tf2crd: "true" name: accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: accesscontextmanageraccesspolicies.accesscontextmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: accesscontextmanagergcpuseraccessbindings.accesscontextmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: accesscontextmanagerserviceperimeterresources.accesscontextmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: alloydbbackups.alloydb.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: alloydbclusters.alloydb.cnrm.cloud.google.com
+  name: alloydbinstances.alloydb.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: alloydbusers.alloydb.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apigatewayapiconfigs.apigateway.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apigatewayapis.apigateway.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apigatewaygateways.apigateway.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apigeeaddonsconfigs.apigee.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apigeeendpointattachments.apigee.cnrm.cloud.google.com
+  name: apigeeenvgroupattachments.apigee.cnrm.cloud.google.com
+  name: apigeeenvgroups.apigee.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: apigeeenvironments.apigee.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apigeeinstanceattachments.apigee.cnrm.cloud.google.com
+  name: apigeeinstances.apigee.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apigeenataddresses.apigee.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: apigeeorganizations.apigee.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apigeesyncauthorizations.apigee.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: apikeyskeys.apikeys.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: appenginedomainmappings.appengine.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: appenginefirewallrules.appengine.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: appengineflexibleappversions.appengine.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: appengineservicesplittraffics.appengine.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: appenginestandardappversions.appengine.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: beyondcorpappconnections.beyondcorp.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: beyondcorpappconnectors.beyondcorp.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: beyondcorpappgateways.beyondcorp.cnrm.cloud.google.com
+  name: bigqueryanalyticshubdataexchanges.bigqueryanalyticshub.cnrm.cloud.google.com
+  name: bigqueryanalyticshublistings.bigqueryanalyticshub.cnrm.cloud.google.com
+  name: bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigquerydatapolicydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigquerydatasets.bigquery.cnrm.cloud.google.com
+  name: bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigqueryjobs.bigquery.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigqueryreservationcapacitycommitments.bigqueryreservation.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigqueryreservationreservations.bigqueryreservation.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigqueryroutines.bigquery.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigquerytables.bigquery.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigtableappprofiles.bigtable.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigtablegcpolicies.bigtable.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigtableinstances.bigtable.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: bigtabletables.bigtable.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: certificatemanagercertificatemapentries.certificatemanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: certificatemanagercertificatemaps.certificatemanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com
+  name: certificatemanagerdnsauthorizations.certificatemanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudassetfolderfeeds.cloudasset.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudassetorganizationfeeds.cloudasset.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudassetprojectfeeds.cloudasset.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com
+  name: cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudidentitygroups.cloudidentity.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudidsendpoints.cloudids.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudiotdeviceregistries.cloudiot.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudiotdevices.cloudiot.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: cloudtasksqueues.cloudtasks.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeaddresses.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeautoscalers.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computebackendbuckets.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computebackendbucketsignedurlkeys.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computebackendservices.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computebackendservicesignedurlkeys.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computediskresourcepolicyattachments.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computedisks.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeexternalvpngateways.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: computefirewallpolicies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: computefirewallpolicyassociations.compute.cnrm.cloud.google.com
+  name: computefirewallpolicyrules.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computefirewalls.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeforwardingrules.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeglobalnetworkendpointgroups.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeglobalnetworkendpoints.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computehealthchecks.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computehttphealthchecks.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computehttpshealthchecks.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeimages.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: computeinstancegroupmanagers.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeinstancegroupnamedports.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeinstancegroups.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeinstances.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeinstancetemplates.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeinterconnectattachments.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computemachineimages.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computemanagedsslcertificates.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenetworkendpointgroups.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenetworkendpoints.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenetworkfirewallpolicies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenetworkfirewallpolicyassociations.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenetworkpeeringroutesconfigs.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenetworkpeerings.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenetworks.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenodegroups.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computenodetemplates.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeorganizationsecuritypolicies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeorganizationsecuritypolicyassociations.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: computepacketmirrorings.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeperinstanceconfigs.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeprojectmetadatas.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeregionautoscalers.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeregiondiskresourcepolicyattachments.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeregionperinstanceconfigs.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeregionsslpolicies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computereservations.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeresourcepolicies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computerouterinterfaces.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computerouternats.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computerouterpeers.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computerouters.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeroutes.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computesecuritypolicies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: computeserviceattachments.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computesharedvpchostprojects.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computesharedvpcserviceprojects.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computesnapshots.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computesslcertificates.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computesslpolicies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computesubnetworks.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computetargetgrpcproxies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computetargethttpproxies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computetargethttpsproxies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computetargetinstances.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computetargetpools.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computetargetsslproxies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computetargettcpproxies.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computetargetvpngateways.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computeurlmaps.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computevpngateways.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: computevpntunnels.compute.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: configcontrollerinstances.configcontroller.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: containeranalysisnotes.containeranalysis.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: containerattachedclusters.containerattached.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: containerclusters.container.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: containernodepools.container.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datacatalogentries.datacatalog.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datacatalogentrygroups.datacatalog.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datacatalogpolicytags.datacatalog.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datacatalogtags.datacatalog.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datacatalogtaxonomies.datacatalog.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dataflowjobs.dataflow.cnrm.cloud.google.com
+  name: dataformrepositories.dataform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: datafusioninstances.datafusion.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: dataprocclusters.dataproc.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datastoreindexes.datastore.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datastreamconnectionprofiles.datastream.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datastreamprivateconnections.datastream.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: datastreamstreams.datastream.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: deploymentmanagerdeployments.deploymentmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowagents.dialogflow.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowcxintents.dialogflowcx.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowcxpages.dialogflowcx.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowcxwebhooks.dialogflowcx.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowentitytypes.dialogflow.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowfulfillments.dialogflow.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dialogflowintents.dialogflow.cnrm.cloud.google.com
+  name: discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com
+  name: discoveryenginedatastoretargetsites.discoveryengine.cnrm.cloud.google.com
+  name: discoveryengineengines.discoveryengine.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: dlpdeidentifytemplates.dlp.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: dlpinspecttemplates.dlp.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: dlpjobtriggers.dlp.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: dlpstoredinfotypes.dlp.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dnsmanagedzones.dns.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dnspolicies.dns.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dnsrecordsets.dns.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dnsresponsepolicies.dns.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: dnsresponsepolicyrules.dns.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: documentaiprocessordefaultversions.documentai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: documentaiprocessors.documentai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: edgecontainerclusters.edgecontainer.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: edgecontainernodepools.edgecontainer.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: edgenetworknetworks.edgenetwork.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: edgenetworksubnets.edgenetwork.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: eventarctriggers.eventarc.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: filestorebackups.filestore.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: filestoreinstances.filestore.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: filestoresnapshots.filestore.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: firebaseandroidapps.firebase.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: firebasedatabaseinstances.firebasedatabase.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: firebasehostingchannels.firebasehosting.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: firebasehostingsites.firebasehosting.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: firebaseprojects.firebase.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: firebasestoragebuckets.firebasestorage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: firebasewebapps.firebase.cnrm.cloud.google.com
+  name: firestoredatabases.firestore.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: firestoreindexes.firestore.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: folders.resourcemanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: gkebackupbackupplans.gkebackup.cnrm.cloud.google.com
+  name: gkehubfeaturememberships.gkehub.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: gkehubfeatures.gkehub.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: gkehubmemberships.gkehub.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: healthcareconsentstores.healthcare.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: healthcaredatasets.healthcare.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: healthcaredicomstores.healthcare.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: healthcarefhirstores.healthcare.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: healthcarehl7v2stores.healthcare.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: iamaccessboundarypolicies.iam.cnrm.cloud.google.com
+  name: iamauditconfigs.iam.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: iamcustomroles.iam.cnrm.cloud.google.com
+  name: iampartialpolicies.iam.cnrm.cloud.google.com
+  name: iampolicies.iam.cnrm.cloud.google.com
+  name: iampolicymembers.iam.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: iamserviceaccountkeys.iam.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: iamserviceaccounts.iam.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: iamworkforcepoolproviders.iam.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: iamworkforcepools.iam.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: iamworkloadidentitypoolproviders.iam.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: iamworkloadidentitypools.iam.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: iapbrands.iap.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: iapidentityawareproxyclients.iap.cnrm.cloud.google.com
+  name: iapsettings.iap.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: identityplatformconfigs.identityplatform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: identityplatformdefaultsupportedidpconfigs.identityplatform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: identityplatformoauthidpconfigs.identityplatform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: identityplatformprojectdefaultconfigs.identityplatform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: identityplatformtenantdefaultsupportedidpconfigs.identityplatform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: identityplatformtenantinboundsamlconfigs.identityplatform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: identityplatformtenantoauthidpconfigs.identityplatform.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: identityplatformtenants.identityplatform.cnrm.cloud.google.com
+  name: kmsautokeyconfigs.kms.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: kmscryptokeys.kms.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: kmscryptokeyversions.kms.cnrm.cloud.google.com
+  name: kmskeyhandles.kms.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: kmskeyringimportjobs.kms.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: kmskeyrings.kms.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: kmssecretciphertexts.kms.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: logginglogbuckets.logging.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: logginglogexclusions.logging.cnrm.cloud.google.com
+  name: logginglogmetrics.logging.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: logginglogsinks.logging.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: logginglogviews.logging.cnrm.cloud.google.com
+  name: managedkafkaclusters.managedkafka.cnrm.cloud.google.com
+  name: managedkafkatopics.managedkafka.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: memcacheinstances.memcache.cnrm.cloud.google.com
+  name: memorystoreinstances.memorystore.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: mlenginemodels.mlengine.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: monitoringalertpolicies.monitoring.cnrm.cloud.google.com
+  name: monitoringdashboards.monitoring.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: monitoringgroups.monitoring.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: monitoringmetricdescriptors.monitoring.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: monitoringmonitoredprojects.monitoring.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: monitoringnotificationchannels.monitoring.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: monitoringservicelevelobjectives.monitoring.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: monitoringservices.monitoring.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: monitoringuptimecheckconfigs.monitoring.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkconnectivityhubs.networkconnectivity.cnrm.cloud.google.com
+  name: networkconnectivityserviceconnectionpolicies.networkconnectivity.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networksecurityauthorizationpolicies.networksecurity.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkservicesendpointpolicies.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkservicesgateways.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkservicesgrpcroutes.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkserviceshttproutes.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkservicesmeshes.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkservicestcproutes.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: networkservicestlsroutes.networkservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: notebooksenvironments.notebooks.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: osconfigguestpolicies.osconfig.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: osconfigospolicyassignments.osconfig.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: osconfigpatchdeployments.osconfig.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: osloginsshpublickeys.oslogin.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: privatecacapools.privateca.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: privatecacertificateauthorities.privateca.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: privatecacertificates.privateca.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: privatecacertificatetemplates.privateca.cnrm.cloud.google.com
+  name: privilegedaccessmanagerentitlements.privilegedaccessmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: projects.resourcemanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: pubsublitereservations.pubsublite.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: pubsublitesubscriptions.pubsublite.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: pubsublitetopics.pubsublite.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: pubsubschemas.pubsub.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: pubsubsubscriptions.pubsub.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: pubsubtopics.pubsub.cnrm.cloud.google.com
+    cnrm.cloud.google.com/dcl2crd: "true" name: recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com
+  name: redisclusters.redis.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: redisinstances.redis.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: resourcemanagerliens.resourcemanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: runjobs.run.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: runservices.run.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: secretmanagersecrets.secretmanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: secretmanagersecretversions.secretmanager.cnrm.cloud.google.com
+  name: securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com
+  name: securesourcemanagerrepositories.securesourcemanager.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: securitycentersources.securitycenter.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: servicedirectoryendpoints.servicedirectory.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: servicedirectorynamespaces.servicedirectory.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: servicedirectoryservices.servicedirectory.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: serviceidentities.serviceusage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: services.serviceusage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: sourcereporepositories.sourcerepo.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: spannerdatabases.spanner.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: spannerinstances.spanner.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: sqldatabases.sql.cnrm.cloud.google.com
+  name: sqlinstances.sql.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: sqlsslcerts.sql.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: sqlusers.sql.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: storagebucketaccesscontrols.storage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: storagebuckets.storage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: storagedefaultobjectaccesscontrols.storage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: storagehmackeys.storage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: storagenotifications.storage.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: storagetransferagentpools.storagetransfer.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: storagetransferjobs.storagetransfer.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: tagslocationtagbindings.tags.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: tagstagbindings.tags.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: tagstagkeys.tags.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: tagstagvalues.tags.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: tpunodes.tpu.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaidatasets.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaiendpoints.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaifeaturestores.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaiindexendpoints.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaiindexes.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaimetadatastores.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vertexaitensorboards.vertexai.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: vpcaccessconnectors.vpcaccess.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true" name: workflowsworkflows.workflows.cnrm.cloud.google.com
+  name: workstationclusters.workstations.cnrm.cloud.google.com
+  name: workstationconfigs.workstations.cnrm.cloud.google.com
+  name: workstations.workstations.cnrm.cloud.google.com
