@@ -169,7 +169,7 @@ func VertexAIMetadataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Metad
 	}
 	out := &krm.VertexAIMetadataStoreSpec{}
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.Description = in.GetDescription()
+	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DataplexConfig = MetadataStore_DataplexConfig_FromProto(mapCtx, in.GetDataplexConfig())
 	return out
 }
@@ -179,7 +179,7 @@ func VertexAIMetadataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vertex
 	}
 	out := &pb.MetadataStore{}
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	out.Description = in.Description
+	out.Description = direct.ValueOf(in.Description)
 	out.DataplexConfig = MetadataStore_DataplexConfig_ToProto(mapCtx, in.DataplexConfig)
 	return out
 }

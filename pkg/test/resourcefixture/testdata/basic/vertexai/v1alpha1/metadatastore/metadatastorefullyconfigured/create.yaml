@@ -19,11 +19,8 @@ metadata:
 spec:
   region: us-central1
   description: "An encrypted metadata store"
-  # Comment out the encryption spec for now. Will add back after direct controller is added.
-  # The updated CRD takes in the kmsKeyRef, but the TF controller does not have
-  # the necessary mapping to convert to the the kmsKeyName used by the REST API.
-  # encryptionSpec:
-  #   kmsKeyRef: 
-  #     name: kmscryptokey-${uniqueId}
+  encryptionSpec:
+    kmsKeyRef: 
+      name: kmscryptokey-${uniqueId}
   projectRef:
       external: ${projectId}

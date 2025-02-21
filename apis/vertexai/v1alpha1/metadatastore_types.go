@@ -37,7 +37,7 @@ type VertexAIMetadataStoreSpec struct {
 
 	// Description of the MetadataStore.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.description
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 
 	// The region of the Metadata Store. eg us-central1.
 	Region string `json:"region,omitempty"`
@@ -85,23 +85,12 @@ type VertexAIMetadataStoreObservedState struct {
 	State *MetadataStore_MetadataStoreState `json:"state,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
-type EncryptionSpec struct {
-	// Required. The Cloud KMS resource identifier of the customer managed
-	//  encryption key used to protect a resource. Has the form:
-	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
-	//  The key needs to be in the same region as where the compute resource is
-	//  created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EncryptionSpec.kms_key_name
-	KMSKeyNameRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
-}
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // TODO(user): make sure the pluralizaiton below is correct"
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaimetadatastore;gcpvertexaimetadatastores
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

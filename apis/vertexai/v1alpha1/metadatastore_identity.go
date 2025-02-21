@@ -32,7 +32,7 @@ type MetadataStoreIdentity struct {
 }
 
 func (i *MetadataStoreIdentity) String() string {
-	return i.parent.String() + "/metadatastores/" + i.id
+	return i.parent.String() + "/metadataStores/" + i.id
 }
 
 func (i *MetadataStoreIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewMetadataStoreIdentity(ctx context.Context, reader client.Reader, obj *Ve
 
 func ParseMetadataStoreExternal(external string) (parent *MetadataStoreParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "metadatastores" {
-		return nil, "", fmt.Errorf("format of VertexAIMetadataStore external=%q was not known (use projects/{{projectID}}/locations/{{location}}/metadatastores/{{metadatastoreID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "metadataStores" {
+		return nil, "", fmt.Errorf("format of VertexAIMetadataStore external=%q was not known (use projects/{{projectID}}/locations/{{location}}/metadataStores/{{metadatastoreID}})", external)
 	}
 	parent = &MetadataStoreParent{
 		ProjectID: tokens[1],
