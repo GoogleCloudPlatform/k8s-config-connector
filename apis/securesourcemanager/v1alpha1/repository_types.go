@@ -84,7 +84,7 @@ type SecureSourceManagerRepositoryObservedState struct {
 	Etag *string `json:"etag,omitempty"`
 
 	// Output only. URIs for the repository.
-	URIs *Repository_URIs `json:"uris,omitempty"`
+	URIs *Repository_URIsObservedState `json:"uris,omitempty"`
 }
 
 // +genclient
