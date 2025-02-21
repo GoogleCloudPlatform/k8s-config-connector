@@ -135,14 +135,15 @@ func FuzzSecureSourceManagerRepositorySpec(f *testing.F) {
 		outputFields.Insert(".uid")
 		outputFields.Insert(".uris")
 		outputFields.Insert(".etag")
+		outputFields.Insert(".create_time")
 
 		// A few fields are not implemented yet in KRM, don't test them
 		unimplementedFields := sets.New[string]()
 		unimplementedFields.Insert(".name")
 
 		// Status fields
-		unimplementedFields.Insert(".create_time")
 		unimplementedFields.Insert(".update_time")
+
 		// Temporarily not supported due to lack of Update API.
 		unimplementedFields.Insert(".description")
 
@@ -196,7 +197,6 @@ func FuzzSecureSourceManagerRepositoryObservedState(f *testing.F) {
 		unimplementedFields.Insert(".name")
 
 		// Status fields
-		unimplementedFields.Insert(".create_time")
 		unimplementedFields.Insert(".update_time")
 
 		// Remove any output only or spec fields
