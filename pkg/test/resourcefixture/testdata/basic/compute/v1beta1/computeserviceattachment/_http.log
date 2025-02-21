@@ -1,341 +1,4 @@
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-403 Forbidden
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 403,
-    "message": "The caller does not have permission",
-    "status": "PERMISSION_DENIED"
-  }
-}
-
----
-
-POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "permissions": [
-    "billing.resourceAssociations.create"
-  ]
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "permissions": [
-    "billing.resourceAssociations.create"
-  ]
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "Dependent Project",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "example-project-01"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "Dependent Project",
-    "etag": "abcdef0123A=",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectNumber}",
-    "parent": "organizations/${organizationID}",
-    "projectId": "example-project-01",
-    "state": "ACTIVE"
-  }
-}
-
----
-
-PUT https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "billingAccountName": "billingAccounts/${billingAccountID}"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "billingAccounts/${billingAccountID}",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "billingAccounts/${billingAccountID}",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "Dependent Project",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "example-project-01",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "billingAccounts/${billingAccountID}",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/compute.googleapis.com:enable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
-    "service": {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    }
-  }
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "services": [
-    {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    }
-  ]
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -356,13 +19,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -388,17 +51,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.networks.patch",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -420,17 +83,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.networks.patch",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -451,13 +114,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -483,17 +146,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.networks.patch",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -515,17 +178,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.networks.patch",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -546,13 +209,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -573,17 +236,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -599,8 +262,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "computebackendservice-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
-  "region": "projects/example-project-01/global/regions/us-west1",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/us-west1",
   "subsetting": {
     "policy": "NONE"
   }
@@ -623,14 +286,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -659,9 +322,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "computebackendservice-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
-  "region": "projects/example-project-01/global/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "subsetting": {
     "policy": "NONE"
   }
@@ -669,7 +332,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -690,17 +353,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -710,9 +373,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "enable": false
   },
   "name": "computesubnetwork-1-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "projects/example-project-01/global/regions/us-west1"
+  "region": "projects/${projectId}/global/regions/us-west1"
 }
 
 200 OK
@@ -733,18 +396,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -766,18 +429,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -804,18 +467,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-1-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -836,17 +499,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -856,9 +519,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "enable": false
   },
   "name": "computesubnetwork-2-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "projects/example-project-01/global/regions/us-west1"
+  "region": "projects/${projectId}/global/regions/us-west1"
 }
 
 200 OK
@@ -879,18 +542,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -912,18 +575,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -950,18 +613,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-2-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -982,17 +645,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1002,9 +665,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "enable": false
   },
   "name": "computesubnetwork-3-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "purpose": "PRIVATE",
-  "region": "projects/example-project-01/global/regions/us-west1"
+  "region": "projects/${projectId}/global/regions/us-west1"
 }
 
 200 OK
@@ -1025,18 +688,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1058,18 +721,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1096,21 +759,21 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-3-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
 Cache-Control: private
@@ -1129,24 +792,24 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1
+X-Goog-Request-Params: project=${projectId}&region=us-west1
 
 {
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "description": "A test forwarding rule with internal load balancing scheme",
   "labels": {
     "cnrm-test": "true",
@@ -1154,9 +817,9 @@ X-Goog-Request-Params: project=example-project-01&region=us-west1
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 200 OK
@@ -1177,21 +840,21 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1&operation=${operationID}
+X-Goog-Request-Params: project=${projectId}&region=us-west1&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -1212,21 +875,21 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1242,7 +905,7 @@ X-Xss-Protection: 0
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
@@ -1251,19 +914,19 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1&resource=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=us-west1&resource=${forwardingRuleID}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1292,21 +955,21 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "setLabels",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -1322,7 +985,7 @@ X-Xss-Protection: 0
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
@@ -1335,11 +998,11 @@ X-Xss-Protection: 0
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 ---
@@ -1758,7 +1421,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1779,17 +1442,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found",
+        "message": "serviceAttachment \"projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found"
+    "message": "serviceAttachment \"projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found"
   }
 }
 
 ---
 
-POST https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments?alt=json
+POST https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1808,9 +1471,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "enableProxyProtocol": false,
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}"
   ],
-  "targetService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
+  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
 }
 
 200 OK
@@ -1831,18 +1494,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1865,18 +1528,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1910,15 +1573,15 @@ X-Xss-Protection: 0
   "kind": "compute#serviceAttachment",
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}"
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
-  "targetService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
 }
 
 ---
 
-PATCH https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+PATCH https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1937,7 +1600,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "fingerprint": "abcdef0123A=",
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}"
   ]
 }
 
@@ -1959,18 +1622,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "patch",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1993,18 +1656,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "patch",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -2038,15 +1701,15 @@ X-Xss-Protection: 0
   "kind": "compute#serviceAttachment",
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}"
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
-  "targetService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}"
 }
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -2068,18 +1731,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -2102,18 +1765,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${serviceAttachmentID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -2134,11 +1797,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found",
+        "message": "serviceAttachment \"projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "serviceAttachment \"projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found"
+    "message": "serviceAttachment \"projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}\" not found"
   }
 }
 
@@ -2290,10 +1953,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -2309,7 +1972,7 @@ X-Xss-Protection: 0
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "A test forwarding rule with internal load balancing scheme",
   "fingerprint": "abcdef0123A=",
@@ -2322,19 +1985,19 @@ X-Xss-Protection: 0
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "computeforwardingrule-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=us-west1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Cache-Control: private
@@ -2354,21 +2017,21 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=example-project-01&region=us-west1&operation=${operationID}
+X-Goog-Request-Params: project=${projectId}&region=us-west1&operation=${operationID}
 
 200 OK
 Cache-Control: private
@@ -2389,18 +2052,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/forwardingRules/computeforwardingrule-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2427,18 +2090,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-3-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2460,18 +2123,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -2493,18 +2156,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-3-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2531,18 +2194,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-2-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2564,18 +2227,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -2597,18 +2260,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-2-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2635,18 +2298,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "computesubnetwork-1-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2668,18 +2331,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -2701,18 +2364,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computesubnetwork-1-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2741,9 +2404,9 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "computebackendservice-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/${networkID}",
-  "region": "projects/example-project-01/global/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/us-west1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}",
   "subsetting": {
     "policy": "NONE"
   }
@@ -2751,7 +2414,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2772,7 +2435,7 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }

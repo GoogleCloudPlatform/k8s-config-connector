@@ -12,30 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: project-${uniqueId}
-spec:
-  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-  name: "Dependent Project"
-  organizationRef:
-    external: ${TEST_ORG_ID}
-  billingAccountRef:
-    external: ${TEST_BILLING_ACCOUNT_ID}
----
-apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-kind: Service
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: compute.googleapis.com
-spec:
-  projectRef:
-    name: project-${uniqueId}
----
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
@@ -104,7 +80,6 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computeforwardingrule-1-${uniqueId}
 spec:
@@ -131,5 +106,3 @@ spec:
   natSubnets:
     - name: computesubnetwork-3-${uniqueId}
   enableProxyProtocol: true
-  projectRef:
-    name: project-${uniqueId}
