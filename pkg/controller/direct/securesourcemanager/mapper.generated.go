@@ -21,28 +21,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Instance_HostConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_HostConfig) *krm.Instance_HostConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Instance_HostConfig{}
-	// MISSING: HTML
-	// MISSING: Api
-	// MISSING: GitHTTP
-	// MISSING: GitSSH
-	return out
-}
-func Instance_HostConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_HostConfig) *pb.Instance_HostConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_HostConfig{}
-	// MISSING: HTML
-	// MISSING: Api
-	// MISSING: GitHTTP
-	// MISSING: GitSSH
-	return out
-}
 func Instance_HostConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_HostConfig) *krm.Instance_HostConfigObservedState {
 	if in == nil {
 		return nil
