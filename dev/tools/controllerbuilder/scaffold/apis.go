@@ -243,3 +243,35 @@ func scaffoldGroupVersionFile(path string, cArgs *apis.APIArgs) error {
 	color.HiGreen("New file added %q\n", path)
 	return nil
 }
+
+// AddTypeFileV2 creates a new types.go file using the V2 template
+func (s *APIScaffolder) AddTypeFileV2(protoName string, kind string) error {
+	typeFilePath := s.PathToTypeFile(protoName)
+	args := &apis.APIArgs{
+		Group:           s.Group,
+		Version:         s.Version,
+		Kind:            kind,
+		KindProtoTag:    s.PackageProtoTag + "." + protoName,
+		PackageProtoTag: s.PackageProtoTag,
+		ProtoResource:   protoName,
+	}
+	return scaffoldTypeFileV2(typeFilePath, args)
+}
+
+func scaffoldTypeFileV2(path string, args *apis.APIArgs) error {
+	tmpl, err := template.New(args.Kind).Funcs(funcMap).Parse(apis.TypesV2Template)
+	if err != nil {
+		return fmt.Errorf("parse %s_types.go template: %w", strings.ToLower(args.ProtoResource), err)
+	}
+	// Apply the APIArgs args to the template
+	out := &bytes.Buffer{}
+	if err := tmpl.Execute(out, args); err != nil {
+		return err
+	}
+	// Write the generated <kind>_types.go
+	if err := WriteToFile(path, out.Bytes()); err != nil {
+		return err
+	}
+	color.HiGreen("New API file added %s\nPlease EDIT it!\n", path)
+	return nil
+}
