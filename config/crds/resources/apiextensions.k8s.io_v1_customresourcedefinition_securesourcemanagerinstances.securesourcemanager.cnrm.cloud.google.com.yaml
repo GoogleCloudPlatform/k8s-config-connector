@@ -235,6 +235,19 @@ spec:
                         description: Output only. HTML hostname.
                         type: string
                     type: object
+                  privateConfig:
+                    description: Optional. PrivateConfig includes settings for private
+                      instance.
+                    properties:
+                      httpServiceAttachment:
+                        description: Output only. Service Attachment for HTTP, resource
+                          is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+                        type: string
+                      sshServiceAttachment:
+                        description: Output only. Service Attachment for SSH, resource
+                          is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+                        type: string
+                    type: object
                   state:
                     description: Output only. Current state of the instance.
                     type: string
