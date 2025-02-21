@@ -12,45 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: project-3-${uniqueId}
-spec:
-  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-  name: "Dependent Project"
-  organizationRef:
-    external: ${TEST_ORG_ID}
-  billingAccountRef:
-    external: ${TEST_BILLING_ACCOUNT_ID}
----
-apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-kind: Service
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: compute.googleapis.com
-spec:
-  projectRef:
-    name: "project-3-${uniqueId}"
----
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   name: default
   annotations:
     cnrm.cloud.google.com/deletion-policy: "abandon"
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
 spec:
   description: Default network for the project
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computebackendservice-${uniqueId}
 spec:
   location: "us-west1"
@@ -61,8 +34,6 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computesubnetwork-1-${uniqueId}
 spec:
   region: "us-west1"
@@ -74,8 +45,6 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computesubnetwork-2-${uniqueId}
 spec:
   region: "us-west1"
@@ -87,8 +56,6 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computesubnetwork-3-${uniqueId}
 spec:
   region: "us-west1"
@@ -101,7 +68,6 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computeforwardingrule-${uniqueId}
 spec:

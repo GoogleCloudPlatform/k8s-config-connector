@@ -26,7 +26,7 @@ spec:
   natSubnets:
   - name: computesubnetwork-2-${uniqueId}
   projectRef:
-    name: project-3-${uniqueId}
+    external: ${projectId}
   resourceID: computeserviceattachment-${uniqueId}
   targetServiceRef:
     name: computeforwardingrule-${uniqueId}
@@ -40,4 +40,4 @@ status:
   fingerprint: abcdef0123A=
   id: 1111111111111111
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/beta/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}
