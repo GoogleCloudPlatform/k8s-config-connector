@@ -17,7 +17,7 @@ kind: KMSCryptoKey
 metadata:
   name: securesourcemanagerinstance-dep
   annotations:
-    cnrm.cloud.google.com/project-id: epang-test
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
   keyRingRef:
     name: securesourcemanagerinstance-dep
