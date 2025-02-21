@@ -135,9 +135,8 @@ func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *direct.MapContex
 	}
 	out := &krm.SecureSourceManagerInstanceObservedState{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.PrivateConfig = Instance_PrivateConfigObservedState_FromProto(mapCtx, in.GetPrivateConfig())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateNote = direct.Enum_FromProto(mapCtx, in.GetStateNote())
@@ -150,9 +149,8 @@ func SecureSourceManagerInstanceObservedState_ToProto(mapCtx *direct.MapContext,
 	}
 	out := &pb.Instance{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.PrivateConfig = Instance_PrivateConfigObservedState_ToProto(mapCtx, in.PrivateConfig)
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
 	out.StateNote = direct.Enum_ToProto[pb.Instance_StateNote](mapCtx, in.StateNote)
@@ -165,9 +163,7 @@ func SecureSourceManagerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.SecureSourceManagerInstanceSpec{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
+	out.Labels = in.Labels
 	out.PrivateConfig = Instance_PrivateConfig_FromProto(mapCtx, in.GetPrivateConfig())
 	if in.GetKmsKey() != "" {
 		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
@@ -180,9 +176,7 @@ func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Instance{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
+	out.Labels = in.Labels
 	out.PrivateConfig = Instance_PrivateConfig_ToProto(mapCtx, in.PrivateConfig)
 	if in.KmsKeyRef != nil {
 		out.KmsKey = in.KmsKeyRef.External
