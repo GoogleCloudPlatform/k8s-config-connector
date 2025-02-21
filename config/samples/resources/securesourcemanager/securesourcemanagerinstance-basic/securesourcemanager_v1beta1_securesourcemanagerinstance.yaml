@@ -19,4 +19,4 @@ metadata:
 spec:
   location: us-central1
   projectRef:
-    external: projects/epang-test
+    external: projects/${PROJECT_ID?}
