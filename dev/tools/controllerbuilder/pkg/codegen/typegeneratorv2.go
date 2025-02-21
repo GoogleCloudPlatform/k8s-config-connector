@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/klog/v2"
@@ -40,11 +41,12 @@ type TypeGeneratorV2 struct {
 	// implementation details, internal to the generator
 	visitedMessages []protoreflect.MessageDescriptor
 	outputMessages  []*OutputMessageDetails
-	ignoredFields   map[string]bool // map of fully qualified field names to skip
+	ignoredFields   map[string]bool            // map of fully qualified field names to skip
+	referenceFields map[string]*ReferenceField // Add this field for preloaded reference fields
 }
 
 func NewTypeGeneratorV2(goPackage string, api *protoapi.Proto, outputBaseDir string, serviceMetadata *ServiceMetadata) *TypeGeneratorV2 {
-	// Create map of ignored fields
+	// Build ignored fields map
 	ignoredFields := make(map[string]bool)
 	for _, resource := range serviceMetadata.Resources {
 		for _, field := range resource.IgnoredFields {
@@ -52,13 +54,22 @@ func NewTypeGeneratorV2(goPackage string, api *protoapi.Proto, outputBaseDir str
 		}
 	}
 
+	// Build reference fields map
+	referenceFields := make(map[string]*ReferenceField)
+	for _, resource := range serviceMetadata.Resources {
+		for _, ref := range resource.ReferenceFields {
+			referenceFields[ref.ProtoField] = &ref
+		}
+	}
+
 	g := &TypeGeneratorV2{
-		goPackage:     goPackage,
-		api:           api,
-		protoPackage:  serviceMetadata.Service,
-		resources:     serviceMetadata.Resources,
-		allowOverride: true, // TODO: this should be a command line flag
-		ignoredFields: ignoredFields,
+		goPackage:       goPackage,
+		api:             api,
+		protoPackage:    serviceMetadata.Service,
+		resources:       serviceMetadata.Resources,
+		allowOverride:   true,
+		ignoredFields:   ignoredFields,
+		referenceFields: referenceFields,
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -278,19 +289,15 @@ func (g *TypeGeneratorV2) writeFields(out io.Writer, msg protoreflect.MessageDes
 			continue
 		}
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
-			writeFieldV2(out, field, msg, fieldIndex, false)
+			g.writeFieldV2(out, field, msg, fieldIndex, false)
 		}
 		fieldIndex++
 	}
 }
 
-func writeFieldV2(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool) {
-	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
-
-	jsonName := GetJSONForKRM(field)
-	GoFieldName := goFieldName(field)
-
-	goType, err := GoTypeForField(field, isTransitiveOutput)
+func (g *TypeGeneratorV2) writeFieldV2(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool) {
+	// Get field properties, checking for reference field overrides
+	goFieldName, jsonName, goType, err := g.getFieldProperties(field, isTransitiveOutput)
 	if err != nil {
 		fmt.Fprintf(out, "\n\t// TODO: %v\n\n", err)
 		return
@@ -301,30 +308,71 @@ func writeFieldV2(out io.Writer, field protoreflect.FieldDescriptor, msg protore
 		fmt.Fprintf(out, "\n")
 	}
 
-	// Write field comments and check for required
-	if sourceLocations.LeadingComments != "" {
-		comment := strings.TrimSpace(sourceLocations.LeadingComments)
-		hasRequired := false
-		for _, line := range strings.Split(comment, "\n") {
-			if strings.TrimSpace(line) == "" {
-				fmt.Fprintf(out, "\t//\n")
-			} else {
-				fmt.Fprintf(out, "\t// %s\n", line)
-				if strings.Contains(strings.ToLower(line), "required") {
-					hasRequired = true
-				}
-			}
-		}
-		// Add +required annotation if needed
-		if hasRequired {
-			fmt.Fprintf(out, "\t// +required\n")
-		}
+	// Write field comments
+	description := msg.ParentFile().SourceLocations().ByDescriptor(field).LeadingComments
+	if ref := g.findReferenceField(field); ref != nil && ref.Description != "" { // use reference field description if provided
+		description = ref.Description
+	}
+	if description != "" {
+		writeFieldComments(out, description)
 	}
 
 	fmt.Fprintf(out, "\t// %s=%s\n", KCCProtoFieldAnnotation, field.FullName())
 	fmt.Fprintf(out, "\t%s %s `json:\"%s,omitempty\"`\n",
-		GoFieldName,
+		goFieldName,
 		goType,
 		jsonName,
 	)
+}
+
+// getFieldProperties returns the Go field name, JSON name, and Go type for a field
+// It also handles reference fields by looking up the reference field configuration
+func (g *TypeGeneratorV2) getFieldProperties(field protoreflect.FieldDescriptor, isTransitiveOutput bool) (string, string, string, error) {
+	// Check if this is a reference field
+	if ref := g.findReferenceField(field); ref != nil {
+		// Convert GoName to snake case first, then to JSON name
+		snakeCase := text.AsSnakeCase(ref.GoName)
+		tokens := strings.Split(snakeCase, "_")
+		for i, token := range tokens {
+			if i == 0 {
+				// First token should be lowercase
+				tokens[i] = strings.ToLower(token)
+			} else if IsAcronym(token) {
+				tokens[i] = strings.ToLower(token)
+			} else {
+				tokens[i] = strings.Title(token)
+			}
+		}
+		jsonName := strings.Join(tokens, "")
+		goType := "*refs." + ref.RefType
+		return ref.GoName, jsonName, goType, nil
+	}
+
+	// Regular field properties
+	goFieldName := goFieldName(field)
+	jsonName := GetJSONForKRM(field)
+	goType, err := GoTypeForField(field, isTransitiveOutput)
+	return goFieldName, jsonName, goType, err
+}
+
+func (g *TypeGeneratorV2) findReferenceField(field protoreflect.FieldDescriptor) *ReferenceField {
+	return g.referenceFields[string(field.FullName())]
+}
+
+// writeFieldComments writes field comments, adding "// +required" annotation if any line contains "required"
+func writeFieldComments(out io.Writer, comments string) {
+	hasRequired := false
+	for _, line := range strings.Split(strings.TrimSpace(comments), "\n") {
+		if strings.TrimSpace(line) == "" {
+			fmt.Fprintf(out, "\t//\n")
+		} else {
+			fmt.Fprintf(out, "\t// %s\n", line)
+			if strings.Contains(strings.ToLower(line), "required") {
+				hasRequired = true
+			}
+		}
+	}
+	if hasRequired {
+		fmt.Fprintf(out, "\t// +required\n")
+	}
 }

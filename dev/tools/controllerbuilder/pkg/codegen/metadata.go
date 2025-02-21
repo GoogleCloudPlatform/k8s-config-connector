@@ -33,10 +33,26 @@ type ServiceMetadata struct {
 }
 
 type ResourceMetadata struct {
-	Kind              string   `yaml:"kind"`
-	ProtoName         string   `yaml:"protoName"`
-	SkipScaffoldFiles bool     `yaml:"skipScaffoldFiles"`
-	IgnoredFields     []string `yaml:"ignoredFields,omitempty"`
+	Kind              string           `yaml:"kind"`
+	ProtoName         string           `yaml:"protoName"`
+	SkipScaffoldFiles bool             `yaml:"skipScaffoldFiles"`
+	IgnoredFields     []string         `yaml:"ignoredFields,omitempty"`
+	ReferenceFields   []ReferenceField `yaml:"referenceFields,omitempty"`
+}
+
+type ReferenceField struct {
+	// ProtoField is the fully qualified proto field name
+	// e.g., "google.cloud.managedkafka.v1.NetworkConfig.subnet"
+	ProtoField string `yaml:"protoField"`
+	// GoName is the name of the reference field in Go
+	// e.g., "SubnetworkRef"
+	GoName string `yaml:"goName"`
+	// RefType is the referenced KRM resource type
+	// e.g., "ComputeSubnetworkRef"
+	RefType string `yaml:"refType"`
+	// Optional. Description is the description of the reference field.
+	// If provided, this will override the original field comment.
+	Description string `yaml:"description,omitempty"`
 }
 
 // LoadAllServiceMetadata loads all service metadata from a given path.

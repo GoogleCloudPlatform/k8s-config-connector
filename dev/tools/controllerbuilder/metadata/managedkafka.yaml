@@ -21,3 +21,23 @@ resources:
     ignoredFields:
       - google.cloud.managedkafka.v1.Cluster.satisfies_pzi
       - google.cloud.managedkafka.v1.Cluster.satisfies_pzs
+    referenceFields:
+      - protoField: google.cloud.managedkafka.v1.NetworkConfig.subnet
+        goName: SubnetworkRef
+        refType: ComputeSubnetworkRef
+        description: |
+          Required. Reference to the VPC subnet in which to create Private Service Connect
+           (PSC) endpoints for the Kafka brokers and bootstrap address.
+
+           The subnet must be located in the same region as the Kafka cluster. The
+           project may differ. Multiple subnets from the same parent network must not
+           be specified.
+
+           The CIDR range of the subnet must be within the IPv4 address ranges for
+           private networks, as specified in RFC 1918.
+      - protoField: google.cloud.managedkafka.v1.GcpConfig.kms_key
+        goName: KmsKeyRef
+        refType: KMSCryptoKeyRef
+        description: |
+          Optional. Immutable. The Cloud KMS Key name to use for encryption. The key
+           must be located in the same region as the cluster and cannot be changed.
