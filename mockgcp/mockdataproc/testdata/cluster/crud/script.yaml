@@ -1,0 +1,6 @@
+
+- exec: gcloud dataproc clusters create test-${uniqueId} --region=us-central1
+- exec: gcloud dataproc clusters describe test-${uniqueId} --region=us-central1
+- exec: gcloud dataproc clusters update test-${uniqueId} --region=us-central1 --num-workers=3
+- exec: gcloud dataproc clusters list --region=us-central1 --filter="test-${uniqueId}"
+- exec: gcloud dataproc clusters delete test-${uniqueId} --region=us-central1
