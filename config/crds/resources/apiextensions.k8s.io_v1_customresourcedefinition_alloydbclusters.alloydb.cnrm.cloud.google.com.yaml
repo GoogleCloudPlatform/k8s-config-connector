@@ -817,6 +817,9 @@ spec:
                                 type: object
                             type: object
                         type: object
+                      user:
+                        description: The database username.
+                        type: string
                     type: object
                 type: object
               uid:
@@ -1623,6 +1626,9 @@ spec:
                                 type: object
                             type: object
                         type: object
+                      user:
+                        description: The database username.
+                        type: string
                     type: object
                 type: object
               uid:

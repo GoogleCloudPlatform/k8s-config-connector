@@ -204,8 +204,6 @@ type UserPassword struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.UserPassword.user
 	User *string `json:"user,omitempty"`
 
-	// TODO: Verify if "// +required" marker is needed for Password after using direct controller.
-
 	// The initial password for the user.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.UserPassword.password
 	// +required
@@ -214,6 +212,10 @@ type UserPassword struct {
 
 // +kcc:proto=google.cloud.alloydb.v1beta.UserPassword
 type UserPasswordObservedState struct {
+	// The database username.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.UserPassword.user
+	User *string `json:"user,omitempty"`
+
 	// The initial password for the user.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.UserPassword.password
 	// +optional

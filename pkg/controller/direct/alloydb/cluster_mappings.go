@@ -266,7 +266,7 @@ func UserPasswordObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UserPa
 		return nil
 	}
 	out := &pb.UserPassword{}
-	// MISSING: User
+	out.User = direct.ValueOf(in.User)
 	out.Password = UserPasswordObservedState_Password_ToProto(mapCtx, in.Password)
 	return out
 }

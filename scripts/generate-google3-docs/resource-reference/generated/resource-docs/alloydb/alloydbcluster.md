@@ -1122,6 +1122,7 @@ observedState:
           key: string
           name: string
           version: string
+    user: string
 uid: string
 ```
 
@@ -1459,6 +1460,13 @@ uid: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Version of the observed Secret.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.initialUser.user</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The database username.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
