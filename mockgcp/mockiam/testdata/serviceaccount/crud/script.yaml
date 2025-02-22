@@ -2,4 +2,6 @@
 - exec: gcloud iam service-accounts create test-${uniqueId} --display-name="Test Service Account" --description="Test Service Account"
 - exec: gcloud iam service-accounts describe test-${uniqueId}@${projectId}.iam.gserviceaccount.com
 - exec: gcloud iam service-accounts update test-${uniqueId}@${projectId}.iam.gserviceaccount.com --description="Updated Description"
+- exec: gcloud iam service-accounts update test-${uniqueId}@${projectId}.iam.gserviceaccount.com --display-name="Updated Display Name"
+- exec: gcloud iam service-accounts describe test-${uniqueId}@${projectId}.iam.gserviceaccount.com
 - exec: gcloud iam service-accounts delete test-${uniqueId}@${projectId}.iam.gserviceaccount.com --quiet
