@@ -16,7 +16,6 @@ package mockalloydb
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/golang/protobuf/ptypes/duration"
@@ -64,37 +63,6 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	if obj.AutomatedBackupPolicy == nil {
 		obj.AutomatedBackupPolicy = &pb.AutomatedBackupPolicy{}
 	}
-	//if obj.AutomatedBackupPolicy == nil {
-	//	obj.AutomatedBackupPolicy = &pb.AutomatedBackupPolicy{
-	//		BackupWindow: PtrTo(duration.Duration{Seconds: 3600}),
-	//		// Defaults to true when unset, which is different from the value in
-	//		// the default policy.
-	//		Enabled:  PtrTo(false),
-	//		Location: name.Location,
-	//		Retention: &pb.AutomatedBackupPolicy_TimeBasedRetention_{
-	//			TimeBasedRetention: &pb.AutomatedBackupPolicy_TimeBasedRetention{
-	//				RetentionPeriod: PtrTo(duration.Duration{Seconds: 1209600}),
-	//			},
-	//		},
-	//		Schedule: &pb.AutomatedBackupPolicy_WeeklySchedule_{
-	//			WeeklySchedule: &pb.AutomatedBackupPolicy_WeeklySchedule{
-	//				DaysOfWeek: []dayofweek.DayOfWeek{
-	//					dayofweek.DayOfWeek_MONDAY,
-	//					dayofweek.DayOfWeek_TUESDAY,
-	//					dayofweek.DayOfWeek_WEDNESDAY,
-	//					dayofweek.DayOfWeek_THURSDAY,
-	//					dayofweek.DayOfWeek_FRIDAY,
-	//					dayofweek.DayOfWeek_SATURDAY,
-	//					dayofweek.DayOfWeek_SUNDAY,
-	//				},
-	//				StartTimes: []*timeofday.TimeOfDay{
-	//					{Hours: 23},
-	//				},
-	//			},
-	//		},
-	//	}
-	//} else {
-	//	fmt.Printf("maqiuyu... mock createcluster AutomatedBackupPolicy:\n%+v\n", obj.AutomatedBackupPolicy)
 	if obj.AutomatedBackupPolicy.BackupWindow == nil {
 		obj.AutomatedBackupPolicy.BackupWindow = PtrTo(duration.Duration{Seconds: 3600})
 	}
@@ -129,7 +97,6 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 			},
 		}
 	}
-	//}
 
 	if obj.ContinuousBackupConfig == nil {
 		obj.ContinuousBackupConfig = &pb.ContinuousBackupConfig{
@@ -186,7 +153,11 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	obj.Reconciling = false
 	obj.State = pb.Cluster_READY
 	obj.Uid = "111111111111111111111"
-	// TODO: Figure out the logic for PrimaryConfig.
+	// TODO: Validate the logic for PrimaryConfig.
+	// PrimaryConfig is probably set when the primary cluster has a secondary
+	// cluster associated with it.
+	// It is then set to be an empty struct (non-nil) when the associated
+	// instance is deleted (?)
 	//if obj.ClusterType == pb.Cluster_PRIMARY {
 	//	obj.PrimaryConfig = &pb.Cluster_PrimaryConfig{}
 	//}
@@ -231,6 +202,26 @@ func (s *AlloyDBAdminV1) CreateSecondaryCluster(ctx context.Context, req *pb.Cre
 	obj.Name = fqn
 	setClusterFields(name, obj)
 
+	// Configure primaryConfig for the target cluster's primary cluster.
+	primaryCluster := &pb.Cluster{}
+	primaryClusterName, err := s.parseClusterName(obj.SecondaryConfig.PrimaryClusterName)
+	if err != nil {
+		return nil, err
+	}
+	if err := s.storage.Get(ctx, primaryClusterName.String(), primaryCluster); err != nil {
+		return nil, err
+	}
+	if primaryCluster.PrimaryConfig == nil {
+		primaryCluster.PrimaryConfig = &pb.Cluster_PrimaryConfig{
+			SecondaryClusterNames: make([]string, 0),
+		}
+	}
+	secondaryClusterNames := append(primaryCluster.PrimaryConfig.SecondaryClusterNames, fqn)
+	primaryCluster.PrimaryConfig.SecondaryClusterNames = secondaryClusterNames
+	if err := s.storage.Update(ctx, primaryClusterName.String(), primaryCluster); err != nil {
+		return nil, err
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -253,12 +244,6 @@ func (s *AlloyDBAdminV1) RestoreCluster(ctx context.Context, req *pb.RestoreClus
 
 func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*longrunning.Operation, error) {
 	reqName := req.GetCluster().GetName()
-	if req.Cluster.AutomatedBackupPolicy != nil {
-		fmt.Printf("maqiuyu... mock updateclusterrequest AutomatedBackupPolicy:\n%+v\n", *req.Cluster.AutomatedBackupPolicy)
-		if req.Cluster.AutomatedBackupPolicy.Enabled != nil {
-			fmt.Printf("maqiuyu... mock updateclusterrequest AutomatedBackupPolicy.Enabled:\n%+v\n", *req.Cluster.AutomatedBackupPolicy.Enabled)
-		}
-	}
 	name, err := s.parseClusterName(reqName)
 	if err != nil {
 		return nil, err
@@ -269,12 +254,7 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	if obj.AutomatedBackupPolicy != nil {
-		fmt.Printf("maqiuyu... mock stored AutomatedBackupPolicy:\n%+v\n", *obj.AutomatedBackupPolicy)
-		if obj.AutomatedBackupPolicy.Enabled != nil {
-			fmt.Printf("maqiuyu... mock stored AutomatedBackupPolicy.Enabled:\n%+v\n", *obj.AutomatedBackupPolicy.Enabled)
-		}
-	}
+
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 
@@ -286,9 +266,9 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 		case "continuousBackupConfig":
 			obj.ContinuousBackupConfig = req.Cluster.GetContinuousBackupConfig()
 		case "displayName":
-			// It's allowed but displayName is an unreadable field.
+			obj.DisplayName = req.Cluster.DisplayName
 		case "initialUser":
-			// It's allowed but initialUser is an unreadable field.
+			obj.InitialUser = req.Cluster.InitialUser
 		case "labels":
 			obj.Labels = req.Cluster.GetLabels()
 		case "maintenanceUpdatePolicy":
@@ -298,6 +278,7 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 		}
 	}
 
+	setClusterFields(name, obj)
 	if *obj.ContinuousBackupConfig.Enabled {
 		obj.ContinuousBackupInfo.EnabledTime = timestamppb.Now()
 	} else {
