@@ -2,7 +2,6 @@ POST https://iam.googleapis.com/v1/permissions:queryTestablePermissions?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 101
 Content-Type: application/json
 
 {
@@ -28,7 +27,6 @@ POST https://iam.googleapis.com/v1/projects/${projectId}/roles?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 165
 Content-Type: application/json
 
 {
@@ -70,7 +68,6 @@ GET https://iam.googleapis.com/v1/projects/${projectId}/roles/test_${uniqueId}?a
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -99,7 +96,6 @@ GET https://iam.googleapis.com/v1/projects/${projectId}/roles/test_${uniqueId}?a
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -128,7 +124,6 @@ POST https://iam.googleapis.com/v1/permissions:queryTestablePermissions?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 101
 Content-Type: application/json
 
 {
@@ -154,7 +149,6 @@ PATCH https://iam.googleapis.com/v1/projects/${projectId}/roles/test_${uniqueId}
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 134
 Content-Type: application/json
 
 {
@@ -195,7 +189,6 @@ DELETE https://iam.googleapis.com/v1/projects/${projectId}/roles/test_${uniqueId
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
