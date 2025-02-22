@@ -378,7 +378,7 @@ powertool-tests:
 
 .PHONY: e2e-scenario-tests
 e2e-scenario-tests:
-	cd scripts/github-actions/ && ./tests-e2e-scenarios.sh
+	dev/ci/scenarios-tests
 
 # indicate which samples testcases will be run
 SAMPLE_TESTCASE ?= TestAllInSeries/samples
