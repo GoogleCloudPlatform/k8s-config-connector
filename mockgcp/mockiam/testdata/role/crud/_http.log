@@ -1,0 +1,221 @@
+POST https://iam.googleapis.com/v1/permissions:queryTestablePermissions?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 101
+Content-Type: application/json
+
+{
+  "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+  "pageSize": 1000
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/roles?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 165
+Content-Type: application/json
+
+{
+  "role": {
+    "description": "This is a test role",
+    "includedPermissions": [
+      "iam.roles.get",
+      "iam.roles.list"
+    ],
+    "title": "Test Role"
+  },
+  "roleId": "test_${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "This is a test role",
+  "etag": "abcdef0123A=",
+  "includedPermissions": [
+    "iam.roles.get",
+    "iam.roles.list"
+  ],
+  "name": "projects/${projectId}/roles/test_${uniqueId}",
+  "title": "Test Role"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/roles/test_${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "This is a test role",
+  "etag": "abcdef0123A=",
+  "includedPermissions": [
+    "iam.roles.get",
+    "iam.roles.list"
+  ],
+  "name": "projects/${projectId}/roles/test_${uniqueId}",
+  "title": "Test Role"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/roles/test_${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "This is a test role",
+  "etag": "abcdef0123A=",
+  "includedPermissions": [
+    "iam.roles.get",
+    "iam.roles.list"
+  ],
+  "name": "projects/${projectId}/roles/test_${uniqueId}",
+  "title": "Test Role"
+}
+
+---
+
+POST https://iam.googleapis.com/v1/permissions:queryTestablePermissions?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 101
+Content-Type: application/json
+
+{
+  "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectId}",
+  "pageSize": 1000
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+PATCH https://iam.googleapis.com/v1/projects/${projectId}/roles/test_${uniqueId}?alt=json&updateMask=title%2CincludedPermissions
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 134
+Content-Type: application/json
+
+{
+  "etag": "abcdef0123A=",
+  "includedPermissions": [
+    "iam.roles.create",
+    "iam.roles.get",
+    "iam.roles.list"
+  ],
+  "title": "Updated Test Role"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "This is a test role",
+  "etag": "abcdef0123A=",
+  "includedPermissions": [
+    "iam.roles.create",
+    "iam.roles.get",
+    "iam.roles.list"
+  ],
+  "name": "projects/${projectId}/roles/test_${uniqueId}",
+  "title": "Updated Test Role"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/roles/test_${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deleted": true,
+  "description": "This is a test role",
+  "etag": "abcdef0123A=",
+  "includedPermissions": [
+    "iam.roles.create",
+    "iam.roles.get",
+    "iam.roles.list"
+  ],
+  "name": "projects/${projectId}/roles/test_${uniqueId}",
+  "title": "Updated Test Role"
+}
