@@ -16,6 +16,7 @@ package mockalloydb
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/golang/protobuf/ptypes/duration"
@@ -58,41 +59,86 @@ func (s *AlloyDBAdminV1) GetCluster(ctx context.Context, req *pb.GetClusterReque
 func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	// Remove unreadable field.
 	obj.InitialUser = nil
+	obj.DisplayName = ""
 	// Set default values to optional fields when unset.
 	if obj.AutomatedBackupPolicy == nil {
-		obj.AutomatedBackupPolicy = &pb.AutomatedBackupPolicy{
-			BackupWindow: PtrTo(duration.Duration{Seconds: 3600}),
-			// Defaults to true when unset, which is different from the value in
-			// the default policy.
-			Enabled:  PtrTo(false),
-			Location: name.Location,
-			Retention: &pb.AutomatedBackupPolicy_TimeBasedRetention_{
-				TimeBasedRetention: &pb.AutomatedBackupPolicy_TimeBasedRetention{
-					RetentionPeriod: PtrTo(duration.Duration{Seconds: 1209600}),
-				},
+		obj.AutomatedBackupPolicy = &pb.AutomatedBackupPolicy{}
+	}
+	//if obj.AutomatedBackupPolicy == nil {
+	//	obj.AutomatedBackupPolicy = &pb.AutomatedBackupPolicy{
+	//		BackupWindow: PtrTo(duration.Duration{Seconds: 3600}),
+	//		// Defaults to true when unset, which is different from the value in
+	//		// the default policy.
+	//		Enabled:  PtrTo(false),
+	//		Location: name.Location,
+	//		Retention: &pb.AutomatedBackupPolicy_TimeBasedRetention_{
+	//			TimeBasedRetention: &pb.AutomatedBackupPolicy_TimeBasedRetention{
+	//				RetentionPeriod: PtrTo(duration.Duration{Seconds: 1209600}),
+	//			},
+	//		},
+	//		Schedule: &pb.AutomatedBackupPolicy_WeeklySchedule_{
+	//			WeeklySchedule: &pb.AutomatedBackupPolicy_WeeklySchedule{
+	//				DaysOfWeek: []dayofweek.DayOfWeek{
+	//					dayofweek.DayOfWeek_MONDAY,
+	//					dayofweek.DayOfWeek_TUESDAY,
+	//					dayofweek.DayOfWeek_WEDNESDAY,
+	//					dayofweek.DayOfWeek_THURSDAY,
+	//					dayofweek.DayOfWeek_FRIDAY,
+	//					dayofweek.DayOfWeek_SATURDAY,
+	//					dayofweek.DayOfWeek_SUNDAY,
+	//				},
+	//				StartTimes: []*timeofday.TimeOfDay{
+	//					{Hours: 23},
+	//				},
+	//			},
+	//		},
+	//	}
+	//} else {
+	//	fmt.Printf("maqiuyu... mock createcluster AutomatedBackupPolicy:\n%+v\n", obj.AutomatedBackupPolicy)
+	if obj.AutomatedBackupPolicy.BackupWindow == nil {
+		obj.AutomatedBackupPolicy.BackupWindow = PtrTo(duration.Duration{Seconds: 3600})
+	}
+	if obj.AutomatedBackupPolicy.Enabled == nil {
+		obj.AutomatedBackupPolicy.Enabled = PtrTo(false)
+	}
+	if obj.AutomatedBackupPolicy.Location == "" {
+		obj.AutomatedBackupPolicy.Location = name.Location
+	}
+	if obj.AutomatedBackupPolicy.Retention == nil {
+		obj.AutomatedBackupPolicy.Retention = &pb.AutomatedBackupPolicy_TimeBasedRetention_{
+			TimeBasedRetention: &pb.AutomatedBackupPolicy_TimeBasedRetention{
+				RetentionPeriod: PtrTo((duration.Duration{Seconds: 1209600})),
 			},
-			Schedule: &pb.AutomatedBackupPolicy_WeeklySchedule_{
-				WeeklySchedule: &pb.AutomatedBackupPolicy_WeeklySchedule{
-					DaysOfWeek: []dayofweek.DayOfWeek{
-						dayofweek.DayOfWeek_MONDAY,
-						dayofweek.DayOfWeek_TUESDAY,
-						dayofweek.DayOfWeek_WEDNESDAY,
-						dayofweek.DayOfWeek_THURSDAY,
-						dayofweek.DayOfWeek_FRIDAY,
-						dayofweek.DayOfWeek_SATURDAY,
-						dayofweek.DayOfWeek_SUNDAY,
-					},
-					StartTimes: []*timeofday.TimeOfDay{
-						{Hours: 23},
-					},
+		}
+	}
+	if obj.AutomatedBackupPolicy.Schedule == nil {
+		obj.AutomatedBackupPolicy.Schedule = &pb.AutomatedBackupPolicy_WeeklySchedule_{
+			WeeklySchedule: &pb.AutomatedBackupPolicy_WeeklySchedule{
+				DaysOfWeek: []dayofweek.DayOfWeek{
+					dayofweek.DayOfWeek_MONDAY,
+					dayofweek.DayOfWeek_TUESDAY,
+					dayofweek.DayOfWeek_WEDNESDAY,
+					dayofweek.DayOfWeek_THURSDAY,
+					dayofweek.DayOfWeek_FRIDAY,
+					dayofweek.DayOfWeek_SATURDAY,
+					dayofweek.DayOfWeek_SUNDAY,
+				},
+				StartTimes: []*timeofday.TimeOfDay{
+					{Hours: 23},
 				},
 			},
 		}
 	}
+	//}
+
 	if obj.ContinuousBackupConfig == nil {
 		obj.ContinuousBackupConfig = &pb.ContinuousBackupConfig{
 			Enabled:            PtrTo(true),
 			RecoveryWindowDays: 14,
+		}
+	} else {
+		if obj.ContinuousBackupConfig.RecoveryWindowDays == 0 {
+			obj.ContinuousBackupConfig.RecoveryWindowDays = 14
 		}
 	}
 	if obj.GeminiConfig == nil {
@@ -200,9 +246,19 @@ func (s *AlloyDBAdminV1) CreateSecondaryCluster(ctx context.Context, req *pb.Cre
 	})
 }
 
+func (s *AlloyDBAdminV1) RestoreCluster(ctx context.Context, req *pb.RestoreClusterRequest) (*longrunning.Operation, error) {
+	// TODO: Implement it once req contains cluster ID.
+	return nil, status.Errorf(codes.Unimplemented, "RestoreCluster not implemented yet")
+}
+
 func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*longrunning.Operation, error) {
 	reqName := req.GetCluster().GetName()
-
+	if req.Cluster.AutomatedBackupPolicy != nil {
+		fmt.Printf("maqiuyu... mock updateclusterrequest AutomatedBackupPolicy:\n%+v\n", *req.Cluster.AutomatedBackupPolicy)
+		if req.Cluster.AutomatedBackupPolicy.Enabled != nil {
+			fmt.Printf("maqiuyu... mock updateclusterrequest AutomatedBackupPolicy.Enabled:\n%+v\n", *req.Cluster.AutomatedBackupPolicy.Enabled)
+		}
+	}
 	name, err := s.parseClusterName(reqName)
 	if err != nil {
 		return nil, err
@@ -213,19 +269,28 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
+	if obj.AutomatedBackupPolicy != nil {
+		fmt.Printf("maqiuyu... mock stored AutomatedBackupPolicy:\n%+v\n", *obj.AutomatedBackupPolicy)
+		if obj.AutomatedBackupPolicy.Enabled != nil {
+			fmt.Printf("maqiuyu... mock stored AutomatedBackupPolicy.Enabled:\n%+v\n", *obj.AutomatedBackupPolicy.Enabled)
+		}
+	}
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
-		case "displayName":
-			obj.DisplayName = req.Cluster.GetDisplayName()
 		case "automatedBackupPolicy":
 			obj.AutomatedBackupPolicy = req.Cluster.GetAutomatedBackupPolicy()
 		case "continuousBackupConfig":
 			obj.ContinuousBackupConfig = req.Cluster.GetContinuousBackupConfig()
+		case "displayName":
+			// It's allowed but displayName is an unreadable field.
+		case "initialUser":
+			// It's allowed but initialUser is an unreadable field.
+		case "labels":
+			obj.Labels = req.Cluster.GetLabels()
 		case "maintenanceUpdatePolicy":
 			obj.MaintenanceUpdatePolicy = req.Cluster.GetMaintenanceUpdatePolicy()
 		default:
@@ -237,9 +302,6 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 		obj.ContinuousBackupInfo.EnabledTime = timestamppb.Now()
 	} else {
 		obj.ContinuousBackupInfo.EnabledTime = nil
-	}
-	if obj.AutomatedBackupPolicy != nil && obj.AutomatedBackupPolicy.Enabled == nil {
-		obj.AutomatedBackupPolicy.Enabled = PtrTo(false)
 	}
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -292,9 +354,13 @@ func updateNetworkInResponse(obj *pb.Cluster) {
 	// Replace projectID with projectNumber for project "mock-project".
 	networkVal = strings.ReplaceAll(networkVal, "mock-project", "518915279")
 	obj.Network = networkVal
-	obj.NetworkConfig = &pb.Cluster_NetworkConfig{
+	networkConfig := &pb.Cluster_NetworkConfig{
 		Network: networkVal,
 	}
+	if obj.NetworkConfig != nil && obj.NetworkConfig.AllocatedIpRange != "" {
+		networkConfig.AllocatedIpRange = obj.NetworkConfig.AllocatedIpRange
+	}
+	obj.NetworkConfig = networkConfig
 }
 
 func updateSecondaryConfigInResponse(obj *pb.Cluster) {
