@@ -60,9 +60,7 @@ func TestScripts(t *testing.T) {
 
 			for _, step := range script.Steps {
 				if step.Exec != "" {
-					args := strings.Fields(step.Exec)
-
-					cmd := exec.CommandContext(ctx, args[0], args[1:]...)
+					cmd := exec.CommandContext(ctx, "bash", "-c", step.Exec)
 					var stdout bytes.Buffer
 					cmd.Stdout = &stdout
 					var stderr bytes.Buffer
