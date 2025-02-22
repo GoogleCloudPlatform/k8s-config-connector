@@ -34,8 +34,9 @@ const (
 var _ identity.Identity = &ApigeeEnvgroupAttachmentIdentity{}
 
 type ApigeeEnvgroupAttachmentIdentity struct {
-	ParentID   *ApigeeEnvgroupIdentity
-	ResourceID string
+	ParentID    *ApigeeEnvgroupIdentity
+	ResourceID  string
+	generatedID string
 }
 
 func (i *ApigeeEnvgroupAttachmentIdentity) String() string {
@@ -61,6 +62,27 @@ func (i *ApigeeEnvgroupAttachmentIdentity) FromExternal(ref string) error {
 	i.ResourceID = resourceID
 
 	return nil
+}
+
+func (i *ApigeeEnvgroupAttachmentIdentity) GeneratedString() string {
+	return fmt.Sprintf("%s/attachments/%s", i.ParentID.String(), i.generatedID)
+}
+
+func (i *ApigeeEnvgroupAttachmentIdentity) GeneratedID() string {
+	return i.generatedID
+}
+
+func (i *ApigeeEnvgroupAttachmentIdentity) SetServerGeneratedID(newID string) {
+	i.generatedID = newID
+}
+
+type EnvgroupAttachmentParent struct {
+	Organization string
+	Envgroup     string
+}
+
+func (p *EnvgroupAttachmentParent) String() string {
+	return "organizations/" + p.Organization + "/envgroups/" + p.Envgroup
 }
 
 var _ identity.Resource = &ApigeeEnvgroupAttachment{}

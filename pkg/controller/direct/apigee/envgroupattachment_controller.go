@@ -16,12 +16,14 @@ package apigee
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -35,7 +37,7 @@ import (
 const aegaCtrlName = "apigee-envgroupattachment-controller"
 
 func init() {
-	registry.RegisterModel(krm.EnvgroupAttachmentGVK, NewApigeeEnvgroupAttachmentModel)
+	registry.RegisterModel(krm.ApigeeEnvgroupAttachmentGVK, NewApigeeEnvgroupAttachmentModel)
 }
 
 func NewApigeeEnvgroupAttachmentModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -59,9 +61,13 @@ func (m *modelEnvgroupAttachment) AdapterForObject(ctx context.Context, reader c
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewEnvgroupAttachmentIdentity(ctx, reader, obj)
+	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	id, ok := i.(*krm.ApigeeEnvgroupAttachmentIdentity)
+	if !ok {
+		return nil, fmt.Errorf("cannot convert Identity to ApigeeEnvgroupAttachmentIdentity")
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -70,7 +76,7 @@ func (m *modelEnvgroupAttachment) AdapterForObject(ctx context.Context, reader c
 		return nil, mapCtx.Err()
 	}
 
-	desired.Name = id.ID()
+	desired.Name = id.ResourceID
 
 	return &EnvgroupAttachmentAdapter{
 		id:               id,
@@ -86,7 +92,7 @@ func (m *modelEnvgroupAttachment) AdapterForURL(ctx context.Context, url string)
 }
 
 type EnvgroupAttachmentAdapter struct {
-	id               *krm.EnvgroupAttachmentIdentity
+	id               *krm.ApigeeEnvgroupAttachmentIdentity
 	desired          *krm.ApigeeEnvgroupAttachment
 	actual           *api.GoogleCloudApigeeV1EnvironmentGroupAttachment
 	client           *api.OrganizationsEnvgroupsAttachmentsService
@@ -125,16 +131,40 @@ func (a *EnvgroupAttachmentAdapter) Create(ctx context.Context, createOp *direct
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	req.Name = a.id.ID()
+	req.Name = a.id.ResourceID
+	// rewrite the env to just the name as that's what the GCP API expects
+	// Note the invariant here is that the EnvironmentRef was resolved in the AdapterForObject func
+	req.Environment = a.desired.Spec.EnvironmentRef.Name
 
-	op, err := a.client.Create(a.id.Parent().String(), req).Context(ctx).Do()
+	op, err := a.client.Create(a.id.ParentID.String(), req).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating ApigeeEnvgroupAttachment %s: %w", a.fullyQualifiedName(), err)
 	}
 
-	if err := WaitForApigeeOp(ctx, a.operationsClient, op); err != nil {
+	// todo acpana: factor out response from LRO to use throughout direct
+	var response *api.GoogleLongrunningOperation
+	if err := common.WaitForDoneOrTimeout(ctx, 2*time.Second, func() (bool, error) {
+		response, err = a.operationsClient.Get(op.Name).Context(ctx).Do()
+		if err != nil {
+			return false, fmt.Errorf("getting operation status of %q: %w", op.Name, err)
+		}
+		if response.Done {
+			if response.Error != nil {
+				return true, fmt.Errorf("operation %q completed with error: %v", op.Name, response.Error)
+			} else {
+				return true, nil
+			}
+		}
+		return false, nil
+	}); err != nil {
 		return fmt.Errorf("waiting for ApigeeEnvgroupAttachment %s creation: %w", a.id, err)
 	}
+	var responseMap map[string]interface{}
+	err = json.Unmarshal(response.Response, &responseMap)
+	if err != nil {
+		return fmt.Errorf("converting long runnning operation response for ApigeeEnvgroupAttachment: %w", err)
+	}
+	a.id.SetServerGeneratedID(responseMap["name"].(string))
 
 	created, err := a.client.Get(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
@@ -156,11 +186,11 @@ func (a *EnvgroupAttachmentAdapter) Create(ctx context.Context, createOp *direct
 func (a *EnvgroupAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx).WithName(aegaCtrlName)
 
-	if *a.desired.Status.ExternalRef == "" {
+	if a.desired.Status.ExternalRef == nil || *a.desired.Status.ExternalRef == "" {
 		// If it is the first reconciliation after switching to direct controller,
 		// then update Status to fill out the ExternalRef even if there is
 		// no update.
-		status := a.desired.Status
+		status := &a.desired.Status
 		status.ExternalRef = direct.LazyPtr(a.id.String())
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
@@ -182,14 +212,14 @@ func (a *EnvgroupAttachmentAdapter) Export(ctx context.Context) (*unstructured.U
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.OrganizationRef = &krmv1beta1.OrganizationRef{External: a.id.Parent().String()}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krm.EnvgroupAttachmentGVK)
+	u.SetName(a.id.ResourceID)
+	u.SetGroupVersionKind(krm.ApigeeEnvgroupAttachmentGVK)
 
 	u.Object = uObj
 	return u, nil
@@ -200,7 +230,7 @@ func (a *EnvgroupAttachmentAdapter) Delete(ctx context.Context, deleteOp *direct
 	log := klog.FromContext(ctx).WithName(aegaCtrlName)
 	log.V(2).Info("deleting ApigeeEnvgroupAttachment", "name", a.id)
 
-	op, err := a.client.Delete(a.fullyQualifiedName()).Context(ctx).Do()
+	op, err := a.client.Delete(a.id.String()).Context(ctx).Do()
 
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -218,5 +248,5 @@ func (a *EnvgroupAttachmentAdapter) Delete(ctx context.Context, deleteOp *direct
 }
 
 func (a *EnvgroupAttachmentAdapter) fullyQualifiedName() string {
-	return a.id.String()
+	return a.id.GeneratedString()
 }
