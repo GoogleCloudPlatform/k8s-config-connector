@@ -19,13 +19,21 @@ metadata:
     cnrm.cloud.google.com/state-into-spec: absent
   name: alloydbcluster-${uniqueId}
 spec:
-  location: southamerica-east1
-  networkRef:
-    name: default
+  location: northamerica-northeast1
+  networkConfig:
+    networkRef:
+      name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
-  initialUser:
-    user: postgres
-    password:
-      value: postgres
-  resourceID: alloydbcluster${uniqueId}
+  automatedBackupPolicy:
+    enabled: true
+    location: northamerica-northeast1
+    quantityBasedRetention:
+      count: 1
+    weeklySchedule:
+      daysOfWeek: [MONDAY]
+      startTimes: 
+        - hours: 4
+          minutes: 0
+          seconds: 0
+          nanos: 0
