@@ -8,7 +8,7 @@ Follow [deep-dives Step 1](../deep-dives/1-add-mockgcp-tests.md)
 
 ### PR Reviews
 
-* The 1st git-commit shall contain `create.yaml` and `update.yaml` files with exactly the same config. 
+* The 1st git-commit shall contain `create.yaml` and `update.yaml` files with exactly the same config. 
 * The 2nd git-commit shall have `update.yaml` changing all the mutable fields, reflected in the git-diff based on the first commit.
 * The 3rd git-commit (or N-th git-commit) shall run against real GCP. The generated `_generated_object_<resource>.golden.yaml` and `_http.log` is the golden log reflecting the real GCP. The `_generated_object_<resource>.golden.yaml` matches the `spec` in `update.yaml`
 * The 4rd git-commit (or N+1-th git-commit) shall run against the Mock GCP. The git-diff shows `_generated_object_<resource>.golden.yaml` is unchanged, and the `_http.log` is as much like the real GCP as possible. 
@@ -21,7 +21,7 @@ Follow [deep-dives Step 2](../deep-dives/2-define-apis.md)
 
 The PR shall contain the types and deepcopy codes. It shall follow the direct resource [recommended styles and conventions](../api-conventions). **It can change the existing fields since it is Alpha**.
 
-* Make sure the generated code is placed under `./apis/<service>/v1alpha1`. If not, please check your flags.
+* Make sure the generated code is placed under `./apis/<service>/v1alpha1`. If not, please check your flags.
 * Add `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` to the API tag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92), to continue using Terraform-based controllers. *This relies on the existing Terraform-based controller to validate your API.*
 
 ### PR Reviews

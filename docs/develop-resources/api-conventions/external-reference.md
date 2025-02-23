@@ -3,7 +3,7 @@
 
 # TL;DR
 
-`status.externalRef` should be used as the GCP identifier of the Config Connector resource.
+`status.externalRef` should be used as the GCP identifier of the Config Connector resource.
 
 
 # Basic Rules
@@ -12,7 +12,7 @@
 
 * Config Connector should use `status.externalRef` as the GCP identifier to retrieve, update and delete (if applicable) the resource.
 
-* Config Connector should validate the `spec` corresponding identifiers (i.e. `spec.projectRef` `spec.location`, `spec.resourceID`) based on `status.externalRef`.
+* Config Connector should validate the `spec` corresponding identifiers (i.e. `spec.projectRef` `spec.location`, `spec.resourceID`) based on `status.externalRef`.
 
 * The `status.externalRef` value can be used as [the resource reference `<kind>Ref.External`](./resource-reference.md#api-rule)
 
