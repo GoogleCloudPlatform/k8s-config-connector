@@ -44,7 +44,7 @@ var (
 		},
 		Args: cobra.NoArgs,
 	}
-	ouputFormat string
+	outputFormat string
 )
 
 func init() {

@@ -50,7 +50,7 @@ func (s *Folders) GetFolder(ctx context.Context, req *pb.GetFolderRequest) (*pb.
 		return nil, err
 	}
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 
 	return obj, nil
 }
@@ -183,7 +183,7 @@ func (s *Folders) DeleteFolder(ctx context.Context, req *pb.DeleteFolderRequest)
 		return nil, err
 	}
 
-	// We should verify that this is part of on of our projects, but ... it's a mock
+	// We should verify that this is part of one of our projects, but ... it's a mock
 	lro, err := s.operations.DoneLRO(ctx, "", nil, obj)
 	if err != nil {
 		return nil, err

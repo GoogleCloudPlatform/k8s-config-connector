@@ -1450,7 +1450,7 @@ spec:
                     type: object
                 type: object
               nodePoolDefaults:
-                description: The default nodel pool settings for the entire cluster.
+                description: The default node pool settings for the entire cluster.
                 properties:
                   nodeConfigDefaults:
                     description: Subset of NodeConfig message that has defaults.
