@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -56,12 +57,41 @@ func VisitObjectsInDirectory(ctx context.Context, dir string, visitor Visitor) e
 	return nil
 }
 
+func VisitObjectsFromStdin(ctx context.Context, visitor Visitor) error {
+	b, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return fmt.Errorf("reading from stdin: %w", err)
+	}
+	out, err := processBytes(ctx, b, visitor)
+	if err != nil {
+		return fmt.Errorf("processing stdin: %w", err)
+	}
+
+	if _, err := os.Stdout.Write(out); err != nil {
+		return fmt.Errorf("error writing to stdout: %w", err)
+	}
+
+	return nil
+}
+
 func processFile(ctx context.Context, p string, visitor Visitor) error {
 	b, err := os.ReadFile(p)
 	if err != nil {
 		return fmt.Errorf("error reading file %q: %w", p, err)
 	}
 
+	out, err := processBytes(ctx, b, visitor)
+	if err != nil {
+		return fmt.Errorf("processing file %q: %w", p, err)
+	}
+
+	if err := os.WriteFile(p, out, 0644); err != nil {
+		return fmt.Errorf("error writing file %q: %w", p, err)
+	}
+	return nil
+}
+
+func processBytes(ctx context.Context, b []byte, visitor Visitor) ([]byte, error) {
 	var out bytes.Buffer
 
 	// We preserve the yaml header (copyright, typically)
@@ -76,38 +106,34 @@ func processFile(ctx context.Context, p string, visitor Visitor) error {
 
 	yamls, err := kccyaml.SplitYAML(b)
 	if err != nil {
-		return fmt.Errorf("error splitting bytes into YAMLs: %w", err)
+		return nil, fmt.Errorf("error splitting bytes into YAMLs: %w", err)
 	}
 	objects := make([]*unstructured.Unstructured, 0)
 	for _, y := range yamls {
 		crd := &unstructured.Unstructured{}
 		if err := yaml.Unmarshal(y, crd); err != nil {
-			return fmt.Errorf("error unmarshalling bytes to object: %w", err)
+			return nil, fmt.Errorf("error unmarshalling bytes to object: %w", err)
 		}
 		objects = append(objects, crd)
 	}
 
 	for _, obj := range objects {
 		if err := visitor.VisitObject(obj); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
 	for i, obj := range objects {
 		b, err := yaml.Marshal(obj)
 		if err != nil {
-			return fmt.Errorf("error marshalling object to bytes: %w", err)
+			return nil, fmt.Errorf("error marshalling object to bytes: %w", err)
 		}
 		out.Write(b)
 		if i != 0 {
 			out.WriteString("\n---\n")
 		}
 	}
-
-	if err := os.WriteFile(p, out.Bytes(), 0644); err != nil {
-		return fmt.Errorf("error writing file %q: %w", p, err)
-	}
-	return nil
+	return out.Bytes(), nil
 }
 
 func PtrTo[T any](t T) *T {

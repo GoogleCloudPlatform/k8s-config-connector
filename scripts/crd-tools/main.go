@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/deleteannotation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/deletefield"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/reflowdescriptions"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/removedescriptions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/setannotation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/setfield"
 	"github.com/spf13/cobra"
@@ -46,6 +47,7 @@ func run(ctx context.Context) error {
 	deleteannotation.AddCommand(rootCmd)
 	deletefield.AddCommand(rootCmd)
 	reflowdescriptions.AddCommand(rootCmd)
+	removedescriptions.AddCommand(rootCmd)
 	setannotation.AddCommand(rootCmd)
 	setfield.AddCommand(rootCmd)
 
