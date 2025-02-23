@@ -192,9 +192,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "run tests-e2e-scenarios"
+      - name: "run scenarios-tests"
         run: |
-          ./scripts/github-actions/tests-e2e-scenarios.sh
+          ./dev/ci/scenarios-tests
   tests-e2e-fixtures-vcr:
     runs-on: ubuntu-22.04
     timeout-minutes: 60

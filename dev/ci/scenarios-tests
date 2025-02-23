@@ -18,11 +18,13 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-
 cd ${REPO_ROOT}/
 
 echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+
+# Always write golden output
+export WRITE_GOLDEN_OUTPUT=1
 
 echo "Running scenarios tests..."
 GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
