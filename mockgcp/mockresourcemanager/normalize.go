@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockstorage
+package mockresourcemanager
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -21,15 +21,16 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// Bucket
-	replacements.ReplacePath(".softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".timeCreated", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".updated", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".items[].timeCreated", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".items[].updated", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".acl[].etag", "abcdef0123A")
-	replacements.ReplacePath(".defaultObjectAcl[].etag", "abcdef0123A=")
+	// Instance
+
+	// TODO
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	event.VisitResponseStringValues(func(path string, value string) {
+		switch path {
+		case ".projectNumber":
+			replacements.ReplaceStringValue(value, "${projectNumber}")
+		}
+	})
 }

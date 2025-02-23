@@ -29,7 +29,7 @@ import (
 )
 
 type ProjectsInternal struct {
-	*MockService
+	storage storage.Storage
 }
 
 var _ projects.ProjectStore = &ProjectsInternal{}
@@ -212,7 +212,7 @@ func (s *ProjectsInternal) mutateProject(ctx context.Context, name string, mutat
 		return nil, err
 	}
 
-	obj, err := s.projectsInternal.tryGetProject(ctx, projectName)
+	obj, err := s.tryGetProject(ctx, projectName)
 	if err != nil {
 		return nil, err
 	}
