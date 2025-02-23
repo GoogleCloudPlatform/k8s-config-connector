@@ -159,3 +159,4 @@ go.work.sum
 e2e.log
 testlogs/
 log
+experiments/conductor/logs
