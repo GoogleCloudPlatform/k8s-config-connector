@@ -2,7 +2,6 @@ POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 73
 Content-Type: application/json
 
 {
@@ -33,7 +32,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -69,7 +67,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -97,7 +94,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagValueID}?alt=jso
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -125,7 +121,6 @@ POST https://cloudresourcemanager.googleapis.com/v3/tagValues?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 64
 Content-Type: application/json
 
 {
@@ -156,7 +151,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -192,7 +186,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=j
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -220,7 +213,6 @@ POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 144
 Content-Type: application/json
 
 {
@@ -256,7 +248,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json&parent=%
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -284,7 +275,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=j
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -312,7 +302,6 @@ DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fclou
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -338,7 +327,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=j
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -366,7 +354,6 @@ DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?al
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -391,7 +378,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -427,7 +413,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagValueID}?alt=jso
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -455,7 +440,6 @@ DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=js
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -480,7 +464,6 @@ GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
