@@ -17,13 +17,12 @@ kind: SecretManagerSecret
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  name: secretmanagersecret-${uniqueId}
   labels:
     label-one: value-one
-  name: secretmanagersecret-${uniqueId}
 spec:
   replication:
     userManaged:
       replicas:
       - location: us-central1
-  expireTime: "Mon, 02 Jan 2006 15:04:05 MST"
+  expireTime: "Monday, 02-Jan-06 15:04:05 MST"
