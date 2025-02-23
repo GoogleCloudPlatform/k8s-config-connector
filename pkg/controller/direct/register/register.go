@@ -49,4 +49,5 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/spanner"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/sql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workstations"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 )
