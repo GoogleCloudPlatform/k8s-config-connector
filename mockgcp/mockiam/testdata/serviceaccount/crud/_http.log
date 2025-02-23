@@ -1,0 +1,175 @@
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 136
+Content-Type: application/json
+
+{
+  "accountId": "test-${uniqueId}",
+  "serviceAccount": {
+    "description": "Test Service Account",
+    "displayName": "Test Service Account"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test Service Account",
+  "displayName": "Test Service Account",
+  "email": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/-/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test Service Account",
+  "displayName": "Test Service Account",
+  "email": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+PATCH https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 87
+Content-Type: application/json
+
+{
+  "serviceAccount": {
+    "description": "Updated Description"
+  },
+  "updateMask": "description"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated Description",
+  "name": "projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+}
+
+---
+
+PATCH https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 88
+Content-Type: application/json
+
+{
+  "serviceAccount": {
+    "displayName": "Updated Display Name"
+  },
+  "updateMask": "displayName"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Updated Display Name",
+  "name": "projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/-/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated Description",
+  "displayName": "Updated Display Name",
+  "email": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/-/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -48,23 +48,19 @@ func TestScripts(t *testing.T) {
 
 			uniqueID := fmt.Sprintf("%x", time.Now().UnixNano())
 
-			project := GCPProject{
-				ProjectID: "testproject-1",
-			}
+			h := NewHarness(t)
+			h.Init()
 
+			project := h.Project
 			testDir := filepath.Join(baseDir, scriptPath)
 
 			script := loadScript(t, testDir, uniqueID, project)
-			h := NewHarness(t)
 
-			h.Init()
 			h.StartProxy()
 
 			for _, step := range script.Steps {
 				if step.Exec != "" {
-					args := strings.Fields(step.Exec)
-
-					cmd := exec.CommandContext(ctx, args[0], args[1:]...)
+					cmd := exec.CommandContext(ctx, "bash", "-c", step.Exec)
 					var stdout bytes.Buffer
 					cmd.Stdout = &stdout
 					var stderr bytes.Buffer

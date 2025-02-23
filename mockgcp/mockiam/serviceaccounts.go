@@ -19,6 +19,7 @@ import (
 	"crypto/md5"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -35,7 +36,7 @@ import (
 const ServiceAccountSuffix = ".iam.gserviceaccount.com"
 
 // Gets a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
-func (s *ServerV1) GetServiceAccount(ctx context.Context, req *pb.GetServiceAccountRequest) (*pb.ServiceAccount, error) {
+func (s *IAMServer) GetServiceAccount(ctx context.Context, req *pb.GetServiceAccountRequest) (*pb.ServiceAccount, error) {
 	name, err := s.parseServiceAccountName(ctx, req.Name)
 	if err != nil {
 		return nil, err
@@ -84,7 +85,7 @@ func isNumber(s string) bool {
 }
 
 // Creates a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
-func (s *ServerV1) CreateServiceAccount(ctx context.Context, req *pb.CreateServiceAccountRequest) (*pb.ServiceAccount, error) {
+func (s *IAMServer) CreateServiceAccount(ctx context.Context, req *pb.CreateServiceAccountRequest) (*pb.ServiceAccount, error) {
 	accountID := req.AccountId
 	if accountID == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "AccountId is required")
@@ -132,8 +133,8 @@ func (s *ServerV1) CreateServiceAccount(ctx context.Context, req *pb.CreateServi
 	return sa, nil
 }
 
-func (s *ServerV1) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServiceAccountRequest) (*emptypb.Empty, error) {
-	name, err := s.serverV1.parseServiceAccountName(ctx, req.Name)
+func (s *IAMServer) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServiceAccountRequest) (*emptypb.Empty, error) {
+	name, err := s.parseServiceAccountName(ctx, req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -147,10 +148,10 @@ func (s *ServerV1) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServi
 	return &emptypb.Empty{}, nil
 }
 
-func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchServiceAccountRequest) (*pb.ServiceAccount, error) {
+func (s *IAMServer) PatchServiceAccount(ctx context.Context, req *pb.PatchServiceAccountRequest) (*pb.ServiceAccount, error) {
 	reqName := req.GetServiceAccount().GetName()
 
-	name, err := s.serverV1.parseServiceAccountName(ctx, reqName)
+	name, err := s.parseServiceAccountName(ctx, reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -161,6 +162,11 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 		return nil, err
 	}
 
+	// Unclear exactly what's going on here, but it seems to only return the fields we patch
+	retVal := &pb.ServiceAccount{
+		Name: sa.Name,
+	}
+
 	// You can patch only the `display_name` and `description` fields.
 	// You must use the `update_mask` field to specify which of these fields you want to patch.
 	paths := req.GetUpdateMask().GetPaths()
@@ -168,8 +174,10 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 		switch path {
 		case "display_name":
 			sa.DisplayName = req.GetServiceAccount().GetDisplayName()
+			retVal.DisplayName = sa.DisplayName
 		case "description":
 			sa.Description = req.GetServiceAccount().GetDescription()
+			retVal.Description = sa.Description
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -179,17 +187,11 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 		return nil, err
 	}
 
-	// Unclear exactly what's going on here, but it seems to only return some of the fields
-	// (maybe the ones we've patched?)
-	retVal := &pb.ServiceAccount{
-		Name:        sa.Name,
-		DisplayName: sa.DisplayName,
-	}
 	return retVal, nil
 }
 
-func (s *ServerV1) DisableServiceAccount(ctx context.Context, req *pb.DisableServiceAccountRequest) (*emptypb.Empty, error) {
-	name, err := s.serverV1.parseServiceAccountName(ctx, req.GetName())
+func (s *IAMServer) DisableServiceAccount(ctx context.Context, req *pb.DisableServiceAccountRequest) (*emptypb.Empty, error) {
+	name, err := s.parseServiceAccountName(ctx, req.GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -209,8 +211,8 @@ func (s *ServerV1) DisableServiceAccount(ctx context.Context, req *pb.DisableSer
 	return &emptypb.Empty{}, nil
 }
 
-func (s *ServerV1) EnableServiceAccount(ctx context.Context, req *pb.EnableServiceAccountRequest) (*emptypb.Empty, error) {
-	name, err := s.serverV1.parseServiceAccountName(ctx, req.GetName())
+func (s *IAMServer) EnableServiceAccount(ctx context.Context, req *pb.EnableServiceAccountRequest) (*emptypb.Empty, error) {
+	name, err := s.parseServiceAccountName(ctx, req.GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -238,4 +240,62 @@ func computeEtag(obj proto.Message) []byte {
 	}
 	hash := md5.Sum(b)
 	return hash[:]
+}
+
+type serviceAccountName struct {
+	Project *projects.ProjectData
+	Email   string
+}
+
+func (n *serviceAccountName) String() string {
+	return "projects/" + n.Project.ID + "/serviceAccounts/" + n.Email
+}
+
+func (s *MockService) parseServiceAccountName(ctx context.Context, name string) (*serviceAccountName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "serviceAccounts" {
+		projectID := tokens[1]
+		email := tokens[3]
+
+		// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+		// the account. The `ACCOUNT` value can be the `email` address or the
+		// `unique_id` of the service account.
+		if projectID == "-" {
+			tokens := strings.Split(email, "@")
+			if len(tokens) == 2 && strings.HasSuffix(tokens[1], ServiceAccountSuffix) {
+				projectID = strings.TrimSuffix(tokens[1], ServiceAccountSuffix)
+			} else {
+				// Infer from the account
+				uniqueID, err := strconv.ParseInt(email, 10, 64)
+				if err != nil {
+					return nil, status.Errorf(codes.InvalidArgument, "name %q not known", name)
+				}
+
+				projectNumber := uniqueID >> 32
+				project, err := s.Projects.GetProjectByNumber(strconv.FormatInt(projectNumber, 10))
+				if err != nil {
+					return nil, err
+				}
+
+				return &serviceAccountName{
+					Project: project,
+					Email:   email,
+				}, nil
+			}
+		}
+
+		project, err := s.Projects.GetProjectByID(projectID)
+		if err != nil {
+			return nil, err
+		}
+
+		name := &serviceAccountName{
+			Project: project,
+			Email:   tokens[3],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }
