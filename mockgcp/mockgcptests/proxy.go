@@ -363,6 +363,7 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 		"securitycenter",
 		"servicedirectory",
 		"servicemanagement",
+		"serviceusage",
 		"sourcerepo",
 		"spanner",
 		"speech",
