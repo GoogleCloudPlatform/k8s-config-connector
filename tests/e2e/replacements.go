@@ -92,7 +92,7 @@ func (r *Replacements) ApplyReplacements(s string) string {
 }
 
 // placeholderForGCPResource returns the placeholder we use for the value, if we recognize the GCP resource type
-func (r *Replacements) placeholderForGCPResource(resource string) string {
+func (r *Replacements) placeholderForGCPResource(resource string, name string) string {
 	switch resource {
 	case "addresses":
 		return "${addressID}"
@@ -101,6 +101,10 @@ func (r *Replacements) placeholderForGCPResource(resource string) string {
 	case "tensorboards":
 		return "${tensorboardID}"
 	case "tagKeys":
+		if name == "namespaced" {
+			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
+			return ""
+		}
 		return "${tagKeyID}"
 	case "tagValues":
 		return "${tagValueID}"
@@ -164,7 +168,7 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 	u, _ := ParseGCPLink(link)
 	if u != nil {
 		for _, item := range u.PathItems {
-			placeholder := r.placeholderForGCPResource(item.Resource)
+			placeholder := r.placeholderForGCPResource(item.Resource, item.Name)
 			if placeholder != "" {
 				r.PathIDs[item.Name] = placeholder
 			}

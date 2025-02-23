@@ -306,7 +306,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			if u != nil {
 				kind := u.PathItems[len(u.PathItems)-1].Resource
 
-				placeholder := x.placeholderForGCPResource(kind)
+				placeholder := x.placeholderForGCPResource(kind, targetId)
 				if placeholder != "" {
 					// We _should_ differentiate between ID and number.
 					// But this causes too many diffs right now.
