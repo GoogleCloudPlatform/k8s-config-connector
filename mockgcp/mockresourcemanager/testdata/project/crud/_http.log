@@ -2,13 +2,12 @@ POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 123
 Content-Type: application/json
 
 {
   "name": "test-${uniqueId}",
   "parent": {
-    "id": "650586513145",
+    "id": "${folderID}",
     "type": "folder"
   },
   "projectId": "test-${uniqueId}"
@@ -34,7 +33,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -57,10 +55,12 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "test-${uniqueId}",
-    "etag": "abcdef0123A=",
-    "name": "projects/1168704978",
-    "parent": "folders/650586513145",
+    "lifecycleState": "ACTIVE",
+    "name": "test-${uniqueId}",
+    "parent": {
+      "id": "${folderID}",
+      "type": "folder"
+    },
     "projectId": "test-${uniqueId}",
     "projectNumber": "${projectNumber}"
   }
@@ -72,7 +72,6 @@ POST https://serviceusage.googleapis.com/v1/projects/test-${uniqueId}/services/c
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 2
 Content-Type: application/json
 
 {}
@@ -97,7 +96,6 @@ GET https://serviceusage.googleapis.com/v1/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -119,8 +117,8 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
     "service": {
-      "name": "projects/1168704978/services/cloudapis.googleapis.com",
-      "parent": "projects/1168704978",
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com",
+      "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     }
   }
@@ -132,7 +130,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/test-${uniqueId}?alt
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -149,11 +146,11 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "test-${uniqueId}",
   "parent": {
-    "id": "650586513145",
+    "id": "${folderID}",
     "type": "folder"
   },
   "projectId": "test-${uniqueId}",
-  "projectNumber": "1168704978"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
@@ -162,7 +159,6 @@ DELETE https://cloudresourcemanager.googleapis.com/v1/projects/test-${uniqueId}?
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
