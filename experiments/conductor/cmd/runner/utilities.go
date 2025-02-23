@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -66,7 +67,7 @@ func startBash() (io.WriteCloser, io.ReadCloser, exitBash, error) {
 	return stdin, stdout, exit, err
 }
 
-func cdRepoBranchDir(opts *RunnerOptions, subdir string, stdin io.WriteCloser, stdout io.ReadCloser) string {
+func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteCloser, stdout io.ReadCloser) string {
 	dir := opts.branchRepoDir
 	if subdir != "" {
 		dir = filepath.Join(dir, subdir)
@@ -88,4 +89,77 @@ func cdRepoBranchDir(opts *RunnerOptions, subdir string, stdin io.WriteCloser, s
 	}
 	log.Printf("CD OUT %s\r\n", msg)
 	return msg
+}
+
+type closer func() error
+
+func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
+	// Initially force out to stdout in case we hit an error we don't
+	// want to pollute a different runs logs with our logs.
+	// TODO: Return a log object so we can run in parrellel.
+	log.SetOutput(os.Stdout)
+	if opts.loggingDir == "" {
+		log.Println("Logging dir not set")
+		return noop
+	}
+	logDir := filepath.Join(opts.loggingDir, branch.Name)
+	if _, err := os.Stat(logDir); os.IsNotExist(err) {
+		err = os.MkdirAll(logDir, 0755)
+		if err != nil {
+			log.Printf("Error creating logging dir %s, :%v", logDir, err)
+			return noop
+		}
+	}
+
+	var out *os.File
+	var err error
+	logFile := filepath.Join(logDir, "out.log")
+	if out, err = os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0755); err != nil {
+		log.Printf("Error opening logging file %s, :%v", logFile, err)
+		return noop
+	}
+	/*
+		if _, err := os.Stat(logFile); os.IsNotExist(err) {
+			out, err = os.Create(logFile)
+			if err != nil {
+				log.Printf("Error creating logging file %s, :%v", logFile, err)
+				return noop
+			}
+		} else {
+			out, err = os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0755)
+			if err != nil {
+				log.Printf("Error opening logging file %s, :%v", logFile, err)
+				return noop
+			}
+		}
+	*/
+	log.SetOutput(out)
+
+	/*
+		var errF *os.File
+		errFile := filepath.Join(logDir, "err.log")
+		if _, err := os.Stat(errFile); os.IsNotExist(err) {
+			errF, err = os.Create(errFile)
+			if err != nil {
+				return os.Stdout, os.Stderr
+			}
+		} else {
+			errF, err = os.OpenFile(errFile, os.O_APPEND, 0755)
+			if err != nil {
+				return os.Stdout, os.Stderr
+			}
+		}
+	*/
+
+	return func() error {
+		// Initially force out to stdout in case we hit an error we don't
+		// want to pollute a different runs logs with our logs.
+		// TODO: Return a log object so we can run in parrellel.
+		log.SetOutput(os.Stdout)
+		return out.Close()
+	}
+}
+
+func noop() error {
+	return nil
 }
