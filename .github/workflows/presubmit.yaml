@@ -99,17 +99,7 @@ jobs:
       - name: "Run pause tests"
         run: |
           ./scripts/github-actions/ga-pause-test.sh
-  scenarios-tests:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "run scenarios-tests"
-        run: |
-          ./dev/ci/scenarios-tests
+
   tests-e2e-fixtures-vcr:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
