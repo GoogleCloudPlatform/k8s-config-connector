@@ -26,9 +26,51 @@ var TagsTagKeyGVK = GroupVersion.WithKind("TagsTagKey")
 type TagsTagKeySpec struct {
 	// The TagsTagKey name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. A textual description of the resource.
+	Description *string `json:"description,omitempty"`
+
+	// The resource name of the parent organization or project. It
+	// will be in one of the following forms: - "projects/{project_number}" -
+	// "organizations/{org_id}"
+	// +required
+	Parent *string `json:"parent,omitempty"`
+
+	/* NOT_IN_LEGACY
+	// Optional. Entity tag which users can pass to prevent race conditions. This
+	// field is always set in server responses. See UpdateTagKeyRequest for details.
+	Etag *string `json:"etag,omitempty"`
+	*/
+
+	// Optional. A purpose denotes that this Tag is part of a grouping of
+	// KCC-managed TagKeys, to which the following restrictions apply:
+	//  -  Only KCC can create, update, or delete a TagKey with a purpose.
+	//  - Only one KCC-managed TagKey may exist for a given project, with a
+	// given
+	//    purpose and ancestor.
+	// +optional
+	Purpose *string `json:"purpose,omitempty"`
+
+	// Optional. Purpose data corresponds to the policy system that the tag is for.
+	// For example, a value of "data-governance-eng@acmeco.com" suggests that
+	// the
+	// tag is a data governance tag managed by a central team. This field
+	// may only be set by setIamPolicy.
+	// +optional
+	PurposeData map[string]string `json:"purposeData,omitempty"`
+
+	// Required. Immutable. The user friendly name for a TagKey. The short name
+	// should be unique for TagKeys within the same tag namespace.
+	//
+	// The short name must be 1-63 characters, beginning and ending with
+	// an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_),
+	// dots (.), and alphanumerics between.
+	// +required
+	ShortName *string `json:"shortName,omitempty"`
 }
 
 // TagsTagKeyStatus defines the config connector machine state of TagsTagKey
+// +kcc:proto=google.cloud.resourcemanager.v3.TagKey
 type TagsTagKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
@@ -37,15 +79,32 @@ type TagsTagKeyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* NOT_IN_LEGACY
 	// A unique specifier for the TagsTagKey resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
+	*/
 
+	/* NOT_IN_LEGACY
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *TagsTagKeyObservedState `json:"observedState,omitempty"`
+	*/
+
+	// Output only. Creation time.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Unique id attribute for a TagKey
+	// resource_id:
+	// e.g. "tagKeys/123456789012"
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Update time.
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Immutable. Namespaced name of the TagKey.
+	NamespacedName *string `json:"namespacedName,omitempty"`
 }
 
 // TagsTagKeyObservedState is the state of the TagsTagKey resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.resourcemanager.v3.TagKey
 type TagsTagKeyObservedState struct {
 }
 
