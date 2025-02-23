@@ -55,7 +55,6 @@ func TestScripts(t *testing.T) {
 			testDir := filepath.Join(baseDir, scriptPath)
 
 			script := loadScript(t, testDir, uniqueID, project)
-
 			h.StartProxy()
 
 			for _, step := range script.Steps {
