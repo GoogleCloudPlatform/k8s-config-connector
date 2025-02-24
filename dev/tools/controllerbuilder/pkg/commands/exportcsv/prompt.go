@@ -35,9 +35,10 @@ import (
 type PromptOptions struct {
 	*options.GenerateOptions
 
-	ProtoDir string
-	SrcDir   string
-	Output   string
+	ProtoDir  string
+	SrcDir    string
+	Output    string
+	InputFile string
 
 	// StrictInputColumnKeys ensures that all input datapoints have this shape.
 	// This helps detect typos in the examples.
@@ -56,6 +57,7 @@ func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.SrcDir, "src-dir", o.SrcDir, "base directory for source code")
 	cmd.Flags().StringVar(&o.ProtoDir, "proto-dir", o.ProtoDir, "base directory for checkout of proto API definitions")
 	cmd.Flags().StringVar(&o.Output, "output", o.Output, "the directory to store the prompt outcome")
+	cmd.Flags().StringVar(&o.InputFile, "input-file", o.InputFile, "the input file to get input from")
 	cmd.Flags().StringSliceVar(&o.StrictInputColumnKeys, "strict-input-columns", o.StrictInputColumnKeys, "return an error if we see an irregular datapoint for this tool")
 }
 
@@ -129,9 +131,15 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		}
 	}
 
-	b, err := io.ReadAll(os.Stdin)
-	if err != nil {
-		return fmt.Errorf("reading from stdin: %w", err)
+	var b []byte
+	if o.InputFile == "" {
+		if b, err = io.ReadAll(os.Stdin); err != nil {
+			return fmt.Errorf("reading from stdin: %w", err)
+		}
+	} else {
+		if b, err = os.ReadFile(o.InputFile); err != nil {
+			return fmt.Errorf("reading from %s: %w", o.InputFile, err)
+		}
 	}
 
 	dataPoints, err := x.BuildDataPoints(ctx, "<prompt>", b)

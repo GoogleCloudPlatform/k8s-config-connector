@@ -91,6 +91,17 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	return msg
 }
 
+func checkoutBranch(branch Branch, workDir string, out strings.Builder) {
+	log.Printf("COMMAND: git checkout %s\r\n", branch.Local)
+	checkout := exec.Command("git", "checkout", branch.Local)
+	checkout.Dir = workDir
+	checkout.Stdout = &out
+	if err := checkout.Run(); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("BRANCH CHECKOUT: %q\n", out.String())
+}
+
 type closer func()
 
 func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
@@ -139,7 +150,6 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 	return func() {
 		// Initially force out to stdout in case we hit an error we don't
 		// want to pollute a different runs logs with our logs.
-		// TODO: Return a log object so we can run in parrellel.
 		log.SetOutput(os.Stdout)
 		if err := out.Close(); err != nil {
 			log.Printf("Failed to clode logging file %s, :%v", logFile, err)
@@ -148,5 +158,4 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 }
 
 func noOp() {
-	return
 }
