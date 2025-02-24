@@ -85,6 +85,15 @@ func (r *OrganizationRef) NormalizedExternal(ctx context.Context, reader client.
 
 	// TODO: Use status.externalRef once direct controller is implemented.
 	// For now, we can use status.projectID.
+	// BUT only construct the reference if the resource is ready
+	resource, err := k8s.NewResource(u)
+	if err != nil {
+		return "", fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+
 	projectID, _, err := unstructured.NestedString(u.Object, "status", "projectId")
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
