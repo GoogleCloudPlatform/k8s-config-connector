@@ -2,7 +2,6 @@ PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/test-${uniqueI
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 62
 Content-Type: application/json
 
 {
@@ -30,7 +29,6 @@ GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/test-${uniqueI
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -53,7 +51,6 @@ DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/test-${uniq
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private

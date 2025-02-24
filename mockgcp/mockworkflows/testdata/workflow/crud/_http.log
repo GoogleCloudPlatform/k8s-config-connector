@@ -2,7 +2,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -28,7 +27,6 @@ POST https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-cent
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 235
 Content-Type: application/json
 
 {
@@ -62,7 +60,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -104,7 +101,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -133,7 +129,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -162,7 +157,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -191,7 +185,6 @@ PATCH https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-cen
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 235
 Content-Type: application/json
 
 {
@@ -225,7 +218,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -267,7 +259,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -296,7 +287,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -325,7 +315,6 @@ DELETE https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-ce
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -354,7 +343,6 @@ GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
