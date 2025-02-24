@@ -189,11 +189,10 @@ func FuzzEnvgroupAttachmentSpec(f *testing.F) {
 		}
 
 		opts := cmp.Options{
-			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEnvgroupAttachmentSpec{}, "OrganizationRef"),
-			cmpopts.IgnoreFields(krm.EnvironmentRef{}, "Name"),
-			cmpopts.IgnoreFields(krm.EnvironmentRef{}, "Namespace"),
-			cmpopts.IgnoreFields(krmv1alpha1.EnvironmentGroupRef{}, "Name"),
-			cmpopts.IgnoreFields(krmv1alpha1.EnvironmentGroupRef{}, "Namespace"),
+			cmpopts.IgnoreFields(krm.ApigeeEnvironmentRef{}, "Name"),
+			cmpopts.IgnoreFields(krm.ApigeeEnvironmentRef{}, "Namespace"),
+			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEnvgroupRef{}, "Name"),
+			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEnvgroupRef{}, "Namespace"),
 			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEnvgroupAttachmentSpec{}, "ResourceID"),
 		}
 

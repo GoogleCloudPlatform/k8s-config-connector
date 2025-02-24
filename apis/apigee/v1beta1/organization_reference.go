@@ -22,15 +22,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &OrganizationRef{}
+var _ refsv1beta1.Ref = &ApigeeOrganizationRef{}
 
-// OrganizationRef defines the resource reference to ApigeeOrganization, which "External" field
-// holds the GCP identifier for the KRM object.
-type OrganizationRef struct {
+// ApigeeOrganizationRef is a reference to a ApigeeOrganization resource.
+type ApigeeOrganizationRef struct {
 	// A reference to an externally managed ApigeeOrganization resource.
 	// Should be in the format "organizations/{{organizationID}}".
 	External string `json:"external,omitempty"`
@@ -42,57 +42,63 @@ type OrganizationRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on ApigeeOrganization.
-// If the "External" is given in the other resource's spec.ApigeeOrganizationRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual ApigeeOrganization object from the cluster.
-func (r *OrganizationRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ApigeeOrganizationGVK.Kind)
+func (r *ApigeeOrganizationRef) GetGVK() schema.GroupVersionKind {
+	return ApigeeOrganizationGVK
+}
+
+func (r *ApigeeOrganizationRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	// From given External
-	if r.External != "" {
-		if _, err := ParseOrganizationExternal(r.External); err != nil {
-			return "", err
+}
+
+func (r *ApigeeOrganizationRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ApigeeOrganizationRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *ApigeeOrganizationRef) ValidateExternal(ref string) error {
+	id := &ApigeeOrganizationIdentity{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ApigeeOrganizationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// TODO: Use general-purpose refsv1beta1.Normalize function once direct controller is implemented.
+	// For now, we can build the external reference by reading status.ProjectId.
+	if r.GetExternal() == "" {
+		key := r.GetNamespacedName()
+		if key.Namespace == "" {
+			key.Namespace = defaultNamespace
 		}
-		return r.External, nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ApigeeOrganizationGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(r.GetGVK())
+		if err := reader.Get(ctx, key, u); err != nil {
+			if apierrors.IsNotFound(err) {
+				return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			}
+			return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ApigeeOrganizationGVK, key, err)
+
+		projectID, _, err := unstructured.NestedString(u.Object, "status", "projectId")
+		if err != nil {
+			return fmt.Errorf("reading status.externalRef: %w", err)
+		}
+		if projectID == "" {
+			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+		}
+		r.SetExternal(ApigeeOrganizationIDToken + "/" + projectID)
 	}
 
-	/* TODO: Use status.externalRef once direct controller is implemented
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	id := &ApigeeOrganizationIdentity{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return err
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	*/
-
-	// TODO: Use status.externalRef once direct controller is implemented.
-	// For now, we can use status.projectID.
-	projectID, _, err := unstructured.NestedString(u.Object, "status", "projectId")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if projectID == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = "organizations/" + projectID
-
-	return r.External, nil
+	return nil
 }
