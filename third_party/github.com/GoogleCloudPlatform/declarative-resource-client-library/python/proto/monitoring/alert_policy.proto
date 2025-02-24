@@ -1,0 +1,656 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum MonitoringAlertPolicyConditionsResourceStateFilterEnum {
+  MonitoringAlertPolicyConditionsResourceStateFilterEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsResourceStateFilterEnumRESOURCE_STATE_FILTER_UNSPECIFIED = 1;
+  MonitoringAlertPolicyConditionsResourceStateFilterEnumINCLUDE_INACTIVE = 2;
+  MonitoringAlertPolicyConditionsResourceStateFilterEnumEXCLUDE_INACTIVE = 3;
+}
+
+enum MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnum {
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_NONE = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_DELTA = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_RATE = 3;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_INTERPOLATE = 4;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_NEXT_OLDER = 5;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_MIN = 6;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_MAX = 7;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_MEAN = 8;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_COUNT = 9;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_SUM = 10;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_STDDEV = 11;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_COUNT_TRUE = 12;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_COUNT_FALSE = 13;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_FRACTION_TRUE = 14;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_99 = 15;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_95 = 16;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_50 = 17;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_05 = 18;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_MAKE_DISTRIBUTION = 19;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnumALIGN_PERCENT_CHANGE = 20;
+}
+
+enum MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnum {
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_NONE = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_MEAN = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_MIN = 3;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_MAX = 4;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_SUM = 5;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_STDDEV = 6;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_COUNT = 7;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_COUNT_TRUE = 8;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_COUNT_FALSE = 9;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_FRACTION_TRUE = 10;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_99 = 11;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_95 = 12;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_50 = 13;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_05 = 14;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_FRACTION_LESS_THAN = 15;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnumREDUCE_MAKE_DISTRIBUTION = 16;
+}
+
+enum MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnum {
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_NONE = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_DELTA = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_RATE = 3;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_INTERPOLATE = 4;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_NEXT_OLDER = 5;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_MIN = 6;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_MAX = 7;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_MEAN = 8;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_COUNT = 9;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_SUM = 10;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_STDDEV = 11;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_COUNT_TRUE = 12;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_COUNT_FALSE = 13;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_FRACTION_TRUE = 14;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_99 = 15;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_95 = 16;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_50 = 17;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_05 = 18;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_MAKE_DISTRIBUTION = 19;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnumALIGN_PERCENT_CHANGE = 20;
+}
+
+enum MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnum {
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_NONE = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_MEAN = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_MIN = 3;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_MAX = 4;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_SUM = 5;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_STDDEV = 6;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_COUNT = 7;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_COUNT_TRUE = 8;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_COUNT_FALSE = 9;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_FRACTION_TRUE = 10;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_99 = 11;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_95 = 12;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_50 = 13;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_05 = 14;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_FRACTION_LESS_THAN = 15;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnumREDUCE_MAKE_DISTRIBUTION = 16;
+}
+
+enum MonitoringAlertPolicyConditionsConditionThresholdComparisonEnum {
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnumCOMPARISON_UNSPECIFIED = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnumCOMPARISON_GT = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnumCOMPARISON_GE = 3;
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnumCOMPARISON_LT = 4;
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnumCOMPARISON_LE = 5;
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnumCOMPARISON_EQ = 6;
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnumCOMPARISON_NE = 7;
+}
+
+enum MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnum {
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_NONE = 1;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_DELTA = 2;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_RATE = 3;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_INTERPOLATE = 4;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_NEXT_OLDER = 5;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_MIN = 6;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_MAX = 7;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_MEAN = 8;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_COUNT = 9;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_SUM = 10;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_STDDEV = 11;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_COUNT_TRUE = 12;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_COUNT_FALSE = 13;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_FRACTION_TRUE = 14;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_99 = 15;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_95 = 16;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_50 = 17;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_05 = 18;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_MAKE_DISTRIBUTION = 19;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnumALIGN_PERCENT_CHANGE = 20;
+}
+
+enum MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnum {
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_NONE = 1;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_MEAN = 2;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_MIN = 3;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_MAX = 4;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_SUM = 5;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_STDDEV = 6;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_COUNT = 7;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_COUNT_TRUE = 8;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_COUNT_FALSE = 9;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_FRACTION_TRUE = 10;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_99 = 11;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_95 = 12;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_50 = 13;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_05 = 14;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_FRACTION_LESS_THAN = 15;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnumREDUCE_MAKE_DISTRIBUTION = 16;
+}
+
+enum MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnum {
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_NONE = 1;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_DELTA = 2;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_RATE = 3;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_INTERPOLATE = 4;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_NEXT_OLDER = 5;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_MIN = 6;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_MAX = 7;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_MEAN = 8;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_COUNT = 9;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_SUM = 10;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_STDDEV = 11;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_COUNT_TRUE = 12;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_COUNT_FALSE = 13;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_FRACTION_TRUE = 14;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_99 = 15;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_95 = 16;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_50 = 17;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_PERCENTILE_05 = 18;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_MAKE_DISTRIBUTION = 19;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnumALIGN_PERCENT_CHANGE = 20;
+}
+
+enum MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnum {
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_NONE = 1;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_MEAN = 2;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_MIN = 3;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_MAX = 4;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_SUM = 5;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_STDDEV = 6;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_COUNT = 7;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_COUNT_TRUE = 8;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_COUNT_FALSE = 9;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_FRACTION_TRUE = 10;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_99 = 11;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_95 = 12;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_50 = 13;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_PERCENTILE_05 = 14;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_FRACTION_LESS_THAN = 15;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnumREDUCE_MAKE_DISTRIBUTION = 16;
+}
+
+enum MonitoringAlertPolicyConditionsConditionRateComparisonEnum {
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnumCOMPARISON_UNSPECIFIED = 1;
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnumCOMPARISON_GT = 2;
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnumCOMPARISON_GE = 3;
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnumCOMPARISON_LT = 4;
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnumCOMPARISON_LE = 5;
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnumCOMPARISON_EQ = 6;
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnumCOMPARISON_NE = 7;
+}
+
+enum MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnum {
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnumCOMPARISON_UNSPECIFIED = 1;
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnumCOMPARISON_GT = 2;
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnumCOMPARISON_GE = 3;
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnumCOMPARISON_LT = 4;
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnumCOMPARISON_LE = 5;
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnumCOMPARISON_EQ = 6;
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnumCOMPARISON_NE = 7;
+}
+
+enum MonitoringAlertPolicyCombinerEnum {
+  MonitoringAlertPolicyCombinerEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyCombinerEnumCOMBINE_UNSPECIFIED = 1;
+  MonitoringAlertPolicyCombinerEnumAND = 2;
+  MonitoringAlertPolicyCombinerEnumOR = 3;
+  MonitoringAlertPolicyCombinerEnumAND_WITH_MATCHING_RESOURCE = 4;
+}
+
+enum MonitoringAlertPolicyIncidentStrategyTypeEnum {
+  MonitoringAlertPolicyIncidentStrategyTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlertPolicyIncidentStrategyTypeEnumTYPE_UNSPECIFIED = 1;
+  MonitoringAlertPolicyIncidentStrategyTypeEnumCUSTOM = 2;
+  MonitoringAlertPolicyIncidentStrategyTypeEnumAPP_ENGINE = 3;
+  MonitoringAlertPolicyIncidentStrategyTypeEnumCLOUD_ENDPOINTS = 4;
+  MonitoringAlertPolicyIncidentStrategyTypeEnumISTIO = 5;
+  MonitoringAlertPolicyIncidentStrategyTypeEnumISTIO_SERVICE = 6;
+}
+
+message MonitoringAlertPolicy {
+  string name = 1;
+  string display_name = 2;
+  MonitoringAlertPolicyDocumentation documentation = 3;
+  map<string, string> user_labels = 4;
+  repeated MonitoringAlertPolicyConditions conditions = 5;
+  MonitoringAlertPolicyCombinerEnum combiner = 6;
+  bool disabled = 7;
+  MonitoringAlertPolicyEnabled enabled = 8;
+  MonitoringAlertPolicyValidity validity = 9;
+  repeated string notification_channels = 10;
+  MonitoringAlertPolicyCreationRecord creation_record = 11;
+  MonitoringAlertPolicyMutationRecord mutation_record = 12;
+  MonitoringAlertPolicyIncidentStrategy incident_strategy = 13;
+  MonitoringAlertPolicyMetadata metadata = 14;
+  string project = 15;
+}
+
+message MonitoringAlertPolicyDocumentation {
+  string content = 1;
+  string mime_type = 2;
+}
+
+message MonitoringAlertPolicyConditions {
+  string name = 1;
+  string display_name = 2;
+  MonitoringAlertPolicyConditionsResourceStateFilterEnum resource_state_filter = 3;
+  MonitoringAlertPolicyConditionsConditionThreshold condition_threshold = 4;
+  MonitoringAlertPolicyConditionsConditionAbsent condition_absent = 5;
+  MonitoringAlertPolicyConditionsConditionMatchedLog condition_matched_log = 6;
+  MonitoringAlertPolicyConditionsConditionClusterOutlier condition_cluster_outlier = 7;
+  MonitoringAlertPolicyConditionsConditionRate condition_rate = 8;
+  MonitoringAlertPolicyConditionsConditionUpMon condition_up_mon = 9;
+  MonitoringAlertPolicyConditionsConditionProcessCount condition_process_count = 10;
+  MonitoringAlertPolicyConditionsConditionTimeSeriesQueryLanguage condition_time_series_query_language = 11;
+  MonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage condition_monitoring_query_language = 12;
+}
+
+message MonitoringAlertPolicyConditionsConditionThreshold {
+  string filter = 1;
+  repeated MonitoringAlertPolicyConditionsConditionThresholdAggregations aggregations = 2;
+  string denominator_filter = 3;
+  repeated MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregations denominator_aggregations = 4;
+  MonitoringAlertPolicyConditionsConditionThresholdComparisonEnum comparison = 5;
+  double threshold_value = 6;
+  string duration = 7;
+  MonitoringAlertPolicyConditionsConditionThresholdTrigger trigger = 8;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdAggregations {
+  string alignment_period = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAlignerEnum per_series_aligner = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducerEnum cross_series_reducer = 3;
+  repeated string group_by_fields = 4;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceFractionLessThanParams reduce_fraction_less_than_params = 5;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParams reduce_make_distribution_params = 6;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceFractionLessThanParams {
+  double threshold = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParams {
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsBucketOptions bucket_options = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsExemplarSampling exemplar_sampling = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsBucketOptions {
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsBucketOptionsLinearBuckets linear_buckets = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsBucketOptionsExponentialBuckets exponential_buckets = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsBucketOptionsExplicitBuckets explicit_buckets = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsBucketOptionsLinearBuckets {
+  int64 num_finite_buckets = 1;
+  double width = 2;
+  double offset = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsBucketOptionsExponentialBuckets {
+  int64 num_finite_buckets = 1;
+  double growth_factor = 2;
+  double scale = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsBucketOptionsExplicitBuckets {
+  repeated double bounds = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdAggregationsReduceMakeDistributionParamsExemplarSampling {
+  double minimum_value = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregations {
+  string alignment_period = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAlignerEnum per_series_aligner = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducerEnum cross_series_reducer = 3;
+  repeated string group_by_fields = 4;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceFractionLessThanParams reduce_fraction_less_than_params = 5;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParams reduce_make_distribution_params = 6;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceFractionLessThanParams {
+  double threshold = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParams {
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsBucketOptions bucket_options = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsExemplarSampling exemplar_sampling = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsBucketOptions {
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsBucketOptionsLinearBuckets linear_buckets = 1;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsBucketOptionsExponentialBuckets exponential_buckets = 2;
+  MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsBucketOptionsExplicitBuckets explicit_buckets = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsBucketOptionsLinearBuckets {
+  int64 num_finite_buckets = 1;
+  double width = 2;
+  double offset = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsBucketOptionsExponentialBuckets {
+  int64 num_finite_buckets = 1;
+  double growth_factor = 2;
+  double scale = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsBucketOptionsExplicitBuckets {
+  repeated double bounds = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsReduceMakeDistributionParamsExemplarSampling {
+  double minimum_value = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionThresholdTrigger {
+  int64 count = 1;
+  double percent = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsent {
+  string filter = 1;
+  repeated MonitoringAlertPolicyConditionsConditionAbsentAggregations aggregations = 2;
+  MonitoringAlertPolicyConditionsConditionAbsentDuration duration = 3;
+  MonitoringAlertPolicyConditionsConditionAbsentTrigger trigger = 4;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentAggregations {
+  string alignment_period = 1;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAlignerEnum per_series_aligner = 2;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducerEnum cross_series_reducer = 3;
+  repeated string group_by_fields = 4;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceFractionLessThanParams reduce_fraction_less_than_params = 5;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParams reduce_make_distribution_params = 6;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceFractionLessThanParams {
+  double threshold = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParams {
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsBucketOptions bucket_options = 1;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsExemplarSampling exemplar_sampling = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsBucketOptions {
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsBucketOptionsLinearBuckets linear_buckets = 1;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsBucketOptionsExponentialBuckets exponential_buckets = 2;
+  MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsBucketOptionsExplicitBuckets explicit_buckets = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsBucketOptionsLinearBuckets {
+  int64 num_finite_buckets = 1;
+  double width = 2;
+  double offset = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsBucketOptionsExponentialBuckets {
+  int64 num_finite_buckets = 1;
+  double growth_factor = 2;
+  double scale = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsBucketOptionsExplicitBuckets {
+  repeated double bounds = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentAggregationsReduceMakeDistributionParamsExemplarSampling {
+  double minimum_value = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentDuration {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionAbsentTrigger {
+  int64 count = 1;
+  double percent = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionMatchedLog {
+  string filter = 1;
+  map<string, string> label_extractors = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionClusterOutlier {
+  string filter = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionRate {
+  string filter = 1;
+  repeated MonitoringAlertPolicyConditionsConditionRateAggregations aggregations = 2;
+  MonitoringAlertPolicyConditionsConditionRateComparisonEnum comparison = 3;
+  double threshold_value = 4;
+  MonitoringAlertPolicyConditionsConditionRateTimeWindow time_window = 5;
+  MonitoringAlertPolicyConditionsConditionRateTrigger trigger = 6;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateAggregations {
+  string alignment_period = 1;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsPerSeriesAlignerEnum per_series_aligner = 2;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsCrossSeriesReducerEnum cross_series_reducer = 3;
+  repeated string group_by_fields = 4;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsReduceFractionLessThanParams reduce_fraction_less_than_params = 5;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParams reduce_make_distribution_params = 6;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateAggregationsReduceFractionLessThanParams {
+  double threshold = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParams {
+  MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsBucketOptions bucket_options = 1;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsExemplarSampling exemplar_sampling = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsBucketOptions {
+  MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsBucketOptionsLinearBuckets linear_buckets = 1;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsBucketOptionsExponentialBuckets exponential_buckets = 2;
+  MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsBucketOptionsExplicitBuckets explicit_buckets = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsBucketOptionsLinearBuckets {
+  int64 num_finite_buckets = 1;
+  double width = 2;
+  double offset = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsBucketOptionsExponentialBuckets {
+  int64 num_finite_buckets = 1;
+  double growth_factor = 2;
+  double scale = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsBucketOptionsExplicitBuckets {
+  repeated double bounds = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateAggregationsReduceMakeDistributionParamsExemplarSampling {
+  double minimum_value = 1;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateTimeWindow {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionRateTrigger {
+  int64 count = 1;
+  double percent = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionUpMon {
+  string filter = 1;
+  string endpoint_id = 2;
+  string check_id = 3;
+  MonitoringAlertPolicyConditionsConditionUpMonDuration duration = 4;
+  MonitoringAlertPolicyConditionsConditionUpMonTrigger trigger = 5;
+}
+
+message MonitoringAlertPolicyConditionsConditionUpMonDuration {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionUpMonTrigger {
+  int64 count = 1;
+  double percent = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionProcessCount {
+  string process = 1;
+  string user = 2;
+  string filter = 3;
+  MonitoringAlertPolicyConditionsConditionProcessCountComparisonEnum comparison = 4;
+  int64 process_count_threshold = 5;
+  MonitoringAlertPolicyConditionsConditionProcessCountTrigger trigger = 6;
+  MonitoringAlertPolicyConditionsConditionProcessCountDuration duration = 7;
+}
+
+message MonitoringAlertPolicyConditionsConditionProcessCountTrigger {
+  int64 count = 1;
+  double percent = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionProcessCountDuration {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionTimeSeriesQueryLanguage {
+  string query = 1;
+  string summary = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage {
+  string query = 1;
+  MonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageDuration duration = 2;
+  MonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigger trigger = 3;
+}
+
+message MonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageDuration {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message MonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigger {
+  int64 count = 1;
+  double percent = 2;
+}
+
+message MonitoringAlertPolicyEnabled {
+  bool value = 1;
+}
+
+message MonitoringAlertPolicyValidity {
+  int64 code = 1;
+  string message = 2;
+  repeated MonitoringAlertPolicyValidityDetails details = 3;
+}
+
+message MonitoringAlertPolicyValidityDetails {
+  string type_url = 1;
+  string value = 2;
+}
+
+message MonitoringAlertPolicyCreationRecord {
+  MonitoringAlertPolicyCreationRecordMutateTime mutate_time = 1;
+  string mutated_by = 2;
+}
+
+message MonitoringAlertPolicyCreationRecordMutateTime {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message MonitoringAlertPolicyMutationRecord {
+  MonitoringAlertPolicyMutationRecordMutateTime mutate_time = 1;
+  string mutated_by = 2;
+}
+
+message MonitoringAlertPolicyMutationRecordMutateTime {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message MonitoringAlertPolicyIncidentStrategy {
+  MonitoringAlertPolicyIncidentStrategyTypeEnum type = 1;
+}
+
+message MonitoringAlertPolicyMetadata {
+  repeated string slo_names = 1;
+}
+
+message ApplyMonitoringAlertPolicyRequest {
+  MonitoringAlertPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteMonitoringAlertPolicyRequest {
+  string service_account_file = 1;
+  MonitoringAlertPolicy resource = 2;
+}
+
+message ListMonitoringAlertPolicyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListMonitoringAlertPolicyResponse {
+  repeated MonitoringAlertPolicy items = 1;
+}
+
+service MonitoringAlertPolicyService {
+  rpc ApplyMonitoringAlertPolicy(ApplyMonitoringAlertPolicyRequest) returns (MonitoringAlertPolicy);
+  rpc DeleteMonitoringAlertPolicy(DeleteMonitoringAlertPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListMonitoringAlertPolicy(ListMonitoringAlertPolicyRequest) returns (ListMonitoringAlertPolicyResponse);
+}

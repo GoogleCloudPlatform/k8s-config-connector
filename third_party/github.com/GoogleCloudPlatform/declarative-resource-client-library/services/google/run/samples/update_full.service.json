@@ -1,0 +1,60 @@
+{
+  "name": "{{name}}",
+  "description": "This is a sample DCL test service.",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "launchStage": "GA",
+  "labels": { "label-key": "label-value-updated" },
+  "client": "client-updated",
+  "clientVersion": "client-version-updated",
+  "template": {
+    "labels": { "label-key": "label-value-updated" },
+    "timeout": "500s",
+    "revision": "",
+    "serviceAccount": "deploy-e2e-test-invoker@run-v2-deploy-e2e.iam.gserviceaccount.com",
+    "containerConcurrency": 2,
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN1",
+    "scaling": {
+      "maxInstanceCount": 2,
+      "minInstanceCount": 1
+    },
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "env": [
+          {
+            "name": "FOO",
+            "value": "yew"
+          },
+          {
+            "name": "baR",
+            "value": "oops"
+          }
+        ],
+        "ports": [
+          {
+            "name": "h2c",
+            "containerPort": 8080
+          }
+        ],
+        "resources": {
+          "cpuIdle": true,
+          "limits": {
+            "cpu": "4",
+            "memory": "2Gi"
+          }
+        },
+        "name": "container-updated"
+      }
+    ]
+  },
+  "traffic": [
+    {
+      "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+      "percent": 100,
+      "revision": "",
+      "tag": "traffic-tag-1"
+    }
+  ]
+}

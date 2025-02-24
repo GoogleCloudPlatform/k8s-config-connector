@@ -1,0 +1,9 @@
+{
+  "parent": "organizations/{{org_id}}",
+  "shortName": "{{tag_key}}",
+  "description": "This TagKey is new.",
+  "purpose": "GCE_FIREWALL",
+  "purposeData": {
+    "network": "{{ref:basic.compute.network.json:selfLinkWithId}}"
+  }
+}

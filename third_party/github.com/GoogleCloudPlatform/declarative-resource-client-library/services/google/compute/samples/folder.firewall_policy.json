@@ -1,0 +1,5 @@
+{
+  "shortName": "{{policy}}-create",
+  "parent": "folders/{{ref:basic.cloudresourcemanager.folder.json:name}}",
+  "description": "Sample firewall policy requiring {{ref:folder_compute.iam.member.json:role}} and {{ref:folder_firewall.iam.member.json:role}}."
+}

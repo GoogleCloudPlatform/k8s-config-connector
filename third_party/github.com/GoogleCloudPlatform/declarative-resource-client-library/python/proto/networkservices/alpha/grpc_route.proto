@@ -1,0 +1,133 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum NetworkservicesAlphaGrpcRouteRulesMatchesMethodTypeEnum {
+  NetworkservicesAlphaGrpcRouteRulesMatchesMethodTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesAlphaGrpcRouteRulesMatchesMethodTypeEnumTYPE_UNSPECIFIED = 1;
+  NetworkservicesAlphaGrpcRouteRulesMatchesMethodTypeEnumEXACT = 2;
+  NetworkservicesAlphaGrpcRouteRulesMatchesMethodTypeEnumREGULAR_EXPRESSION = 3;
+}
+
+enum NetworkservicesAlphaGrpcRouteRulesMatchesHeadersTypeEnum {
+  NetworkservicesAlphaGrpcRouteRulesMatchesHeadersTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesAlphaGrpcRouteRulesMatchesHeadersTypeEnumMATCH_TYPE_UNSPECIFIED = 1;
+  NetworkservicesAlphaGrpcRouteRulesMatchesHeadersTypeEnumMATCH_ANY = 2;
+  NetworkservicesAlphaGrpcRouteRulesMatchesHeadersTypeEnumMATCH_ALL = 3;
+}
+
+message NetworkservicesAlphaGrpcRoute {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  map<string, string> labels = 4;
+  string description = 5;
+  repeated string hostnames = 6;
+  repeated string meshes = 7;
+  repeated string gateways = 8;
+  repeated NetworkservicesAlphaGrpcRouteRules rules = 9;
+  string project = 10;
+  string location = 11;
+  string self_link = 12;
+}
+
+message NetworkservicesAlphaGrpcRouteRules {
+  repeated NetworkservicesAlphaGrpcRouteRulesMatches matches = 1;
+  NetworkservicesAlphaGrpcRouteRulesAction action = 2;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesMatches {
+  NetworkservicesAlphaGrpcRouteRulesMatchesMethod method = 1;
+  repeated NetworkservicesAlphaGrpcRouteRulesMatchesHeaders headers = 2;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesMatchesMethod {
+  NetworkservicesAlphaGrpcRouteRulesMatchesMethodTypeEnum type = 1;
+  string grpc_service = 2;
+  string grpc_method = 3;
+  bool case_sensitive = 4;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesMatchesHeaders {
+  NetworkservicesAlphaGrpcRouteRulesMatchesHeadersTypeEnum type = 1;
+  string key = 2;
+  string value = 3;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesAction {
+  repeated NetworkservicesAlphaGrpcRouteRulesActionDestinations destinations = 1;
+  NetworkservicesAlphaGrpcRouteRulesActionFaultInjectionPolicy fault_injection_policy = 2;
+  string timeout = 3;
+  NetworkservicesAlphaGrpcRouteRulesActionRetryPolicy retry_policy = 4;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesActionDestinations {
+  int64 weight = 1;
+  string service_name = 2;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesActionFaultInjectionPolicy {
+  NetworkservicesAlphaGrpcRouteRulesActionFaultInjectionPolicyDelay delay = 1;
+  NetworkservicesAlphaGrpcRouteRulesActionFaultInjectionPolicyAbort abort = 2;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesActionFaultInjectionPolicyDelay {
+  string fixed_delay = 1;
+  int64 percentage = 2;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesActionFaultInjectionPolicyAbort {
+  int64 http_status = 1;
+  int64 percentage = 2;
+}
+
+message NetworkservicesAlphaGrpcRouteRulesActionRetryPolicy {
+  repeated string retry_conditions = 1;
+  int64 num_retries = 2;
+}
+
+message ApplyNetworkservicesAlphaGrpcRouteRequest {
+  NetworkservicesAlphaGrpcRoute resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworkservicesAlphaGrpcRouteRequest {
+  string service_account_file = 1;
+  NetworkservicesAlphaGrpcRoute resource = 2;
+}
+
+message ListNetworkservicesAlphaGrpcRouteRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListNetworkservicesAlphaGrpcRouteResponse {
+  repeated NetworkservicesAlphaGrpcRoute items = 1;
+}
+
+service NetworkservicesAlphaGrpcRouteService {
+  rpc ApplyNetworkservicesAlphaGrpcRoute(ApplyNetworkservicesAlphaGrpcRouteRequest) returns (NetworkservicesAlphaGrpcRoute);
+  rpc DeleteNetworkservicesAlphaGrpcRoute(DeleteNetworkservicesAlphaGrpcRouteRequest) returns (google.protobuf.Empty);
+  rpc ListNetworkservicesAlphaGrpcRoute(ListNetworkservicesAlphaGrpcRouteRequest) returns (ListNetworkservicesAlphaGrpcRouteResponse);
+}

@@ -1,0 +1,26 @@
+{
+  "name": "{{compute_subnetwork}}",
+  "project": "{{project}}",
+  "description": "A sample compute subnetwork",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "ipCidrRange": "10.2.0.0/15",
+  "region": "{{region}}",
+  "secondaryIPRanges": [
+    {
+      "rangeName": "range",
+      "ipCidrRange": "192.168.10.0/24"
+    },
+    {
+      "rangeName": "new-range",
+      "ipCidrRange": "192.168.12.0/24"
+    }
+  ],
+  "enableFlowLogs": true,
+  "purpose": "PRIVATE",
+  "logConfig": {
+    "aggregationInterval": "INTERVAL_30_SEC",
+    "flowSampling": 0.6,
+    "metadata": "INCLUDE_ALL_METADATA"
+  },
+  "privateIPGoogleAccess": false
+}

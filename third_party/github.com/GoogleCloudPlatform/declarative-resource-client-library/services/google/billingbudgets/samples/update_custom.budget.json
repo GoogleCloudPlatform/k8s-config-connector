@@ -1,0 +1,27 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "billingAccount": "0186CC-FE4258-F9F63E",
+  "budgetFilter": {
+    "creditTypes": ["FREE_TIER"],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "customPeriod": {
+      "startDate": {
+        "year": 2141,
+        "month": 2,
+        "day": 2
+      },
+      "endDate": {
+        "year": 2313,
+        "month": 4,
+        "day": 15
+      }
+    }
+  },
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": 9000000,
+      "nanos": 0
+    }
+  }
+}

@@ -1,0 +1,116 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsStateEnum {
+  ComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsStateEnumEFFECTIVE = 1;
+  ComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsStateEnumINEFFECTIVE = 2;
+}
+
+enum ComputeNetworkFirewallPolicyRuleDirectionEnum {
+  ComputeNetworkFirewallPolicyRuleDirectionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeNetworkFirewallPolicyRuleDirectionEnumINGRESS = 1;
+  ComputeNetworkFirewallPolicyRuleDirectionEnumEGRESS = 2;
+}
+
+enum ComputeNetworkFirewallPolicyRuleTargetSecureTagsStateEnum {
+  ComputeNetworkFirewallPolicyRuleTargetSecureTagsStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeNetworkFirewallPolicyRuleTargetSecureTagsStateEnumEFFECTIVE = 1;
+  ComputeNetworkFirewallPolicyRuleTargetSecureTagsStateEnumINEFFECTIVE = 2;
+}
+
+message ComputeNetworkFirewallPolicyRule {
+  string description = 1;
+  string rule_name = 2;
+  int64 priority = 3;
+  string location = 4;
+  ComputeNetworkFirewallPolicyRuleMatch match = 5;
+  string action = 6;
+  ComputeNetworkFirewallPolicyRuleDirectionEnum direction = 7;
+  bool enable_logging = 8;
+  int64 rule_tuple_count = 9;
+  repeated string target_service_accounts = 10;
+  repeated ComputeNetworkFirewallPolicyRuleTargetSecureTags target_secure_tags = 11;
+  bool disabled = 12;
+  string kind = 13;
+  string firewall_policy = 14;
+  string project = 15;
+}
+
+message ComputeNetworkFirewallPolicyRuleMatch {
+  repeated string src_ip_ranges = 1;
+  repeated string dest_ip_ranges = 2;
+  repeated ComputeNetworkFirewallPolicyRuleMatchLayer4Configs layer4_configs = 3;
+  repeated ComputeNetworkFirewallPolicyRuleMatchSrcSecureTags src_secure_tags = 4;
+  repeated string src_region_codes = 5;
+  repeated string dest_region_codes = 6;
+  repeated string src_threat_intelligences = 7;
+  repeated string dest_threat_intelligences = 8;
+  repeated string src_fqdns = 9;
+  repeated string dest_fqdns = 10;
+  repeated string src_address_groups = 11;
+  repeated string dest_address_groups = 12;
+}
+
+message ComputeNetworkFirewallPolicyRuleMatchLayer4Configs {
+  string ip_protocol = 1;
+  repeated string ports = 2;
+}
+
+message ComputeNetworkFirewallPolicyRuleMatchSrcSecureTags {
+  string name = 1;
+  ComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsStateEnum state = 2;
+}
+
+message ComputeNetworkFirewallPolicyRuleTargetSecureTags {
+  string name = 1;
+  ComputeNetworkFirewallPolicyRuleTargetSecureTagsStateEnum state = 2;
+}
+
+message ApplyComputeNetworkFirewallPolicyRuleRequest {
+  ComputeNetworkFirewallPolicyRule resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeNetworkFirewallPolicyRuleRequest {
+  string service_account_file = 1;
+  ComputeNetworkFirewallPolicyRule resource = 2;
+}
+
+message ListComputeNetworkFirewallPolicyRuleRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string FirewallPolicy = 4;
+}
+
+message ListComputeNetworkFirewallPolicyRuleResponse {
+  repeated ComputeNetworkFirewallPolicyRule items = 1;
+}
+
+service ComputeNetworkFirewallPolicyRuleService {
+  rpc ApplyComputeNetworkFirewallPolicyRule(ApplyComputeNetworkFirewallPolicyRuleRequest) returns (ComputeNetworkFirewallPolicyRule);
+  rpc DeleteComputeNetworkFirewallPolicyRule(DeleteComputeNetworkFirewallPolicyRuleRequest) returns (google.protobuf.Empty);
+  rpc ListComputeNetworkFirewallPolicyRule(ListComputeNetworkFirewallPolicyRuleRequest) returns (ListComputeNetworkFirewallPolicyRuleResponse);
+}

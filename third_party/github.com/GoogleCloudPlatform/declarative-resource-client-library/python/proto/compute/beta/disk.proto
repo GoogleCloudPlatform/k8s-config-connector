@@ -1,0 +1,146 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaDiskGuestOSFeatureTypeEnum {
+  ComputeBetaDiskGuestOSFeatureTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaDiskGuestOSFeatureTypeEnumFEATURE_TYPE_UNSPECIFIED = 1;
+  ComputeBetaDiskGuestOSFeatureTypeEnumVIRTIO_SCSI_MULTIQUEUE = 2;
+  ComputeBetaDiskGuestOSFeatureTypeEnumWINDOWS = 3;
+  ComputeBetaDiskGuestOSFeatureTypeEnumMULTI_IP_SUBNET = 4;
+  ComputeBetaDiskGuestOSFeatureTypeEnumUEFI_COMPATIBLE = 5;
+  ComputeBetaDiskGuestOSFeatureTypeEnumSECURE_BOOT = 6;
+}
+
+enum ComputeBetaDiskGuestOSFeatureTypeAltEnum {
+  ComputeBetaDiskGuestOSFeatureTypeAltEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaDiskGuestOSFeatureTypeAltEnumFEATURE_TYPE_UNSPECIFIED = 1;
+  ComputeBetaDiskGuestOSFeatureTypeAltEnumVIRTIO_SCSI_MULTIQUEUE = 2;
+  ComputeBetaDiskGuestOSFeatureTypeAltEnumWINDOWS = 3;
+  ComputeBetaDiskGuestOSFeatureTypeAltEnumMULTI_IP_SUBNET = 4;
+  ComputeBetaDiskGuestOSFeatureTypeAltEnumUEFI_COMPATIBLE = 5;
+  ComputeBetaDiskGuestOSFeatureTypeAltEnumSECURE_BOOT = 6;
+}
+
+enum ComputeBetaDiskStatusEnum {
+  ComputeBetaDiskStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaDiskStatusEnumPENDING = 1;
+  ComputeBetaDiskStatusEnumRUNNING = 2;
+  ComputeBetaDiskStatusEnumDONE = 3;
+}
+
+enum ComputeBetaDiskGuestOSFeaturesTypeEnum {
+  ComputeBetaDiskGuestOSFeaturesTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaDiskGuestOSFeaturesTypeEnumPATH = 1;
+  ComputeBetaDiskGuestOSFeaturesTypeEnumOTHER = 2;
+  ComputeBetaDiskGuestOSFeaturesTypeEnumPARAMETER = 3;
+}
+
+enum ComputeBetaDiskGuestOSFeaturesTypeAltsEnum {
+  ComputeBetaDiskGuestOSFeaturesTypeAltsEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaDiskGuestOSFeaturesTypeAltsEnumFEATURE_TYPE_UNSPECIFIED = 1;
+  ComputeBetaDiskGuestOSFeaturesTypeAltsEnumVIRTIO_SCSI_MULTIQUEUE = 2;
+  ComputeBetaDiskGuestOSFeaturesTypeAltsEnumWINDOWS = 3;
+  ComputeBetaDiskGuestOSFeaturesTypeAltsEnumMULTI_IP_SUBNET = 4;
+  ComputeBetaDiskGuestOSFeaturesTypeAltsEnumUEFI_COMPATIBLE = 5;
+  ComputeBetaDiskGuestOSFeaturesTypeAltsEnumSECURE_BOOT = 6;
+  ComputeBetaDiskGuestOSFeaturesTypeAltsEnumSEV_CAPABLE = 7;
+}
+
+message ComputeBetaDisk {
+  string self_link = 1;
+  string description = 2;
+  ComputeBetaDiskEncryptionKey disk_encryption_key = 3;
+  repeated ComputeBetaDiskGuestOSFeature guest_os_feature = 4;
+  map<string, string> labels = 5;
+  string label_fingerprint = 6;
+  repeated string license = 7;
+  string name = 8;
+  string region = 9;
+  repeated string replica_zones = 10;
+  repeated string resource_policy = 11;
+  int64 size_gb = 12;
+  string source_image = 13;
+  ComputeBetaDiskEncryptionKey source_image_encryption_key = 14;
+  string source_image_id = 15;
+  string source_snapshot = 16;
+  ComputeBetaDiskEncryptionKey source_snapshot_encryption_key = 17;
+  string source_snapshot_id = 18;
+  string type = 19;
+  string zone = 20;
+  string project = 21;
+  int64 id = 22;
+  ComputeBetaDiskStatusEnum status = 23;
+  string options = 24;
+  repeated string licenses = 25;
+  repeated ComputeBetaDiskGuestOSFeatures guest_os_features = 26;
+  string last_attach_timestamp = 27;
+  string last_detach_timestamp = 28;
+  repeated string users = 29;
+  repeated int64 license_codes = 30;
+  int64 physical_block_size_bytes = 31;
+  repeated string resource_policies = 32;
+  string source_disk = 33;
+  string source_disk_id = 34;
+  string location = 35;
+}
+
+message ComputeBetaDiskGuestOSFeature {
+  ComputeBetaDiskGuestOSFeatureTypeEnum type = 1;
+  repeated ComputeBetaDiskGuestOSFeatureTypeAltEnum type_alt = 2;
+}
+
+message ComputeBetaDiskEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeBetaDiskGuestOSFeatures {
+  ComputeBetaDiskGuestOSFeaturesTypeEnum type = 1;
+  repeated ComputeBetaDiskGuestOSFeaturesTypeAltsEnum type_alts = 2;
+}
+
+message ApplyComputeBetaDiskRequest {
+  ComputeBetaDisk resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaDiskRequest {
+  string service_account_file = 1;
+  ComputeBetaDisk resource = 2;
+}
+
+message ListComputeBetaDiskRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeBetaDiskResponse {
+  repeated ComputeBetaDisk items = 1;
+}
+
+service ComputeBetaDiskService {
+  rpc ApplyComputeBetaDisk(ApplyComputeBetaDiskRequest) returns (ComputeBetaDisk);
+  rpc DeleteComputeBetaDisk(DeleteComputeBetaDiskRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaDisk(ListComputeBetaDiskRequest) returns (ListComputeBetaDiskResponse);
+}

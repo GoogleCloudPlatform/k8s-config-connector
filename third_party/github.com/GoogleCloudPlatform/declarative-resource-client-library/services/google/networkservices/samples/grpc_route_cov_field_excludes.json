@@ -1,0 +1,5 @@
+{
+  "exclude_create_coverage": ["name", "routers"],
+  "exclude_update_coverage": ["name", "routers"],
+  "allow_in_minimal_sample": ["rules.action.destinations"]
+}

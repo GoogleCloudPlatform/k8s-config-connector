@@ -1,0 +1,104 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ConfigcontrollerAlphaInstanceStateEnum {
+  ConfigcontrollerAlphaInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ConfigcontrollerAlphaInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  ConfigcontrollerAlphaInstanceStateEnumCREATING = 2;
+  ConfigcontrollerAlphaInstanceStateEnumRUNNING = 3;
+  ConfigcontrollerAlphaInstanceStateEnumDELETING = 4;
+  ConfigcontrollerAlphaInstanceStateEnumSUSPENDED = 5;
+  ConfigcontrollerAlphaInstanceStateEnumREAD_ONLY = 6;
+}
+
+message ConfigcontrollerAlphaInstance {
+  string name = 1;
+  map<string, string> labels = 2;
+  ConfigcontrollerAlphaInstanceBundlesConfig bundles_config = 3;
+  bool use_private_endpoint = 4;
+  string gke_resource_link = 5;
+  ConfigcontrollerAlphaInstanceStateEnum state = 6;
+  ConfigcontrollerAlphaInstanceManagementConfig management_config = 7;
+  string project = 8;
+  string location = 9;
+}
+
+message ConfigcontrollerAlphaInstanceBundlesConfig {
+  ConfigcontrollerAlphaInstanceBundlesConfigConfigControllerConfig config_controller_config = 1;
+}
+
+message ConfigcontrollerAlphaInstanceBundlesConfigConfigControllerConfig {
+  bool enabled = 1;
+}
+
+message ConfigcontrollerAlphaInstanceManagementConfig {
+  ConfigcontrollerAlphaInstanceManagementConfigStandardManagementConfig standard_management_config = 1;
+  ConfigcontrollerAlphaInstanceManagementConfigFullManagementConfig full_management_config = 2;
+}
+
+message ConfigcontrollerAlphaInstanceManagementConfigStandardManagementConfig {
+  string network = 1;
+  string master_ipv4_cidr_block = 2;
+  string man_block = 3;
+  string cluster_cidr_block = 4;
+  string services_cidr_block = 5;
+  string cluster_named_range = 6;
+  string services_named_range = 7;
+}
+
+message ConfigcontrollerAlphaInstanceManagementConfigFullManagementConfig {
+  string network = 1;
+  string master_ipv4_cidr_block = 2;
+  string man_block = 3;
+  string cluster_cidr_block = 4;
+  string services_cidr_block = 5;
+  string cluster_named_range = 6;
+  string services_named_range = 7;
+}
+
+message ApplyConfigcontrollerAlphaInstanceRequest {
+  ConfigcontrollerAlphaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteConfigcontrollerAlphaInstanceRequest {
+  string service_account_file = 1;
+  ConfigcontrollerAlphaInstance resource = 2;
+}
+
+message ListConfigcontrollerAlphaInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListConfigcontrollerAlphaInstanceResponse {
+  repeated ConfigcontrollerAlphaInstance items = 1;
+}
+
+service ConfigcontrollerAlphaInstanceService {
+  rpc ApplyConfigcontrollerAlphaInstance(ApplyConfigcontrollerAlphaInstanceRequest) returns (ConfigcontrollerAlphaInstance);
+  rpc DeleteConfigcontrollerAlphaInstance(DeleteConfigcontrollerAlphaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListConfigcontrollerAlphaInstance(ListConfigcontrollerAlphaInstanceRequest) returns (ListConfigcontrollerAlphaInstanceResponse);
+}

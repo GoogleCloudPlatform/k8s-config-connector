@@ -1,0 +1,8 @@
+{
+  "name": "{{compute_network1}}",
+  "project": "{{project}}",
+  "autoCreateSubnetworks": false,
+  "routingConfig": {
+    "routingMode": "GLOBAL"
+  }
+}

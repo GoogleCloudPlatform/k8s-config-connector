@@ -1,0 +1,19 @@
+{
+  "name": "{{cloud}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "networkConfig": {
+    "vmwareEngineNetwork": "{{ref:basic.vmware_engine_network.json:name}}",
+    "managementCidr": "192.168.30.0/24"
+  },
+  "managementCluster": {
+    "clusterId": "{{management}}",
+    "nodeTypeConfigs": {
+      "standard-72": {
+        "nodeCount": 3,
+        "customCoreCount": 32
+      }
+    }
+  },
+  "description": "A sample private cloud"
+}

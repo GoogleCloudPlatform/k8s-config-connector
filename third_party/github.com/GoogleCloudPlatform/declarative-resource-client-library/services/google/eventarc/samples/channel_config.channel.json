@@ -1,0 +1,7 @@
+{
+  "name": "{{channel}}",
+  "project": "{{ref:cloudkms.serviceusage.service.json:project}}",
+  "location": "{{region}}",
+  "cryptoKeyName": "projects/{{ref:cloudkms.serviceusage.service.json:project}}/locations/{{region}}/keyRings/{{ref:new.cloudkms.key_ring.json:name}}/cryptoKeys/{{ref:new.cloudkms.crypto_key.json:name}}",
+  "provider": "projects/{{ref:cloudkms.serviceusage.service.json:project}}/locations/{{region}}/providers/datadog"
+ }

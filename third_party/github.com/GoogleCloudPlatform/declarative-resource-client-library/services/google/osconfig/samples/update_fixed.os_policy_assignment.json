@@ -1,0 +1,220 @@
+{
+  "name": "{{assignment}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "description": "An updated test os policy assignment",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "description": "An updated test os policy",
+      "mode": "ENFORCEMENT",
+      "resourceGroups": [
+        {
+          "inventoryFilters": [
+            {
+              "osShortName": "",
+              "osVersion": "9.*"
+            }
+          ],
+          "resources": [
+            {
+              "id": "apt",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "apt": {
+                  "name": "firefox"
+                }
+              }
+            },
+            {
+              "id": "new-deb1",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "deb": {
+                  "source": {
+                    "localPath": "$HOME/new-package.deb"
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-deb2",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "deb": {
+                  "pullDeps": false,
+                  "source": {
+                    "allowInsecure": false,
+                    "remote": {
+                      "uri": "ftp.us.debian.org/debian/new-package.deb",
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "yum": {
+                  "name": "vlc.x86_64"
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "zypper": {
+                  "name": "ModemManager"
+                }
+              }
+            },
+            {
+              "id": "new-rpm1",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "rpm": {
+                  "pullDeps": false,
+                  "source": {
+                    "localPath": "$HOME/new-package.rpm"
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-rpm2",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "rpm": {
+                  "source": {
+                    "allowInsecure": false,
+                    "remote": {
+                      "uri": "https://mirror.jaleco.com/centos/8.3.2011/BaseOS/x86_64/os/Packages/NetworkManager-adsl-1.26.0-12.el8_3.x86_64.rpm",
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-rpm3",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "rpm": {
+                  "source": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "object": "new-test-object",
+                      "generation": 2
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "id": "apt-to-deb",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "deb": {
+                  "source": {
+                    "localPath": "$HOME/new-package.deb"
+                  }
+                }
+              }
+            },
+            {
+              "id": "deb-local-path-to-gcs",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "deb": {
+                  "source": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "object": "new-test-object",
+                      "generation": 2
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-googet",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "googet": {
+                  "name": "julia"
+                }
+              }
+            },
+            {
+              "id": "new-msi1",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "msi": {
+                  "source": {
+                    "localPath": "$HOME/new-package.msi"
+                  },
+                  "properties": ["ACTION=INSTALL"]
+                }
+              }
+            },
+            {
+              "id": "new-msi2",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "msi": {
+                  "source": {
+                    "allowInsecure": false,
+                    "remote": {
+                      "uri": "https://remote.uri.com/new-package.msi",
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-msi3",
+              "pkg": {
+                "desiredState": "REMOVED",
+                "msi": {
+                  "source": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "object": "new-test-object",
+                      "generation": 2
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "allowNoResourceGroupMatch": true
+    }
+  ],
+  "instanceFilter": {
+    "all": false,
+    "inclusionLabels": [],
+    "exclusionLabels": [],
+    "inventories": [
+      {
+        "osShortName": "",
+        "osVersion": "9.*"
+      }
+    ]
+  },
+  "rollout": {
+    "disruptionBudget": {
+      "fixed": 2
+    },
+    "minWaitDuration": "7.5s"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "projects/{{project}}/locations/{{region}}/googleChannelConfig",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "cryptoKeyName": "projects/{{project}}/locations/{{region}}/keyRings/{{ref:minimal.cloudkms.key_ring.json:name}}/cryptoKeys/{{ref:second.cloudkms.crypto_key.json:name}}"
+}

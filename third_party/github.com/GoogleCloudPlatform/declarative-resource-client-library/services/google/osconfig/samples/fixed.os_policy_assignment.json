@@ -1,0 +1,242 @@
+{
+  "name": "{{assignment}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "description": "A test os policy assignment",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "description": "A test os policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "inventoryFilters": [
+            {
+              "osShortName": "centos",
+              "osVersion": "8.*"
+            }
+          ],
+          "resources": [
+            {
+              "id": "apt",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "apt": {
+                  "name": "bazel"
+                }
+              }
+            },
+            {
+              "id": "deb1",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "deb": {
+                  "source": {
+                    "localPath": "$HOME/package.deb"
+                  }
+                }
+              }
+            },
+            {
+              "id": "deb2",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "deb": {
+                  "pullDeps": true,
+                  "source": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "uri": "ftp.us.debian.org/debian/package.deb",
+                      "sha256Checksum": "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "deb3",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "deb": {
+                  "pullDeps": true,
+                  "source": {
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "object": "test-object",
+                      "generation": 1
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "yum": {
+                  "name": "gstreamer-plugins-base-devel.x86_64"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "zypper": {
+                  "name": "gcc"
+                }
+              }
+            },
+            {
+              "id": "rpm1",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "rpm": {
+                  "pullDeps": true,
+                  "source": {
+                    "localPath": "$HOME/package.rpm"
+                  }
+                }
+              }
+            },
+            {
+              "id": "rpm2",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "rpm": {
+                  "source": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "uri": "https://mirror.jaleco.com/centos/8.3.2011/BaseOS/x86_64/os/Packages/efi-filesystem-3-2.el8.noarch.rpm",
+                      "sha256Checksum": "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "rpm3",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "rpm": {
+                  "source": {
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "object": "test-object",
+                      "generation": 1
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "id": "apt-to-deb",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "apt": {
+                  "name": "bazel"
+                }
+              }
+            },
+            {
+              "id": "deb-local-path-to-gcs",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "deb": {
+                  "source": {
+                    "localPath": "$HOME/package.deb"
+                  }
+                }
+              }
+            },
+            {
+              "id": "googet",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "googet": {
+                  "name": "gcc"
+                }
+              }
+            },
+            {
+              "id": "msi1",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "msi": {
+                  "source": {
+                    "localPath": "$HOME/package.msi"
+                  },
+                  "properties": ["REBOOT=ReallySuppress"]
+                }
+              }
+            },
+            {
+              "id": "msi2",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "msi": {
+                  "source": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "uri": "https://remote.uri.com/package.msi",
+                      "sha256Checksum": "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "msi3",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "msi": {
+                  "source": {
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "object": "test-object",
+                      "generation": 1
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "allowNoResourceGroupMatch": false
+    }
+  ],
+  "instanceFilter": {
+    "all": false,
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "osShortName": "centos",
+        "osVersion": "8.*"
+      }
+    ]
+  },
+  "rollout": {
+    "disruptionBudget": {
+      "fixed": 1
+    },
+    "minWaitDuration": "3.5s"
+  }
+}

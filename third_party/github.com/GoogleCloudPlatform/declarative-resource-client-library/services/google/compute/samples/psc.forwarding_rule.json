@@ -1,0 +1,9 @@
+{
+  "name": "{{rule}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "target": "{{ref:psc.service_attachment.json:selfLink}}",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "ipAddress": "{{ref:subnetwork.address.json:selfLink}}",
+  "allowPscGlobalAccess": true
+}

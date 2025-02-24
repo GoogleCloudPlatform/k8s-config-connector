@@ -1,0 +1,7 @@
+{
+  "name": "{{reservation_name}}",
+  "project": "{{project}}",
+  "location": "US",
+  "slotCapacity": 1,
+  "ignoreIdleSlots": true
+}

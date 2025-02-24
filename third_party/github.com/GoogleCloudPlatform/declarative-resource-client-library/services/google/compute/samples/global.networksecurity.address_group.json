@@ -1,0 +1,8 @@
+{
+  "name": "{{policy}}-addr-groups-global",
+  "parent": "projects/{{project}}",
+  "location": "global",
+  "type": "IPV4",
+  "capacity": 100,
+  "description": "Basic address group sample created for compute."
+}

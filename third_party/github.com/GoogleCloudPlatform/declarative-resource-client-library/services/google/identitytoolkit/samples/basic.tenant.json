@@ -1,0 +1,12 @@
+{
+  "project": "{{project}}",
+  "displayName": "myTenant1",
+  "mfaConfig": {
+    "state": "ENABLED",
+    "enabledProviders": ["PHONE_SMS"]
+  },
+  "testPhoneNumbers": {
+    "+16505551234": "145678",
+    "+16505550000": "123456"
+  }
+}

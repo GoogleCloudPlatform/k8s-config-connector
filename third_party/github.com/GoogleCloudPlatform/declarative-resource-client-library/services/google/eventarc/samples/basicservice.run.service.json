@@ -1,0 +1,18 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "template": {
+    "containers": [ {
+      "image": "gcr.io/cloudrun/hello",
+      "env": [ {
+        "name": "FOO",
+        "value": "bar]"
+      } ]
+    } ]
+  },
+  "traffic": [ {
+    "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+    "percent": 100
+  } ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "{{rule}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "target": "{{ref:first.target_pool.json:selfLink}}",
+  "networkTier": "STANDARD",
+  "description": "A test forwarding rule",
+  "IPProtocol": "UDP",
+  "portRange": "80-81",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "servicens",
+      "service": "aservice"
+    }
+  ]
+}

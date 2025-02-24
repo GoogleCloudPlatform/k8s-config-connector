@@ -1,0 +1,23 @@
+{
+  "project": "{{ref:dataproc.serviceusage.service.json:project}}",
+  "region": "{{region}}",
+  "labels": {
+    "key": "value"
+  },
+  "placement": {
+    "clusterName": "{{ref:basic.cluster.json:name}}"
+  },
+  "sparkJob": {
+    "mainClass": "org.apache.spark.examples.SparkPi",
+    "jarFileUris": ["file:///usr/lib/spark/examples/jars/spark-examples.jar"],
+    "args": ["1000"],
+    "properties": {
+      "spark.logConf": "true"
+    },
+    "loggingConfig": {
+      "driverLogLevels": {
+        "root": "INFO"
+      }
+    }
+  }
+}

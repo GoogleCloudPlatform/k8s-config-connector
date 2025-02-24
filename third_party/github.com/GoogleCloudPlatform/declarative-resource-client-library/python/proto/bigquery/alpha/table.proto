@@ -1,0 +1,318 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum BigqueryAlphaTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnum {
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnumTEMPORAL_TYPES_VALUE_UNSPECIFIED = 1;
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnumTEMPORAL_TYPES_VALUE_REJECT = 2;
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnumTEMPORAL_TYPES_VALUE_CLAMP = 3;
+}
+
+enum BigqueryAlphaTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnum {
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnumNUMERIC_TYPE_VALUE_UNSPECIFIED = 1;
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnumNUMERIC_TYPE_VALUE_REJECT = 2;
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnumNUMERIC_TYPE_VALUE_ROUND = 3;
+}
+
+enum BigqueryAlphaTableExternalDataConfigurationDecimalTargetTypesEnum {
+  BigqueryAlphaTableExternalDataConfigurationDecimalTargetTypesEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaTableExternalDataConfigurationDecimalTargetTypesEnumDECIMAL_TARGET_TYPE_UNSPECIFIED = 1;
+  BigqueryAlphaTableExternalDataConfigurationDecimalTargetTypesEnumNUMERIC = 2;
+  BigqueryAlphaTableExternalDataConfigurationDecimalTargetTypesEnumBIGNUMERIC = 3;
+  BigqueryAlphaTableExternalDataConfigurationDecimalTargetTypesEnumSTRING = 4;
+}
+
+enum BigqueryAlphaTableExternalDataConfigurationJsonExtensionEnum {
+  BigqueryAlphaTableExternalDataConfigurationJsonExtensionEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaTableExternalDataConfigurationJsonExtensionEnumJSON_EXTENSION_UNSPECIFIED = 1;
+  BigqueryAlphaTableExternalDataConfigurationJsonExtensionEnumGEOJSON = 2;
+}
+
+message BigqueryAlphaTable {
+  string etag = 1;
+  string id = 2;
+  string self_link = 3;
+  string name = 4;
+  string dataset = 5;
+  string project = 6;
+  string friendly_name = 7;
+  string description = 8;
+  map<string, string> labels = 9;
+  BigqueryAlphaTableModel model = 10;
+  BigqueryAlphaTableSchema schema = 11;
+  BigqueryAlphaTableTimePartitioning time_partitioning = 12;
+  BigqueryAlphaTableRangePartitioning range_partitioning = 13;
+  BigqueryAlphaTableClustering clustering = 14;
+  bool require_partition_filter = 15;
+  string num_bytes = 16;
+  string num_physical_bytes = 17;
+  string num_long_term_bytes = 18;
+  int64 num_rows = 19;
+  int64 creation_time = 20;
+  int64 expiration_time = 21;
+  int64 last_modified_time = 22;
+  string type = 23;
+  BigqueryAlphaTableView view = 24;
+  BigqueryAlphaTableMaterializedView materialized_view = 25;
+  BigqueryAlphaTableExternalDataConfiguration external_data_configuration = 26;
+  string location = 27;
+  BigqueryAlphaTableStreamingBuffer streaming_buffer = 28;
+  BigqueryAlphaTableEncryptionConfiguration encryption_configuration = 29;
+  BigqueryAlphaTableSnapshotDefinition snapshot_definition = 30;
+  string default_collation = 31;
+}
+
+message BigqueryAlphaTableModel {
+  BigqueryAlphaTableModelModelOptions model_options = 1;
+  repeated BigqueryAlphaTableModelTrainingRuns training_runs = 2;
+}
+
+message BigqueryAlphaTableModelModelOptions {
+  string model_type = 1;
+  repeated string labels = 2;
+  string loss_type = 3;
+}
+
+message BigqueryAlphaTableModelTrainingRuns {
+  string state = 1;
+  string start_time = 2;
+  BigqueryAlphaTableModelTrainingRunsTrainingOptions training_options = 3;
+  repeated BigqueryAlphaTableModelTrainingRunsIterationResults iteration_results = 4;
+}
+
+message BigqueryAlphaTableModelTrainingRunsTrainingOptions {
+  int64 max_iteration = 1;
+  double learn_rate = 2;
+  double l1_reg = 3;
+  double l2_reg = 4;
+  double min_rel_progress = 5;
+  bool warm_start = 6;
+  bool early_stop = 7;
+  string learn_rate_strategy = 8;
+  double line_search_init_learn_rate = 9;
+}
+
+message BigqueryAlphaTableModelTrainingRunsIterationResults {
+  int64 index = 1;
+  double learn_rate = 2;
+  double training_loss = 3;
+  double eval_loss = 4;
+  string duration_ms = 5;
+}
+
+message BigqueryAlphaTableSchema {
+  repeated BigqueryAlphaTableGooglecloudbigqueryv2Tablefieldschema fields = 1;
+}
+
+message BigqueryAlphaTableGooglecloudbigqueryv2Tablefieldschema {
+  string name = 1;
+  string type = 2;
+  string mode = 3;
+  repeated BigqueryAlphaTableGooglecloudbigqueryv2Tablefieldschema fields = 4;
+  string description = 5;
+  BigqueryAlphaTableGooglecloudbigqueryv2TablefieldschemaCategories categories = 6;
+  BigqueryAlphaTableGooglecloudbigqueryv2TablefieldschemaPolicyTags policy_tags = 7;
+  repeated string name_alternative = 8;
+  int64 max_length = 9;
+  int64 precision = 10;
+  int64 scale = 11;
+  string collation = 12;
+  string default_value_expression = 13;
+}
+
+message BigqueryAlphaTableGooglecloudbigqueryv2TablefieldschemaCategories {
+  repeated string names = 1;
+}
+
+message BigqueryAlphaTableGooglecloudbigqueryv2TablefieldschemaPolicyTags {
+  repeated string names = 1;
+}
+
+message BigqueryAlphaTableTimePartitioning {
+  string type = 1;
+  string expiration_ms = 2;
+  string field = 3;
+}
+
+message BigqueryAlphaTableRangePartitioning {
+  string field = 1;
+  BigqueryAlphaTableRangePartitioningRange range = 2;
+}
+
+message BigqueryAlphaTableRangePartitioningRange {
+  string start = 1;
+  string end = 2;
+  string interval = 3;
+}
+
+message BigqueryAlphaTableClustering {
+  repeated string fields = 1;
+}
+
+message BigqueryAlphaTableView {
+  string query = 1;
+  repeated BigqueryAlphaTableViewUserDefinedFunctionResources user_defined_function_resources = 2;
+  bool use_legacy_sql = 3;
+  bool use_explicit_column_names = 4;
+}
+
+message BigqueryAlphaTableViewUserDefinedFunctionResources {
+  string resource_uri = 1;
+  string inline_code = 2;
+  repeated string inline_code_alternative = 3;
+}
+
+message BigqueryAlphaTableMaterializedView {
+  string query = 1;
+  int64 last_refresh_time = 2;
+  bool enable_refresh = 3;
+  int64 refresh_interval_ms = 4;
+}
+
+message BigqueryAlphaTableExternalDataConfiguration {
+  repeated string source_uris = 1;
+  BigqueryAlphaTableExternalDataConfigurationSchema schema = 2;
+  string source_format = 3;
+  int64 max_bad_records = 4;
+  bool autodetect = 5;
+  bool ignore_unknown_values = 6;
+  string compression = 7;
+  BigqueryAlphaTableExternalDataConfigurationCsvOptions csv_options = 8;
+  BigqueryAlphaTableExternalDataConfigurationBigtableOptions bigtable_options = 9;
+  BigqueryAlphaTableExternalDataConfigurationGoogleSheetsOptions google_sheets_options = 10;
+  repeated int64 max_bad_records_alternative = 11;
+  BigqueryAlphaTableExternalDataConfigurationHivePartitioningOptions hive_partitioning_options = 12;
+  string connection_id = 13;
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModes value_conversion_modes = 14;
+  repeated BigqueryAlphaTableExternalDataConfigurationDecimalTargetTypesEnum decimal_target_types = 15;
+  BigqueryAlphaTableExternalDataConfigurationAvroOptions avro_options = 16;
+  BigqueryAlphaTableExternalDataConfigurationJsonExtensionEnum json_extension = 17;
+  BigqueryAlphaTableExternalDataConfigurationParquetOptions parquet_options = 18;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationSchema {
+  repeated BigqueryAlphaTableGooglecloudbigqueryv2Tablefieldschema fields = 1;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationCsvOptions {
+  string field_delimiter = 1;
+  string skip_leading_rows = 2;
+  string quote = 3;
+  bool allow_quoted_newlines = 4;
+  bool allow_jagged_rows = 5;
+  string encoding = 6;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationBigtableOptions {
+  repeated BigqueryAlphaTableExternalDataConfigurationBigtableOptionsColumnFamilies column_families = 1;
+  bool ignore_unspecified_column_families = 2;
+  bool read_rowkey_as_string = 3;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationBigtableOptionsColumnFamilies {
+  string family_id = 1;
+  string type = 2;
+  string encoding = 3;
+  repeated BigqueryAlphaTableExternalDataConfigurationBigtableOptionsColumnFamiliesColumns columns = 4;
+  bool only_read_latest = 5;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationBigtableOptionsColumnFamiliesColumns {
+  string qualifier_encoded = 1;
+  string qualifier_string = 2;
+  string field_name = 3;
+  string type = 4;
+  string encoding = 5;
+  bool only_read_latest = 6;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationGoogleSheetsOptions {
+  string skip_leading_rows = 1;
+  string range = 2;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationHivePartitioningOptions {
+  string mode = 1;
+  string source_uri_prefix = 2;
+  bool require_partition_filter = 3;
+  repeated string fields = 4;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationValueConversionModes {
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnum temporal_types_out_of_range_conversion_mode = 1;
+  BigqueryAlphaTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnum numeric_type_out_of_range_conversion_mode = 2;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationAvroOptions {
+  bool use_avro_logical_types = 1;
+}
+
+message BigqueryAlphaTableExternalDataConfigurationParquetOptions {
+  bool enum_as_string = 1;
+  bool enable_list_inference = 2;
+}
+
+message BigqueryAlphaTableStreamingBuffer {
+  int64 estimated_bytes = 1;
+  int64 estimated_rows = 2;
+  int64 oldest_entry_time = 3;
+}
+
+message BigqueryAlphaTableEncryptionConfiguration {
+  string kms_key_name = 1;
+}
+
+message BigqueryAlphaTableSnapshotDefinition {
+  string table = 1;
+  string dataset = 2;
+  string project = 3;
+  string snapshot_time = 4;
+}
+
+message ApplyBigqueryAlphaTableRequest {
+  BigqueryAlphaTable resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBigqueryAlphaTableRequest {
+  string service_account_file = 1;
+  BigqueryAlphaTable resource = 2;
+}
+
+message ListBigqueryAlphaTableRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Dataset = 3;
+}
+
+message ListBigqueryAlphaTableResponse {
+  repeated BigqueryAlphaTable items = 1;
+}
+
+service BigqueryAlphaTableService {
+  rpc ApplyBigqueryAlphaTable(ApplyBigqueryAlphaTableRequest) returns (BigqueryAlphaTable);
+  rpc DeleteBigqueryAlphaTable(DeleteBigqueryAlphaTableRequest) returns (google.protobuf.Empty);
+  rpc ListBigqueryAlphaTable(ListBigqueryAlphaTableRequest) returns (ListBigqueryAlphaTableResponse);
+}

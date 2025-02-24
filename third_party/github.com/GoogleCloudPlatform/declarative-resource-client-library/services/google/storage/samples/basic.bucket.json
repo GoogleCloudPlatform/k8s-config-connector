@@ -1,0 +1,17 @@
+{
+  "name": "{{bucket}}",
+  "project": "{{project}}",
+  "location": "US",
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "withState": "LIVE"
+        }
+      }
+    ]
+  }
+}

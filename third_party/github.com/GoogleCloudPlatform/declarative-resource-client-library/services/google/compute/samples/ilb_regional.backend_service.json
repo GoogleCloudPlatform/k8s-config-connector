@@ -1,0 +1,8 @@
+{
+  "name": "{{service}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "loadBalancingScheme": "INTERNAL",
+  "healthChecks": ["{{ref:basic.health_check.json:selfLink}}"],
+  "protocol": "TCP"
+}

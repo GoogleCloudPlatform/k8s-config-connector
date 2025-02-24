@@ -1,0 +1,7 @@
+{
+  "name": "{{region}}-default",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "A GCVE Network",
+  "type": "LEGACY"
+}

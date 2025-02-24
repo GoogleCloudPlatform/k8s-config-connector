@@ -1,0 +1,23 @@
+{
+  "name": "{{package_note}}",
+  "project": "{{project}}",
+  "package": {
+    "name": "new-sample-package",
+    "distribution": [
+      {
+        "cpeUri": "cpe:/a:microsoft:internet_explorer:8.0.6002:beta",
+        "architecture": "X64",
+        "latestVersion": {
+          "epoch": 2,
+          "name": "test-version-2",
+          "revision": "aaaaaaab",
+          "kind": "NORMAL",
+          "fullName": "2:test-version-2-aaaaaaab"
+        },
+        "maintainer": "somebody-else@google.com",
+        "url": "https://somewhere-else.com",
+        "description": "Another sample distribution"
+      }
+    ]
+  }
+}

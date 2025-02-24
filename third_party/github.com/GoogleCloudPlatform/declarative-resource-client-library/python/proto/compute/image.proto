@@ -1,0 +1,212 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeImageGuestOSFeatureTypeEnum {
+  ComputeImageGuestOSFeatureTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageGuestOSFeatureTypeEnumFEATURE_TYPE_UNSPECIFIED = 1;
+  ComputeImageGuestOSFeatureTypeEnumVIRTIO_SCSI_MULTIQUEUE = 2;
+  ComputeImageGuestOSFeatureTypeEnumWINDOWS = 3;
+  ComputeImageGuestOSFeatureTypeEnumMULTI_IP_SUBNET = 4;
+  ComputeImageGuestOSFeatureTypeEnumUEFI_COMPATIBLE = 5;
+  ComputeImageGuestOSFeatureTypeEnumSECURE_BOOT = 6;
+  ComputeImageGuestOSFeatureTypeEnumSEV_CAPABLE = 7;
+}
+
+enum ComputeImageRawDiskContainerTypeEnum {
+  ComputeImageRawDiskContainerTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageRawDiskContainerTypeEnumTAR = 1;
+}
+
+enum ComputeImageShieldedInstanceInitialStatePkFileTypeEnum {
+  ComputeImageShieldedInstanceInitialStatePkFileTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageShieldedInstanceInitialStatePkFileTypeEnumUNDEFINED = 1;
+  ComputeImageShieldedInstanceInitialStatePkFileTypeEnumBIN = 2;
+  ComputeImageShieldedInstanceInitialStatePkFileTypeEnumX509 = 3;
+}
+
+enum ComputeImageShieldedInstanceInitialStateKekFileTypeEnum {
+  ComputeImageShieldedInstanceInitialStateKekFileTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageShieldedInstanceInitialStateKekFileTypeEnumUNDEFINED = 1;
+  ComputeImageShieldedInstanceInitialStateKekFileTypeEnumBIN = 2;
+  ComputeImageShieldedInstanceInitialStateKekFileTypeEnumX509 = 3;
+}
+
+enum ComputeImageShieldedInstanceInitialStateDbFileTypeEnum {
+  ComputeImageShieldedInstanceInitialStateDbFileTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageShieldedInstanceInitialStateDbFileTypeEnumUNDEFINED = 1;
+  ComputeImageShieldedInstanceInitialStateDbFileTypeEnumBIN = 2;
+  ComputeImageShieldedInstanceInitialStateDbFileTypeEnumX509 = 3;
+}
+
+enum ComputeImageShieldedInstanceInitialStateDbxFileTypeEnum {
+  ComputeImageShieldedInstanceInitialStateDbxFileTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageShieldedInstanceInitialStateDbxFileTypeEnumUNDEFINED = 1;
+  ComputeImageShieldedInstanceInitialStateDbxFileTypeEnumBIN = 2;
+  ComputeImageShieldedInstanceInitialStateDbxFileTypeEnumX509 = 3;
+}
+
+enum ComputeImageSourceTypeEnum {
+  ComputeImageSourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageSourceTypeEnumRAW = 1;
+}
+
+enum ComputeImageStatusEnum {
+  ComputeImageStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageStatusEnumPENDING = 1;
+  ComputeImageStatusEnumREADY = 2;
+  ComputeImageStatusEnumFAILED = 3;
+  ComputeImageStatusEnumDELETING = 4;
+}
+
+enum ComputeImageDeprecatedStateEnum {
+  ComputeImageDeprecatedStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeImageDeprecatedStateEnumDEPRECATED = 1;
+  ComputeImageDeprecatedStateEnumOBSOLETE = 2;
+  ComputeImageDeprecatedStateEnumDELETED = 3;
+  ComputeImageDeprecatedStateEnumACTIVE = 4;
+}
+
+message ComputeImage {
+  int64 archive_size_bytes = 1;
+  string description = 2;
+  int64 disk_size_gb = 3;
+  string family = 4;
+  repeated ComputeImageGuestOSFeature guest_os_feature = 5;
+  ComputeImageImageEncryptionKey image_encryption_key = 6;
+  map<string, string> labels = 7;
+  repeated string license = 8;
+  string name = 9;
+  ComputeImageRawDisk raw_disk = 10;
+  ComputeImageShieldedInstanceInitialState shielded_instance_initial_state = 11;
+  string self_link = 12;
+  string source_disk = 13;
+  ComputeImageSourceDiskEncryptionKey source_disk_encryption_key = 14;
+  string source_disk_id = 15;
+  string source_image = 16;
+  ComputeImageSourceImageEncryptionKey source_image_encryption_key = 17;
+  string source_image_id = 18;
+  string source_snapshot = 19;
+  ComputeImageSourceSnapshotEncryptionKey source_snapshot_encryption_key = 20;
+  string source_snapshot_id = 21;
+  ComputeImageSourceTypeEnum source_type = 22;
+  ComputeImageStatusEnum status = 23;
+  repeated string storage_location = 24;
+  ComputeImageDeprecated deprecated = 25;
+  string project = 26;
+}
+
+message ComputeImageGuestOSFeature {
+  ComputeImageGuestOSFeatureTypeEnum type = 1;
+}
+
+message ComputeImageImageEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeImageRawDisk {
+  string source = 1;
+  string sha1_checksum = 2;
+  ComputeImageRawDiskContainerTypeEnum container_type = 3;
+}
+
+message ComputeImageShieldedInstanceInitialState {
+  ComputeImageShieldedInstanceInitialStatePk pk = 1;
+  repeated ComputeImageShieldedInstanceInitialStateKek kek = 2;
+  repeated ComputeImageShieldedInstanceInitialStateDb db = 3;
+  repeated ComputeImageShieldedInstanceInitialStateDbx dbx = 4;
+}
+
+message ComputeImageShieldedInstanceInitialStatePk {
+  string content = 1;
+  ComputeImageShieldedInstanceInitialStatePkFileTypeEnum file_type = 2;
+}
+
+message ComputeImageShieldedInstanceInitialStateKek {
+  string content = 1;
+  ComputeImageShieldedInstanceInitialStateKekFileTypeEnum file_type = 2;
+}
+
+message ComputeImageShieldedInstanceInitialStateDb {
+  string content = 1;
+  ComputeImageShieldedInstanceInitialStateDbFileTypeEnum file_type = 2;
+}
+
+message ComputeImageShieldedInstanceInitialStateDbx {
+  string content = 1;
+  ComputeImageShieldedInstanceInitialStateDbxFileTypeEnum file_type = 2;
+}
+
+message ComputeImageSourceDiskEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeImageSourceImageEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeImageSourceSnapshotEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeImageDeprecated {
+  ComputeImageDeprecatedStateEnum state = 1;
+  string replacement = 2;
+  string deprecated = 3;
+  string obsolete = 4;
+  string deleted = 5;
+}
+
+message ApplyComputeImageRequest {
+  ComputeImage resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeImageRequest {
+  string service_account_file = 1;
+  ComputeImage resource = 2;
+}
+
+message ListComputeImageRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeImageResponse {
+  repeated ComputeImage items = 1;
+}
+
+service ComputeImageService {
+  rpc ApplyComputeImage(ApplyComputeImageRequest) returns (ComputeImage);
+  rpc DeleteComputeImage(DeleteComputeImageRequest) returns (google.protobuf.Empty);
+  rpc ListComputeImage(ListComputeImageRequest) returns (ListComputeImageResponse);
+}

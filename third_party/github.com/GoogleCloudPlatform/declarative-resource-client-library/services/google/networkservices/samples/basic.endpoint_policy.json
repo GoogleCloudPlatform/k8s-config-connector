@@ -1,0 +1,27 @@
+{
+  "name": "{{selector}}",
+  "location": "global",
+  "project": "{{project}}",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "type": "SIDECAR_PROXY",
+  "authorizationPolicy": "{{ref:first.networksecurity.authorization_policy.json:name}}",
+  "endpointMatcher": {
+    "metadataLabelMatcher": {
+      "metadataLabelMatchCriteria": "MATCH_ANY",
+      "metadataLabels": [
+        {
+          "labelName": "filter-test",
+          "labelValue": "true"
+        }
+      ]
+    }
+  },
+  "trafficPortSelector": {
+    "ports": ["6767"]
+  },
+  "description": "A sample endpoint policy",
+  "serverTlsPolicy": "{{ref:first.networksecurity.server_tls_policy.json:name}}",
+  "clientTlsPolicy": "{{ref:first.networksecurity.client_tls_policy.json:name}}"
+}

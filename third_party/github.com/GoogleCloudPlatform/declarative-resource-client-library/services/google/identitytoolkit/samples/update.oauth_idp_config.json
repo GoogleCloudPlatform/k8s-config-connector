@@ -1,0 +1,8 @@
+{
+  "name": "oidc.{{oauthidpconfig}}",
+  "project": "{{project}}",
+  "clientId": "{{client}}",
+  "issuer": "issuer",
+  "enabled": true,
+  "clientSecret": "updatedsecret"
+}

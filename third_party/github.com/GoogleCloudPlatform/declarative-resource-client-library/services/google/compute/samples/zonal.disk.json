@@ -1,0 +1,9 @@
+{
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "name": "{{disk}}",
+  "diskEncryptionKey": {
+    "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  },
+  "sizeGb": 60
+}

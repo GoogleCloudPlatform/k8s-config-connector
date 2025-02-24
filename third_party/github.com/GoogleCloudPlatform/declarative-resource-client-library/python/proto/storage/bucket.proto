@@ -1,0 +1,127 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum StorageBucketLifecycleRuleActionTypeEnum {
+  StorageBucketLifecycleRuleActionTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageBucketLifecycleRuleActionTypeEnumDelete = 1;
+  StorageBucketLifecycleRuleActionTypeEnumSetStorageClass = 2;
+}
+
+enum StorageBucketLifecycleRuleConditionWithStateEnum {
+  StorageBucketLifecycleRuleConditionWithStateEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageBucketLifecycleRuleConditionWithStateEnumLIVE = 1;
+  StorageBucketLifecycleRuleConditionWithStateEnumARCHIVED = 2;
+  StorageBucketLifecycleRuleConditionWithStateEnumANY = 3;
+}
+
+enum StorageBucketStorageClassEnum {
+  StorageBucketStorageClassEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageBucketStorageClassEnumMULTI_REGIONAL = 1;
+  StorageBucketStorageClassEnumREGIONAL = 2;
+  StorageBucketStorageClassEnumSTANDARD = 3;
+  StorageBucketStorageClassEnumNEARLINE = 4;
+  StorageBucketStorageClassEnumCOLDLINE = 5;
+  StorageBucketStorageClassEnumARCHIVE = 6;
+  StorageBucketStorageClassEnumDURABLE_REDUCED_AVAILABILITY = 7;
+}
+
+message StorageBucket {
+  string project = 1;
+  string location = 2;
+  string name = 3;
+  repeated StorageBucketCors cors = 4;
+  StorageBucketLifecycle lifecycle = 5;
+  StorageBucketLogging logging = 6;
+  StorageBucketStorageClassEnum storage_class = 7;
+  StorageBucketVersioning versioning = 8;
+  StorageBucketWebsite website = 9;
+}
+
+message StorageBucketCors {
+  int64 max_age_seconds = 1;
+  repeated string method = 2;
+  repeated string origin = 3;
+  repeated string response_header = 4;
+}
+
+message StorageBucketLifecycle {
+  repeated StorageBucketLifecycleRule rule = 1;
+}
+
+message StorageBucketLifecycleRule {
+  StorageBucketLifecycleRuleAction action = 1;
+  StorageBucketLifecycleRuleCondition condition = 2;
+}
+
+message StorageBucketLifecycleRuleAction {
+  string storage_class = 1;
+  StorageBucketLifecycleRuleActionTypeEnum type = 2;
+}
+
+message StorageBucketLifecycleRuleCondition {
+  int64 age = 1;
+  string created_before = 2;
+  StorageBucketLifecycleRuleConditionWithStateEnum with_state = 3;
+  repeated string matches_storage_class = 4;
+  int64 num_newer_versions = 5;
+}
+
+message StorageBucketLogging {
+  string log_bucket = 1;
+  string log_object_prefix = 2;
+}
+
+message StorageBucketVersioning {
+  bool enabled = 1;
+}
+
+message StorageBucketWebsite {
+  string main_page_suffix = 1;
+  string not_found_page = 2;
+}
+
+message ApplyStorageBucketRequest {
+  StorageBucket resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteStorageBucketRequest {
+  string service_account_file = 1;
+  StorageBucket resource = 2;
+}
+
+message ListStorageBucketRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListStorageBucketResponse {
+  repeated StorageBucket items = 1;
+}
+
+service StorageBucketService {
+  rpc ApplyStorageBucket(ApplyStorageBucketRequest) returns (StorageBucket);
+  rpc DeleteStorageBucket(DeleteStorageBucketRequest) returns (google.protobuf.Empty);
+  rpc ListStorageBucket(ListStorageBucketRequest) returns (ListStorageBucketResponse);
+}

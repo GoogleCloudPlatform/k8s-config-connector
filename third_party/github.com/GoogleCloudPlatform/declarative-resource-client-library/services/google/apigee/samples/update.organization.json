@@ -1,0 +1,22 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "project": "projects/{{ref:apigee.serviceusage.service.json:project}}",
+  "displayName": "updated-organization",
+  "description": "An updated organization",
+  "properties": {
+    "features.mart.connect.enabled": "false",
+    "features.hybrid.enabled": "true",
+    "features.mart.server.endpoint": "https://127.0.0.1"
+  },
+  "analyticsRegion": "{{region}}",
+  "authorizedNetwork": "projects/{{ref:apigee.serviceusage.service.json:project}}/global/networks/{{ref:basic.compute.network.json:name}}",
+  "runtimeType": "CLOUD",
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": false
+    },
+    "monetizationConfig": {
+      "enabled": true
+    }
+  }
+}

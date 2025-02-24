@@ -1,0 +1,17 @@
+{
+  "name": "{{metric}}",
+  "project": "{{project}}",
+  "filter": "resource.type=gae_app AND severity<=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "valueType": "DISTRIBUTION"
+  },
+  "valueExtractor": "EXTRACT(jsonPayload.request)",
+  "bucketOptions": {
+    "exponentialBuckets": {
+      "numFiniteBuckets": 4,
+      "growthFactor": 2.5,
+      "scale": 0.5
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "projects/{{project}}",
+  "triggers": [
+    {
+      "schedule": {
+        "recurrencePeriodDuration": "86400s"
+      }
+    }
+  ],
+  "status": "HEALTHY",
+  "inspectJob": {
+    "storageConfig": {
+      "cloudStorageOptions": {
+        "fileSet": {
+          "regexFileSet": {
+            "bucketName": "aaa-dont-delete-dcl-dlp-testing",
+            "includeRegex": ["[a-z-]+"],
+            "excludeRegex": ["[A-Z-]+"]
+          }
+        },
+        "bytesLimitPerFilePercent": 50
+      }
+    }
+  }
+}

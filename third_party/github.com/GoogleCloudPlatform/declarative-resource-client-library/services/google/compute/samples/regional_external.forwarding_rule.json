@@ -1,0 +1,12 @@
+{
+  "name": "{{rule}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "IPAddress": "{{ref:basic.address.json:selfLink}}",
+  "backendService": "{{ref:regional_external.backend_service.json:selfLink}}",
+  "networkTier": "PREMIUM",
+  "description": "A test forwarding rule",
+  "IPProtocol": "TCP",
+  "loadBalancingScheme": "EXTERNAL",
+  "portRange": "80-81"
+}

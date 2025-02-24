@@ -1,0 +1,5 @@
+{
+  "role": "roles/binaryauthorization.policyViewer",
+  "members": ["domain:google.com"],
+  "resource": "{{ref:service_account.policy.json:__resource__}}"
+}

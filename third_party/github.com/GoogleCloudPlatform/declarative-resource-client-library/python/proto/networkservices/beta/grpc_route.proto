@@ -1,0 +1,133 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum NetworkservicesBetaGrpcRouteRulesMatchesMethodTypeEnum {
+  NetworkservicesBetaGrpcRouteRulesMatchesMethodTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesBetaGrpcRouteRulesMatchesMethodTypeEnumTYPE_UNSPECIFIED = 1;
+  NetworkservicesBetaGrpcRouteRulesMatchesMethodTypeEnumEXACT = 2;
+  NetworkservicesBetaGrpcRouteRulesMatchesMethodTypeEnumREGULAR_EXPRESSION = 3;
+}
+
+enum NetworkservicesBetaGrpcRouteRulesMatchesHeadersTypeEnum {
+  NetworkservicesBetaGrpcRouteRulesMatchesHeadersTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesBetaGrpcRouteRulesMatchesHeadersTypeEnumMATCH_TYPE_UNSPECIFIED = 1;
+  NetworkservicesBetaGrpcRouteRulesMatchesHeadersTypeEnumMATCH_ANY = 2;
+  NetworkservicesBetaGrpcRouteRulesMatchesHeadersTypeEnumMATCH_ALL = 3;
+}
+
+message NetworkservicesBetaGrpcRoute {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  map<string, string> labels = 4;
+  string description = 5;
+  repeated string hostnames = 6;
+  repeated string meshes = 7;
+  repeated string gateways = 8;
+  repeated NetworkservicesBetaGrpcRouteRules rules = 9;
+  string project = 10;
+  string location = 11;
+  string self_link = 12;
+}
+
+message NetworkservicesBetaGrpcRouteRules {
+  repeated NetworkservicesBetaGrpcRouteRulesMatches matches = 1;
+  NetworkservicesBetaGrpcRouteRulesAction action = 2;
+}
+
+message NetworkservicesBetaGrpcRouteRulesMatches {
+  NetworkservicesBetaGrpcRouteRulesMatchesMethod method = 1;
+  repeated NetworkservicesBetaGrpcRouteRulesMatchesHeaders headers = 2;
+}
+
+message NetworkservicesBetaGrpcRouteRulesMatchesMethod {
+  NetworkservicesBetaGrpcRouteRulesMatchesMethodTypeEnum type = 1;
+  string grpc_service = 2;
+  string grpc_method = 3;
+  bool case_sensitive = 4;
+}
+
+message NetworkservicesBetaGrpcRouteRulesMatchesHeaders {
+  NetworkservicesBetaGrpcRouteRulesMatchesHeadersTypeEnum type = 1;
+  string key = 2;
+  string value = 3;
+}
+
+message NetworkservicesBetaGrpcRouteRulesAction {
+  repeated NetworkservicesBetaGrpcRouteRulesActionDestinations destinations = 1;
+  NetworkservicesBetaGrpcRouteRulesActionFaultInjectionPolicy fault_injection_policy = 2;
+  string timeout = 3;
+  NetworkservicesBetaGrpcRouteRulesActionRetryPolicy retry_policy = 4;
+}
+
+message NetworkservicesBetaGrpcRouteRulesActionDestinations {
+  int64 weight = 1;
+  string service_name = 2;
+}
+
+message NetworkservicesBetaGrpcRouteRulesActionFaultInjectionPolicy {
+  NetworkservicesBetaGrpcRouteRulesActionFaultInjectionPolicyDelay delay = 1;
+  NetworkservicesBetaGrpcRouteRulesActionFaultInjectionPolicyAbort abort = 2;
+}
+
+message NetworkservicesBetaGrpcRouteRulesActionFaultInjectionPolicyDelay {
+  string fixed_delay = 1;
+  int64 percentage = 2;
+}
+
+message NetworkservicesBetaGrpcRouteRulesActionFaultInjectionPolicyAbort {
+  int64 http_status = 1;
+  int64 percentage = 2;
+}
+
+message NetworkservicesBetaGrpcRouteRulesActionRetryPolicy {
+  repeated string retry_conditions = 1;
+  int64 num_retries = 2;
+}
+
+message ApplyNetworkservicesBetaGrpcRouteRequest {
+  NetworkservicesBetaGrpcRoute resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworkservicesBetaGrpcRouteRequest {
+  string service_account_file = 1;
+  NetworkservicesBetaGrpcRoute resource = 2;
+}
+
+message ListNetworkservicesBetaGrpcRouteRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListNetworkservicesBetaGrpcRouteResponse {
+  repeated NetworkservicesBetaGrpcRoute items = 1;
+}
+
+service NetworkservicesBetaGrpcRouteService {
+  rpc ApplyNetworkservicesBetaGrpcRoute(ApplyNetworkservicesBetaGrpcRouteRequest) returns (NetworkservicesBetaGrpcRoute);
+  rpc DeleteNetworkservicesBetaGrpcRoute(DeleteNetworkservicesBetaGrpcRouteRequest) returns (google.protobuf.Empty);
+  rpc ListNetworkservicesBetaGrpcRoute(ListNetworkservicesBetaGrpcRouteRequest) returns (ListNetworkservicesBetaGrpcRouteResponse);
+}

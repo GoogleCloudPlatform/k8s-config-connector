@@ -1,0 +1,229 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ContainerawsAlphaClusterControlPlaneRootVolumeVolumeTypeEnum {
+  ContainerawsAlphaClusterControlPlaneRootVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaClusterControlPlaneRootVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  ContainerawsAlphaClusterControlPlaneRootVolumeVolumeTypeEnumGP2 = 2;
+  ContainerawsAlphaClusterControlPlaneRootVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum ContainerawsAlphaClusterControlPlaneMainVolumeVolumeTypeEnum {
+  ContainerawsAlphaClusterControlPlaneMainVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaClusterControlPlaneMainVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  ContainerawsAlphaClusterControlPlaneMainVolumeVolumeTypeEnumGP2 = 2;
+  ContainerawsAlphaClusterControlPlaneMainVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum ContainerawsAlphaClusterControlPlaneInstancePlacementTenancyEnum {
+  ContainerawsAlphaClusterControlPlaneInstancePlacementTenancyEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaClusterControlPlaneInstancePlacementTenancyEnumTENANCY_UNSPECIFIED = 1;
+  ContainerawsAlphaClusterControlPlaneInstancePlacementTenancyEnumDEFAULT = 2;
+  ContainerawsAlphaClusterControlPlaneInstancePlacementTenancyEnumDEDICATED = 3;
+  ContainerawsAlphaClusterControlPlaneInstancePlacementTenancyEnumHOST = 4;
+}
+
+enum ContainerawsAlphaClusterStateEnum {
+  ContainerawsAlphaClusterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaClusterStateEnumSTATE_UNSPECIFIED = 1;
+  ContainerawsAlphaClusterStateEnumPROVISIONING = 2;
+  ContainerawsAlphaClusterStateEnumRUNNING = 3;
+  ContainerawsAlphaClusterStateEnumRECONCILING = 4;
+  ContainerawsAlphaClusterStateEnumSTOPPING = 5;
+  ContainerawsAlphaClusterStateEnumERROR = 6;
+  ContainerawsAlphaClusterStateEnumDEGRADED = 7;
+}
+
+enum ContainerawsAlphaClusterLoggingConfigComponentConfigEnableComponentsEnum {
+  ContainerawsAlphaClusterLoggingConfigComponentConfigEnableComponentsEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaClusterLoggingConfigComponentConfigEnableComponentsEnumCOMPONENT_UNSPECIFIED = 1;
+  ContainerawsAlphaClusterLoggingConfigComponentConfigEnableComponentsEnumSYSTEM_COMPONENTS = 2;
+  ContainerawsAlphaClusterLoggingConfigComponentConfigEnableComponentsEnumWORKLOADS = 3;
+}
+
+enum ContainerawsAlphaClusterBinaryAuthorizationEvaluationModeEnum {
+  ContainerawsAlphaClusterBinaryAuthorizationEvaluationModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaClusterBinaryAuthorizationEvaluationModeEnumDISABLED = 1;
+  ContainerawsAlphaClusterBinaryAuthorizationEvaluationModeEnumPROJECT_SINGLETON_POLICY_ENFORCE = 2;
+}
+
+message ContainerawsAlphaCluster {
+  string name = 1;
+  string description = 2;
+  ContainerawsAlphaClusterNetworking networking = 3;
+  string aws_region = 4;
+  ContainerawsAlphaClusterControlPlane control_plane = 5;
+  ContainerawsAlphaClusterAuthorization authorization = 6;
+  ContainerawsAlphaClusterStateEnum state = 7;
+  string endpoint = 8;
+  string uid = 9;
+  bool reconciling = 10;
+  string create_time = 11;
+  string update_time = 12;
+  string etag = 13;
+  map<string, string> annotations = 14;
+  ContainerawsAlphaClusterWorkloadIdentityConfig workload_identity_config = 15;
+  string project = 16;
+  string location = 17;
+  ContainerawsAlphaClusterFleet fleet = 18;
+  ContainerawsAlphaClusterLoggingConfig logging_config = 19;
+  ContainerawsAlphaClusterMonitoringConfig monitoring_config = 20;
+  ContainerawsAlphaClusterBinaryAuthorization binary_authorization = 21;
+}
+
+message ContainerawsAlphaClusterNetworking {
+  string vpc_id = 1;
+  repeated string pod_address_cidr_blocks = 2;
+  repeated string service_address_cidr_blocks = 3;
+  bool per_node_pool_sg_rules_disabled = 4;
+}
+
+message ContainerawsAlphaClusterControlPlane {
+  string version = 1;
+  string instance_type = 2;
+  ContainerawsAlphaClusterControlPlaneSshConfig ssh_config = 3;
+  repeated string subnet_ids = 4;
+  ContainerawsAlphaClusterControlPlaneConfigEncryption config_encryption = 5;
+  repeated string security_group_ids = 6;
+  string iam_instance_profile = 7;
+  ContainerawsAlphaClusterControlPlaneRootVolume root_volume = 8;
+  ContainerawsAlphaClusterControlPlaneMainVolume main_volume = 9;
+  ContainerawsAlphaClusterControlPlaneDatabaseEncryption database_encryption = 10;
+  map<string, string> tags = 11;
+  ContainerawsAlphaClusterControlPlaneAwsServicesAuthentication aws_services_authentication = 12;
+  ContainerawsAlphaClusterControlPlaneProxyConfig proxy_config = 13;
+  ContainerawsAlphaClusterControlPlaneInstancePlacement instance_placement = 14;
+}
+
+message ContainerawsAlphaClusterControlPlaneSshConfig {
+  string ec2_key_pair = 1;
+}
+
+message ContainerawsAlphaClusterControlPlaneConfigEncryption {
+  string kms_key_arn = 1;
+}
+
+message ContainerawsAlphaClusterControlPlaneRootVolume {
+  int64 size_gib = 1;
+  ContainerawsAlphaClusterControlPlaneRootVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  int64 throughput = 4;
+  string kms_key_arn = 5;
+}
+
+message ContainerawsAlphaClusterControlPlaneMainVolume {
+  int64 size_gib = 1;
+  ContainerawsAlphaClusterControlPlaneMainVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  int64 throughput = 4;
+  string kms_key_arn = 5;
+}
+
+message ContainerawsAlphaClusterControlPlaneDatabaseEncryption {
+  string kms_key_arn = 1;
+}
+
+message ContainerawsAlphaClusterControlPlaneAwsServicesAuthentication {
+  string role_arn = 1;
+  string role_session_name = 2;
+}
+
+message ContainerawsAlphaClusterControlPlaneProxyConfig {
+  string secret_arn = 1;
+  string secret_version = 2;
+}
+
+message ContainerawsAlphaClusterControlPlaneInstancePlacement {
+  ContainerawsAlphaClusterControlPlaneInstancePlacementTenancyEnum tenancy = 1;
+}
+
+message ContainerawsAlphaClusterAuthorization {
+  repeated ContainerawsAlphaClusterAuthorizationAdminUsers admin_users = 1;
+  repeated ContainerawsAlphaClusterAuthorizationAdminGroups admin_groups = 2;
+}
+
+message ContainerawsAlphaClusterAuthorizationAdminUsers {
+  string username = 1;
+}
+
+message ContainerawsAlphaClusterAuthorizationAdminGroups {
+  string group = 1;
+}
+
+message ContainerawsAlphaClusterWorkloadIdentityConfig {
+  string issuer_uri = 1;
+  string workload_pool = 2;
+  string identity_provider = 3;
+}
+
+message ContainerawsAlphaClusterFleet {
+  string project = 1;
+  string membership = 2;
+}
+
+message ContainerawsAlphaClusterLoggingConfig {
+  ContainerawsAlphaClusterLoggingConfigComponentConfig component_config = 1;
+}
+
+message ContainerawsAlphaClusterLoggingConfigComponentConfig {
+  repeated ContainerawsAlphaClusterLoggingConfigComponentConfigEnableComponentsEnum enable_components = 1;
+}
+
+message ContainerawsAlphaClusterMonitoringConfig {
+  ContainerawsAlphaClusterMonitoringConfigManagedPrometheusConfig managed_prometheus_config = 1;
+}
+
+message ContainerawsAlphaClusterMonitoringConfigManagedPrometheusConfig {
+  bool enabled = 1;
+}
+
+message ContainerawsAlphaClusterBinaryAuthorization {
+  ContainerawsAlphaClusterBinaryAuthorizationEvaluationModeEnum evaluation_mode = 1;
+}
+
+message ApplyContainerawsAlphaClusterRequest {
+  ContainerawsAlphaCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerawsAlphaClusterRequest {
+  string service_account_file = 1;
+  ContainerawsAlphaCluster resource = 2;
+}
+
+message ListContainerawsAlphaClusterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListContainerawsAlphaClusterResponse {
+  repeated ContainerawsAlphaCluster items = 1;
+}
+
+service ContainerawsAlphaClusterService {
+  rpc ApplyContainerawsAlphaCluster(ApplyContainerawsAlphaClusterRequest) returns (ContainerawsAlphaCluster);
+  rpc DeleteContainerawsAlphaCluster(DeleteContainerawsAlphaClusterRequest) returns (google.protobuf.Empty);
+  rpc ListContainerawsAlphaCluster(ListContainerawsAlphaClusterRequest) returns (ListContainerawsAlphaClusterResponse);
+}

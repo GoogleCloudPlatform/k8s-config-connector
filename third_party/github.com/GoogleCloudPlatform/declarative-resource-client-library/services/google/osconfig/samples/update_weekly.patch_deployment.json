@@ -1,0 +1,63 @@
+{
+  "name": "{{deployment}}",
+  "project": "{{project}}",
+  "instanceFilter": {
+    "all": true
+  },
+  "patchConfig": {
+    "apt": {
+      "exclusivePackages": ["python"]
+    },
+    "yum": {
+      "exclusivePackages": ["python"]
+    },
+    "zypper": {
+      "exclusivePatches": ["slessp3-glibc-12407"]
+    },
+    "windowsUpdate": {
+      "exclusivePatches": ["824685"]
+    },
+    "preStep": {
+      "linuxExecStepConfig": {
+        "gcsObject": {
+          "bucket": "my-new-patch-scripts",
+          "generationNumber": 1523477886881,
+          "object": "linux/newPostPatchScript"
+        }
+      },
+      "windowsExecStepConfig": {
+        "interpreter": "POWERSHELL",
+        "gcsObject": {
+          "bucket": "my-new-patch-scripts",
+          "generationNumber": 135920493448,
+          "object": "windows/newPostPatchScript.ps1"
+        }
+      }
+    },
+    "postStep": {
+      "linuxExecStepConfig": {
+        "localPath": "/tmp/newPrePatchScript.sh"
+      },
+      "windowsExecStepConfig": {
+        "interpreter": "POWERSHELL",
+        "localPath": "C:\\Users\\user\\new-pre-patch-script.cmd"
+      }
+    }
+  },
+  "rollout": {
+    "mode": "ZONE_BY_ZONE",
+    "disruptionBudget": {
+      "percent": 75
+    }
+  },
+  "recurringSchedule": {
+    "timeZone": {
+      "id": "America/New_York"
+    },
+    "timeOfDay": {},
+    "frequency": "WEEKLY",
+    "weekly": {
+      "dayOfWeek": "THURSDAY"
+    }
+  }
+}

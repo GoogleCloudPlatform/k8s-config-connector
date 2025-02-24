@@ -1,0 +1,6 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "organizations/{{org_id}}",
+  "shortName": "{{ref:__state__:shortName}}",
+  "description": "This TagKey has been updated."
+}

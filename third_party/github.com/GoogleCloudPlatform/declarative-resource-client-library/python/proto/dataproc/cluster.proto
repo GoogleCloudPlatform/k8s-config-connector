@@ -1,0 +1,508 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum DataprocClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnum {
+  DataprocClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnumPRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 1;
+  DataprocClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnumINHERIT_FROM_SUBNETWORK = 2;
+  DataprocClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnumOUTBOUND = 3;
+  DataprocClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnumBIDIRECTIONAL = 4;
+}
+
+enum DataprocClusterConfigGceClusterConfigReservationAffinityConsumeReservationTypeEnum {
+  DataprocClusterConfigGceClusterConfigReservationAffinityConsumeReservationTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterConfigGceClusterConfigReservationAffinityConsumeReservationTypeEnumTYPE_UNSPECIFIED = 1;
+  DataprocClusterConfigGceClusterConfigReservationAffinityConsumeReservationTypeEnumNO_RESERVATION = 2;
+  DataprocClusterConfigGceClusterConfigReservationAffinityConsumeReservationTypeEnumANY_RESERVATION = 3;
+  DataprocClusterConfigGceClusterConfigReservationAffinityConsumeReservationTypeEnumSPECIFIC_RESERVATION = 4;
+}
+
+enum DataprocClusterConfigMasterConfigPreemptibilityEnum {
+  DataprocClusterConfigMasterConfigPreemptibilityEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterConfigMasterConfigPreemptibilityEnumPREEMPTIBILITY_UNSPECIFIED = 1;
+  DataprocClusterConfigMasterConfigPreemptibilityEnumNON_PREEMPTIBLE = 2;
+  DataprocClusterConfigMasterConfigPreemptibilityEnumPREEMPTIBLE = 3;
+}
+
+enum DataprocClusterConfigWorkerConfigPreemptibilityEnum {
+  DataprocClusterConfigWorkerConfigPreemptibilityEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterConfigWorkerConfigPreemptibilityEnumPREEMPTIBILITY_UNSPECIFIED = 1;
+  DataprocClusterConfigWorkerConfigPreemptibilityEnumNON_PREEMPTIBLE = 2;
+  DataprocClusterConfigWorkerConfigPreemptibilityEnumPREEMPTIBLE = 3;
+}
+
+enum DataprocClusterConfigSecondaryWorkerConfigPreemptibilityEnum {
+  DataprocClusterConfigSecondaryWorkerConfigPreemptibilityEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterConfigSecondaryWorkerConfigPreemptibilityEnumPREEMPTIBILITY_UNSPECIFIED = 1;
+  DataprocClusterConfigSecondaryWorkerConfigPreemptibilityEnumNON_PREEMPTIBLE = 2;
+  DataprocClusterConfigSecondaryWorkerConfigPreemptibilityEnumPREEMPTIBLE = 3;
+}
+
+enum DataprocClusterConfigSoftwareConfigOptionalComponentsEnum {
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumCOMPONENT_UNSPECIFIED = 1;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumANACONDA = 2;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumDOCKER = 3;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumDRUID = 4;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumFLINK = 5;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumHBASE = 6;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumHIVE_WEBHCAT = 7;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumJUPYTER = 8;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumKERBEROS = 9;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumPRESTO = 10;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumRANGER = 11;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumSOLR = 12;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumZEPPELIN = 13;
+  DataprocClusterConfigSoftwareConfigOptionalComponentsEnumZOOKEEPER = 14;
+}
+
+enum DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnum {
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnumMETRIC_SOURCE_UNSPECIFIED = 1;
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnumMONITORING_AGENT_DEFAULTS = 2;
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnumHDFS = 3;
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnumSPARK = 4;
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnumYARN = 5;
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnumSPARK_HISTORY_SERVER = 6;
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnumHIVESERVER2 = 7;
+}
+
+enum DataprocClusterStatusStateEnum {
+  DataprocClusterStatusStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterStatusStateEnumUNKNOWN = 1;
+  DataprocClusterStatusStateEnumCREATING = 2;
+  DataprocClusterStatusStateEnumRUNNING = 3;
+  DataprocClusterStatusStateEnumERROR = 4;
+  DataprocClusterStatusStateEnumDELETING = 5;
+  DataprocClusterStatusStateEnumUPDATING = 6;
+  DataprocClusterStatusStateEnumSTOPPING = 7;
+  DataprocClusterStatusStateEnumSTOPPED = 8;
+  DataprocClusterStatusStateEnumSTARTING = 9;
+}
+
+enum DataprocClusterStatusSubstateEnum {
+  DataprocClusterStatusSubstateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterStatusSubstateEnumUNSPECIFIED = 1;
+  DataprocClusterStatusSubstateEnumUNHEALTHY = 2;
+  DataprocClusterStatusSubstateEnumSTALE_STATUS = 3;
+}
+
+enum DataprocClusterStatusHistoryStateEnum {
+  DataprocClusterStatusHistoryStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterStatusHistoryStateEnumUNKNOWN = 1;
+  DataprocClusterStatusHistoryStateEnumCREATING = 2;
+  DataprocClusterStatusHistoryStateEnumRUNNING = 3;
+  DataprocClusterStatusHistoryStateEnumERROR = 4;
+  DataprocClusterStatusHistoryStateEnumDELETING = 5;
+  DataprocClusterStatusHistoryStateEnumUPDATING = 6;
+  DataprocClusterStatusHistoryStateEnumSTOPPING = 7;
+  DataprocClusterStatusHistoryStateEnumSTOPPED = 8;
+  DataprocClusterStatusHistoryStateEnumSTARTING = 9;
+}
+
+enum DataprocClusterStatusHistorySubstateEnum {
+  DataprocClusterStatusHistorySubstateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterStatusHistorySubstateEnumUNSPECIFIED = 1;
+  DataprocClusterStatusHistorySubstateEnumUNHEALTHY = 2;
+  DataprocClusterStatusHistorySubstateEnumSTALE_STATUS = 3;
+}
+
+enum DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum {
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumROLE_UNSPECIFIED = 1;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumDEFAULT = 2;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumCONTROLLER = 3;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumSPARK_DRIVER = 4;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumSPARK_EXECUTOR = 5;
+}
+
+message DataprocCluster {
+  string project = 1;
+  string name = 2;
+  DataprocClusterConfig config = 3;
+  map<string, string> labels = 4;
+  DataprocClusterStatus status = 5;
+  repeated DataprocClusterStatusHistory status_history = 6;
+  string cluster_uuid = 7;
+  DataprocClusterMetrics metrics = 8;
+  string location = 9;
+  DataprocClusterVirtualClusterConfig virtual_cluster_config = 10;
+}
+
+message DataprocClusterConfig {
+  string staging_bucket = 1;
+  string temp_bucket = 2;
+  DataprocClusterConfigGceClusterConfig gce_cluster_config = 3;
+  DataprocClusterConfigMasterConfig master_config = 4;
+  DataprocClusterConfigWorkerConfig worker_config = 5;
+  DataprocClusterConfigSecondaryWorkerConfig secondary_worker_config = 6;
+  DataprocClusterConfigSoftwareConfig software_config = 7;
+  repeated DataprocClusterConfigInitializationActions initialization_actions = 8;
+  DataprocClusterConfigEncryptionConfig encryption_config = 9;
+  DataprocClusterConfigAutoscalingConfig autoscaling_config = 10;
+  DataprocClusterConfigSecurityConfig security_config = 11;
+  DataprocClusterConfigLifecycleConfig lifecycle_config = 12;
+  DataprocClusterConfigEndpointConfig endpoint_config = 13;
+  DataprocClusterConfigMetastoreConfig metastore_config = 14;
+  DataprocClusterConfigDataprocMetricConfig dataproc_metric_config = 15;
+}
+
+message DataprocClusterConfigGceClusterConfig {
+  string zone = 1;
+  string network = 2;
+  string subnetwork = 3;
+  bool internal_ip_only = 4;
+  DataprocClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnum private_ipv6_google_access = 5;
+  string service_account = 6;
+  repeated string service_account_scopes = 7;
+  repeated string tags = 8;
+  map<string, string> metadata = 9;
+  DataprocClusterConfigGceClusterConfigReservationAffinity reservation_affinity = 10;
+  DataprocClusterConfigGceClusterConfigNodeGroupAffinity node_group_affinity = 11;
+  DataprocClusterConfigGceClusterConfigShieldedInstanceConfig shielded_instance_config = 12;
+  DataprocClusterConfigGceClusterConfigConfidentialInstanceConfig confidential_instance_config = 13;
+}
+
+message DataprocClusterConfigGceClusterConfigReservationAffinity {
+  DataprocClusterConfigGceClusterConfigReservationAffinityConsumeReservationTypeEnum consume_reservation_type = 1;
+  string key = 2;
+  repeated string values = 3;
+}
+
+message DataprocClusterConfigGceClusterConfigNodeGroupAffinity {
+  string node_group = 1;
+}
+
+message DataprocClusterConfigGceClusterConfigShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_vtpm = 2;
+  bool enable_integrity_monitoring = 3;
+}
+
+message DataprocClusterConfigGceClusterConfigConfidentialInstanceConfig {
+  bool enable_confidential_compute = 1;
+}
+
+message DataprocClusterConfigMasterConfig {
+  int64 num_instances = 1;
+  repeated string instance_names = 2;
+  string image = 3;
+  string machine_type = 4;
+  DataprocClusterConfigMasterConfigDiskConfig disk_config = 5;
+  bool is_preemptible = 6;
+  DataprocClusterConfigMasterConfigPreemptibilityEnum preemptibility = 7;
+  DataprocClusterConfigMasterConfigManagedGroupConfig managed_group_config = 8;
+  repeated DataprocClusterConfigMasterConfigAccelerators accelerators = 9;
+  string min_cpu_platform = 10;
+  repeated DataprocClusterConfigMasterConfigInstanceReferences instance_references = 11;
+}
+
+message DataprocClusterConfigMasterConfigDiskConfig {
+  string boot_disk_type = 1;
+  int64 boot_disk_size_gb = 2;
+  int64 num_local_ssds = 3;
+  string local_ssd_interface = 4;
+}
+
+message DataprocClusterConfigMasterConfigManagedGroupConfig {
+  string instance_template_name = 1;
+  string instance_group_manager_name = 2;
+}
+
+message DataprocClusterConfigMasterConfigAccelerators {
+  string accelerator_type = 1;
+  int64 accelerator_count = 2;
+}
+
+message DataprocClusterConfigMasterConfigInstanceReferences {
+  string instance_name = 1;
+  string instance_id = 2;
+  string public_key = 3;
+  string public_ecies_key = 4;
+}
+
+message DataprocClusterConfigWorkerConfig {
+  int64 num_instances = 1;
+  repeated string instance_names = 2;
+  string image = 3;
+  string machine_type = 4;
+  DataprocClusterConfigWorkerConfigDiskConfig disk_config = 5;
+  bool is_preemptible = 6;
+  DataprocClusterConfigWorkerConfigPreemptibilityEnum preemptibility = 7;
+  DataprocClusterConfigWorkerConfigManagedGroupConfig managed_group_config = 8;
+  repeated DataprocClusterConfigWorkerConfigAccelerators accelerators = 9;
+  string min_cpu_platform = 10;
+  repeated DataprocClusterConfigWorkerConfigInstanceReferences instance_references = 11;
+}
+
+message DataprocClusterConfigWorkerConfigDiskConfig {
+  string boot_disk_type = 1;
+  int64 boot_disk_size_gb = 2;
+  int64 num_local_ssds = 3;
+  string local_ssd_interface = 4;
+}
+
+message DataprocClusterConfigWorkerConfigManagedGroupConfig {
+  string instance_template_name = 1;
+  string instance_group_manager_name = 2;
+}
+
+message DataprocClusterConfigWorkerConfigAccelerators {
+  string accelerator_type = 1;
+  int64 accelerator_count = 2;
+}
+
+message DataprocClusterConfigWorkerConfigInstanceReferences {
+  string instance_name = 1;
+  string instance_id = 2;
+  string public_key = 3;
+  string public_ecies_key = 4;
+}
+
+message DataprocClusterConfigSecondaryWorkerConfig {
+  int64 num_instances = 1;
+  repeated string instance_names = 2;
+  string image = 3;
+  string machine_type = 4;
+  DataprocClusterConfigSecondaryWorkerConfigDiskConfig disk_config = 5;
+  bool is_preemptible = 6;
+  DataprocClusterConfigSecondaryWorkerConfigPreemptibilityEnum preemptibility = 7;
+  DataprocClusterConfigSecondaryWorkerConfigManagedGroupConfig managed_group_config = 8;
+  repeated DataprocClusterConfigSecondaryWorkerConfigAccelerators accelerators = 9;
+  string min_cpu_platform = 10;
+  repeated DataprocClusterConfigSecondaryWorkerConfigInstanceReferences instance_references = 11;
+}
+
+message DataprocClusterConfigSecondaryWorkerConfigDiskConfig {
+  string boot_disk_type = 1;
+  int64 boot_disk_size_gb = 2;
+  int64 num_local_ssds = 3;
+  string local_ssd_interface = 4;
+}
+
+message DataprocClusterConfigSecondaryWorkerConfigManagedGroupConfig {
+  string instance_template_name = 1;
+  string instance_group_manager_name = 2;
+}
+
+message DataprocClusterConfigSecondaryWorkerConfigAccelerators {
+  string accelerator_type = 1;
+  int64 accelerator_count = 2;
+}
+
+message DataprocClusterConfigSecondaryWorkerConfigInstanceReferences {
+  string instance_name = 1;
+  string instance_id = 2;
+  string public_key = 3;
+  string public_ecies_key = 4;
+}
+
+message DataprocClusterConfigSoftwareConfig {
+  string image_version = 1;
+  map<string, string> properties = 2;
+  repeated DataprocClusterConfigSoftwareConfigOptionalComponentsEnum optional_components = 3;
+}
+
+message DataprocClusterConfigInitializationActions {
+  string executable_file = 1;
+  string execution_timeout = 2;
+}
+
+message DataprocClusterConfigEncryptionConfig {
+  string gce_pd_kms_key_name = 1;
+}
+
+message DataprocClusterConfigAutoscalingConfig {
+  string policy = 1;
+}
+
+message DataprocClusterConfigSecurityConfig {
+  DataprocClusterConfigSecurityConfigKerberosConfig kerberos_config = 1;
+  DataprocClusterConfigSecurityConfigIdentityConfig identity_config = 2;
+}
+
+message DataprocClusterConfigSecurityConfigKerberosConfig {
+  bool enable_kerberos = 1;
+  string root_principal_password = 2;
+  string kms_key = 3;
+  string keystore = 4;
+  string truststore = 5;
+  string keystore_password = 6;
+  string key_password = 7;
+  string truststore_password = 8;
+  string cross_realm_trust_realm = 9;
+  string cross_realm_trust_kdc = 10;
+  string cross_realm_trust_admin_server = 11;
+  string cross_realm_trust_shared_password = 12;
+  string kdc_db_key = 13;
+  int64 tgt_lifetime_hours = 14;
+  string realm = 15;
+}
+
+message DataprocClusterConfigSecurityConfigIdentityConfig {
+  map<string, string> user_service_account_mapping = 1;
+}
+
+message DataprocClusterConfigLifecycleConfig {
+  string idle_delete_ttl = 1;
+  string auto_delete_time = 2;
+  string auto_delete_ttl = 3;
+  string idle_start_time = 4;
+}
+
+message DataprocClusterConfigEndpointConfig {
+  map<string, string> http_ports = 1;
+  bool enable_http_port_access = 2;
+}
+
+message DataprocClusterConfigMetastoreConfig {
+  string dataproc_metastore_service = 1;
+}
+
+message DataprocClusterConfigDataprocMetricConfig {
+  repeated DataprocClusterConfigDataprocMetricConfigMetrics metrics = 1;
+}
+
+message DataprocClusterConfigDataprocMetricConfigMetrics {
+  DataprocClusterConfigDataprocMetricConfigMetricsMetricSourceEnum metric_source = 1;
+  repeated string metric_overrides = 2;
+}
+
+message DataprocClusterStatus {
+  DataprocClusterStatusStateEnum state = 1;
+  string detail = 2;
+  string state_start_time = 3;
+  DataprocClusterStatusSubstateEnum substate = 4;
+}
+
+message DataprocClusterStatusHistory {
+  DataprocClusterStatusHistoryStateEnum state = 1;
+  string detail = 2;
+  string state_start_time = 3;
+  DataprocClusterStatusHistorySubstateEnum substate = 4;
+}
+
+message DataprocClusterMetrics {
+  map<string, string> hdfs_metrics = 1;
+  map<string, string> yarn_metrics = 2;
+}
+
+message DataprocClusterVirtualClusterConfig {
+  string staging_bucket = 1;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfig kubernetes_cluster_config = 2;
+  DataprocClusterVirtualClusterConfigAuxiliaryServicesConfig auxiliary_services_config = 3;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfig {
+  string kubernetes_namespace = 1;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig gke_cluster_config = 2;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig kubernetes_software_config = 3;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+  string gke_cluster_target = 1;
+  repeated DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget node_pool_target = 2;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+  string node_pool = 1;
+  repeated DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum roles = 2;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig node_pool_config = 3;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig config = 1;
+  repeated string locations = 2;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling autoscaling = 3;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+  string machine_type = 1;
+  int64 local_ssd_count = 2;
+  bool preemptible = 3;
+  repeated DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators accelerators = 4;
+  string min_cpu_platform = 5;
+  string boot_disk_kms_key = 6;
+  DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig ephemeral_storage_config = 7;
+  bool spot = 8;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+  string gpu_partition_size = 3;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+  int64 local_ssd_count = 1;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+  int64 min_node_count = 1;
+  int64 max_node_count = 2;
+}
+
+message DataprocClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+  map<string, string> component_version = 1;
+  map<string, string> properties = 2;
+}
+
+message DataprocClusterVirtualClusterConfigAuxiliaryServicesConfig {
+  DataprocClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig metastore_config = 1;
+  DataprocClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig spark_history_server_config = 2;
+}
+
+message DataprocClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+  string dataproc_metastore_service = 1;
+}
+
+message DataprocClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+  string dataproc_cluster = 1;
+}
+
+message ApplyDataprocClusterRequest {
+  DataprocCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDataprocClusterRequest {
+  string service_account_file = 1;
+  DataprocCluster resource = 2;
+}
+
+message ListDataprocClusterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListDataprocClusterResponse {
+  repeated DataprocCluster items = 1;
+}
+
+service DataprocClusterService {
+  rpc ApplyDataprocCluster(ApplyDataprocClusterRequest) returns (DataprocCluster);
+  rpc DeleteDataprocCluster(DeleteDataprocClusterRequest) returns (google.protobuf.Empty);
+  rpc ListDataprocCluster(ListDataprocClusterRequest) returns (ListDataprocClusterResponse);
+}

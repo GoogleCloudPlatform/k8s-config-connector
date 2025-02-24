@@ -1,0 +1,36 @@
+{
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "name": "{{instance_group_manager}}",
+  "baseInstanceName":  "dcl",
+  "targetSize": 3,
+  "versions": [
+    {
+      "name": "sample-version-1",
+      "instanceTemplate": "{{ref:first.instance_template.json:selfLink}}",
+      "targetSize": {
+        "percent": 33
+      }
+    },
+    {
+      "name": "sample-version-2",
+      "instanceTemplate": "{{ref:first.instance_template.json:selfLink}}"
+    }
+  ],
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "{{ref:https.health_check.json:selfLink}}",
+      "initialDelaySec": 120
+    }
+  ],
+  "updatePolicy": {
+    "type": "OPPORTUNISTIC",
+    "minimalAction": "RESTART",
+    "maxSurge": {
+      "percent": 33
+    },
+    "maxUnavailable": {
+      "percent": 33
+    }
+  }
+}

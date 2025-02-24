@@ -1,0 +1,10 @@
+{
+  "name": "{{pool}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "tier": "DEVOPS",
+  "publishingOptions": {
+    "publishCaCert": false,
+    "publishCrl": false
+  }
+}

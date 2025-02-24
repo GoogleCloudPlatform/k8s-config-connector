@@ -1,0 +1,5 @@
+{
+  "name": "{{pool}}",
+  "project": "{{project}}",
+  "location": "global"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "{{cluster_name}}",
+  "location": "{{region}}",
+  "project": "{{ref:dataproc.serviceusage.service.json:project}}",
+  "config": {
+    "gceClusterConfig": {
+      "zone": "{{zone}}"
+    },
+    "masterConfig": {
+      "accelerators": [
+        {
+          "acceleratorType": "nvidia-tesla-k80",
+          "acceleratorCount": 1
+        }
+      ]
+    }
+  }
+}

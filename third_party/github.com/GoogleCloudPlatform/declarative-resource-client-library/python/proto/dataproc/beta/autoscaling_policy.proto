@@ -1,0 +1,83 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message DataprocBetaAutoscalingPolicy {
+  string name = 1;
+  DataprocBetaAutoscalingPolicyBasicAlgorithm basic_algorithm = 2;
+  DataprocBetaAutoscalingPolicyWorkerConfig worker_config = 3;
+  DataprocBetaAutoscalingPolicySecondaryWorkerConfig secondary_worker_config = 4;
+  string project = 5;
+  string location = 6;
+}
+
+message DataprocBetaAutoscalingPolicyBasicAlgorithm {
+  DataprocBetaAutoscalingPolicyBasicAlgorithmYarnConfig yarn_config = 1;
+  string cooldown_period = 2;
+}
+
+message DataprocBetaAutoscalingPolicyBasicAlgorithmYarnConfig {
+  string graceful_decommission_timeout = 1;
+  double scale_up_factor = 2;
+  double scale_down_factor = 3;
+  double scale_up_min_worker_fraction = 4;
+  double scale_down_min_worker_fraction = 5;
+}
+
+message DataprocBetaAutoscalingPolicyWorkerConfig {
+  int64 min_instances = 1;
+  int64 max_instances = 2;
+  int64 weight = 3;
+}
+
+message DataprocBetaAutoscalingPolicySecondaryWorkerConfig {
+  int64 min_instances = 1;
+  int64 max_instances = 2;
+  int64 weight = 3;
+}
+
+message ApplyDataprocBetaAutoscalingPolicyRequest {
+  DataprocBetaAutoscalingPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDataprocBetaAutoscalingPolicyRequest {
+  string service_account_file = 1;
+  DataprocBetaAutoscalingPolicy resource = 2;
+}
+
+message ListDataprocBetaAutoscalingPolicyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListDataprocBetaAutoscalingPolicyResponse {
+  repeated DataprocBetaAutoscalingPolicy items = 1;
+}
+
+service DataprocBetaAutoscalingPolicyService {
+  rpc ApplyDataprocBetaAutoscalingPolicy(ApplyDataprocBetaAutoscalingPolicyRequest) returns (DataprocBetaAutoscalingPolicy);
+  rpc DeleteDataprocBetaAutoscalingPolicy(DeleteDataprocBetaAutoscalingPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListDataprocBetaAutoscalingPolicy(ListDataprocBetaAutoscalingPolicyRequest) returns (ListDataprocBetaAutoscalingPolicyResponse);
+}

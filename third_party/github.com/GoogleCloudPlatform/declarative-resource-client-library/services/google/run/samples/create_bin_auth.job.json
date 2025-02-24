@@ -1,0 +1,17 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "launchStage": "BETA",
+  "binaryAuthorization": {
+    "useDefault": true,
+    "breakglassJustification": "Some justification"
+  },
+  "template": {
+    "template": {
+      "containers": [ {
+        "image": "gcr.io/run-intro/screenshot:latest"
+      } ]
+    }
+  }
+}

@@ -1,0 +1,251 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Pubsub/Subscription
+  description: The Pubsub Subscription resource
+  x-dcl-struct-name: Subscription
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Subscription
+    parameters:
+    - name: subscription
+      required: true
+      description: A full instance of a Subscription
+  apply:
+    description: The function used to apply information about a Subscription
+    parameters:
+    - name: subscription
+      required: true
+      description: A full instance of a Subscription
+  delete:
+    description: The function used to delete a Subscription
+    parameters:
+    - name: subscription
+      required: true
+      description: A full instance of a Subscription
+  deleteAll:
+    description: The function used to delete all Subscription
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Subscription
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Subscription:
+      title: Subscription
+      x-dcl-id: projects/{{project}}/subscriptions/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - topic
+      - project
+      properties:
+        ackDeadlineSeconds:
+          type: integer
+          format: int64
+          x-dcl-go-name: AckDeadlineSeconds
+          description: The approximate amount of time (on a best-effort basis) Pub/Sub
+            waits for the subscriber to acknowledge receipt before resending the message.
+            In the interval after the message is delivered and before it is acknowledged,
+            it is considered to be _outstanding_. During that time period, the message
+            will not be redelivered (on a best-effort basis). For pull subscriptions,
+            this value is used as the initial value for the ack deadline. To override
+            this value for a given message, call `ModifyAckDeadline` with the corresponding
+            `ack_id` if using non-streaming pull or send the `ack_id` in a `StreamingModifyAckDeadlineRequest`
+            if using streaming pull. The minimum custom deadline you can specify is
+            10 seconds. The maximum custom deadline you can specify is 600 seconds
+            (10 minutes). If this parameter is 0, a default value of 10 seconds is
+            used. For push delivery, this value is also used to set the request timeout
+            for the call to the push endpoint. If the subscriber never acknowledges
+            the message, the Pub/Sub system will eventually redeliver the message.
+          x-kubernetes-immutable: true
+        deadLetterPolicy:
+          type: object
+          x-dcl-go-name: DeadLetterPolicy
+          x-dcl-go-type: SubscriptionDeadLetterPolicy
+          description: A policy that specifies the conditions for dead lettering messages
+            in this subscription. If dead_letter_policy is not set, dead lettering
+            is disabled. The Cloud Pub/Sub service account associated with this subscriptions's
+            parent project (i.e., service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com)
+            must have permission to Acknowledge() messages on this subscription.
+          x-kubernetes-immutable: true
+          properties:
+            deadLetterTopic:
+              type: string
+              x-dcl-go-name: DeadLetterTopic
+              description: The name of the topic to which dead letter messages should
+                be published. Format is `projects/{project}/topics/{topic}`.The Cloud
+                Pub/Sub service account associated with the enclosing subscription's
+                parent project (i.e., service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com)
+                must have permission to Publish() to this topic. The operation will
+                fail if the topic does not exist. Users should ensure that there is
+                a subscription attached to this topic since messages published to
+                a topic with no subscriptions are lost.
+              x-kubernetes-immutable: true
+              x-dcl-references:
+              - resource: Pubsub/Topic
+                field: name
+            maxDeliveryAttempts:
+              type: integer
+              format: int64
+              x-dcl-go-name: MaxDeliveryAttempts
+              description: The maximum number of delivery attempts for any message.
+                The value must be between 5 and 100. The number of delivery attempts
+                is defined as 1 + (the sum of number of NACKs and number of times
+                the acknowledgement deadline has been exceeded for the message). A
+                NACK is any call to ModifyAckDeadline with a 0 deadline. Note that
+                client libraries may automatically extend ack_deadlines. This field
+                will be honored on a best effort basis. If this parameter is 0, a
+                default value of 5 is used.
+              x-kubernetes-immutable: true
+        expirationPolicy:
+          type: object
+          x-dcl-go-name: ExpirationPolicy
+          x-dcl-go-type: SubscriptionExpirationPolicy
+          description: 'A policy that specifies the conditions for this subscription''s
+            expiration. A subscription is considered active as long as any connected
+            subscriber is successfully consuming messages from the subscription or
+            is issuing operations on the subscription. If expirationPolicy is not
+            set, a default policy with ttl of 31 days will be used. The minimum allowed
+            value for expirationPolicy.ttl is 1 day. '
+          x-dcl-server-default: true
+          properties:
+            ttl:
+              type: string
+              x-dcl-go-name: Ttl
+              description: 'Specifies the "time-to-live" duration for an associated
+                resource. The resource expires if it is not active for a period of
+                ttl. The definition of "activity" depends on the type of the associated
+                resource. The minimum and maximum allowed values for ttl depend on
+                the type of the associated resource, as well. If ttl is not set in
+                expirationPolicy, the associated resource never expires. A duration
+                in seconds with up to nine fractional digits, terminated by ''s''.
+                Example - "3.5s". '
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: 'A set of key/value label pairs to assign to this Subscription. '
+        messageRetentionDuration:
+          type: string
+          x-dcl-go-name: MessageRetentionDuration
+          description: 'How long to retain unacknowledged messages in the subscription''s
+            backlog, from the moment a message is published. If retainAckedMessages
+            is true, then this also configures the retention of acknowledged messages,
+            and thus configures how far back in time a subscriptions.seek can be done.
+            Defaults to 7 days. Cannot be more than 7 days (`"604800s"`) or less than
+            10 minutes (`"600s"`).  A duration in seconds with up to nine fractional
+            digits, terminated by ''s''. Example: `"600.5s"`. '
+          x-dcl-server-default: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Name of the subscription.
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project id of the resource.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        pushConfig:
+          type: object
+          x-dcl-go-name: PushConfig
+          x-dcl-go-type: SubscriptionPushConfig
+          description: If push delivery is used with this subscription, this field
+            is used to configure it. An empty `pushConfig` signifies that the subscriber
+            will pull and ack messages using API methods.
+          x-kubernetes-immutable: true
+          required:
+          - pushEndpoint
+          properties:
+            attributes:
+              type: object
+              additionalProperties:
+                type: string
+              x-dcl-go-name: Attributes
+              description: |-
+                Endpoint configuration attributes that can be used to control different aspects of the message delivery. The only currently supported attribute is `x-goog-version`, which you can use to change the format of the pushed message. This attribute indicates the version of the data expected by the endpoint. This controls the shape of the pushed message (i.e., its fields and metadata). If not present during the `CreateSubscription` call, it will default to the version of the Pub/Sub API used to make such call. If not present in a `ModifyPushConfig` call, its value will not be changed. `GetSubscription` calls will always return a valid version, even if the subscription was created without this attribute. The only supported values for the `x-goog-version` attribute are: * `v1beta1`: uses the push format defined in the v1beta1 Pub/Sub API. * `v1` or `v1beta2`: uses the push format defined in the v1 Pub/Sub API. For example:
+
+                    attributes: { "x-goog-version": "v1" }
+              x-kubernetes-immutable: true
+              default: '{"x-goog-version":"v1"}'
+            oidcToken:
+              type: object
+              x-dcl-go-name: OidcToken
+              x-dcl-go-type: SubscriptionPushConfigOidcToken
+              description: If specified, Pub/Sub will generate and attach an OIDC
+                JWT token as an `Authorization` header in the HTTP request for every
+                pushed message.
+              x-kubernetes-immutable: true
+              properties:
+                audience:
+                  type: string
+                  x-dcl-go-name: Audience
+                  description: 'Audience to be used when generating OIDC token. The
+                    audience claim identifies the recipients that the JWT is intended
+                    for. The audience value is a single case-sensitive string. Having
+                    multiple values (array) for the audience field is not supported.
+                    More info about the OIDC JWT token audience here: https://tools.ietf.org/html/rfc7519#section-4.1.3
+                    Note: if not specified, the Push endpoint URL will be used.'
+                  x-kubernetes-immutable: true
+                serviceAccountEmail:
+                  type: string
+                  x-dcl-go-name: ServiceAccountEmail
+                  description: '[Service account email](https://cloud.google.com/iam/docs/service-accounts)
+                    to be used for generating the OIDC token. The caller (for CreateSubscription,
+                    UpdateSubscription, and ModifyPushConfig RPCs) must have the iam.serviceAccounts.actAs
+                    permission for the service account.'
+                  x-kubernetes-immutable: true
+            pushEndpoint:
+              type: string
+              x-dcl-go-name: PushEndpoint
+              description: A URL locating the endpoint to which messages should be
+                pushed. For example, a Webhook endpoint might use `https://example.com/push`.
+              x-kubernetes-immutable: true
+        retainAckedMessages:
+          type: boolean
+          x-dcl-go-name: RetainAckedMessages
+          description: 'Indicates whether to retain acknowledged messages. If `true`,
+            then messages are not expunged from the subscription''s backlog, even
+            if they are acknowledged, until they fall out of the messageRetentionDuration
+            window. '
+        topic:
+          type: string
+          x-dcl-go-name: Topic
+          description: 'A reference to a Topic resource. '
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Pubsub/Topic
+            field: name

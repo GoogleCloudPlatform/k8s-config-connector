@@ -1,0 +1,21 @@
+{
+  "name": "{{pool}}",
+  "project": "{{project}}",
+  "location": "us-west1",
+  "cluster": "{{ref:minimal.cluster.json:name}}",
+  "version": "1.27.4-gke.1600",
+  "autoscaling": {
+    "minNodeCount": 1,
+    "maxNodeCount": 5
+  },
+  "subnetId": "{{aws_subnet}}",
+  "maxPodsConstraint": {
+    "maxPodsPerNode": 110
+  },
+  "config": {
+    "iamInstanceProfile": "{{byo_multicloud_prefix}}-1p-dev-nodepool",
+    "configEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_database_encryption_key}}"
+    }
+  }
+}

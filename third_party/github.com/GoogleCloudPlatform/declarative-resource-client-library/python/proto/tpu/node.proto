@@ -1,0 +1,135 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum TPUNodeStateEnum {
+  TPUNodeStateEnumNO_VALUE_DO_NOT_USE = 0;
+  TPUNodeStateEnumSTATE_UNSPECIFIED = 1;
+  TPUNodeStateEnumCREATING = 2;
+  TPUNodeStateEnumREADY = 3;
+  TPUNodeStateEnumRESTARTING = 4;
+  TPUNodeStateEnumREIMAGING = 5;
+  TPUNodeStateEnumDELETING = 6;
+  TPUNodeStateEnumREPAIRING = 7;
+  TPUNodeStateEnumSTOPPED = 8;
+  TPUNodeStateEnumSTOPPING = 9;
+  TPUNodeStateEnumSTARTING = 10;
+  TPUNodeStateEnumPREEMPTED = 11;
+  TPUNodeStateEnumTERMINATED = 12;
+  TPUNodeStateEnumHIDING = 13;
+  TPUNodeStateEnumHIDDEN = 14;
+  TPUNodeStateEnumUNHIDING = 15;
+}
+
+enum TPUNodeHealthEnum {
+  TPUNodeHealthEnumNO_VALUE_DO_NOT_USE = 0;
+  TPUNodeHealthEnumHEALTH_UNSPECIFIED = 1;
+  TPUNodeHealthEnumHEALTHY = 2;
+  TPUNodeHealthEnumDEPRECATED_UNHEALTHY = 3;
+  TPUNodeHealthEnumTIMEOUT = 4;
+  TPUNodeHealthEnumUNHEALTHY_TENSORFLOW = 5;
+  TPUNodeHealthEnumUNHEALTHY_MAINTENANCE = 6;
+}
+
+enum TPUNodeSymptomsSymptomTypeEnum {
+  TPUNodeSymptomsSymptomTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  TPUNodeSymptomsSymptomTypeEnumSYMPTOM_TYPE_UNSPECIFIED = 1;
+  TPUNodeSymptomsSymptomTypeEnumLOW_MEMORY = 2;
+  TPUNodeSymptomsSymptomTypeEnumOUT_OF_MEMORY = 3;
+  TPUNodeSymptomsSymptomTypeEnumEXECUTE_TIMED_OUT = 4;
+  TPUNodeSymptomsSymptomTypeEnumMESH_BUILD_FAIL = 5;
+  TPUNodeSymptomsSymptomTypeEnumHBM_OUT_OF_MEMORY = 6;
+}
+
+message TPUNode {
+  string name = 1;
+  string description = 2;
+  string accelerator_type = 3;
+  string ip_address = 4;
+  string port = 5;
+  TPUNodeStateEnum state = 6;
+  string health_description = 7;
+  string tensorflow_version = 8;
+  string network = 9;
+  string cidr_block = 10;
+  string service_account = 11;
+  TPUNodeCreateTime create_time = 12;
+  TPUNodeSchedulingConfig scheduling_config = 13;
+  repeated TPUNodeNetworkEndpoints network_endpoints = 14;
+  TPUNodeHealthEnum health = 15;
+  map<string, string> labels = 16;
+  bool use_service_networking = 17;
+  repeated TPUNodeSymptoms symptoms = 18;
+  string project = 19;
+  string location = 20;
+}
+
+message TPUNodeCreateTime {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message TPUNodeSchedulingConfig {
+  bool preemptible = 1;
+  bool reserved = 2;
+}
+
+message TPUNodeNetworkEndpoints {
+  string ip_address = 1;
+  int64 port = 2;
+}
+
+message TPUNodeSymptoms {
+  TPUNodeSymptomsCreateTime create_time = 1;
+  TPUNodeSymptomsSymptomTypeEnum symptom_type = 2;
+  string details = 3;
+  string worker_id = 4;
+}
+
+message TPUNodeSymptomsCreateTime {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ApplyTPUNodeRequest {
+  TPUNode resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteTPUNodeRequest {
+  string service_account_file = 1;
+  TPUNode resource = 2;
+}
+
+message ListTPUNodeRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListTPUNodeResponse {
+  repeated TPUNode items = 1;
+}
+
+service TPUNodeService {
+  rpc ApplyTPUNode(ApplyTPUNodeRequest) returns (TPUNode);
+  rpc DeleteTPUNode(DeleteTPUNodeRequest) returns (google.protobuf.Empty);
+  rpc ListTPUNode(ListTPUNodeRequest) returns (ListTPUNodeResponse);
+}

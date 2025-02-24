@@ -1,0 +1,254 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Iam/WorkloadIdentityPoolProvider
+  description: The Iam WorkloadIdentityPoolProvider resource
+  x-dcl-struct-name: WorkloadIdentityPoolProvider
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a WorkloadIdentityPoolProvider
+    parameters:
+    - name: workloadIdentityPoolProvider
+      required: true
+      description: A full instance of a WorkloadIdentityPoolProvider
+  apply:
+    description: The function used to apply information about a WorkloadIdentityPoolProvider
+    parameters:
+    - name: workloadIdentityPoolProvider
+      required: true
+      description: A full instance of a WorkloadIdentityPoolProvider
+  delete:
+    description: The function used to delete a WorkloadIdentityPoolProvider
+    parameters:
+    - name: workloadIdentityPoolProvider
+      required: true
+      description: A full instance of a WorkloadIdentityPoolProvider
+  deleteAll:
+    description: The function used to delete all WorkloadIdentityPoolProvider
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: workloadIdentityPool
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many WorkloadIdentityPoolProvider
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: workloadIdentityPool
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    WorkloadIdentityPoolProvider:
+      title: WorkloadIdentityPoolProvider
+      x-dcl-id: projects/{{project}}/locations/{{location}}/workloadIdentityPools/{{workload_identity_pool}}/providers/{{name}}
+      x-dcl-uses-state-hint: true
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - project
+      - location
+      - workloadIdentityPool
+      properties:
+        attributeCondition:
+          type: string
+          x-dcl-go-name: AttributeCondition
+          description: '[A Common Expression Language](https://opensource.google/projects/cel)
+            expression, in plain text, to restrict what otherwise valid authentication
+            credentials issued by the provider should not be accepted. The expression
+            must output a boolean representing whether to allow the federation. The
+            following keywords may be referenced in the expressions: * `assertion`:
+            JSON representing the authentication credential issued by the provider.
+            * `google`: The Google attributes mapped from the assertion in the `attribute_mappings`.
+            * `attribute`: The custom attributes mapped from the assertion in the
+            `attribute_mappings`. The maximum length of the attribute condition expression
+            is 4096 characters. If unspecified, all valid authentication credential
+            are accepted. The following example shows how to only allow credentials
+            with a mapped `google.groups` value of `admins`: ``` "''admins'' in google.groups"
+            ```'
+        attributeMapping:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: AttributeMapping
+          description: 'Maps attributes from authentication credentials issued by
+            an external identity provider to Google Cloud attributes, such as `subject`
+            and `segment`. Each key must be a string specifying the Google Cloud IAM
+            attribute to map to. The following keys are supported: * `google.subject`:
+            The principal IAM is authenticating. You can reference this value in IAM
+            bindings. This is also the subject that appears in Cloud Logging logs.
+            Cannot exceed 127 characters. * `google.groups`: Groups the external identity
+            belongs to. You can grant groups access to resources using an IAM `principalSet`
+            binding; access applies to all members of the group. You can also provide
+            custom attributes by specifying `attribute.{custom_attribute}`, where
+            `{custom_attribute}` is the name of the custom attribute to be mapped.
+            You can define a maximum of 50 custom attributes. The maximum length of
+            a mapped attribute key is 100 characters, and the key may only contain
+            the characters [a-z0-9_]. You can reference these attributes in IAM policies
+            to define fine-grained access for a workload to Google Cloud resources.
+            For example: * `google.subject`: `principal://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/subject/{value}`
+            * `google.groups`: `principalSet://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/group/{value}`
+            * `attribute.{custom_attribute}`: `principalSet://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/attribute.{custom_attribute}/{value}`
+            Each value must be a [Common Expression Language] (https://opensource.google/projects/cel)
+            function that maps an identity provider credential to the normalized attribute
+            specified by the corresponding map key. You can use the `assertion` keyword
+            in the expression to access a JSON representation of the authentication
+            credential issued by the provider. The maximum length of an attribute
+            mapping expression is 2048 characters. When evaluated, the total size
+            of all mapped attributes must not exceed 8KB. For AWS providers, if no
+            attribute mapping is defined, the following default mapping applies: ```
+            { "google.subject":"assertion.arn", "attribute.aws_role": "assertion.arn.contains(''assumed-role'')"
+            " ? assertion.arn.extract(''{account_arn}assumed-role/'')" " + ''assumed-role/''"
+            " + assertion.arn.extract(''assumed-role/{role_name}/'')" " : assertion.arn",
+            } ``` If any custom attribute mappings are defined, they must include
+            a mapping to the `google.subject` attribute. For OIDC providers, you must
+            supply a custom mapping, which must include the `google.subject` attribute.
+            For example, the following maps the `sub` claim of the incoming credential
+            to the `subject` attribute on a Google token: ``` {"google.subject": "assertion.sub"}
+            ```'
+        aws:
+          type: object
+          x-dcl-go-name: Aws
+          x-dcl-go-type: WorkloadIdentityPoolProviderAws
+          description: An Amazon Web Services identity provider.
+          x-dcl-conflicts:
+          - oidc
+          required:
+          - accountId
+          properties:
+            accountId:
+              type: string
+              x-dcl-go-name: AccountId
+              description: Required. The AWS account ID.
+            stsUri:
+              type: array
+              x-dcl-go-name: StsUri
+              description: A list of AWS STS URIs that can be used when exchanging
+                credentials. If not provided, any valid AWS STS URI is allowed. URIs
+                must use the form `https://sts.amazonaws.com` or `https://sts.{region}.amazonaws.com`,
+                where {region} is a valid AWS region. You can specify a maximum of
+                25 URIs.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+              x-dcl-mutable-unreadable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: A description for the provider. Cannot exceed 256 characters.
+        disabled:
+          type: boolean
+          x-dcl-go-name: Disabled
+          description: Whether the provider is disabled. You cannot use a disabled
+            provider to exchange tokens. However, existing tokens still grant access.
+        displayName:
+          type: string
+          x-dcl-go-name: DisplayName
+          description: A display name for the provider. Cannot exceed 32 characters.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Output only. The resource name of the provider.
+          x-kubernetes-immutable: true
+        oidc:
+          type: object
+          x-dcl-go-name: Oidc
+          x-dcl-go-type: WorkloadIdentityPoolProviderOidc
+          description: An OpenId Connect 1.0 identity provider.
+          x-dcl-conflicts:
+          - aws
+          required:
+          - issuerUri
+          properties:
+            allowedAudiences:
+              type: array
+              x-dcl-go-name: AllowedAudiences
+              description: 'Acceptable values for the `aud` field (audience) in the
+                OIDC token. Token exchange requests are rejected if the token audience
+                does not match one of the configured values. Each audience may be
+                at most 256 characters. A maximum of 10 audiences may be configured.
+                If this list is empty, the OIDC token audience must be equal to the
+                full canonical resource name of the WorkloadIdentityPoolProvider,
+                with or without the HTTPS prefix. For example: ``` //iam.googleapis.com/projects//locations//workloadIdentityPools//providers/
+                https://iam.googleapis.com/projects//locations//workloadIdentityPools//providers/
+                ```'
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+            issuerUri:
+              type: string
+              x-dcl-go-name: IssuerUri
+              description: Required. The OIDC issuer URL. Must be an HTTPS endpoint.
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: WorkloadIdentityPoolProviderStateEnum
+          readOnly: true
+          description: 'Output only. The state of the provider. Possible values: STATE_UNSPECIFIED,
+            ACTIVE, DELETED'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - ACTIVE
+          - DELETED
+        workloadIdentityPool:
+          type: string
+          x-dcl-go-name: WorkloadIdentityPool
+          description: The workloadIdentityPool for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Iam/WorkloadIdentityPool
+            field: name
+            parent: true

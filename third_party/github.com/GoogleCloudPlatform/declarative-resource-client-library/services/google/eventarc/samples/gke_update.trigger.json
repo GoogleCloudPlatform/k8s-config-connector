@@ -1,0 +1,32 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{name}}",
+  "labels": {
+    "foo1": "bar1"
+  },
+  "destination": {
+    "gke": {
+      "cluster": "projects/{{project}}/locations/us-central1-c/clusters/eventarc-trigger-cli-cluster",
+      "location": "us-central1-c",
+      "namespace": "default",
+      "service": "eventarc-trigger-cloudrun-anthos-2",
+      "path": "/route/subroute"
+    }
+  },
+  "serviceAccount": "{{service_account}}",
+  "matchingCriteria": [
+    {
+      "attribute": "type",
+      "value": "google.cloud.audit.log.v1.written"
+    },
+    {
+      "attribute": "serviceName",
+      "value": "storage.googleapis.com"
+    },
+    {
+      "attribute": "methodName",
+      "value": "storage.objects.create"
+    }
+  ]
+}

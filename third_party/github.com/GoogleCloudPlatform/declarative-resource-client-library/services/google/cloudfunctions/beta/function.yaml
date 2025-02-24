@@ -1,0 +1,392 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: CloudFunctions/Function
+  description: The CloudFunctions Function resource
+  x-dcl-struct-name: Function
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a Function
+    parameters:
+    - name: function
+      required: true
+      description: A full instance of a Function
+  apply:
+    description: The function used to apply information about a Function
+    parameters:
+    - name: function
+      required: true
+      description: A full instance of a Function
+  delete:
+    description: The function used to delete a Function
+    parameters:
+    - name: function
+      required: true
+      description: A full instance of a Function
+  deleteAll:
+    description: The function used to delete all Function
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: region
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Function
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: region
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Function:
+      title: Function
+      x-dcl-id: projects/{{project}}/locations/{{region}}/functions/{{name}}
+      x-dcl-locations:
+      - region
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - runtime
+      - region
+      - project
+      properties:
+        availableMemoryMb:
+          type: integer
+          format: int64
+          x-dcl-go-name: AvailableMemoryMb
+          description: 'Memory (in MB), available to the function. Default value is
+            256MB. Allowed values are: 128MB, 256MB, 512MB, 1024MB, and 2048MB.'
+          x-dcl-server-default: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: User-provided description of a function.
+        entryPoint:
+          type: string
+          x-dcl-go-name: EntryPoint
+          description: |-
+            The name of the function (as defined in source code) that will be
+            executed. Defaults to the resource name suffix, if not specified. For
+            backward compatibility, if function with given name is not found, then the
+            system will try to use function named "function".
+            For Node.js this is name of a function exported by the module specified
+            in `source_location`.
+          x-kubernetes-immutable: true
+        environmentVariables:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: EnvironmentVariables
+          description: Environment variables that shall be available during function
+            execution.
+        eventTrigger:
+          type: object
+          x-dcl-go-name: EventTrigger
+          x-dcl-go-type: FunctionEventTrigger
+          description: A source that fires events in response to a condition in another
+            service.
+          x-kubernetes-immutable: true
+          x-dcl-conflicts:
+          - httpsTrigger
+          required:
+          - eventType
+          - resource
+          properties:
+            eventType:
+              type: string
+              x-dcl-go-name: EventType
+              description: |-
+                Required. The type of event to observe. For example:
+                `providers/cloud.storage/eventTypes/object.change` and
+                `providers/cloud.pubsub/eventTypes/topic.publish`.
+
+                Event types match pattern `providers/*/eventTypes/*.*`.
+                The pattern contains:
+
+                1. namespace: For example, `cloud.storage` and
+                   `google.firebase.analytics`.
+                2. resource type: The type of resource on which event occurs. For
+                   example, the Google Cloud Storage API includes the type `object`.
+                3. action: The action that generates the event. For example, action for
+                   a Google Cloud Storage Object is 'change'.
+                These parts are lower case.
+              x-kubernetes-immutable: true
+            failurePolicy:
+              type: boolean
+              x-dcl-go-name: FailurePolicy
+              description: Specifies policy for failed executions.
+              x-kubernetes-immutable: true
+            resource:
+              type: string
+              x-dcl-go-name: Resource
+              description: |-
+                Required. The resource(s) from which to observe events, for example,
+                `projects/_/buckets/myBucket`.
+
+                Not all syntactically correct values are accepted by all services. For
+                example:
+
+                1. The authorization model must support it. Google Cloud Functions
+                   only allows EventTriggers to be deployed that observe resources in the
+                   same project as the `Function`.
+                2. The resource type must match the pattern expected for an
+                   `event_type`. For example, an `EventTrigger` that has an
+                   `event_type` of "google.pubsub.topic.publish" should have a resource
+                   that matches Google Cloud Pub/Sub topics.
+
+                Additionally, some services may support short names when creating an
+                `EventTrigger`. These will always be returned in the normalized "long"
+                format.
+
+                See each *service's* documentation for supported formats.
+              x-kubernetes-immutable: true
+              x-dcl-references:
+              - resource: Storage/Bucket
+                field: name
+                format: projects/{{project}}/buckets/{{name}}
+              - resource: Pubsub/Topic
+                field: name
+            service:
+              type: string
+              x-dcl-go-name: Service
+              description: |
+                The hostname of the service that should be observed.
+
+                If no string is provided, the default service implementing the API will
+                be used. For example, `storage.googleapis.com` is the default for all
+                event types in the `google.storage` namespace.
+              x-kubernetes-immutable: true
+        httpsTrigger:
+          type: object
+          x-dcl-go-name: HttpsTrigger
+          x-dcl-go-type: FunctionHttpsTrigger
+          description: An HTTPS endpoint type of source that can be triggered via
+            URL.
+          x-kubernetes-immutable: true
+          x-dcl-conflicts:
+          - eventTrigger
+          properties:
+            securityLevel:
+              type: string
+              x-dcl-go-name: SecurityLevel
+              x-dcl-go-type: FunctionHttpsTriggerSecurityLevelEnum
+              description: 'Both HTTP and HTTPS requests with URLs that match the
+                handler succeed without redirects. The application can examine the
+                request to determine which protocol was used and respond accordingly.
+                Possible values: SECURITY_LEVEL_UNSPECIFIED, SECURE_ALWAYS, SECURE_OPTIONAL'
+              x-kubernetes-immutable: true
+              enum:
+              - SECURITY_LEVEL_UNSPECIFIED
+              - SECURE_ALWAYS
+              - SECURE_OPTIONAL
+            url:
+              type: string
+              x-dcl-go-name: Url
+              readOnly: true
+              description: Output only. The deployed url for the function.
+              x-kubernetes-immutable: true
+        ingressSettings:
+          type: string
+          x-dcl-go-name: IngressSettings
+          x-dcl-go-type: FunctionIngressSettingsEnum
+          description: |-
+            The ingress settings for the function, controlling what traffic can reach
+            it. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB
+          x-dcl-server-default: true
+          enum:
+          - INGRESS_SETTINGS_UNSPECIFIED
+          - ALLOW_ALL
+          - ALLOW_INTERNAL_ONLY
+          - ALLOW_INTERNAL_AND_GCLB
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Labels associated with this Cloud Function.
+        maxInstances:
+          type: integer
+          format: int64
+          x-dcl-go-name: MaxInstances
+          description: |-
+            The limit on the maximum number of function instances that may coexist at a
+            given time.
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: A user-defined name of the function. Function names must be
+            unique globally.
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project id of the function.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        region:
+          type: string
+          x-dcl-go-name: Region
+          description: The name of the Cloud Functions region of the function.
+          x-kubernetes-immutable: true
+        runtime:
+          type: string
+          x-dcl-go-name: Runtime
+          description: |
+            The runtime in which to run the function. Required when deploying a new
+            function, optional when updating an existing function. For a complete
+            list of possible choices, see the
+            [`gcloud` command
+            reference](/sdk/gcloud/reference/functions/deploy#--runtime).
+        serviceAccountEmail:
+          type: string
+          x-dcl-go-name: ServiceAccountEmail
+          description: |-
+            The email of the function's service account. If empty, defaults to
+            `{project_id}@appspot.gserviceaccount.com`.
+          x-kubernetes-immutable: true
+          x-dcl-server-default: true
+          x-dcl-references:
+          - resource: Iam/ServiceAccount
+            field: email
+        sourceArchiveUrl:
+          type: string
+          x-dcl-go-name: SourceArchiveUrl
+          description: The Google Cloud Storage URL, starting with gs://, pointing
+            to the zip archive which contains the function.
+          x-kubernetes-immutable: true
+          x-dcl-conflicts:
+          - sourceRepository
+        sourceRepository:
+          type: object
+          x-dcl-go-name: SourceRepository
+          x-dcl-go-type: FunctionSourceRepository
+          description: Represents parameters related to source repository where a
+            function is hosted.
+          x-kubernetes-immutable: true
+          x-dcl-conflicts:
+          - sourceArchiveUrl
+          required:
+          - url
+          properties:
+            deployedUrl:
+              type: string
+              x-dcl-go-name: DeployedUrl
+              readOnly: true
+              description: |-
+                Output only. The URL pointing to the hosted repository where the function
+                were defined at the time of deployment. It always points to a specific
+                commit in the format described above.
+              x-kubernetes-immutable: true
+            url:
+              type: string
+              x-dcl-go-name: Url
+              description: |-
+                The URL pointing to the hosted repository where the function is defined.
+                There are supported Cloud Source Repository URLs in the following
+                formats:
+
+                To refer to a specific commit:
+                `https://source.developers.google.com/projects/*/repos/*/revisions/*/paths/*`
+                To refer to a moveable alias (branch):
+                `https://source.developers.google.com/projects/*/repos/*/moveable-aliases/*/paths/*`
+                In particular, to refer to HEAD use `master` moveable alias.
+                To refer to a specific fixed alias (tag):
+                `https://source.developers.google.com/projects/*/repos/*/fixed-aliases/*/paths/*`
+
+                You may omit `paths/*` if you want to use the main directory.
+              x-kubernetes-immutable: true
+        status:
+          type: string
+          x-dcl-go-name: Status
+          x-dcl-go-type: FunctionStatusEnum
+          readOnly: true
+          description: 'Output only. Status of the function deployment. Possible values:
+            CLOUD_FUNCTION_STATUS_UNSPECIFIED, ACTIVE, OFFLINE, DEPLOY_IN_PROGRESS,
+            DELETE_IN_PROGRESS, UNKNOWN'
+          x-kubernetes-immutable: true
+          enum:
+          - CLOUD_FUNCTION_STATUS_UNSPECIFIED
+          - ACTIVE
+          - OFFLINE
+          - DEPLOY_IN_PROGRESS
+          - DELETE_IN_PROGRESS
+          - UNKNOWN
+        timeout:
+          type: string
+          x-dcl-go-name: Timeout
+          description: |-
+            The function execution timeout. Execution is considered failed and
+            can be terminated if the function is not completed at the end of the
+            timeout period. Defaults to 60 seconds.
+          x-dcl-server-default: true
+        updateTime:
+          type: string
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The last update timestamp of a Cloud Function
+            in RFC3339 UTC 'Zulu' format, with nanosecond resolution and up to nine
+            fractional digits.
+          x-kubernetes-immutable: true
+        versionId:
+          type: integer
+          format: int64
+          x-dcl-go-name: VersionId
+          readOnly: true
+          description: |-
+            Output only. The version identifier of the Cloud Function. Each deployment attempt
+            results in a new version of a function being created.
+          x-kubernetes-immutable: true
+        vpcConnector:
+          type: string
+          x-dcl-go-name: VPCConnector
+          description: |-
+            The VPC Network Connector that this cloud function can connect to. It can
+            be either the fully-qualified URI, or the short name of the network
+            connector resource. The format of this field is
+            `projects/*/locations/*/connectors/*`
+          x-dcl-server-default: true
+          x-dcl-references:
+          - resource: Vpcaccess/Connector
+            field: name
+        vpcConnectorEgressSettings:
+          type: string
+          x-dcl-go-name: VPCConnectorEgressSettings
+          x-dcl-go-type: FunctionVPCConnectorEgressSettingsEnum
+          description: |-
+            The egress settings for the connector, controlling what traffic is diverted
+            through it. Possible values: VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED, PRIVATE_RANGES_ONLY, ALL_TRAFFIC
+          enum:
+          - VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED
+          - PRIVATE_RANGES_ONLY
+          - ALL_TRAFFIC

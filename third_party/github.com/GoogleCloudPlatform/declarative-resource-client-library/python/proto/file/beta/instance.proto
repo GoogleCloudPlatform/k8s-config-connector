@@ -1,0 +1,122 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum FileBetaInstanceStateEnum {
+  FileBetaInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  FileBetaInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  FileBetaInstanceStateEnumCREATING = 2;
+  FileBetaInstanceStateEnumREADY = 3;
+  FileBetaInstanceStateEnumREPAIRING = 4;
+  FileBetaInstanceStateEnumDELETING = 5;
+  FileBetaInstanceStateEnumERROR = 6;
+}
+
+enum FileBetaInstanceTierEnum {
+  FileBetaInstanceTierEnumNO_VALUE_DO_NOT_USE = 0;
+  FileBetaInstanceTierEnumTIER_UNSPECIFIED = 1;
+  FileBetaInstanceTierEnumSTANDARD = 2;
+  FileBetaInstanceTierEnumPREMIUM = 3;
+  FileBetaInstanceTierEnumBASIC_HDD = 4;
+  FileBetaInstanceTierEnumBASIC_SSD = 5;
+  FileBetaInstanceTierEnumHIGH_SCALE_SSD = 6;
+}
+
+enum FileBetaInstanceFileSharesNfsExportOptionsAccessModeEnum {
+  FileBetaInstanceFileSharesNfsExportOptionsAccessModeEnumNO_VALUE_DO_NOT_USE = 0;
+  FileBetaInstanceFileSharesNfsExportOptionsAccessModeEnumACCESS_MODE_UNSPECIFIED = 1;
+  FileBetaInstanceFileSharesNfsExportOptionsAccessModeEnumREAD_ONLY = 2;
+  FileBetaInstanceFileSharesNfsExportOptionsAccessModeEnumREAD_WRITE = 3;
+}
+
+enum FileBetaInstanceFileSharesNfsExportOptionsSquashModeEnum {
+  FileBetaInstanceFileSharesNfsExportOptionsSquashModeEnumNO_VALUE_DO_NOT_USE = 0;
+  FileBetaInstanceFileSharesNfsExportOptionsSquashModeEnumSQUASH_MODE_UNSPECIFIED = 1;
+  FileBetaInstanceFileSharesNfsExportOptionsSquashModeEnumNO_ROOT_SQUASH = 2;
+  FileBetaInstanceFileSharesNfsExportOptionsSquashModeEnumROOT_SQUASH = 3;
+}
+
+enum FileBetaInstanceNetworksModesEnum {
+  FileBetaInstanceNetworksModesEnumNO_VALUE_DO_NOT_USE = 0;
+  FileBetaInstanceNetworksModesEnumADDRESS_MODE_UNSPECIFIED = 1;
+  FileBetaInstanceNetworksModesEnumMODE_IPV4 = 2;
+}
+
+message FileBetaInstance {
+  string name = 1;
+  string description = 2;
+  FileBetaInstanceStateEnum state = 3;
+  string status_message = 4;
+  string create_time = 5;
+  FileBetaInstanceTierEnum tier = 6;
+  map<string, string> labels = 7;
+  repeated FileBetaInstanceFileShares file_shares = 8;
+  repeated FileBetaInstanceNetworks networks = 9;
+  string etag = 10;
+  string project = 11;
+  string location = 12;
+}
+
+message FileBetaInstanceFileShares {
+  string name = 1;
+  int64 capacity_gb = 2;
+  string source_backup = 3;
+  repeated FileBetaInstanceFileSharesNfsExportOptions nfs_export_options = 4;
+}
+
+message FileBetaInstanceFileSharesNfsExportOptions {
+  repeated string ip_ranges = 1;
+  FileBetaInstanceFileSharesNfsExportOptionsAccessModeEnum access_mode = 2;
+  FileBetaInstanceFileSharesNfsExportOptionsSquashModeEnum squash_mode = 3;
+  int64 anon_uid = 4;
+  int64 anon_gid = 5;
+}
+
+message FileBetaInstanceNetworks {
+  string network = 1;
+  repeated FileBetaInstanceNetworksModesEnum modes = 2;
+  string reserved_ip_range = 3;
+  repeated string ip_addresses = 4;
+}
+
+message ApplyFileBetaInstanceRequest {
+  FileBetaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFileBetaInstanceRequest {
+  string service_account_file = 1;
+  FileBetaInstance resource = 2;
+}
+
+message ListFileBetaInstanceRequest {
+  string service_account_file = 1;
+	FileBetaInstance resource = 2;
+}
+
+message ListFileBetaInstanceResponse {
+  repeated FileBetaInstance items = 1;
+}
+
+service FileBetaInstanceService {
+  rpc ApplyFileBetaInstance(ApplyFileBetaInstanceRequest) returns (FileBetaInstance);
+  rpc DeleteFileBetaInstance(DeleteFileBetaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListFileBetaInstance(ListFileBetaInstanceRequest) returns (ListFileBetaInstanceResponse);
+}

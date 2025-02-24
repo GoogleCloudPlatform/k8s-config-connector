@@ -1,0 +1,17 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "launchStage": "BETA",
+  "template": {
+    "template": {
+      "containers": [ {
+        "image": "gcr.io/run-intro/screenshot:latest"
+      } ]
+    },
+    "vpcAccess": {
+      "connector": "projects/{{project}}/locations/{{region}}/connectors/foo",
+      "egress": "ALL_TRAFFIC"
+    }
+  }
+}

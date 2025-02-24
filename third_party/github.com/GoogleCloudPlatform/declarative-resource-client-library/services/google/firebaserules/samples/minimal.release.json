@@ -1,0 +1,5 @@
+{
+  "name": "prod/{{release}}",
+  "project": "{{project}}",
+  "rulesetName":"projects/{{project}}/rulesets/{{ref:minimal.ruleset.json:name}}"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "{{resource_name}}",
+  "meshes": ["projects/{{project}}/locations/global/meshes/{{ref:basictls.networkservices.mesh.json:name}}"],
+  "gateways": ["projects/{{project}}/locations/global/gateways/{{ref:basictls.networkservices.gateway.json:name}}"],
+  "project": "{{project}}",
+  "description": "A test TcpRoute",
+  "location": "global",
+  "rules": [
+    {
+      "matches": [
+        {
+          "sniHost": ["*.foo.example.com", "foo.example.com"],
+          "alpn": ["h2", "http/1.1"]
+        }
+      ],
+      "action": {
+        "destinations": [
+          {
+           "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basictls.compute.backend_service.json:name}}",
+       "weight": 1
+          }
+        ]
+      }
+    }
+  ]
+}

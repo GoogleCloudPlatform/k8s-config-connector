@@ -1,0 +1,145 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComposerEnvironmentStateEnum {
+  ComposerEnvironmentStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComposerEnvironmentStateEnumSTATE_UNSPECIFIED = 1;
+  ComposerEnvironmentStateEnumCREATING = 2;
+  ComposerEnvironmentStateEnumRUNNING = 3;
+  ComposerEnvironmentStateEnumUPDATING = 4;
+  ComposerEnvironmentStateEnumDELETING = 5;
+  ComposerEnvironmentStateEnumERROR = 6;
+}
+
+message ComposerEnvironment {
+  string name = 1;
+  ComposerEnvironmentConfig config = 2;
+  string uuid = 3;
+  ComposerEnvironmentStateEnum state = 4;
+  string create_time = 5;
+  string update_time = 6;
+  map<string, string> labels = 7;
+  string project = 8;
+  string location = 9;
+}
+
+message ComposerEnvironmentConfig {
+  string gke_cluster = 1;
+  string dag_gcs_prefix = 2;
+  int64 node_count = 3;
+  ComposerEnvironmentConfigSoftwareConfig software_config = 4;
+  ComposerEnvironmentConfigNodeConfig node_config = 5;
+  ComposerEnvironmentConfigPrivateEnvironmentConfig private_environment_config = 6;
+  ComposerEnvironmentConfigWebServerNetworkAccessControl web_server_network_access_control = 7;
+  ComposerEnvironmentConfigDatabaseConfig database_config = 8;
+  ComposerEnvironmentConfigWebServerConfig web_server_config = 9;
+  ComposerEnvironmentConfigEncryptionConfig encryption_config = 10;
+  string airflow_uri = 11;
+}
+
+message ComposerEnvironmentConfigSoftwareConfig {
+  string image_version = 1;
+  map<string, string> airflow_config_overrides = 2;
+  map<string, string> pypi_packages = 3;
+  map<string, string> env_variables = 4;
+  string python_version = 5;
+}
+
+message ComposerEnvironmentConfigNodeConfig {
+  string location = 1;
+  string machine_type = 2;
+  string network = 3;
+  string subnetwork = 4;
+  int64 disk_size_gb = 5;
+  repeated string oauth_scopes = 6;
+  string service_account = 7;
+  repeated string tags = 8;
+  ComposerEnvironmentConfigNodeConfigIPAllocationPolicy ip_allocation_policy = 9;
+}
+
+message ComposerEnvironmentConfigNodeConfigIPAllocationPolicy {
+  bool use_ip_aliases = 1;
+  string cluster_secondary_range_name = 2;
+  string cluster_ipv4_cidr_block = 3;
+  string services_secondary_range_name = 4;
+  string services_ipv4_cidr_block = 5;
+}
+
+message ComposerEnvironmentConfigPrivateEnvironmentConfig {
+  bool enable_private_environment = 1;
+  ComposerEnvironmentConfigPrivateEnvironmentConfigPrivateClusterConfig private_cluster_config = 2;
+  string web_server_ipv4_cidr_block = 3;
+  string cloud_sql_ipv4_cidr_block = 4;
+  string web_server_ipv4_reserved_range = 5;
+}
+
+message ComposerEnvironmentConfigPrivateEnvironmentConfigPrivateClusterConfig {
+  bool enable_private_endpoint = 1;
+  string master_ipv4_cidr_block = 2;
+  string master_ipv4_reserved_range = 3;
+}
+
+message ComposerEnvironmentConfigWebServerNetworkAccessControl {
+  repeated ComposerEnvironmentConfigWebServerNetworkAccessControlAllowedIPRanges allowed_ip_ranges = 1;
+}
+
+message ComposerEnvironmentConfigWebServerNetworkAccessControlAllowedIPRanges {
+  string value = 1;
+  string description = 2;
+}
+
+message ComposerEnvironmentConfigDatabaseConfig {
+  string machine_type = 1;
+}
+
+message ComposerEnvironmentConfigWebServerConfig {
+  string machine_type = 1;
+}
+
+message ComposerEnvironmentConfigEncryptionConfig {
+  string kms_key_name = 1;
+}
+
+message ApplyComposerEnvironmentRequest {
+  ComposerEnvironment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComposerEnvironmentRequest {
+  string service_account_file = 1;
+  ComposerEnvironment resource = 2;
+}
+
+message ListComposerEnvironmentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComposerEnvironmentResponse {
+  repeated ComposerEnvironment items = 1;
+}
+
+service ComposerEnvironmentService {
+  rpc ApplyComposerEnvironment(ApplyComposerEnvironmentRequest) returns (ComposerEnvironment);
+  rpc DeleteComposerEnvironment(DeleteComposerEnvironmentRequest) returns (google.protobuf.Empty);
+  rpc ListComposerEnvironment(ListComposerEnvironmentRequest) returns (ListComposerEnvironmentResponse);
+}

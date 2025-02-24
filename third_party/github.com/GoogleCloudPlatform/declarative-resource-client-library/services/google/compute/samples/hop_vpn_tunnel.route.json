@@ -1,0 +1,10 @@
+{
+  "name": "{{name}}",
+  "project": "{{ref:first.cloudresourcemanager.project.json:name}}",
+  "destRange": "0.0.0.0/0",
+  "network": "{{ref:project.network.json:selfLink}}",
+  "nextHopVpnTunnel": "{{ref:basic.vpn_tunnel.json:selfLink}}",
+  "priority": 100,
+  "tag": ["test"],
+  "description": "test description."
+}

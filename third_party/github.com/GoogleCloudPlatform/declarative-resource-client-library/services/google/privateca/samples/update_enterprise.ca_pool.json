@@ -1,0 +1,103 @@
+{
+  "name": "{{pool}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "tier": "ENTERPRISE",
+  "issuancePolicy": {
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "minModulusSize": 128,
+          "maxModulusSize": 256
+        }
+      },
+      {
+        "ellipticCurve": {
+          "signatureAlgorithm": "ECDSA_P256"
+        }
+      }
+    ],
+    "maximumLifetime": "86400s",
+    "allowedIssuanceModes": {
+      "allowCsrBasedIssuance": false,
+      "allowConfigBasedIssuance": true
+    },
+    "baselineValues": {
+      "keyUsage": {
+        "baseKeyUsage": {
+          "digitalSignature": true,
+          "contentCommitment": true,
+          "keyEncipherment": true,
+          "dataEncipherment": true,
+          "keyAgreement": true,
+          "certSign": true,
+          "crlSign": true,
+          "encipherOnly": true,
+          "decipherOnly": true
+        },
+        "extendedKeyUsage": {
+          "serverAuth": true,
+          "clientAuth": true,
+          "codeSigning": true,
+          "emailProtection": true,
+          "timeStamping": true,
+          "ocspSigning": true
+        },
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [1, 6]
+          }
+        ]
+      },
+      "caOptions": {
+        "isCa": true,
+        "maxIssuerPathLength": 0,
+        "zeroMaxIssuerPathLength": true
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [1, 6]
+        }
+      ],
+      "aiaOcspServers": [
+        "new-string"
+      ],
+      "additionalExtensions": [
+        {
+          "objectId": {
+            "objectIdPath": [1, 6]
+          },
+          "critical": true,
+          "value": "bmV3LXN0cmluZwo="
+        }
+      ]
+    },
+    "identityConstraints": {
+      "celExpression": {
+        "title": "Updated expression",
+        "description": "Always true",
+        "expression": "true",
+        "location": "update_devops.ca_pool.json"
+      },
+      "allowSubjectPassthrough": true,
+      "allowSubjectAltNamesPassthrough": true
+    },
+    "passthroughExtensions": {
+      "knownExtensions": [
+        "EXTENDED_KEY_USAGE"
+      ],
+      "additionalExtensions": [
+        {
+          "objectIdPath": [1, 6]
+        }
+      ]
+    }
+  },
+  "publishingOptions": {
+    "publishCaCert": true,
+    "publishCrl": true
+  },
+  "labels": {
+    "label-two": "value-two"
+  }
+}

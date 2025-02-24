@@ -1,0 +1,5 @@
+{
+  "role": "roles/cloudkms.admin",
+  "member": "serviceAccount:{{test_service_account}}",
+  "resource": "{{ref:minimal.ekm_connection.json:__resource__}}"
+}

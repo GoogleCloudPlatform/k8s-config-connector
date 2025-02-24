@@ -1,0 +1,98 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaServiceAttachmentConnectionPreferenceEnum {
+  ComputeAlphaServiceAttachmentConnectionPreferenceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaServiceAttachmentConnectionPreferenceEnumCONNECTION_PREFERENCE_UNSPECIFIED = 1;
+  ComputeAlphaServiceAttachmentConnectionPreferenceEnumACCEPT_AUTOMATIC = 2;
+  ComputeAlphaServiceAttachmentConnectionPreferenceEnumACCEPT_MANUAL = 3;
+}
+
+enum ComputeAlphaServiceAttachmentConnectedEndpointsStatusEnum {
+  ComputeAlphaServiceAttachmentConnectedEndpointsStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaServiceAttachmentConnectedEndpointsStatusEnumPENDING = 1;
+  ComputeAlphaServiceAttachmentConnectedEndpointsStatusEnumRUNNING = 2;
+  ComputeAlphaServiceAttachmentConnectedEndpointsStatusEnumDONE = 3;
+}
+
+message ComputeAlphaServiceAttachment {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string self_link = 4;
+  string region = 5;
+  string target_service = 6;
+  ComputeAlphaServiceAttachmentConnectionPreferenceEnum connection_preference = 7;
+  repeated ComputeAlphaServiceAttachmentConnectedEndpoints connected_endpoints = 8;
+  repeated string nat_subnets = 9;
+  bool enable_proxy_protocol = 10;
+  repeated string consumer_reject_lists = 11;
+  repeated ComputeAlphaServiceAttachmentConsumerAcceptLists consumer_accept_lists = 12;
+  ComputeAlphaServiceAttachmentPscServiceAttachmentId psc_service_attachment_id = 13;
+  string fingerprint = 14;
+  string project = 15;
+  string location = 16;
+}
+
+message ComputeAlphaServiceAttachmentConnectedEndpoints {
+  ComputeAlphaServiceAttachmentConnectedEndpointsStatusEnum status = 1;
+  int64 psc_connection_id = 2;
+  string endpoint = 3;
+}
+
+message ComputeAlphaServiceAttachmentConsumerAcceptLists {
+  string project_id_or_num = 1;
+  int64 connection_limit = 2;
+}
+
+message ComputeAlphaServiceAttachmentPscServiceAttachmentId {
+  int64 high = 1;
+  int64 low = 2;
+}
+
+message ApplyComputeAlphaServiceAttachmentRequest {
+  ComputeAlphaServiceAttachment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaServiceAttachmentRequest {
+  string service_account_file = 1;
+  ComputeAlphaServiceAttachment resource = 2;
+}
+
+message ListComputeAlphaServiceAttachmentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeAlphaServiceAttachmentResponse {
+  repeated ComputeAlphaServiceAttachment items = 1;
+}
+
+service ComputeAlphaServiceAttachmentService {
+  rpc ApplyComputeAlphaServiceAttachment(ApplyComputeAlphaServiceAttachmentRequest) returns (ComputeAlphaServiceAttachment);
+  rpc DeleteComputeAlphaServiceAttachment(DeleteComputeAlphaServiceAttachmentRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaServiceAttachment(ListComputeAlphaServiceAttachmentRequest) returns (ListComputeAlphaServiceAttachmentResponse);
+}

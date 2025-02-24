@@ -1,0 +1,6 @@
+{
+  "project": "{{project}}",
+  "displayName": "sample-group",
+  "filter": "resource.metadata.region=\"europe-west2\"",
+  "isCluster": true
+}

@@ -1,0 +1,81 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message NetworkservicesAlphaTlsRoute {
+  string name = 1;
+  string self_link = 2;
+  string create_time = 3;
+  string update_time = 4;
+  string description = 5;
+  repeated NetworkservicesAlphaTlsRouteRules rules = 6;
+  repeated string meshes = 7;
+  repeated string gateways = 8;
+  string project = 9;
+  string location = 10;
+}
+
+message NetworkservicesAlphaTlsRouteRules {
+  repeated NetworkservicesAlphaTlsRouteRulesMatches matches = 1;
+  NetworkservicesAlphaTlsRouteRulesAction action = 2;
+}
+
+message NetworkservicesAlphaTlsRouteRulesMatches {
+  repeated string sni_host = 1;
+  repeated string alpn = 2;
+}
+
+message NetworkservicesAlphaTlsRouteRulesAction {
+  repeated NetworkservicesAlphaTlsRouteRulesActionDestinations destinations = 1;
+}
+
+message NetworkservicesAlphaTlsRouteRulesActionDestinations {
+  string service_name = 1;
+  int64 weight = 2;
+}
+
+message ApplyNetworkservicesAlphaTlsRouteRequest {
+  NetworkservicesAlphaTlsRoute resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworkservicesAlphaTlsRouteRequest {
+  string service_account_file = 1;
+  NetworkservicesAlphaTlsRoute resource = 2;
+}
+
+message ListNetworkservicesAlphaTlsRouteRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListNetworkservicesAlphaTlsRouteResponse {
+  repeated NetworkservicesAlphaTlsRoute items = 1;
+}
+
+service NetworkservicesAlphaTlsRouteService {
+  rpc ApplyNetworkservicesAlphaTlsRoute(ApplyNetworkservicesAlphaTlsRouteRequest) returns (NetworkservicesAlphaTlsRoute);
+  rpc DeleteNetworkservicesAlphaTlsRoute(DeleteNetworkservicesAlphaTlsRouteRequest) returns (google.protobuf.Empty);
+  rpc ListNetworkservicesAlphaTlsRoute(ListNetworkservicesAlphaTlsRouteRequest) returns (ListNetworkservicesAlphaTlsRouteResponse);
+}

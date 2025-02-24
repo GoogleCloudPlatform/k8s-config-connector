@@ -1,0 +1,10 @@
+{
+  "name": "{{compute_network}}",
+  "project": "{{project}}",
+  "description": "A sample network",
+  "autoCreateSubnetworks": false,
+  "routingConfig": {
+    "routingMode": "GLOBAL"
+  },
+  "mtu": 1500
+}

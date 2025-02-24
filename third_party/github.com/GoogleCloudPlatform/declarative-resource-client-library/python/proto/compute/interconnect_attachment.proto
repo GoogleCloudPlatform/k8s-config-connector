@@ -1,0 +1,139 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeInterconnectAttachmentOperationalStatusEnum {
+  ComputeInterconnectAttachmentOperationalStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectAttachmentOperationalStatusEnumOS_ACTIVE = 1;
+  ComputeInterconnectAttachmentOperationalStatusEnumOS_UNPROVISIONED = 2;
+}
+
+enum ComputeInterconnectAttachmentTypeEnum {
+  ComputeInterconnectAttachmentTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectAttachmentTypeEnumPATH = 1;
+  ComputeInterconnectAttachmentTypeEnumOTHER = 2;
+  ComputeInterconnectAttachmentTypeEnumPARAMETER = 3;
+}
+
+enum ComputeInterconnectAttachmentEdgeAvailabilityDomainEnum {
+  ComputeInterconnectAttachmentEdgeAvailabilityDomainEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_ANY = 1;
+  ComputeInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_1 = 2;
+  ComputeInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_2 = 3;
+}
+
+enum ComputeInterconnectAttachmentBandwidthEnum {
+  ComputeInterconnectAttachmentBandwidthEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_50M = 1;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_100M = 2;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_200M = 3;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_300M = 4;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_400M = 5;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_500M = 6;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_1G = 7;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_2G = 8;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_5G = 9;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_10G = 10;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_20G = 11;
+  ComputeInterconnectAttachmentBandwidthEnumBPS_50G = 12;
+}
+
+enum ComputeInterconnectAttachmentStateEnum {
+  ComputeInterconnectAttachmentStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectAttachmentStateEnumDEPRECATED = 1;
+  ComputeInterconnectAttachmentStateEnumOBSOLETE = 2;
+  ComputeInterconnectAttachmentStateEnumDELETED = 3;
+  ComputeInterconnectAttachmentStateEnumACTIVE = 4;
+}
+
+enum ComputeInterconnectAttachmentEncryptionEnum {
+  ComputeInterconnectAttachmentEncryptionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectAttachmentEncryptionEnumNONE = 1;
+  ComputeInterconnectAttachmentEncryptionEnumIPSEC = 2;
+}
+
+message ComputeInterconnectAttachment {
+  string description = 1;
+  string self_link = 2;
+  int64 id = 3;
+  string name = 4;
+  string interconnect = 5;
+  string router = 6;
+  string region = 7;
+  int64 mtu = 8;
+  ComputeInterconnectAttachmentPrivateInterconnectInfo private_interconnect_info = 9;
+  ComputeInterconnectAttachmentOperationalStatusEnum operational_status = 10;
+  string cloud_router_ip_address = 11;
+  string customer_router_ip_address = 12;
+  ComputeInterconnectAttachmentTypeEnum type = 13;
+  string pairing_key = 14;
+  bool admin_enabled = 15;
+  int64 vlan_tag8021q = 16;
+  ComputeInterconnectAttachmentEdgeAvailabilityDomainEnum edge_availability_domain = 17;
+  repeated string candidate_subnets = 18;
+  ComputeInterconnectAttachmentBandwidthEnum bandwidth = 19;
+  ComputeInterconnectAttachmentPartnerMetadata partner_metadata = 20;
+  ComputeInterconnectAttachmentStateEnum state = 21;
+  int64 partner_asn = 22;
+  ComputeInterconnectAttachmentEncryptionEnum encryption = 23;
+  repeated string ipsec_internal_addresses = 24;
+  int64 dataplane_version = 25;
+  bool satisfies_pzs = 26;
+  string project = 27;
+}
+
+message ComputeInterconnectAttachmentPrivateInterconnectInfo {
+  int64 tag8021q = 1;
+}
+
+message ComputeInterconnectAttachmentPartnerMetadata {
+  string partner_name = 1;
+  string interconnect_name = 2;
+  string portal_url = 3;
+}
+
+message ApplyComputeInterconnectAttachmentRequest {
+  ComputeInterconnectAttachment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeInterconnectAttachmentRequest {
+  string service_account_file = 1;
+  ComputeInterconnectAttachment resource = 2;
+}
+
+message ListComputeInterconnectAttachmentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeInterconnectAttachmentResponse {
+  repeated ComputeInterconnectAttachment items = 1;
+}
+
+service ComputeInterconnectAttachmentService {
+  rpc ApplyComputeInterconnectAttachment(ApplyComputeInterconnectAttachmentRequest) returns (ComputeInterconnectAttachment);
+  rpc DeleteComputeInterconnectAttachment(DeleteComputeInterconnectAttachmentRequest) returns (google.protobuf.Empty);
+  rpc ListComputeInterconnectAttachment(ListComputeInterconnectAttachmentRequest) returns (ListComputeInterconnectAttachmentResponse);
+}

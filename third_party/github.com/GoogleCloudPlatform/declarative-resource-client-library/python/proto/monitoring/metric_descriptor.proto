@@ -1,0 +1,121 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum MonitoringMetricDescriptorLabelsValueTypeEnum {
+  MonitoringMetricDescriptorLabelsValueTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringMetricDescriptorLabelsValueTypeEnumSTRING = 1;
+  MonitoringMetricDescriptorLabelsValueTypeEnumBOOL = 2;
+  MonitoringMetricDescriptorLabelsValueTypeEnumINT64 = 3;
+}
+
+enum MonitoringMetricDescriptorMetricKindEnum {
+  MonitoringMetricDescriptorMetricKindEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringMetricDescriptorMetricKindEnumMETRIC_KIND_UNSPECIFIED = 1;
+  MonitoringMetricDescriptorMetricKindEnumGAUGE = 2;
+  MonitoringMetricDescriptorMetricKindEnumDELTA = 3;
+  MonitoringMetricDescriptorMetricKindEnumCUMULATIVE = 4;
+}
+
+enum MonitoringMetricDescriptorValueTypeEnum {
+  MonitoringMetricDescriptorValueTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringMetricDescriptorValueTypeEnumSTRING = 1;
+  MonitoringMetricDescriptorValueTypeEnumBOOL = 2;
+  MonitoringMetricDescriptorValueTypeEnumINT64 = 3;
+}
+
+enum MonitoringMetricDescriptorMetadataLaunchStageEnum {
+  MonitoringMetricDescriptorMetadataLaunchStageEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringMetricDescriptorMetadataLaunchStageEnumLAUNCH_STAGE_UNSPECIFIED = 1;
+  MonitoringMetricDescriptorMetadataLaunchStageEnumUNIMPLEMENTED = 2;
+  MonitoringMetricDescriptorMetadataLaunchStageEnumPRELAUNCH = 3;
+  MonitoringMetricDescriptorMetadataLaunchStageEnumEARLY_ACCESS = 4;
+  MonitoringMetricDescriptorMetadataLaunchStageEnumALPHA = 5;
+  MonitoringMetricDescriptorMetadataLaunchStageEnumBETA = 6;
+  MonitoringMetricDescriptorMetadataLaunchStageEnumGA = 7;
+  MonitoringMetricDescriptorMetadataLaunchStageEnumDEPRECATED = 8;
+}
+
+enum MonitoringMetricDescriptorLaunchStageEnum {
+  MonitoringMetricDescriptorLaunchStageEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringMetricDescriptorLaunchStageEnumLAUNCH_STAGE_UNSPECIFIED = 1;
+  MonitoringMetricDescriptorLaunchStageEnumUNIMPLEMENTED = 2;
+  MonitoringMetricDescriptorLaunchStageEnumPRELAUNCH = 3;
+  MonitoringMetricDescriptorLaunchStageEnumEARLY_ACCESS = 4;
+  MonitoringMetricDescriptorLaunchStageEnumALPHA = 5;
+  MonitoringMetricDescriptorLaunchStageEnumBETA = 6;
+  MonitoringMetricDescriptorLaunchStageEnumGA = 7;
+  MonitoringMetricDescriptorLaunchStageEnumDEPRECATED = 8;
+}
+
+message MonitoringMetricDescriptor {
+  string self_link = 1;
+  string type = 2;
+  repeated MonitoringMetricDescriptorLabels labels = 3;
+  MonitoringMetricDescriptorMetricKindEnum metric_kind = 4;
+  MonitoringMetricDescriptorValueTypeEnum value_type = 5;
+  string unit = 6;
+  string description = 7;
+  string display_name = 8;
+  MonitoringMetricDescriptorMetadata metadata = 9;
+  MonitoringMetricDescriptorLaunchStageEnum launch_stage = 10;
+  repeated string monitored_resource_types = 11;
+  string project = 12;
+}
+
+message MonitoringMetricDescriptorLabels {
+  string key = 1;
+  MonitoringMetricDescriptorLabelsValueTypeEnum value_type = 2;
+  string description = 3;
+}
+
+message MonitoringMetricDescriptorMetadata {
+  MonitoringMetricDescriptorMetadataLaunchStageEnum launch_stage = 1;
+  string sample_period = 2;
+  string ingest_delay = 3;
+}
+
+message ApplyMonitoringMetricDescriptorRequest {
+  MonitoringMetricDescriptor resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteMonitoringMetricDescriptorRequest {
+  string service_account_file = 1;
+  MonitoringMetricDescriptor resource = 2;
+}
+
+message ListMonitoringMetricDescriptorRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListMonitoringMetricDescriptorResponse {
+  repeated MonitoringMetricDescriptor items = 1;
+}
+
+service MonitoringMetricDescriptorService {
+  rpc ApplyMonitoringMetricDescriptor(ApplyMonitoringMetricDescriptorRequest) returns (MonitoringMetricDescriptor);
+  rpc DeleteMonitoringMetricDescriptor(DeleteMonitoringMetricDescriptorRequest) returns (google.protobuf.Empty);
+  rpc ListMonitoringMetricDescriptor(ListMonitoringMetricDescriptorRequest) returns (ListMonitoringMetricDescriptorResponse);
+}

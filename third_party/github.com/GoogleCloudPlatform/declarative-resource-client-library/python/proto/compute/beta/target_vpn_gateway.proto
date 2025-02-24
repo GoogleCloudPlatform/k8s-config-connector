@@ -1,0 +1,66 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaTargetVpnGatewayStatusEnum {
+  ComputeBetaTargetVpnGatewayStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaTargetVpnGatewayStatusEnumPENDING = 1;
+  ComputeBetaTargetVpnGatewayStatusEnumRUNNING = 2;
+  ComputeBetaTargetVpnGatewayStatusEnumDONE = 3;
+}
+
+message ComputeBetaTargetVpnGateway {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string region = 4;
+  string network = 5;
+  repeated string tunnel = 6;
+  ComputeBetaTargetVpnGatewayStatusEnum status = 7;
+  string self_link = 8;
+  repeated string forwarding_rule = 9;
+  string project = 10;
+}
+
+message ApplyComputeBetaTargetVpnGatewayRequest {
+  ComputeBetaTargetVpnGateway resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaTargetVpnGatewayRequest {
+  string service_account_file = 1;
+  ComputeBetaTargetVpnGateway resource = 2;
+}
+
+message ListComputeBetaTargetVpnGatewayRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeBetaTargetVpnGatewayResponse {
+  repeated ComputeBetaTargetVpnGateway items = 1;
+}
+
+service ComputeBetaTargetVpnGatewayService {
+  rpc ApplyComputeBetaTargetVpnGateway(ApplyComputeBetaTargetVpnGatewayRequest) returns (ComputeBetaTargetVpnGateway);
+  rpc DeleteComputeBetaTargetVpnGateway(DeleteComputeBetaTargetVpnGatewayRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaTargetVpnGateway(ListComputeBetaTargetVpnGatewayRequest) returns (ListComputeBetaTargetVpnGatewayResponse);
+}

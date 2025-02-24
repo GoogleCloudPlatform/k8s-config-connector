@@ -1,0 +1,74 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VmwareengineAlphaClusterStateEnum {
+  VmwareengineAlphaClusterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  VmwareengineAlphaClusterStateEnumSTATE_UNSPECIFIED = 1;
+  VmwareengineAlphaClusterStateEnumACTIVE = 2;
+  VmwareengineAlphaClusterStateEnumCREATING = 3;
+  VmwareengineAlphaClusterStateEnumUPDATING = 4;
+  VmwareengineAlphaClusterStateEnumFAILED = 5;
+  VmwareengineAlphaClusterStateEnumDELETED = 6;
+}
+
+message VmwareengineAlphaCluster {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  map<string, string> labels = 4;
+  VmwareengineAlphaClusterStateEnum state = 5;
+  bool management = 6;
+  string node_type_id = 7;
+  int64 node_count = 8;
+  string project = 9;
+  string location = 10;
+  string private_cloud = 11;
+}
+
+message ApplyVmwareengineAlphaClusterRequest {
+  VmwareengineAlphaCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVmwareengineAlphaClusterRequest {
+  string service_account_file = 1;
+  VmwareengineAlphaCluster resource = 2;
+}
+
+message ListVmwareengineAlphaClusterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string PrivateCloud = 4;
+}
+
+message ListVmwareengineAlphaClusterResponse {
+  repeated VmwareengineAlphaCluster items = 1;
+}
+
+service VmwareengineAlphaClusterService {
+  rpc ApplyVmwareengineAlphaCluster(ApplyVmwareengineAlphaClusterRequest) returns (VmwareengineAlphaCluster);
+  rpc DeleteVmwareengineAlphaCluster(DeleteVmwareengineAlphaClusterRequest) returns (google.protobuf.Empty);
+  rpc ListVmwareengineAlphaCluster(ListVmwareengineAlphaClusterRequest) returns (ListVmwareengineAlphaClusterResponse);
+}

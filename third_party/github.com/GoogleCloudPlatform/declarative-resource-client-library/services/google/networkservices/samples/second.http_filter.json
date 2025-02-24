@@ -1,0 +1,9 @@
+{
+  "name": "{{filter2}}",
+  "location": "global",
+  "project": "{{project}}",
+  "description": "A sample http filter.",
+  "config": "{\"common_config\": {\"admin_config\": {\"config_id\": \"test\"}}}",
+  "configTypeUrl": "type.googleapis.com/envoy.config.filter.http.tap.v2alpha.Tap",
+  "filterName": "envoy.filters.http.tap"
+}
