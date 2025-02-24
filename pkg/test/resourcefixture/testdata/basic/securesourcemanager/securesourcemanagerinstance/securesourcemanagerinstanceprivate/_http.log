@@ -773,15 +773,17 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.securesourcemanager.v1.Instance",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "hostConfig": {
-      "api": "ssminstance-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev",
-      "gitHttp": "ssminstance-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev",
-      "gitSsh": "ssminstance-${uniqueId}-${projectNumber}-ssh.us-central1.sourcemanager.dev",
-      "html": "ssminstance-${uniqueId}-${projectNumber}.us-central1.sourcemanager.dev"
+      "api": "ssminstance-${uniqueId}-${projectNumber}-api.us-central1.p.sourcemanager.dev",
+      "gitHttp": "ssminstance-${uniqueId}-${projectNumber}-git.us-central1.p.sourcemanager.dev",
+      "gitSsh": "ssminstance-${uniqueId}-${projectNumber}-ssh.us-central1.p.sourcemanager.dev",
+      "html": "ssminstance-${uniqueId}-${projectNumber}.us-central1.p.sourcemanager.dev"
     },
     "name": "projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}",
     "privateConfig": {
       "caPool": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
-      "isPrivate": true
+      "httpServiceAttachment": "projects/tenant-tp/regions/us-central1/serviceAttachments/http-psc",
+      "isPrivate": true,
+      "sshServiceAttachment": "projects/tenant-tp/regions/us-central1/serviceAttachments/ssh-psc"
     },
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -809,15 +811,17 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "hostConfig": {
-    "api": "ssminstance-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev",
-    "gitHttp": "ssminstance-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev",
-    "gitSsh": "ssminstance-${uniqueId}-${projectNumber}-ssh.us-central1.sourcemanager.dev",
-    "html": "ssminstance-${uniqueId}-${projectNumber}.us-central1.sourcemanager.dev"
+    "api": "ssminstance-${uniqueId}-${projectNumber}-api.us-central1.p.sourcemanager.dev",
+    "gitHttp": "ssminstance-${uniqueId}-${projectNumber}-git.us-central1.p.sourcemanager.dev",
+    "gitSsh": "ssminstance-${uniqueId}-${projectNumber}-ssh.us-central1.p.sourcemanager.dev",
+    "html": "ssminstance-${uniqueId}-${projectNumber}.us-central1.p.sourcemanager.dev"
   },
   "name": "projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}",
   "privateConfig": {
     "caPool": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
-    "isPrivate": true
+    "httpServiceAttachment": "projects/tenant-tp/regions/us-central1/serviceAttachments/http-psc",
+    "isPrivate": true,
+    "sshServiceAttachment": "projects/tenant-tp/regions/us-central1/serviceAttachments/ssh-psc"
   },
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
