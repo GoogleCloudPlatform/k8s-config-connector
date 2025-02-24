@@ -54,6 +54,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterOrganizationsEnvgroupsServerServer(grpcServer, &EnvgroupV1{MockService: s})
 	pb.RegisterOrganizationsInstancesServerServer(grpcServer, &instancesServer{MockService: s})
 	pb.RegisterOrganizationsServerServer(grpcServer, &organizationsServer{MockService: s})
+	pb.RegisterOrganizationsEndpointAttachmentsServerServer(grpcServer, &endpointAttachmentsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -62,6 +63,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterOrganizationsEnvgroupsServerHandler,
 		pb.RegisterOrganizationsInstancesServerHandler,
 		pb.RegisterOrganizationsServerHandler,
+		pb.RegisterOrganizationsEndpointAttachmentsServerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err

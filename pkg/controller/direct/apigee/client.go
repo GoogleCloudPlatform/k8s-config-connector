@@ -56,3 +56,7 @@ func (m *gcpClient) envgroupsClient() *api.OrganizationsEnvgroupsService {
 func (m *gcpClient) operationsClient() *api.OrganizationsOperationsService {
 	return api.NewOrganizationsOperationsService(m.service)
 }
+
+func (m *gcpClient) endpointAttachmentClient() *api.OrganizationsEndpointAttachmentsService {
+	return api.NewOrganizationsEndpointAttachmentsService(m.service)
+}
