@@ -103,14 +103,11 @@ func (a *GroupAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Group", "name", a.id)
 
-	desired := a.desired.DeepCopy()
-	// CreateTime is empty, indicating that resource does not exist
-	if desired.Status.CreateTime == nil {
+	if !a.id.HasKnownID() {
 		return false, nil
 	}
 
-	generatedId := direct.ValueOf(desired.Status.Name)
-	resource, err := a.gcpClient.Groups.Get(generatedId).Context(ctx).Do()
+	resource, err := a.gcpClient.Groups.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		return false, fmt.Errorf("getting Group %q: %w", a.id, err)
 	}
@@ -179,8 +176,6 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	generatedId := desired.Status.Name
-	//resource.Name = generatedId
 
 	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
@@ -208,12 +203,12 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 
 	req := convertProtoToAPI(resource)
 
-	_, err = a.gcpClient.Groups.Patch(direct.ValueOf(generatedId), req).UpdateMask(updateMask).Context(ctx).Do()
+	_, err = a.gcpClient.Groups.Patch(a.id.String(), req).UpdateMask(updateMask).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("updating Group %s: %w", a.id, err)
 	}
 
-	updated, err := a.gcpClient.Groups.Get(direct.ValueOf(generatedId)).Context(ctx).Do()
+	updated, err := a.gcpClient.Groups.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("getting updated Group %q: %w", a.id, err)
 	}
@@ -262,14 +257,7 @@ func (a *GroupAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Group", "name", a.id)
 
-	desired := a.desired.DeepCopy()
-	// CreateTime is empty, indicating that resource does not exist
-	if desired.Status.CreateTime == nil {
-		return false, nil
-	}
-	generatedId := direct.ValueOf(desired.Status.Name)
-
-	_, err := a.gcpClient.Groups.Delete(generatedId).Context(ctx).Do()
+	_, err := a.gcpClient.Groups.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil

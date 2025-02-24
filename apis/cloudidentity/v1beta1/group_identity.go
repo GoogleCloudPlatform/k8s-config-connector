@@ -26,7 +26,15 @@ import (
 // GroupIdentity defines the resource reference to CloudIdentityGroup, which "External" field
 // holds the GCP identifier for the KRM object.
 type GroupIdentity struct {
-	id string
+	id                      string
+	serviceGeneratedIDKnown bool
+}
+
+// HasKnownID tells whether Config Connector knows the resource identity.
+// If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
+// This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
+func (i *GroupIdentity) HasKnownID() bool {
+	return i.serviceGeneratedIDKnown
 }
 
 func (i *GroupIdentity) String() string {
@@ -39,33 +47,32 @@ func (i *GroupIdentity) ID() string {
 
 // NewGroupIdentity New builds a GroupIdentity from the Config Connector Group object.
 func NewGroupIdentity(ctx context.Context, reader client.Reader, obj *CloudIdentityGroup) (*GroupIdentity, error) {
+	known := false
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+	desiredResourceID := common.ValueOf(obj.Spec.ResourceID)
+	if desiredResourceID != "" {
+		known = true
 	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	actualResourceID := ""
-	var err error
 	if externalRef != "" {
+		known = true
 		// Validate desired with actual
-		actualResourceID, err = ParseGroupExternal(externalRef)
+		actualResourceID, err := ParseGroupExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualResourceID != resourceID {
-			return &GroupIdentity{
-				id: actualResourceID,
-			}, nil
+		if desiredResourceID != "" && actualResourceID != desiredResourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				desiredResourceID, actualResourceID)
 		}
+		desiredResourceID = actualResourceID
 	}
+
 	return &GroupIdentity{
-		id: resourceID,
+		id:                      desiredResourceID,
+		serviceGeneratedIDKnown: known,
 	}, nil
 }
 
