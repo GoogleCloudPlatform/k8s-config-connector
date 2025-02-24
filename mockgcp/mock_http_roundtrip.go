@@ -56,6 +56,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontaineranalysis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataflow"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataproc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
@@ -291,6 +292,10 @@ func (m *mockRoundTripper) ConfigureVisitor(requestURL string, visitor mockgcpre
 	m.registeredServices.ConfigureVisitor(requestURL, visitor)
 }
 
+func (m *mockRoundTripper) Previsit(event mockgcpregistry.Event, visitor mockgcpregistry.NormalizingVisitor) {
+	m.registeredServices.Previsit(event, visitor)
+}
+
 func (m *mockRoundTripper) Run(ctx context.Context) error {
 	go func() {
 		<-ctx.Done()
@@ -518,7 +523,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 
 	response := &http.Response{
 		StatusCode: 403,
-		Status:     "mockRoundTripper injecting fake response",
+		Status:     "mockRoundTripper injecting fake response for unknown service " + req.Host,
 	}
 
 	if request == "GET https://openidconnect.googleapis.com/v1/userinfo?alt=json" {

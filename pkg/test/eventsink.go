@@ -102,6 +102,12 @@ func (s *LogEntries) RemoveHTTPResponseHeader(key string) {
 	}
 }
 
+func (s *LogEntries) ReplaceRequestQueryParameter(key string, value string) {
+	for _, entry := range *s {
+		entry.Request.ReplaceQueryParameter(key, value)
+	}
+}
+
 // KeepIf returns a new LogEntries with only the entries that satisfy the predicate.
 // (where the predicate function returns true)
 func (s LogEntries) KeepIf(pred func(e *LogEntry) bool) LogEntries {

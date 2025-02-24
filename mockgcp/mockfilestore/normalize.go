@@ -27,3 +27,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.networks[].reservedIpRange", "10.20.30.0/24")
 	replacements.ReplacePath(".response.networks[].ipAddresses", []string{"10.20.30.1"})
 }
+
+func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+}

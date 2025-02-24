@@ -36,13 +36,38 @@ type MockService interface {
 
 // SupportsNormalization can be implemented to support normalization
 type SupportsNormalization interface {
+	// ConfigureVisitor sets up simple replacements
 	ConfigureVisitor(url string, replacements NormalizingVisitor)
+
+	// Previsit visits each object.  This is used to extract values to replace with placeholders
+	Previsit(event Event, visitor NormalizingVisitor)
 }
 
 type NormalizingVisitor interface {
+	// ReplacePath replaces values at the given path with newValue
 	ReplacePath(path string, newValue any)
+
+	// RemovePath removes values at the given path
+	RemovePath(path string)
+
+	// ReplaceStringValue replaces the given string value with the provided string value
+	ReplaceStringValue(oldValue string, newValue string)
 }
 
 type Normalizer interface {
 	ConfigureVisitor(url string, replacements NormalizingVisitor)
+
+	// Previsit visits each request, and is used to find placeholder values that may span events
+	Previsit(entry Event, replacements NormalizingVisitor)
+}
+
+type Event interface {
+	// URL returns the URL of the request
+	URL() string
+
+	// VisitRequestStringValues calls the callback for each string-typed value found in the request object (if any)
+	VisitRequestStringValues(callback func(path string, value string))
+
+	// VisitResponseStringValues calls the callback for each string-typed value found in the response object (if any)
+	VisitResponseStringValues(callback func(path string, value string))
 }
