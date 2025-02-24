@@ -91,7 +91,7 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	return msg
 }
 
-type closer func() error
+type closer func()
 
 func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 	// Initially force out to stdout in case we hit an error we don't
@@ -100,14 +100,14 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 	log.SetOutput(os.Stdout)
 	if opts.loggingDir == "" {
 		log.Println("Logging dir not set")
-		return noop
+		return noOp
 	}
 	logDir := filepath.Join(opts.loggingDir, branch.Name)
 	if _, err := os.Stat(logDir); os.IsNotExist(err) {
 		err = os.MkdirAll(logDir, 0755)
 		if err != nil {
 			log.Printf("Error creating logging dir %s, :%v", logDir, err)
-			return noop
+			return noOp
 		}
 	}
 
@@ -116,23 +116,8 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 	logFile := filepath.Join(logDir, "out.log")
 	if out, err = os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0755); err != nil {
 		log.Printf("Error opening logging file %s, :%v", logFile, err)
-		return noop
+		return noOp
 	}
-	/*
-		if _, err := os.Stat(logFile); os.IsNotExist(err) {
-			out, err = os.Create(logFile)
-			if err != nil {
-				log.Printf("Error creating logging file %s, :%v", logFile, err)
-				return noop
-			}
-		} else {
-			out, err = os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0755)
-			if err != nil {
-				log.Printf("Error opening logging file %s, :%v", logFile, err)
-				return noop
-			}
-		}
-	*/
 	log.SetOutput(out)
 
 	/*
@@ -151,15 +136,17 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 		}
 	*/
 
-	return func() error {
+	return func() {
 		// Initially force out to stdout in case we hit an error we don't
 		// want to pollute a different runs logs with our logs.
 		// TODO: Return a log object so we can run in parrellel.
 		log.SetOutput(os.Stdout)
-		return out.Close()
+		if err := out.Close(); err != nil {
+			log.Printf("Failed to clode logging file %s, :%v", logFile, err)
+		}
 	}
 }
 
-func noop() error {
-	return nil
+func noOp() {
+	return
 }
