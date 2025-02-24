@@ -1,0 +1,918 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Run/Service
+  description: The Run Service resource
+  x-dcl-struct-name: Service
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a Service
+    parameters:
+    - name: service
+      required: true
+      description: A full instance of a Service
+  apply:
+    description: The function used to apply information about a Service
+    parameters:
+    - name: service
+      required: true
+      description: A full instance of a Service
+  delete:
+    description: The function used to delete a Service
+    parameters:
+    - name: service
+      required: true
+      description: A full instance of a Service
+  deleteAll:
+    description: The function used to delete all Service
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Service
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Service:
+      title: Service
+      x-dcl-id: projects/{{project}}/locations/{{location}}/services/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - template
+      - project
+      - location
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Annotations
+          description: 'Unstructured key value map that may be set by external tools
+            to store and arbitrary metadata. They are not queryable and should be
+            preserved when modifying objects. Cloud Run will populate some annotations
+            using ''run.googleapis.com'' or ''serving.knative.dev'' namespaces. This
+            field follows Kubernetes annotations'' namespacing, limits, and rules.
+            More info: http://kubernetes.io/docs/user-guide/annotations'
+        binaryAuthorization:
+          type: object
+          x-dcl-go-name: BinaryAuthorization
+          x-dcl-go-type: ServiceBinaryAuthorization
+          description: Settings for the Binary Authorization feature.
+          properties:
+            breakglassJustification:
+              type: string
+              x-dcl-go-name: BreakglassJustification
+              description: If present, indicates to use Breakglass using this justification.
+                For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass
+            useDefault:
+              type: boolean
+              x-dcl-go-name: UseDefault
+              description: If True, indicates to use the default project's binary
+                authorization policy. If False, binary authorization will be disabled
+        client:
+          type: string
+          x-dcl-go-name: Client
+          description: Arbitrary identifier for the API client.
+        clientVersion:
+          type: string
+          x-dcl-go-name: ClientVersion
+          description: Arbitrary version identifier for the API client.
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The creation time.
+          x-kubernetes-immutable: true
+        creator:
+          type: string
+          x-dcl-go-name: Creator
+          readOnly: true
+          description: Output only. Email address of the authenticated creator.
+          x-kubernetes-immutable: true
+        deleteTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: DeleteTime
+          readOnly: true
+          description: Output only. The deletion time.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: User-provided description of the Service.
+        etag:
+          type: string
+          x-dcl-go-name: Etag
+          readOnly: true
+          description: Output only. A system-generated fingerprint for this version
+            of the resource. May be used to detect modification conflict during updates.
+          x-kubernetes-immutable: true
+        expireTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: ExpireTime
+          readOnly: true
+          description: Output only. For a deleted resource, the time after which it
+            will be permamently deleted.
+          x-kubernetes-immutable: true
+        generation:
+          type: integer
+          format: int64
+          x-dcl-go-name: Generation
+          readOnly: true
+          description: Output only. A number that monotonically increases every time
+            the user modifies the desired state.
+          x-kubernetes-immutable: true
+        ingress:
+          type: string
+          x-dcl-go-name: Ingress
+          x-dcl-go-type: ServiceIngressEnum
+          description: Provides the ingress settings for this Service. On output,
+            returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED
+            if no revision is active.
+          enum:
+          - INGRESS_TRAFFIC_UNSPECIFIED
+          - INGRESS_TRAFFIC_ALL
+          - INGRESS_TRAFFIC_INTERNAL_ONLY
+          - INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          readOnly: true
+          description: Map of string keys and values that can be used to organize
+            and categorize objects. User-provided labels are shared with Google's
+            billing system, so they can be used to filter, or break down billing charges
+            by team, component, environment, state, etc. For more information, visit
+            https://cloud.google.com/resource-manager/docs/creating-managing-labels
+            or https://cloud.google.com/run/docs/configuring/labels Cloud Run will
+            populate some labels with 'run.googleapis.com' or 'serving.knative.dev'
+            namespaces. Those labels are read-only, and user changes will not be preserved.
+          x-kubernetes-immutable: true
+        lastModifier:
+          type: string
+          x-dcl-go-name: LastModifier
+          readOnly: true
+          description: Output only. Email address of the last authenticated modifier.
+          x-kubernetes-immutable: true
+        latestCreatedRevision:
+          type: string
+          x-dcl-go-name: LatestCreatedRevision
+          readOnly: true
+          description: Output only. Name of the last created revision. See comments
+            in `reconciling` for additional information on reconciliation process
+            in Cloud Run.
+          x-kubernetes-immutable: true
+        latestReadyRevision:
+          type: string
+          x-dcl-go-name: LatestReadyRevision
+          readOnly: true
+          description: Output only. Name of the latest revision that is serving traffic.
+            See comments in `reconciling` for additional information on reconciliation
+            process in Cloud Run.
+          x-kubernetes-immutable: true
+        launchStage:
+          type: string
+          x-dcl-go-name: LaunchStage
+          x-dcl-go-type: ServiceLaunchStageEnum
+          description: 'The launch stage as defined by [Google Cloud Platform Launch
+            Stages](http://cloud.google.com/terms/launch-stages). Cloud Run supports
+            `ALPHA`, `BETA`, and `GA`. If no value is specified, GA is assumed. Possible
+            values: LAUNCH_STAGE_UNSPECIFIED, UNIMPLEMENTED, PRELAUNCH, EARLY_ACCESS,
+            ALPHA, BETA, GA, DEPRECATED'
+          enum:
+          - LAUNCH_STAGE_UNSPECIFIED
+          - UNIMPLEMENTED
+          - PRELAUNCH
+          - EARLY_ACCESS
+          - ALPHA
+          - BETA
+          - GA
+          - DEPRECATED
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: 'Output only. The fully qualified name of this Service, composed
+            from CreateServiceRequest.parent and CreateServiceRequest.service_id.
+            Format: projects/{project}/locations/{location}/services/{service_id}'
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        reconciling:
+          type: boolean
+          x-dcl-go-name: Reconciling
+          readOnly: true
+          description: 'Output only. Returns true if the Service is currently being
+            acted upon by the system to bring it into the desired state. When a new
+            Service is created, or an existing one is updated, Cloud Run will asynchronously
+            perform all necessary steps to bring the Service to the desired serving
+            state. This process is called reconciliation. While reconciliation is
+            in process, `observed_generation`, `latest_ready_revison`, `traffic_statuses`,
+            and `uri` will have transient values that might mismatch the intended
+            state: Once reconciliation is over (and this field is false), there are
+            two possible outcomes: reconciliation succeeded and the serving state
+            matches the Service, or there was an error, and reconciliation failed.
+            This state can be found in `terminal_condition.state`. If reconciliation
+            succeeded, the following fields will match: `traffic` and `traffic_statuses`,
+            `observed_generation` and `generation`, `latest_ready_revision` and `latest_created_revision`.
+            If reconciliation failed, `traffic_statuses`, `observed_generation`, and
+            `latest_ready_revision` will have the state of the last serving revision,
+            or empty for newly created Services. Additional information on the failure
+            can be found in `terminal_condition` and `conditions`.'
+          x-kubernetes-immutable: true
+        template:
+          type: object
+          x-dcl-go-name: Template
+          x-dcl-go-type: ServiceTemplate
+          description: Required. The template used to create revisions for this Service.
+          properties:
+            annotations:
+              type: object
+              additionalProperties:
+                type: string
+              x-dcl-go-name: Annotations
+              description: KRM-style annotations for the resource.
+            containerConcurrency:
+              type: integer
+              format: int64
+              x-dcl-go-name: ContainerConcurrency
+              description: Sets the maximum number of requests that each serving instance
+                can receive.
+              x-dcl-server-default: true
+            containers:
+              type: array
+              x-dcl-go-name: Containers
+              description: Holds the single container that defines the unit of execution
+                for this Revision.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: object
+                x-dcl-go-type: ServiceTemplateContainers
+                required:
+                - image
+                properties:
+                  args:
+                    type: array
+                    x-dcl-go-name: Args
+                    description: 'Arguments to the entrypoint. The docker image''s
+                      CMD is used if this is not provided. Variable references $(VAR_NAME)
+                      are expanded using the container''s environment. If a variable
+                      cannot be resolved, the reference in the input string will be
+                      unchanged. The $(VAR_NAME) syntax can be escaped with a double
+                      $$, ie: $$(VAR_NAME). Escaped references will never be expanded,
+                      regardless of whether the variable exists or not. More info:
+                      https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell'
+                    x-dcl-send-empty: true
+                    x-dcl-list-type: list
+                    items:
+                      type: string
+                      x-dcl-go-type: string
+                  command:
+                    type: array
+                    x-dcl-go-name: Command
+                    description: 'Entrypoint array. Not executed within a shell. The
+                      docker image''s ENTRYPOINT is used if this is not provided.
+                      Variable references $(VAR_NAME) are expanded using the container''s
+                      environment. If a variable cannot be resolved, the reference
+                      in the input string will be unchanged. The $(VAR_NAME) syntax
+                      can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references
+                      will never be expanded, regardless of whether the variable exists
+                      or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell'
+                    x-dcl-send-empty: true
+                    x-dcl-list-type: list
+                    items:
+                      type: string
+                      x-dcl-go-type: string
+                  env:
+                    type: array
+                    x-dcl-go-name: Env
+                    description: List of environment variables to set in the container.
+                    x-dcl-send-empty: true
+                    x-dcl-list-type: list
+                    items:
+                      type: object
+                      x-dcl-go-type: ServiceTemplateContainersEnv
+                      required:
+                      - name
+                      properties:
+                        name:
+                          type: string
+                          x-dcl-go-name: Name
+                          description: Required. Name of the environment variable.
+                            Must be a C_IDENTIFIER, and mnay not exceed 32768 characters.
+                        value:
+                          type: string
+                          x-dcl-go-name: Value
+                          description: 'Variable references $(VAR_NAME) are expanded
+                            using the previous defined environment variables in the
+                            container and any route environment variables. If a variable
+                            cannot be resolved, the reference in the input string
+                            will be unchanged. The $(VAR_NAME) syntax can be escaped
+                            with a double $$, ie: $$(VAR_NAME). Escaped references
+                            will never be expanded, regardless of whether the variable
+                            exists or not. Defaults to "", and the maximum length
+                            is 32768 bytes.'
+                          x-dcl-conflicts:
+                          - valueSource
+                        valueSource:
+                          type: object
+                          x-dcl-go-name: ValueSource
+                          x-dcl-go-type: ServiceTemplateContainersEnvValueSource
+                          description: Source for the environment variable's value.
+                          x-dcl-conflicts:
+                          - value
+                          properties:
+                            secretKeyRef:
+                              type: object
+                              x-dcl-go-name: SecretKeyRef
+                              x-dcl-go-type: ServiceTemplateContainersEnvValueSourceSecretKeyRef
+                              description: Selects a secret and a specific version
+                                from Cloud Secret Manager.
+                              required:
+                              - secret
+                              properties:
+                                secret:
+                                  type: string
+                                  x-dcl-go-name: Secret
+                                  description: 'Required. The name of the secret in
+                                    Cloud Secret Manager. Format: {secret_name} if
+                                    the secret is in the same project. projects/{project}/secrets/{secret_name}
+                                    if the secret is in a different project.'
+                                  x-dcl-references:
+                                  - resource: Secretmanager/Secret
+                                    field: name
+                                version:
+                                  type: string
+                                  x-dcl-go-name: Version
+                                  description: The Cloud Secret Manager secret version.
+                                    Can be 'latest' for the latest value or an integer
+                                    for a specific version.
+                                  x-dcl-references:
+                                  - resource: Secretmanager/SecretVersion
+                                    field: name
+                  image:
+                    type: string
+                    x-dcl-go-name: Image
+                    description: 'Required. URL of the Container image in Google Container
+                      Registry or Docker More info: https://kubernetes.io/docs/concepts/containers/images'
+                  name:
+                    type: string
+                    x-dcl-go-name: Name
+                    description: Name of the container specified as a DNS_LABEL.
+                  ports:
+                    type: array
+                    x-dcl-go-name: Ports
+                    description: List of ports to expose from the container. Only
+                      a single port can be specified. The specified ports must be
+                      listening on all interfaces (0.0.0.0) within the container to
+                      be accessible. If omitted, a port number will be chosen and
+                      passed to the container through the PORT environment variable
+                      for the container to listen on.
+                    x-dcl-server-default: true
+                    x-dcl-send-empty: true
+                    x-dcl-list-type: list
+                    items:
+                      type: object
+                      x-dcl-go-type: ServiceTemplateContainersPorts
+                      properties:
+                        containerPort:
+                          type: integer
+                          format: int64
+                          x-dcl-go-name: ContainerPort
+                          description: Port number the container listens on. This
+                            must be a valid TCP port number, 0 < container_port <
+                            65536.
+                        name:
+                          type: string
+                          x-dcl-go-name: Name
+                          description: If specified, used to specify which protocol
+                            to use. Allowed values are "http1" and "h2c".
+                  resources:
+                    type: object
+                    x-dcl-go-name: Resources
+                    x-dcl-go-type: ServiceTemplateContainersResources
+                    description: 'Compute Resource requirements by this container.
+                      More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources'
+                    x-dcl-server-default: true
+                    properties:
+                      cpuIdle:
+                        type: boolean
+                        x-dcl-go-name: CpuIdle
+                        description: Determines whether CPU should be throttled or
+                          not outside of requests.
+                      limits:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        x-dcl-go-name: Limits
+                        description: 'Only memory and CPU are supported. Note: The
+                          only supported values for CPU are ''1'', ''2'', and ''4''.
+                          Setting 4 CPU requires at least 2Gi of memory. The values
+                          of the map is string form of the ''quantity'' k8s type:
+                          https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go'
+                  volumeMounts:
+                    type: array
+                    x-dcl-go-name: VolumeMounts
+                    description: Volume to mount into the container's filesystem.
+                    x-dcl-send-empty: true
+                    x-dcl-list-type: list
+                    items:
+                      type: object
+                      x-dcl-go-type: ServiceTemplateContainersVolumeMounts
+                      required:
+                      - name
+                      - mountPath
+                      properties:
+                        mountPath:
+                          type: string
+                          x-dcl-go-name: MountPath
+                          description: Required. Path within the container at which
+                            the volume should be mounted. Must not contain ':'. For
+                            Cloud SQL volumes, it can be left empty, or must otherwise
+                            be `/cloudsql`. All instances defined in the Volume will
+                            be available as `/cloudsql/[instance]`. For more information
+                            on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run
+                        name:
+                          type: string
+                          x-dcl-go-name: Name
+                          description: Required. This must match the Name of a Volume.
+            executionEnvironment:
+              type: string
+              x-dcl-go-name: ExecutionEnvironment
+              x-dcl-go-type: ServiceTemplateExecutionEnvironmentEnum
+              description: 'The sandbox environment to host this Revision. Possible
+                values: EXECUTION_ENVIRONMENT_UNSPECIFIED, EXECUTION_ENVIRONMENT_GEN1,
+                EXECUTION_ENVIRONMENT_GEN2'
+              enum:
+              - EXECUTION_ENVIRONMENT_UNSPECIFIED
+              - EXECUTION_ENVIRONMENT_GEN1
+              - EXECUTION_ENVIRONMENT_GEN2
+            labels:
+              type: object
+              additionalProperties:
+                type: string
+              x-dcl-go-name: Labels
+              description: KRM-style labels for the resource.
+            revision:
+              type: string
+              x-dcl-go-name: Revision
+              description: The unique name for the revision. If this field is omitted,
+                it will be automatically generated based on the Service name.
+            scaling:
+              type: object
+              x-dcl-go-name: Scaling
+              x-dcl-go-type: ServiceTemplateScaling
+              description: Scaling settings for this Revision.
+              properties:
+                maxInstanceCount:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: MaxInstanceCount
+                  description: Maximum number of serving instances that this resource
+                    should have.
+                minInstanceCount:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: MinInstanceCount
+                  description: Minimum number of serving instances that this resource
+                    should have.
+            serviceAccount:
+              type: string
+              x-dcl-go-name: ServiceAccount
+              description: Email address of the IAM service account associated with
+                the revision of the service. The service account represents the identity
+                of the running revision, and determines what permissions the revision
+                has. If not provided, the revision will use the project's default
+                service account.
+              x-dcl-server-default: true
+              x-dcl-references:
+              - resource: Iam/ServiceAccount
+                field: email
+            timeout:
+              type: string
+              x-dcl-go-name: Timeout
+              description: Max allowed time for an instance to respond to a request.
+              x-dcl-server-default: true
+            volumes:
+              type: array
+              x-dcl-go-name: Volumes
+              description: A list of Volumes to make available to containers.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: object
+                x-dcl-go-type: ServiceTemplateVolumes
+                required:
+                - name
+                properties:
+                  cloudSqlInstance:
+                    type: object
+                    x-dcl-go-name: CloudSqlInstance
+                    x-dcl-go-type: ServiceTemplateVolumesCloudSqlInstance
+                    description: For Cloud SQL volumes, contains the specific instances
+                      that should be mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run
+                      for more information on how to connect Cloud SQL and Cloud Run.
+                    x-dcl-conflicts:
+                    - secret
+                    properties:
+                      instances:
+                        type: array
+                        x-dcl-go-name: Instances
+                        description: 'The Cloud SQL instance connection names, as
+                          can be found in https://console.cloud.google.com/sql/instances.
+                          Visit https://cloud.google.com/sql/docs/mysql/connect-run
+                          for more information on how to connect Cloud SQL and Cloud
+                          Run. Format: {project}:{location}:{instance}'
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                          x-dcl-references:
+                          - resource: Sql/Instance
+                            field: instanceName
+                  name:
+                    type: string
+                    x-dcl-go-name: Name
+                    description: Required. Volume's name.
+                  secret:
+                    type: object
+                    x-dcl-go-name: Secret
+                    x-dcl-go-type: ServiceTemplateVolumesSecret
+                    description: 'Secret represents a secret that should populate
+                      this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret'
+                    x-dcl-conflicts:
+                    - cloudSqlInstance
+                    required:
+                    - secret
+                    properties:
+                      defaultMode:
+                        type: integer
+                        format: int64
+                        x-dcl-go-name: DefaultMode
+                        description: 'Integer representation of mode bits to use on
+                          created files by default. Must be a value between 0000 and
+                          0777 (octal), defaulting to 0644. Directories within the
+                          path are not affected by this setting. Notes * Internally,
+                          a umask of 0222 will be applied to any non-zero value. *
+                          This is an integer representation of the mode bits. So,
+                          the octal integer value should look exactly as the chmod
+                          numeric notation with a leading zero. Some examples: for
+                          chmod 777 (a=rwx), set to 0777 (octal) or 511 (base-10).
+                          For chmod 640 (u=rw,g=r), set to 0640 (octal) or 416 (base-10).
+                          For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+                          493 (base-10). * This might be in conflict with other options
+                          that affect the file mode, like fsGroup, and the result
+                          can be other mode bits set. This might be in conflict with
+                          other options that affect the file mode, like fsGroup, and
+                          as a result, other mode bits could be set.'
+                      items:
+                        type: array
+                        x-dcl-go-name: Items
+                        description: If unspecified, the volume will expose a file
+                          whose name is the secret, relative to VolumeMount.mount_path.
+                          If specified, the key will be used as the version to fetch
+                          from Cloud Secret Manager and the path will be the name
+                          of the file exposed in the volume. When items are defined,
+                          they must specify a path and a version.
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: object
+                          x-dcl-go-type: ServiceTemplateVolumesSecretItems
+                          required:
+                          - path
+                          properties:
+                            mode:
+                              type: integer
+                              format: int64
+                              x-dcl-go-name: Mode
+                              description: 'Integer octal mode bits to use on this
+                                file, must be a value between 01 and 0777 (octal).
+                                If 0 or not set, the Volume''s default mode will be
+                                used. Notes * Internally, a umask of 0222 will be
+                                applied to any non-zero value. * This is an integer
+                                representation of the mode bits. So, the octal integer
+                                value should look exactly as the chmod numeric notation
+                                with a leading zero. Some examples: for chmod 777
+                                (a=rwx), set to 0777 (octal) or 511 (base-10). For
+                                chmod 640 (u=rw,g=r), set to 0640 (octal) or 416 (base-10).
+                                For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal)
+                                or 493 (base-10). * This might be in conflict with
+                                other options that affect the file mode, like fsGroup,
+                                and the result can be other mode bits set.'
+                            path:
+                              type: string
+                              x-dcl-go-name: Path
+                              description: Required. The relative path of the secret
+                                in the container.
+                            version:
+                              type: string
+                              x-dcl-go-name: Version
+                              description: The Cloud Secret Manager secret version.
+                                Can be 'latest' for the latest value or an integer
+                                for a specific version.
+                              x-dcl-references:
+                              - resource: Secretmanager/SecretVersion
+                                field: name
+                      secret:
+                        type: string
+                        x-dcl-go-name: Secret
+                        description: 'Required. The name of the secret in Cloud Secret
+                          Manager. Format: {secret} if the secret is in the same project.
+                          projects/{project}/secrets/{secret} if the secret is in
+                          a different project.'
+                        x-dcl-references:
+                        - resource: Secretmanager/Secret
+                          field: name
+            vpcAccess:
+              type: object
+              x-dcl-go-name: VPCAccess
+              x-dcl-go-type: ServiceTemplateVPCAccess
+              description: VPC Access configuration to use for this Revision. For
+                more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.
+              properties:
+                connector:
+                  type: string
+                  x-dcl-go-name: Connector
+                  description: 'VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}'
+                  x-dcl-references:
+                  - resource: Vpcaccess/Connector
+                    field: name
+                egress:
+                  type: string
+                  x-dcl-go-name: Egress
+                  x-dcl-go-type: ServiceTemplateVPCAccessEgressEnum
+                  description: 'Traffic VPC egress settings. Possible values: VPC_EGRESS_UNSPECIFIED,
+                    ALL_TRAFFIC, PRIVATE_RANGES_ONLY'
+                  enum:
+                  - VPC_EGRESS_UNSPECIFIED
+                  - ALL_TRAFFIC
+                  - PRIVATE_RANGES_ONLY
+        terminalCondition:
+          type: object
+          x-dcl-go-name: TerminalCondition
+          x-dcl-go-type: ServiceTerminalCondition
+          readOnly: true
+          description: Output only. The Condition of this Service, containing its
+            readiness status, and detailed error information in case it did not reach
+            a serving state. See comments in `reconciling` for additional information
+            on reconciliation process in Cloud Run.
+          properties:
+            jobReason:
+              type: string
+              x-dcl-go-name: JobReason
+              x-dcl-go-type: ServiceTerminalConditionJobReasonEnum
+              description: 'A reason for the job condition. Possible values: JOB_REASON_UNDEFINED,
+                JOB_STATUS_SERVICE_POLLING_ERROR'
+              x-dcl-conflicts:
+              - reason
+              - revisionReason
+              enum:
+              - JOB_REASON_UNDEFINED
+              - JOB_STATUS_SERVICE_POLLING_ERROR
+            lastTransitionTime:
+              type: string
+              format: date-time
+              x-dcl-go-name: LastTransitionTime
+              description: Last time the condition transitioned from one status to
+                another.
+            message:
+              type: string
+              x-dcl-go-name: Message
+              description: Human readable message indicating details about the current
+                status.
+            reason:
+              type: string
+              x-dcl-go-name: Reason
+              x-dcl-go-type: ServiceTerminalConditionReasonEnum
+              description: 'A common (service-level) reason for this condition. Possible
+                values: COMMON_REASON_UNDEFINED, UNKNOWN, REVISION_FAILED, PROGRESS_DEADLINE_EXCEEDED,
+                CONTAINER_MISSING, CONTAINER_PERMISSION_DENIED, CONTAINER_IMAGE_UNAUTHORIZED,
+                CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED, ENCRYPTION_KEY_PERMISSION_DENIED,
+                ENCRYPTION_KEY_CHECK_FAILED, SECRETS_ACCESS_CHECK_FAILED, WAITING_FOR_OPERATION,
+                IMMEDIATE_RETRY, POSTPONED_RETRY, INTERNAL'
+              x-dcl-conflicts:
+              - revisionReason
+              - jobReason
+              enum:
+              - COMMON_REASON_UNDEFINED
+              - UNKNOWN
+              - REVISION_FAILED
+              - PROGRESS_DEADLINE_EXCEEDED
+              - CONTAINER_MISSING
+              - CONTAINER_PERMISSION_DENIED
+              - CONTAINER_IMAGE_UNAUTHORIZED
+              - CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED
+              - ENCRYPTION_KEY_PERMISSION_DENIED
+              - ENCRYPTION_KEY_CHECK_FAILED
+              - SECRETS_ACCESS_CHECK_FAILED
+              - WAITING_FOR_OPERATION
+              - IMMEDIATE_RETRY
+              - POSTPONED_RETRY
+              - INTERNAL
+            revisionReason:
+              type: string
+              x-dcl-go-name: RevisionReason
+              x-dcl-go-type: ServiceTerminalConditionRevisionReasonEnum
+              description: 'A reason for the revision condition. Possible values:
+                REVISION_REASON_UNDEFINED, PENDING, RESERVE, RETIRED, RETIRING, RECREATING,
+                HEALTH_CHECK_CONTAINER_ERROR, CUSTOMIZED_PATH_RESPONSE_PENDING, MIN_INSTANCES_NOT_PROVISIONED,
+                ACTIVE_REVISION_LIMIT_REACHED, NO_DEPLOYMENT'
+              x-dcl-conflicts:
+              - reason
+              - jobReason
+              enum:
+              - REVISION_REASON_UNDEFINED
+              - PENDING
+              - RESERVE
+              - RETIRED
+              - RETIRING
+              - RECREATING
+              - HEALTH_CHECK_CONTAINER_ERROR
+              - CUSTOMIZED_PATH_RESPONSE_PENDING
+              - MIN_INSTANCES_NOT_PROVISIONED
+              - ACTIVE_REVISION_LIMIT_REACHED
+              - NO_DEPLOYMENT
+            severity:
+              type: string
+              x-dcl-go-name: Severity
+              x-dcl-go-type: ServiceTerminalConditionSeverityEnum
+              description: 'How to interpret failures of this condition, one of Error,
+                Warning, Info Possible values: SEVERITY_UNSPECIFIED, ERROR, WARNING,
+                INFO'
+              enum:
+              - SEVERITY_UNSPECIFIED
+              - ERROR
+              - WARNING
+              - INFO
+            state:
+              type: string
+              x-dcl-go-name: State
+              x-dcl-go-type: ServiceTerminalConditionStateEnum
+              description: 'State of the condition. Possible values: STATE_UNSPECIFIED,
+                CONDITION_PENDING, CONDITION_RECONCILING, CONDITION_FAILED, CONDITION_SUCCEEDED'
+              enum:
+              - STATE_UNSPECIFIED
+              - CONDITION_PENDING
+              - CONDITION_RECONCILING
+              - CONDITION_FAILED
+              - CONDITION_SUCCEEDED
+            type:
+              type: string
+              x-dcl-go-name: Type
+              description: 'type is used to communicate the status of the reconciliation
+                process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
+                Types common to all resources include: * "Ready": True when the Resource
+                is ready.'
+        traffic:
+          type: array
+          x-dcl-go-name: Traffic
+          description: Specifies how to distribute traffic over a collection of Revisions
+            belonging to the Service. If traffic is empty or not provided, defaults
+            to 100% traffic to the latest `Ready` Revision.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: ServiceTraffic
+            properties:
+              percent:
+                type: integer
+                format: int64
+                x-dcl-go-name: Percent
+                description: Specifies percent of the traffic to this Revision. This
+                  defaults to zero if unspecified. Cloud Run currently requires 100
+                  percent for a single TrafficTarget entry.
+              revision:
+                type: string
+                x-dcl-go-name: Revision
+                description: Revision to which to send this portion of traffic, if
+                  traffic allocation is by revision.
+              tag:
+                type: string
+                x-dcl-go-name: Tag
+                description: Indicates a string to be part of the URI to exclusively
+                  reference this target.
+              type:
+                type: string
+                x-dcl-go-name: Type
+                x-dcl-go-type: ServiceTrafficTypeEnum
+                description: 'The allocation type for this traffic target. Possible
+                  values: TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED, TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST,
+                  TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION'
+                enum:
+                - TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED
+                - TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
+                - TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
+        trafficStatuses:
+          type: array
+          x-dcl-go-name: TrafficStatuses
+          readOnly: true
+          description: Output only. Detailed status information for corresponding
+            traffic targets. See comments in `reconciling` for additional information
+            on reconciliation process in Cloud Run.
+          x-kubernetes-immutable: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: ServiceTrafficStatuses
+            properties:
+              percent:
+                type: integer
+                format: int64
+                x-dcl-go-name: Percent
+                description: Specifies percent of the traffic to this Revision.
+              revision:
+                type: string
+                x-dcl-go-name: Revision
+                description: Revision to which this traffic is sent.
+              tag:
+                type: string
+                x-dcl-go-name: Tag
+                description: Indicates the string used in the URI to exclusively reference
+                  this target.
+              type:
+                type: string
+                x-dcl-go-name: Type
+                x-dcl-go-type: ServiceTrafficStatusesTypeEnum
+                description: 'The allocation type for this traffic target. Possible
+                  values: TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED, TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST,
+                  TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION'
+                enum:
+                - TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED
+                - TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
+                - TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
+              uri:
+                type: string
+                x-dcl-go-name: Uri
+                description: Displays the target URI.
+        uid:
+          type: string
+          x-dcl-go-name: Uid
+          readOnly: true
+          description: Output only. Server assigned unique identifier for the trigger.
+            The value is a UUID4 string and guaranteed to remain unchanged until the
+            resource is deleted.
+          x-kubernetes-immutable: true
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The last-modified time.
+          x-kubernetes-immutable: true
+        uri:
+          type: string
+          x-dcl-go-name: Uri
+          readOnly: true
+          description: Output only. The main URI in which this Service is serving
+            traffic.
+          x-kubernetes-immutable: true

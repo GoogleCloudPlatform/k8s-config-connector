@@ -1,0 +1,15 @@
+{
+  "name": "{{function}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "runtime": "nodejs20",
+  "sourceArchiveUrl": "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip",
+  "description": "A sample cloud function with a storage bucket event trigger",
+  "entryPoint": "helloGET",
+  "eventTrigger": {
+    "eventType": "providers/cloud.storage/eventTypes/object.change",
+    "resource": "{{ref:basic.storage.bucket.json:name}}",
+    "failurePolicy": true,
+    "service": "storage.googleapis.com"
+  }
+}

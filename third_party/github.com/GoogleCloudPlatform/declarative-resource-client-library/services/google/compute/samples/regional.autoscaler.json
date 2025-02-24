@@ -1,0 +1,15 @@
+{
+  "project": "{{project}}",
+  "name": "{{autoscaler}}",
+  "description": "A test autoscaler",
+  "location": "{{region}}",
+  "target": "{{ref:fixed.instance_group_manager.json:name}}",
+  "autoscalingPolicy": {
+    "maxNumReplicas": 5,
+    "minNumReplicas": 1,
+    "cooldownPeriodSec": 60,
+    "cpuUtilization": {
+      "utilizationTarget": 0.5
+    }
+  }
+}

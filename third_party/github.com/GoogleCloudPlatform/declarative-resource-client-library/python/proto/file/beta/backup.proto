@@ -1,0 +1,82 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum FileBetaBackupStateEnum {
+  FileBetaBackupStateEnumNO_VALUE_DO_NOT_USE = 0;
+  FileBetaBackupStateEnumSTATE_UNSPECIFIED = 1;
+  FileBetaBackupStateEnumCREATING = 2;
+  FileBetaBackupStateEnumREADY = 3;
+  FileBetaBackupStateEnumREPAIRING = 4;
+  FileBetaBackupStateEnumDELETING = 5;
+  FileBetaBackupStateEnumERROR = 6;
+  FileBetaBackupStateEnumRESTORING = 7;
+}
+
+enum FileBetaBackupSourceInstanceTierEnum {
+  FileBetaBackupSourceInstanceTierEnumNO_VALUE_DO_NOT_USE = 0;
+  FileBetaBackupSourceInstanceTierEnumTIER_UNSPECIFIED = 1;
+  FileBetaBackupSourceInstanceTierEnumSTANDARD = 2;
+  FileBetaBackupSourceInstanceTierEnumPREMIUM = 3;
+  FileBetaBackupSourceInstanceTierEnumBASIC_HDD = 4;
+  FileBetaBackupSourceInstanceTierEnumBASIC_SSD = 5;
+  FileBetaBackupSourceInstanceTierEnumHIGH_SCALE_SSD = 6;
+}
+
+message FileBetaBackup {
+  string name = 1;
+  string description = 2;
+  FileBetaBackupStateEnum state = 3;
+  string create_time = 4;
+  map<string, string> labels = 5;
+  int64 capacity_gb = 6;
+  int64 storage_bytes = 7;
+  string source_instance = 8;
+  string source_file_share = 9;
+  FileBetaBackupSourceInstanceTierEnum source_instance_tier = 10;
+  int64 download_bytes = 11;
+  string project = 12;
+  string location = 13;
+}
+
+message ApplyFileBetaBackupRequest {
+  FileBetaBackup resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFileBetaBackupRequest {
+  string service_account_file = 1;
+  FileBetaBackup resource = 2;
+}
+
+message ListFileBetaBackupRequest {
+  string service_account_file = 1;
+	FileBetaBackup resource = 2;
+}
+
+message ListFileBetaBackupResponse {
+  repeated FileBetaBackup items = 1;
+}
+
+service FileBetaBackupService {
+  rpc ApplyFileBetaBackup(ApplyFileBetaBackupRequest) returns (FileBetaBackup);
+  rpc DeleteFileBetaBackup(DeleteFileBetaBackupRequest) returns (google.protobuf.Empty);
+  rpc ListFileBetaBackup(ListFileBetaBackupRequest) returns (ListFileBetaBackupResponse);
+}

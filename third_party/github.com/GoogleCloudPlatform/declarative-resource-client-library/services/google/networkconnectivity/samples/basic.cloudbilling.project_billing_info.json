@@ -1,0 +1,4 @@
+{
+  "name": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "billingAccountName": "{{billing_account}}"
+}

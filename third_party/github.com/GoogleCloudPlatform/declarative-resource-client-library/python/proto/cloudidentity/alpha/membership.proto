@@ -1,0 +1,120 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationStateEnum {
+  CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationStateEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationStateEnumENCRYPTION_STATE_UNSPECIFIED = 1;
+  CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationStateEnumUNSUPPORTED_BY_DEVICE = 2;
+  CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationStateEnumENCRYPTED = 3;
+  CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationStateEnumNOT_ENCRYPTED = 4;
+}
+
+enum CloudidentityAlphaMembershipTypeEnum {
+  CloudidentityAlphaMembershipTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityAlphaMembershipTypeEnumOWNER_TYPE_UNSPECIFIED = 1;
+  CloudidentityAlphaMembershipTypeEnumOWNER_TYPE_CUSTOMER = 2;
+  CloudidentityAlphaMembershipTypeEnumOWNER_TYPE_PARTNER = 3;
+}
+
+enum CloudidentityAlphaMembershipDeliverySettingEnum {
+  CloudidentityAlphaMembershipDeliverySettingEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityAlphaMembershipDeliverySettingEnumDELIVERY_SETTING_UNSPECIFIED = 1;
+  CloudidentityAlphaMembershipDeliverySettingEnumALL_MAIL = 2;
+  CloudidentityAlphaMembershipDeliverySettingEnumDIGEST = 3;
+  CloudidentityAlphaMembershipDeliverySettingEnumDAILY = 4;
+  CloudidentityAlphaMembershipDeliverySettingEnumNONE = 5;
+  CloudidentityAlphaMembershipDeliverySettingEnumDISABLED = 6;
+}
+
+message CloudidentityAlphaMembership {
+  string name = 1;
+  CloudidentityAlphaMembershipPreferredMemberKey preferred_member_key = 2;
+  string create_time = 3;
+  string update_time = 4;
+  repeated CloudidentityAlphaMembershipRoles roles = 5;
+  CloudidentityAlphaMembershipTypeEnum type = 6;
+  CloudidentityAlphaMembershipDeliverySettingEnum delivery_setting = 7;
+  CloudidentityAlphaMembershipDisplayName display_name = 8;
+  CloudidentityAlphaMembershipMemberKey member_key = 9;
+  string group = 10;
+}
+
+message CloudidentityAlphaMembershipPreferredMemberKey {
+  string id = 1;
+  string namespace = 2;
+}
+
+message CloudidentityAlphaMembershipRoles {
+  string name = 1;
+  CloudidentityAlphaMembershipRolesExpiryDetail expiry_detail = 2;
+  CloudidentityAlphaMembershipRolesRestrictionEvaluations restriction_evaluations = 3;
+}
+
+message CloudidentityAlphaMembershipRolesExpiryDetail {
+  string expire_time = 1;
+}
+
+message CloudidentityAlphaMembershipRolesRestrictionEvaluations {
+  CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation member_restriction_evaluation = 1;
+}
+
+message CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation {
+  CloudidentityAlphaMembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationStateEnum state = 1;
+}
+
+message CloudidentityAlphaMembershipDisplayName {
+  string given_name = 1;
+  string family_name = 2;
+  string full_name = 3;
+}
+
+message CloudidentityAlphaMembershipMemberKey {
+  string id = 1;
+  string namespace = 2;
+}
+
+message ApplyCloudidentityAlphaMembershipRequest {
+  CloudidentityAlphaMembership resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudidentityAlphaMembershipRequest {
+  string service_account_file = 1;
+  CloudidentityAlphaMembership resource = 2;
+}
+
+message ListCloudidentityAlphaMembershipRequest {
+  string service_account_file = 1;
+  string Group = 2;
+}
+
+message ListCloudidentityAlphaMembershipResponse {
+  repeated CloudidentityAlphaMembership items = 1;
+}
+
+service CloudidentityAlphaMembershipService {
+  rpc ApplyCloudidentityAlphaMembership(ApplyCloudidentityAlphaMembershipRequest) returns (CloudidentityAlphaMembership);
+  rpc DeleteCloudidentityAlphaMembership(DeleteCloudidentityAlphaMembershipRequest) returns (google.protobuf.Empty);
+  rpc ListCloudidentityAlphaMembership(ListCloudidentityAlphaMembershipRequest) returns (ListCloudidentityAlphaMembershipResponse);
+}

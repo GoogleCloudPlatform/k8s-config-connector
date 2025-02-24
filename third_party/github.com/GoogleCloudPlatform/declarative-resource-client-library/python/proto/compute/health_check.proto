@@ -1,0 +1,188 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeHealthCheckHttp2HealthCheckPortSpecificationEnum {
+  ComputeHealthCheckHttp2HealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckHttp2HealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeHealthCheckHttp2HealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeHealthCheckHttp2HealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeHealthCheckHttp2HealthCheckProxyHeaderEnum {
+  ComputeHealthCheckHttp2HealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckHttp2HealthCheckProxyHeaderEnumNONE = 1;
+  ComputeHealthCheckHttp2HealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeHealthCheckHttpHealthCheckPortSpecificationEnum {
+  ComputeHealthCheckHttpHealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckHttpHealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeHealthCheckHttpHealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeHealthCheckHttpHealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeHealthCheckHttpHealthCheckProxyHeaderEnum {
+  ComputeHealthCheckHttpHealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckHttpHealthCheckProxyHeaderEnumNONE = 1;
+  ComputeHealthCheckHttpHealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeHealthCheckHttpsHealthCheckPortSpecificationEnum {
+  ComputeHealthCheckHttpsHealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckHttpsHealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeHealthCheckHttpsHealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeHealthCheckHttpsHealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeHealthCheckHttpsHealthCheckProxyHeaderEnum {
+  ComputeHealthCheckHttpsHealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckHttpsHealthCheckProxyHeaderEnumNONE = 1;
+  ComputeHealthCheckHttpsHealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeHealthCheckSslHealthCheckPortSpecificationEnum {
+  ComputeHealthCheckSslHealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckSslHealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeHealthCheckSslHealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeHealthCheckSslHealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeHealthCheckSslHealthCheckProxyHeaderEnum {
+  ComputeHealthCheckSslHealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckSslHealthCheckProxyHeaderEnumNONE = 1;
+  ComputeHealthCheckSslHealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeHealthCheckTcpHealthCheckPortSpecificationEnum {
+  ComputeHealthCheckTcpHealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckTcpHealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeHealthCheckTcpHealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeHealthCheckTcpHealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeHealthCheckTcpHealthCheckProxyHeaderEnum {
+  ComputeHealthCheckTcpHealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckTcpHealthCheckProxyHeaderEnumNONE = 1;
+  ComputeHealthCheckTcpHealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeHealthCheckTypeEnum {
+  ComputeHealthCheckTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeHealthCheckTypeEnumHTTP = 1;
+  ComputeHealthCheckTypeEnumHTTPS = 2;
+  ComputeHealthCheckTypeEnumHTTP2 = 3;
+  ComputeHealthCheckTypeEnumTCP = 4;
+  ComputeHealthCheckTypeEnumSSL = 5;
+  ComputeHealthCheckTypeEnumINVALID = 6;
+}
+
+message ComputeHealthCheck {
+  int64 check_interval_sec = 1;
+  string description = 2;
+  int64 healthy_threshold = 3;
+  ComputeHealthCheckHttp2HealthCheck http2_health_check = 4;
+  ComputeHealthCheckHttpHealthCheck http_health_check = 5;
+  ComputeHealthCheckHttpsHealthCheck https_health_check = 6;
+  string name = 7;
+  ComputeHealthCheckSslHealthCheck ssl_health_check = 8;
+  ComputeHealthCheckTcpHealthCheck tcp_health_check = 9;
+  ComputeHealthCheckTypeEnum type = 10;
+  int64 unhealthy_threshold = 11;
+  int64 timeout_sec = 12;
+  string region = 13;
+  string project = 14;
+  string self_link = 15;
+  string location = 16;
+}
+
+message ComputeHealthCheckHttp2HealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeHealthCheckHttp2HealthCheckPortSpecificationEnum port_specification = 3;
+  string host = 4;
+  string request_path = 5;
+  ComputeHealthCheckHttp2HealthCheckProxyHeaderEnum proxy_header = 6;
+  string response = 7;
+}
+
+message ComputeHealthCheckHttpHealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeHealthCheckHttpHealthCheckPortSpecificationEnum port_specification = 3;
+  string host = 4;
+  string request_path = 5;
+  ComputeHealthCheckHttpHealthCheckProxyHeaderEnum proxy_header = 6;
+  string response = 7;
+}
+
+message ComputeHealthCheckHttpsHealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeHealthCheckHttpsHealthCheckPortSpecificationEnum port_specification = 3;
+  string host = 4;
+  string request_path = 5;
+  ComputeHealthCheckHttpsHealthCheckProxyHeaderEnum proxy_header = 6;
+  string response = 7;
+}
+
+message ComputeHealthCheckSslHealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeHealthCheckSslHealthCheckPortSpecificationEnum port_specification = 3;
+  string request = 4;
+  string response = 5;
+  ComputeHealthCheckSslHealthCheckProxyHeaderEnum proxy_header = 6;
+}
+
+message ComputeHealthCheckTcpHealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeHealthCheckTcpHealthCheckPortSpecificationEnum port_specification = 3;
+  string request = 4;
+  string response = 5;
+  ComputeHealthCheckTcpHealthCheckProxyHeaderEnum proxy_header = 6;
+}
+
+message ApplyComputeHealthCheckRequest {
+  ComputeHealthCheck resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeHealthCheckRequest {
+  string service_account_file = 1;
+  ComputeHealthCheck resource = 2;
+}
+
+message ListComputeHealthCheckRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeHealthCheckResponse {
+  repeated ComputeHealthCheck items = 1;
+}
+
+service ComputeHealthCheckService {
+  rpc ApplyComputeHealthCheck(ApplyComputeHealthCheckRequest) returns (ComputeHealthCheck);
+  rpc DeleteComputeHealthCheck(DeleteComputeHealthCheckRequest) returns (google.protobuf.Empty);
+  rpc ListComputeHealthCheck(ListComputeHealthCheckRequest) returns (ListComputeHealthCheckResponse);
+}

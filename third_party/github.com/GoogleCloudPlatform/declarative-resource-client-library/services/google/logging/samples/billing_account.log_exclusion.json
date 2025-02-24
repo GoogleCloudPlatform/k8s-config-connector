@@ -1,0 +1,6 @@
+{
+  "name": "{{log_exclusion_name}}",
+  "parent": "billingAccounts/{{billing_account}}",
+  "description": "A basic log exclusion on a billing account",
+  "filter": "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+}

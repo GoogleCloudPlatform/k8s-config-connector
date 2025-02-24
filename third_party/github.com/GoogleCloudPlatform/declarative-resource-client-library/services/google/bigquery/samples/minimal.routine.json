@@ -1,0 +1,7 @@
+{
+  "name": "{{_routine}}",
+  "project": "{{project}}",
+  "dataset": "{{ref:basic.dataset.json:name}}",
+  "routineType": "SCALAR_FUNCTION",
+  "definitionBody": "true"
+}

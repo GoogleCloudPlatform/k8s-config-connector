@@ -1,0 +1,152 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum GkemulticloudAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnum {
+  GkemulticloudAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  GkemulticloudAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnumGP2 = 2;
+  GkemulticloudAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum GkemulticloudAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnum {
+  GkemulticloudAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  GkemulticloudAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnumGP2 = 2;
+  GkemulticloudAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum GkemulticloudAlphaAwsClusterStateEnum {
+  GkemulticloudAlphaAwsClusterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudAlphaAwsClusterStateEnumSTATE_UNSPECIFIED = 1;
+  GkemulticloudAlphaAwsClusterStateEnumPROVISIONING = 2;
+  GkemulticloudAlphaAwsClusterStateEnumRUNNING = 3;
+  GkemulticloudAlphaAwsClusterStateEnumRECONCILING = 4;
+  GkemulticloudAlphaAwsClusterStateEnumSTOPPING = 5;
+  GkemulticloudAlphaAwsClusterStateEnumERROR = 6;
+  GkemulticloudAlphaAwsClusterStateEnumDEGRADED = 7;
+}
+
+message GkemulticloudAlphaAwsCluster {
+  string name = 1;
+  string description = 2;
+  GkemulticloudAlphaAwsClusterNetworking networking = 3;
+  string aws_region = 4;
+  GkemulticloudAlphaAwsClusterControlPlane control_plane = 5;
+  GkemulticloudAlphaAwsClusterAuthorization authorization = 6;
+  GkemulticloudAlphaAwsClusterStateEnum state = 7;
+  string endpoint = 8;
+  string uid = 9;
+  bool reconciling = 10;
+  string create_time = 11;
+  string update_time = 12;
+  string etag = 13;
+  map<string, string> annotations = 14;
+  GkemulticloudAlphaAwsClusterWorkloadIdentityConfig workload_identity_config = 15;
+  string project = 16;
+  string location = 17;
+}
+
+message GkemulticloudAlphaAwsClusterNetworking {
+  string vpc_id = 1;
+  repeated string pod_address_cidr_blocks = 2;
+  repeated string service_address_cidr_blocks = 3;
+  repeated string service_load_balancer_subnet_ids = 4;
+}
+
+message GkemulticloudAlphaAwsClusterControlPlane {
+  string version = 1;
+  string instance_type = 2;
+  GkemulticloudAlphaAwsClusterControlPlaneSshConfig ssh_config = 3;
+  repeated string subnet_ids = 4;
+  repeated string security_group_ids = 5;
+  string iam_instance_profile = 6;
+  GkemulticloudAlphaAwsClusterControlPlaneRootVolume root_volume = 7;
+  GkemulticloudAlphaAwsClusterControlPlaneMainVolume main_volume = 8;
+  GkemulticloudAlphaAwsClusterControlPlaneDatabaseEncryption database_encryption = 9;
+  map<string, string> tags = 10;
+  GkemulticloudAlphaAwsClusterControlPlaneAwsServicesAuthentication aws_services_authentication = 11;
+}
+
+message GkemulticloudAlphaAwsClusterControlPlaneSshConfig {
+  string ec2_key_pair = 1;
+}
+
+message GkemulticloudAlphaAwsClusterControlPlaneRootVolume {
+  int64 size_gib = 1;
+  GkemulticloudAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  string kms_key_arn = 4;
+}
+
+message GkemulticloudAlphaAwsClusterControlPlaneMainVolume {
+  int64 size_gib = 1;
+  GkemulticloudAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  string kms_key_arn = 4;
+}
+
+message GkemulticloudAlphaAwsClusterControlPlaneDatabaseEncryption {
+  string kms_key_arn = 1;
+}
+
+message GkemulticloudAlphaAwsClusterControlPlaneAwsServicesAuthentication {
+  string role_arn = 1;
+  string role_session_name = 2;
+}
+
+message GkemulticloudAlphaAwsClusterAuthorization {
+  repeated GkemulticloudAlphaAwsClusterAuthorizationAdminUsers admin_users = 1;
+}
+
+message GkemulticloudAlphaAwsClusterAuthorizationAdminUsers {
+  string username = 1;
+}
+
+message GkemulticloudAlphaAwsClusterWorkloadIdentityConfig {
+  string issuer_uri = 1;
+  string workload_pool = 2;
+  string identity_provider = 3;
+}
+
+message ApplyGkemulticloudAlphaAwsClusterRequest {
+  GkemulticloudAlphaAwsCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkemulticloudAlphaAwsClusterRequest {
+  string service_account_file = 1;
+  GkemulticloudAlphaAwsCluster resource = 2;
+}
+
+message ListGkemulticloudAlphaAwsClusterRequest {
+  string service_account_file = 1;
+	GkemulticloudAlphaAwsCluster resource = 2;
+}
+
+message ListGkemulticloudAlphaAwsClusterResponse {
+  repeated GkemulticloudAlphaAwsCluster items = 1;
+}
+
+service GkemulticloudAlphaAwsClusterService {
+  rpc ApplyGkemulticloudAlphaAwsCluster(ApplyGkemulticloudAlphaAwsClusterRequest) returns (GkemulticloudAlphaAwsCluster);
+  rpc DeleteGkemulticloudAlphaAwsCluster(DeleteGkemulticloudAlphaAwsClusterRequest) returns (google.protobuf.Empty);
+  rpc ListGkemulticloudAlphaAwsCluster(ListGkemulticloudAlphaAwsClusterRequest) returns (ListGkemulticloudAlphaAwsClusterResponse);
+}

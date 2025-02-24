@@ -1,0 +1,8 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "type": "OPEN_MESH",
+  "ports": [80],
+  "location": "global",
+  "scope": "{{resource_name}}"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "{{connection}}",
+  "gitlabConfig": {
+    "hostUri": "https://gle-us-central1.gcb-test.com",
+    "authorizerCredential": {
+      "userTokenSecretVersion": "projects/212465313333/secrets/proctor-repo-gle-api-token/versions/latest"
+    },
+    "webhookSecretSecretVersion":"projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+  },
+  "project": "{{project}}",
+  "annotations": {"somekey": "somevalue"},
+  "location": "{{region}}"
+}

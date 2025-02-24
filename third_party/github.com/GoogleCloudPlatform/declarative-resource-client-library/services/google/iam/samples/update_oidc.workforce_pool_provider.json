@@ -1,0 +1,23 @@
+{
+  "name": "{{provider}}",
+  "location": "global",
+  "workforcePool": "{{ref:basic.workforce_pool.json:name}}",
+  "attributeMapping": {
+    "google.subject": "false"
+  },
+  "oidc": {
+    "issuerUri": "https://test.google.com",
+    "clientId": "new-client-id",
+    "clientSecret": {
+      "value": {
+        "plainText": "new-client-secret"
+      }
+    },
+    "jwksJson": "{\"keys\":[{\"kty\":\"RSA\",\"e\":\"AQAB\",\"use\":\"sig\",\"kid\":\"9jKk-86AKEhZMpkxuBbz_0fhmkaFlnHo8IRIROtrMLo\",\"alg\":\"RS256\",\"n\":\"rlk_r35FsoJg5IaJ4Nn1Zji6Y_4nrDDRXaSftBKbtUMOK_sjBM2LgRfUT_tX3FVFIFQcZtNRHSqfhBp_D0NDtnzVs60vHGBXaok9RD2ZRMBH2g5ou6SeOL14kxL7izmFOFZXx96VCah9Ya-c0MuFjuqKkvzGUR5pWUXB97kvVw6IlDNNNHeendHKmerAo_9GBZwjzp_BXoTAeF79ruhqVvfUyyks0fOILEg8072UA449Svw7_iiOGPX8nlNnVUHII9hMyk0ChzSx3xfQmxLFOHQ2Zpl3uiGdM25CnMBtsB0rVPi2JTbgKy3fCb7oBJ5MOl7uWXfmMiU-T75Ae5zD7Q\"}]}",
+    "webSsoConfig": {
+      "responseType": "ID_TOKEN",
+      "assertionClaimsBehavior": "ONLY_ID_TOKEN_CLAIMS",
+      "additionalScopes": ["roles"]
+    }
+  }
+}

@@ -1,0 +1,63 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: big_query_job_trigger
+description: A test of a dlp job trigger using bigquery
+type: job_trigger
+versions:
+- ga
+- beta
+resource: samples/big_query.job_trigger.json
+dependencies:
+- samples/basic.cloudresourcemanager.project.json
+- samples/basic.cloudbilling.project_billing_info.json
+- samples/bigquery.serviceusage.service.json
+- samples/first.bigquery.dataset.json
+- samples/first.bigquery.table.json
+- samples/first.pubsub.topic.json
+- samples/second.pubsub.topic.json
+- samples/second.bigquery.dataset.json
+- samples/second.bigquery.table.json
+updates:
+- resource: samples/update_big_query.job_trigger.json
+  dependencies:
+  - samples/basic.cloudresourcemanager.project.json
+  - samples/basic.cloudbilling.project_billing_info.json
+  - samples/bigquery.serviceusage.service.json
+  - samples/first.bigquery.dataset.json
+  - samples/first.bigquery.table.json
+  - samples/first.pubsub.topic.json
+  - samples/second.pubsub.topic.json
+  - samples/second.bigquery.dataset.json
+  - samples/second.bigquery.table.json
+variables:
+- name: _dataset1
+  type: resource_name
+- name: _dataset2
+  type: resource_name
+- name: _table1
+  type: resource_name
+- name: _table2
+  type: resource_name
+- name: billing_account
+  type: billing_account
+- name: id
+  type: resource_name
+- name: org_id
+  type: org_id
+- name: project
+  type: project
+- name: topic1
+  type: resource_name
+- name: topic2
+  type: resource_name

@@ -49,6 +49,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
+          BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
   validate-generated-types:
     runs-on: ubuntu-latest
     timeout-minutes: 10

@@ -1,0 +1,127 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum FilestoreInstanceStateEnum {
+  FilestoreInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  FilestoreInstanceStateEnumCREATING = 2;
+  FilestoreInstanceStateEnumREADY = 3;
+  FilestoreInstanceStateEnumREPAIRING = 4;
+  FilestoreInstanceStateEnumDELETING = 5;
+  FilestoreInstanceStateEnumERROR = 6;
+}
+
+enum FilestoreInstanceTierEnum {
+  FilestoreInstanceTierEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreInstanceTierEnumTIER_UNSPECIFIED = 1;
+  FilestoreInstanceTierEnumSTANDARD = 2;
+  FilestoreInstanceTierEnumPREMIUM = 3;
+  FilestoreInstanceTierEnumBASIC_HDD = 4;
+  FilestoreInstanceTierEnumBASIC_SSD = 5;
+  FilestoreInstanceTierEnumHIGH_SCALE_SSD = 6;
+  FilestoreInstanceTierEnumENTERPRISE = 7;
+}
+
+enum FilestoreInstanceFileSharesNfsExportOptionsAccessModeEnum {
+  FilestoreInstanceFileSharesNfsExportOptionsAccessModeEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreInstanceFileSharesNfsExportOptionsAccessModeEnumACCESS_MODE_UNSPECIFIED = 1;
+  FilestoreInstanceFileSharesNfsExportOptionsAccessModeEnumREAD_ONLY = 2;
+  FilestoreInstanceFileSharesNfsExportOptionsAccessModeEnumREAD_WRITE = 3;
+}
+
+enum FilestoreInstanceFileSharesNfsExportOptionsSquashModeEnum {
+  FilestoreInstanceFileSharesNfsExportOptionsSquashModeEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreInstanceFileSharesNfsExportOptionsSquashModeEnumSQUASH_MODE_UNSPECIFIED = 1;
+  FilestoreInstanceFileSharesNfsExportOptionsSquashModeEnumNO_ROOT_SQUASH = 2;
+  FilestoreInstanceFileSharesNfsExportOptionsSquashModeEnumROOT_SQUASH = 3;
+}
+
+enum FilestoreInstanceNetworksModesEnum {
+  FilestoreInstanceNetworksModesEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreInstanceNetworksModesEnumADDRESS_MODE_UNSPECIFIED = 1;
+  FilestoreInstanceNetworksModesEnumMODE_IPV4 = 2;
+}
+
+message FilestoreInstance {
+  string name = 1;
+  string description = 2;
+  FilestoreInstanceStateEnum state = 3;
+  string status_message = 4;
+  string create_time = 5;
+  FilestoreInstanceTierEnum tier = 6;
+  map<string, string> labels = 7;
+  repeated FilestoreInstanceFileShares file_shares = 8;
+  repeated FilestoreInstanceNetworks networks = 9;
+  string etag = 10;
+  string project = 11;
+  string location = 12;
+}
+
+message FilestoreInstanceFileShares {
+  string name = 1;
+  int64 capacity_gb = 2;
+  string source_backup = 3;
+  repeated FilestoreInstanceFileSharesNfsExportOptions nfs_export_options = 4;
+}
+
+message FilestoreInstanceFileSharesNfsExportOptions {
+  repeated string ip_ranges = 1;
+  FilestoreInstanceFileSharesNfsExportOptionsAccessModeEnum access_mode = 2;
+  FilestoreInstanceFileSharesNfsExportOptionsSquashModeEnum squash_mode = 3;
+  int64 anon_uid = 4;
+  int64 anon_gid = 5;
+}
+
+message FilestoreInstanceNetworks {
+  string network = 1;
+  repeated FilestoreInstanceNetworksModesEnum modes = 2;
+  string reserved_ip_range = 3;
+  repeated string ip_addresses = 4;
+}
+
+message ApplyFilestoreInstanceRequest {
+  FilestoreInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFilestoreInstanceRequest {
+  string service_account_file = 1;
+  FilestoreInstance resource = 2;
+}
+
+message ListFilestoreInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListFilestoreInstanceResponse {
+  repeated FilestoreInstance items = 1;
+}
+
+service FilestoreInstanceService {
+  rpc ApplyFilestoreInstance(ApplyFilestoreInstanceRequest) returns (FilestoreInstance);
+  rpc DeleteFilestoreInstance(DeleteFilestoreInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListFilestoreInstance(ListFilestoreInstanceRequest) returns (ListFilestoreInstanceResponse);
+}

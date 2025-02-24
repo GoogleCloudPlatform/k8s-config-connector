@@ -1,0 +1,30 @@
+{
+  "name": "{{service}}",
+  "project": "{{project}}",
+  "backends": [
+    {
+      "description": "A network endpoint group",
+      "group": "{{ref:zonal.network_endpoint_group.json:selfLink}}",
+      "balancingMode": "RATE",
+      "maxUtilization": 0.5,
+      "maxRatePerEndpoint": 2
+    }
+  ],
+  "healthChecks": ["{{ref:https.health_check.json:selfLink}}"],
+  "enableCdn": true,
+  "loadBalancingScheme": "EXTERNAL",
+  "cdnPolicy": {
+    "cacheKeyPolicy": {
+      "includeProtocol": true,
+      "includeHost": true,
+      "includeQueryString": true,
+      "queryStringWhitelist": ["search"]
+    },
+    "signedUrlCacheMaxAgeSec": 7200,
+    "requestCoalescing": true,
+    "cacheMode": "CACHE_ALL_STATIC",
+    "defaultTtl": 3600,
+    "clientTtl": 7200,
+    "maxTtl": 10800
+  }
+}

@@ -1,0 +1,128 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum MonitoringAlphaUptimeCheckConfigResourceGroupResourceTypeEnum {
+  MonitoringAlphaUptimeCheckConfigResourceGroupResourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaUptimeCheckConfigResourceGroupResourceTypeEnumRESOURCE_TYPE_UNSPECIFIED = 1;
+  MonitoringAlphaUptimeCheckConfigResourceGroupResourceTypeEnumINSTANCE = 2;
+  MonitoringAlphaUptimeCheckConfigResourceGroupResourceTypeEnumAWS_ELB_LOAD_BALANCER = 3;
+}
+
+enum MonitoringAlphaUptimeCheckConfigHttpCheckRequestMethodEnum {
+  MonitoringAlphaUptimeCheckConfigHttpCheckRequestMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaUptimeCheckConfigHttpCheckRequestMethodEnumMETHOD_UNSPECIFIED = 1;
+  MonitoringAlphaUptimeCheckConfigHttpCheckRequestMethodEnumGET = 2;
+  MonitoringAlphaUptimeCheckConfigHttpCheckRequestMethodEnumPOST = 3;
+}
+
+enum MonitoringAlphaUptimeCheckConfigHttpCheckContentTypeEnum {
+  MonitoringAlphaUptimeCheckConfigHttpCheckContentTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaUptimeCheckConfigHttpCheckContentTypeEnumTYPE_UNSPECIFIED = 1;
+  MonitoringAlphaUptimeCheckConfigHttpCheckContentTypeEnumURL_ENCODED = 2;
+}
+
+enum MonitoringAlphaUptimeCheckConfigContentMatchersMatcherEnum {
+  MonitoringAlphaUptimeCheckConfigContentMatchersMatcherEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaUptimeCheckConfigContentMatchersMatcherEnumCONTENT_MATCHER_OPTION_UNSPECIFIED = 1;
+  MonitoringAlphaUptimeCheckConfigContentMatchersMatcherEnumCONTAINS_STRING = 2;
+  MonitoringAlphaUptimeCheckConfigContentMatchersMatcherEnumNOT_CONTAINS_STRING = 3;
+  MonitoringAlphaUptimeCheckConfigContentMatchersMatcherEnumMATCHES_REGEX = 4;
+  MonitoringAlphaUptimeCheckConfigContentMatchersMatcherEnumNOT_MATCHES_REGEX = 5;
+}
+
+message MonitoringAlphaUptimeCheckConfig {
+  string name = 1;
+  string display_name = 2;
+  MonitoringAlphaUptimeCheckConfigMonitoredResource monitored_resource = 3;
+  MonitoringAlphaUptimeCheckConfigResourceGroup resource_group = 4;
+  MonitoringAlphaUptimeCheckConfigHttpCheck http_check = 5;
+  MonitoringAlphaUptimeCheckConfigTcpCheck tcp_check = 6;
+  string period = 7;
+  string timeout = 8;
+  repeated MonitoringAlphaUptimeCheckConfigContentMatchers content_matchers = 9;
+  repeated string selected_regions = 10;
+  string project = 11;
+}
+
+message MonitoringAlphaUptimeCheckConfigMonitoredResource {
+  string type = 1;
+  map<string, string> filter_labels = 2;
+}
+
+message MonitoringAlphaUptimeCheckConfigResourceGroup {
+  string group_id = 1;
+  MonitoringAlphaUptimeCheckConfigResourceGroupResourceTypeEnum resource_type = 2;
+}
+
+message MonitoringAlphaUptimeCheckConfigHttpCheck {
+  MonitoringAlphaUptimeCheckConfigHttpCheckRequestMethodEnum request_method = 1;
+  bool use_ssl = 2;
+  string path = 3;
+  int64 port = 4;
+  MonitoringAlphaUptimeCheckConfigHttpCheckAuthInfo auth_info = 5;
+  bool mask_headers = 6;
+  map<string, string> headers = 7;
+  MonitoringAlphaUptimeCheckConfigHttpCheckContentTypeEnum content_type = 8;
+  bool validate_ssl = 9;
+  string body = 10;
+}
+
+message MonitoringAlphaUptimeCheckConfigHttpCheckAuthInfo {
+  string username = 1;
+  string password = 2;
+}
+
+message MonitoringAlphaUptimeCheckConfigTcpCheck {
+  int64 port = 1;
+}
+
+message MonitoringAlphaUptimeCheckConfigContentMatchers {
+  string content = 1;
+  MonitoringAlphaUptimeCheckConfigContentMatchersMatcherEnum matcher = 2;
+}
+
+message ApplyMonitoringAlphaUptimeCheckConfigRequest {
+  MonitoringAlphaUptimeCheckConfig resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteMonitoringAlphaUptimeCheckConfigRequest {
+  string service_account_file = 1;
+  MonitoringAlphaUptimeCheckConfig resource = 2;
+}
+
+message ListMonitoringAlphaUptimeCheckConfigRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListMonitoringAlphaUptimeCheckConfigResponse {
+  repeated MonitoringAlphaUptimeCheckConfig items = 1;
+}
+
+service MonitoringAlphaUptimeCheckConfigService {
+  rpc ApplyMonitoringAlphaUptimeCheckConfig(ApplyMonitoringAlphaUptimeCheckConfigRequest) returns (MonitoringAlphaUptimeCheckConfig);
+  rpc DeleteMonitoringAlphaUptimeCheckConfig(DeleteMonitoringAlphaUptimeCheckConfigRequest) returns (google.protobuf.Empty);
+  rpc ListMonitoringAlphaUptimeCheckConfig(ListMonitoringAlphaUptimeCheckConfigRequest) returns (ListMonitoringAlphaUptimeCheckConfigResponse);
+}

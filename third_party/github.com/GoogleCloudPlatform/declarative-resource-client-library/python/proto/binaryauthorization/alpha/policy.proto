@@ -1,0 +1,172 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum BinaryauthorizationAlphaPolicyClusterAdmissionRulesEvaluationModeEnum {
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEvaluationModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEvaluationModeEnumALWAYS_ALLOW = 1;
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEvaluationModeEnumALWAYS_DENY = 2;
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEvaluationModeEnumREQUIRE_ATTESTATION = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyClusterAdmissionRulesEnforcementModeEnum {
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEnforcementModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEnforcementModeEnumENFORCEMENT_MODE_UNSPECIFIED = 1;
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEnforcementModeEnumENFORCED_BLOCK_AND_AUDIT_LOG = 2;
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEnforcementModeEnumDRYRUN_AUDIT_LOG_ONLY = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEvaluationModeEnum {
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEvaluationModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEvaluationModeEnumALWAYS_ALLOW = 1;
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEvaluationModeEnumALWAYS_DENY = 2;
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEvaluationModeEnumREQUIRE_ATTESTATION = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEnforcementModeEnum {
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEnforcementModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEnforcementModeEnumENFORCEMENT_MODE_UNSPECIFIED = 1;
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEnforcementModeEnumENFORCED_BLOCK_AND_AUDIT_LOG = 2;
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEnforcementModeEnumDRYRUN_AUDIT_LOG_ONLY = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEvaluationModeEnum {
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEvaluationModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEvaluationModeEnumALWAYS_ALLOW = 1;
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEvaluationModeEnumALWAYS_DENY = 2;
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEvaluationModeEnumREQUIRE_ATTESTATION = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEnforcementModeEnum {
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEnforcementModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEnforcementModeEnumENFORCEMENT_MODE_UNSPECIFIED = 1;
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEnforcementModeEnumENFORCED_BLOCK_AND_AUDIT_LOG = 2;
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEnforcementModeEnumDRYRUN_AUDIT_LOG_ONLY = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEvaluationModeEnum {
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEvaluationModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEvaluationModeEnumALWAYS_ALLOW = 1;
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEvaluationModeEnumALWAYS_DENY = 2;
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEvaluationModeEnumREQUIRE_ATTESTATION = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEnforcementModeEnum {
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEnforcementModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEnforcementModeEnumENFORCEMENT_MODE_UNSPECIFIED = 1;
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEnforcementModeEnumENFORCED_BLOCK_AND_AUDIT_LOG = 2;
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEnforcementModeEnumDRYRUN_AUDIT_LOG_ONLY = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEvaluationModeEnum {
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEvaluationModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEvaluationModeEnumALWAYS_ALLOW = 1;
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEvaluationModeEnumALWAYS_DENY = 2;
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEvaluationModeEnumREQUIRE_ATTESTATION = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEnforcementModeEnum {
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEnforcementModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEnforcementModeEnumENFORCEMENT_MODE_UNSPECIFIED = 1;
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEnforcementModeEnumENFORCED_BLOCK_AND_AUDIT_LOG = 2;
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEnforcementModeEnumDRYRUN_AUDIT_LOG_ONLY = 3;
+}
+
+enum BinaryauthorizationAlphaPolicyGlobalPolicyEvaluationModeEnum {
+  BinaryauthorizationAlphaPolicyGlobalPolicyEvaluationModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaPolicyGlobalPolicyEvaluationModeEnumGLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED = 1;
+  BinaryauthorizationAlphaPolicyGlobalPolicyEvaluationModeEnumENABLE = 2;
+  BinaryauthorizationAlphaPolicyGlobalPolicyEvaluationModeEnumDISABLE = 3;
+}
+
+message BinaryauthorizationAlphaPolicy {
+  repeated BinaryauthorizationAlphaPolicyAdmissionWhitelistPatterns admission_whitelist_patterns = 1;
+  map<string, BinaryauthorizationAlphaPolicyClusterAdmissionRules> cluster_admission_rules = 2;
+  map<string, BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRules> kubernetes_namespace_admission_rules = 3;
+  map<string, BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRules> kubernetes_service_account_admission_rules = 4;
+  map<string, BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRules> istio_service_identity_admission_rules = 5;
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRule default_admission_rule = 6;
+  string description = 7;
+  BinaryauthorizationAlphaPolicyGlobalPolicyEvaluationModeEnum global_policy_evaluation_mode = 8;
+  string self_link = 9;
+  string project = 10;
+  string update_time = 11;
+}
+
+message BinaryauthorizationAlphaPolicyAdmissionWhitelistPatterns {
+  string name_pattern = 1;
+}
+
+message BinaryauthorizationAlphaPolicyClusterAdmissionRules {
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEvaluationModeEnum evaluation_mode = 1;
+  repeated string require_attestations_by = 2;
+  BinaryauthorizationAlphaPolicyClusterAdmissionRulesEnforcementModeEnum enforcement_mode = 3;
+}
+
+message BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRules {
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEvaluationModeEnum evaluation_mode = 1;
+  repeated string require_attestations_by = 2;
+  BinaryauthorizationAlphaPolicyKubernetesNamespaceAdmissionRulesEnforcementModeEnum enforcement_mode = 3;
+}
+
+message BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRules {
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEvaluationModeEnum evaluation_mode = 1;
+  repeated string require_attestations_by = 2;
+  BinaryauthorizationAlphaPolicyKubernetesServiceAccountAdmissionRulesEnforcementModeEnum enforcement_mode = 3;
+}
+
+message BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRules {
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEvaluationModeEnum evaluation_mode = 1;
+  repeated string require_attestations_by = 2;
+  BinaryauthorizationAlphaPolicyIstioServiceIdentityAdmissionRulesEnforcementModeEnum enforcement_mode = 3;
+}
+
+message BinaryauthorizationAlphaPolicyDefaultAdmissionRule {
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEvaluationModeEnum evaluation_mode = 1;
+  repeated string require_attestations_by = 2;
+  BinaryauthorizationAlphaPolicyDefaultAdmissionRuleEnforcementModeEnum enforcement_mode = 3;
+}
+
+message ApplyBinaryauthorizationAlphaPolicyRequest {
+  BinaryauthorizationAlphaPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBinaryauthorizationAlphaPolicyRequest {
+  string service_account_file = 1;
+  BinaryauthorizationAlphaPolicy resource = 2;
+}
+
+message ListBinaryauthorizationAlphaPolicyRequest {
+  string service_account_file = 1;
+}
+
+message ListBinaryauthorizationAlphaPolicyResponse {
+  repeated BinaryauthorizationAlphaPolicy items = 1;
+}
+
+service BinaryauthorizationAlphaPolicyService {
+  rpc ApplyBinaryauthorizationAlphaPolicy(ApplyBinaryauthorizationAlphaPolicyRequest) returns (BinaryauthorizationAlphaPolicy);
+  rpc DeleteBinaryauthorizationAlphaPolicy(DeleteBinaryauthorizationAlphaPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListBinaryauthorizationAlphaPolicy(ListBinaryauthorizationAlphaPolicyRequest) returns (ListBinaryauthorizationAlphaPolicyResponse);
+}

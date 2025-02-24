@@ -1,0 +1,100 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum GkemulticloudBetaAzureNodePoolStateEnum {
+  GkemulticloudBetaAzureNodePoolStateEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudBetaAzureNodePoolStateEnumSTATE_UNSPECIFIED = 1;
+  GkemulticloudBetaAzureNodePoolStateEnumPROVISIONING = 2;
+  GkemulticloudBetaAzureNodePoolStateEnumRUNNING = 3;
+  GkemulticloudBetaAzureNodePoolStateEnumRECONCILING = 4;
+  GkemulticloudBetaAzureNodePoolStateEnumSTOPPING = 5;
+  GkemulticloudBetaAzureNodePoolStateEnumERROR = 6;
+  GkemulticloudBetaAzureNodePoolStateEnumDEGRADED = 7;
+}
+
+message GkemulticloudBetaAzureNodePool {
+  string name = 1;
+  string version = 2;
+  GkemulticloudBetaAzureNodePoolConfig config = 3;
+  string subnet_id = 4;
+  GkemulticloudBetaAzureNodePoolAutoscaling autoscaling = 5;
+  GkemulticloudBetaAzureNodePoolStateEnum state = 6;
+  string uid = 7;
+  bool reconciling = 8;
+  string create_time = 9;
+  string update_time = 10;
+  string etag = 11;
+  map<string, string> annotations = 12;
+  GkemulticloudBetaAzureNodePoolMaxPodsConstraint max_pods_constraint = 13;
+  string azure_availability_zone = 14;
+  string project = 15;
+  string location = 16;
+  string azure_cluster = 17;
+}
+
+message GkemulticloudBetaAzureNodePoolConfig {
+  string vm_size = 1;
+  GkemulticloudBetaAzureNodePoolConfigRootVolume root_volume = 2;
+  map<string, string> tags = 3;
+  GkemulticloudBetaAzureNodePoolConfigSshConfig ssh_config = 4;
+}
+
+message GkemulticloudBetaAzureNodePoolConfigRootVolume {
+  int64 size_gib = 1;
+}
+
+message GkemulticloudBetaAzureNodePoolConfigSshConfig {
+  string authorized_key = 1;
+}
+
+message GkemulticloudBetaAzureNodePoolAutoscaling {
+  int64 min_node_count = 1;
+  int64 max_node_count = 2;
+}
+
+message GkemulticloudBetaAzureNodePoolMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ApplyGkemulticloudBetaAzureNodePoolRequest {
+  GkemulticloudBetaAzureNodePool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkemulticloudBetaAzureNodePoolRequest {
+  string service_account_file = 1;
+  GkemulticloudBetaAzureNodePool resource = 2;
+}
+
+message ListGkemulticloudBetaAzureNodePoolRequest {
+  string service_account_file = 1;
+	GkemulticloudBetaAzureNodePool resource = 2;
+}
+
+message ListGkemulticloudBetaAzureNodePoolResponse {
+  repeated GkemulticloudBetaAzureNodePool items = 1;
+}
+
+service GkemulticloudBetaAzureNodePoolService {
+  rpc ApplyGkemulticloudBetaAzureNodePool(ApplyGkemulticloudBetaAzureNodePoolRequest) returns (GkemulticloudBetaAzureNodePool);
+  rpc DeleteGkemulticloudBetaAzureNodePool(DeleteGkemulticloudBetaAzureNodePoolRequest) returns (google.protobuf.Empty);
+  rpc ListGkemulticloudBetaAzureNodePool(ListGkemulticloudBetaAzureNodePoolRequest) returns (ListGkemulticloudBetaAzureNodePoolResponse);
+}

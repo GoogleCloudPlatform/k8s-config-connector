@@ -1,0 +1,23 @@
+{
+  "name": "folders/{{ref:basic.cloudresourcemanager.folder.json:name}}/policies/gcp.resourceLocations",
+  "parent": "folders/{{ref:basic.cloudresourcemanager.folder.json:name}}",
+  "spec": {
+    "rules": [
+      {
+        "condition": {
+          "title": "sample-condition",
+          "description": "A sample condition for the policy",
+          "expression": "resource.matchLabels('labelKeys/123', 'labelValues/345')"
+        },
+        "values": {
+          "allowedValues": ["projects/allowed-project"],
+          "deniedValues": ["projects/denied-project"]
+        }
+      },
+      {
+        "allowAll": true
+      }
+    ],
+    "inheritFromParent": false
+  }
+}

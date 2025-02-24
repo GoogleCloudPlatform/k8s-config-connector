@@ -1,0 +1,24 @@
+{
+  "name": "{{instance1}}",
+  "project": "{{ref:compute.serviceusage.service.json:project}}",
+  "zone": "{{zone}}",
+  "machineType": "zones/{{zone}}/machineTypes/e2-medium",
+  "canIpForward": true,
+  "networkInterfaces": [
+    {
+      "subnetwork": "{{ref:first.compute.subnetwork.json:selfLink}}",
+      "networkIP": "10.0.0.2",
+      "accessConfigs": [{
+        "networkTier": "PREMIUM"
+      }]
+    }
+  ],
+  "disks": [
+    {
+      "boot": true,
+      "initializeParams": {
+        "sourceImage": "projects/debian-cloud/global/images/debian-10-buster-v20210817"
+      }
+    }
+  ]
+}

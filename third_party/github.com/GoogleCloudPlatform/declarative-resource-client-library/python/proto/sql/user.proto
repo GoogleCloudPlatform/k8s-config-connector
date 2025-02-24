@@ -1,0 +1,68 @@
+// Copyright 2020 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum SqlUserTypeEnum {
+  UserTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  UserTypeEnumNATIVE = 1;
+  UserTypeEnumCLOUD_IAM_USER = 2;
+  UserTypeEnumCLOUD_IAM_SERVICE_ACCOUNT = 3;
+}
+
+message SqlUser {
+  string name = 1;
+  string password = 2;
+  string project = 3;
+  string instance = 4;
+  SqlUserSqlserverUserDetails sqlserver_user_details = 5;
+  SqlUserTypeEnum type = 6;
+  string etag = 7;
+  string host = 8;
+}
+
+message SqlUserSqlserverUserDetails {
+  bool disabled = 1;
+  repeated string server_roles = 2;
+}
+
+message ApplySqlUserRequest {
+  SqlUser resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteSqlUserRequest {
+  string service_account_file = 1;
+  SqlUser resource = 2;
+}
+
+message ListSqlUserRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Instance = 3;
+}
+
+message ListSqlUserResponse {
+  repeated SqlUser items = 1;
+}
+service SqlUserService {
+  rpc ApplySqlUser(ApplySqlUserRequest) returns (SqlUser);
+  rpc DeleteSqlUser(DeleteSqlUserRequest) returns (google.protobuf.Empty);
+  rpc ListSqlUser(ListSqlUserRequest) returns (ListSqlUserResponse);
+}

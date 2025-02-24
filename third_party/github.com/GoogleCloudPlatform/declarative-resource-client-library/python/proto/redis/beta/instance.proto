@@ -1,0 +1,156 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum RedisBetaInstanceStateEnum {
+  RedisBetaInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisBetaInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  RedisBetaInstanceStateEnumCREATING = 2;
+  RedisBetaInstanceStateEnumREADY = 3;
+  RedisBetaInstanceStateEnumUPDATING = 4;
+  RedisBetaInstanceStateEnumDELETING = 5;
+  RedisBetaInstanceStateEnumREPAIRING = 6;
+  RedisBetaInstanceStateEnumPERFORMING_MAINTENANCE = 7;
+  RedisBetaInstanceStateEnumIMPORTING = 8;
+  RedisBetaInstanceStateEnumFAILING_OVER = 9;
+}
+
+enum RedisBetaInstanceTierEnum {
+  RedisBetaInstanceTierEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisBetaInstanceTierEnumTIER_UNSPECIFIED = 1;
+  RedisBetaInstanceTierEnumBASIC = 2;
+  RedisBetaInstanceTierEnumSTANDARD_HA = 3;
+}
+
+enum RedisBetaInstanceConnectModeEnum {
+  RedisBetaInstanceConnectModeEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisBetaInstanceConnectModeEnumCONNECT_MODE_UNSPECIFIED = 1;
+  RedisBetaInstanceConnectModeEnumDIRECT_PEERING = 2;
+  RedisBetaInstanceConnectModeEnumPRIVATE_SERVICE_ACCESS = 3;
+}
+
+enum RedisBetaInstanceTransitEncryptionModeEnum {
+  RedisBetaInstanceTransitEncryptionModeEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisBetaInstanceTransitEncryptionModeEnumTRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 1;
+  RedisBetaInstanceTransitEncryptionModeEnumSERVER_AUTHENTICATION = 2;
+  RedisBetaInstanceTransitEncryptionModeEnumDISABLED = 3;
+}
+
+enum RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnum {
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumDAY_OF_WEEK_UNSPECIFIED = 1;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumMONDAY = 2;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumTUESDAY = 3;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumWEDNESDAY = 4;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumTHURSDAY = 5;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumFRIDAY = 6;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumSATURDAY = 7;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumSUNDAY = 8;
+}
+
+message RedisBetaInstance {
+  string name = 1;
+  string display_name = 2;
+  map<string, string> labels = 3;
+  string location_id = 4;
+  string alternative_location_id = 5;
+  string redis_version = 6;
+  string reserved_ip_range = 7;
+  string host = 8;
+  int64 port = 9;
+  string current_location_id = 10;
+  string create_time = 11;
+  RedisBetaInstanceStateEnum state = 12;
+  string status_message = 13;
+  map<string, string> redis_configs = 14;
+  RedisBetaInstanceTierEnum tier = 15;
+  int64 memory_size_gb = 16;
+  string authorized_network = 17;
+  string persistence_iam_identity = 18;
+  RedisBetaInstanceConnectModeEnum connect_mode = 19;
+  bool auth_enabled = 20;
+  repeated RedisBetaInstanceServerCaCerts server_ca_certs = 21;
+  RedisBetaInstanceTransitEncryptionModeEnum transit_encryption_mode = 22;
+  RedisBetaInstanceMaintenancePolicy maintenance_policy = 23;
+  RedisBetaInstanceMaintenanceSchedule maintenance_schedule = 24;
+  string project = 25;
+  string location = 26;
+}
+
+message RedisBetaInstanceServerCaCerts {
+  string serial_number = 1;
+  string cert = 2;
+  string create_time = 3;
+  string expire_time = 4;
+  string sha1_fingerprint = 5;
+}
+
+message RedisBetaInstanceMaintenancePolicy {
+  string create_time = 1;
+  string update_time = 2;
+  string description = 3;
+  repeated RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindow weekly_maintenance_window = 4;
+}
+
+message RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindow {
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnum day = 1;
+  RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime start_time = 2;
+  string duration = 3;
+}
+
+message RedisBetaInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime {
+  int64 hours = 1;
+  int64 minutes = 2;
+  int64 seconds = 3;
+  int64 nanos = 4;
+}
+
+message RedisBetaInstanceMaintenanceSchedule {
+  string start_time = 1;
+  string end_time = 2;
+  bool can_reschedule = 3;
+  string schedule_deadline_time = 4;
+}
+
+message ApplyRedisBetaInstanceRequest {
+  RedisBetaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteRedisBetaInstanceRequest {
+  string service_account_file = 1;
+  RedisBetaInstance resource = 2;
+}
+
+message ListRedisBetaInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListRedisBetaInstanceResponse {
+  repeated RedisBetaInstance items = 1;
+}
+
+service RedisBetaInstanceService {
+  rpc ApplyRedisBetaInstance(ApplyRedisBetaInstanceRequest) returns (RedisBetaInstance);
+  rpc DeleteRedisBetaInstance(DeleteRedisBetaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListRedisBetaInstance(ListRedisBetaInstanceRequest) returns (ListRedisBetaInstanceResponse);
+}

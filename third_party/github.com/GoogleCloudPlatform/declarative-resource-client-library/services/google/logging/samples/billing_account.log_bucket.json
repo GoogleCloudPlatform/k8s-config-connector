@@ -1,0 +1,6 @@
+{
+  "name": "_Default",
+  "parent": "billingAccounts/{{billing_account}}",
+  "location": "global",
+  "retentionDays": 30
+}

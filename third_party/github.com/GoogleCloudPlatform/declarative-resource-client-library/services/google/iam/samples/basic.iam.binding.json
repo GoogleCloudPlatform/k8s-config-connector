@@ -1,0 +1,5 @@
+{
+  "role": "roles/viewer",
+  "members": ["domain:google.com"],
+  "resource": "{{ref:basic.workforce_pool.json:__resource__}}"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "{{instance_name}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "description": "Updated test instance",
+  "tier": "STANDARD",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "fileShares": [
+    {
+      "capacityGb": 1024,
+      "name": "my_share",
+      "nfsExportOptions": [
+        {
+          "ipRanges": ["172.217.14.238"],
+          "accessMode": "READ_ONLY",
+          "squashMode": "NO_ROOT_SQUASH"
+        }
+      ]
+    }
+  ],
+  "networks": [
+    {
+      "network": "default",
+      "modes": ["MODE_IPV4"],
+      "reservedIPRange": "10.{{random_int}}.{{random_int}}.0/29"
+    }
+  ]
+}

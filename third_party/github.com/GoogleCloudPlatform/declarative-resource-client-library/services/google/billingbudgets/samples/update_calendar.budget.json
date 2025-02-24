@@ -1,0 +1,37 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "billingAccount": "0186CC-FE4258-F9F63E",
+  "displayName": "updated-sample-budget",
+  "budgetFilter": {
+    "projects": ["projects/{{ref:second.cloudresourcemanager.project.json:name}}"],
+    "creditTypes": [],
+    "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
+    "services": ["services/002A-FAF7-9793"],
+    "subaccounts": [],
+    "labels": {
+      "label-two": {
+        "values": ["value-two"]
+      }
+    },
+    "calendarPeriod": "YEAR"
+  },
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": 0,
+      "nanos": 1
+    }
+  },
+  "thresholdRules": [
+    {
+      "thresholdPercent": 0.6,
+      "spendBasis": "FORECASTED_SPEND"
+    }
+  ],
+  "allUpdatesRule": {
+    "pubsubTopic": "projects/{{project}}/topics/{{ref:second.pubsub.topic.json:name}}",
+    "schemaVersion": "1.0",
+    "monitoringNotificationChannels": ["projects/{{project}}/notificationChannels/{{ref:second.monitoring.notification_channel.json:name}}"],
+    "disableDefaultIamRecipients": true
+  }
+}

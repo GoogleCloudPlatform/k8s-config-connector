@@ -1,0 +1,115 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum AccesscontextmanagerAccessLevelBasicCombiningFunctionEnum {
+  AccesscontextmanagerAccessLevelBasicCombiningFunctionEnumNO_VALUE_DO_NOT_USE = 0;
+  AccesscontextmanagerAccessLevelBasicCombiningFunctionEnumAND = 1;
+  AccesscontextmanagerAccessLevelBasicCombiningFunctionEnumOR = 2;
+}
+
+enum AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedEncryptionStatusesEnum {
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedEncryptionStatusesEnumNO_VALUE_DO_NOT_USE = 0;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedEncryptionStatusesEnumENCRYPTION_UNSPECIFIED = 1;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedEncryptionStatusesEnumENCRYPTION_UNSUPPORTED = 2;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedEncryptionStatusesEnumUNENCRYPTED = 3;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedEncryptionStatusesEnumENCRYPTED = 4;
+}
+
+enum AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedDeviceManagementLevelsEnum {
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedDeviceManagementLevelsEnumNO_VALUE_DO_NOT_USE = 0;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedDeviceManagementLevelsEnumMANAGEMENT_UNSPECIFIED = 1;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedDeviceManagementLevelsEnumNONE = 2;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedDeviceManagementLevelsEnumBASIC = 3;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedDeviceManagementLevelsEnumCOMPLETE = 4;
+}
+
+enum AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraintsOSTypeEnum {
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraintsOSTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraintsOSTypeEnumOS_UNSPECIFIED = 1;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraintsOSTypeEnumDESKTOP_MAC = 2;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraintsOSTypeEnumDESKTOP_WINDOWS = 3;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraintsOSTypeEnumDESKTOP_LINUX = 4;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraintsOSTypeEnumDESKTOP_CHROME_OS = 5;
+}
+
+message AccesscontextmanagerAccessLevel {
+  string title = 1;
+  string create_time = 2;
+  string update_time = 3;
+  string description = 4;
+  AccesscontextmanagerAccessLevelBasic basic = 5;
+  string name = 6;
+  string policy = 7;
+}
+
+message AccesscontextmanagerAccessLevelBasic {
+  AccesscontextmanagerAccessLevelBasicCombiningFunctionEnum combining_function = 1;
+  repeated AccesscontextmanagerAccessLevelBasicConditions conditions = 2;
+}
+
+message AccesscontextmanagerAccessLevelBasicConditions {
+  repeated string regions = 1;
+  repeated string ip_subnetworks = 2;
+  repeated string required_access_levels = 3;
+  repeated string members = 4;
+  bool negate = 5;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicy device_policy = 6;
+}
+
+message AccesscontextmanagerAccessLevelBasicConditionsDevicePolicy {
+  bool require_screenlock = 1;
+  bool require_admin_approval = 2;
+  bool require_corp_owned = 3;
+  repeated AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedEncryptionStatusesEnum allowed_encryption_statuses = 4;
+  repeated AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyAllowedDeviceManagementLevelsEnum allowed_device_management_levels = 5;
+  repeated AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraints os_constraints = 6;
+}
+
+message AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraints {
+  string minimum_version = 1;
+  AccesscontextmanagerAccessLevelBasicConditionsDevicePolicyOSConstraintsOSTypeEnum os_type = 2;
+  bool require_verified_chrome_os = 3;
+}
+
+message ApplyAccesscontextmanagerAccessLevelRequest {
+  AccesscontextmanagerAccessLevel resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteAccesscontextmanagerAccessLevelRequest {
+  string service_account_file = 1;
+  AccesscontextmanagerAccessLevel resource = 2;
+}
+
+message ListAccesscontextmanagerAccessLevelRequest {
+  string service_account_file = 1;
+  string Policy = 2;
+}
+
+message ListAccesscontextmanagerAccessLevelResponse {
+  repeated AccesscontextmanagerAccessLevel items = 1;
+}
+
+service AccesscontextmanagerAccessLevelService {
+  rpc ApplyAccesscontextmanagerAccessLevel(ApplyAccesscontextmanagerAccessLevelRequest) returns (AccesscontextmanagerAccessLevel);
+  rpc DeleteAccesscontextmanagerAccessLevel(DeleteAccesscontextmanagerAccessLevelRequest) returns (google.protobuf.Empty);
+  rpc ListAccesscontextmanagerAccessLevel(ListAccesscontextmanagerAccessLevelRequest) returns (ListAccesscontextmanagerAccessLevelResponse);
+}

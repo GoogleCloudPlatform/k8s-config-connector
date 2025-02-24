@@ -1,0 +1,29 @@
+{
+  "priority": 9000,
+  "firewallPolicy": "locations/global/firewallPolicies/{{ref:folder.firewall_policy.json:name}}",
+  "description": "allow-scan-probe-update",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "udp",
+        "ports": ["22"]
+      }
+    ],
+    "srcFqdns": ["wikipedia.org"],
+    "destFqdns": [],
+    "srcRegionCodes": ["US"],
+    "destRegionCodes": [],
+    "srcThreatIntelligences": ["iplist-known-malicious-ips"],
+    "destThreatIntelligences": [],
+    "srcIPRanges": ["11.100.0.1/32"],
+    "destIPRanges": [],
+    "srcAddressGroups": ["organizations/{{org_id}}/locations/global/addressGroups/{{ref:basic.networksecurity.address_group.json:name}}"],
+    "destAddressGroups": []
+  },
+  "enableLogging" : true,
+  "targetServiceAccounts" : ["update-261421534184-compute@developer.gserviceaccount.com"],
+  "action" : "allow",
+  "direction": "INGRESS",
+  "disabled" : true,
+  "targetResources": ["{{ref:second_folder.network.json:selfLink}}"]
+}

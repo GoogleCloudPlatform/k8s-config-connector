@@ -1,0 +1,42 @@
+{
+  "name": "{{node-pool}}",
+  "project": "{{project}}",
+  "location": "us-west1",
+  "cluster": "{{ref:minimal.cluster.json:name}}",
+  "version": "1.27.4-gke.1600",
+  "config": {
+    "rootVolume": {
+      "sizeGib": 32
+    },
+    "vmSize": "Standard_DS2_v2",
+    "tags": {
+      "owner": "mmv2",
+      "creation time": "2021-07-16T17:16:38Z",
+      "googleinternal:user": "mmv2"
+    },
+    "labels": {
+      "label-one": "value-one"
+    },
+    "sshConfig": {
+      "authorizedKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8yaayO6lnb2v+SedxUMa2c8vtIEzCzBjM3EJJsv8Vm9zUDWR7dXWKoNGARUb2mNGXASvI6mFIDXTIlkQ0poDEPpMaXR0g2cb5xT8jAAJq7fqXL3+0rcJhY/uigQ+MrT6s+ub0BFVbsmGHNrMQttXX9gtmwkeAEvj3mra9e5pkNf90qlKnZz6U0SVArxVsLx07vHPHDIYrl0OPG4zUREF52igbBPiNrHJFDQJT/4YlDMJmo/QT/A1D6n9ocemvZSzhRx15/Arjowhr+VVKSbaxzPtEfY0oIg2SrqJnnr/l3Du5qIefwh5VmCZe4xopPUaDDoOIEFriZ88sB+3zz8ib8sk8zJJQCgeP78tQvXCgS+4e5W3TUg9mxjB6KjXTyHIVhDZqhqde0OI3Fy1UuVzRUwnBaLjBnAwP5EoFQGRmDYk/rEYe7HTmovLeEBUDQocBQKT4Ripm/xJkkWY7B07K/tfo56dGUCkvyIVXKBInCh+dLK7gZapnd4UWkY0xBYcwo1geMLRq58iFTLA2j/JmpmHXp7m0l7jJii7d44uD3tTIFYThn7NlOnvhLim/YcBK07GMGIN7XwrrKZKmxXaspw6KBWVhzuw1UPxctxshYEaMLfFg/bwOw8HvMPr9VtrElpSB7oiOh91PDIPdPBgHCi7N2QgQ5l/ZDBHieSpNrQ== thomasrodgers"
+    },
+    "proxyConfig": {
+      "resourceGroupId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-cluster",
+      "secretId": "https://{{byo_multicloud_prefix}}-dev-keyvault.vault.azure.net/secrets/{{byo_multicloud_prefix}}-dev-secret/{{azure_proxy_config_secret_version}}"
+    }
+  },
+  "subnetId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-byo/providers/Microsoft.Network/virtualNetworks/{{byo_multicloud_prefix}}-dev-vnet/subnets/default",
+  "autoscaling": {
+      "minNodeCount": 2,
+      "maxNodeCount": 3
+  },
+  "annotations": {
+    "annotation-one": "value-one"
+  },
+  "management": {
+    "autoRepair": true
+  },
+  "maxPodsConstraint": {
+    "maxPodsPerNode": 110
+  }
+}

@@ -1,0 +1,93 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum KrmapihostingAlphaInstanceStateEnum {
+  KrmapihostingAlphaInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  KrmapihostingAlphaInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  KrmapihostingAlphaInstanceStateEnumCREATING = 2;
+  KrmapihostingAlphaInstanceStateEnumRUNNING = 3;
+  KrmapihostingAlphaInstanceStateEnumDELETING = 4;
+  KrmapihostingAlphaInstanceStateEnumSUSPENDED = 5;
+  KrmapihostingAlphaInstanceStateEnumREAD_ONLY = 6;
+}
+
+message KrmapihostingAlphaInstance {
+  string name = 1;
+  map<string, string> labels = 2;
+  KrmapihostingAlphaInstanceBundlesConfig bundles_config = 3;
+  bool use_private_endpoint = 4;
+  string gke_resource_link = 5;
+  KrmapihostingAlphaInstanceStateEnum state = 6;
+  KrmapihostingAlphaInstanceManagementConfig management_config = 7;
+  string project = 8;
+  string location = 9;
+}
+
+message KrmapihostingAlphaInstanceBundlesConfig {
+  KrmapihostingAlphaInstanceBundlesConfigConfigControllerConfig config_controller_config = 1;
+}
+
+message KrmapihostingAlphaInstanceBundlesConfigConfigControllerConfig {
+  bool enabled = 1;
+}
+
+message KrmapihostingAlphaInstanceManagementConfig {
+  KrmapihostingAlphaInstanceManagementConfigStandardManagementConfig standard_management_config = 1;
+}
+
+message KrmapihostingAlphaInstanceManagementConfigStandardManagementConfig {
+  string network = 1;
+  string master_ipv4_cidr_block = 2;
+  string man_block = 3;
+  string cluster_cidr_block = 4;
+  string services_cidr_block = 5;
+  string cluster_named_range = 6;
+  string services_named_range = 7;
+}
+
+message ApplyKrmapihostingAlphaInstanceRequest {
+  KrmapihostingAlphaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteKrmapihostingAlphaInstanceRequest {
+  string service_account_file = 1;
+  KrmapihostingAlphaInstance resource = 2;
+}
+
+message ListKrmapihostingAlphaInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListKrmapihostingAlphaInstanceResponse {
+  repeated KrmapihostingAlphaInstance items = 1;
+}
+
+service KrmapihostingAlphaInstanceService {
+  rpc ApplyKrmapihostingAlphaInstance(ApplyKrmapihostingAlphaInstanceRequest) returns (KrmapihostingAlphaInstance);
+  rpc DeleteKrmapihostingAlphaInstance(DeleteKrmapihostingAlphaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListKrmapihostingAlphaInstance(ListKrmapihostingAlphaInstanceRequest) returns (ListKrmapihostingAlphaInstanceResponse);
+}

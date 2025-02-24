@@ -1,0 +1,364 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum AppengineVersionInboundServicesEnum {
+  AppengineVersionInboundServicesEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_UNSPECIFIED = 1;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_MAIL = 2;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_MAIL_BOUNCE = 3;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_XMPP_ERROR = 4;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_XMPP_MESSAGE = 5;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_XMPP_SUBSCRIBE = 6;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_XMPP_PRESENCE = 7;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_CHANNEL_PRESENCE = 8;
+  AppengineVersionInboundServicesEnumINBOUND_SERVICE_WARMUP = 9;
+}
+
+enum AppengineVersionServingStatusEnum {
+  AppengineVersionServingStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionServingStatusEnumUNSPECIFIED = 1;
+  AppengineVersionServingStatusEnumSERVING = 2;
+  AppengineVersionServingStatusEnumUSER_DISABLED = 3;
+  AppengineVersionServingStatusEnumSYSTEM_DISABLED = 4;
+}
+
+enum AppengineVersionHandlersSecurityLevelEnum {
+  AppengineVersionHandlersSecurityLevelEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionHandlersSecurityLevelEnumSECURE_UNSPECIFIED = 1;
+  AppengineVersionHandlersSecurityLevelEnumSECURE_DEFAULT = 2;
+  AppengineVersionHandlersSecurityLevelEnumSECURE_NEVER = 3;
+  AppengineVersionHandlersSecurityLevelEnumSECURE_OPTIONAL = 4;
+  AppengineVersionHandlersSecurityLevelEnumSECURE_ALWAYS = 5;
+}
+
+enum AppengineVersionHandlersLoginEnum {
+  AppengineVersionHandlersLoginEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionHandlersLoginEnumLOGIN_UNSPECIFIED = 1;
+  AppengineVersionHandlersLoginEnumLOGIN_OPTIONAL = 2;
+  AppengineVersionHandlersLoginEnumLOGIN_ADMIN = 3;
+  AppengineVersionHandlersLoginEnumLOGIN_REQUIRED = 4;
+}
+
+enum AppengineVersionHandlersAuthFailActionEnum {
+  AppengineVersionHandlersAuthFailActionEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionHandlersAuthFailActionEnumAUTH_FAIL_ACTION_UNSPECIFIED = 1;
+  AppengineVersionHandlersAuthFailActionEnumAUTH_FAIL_ACTION_REDIRECT = 2;
+  AppengineVersionHandlersAuthFailActionEnumAUTH_FAIL_ACTION_UNAUTHORIZED = 3;
+}
+
+enum AppengineVersionHandlersRedirectHttpResponseCodeEnum {
+  AppengineVersionHandlersRedirectHttpResponseCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionHandlersRedirectHttpResponseCodeEnumREDIRECT_HTTP_RESPONSE_CODE_UNSPECIFIED = 1;
+  AppengineVersionHandlersRedirectHttpResponseCodeEnumREDIRECT_HTTP_RESPONSE_CODE_301 = 2;
+  AppengineVersionHandlersRedirectHttpResponseCodeEnumREDIRECT_HTTP_RESPONSE_CODE_302 = 3;
+  AppengineVersionHandlersRedirectHttpResponseCodeEnumREDIRECT_HTTP_RESPONSE_CODE_303 = 4;
+  AppengineVersionHandlersRedirectHttpResponseCodeEnumREDIRECT_HTTP_RESPONSE_CODE_307 = 5;
+}
+
+enum AppengineVersionErrorHandlersErrorCodeEnum {
+  AppengineVersionErrorHandlersErrorCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionErrorHandlersErrorCodeEnumERROR_CODE_UNSPECIFIED = 1;
+  AppengineVersionErrorHandlersErrorCodeEnumERROR_CODE_DEFAULT = 2;
+  AppengineVersionErrorHandlersErrorCodeEnumERROR_CODE_OVER_QUOTA = 3;
+  AppengineVersionErrorHandlersErrorCodeEnumERROR_CODE_DOS_API_DENIAL = 4;
+  AppengineVersionErrorHandlersErrorCodeEnumERROR_CODE_TIMEOUT = 5;
+}
+
+enum AppengineVersionApiConfigAuthFailActionEnum {
+  AppengineVersionApiConfigAuthFailActionEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionApiConfigAuthFailActionEnumAUTH_FAIL_ACTION_UNSPECIFIED = 1;
+  AppengineVersionApiConfigAuthFailActionEnumAUTH_FAIL_ACTION_REDIRECT = 2;
+  AppengineVersionApiConfigAuthFailActionEnumAUTH_FAIL_ACTION_UNAUTHORIZED = 3;
+}
+
+enum AppengineVersionApiConfigLoginEnum {
+  AppengineVersionApiConfigLoginEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionApiConfigLoginEnumLOGIN_UNSPECIFIED = 1;
+  AppengineVersionApiConfigLoginEnumLOGIN_OPTIONAL = 2;
+  AppengineVersionApiConfigLoginEnumLOGIN_ADMIN = 3;
+  AppengineVersionApiConfigLoginEnumLOGIN_REQUIRED = 4;
+}
+
+enum AppengineVersionApiConfigSecurityLevelEnum {
+  AppengineVersionApiConfigSecurityLevelEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineVersionApiConfigSecurityLevelEnumSECURE_UNSPECIFIED = 1;
+  AppengineVersionApiConfigSecurityLevelEnumSECURE_DEFAULT = 2;
+  AppengineVersionApiConfigSecurityLevelEnumSECURE_NEVER = 3;
+  AppengineVersionApiConfigSecurityLevelEnumSECURE_OPTIONAL = 4;
+  AppengineVersionApiConfigSecurityLevelEnumSECURE_ALWAYS = 5;
+}
+
+message AppengineVersion {
+  string consumer_name = 1;
+  string name = 2;
+  AppengineVersionAutomaticScaling automatic_scaling = 3;
+  AppengineVersionBasicScaling basic_scaling = 4;
+  AppengineVersionManualScaling manual_scaling = 5;
+  repeated AppengineVersionInboundServicesEnum inbound_services = 6;
+  string instance_class = 7;
+  AppengineVersionNetwork network = 8;
+  repeated string zones = 9;
+  AppengineVersionResources resources = 10;
+  string runtime = 11;
+  string runtime_channel = 12;
+  bool threadsafe = 13;
+  bool vm = 14;
+  map<string, string> beta_settings = 15;
+  string env = 16;
+  AppengineVersionServingStatusEnum serving_status = 17;
+  string created_by = 18;
+  string create_time = 19;
+  int64 disk_usage_bytes = 20;
+  string runtime_api_version = 21;
+  string runtime_main_executable_path = 22;
+  repeated AppengineVersionHandlers handlers = 23;
+  repeated AppengineVersionErrorHandlers error_handlers = 24;
+  repeated AppengineVersionLibraries libraries = 25;
+  AppengineVersionApiConfig api_config = 26;
+  map<string, string> env_variables = 27;
+  string default_expiration = 28;
+  AppengineVersionDeployment deployment = 29;
+  AppengineVersionHealthCheck health_check = 30;
+  AppengineVersionReadinessCheck readiness_check = 31;
+  AppengineVersionLivenessCheck liveness_check = 32;
+  string nobuild_files_regex = 33;
+  string version_url = 34;
+  AppengineVersionEntrypoint entrypoint = 35;
+  AppengineVersionVPCAccessConnector vpc_access_connector = 36;
+  string app = 37;
+  string service = 38;
+}
+
+message AppengineVersionAutomaticScaling {
+  string cool_down_period = 1;
+  AppengineVersionAutomaticScalingCpuUtilization cpu_utilization = 2;
+  int64 max_concurrent_requests = 3;
+  int64 max_idle_instances = 4;
+  int64 max_total_instances = 5;
+  string max_pending_latency = 6;
+  int64 min_idle_instances = 7;
+  int64 min_total_instances = 8;
+  string min_pending_latency = 9;
+  AppengineVersionAutomaticScalingRequestUtilization request_utilization = 10;
+  AppengineVersionAutomaticScalingDiskUtilization disk_utilization = 11;
+  AppengineVersionAutomaticScalingNetworkUtilization network_utilization = 12;
+  AppengineVersionAutomaticScalingStandardSchedulerSettings standard_scheduler_settings = 13;
+}
+
+message AppengineVersionAutomaticScalingCpuUtilization {
+  string aggregation_window_length = 1;
+  double target_utilization = 2;
+}
+
+message AppengineVersionAutomaticScalingRequestUtilization {
+  int64 target_request_count_per_second = 1;
+  int64 target_concurrent_requests = 2;
+}
+
+message AppengineVersionAutomaticScalingDiskUtilization {
+  int64 target_write_bytes_per_second = 1;
+  int64 target_write_ops_per_second = 2;
+  int64 target_read_bytes_per_second = 3;
+  int64 target_read_ops_per_second = 4;
+}
+
+message AppengineVersionAutomaticScalingNetworkUtilization {
+  int64 target_sent_bytes_per_second = 1;
+  int64 target_sent_packets_per_second = 2;
+  int64 target_received_bytes_per_second = 3;
+  int64 target_received_packets_per_second = 4;
+}
+
+message AppengineVersionAutomaticScalingStandardSchedulerSettings {
+  double target_cpu_utilization = 1;
+  double target_throughput_utilization = 2;
+  int64 min_instances = 3;
+  int64 max_instances = 4;
+}
+
+message AppengineVersionBasicScaling {
+  string idle_timeout = 1;
+  int64 max_instances = 2;
+}
+
+message AppengineVersionManualScaling {
+  int64 instances = 1;
+}
+
+message AppengineVersionNetwork {
+  repeated string forwarded_ports = 1;
+  string instance_tag = 2;
+  string name = 3;
+  string subnetwork_name = 4;
+  bool session_affinity = 5;
+}
+
+message AppengineVersionResources {
+  double cpu = 1;
+  double disk_gb = 2;
+  double memory_gb = 3;
+  repeated AppengineVersionResourcesVolumes volumes = 4;
+}
+
+message AppengineVersionResourcesVolumes {
+  string name = 1;
+  string volume_type = 2;
+  double size_gb = 3;
+}
+
+message AppengineVersionHandlers {
+  string url_regex = 1;
+  AppengineVersionHandlersStaticFiles static_files = 2;
+  AppengineVersionHandlersScript script = 3;
+  AppengineVersionHandlersApiEndpoint api_endpoint = 4;
+  AppengineVersionHandlersSecurityLevelEnum security_level = 5;
+  AppengineVersionHandlersLoginEnum login = 6;
+  AppengineVersionHandlersAuthFailActionEnum auth_fail_action = 7;
+  AppengineVersionHandlersRedirectHttpResponseCodeEnum redirect_http_response_code = 8;
+}
+
+message AppengineVersionHandlersStaticFiles {
+  string path = 1;
+  string upload_path_regex = 2;
+  map<string, string> http_headers = 3;
+  string mime_type = 4;
+  string expiration = 5;
+  bool require_matching_file = 6;
+  bool application_readable = 7;
+}
+
+message AppengineVersionHandlersScript {
+  string script_path = 1;
+}
+
+message AppengineVersionHandlersApiEndpoint {
+  string script_path = 1;
+}
+
+message AppengineVersionErrorHandlers {
+  AppengineVersionErrorHandlersErrorCodeEnum error_code = 1;
+  string static_file = 2;
+  string mime_type = 3;
+}
+
+message AppengineVersionLibraries {
+  string name = 1;
+  string version = 2;
+}
+
+message AppengineVersionApiConfig {
+  AppengineVersionApiConfigAuthFailActionEnum auth_fail_action = 1;
+  AppengineVersionApiConfigLoginEnum login = 2;
+  string script = 3;
+  AppengineVersionApiConfigSecurityLevelEnum security_level = 4;
+  string url = 5;
+}
+
+message AppengineVersionDeployment {
+  map<string, AppengineVersionDeploymentFiles> files = 1;
+  AppengineVersionDeploymentContainer container = 2;
+  AppengineVersionDeploymentZip zip = 3;
+  AppengineVersionDeploymentCloudBuildOptions cloud_build_options = 4;
+}
+
+message AppengineVersionDeploymentFiles {
+  string source_url = 1;
+  string sha1_sum = 2;
+  string mime_type = 3;
+}
+
+message AppengineVersionDeploymentContainer {
+  string image = 1;
+}
+
+message AppengineVersionDeploymentZip {
+  string source_url = 1;
+  int64 files_count = 2;
+}
+
+message AppengineVersionDeploymentCloudBuildOptions {
+  string app_yaml_path = 1;
+  string cloud_build_timeout = 2;
+}
+
+message AppengineVersionHealthCheck {
+  bool disable_health_check = 1;
+  string host = 2;
+  int64 healthy_threshold = 3;
+  int64 unhealthy_threshold = 4;
+  int64 restart_threshold = 5;
+  string check_interval = 6;
+  string timeout = 7;
+}
+
+message AppengineVersionReadinessCheck {
+  string path = 1;
+  string host = 2;
+  int64 failure_threshold = 3;
+  int64 success_threshold = 4;
+  string check_interval = 5;
+  string timeout = 6;
+  string app_start_timeout = 7;
+}
+
+message AppengineVersionLivenessCheck {
+  string path = 1;
+  string host = 2;
+  int64 failure_threshold = 3;
+  int64 success_threshold = 4;
+  string check_interval = 5;
+  string timeout = 6;
+  string initial_delay = 7;
+}
+
+message AppengineVersionEntrypoint {
+  string shell = 1;
+}
+
+message AppengineVersionVPCAccessConnector {
+  string name = 1;
+}
+
+message ApplyAppengineVersionRequest {
+  AppengineVersion resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteAppengineVersionRequest {
+  string service_account_file = 1;
+  AppengineVersion resource = 2;
+}
+
+message ListAppengineVersionRequest {
+  string service_account_file = 1;
+  string App = 2;
+  string Service = 3;
+}
+
+message ListAppengineVersionResponse {
+  repeated AppengineVersion items = 1;
+}
+
+service AppengineVersionService {
+  rpc ApplyAppengineVersion(ApplyAppengineVersionRequest) returns (AppengineVersion);
+  rpc DeleteAppengineVersion(DeleteAppengineVersionRequest) returns (google.protobuf.Empty);
+  rpc ListAppengineVersion(ListAppengineVersionRequest) returns (ListAppengineVersionResponse);
+}

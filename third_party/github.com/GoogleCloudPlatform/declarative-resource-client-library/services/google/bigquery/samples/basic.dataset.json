@@ -1,0 +1,18 @@
+{
+  "name": "{{_dataset}}",
+  "project": "{{project}}",
+  "friendlyName": "sample-dataset",
+  "description": "A sample dataset",
+  "defaultTableExpirationMs": "3600000",
+  "defaultPartitionExpirationMs": "3600000",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "access": [
+    {
+      "role": "roles/bigquery.dataOwner",
+      "groupByEmail": "magic-modules-eng@google.com"
+    }
+  ],
+  "location": "{{region}}"
+}

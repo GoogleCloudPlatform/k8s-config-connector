@@ -1,0 +1,17 @@
+{
+  "name": "{{attachment}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "A sample service attachment",
+  "targetService": "{{ref:first_internal.forwarding_rule.json:selfLink}}",
+  "connectionPreference": "ACCEPT_MANUAL",
+  "natSubnets": ["{{ref:first_private_service_connect.subnetwork.json:selfLink}}"],
+  "enableProxyProtocol": false,
+  "consumerRejectLists": ["{{ref:first.cloudresourcemanager.project.json:name}}"],
+  "consumerAcceptLists": [
+    {
+      "projectIdOrNum": "{{ref:second.cloudresourcemanager.project.json:name}}",
+      "connectionLimit": 2
+    }
+  ]
+}

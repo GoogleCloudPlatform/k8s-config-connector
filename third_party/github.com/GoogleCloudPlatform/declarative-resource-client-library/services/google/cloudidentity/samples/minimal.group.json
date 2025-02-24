@@ -1,0 +1,10 @@
+{
+  "groupKey": {
+    "id": "{{group_name}}@mmv2testingorg.joonix.net"
+  },
+  "parent": "customers/C04ha9my8",
+  "initialGroupConfig": "WITH_INITIAL_OWNER",
+  "labels": {
+    "cloudidentity.googleapis.com/groups.discussion_forum": ""
+  }
+}

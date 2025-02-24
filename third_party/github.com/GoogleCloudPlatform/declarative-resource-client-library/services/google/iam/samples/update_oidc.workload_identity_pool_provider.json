@@ -1,0 +1,13 @@
+{
+  "name": "{{provider}}",
+  "project": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "location": "global",
+  "workloadIdentityPool": "{{ref:project.workload_identity_pool.json:name}}",
+  "oidc": {
+    "issuerUri": "https://new-example.com/",
+    "allowedAudiences": [
+      "//iam.googleapis.com/projects/{{ref:basic.cloudresourcemanager.project.json:name}}/locations/{{location}}/workloadIdentityPools/{{ref:project.workload_identity_pool.json:name}}/providers/{{provider}}",
+      "sample-audience"
+    ]
+  }
+}

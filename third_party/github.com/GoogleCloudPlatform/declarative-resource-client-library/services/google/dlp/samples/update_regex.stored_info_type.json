@@ -1,0 +1,11 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "projects/{{project}}",
+  "location": "{{region}}",
+  "displayName": "new-sample-type",
+  "description": "An updated sample regex-based stored info type",
+  "regex": {
+    "pattern": "([a-zA-Z]*)(.+)",
+    "groupIndexes": [1, 2]
+  }
+}

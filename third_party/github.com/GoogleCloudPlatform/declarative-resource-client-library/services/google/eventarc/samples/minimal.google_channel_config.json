@@ -1,0 +1,5 @@
+{
+  "name": "projects/{{project}}/locations/{{region}}/googleChannelConfig",
+  "project": "{{project}}",
+  "location": "{{region}}"
+}

@@ -1,0 +1,48 @@
+{
+  "name": "{{metric}}",
+  "project": "{{project}}",
+  "description": "An updated sample log metric",
+  "filter": "resource.type=gae_app AND severity>=ERROR",
+  "disabled": true,
+  "metricDescriptor": {
+    "labels": [
+      {
+        "key": "mass",
+        "valueType": "STRING",
+        "description": "amount of matter"
+      },
+      {
+        "key": "hasMass",
+        "valueType": "BOOL",
+        "description": "whether the item has a mass"
+      },
+      {
+        "key": "sku",
+        "valueType": "INT64",
+        "description": "identifying number for item"
+      }
+    ],
+    "metricKind": "DELTA",
+    "valueType": "DISTRIBUTION",
+    "unit": "s",
+    "displayName": "updated-sample-descriptor",
+    "metadata": {
+      "samplePeriod": "3.5s",
+      "ingestDelay": "3.5s"
+    },
+    "launchStage": "PRELAUNCH"
+  },
+  "valueExtractor": "EXTRACT(jsonPayload.response)",
+  "labelExtractors": {
+    "mass": "EXTRACT(jsonPayload.request)",
+    "hasMass": "REGEXP_EXTRACT(jsonPayload.request, \".*([1-9]).*\")",
+    "sku": "EXTRACT(jsonPayload.id)"
+  },
+  "bucketOptions": {
+    "linearBuckets": {
+      "numFiniteBuckets": 4,
+      "width": 2.5,
+      "offset": 0.5
+    }
+  }
+}

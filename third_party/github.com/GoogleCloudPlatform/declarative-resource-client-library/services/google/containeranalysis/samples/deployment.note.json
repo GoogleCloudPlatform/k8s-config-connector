@@ -1,0 +1,9 @@
+{
+  "name": "{{deployment_note}}",
+  "project": "{{project}}",
+  "deployment": {
+    "resourceUri": [
+      "sample-uri"
+    ]
+  }
+}

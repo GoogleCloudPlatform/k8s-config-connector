@@ -1,0 +1,86 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+message StorageObject {
+  string name = 1;
+  string bucket = 2;
+  int64 generation = 3;
+  int64 metageneration = 4;
+  string id = 5;
+  string self_link = 6;
+  string content_type = 7;
+  string time_created = 8;
+  string updated = 9;
+  string custom_time = 10;
+  string time_deleted = 11;
+  bool temporary_hold = 12;
+  bool event_based_hold = 13;
+  string retention_expiration_time = 14;
+  string storage_class = 15;
+  string time_storage_class_updated = 16;
+  int64 size = 17;
+  string md5_hash = 18;
+  string media_link = 19;
+  map<string, string> metadata = 20;
+  StorageObjectOwner owner = 21;
+  string crc32c = 22;
+  int64 component_count = 23;
+  string etag = 24;
+  StorageObjectCustomerEncryption customer_encryption = 25;
+  string kms_key_name = 26;
+  string content = 27;
+}
+
+message StorageObjectOwner {
+  string entity = 1;
+  string entity_id = 2;
+}
+
+message StorageObjectCustomerEncryption {
+  string encryption_algorithm = 1;
+  string key_sha256 = 2;
+  string key = 3;
+}
+
+message ApplyStorageObjectRequest {
+  StorageObject resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteStorageObjectRequest {
+  string service_account_file = 1;
+  StorageObject resource = 2;
+}
+
+message ListStorageObjectRequest {
+  string service_account_file = 1;
+  string Bucket = 2;
+}
+
+message ListStorageObjectResponse {
+  repeated StorageObject items = 1;
+}
+
+service StorageObjectService {
+  rpc ApplyStorageObject(ApplyStorageObjectRequest) returns (StorageObject);
+  rpc DeleteStorageObject(DeleteStorageObjectRequest) returns (google.protobuf.Empty);
+  rpc ListStorageObject(ListStorageObjectRequest) returns (ListStorageObjectResponse);
+}

@@ -1,0 +1,29 @@
+{
+  "project": "{{project}}",
+  "name": "{{template1}}",
+  "properties": {
+    "machineType": "e2-standard-2",
+    "networkInterfaces": [
+      {
+        "network": "global/networks/default",
+        "accessConfigs": [
+          {
+            "type": "ONE_TO_ONE_NAT",
+            "name": "External NAT"
+          }
+        ]
+      }
+    ],
+    "disks": [
+      {
+        "type": "PERSISTENT",
+        "deviceName": "sample-disk",
+        "autoDelete": true,
+        "boot": true,
+        "initializeParams": {
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        }
+      }
+    ]
+  }
+}

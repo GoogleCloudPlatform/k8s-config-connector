@@ -1,0 +1,27 @@
+{
+  "apiVersion": "serving.knative.dev/v1",
+  "kind": "Service",
+  "project": "{{project}}",
+  "name": "{{name}}",
+  "metadata": {
+    "name": "{{name}}"
+  },
+  "location": "{{region}}",
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "image": "gcr.io/knative-releases/knative.dev/eventing-contrib/cmd/event_display@sha256:8da2440b62a5c077d9882ed50397730e84d07037b1c8a3e40ff6b89c37332b27"
+          }
+        ]
+      }
+    },
+    "traffic": [
+      {
+        "percent": 100,
+        "latestRevision": true
+      }
+    ]
+  }
+}

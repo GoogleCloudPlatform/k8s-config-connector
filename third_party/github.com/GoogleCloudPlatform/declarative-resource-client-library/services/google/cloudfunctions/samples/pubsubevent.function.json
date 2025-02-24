@@ -1,0 +1,30 @@
+{
+  "name": "{{function}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "runtime": "nodejs20",
+  "description": "A sample cloud function with a pubsub event trigger",
+  "availableMemoryMb": 128,
+  "serviceAccountEmail": "{{project}}@appspot.gserviceaccount.com",
+  "sourceRepository": {
+    "url": "https://source.developers.google.com/projects/{{project}}/repos/aaa-dont-delete-dcl-cloud-functions-testing/moveable-aliases/main"
+  },
+  "timeout": "60s",
+  "entryPoint": "helloGET",
+  "ingressSettings": "ALLOW_INTERNAL_ONLY",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "environmentVariables": {
+    "TEST_ENV_VARIABLE": "test-env-variable-value"
+  },
+  "maxInstances": 10,
+  "vpcConnector": "{{ref:first.vpcaccess.connector.json:name}}",
+  "vpcConnectorEgressSettings": "PRIVATE_RANGES_ONLY",
+  "eventTrigger": {
+    "eventType": "providers/cloud.pubsub/eventTypes/topic.publish",
+    "resource": "projects/{{project}}/topics/{{ref:basic.pubsub.topic.json:name}}",
+    "failurePolicy": true,
+    "service": "pubsub.googleapis.com"
+  }
+}

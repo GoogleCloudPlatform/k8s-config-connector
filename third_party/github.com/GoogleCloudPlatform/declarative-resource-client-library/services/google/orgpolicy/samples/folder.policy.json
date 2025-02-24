@@ -1,0 +1,19 @@
+{
+  "name": "folders/{{ref:basic.cloudresourcemanager.folder.json:name}}/policies/gcp.resourceLocations",
+  "parent": "folders/{{ref:basic.cloudresourcemanager.folder.json:name}}",
+  "spec": {
+    "rules": [
+      {
+        "denyAll": true
+      },
+      {
+        "allowAll": true,
+        "condition": {
+          "expression": "resource.matchTagId('tagKeys/123', 'tagValues/456')",
+          "title": "Allow when compute-external-ip tag is set to allowed"
+        }
+      }
+    ],
+    "inheritFromParent": true
+  }
+}

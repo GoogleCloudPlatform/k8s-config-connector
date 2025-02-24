@@ -1,0 +1,301 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Iam/WorkforcePoolProvider
+  description: The Iam WorkforcePoolProvider resource
+  x-dcl-struct-name: WorkforcePoolProvider
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a WorkforcePoolProvider
+    parameters:
+    - name: workforcePoolProvider
+      required: true
+      description: A full instance of a WorkforcePoolProvider
+  apply:
+    description: The function used to apply information about a WorkforcePoolProvider
+    parameters:
+    - name: workforcePoolProvider
+      required: true
+      description: A full instance of a WorkforcePoolProvider
+  delete:
+    description: The function used to delete a WorkforcePoolProvider
+    parameters:
+    - name: workforcePoolProvider
+      required: true
+      description: A full instance of a WorkforcePoolProvider
+  deleteAll:
+    description: The function used to delete all WorkforcePoolProvider
+    parameters:
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: workforcePool
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many WorkforcePoolProvider
+    parameters:
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: workforcePool
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    WorkforcePoolProvider:
+      title: WorkforcePoolProvider
+      x-dcl-id: locations/{{location}}/workforcePools/{{workforce_pool}}/providers/{{name}}
+      x-dcl-uses-state-hint: true
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - attributeMapping
+      - location
+      - workforcePool
+      properties:
+        attributeCondition:
+          type: string
+          x-dcl-go-name: AttributeCondition
+          description: 'A [Common Expression Language](https://opensource.google/projects/cel)
+            expression, in plain text, to restrict what otherwise valid authentication
+            credentials issued by the provider should not be accepted. The expression
+            must output a boolean representing whether to allow the federation. The
+            following keywords may be referenced in the expressions: * `assertion`:
+            JSON representing the authentication credential issued by the provider.
+            * `google`: The Google attributes mapped from the assertion in the `attribute_mappings`.
+            `google.profile_photo` and `google.display_name` are not supported. *
+            `attribute`: The custom attributes mapped from the assertion in the `attribute_mappings`.
+            The maximum length of the attribute condition expression is 4096 characters.
+            If unspecified, all valid authentication credentials will be accepted.
+            The following example shows how to only allow credentials with a mapped
+            `google.groups` value of `admins`: ``` "''admins'' in google.groups" ```'
+        attributeMapping:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: AttributeMapping
+          description: 'Required. Maps attributes from the authentication credentials
+            issued by an external identity provider to Google Cloud attributes, such
+            as `subject` and `segment`. Each key must be a string specifying the Google
+            Cloud IAM attribute to map to. The following keys are supported: * `google.subject`:
+            The principal IAM is authenticating. You can reference this value in IAM
+            bindings. This is also the subject that appears in Cloud Logging logs.
+            This is a required field and the mapped subject cannot exceed 127 bytes.
+            * `google.groups`: Groups the authenticating user belongs to. You can
+            grant groups access to resources using an IAM `principalSet` binding;
+            access applies to all members of the group. * `google.display_name`: The
+            name of the authenticated user. This is an optional field and the mapped
+            display name cannot exceed 100 bytes. If not set, `google.subject` will
+            be displayed instead. This attribute cannot be referenced in IAM bindings.
+            * `google.profile_photo`: The URL that specifies the authenticated user''s
+            thumbnail photo. This is an optional field. When set, the image will be
+            visible as the user''s profile picture. If not set, a generic user icon
+            will be displayed instead. This attribute cannot be referenced in IAM
+            bindings. You can also provide custom attributes by specifying `attribute.{custom_attribute}`,
+            where {custom_attribute} is the name of the custom attribute to be mapped.
+            You can define a maximum of 50 custom attributes. The maximum length of
+            a mapped attribute key is 100 characters, and the key may only contain
+            the characters [a-z0-9_]. You can reference these attributes in IAM policies
+            to define fine-grained access for a workforce pool to Google Cloud resources.
+            For example:'
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: A user-specified description of the provider. Cannot exceed
+            256 characters.
+        disabled:
+          type: boolean
+          x-dcl-go-name: Disabled
+          description: Whether the provider is disabled. You cannot use a disabled
+            provider to exchange tokens. However, existing tokens still grant access.
+        displayName:
+          type: string
+          x-dcl-go-name: DisplayName
+          description: A user-specified display name for the provider. Cannot exceed
+            32 characters.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: 'Output only. The resource name of the provider. Format: `locations/{location}/workforcePools/{workforce_pool_id}/providers/{provider_id}`'
+          x-kubernetes-immutable: true
+        oidc:
+          type: object
+          x-dcl-go-name: Oidc
+          x-dcl-go-type: WorkforcePoolProviderOidc
+          description: An OpenId Connect 1.0 identity provider configuration.
+          x-dcl-conflicts:
+          - saml
+          required:
+          - issuerUri
+          - clientId
+          - webSsoConfig
+          properties:
+            clientId:
+              type: string
+              x-dcl-go-name: ClientId
+              description: Required. The client ID. Must match the audience claim
+                of the JWT issued by the identity provider.
+            clientSecret:
+              type: object
+              x-dcl-go-name: ClientSecret
+              x-dcl-go-type: WorkforcePoolProviderOidcClientSecret
+              description: The optional client secret. Required to enable Authorization
+                Code flow for web sign-in.
+              properties:
+                value:
+                  type: object
+                  x-dcl-go-name: Value
+                  x-dcl-go-type: WorkforcePoolProviderOidcClientSecretValue
+                  description: The value of the client secret.
+                  properties:
+                    plainText:
+                      type: string
+                      x-dcl-go-name: PlainText
+                      description: Input only. The plain text of the client secret
+                        value.
+                      x-dcl-sensitive: true
+                      x-dcl-mutable-unreadable: true
+                    thumbprint:
+                      type: string
+                      x-dcl-go-name: Thumbprint
+                      readOnly: true
+                      description: Output only. A thumbprint to represent the current
+                        client secret value.
+            issuerUri:
+              type: string
+              x-dcl-go-name: IssuerUri
+              description: Required. The OIDC issuer URI. Must be a valid URI using
+                the 'https' scheme.
+            jwksJson:
+              type: string
+              x-dcl-go-name: JwksJson
+              description: 'OIDC JWKs in JSON String format. For details on definition
+                of a JWK, see https:tools.ietf.org/html/rfc7517. If not set, then
+                we use the `jwks_uri` from the discovery document fetched from the
+                .well-known path for the `issuer_uri`. Currently, RSA and EC asymmetric
+                keys are supported. The JWK must use following format and include
+                only the following fields: ```{"keys": [{"kty": "RSA/EC", "alg": "<algorithm>",
+                "use": "sig", "kid": "<key-id>", "n": "", "e": "", "x": "", "y": "",
+                "crv": ""}]}```'
+            webSsoConfig:
+              type: object
+              x-dcl-go-name: WebSsoConfig
+              x-dcl-go-type: WorkforcePoolProviderOidcWebSsoConfig
+              description: Required. Configuration for web single sign-on for the
+                OIDC provider. Here, web sign-in refers to console sign-in and gcloud
+                sign-in through the browser.
+              required:
+              - responseType
+              - assertionClaimsBehavior
+              properties:
+                additionalScopes:
+                  type: array
+                  x-dcl-go-name: AdditionalScopes
+                  description: Additional scopes to request for in the OIDC authentication
+                    request on top of scopes requested by default. By default, the
+                    `openid`, `profile` and `email` scopes that are supported by the
+                    identity provider are requested. Each additional scope may be
+                    at most 256 characters. A maximum of 10 additional scopes may
+                    be configured.
+                  x-dcl-send-empty: true
+                  x-dcl-list-type: list
+                  items:
+                    type: string
+                    x-dcl-go-type: string
+                assertionClaimsBehavior:
+                  type: string
+                  x-dcl-go-name: AssertionClaimsBehavior
+                  x-dcl-go-type: WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum
+                  description: 'Required. The behavior for how OIDC Claims are included
+                    in the `assertion` object used for attribute mapping and attribute
+                    condition. Possible values: ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED,
+                    MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS, ONLY_ID_TOKEN_CLAIMS'
+                  enum:
+                  - ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED
+                  - MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS
+                  - ONLY_ID_TOKEN_CLAIMS
+                responseType:
+                  type: string
+                  x-dcl-go-name: ResponseType
+                  x-dcl-go-type: WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum
+                  description: 'Required. The Response Type to request for in the
+                    OIDC Authorization Request for web sign-in. The `CODE` Response
+                    Type is recommended to avoid the Implicit Flow, for security reasons.
+                    Possible values: RESPONSE_TYPE_UNSPECIFIED, CODE, ID_TOKEN'
+                  enum:
+                  - RESPONSE_TYPE_UNSPECIFIED
+                  - CODE
+                  - ID_TOKEN
+        saml:
+          type: object
+          x-dcl-go-name: Saml
+          x-dcl-go-type: WorkforcePoolProviderSaml
+          description: A SAML identity provider configuration.
+          x-dcl-conflicts:
+          - oidc
+          required:
+          - idpMetadataXml
+          properties:
+            idpMetadataXml:
+              type: string
+              x-dcl-go-name: IdpMetadataXml
+              description: 'Required. SAML Identity provider configuration metadata
+                xml doc. The xml document should comply with [SAML 2.0 specification](https://docs.oasis-open.org/security/saml/v2.0/saml-metadata-2.0-os.pdf).
+                The max size of the acceptable xml document will be bounded to 128k
+                characters. The metadata xml document should satisfy the following
+                constraints: 1) Must contain an Identity Provider Entity ID. 2) Must
+                contain at least one non-expired signing key certificate. 3) For each
+                signing key: a) Valid from should be no more than 7 days from now.
+                b) Valid to should be no more than 10 years in the future. 4) Up to
+                3 IdP signing keys are allowed in the metadata xml. When updating
+                the provider''s metadata xml, at least one non-expired signing key
+                must overlap with the existing metadata. This requirement is skipped
+                if there are no non-expired signing keys present in the existing metadata.'
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: WorkforcePoolProviderStateEnum
+          readOnly: true
+          description: 'Output only. The state of the provider. Possible values: STATE_UNSPECIFIED,
+            ACTIVE, DELETED'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - ACTIVE
+          - DELETED
+        workforcePool:
+          type: string
+          x-dcl-go-name: WorkforcePool
+          description: The workforce_pool for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Iam/WorkforcePool
+            field: name
+            parent: true

@@ -1,0 +1,110 @@
+{
+  "project": "{{project}}",
+  "signIn": {
+    "email": {
+      "enabled": true,
+      "passwordRequired": false
+    },
+    "phoneNumber": {
+      "enabled": false,
+      "testPhoneNumbers": {
+        "+52 –  55 – 1234 5678": "000001"
+      }
+    },
+    "anonymous": {
+      "enabled": false
+    },
+    "allowDuplicateEmails": false
+  },
+  "notification": {
+    "sendEmail": {
+      "method": "DEFAULT",
+      "smtp": {
+        "senderEmail": "magic-modules-eng@google.com",
+        "host": "google.com",
+        "port": 80,
+        "username": "new-sample-username",
+        "password": "new-sample-password",
+        "securityMode": "START_TLS"
+      },
+      "resetPasswordTemplate": {
+        "senderLocalPart": "new-noreply",
+        "subject": "Reset the password for %APP_NAME%",
+        "senderDisplayName": "DCL",
+        "body": "<p>Sample message body</p>",
+        "bodyFormat": "HTML",
+        "replyTo": "new-noreply"
+      },
+      "verifyEmailTemplate": {
+        "senderLocalPart": "new-noreply",
+        "subject": "Verify the email for %APP_NAME%",
+        "senderDisplayName": "DCL",
+        "body": "\u003cp\u003eHello %DISPLAY_NAME%,\u003c/p\u003e\n\u003cp\u003eFollow this link to verify your email address.\u003c/p\u003e\n\u003cp\u003e\u003ca href='%LINK%'\u003e%LINK%\u003c/a\u003e\u003c/p\u003e\n\u003cp\u003eIf you didn’t ask to verify this address, you can ignore this email.\u003c/p\u003e\n\u003cp\u003eThanks,\u003c/p\u003e\n\u003cp\u003eYour %APP_NAME% team\u003c/p\u003e",
+        "bodyFormat": "HTML",
+        "replyTo": "new-noreply"
+      },
+      "changeEmailTemplate": {
+        "senderLocalPart": "new-noreply",
+        "subject": "The sign-in email was changed for %APP_NAME%",
+        "senderDisplayName": "DCL",
+        "body": "\u003cp\u003eHello %DISPLAY_NAME%,\u003c/p\u003e\n\u003cp\u003eYour sign-in email for %APP_NAME% was changed to %NEW_EMAIL%.\u003c/p\u003e\n\u003cp\u003eIf you didn’t ask to change your email, follow this link to reset your sign-in email.\u003c/p\u003e\n\u003cp\u003e\u003ca href='%LINK%'\u003e%LINK%\u003c/a\u003e\u003c/p\u003e\n\u003cp\u003eThanks,\u003c/p\u003e\n\u003cp\u003eYour %APP_NAME% team\u003c/p\u003e",
+        "bodyFormat": "HTML",
+        "replyTo": "new-noreply"
+      },
+      "callbackUri": "https://{{project}}.firebaseapp.com/__/auth/new-action",
+      "dnsInfo": {
+        "useCustomDomain": false
+      },
+      "revertSecondFactorAdditionTemplate": {
+        "senderLocalPart": "new-noreply",
+        "subject": "You've added 2 step verification to the %APP_NAME% account.",
+        "senderDisplayName": "DCL",
+        "body": "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your account in %APP_NAME% has been updated with %SECOND_FACTOR% for 2-step verification.</p>\n<p>If you didn't add this 2-step verification, click the link below to remove it.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>Thanks,</p>\n<p>Your %APP_NAME% team</p>",
+        "bodyFormat": "HTML",
+        "replyTo": "new-noreply"
+      }
+    },
+    "sendSms": {
+      "useDeviceLocale": false
+    },
+    "defaultLocale": "zh"
+  },
+  "quota": {
+    "signUpQuotaConfig": {
+      "quota": 2,
+      "startTime": "2022-08-20T00:22:56.247547Z",
+      "quotaDuration": "1209600s"
+    }
+  },
+  "monitoring": {
+    "requestLogging": {
+      "enabled": false
+    }
+  },
+  "multiTenant": {
+    "allowTenants": true,
+    "defaultTenantLocation": "folders/{{ref:basic.cloudresourcemanager.folder.json:name}}"
+  },
+  "authorizedDomains": [
+    "localhost",
+    "{{project}}.firebaseapp.com",
+    "{{project}}.web.app"
+  ],
+  "subtype": "IDENTITY_PLATFORM",
+  "client": {
+    "permissions": {
+      "disabledUserSignup": false,
+      "disabledUserDeletion": false
+    }
+  },
+  "mfa": {
+    "state": "DISABLED"
+  },
+  "blockingFunctions": {
+    "triggers": {
+      "beforeCreate": {
+        "functionUri": "{{ref:second.cloudfunctions.function.json:httpsTrigger.url}}"
+      }
+    }
+  }
+}

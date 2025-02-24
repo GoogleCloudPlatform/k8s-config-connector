@@ -1,0 +1,10 @@
+{
+  "name": "{{check}}",
+  "project": "{{project}}",
+  "description": "A sample http health check",
+  "requestPath": "/",
+  "port": 8080,
+  "checkIntervalSec": 1,
+  "timeoutSec": 1,
+  "unhealthyThreshold": 5
+}

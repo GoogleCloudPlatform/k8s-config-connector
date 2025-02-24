@@ -1,0 +1,242 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnum {
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumLATENCY_EXPERIENCE_UNSPECIFIED = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumDELIGHTING = 2;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumSATISFYING = 3;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumANNOYING = 4;
+}
+
+enum MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnum {
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumLATENCY_EXPERIENCE_UNSPECIFIED = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumDELIGHTING = 2;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumSATISFYING = 3;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumANNOYING = 4;
+}
+
+enum MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnum {
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumLATENCY_EXPERIENCE_UNSPECIFIED = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumDELIGHTING = 2;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumSATISFYING = 3;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumANNOYING = 4;
+}
+
+enum MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnum {
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumLATENCY_EXPERIENCE_UNSPECIFIED = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumDELIGHTING = 2;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumSATISFYING = 3;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumANNOYING = 4;
+}
+
+enum MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnum {
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumCALENDAR_PERIOD_UNSPECIFIED = 1;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumDAY = 2;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumWEEK = 3;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumFORTNIGHT = 4;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumMONTH = 5;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumQUARTER = 6;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumHALF = 7;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnumYEAR = 8;
+}
+
+message MonitoringAlphaServiceLevelObjective {
+  string name = 1;
+  string display_name = 2;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicator service_level_indicator = 3;
+  double goal = 4;
+  string rolling_period = 5;
+  MonitoringAlphaServiceLevelObjectiveCalendarPeriodEnum calendar_period = 6;
+  string create_time = 7;
+  string delete_time = 8;
+  bool service_management_owned = 9;
+  map<string, string> user_labels = 10;
+  string project = 11;
+  string service = 12;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicator {
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSli basic_sli = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorRequestBased request_based = 2;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBased windows_based = 3;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSli {
+  repeated string method = 1;
+  repeated string location = 2;
+  repeated string version = 3;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability availability = 4;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency latency = 5;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability operation_availability = 6;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency operation_latency = 7;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability {
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency {
+  string threshold = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnum experience = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability {
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency {
+  string threshold = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnum experience = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorRequestBased {
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio good_total_ratio = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut distribution_cut = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio {
+  string good_service_filter = 1;
+  string bad_service_filter = 2;
+  string total_service_filter = 3;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut {
+  string distribution_filter = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange range = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange {
+  double min = 1;
+  double max = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBased {
+  string good_bad_metric_filter = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold good_total_ratio_threshold = 2;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange metric_mean_in_range = 3;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange metric_sum_in_range = 4;
+  string window_period = 5;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold {
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance performance = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance basic_sli_performance = 2;
+  double threshold = 3;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance {
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio good_total_ratio = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut distribution_cut = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio {
+  string good_service_filter = 1;
+  string bad_service_filter = 2;
+  string total_service_filter = 3;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut {
+  string distribution_filter = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange range = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange {
+  double min = 1;
+  double max = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance {
+  repeated string method = 1;
+  repeated string location = 2;
+  repeated string version = 3;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability availability = 4;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency latency = 5;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability operation_availability = 6;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency operation_latency = 7;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability {
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency {
+  string threshold = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnum experience = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability {
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency {
+  string threshold = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnum experience = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange {
+  string time_series = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange range = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange {
+  double min = 1;
+  double max = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange {
+  string time_series = 1;
+  MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange range = 2;
+}
+
+message MonitoringAlphaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange {
+  double min = 1;
+  double max = 2;
+}
+
+message ApplyMonitoringAlphaServiceLevelObjectiveRequest {
+  MonitoringAlphaServiceLevelObjective resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteMonitoringAlphaServiceLevelObjectiveRequest {
+  string service_account_file = 1;
+  MonitoringAlphaServiceLevelObjective resource = 2;
+}
+
+message ListMonitoringAlphaServiceLevelObjectiveRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Service = 3;
+}
+
+message ListMonitoringAlphaServiceLevelObjectiveResponse {
+  repeated MonitoringAlphaServiceLevelObjective items = 1;
+}
+
+service MonitoringAlphaServiceLevelObjectiveService {
+  rpc ApplyMonitoringAlphaServiceLevelObjective(ApplyMonitoringAlphaServiceLevelObjectiveRequest) returns (MonitoringAlphaServiceLevelObjective);
+  rpc DeleteMonitoringAlphaServiceLevelObjective(DeleteMonitoringAlphaServiceLevelObjectiveRequest) returns (google.protobuf.Empty);
+  rpc ListMonitoringAlphaServiceLevelObjective(ListMonitoringAlphaServiceLevelObjectiveRequest) returns (ListMonitoringAlphaServiceLevelObjectiveResponse);
+}
