@@ -24,6 +24,8 @@ branches:
     package: google.cloud.accessapproval.v1
     proto: ApprovalRequest
     proto-path: google.cloud.accessapproval.v1.ApprovalRequest
+    proto-service: google.cloud.accessapproval.v1.AccessApproval
+    host-name: accessapproval.googleapis.com
     notes:
       - No gcloud command found
   - name: ai-customjobs
@@ -37,6 +39,8 @@ branches:
     package: ""
     proto: ""
     proto-path: ""
+    proto-svc: ""
+    host_name: ""
     notes:
   - name: compute-computebackendservice
     local: resource-compute-computebackendservice
@@ -47,6 +51,8 @@ branches:
     controller: terraform
     kind: ""
     package: ""
-    proto: ""
-    proto-path: ""
+    proto: BackendService
+    proto-path: google.cloud.compute.v1.BackendService
+    proto-service: google.cloud.compute.v1.BackendServices
+    host-name: compute.googleapis.com
     notes:

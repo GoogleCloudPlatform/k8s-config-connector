@@ -98,10 +98,12 @@ type Branch struct {
 	Resource   string `yaml:"resource"`   // model
 	Controller string `yaml:"controller"` // Unknown
 
-	Kind      string `yaml:"kind"`       // AIModel
-	Package   string `yaml:"package"`    // google.ai.generativelanguage.v1beta
-	Proto     string `yaml:"proto"`      // Model
-	ProtoPath string `yaml:"proto-path"` // google.ai.generativelanguage.v1beta.Model
+	Kind      string `yaml:"kind"`          // AIModel
+	Package   string `yaml:"package"`       // google.ai.generativelanguage.v1beta
+	Proto     string `yaml:"proto"`         // Model
+	ProtoPath string `yaml:"proto-path"`    // google.ai.generativelanguage.v1beta.Model
+	ProtoSvc  string `yaml:"proto-service"` // google.ai.generativelanguage.v1beta.ModelService
+	HostName  string `yaml:"host-name"`     // generativelanguage.googleapis.com
 
 	Notes []string `yaml:"notes"` // Observation goes here
 }
@@ -164,8 +166,13 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 	case 5:
 		for idx, branch := range branches.Branches {
-			log.Printf("Catpure HTTP Log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			log.Printf("Capture HTTP Log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			captureHttpLog(opts, branch)
+		}
+	case 6:
+		for idx, branch := range branches.Branches {
+			log.Printf("Generate mock Service and Resource go files: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			generateMockGo(opts, branch)
 		}
 	default:
 		log.Fatalf("unrecognixed command: %d", opts.command)
