@@ -190,15 +190,8 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
 
-	log.Printf("COMMAND: git checkout %s\r\n", branch.Local)
-	checkout := exec.Command("git", "checkout", branch.Local)
-	checkout.Dir = workDir
 	var out strings.Builder
-	checkout.Stdout = &out
-	if err := checkout.Run(); err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("BRANCH CHECKOUT: %q\n", out.String())
+	checkoutBranch(branch, workDir, out)
 
 	// Check to see if the script file already exists
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
@@ -304,15 +297,8 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	defer close()
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
 
-	log.Printf("COMMAND: git checkout %s\r\n", branch.Local)
-	checkout := exec.Command("git", "checkout", branch.Local)
-	checkout.Dir = workDir
 	var out strings.Builder
-	checkout.Stdout = &out
-	if err := checkout.Run(); err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("BRANCH CHECKOUT: %q\n", out.String())
+	checkoutBranch(branch, workDir, out)
 
 	// Check to see if the script file exists
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
@@ -369,6 +355,172 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	// Commit the change to the current branch.
 	log.Printf("COMMAND: git commit -m \"Adding mockgcptests generated _http.log for %s\"\r\n", branch.Name)
 	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("\"Adding mockgcptests generated _http.log for %s\"", branch.Name))
+	gitcommit.Dir = workDir
+	gitcommit.Stdout = &out
+	if err := gitcommit.Run(); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("BRANCH COMMIT: %q\n", out.String())
+}
+
+const MOCK_SERVICE_GO_GEN string = `mock<SERVICE>/service.go
+// +tool:mockgcp-service
+// http.host: <HTTP_HOST>
+// proto.service: <PROTO_SERVICE>`
+
+const MOCK_RESOURCE_GO_GEN string = `mock<SERVICE>/<RESOURCE>.go
+// +tool:mockgcp-support
+// proto.service: <PROTO_SERVICE>
+// proto.message: <PROTO_MESSAGE>`
+
+func generateMockGo(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, out)
+
+	// Check to see if the http log file already exists
+	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
+	logFullPath := filepath.Join(workDir, logFile)
+	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, missing %s\r\n", branch.Name, logFullPath)
+		return
+	}
+
+	// Check to see if the script file exists
+	serviceGoFile := fmt.Sprintf("mock%s/service.go", branch.Group)
+	serviceGoFullPath := filepath.Join(workDir, serviceGoFile)
+	if _, err := os.Stat(serviceGoFullPath); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, %s already exists\r\n", branch.Name, serviceGoFullPath)
+		return
+	}
+
+	tmp := strings.ReplaceAll(MOCK_SERVICE_GO_GEN, "<TICK>", "`")
+	tmp = strings.ReplaceAll(tmp, "<SERVICE>", branch.Group)
+	tmp = strings.ReplaceAll(tmp, "<HTTP_HOST>", branch.HostName)
+	service_prompt := strings.ReplaceAll(tmp, "<PROTO_SERVICE>", branch.ProtoSvc)
+	log.Printf("MOCK SERVICE GEN PROMPT %s\r\n", service_prompt)
+
+	tmp = strings.ReplaceAll(MOCK_RESOURCE_GO_GEN, "<TICK>", "`")
+	tmp = strings.ReplaceAll(tmp, "<SERVICE>", branch.Group)
+	tmp = strings.ReplaceAll(tmp, "<RESOURCE>", strings.ToLower(branch.Resource))
+	tmp = strings.ReplaceAll(tmp, "<PROTO_SERVICE>", branch.ProtoSvc)
+	resource_prompt := strings.ReplaceAll(tmp, "<PROTO_MESSAGE>", branch.ProtoPath)
+	log.Printf("MOCK RESOURCE GEN PROMPT %s\r\n", resource_prompt)
+
+	// Delete then write the service prompt file.
+	servicePromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "service_prompt.txt")
+	if _, err := os.Stat(servicePromptPath); !errors.Is(err, os.ErrNotExist) {
+		log.Println("COMMAND: cleaning up old service_prompt.txt")
+		err = os.Remove(servicePromptPath)
+		if err != nil {
+			log.Printf("Attempt to clean up service_prompt.txt failed with %v", err)
+		}
+	}
+	log.Println("COMMAND: writing new service_prompt.txt")
+	if err := os.WriteFile(servicePromptPath, []byte(service_prompt), 0644); err != nil {
+		log.Fatal(err)
+	}
+
+	// Delete then write the resource prompt file.
+	resourcePromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "resource_prompt.txt")
+	if _, err := os.Stat(resourcePromptPath); !errors.Is(err, os.ErrNotExist) {
+		log.Println("COMMAND: cleaning up old resource_prompt.txt")
+		err = os.Remove(resourcePromptPath)
+		if err != nil {
+			log.Printf("Attempt to clean up resource_prompt.txt failed with %v", err)
+		}
+	}
+	log.Println("COMMAND: writing new resource_prompt.txt")
+	if err := os.WriteFile(resourcePromptPath, []byte(resource_prompt), 0644); err != nil {
+		log.Fatal(err)
+	}
+
+	// Run the controller builder to generate the service go file.
+	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
+	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
+		start := time.Now()
+		log.Printf("COMMAND: controllerbuilder prompt --src-dir %s --proto-dir %s/.build/third_party/googleapis/ --input-file=service_prompt.txt", opts.branchRepoDir, opts.branchRepoDir)
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+		defer cancel()
+		service_go := exec.CommandContext(ctx, "controllerbuilder", "prompt",
+			"--src-dir", opts.branchRepoDir,
+			"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
+			"--input-file", "service_prompt.txt")
+		service_go.Dir = workDir
+		var serviceOut strings.Builder
+		service_go.Stdout = &serviceOut
+		if err := service_go.Run(); err != nil {
+			log.Printf("MOCK SERVICE GENERATE error: %q\n", err)
+			// Currently ignoring error and just basing on if the _http.log was generated.
+			// log.Fatal(err)
+		}
+		stop := time.Now()
+		diff := stop.Sub(start)
+		if err := os.WriteFile(serviceFile, []byte(serviceOut.String()), 0755); err != nil {
+			log.Printf("WRITE MOCK SERVICE %s error: %q\n", serviceFile, err)
+		}
+		log.Printf("MOCK SERVICE GENERATE (%v): %q\n", diff, serviceOut.String())
+
+		// Check to see if the service go file was created
+		if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
+			log.Printf("SKIPPING %s, %s was not created\r\n", branch.Name, serviceFile)
+			return
+		}
+	} else {
+		log.Printf("SKIPPING generating service mock go, %s already exists\r\n", serviceFile)
+	}
+
+	// Run the controller builder to generate the resource go file.
+	resourceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
+	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
+		start := time.Now()
+		log.Printf("COMMAND: controllerbuilder prompt --src-dir %s --proto-dir %s/.build/third_party/googleapis/ --input-file=resource_prompt.txt", opts.branchRepoDir, opts.branchRepoDir)
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+		defer cancel()
+		resource_go := exec.CommandContext(ctx, "controllerbuilder", "prompt",
+			"--src-dir", opts.branchRepoDir,
+			"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
+			"--input-file", "resource_prompt.txt")
+		resource_go.Dir = workDir
+		var resourceOut strings.Builder
+		resource_go.Stdout = &resourceOut
+		if err := resource_go.Run(); err != nil {
+			log.Printf("MOCK RESOURCE GENERATE error: %q\n", err)
+			// Currently ignoring error and just basing on if the _http.log was generated.
+			// log.Fatal(err)
+		}
+		stop := time.Now()
+		diff := stop.Sub(start)
+		if err := os.WriteFile(resourceFile, []byte(resourceOut.String()), 0755); err != nil {
+			log.Printf("WRITE MOCK RESOURCE %s error: %q\n", resourceFile, err)
+		}
+		log.Printf("MOCK RESOURCE GENERATE (%v): %q\n", diff, resourceOut.String())
+
+		// Check to see if the service go file was created
+		if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
+			log.Printf("SKIPPING %s, %s was not created\r\n", branch.Name, resourceFile)
+			return
+		}
+	} else {
+		log.Printf("SKIPPING generating resource mock go, %s already exists\r\n", resourceFile)
+	}
+
+	// Add the new files to the current branch.
+	log.Printf("COMMAND: git add %s %s\r\n", serviceFile, resourceFile)
+	gitadd := exec.Command("git", "add", serviceFile, resourceFile)
+	gitadd.Dir = workDir
+	gitadd.Stdout = &out
+	if err := gitadd.Run(); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("BRANCH ADD: %q\n", out.String())
+
+	// Commit the change to the current branch.
+	log.Printf("COMMAND: git commit -m \"Adding mock service and resource for %s\"\r\n", branch.Name)
+	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("\"Adding mock service and resource for %s\"", branch.Name))
 	gitcommit.Dir = workDir
 	gitcommit.Stdout = &out
 	if err := gitcommit.Run(); err != nil {
