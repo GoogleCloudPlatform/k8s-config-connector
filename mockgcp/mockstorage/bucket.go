@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 )
 
@@ -66,6 +67,37 @@ func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.
 	httpmux.SetExpiresHeader(ctx, time.Now())
 
 	return ret, nil
+}
+
+func (s *buckets) ListBuckets(ctx context.Context, req *pb.ListBucketsRequest) (*pb.Buckets, error) {
+	project, err := s.Projects.GetProjectByID(req.GetProject())
+	if err != nil {
+		return nil, err
+	}
+
+	var buckets []*pb.Bucket
+
+	bucketKind := (&pb.Bucket{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, bucketKind, storage.ListOptions{}, func(obj proto.Message) error {
+		bucket := obj.(*pb.Bucket)
+
+		// TODO: Some form of ACL?
+
+		if bucket.GetProjectNumber() != uint64(project.Number) {
+			return nil
+		}
+
+		buckets = append(buckets, bucket)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.Buckets{
+		Items:         buckets,
+		NextPageToken: nil,
+		Kind:          PtrTo("storage#buckets"),
+	}, nil
 }
 
 func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest) (*pb.Bucket, error) {
