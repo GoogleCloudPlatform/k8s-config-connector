@@ -51,6 +51,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Directory in which to do the work.")
 	cmd.Flags().Int64VarP(&opts.command, commandFlag,
 		"", 0, "Which commands to you on the directory.")
+	cmd.Flags().StringVarP(&opts.loggingDir, loggingDirFlag,
+		"", "", "dedicated directory for logging, empty for stdout.")
 
 	return cmd
 }
@@ -60,12 +62,14 @@ const (
 	branchConfigurationFlag = "branch-conf"
 	branchRepoFlag          = "branch-repo"
 	commandFlag             = "command"
+	loggingDirFlag          = "logging-dir"
 )
 
 type RunnerOptions struct {
 	branchConfFile string
 	branchRepoDir  string
 	command        int64
+	loggingDir     string
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -103,7 +107,7 @@ type Branch struct {
 }
 
 func RunRunner(ctx context.Context, opts *RunnerOptions) error {
-	log.Printf("Running kompanion export with branch config: %s", opts.branchConfFile)
+	log.Printf("Running conductor runner with branch config: %s", opts.branchConfFile)
 
 	if err := opts.validateFlags(); err != nil {
 		return err
@@ -144,18 +148,24 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 					continue
 				}
 			*/
-			log.Printf("%d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			log.Printf("Create GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createGithubBranch(opts, branch)
 		}
 	case 3:
 		for idx, branch := range branches.Branches {
-			log.Printf("%d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			log.Printf("Delete GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			deleteGithubBranch(opts, branch)
 		}
 	case 4:
 		for idx, branch := range branches.Branches {
-			log.Printf("%d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			// createScriptYamlBash(opts, branch)
 			createScriptYaml(opts, branch)
+		}
+	case 5:
+		for idx, branch := range branches.Branches {
+			log.Printf("Catpure HTTP Log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			captureHttpLog(opts, branch)
 		}
 	default:
 		log.Fatalf("unrecognixed command: %d", opts.command)
@@ -171,6 +181,7 @@ func printHelp() {
 	log.Println("\t2 - Create the local github branches from the metadata")
 	log.Println("\t3 - Delete the local github branches from the metadata")
 	log.Println("\t4 - Create script.yaml for mock gcp generation in each github branch")
+	log.Println("\t5 - Create _http.log for mock gcp generation in each github branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
@@ -181,7 +192,7 @@ func checkRepoDir(opts *RunnerOptions, branches Branches) {
 	defer stdin.Close()
 	defer exit()
 
-	cdRepoBranchDir(opts, "", stdin, stdout)
+	cdRepoBranchDirBash(opts, "", stdin, stdout)
 
 	log.Println("COMMAND: ls and echo")
 	if _, err = stdin.Write([]byte("ls -alh && echo done\n")); err != nil {

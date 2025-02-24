@@ -28,7 +28,7 @@ func createGithubBranch(opts *RunnerOptions, branch Branch) {
 	defer stdin.Close()
 	defer exit()
 
-	cdRepoBranchDir(opts, "", stdin, stdout)
+	cdRepoBranchDirBash(opts, "", stdin, stdout)
 
 	// Check to see if the branch already exists
 	log.Printf("COMMAND: git branch --list %s and echo done\r\n", branch.Local)
@@ -81,7 +81,7 @@ func deleteGithubBranch(opts *RunnerOptions, branch Branch) {
 	defer stdin.Close()
 	defer exit()
 
-	cdRepoBranchDir(opts, "", stdin, stdout)
+	cdRepoBranchDirBash(opts, "", stdin, stdout)
 
 	// Change to the master branch so we're not the branch we are deleting
 	log.Printf("COMMAND: git checkout -b %s and echo done\r\n", branch.Local)
