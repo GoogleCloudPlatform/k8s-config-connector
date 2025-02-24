@@ -30,3 +30,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".acl[].etag", "abcdef0123A")
 	replacements.ReplacePath(".defaultObjectAcl[].etag", "abcdef0123A=")
 }
+
+func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+}

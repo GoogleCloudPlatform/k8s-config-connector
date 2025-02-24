@@ -69,7 +69,7 @@ func TestScripts(t *testing.T) {
 			}
 			script := loadScript(t, testDir, placeholders)
 
-			h.StartProxy()
+			h.StartProxy(ctx)
 
 			for _, step := range script.Steps {
 				if step.Exec != "" {
