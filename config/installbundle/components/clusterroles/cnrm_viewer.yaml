@@ -543,6 +543,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - migrationcenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - mlengine.cnrm.cloud.google.com
   resources:
   - '*'
