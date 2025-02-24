@@ -1,0 +1,5 @@
+Please add the services in `mock${SERVICE}` to `mock_http_roundtrip.go`
+
+* Use the ReadFile command to read the contents of the file.
+* Use the EditFile command to insert mock${SERVICE} into the list of services.
+* Don't forget to import the package!
