@@ -26,6 +26,8 @@ go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEnvgroupSpec -fuzztim
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEnvgroupObservedState -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceObservedState -fuzztime 60s
+go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceAttachmentSpec -fuzztime 60s
+go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceAttachmentObservedState -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/  -fuzz=FuzzEnvgroupAttachmentSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/  -fuzz=FuzzEnvgroupAttachmentObservedState -fuzztime 60s
 
