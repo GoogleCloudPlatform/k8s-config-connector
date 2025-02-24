@@ -28,17 +28,20 @@ echo "Running validations..."
 if [[ "${EVENT_NAME:-}" == "pull_request" ]]; then
   # Check if any commit contains changes both within and outside the TF Git Subtree
   SUBTREE_DIR="third_party/github.com/hashicorp/terraform-provider-google-beta/"
-  COMMIT_HASHES=($(git rev-list --topo-order -n $COMMIT_CNT $COMMIT_HEAD))
+  if git diff --name-only $BASE_COMMIT..$COMMIT_HEAD | grep "^$SUBTREE_DIR" > /dev/null
+  then
+    COMMIT_HASHES=($(git rev-list --topo-order -n $COMMIT_CNT $COMMIT_HEAD))
 
-  for COMMIT in "${COMMIT_HASHES[@]}"; do
-    PARENT_COMMIT=$(git rev-parse $COMMIT^)
+    for COMMIT in "${COMMIT_HASHES[@]}"; do
+      PARENT_COMMIT=$(git rev-parse $COMMIT^)
 
-    if git diff --name-only $PARENT_COMMIT..$COMMIT | grep "^$SUBTREE_DIR" > /dev/null && git diff --name-only $PARENT_COMMIT..$COMMIT | grep -v "^$SUBTREE_DIR" > /dev/null
-    then
-      echo -e "Error: Your commit \"$COMMIT\" includes changes both within and outside the\n\"$SUBTREE_DIR\" directory.\nPlease ensure that changes made within this directory are grouped and\nsubmitted as a separate, dedicated commit.\n"
-      exit 1
-    fi
-  done
+      if git diff --name-only $PARENT_COMMIT..$COMMIT | grep "^$SUBTREE_DIR" > /dev/null && git diff --name-only $PARENT_COMMIT..$COMMIT | grep -v "^$SUBTREE_DIR" > /dev/null
+      then
+        echo -e "Error: Your commit \"$COMMIT\" includes changes both within and outside the\n\"$SUBTREE_DIR\" directory.\nPlease ensure that changes made within this directory are grouped and\nsubmitted as a separate, dedicated commit.\n"
+        exit 1
+      fi
+    done
+  fi
 fi
 
 # Regular validations on fmt, generated doc, generated code, etc.
