@@ -150,7 +150,7 @@ require (
 	sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730 // indirect
 )
 
-require cloud.google.com/go/billing v1.19.2 // indirect
+require cloud.google.com/go/billing v1.20.4 // indirect
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
