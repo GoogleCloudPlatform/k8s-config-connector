@@ -94,6 +94,8 @@ func (r *Replacements) ApplyReplacements(s string) string {
 // placeholderForGCPResource returns the placeholder we use for the value, if we recognize the GCP resource type
 func (r *Replacements) placeholderForGCPResource(resource string) string {
 	switch resource {
+	case "attachments":
+		return "${attachmentID}"
 	case "addresses":
 		return "${addressID}"
 	case "tensorboards":

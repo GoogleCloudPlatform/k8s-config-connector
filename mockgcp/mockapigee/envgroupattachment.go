@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/apigee/v1"
@@ -34,7 +35,9 @@ type envgroupAttachmentServer struct {
 }
 
 func (s *envgroupAttachmentServer) CreateOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.CreateOrganizationsEnvgroupsAttachmentRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseEnvgroupAttachmentName(req.GetParent() + "/attachments/" + req.GetOrganizationsEnvgroupsAttachment().GetName())
+	// mock generation of a server side id
+	serverGeneratedName := fmt.Sprintf("%x", time.Now().UnixMilli())
+	name, err := s.parseEnvgroupAttachmentName(req.GetParent() + "/attachments/" + serverGeneratedName)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +47,7 @@ func (s *envgroupAttachmentServer) CreateOrganizationsEnvgroupsAttachment(ctx co
 
 	// The name field in the request body is ignored by Apigee.
 	// Set it to the fully qualified name for consistency with GCP
-	obj.Name = fqn
+	obj.Name = serverGeneratedName
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -57,7 +60,12 @@ func (s *envgroupAttachmentServer) CreateOrganizationsEnvgroupsAttachment(ctx co
 	}
 
 	opPrefix := fmt.Sprintf("organizations/%s/envgroups/%s", name.Organization, name.Envgroup)
-	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, obj)
+	op, err := s.operations.DoneLRO(ctx, opPrefix, opMetadata, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	return op, nil
 }
 
 func (s *envgroupAttachmentServer) GetOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.GetOrganizationsEnvgroupsAttachmentRequest) (*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment, error) {
