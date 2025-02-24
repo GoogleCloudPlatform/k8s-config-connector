@@ -2729,11 +2729,6 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.yAxis.label" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].xyChart.yAxis.scale" is not set in unstructured objects
 [missing_field] crd=monitoringgroups.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.isCluster" is not set in unstructured objects
-[missing_field] crd=monitoringnotificationchannels.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.sensitiveLabels.authToken.value" is not set in unstructured objects
-[missing_field] crd=monitoringnotificationchannels.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.sensitiveLabels.authToken.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=monitoringnotificationchannels.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.sensitiveLabels.password.value" is not set in unstructured objects
-[missing_field] crd=monitoringnotificationchannels.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.sensitiveLabels.serviceKey.value" is not set in unstructured objects
-[missing_field] crd=monitoringnotificationchannels.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.sensitiveLabels.serviceKey.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringservicelevelobjectives.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceLevelIndicator.basicSli.latency.experience" is not set in unstructured objects
 [missing_field] crd=monitoringservicelevelobjectives.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceLevelIndicator.basicSli.latency.threshold" is not set in unstructured objects
 [missing_field] crd=monitoringservicelevelobjectives.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceLevelIndicator.basicSli.location[]" is not set in unstructured objects
