@@ -63,7 +63,7 @@ func (m *modelEnvgroupAttachment) AdapterForObject(ctx context.Context, reader c
 
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("could not create identity: %w", err)
 	}
 	id, ok := i.(*krm.ApigeeEnvgroupAttachmentIdentity)
 	if !ok {

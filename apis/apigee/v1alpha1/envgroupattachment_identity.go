@@ -91,7 +91,7 @@ func (obj *ApigeeEnvgroupAttachment) GetIdentity(ctx context.Context, reader cli
 	// Get parent ID
 	parentID, err := obj.GetParentIdentity(ctx, reader)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot resolve parent identity: %w", err)
 	}
 
 	environmentRef := obj.Spec.EnvironmentRef
@@ -120,9 +120,9 @@ func (obj *ApigeeEnvgroupAttachment) GetIdentity(ctx context.Context, reader cli
 	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		previousID := &ApigeeEnvgroupIdentity{}
+		previousID := &ApigeeEnvgroupAttachmentIdentity{}
 		if err := previousID.FromExternal(externalRef); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("could not resolve previousID: %s :%w", externalRef, err)
 		}
 		if id.String() != previousID.String() {
 			return nil, fmt.Errorf("cannot update ApigeeEnvgroupAttachment identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
