@@ -1,0 +1,42 @@
+{
+  "name": "{{metric}}",
+  "project": "{{project}}",
+  "description": "A sample log metric",
+  "filter": "resource.type=gae_app AND severity<=ERROR",
+  "disabled": false,
+  "metricDescriptor": {
+    "labels": [
+      {
+        "key": "mass",
+        "valueType": "STRING",
+        "description": "amount of matter"
+      },
+      {
+        "key": "sku",
+        "valueType": "INT64",
+        "description": "identifying number for item"
+      }
+    ],
+    "metricKind": "DELTA",
+    "valueType": "DISTRIBUTION",
+    "unit": "bit",
+    "displayName": "sample-descriptor",
+    "metadata": {
+      "samplePeriod": "5s",
+      "ingestDelay": "2s"
+    },
+    "launchStage": "UNIMPLEMENTED"
+  },
+  "valueExtractor": "EXTRACT(jsonPayload.request)",
+  "labelExtractors": {
+    "mass": "EXTRACT(jsonPayload.request)",
+    "sku": "EXTRACT(jsonPayload.id)"
+  },
+  "bucketOptions": {
+    "linearBuckets": {
+      "numFiniteBuckets": 3,
+      "width": 3.5,
+      "offset": 1.5
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "priority": 9000,
+  "firewallPolicy": "locations/global/firewallPolicies/{{ref:folder.firewall_policy.json:name}}",
+  "description": "allow-scan-probe",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "tcp",
+        "ports": ["123"]
+      }
+    ],
+    "destIPRanges": ["10.100.0.1/32"]
+  },
+  "enableLogging" : false,
+  "targetServiceAccounts" : ["261421534184-compute@developer.gserviceaccount.com"],
+  "action": "deny",
+  "direction": "EGRESS",
+  "disabled" : false,
+  "targetResources": ["{{ref:first_folder.network.json:selfLink}}"]
+}

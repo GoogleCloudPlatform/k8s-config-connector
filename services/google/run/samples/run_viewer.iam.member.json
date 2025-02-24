@@ -1,0 +1,5 @@
+{
+  "role": "roles/run.viewer",
+  "member": "serviceAccount:{{test_service_account}}",
+  "resource": "{{ref:basic.service.json:__resource__}}"
+}

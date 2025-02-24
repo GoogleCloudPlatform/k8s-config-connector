@@ -1,0 +1,6 @@
+{
+  "name":"{{ref:__state__:name}}",
+  "shortName": "{{ref:__state__:shortName}}",
+  "parent": "organizations/{{org_id}}",
+  "description": "Updated sample firewall policy."
+}

@@ -1,0 +1,141 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaInterconnectAttachmentOperationalStatusEnum {
+  ComputeAlphaInterconnectAttachmentOperationalStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectAttachmentOperationalStatusEnumOS_ACTIVE = 1;
+  ComputeAlphaInterconnectAttachmentOperationalStatusEnumOS_UNPROVISIONED = 2;
+}
+
+enum ComputeAlphaInterconnectAttachmentTypeEnum {
+  ComputeAlphaInterconnectAttachmentTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectAttachmentTypeEnumPATH = 1;
+  ComputeAlphaInterconnectAttachmentTypeEnumOTHER = 2;
+  ComputeAlphaInterconnectAttachmentTypeEnumPARAMETER = 3;
+}
+
+enum ComputeAlphaInterconnectAttachmentEdgeAvailabilityDomainEnum {
+  ComputeAlphaInterconnectAttachmentEdgeAvailabilityDomainEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_ANY = 1;
+  ComputeAlphaInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_1 = 2;
+  ComputeAlphaInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_2 = 3;
+}
+
+enum ComputeAlphaInterconnectAttachmentBandwidthEnum {
+  ComputeAlphaInterconnectAttachmentBandwidthEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_50M = 1;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_100M = 2;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_200M = 3;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_300M = 4;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_400M = 5;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_500M = 6;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_1G = 7;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_2G = 8;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_5G = 9;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_10G = 10;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_20G = 11;
+  ComputeAlphaInterconnectAttachmentBandwidthEnumBPS_50G = 12;
+}
+
+enum ComputeAlphaInterconnectAttachmentStateEnum {
+  ComputeAlphaInterconnectAttachmentStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectAttachmentStateEnumDEPRECATED = 1;
+  ComputeAlphaInterconnectAttachmentStateEnumOBSOLETE = 2;
+  ComputeAlphaInterconnectAttachmentStateEnumDELETED = 3;
+  ComputeAlphaInterconnectAttachmentStateEnumACTIVE = 4;
+}
+
+enum ComputeAlphaInterconnectAttachmentEncryptionEnum {
+  ComputeAlphaInterconnectAttachmentEncryptionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectAttachmentEncryptionEnumNONE = 1;
+  ComputeAlphaInterconnectAttachmentEncryptionEnumIPSEC = 2;
+}
+
+message ComputeAlphaInterconnectAttachment {
+  string description = 1;
+  string self_link = 2;
+  int64 id = 3;
+  string name = 4;
+  string interconnect = 5;
+  string router = 6;
+  string region = 7;
+  int64 mtu = 8;
+  ComputeAlphaInterconnectAttachmentPrivateInterconnectInfo private_interconnect_info = 9;
+  ComputeAlphaInterconnectAttachmentOperationalStatusEnum operational_status = 10;
+  string cloud_router_ip_address = 11;
+  string customer_router_ip_address = 12;
+  ComputeAlphaInterconnectAttachmentTypeEnum type = 13;
+  string pairing_key = 14;
+  bool admin_enabled = 15;
+  int64 vlan_tag8021q = 16;
+  ComputeAlphaInterconnectAttachmentEdgeAvailabilityDomainEnum edge_availability_domain = 17;
+  repeated string candidate_subnets = 18;
+  ComputeAlphaInterconnectAttachmentBandwidthEnum bandwidth = 19;
+  ComputeAlphaInterconnectAttachmentPartnerMetadata partner_metadata = 20;
+  ComputeAlphaInterconnectAttachmentStateEnum state = 21;
+  int64 partner_asn = 22;
+  ComputeAlphaInterconnectAttachmentEncryptionEnum encryption = 23;
+  repeated string ipsec_internal_addresses = 24;
+  int64 dataplane_version = 25;
+  bool satisfies_pzs = 26;
+  map<string, string> labels = 27;
+  string label_fingerprint = 28;
+  string project = 29;
+}
+
+message ComputeAlphaInterconnectAttachmentPrivateInterconnectInfo {
+  int64 tag8021q = 1;
+}
+
+message ComputeAlphaInterconnectAttachmentPartnerMetadata {
+  string partner_name = 1;
+  string interconnect_name = 2;
+  string portal_url = 3;
+}
+
+message ApplyComputeAlphaInterconnectAttachmentRequest {
+  ComputeAlphaInterconnectAttachment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaInterconnectAttachmentRequest {
+  string service_account_file = 1;
+  ComputeAlphaInterconnectAttachment resource = 2;
+}
+
+message ListComputeAlphaInterconnectAttachmentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeAlphaInterconnectAttachmentResponse {
+  repeated ComputeAlphaInterconnectAttachment items = 1;
+}
+
+service ComputeAlphaInterconnectAttachmentService {
+  rpc ApplyComputeAlphaInterconnectAttachment(ApplyComputeAlphaInterconnectAttachmentRequest) returns (ComputeAlphaInterconnectAttachment);
+  rpc DeleteComputeAlphaInterconnectAttachment(DeleteComputeAlphaInterconnectAttachmentRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaInterconnectAttachment(ListComputeAlphaInterconnectAttachmentRequest) returns (ListComputeAlphaInterconnectAttachmentResponse);
+}

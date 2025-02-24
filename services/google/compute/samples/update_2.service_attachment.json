@@ -1,0 +1,12 @@
+{
+  "name": "{{attachment}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "An updated sample service attachment",
+  "targetService": "{{ref:first_internal.forwarding_rule.json:selfLink}}",
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "natSubnets": ["{{ref:first_private_service_connect.subnetwork.json:selfLink}}"],
+  "enableProxyProtocol": false,
+  "consumerRejectLists": [],
+  "consumerAcceptLists": []
+}

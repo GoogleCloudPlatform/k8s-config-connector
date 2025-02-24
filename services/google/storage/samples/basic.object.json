@@ -1,0 +1,15 @@
+{
+  "name": "{{object}}",
+  "bucket": "{{ref:basic.bucket.json:name}}",
+  "contentType": "text/plain",
+  "temporaryHold": false,
+  "metadata": {
+    "key-one": "value-one"
+  },
+  "customerEncryption": {
+    "encryptionAlgorithm": "AES256",
+    "key": "grfGFkZz3Srvr6ump6D4q48BAIN3vy7Kf+uJNWEfKak=",
+    "keySha256": "LuEWS2yxdKG3xR9w+eX6AEhZ+v1IV4dVWk/sU13WuW8="
+  },
+  "content": "{{content}}"
+}

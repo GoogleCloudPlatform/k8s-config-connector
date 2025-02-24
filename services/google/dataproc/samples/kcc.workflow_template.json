@@ -1,0 +1,55 @@
+{
+  "project": "{{ref:dataproc.serviceusage.service.json:project}}",
+  "name": "{{template_name}}",
+  "location": "{{region}}",
+  "labels": {
+    "foo": "bar"
+  },
+  "placement": {
+    "managedCluster": {
+      "clusterName": "test-cluster",
+      "config": {
+        "autoscalingConfig": {
+          "policy": "projects/{{ref:dataproc.serviceusage.service.json:project}}/locations/{{region}}/autoscalingPolicies/{{ref:basic.autoscaling_policy.json:name}}"
+        },
+        "gceClusterConfig": {
+          "tags": ["foo", "bar"]
+        },
+        "masterConfig": {
+          "numInstances": 1,
+          "machineType": "n2-standard-8",
+          "diskConfig": {
+            "bootDiskType": "pd-standard",
+            "bootDiskSizeGb": 30
+          }
+        },
+        "workerConfig": {
+          "numInstances": 3,
+          "machineType": "n2-standard-8",
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "numLocalSsds": 1
+          }
+        },
+        "softwareConfig": {
+          "imageVersion": "2.0.27-debian10"
+        }
+      }
+    }
+  },
+  "jobs": [
+    {
+      "stepId": "someJob",
+      "sparkJob": {
+        "mainClass": "SomeClass"
+      }
+    },
+    {
+      "stepId": "otherJob",
+      "prerequisiteStepIds": ["someJob"],
+      "prestoJob": {
+        "queryFileUri": "someUri"
+      }
+    }
+  ]
+}

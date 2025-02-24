@@ -1,0 +1,66 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum IamBetaWorkloadIdentityPoolStateEnum {
+  IamBetaWorkloadIdentityPoolStateEnumNO_VALUE_DO_NOT_USE = 0;
+  IamBetaWorkloadIdentityPoolStateEnumSTATE_UNSPECIFIED = 1;
+  IamBetaWorkloadIdentityPoolStateEnumACTIVE = 2;
+  IamBetaWorkloadIdentityPoolStateEnumDELETED = 3;
+}
+
+message IamBetaWorkloadIdentityPool {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  IamBetaWorkloadIdentityPoolStateEnum state = 4;
+  bool disabled = 5;
+  string project = 6;
+  string location = 7;
+}
+
+message ApplyIamBetaWorkloadIdentityPoolRequest {
+  IamBetaWorkloadIdentityPool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteIamBetaWorkloadIdentityPoolRequest {
+  string service_account_file = 1;
+  IamBetaWorkloadIdentityPool resource = 2;
+}
+
+message ListIamBetaWorkloadIdentityPoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListIamBetaWorkloadIdentityPoolResponse {
+  repeated IamBetaWorkloadIdentityPool items = 1;
+}
+
+service IamBetaWorkloadIdentityPoolService {
+  rpc ApplyIamBetaWorkloadIdentityPool(ApplyIamBetaWorkloadIdentityPoolRequest) returns (IamBetaWorkloadIdentityPool);
+  rpc DeleteIamBetaWorkloadIdentityPool(DeleteIamBetaWorkloadIdentityPoolRequest) returns (google.protobuf.Empty);
+  rpc ListIamBetaWorkloadIdentityPool(ListIamBetaWorkloadIdentityPoolRequest) returns (ListIamBetaWorkloadIdentityPoolResponse);
+}

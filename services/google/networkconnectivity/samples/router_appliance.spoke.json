@@ -1,0 +1,17 @@
+{
+  "name": "{{spoke}}",
+  "project": "{{ref:networkconnectivity.serviceusage.service.json:project}}",
+  "location": "{{region}}",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "description": "A sample spoke with a linked routher appliance instance",
+  "hub": "projects/{{ref:networkconnectivity.serviceusage.service.json:project}}/locations/global/hubs/{{ref:basic.hub.json:name}}",
+  "linkedRouterApplianceInstances": {
+    "instances": [{
+      "virtualMachine": "{{ref:router_appliance.compute.instance.json:selfLink}}",
+      "ipAddress": "10.0.0.2"
+    }],
+    "siteToSiteDataTransfer": true
+  }
+}

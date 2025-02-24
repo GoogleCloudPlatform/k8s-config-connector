@@ -1,0 +1,133 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+package server
+
+import (
+	"context"
+	"errors"
+	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
+	emptypb "github.com/GoogleCloudPlatform/declarative-resource-client-library/python/proto/empty_go_proto"
+	vertexpb "github.com/GoogleCloudPlatform/declarative-resource-client-library/python/proto/vertex/vertex_go_proto"
+	"github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/vertex"
+)
+
+// MetadataSchemaServer implements the gRPC interface for MetadataSchema.
+type MetadataSchemaServer struct{}
+
+// ProtoToMetadataSchemaSchemaTypeEnum converts a MetadataSchemaSchemaTypeEnum enum from its proto representation.
+func ProtoToVertexMetadataSchemaSchemaTypeEnum(e vertexpb.VertexMetadataSchemaSchemaTypeEnum) *vertex.MetadataSchemaSchemaTypeEnum {
+	if e == 0 {
+		return nil
+	}
+	if n, ok := vertexpb.VertexMetadataSchemaSchemaTypeEnum_name[int32(e)]; ok {
+		e := vertex.MetadataSchemaSchemaTypeEnum(n[len("VertexMetadataSchemaSchemaTypeEnum"):])
+		return &e
+	}
+	return nil
+}
+
+// ProtoToMetadataSchema converts a MetadataSchema resource from its proto representation.
+func ProtoToMetadataSchema(p *vertexpb.VertexMetadataSchema) *vertex.MetadataSchema {
+	obj := &vertex.MetadataSchema{
+		Name:          dcl.StringOrNil(p.GetName()),
+		SchemaVersion: dcl.StringOrNil(p.GetSchemaVersion()),
+		Schema:        dcl.StringOrNil(p.GetSchema()),
+		SchemaType:    ProtoToVertexMetadataSchemaSchemaTypeEnum(p.GetSchemaType()),
+		CreateTime:    dcl.StringOrNil(p.GetCreateTime()),
+		Project:       dcl.StringOrNil(p.GetProject()),
+		Location:      dcl.StringOrNil(p.GetLocation()),
+		MetadataStore: dcl.StringOrNil(p.GetMetadataStore()),
+	}
+	return obj
+}
+
+// MetadataSchemaSchemaTypeEnumToProto converts a MetadataSchemaSchemaTypeEnum enum to its proto representation.
+func VertexMetadataSchemaSchemaTypeEnumToProto(e *vertex.MetadataSchemaSchemaTypeEnum) vertexpb.VertexMetadataSchemaSchemaTypeEnum {
+	if e == nil {
+		return vertexpb.VertexMetadataSchemaSchemaTypeEnum(0)
+	}
+	if v, ok := vertexpb.VertexMetadataSchemaSchemaTypeEnum_value["MetadataSchemaSchemaTypeEnum"+string(*e)]; ok {
+		return vertexpb.VertexMetadataSchemaSchemaTypeEnum(v)
+	}
+	return vertexpb.VertexMetadataSchemaSchemaTypeEnum(0)
+}
+
+// MetadataSchemaToProto converts a MetadataSchema resource to its proto representation.
+func MetadataSchemaToProto(resource *vertex.MetadataSchema) *vertexpb.VertexMetadataSchema {
+	p := &vertexpb.VertexMetadataSchema{}
+	p.SetName(dcl.ValueOrEmptyString(resource.Name))
+	p.SetSchemaVersion(dcl.ValueOrEmptyString(resource.SchemaVersion))
+	p.SetSchema(dcl.ValueOrEmptyString(resource.Schema))
+	p.SetSchemaType(VertexMetadataSchemaSchemaTypeEnumToProto(resource.SchemaType))
+	p.SetCreateTime(dcl.ValueOrEmptyString(resource.CreateTime))
+	p.SetProject(dcl.ValueOrEmptyString(resource.Project))
+	p.SetLocation(dcl.ValueOrEmptyString(resource.Location))
+	p.SetMetadataStore(dcl.ValueOrEmptyString(resource.MetadataStore))
+
+	return p
+}
+
+// applyMetadataSchema handles the gRPC request by passing it to the underlying MetadataSchema Apply() method.
+func (s *MetadataSchemaServer) applyMetadataSchema(ctx context.Context, c *vertex.Client, request *vertexpb.ApplyVertexMetadataSchemaRequest) (*vertexpb.VertexMetadataSchema, error) {
+	p := ProtoToMetadataSchema(request.GetResource())
+	res, err := c.ApplyMetadataSchema(ctx, p)
+	if err != nil {
+		return nil, err
+	}
+	r := MetadataSchemaToProto(res)
+	return r, nil
+}
+
+// applyVertexMetadataSchema handles the gRPC request by passing it to the underlying MetadataSchema Apply() method.
+func (s *MetadataSchemaServer) ApplyVertexMetadataSchema(ctx context.Context, request *vertexpb.ApplyVertexMetadataSchemaRequest) (*vertexpb.VertexMetadataSchema, error) {
+	cl, err := createConfigMetadataSchema(ctx, request.GetServiceAccountFile())
+	if err != nil {
+		return nil, err
+	}
+	return s.applyMetadataSchema(ctx, cl, request)
+}
+
+// DeleteMetadataSchema handles the gRPC request by passing it to the underlying MetadataSchema Delete() method.
+func (s *MetadataSchemaServer) DeleteVertexMetadataSchema(ctx context.Context, request *vertexpb.DeleteVertexMetadataSchemaRequest) (*emptypb.Empty, error) {
+
+	return nil, errors.New("no delete endpoint for MetadataSchema")
+
+}
+
+// ListVertexMetadataSchema handles the gRPC request by passing it to the underlying MetadataSchemaList() method.
+func (s *MetadataSchemaServer) ListVertexMetadataSchema(ctx context.Context, request *vertexpb.ListVertexMetadataSchemaRequest) (*vertexpb.ListVertexMetadataSchemaResponse, error) {
+	cl, err := createConfigMetadataSchema(ctx, request.GetServiceAccountFile())
+	if err != nil {
+		return nil, err
+	}
+
+	resources, err := cl.ListMetadataSchema(ctx, request.GetProject(), request.GetLocation(), request.GetMetadataStore())
+	if err != nil {
+		return nil, err
+	}
+	var protos []*vertexpb.VertexMetadataSchema
+	for _, r := range resources.Items {
+		rp := MetadataSchemaToProto(r)
+		protos = append(protos, rp)
+	}
+	p := &vertexpb.ListVertexMetadataSchemaResponse{}
+	p.SetItems(protos)
+	return p, nil
+}
+
+func createConfigMetadataSchema(ctx context.Context, service_account_file string) (*vertex.Client, error) {
+
+	conf := dcl.NewConfig(dcl.WithUserAgent("dcl-test"), dcl.WithCredentialsFile(service_account_file))
+	return vertex.NewClient(conf), nil
+}

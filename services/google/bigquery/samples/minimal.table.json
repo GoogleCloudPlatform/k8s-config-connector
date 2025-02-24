@@ -1,0 +1,5 @@
+{
+  "name": "{{_min_table}}",
+  "project": "{{project}}",
+  "dataset": "{{ref:minimal.dataset.json:name}}"
+}

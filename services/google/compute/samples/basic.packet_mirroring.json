@@ -1,0 +1,32 @@
+{
+  "name": "{{mirroring}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "A sample packet mirroring",
+  "network": {
+    "url": "projects/{{project}}/global/networks/default"
+  },
+  "priority": 1000,
+  "collectorIlb": {
+    "url": "{{ref:first_mirroring_internal.forwarding_rule.json:selfLink}}"
+  },
+  "mirroredResources": {
+    "subnetworks": [
+      {
+        "url": "projects/{{project}}/regions/{{region}}/subnetworks/default"
+      }
+    ],
+    "instances": [
+      {
+        "url": "{{ref:basic.instance.json:selfLink}}"
+      }
+    ],
+    "tags": ["tag-one"]
+  },
+  "filter": {
+    "cidrRanges": ["192.168.0.0/23"],
+    "ipProtocols": ["tcp"],
+    "direction": "BOTH"
+  },
+  "enable": "TRUE"
+}

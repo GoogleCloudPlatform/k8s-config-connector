@@ -1,0 +1,47 @@
+{
+  "name": "{{service}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "loadBalancingScheme": "INTERNAL",
+  "portName": "test-port",
+  "sessionAffinity": "HTTP_COOKIE",
+  "affinityCookieTtlSec": 30,
+  "localityLbPolicy": "MAGLEV",
+  "consistentHash": {
+    "httpCookie": {
+      "name": "test-cookie",
+      "path": "/",
+      "ttl": {
+        "seconds": 15,
+        "nanos": 20
+      }
+    }
+  },
+  "circuitBreakers": {
+    "connectTimeout": {
+      "seconds": 15,
+      "nanos": 20
+    },
+    "maxRequestsPerConnection": 7,
+    "maxConnections": 7,
+    "maxPendingRequests": 7,
+    "maxRequests": 7,
+    "maxRetries": 2
+  },
+  "outlierDetection": {
+    "consecutiveErrors": 4,
+    "interval": {
+      "seconds": 10
+    },
+    "baseEjectionTime": {
+      "nanos": 9e8
+    },
+    "maxEjectionPercent": 42,
+    "enforcingConsecutiveErrors": 12,
+    "enforcingSuccessRate": 89,
+    "successRateMinimumHosts": 4,
+    "successRateStdevFactor": 4900,
+    "consecutiveGatewayFailure": 4,
+    "enforcingConsecutiveGatewayFailure": 89
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "name": "{{attachment}}",
+  "edgeAvailabilityDomain": "AVAILABILITY_DOMAIN_1",
+  "type": "PARTNER",
+  "router": "{{ref:interconnect.router.json:selfLink}}",
+  "mtu": 1500
+}

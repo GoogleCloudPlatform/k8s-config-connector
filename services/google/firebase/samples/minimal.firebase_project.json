@@ -1,0 +1,3 @@
+{
+  "project": "{{ref:minimal.cloudresourcemanager.project.json:name}}"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "{{connectivity_interface3}}",
+  "project": "{{ref:compute.serviceusage.service.json:project}}",
+  "location": "{{region}}",
+  "router": "{{ref:second.compute.router.json:name}}",
+  "ipRange": "169.254.0.8/30",
+  "linkedVpnTunnel": "{{ref:gw2_if0.compute.vpn_tunnel.json:selfLink}}"
+}

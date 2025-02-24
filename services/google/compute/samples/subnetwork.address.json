@@ -1,0 +1,8 @@
+{
+  "project":     "{{project}}",
+  "location":    "{{region}}",
+  "name":        "{{address}}",
+  "addressType": "INTERNAL",
+  "subnetwork": "{{ref:private.subnetwork.json:selfLink}}",
+  "description": "A test address"
+}

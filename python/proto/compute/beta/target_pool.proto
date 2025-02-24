@@ -1,0 +1,70 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaTargetPoolSessionAffinityEnum {
+  ComputeBetaTargetPoolSessionAffinityEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaTargetPoolSessionAffinityEnumNONE = 1;
+  ComputeBetaTargetPoolSessionAffinityEnumCLIENT_IP = 2;
+  ComputeBetaTargetPoolSessionAffinityEnumCLIENT_IP_PROTO = 3;
+  ComputeBetaTargetPoolSessionAffinityEnumGENERATED_COOKIE = 4;
+  ComputeBetaTargetPoolSessionAffinityEnumCLIENT_IP_PORT_PROTO = 5;
+  ComputeBetaTargetPoolSessionAffinityEnumHTTP_COOKIE = 6;
+  ComputeBetaTargetPoolSessionAffinityEnumHEADER_FIELD = 7;
+}
+
+message ComputeBetaTargetPool {
+  string backup_pool = 1;
+  string description = 2;
+  double failover_ratio = 3;
+  repeated string health_checks = 4;
+  repeated string instances = 5;
+  string name = 6;
+  string region = 7;
+  string self_link = 8;
+  ComputeBetaTargetPoolSessionAffinityEnum session_affinity = 9;
+  string project = 10;
+}
+
+message ApplyComputeBetaTargetPoolRequest {
+  ComputeBetaTargetPool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaTargetPoolRequest {
+  string service_account_file = 1;
+  ComputeBetaTargetPool resource = 2;
+}
+
+message ListComputeBetaTargetPoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeBetaTargetPoolResponse {
+  repeated ComputeBetaTargetPool items = 1;
+}
+
+service ComputeBetaTargetPoolService {
+  rpc ApplyComputeBetaTargetPool(ApplyComputeBetaTargetPoolRequest) returns (ComputeBetaTargetPool);
+  rpc DeleteComputeBetaTargetPool(DeleteComputeBetaTargetPoolRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaTargetPool(ListComputeBetaTargetPoolRequest) returns (ListComputeBetaTargetPoolResponse);
+}

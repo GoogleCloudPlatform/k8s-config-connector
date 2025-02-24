@@ -1,0 +1,55 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+message ServicenetworkingConnection {
+  string network = 1;
+  string project = 2;
+  string name = 3;
+  repeated string reserved_peering_ranges = 4;
+  string service = 5;
+}
+
+message ApplyServicenetworkingConnectionRequest {
+  ServicenetworkingConnection resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteServicenetworkingConnectionRequest {
+  string service_account_file = 1;
+  ServicenetworkingConnection resource = 2;
+}
+
+message ListServicenetworkingConnectionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Network = 3;
+  string Service = 4;
+}
+
+message ListServicenetworkingConnectionResponse {
+  repeated ServicenetworkingConnection items = 1;
+}
+
+service ServicenetworkingConnectionService {
+  rpc ApplyServicenetworkingConnection(ApplyServicenetworkingConnectionRequest) returns (ServicenetworkingConnection);
+  rpc DeleteServicenetworkingConnection(DeleteServicenetworkingConnectionRequest) returns (google.protobuf.Empty);
+  rpc ListServicenetworkingConnection(ListServicenetworkingConnectionRequest) returns (ListServicenetworkingConnectionResponse);
+}

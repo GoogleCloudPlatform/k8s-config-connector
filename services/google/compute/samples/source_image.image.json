@@ -1,0 +1,6 @@
+{
+  "name": "{{image}}",
+  "project": "{{project}}",
+  "family": "debian-9",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20210217"
+}

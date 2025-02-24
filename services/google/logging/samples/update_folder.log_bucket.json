@@ -1,0 +1,6 @@
+{
+  "name": "_Default",
+  "parent": "folders/{{ref:folder.cloudresourcemanager.folder.json:name}}",
+  "location": "global",
+  "retentionDays": 20
+}

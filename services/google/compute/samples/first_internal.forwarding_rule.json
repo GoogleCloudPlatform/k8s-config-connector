@@ -1,0 +1,12 @@
+{
+  "name": "{{rule1}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "subnetwork": "{{ref:private.subnetwork.json:selfLink}}",
+  "description": "A test forwarding rule with internal load balancing scheme",
+  "loadBalancingScheme": "INTERNAL",
+  "backendService": "{{ref:internal.backend_service.json:selfLink}}",
+  "networkTier": "PREMIUM",
+  "allPorts": true
+}

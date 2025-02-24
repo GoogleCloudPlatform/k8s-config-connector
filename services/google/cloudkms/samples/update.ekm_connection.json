@@ -1,0 +1,34 @@
+{
+  "name": "{{connection}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "serviceResolvers": [
+    {
+      "serviceDirectoryService": "projects/{{project}}/locations/{{region}}/namespaces/{{ref:basic.servicedirectory.namespace.json:name}}/services/{{ref:update.servicedirectory.service.json:name}}",
+      "hostname": "test-2",
+      "endpointFilter": "address=staging",
+      "serverCertificates": [
+        {
+          "rawDer": "MIIDGjCCAgICCQDQoAnIuigKvTANBgkqhkiG9w0BAQsFADBOMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTlkxCzAJBgNVBAcMAk5ZMQ4wDAYDVQQKDAV0eWxpdTEVMBMGA1UEAwwMZWttX2hvc3RuYW1lMCAXDTIyMDUxMzE3MzMyM1oYDzMwMDIwNzE1MTczMzIzWjBOMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTlkxCzAJBgNVBAcMAk5ZMQ4wDAYDVQQKDAV0eWxpdTEVMBMGA1UEAwwMZWttX2hvc3RuYW1lMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzTiuXQwtqqJjxOfqAEMC6+cDG7zSXr8m/vuyGHvM8BWqbGNe1wZUFh2oUvhpA3V0kHORylmiW2KC0Fvw5mNjfP1Ylf6MNlh1rgd6i+1jb1QC7Rh+1Sxb4wRdRWPxVbWcb/iWvmL5nMj/nyLatjtO6GltYV8KtwzME+ncQgwOpfqPEib7fbNBrYaT+z8BMa89Zd8hWJ5DBt5OgPhi320b/xYvO6mzau0FMCHEQjtxa8MmxRKqv27kWQqc2V43A1DpWT2kw3ZTDg5cmUv3r1Jd+DcCKZuZzVpcDVeZOxWGiTZGCoRVHGgvqNRmxLkuDis4i/cO7mlIVHGxVop+DMOmrwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQC8JQqvd5bW78RRwR2yE/9rdNxxskdM2fb/uUNzK4I1oEunrSmYne17PkRh+kHc1wI6BQnv0E+AqJPm6JVWiW8mri3PISfskkP8cAd8jT+q/XbXgc5ufkOeY6n0YwI6yY5SYlHCQ8MButtnTSqPSkUKlLpoaVwelh9sbZZfBUlc02kjt0Jj+SEjGJ/4xlM/RjYI8KVgm8HOH/19g/wpZUJFEvNFv4zcStgHsrCqMeHrY7MUV4cGZd4t3MvLHU+yYtBR3vHcKu6lll4x1udqVblUKZQfRC2p5Zi1GwN2PcOvEobxfPbCycDwQwDHFKHPgOaS5voZzK7SU3FODfAP6UrB",
+          "parsed": true,
+          "issuer": "CN=ekm_hostname,O=tyliu,L=NY,ST=NY,C=US",
+          "subject": "CN=ekm_hostname,O=tyliu,L=NY,ST=NY,C=US",
+          "notBeforeTime": "2022-05-13T17:33:23Z",
+          "notAfterTime": "3002-07-15T17:33:23Z",
+          "serialNumber": "D0A009C8BA280ABD",
+          "sha256Fingerprint": "F57CCE5DF1D805D011676EE846E02A59A093584F66E964CDA4C6D1C6987606B9"
+        },
+        {
+          "rawDer": "MIIC8jCCAdoCCQDRuNYaz99g/DANBgkqhkiG9w0BAQsFADA6MQswCQYDVQQGEwJVUzELMAkGA1UECAwCQ0ExCzAJBgNVBAcMAlNGMREwDwYDVQQDDAhla20tdGVzdDAgFw0yMjA1MTkxODMyNTRaGA8zMDAyMDcyMTE4MzI1NFowOjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAkNBMQswCQYDVQQHDAJTRjERMA8GA1UEAwwIZWttLXRlc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDNOK5dDC2qomPE5+oAQwLr5wMbvNJevyb++7IYe8zwFapsY17XBlQWHahS+GkDdXSQc5HKWaJbYoLQW/DmY2N8/ViV/ow2WHWuB3qL7WNvVALtGH7VLFvjBF1FY/FVtZxv+Ja+YvmcyP+fItq2O07oaW1hXwq3DMwT6dxCDA6l+o8SJvt9s0GthpP7PwExrz1l3yFYnkMG3k6A+GLfbRv/Fi87qbNq7QUwIcRCO3FrwybFEqq/buRZCpzZXjcDUOlZPaTDdlMODlyZS/evUl34NwIpm5nNWlwNV5k7FYaJNkYKhFUcaC+o1GbEuS4OKziL9w7uaUhUcbFWin4Mw6avAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAJHqCoorJ+TRpSJR9JHMdQz5mP3e/XKpHmZLuflRe27WbLqIrcU+u02t9J92+G7wPGiIRJap6uyltE7JS0faL2tijMlPq0lNVukZOBQaIA9edL/VQ/i35yJSCu652nMyDGFgF+06iAdi318qFxfsR/0zd/gyphoSICYjKs90hHeWXxLMXl0o36gDQSHyhHSQH3m/4LyaU0zPKKy7Nkwb0HRKJFf/fPBRCRwa87vFaWTxXkzFNWiJA/nlRNkOvV0PrlPyAtsbMuDzvA3JghNDPkdxaDBMjYPhyV6bas/tICZiGRCXbNHSLnbMHDaibAb3ADbPnctacBFbH//SE976/AQ=",
+          "parsed": true,
+          "issuer": "CN=ekm-test,L=SF,ST=CA,C=US",
+          "subject": "CN=ekm-test,L=SF,ST=CA,C=US",
+          "notBeforeTime": "2022-05-19T18:32:54Z",
+          "notAfterTime": "3002-07-21T18:32:54Z",
+          "serialNumber": "D1B8D61ACFDF60FC",
+          "sha256Fingerprint": "526A87FB734F17AF9C8A5D2E5CE4ED1E8D6B41378DAEB21BB43B0A1EF6C515E4"
+        }
+      ]
+    }
+  ]
+}

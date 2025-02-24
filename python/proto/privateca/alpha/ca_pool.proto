@@ -1,0 +1,198 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum PrivatecaAlphaCaPoolTierEnum {
+  PrivatecaAlphaCaPoolTierEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaAlphaCaPoolTierEnumTIER_UNSPECIFIED = 1;
+  PrivatecaAlphaCaPoolTierEnumENTERPRISE = 2;
+  PrivatecaAlphaCaPoolTierEnumDEVOPS = 3;
+}
+
+enum PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSignatureAlgorithmEnum {
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSignatureAlgorithmEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSignatureAlgorithmEnumEC_SIGNATURE_ALGORITHM_UNSPECIFIED = 1;
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSignatureAlgorithmEnumECDSA_P256 = 2;
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSignatureAlgorithmEnumECDSA_P384 = 3;
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSignatureAlgorithmEnumEDDSA_25519 = 4;
+}
+
+enum PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnum {
+  PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnumKNOWN_CERTIFICATE_EXTENSION_UNSPECIFIED = 1;
+  PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnumBASE_KEY_USAGE = 2;
+  PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnumEXTENDED_KEY_USAGE = 3;
+  PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnumCA_OPTIONS = 4;
+  PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnumPOLICY_IDS = 5;
+  PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnumAIA_OCSP_SERVERS = 6;
+}
+
+message PrivatecaAlphaCaPool {
+  string name = 1;
+  PrivatecaAlphaCaPoolTierEnum tier = 2;
+  PrivatecaAlphaCaPoolIssuancePolicy issuance_policy = 3;
+  PrivatecaAlphaCaPoolPublishingOptions publishing_options = 4;
+  map<string, string> labels = 5;
+  string project = 6;
+  string location = 7;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicy {
+  repeated PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypes allowed_key_types = 1;
+  string maximum_lifetime = 2;
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedIssuanceModes allowed_issuance_modes = 3;
+  PrivatecaAlphaCaPoolIssuancePolicyBaselineValues baseline_values = 4;
+  PrivatecaAlphaCaPoolIssuancePolicyIdentityConstraints identity_constraints = 5;
+  PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensions passthrough_extensions = 6;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypes {
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesRsa rsa = 1;
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurve elliptic_curve = 2;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesRsa {
+  int64 min_modulus_size = 1;
+  int64 max_modulus_size = 2;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurve {
+  PrivatecaAlphaCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSignatureAlgorithmEnum signature_algorithm = 1;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyAllowedIssuanceModes {
+  bool allow_csr_based_issuance = 1;
+  bool allow_config_based_issuance = 2;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValues {
+  PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesKeyUsage key_usage = 1;
+  PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesCaOptions ca_options = 2;
+  repeated PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesPolicyIds policy_ids = 3;
+  repeated string aia_ocsp_servers = 4;
+  repeated PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesAdditionalExtensions additional_extensions = 5;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesKeyUsage {
+  PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage base_key_usage = 1;
+  PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage extended_key_usage = 2;
+  repeated PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages unknown_extended_key_usages = 3;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage {
+  bool digital_signature = 1;
+  bool content_commitment = 2;
+  bool key_encipherment = 3;
+  bool data_encipherment = 4;
+  bool key_agreement = 5;
+  bool cert_sign = 6;
+  bool crl_sign = 7;
+  bool encipher_only = 8;
+  bool decipher_only = 9;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage {
+  bool server_auth = 1;
+  bool client_auth = 2;
+  bool code_signing = 3;
+  bool email_protection = 4;
+  bool time_stamping = 5;
+  bool ocsp_signing = 6;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesCaOptions {
+  bool is_ca = 1;
+  int64 max_issuer_path_length = 2;
+  bool zero_max_issuer_path_length = 3;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesPolicyIds {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesAdditionalExtensions {
+  PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyIdentityConstraints {
+  PrivatecaAlphaCaPoolIssuancePolicyIdentityConstraintsCelExpression cel_expression = 1;
+  bool allow_subject_passthrough = 2;
+  bool allow_subject_alt_names_passthrough = 3;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyIdentityConstraintsCelExpression {
+  string expression = 1;
+  string title = 2;
+  string description = 3;
+  string location = 4;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensions {
+  repeated PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsKnownExtensionsEnum known_extensions = 1;
+  repeated PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions additional_extensions = 2;
+}
+
+message PrivatecaAlphaCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaAlphaCaPoolPublishingOptions {
+  bool publish_ca_cert = 1;
+  bool publish_crl = 2;
+}
+
+message ApplyPrivatecaAlphaCaPoolRequest {
+  PrivatecaAlphaCaPool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeletePrivatecaAlphaCaPoolRequest {
+  string service_account_file = 1;
+  PrivatecaAlphaCaPool resource = 2;
+}
+
+message ListPrivatecaAlphaCaPoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListPrivatecaAlphaCaPoolResponse {
+  repeated PrivatecaAlphaCaPool items = 1;
+}
+
+service PrivatecaAlphaCaPoolService {
+  rpc ApplyPrivatecaAlphaCaPool(ApplyPrivatecaAlphaCaPoolRequest) returns (PrivatecaAlphaCaPool);
+  rpc DeletePrivatecaAlphaCaPool(DeletePrivatecaAlphaCaPoolRequest) returns (google.protobuf.Empty);
+  rpc ListPrivatecaAlphaCaPool(ListPrivatecaAlphaCaPoolRequest) returns (ListPrivatecaAlphaCaPoolResponse);
+}

@@ -1,0 +1,13 @@
+{
+  "name": "{{connection}}",
+  "githubEnterpriseConfig": {
+    "hostUri": "https://ghe.proctor-staging-test.com",
+    "privateKeySecretVersion":"projects/gcb-terraform-creds/secrets/ghe-private-key/versions/latest",
+    "webhookSecretSecretVersion":"projects/gcb-terraform-creds/secrets/ghe-webhook-secret/versions/latest",
+    "appId":516,
+    "appSlug":"myapp",
+    "appInstallationId": 243
+  },
+  "project": "{{project}}",
+  "location": "{{region}}"
+}

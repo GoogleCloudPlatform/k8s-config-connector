@@ -1,0 +1,10 @@
+{
+  "project": "{{project}}",
+  "location": "us-west1",
+  "connection": "{{ref:gle.connection.json:name}}",
+  "name": "{{repository}}",
+  "remoteUri": "https://gle-us-central1.gcb-test.com/proctor-test/smoketest.git",
+  "annotations": {
+    "some-key": "some-value"
+  }
+}

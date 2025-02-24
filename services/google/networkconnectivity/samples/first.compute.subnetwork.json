@@ -1,0 +1,7 @@
+{
+  "name": "{{connectivity_subnet1}}",
+  "project": "{{ref:compute.serviceusage.service.json:project}}",
+  "region": "{{region}}",
+  "network": "{{ref:first.compute.network.json:selfLink}}",
+  "ipCidrRange": "10.0.0.0/28"
+}

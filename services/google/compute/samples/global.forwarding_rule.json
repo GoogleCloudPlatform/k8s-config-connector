@@ -1,0 +1,11 @@
+{
+  "name": "{{rule}}",
+  "project": "{{project}}",
+  "location": "global",
+  "networkTier": "PREMIUM",
+  "ipProtocol": "TCP",
+  "description": "A test global forwarding rule with load balancing scheme EXTERNAL_MANAGED",
+  "target": "{{ref:global.target_http_proxy.json:selfLink}}",
+  "loadBalancingScheme": "EXTERNAL_MANAGED",
+  "portRange": "80-80"
+}

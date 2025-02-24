@@ -1,0 +1,14 @@
+{
+  "name": "{{membership1}}",
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "description": "description",
+  "endpoint": {
+    "gkeCluster": {
+      "resourceLink": "{{ref:first.container.cluster.json:selfLink}}"
+    }
+  },
+  "authority": {
+    "issuer": "https://container.googleapis.com/v1/projects/{{ref:first.membership.json:project}}/locations/{{ref:first.container.cluster.json:location}}/clusters/{{ref:first.container.cluster.json:name}}"
+  }
+}

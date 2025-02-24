@@ -1,0 +1,285 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum DataprocBetaJobStatusStateEnum {
+  DataprocBetaJobStatusStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocBetaJobStatusStateEnumUNKNOWN = 1;
+  DataprocBetaJobStatusStateEnumCREATING = 2;
+  DataprocBetaJobStatusStateEnumRUNNING = 3;
+  DataprocBetaJobStatusStateEnumERROR = 4;
+  DataprocBetaJobStatusStateEnumDELETING = 5;
+  DataprocBetaJobStatusStateEnumUPDATING = 6;
+  DataprocBetaJobStatusStateEnumSTOPPING = 7;
+  DataprocBetaJobStatusStateEnumSTOPPED = 8;
+  DataprocBetaJobStatusStateEnumSTARTING = 9;
+}
+
+enum DataprocBetaJobStatusSubstateEnum {
+  DataprocBetaJobStatusSubstateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocBetaJobStatusSubstateEnumUNSPECIFIED = 1;
+  DataprocBetaJobStatusSubstateEnumUNHEALTHY = 2;
+  DataprocBetaJobStatusSubstateEnumSTALE_STATUS = 3;
+}
+
+enum DataprocBetaJobStatusHistoryStateEnum {
+  DataprocBetaJobStatusHistoryStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocBetaJobStatusHistoryStateEnumUNKNOWN = 1;
+  DataprocBetaJobStatusHistoryStateEnumCREATING = 2;
+  DataprocBetaJobStatusHistoryStateEnumRUNNING = 3;
+  DataprocBetaJobStatusHistoryStateEnumERROR = 4;
+  DataprocBetaJobStatusHistoryStateEnumDELETING = 5;
+  DataprocBetaJobStatusHistoryStateEnumUPDATING = 6;
+  DataprocBetaJobStatusHistoryStateEnumSTOPPING = 7;
+  DataprocBetaJobStatusHistoryStateEnumSTOPPED = 8;
+  DataprocBetaJobStatusHistoryStateEnumSTARTING = 9;
+}
+
+enum DataprocBetaJobStatusHistorySubstateEnum {
+  DataprocBetaJobStatusHistorySubstateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocBetaJobStatusHistorySubstateEnumUNSPECIFIED = 1;
+  DataprocBetaJobStatusHistorySubstateEnumUNHEALTHY = 2;
+  DataprocBetaJobStatusHistorySubstateEnumSTALE_STATUS = 3;
+}
+
+enum DataprocBetaJobYarnApplicationsStateEnum {
+  DataprocBetaJobYarnApplicationsStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocBetaJobYarnApplicationsStateEnumUNKNOWN = 1;
+  DataprocBetaJobYarnApplicationsStateEnumCREATING = 2;
+  DataprocBetaJobYarnApplicationsStateEnumRUNNING = 3;
+  DataprocBetaJobYarnApplicationsStateEnumERROR = 4;
+  DataprocBetaJobYarnApplicationsStateEnumDELETING = 5;
+  DataprocBetaJobYarnApplicationsStateEnumUPDATING = 6;
+  DataprocBetaJobYarnApplicationsStateEnumSTOPPING = 7;
+  DataprocBetaJobYarnApplicationsStateEnumSTOPPED = 8;
+  DataprocBetaJobYarnApplicationsStateEnumSTARTING = 9;
+}
+
+message DataprocBetaJob {
+  DataprocBetaJobReference reference = 1;
+  DataprocBetaJobPlacement placement = 2;
+  DataprocBetaJobHadoopJob hadoop_job = 3;
+  DataprocBetaJobSparkJob spark_job = 4;
+  DataprocBetaJobPysparkJob pyspark_job = 5;
+  DataprocBetaJobHiveJob hive_job = 6;
+  DataprocBetaJobPigJob pig_job = 7;
+  DataprocBetaJobSparkRJob spark_r_job = 8;
+  DataprocBetaJobSparkSqlJob spark_sql_job = 9;
+  DataprocBetaJobPrestoJob presto_job = 10;
+  DataprocBetaJobStatus status = 11;
+  repeated DataprocBetaJobStatusHistory status_history = 12;
+  repeated DataprocBetaJobYarnApplications yarn_applications = 13;
+  string submitted_by = 14;
+  string driver_output_resource_uri = 15;
+  string driver_control_files_uri = 16;
+  map<string, string> labels = 17;
+  DataprocBetaJobScheduling scheduling = 18;
+  string name = 19;
+  bool done = 20;
+  string region = 21;
+  string project = 22;
+}
+
+message DataprocBetaJobReference {
+  string project_id = 1;
+  string job_id = 2;
+}
+
+message DataprocBetaJobPlacement {
+  string cluster_name = 1;
+  string cluster_uuid = 2;
+  map<string, string> cluster_labels = 3;
+}
+
+message DataprocBetaJobHadoopJob {
+  string main_jar_file_uri = 1;
+  string main_class = 2;
+  repeated string args = 3;
+  repeated string jar_file_uris = 4;
+  repeated string file_uris = 5;
+  repeated string archive_uris = 6;
+  map<string, string> properties = 7;
+  DataprocBetaJobHadoopJobLoggingConfig logging_config = 8;
+}
+
+message DataprocBetaJobHadoopJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocBetaJobSparkJob {
+  string main_jar_file_uri = 1;
+  string main_class = 2;
+  repeated string args = 3;
+  repeated string jar_file_uris = 4;
+  repeated string file_uris = 5;
+  repeated string archive_uris = 6;
+  map<string, string> properties = 7;
+  DataprocBetaJobSparkJobLoggingConfig logging_config = 8;
+}
+
+message DataprocBetaJobSparkJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocBetaJobPysparkJob {
+  string main_python_file_uri = 1;
+  repeated string args = 2;
+  repeated string python_file_uris = 3;
+  repeated string jar_file_uris = 4;
+  repeated string file_uris = 5;
+  repeated string archive_uris = 6;
+  map<string, string> properties = 7;
+  DataprocBetaJobPysparkJobLoggingConfig logging_config = 8;
+}
+
+message DataprocBetaJobPysparkJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocBetaJobHiveJob {
+  string query_file_uri = 1;
+  DataprocBetaJobHiveJobQueryList query_list = 2;
+  bool continue_on_failure = 3;
+  map<string, string> script_variables = 4;
+  map<string, string> properties = 5;
+  repeated string jar_file_uris = 6;
+}
+
+message DataprocBetaJobHiveJobQueryList {
+  repeated string queries = 1;
+}
+
+message DataprocBetaJobPigJob {
+  string query_file_uri = 1;
+  DataprocBetaJobPigJobQueryList query_list = 2;
+  bool continue_on_failure = 3;
+  map<string, string> script_variables = 4;
+  map<string, string> properties = 5;
+  repeated string jar_file_uris = 6;
+  DataprocBetaJobPigJobLoggingConfig logging_config = 7;
+}
+
+message DataprocBetaJobPigJobQueryList {
+  repeated string queries = 1;
+}
+
+message DataprocBetaJobPigJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocBetaJobSparkRJob {
+  string main_r_file_uri = 1;
+  repeated string args = 2;
+  repeated string file_uris = 3;
+  repeated string archive_uris = 4;
+  map<string, string> properties = 5;
+  DataprocBetaJobSparkRJobLoggingConfig logging_config = 6;
+}
+
+message DataprocBetaJobSparkRJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocBetaJobSparkSqlJob {
+  string query_file_uri = 1;
+  DataprocBetaJobSparkSqlJobQueryList query_list = 2;
+  map<string, string> script_variables = 3;
+  map<string, string> properties = 4;
+  repeated string jar_file_uris = 5;
+  DataprocBetaJobSparkSqlJobLoggingConfig logging_config = 6;
+}
+
+message DataprocBetaJobSparkSqlJobQueryList {
+  repeated string queries = 1;
+}
+
+message DataprocBetaJobSparkSqlJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocBetaJobPrestoJob {
+  string query_file_uri = 1;
+  DataprocBetaJobPrestoJobQueryList query_list = 2;
+  bool continue_on_failure = 3;
+  string output_format = 4;
+  repeated string client_tags = 5;
+  map<string, string> properties = 6;
+  DataprocBetaJobPrestoJobLoggingConfig logging_config = 7;
+}
+
+message DataprocBetaJobPrestoJobQueryList {
+  repeated string queries = 1;
+}
+
+message DataprocBetaJobPrestoJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocBetaJobStatus {
+  DataprocBetaJobStatusStateEnum state = 1;
+  string details = 2;
+  string state_start_time = 3;
+  DataprocBetaJobStatusSubstateEnum substate = 4;
+}
+
+message DataprocBetaJobStatusHistory {
+  DataprocBetaJobStatusHistoryStateEnum state = 1;
+  string details = 2;
+  string state_start_time = 3;
+  DataprocBetaJobStatusHistorySubstateEnum substate = 4;
+}
+
+message DataprocBetaJobYarnApplications {
+  string name = 1;
+  DataprocBetaJobYarnApplicationsStateEnum state = 2;
+  double progress = 3;
+  string tracking_url = 4;
+}
+
+message DataprocBetaJobScheduling {
+  int64 max_failures_per_hour = 1;
+  int64 max_failures_total = 2;
+}
+
+message ApplyDataprocBetaJobRequest {
+  DataprocBetaJob resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDataprocBetaJobRequest {
+  string service_account_file = 1;
+  DataprocBetaJob resource = 2;
+}
+
+message ListDataprocBetaJobRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListDataprocBetaJobResponse {
+  repeated DataprocBetaJob items = 1;
+}
+
+service DataprocBetaJobService {
+  rpc ApplyDataprocBetaJob(ApplyDataprocBetaJobRequest) returns (DataprocBetaJob);
+  rpc DeleteDataprocBetaJob(DeleteDataprocBetaJobRequest) returns (google.protobuf.Empty);
+  rpc ListDataprocBetaJob(ListDataprocBetaJobRequest) returns (ListDataprocBetaJobResponse);
+}

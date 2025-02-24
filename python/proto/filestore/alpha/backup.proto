@@ -1,0 +1,86 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum FilestoreAlphaBackupStateEnum {
+  FilestoreAlphaBackupStateEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreAlphaBackupStateEnumSTATE_UNSPECIFIED = 1;
+  FilestoreAlphaBackupStateEnumCREATING = 2;
+  FilestoreAlphaBackupStateEnumREADY = 3;
+  FilestoreAlphaBackupStateEnumREPAIRING = 4;
+  FilestoreAlphaBackupStateEnumDELETING = 5;
+  FilestoreAlphaBackupStateEnumERROR = 6;
+  FilestoreAlphaBackupStateEnumRESTORING = 7;
+}
+
+enum FilestoreAlphaBackupSourceInstanceTierEnum {
+  FilestoreAlphaBackupSourceInstanceTierEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreAlphaBackupSourceInstanceTierEnumTIER_UNSPECIFIED = 1;
+  FilestoreAlphaBackupSourceInstanceTierEnumSTANDARD = 2;
+  FilestoreAlphaBackupSourceInstanceTierEnumPREMIUM = 3;
+  FilestoreAlphaBackupSourceInstanceTierEnumBASIC_HDD = 4;
+  FilestoreAlphaBackupSourceInstanceTierEnumBASIC_SSD = 5;
+  FilestoreAlphaBackupSourceInstanceTierEnumHIGH_SCALE_SSD = 6;
+}
+
+message FilestoreAlphaBackup {
+  string name = 1;
+  string description = 2;
+  FilestoreAlphaBackupStateEnum state = 3;
+  string create_time = 4;
+  map<string, string> labels = 5;
+  int64 capacity_gb = 6;
+  int64 storage_bytes = 7;
+  string source_instance = 8;
+  string source_file_share = 9;
+  FilestoreAlphaBackupSourceInstanceTierEnum source_instance_tier = 10;
+  int64 download_bytes = 11;
+  string project = 12;
+  string location = 13;
+}
+
+message ApplyFilestoreAlphaBackupRequest {
+  FilestoreAlphaBackup resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFilestoreAlphaBackupRequest {
+  string service_account_file = 1;
+  FilestoreAlphaBackup resource = 2;
+}
+
+message ListFilestoreAlphaBackupRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListFilestoreAlphaBackupResponse {
+  repeated FilestoreAlphaBackup items = 1;
+}
+
+service FilestoreAlphaBackupService {
+  rpc ApplyFilestoreAlphaBackup(ApplyFilestoreAlphaBackupRequest) returns (FilestoreAlphaBackup);
+  rpc DeleteFilestoreAlphaBackup(DeleteFilestoreAlphaBackupRequest) returns (google.protobuf.Empty);
+  rpc ListFilestoreAlphaBackup(ListFilestoreAlphaBackupRequest) returns (ListFilestoreAlphaBackupResponse);
+}

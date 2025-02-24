@@ -1,0 +1,6 @@
+{
+  "name":"{{service-name}}",
+  "project":"{{project}}",
+  "location":"{{region}}",
+  "namespace":"projects/{{project}}/locations/{{location}}/namespaces/{{ref:basic.servicedirectory.namespace.json:name}}"
+}

@@ -1,0 +1,252 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaInstanceGroupManagerDistributionPolicyTargetShapeEnum {
+  ComputeAlphaInstanceGroupManagerDistributionPolicyTargetShapeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerDistributionPolicyTargetShapeEnumTARGET_SHAPE_UNSPECIFIED = 1;
+  ComputeAlphaInstanceGroupManagerDistributionPolicyTargetShapeEnumANY = 2;
+  ComputeAlphaInstanceGroupManagerDistributionPolicyTargetShapeEnumBALANCED = 3;
+  ComputeAlphaInstanceGroupManagerDistributionPolicyTargetShapeEnumANY_SINGLE_ZONE = 4;
+}
+
+enum ComputeAlphaInstanceGroupManagerUpdatePolicyTypeEnum {
+  ComputeAlphaInstanceGroupManagerUpdatePolicyTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyTypeEnumOPPORTUNISTIC = 1;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyTypeEnumPROACTIVE = 2;
+}
+
+enum ComputeAlphaInstanceGroupManagerUpdatePolicyInstanceRedistributionTypeEnum {
+  ComputeAlphaInstanceGroupManagerUpdatePolicyInstanceRedistributionTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyInstanceRedistributionTypeEnumNONE = 1;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyInstanceRedistributionTypeEnumPROACTIVE = 2;
+}
+
+enum ComputeAlphaInstanceGroupManagerUpdatePolicyMinimalActionEnum {
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMinimalActionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMinimalActionEnumREPLACE = 1;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMinimalActionEnumRESTART = 2;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMinimalActionEnumREFRESH = 3;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMinimalActionEnumNONE = 4;
+}
+
+enum ComputeAlphaInstanceGroupManagerUpdatePolicyReplacementMethodEnum {
+  ComputeAlphaInstanceGroupManagerUpdatePolicyReplacementMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyReplacementMethodEnumSUBSTITUTE = 1;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyReplacementMethodEnumRECREATE = 2;
+}
+
+enum ComputeAlphaInstanceGroupManagerUpdatePolicyMostDisruptiveAllowedActionEnum {
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMostDisruptiveAllowedActionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMostDisruptiveAllowedActionEnumREPLACE = 1;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMostDisruptiveAllowedActionEnumRESTART = 2;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMostDisruptiveAllowedActionEnumREFRESH = 3;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMostDisruptiveAllowedActionEnumNONE = 4;
+}
+
+enum ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateDisksAutoDeleteEnum {
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateDisksAutoDeleteEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateDisksAutoDeleteEnumNEVER = 1;
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateDisksAutoDeleteEnumON_PERMANENT_INSTANCE_DELETION = 2;
+}
+
+enum ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum {
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnumNEVER = 1;
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnumON_PERMANENT_INSTANCE_DELETION = 2;
+}
+
+enum ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum {
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnumNEVER = 1;
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnumON_PERMANENT_INSTANCE_DELETION = 2;
+}
+
+enum ComputeAlphaInstanceGroupManagerFailoverActionEnum {
+  ComputeAlphaInstanceGroupManagerFailoverActionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceGroupManagerFailoverActionEnumUNKNOWN = 1;
+  ComputeAlphaInstanceGroupManagerFailoverActionEnumNO_FAILOVER = 2;
+}
+
+message ComputeAlphaInstanceGroupManager {
+  int64 id = 1;
+  string creation_timestamp = 2;
+  string name = 3;
+  string description = 4;
+  string zone = 5;
+  string region = 6;
+  ComputeAlphaInstanceGroupManagerDistributionPolicy distribution_policy = 7;
+  string instance_template = 8;
+  repeated ComputeAlphaInstanceGroupManagerVersions versions = 9;
+  string instance_group = 10;
+  repeated string target_pools = 11;
+  string base_instance_name = 12;
+  string fingerprint = 13;
+  ComputeAlphaInstanceGroupManagerCurrentActions current_actions = 14;
+  ComputeAlphaInstanceGroupManagerStatus status = 15;
+  int64 target_size = 16;
+  string self_link = 17;
+  repeated ComputeAlphaInstanceGroupManagerAutoHealingPolicies auto_healing_policies = 18;
+  ComputeAlphaInstanceGroupManagerUpdatePolicy update_policy = 19;
+  repeated ComputeAlphaInstanceGroupManagerNamedPorts named_ports = 20;
+  ComputeAlphaInstanceGroupManagerStatefulPolicy stateful_policy = 21;
+  string service_account = 22;
+  ComputeAlphaInstanceGroupManagerFailoverActionEnum failover_action = 23;
+  string project = 24;
+  string location = 25;
+}
+
+message ComputeAlphaInstanceGroupManagerDistributionPolicy {
+  repeated ComputeAlphaInstanceGroupManagerDistributionPolicyZones zones = 1;
+  ComputeAlphaInstanceGroupManagerDistributionPolicyTargetShapeEnum target_shape = 2;
+}
+
+message ComputeAlphaInstanceGroupManagerDistributionPolicyZones {
+  string zone = 1;
+}
+
+message ComputeAlphaInstanceGroupManagerVersions {
+  string name = 1;
+  string instance_template = 2;
+  ComputeAlphaInstanceGroupManagerVersionsTargetSize target_size = 3;
+}
+
+message ComputeAlphaInstanceGroupManagerVersionsTargetSize {
+  int64 fixed = 1;
+  int64 percent = 2;
+  int64 calculated = 3;
+}
+
+message ComputeAlphaInstanceGroupManagerCurrentActions {
+  int64 none = 1;
+  int64 creating = 2;
+  int64 creating_without_retries = 3;
+  int64 verifying = 4;
+  int64 recreating = 5;
+  int64 deleting = 6;
+  int64 abandoning = 7;
+  int64 restarting = 8;
+  int64 refreshing = 9;
+}
+
+message ComputeAlphaInstanceGroupManagerStatus {
+  bool is_stable = 1;
+  ComputeAlphaInstanceGroupManagerStatusVersionTarget version_target = 2;
+  ComputeAlphaInstanceGroupManagerStatusStateful stateful = 3;
+  string autoscaler = 4;
+}
+
+message ComputeAlphaInstanceGroupManagerStatusVersionTarget {
+  bool is_reached = 1;
+}
+
+message ComputeAlphaInstanceGroupManagerStatusStateful {
+  bool has_stateful_config = 1;
+  ComputeAlphaInstanceGroupManagerStatusStatefulPerInstanceConfigs per_instance_configs = 2;
+  bool is_stateful = 3;
+}
+
+message ComputeAlphaInstanceGroupManagerStatusStatefulPerInstanceConfigs {
+  bool all_effective = 1;
+}
+
+message ComputeAlphaInstanceGroupManagerAutoHealingPolicies {
+  string health_check = 1;
+  int64 initial_delay_sec = 2;
+}
+
+message ComputeAlphaInstanceGroupManagerUpdatePolicy {
+  ComputeAlphaInstanceGroupManagerUpdatePolicyTypeEnum type = 1;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyInstanceRedistributionTypeEnum instance_redistribution_type = 2;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMinimalActionEnum minimal_action = 3;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMaxSurge max_surge = 4;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMaxUnavailable max_unavailable = 5;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyReplacementMethodEnum replacement_method = 6;
+  ComputeAlphaInstanceGroupManagerUpdatePolicyMostDisruptiveAllowedActionEnum most_disruptive_allowed_action = 7;
+  int64 min_ready_sec = 8;
+}
+
+message ComputeAlphaInstanceGroupManagerUpdatePolicyMaxSurge {
+  int64 fixed = 1;
+  int64 percent = 2;
+  int64 calculated = 3;
+}
+
+message ComputeAlphaInstanceGroupManagerUpdatePolicyMaxUnavailable {
+  int64 fixed = 1;
+  int64 percent = 2;
+  int64 calculated = 3;
+}
+
+message ComputeAlphaInstanceGroupManagerNamedPorts {
+  string name = 1;
+  int64 port = 2;
+}
+
+message ComputeAlphaInstanceGroupManagerStatefulPolicy {
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedState preserved_state = 1;
+}
+
+message ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedState {
+  map<string, ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateDisks> disks = 1;
+  map<string, ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateInternalIps> internal_ips = 2;
+  map<string, ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateExternalIps> external_ips = 3;
+}
+
+message ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateDisks {
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateDisksAutoDeleteEnum auto_delete = 1;
+}
+
+message ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateInternalIps {
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsAutoDeleteEnum auto_delete = 1;
+}
+
+message ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateExternalIps {
+  ComputeAlphaInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsAutoDeleteEnum auto_delete = 1;
+}
+
+message ApplyComputeAlphaInstanceGroupManagerRequest {
+  ComputeAlphaInstanceGroupManager resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaInstanceGroupManagerRequest {
+  string service_account_file = 1;
+  ComputeAlphaInstanceGroupManager resource = 2;
+}
+
+message ListComputeAlphaInstanceGroupManagerRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeAlphaInstanceGroupManagerResponse {
+  repeated ComputeAlphaInstanceGroupManager items = 1;
+}
+
+service ComputeAlphaInstanceGroupManagerService {
+  rpc ApplyComputeAlphaInstanceGroupManager(ApplyComputeAlphaInstanceGroupManagerRequest) returns (ComputeAlphaInstanceGroupManager);
+  rpc DeleteComputeAlphaInstanceGroupManager(DeleteComputeAlphaInstanceGroupManagerRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaInstanceGroupManager(ListComputeAlphaInstanceGroupManagerRequest) returns (ListComputeAlphaInstanceGroupManagerResponse);
+}

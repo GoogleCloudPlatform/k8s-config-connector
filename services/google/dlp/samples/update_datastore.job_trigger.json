@@ -1,0 +1,25 @@
+{
+  "parent": "projects/{{project}}",
+  "location": "{{region}}",
+  "triggers": [
+    {
+      "schedule": {
+        "recurrencePeriodDuration": "172800s"
+      }
+    }
+  ],
+  "status": "HEALTHY",
+  "inspectJob": {
+    "storageConfig": {
+      "datastoreOptions": {
+        "partitionId": {
+          "projectId": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+          "namespaceId": "new-test-namespace"
+        },
+        "kind": {
+          "name": "new-test-kind"
+        }
+      }
+    }
+  }
+}

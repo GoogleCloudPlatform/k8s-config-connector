@@ -1,0 +1,820 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ContainerBetaClusterAddonsConfigCloudRunConfigLoadBalancerTypeEnum {
+  ContainerBetaClusterAddonsConfigCloudRunConfigLoadBalancerTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterAddonsConfigCloudRunConfigLoadBalancerTypeEnumLOAD_BALANCER_TYPE_UNSPECIFIED = 1;
+  ContainerBetaClusterAddonsConfigCloudRunConfigLoadBalancerTypeEnumLOAD_BALANCER_TYPE_EXTERNAL = 2;
+  ContainerBetaClusterAddonsConfigCloudRunConfigLoadBalancerTypeEnumLOAD_BALANCER_TYPE_INTERNAL = 3;
+}
+
+enum ContainerBetaClusterAddonsConfigIstioConfigAuthEnum {
+  ContainerBetaClusterAddonsConfigIstioConfigAuthEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterAddonsConfigIstioConfigAuthEnumAUTH_NONE = 1;
+  ContainerBetaClusterAddonsConfigIstioConfigAuthEnumAUTH_MUTUAL_TLS = 2;
+}
+
+enum ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigModeEnum {
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigModeEnumMODE_UNSPECIFIED = 1;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigModeEnumGCE_METADATA = 2;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigModeEnumGKE_METADATA = 3;
+}
+
+enum ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigNodeMetadataEnum {
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigNodeMetadataEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigNodeMetadataEnumUNSPECIFIED = 1;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigNodeMetadataEnumSECURE = 2;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigNodeMetadataEnumEXPOSE = 3;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigNodeMetadataEnumGKE_METADATA_SERVER = 4;
+}
+
+enum ContainerBetaClusterNodePoolsConfigTaintsEffectEnum {
+  ContainerBetaClusterNodePoolsConfigTaintsEffectEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodePoolsConfigTaintsEffectEnumEFFECT_UNSPECIFIED = 1;
+  ContainerBetaClusterNodePoolsConfigTaintsEffectEnumNO_SCHEDULE = 2;
+  ContainerBetaClusterNodePoolsConfigTaintsEffectEnumPREFER_NO_SCHEDULE = 3;
+  ContainerBetaClusterNodePoolsConfigTaintsEffectEnumNO_EXECUTE = 4;
+}
+
+enum ContainerBetaClusterNodePoolsConfigSandboxConfigTypeEnum {
+  ContainerBetaClusterNodePoolsConfigSandboxConfigTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodePoolsConfigSandboxConfigTypeEnumUNSPECIFIED = 1;
+  ContainerBetaClusterNodePoolsConfigSandboxConfigTypeEnumGVISOR = 2;
+}
+
+enum ContainerBetaClusterNodePoolsConfigReservationAffinityConsumeReservationTypeEnum {
+  ContainerBetaClusterNodePoolsConfigReservationAffinityConsumeReservationTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodePoolsConfigReservationAffinityConsumeReservationTypeEnumUNSPECIFIED = 1;
+  ContainerBetaClusterNodePoolsConfigReservationAffinityConsumeReservationTypeEnumNO_RESERVATION = 2;
+  ContainerBetaClusterNodePoolsConfigReservationAffinityConsumeReservationTypeEnumANY_RESERVATION = 3;
+  ContainerBetaClusterNodePoolsConfigReservationAffinityConsumeReservationTypeEnumSPECIFIC_RESERVATION = 4;
+}
+
+enum ContainerBetaClusterNodePoolsStatusEnum {
+  ContainerBetaClusterNodePoolsStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodePoolsStatusEnumSTATUS_UNSPECIFIED = 1;
+  ContainerBetaClusterNodePoolsStatusEnumPROVISIONING = 2;
+  ContainerBetaClusterNodePoolsStatusEnumRUNNING = 3;
+  ContainerBetaClusterNodePoolsStatusEnumRECONCILING = 4;
+  ContainerBetaClusterNodePoolsStatusEnumSTOPPING = 5;
+  ContainerBetaClusterNodePoolsStatusEnumERROR = 6;
+  ContainerBetaClusterNodePoolsStatusEnumDEGRADED = 7;
+}
+
+enum ContainerBetaClusterNodePoolsConditionsCodeEnum {
+  ContainerBetaClusterNodePoolsConditionsCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumOK = 1;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumCANCELLED = 2;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumUNKNOWN = 3;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumINVALID_ARGUMENT = 4;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumDEADLINE_EXCEEDED = 5;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumNOT_FOUND = 6;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumALREADY_EXISTS = 7;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumPERMISSION_DENIED = 8;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumUNAUTHENTICATED = 9;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumRESOURCE_EXHAUSTED = 10;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumFAILED_PRECONDITION = 11;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumABORTED = 12;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumOUT_OF_RANGE = 13;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumUNIMPLEMENTED = 14;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumINTERNAL = 15;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumUNAVAILABLE = 16;
+  ContainerBetaClusterNodePoolsConditionsCodeEnumDATA_LOSS = 17;
+}
+
+enum ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnum {
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumOK = 1;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumCANCELLED = 2;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumUNKNOWN = 3;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumINVALID_ARGUMENT = 4;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumDEADLINE_EXCEEDED = 5;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumNOT_FOUND = 6;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumALREADY_EXISTS = 7;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumPERMISSION_DENIED = 8;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumUNAUTHENTICATED = 9;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumRESOURCE_EXHAUSTED = 10;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumFAILED_PRECONDITION = 11;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumABORTED = 12;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumOUT_OF_RANGE = 13;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumUNIMPLEMENTED = 14;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumINTERNAL = 15;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumUNAVAILABLE = 16;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnumDATA_LOSS = 17;
+}
+
+enum ContainerBetaClusterNetworkPolicyProviderEnum {
+  ContainerBetaClusterNetworkPolicyProviderEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNetworkPolicyProviderEnumPROVIDER_UNSPECIFIED = 1;
+  ContainerBetaClusterNetworkPolicyProviderEnumCALICO = 2;
+}
+
+enum ContainerBetaClusterAutoscalingAutoscalingProfileEnum {
+  ContainerBetaClusterAutoscalingAutoscalingProfileEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterAutoscalingAutoscalingProfileEnumPROFILE_UNSPECIFIED = 1;
+  ContainerBetaClusterAutoscalingAutoscalingProfileEnumOPTIMIZE_UTILIZATION = 2;
+  ContainerBetaClusterAutoscalingAutoscalingProfileEnumBALANCED = 3;
+}
+
+enum ContainerBetaClusterNetworkConfigPrivateIPv6GoogleAccessEnum {
+  ContainerBetaClusterNetworkConfigPrivateIPv6GoogleAccessEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNetworkConfigPrivateIPv6GoogleAccessEnumPRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 1;
+  ContainerBetaClusterNetworkConfigPrivateIPv6GoogleAccessEnumPRIVATE_IPV6_GOOGLE_ACCESS_DISABLED = 2;
+  ContainerBetaClusterNetworkConfigPrivateIPv6GoogleAccessEnumPRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE = 3;
+  ContainerBetaClusterNetworkConfigPrivateIPv6GoogleAccessEnumPRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL = 4;
+}
+
+enum ContainerBetaClusterNetworkConfigDatapathProviderEnum {
+  ContainerBetaClusterNetworkConfigDatapathProviderEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNetworkConfigDatapathProviderEnumDATAPATH_PROVIDER_UNSPECIFIED = 1;
+  ContainerBetaClusterNetworkConfigDatapathProviderEnumLEGACY_DATAPATH = 2;
+  ContainerBetaClusterNetworkConfigDatapathProviderEnumADVANCED_DATAPATH = 3;
+}
+
+enum ContainerBetaClusterDatabaseEncryptionStateEnum {
+  ContainerBetaClusterDatabaseEncryptionStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterDatabaseEncryptionStateEnumUNKNOWN = 1;
+  ContainerBetaClusterDatabaseEncryptionStateEnumENCRYPTED = 2;
+  ContainerBetaClusterDatabaseEncryptionStateEnumDECRYPTED = 3;
+}
+
+enum ContainerBetaClusterConditionsCanonicalCodeEnum {
+  ContainerBetaClusterConditionsCanonicalCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterConditionsCanonicalCodeEnumOK = 1;
+  ContainerBetaClusterConditionsCanonicalCodeEnumCANCELLED = 2;
+  ContainerBetaClusterConditionsCanonicalCodeEnumUNKNOWN = 3;
+  ContainerBetaClusterConditionsCanonicalCodeEnumINVALID_ARGUMENT = 4;
+  ContainerBetaClusterConditionsCanonicalCodeEnumDEADLINE_EXCEEDED = 5;
+  ContainerBetaClusterConditionsCanonicalCodeEnumNOT_FOUND = 6;
+  ContainerBetaClusterConditionsCanonicalCodeEnumALREADY_EXISTS = 7;
+  ContainerBetaClusterConditionsCanonicalCodeEnumPERMISSION_DENIED = 8;
+  ContainerBetaClusterConditionsCanonicalCodeEnumUNAUTHENTICATED = 9;
+  ContainerBetaClusterConditionsCanonicalCodeEnumRESOURCE_EXHAUSTED = 10;
+  ContainerBetaClusterConditionsCanonicalCodeEnumFAILED_PRECONDITION = 11;
+  ContainerBetaClusterConditionsCanonicalCodeEnumABORTED = 12;
+  ContainerBetaClusterConditionsCanonicalCodeEnumOUT_OF_RANGE = 13;
+  ContainerBetaClusterConditionsCanonicalCodeEnumUNIMPLEMENTED = 14;
+  ContainerBetaClusterConditionsCanonicalCodeEnumINTERNAL = 15;
+  ContainerBetaClusterConditionsCanonicalCodeEnumUNAVAILABLE = 16;
+  ContainerBetaClusterConditionsCanonicalCodeEnumDATA_LOSS = 17;
+}
+
+enum ContainerBetaClusterNodeConfigWorkloadMetadataConfigModeEnum {
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigModeEnumMODE_UNSPECIFIED = 1;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigModeEnumGCE_METADATA = 2;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigModeEnumGKE_METADATA = 3;
+}
+
+enum ContainerBetaClusterNodeConfigWorkloadMetadataConfigNodeMetadataEnum {
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigNodeMetadataEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigNodeMetadataEnumUNSPECIFIED = 1;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigNodeMetadataEnumSECURE = 2;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigNodeMetadataEnumEXPOSE = 3;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigNodeMetadataEnumGKE_METADATA_SERVER = 4;
+}
+
+enum ContainerBetaClusterNodeConfigTaintsEffectEnum {
+  ContainerBetaClusterNodeConfigTaintsEffectEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodeConfigTaintsEffectEnumEFFECT_UNSPECIFIED = 1;
+  ContainerBetaClusterNodeConfigTaintsEffectEnumNO_SCHEDULE = 2;
+  ContainerBetaClusterNodeConfigTaintsEffectEnumPREFER_NO_SCHEDULE = 3;
+  ContainerBetaClusterNodeConfigTaintsEffectEnumNO_EXECUTE = 4;
+}
+
+enum ContainerBetaClusterNodeConfigSandboxConfigTypeEnum {
+  ContainerBetaClusterNodeConfigSandboxConfigTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodeConfigSandboxConfigTypeEnumUNSPECIFIED = 1;
+  ContainerBetaClusterNodeConfigSandboxConfigTypeEnumGVISOR = 2;
+}
+
+enum ContainerBetaClusterNodeConfigReservationAffinityConsumeReservationTypeEnum {
+  ContainerBetaClusterNodeConfigReservationAffinityConsumeReservationTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterNodeConfigReservationAffinityConsumeReservationTypeEnumUNSPECIFIED = 1;
+  ContainerBetaClusterNodeConfigReservationAffinityConsumeReservationTypeEnumNO_RESERVATION = 2;
+  ContainerBetaClusterNodeConfigReservationAffinityConsumeReservationTypeEnumANY_RESERVATION = 3;
+  ContainerBetaClusterNodeConfigReservationAffinityConsumeReservationTypeEnumSPECIFIC_RESERVATION = 4;
+}
+
+enum ContainerBetaClusterReleaseChannelChannelEnum {
+  ContainerBetaClusterReleaseChannelChannelEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterReleaseChannelChannelEnumUNSPECIFIED = 1;
+  ContainerBetaClusterReleaseChannelChannelEnumRAPID = 2;
+  ContainerBetaClusterReleaseChannelChannelEnumREGULAR = 3;
+  ContainerBetaClusterReleaseChannelChannelEnumSTABLE = 4;
+}
+
+enum ContainerBetaClusterClusterTelemetryTypeEnum {
+  ContainerBetaClusterClusterTelemetryTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaClusterClusterTelemetryTypeEnumUNSPECIFIED = 1;
+  ContainerBetaClusterClusterTelemetryTypeEnumGVISOR = 2;
+}
+
+message ContainerBetaCluster {
+  string name = 1;
+  string description = 2;
+  int64 initial_node_count = 3;
+  ContainerBetaClusterMasterAuth master_auth = 4;
+  string logging_service = 5;
+  string monitoring_service = 6;
+  string network = 7;
+  string cluster_ipv4_cidr = 8;
+  ContainerBetaClusterAddonsConfig addons_config = 9;
+  string subnetwork = 10;
+  repeated ContainerBetaClusterNodePools node_pools = 11;
+  repeated string locations = 12;
+  bool enable_kubernetes_alpha = 13;
+  map<string, string> resource_labels = 14;
+  string label_fingerprint = 15;
+  ContainerBetaClusterLegacyAbac legacy_abac = 16;
+  ContainerBetaClusterNetworkPolicy network_policy = 17;
+  ContainerBetaClusterIPAllocationPolicy ip_allocation_policy = 18;
+  ContainerBetaClusterMasterAuthorizedNetworksConfig master_authorized_networks_config = 19;
+  ContainerBetaClusterBinaryAuthorization binary_authorization = 20;
+  ContainerBetaClusterAutoscaling autoscaling = 21;
+  ContainerBetaClusterNetworkConfig network_config = 22;
+  ContainerBetaClusterMaintenancePolicy maintenance_policy = 23;
+  ContainerBetaClusterDefaultMaxPodsConstraint default_max_pods_constraint = 24;
+  ContainerBetaClusterResourceUsageExportConfig resource_usage_export_config = 25;
+  ContainerBetaClusterAuthenticatorGroupsConfig authenticator_groups_config = 26;
+  ContainerBetaClusterPrivateClusterConfig private_cluster_config = 27;
+  ContainerBetaClusterDatabaseEncryption database_encryption = 28;
+  ContainerBetaClusterVerticalPodAutoscaling vertical_pod_autoscaling = 29;
+  ContainerBetaClusterShieldedNodes shielded_nodes = 30;
+  string endpoint = 31;
+  string master_version = 32;
+  string create_time = 33;
+  string status = 34;
+  string status_message = 35;
+  int64 node_ipv4_cidr_size = 36;
+  string services_ipv4_cidr = 37;
+  string expire_time = 38;
+  string location = 39;
+  bool enable_tpu = 40;
+  string tpu_ipv4_cidr_block = 41;
+  repeated ContainerBetaClusterConditions conditions = 42;
+  ContainerBetaClusterAutopilot autopilot = 43;
+  string project = 44;
+  ContainerBetaClusterNodeConfig node_config = 45;
+  ContainerBetaClusterReleaseChannel release_channel = 46;
+  ContainerBetaClusterWorkloadIdentityConfig workload_identity_config = 47;
+  ContainerBetaClusterNotificationConfig notification_config = 48;
+  ContainerBetaClusterConfidentialNodes confidential_nodes = 49;
+  string self_link = 50;
+  string zone = 51;
+  string initial_cluster_version = 52;
+  string current_master_version = 53;
+  string current_node_version = 54;
+  repeated string instance_group_urls = 55;
+  int64 current_node_count = 56;
+  string id = 57;
+  ContainerBetaClusterPodSecurityPolicyConfig pod_security_policy_config = 58;
+  bool private_cluster = 59;
+  string master_ipv4_cidr_block = 60;
+  ContainerBetaClusterClusterTelemetry cluster_telemetry = 61;
+  ContainerBetaClusterTPUConfig tpu_config = 62;
+  ContainerBetaClusterMaster master = 63;
+}
+
+message ContainerBetaClusterMasterAuth {
+  string username = 1;
+  string password = 2;
+  ContainerBetaClusterMasterAuthClientCertificateConfig client_certificate_config = 3;
+  string cluster_ca_certificate = 4;
+  string client_certificate = 5;
+  string client_key = 6;
+}
+
+message ContainerBetaClusterMasterAuthClientCertificateConfig {
+  bool issue_client_certificate = 1;
+}
+
+message ContainerBetaClusterAddonsConfig {
+  ContainerBetaClusterAddonsConfigHttpLoadBalancing http_load_balancing = 1;
+  ContainerBetaClusterAddonsConfigHorizontalPodAutoscaling horizontal_pod_autoscaling = 2;
+  ContainerBetaClusterAddonsConfigKubernetesDashboard kubernetes_dashboard = 3;
+  ContainerBetaClusterAddonsConfigNetworkPolicyConfig network_policy_config = 4;
+  ContainerBetaClusterAddonsConfigCloudRunConfig cloud_run_config = 5;
+  ContainerBetaClusterAddonsConfigDnsCacheConfig dns_cache_config = 6;
+  ContainerBetaClusterAddonsConfigConfigConnectorConfig config_connector_config = 7;
+  ContainerBetaClusterAddonsConfigGcePersistentDiskCsiDriverConfig gce_persistent_disk_csi_driver_config = 8;
+  ContainerBetaClusterAddonsConfigIstioConfig istio_config = 9;
+  ContainerBetaClusterAddonsConfigKalmConfig kalm_config = 10;
+}
+
+message ContainerBetaClusterAddonsConfigHttpLoadBalancing {
+  bool disabled = 1;
+}
+
+message ContainerBetaClusterAddonsConfigHorizontalPodAutoscaling {
+  bool disabled = 1;
+}
+
+message ContainerBetaClusterAddonsConfigKubernetesDashboard {
+  bool disabled = 1;
+}
+
+message ContainerBetaClusterAddonsConfigNetworkPolicyConfig {
+  bool disabled = 1;
+}
+
+message ContainerBetaClusterAddonsConfigCloudRunConfig {
+  bool disabled = 1;
+  ContainerBetaClusterAddonsConfigCloudRunConfigLoadBalancerTypeEnum load_balancer_type = 2;
+}
+
+message ContainerBetaClusterAddonsConfigDnsCacheConfig {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterAddonsConfigConfigConnectorConfig {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterAddonsConfigGcePersistentDiskCsiDriverConfig {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterAddonsConfigIstioConfig {
+  bool disabled = 1;
+  ContainerBetaClusterAddonsConfigIstioConfigAuthEnum auth = 2;
+}
+
+message ContainerBetaClusterAddonsConfigKalmConfig {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterNodePools {
+  string name = 1;
+  ContainerBetaClusterNodePoolsConfig config = 2;
+  int64 initial_node_count = 3;
+  repeated string locations = 4;
+  string self_link = 5;
+  string version = 6;
+  repeated string instance_group_urls = 7;
+  ContainerBetaClusterNodePoolsStatusEnum status = 8;
+  string status_message = 9;
+  ContainerBetaClusterNodePoolsAutoscaling autoscaling = 10;
+  ContainerBetaClusterNodePoolsManagement management = 11;
+  ContainerBetaClusterNodePoolsMaxPodsConstraint max_pods_constraint = 12;
+  repeated ContainerBetaClusterNodePoolsConditions conditions = 13;
+  int64 pod_ipv4_cidr_size = 14;
+  ContainerBetaClusterNodePoolsUpgradeSettings upgrade_settings = 15;
+  ContainerBetaClusterNodePoolsNetworkConfig network_config = 16;
+}
+
+message ContainerBetaClusterNodePoolsConfig {
+  string machine_type = 1;
+  int64 disk_size_gb = 2;
+  repeated string oauth_scopes = 3;
+  string service_account = 4;
+  map<string, string> metadata = 5;
+  string image_type = 6;
+  map<string, string> labels = 7;
+  int64 local_ssd_count = 8;
+  repeated string tags = 9;
+  bool preemptible = 10;
+  repeated ContainerBetaClusterNodePoolsConfigAccelerators accelerators = 11;
+  string disk_type = 12;
+  string min_cpu_platform = 13;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfig workload_metadata_config = 14;
+  repeated ContainerBetaClusterNodePoolsConfigTaints taints = 15;
+  ContainerBetaClusterNodePoolsConfigSandboxConfig sandbox_config = 16;
+  string node_group = 17;
+  ContainerBetaClusterNodePoolsConfigReservationAffinity reservation_affinity = 18;
+  ContainerBetaClusterNodePoolsConfigShieldedInstanceConfig shielded_instance_config = 19;
+  ContainerBetaClusterNodePoolsConfigLinuxNodeConfig linux_node_config = 20;
+  ContainerBetaClusterNodePoolsConfigKubeletConfig kubelet_config = 21;
+  string boot_disk_kms_key = 22;
+  ContainerBetaClusterNodePoolsConfigEphemeralStorageConfig ephemeral_storage_config = 23;
+}
+
+message ContainerBetaClusterNodePoolsConfigAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfig {
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigModeEnum mode = 1;
+  ContainerBetaClusterNodePoolsConfigWorkloadMetadataConfigNodeMetadataEnum node_metadata = 2;
+}
+
+message ContainerBetaClusterNodePoolsConfigTaints {
+  string key = 1;
+  string value = 2;
+  ContainerBetaClusterNodePoolsConfigTaintsEffectEnum effect = 3;
+}
+
+message ContainerBetaClusterNodePoolsConfigSandboxConfig {
+  ContainerBetaClusterNodePoolsConfigSandboxConfigTypeEnum type = 1;
+  string sandbox_type = 2;
+}
+
+message ContainerBetaClusterNodePoolsConfigReservationAffinity {
+  ContainerBetaClusterNodePoolsConfigReservationAffinityConsumeReservationTypeEnum consume_reservation_type = 1;
+  string key = 2;
+  repeated string values = 3;
+}
+
+message ContainerBetaClusterNodePoolsConfigShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_integrity_monitoring = 2;
+}
+
+message ContainerBetaClusterNodePoolsConfigLinuxNodeConfig {
+  map<string, string> sysctls = 1;
+}
+
+message ContainerBetaClusterNodePoolsConfigKubeletConfig {
+  string cpu_manager_policy = 1;
+  bool cpu_cfs_quota = 2;
+  string cpu_cfs_quota_period = 3;
+}
+
+message ContainerBetaClusterNodePoolsConfigEphemeralStorageConfig {
+  int64 local_ssd_count = 1;
+}
+
+message ContainerBetaClusterNodePoolsAutoscaling {
+  bool enabled = 1;
+  int64 min_node_count = 2;
+  int64 max_node_count = 3;
+  bool autoprovisioned = 4;
+}
+
+message ContainerBetaClusterNodePoolsManagement {
+  bool auto_upgrade = 1;
+  bool auto_repair = 2;
+  ContainerBetaClusterNodePoolsManagementUpgradeOptions upgrade_options = 3;
+}
+
+message ContainerBetaClusterNodePoolsManagementUpgradeOptions {
+  string auto_upgrade_start_time = 1;
+  string description = 2;
+}
+
+message ContainerBetaClusterNodePoolsMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ContainerBetaClusterNodePoolsConditions {
+  ContainerBetaClusterNodePoolsConditionsCodeEnum code = 1;
+  string message = 2;
+  ContainerBetaClusterNodePoolsConditionsCanonicalCodeEnum canonical_code = 3;
+}
+
+message ContainerBetaClusterNodePoolsUpgradeSettings {
+  int64 max_surge = 1;
+  int64 max_unavailable = 2;
+}
+
+message ContainerBetaClusterNodePoolsNetworkConfig {
+  bool create_pod_range = 1;
+  string pod_range = 2;
+  string pod_ipv4_cidr_block = 3;
+}
+
+message ContainerBetaClusterLegacyAbac {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterNetworkPolicy {
+  ContainerBetaClusterNetworkPolicyProviderEnum provider = 1;
+  bool enabled = 2;
+}
+
+message ContainerBetaClusterIPAllocationPolicy {
+  bool use_ip_aliases = 1;
+  bool create_subnetwork = 2;
+  string subnetwork_name = 3;
+  string cluster_secondary_range_name = 4;
+  string services_secondary_range_name = 5;
+  string cluster_ipv4_cidr_block = 6;
+  string node_ipv4_cidr_block = 7;
+  string services_ipv4_cidr_block = 8;
+  string tpu_ipv4_cidr_block = 9;
+  string cluster_ipv4_cidr = 10;
+  string node_ipv4_cidr = 11;
+  string services_ipv4_cidr = 12;
+  bool use_routes = 13;
+  bool allow_route_overlap = 14;
+}
+
+message ContainerBetaClusterMasterAuthorizedNetworksConfig {
+  bool enabled = 1;
+  repeated ContainerBetaClusterMasterAuthorizedNetworksConfigCidrBlocks cidr_blocks = 2;
+}
+
+message ContainerBetaClusterMasterAuthorizedNetworksConfigCidrBlocks {
+  string display_name = 1;
+  string cidr_block = 2;
+}
+
+message ContainerBetaClusterBinaryAuthorization {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterAutoscaling {
+  bool enable_node_autoprovisioning = 1;
+  repeated ContainerBetaClusterAutoscalingResourceLimits resource_limits = 2;
+  ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaults autoprovisioning_node_pool_defaults = 3;
+  repeated string autoprovisioning_locations = 4;
+  ContainerBetaClusterAutoscalingAutoscalingProfileEnum autoscaling_profile = 5;
+}
+
+message ContainerBetaClusterAutoscalingResourceLimits {
+  string resource_type = 1;
+  int64 minimum = 2;
+  int64 maximum = 3;
+}
+
+message ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaults {
+  repeated string oauth_scopes = 1;
+  string service_account = 2;
+  ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaultsUpgradeSettings upgrade_settings = 3;
+  ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaultsManagement management = 4;
+  string min_cpu_platform = 5;
+  int64 disk_size_gb = 6;
+  string disk_type = 7;
+  ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaultsShieldedInstanceConfig shielded_instance_config = 8;
+  string boot_disk_kms_key = 9;
+}
+
+message ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaultsUpgradeSettings {
+  int64 max_surge = 1;
+  int64 max_unavailable = 2;
+}
+
+message ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaultsManagement {
+  bool auto_upgrade = 1;
+  bool auto_repair = 2;
+  ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaultsManagementUpgradeOptions upgrade_options = 3;
+}
+
+message ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaultsManagementUpgradeOptions {
+  string auto_upgrade_start_time = 1;
+  string description = 2;
+}
+
+message ContainerBetaClusterAutoscalingAutoprovisioningNodePoolDefaultsShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_integrity_monitoring = 2;
+}
+
+message ContainerBetaClusterNetworkConfig {
+  string network = 1;
+  string subnetwork = 2;
+  bool enable_intra_node_visibility = 3;
+  ContainerBetaClusterNetworkConfigDefaultSnatStatus default_snat_status = 4;
+  ContainerBetaClusterNetworkConfigPrivateIPv6GoogleAccessEnum private_ipv6_google_access = 5;
+  ContainerBetaClusterNetworkConfigDatapathProviderEnum datapath_provider = 6;
+}
+
+message ContainerBetaClusterNetworkConfigDefaultSnatStatus {
+  bool disabled = 1;
+}
+
+message ContainerBetaClusterMaintenancePolicy {
+  ContainerBetaClusterMaintenancePolicyWindow window = 1;
+  string resource_version = 2;
+}
+
+message ContainerBetaClusterMaintenancePolicyWindow {
+  ContainerBetaClusterMaintenancePolicyWindowDailyMaintenanceWindow daily_maintenance_window = 1;
+  ContainerBetaClusterMaintenancePolicyWindowRecurringWindow recurring_window = 2;
+  map<string, string> maintenance_exclusions = 3;
+}
+
+message ContainerBetaClusterMaintenancePolicyWindowDailyMaintenanceWindow {
+  string start_time = 1;
+  string duration = 2;
+}
+
+message ContainerBetaClusterMaintenancePolicyWindowRecurringWindow {
+  ContainerBetaClusterMaintenancePolicyWindowRecurringWindowWindow window = 1;
+  string recurrence = 2;
+}
+
+message ContainerBetaClusterMaintenancePolicyWindowRecurringWindowWindow {
+  string start_time = 1;
+  string end_time = 2;
+}
+
+message ContainerBetaClusterDefaultMaxPodsConstraint {
+  string max_pods_per_node = 1;
+}
+
+message ContainerBetaClusterResourceUsageExportConfig {
+  ContainerBetaClusterResourceUsageExportConfigBigqueryDestination bigquery_destination = 1;
+  bool enable_network_egress_monitoring = 2;
+  ContainerBetaClusterResourceUsageExportConfigConsumptionMeteringConfig consumption_metering_config = 3;
+  bool enable_network_egress_metering = 4;
+}
+
+message ContainerBetaClusterResourceUsageExportConfigBigqueryDestination {
+  string dataset_id = 1;
+}
+
+message ContainerBetaClusterResourceUsageExportConfigConsumptionMeteringConfig {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterAuthenticatorGroupsConfig {
+  bool enabled = 1;
+  string security_group = 2;
+}
+
+message ContainerBetaClusterPrivateClusterConfig {
+  bool enable_private_nodes = 1;
+  bool enable_private_endpoint = 2;
+  string master_ipv4_cidr_block = 3;
+  string private_endpoint = 4;
+  string public_endpoint = 5;
+  string peering_name = 6;
+  ContainerBetaClusterPrivateClusterConfigMasterGlobalAccessConfig master_global_access_config = 7;
+}
+
+message ContainerBetaClusterPrivateClusterConfigMasterGlobalAccessConfig {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterDatabaseEncryption {
+  ContainerBetaClusterDatabaseEncryptionStateEnum state = 1;
+  string key_name = 2;
+}
+
+message ContainerBetaClusterVerticalPodAutoscaling {
+  bool enabled = 1;
+  bool enable_experimental_features = 2;
+}
+
+message ContainerBetaClusterShieldedNodes {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterConditions {
+  string code = 1;
+  string message = 2;
+  ContainerBetaClusterConditionsCanonicalCodeEnum canonical_code = 3;
+}
+
+message ContainerBetaClusterAutopilot {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterNodeConfig {
+  string machine_type = 1;
+  int64 disk_size_gb = 2;
+  repeated string oauth_scopes = 3;
+  string service_account = 4;
+  map<string, string> metadata = 5;
+  string image_type = 6;
+  map<string, string> labels = 7;
+  int64 local_ssd_count = 8;
+  repeated string tags = 9;
+  bool preemptible = 10;
+  repeated ContainerBetaClusterNodeConfigAccelerators accelerators = 11;
+  string disk_type = 12;
+  string min_cpu_platform = 13;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfig workload_metadata_config = 14;
+  repeated ContainerBetaClusterNodeConfigTaints taints = 15;
+  ContainerBetaClusterNodeConfigSandboxConfig sandbox_config = 16;
+  string node_group = 17;
+  ContainerBetaClusterNodeConfigReservationAffinity reservation_affinity = 18;
+  ContainerBetaClusterNodeConfigShieldedInstanceConfig shielded_instance_config = 19;
+  ContainerBetaClusterNodeConfigLinuxNodeConfig linux_node_config = 20;
+  ContainerBetaClusterNodeConfigKubeletConfig kubelet_config = 21;
+  string boot_disk_kms_key = 22;
+  ContainerBetaClusterNodeConfigEphemeralStorageConfig ephemeral_storage_config = 23;
+}
+
+message ContainerBetaClusterNodeConfigAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ContainerBetaClusterNodeConfigWorkloadMetadataConfig {
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigModeEnum mode = 1;
+  ContainerBetaClusterNodeConfigWorkloadMetadataConfigNodeMetadataEnum node_metadata = 2;
+}
+
+message ContainerBetaClusterNodeConfigTaints {
+  string key = 1;
+  string value = 2;
+  ContainerBetaClusterNodeConfigTaintsEffectEnum effect = 3;
+}
+
+message ContainerBetaClusterNodeConfigSandboxConfig {
+  ContainerBetaClusterNodeConfigSandboxConfigTypeEnum type = 1;
+  string sandbox_type = 2;
+}
+
+message ContainerBetaClusterNodeConfigReservationAffinity {
+  ContainerBetaClusterNodeConfigReservationAffinityConsumeReservationTypeEnum consume_reservation_type = 1;
+  string key = 2;
+  repeated string values = 3;
+}
+
+message ContainerBetaClusterNodeConfigShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_integrity_monitoring = 2;
+}
+
+message ContainerBetaClusterNodeConfigLinuxNodeConfig {
+  map<string, string> sysctls = 1;
+}
+
+message ContainerBetaClusterNodeConfigKubeletConfig {
+  string cpu_manager_policy = 1;
+  bool cpu_cfs_quota = 2;
+  string cpu_cfs_quota_period = 3;
+}
+
+message ContainerBetaClusterNodeConfigEphemeralStorageConfig {
+  int64 local_ssd_count = 1;
+}
+
+message ContainerBetaClusterReleaseChannel {
+  ContainerBetaClusterReleaseChannelChannelEnum channel = 1;
+}
+
+message ContainerBetaClusterWorkloadIdentityConfig {
+  string workload_pool = 1;
+  string identity_namespace = 2;
+  string identity_provider = 3;
+}
+
+message ContainerBetaClusterNotificationConfig {
+  ContainerBetaClusterNotificationConfigPubsub pubsub = 1;
+}
+
+message ContainerBetaClusterNotificationConfigPubsub {
+  bool enabled = 1;
+  string topic = 2;
+}
+
+message ContainerBetaClusterConfidentialNodes {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterPodSecurityPolicyConfig {
+  bool enabled = 1;
+}
+
+message ContainerBetaClusterClusterTelemetry {
+  ContainerBetaClusterClusterTelemetryTypeEnum type = 1;
+}
+
+message ContainerBetaClusterTPUConfig {
+  bool enabled = 1;
+  bool use_service_networking = 2;
+  string ipv4_cidr_block = 3;
+}
+
+message ContainerBetaClusterMaster {
+}
+
+message ApplyContainerBetaClusterRequest {
+  ContainerBetaCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerBetaClusterRequest {
+  string service_account_file = 1;
+  ContainerBetaCluster resource = 2;
+}
+
+message ListContainerBetaClusterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListContainerBetaClusterResponse {
+  repeated ContainerBetaCluster items = 1;
+}
+
+service ContainerBetaClusterService {
+  rpc ApplyContainerBetaCluster(ApplyContainerBetaClusterRequest) returns (ContainerBetaCluster);
+  rpc DeleteContainerBetaCluster(DeleteContainerBetaClusterRequest) returns (google.protobuf.Empty);
+  rpc ListContainerBetaCluster(ListContainerBetaClusterRequest) returns (ListContainerBetaClusterResponse);
+}

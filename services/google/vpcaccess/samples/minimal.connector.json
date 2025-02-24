@@ -1,0 +1,9 @@
+{
+  "name": "{{c}}",
+  "project": "{{project}}",
+  "location": "us-central1",
+  "network": "{{ref:basic.compute.network.json:name}}",
+  "ipCidrRange": "10.132.0.0/28",
+  "minThroughput": 300,
+  "maxThroughput": 400
+}

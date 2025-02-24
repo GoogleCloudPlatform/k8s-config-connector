@@ -1,0 +1,12 @@
+{
+  "project":     "{{ref:compute.serviceusage.service.json:project}}",
+  "location":    "{{region}}",
+  "name":        "{{udp_forwarding_rule_2}}",
+  "target":      "{{ref:basic.target_vpn_gateway.json:selfLink}}",
+  "ipProtocol":  "UDP",
+  "portRange":   "500-500",
+  "ipAddress":   "{{ref:project.address.json:address}}",
+  "networkTier": "PREMIUM",
+  "description": "A test forwarding rule"
+}
+

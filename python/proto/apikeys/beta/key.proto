@@ -1,0 +1,91 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message ApikeysBetaKey {
+  string name = 1;
+  string display_name = 2;
+  string key_string = 3;
+  string uid = 4;
+  ApikeysBetaKeyRestrictions restrictions = 5;
+  string project = 6;
+}
+
+message ApikeysBetaKeyRestrictions {
+  ApikeysBetaKeyRestrictionsBrowserKeyRestrictions browser_key_restrictions = 1;
+  ApikeysBetaKeyRestrictionsServerKeyRestrictions server_key_restrictions = 2;
+  ApikeysBetaKeyRestrictionsAndroidKeyRestrictions android_key_restrictions = 3;
+  ApikeysBetaKeyRestrictionsIosKeyRestrictions ios_key_restrictions = 4;
+  repeated ApikeysBetaKeyRestrictionsApiTargets api_targets = 5;
+}
+
+message ApikeysBetaKeyRestrictionsBrowserKeyRestrictions {
+  repeated string allowed_referrers = 1;
+}
+
+message ApikeysBetaKeyRestrictionsServerKeyRestrictions {
+  repeated string allowed_ips = 1;
+}
+
+message ApikeysBetaKeyRestrictionsAndroidKeyRestrictions {
+  repeated ApikeysBetaKeyRestrictionsAndroidKeyRestrictionsAllowedApplications allowed_applications = 1;
+}
+
+message ApikeysBetaKeyRestrictionsAndroidKeyRestrictionsAllowedApplications {
+  string sha1_fingerprint = 1;
+  string package_name = 2;
+}
+
+message ApikeysBetaKeyRestrictionsIosKeyRestrictions {
+  repeated string allowed_bundle_ids = 1;
+}
+
+message ApikeysBetaKeyRestrictionsApiTargets {
+  string service = 1;
+  repeated string methods = 2;
+}
+
+message ApplyApikeysBetaKeyRequest {
+  ApikeysBetaKey resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteApikeysBetaKeyRequest {
+  string service_account_file = 1;
+  ApikeysBetaKey resource = 2;
+}
+
+message ListApikeysBetaKeyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListApikeysBetaKeyResponse {
+  repeated ApikeysBetaKey items = 1;
+}
+
+service ApikeysBetaKeyService {
+  rpc ApplyApikeysBetaKey(ApplyApikeysBetaKeyRequest) returns (ApikeysBetaKey);
+  rpc DeleteApikeysBetaKey(DeleteApikeysBetaKeyRequest) returns (google.protobuf.Empty);
+  rpc ListApikeysBetaKey(ListApikeysBetaKeyRequest) returns (ListApikeysBetaKeyResponse);
+}

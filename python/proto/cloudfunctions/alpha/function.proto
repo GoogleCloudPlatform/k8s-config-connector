@@ -1,0 +1,123 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudfunctionsAlphaFunctionHttpsTriggerSecurityLevelEnum {
+  CloudfunctionsAlphaFunctionHttpsTriggerSecurityLevelEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudfunctionsAlphaFunctionHttpsTriggerSecurityLevelEnumSECURITY_LEVEL_UNSPECIFIED = 1;
+  CloudfunctionsAlphaFunctionHttpsTriggerSecurityLevelEnumSECURE_ALWAYS = 2;
+  CloudfunctionsAlphaFunctionHttpsTriggerSecurityLevelEnumSECURE_OPTIONAL = 3;
+}
+
+enum CloudfunctionsAlphaFunctionStatusEnum {
+  CloudfunctionsAlphaFunctionStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudfunctionsAlphaFunctionStatusEnumCLOUD_FUNCTION_STATUS_UNSPECIFIED = 1;
+  CloudfunctionsAlphaFunctionStatusEnumACTIVE = 2;
+  CloudfunctionsAlphaFunctionStatusEnumOFFLINE = 3;
+  CloudfunctionsAlphaFunctionStatusEnumDEPLOY_IN_PROGRESS = 4;
+  CloudfunctionsAlphaFunctionStatusEnumDELETE_IN_PROGRESS = 5;
+  CloudfunctionsAlphaFunctionStatusEnumUNKNOWN = 6;
+}
+
+enum CloudfunctionsAlphaFunctionVPCConnectorEgressSettingsEnum {
+  CloudfunctionsAlphaFunctionVPCConnectorEgressSettingsEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudfunctionsAlphaFunctionVPCConnectorEgressSettingsEnumVPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED = 1;
+  CloudfunctionsAlphaFunctionVPCConnectorEgressSettingsEnumPRIVATE_RANGES_ONLY = 2;
+  CloudfunctionsAlphaFunctionVPCConnectorEgressSettingsEnumALL_TRAFFIC = 3;
+}
+
+enum CloudfunctionsAlphaFunctionIngressSettingsEnum {
+  CloudfunctionsAlphaFunctionIngressSettingsEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudfunctionsAlphaFunctionIngressSettingsEnumINGRESS_SETTINGS_UNSPECIFIED = 1;
+  CloudfunctionsAlphaFunctionIngressSettingsEnumALLOW_ALL = 2;
+  CloudfunctionsAlphaFunctionIngressSettingsEnumALLOW_INTERNAL_ONLY = 3;
+  CloudfunctionsAlphaFunctionIngressSettingsEnumALLOW_INTERNAL_AND_GCLB = 4;
+}
+
+message CloudfunctionsAlphaFunction {
+  string name = 1;
+  string description = 2;
+  string source_archive_url = 3;
+  CloudfunctionsAlphaFunctionSourceRepository source_repository = 4;
+  CloudfunctionsAlphaFunctionHttpsTrigger https_trigger = 5;
+  CloudfunctionsAlphaFunctionEventTrigger event_trigger = 6;
+  CloudfunctionsAlphaFunctionStatusEnum status = 7;
+  string entry_point = 8;
+  string runtime = 9;
+  string timeout = 10;
+  int64 available_memory_mb = 11;
+  string service_account_email = 12;
+  string update_time = 13;
+  int64 version_id = 14;
+  map<string, string> labels = 15;
+  map<string, string> environment_variables = 16;
+  int64 max_instances = 17;
+  string vpc_connector = 18;
+  CloudfunctionsAlphaFunctionVPCConnectorEgressSettingsEnum vpc_connector_egress_settings = 19;
+  CloudfunctionsAlphaFunctionIngressSettingsEnum ingress_settings = 20;
+  string region = 21;
+  string project = 22;
+}
+
+message CloudfunctionsAlphaFunctionSourceRepository {
+  string url = 1;
+  string deployed_url = 2;
+}
+
+message CloudfunctionsAlphaFunctionHttpsTrigger {
+  string url = 1;
+  CloudfunctionsAlphaFunctionHttpsTriggerSecurityLevelEnum security_level = 2;
+}
+
+message CloudfunctionsAlphaFunctionEventTrigger {
+  string event_type = 1;
+  string resource = 2;
+  string service = 3;
+  bool failure_policy = 4;
+}
+
+message ApplyCloudfunctionsAlphaFunctionRequest {
+  CloudfunctionsAlphaFunction resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudfunctionsAlphaFunctionRequest {
+  string service_account_file = 1;
+  CloudfunctionsAlphaFunction resource = 2;
+}
+
+message ListCloudfunctionsAlphaFunctionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListCloudfunctionsAlphaFunctionResponse {
+  repeated CloudfunctionsAlphaFunction items = 1;
+}
+
+service CloudfunctionsAlphaFunctionService {
+  rpc ApplyCloudfunctionsAlphaFunction(ApplyCloudfunctionsAlphaFunctionRequest) returns (CloudfunctionsAlphaFunction);
+  rpc DeleteCloudfunctionsAlphaFunction(DeleteCloudfunctionsAlphaFunctionRequest) returns (google.protobuf.Empty);
+  rpc ListCloudfunctionsAlphaFunction(ListCloudfunctionsAlphaFunctionRequest) returns (ListCloudfunctionsAlphaFunctionResponse);
+}

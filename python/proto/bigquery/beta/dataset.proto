@@ -1,0 +1,94 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message BigqueryBetaDataset {
+  string etag = 1;
+  string id = 2;
+  string self_link = 3;
+  string name = 4;
+  string project = 5;
+  string friendly_name = 6;
+  string description = 7;
+  string default_table_expiration_ms = 8;
+  string default_partition_expiration_ms = 9;
+  map<string, string> labels = 10;
+  repeated BigqueryBetaDatasetAccess access = 11;
+  int64 creation_time = 12;
+  int64 last_modified_time = 13;
+  string location = 14;
+  bool published = 15;
+  BigqueryBetaDatasetDefaultEncryptionConfiguration default_encryption_configuration = 16;
+}
+
+message BigqueryBetaDatasetAccess {
+  string role = 1;
+  string user_by_email = 2;
+  string group_by_email = 3;
+  string domain = 4;
+  string special_group = 5;
+  string iam_member = 6;
+  BigqueryBetaDatasetAccessView view = 7;
+  BigqueryBetaDatasetAccessRoutine routine = 8;
+}
+
+message BigqueryBetaDatasetAccessView {
+  string project_id = 1;
+  string dataset_id = 2;
+  string table_id = 3;
+}
+
+message BigqueryBetaDatasetAccessRoutine {
+  string project_id = 1;
+  string dataset_id = 2;
+  string routine_id = 3;
+}
+
+message BigqueryBetaDatasetDefaultEncryptionConfiguration {
+  string kms_key_name = 1;
+}
+
+message ApplyBigqueryBetaDatasetRequest {
+  BigqueryBetaDataset resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBigqueryBetaDatasetRequest {
+  string service_account_file = 1;
+  BigqueryBetaDataset resource = 2;
+}
+
+message ListBigqueryBetaDatasetRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListBigqueryBetaDatasetResponse {
+  repeated BigqueryBetaDataset items = 1;
+}
+
+service BigqueryBetaDatasetService {
+  rpc ApplyBigqueryBetaDataset(ApplyBigqueryBetaDatasetRequest) returns (BigqueryBetaDataset);
+  rpc DeleteBigqueryBetaDataset(DeleteBigqueryBetaDatasetRequest) returns (google.protobuf.Empty);
+  rpc ListBigqueryBetaDataset(ListBigqueryBetaDatasetRequest) returns (ListBigqueryBetaDatasetResponse);
+}

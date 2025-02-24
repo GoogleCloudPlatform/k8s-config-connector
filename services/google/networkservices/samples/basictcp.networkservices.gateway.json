@@ -1,0 +1,12 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "description": "A test Gateway",
+  "type": "OPEN_MESH",
+  "ports": [80, 443],
+  "location": "global",
+  "scope": "{{resource_name}}",
+  "labels": {
+    "foo": "bar"
+  }
+}

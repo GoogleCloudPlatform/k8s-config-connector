@@ -1,0 +1,8 @@
+{
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "group": "{{ref:zonal.network_endpoint_group.json:name}}",
+  "instance": "{{ref:basic.instance.json:name}}",
+  "port": 90,
+  "ipAddress": "{{ref:basic.instance.json:networkInterfaces[0].networkIP}}"
+}

@@ -1,0 +1,14 @@
+{
+  "group": "groups/{{ref:basic.group.json:name}}",
+  "preferredMemberKey": {
+    "id": "support@mmv2testingorg.joonix.net"
+  },
+  "roles": [
+    {
+      "name": "MEMBER",
+      "expiryDetail": {
+        "expireTime": "2222-10-02T15:01:23Z"
+      }
+    }
+  ]
+}

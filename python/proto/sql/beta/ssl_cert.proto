@@ -1,0 +1,57 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+message SqlBetaSslCert {
+  string cert_serial_number = 1;
+  string cert = 2;
+  string create_time = 3;
+  string common_name = 4;
+  string expiration_time = 5;
+  string name = 6;
+  string instance = 7;
+  string project = 8;
+}
+
+message ApplySqlBetaSslCertRequest {
+  SqlBetaSslCert resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteSqlBetaSslCertRequest {
+  string service_account_file = 1;
+  SqlBetaSslCert resource = 2;
+}
+
+message ListSqlBetaSslCertRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Instance = 3;
+}
+
+message ListSqlBetaSslCertResponse {
+  repeated SqlBetaSslCert items = 1;
+}
+
+service SqlBetaSslCertService {
+  rpc ApplySqlBetaSslCert(ApplySqlBetaSslCertRequest) returns (SqlBetaSslCert);
+  rpc DeleteSqlBetaSslCert(DeleteSqlBetaSslCertRequest) returns (google.protobuf.Empty);
+  rpc ListSqlBetaSslCert(ListSqlBetaSslCertRequest) returns (ListSqlBetaSslCertResponse);
+}

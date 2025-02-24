@@ -1,0 +1,10 @@
+{
+  "name": "{{key}}",
+  "project": "{{ref:cloudkms.serviceusage.service.json:project}}",
+  "location": "global",
+  "keyRing": "{{ref:basic.key_ring.json:name}}",
+  "purpose": "ASYMMETRIC_SIGN",
+  "versionTemplate": {
+    "algorithm": "RSA_SIGN_PSS_3072_SHA256"
+  }
+}

@@ -1,0 +1,127 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VertexaiBetaModelSupportedExportFormatsExportableContentsEnum {
+  VertexaiBetaModelSupportedExportFormatsExportableContentsEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexaiBetaModelSupportedExportFormatsExportableContentsEnumEXPORTABLE_CONTENT_UNSPECIFIED = 1;
+  VertexaiBetaModelSupportedExportFormatsExportableContentsEnumARTIFACT = 2;
+  VertexaiBetaModelSupportedExportFormatsExportableContentsEnumIMAGE = 3;
+}
+
+enum VertexaiBetaModelSupportedDeploymentResourcesTypesEnum {
+  VertexaiBetaModelSupportedDeploymentResourcesTypesEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexaiBetaModelSupportedDeploymentResourcesTypesEnumDEPLOYMENT_RESOURCES_TYPE_UNSPECIFIED = 1;
+  VertexaiBetaModelSupportedDeploymentResourcesTypesEnumDEDICATED_RESOURCES = 2;
+  VertexaiBetaModelSupportedDeploymentResourcesTypesEnumAUTOMATIC_RESOURCES = 3;
+}
+
+message VertexaiBetaModel {
+  string name = 1;
+  string version_id = 2;
+  repeated string version_aliases = 3;
+  string version_create_time = 4;
+  string version_update_time = 5;
+  string display_name = 6;
+  string description = 7;
+  string version_description = 8;
+  repeated VertexaiBetaModelSupportedExportFormats supported_export_formats = 9;
+  string training_pipeline = 10;
+  VertexaiBetaModelOriginalModelInfo original_model_info = 11;
+  VertexaiBetaModelContainerSpec container_spec = 12;
+  string artifact_uri = 13;
+  repeated VertexaiBetaModelSupportedDeploymentResourcesTypesEnum supported_deployment_resources_types = 14;
+  repeated string supported_input_storage_formats = 15;
+  repeated string supported_output_storage_formats = 16;
+  string create_time = 17;
+  string update_time = 18;
+  repeated VertexaiBetaModelDeployedModels deployed_models = 19;
+  string etag = 20;
+  map<string, string> labels = 21;
+  VertexaiBetaModelEncryptionSpec encryption_spec = 22;
+  string project = 23;
+  string location = 24;
+}
+
+message VertexaiBetaModelSupportedExportFormats {
+  string id = 1;
+  repeated VertexaiBetaModelSupportedExportFormatsExportableContentsEnum exportable_contents = 2;
+}
+
+message VertexaiBetaModelOriginalModelInfo {
+  string model = 1;
+}
+
+message VertexaiBetaModelContainerSpec {
+  string image_uri = 1;
+  repeated string command = 2;
+  repeated string args = 3;
+  repeated VertexaiBetaModelContainerSpecEnv env = 4;
+  repeated VertexaiBetaModelContainerSpecPorts ports = 5;
+  string predict_route = 6;
+  string health_route = 7;
+}
+
+message VertexaiBetaModelContainerSpecEnv {
+  string name = 1;
+  string value = 2;
+}
+
+message VertexaiBetaModelContainerSpecPorts {
+  int64 container_port = 1;
+}
+
+message VertexaiBetaModelDeployedModels {
+  string endpoint = 1;
+  string deployed_model_id = 2;
+}
+
+message VertexaiBetaModelEncryptionSpec {
+  string kms_key_name = 1;
+}
+
+message ApplyVertexaiBetaModelRequest {
+  VertexaiBetaModel resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVertexaiBetaModelRequest {
+  string service_account_file = 1;
+  VertexaiBetaModel resource = 2;
+}
+
+message ListVertexaiBetaModelRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListVertexaiBetaModelResponse {
+  repeated VertexaiBetaModel items = 1;
+}
+
+service VertexaiBetaModelService {
+  rpc ApplyVertexaiBetaModel(ApplyVertexaiBetaModelRequest) returns (VertexaiBetaModel);
+  rpc DeleteVertexaiBetaModel(DeleteVertexaiBetaModelRequest) returns (google.protobuf.Empty);
+  rpc ListVertexaiBetaModel(ListVertexaiBetaModelRequest) returns (ListVertexaiBetaModelResponse);
+}

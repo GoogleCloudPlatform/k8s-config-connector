@@ -1,0 +1,13 @@
+{
+  "name": "{{_table1}}",
+  "project": "{{project}}",
+  "dataset": "{{ref:first.bigquery.dataset.json:name}}",
+  "schema": {
+    "fields": [
+      {
+        "name": "sample_field",
+        "type": "STRING"
+      }
+    ]
+  }
+}

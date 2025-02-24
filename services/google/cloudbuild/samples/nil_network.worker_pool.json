@@ -1,0 +1,10 @@
+{
+  "name": "{{resource_name}}",
+  "location": "{{region}}",
+  "project": "{{project}}",
+  "workerConfig": {
+    "machineType": "e2-standard-2",
+    "diskSizeGb": 100,
+    "noExternalIP": true
+  }
+}

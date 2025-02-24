@@ -1,0 +1,8 @@
+{
+  "name": "{{address}}",
+  "project": "{{project}}",
+  "network": "default",
+  "purpose": "VPC_PEERING",
+  "addressType": "INTERNAL",
+  "prefixLength": 24
+}

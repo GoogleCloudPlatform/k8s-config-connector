@@ -1,0 +1,90 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum KrmapihostingAlphaKrmApiHostStateEnum {
+  KrmapihostingAlphaKrmApiHostStateEnumNO_VALUE_DO_NOT_USE = 0;
+  KrmapihostingAlphaKrmApiHostStateEnumSTATE_UNSPECIFIED = 1;
+  KrmapihostingAlphaKrmApiHostStateEnumCREATING = 2;
+  KrmapihostingAlphaKrmApiHostStateEnumRUNNING = 3;
+  KrmapihostingAlphaKrmApiHostStateEnumDELETING = 4;
+  KrmapihostingAlphaKrmApiHostStateEnumSUSPENDED = 5;
+  KrmapihostingAlphaKrmApiHostStateEnumREAD_ONLY = 6;
+}
+
+message KrmapihostingAlphaKrmApiHost {
+  string name = 1;
+  map<string, string> labels = 2;
+  KrmapihostingAlphaKrmApiHostBundlesConfig bundles_config = 3;
+  bool use_private_endpoint = 4;
+  string gke_resource_link = 5;
+  KrmapihostingAlphaKrmApiHostStateEnum state = 6;
+  KrmapihostingAlphaKrmApiHostManagementConfig management_config = 7;
+  string project = 8;
+  string location = 9;
+}
+
+message KrmapihostingAlphaKrmApiHostBundlesConfig {
+  KrmapihostingAlphaKrmApiHostBundlesConfigConfigControllerConfig config_controller_config = 1;
+}
+
+message KrmapihostingAlphaKrmApiHostBundlesConfigConfigControllerConfig {
+  bool enabled = 1;
+}
+
+message KrmapihostingAlphaKrmApiHostManagementConfig {
+  KrmapihostingAlphaKrmApiHostManagementConfigStandardManagementConfig standard_management_config = 1;
+}
+
+message KrmapihostingAlphaKrmApiHostManagementConfigStandardManagementConfig {
+  string network = 1;
+  string master_ipv4_cidr_block = 2;
+  string man_block = 3;
+  string cluster_cidr_block = 4;
+  string services_cidr_block = 5;
+  string cluster_named_range = 6;
+  string services_named_range = 7;
+}
+
+message ApplyKrmapihostingAlphaKrmApiHostRequest {
+  KrmapihostingAlphaKrmApiHost resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteKrmapihostingAlphaKrmApiHostRequest {
+  string service_account_file = 1;
+  KrmapihostingAlphaKrmApiHost resource = 2;
+}
+
+message ListKrmapihostingAlphaKrmApiHostRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListKrmapihostingAlphaKrmApiHostResponse {
+  repeated KrmapihostingAlphaKrmApiHost items = 1;
+}
+
+service KrmapihostingAlphaKrmApiHostService {
+  rpc ApplyKrmapihostingAlphaKrmApiHost(ApplyKrmapihostingAlphaKrmApiHostRequest) returns (KrmapihostingAlphaKrmApiHost);
+  rpc DeleteKrmapihostingAlphaKrmApiHost(DeleteKrmapihostingAlphaKrmApiHostRequest) returns (google.protobuf.Empty);
+  rpc ListKrmapihostingAlphaKrmApiHost(ListKrmapihostingAlphaKrmApiHostRequest) returns (ListKrmapihostingAlphaKrmApiHostResponse);
+}
