@@ -13,8 +13,6 @@
 [acronyms] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".status.outboundPublicIpAddresses" should be ".status.outboundPublicIPAddresses"
 [acronyms] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".status.outboundPublicIpAddresses[]" should be ".status.outboundPublicIPAddresses[]"
 [acronyms] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".status.publicIpAddress" should be ".status.publicIPAddress"
-[acronyms] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiConfigIdPrefix" should be ".spec.apiConfigIDPrefix"
-[acronyms] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".status.serviceConfigId" should be ".status.serviceConfigID"
 [acronyms] crd=apigeeaddonsconfigs.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.addonsConfig.advancedApiOpsConfig" should be ".spec.addonsConfig.advancedAPIOpsConfig"
 [acronyms] crd=apigeeaddonsconfigs.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.addonsConfig.advancedApiOpsConfig.enabled" should be ".spec.addonsConfig.advancedAPIOpsConfig.enabled"
 [acronyms] crd=apigeeendpointattachments.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.orgId" should be ".spec.orgID"
