@@ -160,3 +160,6 @@ e2e.log
 testlogs/
 log
 experiments/conductor/logs
+
+# Controller builder binary
+dev/tools/controllerbuilder/controllerbuilder
