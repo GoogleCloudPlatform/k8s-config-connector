@@ -35,21 +35,21 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.ApigeeInstanceAttachmentGVK, NewApigeeInstanceAttachmentModel)
+	registry.RegisterModel(krm.ApigeeEnvgroupAttachmentGVK, NewApigeeEnvgroupAttachmentModel)
 }
 
-func NewApigeeInstanceAttachmentModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &modelApigeeInstanceAttachment{config: config}, nil
+func NewApigeeEnvgroupAttachmentModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelApigeeEnvgroupAttachment{config: config}, nil
 }
 
-var _ directbase.Model = &modelApigeeInstanceAttachment{}
+var _ directbase.Model = &modelApigeeEnvgroupAttachment{}
 
-type modelApigeeInstanceAttachment struct {
+type modelApigeeEnvgroupAttachment struct {
 	config *config.ControllerConfig
 }
 
-func (m *modelApigeeInstanceAttachment) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.ApigeeInstanceAttachment{}
+func (m *modelApigeeEnvgroupAttachment) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	obj := &krm.ApigeeEnvgroupAttachment{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -58,43 +58,43 @@ func (m *modelApigeeInstanceAttachment) AdapterForObject(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	id := i.(*krm.ApigeeInstanceAttachmentIdentity)
+	id := i.(*krm.ApigeeEnvgroupAttachmentIdentity)
 
 	// Get apigee GCP client
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
 	}
-	return &ApigeeInstanceAttachmentAdapter{
+	return &ApigeeEnvgroupAttachmentAdapter{
 		id:                id,
 		k8sClient:         reader,
-		attachmentsClient: gcpClient.instancesAttachmentsClient(),
+		attachmentsClient: gcpClient.envgroupsAttachmentsClient(),
 		operationsClient:  gcpClient.operationsClient(),
 		desired:           obj,
 	}, nil
 }
 
-func (m *modelApigeeInstanceAttachment) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *modelApigeeEnvgroupAttachment) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
 
-type ApigeeInstanceAttachmentAdapter struct {
-	id                *krm.ApigeeInstanceAttachmentIdentity
+type ApigeeEnvgroupAttachmentAdapter struct {
+	id                *krm.ApigeeEnvgroupAttachmentIdentity
 	k8sClient         client.Reader
-	attachmentsClient *api.OrganizationsInstancesAttachmentsService
+	attachmentsClient *api.OrganizationsEnvgroupsAttachmentsService
 	operationsClient  *api.OrganizationsOperationsService
-	desired           *krm.ApigeeInstanceAttachment
-	actual            *api.GoogleCloudApigeeV1InstanceAttachment
+	desired           *krm.ApigeeEnvgroupAttachment
+	actual            *api.GoogleCloudApigeeV1EnvironmentGroupAttachment
 }
 
-var _ directbase.Adapter = &ApigeeInstanceAttachmentAdapter{}
+var _ directbase.Adapter = &ApigeeEnvgroupAttachmentAdapter{}
 
 // Find retrieves the GCP resource.
-// Return true means the object is found. This triggers Adapter `Update` call.
-// Return false means the object is not found. This triggers Adapter `Create` call.
+// Return true means the object is found. This triggers Adapter `Update` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
-func (a *ApigeeInstanceAttachmentAdapter) Find(ctx context.Context) (bool, error) {
+func (a *ApigeeEnvgroupAttachmentAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ApigeeInstanceAttachment", "name", a.id)
 
@@ -110,10 +110,10 @@ func (a *ApigeeInstanceAttachmentAdapter) Find(ctx context.Context) (bool, error
 		a.actual = attachment
 		return true, nil
 	} else {
-		// Otherwise, we must list all the attachments for the instance, and search for the one that contains the specified environment.
+		// Otherwise, we must list all the attachments for the envgroup, and search for the one that contains the specified environment.
 		// This code path will only run on acquire, and will not run after the resource has already been reconciled.
 		// Therefore, it is ok (and necessary) to attempt to resolve the ApigeeEnvironment reference here.
-		if err := ResolveApigeeInstanceAttachmentRefs(ctx, a.k8sClient, a.desired); err != nil {
+		if err := ResolveApigeeEnvgroupAttachmentRefs(ctx, a.k8sClient, a.desired); err != nil {
 			return false, err
 		}
 
@@ -131,10 +131,10 @@ func (a *ApigeeInstanceAttachmentAdapter) Find(ctx context.Context) (bool, error
 				if direct.IsNotFound(err) {
 					return false, nil
 				}
-				return false, fmt.Errorf("listing ApigeeInstanceAttachments underneath ApigeeInstance %q: %w", a.id.ParentID.String(), err)
+				return false, fmt.Errorf("listing ApigeeEnvgroupAttachments underneath ApigeeEnvgroup %q: %w", a.id.ParentID.String(), err)
 			}
 
-			for _, attachment := range attachments.Attachments {
+			for _, attachment := range attachments.EnvironmentGroupAttachments {
 				if attachment.Environment == envName {
 					// Update identity to include server-generated ID.
 					a.id.ResourceID = attachment.Name
@@ -154,20 +154,20 @@ func (a *ApigeeInstanceAttachmentAdapter) Find(ctx context.Context) (bool, error
 	return false, nil
 }
 
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *ApigeeInstanceAttachmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+func (a *ApigeeEnvgroupAttachmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ApigeeInstanceAttachment", "name", a.desired.Name)
+	log.V(2).Info("creating ApigeeEnvgroupAttachment", "name", a.desired.Name)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
 
 	// Resolve references
-	if err := ResolveApigeeInstanceAttachmentRefs(ctx, a.k8sClient, desired); err != nil {
+	if err := ResolveApigeeEnvgroupAttachmentRefs(ctx, a.k8sClient, desired); err != nil {
 		return err
 	}
 	// Convert to proto
-	resource := ApigeeInstanceAttachmentSpec_ToAPI(mapCtx, &desired.Spec)
+	resource := ApigeeEnvgroupAttachmentSpec_ToAPI(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -182,36 +182,36 @@ func (a *ApigeeInstanceAttachmentAdapter) Create(ctx context.Context, createOp *
 
 	op, err := a.attachmentsClient.Create(a.id.ParentID.String(), resource).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("creating ApigeeInstanceAttachment %s: %w", a.desired.Name, err)
+		return fmt.Errorf("creating ApigeeEnvgroupAttachment %s: %w", a.desired.Name, err)
 	}
 	if err := WaitForApigeeOp(ctx, a.operationsClient, op); err != nil {
-		return fmt.Errorf("ApigeeInstanceAttachment %s waiting creation: %w", a.desired.Name, err)
+		return fmt.Errorf("ApigeeEnvgroupAttachment %s waiting creation: %w", a.desired.Name, err)
 	}
 
 	// Get response from completed operation and unmarshal it so that we can determine
-	// the server-generated ID for the newly-created instance attachment.
+	// the server-generated ID for the newly-created envgroup attachment.
 	result, err := a.operationsClient.Get(op.Name).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("getting create ApigeeInstanceAttachment %s operation: %w", a.desired.Name, err)
+		return fmt.Errorf("getting create ApigeeEnvgroupAttachment %s operation: %w", a.desired.Name, err)
 	}
-	var resultResponse api.GoogleCloudApigeeV1InstanceAttachment
+	var resultResponse api.GoogleCloudApigeeV1EnvironmentGroupAttachment
 	if err := json.Unmarshal(result.Response, &resultResponse); err != nil {
-		return fmt.Errorf("unmarshalling create ApigeeInstanceAttachment %s operation response: %w", a.desired.Name, err)
+		return fmt.Errorf("unmarshalling create ApigeeEnvgroupAttachment %s operation response: %w", a.desired.Name, err)
 	}
 
 	// Update identity to include server-generated ID.
 	a.id.ResourceID = resultResponse.Name
 
-	// Get the newly-created instance attachment.
+	// Get the newly-created envgroup attachment.
 	created, err := a.attachmentsClient.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("getting created ApigeeInstanceAttachment %s: %w", a.desired.Name, err)
+		return fmt.Errorf("getting created ApigeeEnvgroupAttachment %s: %w", a.desired.Name, err)
 	}
 
-	log.V(2).Info("successfully created ApigeeInstanceAttachment", "name", a.desired.Name, "id", a.id)
+	log.V(2).Info("successfully created ApigeeEnvgroupAttachment", "name", a.desired.Name, "id", a.id)
 
-	status := &krm.ApigeeInstanceAttachmentStatus{}
-	status.ObservedState = ApigeeInstanceAttachmentObservedState_FromAPI(mapCtx, created)
+	status := &krm.ApigeeEnvgroupAttachmentStatus{}
+	status.ObservedState = ApigeeEnvgroupAttachmentObservedState_FromAPI(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -220,15 +220,15 @@ func (a *ApigeeInstanceAttachmentAdapter) Create(ctx context.Context, createOp *
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *ApigeeInstanceAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *ApigeeEnvgroupAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating ApigeeInstanceAttachment", "id", a.id)
+	log.V(2).Info("updating ApigeeEnvgroupAttachment", "id", a.id)
 	mapCtx := &direct.MapContext{}
 
-	// There are no fields in the GCP ApigeeInstanceAttachment API that can be updated.
+	// There are no fields in the GCP ApigeeEnvgroupAttachment API that can be updated.
 	// So, we will only update the KRM status.
-	status := &krm.ApigeeInstanceAttachmentStatus{}
-	status.ObservedState = ApigeeInstanceAttachmentObservedState_FromAPI(mapCtx, a.actual)
+	status := &krm.ApigeeEnvgroupAttachmentStatus{}
+	status.ObservedState = ApigeeEnvgroupAttachmentObservedState_FromAPI(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -236,19 +236,19 @@ func (a *ApigeeInstanceAttachmentAdapter) Update(ctx context.Context, updateOp *
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
-func (a *ApigeeInstanceAttachmentAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *ApigeeEnvgroupAttachmentAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.ApigeeInstanceAttachment{}
+	obj := &krm.ApigeeEnvgroupAttachment{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ApigeeInstanceAttachmentSpec_FromAPI(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ApigeeEnvgroupAttachmentSpec_FromAPI(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.InstanceRef = &krm.ApigeeInstanceRef{External: a.id.ParentID.String()}
+	obj.Spec.EnvgroupRef = &krm.ApigeeEnvgroupRef{External: a.id.ParentID.String()}
 
 	// HACK: Environment field format returned from GCP API is name-only, not fully-qualified ID.
 	// So, we fix this by building a fully-qualified environment ID.
@@ -267,30 +267,30 @@ func (a *ApigeeInstanceAttachmentAdapter) Export(ctx context.Context) (*unstruct
 	}
 
 	u.SetName(a.id.ResourceID)
-	u.SetGroupVersionKind(krm.ApigeeInstanceAttachmentGVK)
+	u.SetGroupVersionKind(krm.ApigeeEnvgroupAttachmentGVK)
 
 	u.Object = uObj
 	return u, nil
 }
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
-func (a *ApigeeInstanceAttachmentAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *ApigeeEnvgroupAttachmentAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting ApigeeInstanceAttachment", "id", a.id)
+	log.V(2).Info("deleting ApigeeEnvgroupAttachment", "id", a.id)
 
 	op, err := a.attachmentsClient.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent ApigeeInstanceAttachment, assuming it was already deleted", "id", a.id)
+			log.V(2).Info("skipping delete for non-existent ApigeeEnvgroupAttachment, assuming it was already deleted", "id", a.id)
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting ApigeeInstanceAttachment %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting ApigeeEnvgroupAttachment %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted ApigeeInstanceAttachment", "id", a.id)
+	log.V(2).Info("successfully deleted ApigeeEnvgroupAttachment", "id", a.id)
 
 	if err := WaitForApigeeOp(ctx, a.operationsClient, op); err != nil {
-		return false, fmt.Errorf("waiting delete ApigeeInstanceAttachment %s: %w", a.id, err)
+		return false, fmt.Errorf("waiting delete ApigeeEnvgroupAttachment %s: %w", a.id, err)
 	}
 	return true, nil
 }

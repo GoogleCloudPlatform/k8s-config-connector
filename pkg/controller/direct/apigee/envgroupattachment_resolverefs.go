@@ -15,22 +15,20 @@
 package apigee
 
 import (
-	"time"
+	"context"
+	"fmt"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ConvertEpochMillisToTimestamp converts an int64 representing milliseconds since epoch
-// into a human-readable timestamp string in RFC3339 format.
-func ConvertEpochMillisToTimestamp(epochMillis int64) string {
-	t := time.UnixMilli(epochMillis).UTC()
-	return t.Format(time.RFC3339)
-}
-
-// ConvertTimestampToEpochMillis converts an RFC3339 timestamp string
-// into an int64 representing milliseconds since epoch.
-func ConvertTimestampToEpochMillis(timestamp string) (int64, error) {
-	t, err := time.Parse(time.RFC3339, timestamp)
-	if err != nil {
-		return 0, err
+func ResolveApigeeEnvgroupAttachmentRefs(ctx context.Context, kube client.Reader, obj *krm.ApigeeEnvgroupAttachment) error {
+	if obj.Spec.EnvironmentRef != nil {
+		if err := obj.Spec.EnvironmentRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
+			return err
+		}
+	} else {
+		return fmt.Errorf("spec.environmentRef is required")
 	}
-	return t.UnixMilli(), nil
+	return nil
 }

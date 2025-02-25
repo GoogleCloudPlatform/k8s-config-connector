@@ -1,0 +1,28 @@
+apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
+kind: ApigeeEnvgroupAttachment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: apgenvga-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  envgroupRef:
+    name: apgenvg-${uniqueId}
+  environmentRef:
+    name: apgenv-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/91686927-06a2-4008-ac80-5fab2d3dc51b
+  observedGeneration: 1
+  observedState:
+    createdAt: 1711974896
+    name: 91686927-06a2-4008-ac80-5fab2d3dc51b
