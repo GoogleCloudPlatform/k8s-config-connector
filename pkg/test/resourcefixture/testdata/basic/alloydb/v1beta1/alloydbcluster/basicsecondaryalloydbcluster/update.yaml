@@ -29,6 +29,7 @@ spec:
   secondaryConfig:
     primaryClusterNameRef:
       name: alloydbcluster-1-${uniqueId}
+  deletionPolicy: "FORCE"
   automatedBackupPolicy:
     labels:
       source: kcc-test

@@ -74,6 +74,8 @@ func BuildVertexAIClient(ctx context.Context, options ...GCPOptions) (*VertexAIC
 	if err != nil {
 		return nil, fmt.Errorf("building vertexai client: %w", err)
 	}
+
+	//model := c.client.GenerativeModel("gemini-2.0-flash-exp")
 	model := "gemini-2.0-pro-exp-02-05"
 	return &VertexAIClient{
 		client: client,

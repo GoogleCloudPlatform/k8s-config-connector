@@ -1949,6 +1949,7 @@ X-Xss-Protection: 0
   "networkConfig": {
     "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   },
+  "primaryConfig": {},
   "reconciling": false,
   "state": "READY",
   "subscriptionType": "STANDARD",
