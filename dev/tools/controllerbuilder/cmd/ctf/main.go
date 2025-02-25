@@ -40,8 +40,15 @@ func main() {
 }
 
 func run(ctx context.Context) error {
+	scenario := ""
+	flag.StringVar(&scenario, "scenario", scenario, "scenario to run")
+
 	klog.InitFlags(nil)
 	flag.Parse()
+
+	if scenario == "" {
+		return fmt.Errorf("must specify --scenario")
+	}
 
 	log := klog.FromContext(ctx)
 
@@ -55,54 +62,50 @@ func run(ctx context.Context) error {
 		}
 	}()
 
+	scenarioDir, err := filepath.Abs(scenario)
+	if err != nil {
+		return fmt.Errorf("getting absolute path for %q: %w", scenario, err)
+	}
+
+	srcDir := filepath.Join(scenarioDir, "src")
+
 	contextFiles := make(map[string]*codebot.FileInfo)
 
-	{
-		// main.go
-		s := `
-	package main
-	
-	import (
-		"context"
-		"fmt"
-		"os"
-	)
-	
-	func main() {
-	  fmt.Fprintf(os.Stdout, "Hello world\n")
+	// Walk the files in srcDir, copy them to tmpDir, and add them to contextFiles
+	if err := filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+
+		relativePath, err := filepath.Rel(srcDir, path)
+		if err != nil {
+			return fmt.Errorf("getting relative path for %q: %w", path, err)
+		}
+
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return fmt.Errorf("reading file %q: %w", path, err)
+		}
+
+		contextFiles[path] = &codebot.FileInfo{
+			Content: string(b),
+			Path:    relativePath,
+		}
+
+		tmpPath := filepath.Join(tmpDir, relativePath)
+		if err := os.MkdirAll(filepath.Dir(tmpPath), 0755); err != nil {
+			return fmt.Errorf("creating directory %q: %w", filepath.Dir(tmpPath), err)
+		}
+		if err := os.WriteFile(tmpPath, b, 0644); err != nil {
+			return fmt.Errorf("writing file %q: %w", tmpPath, err)
+		}
+		return nil
+	}); err != nil {
+		return fmt.Errorf("walking scenario dir %q: %w", scenarioDir, err)
 	}
-	`
-
-		contextFiles["main.go"] = &codebot.FileInfo{
-			Content: s,
-			Path:    "main.go",
-		}
-
-		p := filepath.Join(tmpDir, "main.go")
-		if err := os.WriteFile(p, []byte(s), 0644); err != nil {
-			return fmt.Errorf("writing file %q: %w", p, err)
-		}
-	}
-
-	{
-		// go.mod
-		s := `
-module mymodule
-
-go 1.21
-	`
-
-		contextFiles["go.mod"] = &codebot.FileInfo{
-			Content: s,
-			Path:    "go.mod",
-		}
-
-		p := filepath.Join(tmpDir, "go.mod")
-		if err := os.WriteFile(p, []byte(s), 0644); err != nil {
-			return fmt.Errorf("writing file %q: %w", p, err)
-		}
-	}
-
 	buildResults, err := runGoBuild(ctx, tmpDir)
 	if err != nil {
 		return err
@@ -134,7 +137,9 @@ I am trying to write a simple go program, and when I run go build I get the foll
 {{stdout}}\n
 {{stderr}}\n
 
-Can you fix the problems?
+Can you fix the problems? Make the minimal code changes, do not make any changes not needed to fix the problem with go build.
+
+Use function calling to fix the problems; do not ask me follow-on questions.
 `
 
 	msg = strings.ReplaceAll(msg, "{{stdout}}", buildResults.Stdout)
@@ -145,18 +150,25 @@ Can you fix the problems?
 		return err
 	}
 
-	p := filepath.Join(tmpDir, "main.go")
-	newMain, err := os.ReadFile(p)
-	if err != nil {
-		return fmt.Errorf("reading file %q: %w", p, err)
-	}
-	fmt.Fprintf(os.Stdout, "updated main.go is:\n%s", string(newMain))
-
-	buildResults2, err := runGoBuild(ctx, tmpDir)
-	if err != nil {
-		return err
+	{
+		newMain, err := os.ReadFile(p)
+		if err != nil {
+			return fmt.Errorf("reading file %q: %w", p, err)
 	}
 	log.Info("new build results", "results", buildResults2)
+
+	if _, err := runGoFormat(ctx, tmpDir); err != nil {
+		return err
+	}
+
+	{
+		p := filepath.Join(tmpDir, "main.go")
+		newMain, err := os.ReadFile(p)
+		if err != nil {
+			return fmt.Errorf("reading file %q: %w", p, err)
+		}
+		fmt.Fprintf(os.Stdout, "final main.go is:\n%s", string(newMain))
+	}
 
 	if buildResults2.ExitCode == 0 {
 		fmt.Printf("SUCCESS\n")
@@ -195,6 +207,40 @@ func runGoBuild(ctx context.Context, dir string) (*GoBuildResults, error) {
 
 	results.Stdout = stdout.String()
 	results.Stderr = stderr.String()
+
+	return results, nil
+}
+
+type GoFormatResults struct {
+	Stdout   string
+	Stderr   string
+	ExitCode int
+}
+
+func runGoFormat(ctx context.Context, dir string) (*GoFormatResults, error) {
+	results := &GoFormatResults{}
+
+	buildCmd := exec.CommandContext(ctx, "gofmt", "-w", ".")
+	buildCmd.Dir = dir
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	buildCmd.Stdout = &stdout
+	buildCmd.Stderr = &stderr
+
+	err := buildCmd.Run()
+	if err != nil {
+		switch err := err.(type) {
+		case *exec.ExitError:
+			results.ExitCode = err.ExitCode()
+		default:
+			return nil, fmt.Errorf("unexpected error running %q: %w", strings.Join(buildCmd.Args, " "), err)
+		}
+	}
+
+	results.Stdout = stdout.String()
+	results.Stderr = stderr.String()
+
+	klog.Infof("gofmt results: %+v", results)
 
 	return results, nil
 }
