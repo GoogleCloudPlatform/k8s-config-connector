@@ -150,6 +150,13 @@ func (ref *ComputeNetworkRef) Normalize(ctx context.Context, reader client.Reade
 		}
 		return fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
 	}
+	resource, err := k8s.NewResource(computeNetwork)
+	if err != nil {
+		return fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return k8s.NewReferenceNotReadyError(computeNetwork.GroupVersionKind(), key)
+	}
 
 	resourceID, err := GetResourceID(computeNetwork)
 	if err != nil {
