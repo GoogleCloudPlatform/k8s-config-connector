@@ -18,9 +18,10 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: "${projectId}"
   labels:
-    label-one: "value-one"
+    label-one: "value-two"
   name: computenetwork-${uniqueId}
 spec:
   routingMode: GLOBAL
   autoCreateSubnetworks: true
-  enableUlaInternalIpv6: true
+  # ULA internal ipv6 is not supported for auto mode network
+  enableUlaInternalIpv6: false

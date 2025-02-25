@@ -11,12 +11,12 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-one
+    label-one: value-two
   name: computenetwork-${uniqueId}
   namespace: ${uniqueId}
 spec:
   autoCreateSubnetworks: true
-  enableUlaInternalIpv6: true
+  enableUlaInternalIpv6: false
   resourceID: computenetwork-${uniqueId}
   routingMode: GLOBAL
 status:
