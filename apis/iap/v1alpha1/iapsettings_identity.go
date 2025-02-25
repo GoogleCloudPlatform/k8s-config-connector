@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -52,14 +53,102 @@ func (i *IAPSettingsIdentity) ID() string {
 // New builds a IAPSettingsIdentity from the Config Connector IAPSettings object.
 func NewIAPSettingsIdentity(ctx context.Context, reader client.Reader, obj *IAPSettings) (*IAPSettingsIdentity, error) {
 	// Get desired ID
-	// Note that we cannot use `metadata.name` as resourceID since the supported resource ID formats are not valid Kubernetes names.
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
-		resourceID = common.ValueOf(obj.Spec.Name)
+		// Get resource ID from parent
+		switch {
+		case obj.Spec.OrganizationRef != nil:
+			organization, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
+			if err != nil {
+				return nil, err
+			}
+			resourceID = fmt.Sprintf("organizations/%s", organization.OrganizationID)
+
+		case obj.Spec.FolderRef != nil:
+			folder, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+			if err != nil {
+				return nil, err
+			}
+			resourceID = fmt.Sprintf("folders/%s", folder.FolderID)
+
+		case obj.Spec.ProjectRef != nil:
+			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+			if err != nil {
+				return nil, err
+			}
+			resourceID = fmt.Sprintf("projects/%s", project.ProjectID)
+
+		case obj.Spec.ProjectWebRef != nil:
+			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectWebRef.ProjectRef)
+			if err != nil {
+				return nil, err
+			}
+			resourceID = fmt.Sprintf("projects/%s/iap_web", project.ProjectID)
+
+		case obj.Spec.ComputeServiceRef != nil:
+			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ComputeServiceRef.ProjectRef)
+			if err != nil {
+				return nil, err
+			}
+			if obj.Spec.ComputeServiceRef.Region != nil {
+				if obj.Spec.ComputeServiceRef.ServiceRef != nil {
+					external, err := obj.Spec.ComputeServiceRef.ServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+					if err != nil {
+						return nil, err
+					}
+					serviceID, err := parseComputeBackendServiceID(external)
+					if err != nil {
+						return nil, err
+					}
+					resourceID = fmt.Sprintf("projects/%s/iap_web/compute-%s/services/%s", project.ProjectID, *obj.Spec.ComputeServiceRef.Region, serviceID)
+				} else {
+					resourceID = fmt.Sprintf("projects/%s/iap_web/compute-%s", project.ProjectID, *obj.Spec.ComputeServiceRef.Region)
+				}
+			} else {
+				if obj.Spec.ComputeServiceRef.ServiceRef != nil {
+					external, err := obj.Spec.ComputeServiceRef.ServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+					if err != nil {
+						return nil, err
+					}
+					serviceID, err := parseComputeBackendServiceID(external)
+					if err != nil {
+						return nil, err
+					}
+					resourceID = fmt.Sprintf("projects/%s/iap_web/compute/services/%s", project.ProjectID, serviceID)
+				} else {
+					resourceID = fmt.Sprintf("projects/%s/iap_web/compute", project.ProjectID)
+				}
+			}
+
+		case obj.Spec.AppEngineRef != nil:
+			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.AppEngineRef.ProjectRef)
+			if err != nil {
+				return nil, err
+			}
+			appID, err := refsv1beta1.ResolveAppEngineApplicationID(ctx, reader, obj.GetNamespace(), obj.Spec.AppEngineRef.ApplicationRef)
+			if err != nil {
+				return nil, err
+			}
+			if obj.Spec.AppEngineRef.ServiceRef != nil {
+				serviceID, err := refsv1beta1.ResolveAppEngineServiceID(ctx, reader, obj.GetNamespace(), obj.Spec.AppEngineRef.ServiceRef)
+				if err != nil {
+					return nil, err
+				}
+				if obj.Spec.AppEngineRef.VersionRef != nil {
+					versionID, err := refsv1beta1.ResolveAppEngineVersionID(ctx, reader, obj.GetNamespace(), obj.Spec.AppEngineRef.VersionRef)
+					if err != nil {
+						return nil, err
+					}
+					resourceID = fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s/versions/%s", project.ProjectID, appID, serviceID, versionID)
+				} else {
+					resourceID = fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s", project.ProjectID, appID, serviceID)
+				}
+			} else {
+				resourceID = fmt.Sprintf("projects/%s/iap_web/appengine-%s", project.ProjectID, appID)
+			}
+		}
 	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+
 	if err := ValidateIAPSettingsID(resourceID); err != nil {
 		return nil, err
 	}
@@ -73,7 +162,7 @@ func NewIAPSettingsIdentity(ctx context.Context, reader client.Reader, obj *IAPS
 			return nil, err
 		}
 		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `spec.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
 	}
@@ -141,4 +230,29 @@ func ValidateIAPSettingsID(id string) error {
 	}
 
 	return nil
+}
+
+func parseComputeBackendServiceID(selfLink string) (string, error) {
+	// example global: https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}
+	// example regional: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/${location}/backendServices/computebackendservice-${uniqueId}
+	if !strings.HasPrefix(selfLink, "https://www.googleapis.com/compute/v1/") {
+		return "", fmt.Errorf("invalid selfLink %q: must start with 'https://www.googleapis.com/compute/v1/'", selfLink)
+	}
+	selfLink = strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/v1/")
+	parts := strings.Split(selfLink, "/")
+	switch len(parts) {
+	case 5: // global
+		if parts[0] != "projects" || parts[2] != "global" || parts[3] != "backendServices" {
+			return "", fmt.Errorf("invalid selfLink %q: must have the format 'projects/{project_id}/global/backendServices/{backend_service_id}'", selfLink)
+		}
+		serviceID := parts[len(parts)-1]
+		return serviceID, nil
+	case 6: // regional
+		if parts[0] != "projects" || parts[2] != "regions" || parts[4] != "backendServices" {
+			return "", fmt.Errorf("invalid selfLink %q: must have the format 'projects/{project_id}/regions/{region}/backendServices/{backend_service_id}'", selfLink)
+		}
+		serviceID := parts[len(parts)-1]
+		return serviceID, nil
+	}
+	return "", fmt.Errorf("invalid selfLink %q: must have at least 3 segments (e.g., 'projects/{project_id}/global/backendServices/{backend_service_id}')", selfLink)
 }

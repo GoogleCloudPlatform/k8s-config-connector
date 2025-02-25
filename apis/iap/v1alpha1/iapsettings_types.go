@@ -15,11 +15,55 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 )
 
 var IAPSettingsGVK = GroupVersion.WithKind("IAPSettings")
+
+type Parent struct {
+	// Organization-level settings
+	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// Folder-level settings
+	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
+
+	// Project-level settings
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+
+	// Project-wide web service settings
+	ProjectWebRef *ProjectWebRef `json:"projectWebRef,omitempty"`
+
+	// Project-wide Compute service settings
+	ComputeServiceRef *ComputeServiceRef `json:"computeServiceRef,omitempty"`
+
+	// Project-wide App Engine service settings
+	AppEngineRef *AppEngineRef `json:"appEngineRef,omitempty"`
+}
+
+type ProjectWebRef struct {
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+}
+
+type ComputeServiceRef struct {
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+	// Optional. If specified, settings apply to the region
+	Region *string `json:"region,omitempty"`
+	// Optional. If specified, settings apply to the service
+	ServiceRef *computev1beta1.ComputeBackendServiceRef `json:"serviceRef,omitempty"`
+}
+
+type AppEngineRef struct {
+	ProjectRef     *refs.ProjectRef              `json:"projectRef"`
+	ApplicationRef *refs.AppEngineApplicationRef `json:"applicationRef"`
+	// Optional. If specified, settings apply to the service
+	ServiceRef *refs.AppEngineServiceRef `json:"serviceRef,omitempty"`
+	// Optional. If specified, settings apply to the version
+	VersionRef *refs.AppEngineVersionRef `json:"versionRef,omitempty"`
+}
 
 // IAPSettingsSpec defines the desired state of IAPSettings
 // +kcc:proto=google.cloud.iap.v1.IapSettings
@@ -27,22 +71,7 @@ type IAPSettingsSpec struct {
 	// The IAPSettings name.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Required. The resource name of the IAP protected resource.
-	// The name could have the following format:
-	//	 organizations/{organization_id}
-	//	 folders/{folder_id}
-	//	 projects/{projects_id}
-	//	 projects/{projects_id}/iap_web
-	//	 projects/{projects_id}/iap_web/compute
-	//	 projects/{projects_id}/iap_web/compute-{region}
-	//	 projects/{projects_id}/iap_web/compute/service/{service_id}
-	//	 projects/{projects_id}/iap_web/compute-{region}/service/{service_id}
-	//	 projects/{projects_id}/iap_web/appengine-{app_id}
-	//	 projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}
-	//	 projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}
-	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.name
-	// +required
-	Name *string `json:"name,omitempty"`
+	Parent `json:",inline"`
 
 	// Top level wrapper for all access related setting in IAP
 	// +kcc:proto:field=google.cloud.iap.v1.IapSettings.access_settings
