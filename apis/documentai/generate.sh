@@ -23,10 +23,10 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 
 go run . generate-types \
-    --service google.cloud.documentai.v1beta3 \
+    --service google.cloud.documentai.v1 \
     --api-version documentai.cnrm.cloud.google.com/v1alpha1 \
     --resource DocumentAI:ProcessorVersion
 
 go run . generate-mapper \
-    --service google.cloud.documentai.v1beta3 \
+    --service google.cloud.documentai.v1 \
     --api-version documentai.cnrm.cloud.google.com/v1alpha1
