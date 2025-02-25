@@ -53,8 +53,7 @@ func (p *ProcessorVersionParent) String() string {
 }
 
 // New builds a ProcessorVersionIdentity from the Config Connector ProcessorVersion object.
-func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj *DocumentAI) (*ProcessorVersionIdentity, error) {
-
+func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj *DocumentAIProcessorVersion) (*ProcessorVersionIdentity, error) {
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
@@ -64,7 +63,8 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+
+	location := common.ValueOf(obj.Spec.Location)
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

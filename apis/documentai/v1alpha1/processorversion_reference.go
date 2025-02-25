@@ -47,7 +47,7 @@ type ProcessorVersionRef struct {
 // Otherwise, the "Name" and "Namespace" will be used to query the actual DocumentAI object from the cluster.
 func (r *ProcessorVersionRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", DocumentAIGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", DocumentAIProcessorVersionGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
@@ -63,12 +63,12 @@ func (r *ProcessorVersionRef) NormalizedExternal(ctx context.Context, reader cli
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(DocumentAIGVK)
+	u.SetGroupVersionKind(DocumentAIProcessorVersionGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", DocumentAIGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", DocumentAIProcessorVersionGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
