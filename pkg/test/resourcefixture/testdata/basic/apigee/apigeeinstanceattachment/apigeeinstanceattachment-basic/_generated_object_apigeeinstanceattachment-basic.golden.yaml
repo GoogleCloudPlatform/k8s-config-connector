@@ -21,8 +21,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${projectId}/instances/apgi-${uniqueId}/attachments/24107a25-fa61-453d-9751-d2251c6b014a
+  externalRef: organizations/${projectId}/instances/apgi-${uniqueId}/attachments/${attachmentId}
   observedGeneration: 1
   observedState:
     createdAt: 1711974896
-    name: 24107a25-fa61-453d-9751-d2251c6b014a
+    name: ${attachmentId}
