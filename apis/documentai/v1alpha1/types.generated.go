@@ -224,43 +224,6 @@ type FieldExtractionMetadata struct {
 	SummaryOptions *SummaryOptions `json:"summaryOptions,omitempty"`
 }
 
-// +kcc:proto=google.cloud.documentai.v1beta3.ProcessorVersion
-type ProcessorVersion struct {
-	// Identifier. The resource name of the processor version.
-	//  Format:
-	//  `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processor_version}`
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.name
-	Name *string `json:"name,omitempty"`
-
-	// The display name of the processor version.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The schema of the processor version. Describes the output.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.document_schema
-	DocumentSchema *DocumentSchema `json:"documentSchema,omitempty"`
-
-	// The time the processor version was created.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// The most recently invoked evaluation for the processor version.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.latest_evaluation
-	LatestEvaluation *EvaluationReference `json:"latestEvaluation,omitempty"`
-
-	// The KMS key name used for encryption.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.kms_key_name
-	KMSKeyName *string `json:"kmsKeyName,omitempty"`
-
-	// The KMS key version with which data is encrypted.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.kms_key_version_name
-	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
-
-	// If set, information about the eventual deprecation of this version.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.deprecation_info
-	DeprecationInfo *ProcessorVersion_DeprecationInfo `json:"deprecationInfo,omitempty"`
-}
-
 // +kcc:proto=google.cloud.documentai.v1beta3.ProcessorVersion.DeprecationInfo
 type ProcessorVersion_DeprecationInfo struct {
 	// The time at which this processor version will be deprecated.
@@ -306,6 +269,17 @@ type ProcessorVersion_GenAiModelInfo_FoundationGenAiModelInfo struct {
 	MinTrainLabeledDocuments *int32 `json:"minTrainLabeledDocuments,omitempty"`
 }
 
+// +kcc:proto=google.cloud.documentai.v1beta3.ProcessorVersionAlias
+type ProcessorVersionAlias struct {
+	// The alias in the form of `processor_version` resource name.
+	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersionAlias.alias
+	Alias *string `json:"alias,omitempty"`
+
+	// The resource name of aliased processor version.
+	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersionAlias.processor_version
+	ProcessorVersion *string `json:"processorVersion,omitempty"`
+}
+
 // +kcc:proto=google.cloud.documentai.v1beta3.PropertyMetadata
 type PropertyMetadata struct {
 	// Whether the property should be considered as "inactive".
@@ -326,32 +300,4 @@ type SummaryOptions struct {
 	// The format the summary should be in.
 	// +kcc:proto:field=google.cloud.documentai.v1beta3.SummaryOptions.format
 	Format *string `json:"format,omitempty"`
-}
-
-// +kcc:proto=google.cloud.documentai.v1beta3.ProcessorVersion
-type ProcessorVersionObservedState struct {
-	// Output only. The state of the processor version.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Denotes that this `ProcessorVersion` is managed by Google.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.google_managed
-	GoogleManaged *bool `json:"googleManaged,omitempty"`
-
-	// Output only. The model type of this processor version.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.model_type
-	ModelType *string `json:"modelType,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.satisfies_pzs
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.satisfies_pzi
-	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-
-	// Output only. Information about Generative AI model-based processor
-	//  versions.
-	// +kcc:proto:field=google.cloud.documentai.v1beta3.ProcessorVersion.gen_ai_model_info
-	GenAiModelInfo *ProcessorVersion_GenAiModelInfo `json:"genAiModelInfo,omitempty"`
 }

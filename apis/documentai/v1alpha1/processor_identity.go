@@ -24,36 +24,36 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ProcessorVersionIdentity defines the resource reference to DocumentAI, which "External" field
+// ProcessorIdentity defines the resource reference to DocumentAI, which "External" field
 // holds the GCP identifier for the KRM object.
-type ProcessorVersionIdentity struct {
-	parent *ProcessorVersionParent
+type ProcessorIdentity struct {
+	parent *ProcessorParent
 	id     string
 }
 
-func (i *ProcessorVersionIdentity) String() string {
-	return i.parent.String() + "/processorversions/" + i.id
+func (i *ProcessorIdentity) String() string {
+	return i.parent.String() + "/processors/" + i.id
 }
 
-func (i *ProcessorVersionIdentity) ID() string {
+func (i *ProcessorIdentity) ID() string {
 	return i.id
 }
 
-func (i *ProcessorVersionIdentity) Parent() *ProcessorVersionParent {
+func (i *ProcessorIdentity) Parent() *ProcessorParent {
 	return i.parent
 }
 
-type ProcessorVersionParent struct {
+type ProcessorParent struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *ProcessorVersionParent) String() string {
+func (p *ProcessorParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a ProcessorVersionIdentity from the Config Connector ProcessorVersion object.
-func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj *DocumentAIProcessorVersion) (*ProcessorVersionIdentity, error) {
+// New builds a ProcessorIdentity from the Config Connector Processor object.
+func NewProcessorIdentity(ctx context.Context, reader client.Reader, obj *DocumentAIProcessor) (*ProcessorIdentity, error) {
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
@@ -79,7 +79,7 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseProcessorVersionExternal(externalRef)
+		actualParent, actualResourceID, err := ParseProcessorExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -94,8 +94,8 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 				resourceID, actualResourceID)
 		}
 	}
-	return &ProcessorVersionIdentity{
-		parent: &ProcessorVersionParent{
+	return &ProcessorIdentity{
+		parent: &ProcessorParent{
 			ProjectID: projectID,
 			Location:  location,
 		},
@@ -103,12 +103,12 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 	}, nil
 }
 
-func ParseProcessorVersionExternal(external string) (parent *ProcessorVersionParent, resourceID string, err error) {
+func ParseProcessorExternal(external string) (parent *ProcessorParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "processorversions" {
-		return nil, "", fmt.Errorf("format of DocumentAI external=%q was not known (use projects/{{projectID}}/locations/{{location}}/processorversions/{{processorversionID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "processors" {
+		return nil, "", fmt.Errorf("format of DocumentAI external=%q was not known (use projects/{{projectID}}/locations/{{location}}/processors/{{processorID}})", external)
 	}
-	parent = &ProcessorVersionParent{
+	parent = &ProcessorParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}
