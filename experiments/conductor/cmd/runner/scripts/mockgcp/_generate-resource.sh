@@ -18,23 +18,33 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-if [[ -z "${GCLOUD_COMMAND}" ]]; then
-  echo "GCLOUD_COMMAND is required"
-  exit 1
-fi
-
-export WORKDIR=~/kccai/work1/
+#if [[ -z "${GCLOUD_COMMAND}" ]]; then
+#  echo "GCLOUD_COMMAND is required"
+#  exit 1
+#fi
+export GCLOUD_COMMAND="gcloud composer environments"
+export SERVICE=composer
+export RESOURCE=environment
+export WORKDIR=/usr/local/google/home/maqiuyu/go/src/github.com/maqiuyujoyce/3-k8s-config-connector
 export BRANCH_NAME=gcloud_${SERVICE}_${RESOURCE}
 export LOG_DIR=/tmp/conductor/${BRANCH_NAME}
+export PATH=${PATH}:/usr/local/google/home/maqiuyu/go/src/github.com/maqiuyujoyce/2-k8s-config-connector/dev/tools/controllerbuilder/cmd/codebot
 
 export EXPECTED_PATH=mock${SERVICE}/testdata/${RESOURCE}/crud
-./01-generate-script.sh
+export PROTO_PACKAGE=./third_party/googleapis/google/cloud/orchestration/airflow/service/v1/environments.proto
+mkdir -p ${WORKDIR}
+#echo "./01-generate-script.sh..."
+#./01-generate-script.sh
 
 export RUN_TEST=${EXPECTED_PATH}
+echo "./02-run-script-real-gcp.sh..."
 ./02-run-script-real-gcp.sh 
 
+echo "./03a-add-to-makefile.sh..."
 ./03a-add-to-makefile.sh
 
+echo "./03-implement-mocks.sh..."
 ./03-implement-mocks.sh
 
+echo "./04-run-script-mockgcp.sh..."
 ./04-run-script-mockgcp.sh
