@@ -71,6 +71,7 @@ type IAPSettingsSpec struct {
 	// The IAPSettings name.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="(has(self.organizationRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0) + (has(self.projectRef) ? 1 : 0) + (has(self.projectWebRef) ? 1 : 0) + (has(self.computeServiceRef) ? 1 : 0) + (has(self.appEngineRef) ? 1 : 0) == 1",message="Exactly one parent field must be set"
 	Parent `json:",inline"`
 
 	// Top level wrapper for all access related setting in IAP
