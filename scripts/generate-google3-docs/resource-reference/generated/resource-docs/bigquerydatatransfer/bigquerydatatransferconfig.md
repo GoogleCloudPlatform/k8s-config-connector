@@ -143,7 +143,7 @@ serviceAccountRef:
     <tr>
         <td>
             <p><code>datasetRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
