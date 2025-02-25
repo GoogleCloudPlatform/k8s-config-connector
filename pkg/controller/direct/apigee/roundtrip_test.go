@@ -21,6 +21,7 @@ import (
 
 	"math/rand"
 
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -173,6 +174,83 @@ func FuzzApigeeEnvgroupObservedState(f *testing.F) {
 			t.Errorf("roundtrip failed; diff:\n%s", diff)
 		}
 
+	})
+}
+
+func FuzzApigeeEnvgroupAttachmentSpec(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		stream := rand.New(rand.NewSource(seed))
+		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
+
+		// To KRM
+		k1 := &krmv1alpha1.ApigeeEnvgroupAttachmentSpec{}
+		filler.Fill(t, k1)
+
+		// To API
+		ctx := &direct.MapContext{}
+		apiObj := ApigeeEnvgroupAttachmentSpec_ToAPI(ctx, k1)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting KRM to API obj: %v \n KRM: %s", ctx.Err(), test.PrettyPrintJSON(t, k1))
+		}
+
+		// Back to KRM
+		k2 := ApigeeEnvgroupAttachmentSpec_FromAPI(ctx, apiObj)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting API obj to KRM: %v \n API: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
+		}
+
+		opts := cmp.Options{
+			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEnvgroupAttachmentSpec{}, "EnvgroupRef"),
+			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEnvgroupAttachmentSpec{}, "ResourceID"),
+			cmpopts.IgnoreFields(krm.ApigeeEnvironmentRef{}, "Name"),
+			cmpopts.IgnoreFields(krm.ApigeeEnvironmentRef{}, "Namespace"),
+		}
+
+		// Compare
+		if diff := cmp.Diff(k1, k2, opts...); diff != "" {
+			t.Logf("k1 = %v", k1)
+			t.Logf("k2 = %v", k2)
+			t.Errorf("roundtrip failed; diff:\n%s", diff)
+		}
+
+	})
+}
+
+func FuzzApigeeEnvgroupAttachmentObservedState(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		stream := rand.New(rand.NewSource(seed))
+		overrides := map[string]fuzz.OverrideFiller{
+			".CreatedAt": func(t *testing.T, fieldName string, field reflect.Value) {
+				// Generate a valid timestamp within 10 years.
+				validTime := time.Now().Add(time.Duration(stream.Intn(365*10)) * 24 * time.Hour)
+				field.SetString(validTime.Format(time.RFC3339))
+			},
+		}
+
+		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream, FieldOverrides: overrides})
+
+		k1 := &krmv1alpha1.ApigeeEnvgroupAttachmentObservedState{}
+		filler.Fill(t, k1)
+
+		// KRM -> API
+		ctx := &direct.MapContext{}
+		apiObj := ApigeeEnvgroupAttachmentObservedState_ToAPI(ctx, k1)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting KRM to API: %v, krm = %v", ctx.Err(), test.PrettyPrintJSON(t, k1))
+		}
+
+		// API -> KRM
+		k2 := ApigeeEnvgroupAttachmentObservedState_FromAPI(ctx, apiObj)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting API to KRM: %v, api = %v", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
+		}
+
+		// Compare
+		if diff := cmp.Diff(k1, k2); diff != "" {
+			t.Logf("k1 = %v", k1)
+			t.Logf("k2 = %v", k2)
+			t.Errorf("roundtrip failed: diff = %s", diff)
+		}
 	})
 }
 
