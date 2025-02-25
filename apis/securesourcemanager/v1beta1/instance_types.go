@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -113,6 +113,7 @@ type Instance_PrivateConfig struct {
 
 // SecureSourceManagerInstance is the Schema for the SecureSourceManagerInstance API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type SecureSourceManagerInstance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

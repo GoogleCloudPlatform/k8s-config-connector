@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: securesourcemanager.cnrm.cloud.google.com/v1beta1
-kind: SecureSourceManagerRepository
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
 metadata:
-  name: ssmrepository-${uniqueId}
+  name: securesourcemanagerinstance-dep
 spec:
-  location: us-central1
-  projectRef:
-    external: ${projectId}
-  instanceRef:
-    name: ssminstance-dep-${uniqueId}
-  initialConfig:
-    defaultBranch: main
-    gitignores:
-      - python
-    license: mit
-    readme: default
+  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-sourcemanager.iam.gserviceaccount.com
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: securesourcemanagerinstance-dep
