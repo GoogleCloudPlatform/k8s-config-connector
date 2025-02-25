@@ -22,8 +22,6 @@ spec:
   location: us-central1
   displayName: "an updated example of scheduled query"
   dataSourceID: "scheduled_query"
-  datasetRef:
-    name: bigquerydataset${uniqueId}
   params:
     destination_table_name_template: "my_table2"
     write_disposition: "WRITE_TRUNCATE"
