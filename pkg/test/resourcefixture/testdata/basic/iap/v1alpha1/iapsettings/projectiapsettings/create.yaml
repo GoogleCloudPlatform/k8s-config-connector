@@ -17,7 +17,8 @@ kind: IAPSettings
 metadata:
   name: iapsettings-${uniqueId}
 spec:
-  name: projects/${projectId}
+  projectRef:
+    external: projects/${projectId}
   accessSettings:
     corsSettings:
       allowHTTPOptions: true
