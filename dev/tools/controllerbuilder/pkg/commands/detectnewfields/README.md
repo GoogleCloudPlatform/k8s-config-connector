@@ -17,20 +17,9 @@ $ go run . detect-new-fields
 $ go run . detect-new-fields \
   --target-messages="google.cloud.bigquery.datatransfer.v1.TransferConfig"
 
-# Ignore specific fields using a config file
+# Ignore specific fields using configurations from metadata file
 $ go run . detect-new-fields \
-  --ignored-fields-file=config/ignored_fields.yaml
-```
-
-An example ignored_fields.yaml
-```yaml
-google.cloud.bigquery.connection.v1:
-  Connection:
-    - salesforceDataCloud
-google.api.apikeys.v2:
-  Key:
-    - createTime
-    - updateTime
+  --metadata-dir=metadata/
 ```
 
 ## Example Output
