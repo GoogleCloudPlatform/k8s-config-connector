@@ -195,6 +195,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 		}
 
 		v.writeMapFunctionsForPair(&out.body, out.OutputDir(), &pair)
+
 	}
 
 	return nil
