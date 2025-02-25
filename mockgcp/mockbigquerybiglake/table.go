@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/biglake/v1"
 )
 
@@ -114,26 +115,38 @@ func (s *bigLakeService) GetTable(ctx context.Context, req *pb.GetTableRequest) 
 }
 
 type tableName struct {
-	databaseName
-	Table string
+	Project    *projects.ProjectData
+	Location   string
+	CatalogID  string
+	DatabaseID string
+	Table      string
 }
 
-func (t *tableName) String() string {
-	return fmt.Sprintf("%s/tables/%s", t.databaseName.String(), t.Table)
+func (n *tableName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/catalogs/" + n.CatalogID + "/databases/" + n.DatabaseID + "/tables/" + n.Table
 }
 
 // parseTableName parses a string into a tableName.
 // The expected form is `projects/*/locations/*/catalogs/*/databases/*/tables/*`.
 func (s *bigLakeService) parseTableName(name string) (*tableName, error) {
-	databaseName, err := s.parseDatabaseName(name)
-	if err != nil {
-		return nil, err
-	}
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 10 && tokens[8] == "tables" {
+	if len(tokens) == 10 &&
+		tokens[0] == "projects" &&
+		tokens[2] == "locations" &&
+		tokens[4] == "catalogs" &&
+		tokens[6] == "databases" &&
+		tokens[8] == "tables" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
 		name := &tableName{
-			databaseName: *databaseName,
-			Table:        tokens[9],
+			Project:    project,
+			Location:   tokens[3],
+			CatalogID:  tokens[5],
+			DatabaseID: tokens[7],
+			Table:      tokens[9],
 		}
 
 		return name, nil
@@ -141,5 +154,3 @@ func (s *bigLakeService) parseTableName(name string) (*tableName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
