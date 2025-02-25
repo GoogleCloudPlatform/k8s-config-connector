@@ -40,9 +40,9 @@ func (n *instanceName) String() string {
 	return fmt.Sprintf("organizations/%v/instances/%v", n.Organization, n.Instance)
 }
 
-// parseInstanceName parses a string into a instanceName.
+// ParseInstanceName parses a string into a instanceName.
 // The expected form is organizations/{organization}/instances/{instance}.
-func (s *instancesServer) parseInstanceName(name string) (*instanceName, error) {
+func ParseInstanceName(name string) (*instanceName, error) {
 	expectedFormat := "organizations/{organization}/instances/{instance}"
 	parts := strings.Split(name, "/")
 	if len(parts) != 4 || parts[0] != "organizations" || parts[2] != "instances" {
@@ -60,7 +60,7 @@ type instancesServer struct {
 }
 
 func (s *instancesServer) GetOrganizationsInstance(ctx context.Context, req *pb.GetOrganizationsInstanceRequest) (*pb.GoogleCloudApigeeV1Instance, error) {
-	name, err := s.parseInstanceName(req.Name)
+	name, err := ParseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (s *instancesServer) GetOrganizationsInstance(ctx context.Context, req *pb.
 
 func (s *instancesServer) CreateOrganizationsInstance(ctx context.Context, req *pb.CreateOrganizationsInstanceRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/instances/" + req.OrganizationsInstance.Name
-	name, err := s.parseInstanceName(reqName)
+	name, err := ParseInstanceName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +113,7 @@ func (s *instancesServer) CreateOrganizationsInstance(ctx context.Context, req *
 }
 
 func (s *instancesServer) PatchOrganizationsInstance(ctx context.Context, req *pb.PatchOrganizationsInstanceRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseInstanceName(req.Name)
+	name, err := ParseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +160,7 @@ func (s *instancesServer) PatchOrganizationsInstance(ctx context.Context, req *p
 }
 
 func (s *instancesServer) DeleteOrganizationsInstance(ctx context.Context, req *pb.DeleteOrganizationsInstanceRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseInstanceName(req.Name)
+	name, err := ParseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
 	}
