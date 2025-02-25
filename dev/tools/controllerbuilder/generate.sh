@@ -178,16 +178,6 @@ go run . generate-mapper \
    --service google.spanner.admin.instance.v1  \
    --api-version "spanner.cnrm.cloud.google.com/v1beta1"
 
-# IAPSettings
-go run . generate-types \
-    --service google.cloud.iap.v1 \
-    --api-version iap.cnrm.cloud.google.com/v1alpha1 \
-    --resource IAPSettings:IapSettings
-
-go run . generate-mapper \
-    --service google.cloud.iap.v1 \
-    --api-version iap.cnrm.cloud.google.com/v1alpha1
-
 # ManagedKafka
 go run . generate-types \
     --service google.cloud.managedkafka.v1 \
