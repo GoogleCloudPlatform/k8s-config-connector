@@ -77,8 +77,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	// Dataproc does not set Cache-Control
 	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
 		response.Header().Del("Cache-Control")
+	}
+
+	// Returns non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil
