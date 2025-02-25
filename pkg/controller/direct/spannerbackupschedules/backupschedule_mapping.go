@@ -108,6 +108,13 @@ func SpannerBackupScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.BackupSchedule{}
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if in.CronSpec != nil {
+		out.Spec = &pb.BackupScheduleSpec{
+			ScheduleSpec: &pb.BackupScheduleSpec_CronSpec{
+				CronSpec: CrontabSpecObservedState_ToProto(mapCtx, in.CronSpec),
+			},
+		}
+	}
 	return out
 }
 func SpannerBackupScheduleSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krm.SpannerBackupScheduleSpec {
