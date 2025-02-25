@@ -63,7 +63,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterDatasetServiceHandler,
 		pb.RegisterEndpointServiceHandler,
 		pb.RegisterMetadataServiceHandler,
-		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
+		s.operations.RegisterOperationsPath("/ui/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
