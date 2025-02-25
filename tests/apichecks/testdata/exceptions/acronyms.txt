@@ -17,7 +17,6 @@
 [acronyms] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".status.serviceConfigId" should be ".status.serviceConfigID"
 [acronyms] crd=apigeeaddonsconfigs.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.addonsConfig.advancedApiOpsConfig" should be ".spec.addonsConfig.advancedAPIOpsConfig"
 [acronyms] crd=apigeeaddonsconfigs.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.addonsConfig.advancedApiOpsConfig.enabled" should be ".spec.addonsConfig.advancedAPIOpsConfig.enabled"
-[acronyms] crd=apigeeendpointattachments.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.orgId" should be ".spec.orgID"
 [acronyms] crd=apigeenataddresses.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceId" should be ".spec.instanceID"
 [acronyms] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.addonsConfig.advancedApiOpsConfig" should be ".spec.addonsConfig.advancedAPIOpsConfig"
 [acronyms] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".spec.addonsConfig.advancedApiOpsConfig.enabled" should be ".spec.addonsConfig.advancedAPIOpsConfig.enabled"
