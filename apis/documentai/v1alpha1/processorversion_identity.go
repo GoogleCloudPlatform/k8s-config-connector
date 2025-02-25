@@ -31,7 +31,7 @@ type ProcessorVersionIdentity struct {
 }
 
 func (i *ProcessorVersionIdentity) String() string {
-	return i.parent.String() + "/processorversions/" + i.id
+	return i.parent.String() + "/processorVersions/" + i.id
 }
 
 func (i *ProcessorVersionIdentity) ID() string {
@@ -50,7 +50,7 @@ func (p *ProcessorVersionParent) String() string {
 	return p.Processor
 }
 
-// New builds a ProcessorVersionIdentity from the Config Connector ProcessorVersion object.
+// NewProcessorVersionIdentity builds a ProcessorVersionIdentity from the Config Connector ProcessorVersion object.
 func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj *DocumentAIProcessorVersion) (*ProcessorVersionIdentity, error) {
 	//Get parent
 	processorRef := &ProcessorRef{}
@@ -94,8 +94,8 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseProcessorVersionExternal(external string) (parent *ProcessorVersionParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "processors" || tokens[6] != "processorversions" {
-		return nil, "", fmt.Errorf("format of DocumentAI external=%q was not known (use projects/{{projectID}}/locations/{{location}}/processors/{{processorID}}/processorversions/{{processorversionID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "processors" || tokens[6] != "processorVersions" {
+		return nil, "", fmt.Errorf("format of DocumentAI external=%q was not known (use projects/{{projectID}}/locations/{{location}}/processors/{{processorID}}/processorVersions/{{processorversionID}})", external)
 	}
 	processor := strings.Join(tokens[:len(tokens)-2], "/")
 	parent = &ProcessorVersionParent{
