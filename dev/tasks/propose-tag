@@ -124,7 +124,7 @@ fi
 echo "Found versions:"
 printf '%s\n' "${versions[@]}"
 
-STALE_VERSION=$(printf "%s\n" "${versions[@]}" | sort -V | tail -n 4 | head -n 1)
+# STALE_VERSION=$(printf "%s\n" "${versions[@]}" | sort -V | tail -n 4 | head -n 1)
 echo "stale version: ${STALE_VERSION}"
 
 # Remove the STALE_VERSION package for standard and autopilot
