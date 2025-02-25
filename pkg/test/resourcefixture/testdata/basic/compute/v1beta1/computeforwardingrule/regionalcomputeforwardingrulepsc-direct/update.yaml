@@ -34,4 +34,4 @@ spec:
   ipAddress:
     addressRef:
       # PSC forwarding rule requires address's self_link instead of address
-      external: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}
+      external: https://www.googleapis.com/compute/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/regions/us-central1/addresses/computeaddress-${uniqueId}

@@ -17,6 +17,8 @@ kind: ComputeServiceAttachment
 metadata:
   name: computeserviceattachment-${uniqueId}
 spec:
+  projectRef:
+    name: "project-3-${uniqueId}"
   location: "us-west1"
   description: "A sample service attachment"
   targetServiceRef:
