@@ -138,13 +138,8 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	})
 
 	// Specific to GCS
-	visitor.replacePaths[".softDeletePolicy.effectiveTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".timeCreated"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".updated"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".acl[].etag"] = "abcdef0123A"
-	visitor.replacePaths[".defaultObjectAcl[].etag"] = "abcdef0123A="
-	visitor.replacePaths[".spec.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.observedState.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
+	visitor.ReplacePath(".spec.softDeletePolicy.effectiveTime", "1970-01-01T00:00:00Z")
+	visitor.ReplacePath(".status.observedState.softDeletePolicy.effectiveTime", "1970-01-01T00:00:00Z")
 
 	// Specific to Compute
 	visitor.replacePaths[".status.observedState.certificateID"] = 1111111111111111

@@ -90,6 +90,55 @@ Vary: X-Origin
 
 ---
 
+GET https://storage.googleapis.com/storage/v1/b?alt=json&maxResults=1000&project=${projectId}&projection=full
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+
+200 OK
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "items": [
+    {
+      "etag": "abcdef0123A=",
+      "iamConfiguration": {
+        "bucketPolicyOnly": {
+          "enabled": false
+        },
+        "publicAccessPrevention": "inherited",
+        "uniformBucketLevelAccess": {}
+      },
+      "id": "test-${uniqueId}",
+      "kind": "storage#bucket",
+      "location": "US",
+      "locationType": "multi-region",
+      "metageneration": "1",
+      "name": "test-${uniqueId}",
+      "projectNumber": "${projectNumber}",
+      "rpo": "DEFAULT",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}",
+      "softDeletePolicy": {
+        "effectiveTime": "2024-04-01T00:00:00Z",
+        "retentionDurationSeconds": "604800"
+      },
+      "storageClass": "STANDARD",
+      "timeCreated": "2024-04-01T12:34:56.123456Z",
+      "updated": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "kind": "storage#buckets"
+}
+
+---
+
 DELETE https://storage.googleapis.com/storage/v1/b/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
