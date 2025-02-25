@@ -23,8 +23,9 @@ branches:
     kind: AccessApprovalApprovalRequest
     package: google.cloud.accessapproval.v1
     proto: ApprovalRequest
-    proto-path: google.cloud.accessapproval.v1.ApprovalRequest
+    proto-path: google.cloud.accessapproval.v1.accessapproval
     proto-service: google.cloud.accessapproval.v1.AccessApproval
+    proto-msg: google.cloud.accessapproval.v1.ApprovalRequest
     host-name: accessapproval.googleapis.com
     notes:
       - No gcloud command found
@@ -39,7 +40,8 @@ branches:
     package: ""
     proto: ""
     proto-path: ""
-    proto-svc: ""
+    proto-service: ""
+    proto-msg:
     host_name: ""
     notes:
   - name: compute-computebackendservice
@@ -52,7 +54,8 @@ branches:
     kind: ""
     package: ""
     proto: BackendService
-    proto-path: google.cloud.compute.v1.BackendService
+    proto-path: google.cloud.compute.v1.Compute
     proto-service: google.cloud.compute.v1.BackendServices
+    proto-msg: google.cloud.compute.v1.BackendService
     host-name: compute.googleapis.com
     notes:
