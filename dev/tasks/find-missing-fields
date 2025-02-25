@@ -22,6 +22,8 @@ cd ${REPO_ROOT}
 
 go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -fuzztime 600s # fuzz for 10 minutes because we are fuzzing all the registered mappers
 
+go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEndpointAttachmentSpec -fuzztime 60s
+go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEndpointAttachmentObservedState -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEnvgroupSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeEnvgroupObservedState -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceSpec -fuzztime 60s
