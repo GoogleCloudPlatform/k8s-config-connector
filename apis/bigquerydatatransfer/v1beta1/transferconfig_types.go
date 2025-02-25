@@ -81,7 +81,6 @@ type BigQueryDataTransferConfigSpec struct {
 	DataSourceID *string `json:"dataSourceID,omitempty"`
 
 	// The BigQuery target dataset id.
-	// +required
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.destination_dataset_id
 	DatasetRef *bigquery.DatasetRef `json:"datasetRef,omitempty"`
 

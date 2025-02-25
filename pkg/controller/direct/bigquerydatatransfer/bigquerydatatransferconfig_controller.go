@@ -291,7 +291,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if !reflect.DeepEqual(desired.DataSourceId, a.actual.DataSourceId) {
 		return fmt.Errorf("BigQueryDataTransferConfig %s/%s data source ID cannot be changed", u.GetNamespace(), u.GetName())
 	}
-	if !reflect.DeepEqual(desired.Destination, a.actual.Destination) {
+	if desired.Destination != nil && !reflect.DeepEqual(desired.Destination, a.actual.Destination) {
 		return fmt.Errorf("BigQueryDataTransferConfig %s/%s destination dataset cannot be changed", u.GetNamespace(), u.GetName())
 	}
 

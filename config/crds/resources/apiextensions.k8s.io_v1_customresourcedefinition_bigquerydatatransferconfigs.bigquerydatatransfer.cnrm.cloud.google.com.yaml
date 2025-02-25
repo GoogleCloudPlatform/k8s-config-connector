@@ -311,7 +311,6 @@ spec:
                 type: object
             required:
             - dataSourceID
-            - datasetRef
             - location
             - params
             - projectRef
@@ -775,7 +774,6 @@ spec:
                 type: object
             required:
             - dataSourceID
-            - datasetRef
             - location
             - params
             - projectRef

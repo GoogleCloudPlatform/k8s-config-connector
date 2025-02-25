@@ -49,7 +49,6 @@ type BigQueryDataTransferConfigSpec struct {
 	DataSourceID *string `json:"dataSourceID,omitempty"`
 
 	// The BigQuery target dataset id.
-	// +required
 	DatasetRef *bigquery.DatasetRef `json:"datasetRef,omitempty"`
 
 	// Is this config disabled. When set to true, no runs will be scheduled for
