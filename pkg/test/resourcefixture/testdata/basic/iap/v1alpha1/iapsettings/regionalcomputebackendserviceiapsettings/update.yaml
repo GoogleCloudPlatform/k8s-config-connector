@@ -17,7 +17,12 @@ kind: IAPSettings
 metadata:
   name: iapsettings-${uniqueId}
 spec:
-  name: projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}
+  computeServiceRef:
+    projectRef:
+      external: projects/${projectId}
+    region: us-central1
+    serviceRef:
+      name: computebackendservice-${uniqueId}
   accessSettings:
     corsSettings:
       allowHTTPOptions: false  # true -> false
