@@ -11,8 +11,6 @@ metadata:
   namespace: ${uniqueId}
 spec:
   dataSourceID: scheduled_query
-  datasetRef:
-    name: bigquerydataset${uniqueId}
   displayName: an updated example of scheduled query
   location: us-central1
   params:

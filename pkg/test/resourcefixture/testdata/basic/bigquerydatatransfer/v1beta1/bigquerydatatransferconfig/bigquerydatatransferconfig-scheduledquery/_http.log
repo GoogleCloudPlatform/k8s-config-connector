@@ -1,155 +1,3 @@
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "us-central1"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -245,7 +93,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "dataSourceId": "scheduled_query",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
   "displayName": "example of scheduled query",
   "params": {
     "destination_table_name_template": "my_table",
@@ -269,7 +116,6 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
   "displayName": "example of scheduled query",
   "encryptionConfiguration": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -283,6 +129,7 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_APPEND"
   },
   "schedule": "first sunday of quarter 00:00",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -308,7 +155,6 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
   "displayName": "example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -322,6 +168,7 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_APPEND"
   },
   "schedule": "first sunday of quarter 00:00",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -336,7 +183,6 @@ X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -350,6 +196,7 @@ X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%
     "write_disposition": "WRITE_TRUNCATE"
   },
   "schedule": "every 24 hours",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -368,7 +215,6 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -382,6 +228,7 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_TRUNCATE"
   },
   "schedule": "every 24 hours",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -407,7 +254,6 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -422,6 +268,7 @@ X-Xss-Protection: 0
   },
   "schedule": "every 24 hours",
   "scheduleOptions": {},
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -487,74 +334,3 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-204 No Content
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
