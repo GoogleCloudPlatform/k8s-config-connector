@@ -100,7 +100,3 @@ status:
     stateStartTime: "2024-04-01T12:34:56.123456Z"
   - state: UPDATING
     stateStartTime: "2024-04-01T12:34:56.123456Z"
-  - state: RUNNING
-    stateStartTime: "2024-04-01T12:34:56.123456Z"
-  - state: UPDATING
-    stateStartTime: "2024-04-01T12:34:56.123456Z"
