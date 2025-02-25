@@ -126,7 +126,7 @@ func (r *ApigeeEnvironmentRef) Normalize(ctx context.Context, reader client.Read
 		if envID == "" {
 			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 		}
-		r.SetExternal(orgRef.External + "/" + EnvironmentIDToken + "/" + envID)
+		r.SetExternal(orgRef.External + "/" + ApigeeEnvironmentIDToken + "/" + envID)
 	}
 
 	id := &ApigeeEnvironmentIdentity{}

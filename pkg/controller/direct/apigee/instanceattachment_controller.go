@@ -255,7 +255,7 @@ func (a *ApigeeInstanceAttachmentAdapter) Export(ctx context.Context) (*unstruct
 	if obj.Spec.EnvironmentRef != nil {
 		environmentID := &apigeev1beta1.ApigeeEnvironmentIdentity{}
 		environmentName := obj.Spec.EnvironmentRef.External
-		if err := environmentID.FromExternal(a.id.ParentID.ParentID.String() + "/" + apigeev1beta1.EnvironmentIDToken + "/" + environmentName); err != nil {
+		if err := environmentID.FromExternal(a.id.ParentID.ParentID.String() + "/" + apigeev1beta1.ApigeeEnvironmentIDToken + "/" + environmentName); err != nil {
 			return nil, err
 		}
 		obj.Spec.EnvironmentRef.External = environmentID.String()
