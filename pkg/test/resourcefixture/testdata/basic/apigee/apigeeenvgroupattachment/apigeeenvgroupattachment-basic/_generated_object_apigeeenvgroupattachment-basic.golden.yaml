@@ -21,8 +21,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/91686927-06a2-4008-ac80-5fab2d3dc51b
+  externalRef: organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/${attachmentId}
   observedGeneration: 1
   observedState:
     createdAt: 1711974896
-    name: 91686927-06a2-4008-ac80-5fab2d3dc51b
+    name: ${attachmentId}

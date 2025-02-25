@@ -53,6 +53,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterOrganizationsEndpointAttachmentsServerServer(grpcServer, &endpointAttachmentsServer{MockService: s})
 	pb.RegisterOrganizationsEnvironmentsServerServer(grpcServer, &environmentsServer{MockService: s})
 	pb.RegisterOrganizationsEnvgroupsServerServer(grpcServer, &EnvgroupV1{MockService: s})
+	pb.RegisterOrganizationsEnvgroupsAttachmentsServerServer(grpcServer, &envgroupsAttachmentsServer{MockService: s})
 	pb.RegisterOrganizationsInstancesServerServer(grpcServer, &instancesServer{MockService: s})
 	pb.RegisterOrganizationsInstancesAttachmentsServerServer(grpcServer, &instancesAttachmentsServer{MockService: s})
 	pb.RegisterOrganizationsServerServer(grpcServer, &organizationsServer{MockService: s})
@@ -63,6 +64,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterOrganizationsEndpointAttachmentsServerHandler,
 		pb.RegisterOrganizationsEnvironmentsServerHandler,
 		pb.RegisterOrganizationsEnvgroupsServerHandler,
+		pb.RegisterOrganizationsEnvgroupsAttachmentsServerHandler,
 		pb.RegisterOrganizationsInstancesServerHandler,
 		pb.RegisterOrganizationsInstancesAttachmentsServerHandler,
 		pb.RegisterOrganizationsServerHandler,
