@@ -1,3 +1,367 @@
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/cloudresourcemanager.googleapis.com:enable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty",
+    "value": {}
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty",
+    "value": {}
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
+    "service": {
+      "name": "projects/${projectNumber}/services/cloudresourcemanager.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  }
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/cloudresourcemanager.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/dataproc.worker"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
@@ -30,18 +394,19 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "clusterName": "dataproccluster-${uniqueId}",
   "config": {
     "gceClusterConfig": {
-      "internalIpOnly": true
+      "internalIpOnly": false
     },
     "masterConfig": {
       "diskConfig": {
         "bootDiskType": "pd-standard"
       },
-      "machineTypeUri": "n2-standard-4",
+      "machineTypeUri": "n2-standard-2",
       "numInstances": 1
     }
   },
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
 }
@@ -131,7 +496,7 @@ X-Xss-Protection: 0
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
-        "internalIpOnly": true,
+        "internalIpOnly": false,
         "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
         "serviceAccountScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
@@ -149,7 +514,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -179,7 +544,7 @@ X-Xss-Protection: 0
           "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
           "hdfs:dfs.namenode.service.handler.count": "10",
           "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
-          "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "4000",
+          "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
           "mapred:mapreduce.job.maps": "21",
           "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
           "mapred:mapreduce.job.reduces": "7",
@@ -194,9 +559,9 @@ X-Xss-Protection: 0
           "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
           "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
           "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
-          "spark-env:SPARK_DAEMON_MEMORY": "4000m",
-          "spark:spark.driver.maxResultSize": "2048m",
-          "spark:spark.driver.memory": "4096m",
+          "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+          "spark:spark.driver.maxResultSize": "1024m",
+          "spark:spark.driver.memory": "2048m",
           "spark:spark.executor.cores": "2",
           "spark:spark.executor.instances": "2",
           "spark:spark.executor.memory": "6157m",
@@ -208,8 +573,8 @@ X-Xss-Protection: 0
           "spark:spark.ui.port": "0",
           "spark:spark.yarn.am.memory": "640m",
           "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
-          "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "4000",
-          "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "4000",
+          "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+          "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
           "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
           "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
           "yarn:yarn.nodemanager.resource.memory-mb": "13544",
@@ -239,6 +604,7 @@ X-Xss-Protection: 0
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
       "goog-dataproc-location": "us-central1",
+      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
@@ -268,7 +634,7 @@ X-Xss-Protection: 0
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": true,
+      "internalIpOnly": false,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -289,7 +655,7 @@ X-Xss-Protection: 0
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -319,7 +685,7 @@ X-Xss-Protection: 0
         "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
         "hdfs:dfs.namenode.service.handler.count": "10",
         "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
-        "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "4000",
+        "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
         "mapred:mapreduce.job.maps": "21",
         "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
         "mapred:mapreduce.job.reduces": "7",
@@ -334,9 +700,9 @@ X-Xss-Protection: 0
         "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
         "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
         "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
-        "spark-env:SPARK_DAEMON_MEMORY": "4000m",
-        "spark:spark.driver.maxResultSize": "2048m",
-        "spark:spark.driver.memory": "4096m",
+        "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+        "spark:spark.driver.maxResultSize": "1024m",
+        "spark:spark.driver.memory": "2048m",
         "spark:spark.executor.cores": "2",
         "spark:spark.executor.instances": "2",
         "spark:spark.executor.memory": "6157m",
@@ -348,8 +714,8 @@ X-Xss-Protection: 0
         "spark:spark.ui.port": "0",
         "spark:spark.yarn.am.memory": "640m",
         "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
-        "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "4000",
-        "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "4000",
+        "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+        "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
         "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
         "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
         "yarn:yarn.nodemanager.resource.memory-mb": "13544",
@@ -383,6 +749,7 @@ X-Xss-Protection: 0
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
@@ -400,12 +767,19 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
-404 Not Found
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "new-value",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -416,110 +790,180 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+    "clusterName": "dataproccluster-${uniqueId}",
+    "clusterUuid": "${dataStoreClusterUUID}",
+    "operationType": "UPDATE",
+    "status": {
+      "innerState": "PENDING",
+      "state": "PENDING",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
 }
 
 ---
 
-POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs:submit?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "job": {
-    "hiveJob": {
-      "continueOnFailure": true,
-      "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+    "clusterName": "dataproccluster-${uniqueId}",
+    "clusterUuid": "${dataStoreClusterUUID}",
+    "operationType": "UPDATE",
+    "status": {
+      "innerState": "DONE",
+      "state": "DONE",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "statusHistory": [
+      {
+        "state": "PENDING",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      },
+      {
+        "state": "RUNNING",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.Cluster",
+    "clusterName": "dataproccluster-${uniqueId}",
+    "clusterUuid": "${dataStoreClusterUUID}",
+    "config": {
+      "configBucket": "${dataStoreConfigBucketPath}",
+      "endpointConfig": {},
+      "gceClusterConfig": {
+        "internalIpOnly": false,
+        "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "serviceAccountScopes": [
+          "https://www.googleapis.com/auth/cloud-platform"
+        ],
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true,
+          "enableSecureBoot": true,
+          "enableVtpm": true
+        },
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+      },
+      "masterConfig": {
+        "diskConfig": {
+          "bootDiskSizeGb": 1000,
+          "bootDiskType": "pd-standard"
+        },
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "minCpuPlatform": "AUTOMATIC",
+        "numInstances": 1,
+        "preemptibility": "NON_PREEMPTIBLE"
+      },
+      "softwareConfig": {
+        "imageVersion": "2.2.63-debian12",
+        "properties": {
+          "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
+          "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+          "core:fs.gs.block.size": "134217728",
+          "core:fs.gs.metadata.cache.enable": "false",
+          "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+          "distcp:mapreduce.map.java.opts": "-Xmx768m",
+          "distcp:mapreduce.map.memory.mb": "1024",
+          "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+          "distcp:mapreduce.reduce.memory.mb": "1024",
+          "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+          "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+          "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+          "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+          "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+          "hdfs:dfs.namenode.handler.count": "20",
+          "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+          "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+          "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
+          "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+          "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+          "hdfs:dfs.namenode.service.handler.count": "10",
+          "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
+          "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+          "mapred:mapreduce.job.maps": "21",
+          "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+          "mapred:mapreduce.job.reduces": "7",
+          "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+          "mapred:mapreduce.map.cpu.vcores": "1",
+          "mapred:mapreduce.map.java.opts": "-Xmx2708m",
+          "mapred:mapreduce.map.memory.mb": "3386",
+          "mapred:mapreduce.reduce.cpu.vcores": "1",
+          "mapred:mapreduce.reduce.java.opts": "-Xmx2708m",
+          "mapred:mapreduce.reduce.memory.mb": "3386",
+          "mapred:mapreduce.task.io.sort.mb": "256",
+          "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
+          "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+          "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
+          "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+          "spark:spark.driver.maxResultSize": "1024m",
+          "spark:spark.driver.memory": "2048m",
+          "spark:spark.executor.cores": "2",
+          "spark:spark.executor.instances": "2",
+          "spark:spark.executor.memory": "6157m",
+          "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+          "spark:spark.plugins.defaultList": "com.google.cloud.dataproc.DataprocSparkPlugin",
+          "spark:spark.scheduler.mode": "FAIR",
+          "spark:spark.sql.cbo.enabled": "true",
+          "spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
+          "spark:spark.ui.port": "0",
+          "spark:spark.yarn.am.memory": "640m",
+          "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
+          "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+          "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+          "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+          "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+          "yarn:yarn.nodemanager.resource.memory-mb": "13544",
+          "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+          "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+          "yarn:yarn.scheduler.maximum-allocation-mb": "13544",
+          "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+        }
+      },
+      "tempBucket": "${dataStoreTempBucketPath}",
+      "workerConfig": {
+        "diskConfig": {
+          "bootDiskSizeGb": 1000,
+          "bootDiskType": "pd-standard"
+        },
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+        "minCpuPlatform": "AUTOMATIC",
+        "numInstances": 2,
+        "preemptibility": "NON_PREEMPTIBLE"
+      }
     },
     "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-autozone": "enabled",
+      "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
+      "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
+      "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
+      "goog-dataproc-location": "us-central1",
+      "label-one": "new-value",
       "managed-by-cnrm": "true"
     },
-    "placement": {
-      "clusterName": "dataproccluster-${uniqueId}"
-    },
-    "reference": {
-      "jobId": "dataprocjob-minimal-${uniqueId}"
-    }
-  },
-  "projectId": "${projectId}",
-  "region": "us-central1"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "driverControlFilesUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/",
-  "driverOutputResourceUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
-  "hiveJob": {
-    "continueOnFailure": true,
-    "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
-  },
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "placement": {
-    "clusterName": "dataproccluster-${uniqueId}"
-  },
-  "reference": {
-    "jobId": "dataprocjob-minimal-${uniqueId}",
     "projectId": "${projectId}"
-  },
-  "status": {
-    "state": 5,
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": 1,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    },
-    {
-      "state": 8,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    },
-    {
-      "details": "Agent reported job success",
-      "state": 2,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
-}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
   }
 }
 
@@ -546,7 +990,7 @@ X-Xss-Protection: 0
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": true,
+      "internalIpOnly": false,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -567,7 +1011,7 @@ X-Xss-Protection: 0
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
@@ -597,7 +1041,7 @@ X-Xss-Protection: 0
         "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
         "hdfs:dfs.namenode.service.handler.count": "10",
         "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
-        "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "4000",
+        "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
         "mapred:mapreduce.job.maps": "21",
         "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
         "mapred:mapreduce.job.reduces": "7",
@@ -612,9 +1056,9 @@ X-Xss-Protection: 0
         "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
         "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
         "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
-        "spark-env:SPARK_DAEMON_MEMORY": "4000m",
-        "spark:spark.driver.maxResultSize": "2048m",
-        "spark:spark.driver.memory": "4096m",
+        "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+        "spark:spark.driver.maxResultSize": "1024m",
+        "spark:spark.driver.memory": "2048m",
         "spark:spark.executor.cores": "2",
         "spark:spark.executor.instances": "2",
         "spark:spark.executor.memory": "6157m",
@@ -626,8 +1070,8 @@ X-Xss-Protection: 0
         "spark:spark.ui.port": "0",
         "spark:spark.yarn.am.memory": "640m",
         "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
-        "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "4000",
-        "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "4000",
+        "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+        "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
         "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
         "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
         "yarn:yarn.nodemanager.resource.memory-mb": "13544",
@@ -661,7 +1105,54 @@ X-Xss-Protection: 0
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
+    "label-one": "new-value",
     "managed-by-cnrm": "true"
+  },
+  "metrics": {
+    "hdfsMetrics": {
+      "dfs-blocks-corrupt": "0",
+      "dfs-blocks-default-replication-factor": "2",
+      "dfs-blocks-missing": "0",
+      "dfs-blocks-missing-repl-one": "0",
+      "dfs-blocks-pending-deletion": "0",
+      "dfs-blocks-under-replication": "0",
+      "dfs-capacity-present": 12345,
+      "dfs-capacity-remaining": 12345,
+      "dfs-capacity-total": 12345,
+      "dfs-capacity-used": 12345,
+      "dfs-nodes-decommissioned": "0",
+      "dfs-nodes-decommissioning": "0",
+      "dfs-nodes-running": "2"
+    },
+    "yarnMetrics": {
+      "yarn-apps-completed": "0",
+      "yarn-apps-failed": "0",
+      "yarn-apps-killed": "0",
+      "yarn-apps-pending": "0",
+      "yarn-apps-running": "0",
+      "yarn-apps-submitted": "0",
+      "yarn-containers-allocated": "0",
+      "yarn-containers-pending": "0",
+      "yarn-containers-reserved": "0",
+      "yarn-memory-mb-allocated": "0",
+      "yarn-memory-mb-available": "27088",
+      "yarn-memory-mb-pending": "0",
+      "yarn-memory-mb-reserved": "0",
+      "yarn-memory-mb-total": "27088",
+      "yarn-nodes-active": "2",
+      "yarn-nodes-decommissioned": "0",
+      "yarn-nodes-decommissioning": "0",
+      "yarn-nodes-lost": "0",
+      "yarn-nodes-new": "0",
+      "yarn-nodes-rebooted": "0",
+      "yarn-nodes-shutdown": "0",
+      "yarn-nodes-unhealthy": "0",
+      "yarn-vcores-allocated": "0",
+      "yarn-vcores-available": "8",
+      "yarn-vcores-pending": "0",
+      "yarn-vcores-reserved": "0",
+      "yarn-vcores-total": "8"
+    }
   },
   "projectId": "${projectId}",
   "status": {
@@ -671,6 +1162,14 @@ X-Xss-Protection: 0
   "statusHistory": [
     {
       "state": "CREATING",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "state": "RUNNING",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "state": "UPDATING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
