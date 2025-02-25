@@ -49,3 +49,13 @@ func (s *Services) ConfigureVisitor(url string, visitor NormalizingVisitor) {
 		supportsNormalization.ConfigureVisitor(url, visitor)
 	}
 }
+
+func (s *Services) Previsit(event Event, visitor NormalizingVisitor) {
+	for _, service := range s.Services {
+		supportsNormalization, ok := service.(SupportsNormalization)
+		if !ok {
+			continue
+		}
+		supportsNormalization.Previsit(event, visitor)
+	}
+}

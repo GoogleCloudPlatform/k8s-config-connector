@@ -142,7 +142,8 @@ generate-grpc-for-google-protos:
 		--grpc-gateway_opt standalone=true \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/data_store_service.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
-		./third_party/googleapis/google/bigtable/admin/v2/*.proto
+		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
+		./third_party/googleapis/google/cloud/dataproc/v1/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

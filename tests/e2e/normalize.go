@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 	"regexp"
 	"sort"
 	"strconv"
@@ -391,6 +392,8 @@ type objectWalker struct {
 	stringTransforms         []func(path string, value string) string
 	objectTransforms         []func(path string, value map[string]any)
 	sliceTransforms          []func(path string, value []any) []any
+
+	stringReplacements map[string]string
 }
 
 func newObjectWalker() *objectWalker {
@@ -399,15 +402,28 @@ func newObjectWalker() *objectWalker {
 		sortSlices:               sets.New[string](),
 		sortAndDeduplicateSlices: sets.New[string](),
 		replacePaths:             make(map[string]any),
+		stringReplacements:       make(map[string]string),
 	}
 }
 
 func (o *objectWalker) ReplacePath(path string, v any) {
-	if _, found := o.replacePaths[path]; found {
+	if v2, found := o.replacePaths[path]; found && !reflect.DeepEqual(v, v2) {
 		klog.Fatalf("objectWalker has duplicate ReplacePath %q", path)
 	}
 
 	o.replacePaths[path] = v
+}
+
+func (o *objectWalker) ReplaceStringValue(oldValue string, newValue string) {
+	if v2, found := o.stringReplacements[oldValue]; found && v2 != newValue {
+		klog.Fatalf("objectWalker has duplicate ReplaceStringValue %q", oldValue)
+	}
+
+	o.stringReplacements[oldValue] = newValue
+}
+
+func (o *objectWalker) RemovePath(path string) {
+	o.removePaths.Insert(path)
 }
 
 func (o *objectWalker) SortSlice(path string) {
@@ -530,11 +546,14 @@ func (o *objectWalker) visitPrimitive(v any, _ string) (any, error) {
 	return v, nil
 }
 
-func (o *objectWalker) visitString(v string, path string) (string, error) {
-	for _, fn := range o.stringTransforms {
-		v = fn(path, v)
+func (o *objectWalker) visitString(s string, path string) (string, error) {
+	for k, v := range o.stringReplacements {
+		s = strings.ReplaceAll(s, k, v)
 	}
-	return v, nil
+	for _, fn := range o.stringTransforms {
+		s = fn(path, s)
+	}
+	return s, nil
 }
 
 func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
@@ -647,6 +666,9 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	for _, event := range events {
 		findLinksInEvent(t, normalizer.Replacements, event)
 	}
+
+	// Remove idempotency tokens
+	events.ReplaceRequestQueryParameter("requestId", "123456")
 
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
@@ -869,14 +891,26 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)
 		}
+	})
 
+	// Run per-service replaceres
+	{
 		replacements := newObjectWalker()
-		normalizer.ConfigureVisitor(requestURL, replacements)
-		if err := replacements.visitMap(obj, ""); err != nil {
-			t.Fatalf("error normalizing response: %v", err)
+
+		for _, entry := range events {
+			normalizer.ConfigureVisitor(entry.Request.URL, replacements)
 		}
 
-	})
+		for _, entry := range events {
+			normalizer.Previsit(entry, replacements)
+		}
+
+		events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+			if err := replacements.visitMap(obj, ""); err != nil {
+				t.Fatalf("error normalizing response: %v", err)
+			}
+		})
+	}
 }
 
 // Compute URLs: Replace any compute beta URLs with v1 URLs

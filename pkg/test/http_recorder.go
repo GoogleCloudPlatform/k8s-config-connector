@@ -35,6 +35,56 @@ type LogEntry struct {
 	Error     string    `json:"error,omitempty"`
 }
 
+func (e *LogEntry) URL() string {
+	return e.Request.URL
+}
+
+// VisitRequestStringValues calls callback for any string values in the request body
+func (e *LogEntry) VisitRequestStringValues(callback func(path, value string)) {
+	body := e.Request.Body
+	if body == "" {
+		return
+	}
+
+	obj := make(map[string]any)
+	if err := json.Unmarshal([]byte(body), &obj); err != nil {
+		klog.Fatalf("error from json.Unmarshal(%q): %v", body, err)
+		return
+	}
+	visitStringValues(obj, "", callback)
+}
+
+// VisitResponseStringValues calls callback for any string values in the response body
+func (e *LogEntry) VisitResponseStringValues(callback func(path, value string)) {
+	body := e.Response.Body
+	if body == "" {
+		return
+	}
+
+	obj := make(map[string]any)
+	if err := json.Unmarshal([]byte(body), &obj); err != nil {
+		klog.Fatalf("error from json.Unmarshal(%q): %v", body, err)
+		return
+	}
+	visitStringValues(obj, "", callback)
+}
+
+// visitStringValues walks the object, building the path for
+func visitStringValues(obj any, path string, callback func(path, value string)) {
+	switch obj := obj.(type) {
+	case map[string]any:
+		for k, v := range obj {
+			visitStringValues(v, path+"."+k, callback)
+		}
+	case []any:
+		for _, v := range obj {
+			visitStringValues(v, path+"[]", callback)
+		}
+	case string:
+		callback(path, obj)
+	}
+}
+
 type Request struct {
 	Method string `json:"method,omitempty"`
 	URL    string `json:"url,omitempty"`
@@ -274,6 +324,22 @@ func (r *Response) RemoveHeader(key string) {
 func (r *Request) RemoveHeader(key string) {
 	key = http.CanonicalHeaderKey(key)
 	r.Header.Del(key)
+}
+
+func (s *Request) ReplaceQueryParameter(key string, value string) {
+	// Slightly hacky replacement to preserve order
+	url := s.URL
+	base, query, found := strings.Cut(url, "?")
+	if query == "" || !found {
+		return
+	}
+	parameters := strings.Split(query, "&")
+	for i, parameter := range parameters {
+		if strings.HasPrefix(parameter, key+"=") {
+			parameters[i] = key + "=" + value
+		}
+	}
+	s.URL = base + "?" + strings.Join(parameters, "&")
 }
 
 func (r *Response) ParseBody() map[string]any {

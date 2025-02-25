@@ -92,7 +92,6 @@ GET https://storage.googleapis.com/storage/v1/b?alt=json&maxResults=1000&project
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
