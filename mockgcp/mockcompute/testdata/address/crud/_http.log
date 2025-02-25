@@ -2,7 +2,6 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 33
 Content-Type: application/json
 
 {
@@ -42,7 +41,6 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -78,7 +76,6 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-c
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -112,7 +109,6 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-c
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -146,7 +142,6 @@ DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/u
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -181,7 +176,6 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private

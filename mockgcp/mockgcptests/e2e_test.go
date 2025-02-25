@@ -93,6 +93,10 @@ func TestScripts(t *testing.T) {
 					// gcloud includes a UUID in the user-agent, along with a lot of other client info (e.g. kernel version, python version)
 					// Just remove it from the golden output.
 					httpEvent.Request.RemoveHeader("user-agent")
+
+					// Remove the Content-Length header, as it changes with dynamic values
+					httpEvent.Request.RemoveHeader("Content-Length")
+					httpEvent.Response.RemoveHeader("Content-Length")
 				}
 
 				folderID := ""
