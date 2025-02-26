@@ -41,14 +41,12 @@ func FuzzSecureSourceManagerInstanceSpec(f *testing.F) {
 			// Handled specially
 			".name",
 
-			// Not yet implemented
-			".private_config",
-			".labels",
+			// ObservedState (output) fields
 			".create_time",
 			".update_time",
-
-			// ObservedState (output) fields
 			".host_config",
+			".private_config.http_service_attachment",
+			".private_config.ssh_service_attachment",
 			".state",
 			".state_note",
 		)
@@ -93,14 +91,11 @@ func FuzzSecureSourceManagerInstanceObservedState(f *testing.F) {
 			// Handled specially
 			".name",
 
-			// Not yet implemented
-			".private_config",
-			".labels",
-			".create_time",
-			".update_time",
-
 			// Spec fields
 			".kms_key",
+			".private_config.ca_pool",
+			".private_config.is_private",
+			".labels",
 		)
 
 		// Remove any output only or known-unimplemented fields

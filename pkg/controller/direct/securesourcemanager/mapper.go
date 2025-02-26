@@ -16,7 +16,6 @@ package securesourcemanager
 
 import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -62,32 +61,7 @@ func OperationMetadata_EndTime_ToProto(mapCtx *direct.MapContext, in *string) *t
 	mapCtx.Errorf("OperationMetadata_EndTime_ToProto not implemented")
 	return nil
 }
-func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Instance_PrivateConfig{}
-	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
-	if in.GetCaPool() != "" {
-		out.CaPoolRef = &refs.PrivateCACAPoolRef{External: in.GetCaPool()}
-	}
-	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
-	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
-	return out
-}
-func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance_PrivateConfig{}
-	out.IsPrivate = direct.ValueOf(in.IsPrivate)
-	if in.CaPoolRef != nil {
-		out.CaPool = in.CaPoolRef.External
-	}
-	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
-	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
-	return out
-}
+
 func SecureSourceManagerRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.SecureSourceManagerRepositoryObservedState {
 	if in == nil {
 		return nil

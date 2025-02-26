@@ -25,9 +25,11 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}
   observedGeneration: 1
   observedState:
+    createTime: "1970-01-01T00:00:00Z"
     hostConfig:
       api: ssminstance-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev
       gitHTTP: ssminstance-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev
       gitSSH: ssminstance-${uniqueId}-${projectNumber}-ssh.us-central1.sourcemanager.dev
       html: ssminstance-${uniqueId}-${projectNumber}.us-central1.sourcemanager.dev
     state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"
