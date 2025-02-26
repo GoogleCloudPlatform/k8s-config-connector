@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,35 +24,43 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(TPUNodeFuzzer())
+	fuzztesting.RegisterKRMFuzzer(tpuNodeFuzzer())
 }
 
-func TPUNodeFuzzer() fuzztesting.KRMFuzzer {
+func tpuNodeFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Node{},
 		TPUNodeSpec_FromProto, TPUNodeSpec_ToProto,
-		TPUNodeStatus_FromProto, TPUNodeStatus_ToProto,
+		TPUNodeObservedState_FromProto, TPUNodeObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".accelerator_type")
 	f.SpecFields.Insert(".tensorflow_version")
-	f.SpecFields.Insert(".network")
+	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".cidr_block")
-	f.SpecFields.Insert(".scheduling_config")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".use_service_networking")
+	f.SpecFields.Insert(".network")
+	f.SpecFields.Insert(".scheduling_config")
 
-	f.StatusFields.Insert(".ip_address")
-	f.StatusFields.Insert(".port")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".health_description")
-	f.StatusFields.Insert(".service_account")
-	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".network_endpoints")
-	f.StatusFields.Insert(".health")
+	f.StatusFields.Insert(".health_description")
+	f.StatusFields.Insert(".state")
+	f.StatusFields.Insert(".service_account")
 	f.StatusFields.Insert(".api_version")
 	f.StatusFields.Insert(".symptoms")
+	f.StatusFields.Insert(".health")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	// Identity fields
+	f.UnimplementedFields.Insert(".name")
+
+	// Labels
+	f.UnimplementedFields.Insert(".labels")
+
+	// Volatile fields we don't (yet) want to expose
+	f.UnimplementedFields.Insert(".create_time")
+
+	// Deprecated fields we don't support
+	f.UnimplementedFields.Insert(".ip_address")
+	f.UnimplementedFields.Insert(".port")
+
 	return f
 }
