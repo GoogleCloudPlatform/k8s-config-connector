@@ -35,6 +35,8 @@ import (
 	"k8s.io/klog/v2"
 )
 
+const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
+
 func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
@@ -98,6 +100,18 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
+
+	// Specific to Dataproc
+	{
+		visitor.ReplacePath(".status.clusterUuid", "${clusterUuid}")
+		visitor.ReplacePath(".status.status.stateStartTime", PlaceholderTimestamp)
+		visitor.ReplacePath(".status.statusHistory[].stateStartTime", PlaceholderTimestamp)
+
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-present", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-remaining", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-total", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-used", "56789")
+	}
 
 	// Specific to Firestore
 	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
