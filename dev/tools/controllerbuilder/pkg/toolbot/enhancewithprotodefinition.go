@@ -70,7 +70,9 @@ func (x *EnhanceWithProtoDefinition) EnhanceDataPoint(ctx context.Context, p *Da
 		if protoService != nil {
 			p.SetInput("proto.service.definition", strings.Join(protoService.Definition, "\n"))
 		} else {
-			return fmt.Errorf("unable to find proto service %q", service)
+			klog.Infof("unable to find proto service %q", service)
+			return nil
+			//return fmt.Errorf("unable to find proto service %q", service)
 		}
 	}
 
