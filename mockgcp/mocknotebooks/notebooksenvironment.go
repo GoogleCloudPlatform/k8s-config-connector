@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -34,12 +35,7 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-type notebookServiceV1 struct {
-	*MockService
-	pb.UnimplementedNotebookServiceServer
-}
-
-func (s *notebookServiceV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentRequest) (*pb.Environment, error) {
+func (s *NotebookServiceV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentRequest) (*pb.Environment, error) {
 	name, err := s.parseEnvironmentName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -57,7 +53,7 @@ func (s *notebookServiceV1) GetEnvironment(ctx context.Context, req *pb.GetEnvir
 	return obj, nil
 }
 
-func (s *notebookServiceV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnvironmentRequest) (*longrunningpb.Operation, error) {
+func (s *NotebookServiceV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnvironmentRequest) (*longrunningpb.Operation, error) {
 	reqName := fmt.Sprintf("%s/environments/%s", req.GetParent(), req.GetEnvironmentId())
 	name, err := s.parseEnvironmentName(reqName)
 	if err != nil {
@@ -73,10 +69,22 @@ func (s *notebookServiceV1) CreateEnvironment(ctx context.Context, req *pb.Creat
 		return nil, err
 	}
 
-	return s.operations.SuccessLRO(ctx, name.Project.ID, obj)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	metadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.New(time.Now()),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "create",
+		Endpoint:              "CreateEnvironment",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
+		return obj, nil
+	})
 }
 
-func (s *notebookServiceV1) DeleteEnvironment(ctx context.Context, req *pb.DeleteEnvironmentRequest) (*longrunningpb.Operation, error) {
+func (s *NotebookServiceV1) DeleteEnvironment(ctx context.Context, req *pb.DeleteEnvironmentRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseEnvironmentName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -88,23 +96,36 @@ func (s *notebookServiceV1) DeleteEnvironment(ctx context.Context, req *pb.Delet
 		return nil, err
 	}
 
-	return s.operations.SuccessLRO(ctx, name.Project.ID, nil)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	metadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.Now(),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "delete",
+		Endpoint:              "DeleteEnvironment",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type environmentName struct {
 	Project     *projects.ProjectData
+	Location    string
 	Environment string
 }
 
 func (n *environmentName) String() string {
-	return "projects/" + n.Project.ID + "/environments/" + n.Environment
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/environments/" + n.Environment
 }
 
 // parseEnvironmentName parses a string into a environmentName.
 // The expected form is projects/<projectID>/environments/<environment>.
-func (s *notebookServiceV1) parseEnvironmentName(name string) (*environmentName, error) {
+func (s *NotebookServiceV1) parseEnvironmentName(name string) (*environmentName, error) {
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "environments" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "environments" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
@@ -112,7 +133,8 @@ func (s *notebookServiceV1) parseEnvironmentName(name string) (*environmentName,
 
 		name := &environmentName{
 			Project:     project,
-			Environment: tokens[3],
+			Location:    tokens[3],
+			Environment: tokens[5],
 		}
 
 		return name, nil
