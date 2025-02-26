@@ -93,6 +93,10 @@ func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 		}
 		// klog.Infof("%v", p)
 		if err := x.visitGoFile(ctx, p); err != nil {
+			if strings.HasSuffix(p, "cmd/runner/mock_commands.go") {
+				 klog.Infof("Skipping file: %v", p)
+				return nil
+			}
 			return fmt.Errorf("processing file %q: %w", p, err)
 		}
 		return nil
