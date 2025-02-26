@@ -4164,6 +4164,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "spannerbackupschedules.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "SpannerBackupSchedule",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "spanner.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "SpannerDatabase",
