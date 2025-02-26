@@ -274,20 +274,41 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		t.Fatalf("E2E_KUBE_TARGET=%q not supported", targetKube)
 	}
 
+	// Set up eventSinks for logging GCP and kube requests
+	eventSinks := test.EventSinksFromContext(ctx)
+
+	// Set up event sink for logging to a file, if ARTIFACTS env var is set
+	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
+		outputDir := filepath.Join(artifacts, "http-logs")
+		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
+	} else {
+		log.Info("env var ARTIFACTS is not set; will not record http log")
+	}
+
 	// Set up logging of k8s requests
 	logKubeRequests := true
 	if logKubeRequests {
-		eventSinks := test.EventSinksFromContext(ctx)
 		kubeEvents := test.NewMemoryEventSink()
 		h.KubeEvents = kubeEvents
 
-		eventSinks = append(eventSinks, kubeEvents)
+		// Don't log these to general events (for now)
+		kubeEventSinks := append(eventSinks, kubeEvents)
 
 		wrapTransport := func(rt http.RoundTripper) http.RoundTripper {
-			t := test.NewHTTPRecorder(rt, eventSinks...)
+			t := test.NewHTTPRecorder(rt, kubeEventSinks...)
 			return t
 		}
 		h.restConfig.Wrap(wrapTransport)
+	}
+
+	// Set up capture of GCP requests
+	{
+		eventSink := test.NewMemoryEventSink()
+		ctx = test.AddSinkToContext(ctx, eventSink)
+		eventSinks = append(eventSinks, eventSink)
+		h.Ctx = ctx
+
+		h.Events = eventSink
 	}
 
 	if h.client == nil {
@@ -446,22 +467,6 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
 	} else {
 		h.Project = testgcp.GetDefaultProject(t)
-	}
-
-	eventSink := test.NewMemoryEventSink()
-	ctx = test.AddSinkToContext(ctx, eventSink)
-	h.Ctx = ctx
-
-	h.Events = eventSink
-
-	eventSinks := test.EventSinksFromContext(ctx)
-
-	// Set up event sink for logging to a file, if ARTIFACTS env var is set
-	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
-		outputDir := filepath.Join(artifacts, "http-logs")
-		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
-	} else {
-		log.Info("env var ARTIFACTS is not set; will not record http log")
 	}
 
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
