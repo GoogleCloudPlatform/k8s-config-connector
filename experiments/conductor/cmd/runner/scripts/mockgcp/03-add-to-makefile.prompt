@@ -1,4 +1,4 @@
-Please add the generation for ${PROTO_PACKAGE} to the `generate-grpc-for-google-protos` target in `Makefile.
+Please add the generation for ${PROTO_PACKAGE} to the `generate-grpc-for-google-protos` target in `Makefile`.
 
 Hints:
 
