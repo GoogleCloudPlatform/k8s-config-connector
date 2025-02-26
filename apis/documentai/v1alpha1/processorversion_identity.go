@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -44,27 +43,21 @@ func (i *ProcessorVersionIdentity) Parent() *ProcessorVersionParent {
 }
 
 type ProcessorVersionParent struct {
-	ProjectID string
-	Location  string
+	Processor string
 }
 
 func (p *ProcessorVersionParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return p.Processor
 }
 
 // New builds a ProcessorVersionIdentity from the Config Connector ProcessorVersion object.
 func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj *DocumentAIProcessorVersion) (*ProcessorVersionIdentity, error) {
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	//Get parent
+	processorRef := &ProcessorRef{}
+	processor, err := processorRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	location := common.ValueOf(obj.Spec.Location)
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +76,8 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Processor != processor {
+			return nil, fmt.Errorf("spec.processorRef changed, expect %s, got %s", actualParent.Processor, processor)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,8 +86,7 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 	}
 	return &ProcessorVersionIdentity{
 		parent: &ProcessorVersionParent{
-			ProjectID: projectID,
-			Location:  location,
+			Processor: processor,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +94,13 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseProcessorVersionExternal(external string) (parent *ProcessorVersionParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "processorversions" {
-		return nil, "", fmt.Errorf("format of DocumentAI external=%q was not known (use projects/{{projectID}}/locations/{{location}}/processorversions/{{processorversionID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "processors" || tokens[6] != "processorversions" {
+		return nil, "", fmt.Errorf("format of DocumentAI external=%q was not known (use projects/{{projectID}}/locations/{{location}}/processors/{{processorID}}/processorversions/{{processorversionID}})", external)
 	}
+	processor := strings.Join(tokens[:len(tokens)-2], "/")
 	parent = &ProcessorVersionParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		processor,
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
