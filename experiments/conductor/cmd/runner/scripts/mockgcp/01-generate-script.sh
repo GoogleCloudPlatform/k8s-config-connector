@@ -58,7 +58,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 git co master
-git co ${BRANCH_NAME}
+git co ${BRANCH_NAME} || git co -b ${BRANCH_NAME}
 
 cd ${REPO_ROOT}/mockgcp
 
@@ -67,6 +67,6 @@ codebot --prompt=${LOG_DIR}/prompt | tee ${LOG_DIR}/codebot.log
 git status
 git add ${EXPECTED_PATH}/script.yaml
 git add .
-git commit -m "autogen: generate-script for ${GCLOUD_COMMAND}"
+git commit -m "mockgcp: test script for ${GCLOUD_COMMAND}"
 
 echo "Done"
