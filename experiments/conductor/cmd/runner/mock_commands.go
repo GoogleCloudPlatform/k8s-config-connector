@@ -62,123 +62,6 @@ When you have completed, please output the name of the test script you have crea
 
 { "path_to_created_test": "mock<GROUP>/testdata/<RESOURCE>/crud/script.yaml" }`
 
-func createScriptYamlBash(opts *RunnerOptions, branch Branch) {
-	if branch.Command == "" {
-		log.Printf("SKIPPING %s, no gcloud command\r\n", branch.Name)
-		return
-	}
-
-	stdin, stdout, exit, err := startBash()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer stdin.Close()
-	defer exit()
-
-	cdRepoBranchDirBash(opts, "mockgcp", stdin, stdout)
-
-	// Change to the checkout branch
-	log.Printf("COMMAND: git checkout %s and echo done\r\n", branch.Local)
-	if _, err = stdin.Write([]byte(fmt.Sprintf("git checkout %s && echo done\n", branch.Local))); err != nil {
-		log.Fatal(err)
-	}
-	done := false
-	outBuffer := make([]byte, 1000)
-	var msg string
-	for !done {
-		length, err := stdout.Read(outBuffer)
-		if err != nil {
-			log.Fatal(err)
-		}
-		msg += string(outBuffer[:length])
-		done = strings.HasSuffix(msg, "done\n")
-	}
-	log.Printf("BRANCH CHECKOUT %s\r\n", msg)
-
-	// Check to see if the script file already exists
-	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
-	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", scriptFile)
-	if _, err := os.Stat(scriptFullPath); !errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, %s already exists\r\n", branch.Name, scriptFullPath)
-		return
-	}
-
-	tmp := strings.ReplaceAll(SCRIPT_YAML_PROMPT, "<TICK>", "`")
-	tmp = strings.ReplaceAll(tmp, "<GCLOUD_COMMAND>", branch.Command)
-	tmp = strings.ReplaceAll(tmp, "<GROUP>", branch.Group)
-	prompt := strings.ReplaceAll(tmp, "<RESOURCE>", strings.ToLower(branch.Resource))
-	log.Printf("CODEBOT PROMPT %s\r\n", prompt)
-
-	// Delete then write the prompt file.
-	promptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "prompt.txt")
-	if _, err := os.Stat(promptPath); !errors.Is(err, os.ErrNotExist) {
-		log.Println("COMMAND: cleaning up old prompt.txt")
-		err = os.Remove(promptPath)
-		if err != nil {
-			log.Printf("Attempt to clean up prompt.txt failed with %v", err)
-		}
-	}
-	log.Println("COMMAND: writing new prompt.txt")
-	err = os.WriteFile(promptPath, []byte(prompt), 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Run the LLM to generate the file.
-	log.Println("COMMAND: codebot --ui-type=prompt --prompt=prompt.txt and echo done")
-	if _, err = stdin.Write([]byte("codebot --ui-type=prompt --prompt=prompt.txt && echo done\n")); err != nil {
-		log.Fatal(err)
-	}
-	done = false
-	for !done {
-		length, err := stdout.Read(outBuffer)
-		if err != nil {
-			log.Fatal(err)
-		}
-		msg += string(outBuffer[:length])
-		done = strings.HasSuffix(msg, "done\n")
-	}
-	log.Printf("CODEBOT GENERATE %s\r\n", msg)
-
-	// Check to see if the script file was created
-	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, %s was not created\r\n", branch.Name, scriptFullPath)
-		return
-	}
-
-	// Add the new file to the current branch.
-	log.Printf("COMMAND: git add %s and echo done\r\n", scriptFile)
-	if _, err = stdin.Write([]byte(fmt.Sprintf("git add %s && echo done\n", scriptFile))); err != nil {
-		log.Fatal(err)
-	}
-	done = false
-	for !done {
-		length, err := stdout.Read(outBuffer)
-		if err != nil {
-			log.Fatal(err)
-		}
-		msg += string(outBuffer[:length])
-		done = strings.HasSuffix(msg, "done\n")
-	}
-	log.Printf("BRANCH ADD %s\r\n", msg)
-
-	// Commit the change to the current branch.
-	log.Printf("COMMAND: git commit -m \"Adding LLM/gcloud generated test script.yaml for %s\" and echo done\r\n", branch.Name)
-	if _, err = stdin.Write([]byte(fmt.Sprintf("git commit -m \"Adding LLM/gcloud generated test script.yaml for %s\" && echo done\n", branch.Name))); err != nil {
-		log.Fatal(err)
-	}
-	done = false
-	for !done {
-		length, err := stdout.Read(outBuffer)
-		if err != nil {
-			log.Fatal(err)
-		}
-		msg += string(outBuffer[:length])
-		done = strings.HasSuffix(msg, "done\n")
-	}
-	log.Printf("BRANCH COMMIT %s\r\n", msg)
-}
-
 func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
 	defer close()
@@ -201,25 +84,9 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 		return
 	}
 
-	tmp := strings.ReplaceAll(SCRIPT_YAML_PROMPT, "<TICK>", "`")
-	tmp = strings.ReplaceAll(tmp, "<GCLOUD_COMMAND>", branch.Command)
-	tmp = strings.ReplaceAll(tmp, "<GROUP>", branch.Group)
-	prompt := strings.ReplaceAll(tmp, "<RESOURCE>", strings.ToLower(branch.Resource))
-	log.Printf("CODEBOT PROMPT %s\r\n", prompt)
-
 	// Delete then write the prompt file.
 	promptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "prompt.txt")
-	if _, err := os.Stat(promptPath); !errors.Is(err, os.ErrNotExist) {
-		log.Println("COMMAND: cleaning up old prompt.txt")
-		err = os.Remove(promptPath)
-		if err != nil {
-			log.Printf("Attempt to clean up prompt.txt failed with %v", err)
-		}
-	}
-	log.Println("COMMAND: writing new prompt.txt")
-	if err := os.WriteFile(promptPath, []byte(prompt), 0644); err != nil {
-		log.Fatal(err)
-	}
+	writeTemplateToFile(branch, promptPath, SCRIPT_YAML_PROMPT)
 
 	// Run the LLM to generate the file.
 	start := time.Now()
@@ -247,24 +114,10 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Add the new file to the current branch.
-	log.Printf("COMMAND: git add %s\r\n", scriptFile)
-	gitadd := exec.Command("git", "add", scriptFile)
-	gitadd.Dir = workDir
-	gitadd.Stdout = &out
-	if err := gitadd.Run(); err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("BRANCH ADD: %q\n", out.String())
+	gitAdd(workDir, out, scriptFile)
 
 	// Commit the change to the current branch.
-	log.Printf("COMMAND: git commit -m \"Adding LLM/gcloud generated test script.yaml for %s\"\r\n", branch.Name)
-	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("\"Adding LLM/gcloud generated test script.yaml for %s\"", branch.Name))
-	gitcommit.Dir = workDir
-	gitcommit.Stdout = &out
-	if err := gitcommit.Run(); err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("BRANCH COMMIT: %q\n", out.String())
+	gitCommit(workDir, out, fmt.Sprintf("Adding LLM/gcloud generated test script.yaml for %s", branch.Name))
 }
 
 const CAPTURE_HTTP_LOG string = `I need to capture the logs from GCP for running a mockgcp test that I just created.  I then need to create a git commit.
@@ -343,24 +196,10 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Add the new file to the current branch.
-	log.Printf("COMMAND: git add %s\r\n", logFullPath)
-	gitadd := exec.Command("git", "add", logFullPath)
-	gitadd.Dir = workDir
-	gitadd.Stdout = &out
-	if err := gitadd.Run(); err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("BRANCH ADD: %q\n", out.String())
+	gitAdd(workDir, out, logFullPath)
 
 	// Commit the change to the current branch.
-	log.Printf("COMMAND: git commit -m \"Adding mockgcptests generated _http.log for %s\"\r\n", branch.Name)
-	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("\"Adding mockgcptests generated _http.log for %s\"", branch.Name))
-	gitcommit.Dir = workDir
-	gitcommit.Stdout = &out
-	if err := gitcommit.Run(); err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("BRANCH COMMIT: %q\n", out.String())
+	gitCommit(workDir, out, fmt.Sprintf("Adding mockgcptests generated _http.log for %s", branch.Name))
 }
 
 const MOCK_SERVICE_GO_GEN string = `mock<SERVICE>/service.go
@@ -397,46 +236,13 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 		return
 	}
 
-	tmp := strings.ReplaceAll(MOCK_SERVICE_GO_GEN, "<TICK>", "`")
-	tmp = strings.ReplaceAll(tmp, "<SERVICE>", branch.Group)
-	tmp = strings.ReplaceAll(tmp, "<HTTP_HOST>", branch.HostName)
-	service_prompt := strings.ReplaceAll(tmp, "<PROTO_SERVICE>", branch.ProtoSvc)
-	log.Printf("MOCK SERVICE GEN PROMPT %s\r\n", service_prompt)
-
-	tmp = strings.ReplaceAll(MOCK_RESOURCE_GO_GEN, "<TICK>", "`")
-	tmp = strings.ReplaceAll(tmp, "<SERVICE>", branch.Group)
-	tmp = strings.ReplaceAll(tmp, "<RESOURCE>", strings.ToLower(branch.Resource))
-	tmp = strings.ReplaceAll(tmp, "<PROTO_SERVICE>", branch.ProtoSvc)
-	resource_prompt := strings.ReplaceAll(tmp, "<PROTO_MESSAGE>", branch.ProtoPath)
-	log.Printf("MOCK RESOURCE GEN PROMPT %s\r\n", resource_prompt)
-
-	// Delete then write the service prompt file.
+	// Delete then write the service go prompt file.
 	servicePromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "service_prompt.txt")
-	if _, err := os.Stat(servicePromptPath); !errors.Is(err, os.ErrNotExist) {
-		log.Println("COMMAND: cleaning up old service_prompt.txt")
-		err = os.Remove(servicePromptPath)
-		if err != nil {
-			log.Printf("Attempt to clean up service_prompt.txt failed with %v", err)
-		}
-	}
-	log.Println("COMMAND: writing new service_prompt.txt")
-	if err := os.WriteFile(servicePromptPath, []byte(service_prompt), 0644); err != nil {
-		log.Fatal(err)
-	}
+	writeTemplateToFile(branch, servicePromptPath, MOCK_SERVICE_GO_GEN)
 
-	// Delete then write the resource prompt file.
+	// Delete then write the resource go prompt file.
 	resourcePromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "resource_prompt.txt")
-	if _, err := os.Stat(resourcePromptPath); !errors.Is(err, os.ErrNotExist) {
-		log.Println("COMMAND: cleaning up old resource_prompt.txt")
-		err = os.Remove(resourcePromptPath)
-		if err != nil {
-			log.Printf("Attempt to clean up resource_prompt.txt failed with %v", err)
-		}
-	}
-	log.Println("COMMAND: writing new resource_prompt.txt")
-	if err := os.WriteFile(resourcePromptPath, []byte(resource_prompt), 0644); err != nil {
-		log.Fatal(err)
-	}
+	writeTemplateToFile(branch, resourcePromptPath, MOCK_RESOURCE_GO_GEN)
 
 	// Run the controller builder to generate the service go file.
 	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
@@ -509,22 +315,120 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Add the new files to the current branch.
-	log.Printf("COMMAND: git add %s %s\r\n", serviceFile, resourceFile)
-	gitadd := exec.Command("git", "add", serviceFile, resourceFile)
-	gitadd.Dir = workDir
-	gitadd.Stdout = &out
-	if err := gitadd.Run(); err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("BRANCH ADD: %q\n", out.String())
+	gitAdd(workDir, out, serviceFile, resourceFile)
 
 	// Commit the change to the current branch.
-	log.Printf("COMMAND: git commit -m \"Adding mock service and resource for %s\"\r\n", branch.Name)
-	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("\"Adding mock service and resource for %s\"", branch.Name))
-	gitcommit.Dir = workDir
-	gitcommit.Stdout = &out
-	if err := gitcommit.Run(); err != nil {
+	gitCommit(workDir, out, fmt.Sprintf("Adding mock service and resource for %s", branch.Name))
+}
+
+const ADD_SERVICE_TO_ROUNDTRIP string = `Please add the services in <TICK>mock<SERVICE><TICK> to <TICK>mock_http_roundtrip.go<TICK>
+
+* Use the ReadFile command to read the contents of the file.
+* Use the EditFile command to insert mock<SERVICE> into the list of services.
+* Please keep the list of services in alphabetical order.
+* Don't forget to import the package!`
+
+func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, out)
+
+	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
+	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, missing %s\r\n", branch.Name, serviceFile)
+		return
+	}
+
+	// Delete then write the add service to roundtrip prompt file.
+	roundtripPromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "roundtrip_prompt.txt")
+	writeTemplateToFile(branch, roundtripPromptPath, ADD_SERVICE_TO_ROUNDTRIP)
+
+	// Run the LLM to add the service to roundtrip file..
+	start := time.Now()
+	log.Println("COMMAND: codebot --ui-type=prompt --prompt=roundtrip_prompt.txt")
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+	codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=roundtrip_prompt.txt")
+	codebot.Dir = workDir
+	codebot.Stdout = &out
+	if err := codebot.Run(); err != nil {
+		stop := time.Now()
+		diff := stop.Sub(start)
+		log.Printf("CODEBOT GENERATE ERROR (%v): %q\n", diff, out.String())
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH COMMIT: %q\n", out.String())
+	stop := time.Now()
+	diff := stop.Sub(start)
+	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, out.String())
+
+	// Add the new files to the current branch.
+	gitAdd(workDir, out, "mock_http_roundtrip.go")
+
+	// Commit the change to the current branch.
+	gitCommit(workDir, out, fmt.Sprintf("Adding service to mock_http_roundtrip.go for %s", branch.Name))
+}
+
+const ADD_PROTO_TO_MAKEFILE string = `Please add the generation for <TICK><PROTO_PACKAGE><TICK> to the <TICK>generate-grpc-for-google-protos<TICK> target in <TICK>Makefile<TICK>.
+
+Hints:
+
+* Use the ReadFile command to read the contents of the file.
+
+* Use the EditFile command to insert the appropriate third_party directory into the list of paths.
+
+* The generate-grpc-for-google-protos command contains a long protoc command, split across multiple lines.  There should be a backslash character (\) on all lines but the last.  Make sure there is a space before the backslash.`
+
+func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, out)
+
+	// TODO: Populate the ProtoPath in branches-all.yaml.
+	// Maybe populate it with the actual filepath?
+	dirs := strings.Split(branch.ProtoPath, ".")
+	apisDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
+	protoDir := filepath.Join(dirs[:len(dirs)-1]...)
+	protoFile := filepath.Join(apisDir, protoDir, fmt.Sprintf("%s.proto", dirs[len(dirs)-1]))
+	if _, err := os.Stat(protoFile); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, missing %s\r\n", branch.Name, protoFile)
+		return
+	}
+
+	// Delete then write the add service to roundtrip prompt file.
+	roundtripPromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "makefile_prompt.txt")
+	template := strings.ReplaceAll(ADD_PROTO_TO_MAKEFILE, "<PROTO_PACKAGE>", protoFile)
+	writeTemplateToFile(branch, roundtripPromptPath, template)
+
+	// Run the LLM to add the service to roundtrip file..
+	start := time.Now()
+	log.Println("COMMAND: codebot --ui-type=prompt --prompt=makefile_prompt.txt")
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+	codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=makefile_prompt.txt")
+	codebot.Dir = workDir
+	codebot.Stdout = &out
+
+	if err := codebot.Run(); err != nil {
+		stop := time.Now()
+		diff := stop.Sub(start)
+		log.Printf("CODEBOT GENERATE ERROR (%v): %q\n", diff, out.String())
+		log.Fatal(err)
+	}
+
+	stop := time.Now()
+	diff := stop.Sub(start)
+	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, out.String())
+
+	// Add the new files to the current branch.
+	gitAdd(workDir, out, "Makefile")
+
+	// Commit the change to the current branch.
+	gitCommit(workDir, out, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
+
 }

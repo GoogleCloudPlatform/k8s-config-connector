@@ -101,8 +101,9 @@ type Branch struct {
 	Kind      string `yaml:"kind"`          // AIModel
 	Package   string `yaml:"package"`       // google.ai.generativelanguage.v1beta
 	Proto     string `yaml:"proto"`         // Model
-	ProtoPath string `yaml:"proto-path"`    // google.ai.generativelanguage.v1beta.Model
+	ProtoPath string `yaml:"proto-path"`    // google.ai.generativelanguage.v1beta.model_service
 	ProtoSvc  string `yaml:"proto-service"` // google.ai.generativelanguage.v1beta.ModelService
+	ProtoMsg  string `yaml:"proto-msg"`     // google.ai.generativelanguage.v1beta.Model
 	HostName  string `yaml:"host-name"`     // generativelanguage.googleapis.com
 
 	Notes []string `yaml:"notes"` // Observation goes here
@@ -161,7 +162,6 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	case 4:
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			// createScriptYamlBash(opts, branch)
 			createScriptYaml(opts, branch)
 		}
 	case 5:
@@ -173,6 +173,16 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate mock Service and Resource go files: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateMockGo(opts, branch)
+		}
+	case 7:
+		for idx, branch := range branches.Branches {
+			log.Printf("Add service to mock_http_roundtrip.go: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			addServiceToRoundTrip(opts, branch)
+		}
+	case 8:
+		for idx, branch := range branches.Branches {
+			log.Printf("Add proto to makefile: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			addProtoToMakfile(opts, branch)
 		}
 	default:
 		log.Fatalf("unrecognixed command: %d", opts.command)
