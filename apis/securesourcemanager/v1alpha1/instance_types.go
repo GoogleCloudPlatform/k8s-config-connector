@@ -37,10 +37,8 @@ type SecureSourceManagerInstanceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* NOTYET
 	// Optional. Labels as key value pairs.
 	Labels map[string]string `json:"labels,omitempty"`
-	*/
 
 	// Optional. Immutable. Customer-managed encryption key name.
 	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
@@ -71,11 +69,11 @@ type SecureSourceManagerInstanceStatus struct {
 // SecureSourceManagerInstanceSpec defines the desired state of SecureSourceManagerInstance
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance
 type SecureSourceManagerInstanceObservedState struct {
-	// // Output only. Create timestamp.
-	// CreateTime *string `json:"createTime,omitempty"`
+	// Output only. Create timestamp.
+	CreateTime *string `json:"createTime,omitempty"`
 
-	// // Output only. Update timestamp.
-	// UpdateTime *string `json:"updateTime,omitempty"`
+	// Output only. Update timestamp.
+	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Current state of the instance.
 	State *string `json:"state,omitempty"`
@@ -85,25 +83,22 @@ type SecureSourceManagerInstanceObservedState struct {
 	StateNote *string `json:"stateNote,omitempty"`
 
 	// Output only. A list of hostnames for this instance.
-	HostConfig *Instance_HostConfig `json:"hostConfig,omitempty"`
+	HostConfig *Instance_HostConfigObservedState `json:"hostConfig,omitempty"`
+
+	// Optional. PrivateConfig includes settings for private instance.
+	PrivateConfig *Instance_PrivateConfigObservedState `json:"privateConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig
 type Instance_PrivateConfig struct {
 	// Required. Immutable. Indicate if it's private instance.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.is_private
 	IsPrivate *bool `json:"isPrivate,omitempty"`
 
 	// Required. Immutable. CA pool resource, resource must in the format of
 	//  `projects/{project}/locations/{location}/caPools/{ca_pool}`.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.ca_pool
 	CaPoolRef *refs.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
-
-	// Output only. Service Attachment for HTTP, resource is in the format of
-	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
-	HTTPServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
-
-	// Output only. Service Attachment for SSH, resource is in the format of
-	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
-	SSHServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
 }
 
 // +genclient
