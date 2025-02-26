@@ -18,6 +18,7 @@ import (
 	"context"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -25,16 +26,16 @@ import (
 
 var _ refsv1beta1.Ref = &ApigeeEnvgroupAttachmentRef{}
 
-// ApigeeEnvgroupAttachmentRef is a reference to a ApigeeEnvgroup resource.
+// ApigeeEnvgroupAttachmentRef is a reference to a ApigeeEnvgroupAttachment resource.
 type ApigeeEnvgroupAttachmentRef struct {
-	// A reference to an externally managed EnvgroupAttachment resource.
+	// A reference to an externally managed ApigeeEnvgroupAttachment resource.
 	// Should be in the format "organizations/{{organizationID}}/envgroups/{{envgroupID}}/attachments/{{attachmentID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a EnvgroupAttachment resource.
+	// The name of a ApigeeEnvgroupAttachment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a EnvgroupAttachment resource.
+	// The namespace of a ApigeeEnvgroupAttachment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
