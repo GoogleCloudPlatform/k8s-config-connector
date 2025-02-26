@@ -174,9 +174,6 @@ spec:
                     description: Output only. The time at which the environment group
                       attachment was created as milliseconds since epoch.
                     type: string
-                  name:
-                    description: ID of the environment group attachment.
-                    type: string
                 type: object
             type: object
         required:

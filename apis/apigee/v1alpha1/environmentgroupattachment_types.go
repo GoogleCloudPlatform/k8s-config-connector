@@ -57,10 +57,6 @@ type ApigeeEnvgroupAttachmentStatus struct {
 // ApigeeEnvgroupAttachmentObservedState is the state of the ApigeeEnvgroupAttachment resource as most recently observed in GCP.
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
 type ApigeeEnvgroupAttachmentObservedState struct {
-	// ID of the environment group attachment.
-	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment.name
-	Name *string `json:"name,omitempty"`
-
 	// Output only. The time at which the environment group attachment was created as milliseconds since epoch.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment.created_at
 	CreatedAt *string `json:"createdAt,omitempty"`

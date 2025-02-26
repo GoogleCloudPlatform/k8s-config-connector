@@ -99,7 +99,7 @@ func (a *ApigeeEnvgroupAttachmentAdapter) Find(ctx context.Context) (bool, error
 	log.V(2).Info("getting ApigeeInstanceAttachment", "name", a.id)
 
 	if a.id.String() != "" {
-		// If we have the service-generated ID saved in status, we can use it to lookup the attachment.
+		// If resource ID is specified, we can use it to look up the attachment.
 		attachment, err := a.attachmentsClient.Get(a.id.String()).Context(ctx).Do()
 		if err != nil {
 			if direct.IsNotFound(err) {
@@ -109,46 +109,6 @@ func (a *ApigeeEnvgroupAttachmentAdapter) Find(ctx context.Context) (bool, error
 		}
 		a.actual = attachment
 		return true, nil
-	} else {
-		// Otherwise, we must list all the attachments for the envgroup, and search for the one that contains the specified environment.
-		// This code path will only run on acquire, and will not run after the resource has already been reconciled.
-		// Therefore, it is ok (and necessary) to attempt to resolve the ApigeeEnvironment reference here.
-		if err := ResolveApigeeEnvgroupAttachmentRefs(ctx, a.k8sClient, a.desired); err != nil {
-			return false, err
-		}
-
-		// HACK: Environment field format required by GCP API is name-only, not fully-qualified ID.
-		// So, we fix this by getting the name of the environment.
-		envName, err := GetNameOfEnvironment(a.desired.Spec.EnvironmentRef.External)
-		if err != nil {
-			return false, err
-		}
-
-		nextPageToken := ""
-		for {
-			attachments, err := a.attachmentsClient.List(a.id.ParentID.String()).PageToken(nextPageToken).Context(ctx).Do()
-			if err != nil {
-				if direct.IsNotFound(err) {
-					return false, nil
-				}
-				return false, fmt.Errorf("listing ApigeeEnvgroupAttachments underneath ApigeeEnvgroup %q: %w", a.id.ParentID.String(), err)
-			}
-
-			for _, attachment := range attachments.EnvironmentGroupAttachments {
-				if attachment.Environment == envName {
-					// Update identity to include server-generated ID.
-					a.id.ResourceID = attachment.Name
-					// Store the discovered resource.
-					a.actual = attachment
-					return true, nil
-				}
-			}
-
-			nextPageToken = attachments.NextPageToken
-			if nextPageToken == "" {
-				break
-			}
-		}
 	}
 
 	return false, nil
@@ -248,6 +208,7 @@ func (a *ApigeeEnvgroupAttachmentAdapter) Export(ctx context.Context) (*unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	obj.Spec.ResourceID = &a.actual.Name
 	obj.Spec.EnvgroupRef = &krm.ApigeeEnvgroupRef{External: a.id.ParentID.String()}
 
 	// HACK: Environment field format returned from GCP API is name-only, not fully-qualified ID.
