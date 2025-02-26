@@ -15,7 +15,9 @@
 package v1alpha1
 
 import (
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -24,8 +26,36 @@ var NotebooksEnvironmentGVK = GroupVersion.WithKind("NotebooksEnvironment")
 // NotebooksEnvironmentSpec defines the desired state of NotebooksEnvironment
 // +kcc:proto=google.cloud.notebooks.v1.Environment
 type NotebooksEnvironmentSpec struct {
+	commonv1alpha1.CommonSpec `json:",inline"`
+
+	// The location for the resource.
+	// +required
+	Location string `json:"location"`
+
 	// The NotebooksEnvironment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Display name of this environment for the UI.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A brief description of this environment.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.description
+	Description *string `json:"description,omitempty"`
+
+	// Use a Compute Engine VM image to start the notebook instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.vm_image
+	VmImage *VmImage `json:"vmImage,omitempty"`
+
+	// Use a container image to start the notebook instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.container_image
+	ContainerImage *ContainerImage `json:"containerImage,omitempty"`
+
+	// Path to a Bash script that automatically runs after a notebook instance
+	//  fully boots up. The path must be a URL or
+	//  Cloud Storage path. Example: `"gs://path-to-file/file-name"`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.post_startup_script
+	PostStartupScript *string `json:"postStartupScript,omitempty"`
 }
 
 // NotebooksEnvironmentStatus defines the config connector machine state of NotebooksEnvironment
@@ -47,6 +77,16 @@ type NotebooksEnvironmentStatus struct {
 // NotebooksEnvironmentObservedState is the state of the NotebooksEnvironment resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.notebooks.v1.Environment
 type NotebooksEnvironmentObservedState struct {
+	// Output only. Name of this environment.
+	//  Format:
+	//  `projects/{project_id}/locations/{location}/environments/{environment_id}`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.name
+	// NOTYET: same as externalRef
+	// Name *string `json:"name,omitempty"`
+
+	// Output only. The time at which this environment was created.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
 // +genclient
