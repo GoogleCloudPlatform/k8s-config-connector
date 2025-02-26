@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: apigeeendpointattachments.apigee.cnrm.cloud.google.com
 spec:
   group: apigee.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: ApigeeEndpointAttachment
+    listKind: ApigeeEndpointAttachmentList
     plural: apigeeendpointattachments
     shortNames:
     - gcpapigeeendpointattachment
@@ -43,47 +42,101 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: ApigeeEndpointAttachment is the Schema for the ApigeeEndpointAttachment
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: ApigeeEndpointAttachmentSpec defines the desired state of
+              ApigeeEndpointAttachment
             properties:
               location:
-                description: Immutable. Location of the endpoint attachment.
+                description: Required. Location of the endpoint attachment.
                 type: string
-              orgId:
-                description: |-
-                  Immutable. The Apigee Organization associated with the Apigee instance,
-                  in the format 'organizations/{{org_name}}'.
-                type: string
+              organizationRef:
+                description: Reference to parent Apigee Organization.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ApigeeOrganization
+                      resource. Should be in the format "organizations/{{organizationID}}".
+                    type: string
+                  name:
+                    description: The name of a ApigeeOrganization resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ApigeeOrganization resource.
+                    type: string
+                type: object
               resourceID:
-                description: Immutable. Optional. The endpointAttachmentId of the
-                  resource. Used for creation and acquisition. When unset, the value
-                  of `metadata.name` is used as the default.
+                description: The ApigeeEndpointAttachment name. If not given, the
+                  metadata.name will be used.
                 type: string
-              serviceAttachment:
-                description: 'Immutable. Format: projects/*/regions/*/serviceAttachments/*.'
-                type: string
+              serviceAttachmentRef:
+                description: Reference to the ServiceAttachment for the EndpointAttachment.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The ComputeServiceAttachment selflink in the form
+                      "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                      when not managed by Config Connector.
+                    type: string
+                  name:
+                    description: The `name` field of a `ComputeServiceAttachment`
+                      resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `ComputeServiceAttachment`
+                      resource.
+                    type: string
+                type: object
             required:
-            - location
-            - orgId
-            - serviceAttachment
+            - organizationRef
             type: object
           status:
+            description: ApigeeEndpointAttachmentStatus defines the config connector
+              machine state of ApigeeEndpointAttachment
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -107,18 +160,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              connectionState:
-                description: State of the endpoint attachment connection to the service
-                  attachment.
-                type: string
-              host:
-                description: Host that can be used in either HTTP Target Endpoint
-                  directly, or as the host in Target Server.
-                type: string
-              name:
-                description: |-
-                  Name of the Endpoint Attachment in the following format:
-                  organizations/{organization}/endpointAttachments/{endpointAttachment}.
+              externalRef:
+                description: A unique specifier for the ApigeeEndpointAttachment resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -126,7 +170,25 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  connectionState:
+                    description: Output only. State of the endpoint attachment connection
+                      to the service attachment.
+                    type: string
+                  host:
+                    description: Output only. Host that can be used in either the
+                      HTTP target endpoint directly or as the host in target server.
+                    type: string
+                  state:
+                    description: Output only. State of the endpoint attachment. Values
+                      other than `ACTIVE` mean the resource is not ready to use.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -135,9 +197,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
