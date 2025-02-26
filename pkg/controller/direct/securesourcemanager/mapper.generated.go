@@ -109,17 +109,17 @@ func Repository_InitialConfig_ToProto(mapCtx *direct.MapContext, in *krm.Reposit
 	out.Readme = direct.ValueOf(in.Readme)
 	return out
 }
-func Repository_URIs_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs) *krm.Repository_URIs {
+func Repository_URIsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs) *krm.Repository_URIsObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Repository_URIs{}
+	out := &krm.Repository_URIsObservedState{}
 	out.HTML = direct.LazyPtr(in.GetHtml())
 	out.GitHTTPS = direct.LazyPtr(in.GetGitHttps())
 	out.Api = direct.LazyPtr(in.GetApi())
 	return out
 }
-func Repository_URIs_ToProto(mapCtx *direct.MapContext, in *krm.Repository_URIs) *pb.Repository_URIs {
+func Repository_URIsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Repository_URIsObservedState) *pb.Repository_URIs {
 	if in == nil {
 		return nil
 	}

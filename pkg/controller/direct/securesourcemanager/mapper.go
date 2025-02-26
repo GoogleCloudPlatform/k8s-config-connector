@@ -22,26 +22,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func Repository_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.Errorf("Repository_CreateTime_FromProto not implemented")
-	return nil
-}
-
-func Repository_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.Errorf("Repository_CreateTime_ToProto not implemented")
-	return nil
-}
-
-func Repository_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.Errorf("Repository_UpdateTime_FromProto not implemented")
-	return nil
-}
-
-func Repository_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.Errorf("Repository_UpdateTime_ToProto not implemented")
-	return nil
-}
-
 func OperationMetadata_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.Errorf("OperationMetadata_CreateTime_FromProto not implemented")
 	return nil
@@ -67,9 +47,11 @@ func SecureSourceManagerRepositoryObservedState_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krm.SecureSourceManagerRepositoryObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Uid = direct.LazyPtr(in.Uid)
 	out.Etag = direct.LazyPtr(in.Etag)
-	out.URIs = Repository_URIs_FromProto(mapCtx, in.GetUris())
+	out.URIs = Repository_URIsObservedState_FromProto(mapCtx, in.GetUris())
 	return out
 }
 func SecureSourceManagerRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerRepositoryObservedState) *pb.Repository {
@@ -77,9 +59,11 @@ func SecureSourceManagerRepositoryObservedState_ToProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &pb.Repository{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.Etag = direct.ValueOf(in.Etag)
-	out.Uris = Repository_URIs_ToProto(mapCtx, in.URIs)
+	out.Uris = Repository_URIsObservedState_ToProto(mapCtx, in.URIs)
 	return out
 }
 func SecureSourceManagerRepositorySpec_InstanceRef_FromProto(mapCtx *direct.MapContext, in string) *krm.SecureSourceManagerInstanceRef {
