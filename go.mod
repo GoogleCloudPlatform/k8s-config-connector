@@ -9,7 +9,7 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 require (
 	cloud.google.com/go/alloydb v1.14.0
 	cloud.google.com/go/apikeys v1.1.12
-	cloud.google.com/go/bigquery v1.65.0
+	cloud.google.com/go/bigquery v1.64.0
 	cloud.google.com/go/certificatemanager v1.9.2
 	cloud.google.com/go/cloudbuild v1.19.0
 	cloud.google.com/go/compute v1.29.0
@@ -21,6 +21,7 @@ require (
 	cloud.google.com/go/iam v1.2.2
 	cloud.google.com/go/iap v1.10.2
 	cloud.google.com/go/kms v1.20.1
+	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.21.2
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
@@ -96,7 +97,7 @@ require cloud.google.com/go/dataproc/v2 v2.10.0 // indirect
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cel.dev/expr v0.16.0 // indirect
-	cloud.google.com/go v0.116.0 // indirect
+	cloud.google.com/go v0.117.0 // indirect
 	cloud.google.com/go/auth v0.13.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.6 // indirect
 	cloud.google.com/go/bigtable v1.33.0 // indirect
@@ -236,14 +237,12 @@ require (
 	go.starlark.net v0.0.0-20200306205701-8dd3e2ee1dd5 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/crypto v0.32.0 // indirect
-	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
-	golang.org/x/mod v0.22.0 // indirect
+	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/term v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
-	golang.org/x/tools v0.29.0 // indirect
-	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
+	golang.org/x/tools v0.24.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.3.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
