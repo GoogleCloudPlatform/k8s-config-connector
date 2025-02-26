@@ -25,4 +25,3 @@ status:
   observedGeneration: 1
   observedState:
     createdAt: 1711974896
-    name: ${attachmentId}

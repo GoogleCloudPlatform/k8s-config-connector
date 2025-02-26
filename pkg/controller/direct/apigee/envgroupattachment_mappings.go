@@ -27,7 +27,6 @@ func ApigeeEnvgroupAttachmentObservedState_FromAPI(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krm.ApigeeEnvgroupAttachmentObservedState{}
-	out.Name = direct.LazyPtr(in.Name)
 	out.CreatedAt = direct.LazyPtr(ConvertEpochMillisToTimestamp(in.CreatedAt))
 	return out
 }
@@ -37,7 +36,6 @@ func ApigeeEnvgroupAttachmentObservedState_ToAPI(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &api.GoogleCloudApigeeV1EnvironmentGroupAttachment{}
-	out.Name = direct.ValueOf(in.Name)
 	i, err := ConvertTimestampToEpochMillis(direct.ValueOf(in.CreatedAt))
 	if err != nil {
 		mapCtx.Errorf("could not convert CreatedAt value for ObservedState: %w", err)
