@@ -11,14 +11,15 @@ metadata:
   namespace: ${uniqueId}
 spec:
   autoscale:
-    maxSlots: 100
+    maxSlots: 50
   concurrency: 0
   edition: ENTERPRISE_PLUS
-  ignoreIdleSlots: true
+  ignoreIdleSlots: false
   location: us-west2
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
+  secondaryLocation: ""
   slotCapacity: 0
 status:
   conditions:
