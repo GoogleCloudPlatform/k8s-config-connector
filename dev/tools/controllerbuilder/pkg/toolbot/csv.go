@@ -83,6 +83,9 @@ func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 			return err
 		}
 		if d.IsDir() {
+			if d.Name() == "experiments" { // Skip the experiments directory
+				return filepath.SkipDir
+			}
 			return nil
 		}
 		switch filepath.Ext(p) {
