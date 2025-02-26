@@ -15,12 +15,99 @@
 package documentai
 
 import (
-	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
+	pb "cloud.google.com/go/documentai/apiv1beta3/documentaipb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DocumentAIProcessorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Processor) *krm.DocumentAIProcessorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DocumentAIProcessorObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ProcessorVersionAliases = direct.Slice_FromProto(mapCtx, in.ProcessorVersionAliases, ProcessorVersionAlias_FromProto)
+	out.ProcessEndpoint = direct.LazyPtr(in.GetProcessEndpoint())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: KMSKeyName
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+func DocumentAIProcessorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DocumentAIProcessorObservedState) *pb.Processor {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Processor{}
+	out.Name = direct.ValueOf(in.Name)
+	out.State = direct.Enum_ToProto[pb.Processor_State](mapCtx, in.State)
+	out.ProcessorVersionAliases = direct.Slice_ToProto(mapCtx, in.ProcessorVersionAliases, ProcessorVersionAlias_ToProto)
+	out.ProcessEndpoint = direct.ValueOf(in.ProcessEndpoint)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: KMSKeyName
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+func DocumentAIProcessorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Processor) *krm.DocumentAIProcessorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DocumentAIProcessorSpec{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.DefaultProcessorVersion = direct.LazyPtr(in.GetDefaultProcessorVersion())
+	// MISSING: KMSKeyName
+	return out
+}
+func DocumentAIProcessorSpec_ToProto(mapCtx *direct.MapContext, in *krm.DocumentAIProcessorSpec) *pb.Processor {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Processor{}
+	out.Type = direct.ValueOf(in.Type)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.DefaultProcessorVersion = direct.ValueOf(in.DefaultProcessorVersion)
+	// MISSING: KMSKeyName
+	return out
+}
+func DocumentAIProcessorStatus_FromProto(mapCtx *direct.MapContext, in *pb.Processor) *krm.DocumentAIProcessorStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DocumentAIProcessorStatus{}
+	// MISSING: Name
+	// MISSING: Type
+	// MISSING: DisplayName
+	// MISSING: State
+	// MISSING: DefaultProcessorVersion
+	// MISSING: ProcessorVersionAliases
+	// MISSING: ProcessEndpoint
+	// MISSING: CreateTime
+	// MISSING: KMSKeyName
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func DocumentAIProcessorStatus_ToProto(mapCtx *direct.MapContext, in *krm.DocumentAIProcessorStatus) *pb.Processor {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Processor{}
+	// MISSING: Name
+	// MISSING: Type
+	// MISSING: DisplayName
+	// MISSING: State
+	// MISSING: DefaultProcessorVersion
+	// MISSING: ProcessorVersionAliases
+	// MISSING: ProcessEndpoint
+	// MISSING: CreateTime
+	// MISSING: KMSKeyName
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 func DocumentAIProcessorVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProcessorVersion) *krm.DocumentAIProcessorVersionObservedState {
 	if in == nil {
 		return nil
@@ -60,7 +147,7 @@ func DocumentAIProcessorVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.DocumentAIProcessorVersionSpec{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.KMSKeyNameRef = DocumentAIProcessorVersionSpec_KMSKeyNameRef_FromProto(mapCtx, in.GetKmsKeyName())
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
 	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
 	out.DeprecationInfo = ProcessorVersion_DeprecationInfo_FromProto(mapCtx, in.GetDeprecationInfo())
 	return out
@@ -72,27 +159,10 @@ func DocumentAIProcessorVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out := &pb.ProcessorVersion{}
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.KmsKeyName = DocumentAIProcessorVersionSpec_KMSKeyNameRef_ToProto(mapCtx, in.KMSKeyNameRef)
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	out.DeprecationInfo = ProcessorVersion_DeprecationInfo_ToProto(mapCtx, in.DeprecationInfo)
 	return out
-}
-func DocumentAIProcessorVersionSpec_KMSKeyNameRef_FromProto(mapCtx *direct.MapContext, in string) *refs.KMSCryptoKeyRef {
-	if in == "" {
-		return nil
-	}
-	return &refs.KMSCryptoKeyRef{
-		External: in,
-	}
-}
-func DocumentAIProcessorVersionSpec_KMSKeyNameRef_ToProto(mapCtx *direct.MapContext, in *refs.KMSCryptoKeyRef) string {
-	if in == nil {
-		return ""
-	}
-	if in.External == "" {
-		mapCtx.Errorf("reference %s was not pre-resolved", in.Name)
-	}
-	return in.External
 }
 func DocumentSchema_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema) *krm.DocumentSchema {
 	if in == nil {
@@ -124,8 +194,10 @@ func DocumentSchema_EntityType_FromProto(mapCtx *direct.MapContext, in *pb.Docum
 	out.EnumValues = DocumentSchema_EntityType_EnumValues_FromProto(mapCtx, in.GetEnumValues())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
 	out.BaseTypes = in.BaseTypes
 	out.Properties = direct.Slice_FromProto(mapCtx, in.Properties, DocumentSchema_EntityType_Property_FromProto)
+	out.EntityTypeMetadata = EntityTypeMetadata_FromProto(mapCtx, in.GetEntityTypeMetadata())
 	return out
 }
 func DocumentSchema_EntityType_ToProto(mapCtx *direct.MapContext, in *krm.DocumentSchema_EntityType) *pb.DocumentSchema_EntityType {
@@ -138,8 +210,10 @@ func DocumentSchema_EntityType_ToProto(mapCtx *direct.MapContext, in *krm.Docume
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
 	out.BaseTypes = in.BaseTypes
 	out.Properties = direct.Slice_ToProto(mapCtx, in.Properties, DocumentSchema_EntityType_Property_ToProto)
+	out.EntityTypeMetadata = EntityTypeMetadata_ToProto(mapCtx, in.EntityTypeMetadata)
 	return out
 }
 func DocumentSchema_EntityType_EnumValues_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_EntityType_EnumValues) *krm.DocumentSchema_EntityType_EnumValues {
@@ -158,15 +232,33 @@ func DocumentSchema_EntityType_EnumValues_ToProto(mapCtx *direct.MapContext, in 
 	out.Values = in.Values
 	return out
 }
+func EntityTypeMetadata_FromProto(mapCtx *direct.MapContext, in *pb.EntityTypeMetadata) *krm.EntityTypeMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntityTypeMetadata{}
+	out.Inactive = direct.LazyPtr(in.Inactive)
+	return out
+}
+func EntityTypeMetadata_ToProto(mapCtx *direct.MapContext, in *krm.EntityTypeMetadata) *pb.EntityTypeMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityTypeMetadata{}
+	out.Inactive = direct.ValueOf(in.Inactive)
+	return out
+}
 func DocumentSchema_EntityType_Property_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_EntityType_Property) *krm.DocumentSchema_EntityType_Property {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DocumentSchema_EntityType_Property{}
 	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ValueType = direct.LazyPtr(in.GetValueType())
 	out.OccurrenceType = direct.Enum_FromProto(mapCtx, in.GetOccurrenceType())
+	out.PropertyMetadata = PropertyMetadata_FromProto(mapCtx, in.GetPropertyMetadata())
 	return out
 }
 func DocumentSchema_EntityType_Property_ToProto(mapCtx *direct.MapContext, in *krm.DocumentSchema_EntityType_Property) *pb.DocumentSchema_EntityType_Property {
@@ -175,9 +267,45 @@ func DocumentSchema_EntityType_Property_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.DocumentSchema_EntityType_Property{}
 	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.ValueType = direct.ValueOf(in.ValueType)
 	out.OccurrenceType = direct.Enum_ToProto[pb.DocumentSchema_EntityType_Property_OccurrenceType](mapCtx, in.OccurrenceType)
+	out.PropertyMetadata = PropertyMetadata_ToProto(mapCtx, in.PropertyMetadata)
+	return out
+}
+func PropertyMetadata_FromProto(mapCtx *direct.MapContext, in *pb.PropertyMetadata) *krm.PropertyMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PropertyMetadata{}
+	out.Inactive = direct.LazyPtr(in.Inactive)
+	out.FieldExtractionMetadata = FieldExtractionMetadata_FromProto(mapCtx, in.FieldExtractionMetadata)
+	return out
+}
+func PropertyMetadata_ToProto(mapCtx *direct.MapContext, in *krm.PropertyMetadata) *pb.PropertyMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PropertyMetadata{}
+	out.Inactive = direct.ValueOf(in.Inactive)
+	out.FieldExtractionMetadata = FieldExtractionMetadata_ToProto(mapCtx, in.FieldExtractionMetadata)
+	return out
+}
+func FieldExtractionMetadata_FromProto(mapCtx *direct.MapContext, in *pb.FieldExtractionMetadata) *krm.FieldExtractionMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FieldExtractionMetadata{}
+	out.SummaryOptions = SummaryOptions_FromProto(mapCtx, in.SummaryOptions)
+	return out
+}
+func FieldExtractionMetadata_ToProto(mapCtx *direct.MapContext, in *krm.FieldExtractionMetadata) *pb.FieldExtractionMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FieldExtractionMetadata{}
+	out.SummaryOptions = SummaryOptions_ToProto(mapCtx, in.SummaryOptions)
 	return out
 }
 func DocumentSchema_Metadata_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_Metadata) *krm.DocumentSchema_Metadata {
@@ -354,5 +482,23 @@ func ProcessorVersion_GenAiModelInfo_FoundationGenAiModelInfo_ToProto(mapCtx *di
 	out := &pb.ProcessorVersion_GenAiModelInfo_FoundationGenAiModelInfo{}
 	out.FinetuningAllowed = direct.ValueOf(in.FinetuningAllowed)
 	out.MinTrainLabeledDocuments = direct.ValueOf(in.MinTrainLabeledDocuments)
+	return out
+}
+func SummaryOptions_FromProto(mapCtx *direct.MapContext, in *pb.SummaryOptions) *krm.SummaryOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SummaryOptions{}
+	out.Length = direct.Enum_FromProto(mapCtx, in.GetLength())
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	return out
+}
+func SummaryOptions_ToProto(mapCtx *direct.MapContext, in *krm.SummaryOptions) *pb.SummaryOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SummaryOptions{}
+	out.Length = direct.Enum_ToProto[pb.SummaryOptions_Length](mapCtx, in.Length)
+	out.Format = direct.Enum_ToProto[pb.SummaryOptions_Format](mapCtx, in.Format)
 	return out
 }

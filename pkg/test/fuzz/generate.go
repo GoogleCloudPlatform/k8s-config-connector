@@ -157,7 +157,7 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		case protoreflect.DoubleKind:
 			msg.Set(field, protoreflect.ValueOfFloat64(randStream.NormFloat64()))
 		case protoreflect.FloatKind:
-			msg.Set(field, protoreflect.ValueOfFloat64(randStream.NormFloat64()))
+			msg.Set(field, protoreflect.ValueOfFloat32(randStream.Float32()))
 		case protoreflect.Int32Kind:
 			msg.Set(field, protoreflect.ValueOfInt32(randStream.Int31()))
 		case protoreflect.Int64Kind:
