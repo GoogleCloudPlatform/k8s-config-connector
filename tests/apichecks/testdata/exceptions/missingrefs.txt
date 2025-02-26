@@ -44,7 +44,6 @@
 [refs] crd=dialogflowintents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentFollowupIntentName" should be a reference
 [refs] crd=essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.encryptionKey.gcpKmsEncryptionKey" should be a reference
-[refs] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.vmImage.project" should be a reference
 [refs] crd=tagstagkeys.tags.cnrm.cloud.google.com version=v1beta1: field ".spec.parent" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.featurestore" should be a reference
