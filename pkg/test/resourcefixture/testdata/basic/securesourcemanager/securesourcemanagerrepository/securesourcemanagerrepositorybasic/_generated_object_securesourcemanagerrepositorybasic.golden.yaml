@@ -25,6 +25,7 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}
   observedGeneration: 1
   observedState:
+    createTime: "1970-01-01T00:00:00Z"
     uris:
       api: https://ssminstance-dep-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}
       gitHTTPS: https://ssminstance-dep-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev/${projectId}/ssmrepository-${uniqueId}.git

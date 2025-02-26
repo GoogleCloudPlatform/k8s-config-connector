@@ -69,11 +69,11 @@ type SecureSourceManagerRepositoryStatus struct {
 
 // SecureSourceManagerRepositoryObservedState is the state of the SecureSourceManagerRepository resource as most recently observed in GCP.
 type SecureSourceManagerRepositoryObservedState struct {
-	// // Output only. Create timestamp.
-	// CreateTime *string `json:"createTime,omitempty"`
+	// Output only. Create timestamp.
+	CreateTime *string `json:"createTime,omitempty"`
 
-	// // Output only. Update timestamp.
-	// UpdateTime *string `json:"updateTime,omitempty"`
+	// Output only. Update timestamp.
+	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Unique identifier of the repository.
 	Uid *string `json:"uid,omitempty"`
@@ -84,7 +84,7 @@ type SecureSourceManagerRepositoryObservedState struct {
 	Etag *string `json:"etag,omitempty"`
 
 	// Output only. URIs for the repository.
-	URIs *Repository_URIs `json:"uris,omitempty"`
+	URIs *Repository_URIsObservedState `json:"uris,omitempty"`
 }
 
 // +genclient

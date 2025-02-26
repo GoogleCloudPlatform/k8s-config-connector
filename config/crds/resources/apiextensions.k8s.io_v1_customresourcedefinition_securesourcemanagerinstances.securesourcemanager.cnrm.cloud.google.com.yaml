@@ -91,6 +91,11 @@ spec:
                     description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels as key value pairs.
+                type: object
               location:
                 description: Immutable. Location of the instance.
                 type: string
@@ -127,17 +132,9 @@ spec:
                         description: The `namespace` of a `PrivateCACAPool` resource.
                         type: string
                     type: object
-                  httpServiceAttachment:
-                    description: Output only. Service Attachment for HTTP, resource
-                      is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
-                    type: string
                   isPrivate:
                     description: Required. Immutable. Indicate if it's private instance.
                     type: boolean
-                  sshServiceAttachment:
-                    description: Output only. Service Attachment for SSH, resource
-                      is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
-                    type: string
                 type: object
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
@@ -226,6 +223,9 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  createTime:
+                    description: Output only. Create timestamp.
+                    type: string
                   hostConfig:
                     description: Output only. A list of hostnames for this instance.
                     properties:
@@ -243,12 +243,28 @@ spec:
                         description: Output only. HTML hostname.
                         type: string
                     type: object
+                  privateConfig:
+                    description: Optional. PrivateConfig includes settings for private
+                      instance.
+                    properties:
+                      httpServiceAttachment:
+                        description: Output only. Service Attachment for HTTP, resource
+                          is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+                        type: string
+                      sshServiceAttachment:
+                        description: Output only. Service Attachment for SSH, resource
+                          is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+                        type: string
+                    type: object
                   state:
                     description: Output only. Current state of the instance.
                     type: string
                   stateNote:
                     description: Output only. An optional field providing information
                       about the current instance state.
+                    type: string
+                  updateTime:
+                    description: Output only. Update timestamp.
                     type: string
                 type: object
             type: object
