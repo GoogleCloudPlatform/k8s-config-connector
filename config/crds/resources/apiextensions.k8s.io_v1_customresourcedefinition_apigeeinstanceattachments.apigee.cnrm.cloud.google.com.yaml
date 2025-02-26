@@ -175,9 +175,6 @@ spec:
                     description: Output only. Time the attachment was created in milliseconds
                       since epoch.
                     type: string
-                  name:
-                    description: Output only. ID of the attachment.
-                    type: string
                 type: object
             type: object
         required:

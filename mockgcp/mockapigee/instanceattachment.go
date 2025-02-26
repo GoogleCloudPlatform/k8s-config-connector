@@ -21,7 +21,6 @@ import (
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/apigee/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -77,28 +76,6 @@ func (s *instancesAttachmentsServer) GetOrganizationsInstancesAttachment(ctx con
 		return nil, err
 	}
 	return obj, nil
-}
-
-func (s *instancesAttachmentsServer) ListOrganizationsInstancesAttachments(ctx context.Context, req *pb.ListOrganizationsInstancesAttachmentsRequest) (*pb.GoogleCloudApigeeV1ListInstanceAttachmentsResponse, error) {
-	instanceName, err := ParseInstanceName(req.Parent)
-	if err != nil {
-		return nil, err
-	}
-	orgID := instanceName.Parent()
-
-	response := &pb.GoogleCloudApigeeV1ListInstanceAttachmentsResponse{}
-	findKind := (&pb.GoogleCloudApigeeV1InstanceAttachment{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, findKind, storage.ListOptions{
-		Prefix: orgID,
-	}, func(obj proto.Message) error {
-		attachment := obj.(*pb.GoogleCloudApigeeV1InstanceAttachment)
-		response.Attachments = append(response.Attachments, attachment)
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-
-	return response, nil
 }
 
 func (s *instancesAttachmentsServer) CreateOrganizationsInstancesAttachment(ctx context.Context, req *pb.CreateOrganizationsInstancesAttachmentRequest) (*longrunningpb.Operation, error) {

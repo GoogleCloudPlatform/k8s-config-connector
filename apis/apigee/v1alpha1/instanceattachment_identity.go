@@ -38,7 +38,7 @@ type ApigeeInstanceAttachmentIdentity struct {
 
 func (i *ApigeeInstanceAttachmentIdentity) String() string {
 	if i.ResourceID == "" {
-		// Initially, the identity of the ApigeeInstanceAttachment is unknown, until it is adopted or created.
+		// Initially, the identity of the ApigeeInstanceAttachment is unknown, until it is acquired or created.
 		// This is because the resource uses a service-generated ID.
 		return ""
 	}
@@ -76,9 +76,13 @@ func (obj *ApigeeInstanceAttachment) GetIdentity(ctx context.Context, reader cli
 	}
 
 	// Get service-generated resource ID
-	resourceID := ""
-	if obj.Status.ObservedState != nil {
-		resourceID = common.ValueOf(obj.Status.ObservedState.Name)
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" && obj.Status.ExternalRef != nil {
+		savedID := &ApigeeInstanceAttachmentIdentity{}
+		if err := savedID.FromExternal(common.ValueOf(obj.Status.ExternalRef)); err != nil {
+			return nil, err
+		}
+		resourceID = savedID.ResourceID
 	}
 
 	id := &ApigeeInstanceAttachmentIdentity{
