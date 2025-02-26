@@ -90,6 +90,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 	pureDirectResources := []string{
 		"ApigeeEnvgroup",
 		"ApigeeInstance",
+		"ApigeeInstanceAttachment",
 		"BigQueryConnectionConnection",
 		"BigQueryDataTransferConfig",
 		"CloudBuildWorkerPool",
