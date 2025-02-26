@@ -15,11 +15,11 @@
 package notebooks
 
 import (
+	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
 )
+
 func ContainerImage_FromProto(mapCtx *direct.MapContext, in *pb.ContainerImage) *krm.ContainerImage {
 	if in == nil {
 		return nil
@@ -38,21 +38,38 @@ func ContainerImage_ToProto(mapCtx *direct.MapContext, in *krm.ContainerImage) *
 	out.Tag = direct.ValueOf(in.Tag)
 	return out
 }
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
+func NotebooksEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Environment{}
+	out := &krm.NotebooksEnvironmentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func NotebooksEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func NotebooksEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebooksEnvironmentSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.VmImage = VmImage_FromProto(mapCtx, in.GetVmImage())
 	out.ContainerImage = ContainerImage_FromProto(mapCtx, in.GetContainerImage())
 	out.PostStartupScript = direct.LazyPtr(in.GetPostStartupScript())
-	// MISSING: CreateTime
 	return out
 }
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
+func NotebooksEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentSpec) *pb.Environment {
 	if in == nil {
 		return nil
 	}
@@ -67,91 +84,6 @@ func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Env
 		out.ImageType = &pb.Environment_ContainerImage{ContainerImage: oneof}
 	}
 	out.PostStartupScript = direct.ValueOf(in.PostStartupScript)
-	// MISSING: CreateTime
-	return out
-}
-func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EnvironmentObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	return out
-}
-func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	return out
-}
-func NotebooksEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebooksEnvironmentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	// MISSING: CreateTime
-	return out
-}
-func NotebooksEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentObservedState) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	// MISSING: CreateTime
-	return out
-}
-func NotebooksEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebooksEnvironmentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	// MISSING: CreateTime
-	return out
-}
-func NotebooksEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentSpec) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VmImage
-	// MISSING: ContainerImage
-	// MISSING: PostStartupScript
-	// MISSING: CreateTime
 	return out
 }
 func VmImage_FromProto(mapCtx *direct.MapContext, in *pb.VmImage) *krm.VmImage {
