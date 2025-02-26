@@ -19,6 +19,20 @@ metadata:
 spec:
   autoCreateSubnetworks: false
 ---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+  name: computesubnetwork-${uniqueId}
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
+    name: computenetwork-${uniqueId}
+  secondaryIpRange:
+    - rangeName: test-range-1
+      ipCidrRange: 192.168.10.0/24
+---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: ServiceIdentity
 metadata:
@@ -42,7 +56,7 @@ kind: KMSCryptoKey
 metadata:
   labels:
     key-one: value-one
-  name: kmscryptokey-${uniqueId}
+  name: kmscryptokey-1-${uniqueId}
 spec:
   keyRingRef:
     name: kmskeyring-${uniqueId}
@@ -50,15 +64,53 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
-  name: iampartialpolicy-${uniqueId}
+  name: iampartialpolicy-1-${uniqueId}
 spec:
   resourceRef:
     apiVersion: kms.cnrm.cloud.google.com/v1beta1
     kind: KMSCryptoKey
-    name: kmscryptokey-${uniqueId}
+    name: kmscryptokey-1-${uniqueId}
   bindings:
     - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
       members:
         - memberFrom:
             serviceIdentityRef:
               name: serviceidentity-${uniqueId}
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: kmscryptokey-2-${uniqueId}
+spec:
+  keyRingRef:
+    name: kmskeyring-${uniqueId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-2-${uniqueId}
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: kmscryptokey-2-${uniqueId}
+  bindings:
+    - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+      members:
+        - memberFrom:
+            serviceIdentityRef:
+              name: serviceidentity-${uniqueId}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-1-${uniqueId}
+data:
+  password: a2NjLXRlc3Q=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-2-${uniqueId}
+data:
+  newValue: a2NjLXRlc3QtdXBkYXRlZA==

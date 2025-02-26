@@ -179,3 +179,70 @@ type AlloyDBBackupRef struct {
 	// The `metadata.namespace` field of a `AlloyDBBackup` resource.
 	Namespace string `json:"namespace,omitempty"`
 }
+
+func ResolveAlloyDBBackupRef(ctx context.Context, reader client.Reader, src client.Object, ref *AlloyDBBackupRef) (*AlloyDBBackupRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.Name == "" && ref.External == "" {
+		return nil, fmt.Errorf("must specify either name or external on AlloyDBBackupRef")
+	}
+	if ref.Name != "" && ref.External != "" {
+		return nil, fmt.Errorf("cannot specify both name and external on AlloyDBBackupRef")
+	}
+
+	// External should be in the `projects/[projectId]/locations/[location]/backups/[backupId]` format
+	if ref.External != "" {
+		tokens := strings.Split(ref.External, "/")
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "backups" {
+			ref = &AlloyDBBackupRef{
+				External: fmt.Sprintf("projects/%s/locations/%s/backups/%s", tokens[1], tokens[3], tokens[5]),
+			}
+			return ref, nil
+		}
+		return nil, fmt.Errorf("format of AlloyDBBackupRef external=%q was not known (use projects/[projectId]/locations/[location]/backups/[backupId])", ref.External)
+	}
+
+	backupNN := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if backupNN.Namespace == "" {
+		backupNN.Namespace = src.GetNamespace()
+	}
+
+	// Fetch object from k8s cluster to construct the external form
+	backup := &unstructured.Unstructured{}
+	backup.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "alloydb.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "AlloyDBBackup",
+	})
+	if err := reader.Get(ctx, backupNN, backup); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced AlloyDBBackup %v not found", backupNN)
+		}
+		return nil, fmt.Errorf("error reading referenced AlloyDBBackup %v: %w", backupNN, err)
+	}
+
+	resourceID, err := GetResourceID(backup)
+	if err != nil {
+		return nil, err
+	}
+
+	projectID, err := ResolveProjectID(ctx, reader, backup)
+	if err != nil {
+		return nil, err
+	}
+
+	location, err := GetLocation(backup)
+	if err != nil {
+		return nil, err
+	}
+
+	ref = &AlloyDBBackupRef{
+		External: fmt.Sprintf("projects/%s/locations/%s/backups/%s", projectID, location, resourceID),
+	}
+	return ref, nil
+}

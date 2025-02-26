@@ -239,7 +239,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
-	// To create, update or delete the GCP object, we need to get the GCP object first.
+	// To create, update or delete the GCP object, we need to get the GCP object first.
 	// Because the object contains the cloud service information like `selfLink` `ID` required to validate
 	// the resource uniqueness before updating/deleting.
 	existsAlready, err := adapter.Find(ctx)

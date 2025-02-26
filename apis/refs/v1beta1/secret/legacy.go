@@ -38,10 +38,28 @@ type Legacy struct {
 }
 
 // +kubebuilder:object:generate:=true
+type LegacyObservedState struct {
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *LegacyValueFromObservedState `json:"valueFrom,omitempty"`
+}
+
+// +kubebuilder:object:generate:=true
 type LegacyValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
 	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+}
+
+// +kubebuilder:object:generate:=true
+type LegacyValueFromObservedState struct {
+	/* Observed stae of the reference to a value with the given key in the given Secret in the resource's namespace. */
+	// +optional
+	SecretKeyRef *v1alpha1.SecretKeyRefObservedState `json:"secretKeyRef,omitempty"`
 }
 
 func NormalizedLegacySecret(ctx context.Context, r *v1alpha1.SecretKeyRef, reader client.Reader, otherNamespace string) ([]byte, error) {

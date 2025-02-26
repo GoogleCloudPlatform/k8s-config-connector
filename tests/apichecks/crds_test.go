@@ -92,6 +92,8 @@ func TestMissingRefs(t *testing.T) {
 
 // Looks for fields that looks like refs, but are in the status.
 // These fields should not be refs, they should be "external style" links.
+// Persistence of the mutable-but-unreadable SecretKeyRef fields can be exempted
+// manually by being added to no_refs_in_status.txt.
 func TestNoRefsInStatus(t *testing.T) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
@@ -388,9 +390,9 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 				continue
 			}
 
+			kind := crd.Spec.Names.Kind
 			visitCRDVersion(version, func(field *CRDField) {
 				fieldPath := field.FieldPath
-
 				// Only consider fields under `spec`
 				if !strings.HasPrefix(fieldPath, ".spec.") {
 					return
@@ -408,6 +410,9 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 
 					// Check for specific related fields
 					for _, obj := range unstructs {
+						if obj.GetKind() != kind {
+							continue
+						}
 						if hasField(obj.Object, fieldPath+".external") {
 							hasExternal = true
 						}
@@ -441,6 +446,9 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 				// Check if field exists in any unstructured object
 				missing := true
 				for _, obj := range unstructs {
+					if obj.GetKind() != kind {
+						continue
+					}
 					if hasField(obj.Object, fieldPath) {
 						missing = false
 						break
