@@ -1,0 +1,444 @@
+POST https://tpu.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/nodes?alt=json&nodeId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "acceleratorType": "v5p-8",
+  "metadata": {},
+  "networkConfig": {
+    "enableExternalIps": true,
+    "network": "default"
+  },
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {
+    "preemptible": false,
+    "reserved": false,
+    "spot": false
+  },
+  "shieldedInstanceConfig": {
+    "enableSecureBoot": false
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://tpu.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.tpu.v2.Node",
+    "acceleratorConfig": {
+      "topology": "2x2x1",
+      "type": "V5P"
+    },
+    "acceleratorType": "v5p-8",
+    "apiVersion": "V2",
+    "cidrBlock": "10.20.30.0/24",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "id": "000000000000000000000",
+    "name": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+    "networkConfig": {
+      "enableExternalIps": true,
+      "network": "projects/${projectId}/global/networks/default",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+    },
+    "networkEndpoints": [
+      {
+        "accessConfig": {
+          "externalIp": "8.8.8.8"
+        },
+        "ipAddress": "10.20.30.40",
+        "port": 8470
+      }
+    ],
+    "runtimeVersion": "tpu-vm-cos-stable",
+    "schedulingConfig": {},
+    "serviceAccount": {
+      "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "scope": [
+        "https://www.googleapis.com/auth/devstorage.read_write",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/service.management",
+        "https://www.googleapis.com/auth/servicecontrol",
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/pubsub"
+      ]
+    },
+    "shieldedInstanceConfig": {},
+    "state": "READY"
+  }
+}
+
+---
+
+GET https://tpu.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+  "networkConfig": {
+    "enableExternalIps": true,
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {
+        "externalIp": "8.8.8.8"
+      },
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+---
+
+GET https://tpu.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+  "networkConfig": {
+    "enableExternalIps": true,
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {
+        "externalIp": "8.8.8.8"
+      },
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+---
+
+PATCH https://tpu.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}?alt=json&updateMask=description
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "new description",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+  "networkConfig": {
+    "enableExternalIps": true,
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {
+        "externalIp": "8.8.8.8"
+      },
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://tpu.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.tpu.v2.Node",
+    "acceleratorConfig": {
+      "topology": "2x2x1",
+      "type": "V5P"
+    },
+    "acceleratorType": "v5p-8",
+    "apiVersion": "V2",
+    "cidrBlock": "10.20.30.0/24",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "new description",
+    "health": "HEALTHY",
+    "id": "000000000000000000000",
+    "name": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+    "networkConfig": {
+      "enableExternalIps": true,
+      "network": "projects/${projectId}/global/networks/default",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+    },
+    "networkEndpoints": [
+      {
+        "accessConfig": {
+          "externalIp": "8.8.8.8"
+        },
+        "ipAddress": "10.20.30.40",
+        "port": 8470
+      }
+    ],
+    "runtimeVersion": "tpu-vm-cos-stable",
+    "schedulingConfig": {},
+    "serviceAccount": {
+      "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "scope": [
+        "https://www.googleapis.com/auth/devstorage.read_write",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/service.management",
+        "https://www.googleapis.com/auth/servicecontrol",
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/pubsub"
+      ]
+    },
+    "shieldedInstanceConfig": {},
+    "state": "READY"
+  }
+}
+
+---
+
+DELETE https://tpu.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://tpu.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
