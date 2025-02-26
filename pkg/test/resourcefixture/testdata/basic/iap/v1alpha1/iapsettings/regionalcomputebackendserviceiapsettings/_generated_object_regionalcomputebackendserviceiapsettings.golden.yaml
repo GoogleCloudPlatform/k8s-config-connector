@@ -19,7 +19,12 @@ spec:
       policyType: DEFAULT
   applicationSettings:
     cookieDomain: .updated-example.com
-  name: projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}
+  computeServiceRef:
+    projectRef:
+      external: projects/${projectId}
+    region: us-central1
+    serviceRef:
+      name: computebackendservice-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

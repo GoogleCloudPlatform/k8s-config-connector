@@ -32,5 +32,7 @@ func iapsettingsFuzzer() fuzztesting.KRMFuzzer {
 		IAPSettingsSpec_FromProto, IAPSettingsSpec_ToProto,
 	)
 
+	f.UnimplementedFields.Insert(".name")
+
 	return f
 }

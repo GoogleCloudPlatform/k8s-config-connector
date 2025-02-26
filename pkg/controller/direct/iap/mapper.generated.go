@@ -169,7 +169,7 @@ func IAPSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.IapSettings) *k
 		return nil
 	}
 	out := &krm.IAPSettingsSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.AccessSettings = AccessSettings_FromProto(mapCtx, in.GetAccessSettings())
 	out.ApplicationSettings = ApplicationSettings_FromProto(mapCtx, in.GetApplicationSettings())
 	return out
@@ -179,7 +179,7 @@ func IAPSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.IAPSettingsSpec)
 		return nil
 	}
 	out := &pb.IapSettings{}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.AccessSettings = AccessSettings_ToProto(mapCtx, in.AccessSettings)
 	out.ApplicationSettings = ApplicationSettings_ToProto(mapCtx, in.ApplicationSettings)
 	return out
