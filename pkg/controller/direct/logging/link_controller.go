@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	//"net/http"
 
@@ -144,7 +145,6 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return err
 	}
 
-	// TODO: Should I be setting this ResourceID field here or should this be set in the mappers?
 	resourceID := direct.ValueOf(desired.Spec.ResourceID)
 	if resourceID == "" {
 		log.V(2).Info("ResourceID is not set, will use metadata.name")
@@ -154,7 +154,6 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		resourceID = *desired.Spec.ResourceID
 	}
 
-	// TODO: IT appears that the resourceID is not set.  It should map to metadata.name, but this isn't going through
 	req := &loggingpb.CreateLinkRequest{
 		Parent: parent.String(),
 		Link:   resource,
@@ -180,55 +179,8 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 }
 
 func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	// TODO Delete this
-	// No Update method for logging links
-	//Return update not supported from gemmahou CL
-	// https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3252/files
-	return nil
-
-	/*
-		log := klog.FromContext(ctx)
-		log.V(2).Info("updating Link", "name", a.id.External)
-		mapCtx := &direct.MapContext{}
-
-		desired := a.desired.DeepCopy()
-		resource := LoggingLinkSpec_ToProto(mapCtx, &desired.Spec)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-
-		updateMask := &fieldmaskpb.FieldMask{}
-		if !reflect.DeepEqual(a.desired.Spec.description, a.actual.description) {
-			updateMask.Paths = append(updateMask.Paths, "description")
-		}
-
-		if len(updateMask.Paths) == 0 {
-			log.V(2).Info("no field needs update", "name", a.id.External)
-			return nil
-		}
-		// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
-		req := &loggingpb.UpdateLinkRequest{
-			Name:       a.id.External,
-			UpdateMask: updateMask,
-			Link:       resource,
-		}
-		op, err := a.gcpClient.UpdateLink(ctx, req)
-		if err != nil {
-			return fmt.Errorf("updating Link %s: %w", a.id.External, err)
-		}
-		updated, err := op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("Link %s waiting update: %w", a.id.External, err)
-		}
-		log.V(2).Info("successfully updated Link", "name", a.id.External)
-
-		status := &krm.LoggingLinkStatus{}
-		status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, updated)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		return updateOp.UpdateStatus(ctx, status, nil)
-	*/
+	return fmt.Errorf("update operation not supported for resource %v %v",
+		a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
 }
 
 func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
