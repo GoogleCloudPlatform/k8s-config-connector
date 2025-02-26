@@ -759,6 +759,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - spannerbackupschedules.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - sql.cnrm.cloud.google.com
   resources:
   - '*'
