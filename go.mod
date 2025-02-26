@@ -22,7 +22,7 @@ require (
 	cloud.google.com/go/iam v1.2.2
 	cloud.google.com/go/iap v1.10.2
 	cloud.google.com/go/kms v1.20.1
-    cloud.google.com/go/logging v1.13.0
+	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.24.0
 	cloud.google.com/go/netapp v1.7.0
@@ -114,7 +114,7 @@ require (
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cel.dev/expr v0.16.0 // indirect
-	cloud.google.com/go v0.116.0 // indirect
+	cloud.google.com/go v0.117.0 // indirect
 	cloud.google.com/go/auth v0.13.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.6 // indirect
 	cloud.google.com/go/bigtable v1.33.0 // indirect
