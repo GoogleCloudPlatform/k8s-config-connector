@@ -22,6 +22,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -31,6 +32,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e"
 	"sigs.k8s.io/yaml"
 )
+
+type Placeholders struct {
+	ProjectID        string
+	ProjectNumber    int64
+	UniqueID         string
+	BillingAccountID string
+}
 
 func TestScripts(t *testing.T) {
 	baseDir, err := filepath.Abs("..")
@@ -53,10 +61,15 @@ func TestScripts(t *testing.T) {
 
 			project := h.Project
 			testDir := filepath.Join(baseDir, scriptPath)
+			placeholders := Placeholders{
+				ProjectID:        project.ProjectID,
+				ProjectNumber:    project.ProjectNumber,
+				UniqueID:         uniqueID,
+				BillingAccountID: testgcp.TestBillingAccountID.Get(),
+			}
+			script := loadScript(t, testDir, placeholders)
 
-			script := loadScript(t, testDir, uniqueID, project)
-
-			h.StartProxy()
+			h.StartProxy(ctx)
 
 			for _, step := range script.Steps {
 				if step.Exec != "" {
@@ -147,14 +160,14 @@ type Step struct {
 	Exec string `json:"exec"`
 }
 
-func loadScript(t *testing.T, dir string, uniqueID string, project GCPProject) *Script {
+func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
 	s := &Script{
 		Name:      dir,
 		SourceDir: dir,
 	}
 	b := test.MustReadFile(t, filepath.Join(dir, "script.yaml"))
 
-	b = ReplaceTestVars(t, b, uniqueID, project)
+	b = ReplaceTestVars(t, b, placeholders)
 
 	var steps []*Step
 	if err := yaml.Unmarshal(b, &steps); err != nil {
@@ -167,9 +180,11 @@ func loadScript(t *testing.T, dir string, uniqueID string, project GCPProject) *
 }
 
 // ReplaceTestVars replaces all occurrences of placeholder strings e.g. ${uniqueId} in a given byte slice.
-func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project GCPProject) []byte {
+func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s := string(b)
-	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
-	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
+	s = strings.Replace(s, "${uniqueId}", placeholders.UniqueID, -1)
+	s = strings.Replace(s, "${projectId}", placeholders.ProjectID, -1)
+	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
+	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
 	return []byte(s)
 }

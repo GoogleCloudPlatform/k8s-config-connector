@@ -159,23 +159,23 @@ func (t *Harness) Init() {
 	}
 
 	if os.Getenv("E2E_GCP_TARGET") == "mock" {
-		// // Some fixed-value fake org-ids for testing.
-		// // We used fixed values so that the output is predictable (for golden testing)
-		// testgcp.TestFolderID.Set("123451001")
-		// testgcp.TestFolder2ID.Set("123451002")
-		// testgcp.TestOrgID.Set("123450001")
-		// testgcp.IsolatedTestOrgName.Set("isolated-test-org.example.com")
-		// testgcp.TestBillingAccountID.Set("123456-777777-000001")
-		// testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
-		// testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
-		// testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
-		// testgcp.TestAttachedClusterName.Set("xks-cluster")
-		// testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
-		// testgcp.TestDependentOrgProjectID.Set("example-project-01")
-		// testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		// testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
-		// testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
-		// testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
+		// Some fixed-value fake org-ids for testing.
+		// We used fixed values so that the output is predictable (for golden testing)
+		testgcp.TestFolderID.Set("123451001")
+		testgcp.TestFolder2ID.Set("123451002")
+		testgcp.TestOrgID.Set("123450001")
+		testgcp.IsolatedTestOrgName.Set("isolated-test-org.example.com")
+		testgcp.TestBillingAccountID.Set("123456-777777-000001")
+		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
+		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
+		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
+		testgcp.TestAttachedClusterName.Set("xks-cluster")
+		testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
+		testgcp.TestDependentOrgProjectID.Set("example-project-01")
+		testgcp.TestDependentFolderProjectID.Set("example-project-02")
+		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
+		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
+		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 
 		crm := t.getCloudResourceManagerClient(t.HTTPClient)
 		req := &cloudresourcemanagerv1.Project{
@@ -302,33 +302,41 @@ func (t *Harness) Init() {
 	}
 }
 
-func (t *Harness) StartProxy() {
-	httpClient := t.HTTPClient
-	t.proxy = &Proxy{
-		httpClient: httpClient,
-	}
+func (t *Harness) StartProxy(ctx context.Context) {
+	ctx, cancel := context.WithCancel(ctx)
 
-	listener, err := net.Listen("tcp", "localhost:0")
+	httpClient := t.HTTPClient
+	t.proxy = NewProxy(httpClient)
+
+	httpListener, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
 		t.Fatalf("net.Listen failed: %v", err)
 	}
 
 	httpServer := &http.Server{}
 	httpServer.Handler = t.proxy
+	go func() {
+		if err := httpServer.Serve(httpListener); err != nil {
+			if err != http.ErrServerClosed {
+				t.Errorf("error from http proxy server: %v", err)
+			}
+		}
+	}()
 
 	go func() {
-		if err := httpServer.Serve(listener); err != nil {
+		if err := t.proxy.ListenAndServeHTTPS(ctx); err != nil {
 			if err != http.ErrServerClosed {
-				t.Errorf("error from proxy server: %v", err)
+				t.Errorf("error from http proxy server: %v", err)
 			}
 		}
 	}()
 
 	t.Cleanup(func() {
 		httpServer.Close()
+		cancel()
 	})
 
-	t.ProxyEndpoint = listener.Addr().(*net.TCPAddr)
+	t.ProxyEndpoint = httpListener.Addr().(*net.TCPAddr)
 }
 
 func (t *Harness) RunCommand(cmdline string) {
