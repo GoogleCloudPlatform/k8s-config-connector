@@ -453,6 +453,8 @@ toc:
   section:
   - title: "ManagedKafkaCluster"
     path: /config-connector/docs/reference/resource-docs/managedkafka/managedkafkacluster.md
+  - title: "ManagedKafkaTopic"
+    path: /config-connector/docs/reference/resource-docs/managedkafka/managedkafkatopic.md
 - title: "Memorystore (Redis)"
   section:
   - title: "RedisCluster"
