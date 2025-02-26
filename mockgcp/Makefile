@@ -99,6 +99,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
 		./third_party/googleapis/mockgcp/cloud/compute/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/documentai/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/documentai/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/cloud/edgecontainer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/edgenetwork/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/filestore/v1/*.proto \
