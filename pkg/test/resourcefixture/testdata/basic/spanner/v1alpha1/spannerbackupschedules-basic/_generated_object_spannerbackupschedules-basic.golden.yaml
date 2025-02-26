@@ -1,0 +1,33 @@
+apiVersion: spannerbackupschedules.cnrm.cloud.google.com/v1alpha1
+kind: SpannerBackupSchedule
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: spannerbackupschedule-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  fullBackupSpec: {}
+  retentionDuration: 1000000s
+  spannerDatabaseRef:
+    name: spannerdb-${uniqueId}
+  spec:
+    cronSpec:
+      text: 0 3 * * *
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    cronSpec:
+      creationWindow: 4h0m0s
+      timeZone: UTC
+    updateTime: "1970-01-01T00:00:00Z"
