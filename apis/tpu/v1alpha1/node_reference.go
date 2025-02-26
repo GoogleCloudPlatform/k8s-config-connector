@@ -14,70 +14,70 @@
 
 package v1alpha1
 
-import (
-	"context"
-	"fmt"
+// import (
+// 	"context"
+// 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/client"
-)
+// 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+// 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+// 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+// 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+// 	"k8s.io/apimachinery/pkg/types"
+// 	"sigs.k8s.io/controller-runtime/pkg/client"
+// )
 
-var _ refsv1beta1.ExternalNormalizer = &NodeRef{}
+// var _ refsv1beta1.ExternalNormalizer = &NodeRef{}
 
-// NodeRef defines the resource reference to TPUNode, which "External" field
-// holds the GCP identifier for the KRM object.
-type NodeRef struct {
-	// A reference to an externally managed TPUNode resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/nodes/{{nodeID}}".
-	External string `json:"external,omitempty"`
+// // NodeRef defines the resource reference to TPUNode, which "External" field
+// // holds the GCP identifier for the KRM object.
+// type NodeRef struct {
+// 	// A reference to an externally managed TPUNode resource.
+// 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/nodes/{{nodeID}}".
+// 	External string `json:"external,omitempty"`
 
-	// The name of a TPUNode resource.
-	Name string `json:"name,omitempty"`
+// 	// The name of a TPUNode resource.
+// 	Name string `json:"name,omitempty"`
 
-	// The namespace of a TPUNode resource.
-	Namespace string `json:"namespace,omitempty"`
-}
+// 	// The namespace of a TPUNode resource.
+// 	Namespace string `json:"namespace,omitempty"`
+// }
 
-// NormalizedExternal provision the "External" value for other resource that depends on TPUNode.
-// If the "External" is given in the other resource's spec.TPUNodeRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual TPUNode object from the cluster.
-func (r *NodeRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", TPUNodeGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseNodeExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+// // NormalizedExternal provision the "External" value for other resource that depends on TPUNode.
+// // If the "External" is given in the other resource's spec.TPUNodeRef, the given value will be used.
+// // Otherwise, the "Name" and "Namespace" will be used to query the actual TPUNode object from the cluster.
+// func (r *NodeRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// 	if r.External != "" && r.Name != "" {
+// 		return "", fmt.Errorf("cannot specify both name and external on %s reference", TPUNodeGVK.Kind)
+// 	}
+// 	// From given External
+// 	if r.External != "" {
+// 		if _, _, err := ParseNodeExternal(r.External); err != nil {
+// 			return "", err
+// 		}
+// 		return r.External, nil
+// 	}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(TPUNodeGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", TPUNodeGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
-}
+// 	// From the Config Connector object
+// 	if r.Namespace == "" {
+// 		r.Namespace = otherNamespace
+// 	}
+// 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+// 	u := &unstructured.Unstructured{}
+// 	u.SetGroupVersionKind(TPUNodeGVK)
+// 	if err := reader.Get(ctx, key, u); err != nil {
+// 		if apierrors.IsNotFound(err) {
+// 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+// 		}
+// 		return "", fmt.Errorf("reading referenced %s %s: %w", TPUNodeGVK, key, err)
+// 	}
+// 	// Get external from status.externalRef. This is the most trustworthy place.
+// 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+// 	if err != nil {
+// 		return "", fmt.Errorf("reading status.externalRef: %w", err)
+// 	}
+// 	if actualExternalRef == "" {
+// 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+// 	}
+// 	r.External = actualExternalRef
+// 	return r.External, nil
+// }
