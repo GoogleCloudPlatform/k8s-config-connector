@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support-spanner
+// proto.service: google.spanner.admin.instance.v1.InstanceAdmin
+// proto.message: google.spanner.admin.instance.v1.Instance
+
 package mockspanner
 
 import (
@@ -92,7 +96,9 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 		metadata.EndTime = now
 		metadata.Instance.UpdateTime = now
 		metadata.Instance.ReplicaComputeCapacity = nil
+		metadata.Instance.Name = fqn
 		retObj := proto.Clone(obj).(*pb.Instance)
+		retObj.Name = fqn
 		return retObj, nil
 	})
 }
