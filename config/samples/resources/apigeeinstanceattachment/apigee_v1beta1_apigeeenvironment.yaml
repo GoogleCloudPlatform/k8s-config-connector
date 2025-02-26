@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,9 @@
 # limitations under the License.
 
 apiVersion: apigee.cnrm.cloud.google.com/v1beta1
-kind: ApigeeInstanceAttachment
+kind: ApigeeEnvironment
 metadata:
-  name: apgia-${uniqueId}
+  name: apigeeenvironment-dep
 spec:
-  instanceRef:
-    name: apgi-${uniqueId}
-  environmentRef:
-    name: apgenv-${uniqueId}
+  apigeeOrganizationRef:
+    external: organizations/${PROJECT_ID?}
