@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -52,14 +52,14 @@ type DocumentAIProcessorVersionSpec struct {
 
 	// The KMS key name used for encryption.
 	// +optional
-	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+	KMSKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
 
 	// The KMS key version with which data is encrypted.
 	// +optional
 	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
 
 	// The project that this resource belongs to.
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
 }
 
 // DocumentAIProcessorVersionStatus defines the config connector machine state of DocumentAIProcessorVersion
