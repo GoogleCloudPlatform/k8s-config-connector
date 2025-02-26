@@ -13,13 +13,13 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.documentai.v1.ProcessorVersion
+// proto.message: google.cloud.documentai.v1beta3.ProcessorVersion
 // api.group: documentai.cnrm.cloud.google.com
 
 package documentai
 
 import (
-	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
+	pb "cloud.google.com/go/documentai/apiv1beta3/documentaipb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
