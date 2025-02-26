@@ -56,7 +56,6 @@ func (p *LinkParent) String() string {
 // New builds a LinkIdentity from the Config Connector Link object.
 func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink) (*LinkIdentity, error) {
 
-	// TODO this thinks the parent is a project, its a bucket
 	// Get Parent
 	bucketRef, err := refsv1beta1.ResolveLoggingLogBucketRef(ctx, reader, obj, obj.Spec.LoggingLogBucketRef)
 	if err != nil {
