@@ -210,6 +210,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
 
+	// Specific to WorflowsWorkflow
+	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
+	visitor.replacePaths[".status.observedState.revisionCreateTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
