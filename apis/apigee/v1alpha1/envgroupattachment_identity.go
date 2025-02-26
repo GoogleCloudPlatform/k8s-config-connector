@@ -34,8 +34,9 @@ const (
 var _ identity.Identity = &ApigeeEnvgroupAttachmentIdentity{}
 
 type ApigeeEnvgroupAttachmentIdentity struct {
-	ParentID   *ApigeeEnvgroupIdentity
-	ResourceID string
+	ParentID    *ApigeeEnvgroupIdentity
+	ResourceID  string
+	generatedID string
 }
 
 func (i *ApigeeEnvgroupAttachmentIdentity) String() string {
@@ -63,13 +64,43 @@ func (i *ApigeeEnvgroupAttachmentIdentity) FromExternal(ref string) error {
 	return nil
 }
 
+func (i *ApigeeEnvgroupAttachmentIdentity) GeneratedString() string {
+	return fmt.Sprintf("%s/attachments/%s", i.ParentID.String(), i.generatedID)
+}
+
+func (i *ApigeeEnvgroupAttachmentIdentity) GeneratedID() string {
+	return i.generatedID
+}
+
+func (i *ApigeeEnvgroupAttachmentIdentity) SetServerGeneratedID(newID string) {
+	i.generatedID = newID
+}
+
+type EnvgroupAttachmentParent struct {
+	Organization string
+	Envgroup     string
+}
+
+func (p *EnvgroupAttachmentParent) String() string {
+	return "organizations/" + p.Organization + "/envgroups/" + p.Envgroup
+}
+
 var _ identity.Resource = &ApigeeEnvgroupAttachment{}
 
 func (obj *ApigeeEnvgroupAttachment) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	// Get parent ID
 	parentID, err := obj.GetParentIdentity(ctx, reader)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot resolve parent identity: %w", err)
+	}
+
+	environmentRef := obj.Spec.EnvironmentRef
+	if environmentRef == nil {
+		return nil, fmt.Errorf("no environment reference")
+	}
+	err = environmentRef.Normalize(ctx, reader, obj.Namespace)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve environment: %w", err)
 	}
 
 	// Get desired ID
@@ -89,9 +120,9 @@ func (obj *ApigeeEnvgroupAttachment) GetIdentity(ctx context.Context, reader cli
 	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		previousID := &ApigeeEnvgroupIdentity{}
+		previousID := &ApigeeEnvgroupAttachmentIdentity{}
 		if err := previousID.FromExternal(externalRef); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("could not resolve previousID: %s :%w", externalRef, err)
 		}
 		if id.String() != previousID.String() {
 			return nil, fmt.Errorf("cannot update ApigeeEnvgroupAttachment identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
