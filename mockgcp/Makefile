@@ -123,7 +123,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/spanner/admin/instance/v1/*.proto \
 		./third_party/googleapis/mockgrafeas/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto
+		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/notebooks/v1/*.proto
 
 
 .PHONY: generate-grpc-for-google-protos
