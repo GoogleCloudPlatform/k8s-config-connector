@@ -77,9 +77,34 @@ spec:
               displayName:
                 description: The display name of the processor version.
                 type: string
-              kmsKeyName:
+              kmsKeyNameRef:
                 description: The KMS key name used for encryption.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               kmsKeyVersionName:
                 description: The KMS key version with which data is encrypted.
                 type: string
