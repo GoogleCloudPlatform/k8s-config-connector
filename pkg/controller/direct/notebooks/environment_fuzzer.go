@@ -45,5 +45,3 @@ func notebooksEnvironmentFuzzer() fuzztesting.KRMFuzzer {
 
 	return f
 }
-
-
