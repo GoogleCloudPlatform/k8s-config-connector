@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: notebooksenvironments.notebooks.cnrm.cloud.google.com
 spec:
   group: notebooks.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: NotebooksEnvironment
+    listKind: NotebooksEnvironmentList
     plural: notebooksenvironments
     shortNames:
     - gcpnotebooksenvironment
@@ -43,133 +42,36 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: NotebooksEnvironment is the Schema for the NotebooksEnvironment
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: NotebooksEnvironmentSpec defines the desired state of NotebooksEnvironment
             properties:
-              containerImage:
-                description: Use a container image to start the notebook instance.
-                properties:
-                  repository:
-                    description: |-
-                      The path to the container image repository.
-                      For example: gcr.io/{project_id}/{imageName}.
-                    type: string
-                  tag:
-                    description: The tag of the container image. If not specified,
-                      this defaults to the latest tag.
-                    type: string
-                required:
-                - repository
-                type: object
-              description:
-                description: A brief description of this environment.
-                type: string
-              displayName:
-                description: Display name of this environment for the UI.
-                type: string
-              locationRef:
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The `name` field of a `NotebooksLocation`
-                      resource.'
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
-              postStartupScript:
-                description: |-
-                  Path to a Bash script that automatically runs after a notebook instance fully boots up.
-                  The path must be a URL or Cloud Storage path. Example: "gs://path-to-file/file-name".
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The NotebooksEnvironment name. If not given, the metadata.name
+                  will be used.
                 type: string
-              vmImage:
-                description: Use a Compute Engine VM image to start the notebook instance.
-                properties:
-                  imageFamily:
-                    description: Use this VM image family to find the image; the newest
-                      image in this family will be used.
-                    type: string
-                  imageName:
-                    description: Use VM image name to find the image.
-                    type: string
-                  project:
-                    description: |-
-                      The name of the Google Cloud project that this VM image belongs to.
-                      Format: projects/{project_id}.
-                    type: string
-                required:
-                - project
-                type: object
-            required:
-            - locationRef
-            - projectRef
             type: object
           status:
+            description: NotebooksEnvironmentStatus defines the config connector machine
+              state of NotebooksEnvironment
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -193,8 +95,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Instance creation time.
+              externalRef:
+                description: A unique specifier for the NotebooksEnvironment resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -202,7 +105,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -211,9 +119,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
