@@ -71,6 +71,7 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 		if err := s.storage.Create(ctx, fqn, service); err != nil {
 			return nil, err
 		}
+
 	} else {
 		service.State = pb.State_ENABLED
 		if err := s.storage.Update(ctx, fqn, service); err != nil {

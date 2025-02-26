@@ -52,10 +52,12 @@ func TestScripts(t *testing.T) {
 			h.Init()
 
 			project := h.Project
+			folderID := h.FolderID()
+			organizationID := testgcp.TestOrgID.Get()
+
 			testDir := filepath.Join(baseDir, scriptPath)
 
-			script := loadScript(t, testDir, uniqueID, project)
-
+			script := loadScript(t, testDir, uniqueID, project, folderID)
 			h.StartProxy()
 
 			for _, step := range script.Steps {
@@ -98,9 +100,6 @@ func TestScripts(t *testing.T) {
 					httpEvent.Request.RemoveHeader("Content-Length")
 					httpEvent.Response.RemoveHeader("Content-Length")
 				}
-
-				folderID := ""
-				organizationID := ""
 
 				e2e.NormalizeHTTPLog(t, httpEvents, h.RegisteredServices(), testgcp.GCPProject{ProjectID: h.Project.ProjectID, ProjectNumber: h.Project.ProjectNumber}, uniqueID, folderID, organizationID)
 
@@ -147,14 +146,14 @@ type Step struct {
 	Exec string `json:"exec"`
 }
 
-func loadScript(t *testing.T, dir string, uniqueID string, project GCPProject) *Script {
+func loadScript(t *testing.T, dir string, uniqueID string, project GCPProject, folderID string) *Script {
 	s := &Script{
 		Name:      dir,
 		SourceDir: dir,
 	}
 	b := test.MustReadFile(t, filepath.Join(dir, "script.yaml"))
 
-	b = ReplaceTestVars(t, b, uniqueID, project)
+	b = ReplaceTestVars(t, b, uniqueID, project, folderID)
 
 	var steps []*Step
 	if err := yaml.Unmarshal(b, &steps); err != nil {
@@ -167,9 +166,10 @@ func loadScript(t *testing.T, dir string, uniqueID string, project GCPProject) *
 }
 
 // ReplaceTestVars replaces all occurrences of placeholder strings e.g. ${uniqueId} in a given byte slice.
-func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project GCPProject) []byte {
+func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project GCPProject, folderID string) []byte {
 	s := string(b)
 	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
 	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
+	s = strings.Replace(s, "${folderId}", folderID, -1)
 	return []byte(s)
 }
