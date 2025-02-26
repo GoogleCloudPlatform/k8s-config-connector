@@ -1,0 +1,5 @@
+
+- exec: gcloud compute tpus tpu-vm create test-${uniqueId} --zone us-central1-a --accelerator-type v5p-8 --version tpu-vm-cos-stable
+- exec: gcloud compute tpus tpu-vm describe test-${uniqueId} --zone us-central1-a
+- exec: gcloud compute tpus tpu-vm update test-${uniqueId} --zone us-central1-a --description "new description"
+- exec: gcloud compute tpus tpu-vm delete test-${uniqueId} --zone us-central1-a --quiet
