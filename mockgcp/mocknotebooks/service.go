@@ -77,5 +77,3 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	return mux, nil
 }
-
-
