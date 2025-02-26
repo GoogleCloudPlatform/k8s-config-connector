@@ -230,5 +230,14 @@ go run . generate-mapper \
      --service mockgcp.cloud.cloudidentity.groups.v1beta1 \
      --api-version cloudidentity.cnrm.cloud.google.com/v1beta1
 
+# Workflow : Workflow
+go run . generate-types \
+     --service google.cloud.workflows.v1 \
+     --resource WorkflowsWorkflow:Workflow \
+     --api-version "workflows.cnrm.cloud.google.com/v1alpha1"
+
+go run . generate-mapper \
+     --service google.cloud.workflows.v1 \
+     --api-version workflows.cnrm.cloud.google.com/v1alpha1
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
