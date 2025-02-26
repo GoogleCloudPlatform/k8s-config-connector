@@ -573,7 +573,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		body["email"] = "test@example.com"
 		response.StatusCode = 200
 	} else {
-		log.Printf("host name %q not known.  "+
+		klog.Errorf("host name %q not known.  "+
 			"Please verify the ExpectedHost in service.go and retry.", req.Host)
 	}
 
