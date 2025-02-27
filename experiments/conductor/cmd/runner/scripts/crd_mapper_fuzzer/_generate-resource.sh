@@ -25,9 +25,9 @@ export WORKDIR=~/kccai/work1/
 export BRANCH_NAME=types_${SERVICE}_${CRD_KIND}
 export LOG_DIR=/tmp/conductor/${BRANCH_NAME}
 
-#./01-write-generator-script.sh
+./01-write-generator-script.sh
 
-#./02-generate-spec-and-status.sh
+./02-generate-spec-and-status.sh
 
 ./03-generate-fuzzer.sh
 
@@ -44,9 +44,9 @@ go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -fuzztime 600s
 If the CRD already exists we need to make sure that there are only description changes in 
 
 git diff origin/master -- config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_dataprocclusters.dataproc.cnrm.cloud.google.com.yaml
-EOF
-
 
 diff -u3 \
 <(git show origin/master:config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_dataprocclusters.dataproc.cnrm.cloud.google.com.yaml | crd-tools remove-descriptions) \
 <(cat config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_dataprocclusters.dataproc.cnrm.cloud.google.com.yaml | crd-tools remove-descriptions) | less
+EOF
+
