@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ kind: NotebooksEnvironment
 metadata:
   name: notebooksenvironment-${uniqueId}
 spec:
-  containerImage:
-  - repository: gcr.io/deeplearning-platform-release/base-cpu
+  vmImage:
+    imageFamily: tf-latest-cpu
+    project: deeplearning-platform-release
   location: us-west1-a
   projectRef:
     external: ${projectId}
-  resourceID: notebooksenvironment${uniqueId}
