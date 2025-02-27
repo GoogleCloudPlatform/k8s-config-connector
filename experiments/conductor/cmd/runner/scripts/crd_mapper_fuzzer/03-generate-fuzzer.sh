@@ -33,24 +33,12 @@ if [[ -z "${BRANCH_NAME}" ]]; then
   exit 1
 fi
 
-# if [[ -z "${GCLOUD_COMMAND}" ]]; then
-#   echo "GCLOUD_COMMAND is required"
-#   exit 1
-# fi
-
 if [[ -z "${LOG_DIR}" ]]; then
   echo "LOG_DIR is required"
   exit 1
 fi
 
-# if [[ -z "${EXPECTED_PATH}" ]]; then
-#   echo "EXPECTED_PATH is required"
-#   exit 1
-# fi
-
 mkdir -p ${LOG_DIR}
-# cat ${PROMPT} | \
-#     envsubst '$GCLOUD_COMMAND,$EXPECTED_PATH' > ${LOG_DIR}/prompt
 
 cd ${WORKDIR}
 
@@ -76,6 +64,6 @@ EOF
 
 git status
 git add .
-git commit -m "Generate fuzzer ${SERVICE} ${RESOURCE}"
+git commit -m ""${CRD_KIND}: Create fuzz test"
 
 echo "Done"
