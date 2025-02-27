@@ -173,19 +173,21 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	paths := []string{}
-	if !reflect.DeepEqual(a.desired.Spec.ReplicaCount, a.actual.ReplicaCount) {
+
+	// If replica count is unset, the field become unmanaged.
+	if a.desired.Spec.ReplicaCount != nil && !reflect.DeepEqual(a.desired.Spec.ReplicaCount, a.actual.ReplicaCount) {
 		paths = append(paths, "replica_count")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.ShardCount, a.actual.ShardCount) {
+	if a.desired.Spec.ShardCount != nil && !reflect.DeepEqual(a.desired.Spec.ShardCount, a.actual.ShardCount) {
 		paths = append(paths, "shard_count")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
+	if a.desired.Spec.DeletionProtectionEnabled != nil && !reflect.DeepEqual(a.desired.Spec.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
 		paths = append(paths, "deletion_protection_enabled")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.PersistenceConfig, a.actual.PersistenceConfig) {
-		paths = append(paths, "persistent_config")
+	if a.desired.Spec.PersistenceConfig != nil && !reflect.DeepEqual(a.desired.Spec.PersistenceConfig, a.actual.PersistenceConfig) {
+		paths = append(paths, "persistence_config")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.EngineConfigs, a.actual.EngineConfigs) {
+	if a.desired.Spec.EngineConfigs != nil && !reflect.DeepEqual(a.desired.Spec.EngineConfigs, a.actual.EngineConfigs) {
 		paths = append(paths, "engine_configs")
 	}
 
@@ -210,6 +212,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 				UpdateMask: updateMask,
 				Instance:   desiredPb,
 			}
+			req.Instance.Name = a.id.String()
 			op, err := a.gcpClient.UpdateInstance(ctx, req)
 			if err != nil {
 				return fmt.Errorf("updating instance %s: %w", a.id, err)
