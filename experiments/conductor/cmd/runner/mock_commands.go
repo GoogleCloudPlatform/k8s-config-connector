@@ -73,7 +73,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
 
 	var out strings.Builder
-	checkoutBranch(branch, workDir, out)
+	checkoutBranch(branch, workDir, &out)
 
 	// Check to see if the script file already exists
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
@@ -114,10 +114,10 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Add the new file to the current branch.
-	gitAdd(workDir, out, scriptFile)
+	gitAdd(workDir, &out, scriptFile)
 
 	// Commit the change to the current branch.
-	gitCommit(workDir, out, fmt.Sprintf("Adding LLM/gcloud generated test script.yaml for %s", branch.Name))
+	gitCommit(workDir, &out, fmt.Sprintf("Adding LLM/gcloud generated test script.yaml for %s", branch.Name))
 }
 
 const CAPTURE_HTTP_LOG string = `I need to capture the logs from GCP for running a mockgcp test that I just created.  I then need to create a git commit.
@@ -151,7 +151,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
 
 	var out strings.Builder
-	checkoutBranch(branch, workDir, out)
+	checkoutBranch(branch, workDir, &out)
 
 	// Check to see if the script file exists
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
@@ -197,10 +197,10 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Add the new file to the current branch.
-	gitAdd(workDir, out, logFullPath)
+	gitAdd(workDir, &out, logFullPath)
 
 	// Commit the change to the current branch.
-	gitCommit(workDir, out, fmt.Sprintf("Adding mockgcptests generated _http.log for %s", branch.Name))
+	gitCommit(workDir, &out, fmt.Sprintf("Adding mockgcptests generated _http.log for %s", branch.Name))
 }
 
 const MOCK_SERVICE_GO_GEN string = `mock<SERVICE>/service.go
@@ -219,7 +219,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
 
 	var out strings.Builder
-	checkoutBranch(branch, workDir, out)
+	checkoutBranch(branch, workDir, &out)
 
 	// Check to see if the http log file already exists
 	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
@@ -320,10 +320,10 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Add the new files to the current branch.
-	gitAdd(workDir, out, serviceFile, resourceFile)
+	gitAdd(workDir, &out, serviceFile, resourceFile)
 
 	// Commit the change to the current branch.
-	gitCommit(workDir, out, fmt.Sprintf("Adding mock service and resource for %s", branch.Name))
+	gitCommit(workDir, &out, fmt.Sprintf("Adding mock service and resource for %s", branch.Name))
 }
 
 const ADD_SERVICE_TO_ROUNDTRIP string = `Please add the services in <TICK>mock<SERVICE><TICK> to <TICK>mock_http_roundtrip.go<TICK>
@@ -339,7 +339,7 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
 
 	var out strings.Builder
-	checkoutBranch(branch, workDir, out)
+	checkoutBranch(branch, workDir, &out)
 
 	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
 	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
@@ -371,10 +371,10 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, out.String())
 
 	// Add the new files to the current branch.
-	gitAdd(workDir, out, "mock_http_roundtrip.go")
+	gitAdd(workDir, &out, "mock_http_roundtrip.go")
 
 	// Commit the change to the current branch.
-	gitCommit(workDir, out, fmt.Sprintf("Adding service to mock_http_roundtrip.go for %s", branch.Name))
+	gitCommit(workDir, &out, fmt.Sprintf("Adding service to mock_http_roundtrip.go for %s", branch.Name))
 }
 
 const ADD_PROTO_TO_MAKEFILE string = `Please add the generation for <TICK><PROTO_PACKAGE><TICK> to the <TICK>generate-grpc-for-google-protos<TICK> target in <TICK>Makefile<TICK>.
@@ -393,7 +393,7 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
 
 	var out strings.Builder
-	checkoutBranch(branch, workDir, out)
+	checkoutBranch(branch, workDir, &out)
 
 	// TODO: Populate the ProtoPath in branches-all.yaml.
 	// Maybe populate it with the actual filepath?
@@ -430,9 +430,9 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, out.String())
 
 	// Add the new files to the current branch.
-	gitAdd(workDir, out, "Makefile")
+	gitAdd(workDir, &out, "Makefile")
 
 	// Commit the change to the current branch.
-	gitCommit(workDir, out, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
+	gitCommit(workDir, &out, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
 
 }

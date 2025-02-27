@@ -92,11 +92,11 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	return msg
 }
 
-func checkoutBranch(branch Branch, workDir string, out strings.Builder) {
+func checkoutBranch(branch Branch, workDir string, out *strings.Builder) {
 	log.Printf("COMMAND: git checkout %s\r\n", branch.Local)
 	checkout := exec.Command("git", "checkout", branch.Local)
 	checkout.Dir = workDir
-	checkout.Stdout = &out
+	checkout.Stdout = out
 	if err := checkout.Run(); err != nil {
 		log.Fatal(err)
 	}
@@ -127,7 +127,7 @@ func writeTemplateToFile(branch Branch, filePath string, template string) {
 	}
 }
 
-func gitAdd(workDir string, out strings.Builder, files ...string) {
+func gitAdd(workDir string, out *strings.Builder, files ...string) {
 	params := ""
 	first := true
 	for _, file := range files {
@@ -141,20 +141,20 @@ func gitAdd(workDir string, out strings.Builder, files ...string) {
 	log.Printf("COMMAND: git add %s\r\n", params)
 	gitadd := exec.Command("git", "add", params)
 	gitadd.Dir = workDir
-	gitadd.Stdout = &out
-	gitadd.Stderr = &out
+	gitadd.Stdout = out
+	gitadd.Stderr = out
 	if err := gitadd.Run(); err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("BRANCH ADD: %q\n", out.String())
 }
 
-func gitCommit(workDir string, out strings.Builder, msg string) {
+func gitCommit(workDir string, out *strings.Builder, msg string) {
 	log.Printf("COMMAND: git commit -m %q\r\n", msg)
 	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("%q", msg))
 	gitcommit.Dir = workDir
-	gitcommit.Stdout = &out
-	gitcommit.Stderr = &out
+	gitcommit.Stdout = out
+	gitcommit.Stderr = out
 	if err := gitcommit.Run(); err != nil {
 		log.Fatal(err)
 	}
