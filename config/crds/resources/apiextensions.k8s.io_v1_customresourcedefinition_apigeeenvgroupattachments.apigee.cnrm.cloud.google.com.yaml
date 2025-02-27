@@ -6,7 +6,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: apigeeenvgroupattachments.apigee.cnrm.cloud.google.com
 spec:
@@ -43,7 +42,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ApigeeEnvgroupAttachment is the Schema for the EnvgroupAttachments
+        description: ApigeeEnvgroupAttachment is the Schema for the ApigeeEnvgroupAttachment
           API
         properties:
           apiVersion:
@@ -60,10 +59,10 @@ spec:
             type: object
           spec:
             description: ApigeeEnvgroupAttachmentSpec defines the desired state of
-              EnvgroupAttachment
+              ApigeeEnvgroupAttachment
             properties:
               envgroupRef:
-                description: Reference to parent ApigeeEnvgroup.
+                description: Reference to parent Environment Group
                 oneOf:
                 - not:
                     required:
@@ -91,7 +90,7 @@ spec:
                     type: string
                 type: object
               environmentRef:
-                description: The Apigee environment to attach to.
+                description: Required. ID of the attached environment.
                 oneOf:
                 - not:
                     required:
@@ -119,20 +118,19 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The EnvgroupAttachment name. If not given, the metadata.name
-                  will be used.
+                description: The ApigeeEnvgroupAttachment name. If not given, the
+                  metadata.name will be used.
                 type: string
             required:
             - envgroupRef
-            - environmentRef
             type: object
           status:
-            description: ApigeeEnvgroupAttachmentStatus defines the observed state
-              of EnvgroupAttachment
+            description: ApigeeEnvgroupAttachmentStatus defines the config connector
+              machine state of ApigeeEnvgroupAttachment
             properties:
               conditions:
                 description: Conditions represent the latest available observations
-                  of the EnvgroupAttachment's current state.
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -157,7 +155,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the EnvgroupAttachment resource.
+                description: A unique specifier for the ApigeeEnvgroupAttachment resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -177,6 +176,8 @@ spec:
                     type: string
                 type: object
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

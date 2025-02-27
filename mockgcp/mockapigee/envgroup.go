@@ -36,7 +36,7 @@ type EnvgroupV1 struct {
 }
 
 func (s *EnvgroupV1) GetOrganizationsEnvgroup(ctx context.Context, req *pb.GetOrganizationsEnvgroupRequest) (*pb.GoogleCloudApigeeV1EnvironmentGroup, error) {
-	name, err := s.parseEnvGroupName(req.Name)
+	name, err := ParseEnvgroupName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (s *EnvgroupV1) GetOrganizationsEnvgroup(ctx context.Context, req *pb.GetOr
 
 func (s *EnvgroupV1) CreateOrganizationsEnvgroup(ctx context.Context, req *pb.CreateOrganizationsEnvgroupRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/envgroups/" + req.OrganizationsEnvgroup.Name
-	name, err := s.parseEnvGroupName(reqName)
+	name, err := ParseEnvgroupName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (s *EnvgroupV1) CreateOrganizationsEnvgroup(ctx context.Context, req *pb.Cr
 }
 
 func (s *EnvgroupV1) PatchOrganizationsEnvgroup(ctx context.Context, req *pb.PatchOrganizationsEnvgroupRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseEnvGroupName(req.Name)
+	name, err := ParseEnvgroupName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -137,7 +137,7 @@ func (s *EnvgroupV1) PatchOrganizationsEnvgroup(ctx context.Context, req *pb.Pat
 }
 
 func (s *EnvgroupV1) DeleteOrganizationsEnvgroup(ctx context.Context, req *pb.DeleteOrganizationsEnvgroupRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseEnvGroupName(req.Name)
+	name, err := ParseEnvgroupName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -167,9 +167,13 @@ func (n *EnvGroupName) String() string {
 	return "organizations/" + n.Organization + "/envgroups/" + n.EnvGroupName
 }
 
-// parseEnvGroupName parses a string into a envgroupName.
+func (n *EnvGroupName) Parent() string {
+	return fmt.Sprintf("organizations/%v", n.Organization)
+}
+
+// ParseEnvgroupName parses a string into a envgroupName.
 // The expected form is organizations/<projectID>/envgroups/<name>
-func (s *MockService) parseEnvGroupName(name string) (*EnvGroupName, error) {
+func ParseEnvgroupName(name string) (*EnvGroupName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && tokens[0] == "organizations" && tokens[2] == "envgroups" {

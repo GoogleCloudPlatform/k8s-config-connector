@@ -119,7 +119,7 @@ func (a *ApigeeInstanceAttachmentAdapter) Find(ctx context.Context) (bool, error
 
 		// HACK: Environment field format required by GCP API is name-only, not fully-qualified ID.
 		// So, we fix this by getting the name of the environment.
-		envName, err := getNameOfEnvironment(a.desired.Spec.EnvironmentRef.External)
+		envName, err := GetNameOfEnvironment(a.desired.Spec.EnvironmentRef.External)
 		if err != nil {
 			return false, err
 		}
@@ -174,7 +174,7 @@ func (a *ApigeeInstanceAttachmentAdapter) Create(ctx context.Context, createOp *
 
 	// HACK: Environment field format required by GCP API is name-only, not fully-qualified ID.
 	// So, we fix this by editing the environment to be name-only.
-	envName, err := getNameOfEnvironment(resource.Environment)
+	envName, err := GetNameOfEnvironment(resource.Environment)
 	if err != nil {
 		return err
 	}
@@ -255,7 +255,7 @@ func (a *ApigeeInstanceAttachmentAdapter) Export(ctx context.Context) (*unstruct
 	if obj.Spec.EnvironmentRef != nil {
 		environmentID := &apigeev1beta1.ApigeeEnvironmentIdentity{}
 		environmentName := obj.Spec.EnvironmentRef.External
-		if err := environmentID.FromExternal(a.id.ParentID.ParentID.String() + "/" + apigeev1beta1.EnvironmentIDToken + "/" + environmentName); err != nil {
+		if err := environmentID.FromExternal(a.id.ParentID.ParentID.String() + "/" + apigeev1beta1.ApigeeEnvironmentIDToken + "/" + environmentName); err != nil {
 			return nil, err
 		}
 		obj.Spec.EnvironmentRef.External = environmentID.String()
@@ -293,13 +293,4 @@ func (a *ApigeeInstanceAttachmentAdapter) Delete(ctx context.Context, deleteOp *
 		return false, fmt.Errorf("waiting delete ApigeeInstanceAttachment %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-// getNameOfEnvironment gets the name of the environment by parsing its external reference string
-func getNameOfEnvironment(external string) (string, error) {
-	environmentID := &apigeev1beta1.ApigeeEnvironmentIdentity{}
-	if err := environmentID.FromExternal(external); err != nil {
-		return "", err
-	}
-	return environmentID.ResourceID, nil
 }

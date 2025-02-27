@@ -25,8 +25,8 @@ import (
 )
 
 const (
-	EnvironmentIDToken  = "environments"
-	EnvironmentIDFormat = ApigeeOrganizationIDFormat + "/" + EnvironmentIDToken + "/{{environmentID}}"
+	ApigeeEnvironmentIDToken  = "environments"
+	ApigeeEnvironmentIDFormat = ApigeeOrganizationIDFormat + "/" + ApigeeEnvironmentIDToken + "/{{environmentID}}"
 )
 
 var _ identity.Identity = &ApigeeEnvironmentIdentity{}
@@ -37,20 +37,20 @@ type ApigeeEnvironmentIdentity struct {
 }
 
 func (i *ApigeeEnvironmentIdentity) String() string {
-	return i.ParentID.String() + "/" + EnvironmentIDToken + "/" + i.ResourceID
+	return i.ParentID.String() + "/" + ApigeeEnvironmentIDToken + "/" + i.ResourceID
 }
 
 func (i *ApigeeEnvironmentIdentity) FromExternal(ref string) error {
-	requiredTokens := len(strings.Split(EnvironmentIDFormat, "/"))
+	requiredTokens := len(strings.Split(ApigeeEnvironmentIDFormat, "/"))
 
 	tokens := strings.Split(ref, "/")
-	if len(tokens) != requiredTokens || tokens[len(tokens)-2] != EnvironmentIDToken {
-		return fmt.Errorf("format of ApigeeEnvironment ref=%q was not known (use %q)", ref, EnvironmentIDFormat)
+	if len(tokens) != requiredTokens || tokens[len(tokens)-2] != ApigeeEnvironmentIDToken {
+		return fmt.Errorf("format of ApigeeEnvironment ref=%q was not known (use %q)", ref, ApigeeEnvironmentIDFormat)
 	}
 
 	parentID := &ApigeeOrganizationIdentity{}
 	if err := parentID.FromExternal(strings.Join(tokens[:len(tokens)-2], "/")); err != nil {
-		return fmt.Errorf("format of ApigeeEnvironment ref=%q was not known (use %q)", ref, EnvironmentIDFormat)
+		return fmt.Errorf("format of ApigeeEnvironment ref=%q was not known (use %q)", ref, ApigeeEnvironmentIDFormat)
 	}
 
 	resourceID := tokens[len(tokens)-1]

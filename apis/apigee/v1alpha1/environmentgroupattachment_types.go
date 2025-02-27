@@ -1,11 +1,11 @@
-// Copyright 2025 Google LLC.
-
+// Copyright 2025 Google LLC
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-
+//
 //    http://www.apache.org/licenses/LICENSE-2.0
-
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,69 +23,69 @@ import (
 
 var ApigeeEnvgroupAttachmentGVK = GroupVersion.WithKind("ApigeeEnvgroupAttachment")
 
-// ApigeeEnvgroupAttachmentSpec defines the desired state of EnvgroupAttachment
+// ApigeeEnvgroupAttachmentSpec defines the desired state of ApigeeEnvgroupAttachment
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
 type ApigeeEnvgroupAttachmentSpec struct {
-	// Reference to parent ApigeeEnvgroup.
+	// Reference to parent Environment Group
 	// +required
-	EnvgroupRef *ApigeeEnvgroupRef `json:"envgroupRef"`
+	EnvgroupRef *ApigeeEnvgroupRef `json:"envgroupRef,omitempty"`
 
-	// The Apigee environment to attach to.
-	// +required
-	EnvironmentRef *apigeev1beta1.ApigeeEnvironmentRef `json:"environmentRef"`
+	// Required. ID of the attached environment.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment.environment
+	EnvironmentRef *apigeev1beta1.ApigeeEnvironmentRef `json:"environmentRef,omitempty"`
 
-	// The EnvgroupAttachment name. If not given, the metadata.name will be used.
+	// The ApigeeEnvgroupAttachment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-// ApigeeEnvgroupAttachmentStatus defines the observed state of EnvgroupAttachment
+// ApigeeEnvgroupAttachmentStatus defines the config connector machine state of ApigeeEnvgroupAttachment
 type ApigeeEnvgroupAttachmentStatus struct {
-	// Conditions represent the latest available observations of the
-	//   EnvgroupAttachment's current state.
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
-	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller.
-	// If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
-	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the EnvgroupAttachment resource.
-	// +optional
+	// A unique specifier for the ApigeeEnvgroupAttachment resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *EnvgroupAttachmentObservedState `json:"observedState,omitempty"`
+	ObservedState *ApigeeEnvgroupAttachmentObservedState `json:"observedState,omitempty"`
 }
 
-// EnvgroupAttachmentObservedState defines the desired state of ApigeeEnvgroupAttachment
-type EnvgroupAttachmentObservedState struct {
-	// Output only. The time at which the environment group attachment
-	// was created as milliseconds since epoch.
+// ApigeeEnvgroupAttachmentObservedState is the state of the ApigeeEnvgroupAttachment resource as most recently observed in GCP.
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
+type ApigeeEnvgroupAttachmentObservedState struct {
+	// Output only. The time at which the environment group attachment was created as milliseconds since epoch.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment.created_at
 	CreatedAt *string `json:"createdAt,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ApigeeEnvgroupAttachment is the Schema for the EnvgroupAttachments API
-// +genclient
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeeenvgroupattachment;gcpapigeeenvgroupattachments
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// ApigeeEnvgroupAttachment is the Schema for the ApigeeEnvgroupAttachment API
+// +k8s:openapi-gen=true
 type ApigeeEnvgroupAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// +required
 	Spec   ApigeeEnvgroupAttachmentSpec   `json:"spec,omitempty"`
 	Status ApigeeEnvgroupAttachmentStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// ApigeeEnvgroupAttachmentList contains a list of EnvgroupAttachment
+// ApigeeEnvgroupAttachmentList contains a list of ApigeeEnvgroupAttachment
 type ApigeeEnvgroupAttachmentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`

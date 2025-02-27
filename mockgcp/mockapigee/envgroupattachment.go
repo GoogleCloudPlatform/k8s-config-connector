@@ -20,118 +20,140 @@ import (
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/apigee/v1"
-
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-type envgroupAttachmentServer struct {
+type envgroupAttachmentName struct {
+	Organization string
+	Envgroup     string
+	Attachment   string
+}
+
+func (n *envgroupAttachmentName) Parent() string {
+	return fmt.Sprintf("organizations/%v/envgroups/%v", n.Organization, n.Envgroup)
+}
+
+func (n *envgroupAttachmentName) String() string {
+	return fmt.Sprintf("organizations/%v/envgroups/%v/attachments/%v", n.Organization, n.Envgroup, n.Attachment)
+}
+
+// parseEnvgroupAttachmentName parses a string into a envgroupAttachmentName.
+// The expected form is organizations/{organization}/envgroups/{envgroup}/attachments/{attachment}.
+func (s *envgroupsAttachmentsServer) parseEnvgroupAttachmentName(name string) (*envgroupAttachmentName, error) {
+	expectedFormat := "organizations/{organization}/envgroups/{envgroup}/attachments/{attachment}"
+	parts := strings.Split(name, "/")
+	if len(parts) != 6 || parts[0] != "organizations" || parts[2] != "envgroups" || parts[4] != "attachments" {
+		return nil, fmt.Errorf("name '%s' is not of the form %s", name, expectedFormat)
+	}
+	return &envgroupAttachmentName{
+		Organization: parts[1],
+		Envgroup:     parts[3],
+		Attachment:   parts[5],
+	}, nil
+}
+
+type envgroupsAttachmentsServer struct {
 	*MockService
 	pb.UnimplementedOrganizationsEnvgroupsAttachmentsServerServer
 }
 
-func (s *envgroupAttachmentServer) CreateOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.CreateOrganizationsEnvgroupsAttachmentRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseEnvgroupAttachmentName(req.GetParent() + "/attachments/" + req.GetOrganizationsEnvgroupsAttachment().GetName())
+func (s *envgroupsAttachmentsServer) GetOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.GetOrganizationsEnvgroupsAttachmentRequest) (*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment, error) {
+	name, err := s.parseEnvgroupAttachmentName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.GetOrganizationsEnvgroupsAttachment()).(*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment)
-	obj.Name = fqn
+
+	obj := &pb.GoogleCloudApigeeV1EnvironmentGroupAttachment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "generic::not_found: resource %s not found", fqn)
+		}
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (s *envgroupsAttachmentsServer) CreateOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.CreateOrganizationsEnvgroupsAttachmentRequest) (*longrunningpb.Operation, error) {
+	obj := proto.Clone(req.OrganizationsEnvgroupsAttachment).(*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment)
+	populateDefaultsForOrganizationsEnvgroupsAttachment(obj)
+
+	reqName := req.Parent + "/attachments/" + obj.Name
+	name, err := s.parseEnvgroupAttachmentName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	envgroupName, err := ParseEnvgroupName(name.Parent())
+	if err != nil {
+		return nil, err
+	}
+	orgID := envgroupName.Parent()
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	opMetadata := &pb.GoogleCloudApigeeV1OperationMetadata{
+	metadata := &pb.GoogleCloudApigeeV1OperationMetadata{
 		OperationType:      "INSERT",
-		State:              "FINISHED",
+		State:              "IN_PROGRESS",
 		TargetResourceName: fqn,
 	}
-
-	// TODO: StartLRO
-	return s.operations.DoneLRO(ctx, fqn, opMetadata, func() *pb.GoogleCloudApigeeV1EnvironmentGroupAttachment {
-		obj.Name = name.AttachmentID
-		obj.Environment = name.Environment
-		obj.EnvironmentGroupId = name.Envgroup
-
-		return obj
-	}())
+	op, err := s.operations.StartLRO(ctx, orgID, metadata, func() (proto.Message, error) {
+		metadata.Progress = &pb.GoogleCloudApigeeV1OperationMetadataProgress{
+			Description: "Succeeded",
+			PercentDone: 100,
+		}
+		metadata.State = "FINISHED"
+		result := proto.Clone(obj).(*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment)
+		populateOutputsForOrganizationsEnvgroupsAttachment(result)
+		s.storage.Update(ctx, fqn, result)
+		return result, nil
+	})
+	return op, err
 }
 
-func (s *envgroupAttachmentServer) GetOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.GetOrganizationsEnvgroupsAttachmentRequest) (*pb.GoogleCloudApigeeV1EnvironmentGroupAttachment, error) {
-	name, err := s.parseEnvgroupAttachmentName(req.GetName())
+func (s *envgroupsAttachmentsServer) DeleteOrganizationsEnvgroupsAttachment(ctx context.Context, req *pb.DeleteOrganizationsEnvgroupsAttachmentRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseEnvgroupAttachmentName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.GoogleCloudApigeeV1EnvironmentGroupAttachment{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
 
-	return obj, nil
-}
-
-func (s *envgroupAttachmentServer) DeleteEnvgroupAttachment(ctx context.Context, req *pb.DeleteOrganizationsEnvgroupsAttachmentRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseEnvgroupAttachmentName(req.GetName())
+	envgroupName, err := ParseEnvgroupName(name.Parent())
 	if err != nil {
 		return nil, err
 	}
-	fqn := name.String()
+	orgID := envgroupName.Parent()
 
-	deleted := &pb.GoogleCloudApigeeV1EnvironmentGroupAttachment{}
-	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+	oldObj := &pb.GoogleCloudApigeeV1EnvironmentGroupAttachment{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
 
-	opMetadata := &pb.GoogleCloudApigeeV1OperationMetadata{
+	metadata := &pb.GoogleCloudApigeeV1OperationMetadata{
 		OperationType:      "DELETE",
-		State:              "FINISHED",
+		State:              "IN_PROGRESS",
 		TargetResourceName: fqn,
 	}
-	opPrefix := fmt.Sprintf("projects/%d/environments/%s/envgroups/%s", name.Project.Number, name.Environment, name.Envgroup)
-	return s.operations.DoneLRO(ctx, opPrefix, opMetadata, &emptypb.Empty{})
+	op, err := s.operations.StartLRO(ctx, orgID, metadata, func() (proto.Message, error) {
+		metadata.State = "FINISHED"
+		return &pb.GoogleCloudApigeeV1EnvironmentGroupAttachment{}, nil
+	})
+	return op, err
 }
 
-// There is no UPDATE func for this API based on the gneerated proto
-
-// EnvgroupAttachmentName represents a "fully qualified name" for an EnvgroupAttachment resource.
-type envgroupAttachmentName struct {
-	Project      *projects.ProjectData
-	Environment  string
-	Envgroup     string
-	AttachmentID string
+func populateDefaultsForOrganizationsEnvgroupsAttachment(obj *pb.GoogleCloudApigeeV1EnvironmentGroupAttachment) {
+	obj.Name = "${attachmentId}"
 }
 
-func (n *envgroupAttachmentName) String() string {
-	return fmt.Sprintf("projects/%s/environments/%s/envgroups/%s/attachments/%s", n.Project.ID, n.Environment, n.Envgroup, n.AttachmentID)
-}
-
-// parseEnvgroupAttachmentName parses the given name string into a envgroupAttachmentName struct.
-// The expected format is: projects/<projectID>/environments/<environment>/envgroups/<envgroup>/attachments/<attachmentID>.
-func (s *MockService) parseEnvgroupAttachmentName(name string) (*envgroupAttachmentName, error) {
-	split := strings.Split(name, "/")
-	if len(split) != 8 || split[0] != "projects" || split[2] != "environments" || split[4] != "envgroups" || split[6] != "attachments" {
-		return nil, status.Errorf(codes.InvalidArgument, "invalid envgroup attachment name: %q", name)
-	}
-
-	project, err := s.Projects.GetProjectByID(split[1])
-	if err != nil {
-		return nil, err
-	}
-
-	result := &envgroupAttachmentName{
-		Project:      project,
-		Environment:  split[3],
-		Envgroup:     split[5],
-		AttachmentID: split[7],
-	}
-	return result, nil
+func populateOutputsForOrganizationsEnvgroupsAttachment(obj *pb.GoogleCloudApigeeV1EnvironmentGroupAttachment) {
+	obj.CreatedAt = 1740434641
 }

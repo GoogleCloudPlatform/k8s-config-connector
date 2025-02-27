@@ -19,16 +19,14 @@ import (
 	"fmt"
 	"strings"
 
-	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
-	EnvgroupAttachmentIDToken  = "attachments"
-	EnvgroupAttachmentIDFormat = apigeev1beta1.EnvgroupIDFormat + "/" + EnvgroupAttachmentIDToken + "/{{attachmentID}}"
+	ApigeeEnvgroupAttachmentIDToken  = "attachments"
+	ApigeeEnvgroupAttachmentIDFormat = ApigeeEnvgroupIDFormat + "/" + ApigeeEnvgroupAttachmentIDToken + "/{{attachmentID}}"
 )
 
 var _ identity.Identity = &ApigeeEnvgroupAttachmentIdentity{}
@@ -39,20 +37,25 @@ type ApigeeEnvgroupAttachmentIdentity struct {
 }
 
 func (i *ApigeeEnvgroupAttachmentIdentity) String() string {
-	return i.ParentID.String() + "/" + EnvgroupAttachmentIDToken + "/" + i.ResourceID
+	if i.ResourceID == "" {
+		// Initially, the identity of the ApigeeEnvgroupAttachment is unknown, until it is acquired or created.
+		// This is because the resource uses a service-generated ID.
+		return ""
+	}
+	return i.ParentID.String() + "/" + ApigeeEnvgroupAttachmentIDToken + "/" + i.ResourceID
 }
 
 func (i *ApigeeEnvgroupAttachmentIdentity) FromExternal(ref string) error {
-	requiredTokens := len(strings.Split(EnvgroupAttachmentIDFormat, "/"))
+	requiredTokens := len(strings.Split(ApigeeEnvgroupAttachmentIDFormat, "/"))
 
 	tokens := strings.Split(ref, "/")
-	if len(tokens) != requiredTokens || tokens[len(tokens)-2] != EnvgroupAttachmentIDToken {
-		return fmt.Errorf("format of ApigeeEnvgroupAttachment ref=%q was not known (use %q)", ref, EnvgroupAttachmentIDFormat)
+	if len(tokens) != requiredTokens || tokens[len(tokens)-2] != ApigeeEnvgroupAttachmentIDToken {
+		return fmt.Errorf("format of ApigeeEnvgroupAttachment ref=%q was not known (use %q)", ref, ApigeeEnvgroupAttachmentIDFormat)
 	}
 
 	parentID := &ApigeeEnvgroupIdentity{}
 	if err := parentID.FromExternal(strings.Join(tokens[:len(tokens)-2], "/")); err != nil {
-		return fmt.Errorf("format of ApigeeEnvgroupAttachment ref=%q was not known (use %q)", ref, EnvgroupAttachmentIDFormat)
+		return fmt.Errorf("format of ApigeeEnvgroupAttachment ref=%q was not known (use %q)", ref, ApigeeEnvgroupAttachmentIDFormat)
 	}
 
 	resourceID := tokens[len(tokens)-1]
@@ -72,13 +75,14 @@ func (obj *ApigeeEnvgroupAttachment) GetIdentity(ctx context.Context, reader cli
 		return nil, err
 	}
 
-	// Get desired ID
+	// Get service-generated resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+	if resourceID == "" && obj.Status.ExternalRef != nil {
+		savedID := &ApigeeEnvgroupAttachmentIdentity{}
+		if err := savedID.FromExternal(common.ValueOf(obj.Status.ExternalRef)); err != nil {
+			return nil, err
+		}
+		resourceID = savedID.ResourceID
 	}
 
 	id := &ApigeeEnvgroupAttachmentIdentity{
@@ -89,7 +93,7 @@ func (obj *ApigeeEnvgroupAttachment) GetIdentity(ctx context.Context, reader cli
 	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		previousID := &ApigeeEnvgroupIdentity{}
+		previousID := &ApigeeEnvgroupAttachmentIdentity{}
 		if err := previousID.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
