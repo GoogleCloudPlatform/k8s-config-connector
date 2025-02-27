@@ -14,9 +14,9 @@
 
 // +tool:fuzz-gen
 // proto.message: google.spanner.admin.database.v1.BackupSchedule
-// api.group: spannerbackupschedule.cnrm.cloud.google.com
+// api.group: spanner.cnrm.cloud.google.com
 
-package spannerbackupschedules
+package spanner
 
 import (
 	pb "cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
