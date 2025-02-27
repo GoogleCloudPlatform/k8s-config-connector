@@ -139,11 +139,14 @@ func gitAdd(workDir string, out *strings.Builder, files ...string) {
 		params += file
 	}
 	log.Printf("COMMAND: git add %s\r\n", params)
-	gitadd := exec.Command("git", "add", params)
+	args := []string{"add"}
+	args = append(args, files...)
+	gitadd := exec.Command("git", args...)
 	gitadd.Dir = workDir
 	gitadd.Stdout = out
 	gitadd.Stderr = out
 	if err := gitadd.Run(); err != nil {
+		log.Printf("GIT add error: %q\n", out.String())
 		log.Fatal(err)
 	}
 	log.Printf("BRANCH ADD: %q\n", out.String())
@@ -156,6 +159,7 @@ func gitCommit(workDir string, out *strings.Builder, msg string) {
 	gitcommit.Stdout = out
 	gitcommit.Stderr = out
 	if err := gitcommit.Run(); err != nil {
+		log.Printf("GIT commit error: %q\n", out.String())
 		log.Fatal(err)
 	}
 	log.Printf("BRANCH COMMIT: %q\n", out.String())
