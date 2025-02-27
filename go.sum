@@ -62,6 +62,8 @@ cloud.google.com/go/datastore v1.0.0/go.mod h1:LXYbyblFSglQ5pkeyhO+Qmw7ukd3C+pD7
 cloud.google.com/go/datastore v1.1.0/go.mod h1:umbIZjpQpHh4hmRpGhH4tLFup+FVzqBi1b3c64qFpCk=
 cloud.google.com/go/discoveryengine v1.15.0 h1:CHUN1mbs5iTqWJRuU6rZCvcuV5iVMr/rW8Kr1ivn7p4=
 cloud.google.com/go/discoveryengine v1.15.0/go.mod h1:WIstQLougDQ6D8cza4icHFfGGzXsI4QNwTEWdNfRJ8g=
+cloud.google.com/go/filestore v1.9.2 h1:DYwMNAcF5bELHHMxRdkIWWZ3XicKp+ZpEBy+c6Gt4uY=
+cloud.google.com/go/filestore v1.9.2/go.mod h1:I9pM7Hoetq9a7djC1xtmtOeHSUYocna09ZP6x+PG1Xw=
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
 cloud.google.com/go/firestore v1.17.0 h1:iEd1LBbkDZTFsLw3sTH50eyg4qe8eoG6CjocmEXO9aQ=
 cloud.google.com/go/firestore v1.17.0/go.mod h1:69uPx1papBsY8ZETooc71fOhoKkD70Q1DwMrtKuOT/Y=
