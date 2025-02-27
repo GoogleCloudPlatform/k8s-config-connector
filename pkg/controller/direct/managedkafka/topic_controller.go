@@ -171,10 +171,6 @@ func (a *TopicAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return err
 	}
 
-	if paths.Has("replication_factor") {
-		return fmt.Errorf("replicationFactor field is immutable")
-	}
-
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.ManagedKafkaTopicStatus{}

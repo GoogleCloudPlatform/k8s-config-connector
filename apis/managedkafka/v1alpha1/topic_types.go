@@ -44,11 +44,13 @@ type ManagedKafkaTopicSpec struct {
 	//  increased for a topic that has a key, the partitioning logic or the
 	//  ordering of the messages will be affected.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.partition_count
+	// +required
 	PartitionCount *int32 `json:"partitionCount,omitempty"`
 
 	// Required. Immutable. The number of replicas of each partition. A
 	//  replication factor of 3 is recommended for high availability.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.replication_factor
+	// +required
 	ReplicationFactor *int32 `json:"replicationFactor,omitempty"`
 
 	// Optional. Configurations for the topic that are overridden from the cluster
