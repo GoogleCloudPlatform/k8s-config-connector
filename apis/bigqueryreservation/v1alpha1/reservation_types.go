@@ -85,6 +85,8 @@ type BigQueryReservationReservationSpec struct {
 	//  feature. Users can set this in create reservation calls
 	//  to create a failover reservation or in update reservation calls to convert
 	//  a non-failover reservation to a failover reservation(or vice versa).
+	//
+	//  NOTE: If the field is removed, the field is externally managed.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.secondary_location
 	SecondaryLocation *string `json:"secondaryLocation,omitempty"`
 }
