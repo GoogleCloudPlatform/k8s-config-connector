@@ -46,7 +46,8 @@ type DocumentAIProcessorSpec struct {
 
 	// The default processor version.
 	// +kcc:proto:field=google.cloud.documentai.v1.Processor.default_processor_version
-	DefaultProcessorVersion *string `json:"defaultProcessorVersion,omitempty"`
+	// NOTYET
+	// DefaultProcessorVersion *string `json:"defaultProcessorVersion,omitempty"`
 
 	// The [KMS key](https://cloud.google.com/security-key-management) used for
 	//  encryption and decryption in CMEK scenarios.

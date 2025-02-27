@@ -28,7 +28,8 @@ func DocumentAIProcessorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Process
 	out := &krm.DocumentAIProcessorSpec{}
 	out.Type = direct.LazyPtr(in.GetType())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.DefaultProcessorVersion = direct.LazyPtr(in.GetDefaultProcessorVersion())
+	// NOTYET
+	// out.DefaultProcessorVersion = direct.LazyPtr(in.GetDefaultProcessorVersion())
 	if in.GetKmsKeyName() != "" {
 		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
@@ -41,7 +42,8 @@ func DocumentAIProcessorSpec_ToProto(mapCtx *direct.MapContext, in *krm.Document
 	out := &pb.Processor{}
 	out.Type = direct.ValueOf(in.Type)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.DefaultProcessorVersion = direct.ValueOf(in.DefaultProcessorVersion)
+	// NOTYET
+	// out.DefaultProcessorVersion = direct.ValueOf(in.DefaultProcessorVersion)
 	if in.KmsKeyRef != nil {
 		out.KmsKeyName = in.KmsKeyRef.External
 	}

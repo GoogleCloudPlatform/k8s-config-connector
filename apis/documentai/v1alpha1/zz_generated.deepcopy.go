@@ -149,11 +149,6 @@ func (in *DocumentAIProcessorSpec) DeepCopyInto(out *DocumentAIProcessorSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.DefaultProcessorVersion != nil {
-		in, out := &in.DefaultProcessorVersion, &out.DefaultProcessorVersion
-		*out = new(string)
-		**out = **in
-	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
 		*out = new(v1beta1.KMSCryptoKeyRef)

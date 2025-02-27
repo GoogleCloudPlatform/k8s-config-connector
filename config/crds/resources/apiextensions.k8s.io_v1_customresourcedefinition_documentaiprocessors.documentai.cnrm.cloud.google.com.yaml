@@ -60,9 +60,6 @@ spec:
           spec:
             description: DocumentAIProcessorSpec defines the desired state of DocumentAIProcessor
             properties:
-              defaultProcessorVersion:
-                description: The default processor version.
-                type: string
               displayName:
                 description: The display name of the processor.
                 type: string
