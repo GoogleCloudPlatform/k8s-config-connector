@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 
-	extServicepb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -36,8 +35,8 @@ var (
 	filter_ImageVersions_ListImageVersions_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_ImageVersions_ListImageVersions_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.ImageVersionsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListImageVersionsRequest
+func request_ImageVersions_ListImageVersions_0(ctx context.Context, marshaler runtime.Marshaler, client ImageVersionsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListImageVersionsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -69,8 +68,8 @@ func request_ImageVersions_ListImageVersions_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_ImageVersions_ListImageVersions_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.ImageVersionsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListImageVersionsRequest
+func local_request_ImageVersions_ListImageVersions_0(ctx context.Context, marshaler runtime.Marshaler, server ImageVersionsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListImageVersionsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -106,7 +105,7 @@ func local_request_ImageVersions_ListImageVersions_0(ctx context.Context, marsha
 // UnaryRPC     :call ImageVersionsServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterImageVersionsHandlerFromEndpoint instead.
-func RegisterImageVersionsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extServicepb.ImageVersionsServer) error {
+func RegisterImageVersionsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ImageVersionsServer) error {
 
 	mux.Handle("GET", pattern_ImageVersions_ListImageVersions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -164,15 +163,15 @@ func RegisterImageVersionsHandlerFromEndpoint(ctx context.Context, mux *runtime.
 // RegisterImageVersionsHandler registers the http handlers for service ImageVersions to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterImageVersionsHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterImageVersionsHandlerClient(ctx, mux, extServicepb.NewImageVersionsClient(conn))
+	return RegisterImageVersionsHandlerClient(ctx, mux, NewImageVersionsClient(conn))
 }
 
 // RegisterImageVersionsHandlerClient registers the http handlers for service ImageVersions
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extServicepb.ImageVersionsClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extServicepb.ImageVersionsClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ImageVersionsClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ImageVersionsClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extServicepb.ImageVersionsClient" to call the correct interceptors.
-func RegisterImageVersionsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extServicepb.ImageVersionsClient) error {
+// "ImageVersionsClient" to call the correct interceptors.
+func RegisterImageVersionsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ImageVersionsClient) error {
 
 	mux.Handle("GET", pattern_ImageVersions_ListImageVersions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())

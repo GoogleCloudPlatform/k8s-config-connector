@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 
-	extServicepb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -32,8 +31,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_Environments_CreateEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.CreateEnvironmentRequest
+func request_Environments_CreateEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEnvironmentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -66,8 +65,8 @@ func request_Environments_CreateEnvironment_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_Environments_CreateEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.CreateEnvironmentRequest
+func local_request_Environments_CreateEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateEnvironmentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -100,8 +99,8 @@ func local_request_Environments_CreateEnvironment_0(ctx context.Context, marshal
 
 }
 
-func request_Environments_GetEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.GetEnvironmentRequest
+func request_Environments_GetEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEnvironmentRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -126,8 +125,8 @@ func request_Environments_GetEnvironment_0(ctx context.Context, marshaler runtim
 
 }
 
-func local_request_Environments_GetEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.GetEnvironmentRequest
+func local_request_Environments_GetEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetEnvironmentRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -156,8 +155,8 @@ var (
 	filter_Environments_ListEnvironments_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_Environments_ListEnvironments_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListEnvironmentsRequest
+func request_Environments_ListEnvironments_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEnvironmentsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -189,8 +188,8 @@ func request_Environments_ListEnvironments_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_Environments_ListEnvironments_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListEnvironmentsRequest
+func local_request_Environments_ListEnvironments_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListEnvironmentsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -226,8 +225,8 @@ var (
 	filter_Environments_UpdateEnvironment_0 = &utilities.DoubleArray{Encoding: map[string]int{"environment": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_Environments_UpdateEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.UpdateEnvironmentRequest
+func request_Environments_UpdateEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEnvironmentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -274,8 +273,8 @@ func request_Environments_UpdateEnvironment_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_Environments_UpdateEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.UpdateEnvironmentRequest
+func local_request_Environments_UpdateEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateEnvironmentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -322,8 +321,8 @@ func local_request_Environments_UpdateEnvironment_0(ctx context.Context, marshal
 
 }
 
-func request_Environments_DeleteEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.DeleteEnvironmentRequest
+func request_Environments_DeleteEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEnvironmentRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -348,8 +347,8 @@ func request_Environments_DeleteEnvironment_0(ctx context.Context, marshaler run
 
 }
 
-func local_request_Environments_DeleteEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.DeleteEnvironmentRequest
+func local_request_Environments_DeleteEnvironment_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteEnvironmentRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -374,8 +373,8 @@ func local_request_Environments_DeleteEnvironment_0(ctx context.Context, marshal
 
 }
 
-func request_Environments_ExecuteAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ExecuteAirflowCommandRequest
+func request_Environments_ExecuteAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ExecuteAirflowCommandRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -408,8 +407,8 @@ func request_Environments_ExecuteAirflowCommand_0(ctx context.Context, marshaler
 
 }
 
-func local_request_Environments_ExecuteAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ExecuteAirflowCommandRequest
+func local_request_Environments_ExecuteAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ExecuteAirflowCommandRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -442,8 +441,8 @@ func local_request_Environments_ExecuteAirflowCommand_0(ctx context.Context, mar
 
 }
 
-func request_Environments_StopAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.StopAirflowCommandRequest
+func request_Environments_StopAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq StopAirflowCommandRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -476,8 +475,8 @@ func request_Environments_StopAirflowCommand_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_Environments_StopAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.StopAirflowCommandRequest
+func local_request_Environments_StopAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq StopAirflowCommandRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -510,8 +509,8 @@ func local_request_Environments_StopAirflowCommand_0(ctx context.Context, marsha
 
 }
 
-func request_Environments_PollAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.PollAirflowCommandRequest
+func request_Environments_PollAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PollAirflowCommandRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -544,8 +543,8 @@ func request_Environments_PollAirflowCommand_0(ctx context.Context, marshaler ru
 
 }
 
-func local_request_Environments_PollAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.PollAirflowCommandRequest
+func local_request_Environments_PollAirflowCommand_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PollAirflowCommandRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -582,8 +581,8 @@ var (
 	filter_Environments_ListWorkloads_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_Environments_ListWorkloads_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListWorkloadsRequest
+func request_Environments_ListWorkloads_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListWorkloadsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -615,8 +614,8 @@ func request_Environments_ListWorkloads_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_Environments_ListWorkloads_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListWorkloadsRequest
+func local_request_Environments_ListWorkloads_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListWorkloadsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -648,8 +647,8 @@ func local_request_Environments_ListWorkloads_0(ctx context.Context, marshaler r
 
 }
 
-func request_Environments_CheckUpgrade_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.CheckUpgradeRequest
+func request_Environments_CheckUpgrade_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CheckUpgradeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -682,8 +681,8 @@ func request_Environments_CheckUpgrade_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_Environments_CheckUpgrade_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.CheckUpgradeRequest
+func local_request_Environments_CheckUpgrade_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CheckUpgradeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -716,8 +715,8 @@ func local_request_Environments_CheckUpgrade_0(ctx context.Context, marshaler ru
 
 }
 
-func request_Environments_CreateUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.CreateUserWorkloadsSecretRequest
+func request_Environments_CreateUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateUserWorkloadsSecretRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -750,8 +749,8 @@ func request_Environments_CreateUserWorkloadsSecret_0(ctx context.Context, marsh
 
 }
 
-func local_request_Environments_CreateUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.CreateUserWorkloadsSecretRequest
+func local_request_Environments_CreateUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateUserWorkloadsSecretRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -784,8 +783,8 @@ func local_request_Environments_CreateUserWorkloadsSecret_0(ctx context.Context,
 
 }
 
-func request_Environments_GetUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.GetUserWorkloadsSecretRequest
+func request_Environments_GetUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetUserWorkloadsSecretRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -810,8 +809,8 @@ func request_Environments_GetUserWorkloadsSecret_0(ctx context.Context, marshale
 
 }
 
-func local_request_Environments_GetUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.GetUserWorkloadsSecretRequest
+func local_request_Environments_GetUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetUserWorkloadsSecretRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -840,8 +839,8 @@ var (
 	filter_Environments_ListUserWorkloadsSecrets_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_Environments_ListUserWorkloadsSecrets_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListUserWorkloadsSecretsRequest
+func request_Environments_ListUserWorkloadsSecrets_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListUserWorkloadsSecretsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -873,8 +872,8 @@ func request_Environments_ListUserWorkloadsSecrets_0(ctx context.Context, marsha
 
 }
 
-func local_request_Environments_ListUserWorkloadsSecrets_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListUserWorkloadsSecretsRequest
+func local_request_Environments_ListUserWorkloadsSecrets_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListUserWorkloadsSecretsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -906,8 +905,8 @@ func local_request_Environments_ListUserWorkloadsSecrets_0(ctx context.Context, 
 
 }
 
-func request_Environments_UpdateUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.UpdateUserWorkloadsSecretRequest
+func request_Environments_UpdateUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateUserWorkloadsSecretRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -940,8 +939,8 @@ func request_Environments_UpdateUserWorkloadsSecret_0(ctx context.Context, marsh
 
 }
 
-func local_request_Environments_UpdateUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.UpdateUserWorkloadsSecretRequest
+func local_request_Environments_UpdateUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateUserWorkloadsSecretRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -974,8 +973,8 @@ func local_request_Environments_UpdateUserWorkloadsSecret_0(ctx context.Context,
 
 }
 
-func request_Environments_DeleteUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.DeleteUserWorkloadsSecretRequest
+func request_Environments_DeleteUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteUserWorkloadsSecretRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1000,8 +999,8 @@ func request_Environments_DeleteUserWorkloadsSecret_0(ctx context.Context, marsh
 
 }
 
-func local_request_Environments_DeleteUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.DeleteUserWorkloadsSecretRequest
+func local_request_Environments_DeleteUserWorkloadsSecret_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteUserWorkloadsSecretRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1026,8 +1025,8 @@ func local_request_Environments_DeleteUserWorkloadsSecret_0(ctx context.Context,
 
 }
 
-func request_Environments_CreateUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.CreateUserWorkloadsConfigMapRequest
+func request_Environments_CreateUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateUserWorkloadsConfigMapRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1060,8 +1059,8 @@ func request_Environments_CreateUserWorkloadsConfigMap_0(ctx context.Context, ma
 
 }
 
-func local_request_Environments_CreateUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.CreateUserWorkloadsConfigMapRequest
+func local_request_Environments_CreateUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateUserWorkloadsConfigMapRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1094,8 +1093,8 @@ func local_request_Environments_CreateUserWorkloadsConfigMap_0(ctx context.Conte
 
 }
 
-func request_Environments_GetUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.GetUserWorkloadsConfigMapRequest
+func request_Environments_GetUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetUserWorkloadsConfigMapRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1120,8 +1119,8 @@ func request_Environments_GetUserWorkloadsConfigMap_0(ctx context.Context, marsh
 
 }
 
-func local_request_Environments_GetUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.GetUserWorkloadsConfigMapRequest
+func local_request_Environments_GetUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetUserWorkloadsConfigMapRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1150,8 +1149,8 @@ var (
 	filter_Environments_ListUserWorkloadsConfigMaps_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_Environments_ListUserWorkloadsConfigMaps_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListUserWorkloadsConfigMapsRequest
+func request_Environments_ListUserWorkloadsConfigMaps_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListUserWorkloadsConfigMapsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1183,8 +1182,8 @@ func request_Environments_ListUserWorkloadsConfigMaps_0(ctx context.Context, mar
 
 }
 
-func local_request_Environments_ListUserWorkloadsConfigMaps_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.ListUserWorkloadsConfigMapsRequest
+func local_request_Environments_ListUserWorkloadsConfigMaps_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListUserWorkloadsConfigMapsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1216,8 +1215,8 @@ func local_request_Environments_ListUserWorkloadsConfigMaps_0(ctx context.Contex
 
 }
 
-func request_Environments_UpdateUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.UpdateUserWorkloadsConfigMapRequest
+func request_Environments_UpdateUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateUserWorkloadsConfigMapRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1250,8 +1249,8 @@ func request_Environments_UpdateUserWorkloadsConfigMap_0(ctx context.Context, ma
 
 }
 
-func local_request_Environments_UpdateUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.UpdateUserWorkloadsConfigMapRequest
+func local_request_Environments_UpdateUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateUserWorkloadsConfigMapRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1284,8 +1283,8 @@ func local_request_Environments_UpdateUserWorkloadsConfigMap_0(ctx context.Conte
 
 }
 
-func request_Environments_DeleteUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.DeleteUserWorkloadsConfigMapRequest
+func request_Environments_DeleteUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteUserWorkloadsConfigMapRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1310,8 +1309,8 @@ func request_Environments_DeleteUserWorkloadsConfigMap_0(ctx context.Context, ma
 
 }
 
-func local_request_Environments_DeleteUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.DeleteUserWorkloadsConfigMapRequest
+func local_request_Environments_DeleteUserWorkloadsConfigMap_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteUserWorkloadsConfigMapRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1336,8 +1335,8 @@ func local_request_Environments_DeleteUserWorkloadsConfigMap_0(ctx context.Conte
 
 }
 
-func request_Environments_SaveSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.SaveSnapshotRequest
+func request_Environments_SaveSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SaveSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1370,8 +1369,8 @@ func request_Environments_SaveSnapshot_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_Environments_SaveSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.SaveSnapshotRequest
+func local_request_Environments_SaveSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SaveSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1404,8 +1403,8 @@ func local_request_Environments_SaveSnapshot_0(ctx context.Context, marshaler ru
 
 }
 
-func request_Environments_LoadSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.LoadSnapshotRequest
+func request_Environments_LoadSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LoadSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1438,8 +1437,8 @@ func request_Environments_LoadSnapshot_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_Environments_LoadSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.LoadSnapshotRequest
+func local_request_Environments_LoadSnapshot_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LoadSnapshotRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1472,8 +1471,8 @@ func local_request_Environments_LoadSnapshot_0(ctx context.Context, marshaler ru
 
 }
 
-func request_Environments_DatabaseFailover_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.DatabaseFailoverRequest
+func request_Environments_DatabaseFailover_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DatabaseFailoverRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1506,8 +1505,8 @@ func request_Environments_DatabaseFailover_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_Environments_DatabaseFailover_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.DatabaseFailoverRequest
+func local_request_Environments_DatabaseFailover_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DatabaseFailoverRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1540,8 +1539,8 @@ func local_request_Environments_DatabaseFailover_0(ctx context.Context, marshale
 
 }
 
-func request_Environments_FetchDatabaseProperties_0(ctx context.Context, marshaler runtime.Marshaler, client extServicepb.EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.FetchDatabasePropertiesRequest
+func request_Environments_FetchDatabaseProperties_0(ctx context.Context, marshaler runtime.Marshaler, client EnvironmentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq FetchDatabasePropertiesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1566,8 +1565,8 @@ func request_Environments_FetchDatabaseProperties_0(ctx context.Context, marshal
 
 }
 
-func local_request_Environments_FetchDatabaseProperties_0(ctx context.Context, marshaler runtime.Marshaler, server extServicepb.EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extServicepb.FetchDatabasePropertiesRequest
+func local_request_Environments_FetchDatabaseProperties_0(ctx context.Context, marshaler runtime.Marshaler, server EnvironmentsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq FetchDatabasePropertiesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1596,7 +1595,7 @@ func local_request_Environments_FetchDatabaseProperties_0(ctx context.Context, m
 // UnaryRPC     :call EnvironmentsServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterEnvironmentsHandlerFromEndpoint instead.
-func RegisterEnvironmentsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extServicepb.EnvironmentsServer) error {
+func RegisterEnvironmentsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server EnvironmentsServer) error {
 
 	mux.Handle("POST", pattern_Environments_CreateEnvironment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -2229,15 +2228,15 @@ func RegisterEnvironmentsHandlerFromEndpoint(ctx context.Context, mux *runtime.S
 // RegisterEnvironmentsHandler registers the http handlers for service Environments to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterEnvironmentsHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterEnvironmentsHandlerClient(ctx, mux, extServicepb.NewEnvironmentsClient(conn))
+	return RegisterEnvironmentsHandlerClient(ctx, mux, NewEnvironmentsClient(conn))
 }
 
 // RegisterEnvironmentsHandlerClient registers the http handlers for service Environments
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extServicepb.EnvironmentsClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extServicepb.EnvironmentsClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "EnvironmentsClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "EnvironmentsClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extServicepb.EnvironmentsClient" to call the correct interceptors.
-func RegisterEnvironmentsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extServicepb.EnvironmentsClient) error {
+// "EnvironmentsClient" to call the correct interceptors.
+func RegisterEnvironmentsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client EnvironmentsClient) error {
 
 	mux.Handle("POST", pattern_Environments_CreateEnvironment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
