@@ -19,24 +19,13 @@ if [[ -z "${BRANCH_NAME}" ]]; then
   exit 1
 fi
 
-# if [[ -z "${GCLOUD_COMMAND}" ]]; then
-#   echo "GCLOUD_COMMAND is required"
-#   exit 1
-# fi
-
 if [[ -z "${LOG_DIR}" ]]; then
   echo "LOG_DIR is required"
   exit 1
 fi
 
-# if [[ -z "${EXPECTED_PATH}" ]]; then
-#   echo "EXPECTED_PATH is required"
-#   exit 1
-# fi
 
 mkdir -p ${LOG_DIR}
-# cat ${PROMPT} | \
-#     envsubst '$GCLOUD_COMMAND,$EXPECTED_PATH' > ${LOG_DIR}/prompt
 
 cd ${WORKDIR}
 
@@ -72,8 +61,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
+REPO_ROOT="\$(git rev-parse --show-toplevel)"
+cd \${REPO_ROOT}/dev/tools/controllerbuilder
 EOF
 
 fi
@@ -82,20 +71,27 @@ fi
 cat >> generate.sh <<EOF
 
 go run . generate-types \
-    --service ${PROTO_SERVICE} \
+    --service ${PROTO_PACKAGE} \
     --api-version ${CRD_GROUP}/${CRD_VERSION} \
     --resource ${CRD_KIND}:${PROTO_RESOURCE}
 
 go run . generate-mapper \
-    --service ${PROTO_SERVICE} \
+    --service ${PROTO_PACKAGE} \
     --api-version ${CRD_GROUP}/${CRD_VERSION}
+
+
+cd \${REPO_ROOT}
+dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/${SERVICE}/
+
 EOF
 
 chmod +x generate.sh
 
 git status
 git add .
-git commit -m "autogen: generated scripts for ${CRD_KIND}"
+git commit -m "${CRD_KIND}: generated scripts"
 
 cd ${REPO_ROOT}
 
@@ -106,12 +102,5 @@ cd ${REPO_ROOT}
 git status
 git add .
 git commit -m "autogen: apis/${SERVICE}/${CRD_VERSION}/generate.sh"
-
-
-cd ${REPO_ROOT}
-dev/tasks/generate-crds
-git status
-git add .
-git commit -m "autogen: dev/tasks/generate-crds"
 
 echo "Done"
