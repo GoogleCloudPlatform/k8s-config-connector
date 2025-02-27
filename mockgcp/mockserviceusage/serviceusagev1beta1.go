@@ -73,6 +73,8 @@ func (s *ServiceUsageV1Beta1) GenerateServiceIdentity(ctx context.Context, req *
 		identity.UniqueId = "123456789008"
 	case "managedkafka.googleapis.com":
 		identity.Email = "service-" + strconv.FormatInt(name.Project.Number, 10) + "@gcp-sa-managedkafka.iam.gserviceaccount.com"
+	case "workflows.googleapis.com":
+		identity.Email = "service-" + strconv.FormatInt(name.Project.Number, 10) + "@gcp-sa-worksflow.iam.gserviceaccount.com"
 	default:
 		return nil, fmt.Errorf("generating serviceIdentity for service %q not implemented in mock", name.ServiceName)
 	}

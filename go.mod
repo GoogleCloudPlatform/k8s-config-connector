@@ -31,6 +31,7 @@ require (
 	cloud.google.com/go/securesourcemanager v1.1.1
 	cloud.google.com/go/security v1.18.2
 	cloud.google.com/go/spanner v1.73.0
+	cloud.google.com/go/workflows v1.13.2
 	cloud.google.com/go/workstations v1.1.1
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
