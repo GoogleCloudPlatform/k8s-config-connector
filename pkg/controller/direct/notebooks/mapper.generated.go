@@ -15,7 +15,7 @@
 package notebooks
 
 import (
-	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
+	pb "cloud.google.com/go/notebooks/apiv1beta1/notebookspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
