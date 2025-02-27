@@ -119,7 +119,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
+                description: The NotebooksEnvironment name. If not given, the metadata.name
                   will be used.
                 type: string
               vmImage:

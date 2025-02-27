@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,7 +26,9 @@ var NotebooksEnvironmentGVK = GroupVersion.WithKind("NotebooksEnvironment")
 // NotebooksEnvironmentSpec defines the desired state of NotebooksEnvironment
 // +kcc:proto=google.cloud.notebooks.v1.Environment
 type NotebooksEnvironmentSpec struct {
-	commonv1alpha1.CommonSpec `json:",inline"`
+	// The Project that this resource belongs to.
+	// +required
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location for the resource.
 	// +required
@@ -91,7 +93,6 @@ type NotebooksEnvironmentObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpnotebooksenvironment;gcpnotebooksenvironments
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
