@@ -1,5 +1,5 @@
 
 - exec: gcloud composer environments create test-${uniqueId} --location us-central1
 - exec: gcloud composer environments describe test-${uniqueId} --location us-central1
-- exec: gcloud composer environments update test-${uniqueId} --location us-central1 --update-mask="airflow_configuration_options" --airflow-configuration-options airflow-cfg:section/key=value
+- exec: gcloud composer environments update test-${uniqueId} --location us-central1 --update-labels=test=true
 - exec: gcloud composer environments delete test-${uniqueId} --location us-central1 --quiet
