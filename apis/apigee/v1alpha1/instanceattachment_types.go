@@ -58,10 +58,6 @@ type ApigeeInstanceAttachmentStatus struct {
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1InstanceAttachment
 // ApigeeInstanceAttachmentObservedState is the state of the ApigeeInstanceAttachment resource as most recently observed in GCP.
 type ApigeeInstanceAttachmentObservedState struct {
-	// Output only. ID of the attachment.
-	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1InstanceAttachment.name
-	Name *string `json:"name,omitempty"`
-
 	// Output only. Time the attachment was created in milliseconds since epoch.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1InstanceAttachment.created_at
 	CreatedAt *string `json:"createdAt,omitempty"`
