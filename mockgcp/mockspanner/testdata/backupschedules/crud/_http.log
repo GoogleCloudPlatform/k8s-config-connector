@@ -223,12 +223,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "encryptionConfig": {
+    "encryptionType": "USE_DATABASE_ENCRYPTION"
+  },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}/backupSchedules/test-schedule-${uniqueId}",
   "retentionDuration": "1209600s",
   "spec": {
     "cronSpec": {
       "creationWindow": "14400s",
+      "text": "0 2 * * *",
       "timeZone": "UTC"
     }
   },
@@ -272,12 +276,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "encryptionConfig": {
+    "encryptionType": "USE_DATABASE_ENCRYPTION"
+  },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}/backupSchedules/test-schedule-${uniqueId}",
   "retentionDuration": "1209600s",
   "spec": {
     "cronSpec": {
       "creationWindow": "14400s",
+      "text": "0 2 * * *",
       "timeZone": "UTC"
     }
   },
@@ -312,12 +320,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "encryptionConfig": {
+    "encryptionType": "USE_DATABASE_ENCRYPTION"
+  },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}/backupSchedules/test-schedule-${uniqueId}",
   "retentionDuration": "1209600s",
   "spec": {
     "cronSpec": {
-      "text": "0 3 * * *"
+      "creationWindow": "14400s",
+      "text": "0 3 * * *",
+      "timeZone": "UTC"
     }
   },
   "updateTime": "2024-04-01T12:34:56.123456Z"
