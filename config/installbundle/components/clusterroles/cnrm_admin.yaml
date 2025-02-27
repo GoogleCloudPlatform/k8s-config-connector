@@ -1136,18 +1136,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - spannerbackupschedules.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - sql.cnrm.cloud.google.com
   resources:
   - '*'

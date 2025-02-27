@@ -1,4 +1,4 @@
-apiVersion: spannerbackupschedules.cnrm.cloud.google.com/v1alpha1
+apiVersion: spanner.cnrm.cloud.google.com/v1alpha1
 kind: SpannerBackupSchedule
 metadata:
   finalizers:

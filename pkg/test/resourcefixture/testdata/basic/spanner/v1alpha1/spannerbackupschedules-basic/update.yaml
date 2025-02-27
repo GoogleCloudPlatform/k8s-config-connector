@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: spannerbackupschedules.cnrm.cloud.google.com/v1alpha1
+apiVersion: spanner.cnrm.cloud.google.com/v1alpha1
 kind: SpannerBackupSchedule
 metadata:
   name: spannerbackupschedule-${uniqueId}
