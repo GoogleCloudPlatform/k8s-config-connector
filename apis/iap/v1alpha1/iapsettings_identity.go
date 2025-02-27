@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -50,102 +51,16 @@ func (i *IAPSettingsIdentity) ID() string {
 	return i.id
 }
 
-// New builds a IAPSettingsIdentity from the Config Connector IAPSettings object.
+// NewIAPSettingsIdentity builds a IAPSettingsIdentity from the Config Connector IAPSettings object.
 func NewIAPSettingsIdentity(ctx context.Context, reader client.Reader, obj *IAPSettings) (*IAPSettingsIdentity, error) {
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		// Get resource ID from parent
-		switch {
-		case obj.Spec.OrganizationRef != nil:
-			organization, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
-			if err != nil {
-				return nil, err
-			}
-			resourceID = fmt.Sprintf("organizations/%s", organization.OrganizationID)
-
-		case obj.Spec.FolderRef != nil:
-			folder, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
-			if err != nil {
-				return nil, err
-			}
-			resourceID = fmt.Sprintf("folders/%s", folder.FolderID)
-
-		case obj.Spec.ProjectRef != nil:
-			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-			if err != nil {
-				return nil, err
-			}
-			resourceID = fmt.Sprintf("projects/%s", project.ProjectID)
-
-		case obj.Spec.ProjectWebRef != nil:
-			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectWebRef.ProjectRef)
-			if err != nil {
-				return nil, err
-			}
-			resourceID = fmt.Sprintf("projects/%s/iap_web", project.ProjectID)
-
-		case obj.Spec.ComputeServiceRef != nil:
-			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ComputeServiceRef.ProjectRef)
-			if err != nil {
-				return nil, err
-			}
-			if obj.Spec.ComputeServiceRef.Region != nil {
-				if obj.Spec.ComputeServiceRef.ServiceRef != nil {
-					external, err := obj.Spec.ComputeServiceRef.ServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-					if err != nil {
-						return nil, err
-					}
-					serviceID, err := parseComputeBackendServiceID(external)
-					if err != nil {
-						return nil, err
-					}
-					resourceID = fmt.Sprintf("projects/%s/iap_web/compute-%s/services/%s", project.ProjectID, *obj.Spec.ComputeServiceRef.Region, serviceID)
-				} else {
-					resourceID = fmt.Sprintf("projects/%s/iap_web/compute-%s", project.ProjectID, *obj.Spec.ComputeServiceRef.Region)
-				}
-			} else {
-				if obj.Spec.ComputeServiceRef.ServiceRef != nil {
-					external, err := obj.Spec.ComputeServiceRef.ServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-					if err != nil {
-						return nil, err
-					}
-					serviceID, err := parseComputeBackendServiceID(external)
-					if err != nil {
-						return nil, err
-					}
-					resourceID = fmt.Sprintf("projects/%s/iap_web/compute/services/%s", project.ProjectID, serviceID)
-				} else {
-					resourceID = fmt.Sprintf("projects/%s/iap_web/compute", project.ProjectID)
-				}
-			}
-
-		case obj.Spec.AppEngineRef != nil:
-			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.AppEngineRef.ProjectRef)
-			if err != nil {
-				return nil, err
-			}
-			appID, err := refsv1beta1.ResolveAppEngineApplicationID(ctx, reader, obj.GetNamespace(), obj.Spec.AppEngineRef.ApplicationRef)
-			if err != nil {
-				return nil, err
-			}
-			if obj.Spec.AppEngineRef.ServiceRef != nil {
-				serviceID, err := refsv1beta1.ResolveAppEngineServiceID(ctx, reader, obj.GetNamespace(), obj.Spec.AppEngineRef.ServiceRef)
-				if err != nil {
-					return nil, err
-				}
-				if obj.Spec.AppEngineRef.VersionRef != nil {
-					versionID, err := refsv1beta1.ResolveAppEngineVersionID(ctx, reader, obj.GetNamespace(), obj.Spec.AppEngineRef.VersionRef)
-					if err != nil {
-						return nil, err
-					}
-					resourceID = fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s/versions/%s", project.ProjectID, appID, serviceID, versionID)
-				} else {
-					resourceID = fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s", project.ProjectID, appID, serviceID)
-				}
-			} else {
-				resourceID = fmt.Sprintf("projects/%s/iap_web/appengine-%s", project.ProjectID, appID)
-			}
+		var err error
+		resourceID, err = buildIAPSettingsIDFromParent(ctx, reader, obj)
+		if err != nil {
+			return nil, err
 		}
 	}
 
@@ -169,6 +84,185 @@ func NewIAPSettingsIdentity(ctx context.Context, reader client.Reader, obj *IAPS
 	return &IAPSettingsIdentity{
 		id: resourceID,
 	}, nil
+}
+
+// buildIAPSettingsIDFromParent constructs the resource ID based on the parent reference type
+func buildIAPSettingsIDFromParent(ctx context.Context, reader client.Reader, obj *IAPSettings) (string, error) {
+	parent, err := getParentReference(obj)
+	if err != nil {
+		return "", err
+	}
+	return parent.buildIAPSettingsID(ctx, reader, obj.GetNamespace())
+}
+
+// parentReference is an interface that all parent reference types must implement
+type parentReference interface {
+	buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error)
+}
+
+// OrganizationParent represents organization-level settings
+type OrganizationParent struct {
+	Ref *refsv1beta1.OrganizationRef
+}
+
+func (p OrganizationParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
+	organization, err := refsv1beta1.ResolveOrganization(ctx, reader, nil, p.Ref)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("organizations/%s", organization.OrganizationID), nil
+}
+
+// FolderParent represents folder-level settings
+type FolderParent struct {
+	Ref *refsv1beta1.FolderRef
+}
+
+func (p FolderParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
+	folder, err := refsv1beta1.ResolveFolder(ctx, reader, nil, p.Ref)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("folders/%s", folder.FolderID), nil
+}
+
+// ProjectParent represents project-level settings
+type ProjectParent struct {
+	Ref *refsv1beta1.ProjectRef
+}
+
+func (p ProjectParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
+	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.Ref)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("projects/%s", project.ProjectID), nil
+}
+
+// ProjectWebParent represents project-wide web service settings
+type ProjectWebParent struct {
+	ProjectRef *refsv1beta1.ProjectRef
+}
+
+func (p ProjectWebParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
+	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.ProjectRef)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("projects/%s/iap_web", project.ProjectID), nil
+}
+
+// ComputeServiceParent represents project-wide Compute service settings
+type ComputeServiceParent struct {
+	ProjectRef *refsv1beta1.ProjectRef
+	Region     *string
+	ServiceRef *computev1beta1.ComputeBackendServiceRef
+}
+
+func (p ComputeServiceParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
+	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.ProjectRef)
+	if err != nil {
+		return "", err
+	}
+
+	if p.Region != nil {
+		if p.ServiceRef != nil {
+			external, err := p.ServiceRef.NormalizedExternal(ctx, reader, namespace)
+			if err != nil {
+				return "", err
+			}
+			serviceID, err := parseComputeBackendServiceID(external)
+			if err != nil {
+				return "", err
+			}
+			return fmt.Sprintf("projects/%s/iap_web/compute-%s/services/%s", project.ProjectID, *p.Region, serviceID), nil
+		}
+		return fmt.Sprintf("projects/%s/iap_web/compute-%s", project.ProjectID, *p.Region), nil
+	}
+
+	if p.ServiceRef != nil {
+		external, err := p.ServiceRef.NormalizedExternal(ctx, reader, namespace)
+		if err != nil {
+			return "", err
+		}
+		serviceID, err := parseComputeBackendServiceID(external)
+		if err != nil {
+			return "", err
+		}
+		return fmt.Sprintf("projects/%s/iap_web/compute/services/%s", project.ProjectID, serviceID), nil
+	}
+
+	return fmt.Sprintf("projects/%s/iap_web/compute", project.ProjectID), nil
+}
+
+// AppEngineParent represents project-wide App Engine service settings
+type AppEngineParent struct {
+	ProjectRef     *refsv1beta1.ProjectRef
+	ApplicationRef *refsv1beta1.AppEngineApplicationRef
+	ServiceRef     *refsv1beta1.AppEngineServiceRef
+	VersionRef     *refsv1beta1.AppEngineVersionRef
+}
+
+func (p AppEngineParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
+	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.ProjectRef)
+	if err != nil {
+		return "", err
+	}
+
+	appID, err := refsv1beta1.ResolveAppEngineApplicationID(ctx, reader, namespace, p.ApplicationRef)
+	if err != nil {
+		return "", err
+	}
+
+	if p.ServiceRef != nil {
+		serviceID, err := refsv1beta1.ResolveAppEngineServiceID(ctx, reader, namespace, p.ServiceRef)
+		if err != nil {
+			return "", err
+		}
+
+		if p.VersionRef != nil {
+			versionID, err := refsv1beta1.ResolveAppEngineVersionID(ctx, reader, namespace, p.VersionRef)
+			if err != nil {
+				return "", err
+			}
+			return fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s/versions/%s",
+				project.ProjectID, appID, serviceID, versionID), nil
+		}
+
+		return fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s",
+			project.ProjectID, appID, serviceID), nil
+	}
+
+	return fmt.Sprintf("projects/%s/iap_web/appengine-%s", project.ProjectID, appID), nil
+}
+
+// getParentReference extracts the appropriate parent reference from an IAPSettings object
+func getParentReference(obj *IAPSettings) (parentReference, error) {
+	switch {
+	case obj.Spec.OrganizationRef != nil:
+		return OrganizationParent{Ref: obj.Spec.OrganizationRef}, nil
+	case obj.Spec.FolderRef != nil:
+		return FolderParent{Ref: obj.Spec.FolderRef}, nil
+	case obj.Spec.ProjectRef != nil:
+		return ProjectParent{Ref: obj.Spec.ProjectRef}, nil
+	case obj.Spec.ProjectWebRef != nil:
+		return ProjectWebParent{ProjectRef: obj.Spec.ProjectWebRef.ProjectRef}, nil
+	case obj.Spec.ComputeServiceRef != nil:
+		return ComputeServiceParent{
+			ProjectRef: obj.Spec.ComputeServiceRef.ProjectRef,
+			Region:     obj.Spec.ComputeServiceRef.Region,
+			ServiceRef: obj.Spec.ComputeServiceRef.ServiceRef,
+		}, nil
+	case obj.Spec.AppEngineRef != nil:
+		return AppEngineParent{
+			ProjectRef:     obj.Spec.AppEngineRef.ProjectRef,
+			ApplicationRef: obj.Spec.AppEngineRef.ApplicationRef,
+			ServiceRef:     obj.Spec.AppEngineRef.ServiceRef,
+			VersionRef:     obj.Spec.AppEngineRef.VersionRef,
+		}, nil
+	default:
+		return nil, fmt.Errorf("no parent reference specified")
+	}
 }
 
 // ValidateIAPSettingsID validates the IAPSettings resource ID.
