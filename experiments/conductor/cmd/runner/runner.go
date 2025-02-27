@@ -16,9 +16,13 @@ package runner
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -139,6 +143,8 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	}
 
 	switch opts.command {
+	case -1:
+		fixMetadata(opts, branches)
 	case 0:
 		printHelp()
 	case 1:
@@ -376,4 +382,146 @@ func checkRepoDir(opts *RunnerOptions, branches Branches) {
 			log.Fatal(err)
 		}
 	*/
+}
+
+const COPYRIGHT_HEADER string = `# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+`
+
+func fixMetadata(opts *RunnerOptions, branches Branches) {
+	workDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
+	var newBranches Branches
+	for _, branch := range branches.Branches {
+		if branch.ProtoPath == "" {
+			branch.ProtoPath = inferProtoPath(branch, workDir)
+			log.Printf("ProtoPath for %s should be %s", branch.Name, branch.ProtoPath)
+		}
+		newBranches.Branches = append(newBranches.Branches, branch)
+	}
+	data := []byte(COPYRIGHT_HEADER)
+	yamlData, err := yaml.Marshal(newBranches)
+	if err != nil {
+		log.Fatal(err)
+	}
+	data = append(data, yamlData...)
+	err = os.WriteFile("branches-new.yaml", data, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func inferProtoPath(branch Branch, workDir string) string {
+	var out strings.Builder
+	var errOut strings.Builder
+	var protoDir = ""
+	var svcNm = ""
+	if branch.Proto != "" {
+		svcNm = branch.Proto
+	} else if branch.ProtoSvc != "" {
+		dirs := strings.Split(branch.ProtoSvc, ".")
+		svcNm = dirs[len(dirs)-1]
+	} else if branch.Resource != "" {
+		svcNm = branch.Resource
+	} else {
+		return ""
+	}
+
+	if branch.ProtoPath != "" {
+		dirs := strings.Split(branch.ProtoPath, ".")
+		protoDir = filepath.Join(dirs[:len(dirs)-1]...)
+	} else if branch.ProtoSvc != "" {
+		dirs := strings.Split(branch.ProtoSvc, ".")
+		protoDir = filepath.Join(dirs[:len(dirs)-1]...)
+	} else if branch.Package != "" {
+		dirs := strings.Split(branch.Package, ".")
+		protoDir = filepath.Join(dirs...)
+	} else {
+		return ""
+	}
+
+	searchPath := filepath.Join(workDir, protoDir, "*.proto")
+	files, err := filepath.Glob(searchPath)
+	if err != nil {
+		log.Printf("Glob error %v", err)
+		return ""
+	}
+	if len(files) == 1 {
+		localFile, _ := strings.CutPrefix(files[0], workDir+string(filepath.Separator))
+		log.Printf("Glob for %s matched %s", branch.Name, localFile)
+		return localFile
+	}
+
+	searchList := ""
+	first := true
+	args := []string{"-iH", fmt.Sprintf("^service %s", svcNm)}
+	for _, file := range files {
+		localFile, _ := strings.CutPrefix(file, workDir+string(filepath.Separator))
+		args = append(args, localFile)
+		if first {
+			searchList = localFile
+			first = false
+		} else {
+			searchList += " " + localFile
+		}
+	}
+
+	service_go := exec.Command("egrep", args...)
+
+	service_go.Dir = workDir
+	service_go.Stdout = &out
+	service_go.Stderr = &errOut
+
+	if err := service_go.Run(); err != nil {
+		var exitError *exec.ExitError
+		if errors.As(err, &exitError) {
+			args := []string{"-iH", "^service"}
+			for _, file := range files {
+				localFile, _ := strings.CutPrefix(file, workDir+string(filepath.Separator))
+				args = append(args, localFile)
+				if first {
+					searchList = localFile
+					first = false
+				} else {
+					searchList += " " + localFile
+				}
+			}
+
+			var errOut2 strings.Builder
+			service_go := exec.Command("egrep", args...)
+			service_go.Dir = workDir
+			service_go.Stdout = &out
+			service_go.Stderr = &errOut2
+			if err := service_go.Run(); err != nil {
+				log.Printf("Working in directory %s", workDir)
+				log.Printf("Got response2 %v", errOut2.String())
+				log.Printf("Find proto file error: %q\n", err)
+				return ""
+			}
+		} else {
+			log.Printf("Working in directory %s", workDir)
+			log.Printf("Find proto file error: %q\n", err)
+			return ""
+		}
+	}
+
+	response := out.String()
+
+	vals := strings.Split(response, ":")
+	if len(vals) <= 1 {
+		log.Printf("ERROR: something wrong with grep response: %q\n", response)
+		return ""
+	}
+	return vals[0]
 }
