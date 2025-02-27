@@ -155,15 +155,13 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 }
 
 // The secondaryLocation is output-only, in the event of manual failover, skip the reconciliation of this field.
-func processSecondaryLocation(desired *pb.Reservation, actual *pb.Reservation, previouslyApplied *krm.BigQueryReservationReservationObservedState, specToApply *krm.BigQueryReservationReservationSpec) (*pb.Reservation, error) {
-	if previouslyApplied.SecondaryLocation != nil {
+func processSecondaryLocation(desired *pb.Reservation, actual *pb.Reservation, specToApply *krm.BigQueryReservationReservationSpec) (*pb.Reservation, error) {
+	if actual.SecondaryLocation != "" {
 		if desired.SecondaryLocation != "" {
-			// Changing the field intentionally
-			if !reflect.DeepEqual(desired.SecondaryLocation, *previouslyApplied.SecondaryLocation) {
-				return desired, fmt.Errorf("changing the secondary location of an existing failover reservation is not supported. Please remove the existing secondary location before setting a new secondary location")
-			}
-			// In the event of manual failover, skip the reconciliation
-			if !reflect.DeepEqual(*previouslyApplied.SecondaryLocation, actual.SecondaryLocation) {
+			// Ignore change of the secondaryLocation. This happens when:
+			// 1) Change the field in YAML intentionally
+			// 2) Failover the reservation to the secondary region using the API
+			if !reflect.DeepEqual(desired.SecondaryLocation, actual.SecondaryLocation) {
 				desired.SecondaryLocation = actual.SecondaryLocation
 				return desired, nil
 			}
@@ -202,7 +200,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		paths = append(paths, "concurrency")
 	}
 
-	desiredPb, err := processSecondaryLocation(desiredPb, a.actual, a.desired.Status.ObservedState, desiredSpec)
+	desiredPb, err := processSecondaryLocation(desiredPb, a.actual, desiredSpec)
 	if err != nil {
 		return fmt.Errorf("updating Reservation %s: %w", a.id.String(), err)
 	}
