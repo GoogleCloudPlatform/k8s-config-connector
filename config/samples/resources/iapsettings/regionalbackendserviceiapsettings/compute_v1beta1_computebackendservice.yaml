@@ -12,18 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: iap.cnrm.cloud.google.com/v1alpha1
-kind: IAPSettings
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
 metadata:
-  name: iapsettings-${uniqueId}
+  name: iapsettings-dep-backendservice
 spec:
-  name: projects/${projectId}
-  accessSettings:
-    corsSettings:
-      allowHTTPOptions: false # true -> false
-    reauthSettings:
-      method: SECURE_KEY # LOGIN -> SECURE_KEY
-      maxAge: 600s # 300s -> 600s
-      policyType: MINIMUM # DEFAULT -> MINIMUM
-  applicationSettings:
-    cookieDomain: .updated-example.com # .example.com -> .updated-example.com
+  healthChecks:
+    - healthCheckRef:
+        name: iapsettings-dep-backendservice
+  location: us-central1
+  connectionDrainingTimeoutSec: 10
+  sessionAffinity: CLIENT_IP

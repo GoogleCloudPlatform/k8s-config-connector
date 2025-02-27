@@ -1,4 +1,4 @@
-apiVersion: iap.cnrm.cloud.google.com/v1alpha1
+apiVersion: iap.cnrm.cloud.google.com/v1beta1
 kind: IAPSettings
 metadata:
   finalizers:
