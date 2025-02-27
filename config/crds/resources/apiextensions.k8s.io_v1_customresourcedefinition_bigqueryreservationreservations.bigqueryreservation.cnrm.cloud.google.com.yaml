@@ -140,12 +140,14 @@ spec:
                   identify the Reservation resource to acquire.'
                 type: string
               secondaryLocation:
-                description: Optional. The current location of the reservation's secondary
-                  replica. This field is only set for reservations using the managed
-                  disaster recovery feature. Users can set this in create reservation
-                  calls to create a failover reservation or in update reservation
-                  calls to convert a non-failover reservation to a failover reservation(or
-                  vice versa).
+                description: |-
+                  Optional. The current location of the reservation's secondary replica. This
+                   field is only set for reservations using the managed disaster recovery
+                   feature. Users can set this in create reservation calls
+                   to create a failover reservation or in update reservation calls to convert
+                   a non-failover reservation to a failover reservation(or vice versa).
+
+                   NOTE: If the field is removed, the field is externally managed.
                 type: string
               slotCapacity:
                 description: |-
