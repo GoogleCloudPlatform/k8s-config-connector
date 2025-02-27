@@ -143,6 +143,68 @@ spec:
                         type: string
                     type: object
                 type: object
+              appEngineRef:
+                description: Project-wide App Engine service settings
+                properties:
+                  applicationRef:
+                    properties:
+                      external:
+                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}'
+                        type: string
+                    type: object
+                  projectRef:
+                    description: The Project that this resource belongs to.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                  serviceRef:
+                    description: Optional. If specified, settings apply to the service
+                    properties:
+                      external:
+                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}'
+                        type: string
+                    type: object
+                  versionRef:
+                    description: Optional. If specified, settings apply to the version
+                    properties:
+                      external:
+                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}'
+                        type: string
+                    type: object
+                required:
+                - applicationRef
+                - projectRef
+                type: object
               applicationSettings:
                 description: Top level wrapper for all application related settings
                   in IAP
@@ -225,21 +287,203 @@ spec:
                         type: string
                     type: object
                 type: object
-              name:
-                description: 'Required. The resource name of the IAP protected resource.
-                  The name could have the following format: organizations/{organization_id}
-                  folders/{folder_id} projects/{projects_id} projects/{projects_id}/iap_web
-                  projects/{projects_id}/iap_web/compute projects/{projects_id}/iap_web/compute-{region}
-                  projects/{projects_id}/iap_web/compute/service/{service_id} projects/{projects_id}/iap_web/compute-{region}/service/{service_id}
-                  projects/{projects_id}/iap_web/appengine-{app_id} projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}
-                  projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}'
-                type: string
+              computeServiceRef:
+                description: Project-wide Compute service settings
+                properties:
+                  projectRef:
+                    description: The Project that this resource belongs to.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                  region:
+                    description: Optional. If specified, settings apply to the region
+                    type: string
+                  serviceRef:
+                    description: Optional. If specified, settings apply to the service
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The value of an externally managed ComputeBackendService
+                          resource.
+                        type: string
+                      name:
+                        description: The name of a ComputeBackendService resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeBackendService resource.
+                        type: string
+                    type: object
+                required:
+                - projectRef
+                type: object
+              folderRef:
+                description: Folder-level settings
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              organizationRef:
+                description: Organization-level settings
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              projectRef:
+                description: Project-level settings
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              projectWebRef:
+                description: Project-wide web service settings
+                properties:
+                  projectRef:
+                    description: The Project that this resource belongs to.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                required:
+                - projectRef
+                type: object
               resourceID:
                 description: The IAPSettings name.
                 type: string
-            required:
-            - name
             type: object
+            x-kubernetes-validations:
+            - message: Exactly one parent field must be set
+              rule: '(has(self.organizationRef) ? 1 : 0) + (has(self.folderRef) ?
+                1 : 0) + (has(self.projectRef) ? 1 : 0) + (has(self.projectWebRef)
+                ? 1 : 0) + (has(self.computeServiceRef) ? 1 : 0) + (has(self.appEngineRef)
+                ? 1 : 0) == 1'
           status:
             description: IAPSettingsStatus defines the config connector machine state
               of IAPSettings

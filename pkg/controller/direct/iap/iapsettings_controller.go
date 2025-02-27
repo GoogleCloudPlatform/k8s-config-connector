@@ -143,6 +143,8 @@ func (a *IAPSettingsAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
+	desiredPb.Name = a.id.String() // explicitly set Name field for the underlying GCP API
+
 	req := &pb.UpdateIapSettingsRequest{
 		IapSettings: desiredPb,
 		UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
