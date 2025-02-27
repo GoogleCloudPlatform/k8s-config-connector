@@ -232,7 +232,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	// Check to see if the script file exists
 	serviceGoFile := fmt.Sprintf("mock%s/service.go", branch.Group)
 	serviceGoFullPath := filepath.Join(workDir, serviceGoFile)
-	if _, err := os.Stat(serviceGoFullPath); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(serviceGoFullPath); !errors.Is(err, os.ErrNotExist) {
 		log.Printf("SKIPPING %s, %s already exists\r\n", branch.Name, serviceGoFullPath)
 		return
 	}
