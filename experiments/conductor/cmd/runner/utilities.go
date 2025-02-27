@@ -142,6 +142,7 @@ func gitAdd(workDir string, out strings.Builder, files ...string) {
 	gitadd := exec.Command("git", "add", params)
 	gitadd.Dir = workDir
 	gitadd.Stdout = &out
+	gitadd.Stderr = &out
 	if err := gitadd.Run(); err != nil {
 		log.Fatal(err)
 	}
@@ -153,6 +154,7 @@ func gitCommit(workDir string, out strings.Builder, msg string) {
 	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("%q", msg))
 	gitcommit.Dir = workDir
 	gitcommit.Stdout = &out
+	gitcommit.Stderr = &out
 	if err := gitcommit.Run(); err != nil {
 		log.Fatal(err)
 	}
