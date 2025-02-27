@@ -66,7 +66,6 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
 	defer close()
 	if branch.Command == "" {
-		//stdout.
 		log.Printf("SKIPPING %s, no gcloud command\r\n", branch.Name)
 		return
 	}
@@ -97,6 +96,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	// codebot := exec.Command("codebot", "--ui-type=prompt", "--prompt=prompt.txt")
 	codebot.Dir = workDir
 	codebot.Stdout = &out
+	codebot.Stderr = &out
 	if err := codebot.Run(); err != nil {
 		stop := time.Now()
 		diff := stop.Sub(start)
@@ -180,6 +180,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	test.Dir = workDir
 	test.Env = append(os.Environ(), "WRITE_GOLDEN_OUTPUT=1", "E2E_GCP_TARGET=real")
 	test.Stdout = &out
+	test.Stderr = &out
 	if err := test.Run(); err != nil {
 		log.Printf("TEST GENERATE error: %q\n", out.String())
 		// Currently ignoring error and just basing on if the _http.log was generated.
@@ -258,7 +259,9 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 		service_go.Dir = workDir
 		var serviceOut strings.Builder
 		service_go.Stdout = &serviceOut
+		service_go.Stderr = &out
 		if err := service_go.Run(); err != nil {
+			log.Println(out.String())
 			log.Printf("MOCK SERVICE GENERATE error: %q\n", err)
 			// Currently ignoring error and just basing on if the _http.log was generated.
 			// log.Fatal(err)
@@ -293,7 +296,9 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 		resource_go.Dir = workDir
 		var resourceOut strings.Builder
 		resource_go.Stdout = &resourceOut
+		resource_go.Stderr = &out
 		if err := resource_go.Run(); err != nil {
+			log.Println(out.String())
 			log.Printf("MOCK RESOURCE GENERATE error: %q\n", err)
 			// Currently ignoring error and just basing on if the _http.log was generated.
 			// log.Fatal(err)
@@ -354,6 +359,7 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 	codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=roundtrip_prompt.txt")
 	codebot.Dir = workDir
 	codebot.Stdout = &out
+	codebot.Stderr = &out
 	if err := codebot.Run(); err != nil {
 		stop := time.Now()
 		diff := stop.Sub(start)
@@ -391,10 +397,8 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 
 	// TODO: Populate the ProtoPath in branches-all.yaml.
 	// Maybe populate it with the actual filepath?
-	dirs := strings.Split(branch.ProtoPath, ".")
 	apisDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
-	protoDir := filepath.Join(dirs[:len(dirs)-1]...)
-	protoFile := filepath.Join(apisDir, protoDir, fmt.Sprintf("%s.proto", dirs[len(dirs)-1]))
+	protoFile := filepath.Join(apisDir, branch.ProtoPath)
 	if _, err := os.Stat(protoFile); errors.Is(err, os.ErrNotExist) {
 		log.Printf("SKIPPING %s, missing %s\r\n", branch.Name, protoFile)
 		return
@@ -402,7 +406,7 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 
 	// Delete then write the add service to roundtrip prompt file.
 	roundtripPromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "makefile_prompt.txt")
-	template := strings.ReplaceAll(ADD_PROTO_TO_MAKEFILE, "<PROTO_PACKAGE>", protoFile)
+	template := strings.ReplaceAll(ADD_PROTO_TO_MAKEFILE, "<PROTO_PACKAGE>", branch.ProtoPath)
 	writeTemplateToFile(branch, roundtripPromptPath, template)
 
 	// Run the LLM to add the service to roundtrip file..
@@ -413,7 +417,7 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 	codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=makefile_prompt.txt")
 	codebot.Dir = workDir
 	codebot.Stdout = &out
-
+	codebot.Stderr = &out
 	if err := codebot.Run(); err != nil {
 		stop := time.Now()
 		diff := stop.Sub(start)
