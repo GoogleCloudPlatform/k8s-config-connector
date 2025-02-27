@@ -40,7 +40,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "CREATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "d65a68fa-087d-4bf9-9dc3-8b466b11ddb3",
+    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
     "state": "PENDING"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -73,16 +73,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "CREATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "d65a68fa-087d-4bf9-9dc3-8b466b11ddb3",
+    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://d65a68fa087d4bf99dc38b466b11ddb3-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://d65a68fa087d4bf99dc38b466b11ddb3-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-test-18279b9389-f74ff35e-bucket/dags",
+      "airflowByoidUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-test-18282361c5-cafeadcc-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionMode": "RETENTION_MODE_DISABLED"
@@ -96,7 +96,7 @@ X-Xss-Protection: 0
       },
       "encryptionConfig": {},
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
-      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18279b9389-f74ff35e-gke",
+      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18282361c5-cafeadcc-gke",
       "maintenanceWindow": {
         "endTime": "1970-01-01T04:00:00Z",
         "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -116,7 +116,7 @@ X-Xss-Protection: 0
       },
       "softwareConfig": {
         "cloudDataLineageIntegration": {},
-        "imageVersion": "composer-2.11.2-airflow-2.10.2",
+        "imageVersion": "composer-2.11.3-airflow-2.10.2",
         "pythonVersion": "3"
       },
       "webServerNetworkAccessControl": {
@@ -156,10 +156,10 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
     "state": "RUNNING",
     "storageConfig": {
-      "bucket": "us-central1-test-18279b9389-f74ff35e-bucket"
+      "bucket": "us-central1-test-18282361c5-cafeadcc-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "d65a68fa-087d-4bf9-9dc3-8b466b11ddb3"
+    "uuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea"
   }
 }
 
@@ -184,9 +184,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://d65a68fa087d4bf99dc38b466b11ddb3-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://d65a68fa087d4bf99dc38b466b11ddb3-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-test-18279b9389-f74ff35e-bucket/dags",
+    "airflowByoidUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-test-18282361c5-cafeadcc-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionMode": "RETENTION_MODE_DISABLED"
@@ -198,7 +198,7 @@ X-Xss-Protection: 0
     "databaseConfig": {},
     "encryptionConfig": {},
     "environmentSize": "ENVIRONMENT_SIZE_SMALL",
-    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18279b9389-f74ff35e-gke",
+    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18282361c5-cafeadcc-gke",
     "maintenanceWindow": {
       "endTime": "1970-01-01T04:00:00Z",
       "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -216,7 +216,7 @@ X-Xss-Protection: 0
     },
     "softwareConfig": {
       "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-2.11.2-airflow-2.10.2"
+      "imageVersion": "composer-2.11.3-airflow-2.10.2"
     },
     "webServerNetworkAccessControl": {
       "allowedIpRanges": [
@@ -255,10 +255,266 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
   "state": "RUNNING",
   "storageConfig": {
-    "bucket": "us-central1-test-18279b9389-f74ff35e-bucket"
+    "bucket": "us-central1-test-18282361c5-cafeadcc-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "d65a68fa-087d-4bf9-9dc3-8b466b11ddb3"
+  "uuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "airflowByoidUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-test-18282361c5-cafeadcc-bucket/dags",
+    "dataRetentionConfig": {
+      "airflowMetadataRetentionConfig": {
+        "retentionMode": "RETENTION_MODE_DISABLED"
+      },
+      "taskLogsRetentionConfig": {
+        "storageMode": "CLOUD_LOGGING_ONLY"
+      }
+    },
+    "databaseConfig": {},
+    "encryptionConfig": {},
+    "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18282361c5-cafeadcc-gke",
+    "maintenanceWindow": {
+      "endTime": "1970-01-01T04:00:00Z",
+      "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+      "startTime": "1970-01-01T00:00:00Z"
+    },
+    "nodeConfig": {
+      "ipAllocationPolicy": {},
+      "network": "projects/${projectId}/global/networks/default",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+    },
+    "privateEnvironmentConfig": {
+      "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+      "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
+      "privateClusterConfig": {}
+    },
+    "softwareConfig": {
+      "cloudDataLineageIntegration": {},
+      "imageVersion": "composer-2.11.3-airflow-2.10.2"
+    },
+    "webServerNetworkAccessControl": {
+      "allowedIpRanges": [
+        {
+          "description": "Allows access from all IPv4 addresses (default value)",
+          "value": "0.0.0.0/0"
+        },
+        {
+          "description": "Allows access from all IPv6 addresses (default value)",
+          "value": "::0/0"
+        }
+      ]
+    },
+    "workloadsConfig": {
+      "scheduler": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "webServer": {
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "worker": {
+        "cpu": 0.5,
+        "maxCount": 3,
+        "memoryGb": 2,
+        "minCount": 1,
+        "storageGb": 1
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
+  "state": "RUNNING",
+  "storageConfig": {
+    "bucket": "us-central1-test-18282361c5-cafeadcc-bucket"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea"
+}
+
+---
+
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/test-${uniqueId}?alt=json&updateMask=labels.test
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 28
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "labels": {
+    "test": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
+    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
+    "state": "PENDING"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Length: 0
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
+    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowByoidUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-test-18282361c5-cafeadcc-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionMode": "RETENTION_MODE_DISABLED"
+        },
+        "taskLogsRetentionConfig": {
+          "storageMode": "CLOUD_LOGGING_ONLY"
+        }
+      },
+      "databaseConfig": {
+        "machineType": "db-custom-2-7680"
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18282361c5-cafeadcc-gke",
+      "maintenanceWindow": {
+        "endTime": "1970-01-01T04:00:00Z",
+        "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+        "startTime": "1970-01-01T00:00:00Z"
+      },
+      "nodeConfig": {
+        "ipAllocationPolicy": {
+          "useIpAliases": true
+        },
+        "network": "projects/${projectId}/global/networks/default",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+        "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
+        "privateClusterConfig": {}
+      },
+      "softwareConfig": {
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-2.11.3-airflow-2.10.2",
+        "pythonVersion": "3"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "scheduler": {
+          "count": 1,
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "webServer": {
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "worker": {
+          "cpu": 0.5,
+          "maxCount": 3,
+          "memoryGb": 2,
+          "minCount": 1,
+          "storageGb": 1
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "test": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
+    "state": "RUNNING",
+    "storageConfig": {
+      "bucket": "us-central1-test-18282361c5-cafeadcc-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea"
+  }
 }
 
 ---
@@ -286,7 +542,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "DELETE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "d65a68fa-087d-4bf9-9dc3-8b466b11ddb3",
+    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
     "state": "PENDING"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -319,7 +575,7 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "DELETE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "d65a68fa-087d-4bf9-9dc3-8b466b11ddb3",
+    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
