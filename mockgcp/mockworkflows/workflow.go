@@ -158,14 +158,14 @@ func (s *WorkflowsV1) UpdateWorkflow(ctx context.Context, req *pb.UpdateWorkflow
 			updated.SourceCode = &pb.Workflow_SourceContents{
 				SourceContents: req.GetWorkflow().GetSourceContents(),
 			}
-		// case "service_account":
-		// 	updated.ServiceAccount = req.GetWorkflow().GetServiceAccount()
-		// case "crypto_key_name":
-		// 	updated.CryptoKeyName = req.GetWorkflow().GetCryptoKeyName()
-		// case "call_log_level":
-		// 	updated.CallLogLevel = req.GetWorkflow().GetCallLogLevel()
-		// case "user_env_vars":
-		// 	updated.UserEnvVars = req.GetWorkflow().GetUserEnvVars()
+		case "serviceAccount":
+			updated.ServiceAccount = req.GetWorkflow().GetServiceAccount()
+		case "cryptoKeyName":
+			updated.CryptoKeyName = req.GetWorkflow().GetCryptoKeyName()
+		case "callLogLevel":
+			updated.CallLogLevel = req.GetWorkflow().GetCallLogLevel()
+		case "userEnvVars":
+			updated.UserEnvVars = req.GetWorkflow().GetUserEnvVars()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
