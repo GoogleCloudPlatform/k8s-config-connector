@@ -15,6 +15,7 @@
 package runner
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -100,6 +101,62 @@ func checkoutBranch(branch Branch, workDir string, out strings.Builder) {
 		log.Fatal(err)
 	}
 	log.Printf("BRANCH CHECKOUT: %q\n", out.String())
+}
+
+func writeTemplateToFile(branch Branch, filePath string, template string) {
+	tmp := strings.ReplaceAll(template, "<TICK>", "`")
+	tmp = strings.ReplaceAll(tmp, "<GCLOUD_COMMAND>", branch.Command)
+	tmp = strings.ReplaceAll(tmp, "<GROUP>", branch.Group)
+	tmp = strings.ReplaceAll(tmp, "<SERVICE>", branch.Group)
+	tmp = strings.ReplaceAll(tmp, "<HTTP_HOST>", branch.HostName)
+	tmp = strings.ReplaceAll(tmp, "<PROTO_SERVICE>", branch.ProtoSvc)
+	tmp = strings.ReplaceAll(tmp, "<PROTO_MESSAGE>", branch.ProtoMsg)
+	contents := strings.ReplaceAll(tmp, "<RESOURCE>", strings.ToLower(branch.Resource))
+	log.Printf("TEMPLATE %s %s\r\n", filePath, contents)
+
+	if _, err := os.Stat(filePath); !errors.Is(err, os.ErrNotExist) {
+		log.Printf("COMMAND: cleaning up old %s\r\n", filePath)
+		err = os.Remove(filePath)
+		if err != nil {
+			log.Printf("Attempt to clean up %s failed with %v\r\n", filePath, err)
+		}
+	}
+	log.Printf("COMMAND: writing new %s\r\n", filePath)
+	if err := os.WriteFile(filePath, []byte(contents), 0644); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func gitAdd(workDir string, out strings.Builder, files ...string) {
+	params := ""
+	first := true
+	for _, file := range files {
+		if first {
+			first = false
+		} else {
+			params += " "
+		}
+		params += file
+	}
+	log.Printf("COMMAND: git add %s\r\n", params)
+	gitadd := exec.Command("git", "add", params)
+	gitadd.Dir = workDir
+	gitadd.Stdout = &out
+	if err := gitadd.Run(); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("BRANCH ADD: %q\n", out.String())
+}
+
+func gitCommit(workDir string, out strings.Builder, msg string) {
+	log.Printf("COMMAND: git commit -m %q\r\n", msg)
+	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("%q", msg))
+	gitcommit.Dir = workDir
+	gitcommit.Stdout = &out
+	if err := gitcommit.Run(); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("BRANCH COMMIT: %q\n", out.String())
 }
 
 type closer func()
