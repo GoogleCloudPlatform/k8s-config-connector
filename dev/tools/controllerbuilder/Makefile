@@ -2,7 +2,7 @@
 all: build
 
 .PHONY: build
-build: codebot controllerbuilder ctf benchmark
+build: codebot controllerbuilder benchmark
 
 .PHONY: controllerbuilder
 controllerbuilder:
