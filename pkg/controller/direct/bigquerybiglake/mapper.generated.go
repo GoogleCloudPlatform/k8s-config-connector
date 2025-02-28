@@ -19,6 +19,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func BigLakeTableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigLakeTableObservedState {
 	if in == nil {
 		return nil
