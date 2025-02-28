@@ -389,9 +389,6 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting BigQueryDataTransferConfig", "name", a.id.FullyQualifiedName())
 
-	if a.id.transferConfigID == "" {
-		return false, nil
-	}
 	req := &bigquerydatatransferpb.DeleteTransferConfigRequest{Name: a.id.FullyQualifiedName()}
 	err := a.gcpClient.DeleteTransferConfig(ctx, req)
 	if err != nil {
