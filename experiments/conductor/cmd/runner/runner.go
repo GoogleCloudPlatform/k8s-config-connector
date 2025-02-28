@@ -190,6 +190,11 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Add proto to makefile: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			addProtoToMakfile(opts, branch)
 		}
+	case 9:
+		for idx, branch := range branches.Branches {
+			log.Printf("Run mockgcptests on generated mocks: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			runMockgcpTests(opts, branch)
+		}
 	default:
 		log.Fatalf("unrecognixed command: %d", opts.command)
 	}
@@ -205,6 +210,10 @@ func printHelp() {
 	log.Println("\t3 - Delete the local github branches from the metadata")
 	log.Println("\t4 - Create script.yaml for mock gcp generation in each github branch")
 	log.Println("\t5 - Create _http.log for mock gcp generation in each github branch")
+	log.Println("\t6 - Generate mock Service and Resource go files in each github branch")
+	log.Println("\t7 - Add service to mock_http_roundtrip.go in each github branch")
+	log.Println("\t8 - Add proto to makefile in each github branch")
+	log.Println("\t9 - Run mockgcptests on generated mocks in each github branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {

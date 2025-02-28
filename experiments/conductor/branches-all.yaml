@@ -17218,11 +17218,11 @@ branches:
       controller: terraform
       kind: ""
       package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      proto: BackendService
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.BackendServices
+      proto-msg: google.cloud.compute.v1.BackendService
+      host-name: compute.googleapis.com
       notes: []
     - name: compute-computebackendservicesignedurlkeys
       local: resource-compute-computebackendservicesignedurlkeys

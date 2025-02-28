@@ -66,7 +66,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
 	defer close()
 	if branch.Command == "" {
-		log.Printf("SKIPPING %s, no gcloud command\r\n", branch.Name)
+		log.Printf("SKIPPING %s, no gcloud command", branch.Name)
 		return
 	}
 
@@ -79,7 +79,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
 	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", scriptFile)
 	if _, err := os.Stat(scriptFullPath); !errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, %s already exists\r\n", branch.Name, scriptFullPath)
+		log.Printf("SKIPPING %s, %s already exists", branch.Name, scriptFullPath)
 		return
 	}
 
@@ -109,7 +109,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 
 	// Check to see if the script file was created
 	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, %s was not created\r\n", branch.Name, scriptFullPath)
+		log.Printf("SKIPPING %s, %s was not created", branch.Name, scriptFullPath)
 		return
 	}
 
@@ -157,7 +157,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
 	scriptFullPath := filepath.Join(workDir, scriptFile)
 	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, missing script %s\r\n", branch.Name, scriptFullPath)
+		log.Printf("SKIPPING %s, missing script %s", branch.Name, scriptFullPath)
 		return
 	}
 
@@ -165,7 +165,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
 	logFullPath := filepath.Join(workDir, logFile)
 	if _, err := os.Stat(logFullPath); !errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, %s already exists\r\n", branch.Name, logFullPath)
+		log.Printf("SKIPPING %s, %s already exists", branch.Name, logFullPath)
 		return
 	}
 
@@ -192,7 +192,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 
 	// Check to see if the script file was created
 	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, %s was not created\r\n", branch.Name, logFullPath)
+		log.Printf("SKIPPING %s, %s was not created", branch.Name, logFullPath)
 		return
 	}
 
@@ -219,21 +219,14 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
 
 	var out strings.Builder
+	var hasChange = false
 	checkoutBranch(branch, workDir, &out)
 
 	// Check to see if the http log file already exists
 	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
 	logFullPath := filepath.Join(workDir, logFile)
 	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, missing %s\r\n", branch.Name, logFullPath)
-		return
-	}
-
-	// Check to see if the script file exists
-	serviceGoFile := fmt.Sprintf("mock%s/service.go", branch.Group)
-	serviceGoFullPath := filepath.Join(workDir, serviceGoFile)
-	if _, err := os.Stat(serviceGoFullPath); !errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, %s already exists\r\n", branch.Name, serviceGoFullPath)
+		log.Printf("SKIPPING %s, missing %s", branch.Name, logFullPath)
 		return
 	}
 
@@ -275,11 +268,15 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 
 		// Check to see if the service go file was created
 		if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
-			log.Printf("SKIPPING %s, %s was not created\r\n", branch.Name, serviceFile)
+			log.Printf("SKIPPING %s, %s was not created", branch.Name, serviceFile)
 			return
 		}
+
+		// Add the new files to the current branch.
+		hasChange = true
+		gitAdd(workDir, &out, serviceFile)
 	} else {
-		log.Printf("SKIPPING generating service mock go, %s already exists\r\n", serviceFile)
+		log.Printf("SKIPPING generating service mock go, %s already exists", serviceFile)
 	}
 
 	// Run the controller builder to generate the resource go file.
@@ -312,18 +309,23 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 
 		// Check to see if the service go file was created
 		if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
-			log.Printf("SKIPPING %s, %s was not created\r\n", branch.Name, resourceFile)
+			log.Printf("SKIPPING %s, %s was not created", branch.Name, resourceFile)
 			return
 		}
+
+		// Add the new files to the current branch.
+		hasChange = true
+		gitAdd(workDir, &out, resourceFile)
 	} else {
-		log.Printf("SKIPPING generating resource mock go, %s already exists\r\n", resourceFile)
+		log.Printf("SKIPPING generating resource mock go, %s already exists", resourceFile)
 	}
 
-	// Add the new files to the current branch.
-	gitAdd(workDir, &out, serviceFile, resourceFile)
-
 	// Commit the change to the current branch.
-	gitCommit(workDir, &out, fmt.Sprintf("Adding mock service and resource for %s", branch.Name))
+	if hasChange {
+		gitCommit(workDir, &out, fmt.Sprintf("Adding mock service and resource for %s", branch.Name))
+	} else {
+		log.Printf("SKIPPING git commit, no new changes for %s", branch.Name)
+	}
 }
 
 const ADD_SERVICE_TO_ROUNDTRIP string = `Please add the services in <TICK>mock<SERVICE><TICK> to <TICK>mock_http_roundtrip.go<TICK>
@@ -343,7 +345,7 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 
 	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
 	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, missing %s\r\n", branch.Name, serviceFile)
+		log.Printf("SKIPPING %s, missing %s", branch.Name, serviceFile)
 		return
 	}
 
@@ -400,7 +402,7 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 	apisDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 	protoFile := filepath.Join(apisDir, branch.ProtoPath)
 	if _, err := os.Stat(protoFile); errors.Is(err, os.ErrNotExist) {
-		log.Printf("SKIPPING %s, missing %s\r\n", branch.Name, protoFile)
+		log.Printf("SKIPPING %s, missing %s", branch.Name, protoFile)
 		return
 	}
 
@@ -435,4 +437,42 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 	// Commit the change to the current branch.
 	gitCommit(workDir, &out, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
 
+}
+
+func runMockgcpTests(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, &out)
+
+	// Check to see if the http log file already exists
+	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
+	logFullPath := filepath.Join(workDir, logFile)
+
+	// Run the test against the generated mocks to determine quality
+	start := time.Now()
+	log.Printf("COMMAND: go test ./mockgcptests -v -run TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+	test := exec.CommandContext(ctx, "go", "test", "./mockgcptests", "-v", "-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource))
+	test.Dir = workDir
+	test.Env = append(os.Environ(), "WRITE_GOLDEN_OUTPUT=1", "E2E_GCP_TARGET=mock")
+	test.Stdout = &out
+	test.Stderr = &out
+	if err := test.Run(); err != nil {
+		log.Printf("TEST RUN error: %q\n", out.String())
+		// Currently ignoring error and just basing on if the _http.log was generated.
+		// log.Fatal(err)
+	}
+	stop := time.Now()
+	diff := stop.Sub(start)
+	log.Printf("TEST RUN (%v): %q\n", diff, out.String())
+
+	// Check to see if the script file was created
+	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, %s was not created", branch.Name, logFullPath)
+		return
+	}
 }
