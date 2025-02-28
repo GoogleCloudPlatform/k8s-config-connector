@@ -1,0 +1,130 @@
+POST https://documentai.googleapis.com/v1beta3/projects/${projectId}/locations/us/processors/${processorID}/processorVersions:train?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus%2Fprocessors%2F${processorID}
+
+{
+  "parent": "projects/${projectId}/locations/us/processors/${processorID}",
+  "processorVersion": {
+    "displayName": "Test Document AI Version Name"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.documentai.v1beta3.TrainProcessorVersionMetadata",
+    "commonMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "resource": "projects/${projectId}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
+      "state": 1,
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "testDatasetValidation": {},
+    "trainingDatasetValidation": {}
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}"
+}
+
+---
+
+GET https://documentai.googleapis.com/v1beta3/projects/${projectId}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocessors%2F${processorID}%2FprocessorVersions%2F${processorVersionID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Test Document AI Version Name",
+  "latestEvaluation": {},
+  "modelType": 2,
+  "name": "projects/${projectId}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
+  "state": 7
+}
+
+---
+
+DELETE https://documentai.googleapis.com/v1beta3/projects/${projectId}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocessors%2F${processorID}%2FprocessorVersions%2F${processorVersionID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.documentai.v1beta3.DeleteProcessorVersionMetadata",
+    "commonMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "resource": "projects/${projectId}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
+      "state": 1,
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}"
+}
+
+---
+
+GET https://documentai.googleapis.com/v1beta3/projects/${projectId}/locations/us/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.documentai.v1beta3.DeleteProcessorVersionMetadata",
+    "commonMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "resource": "projects/${projectId}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
+      "state": "RUNNING",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.documentai.v1beta3.ProcessorVersion"
+  }
+}
