@@ -96,6 +96,8 @@ func (r *Replacements) placeholderForGCPResource(resource string) string {
 	switch resource {
 	case "addresses":
 		return "${addressID}"
+	case "creator":
+		return "${creatorID}"
 	case "tensorboards":
 		return "${tensorboardID}"
 	case "tagKeys":
