@@ -203,15 +203,15 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	gitCommit(workDir, &out, fmt.Sprintf("Adding mockgcptests generated _http.log for %s", branch.Name))
 }
 
-const MOCK_SERVICE_GO_GEN string = `mock<SERVICE>/service.go
-// +tool:mockgcp-service
+const MOCK_SERVICE_GO_GEN string = `// +tool:mockgcp-service
 // http.host: <HTTP_HOST>
-// proto.service: <PROTO_SERVICE>`
-
-const MOCK_RESOURCE_GO_GEN string = `mock<SERVICE>/<RESOURCE>.go
-// +tool:mockgcp-support
 // proto.service: <PROTO_SERVICE>
-// proto.message: <PROTO_MESSAGE>`
+`
+
+const MOCK_RESOURCE_GO_GEN string = `// +tool:mockgcp-support
+// proto.service: <PROTO_SERVICE>
+// proto.message: <PROTO_MESSAGE>
+`
 
 func generateMockGo(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
