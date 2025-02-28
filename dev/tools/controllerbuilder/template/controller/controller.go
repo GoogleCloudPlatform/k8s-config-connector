@@ -47,7 +47,6 @@ package {{.KCCService}}
 import (
 	"context"
 	"reflect"
-	"strings"
 	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/{{.KCCService}}/{{.KCCVersion}}"
@@ -69,6 +68,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -205,7 +205,7 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 		return mapCtx.Err()
 	}
 
-	paths := []string{}
+	paths := make(sets.Set[string])
 	// Option 1: This option is good for proto that has ` + "`" + `field_mask` + "`" + ` for output-only, immutable, required/optional.
 	// TODO(contributor): If choosing this option, remove the "Option 2" code.
 	{
@@ -220,7 +220,7 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	// TODO(contributor): If choosing this option, remove the "Option 1" code.
 	{
 		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-			paths = append(paths, "display_name")
+			paths = paths.Insert("display_name")
 		}
 	}
 
