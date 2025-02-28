@@ -46,5 +46,3 @@ func bigLakeTableFuzzer() fuzztesting.KRMFuzzer {
 
 	return f
 }
-
-
