@@ -19,7 +19,50 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-
+func BigLakeTableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigLakeTableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigLakeTableObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	return out
+}
+func BigLakeTableObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigLakeTableObservedState) *pb.Table {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Table{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	return out
+}
+func BigLakeTableSpec_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigLakeTableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigLakeTableSpec{}
+	out.HiveOptions = HiveTableOptions_FromProto(mapCtx, in.GetHiveOptions())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func BigLakeTableSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigLakeTableSpec) *pb.Table {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Table{}
+	if oneof := HiveTableOptions_ToProto(mapCtx, in.HiveOptions); oneof != nil {
+		out.Options = &pb.Table_HiveOptions{HiveOptions: oneof}
+	}
+	out.Type = direct.Enum_ToProto[pb.Table_Type](mapCtx, in.Type)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
 func HiveTableOptions_FromProto(mapCtx *direct.MapContext, in *pb.HiveTableOptions) *krm.HiveTableOptions {
 	if in == nil {
 		return nil
@@ -76,67 +119,5 @@ func HiveTableOptions_StorageDescriptor_ToProto(mapCtx *direct.MapContext, in *k
 	out.InputFormat = direct.ValueOf(in.InputFormat)
 	out.OutputFormat = direct.ValueOf(in.OutputFormat)
 	out.SerdeInfo = HiveTableOptions_SerDeInfo_ToProto(mapCtx, in.SerdeInfo)
-	return out
-}
-func Table_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.Table {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Table{}
-	out.HiveOptions = HiveTableOptions_FromProto(mapCtx, in.GetHiveOptions())
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
-func Table_ToProto(mapCtx *direct.MapContext, in *krm.Table) *pb.Table {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Table{}
-	if oneof := HiveTableOptions_ToProto(mapCtx, in.HiveOptions); oneof != nil {
-		out.Options = &pb.Table_HiveOptions{HiveOptions: oneof}
-	}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	out.Type = direct.Enum_ToProto[pb.Table_Type](mapCtx, in.Type)
-	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
-func TableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.TableObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TableObservedState{}
-	// MISSING: HiveOptions
-	out.Name = direct.LazyPtr(in.GetName())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	// MISSING: Type
-	// MISSING: Etag
-	return out
-}
-func TableObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TableObservedState) *pb.Table {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Table{}
-	// MISSING: HiveOptions
-	out.Name = direct.ValueOf(in.Name)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	// MISSING: Type
-	// MISSING: Etag
 	return out
 }
