@@ -72,6 +72,8 @@ kmsKeyRef:
   external: string
   name: string
   namespace: string
+labels:
+  string: string
 location: string
 privateConfig:
   caPoolRef:
@@ -132,6 +134,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Optional. Labels as key value pairs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -283,13 +295,18 @@ conditions:
 externalRef: string
 observedGeneration: integer
 observedState:
+  createTime: string
   hostConfig:
     api: string
     gitHTTP: string
     gitSSH: string
     html: string
+  privateConfig:
+    httpServiceAttachment: string
+    sshServiceAttachment: string
   state: string
   stateNote: string
+  updateTime: string
 ```
 
 <table class="properties responsive">
@@ -370,6 +387,13 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.createTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Create timestamp.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.hostConfig</code></td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -405,6 +429,27 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.privateConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. PrivateConfig includes settings for private instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.privateConfig.httpServiceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Service Attachment for HTTP, resource is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.privateConfig.sshServiceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Service Attachment for SSH, resource is in the format of `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -416,6 +461,13 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. An optional field providing information about the current instance state.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Update timestamp.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

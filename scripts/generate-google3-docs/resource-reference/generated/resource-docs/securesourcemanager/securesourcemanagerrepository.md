@@ -281,8 +281,10 @@ conditions:
 externalRef: string
 observedGeneration: integer
 observedState:
+  createTime: string
   etag: string
   uid: string
+  updateTime: string
   uris:
     api: string
     gitHTTPS: string
@@ -367,6 +369,13 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.createTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Create timestamp.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -378,6 +387,13 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. Unique identifier of the repository.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Update timestamp.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
