@@ -15,7 +15,7 @@
 package documentai
 
 import (
-	pb "cloud.google.com/go/documentai/apiv1beta3/documentaipb"
+	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -124,10 +124,8 @@ func DocumentSchema_EntityType_FromProto(mapCtx *direct.MapContext, in *pb.Docum
 	out.EnumValues = DocumentSchema_EntityType_EnumValues_FromProto(mapCtx, in.GetEnumValues())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
 	out.BaseTypes = in.BaseTypes
 	out.Properties = direct.Slice_FromProto(mapCtx, in.Properties, DocumentSchema_EntityType_Property_FromProto)
-	out.EntityTypeMetadata = EntityTypeMetadata_FromProto(mapCtx, in.GetEntityTypeMetadata())
 	return out
 }
 func DocumentSchema_EntityType_ToProto(mapCtx *direct.MapContext, in *krm.DocumentSchema_EntityType) *pb.DocumentSchema_EntityType {
@@ -140,10 +138,8 @@ func DocumentSchema_EntityType_ToProto(mapCtx *direct.MapContext, in *krm.Docume
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
 	out.BaseTypes = in.BaseTypes
 	out.Properties = direct.Slice_ToProto(mapCtx, in.Properties, DocumentSchema_EntityType_Property_ToProto)
-	out.EntityTypeMetadata = EntityTypeMetadata_ToProto(mapCtx, in.EntityTypeMetadata)
 	return out
 }
 func DocumentSchema_EntityType_EnumValues_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_EntityType_EnumValues) *krm.DocumentSchema_EntityType_EnumValues {
@@ -162,33 +158,15 @@ func DocumentSchema_EntityType_EnumValues_ToProto(mapCtx *direct.MapContext, in 
 	out.Values = in.Values
 	return out
 }
-func EntityTypeMetadata_FromProto(mapCtx *direct.MapContext, in *pb.EntityTypeMetadata) *krm.EntityTypeMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EntityTypeMetadata{}
-	out.Inactive = direct.LazyPtr(in.Inactive)
-	return out
-}
-func EntityTypeMetadata_ToProto(mapCtx *direct.MapContext, in *krm.EntityTypeMetadata) *pb.EntityTypeMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntityTypeMetadata{}
-	out.Inactive = direct.ValueOf(in.Inactive)
-	return out
-}
 func DocumentSchema_EntityType_Property_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_EntityType_Property) *krm.DocumentSchema_EntityType_Property {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DocumentSchema_EntityType_Property{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ValueType = direct.LazyPtr(in.GetValueType())
 	out.OccurrenceType = direct.Enum_FromProto(mapCtx, in.GetOccurrenceType())
-	out.PropertyMetadata = PropertyMetadata_FromProto(mapCtx, in.GetPropertyMetadata())
 	return out
 }
 func DocumentSchema_EntityType_Property_ToProto(mapCtx *direct.MapContext, in *krm.DocumentSchema_EntityType_Property) *pb.DocumentSchema_EntityType_Property {
@@ -197,45 +175,9 @@ func DocumentSchema_EntityType_Property_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.DocumentSchema_EntityType_Property{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.ValueType = direct.ValueOf(in.ValueType)
 	out.OccurrenceType = direct.Enum_ToProto[pb.DocumentSchema_EntityType_Property_OccurrenceType](mapCtx, in.OccurrenceType)
-	out.PropertyMetadata = PropertyMetadata_ToProto(mapCtx, in.PropertyMetadata)
-	return out
-}
-func PropertyMetadata_FromProto(mapCtx *direct.MapContext, in *pb.PropertyMetadata) *krm.PropertyMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PropertyMetadata{}
-	out.Inactive = direct.LazyPtr(in.Inactive)
-	out.FieldExtractionMetadata = FieldExtractionMetadata_FromProto(mapCtx, in.FieldExtractionMetadata)
-	return out
-}
-func PropertyMetadata_ToProto(mapCtx *direct.MapContext, in *krm.PropertyMetadata) *pb.PropertyMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PropertyMetadata{}
-	out.Inactive = direct.ValueOf(in.Inactive)
-	out.FieldExtractionMetadata = FieldExtractionMetadata_ToProto(mapCtx, in.FieldExtractionMetadata)
-	return out
-}
-func FieldExtractionMetadata_FromProto(mapCtx *direct.MapContext, in *pb.FieldExtractionMetadata) *krm.FieldExtractionMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FieldExtractionMetadata{}
-	out.SummaryOptions = SummaryOptions_FromProto(mapCtx, in.SummaryOptions)
-	return out
-}
-func FieldExtractionMetadata_ToProto(mapCtx *direct.MapContext, in *krm.FieldExtractionMetadata) *pb.FieldExtractionMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FieldExtractionMetadata{}
-	out.SummaryOptions = SummaryOptions_ToProto(mapCtx, in.SummaryOptions)
 	return out
 }
 func DocumentSchema_Metadata_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_Metadata) *krm.DocumentSchema_Metadata {
@@ -412,23 +354,5 @@ func ProcessorVersion_GenAiModelInfo_FoundationGenAiModelInfo_ToProto(mapCtx *di
 	out := &pb.ProcessorVersion_GenAiModelInfo_FoundationGenAiModelInfo{}
 	out.FinetuningAllowed = direct.ValueOf(in.FinetuningAllowed)
 	out.MinTrainLabeledDocuments = direct.ValueOf(in.MinTrainLabeledDocuments)
-	return out
-}
-func SummaryOptions_FromProto(mapCtx *direct.MapContext, in *pb.SummaryOptions) *krm.SummaryOptions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SummaryOptions{}
-	out.Length = direct.Enum_FromProto(mapCtx, in.GetLength())
-	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
-	return out
-}
-func SummaryOptions_ToProto(mapCtx *direct.MapContext, in *krm.SummaryOptions) *pb.SummaryOptions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SummaryOptions{}
-	out.Length = direct.Enum_ToProto[pb.SummaryOptions_Length](mapCtx, in.Length)
-	out.Format = direct.Enum_ToProto[pb.SummaryOptions_Format](mapCtx, in.Format)
 	return out
 }

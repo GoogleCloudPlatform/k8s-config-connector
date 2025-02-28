@@ -25,6 +25,7 @@ var DocumentAIProcessorVersionGVK = GroupVersion.WithKind("DocumentAIProcessorVe
 // DocumentAIProcessorVersionSpec defines the desired state of DocumentAIProcessorVersion
 // +kcc:proto=google.cloud.documentai.v1.ProcessorVersion
 type DocumentAIProcessorVersionSpec struct {
+	Parent `json:",inline"`
 
 	// The DocumentAIProcessorVersion name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -34,13 +35,6 @@ type DocumentAIProcessorVersionSpec struct {
 	// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processor_version}`
 	// +optional
 	Name *string `json:"name,omitempty"`
-
-	// The location of the resource, for example: "us" or "europe".
-	// +required
-	Location *string `json:"location,omitempty"`
-
-	// +required
-	ProcessorRef *ProcessorRef `json:"processorRef"`
 
 	// If set, information about the eventual deprecation of this version.
 	// +optional
@@ -57,9 +51,19 @@ type DocumentAIProcessorVersionSpec struct {
 	// The KMS key version with which data is encrypted.
 	// +optional
 	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+}
 
+type Parent struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	// The location of the resource, for example: "us" or "europe".
+	// +required
+	Location *string `json:"location,omitempty"`
+
+	// +required
+	ProcessorRef *ProcessorRef `json:"processorRef"`
 }
 
 // DocumentAIProcessorVersionStatus defines the config connector machine state of DocumentAIProcessorVersion
