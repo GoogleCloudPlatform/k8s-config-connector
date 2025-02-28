@@ -59,7 +59,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"{region}-documentai.googleapis.com"}
+	return []string{"documentai.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {

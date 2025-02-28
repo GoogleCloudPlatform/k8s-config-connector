@@ -16,7 +16,11 @@ package mockdocumentai
 
 import (
 	"context"
+	"fmt"
 	"strings"
+	"time"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 
@@ -37,6 +41,9 @@ func (s *DocumentProcessorV1Beta3) GetProcessorVersion(ctx context.Context, req 
 
 	obj := &pb.ProcessorVersion{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "processor version not found")
+		}
 		return nil, err
 	}
 
@@ -56,24 +63,62 @@ func (s *DocumentProcessorV1Beta3) DeleteProcessorVersion(ctx context.Context, r
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	now := timestamppb.New(time.Now())
+	metadata := &pb.DeleteProcessorVersionMetadata{
+		CommonMetadata: &pb.CommonOperationMetadata{
+			State:      1,
+			CreateTime: now,
+			UpdateTime: now,
+			Resource:   fqn,
+		},
+	}
+	return s.operations.StartLRO(ctx, getOperationParent(fqn), metadata, func() (proto.Message, error) {
+		return &pb.ProcessorVersion{}, nil
+	})
 }
 
 func (s *DocumentProcessorV1Beta3) TrainProcessorVersion(ctx context.Context, req *pb.TrainProcessorVersionRequest) (*longrunning.Operation, error) {
-	name, err := s.parseProcessorVersionName(req.GetProcessorVersion().GetName())
+	processorName, err := s.ParseProcessorName(req.GetParent())
 	if err != nil {
 		return nil, err
 	}
-	fqn := name.String()
+	reqName := fmt.Sprintf("%s/processorVersions/%x", processorName, time.Now().UnixMilli())
 
-	processorVersion := proto.Clone(req.GetProcessorVersion()).(*pb.ProcessorVersion)
-	processorVersion.Name = fqn
-
-	if err := s.storage.Create(ctx, fqn, processorVersion); err != nil {
+	name, err := s.parseProcessorVersionName(reqName)
+	if err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	now := timestamppb.New(time.Now())
+	fqn := name.String()
+
+	obj := proto.Clone(req.GetProcessorVersion()).(*pb.ProcessorVersion)
+	obj.Name = fqn
+	obj.CreateTime = now
+	// FAILED
+	obj.State = 7
+	obj.LatestEvaluation = &pb.EvaluationReference{}
+	// MODEL_TYPE_CUSTOM
+	obj.ModelType = 2
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.TrainProcessorVersionMetadata{
+		TrainingDatasetValidation: &pb.TrainProcessorVersionMetadata_DatasetValidation{},
+		TestDatasetValidation:     &pb.TrainProcessorVersionMetadata_DatasetValidation{},
+		CommonMetadata: &pb.CommonOperationMetadata{
+			State:      1,
+			CreateTime: now,
+			UpdateTime: now,
+			Resource:   fqn,
+		},
+	}
+	return s.operations.StartLRO(ctx, getOperationParent(fqn), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.ProcessorVersion)
+		return result, nil
+	})
 }
 
 type processorVersionName struct {
@@ -102,4 +147,9 @@ func (s *DocumentProcessorV1Beta3) parseProcessorVersionName(name string) (*proc
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func getOperationParent(fqn string) string {
+	tokens := strings.Split(fqn, "/")
+	return strings.Join(tokens[0:4], "/")
 }
