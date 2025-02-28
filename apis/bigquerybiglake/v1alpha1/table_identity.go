@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type TableIdentity struct {
 	parent *TableParent
-	id string
+	id     string
 }
 
 func (i *TableIdentity) String() string {
-	return  i.parent.String() + "/tables/" + i.id
+	return i.parent.String() + "/tables/" + i.id
 }
 
 func (i *TableIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *TableIdentity) ID() string {
 }
 
 func (i *TableIdentity) Parent() *TableParent {
-	return  i.parent
+	return i.parent
 }
 
 type TableParent struct {
@@ -51,7 +51,6 @@ type TableParent struct {
 func (p *TableParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a TableIdentity from the Config Connector Table object.
 func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigLakeTable) (*TableIdentity, error) {
@@ -65,7 +64,10 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigLakeTab
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := common.ValueOf(obj.Spec.Location)
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
