@@ -1,0 +1,980 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.AirflowMetadataRetentionPolicyConfig
+type AirflowMetadataRetentionPolicyConfig struct {
+	// Optional. Retention can be either enabled or disabled.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.AirflowMetadataRetentionPolicyConfig.retention_mode
+	RetentionMode *string `json:"retentionMode,omitempty"`
+
+	// Optional. How many days data should be retained for.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.AirflowMetadataRetentionPolicyConfig.retention_days
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.CloudDataLineageIntegration
+type CloudDataLineageIntegration struct {
+	// Optional. Whether or not Cloud Data Lineage integration is enabled.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.CloudDataLineageIntegration.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.DataRetentionConfig
+type DataRetentionConfig struct {
+	// Optional. The retention policy for airflow metadata database.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.DataRetentionConfig.airflow_metadata_retention_config
+	AirflowMetadataRetentionConfig *AirflowMetadataRetentionPolicyConfig `json:"airflowMetadataRetentionConfig,omitempty"`
+
+	// Optional. The configuration settings for task logs retention
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.DataRetentionConfig.task_logs_retention_config
+	TaskLogsRetentionConfig *TaskLogsRetentionConfig `json:"taskLogsRetentionConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.DatabaseConfig
+type DatabaseConfig struct {
+	// Optional. Cloud SQL machine type used by Airflow database.
+	//  It has to be one of: db-n1-standard-2, db-n1-standard-4, db-n1-standard-8
+	//  or db-n1-standard-16. If not specified, db-n1-standard-2 will be used.
+	//  Supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.DatabaseConfig.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Optional. The Compute Engine zone where the Airflow database is created. If
+	//  zone is provided, it must be in the region selected for the environment. If
+	//  zone is not provided, a zone is automatically selected. The zone can only
+	//  be set during environment creation. Supported for Cloud Composer
+	//  environments in versions composer-2.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.DatabaseConfig.zone
+	Zone *string `json:"zone,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.EncryptionConfig
+type EncryptionConfig struct {
+	// Optional. Customer-managed Encryption Key available through Google's Key
+	//  Management Service. Cannot be updated. If not specified, Google-managed key
+	//  will be used.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EncryptionConfig.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.Environment
+type Environment struct {
+	// Identifier. The resource name of the environment, in the form:
+	//  "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+	//
+	//  EnvironmentId must start with a lowercase letter followed by up to 63
+	//  lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Configuration parameters for this environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.config
+	Config *EnvironmentConfig `json:"config,omitempty"`
+
+	// Output only. The UUID (Universally Unique IDentifier) associated with this
+	//  environment. This value is generated when the environment is created.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.uuid
+	Uuid *string `json:"uuid,omitempty"`
+
+	// The current state of the environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The time at which this environment was created.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which this environment was last modified.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. User-defined labels for this environment.
+	//  The labels map can contain no more than 64 entries. Entries of the labels
+	//  map are UTF8 strings that comply with the following restrictions:
+	//
+	//  * Keys must conform to regexp: [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+	//  * Values must conform to regexp:  [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+	//  * Both keys and values are additionally constrained to be <= 128 bytes in
+	//  size.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Storage configuration for this environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.storage_config
+	StorageConfig *StorageConfig `json:"storageConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig
+type EnvironmentConfig struct {
+	// Output only. The Kubernetes Engine cluster used to run this environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.gke_cluster
+	GkeCluster *string `json:"gkeCluster,omitempty"`
+
+	// Output only. The Cloud Storage prefix of the DAGs for this environment.
+	//  Although Cloud Storage objects reside in a flat namespace, a hierarchical
+	//  file tree can be simulated using "/"-delimited object name prefixes. DAG
+	//  objects for this environment reside in a simulated directory with the given
+	//  prefix.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.dag_gcs_prefix
+	DagGcsPrefix *string `json:"dagGcsPrefix,omitempty"`
+
+	// The number of nodes in the Kubernetes Engine cluster that will be
+	//  used to run this environment.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.node_count
+	NodeCount *int32 `json:"nodeCount,omitempty"`
+
+	// Optional. The configuration settings for software inside the environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.software_config
+	SoftwareConfig *SoftwareConfig `json:"softwareConfig,omitempty"`
+
+	// Optional. The configuration used for the Kubernetes Engine cluster.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.node_config
+	NodeConfig *NodeConfig `json:"nodeConfig,omitempty"`
+
+	// Optional. The configuration used for the Private IP Cloud Composer
+	//  environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.private_environment_config
+	PrivateEnvironmentConfig *PrivateEnvironmentConfig `json:"privateEnvironmentConfig,omitempty"`
+
+	// Optional. The network-level access control policy for the Airflow web
+	//  server. If unspecified, no network-level access restrictions will be
+	//  applied.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.web_server_network_access_control
+	WebServerNetworkAccessControl *WebServerNetworkAccessControl `json:"webServerNetworkAccessControl,omitempty"`
+
+	// Optional. The configuration settings for Cloud SQL instance used internally
+	//  by Apache Airflow software.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.database_config
+	DatabaseConfig *DatabaseConfig `json:"databaseConfig,omitempty"`
+
+	// Optional. The configuration settings for the Airflow web server App Engine
+	//  instance.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.web_server_config
+	WebServerConfig *WebServerConfig `json:"webServerConfig,omitempty"`
+
+	// Optional. The encryption options for the Cloud Composer environment
+	//  and its dependencies. Cannot be updated.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.encryption_config
+	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
+
+	// Optional. The maintenance window is the period when Cloud Composer
+	//  components may undergo maintenance. It is defined so that maintenance is
+	//  not executed during peak hours or critical time periods.
+	//
+	//  The system will not be under maintenance for every occurrence of this
+	//  window, but when maintenance is planned, it will be scheduled
+	//  during the window.
+	//
+	//  The maintenance window period must encompass at least 12 hours per week.
+	//  This may be split into multiple chunks, each with a size of
+	//  at least 4 hours.
+	//
+	//  If this value is omitted, the default value for maintenance window is
+	//  applied. By default, maintenance windows are from 00:00:00 to 04:00:00
+	//  (GMT) on Friday, Saturday, and Sunday every week.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.maintenance_window
+	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
+	// Optional. The workloads configuration settings for the GKE cluster
+	//  associated with the Cloud Composer environment. The GKE cluster runs
+	//  Airflow scheduler, web server and workers workloads.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-2.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.workloads_config
+	WorkloadsConfig *WorkloadsConfig `json:"workloadsConfig,omitempty"`
+
+	// Optional. The size of the Cloud Composer environment.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-2.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.environment_size
+	EnvironmentSize *string `json:"environmentSize,omitempty"`
+
+	// Output only. The URI of the Apache Airflow Web UI hosted within this
+	//  environment (see [Airflow web
+	//  interface](/composer/docs/how-to/accessing/airflow-web-interface)).
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.airflow_uri
+	AirflowURI *string `json:"airflowURI,omitempty"`
+
+	// Optional. The configuration options for GKE cluster master authorized
+	//  networks. By default master authorized networks feature is:
+	//  - in case of private environment: enabled with no external networks
+	//  allowlisted.
+	//  - in case of public environment: disabled.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.master_authorized_networks_config
+	MasterAuthorizedNetworksConfig *MasterAuthorizedNetworksConfig `json:"masterAuthorizedNetworksConfig,omitempty"`
+
+	// Optional. The Recovery settings configuration of an environment.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-2.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.recovery_config
+	RecoveryConfig *RecoveryConfig `json:"recoveryConfig,omitempty"`
+
+	// Optional. Resilience mode of the Cloud Composer Environment.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-2.2.0-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.resilience_mode
+	ResilienceMode *string `json:"resilienceMode,omitempty"`
+
+	// Optional. The configuration setting for Airflow database data retention
+	//  mechanism.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.data_retention_config
+	DataRetentionConfig *DataRetentionConfig `json:"dataRetentionConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.IPAllocationPolicy
+type IPAllocationPolicy struct {
+	// Optional. Whether or not to enable Alias IPs in the GKE cluster.
+	//  If `true`, a VPC-native cluster is created.
+	//
+	//  This field is only supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*. Environments in newer versions always use
+	//  VPC-native GKE clusters.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.IPAllocationPolicy.use_ip_aliases
+	UseIPAliases *bool `json:"useIPAliases,omitempty"`
+
+	// Optional. The name of the GKE cluster's secondary range used to allocate
+	//  IP addresses to pods.
+	//
+	//  For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+	//  this field is applicable only when `use_ip_aliases` is true.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.IPAllocationPolicy.cluster_secondary_range_name
+	ClusterSecondaryRangeName *string `json:"clusterSecondaryRangeName,omitempty"`
+
+	// Optional. The IP address range used to allocate IP addresses to pods in
+	//  the GKE cluster.
+	//
+	//  For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+	//  this field is applicable only when `use_ip_aliases` is true.
+	//
+	//  Set to blank to have GKE choose a range with the default size.
+	//
+	//  Set to /netmask (e.g. `/14`) to have GKE choose a range with a specific
+	//  netmask.
+	//
+	//  Set to a
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+	//  to use.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.IPAllocationPolicy.cluster_ipv4_cidr_block
+	ClusterIPV4CIDRBlock *string `json:"clusterIPV4CIDRBlock,omitempty"`
+
+	// Optional. The name of the services' secondary range used to allocate
+	//  IP addresses to the GKE cluster.
+	//
+	//  For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+	//  this field is applicable only when `use_ip_aliases` is true.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.IPAllocationPolicy.services_secondary_range_name
+	ServicesSecondaryRangeName *string `json:"servicesSecondaryRangeName,omitempty"`
+
+	// Optional. The IP address range of the services IP addresses in this
+	//  GKE cluster.
+	//
+	//  For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+	//  this field is applicable only when `use_ip_aliases` is true.
+	//
+	//  Set to blank to have GKE choose a range with the default size.
+	//
+	//  Set to /netmask (e.g. `/14`) to have GKE choose a range with a specific
+	//  netmask.
+	//
+	//  Set to a
+	//  [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+	//  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+	//  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+	//  to use.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.IPAllocationPolicy.services_ipv4_cidr_block
+	ServicesIPV4CIDRBlock *string `json:"servicesIPV4CIDRBlock,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.MaintenanceWindow
+type MaintenanceWindow struct {
+	// Required. Start time of the first recurrence of the maintenance window.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.MaintenanceWindow.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Required. Maintenance window end time. It is used only to calculate the
+	//  duration of the maintenance window. The value for end-time must be in the
+	//  future, relative to `start_time`.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.MaintenanceWindow.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Required. Maintenance window recurrence. Format is a subset of
+	//  [RFC-5545](https://tools.ietf.org/html/rfc5545) `RRULE`. The only allowed
+	//  values for `FREQ` field are `FREQ=DAILY` and `FREQ=WEEKLY;BYDAY=...`
+	//  Example values: `FREQ=WEEKLY;BYDAY=TU,WE`, `FREQ=DAILY`.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.MaintenanceWindow.recurrence
+	Recurrence *string `json:"recurrence,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.MasterAuthorizedNetworksConfig
+type MasterAuthorizedNetworksConfig struct {
+	// Whether or not master authorized networks feature is enabled.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.MasterAuthorizedNetworksConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Up to 50 external networks that could access Kubernetes master through
+	//  HTTPS.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.MasterAuthorizedNetworksConfig.cidr_blocks
+	CIDRBlocks []MasterAuthorizedNetworksConfig_CIDRBlock `json:"cidrBlocks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.MasterAuthorizedNetworksConfig.CidrBlock
+type MasterAuthorizedNetworksConfig_CIDRBlock struct {
+	// User-defined name that identifies the CIDR block.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.MasterAuthorizedNetworksConfig.CidrBlock.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// CIDR block that must be specified in CIDR notation.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.MasterAuthorizedNetworksConfig.CidrBlock.cidr_block
+	CIDRBlock *string `json:"cidrBlock,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.NetworkingConfig
+type NetworkingConfig struct {
+	// Optional. Indicates the user requested specifc connection type between
+	//  Tenant and Customer projects. You cannot set networking connection type in
+	//  public IP environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NetworkingConfig.connection_type
+	ConnectionType *string `json:"connectionType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.NodeConfig
+type NodeConfig struct {
+	// Optional. The Compute Engine [zone](/compute/docs/regions-zones) in which
+	//  to deploy the VMs used to run the Apache Airflow software, specified as a
+	//  [relative resource
+	//  name](/apis/design/resource_names#relative_resource_name). For example:
+	//  "projects/{projectId}/zones/{zoneId}".
+	//
+	//  This `location` must belong to the enclosing environment's project and
+	//  location. If both this field and `nodeConfig.machineType` are specified,
+	//  `nodeConfig.machineType` must belong to this `location`; if both are
+	//  unspecified, the service will pick a zone in the Compute Engine region
+	//  corresponding to the Cloud Composer location, and propagate that choice to
+	//  both fields. If only one field (`location` or `nodeConfig.machineType`) is
+	//  specified, the location information from the specified field will be
+	//  propagated to the unspecified field.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.location
+	Location *string `json:"location,omitempty"`
+
+	// Optional. The Compute Engine
+	//  [machine type](/compute/docs/machine-types) used for cluster instances,
+	//  specified as a
+	//  [relative resource
+	//  name](/apis/design/resource_names#relative_resource_name). For example:
+	//  "projects/{projectId}/zones/{zoneId}/machineTypes/{machineTypeId}".
+	//
+	//  The `machineType` must belong to the enclosing environment's project and
+	//  location. If both this field and `nodeConfig.location` are specified,
+	//  this `machineType` must belong to the `nodeConfig.location`; if both are
+	//  unspecified, the service will pick a zone in the Compute Engine region
+	//  corresponding to the Cloud Composer location, and propagate that choice to
+	//  both fields. If exactly one of this field and `nodeConfig.location` is
+	//  specified, the location information from the specified field will be
+	//  propagated to the unspecified field.
+	//
+	//  The `machineTypeId` must not be a [shared-core machine
+	//  type](/compute/docs/machine-types#sharedcore).
+	//
+	//  If this field is unspecified, the `machineTypeId` defaults
+	//  to "n1-standard-1".
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Optional. The Compute Engine network to be used for machine
+	//  communications, specified as a
+	//  [relative resource
+	//  name](/apis/design/resource_names#relative_resource_name). For example:
+	//  "projects/{projectId}/global/networks/{networkId}".
+	//
+	//  If unspecified, the "default" network ID in the environment's project is
+	//  used. If a [Custom Subnet Network](/vpc/docs/vpc#vpc_networks_and_subnets)
+	//  is provided, `nodeConfig.subnetwork` must also be provided. For
+	//  [Shared VPC](/vpc/docs/shared-vpc) subnetwork requirements, see
+	//  `nodeConfig.subnetwork`.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.network
+	Network *string `json:"network,omitempty"`
+
+	// Optional. The Compute Engine subnetwork to be used for machine
+	//  communications, specified as a
+	//  [relative resource
+	//  name](/apis/design/resource_names#relative_resource_name). For example:
+	//  "projects/{projectId}/regions/{regionId}/subnetworks/{subnetworkId}"
+	//
+	//  If a subnetwork is provided, `nodeConfig.network` must also be provided,
+	//  and the subnetwork must belong to the enclosing environment's project and
+	//  location.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// Optional. The disk size in GB used for node VMs. Minimum size is 30GB.
+	//  If unspecified, defaults to 100GB. Cannot be updated.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// Optional. The set of Google API scopes to be made available on all
+	//  node VMs. If `oauth_scopes` is empty, defaults to
+	//  ["https://www.googleapis.com/auth/cloud-platform"]. Cannot be updated.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.oauth_scopes
+	OauthScopes []string `json:"oauthScopes,omitempty"`
+
+	// Optional. The Google Cloud Platform Service Account to be used by the node
+	//  VMs. If a service account is not specified, the "default" Compute Engine
+	//  service account is used. Cannot be updated.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. The list of instance tags applied to all node VMs. Tags are used
+	//  to identify valid sources or targets for network firewalls. Each tag within
+	//  the list must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
+	//  Cannot be updated.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.tags
+	Tags []string `json:"tags,omitempty"`
+
+	// Optional. The configuration for controlling how IPs are allocated in the
+	//  GKE cluster.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.ip_allocation_policy
+	IPAllocationPolicy *IPAllocationPolicy `json:"ipAllocationPolicy,omitempty"`
+
+	// Optional. Deploys 'ip-masq-agent' daemon set in the GKE cluster and defines
+	//  nonMasqueradeCIDRs equals to pod IP range so IP masquerading is used for
+	//  all destination addresses, except between pods traffic.
+	//
+	//  See:
+	//  https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.enable_ip_masq_agent
+	EnableIPMasqAgent *bool `json:"enableIPMasqAgent,omitempty"`
+
+	// Optional. Network Attachment that Cloud Composer environment is connected
+	//  to, which provides connectivity with a user's VPC network. Takes precedence
+	//  over network and subnetwork settings. If not provided, but network and
+	//  subnetwork are defined during environment, it will be provisioned. If not
+	//  provided and network and subnetwork are also empty, then connectivity to
+	//  user's VPC network is disabled. Network attachment must be provided in
+	//  format
+	//  projects/{project}/regions/{region}/networkAttachments/{networkAttachment}.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-3.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.composer_network_attachment
+	ComposerNetworkAttachment *string `json:"composerNetworkAttachment,omitempty"`
+
+	// Optional. The IP range in CIDR notation to use internally by Cloud
+	//  Composer. IP addresses are not reserved - and the same range can be used by
+	//  multiple Cloud Composer environments. In case of overlap, IPs from this
+	//  range will not be accessible in the user's VPC network. Cannot be updated.
+	//  If not specified, the default value of '100.64.128.0/20' is used.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-3.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.composer_internal_ipv4_cidr_block
+	ComposerInternalIPV4CIDRBlock *string `json:"composerInternalIPV4CIDRBlock,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.PrivateClusterConfig
+type PrivateClusterConfig struct {
+	// Optional. If `true`, access to the public endpoint of the GKE cluster is
+	//  denied.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateClusterConfig.enable_private_endpoint
+	EnablePrivateEndpoint *bool `json:"enablePrivateEndpoint,omitempty"`
+
+	// Optional. The CIDR block from which IPv4 range for GKE master will be
+	//  reserved. If left blank, the default value of '172.16.0.0/23' is used.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateClusterConfig.master_ipv4_cidr_block
+	MasterIPV4CIDRBlock *string `json:"masterIPV4CIDRBlock,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig
+type PrivateEnvironmentConfig struct {
+	// Optional. If `true`, a Private IP Cloud Composer environment is created.
+	//  If this field is set to true, `IPAllocationPolicy.use_ip_aliases` must be
+	//  set to true for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.enable_private_environment
+	EnablePrivateEnvironment *bool `json:"enablePrivateEnvironment,omitempty"`
+
+	// Optional. If `true`, builds performed during operations that install Python
+	//  packages have only private connectivity to Google services (including
+	//  Artifact Registry) and VPC network (if either `NodeConfig.network` and
+	//  `NodeConfig.subnetwork` fields or `NodeConfig.composer_network_attachment`
+	//  field are specified). If `false`, the builds also have access to the
+	//  internet.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-3.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.enable_private_builds_only
+	EnablePrivateBuildsOnly *bool `json:"enablePrivateBuildsOnly,omitempty"`
+
+	// Optional. Configuration for the private GKE cluster for a Private IP
+	//  Cloud Composer environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.private_cluster_config
+	PrivateClusterConfig *PrivateClusterConfig `json:"privateClusterConfig,omitempty"`
+
+	// Optional. The CIDR block from which IP range for web server will be
+	//  reserved. Needs to be disjoint from
+	//  `private_cluster_config.master_ipv4_cidr_block` and
+	//  `cloud_sql_ipv4_cidr_block`.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.web_server_ipv4_cidr_block
+	WebServerIPV4CIDRBlock *string `json:"webServerIPV4CIDRBlock,omitempty"`
+
+	// Optional. The CIDR block from which IP range in tenant project will be
+	//  reserved for Cloud SQL. Needs to be disjoint from
+	//  `web_server_ipv4_cidr_block`.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.cloud_sql_ipv4_cidr_block
+	CloudSQLIPV4CIDRBlock *string `json:"cloudSQLIPV4CIDRBlock,omitempty"`
+
+	// Optional. The CIDR block from which IP range for Cloud Composer Network in
+	//  tenant project will be reserved. Needs to be disjoint from
+	//  private_cluster_config.master_ipv4_cidr_block and
+	//  cloud_sql_ipv4_cidr_block.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-2.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.cloud_composer_network_ipv4_cidr_block
+	CloudComposerNetworkIPV4CIDRBlock *string `json:"cloudComposerNetworkIPV4CIDRBlock,omitempty"`
+
+	// Optional. When enabled, IPs from public (non-RFC1918) ranges can be used
+	//  for `IPAllocationPolicy.cluster_ipv4_cidr_block` and
+	//  `IPAllocationPolicy.service_ipv4_cidr_block`.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.enable_privately_used_public_ips
+	EnablePrivatelyUsedPublicIps *bool `json:"enablePrivatelyUsedPublicIps,omitempty"`
+
+	// Optional. When specified, the environment will use Private Service Connect
+	//  instead of VPC peerings to connect to Cloud SQL in the Tenant Project,
+	//  and the PSC endpoint in the Customer Project will use an IP address from
+	//  this subnetwork.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.cloud_composer_connection_subnetwork
+	CloudComposerConnectionSubnetwork *string `json:"cloudComposerConnectionSubnetwork,omitempty"`
+
+	// Optional. Configuration for the network connections configuration in the
+	//  environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.networking_config
+	NetworkingConfig *NetworkingConfig `json:"networkingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.RecoveryConfig
+type RecoveryConfig struct {
+	// Optional. The configuration for scheduled snapshot creation mechanism.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.RecoveryConfig.scheduled_snapshots_config
+	ScheduledSnapshotsConfig *ScheduledSnapshotsConfig `json:"scheduledSnapshotsConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.ScheduledSnapshotsConfig
+type ScheduledSnapshotsConfig struct {
+	// Optional. Whether scheduled snapshots creation is enabled.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.ScheduledSnapshotsConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. The Cloud Storage location for storing automatically created
+	//  snapshots.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.ScheduledSnapshotsConfig.snapshot_location
+	SnapshotLocation *string `json:"snapshotLocation,omitempty"`
+
+	// Optional. The cron expression representing the time when snapshots creation
+	//  mechanism runs. This field is subject to additional validation around
+	//  frequency of execution.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.ScheduledSnapshotsConfig.snapshot_creation_schedule
+	SnapshotCreationSchedule *string `json:"snapshotCreationSchedule,omitempty"`
+
+	// Optional. Time zone that sets the context to interpret
+	//  snapshot_creation_schedule.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.ScheduledSnapshotsConfig.time_zone
+	TimeZone *string `json:"timeZone,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.SoftwareConfig
+type SoftwareConfig struct {
+	// Optional. The version of the software running in the environment.
+	//  This encapsulates both the version of Cloud Composer functionality and the
+	//  version of Apache Airflow. It must match the regular expression
+	//  `composer-([0-9]+(\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?)?|latest)-airflow-([0-9]+(\.[0-9]+(\.[0-9]+)?)?)`.
+	//  When used as input, the server also checks if the provided version is
+	//  supported and denies the request for an unsupported version.
+	//
+	//  The Cloud Composer portion of the image version is a full
+	//  [semantic version](https://semver.org), or an alias in the form of major
+	//  version number or `latest`. When an alias is provided, the server replaces
+	//  it with the current Cloud Composer version that satisfies the alias.
+	//
+	//  The Apache Airflow portion of the image version is a full semantic version
+	//  that points to one of the supported Apache Airflow versions, or an alias in
+	//  the form of only major or major.minor versions specified. When an alias is
+	//  provided, the server replaces it with the latest Apache Airflow version
+	//  that satisfies the alias and is supported in the given Cloud Composer
+	//  version.
+	//
+	//  In all cases, the resolved image version is stored in the same field.
+	//
+	//  See also [version
+	//  list](/composer/docs/concepts/versioning/composer-versions) and [versioning
+	//  overview](/composer/docs/concepts/versioning/composer-versioning-overview).
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.image_version
+	ImageVersion *string `json:"imageVersion,omitempty"`
+
+	// Optional. Apache Airflow configuration properties to override.
+	//
+	//  Property keys contain the section and property names, separated by a
+	//  hyphen, for example "core-dags_are_paused_at_creation". Section names must
+	//  not contain hyphens ("-"), opening square brackets ("["),  or closing
+	//  square brackets ("]"). The property name must not be empty and must not
+	//  contain an equals sign ("=") or semicolon (";"). Section and property names
+	//  must not contain a period ("."). Apache Airflow configuration property
+	//  names must be written in
+	//  [snake_case](https://en.wikipedia.org/wiki/Snake_case). Property values can
+	//  contain any character, and can be written in any lower/upper case format.
+	//
+	//  Certain Apache Airflow configuration property values are
+	//  [blocked](/composer/docs/concepts/airflow-configurations),
+	//  and cannot be overridden.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.airflow_config_overrides
+	AirflowConfigOverrides map[string]string `json:"airflowConfigOverrides,omitempty"`
+
+	// Optional. Custom Python Package Index (PyPI) packages to be installed in
+	//  the environment.
+	//
+	//  Keys refer to the lowercase package name such as "numpy"
+	//  and values are the lowercase extras and version specifier such as
+	//  "==1.12.0", "[devel,gcp_api]", or "[devel]>=1.8.2, <1.9.2". To specify a
+	//  package without pinning it to a version specifier, use the empty string as
+	//  the value.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.pypi_packages
+	PypiPackages map[string]string `json:"pypiPackages,omitempty"`
+
+	// Optional. Additional environment variables to provide to the Apache Airflow
+	//  scheduler, worker, and webserver processes.
+	//
+	//  Environment variable names must match the regular expression
+	//  `[a-zA-Z_][a-zA-Z0-9_]*`. They cannot specify Apache Airflow
+	//  software configuration overrides (they cannot match the regular expression
+	//  `AIRFLOW__[A-Z0-9_]+__[A-Z0-9_]+`), and they cannot match any of the
+	//  following reserved names:
+	//
+	//  * `AIRFLOW_HOME`
+	//  * `C_FORCE_ROOT`
+	//  * `CONTAINER_NAME`
+	//  * `DAGS_FOLDER`
+	//  * `GCP_PROJECT`
+	//  * `GCS_BUCKET`
+	//  * `GKE_CLUSTER_NAME`
+	//  * `SQL_DATABASE`
+	//  * `SQL_INSTANCE`
+	//  * `SQL_PASSWORD`
+	//  * `SQL_PROJECT`
+	//  * `SQL_REGION`
+	//  * `SQL_USER`
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.env_variables
+	EnvVariables map[string]string `json:"envVariables,omitempty"`
+
+	// Optional. The major version of Python used to run the Apache Airflow
+	//  scheduler, worker, and webserver processes.
+	//
+	//  Can be set to '2' or '3'. If not specified, the default is '3'. Cannot be
+	//  updated.
+	//
+	//  This field is only supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*. Environments in newer versions always use
+	//  Python major version 3.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.python_version
+	PythonVersion *string `json:"pythonVersion,omitempty"`
+
+	// Optional. The number of schedulers for Airflow.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-2.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.scheduler_count
+	SchedulerCount *int32 `json:"schedulerCount,omitempty"`
+
+	// Optional. The configuration for Cloud Data Lineage integration.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.cloud_data_lineage_integration
+	CloudDataLineageIntegration *CloudDataLineageIntegration `json:"cloudDataLineageIntegration,omitempty"`
+
+	// Optional. Whether or not the web server uses custom plugins.
+	//  If unspecified, the field defaults to `PLUGINS_ENABLED`.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-3.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.web_server_plugins_mode
+	WebServerPluginsMode *string `json:"webServerPluginsMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.StorageConfig
+type StorageConfig struct {
+	// Optional. The name of the Cloud Storage bucket used by the environment. No
+	//  `gs://` prefix.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.StorageConfig.bucket
+	Bucket *string `json:"bucket,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.TaskLogsRetentionConfig
+type TaskLogsRetentionConfig struct {
+	// Optional. The mode of storage for Airflow workers task logs.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.TaskLogsRetentionConfig.storage_mode
+	StorageMode *string `json:"storageMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WebServerConfig
+type WebServerConfig struct {
+	// Optional. Machine type on which Airflow web server is running.
+	//  It has to be one of: composer-n1-webserver-2, composer-n1-webserver-4 or
+	//  composer-n1-webserver-8.
+	//  If not specified, composer-n1-webserver-2 will be used.
+	//  Value custom is returned only in response, if Airflow web server parameters
+	//  were manually changed to a non-standard values.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WebServerConfig.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WebServerNetworkAccessControl
+type WebServerNetworkAccessControl struct {
+	// A collection of allowed IP ranges with descriptions.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WebServerNetworkAccessControl.allowed_ip_ranges
+	AllowedIPRanges []WebServerNetworkAccessControl_AllowedIPRange `json:"allowedIPRanges,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WebServerNetworkAccessControl.AllowedIpRange
+type WebServerNetworkAccessControl_AllowedIPRange struct {
+	// IP address or range, defined using CIDR notation, of requests that this
+	//  rule applies to.
+	//  Examples: `192.168.1.1` or `192.168.0.0/16` or `2001:db8::/32`
+	//            or `2001:0db8:0000:0042:0000:8a2e:0370:7334`.
+	//
+	//  IP range prefixes should be properly truncated. For example,
+	//  `1.2.3.4/24` should be truncated to `1.2.3.0/24`. Similarly, for IPv6,
+	//  `2001:db8::1/32` should be truncated to `2001:db8::/32`.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WebServerNetworkAccessControl.AllowedIpRange.value
+	Value *string `json:"value,omitempty"`
+
+	// Optional. User-provided description. It must contain at most 300
+	//  characters.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WebServerNetworkAccessControl.AllowedIpRange.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig
+type WorkloadsConfig struct {
+	// Optional. Resources used by Airflow schedulers.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.scheduler
+	Scheduler *WorkloadsConfig_SchedulerResource `json:"scheduler,omitempty"`
+
+	// Optional. Resources used by Airflow web server.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.web_server
+	WebServer *WorkloadsConfig_WebServerResource `json:"webServer,omitempty"`
+
+	// Optional. Resources used by Airflow workers.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.worker
+	Worker *WorkloadsConfig_WorkerResource `json:"worker,omitempty"`
+
+	// Optional. Resources used by Airflow triggerers.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.triggerer
+	Triggerer *WorkloadsConfig_TriggererResource `json:"triggerer,omitempty"`
+
+	// Optional. Resources used by Airflow DAG processors.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-3.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.dag_processor
+	DagProcessor *WorkloadsConfig_DagProcessorResource `json:"dagProcessor,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource
+type WorkloadsConfig_DagProcessorResource struct {
+	// Optional. CPU request and limit for a single Airflow DAG processor
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource.cpu
+	CPU *float32 `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for a single Airflow DAG
+	//  processor replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource.memory_gb
+	MemoryGB *float32 `json:"memoryGB,omitempty"`
+
+	// Optional. Storage (GB) request and limit for a single Airflow DAG
+	//  processor replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource.storage_gb
+	StorageGB *float32 `json:"storageGB,omitempty"`
+
+	// Optional. The number of DAG processors. If not provided or set to 0, a
+	//  single DAG processor instance will be created.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource.count
+	Count *int32 `json:"count,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource
+type WorkloadsConfig_SchedulerResource struct {
+	// Optional. CPU request and limit for a single Airflow scheduler replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource.cpu
+	CPU *float32 `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for a single Airflow scheduler
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource.memory_gb
+	MemoryGB *float32 `json:"memoryGB,omitempty"`
+
+	// Optional. Storage (GB) request and limit for a single Airflow scheduler
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource.storage_gb
+	StorageGB *float32 `json:"storageGB,omitempty"`
+
+	// Optional. The number of schedulers.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource.count
+	Count *int32 `json:"count,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.TriggererResource
+type WorkloadsConfig_TriggererResource struct {
+	// Optional. The number of triggerers.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.TriggererResource.count
+	Count *int32 `json:"count,omitempty"`
+
+	// Optional. CPU request and limit for a single Airflow triggerer replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.TriggererResource.cpu
+	CPU *float32 `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for a single Airflow triggerer
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.TriggererResource.memory_gb
+	MemoryGB *float32 `json:"memoryGB,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WebServerResource
+type WorkloadsConfig_WebServerResource struct {
+	// Optional. CPU request and limit for Airflow web server.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WebServerResource.cpu
+	CPU *float32 `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for Airflow web server.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WebServerResource.memory_gb
+	MemoryGB *float32 `json:"memoryGB,omitempty"`
+
+	// Optional. Storage (GB) request and limit for Airflow web server.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WebServerResource.storage_gb
+	StorageGB *float32 `json:"storageGB,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource
+type WorkloadsConfig_WorkerResource struct {
+	// Optional. CPU request and limit for a single Airflow worker replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.cpu
+	CPU *float32 `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for a single Airflow worker
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.memory_gb
+	MemoryGB *float32 `json:"memoryGB,omitempty"`
+
+	// Optional. Storage (GB) request and limit for a single Airflow worker
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.storage_gb
+	StorageGB *float32 `json:"storageGB,omitempty"`
+
+	// Optional. Minimum number of workers for autoscaling.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.min_count
+	MinCount *int32 `json:"minCount,omitempty"`
+
+	// Optional. Maximum number of workers for autoscaling.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.max_count
+	MaxCount *int32 `json:"maxCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.Environment
+type EnvironmentObservedState struct {
+	// Optional. Configuration parameters for this environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.config
+	Config *EnvironmentConfigObservedState `json:"config,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig
+type EnvironmentConfigObservedState struct {
+	// Optional. The configuration used for the Private IP Cloud Composer
+	//  environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.private_environment_config
+	PrivateEnvironmentConfig *PrivateEnvironmentConfigObservedState `json:"privateEnvironmentConfig,omitempty"`
+
+	// Output only. The 'bring your own identity' variant of the URI of the Apache
+	//  Airflow Web UI hosted within this environment, to be accessed with external
+	//  identities using workforce identity federation (see [Access environments
+	//  with workforce identity
+	//  federation](/composer/docs/composer-2/access-environments-with-workforce-identity-federation)).
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.airflow_byoid_uri
+	AirflowByoidURI *string `json:"airflowByoidURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.PrivateClusterConfig
+type PrivateClusterConfigObservedState struct {
+	// Output only. The IP range in CIDR notation to use for the hosted master
+	//  network. This range is used for assigning internal IP addresses to the GKE
+	//  cluster master or set of masters and to the internal load balancer virtual
+	//  IP. This range must not overlap with any other ranges in use within the
+	//  cluster's network.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateClusterConfig.master_ipv4_reserved_range
+	MasterIPV4ReservedRange *string `json:"masterIPV4ReservedRange,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig
+type PrivateEnvironmentConfigObservedState struct {
+	// Optional. Configuration for the private GKE cluster for a Private IP
+	//  Cloud Composer environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.private_cluster_config
+	PrivateClusterConfig *PrivateClusterConfigObservedState `json:"privateClusterConfig,omitempty"`
+
+	// Output only. The IP range reserved for the tenant project's App Engine VMs.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-1.*.*-airflow-*.*.*.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.web_server_ipv4_reserved_range
+	WebServerIPV4ReservedRange *string `json:"webServerIPV4ReservedRange,omitempty"`
+
+	// Output only. The IP range reserved for the tenant project's Cloud Composer
+	//  network.
+	//
+	//  This field is supported for Cloud Composer environments in versions
+	//  composer-2.*.*-airflow-*.*.* and newer.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.cloud_composer_network_ipv4_reserved_range
+	CloudComposerNetworkIPV4ReservedRange *string `json:"cloudComposerNetworkIPV4ReservedRange,omitempty"`
+}
