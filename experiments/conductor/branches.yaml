@@ -23,10 +23,10 @@ branches:
     kind: AccessApprovalApprovalRequest
     package: google.cloud.accessapproval.v1
     proto: ApprovalRequest
-    proto-path: google.cloud.accessapproval.v1.accessapproval
-    proto-service: google.cloud.accessapproval.v1.AccessApproval
+    proto-path: google/cloud/accessapproval/v1/accessapproval.proto
+    proto-service: ""
     proto-msg: google.cloud.accessapproval.v1.ApprovalRequest
-    host-name: accessapproval.googleapis.com
+    host-name: ""
     notes:
       - No gcloud command found
   - name: ai-customjobs
@@ -41,9 +41,9 @@ branches:
     proto: ""
     proto-path: ""
     proto-service: ""
-    proto-msg:
-    host_name: ""
-    notes:
+    proto-msg: ""
+    host-name: ""
+    notes: []
   - name: compute-computebackendservice
     local: resource-compute-computebackendservice
     remote: resource-compute-computebackendservice
@@ -54,8 +54,8 @@ branches:
     kind: ""
     package: ""
     proto: BackendService
-    proto-path: google.cloud.compute.v1.Compute
+    proto-path: google/cloud/compute/v1/compute.proto
     proto-service: google.cloud.compute.v1.BackendServices
     proto-msg: google.cloud.compute.v1.BackendService
     host-name: compute.googleapis.com
-    notes:
+    notes: []

@@ -48,14 +48,14 @@ func startBash() (io.WriteCloser, io.ReadCloser, exitBash, error) {
 			log.Fatal(err)
 		}
 
-		log.Printf("BASH ERR %s\r\n", string(errBuffer))
+		log.Printf("BASH ERR %s", string(errBuffer))
 	}()
 	err = cmd.Start()
 	if err != nil {
 		log.Fatal(err)
 	}
 	exit := func() {
-		log.Printf("COMMAND: exit\r\n")
+		log.Printf("COMMAND: exit")
 		if _, err = stdin.Write([]byte("exit\n")); err != nil {
 			log.Fatal(err)
 		}
@@ -63,7 +63,7 @@ func startBash() (io.WriteCloser, io.ReadCloser, exitBash, error) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("BASH DONE\r\n")
+		log.Printf("BASH DONE")
 	}
 	return stdin, stdout, exit, err
 }
@@ -73,7 +73,7 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	if subdir != "" {
 		dir = filepath.Join(dir, subdir)
 	}
-	log.Printf("COMMAND: cd %s and echo\r\n", dir)
+	log.Printf("COMMAND: cd %s and echo", dir)
 	if _, err := stdin.Write([]byte(fmt.Sprintf("cd %s && echo done\n", dir))); err != nil {
 		log.Fatal(err)
 	}
@@ -88,12 +88,12 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 		msg += string(outBuffer[:length])
 		done = strings.HasSuffix(msg, "done\n")
 	}
-	log.Printf("CD OUT %s\r\n", msg)
+	log.Printf("CD OUT %s", msg)
 	return msg
 }
 
 func checkoutBranch(branch Branch, workDir string, out *strings.Builder) {
-	log.Printf("COMMAND: git checkout %s\r\n", branch.Local)
+	log.Printf("COMMAND: git checkout %s", branch.Local)
 	checkout := exec.Command("git", "checkout", branch.Local)
 	checkout.Dir = workDir
 	checkout.Stdout = out
@@ -112,16 +112,16 @@ func writeTemplateToFile(branch Branch, filePath string, template string) {
 	tmp = strings.ReplaceAll(tmp, "<PROTO_SERVICE>", branch.ProtoSvc)
 	tmp = strings.ReplaceAll(tmp, "<PROTO_MESSAGE>", branch.ProtoMsg)
 	contents := strings.ReplaceAll(tmp, "<RESOURCE>", strings.ToLower(branch.Resource))
-	log.Printf("TEMPLATE %s %s\r\n", filePath, contents)
+	log.Printf("TEMPLATE %s %s", filePath, contents)
 
 	if _, err := os.Stat(filePath); !errors.Is(err, os.ErrNotExist) {
-		log.Printf("COMMAND: cleaning up old %s\r\n", filePath)
+		log.Printf("COMMAND: cleaning up old %s", filePath)
 		err = os.Remove(filePath)
 		if err != nil {
-			log.Printf("Attempt to clean up %s failed with %v\r\n", filePath, err)
+			log.Printf("Attempt to clean up %s failed with %v", filePath, err)
 		}
 	}
-	log.Printf("COMMAND: writing new %s\r\n", filePath)
+	log.Printf("COMMAND: writing new %s", filePath)
 	if err := os.WriteFile(filePath, []byte(contents), 0644); err != nil {
 		log.Fatal(err)
 	}
@@ -138,7 +138,7 @@ func gitAdd(workDir string, out *strings.Builder, files ...string) {
 		}
 		params += file
 	}
-	log.Printf("COMMAND: git add %s\r\n", params)
+	log.Printf("COMMAND: git add %s", params)
 	args := []string{"add"}
 	args = append(args, files...)
 	gitadd := exec.Command("git", args...)
@@ -153,7 +153,7 @@ func gitAdd(workDir string, out *strings.Builder, files ...string) {
 }
 
 func gitCommit(workDir string, out *strings.Builder, msg string) {
-	log.Printf("COMMAND: git commit -m %q\r\n", msg)
+	log.Printf("COMMAND: git commit -m %q", msg)
 	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("%q", msg))
 	gitcommit.Dir = workDir
 	gitcommit.Stdout = out
