@@ -22,4 +22,4 @@ spec:
   location: us-central1
   onlineServingConfig:
     fixedNodeCount: 2
-  onlineStorageTtlDays: 10
+  onlineStorageTTLDays: 10

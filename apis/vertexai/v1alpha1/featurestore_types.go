@@ -82,7 +82,7 @@ type VertexAIFeaturestoreSpec struct {
 	//  than or equal to `offline_storage_ttl_days` for each EntityType under a
 	//  featurestore. If not set, default to 4000 days
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.online_storage_ttl_days
-	OnlineStorageTtlDays *int32 `json:"onlineStorageTtlDays,omitempty"`
+	OnlineStorageTTLDays *int32 `json:"onlineStorageTTLDays,omitempty"`
 
 	// Optional. Customer-managed encryption key spec for data storage. If set,
 	//  both of the online and offline data storage will be secured by this key.

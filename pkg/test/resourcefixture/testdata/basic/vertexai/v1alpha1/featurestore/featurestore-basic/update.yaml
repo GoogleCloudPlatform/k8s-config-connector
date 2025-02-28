@@ -22,6 +22,6 @@ spec:
   location: us-central1
   onlineServingConfig:
     fixedNodeCount: 3 # 2 -> 3
-  onlineStorageTtlDays: 20 # 10 -> 20
+  onlineStorageTTLDays: 20 # 10 -> 20
   labels:
     foo: bar # add a new label

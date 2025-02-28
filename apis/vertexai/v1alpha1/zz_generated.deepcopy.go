@@ -320,8 +320,8 @@ func (in *VertexAIFeaturestoreSpec) DeepCopyInto(out *VertexAIFeaturestoreSpec) 
 		*out = new(Featurestore_OnlineServingConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.OnlineStorageTtlDays != nil {
-		in, out := &in.OnlineStorageTtlDays, &out.OnlineStorageTtlDays
+	if in.OnlineStorageTTLDays != nil {
+		in, out := &in.OnlineStorageTTLDays, &out.OnlineStorageTTLDays
 		*out = new(int32)
 		**out = **in
 	}

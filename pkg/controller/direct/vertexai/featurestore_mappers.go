@@ -41,3 +41,59 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 	}
 	return out
 }
+func VertexAIFeaturestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.VertexAIFeaturestoreObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIFeaturestoreObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIFeaturestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeaturestoreObservedState) *pb.Featurestore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Featurestore_State](mapCtx, in.State)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIFeaturestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.VertexAIFeaturestoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIFeaturestoreSpec{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.OnlineServingConfig = Featurestore_OnlineServingConfig_FromProto(mapCtx, in.GetOnlineServingConfig())
+	out.OnlineStorageTTLDays = direct.LazyPtr(in.GetOnlineStorageTtlDays())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIFeaturestoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeaturestoreSpec) *pb.Featurestore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.OnlineServingConfig = Featurestore_OnlineServingConfig_ToProto(mapCtx, in.OnlineServingConfig)
+	out.OnlineStorageTtlDays = direct.ValueOf(in.OnlineStorageTTLDays)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}

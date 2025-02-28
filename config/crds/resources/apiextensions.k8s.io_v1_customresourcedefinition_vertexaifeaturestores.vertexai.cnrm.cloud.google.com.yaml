@@ -166,7 +166,7 @@ spec:
                         type: integer
                     type: object
                 type: object
-              onlineStorageTtlDays:
+              onlineStorageTTLDays:
                 description: Optional. TTL in days for feature values that will be
                   stored in online serving storage. The Feature Store online storage
                   periodically removes obsolete feature values older than `online_storage_ttl_days`

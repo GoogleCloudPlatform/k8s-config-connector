@@ -15,7 +15,7 @@ spec:
   location: us-central1
   onlineServingConfig:
     fixedNodeCount: 3
-  onlineStorageTtlDays: 20
+  onlineStorageTTLDays: 20
   projectRef:
     external: ${projectId}
 status:
