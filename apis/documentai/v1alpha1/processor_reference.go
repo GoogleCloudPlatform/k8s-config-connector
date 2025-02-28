@@ -27,7 +27,6 @@ import (
 )
 
 var _ refsv1beta1.ExternalNormalizer = &ProcessorRef{}
-var DocumentAIProcessorGVK = GroupVersion.WithKind("DocumentAIProcessor")
 
 // ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -51,9 +50,10 @@ func (r *ProcessorRef) NormalizedExternal(ctx context.Context, reader client.Rea
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", DocumentAIProcessorGVK.Kind)
 	}
 	// From given External
-	// For backward compatibility, we are not validating the external format.
-	// todo(yuhou): validate external when it's referenced by a pure direct resource
 	if r.External != "" {
+		if _, _, err := ParseProcessorExternal(r.External); err != nil {
+			return "", err
+		}
 		return r.External, nil
 	}
 
@@ -70,13 +70,14 @@ func (r *ProcessorRef) NormalizedExternal(ctx context.Context, reader client.Rea
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", DocumentAIProcessorGVK, key, err)
 	}
-
-	// get resource identifier from spec.resourceID
-	// todo(yuhou): use externalRef for resource that managed by direct controller
-	resourceID, _, err := unstructured.NestedString(u.Object, "spec", "resourceID")
-	if err != nil || resourceID == "" {
-		return "", fmt.Errorf("cannot get selfLink for referenced %s %v (status.name is empty)", u.GetKind(), u.GetNamespace())
+	// Get external from status.externalRef. This is the most trustworthy place.
+	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	r.External = resourceID
+	if actualExternalRef == "" {
+		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	r.External = actualExternalRef
 	return r.External, nil
 }
