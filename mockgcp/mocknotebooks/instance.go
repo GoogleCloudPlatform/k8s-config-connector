@@ -1,4 +1,4 @@
- // Copyright 2024 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,18 +28,14 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/notebooks/v1"
 )
 
-type NotebooksV1 struct {
-	*MockService
-	pb.UnimplementedNotebookServiceServer
-}
-
-func (s *NotebooksV1) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
+func (s *NotebookServiceV1) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
 	name, err := s.parseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
@@ -55,7 +51,49 @@ func (s *NotebooksV1) GetInstance(ctx context.Context, req *pb.GetInstanceReques
 	return obj, nil
 }
 
-func (s *NotebooksV1) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
+// createBootDisk creates the boot disk configuration
+func createBootDisk(projectID string, instanceName string) *pb.Instance_Disk {
+	return &pb.Instance_Disk{
+		AutoDelete: true,
+		Boot:       true,
+		DeviceName: "boot",
+		DiskSizeGb: 150,
+		GuestOsFeatures: []*pb.Instance_Disk_GuestOsFeature{
+			{Type: "VIRTIO_SCSI_MULTIQUEUE"},
+			{Type: "UEFI_COMPATIBLE"},
+			{Type: "GVNIC"},
+		},
+		Interface: "SCSI",
+		Kind:      "compute#attachedDisk",
+		Licenses: []string{
+			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-cpu-common",
+			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm",
+		},
+		Mode:   "READ_WRITE",
+		Source: fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/us-central1-a/disks/%s-boot", projectID, instanceName),
+		Type:   "PERSISTENT",
+	}
+}
+
+// createDataDisk creates the data disk configuration
+func createDataDisk(projectID string, instanceName string) *pb.Instance_Disk {
+	return &pb.Instance_Disk{
+		AutoDelete: true,
+		DeviceName: "data",
+		DiskSizeGb: 100,
+		Index:      1,
+		Interface:  "SCSI",
+		Kind:       "compute#attachedDisk",
+		Mode:       "READ_WRITE",
+		Source:     fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/us-central1-a/disks/%s-data", projectID, instanceName),
+		Type:       "PERSISTENT",
+	}
+}
+
+func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/instances/" + req.InstanceId
 	name, err := s.parseInstanceName(reqName)
 	if err != nil {
@@ -66,23 +104,81 @@ func (s *NotebooksV1) CreateInstance(ctx context.Context, req *pb.CreateInstance
 
 	obj := proto.Clone(req.Instance).(*pb.Instance)
 	obj.Name = fqn
+	obj.Environment = req.Instance.Environment
 	obj.CreateTime = timestamppb.New(time.Now())
-	obj.State = pb.Instance_ACTIVE
+	obj.UpdateTime = timestamppb.New(time.Now())
+	obj.State = pb.Instance_PROVISIONING
 	s.setDefaultServiceAccount(obj, name)
+
+	// Set additional required fields
+	obj.Creator = "someone@somewhere.com"
+	obj.DiskEncryption = pb.Instance_GMEK
+	obj.AcceleratorConfig = nil
+	obj.Disks = []*pb.Instance_Disk{
+		createBootDisk(name.Project.ID, req.InstanceId),
+		createDataDisk(name.Project.ID, req.InstanceId),
+	}
+	// Cant find the field InstanceMigrationEligibility in the proto file
+	// for     "instanceMigrationEligibility": {},
+	//obj.InstanceMigrationEligibility = &pb.Instance_InstanceMigrationEligibility{}
+	obj.Labels = map[string]string{
+		"goog-caip-notebook": "",
+	}
+	obj.MachineType = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/us-central1-a/machineTypes/n1-standard-1", name.Project.ID)
+	obj.Metadata = map[string]string{
+		"disable-swap-binaries":      "true",
+		"enable-guest-attributes":    "TRUE",
+		"notebooks-api":              "PROD",
+		"notebooks-api-version":      "v1",
+		"proxy-mode":                 "service_account",
+		"serial-port-logging-enable": "true",
+		"shutdown-script":            "/opt/deeplearning/bin/shutdown_script.sh",
+		"warmup-libraries":           "matplotlib.pyplot",
+	}
+	//  cant find the field Migrated in the proto file
+	// for     "migrated": false,
+	//obj.Migrated = false
+	obj.Network = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/default", name.Project.ID)
+	obj.ServiceAccountScopes = []string{
+		"https://www.googleapis.com/auth/cloud-platform",
+		"https://www.googleapis.com/auth/userinfo.email",
+	}
+	obj.ShieldedInstanceConfig = &pb.Instance_ShieldedInstanceConfig{
+		EnableIntegrityMonitoring: true,
+		EnableVtpm:                true,
+	}
+	obj.Subnet = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/us-central1/subnetworks/default", name.Project.ID)
+	obj.Tags = []string{
+		"deeplearning-vm",
+		"notebook-instance",
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return s.operations.NewLRO(ctx)
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	metadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.New(time.Now()),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "create",
+		Endpoint:              "CreateInstance",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
+		return obj, nil
+	})
 }
 
-func (s *NotebooksV1) setDefaultServiceAccount(obj *pb.Instance, name *instanceName) {
+func (s *NotebookServiceV1) setDefaultServiceAccount(obj *pb.Instance, name *instanceName) {
 	if obj.ServiceAccount == "" {
 		obj.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
 	}
 }
 
-func (s *NotebooksV1) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
+func (s *NotebookServiceV1) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
 	name, err := s.parseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
@@ -94,8 +190,19 @@ func (s *NotebooksV1) DeleteInstance(ctx context.Context, req *pb.DeleteInstance
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
-
-	return s.operations.NewLRO(ctx)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	metadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.Now(),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "delete",
+		Endpoint:              "DeleteInstance",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type instanceName struct {
@@ -130,5 +237,3 @@ func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
