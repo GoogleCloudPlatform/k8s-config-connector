@@ -475,6 +475,89 @@ observedState:
 
 ## Sample YAML(s)
 
+### SecureSourceManagerInstance Basic
+```yaml
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: securesourcemanager.cnrm.cloud.google.com/v1beta1
+kind: SecureSourceManagerInstance
+metadata:
+  name: securesourcemanagerinstance-sample
+spec:
+  location: us-central1
+  projectRef:
+    external: projects/${PROJECT_ID?}
+```
+
+### SecureSourceManagerInstance Cmek
+```yaml
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: securesourcemanager.cnrm.cloud.google.com/v1beta1
+kind: SecureSourceManagerInstance
+metadata:
+  name: securesourcemanagerinstance-sample
+spec:
+  location: us-central1
+  projectRef:
+    external: projects/${PROJECT_ID?}
+  kmsKeyRef:
+    name: securesourcemanagerinstance-dep
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: securesourcemanagerinstance-dep
+spec:
+  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-sourcemanager.iam.gserviceaccount.com
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: securesourcemanagerinstance-dep
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: securesourcemanagerinstance-dep
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  keyRingRef:
+    name: securesourcemanagerinstance-dep
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: securesourcemanagerinstance-dep
+spec:
+  location: us-central1
+```
+
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
