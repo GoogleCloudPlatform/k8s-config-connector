@@ -82,3 +82,35 @@ type ComposerEnvironmentList struct {
 func init() {
 	SchemeBuilder.Register(&ComposerEnvironment{}, &ComposerEnvironmentList{})
 }
+ type ComposerEnvironmentSpec struct {
+	// The ComposerEnvironment name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. Configuration parameters for this environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.config
+	Config *EnvironmentConfig `json:"config,omitempty"`
+
+	// Optional. User-defined labels for this environment.
+	//  The labels map can contain no more than 64 entries. Entries of the labels
+	//  map are UTF8 strings that comply with the following restrictions:
+	//
+	//  * Keys must conform to regexp: [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+	//  * Values must conform to regexp:  [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+	//  * Both keys and values are additionally constrained to be <= 128 bytes in
+	//  size.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	// Immutable. The name of the region where the Environment will be created.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Region is immutable."
+	// Required.
+	Region string `json:"region"`
+
+	// Optional. Storage configuration for this environment.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.storage_config
+	StorageConfig *StorageConfig `json:"storageConfig,omitempty"`
+}
+
