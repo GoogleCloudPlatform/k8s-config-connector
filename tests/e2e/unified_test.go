@@ -883,6 +883,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					})
 
+					// DocumentAI
+					addReplacement("metadata.commonMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.commonMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
 					// Remove error details which can contain confidential information
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						response := obj["error"]
