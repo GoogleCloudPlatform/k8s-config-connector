@@ -116,7 +116,7 @@ spec:
                   Format: `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processor_version}`'
                 type: string
               processorRef:
-                description: ProcessorRef defines the resource reference to DocumentAI,
+                description: ProcessorRef defines the resource reference to DocumentAIProcessor,
                   which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
@@ -134,14 +134,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed DocumentAI resource.
-                      Should be in the format "projects/{{projectID}}/locations/{{location}}/processors/{{processorID}}".
+                    description: A reference to an externally managed DocumentAIProcessor
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/processors/{{processorID}}".
                     type: string
                   name:
-                    description: The name of a DocumentAI resource.
+                    description: The name of a DocumentAIProcessor resource.
                     type: string
                   namespace:
-                    description: The namespace of a DocumentAI resource.
+                    description: The namespace of a DocumentAIProcessor resource.
                     type: string
                 type: object
               projectRef:
