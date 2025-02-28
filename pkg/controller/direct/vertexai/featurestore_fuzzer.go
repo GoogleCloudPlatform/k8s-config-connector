@@ -16,7 +16,7 @@
 // proto.message: google.cloud.aiplatform.v1beta1.Featurestore
 // api.group: aiplatform.cnrm.cloud.google.com
 
-package aiplatform
+package vertexai
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
@@ -29,25 +29,23 @@ func init() {
 
 func featurestoreFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Featurestore{},
-		FeaturestoreSpec_FromProto, FeaturestoreSpec_ToProto,
-		FeaturestoreObservedState_FromProto, FeaturestoreObservedState_ToProto,
+		VertexAIFeaturestoreSpec_FromProto, VertexAIFeaturestoreSpec_ToProto,
+		VertexAIFeaturestoreObservedState_FromProto, VertexAIFeaturestoreObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")          // special field
 	f.UnimplementedFields.Insert(".satisfies_pzi") // NOTYET
 	f.UnimplementedFields.Insert(".satisfies_pzs") // NOTYET
 
+	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".online_serving_config")
-	f.SpecFields.Insert(".encryption_spec")
 	f.SpecFields.Insert(".online_storage_ttl_days")
+	f.SpecFields.Insert(".encryption_spec")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".etag")
 	f.StatusFields.Insert(".state")
 
 	return f
 }
-
-
