@@ -82,3 +82,29 @@ type VertexAIFeaturestoreList struct {
 func init() {
 	SchemeBuilder.Register(&VertexAIFeaturestore{}, &VertexAIFeaturestoreList{})
 }
+type Featurestore struct {
+	// Output only. Timestamp when this Featurestore was created.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Optional. Used to perform consistent read-modify-write updates.
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. The labels with user-defined metadata to organize your Featurestore.
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Output only. Name of the Featurestore. Format:
+	// `projects/{project}/locations/{location}/featurestores/{featurestore}`
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Config for online serving resources.
+	OnlineServingConfig *Featurestore_OnlineServingConfig `json:"onlineServingConfig,omitempty"`
+
+	// Output only. State of the featurestore.
+	State *string `json:"state,omitempty"`
+
+	// Output only. Timestamp when this Featurestore was last updated.
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+
+
