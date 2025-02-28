@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type EnvironmentIdentity struct {
 	parent *EnvironmentParent
-	id string
+	id     string
 }
 
 func (i *EnvironmentIdentity) String() string {
-	return  i.parent.String() + "/environments/" + i.id
+	return i.parent.String() + "/environments/" + i.id
 }
 
 func (i *EnvironmentIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *EnvironmentIdentity) ID() string {
 }
 
 func (i *EnvironmentIdentity) Parent() *EnvironmentParent {
-	return  i.parent
+	return i.parent
 }
 
 type EnvironmentParent struct {
@@ -51,7 +51,6 @@ type EnvironmentParent struct {
 func (p *EnvironmentParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a EnvironmentIdentity from the Config Connector Environment object.
 func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *ComposerEnvironment) (*EnvironmentIdentity, error) {

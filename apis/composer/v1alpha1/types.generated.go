@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.orchestration.airflow.service.v1.AirflowMetadataRetentionPolicyConfig
 type AirflowMetadataRetentionPolicyConfig struct {
 	// Optional. Retention can be either enabled or disabled.
