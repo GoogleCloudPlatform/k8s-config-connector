@@ -148,6 +148,10 @@ func (r *Replacements) placeholderForGCPResource(resource string) string {
 		return "${targetHttpsProxyID}"
 	case "targetSslProxies":
 		return "${targetSslProxyID}"
+	case "processors":
+		return "${processorID}"
+	case "processorVersions":
+		return "${processorVersionID}"
 	default:
 		return ""
 	}
