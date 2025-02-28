@@ -175,9 +175,6 @@ func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	}
 	op, err := a.gcp.DeleteKey(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting key: %w", err)
 	}
 

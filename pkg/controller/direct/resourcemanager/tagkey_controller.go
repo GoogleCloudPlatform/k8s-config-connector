@@ -123,11 +123,6 @@ func (a *tagKeyAdapter) Find(ctx context.Context) (bool, error) {
 
 // Delete implements the Adapter interface.
 func (a *tagKeyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	// Already deleted
-	if a.resourceID == "" {
-		return false, nil
-	}
-
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteTagKeyRequest{
 		Name: a.fullyQualifiedName(),
@@ -135,9 +130,6 @@ func (a *tagKeyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 
 	op, err := a.tagKeysClient.DeleteTagKey(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting tagKey %s: %w", a.fullyQualifiedName(), err)
 	}
 

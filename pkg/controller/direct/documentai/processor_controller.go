@@ -249,10 +249,6 @@ func (a *ProcessorAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	req := &pb.DeleteProcessorRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteProcessor(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			log.V(2).Info("Processor not found, skipping delete", "name", a.id)
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting Processor %s: %w", a.id, err)
 	}
 

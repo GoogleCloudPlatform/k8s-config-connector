@@ -627,9 +627,6 @@ func (a *ClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	}
 	op, err := a.gcpClient.DeleteCluster(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting Cluster %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted Cluster", "name", a.id)

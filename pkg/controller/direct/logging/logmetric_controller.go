@@ -158,16 +158,8 @@ func (a *logMetricAdapter) Find(ctx context.Context) (bool, error) {
 
 // Delete implements the Adapter interface.
 func (a *logMetricAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	// Already deleted
-	if a.resourceID == "" {
-		return false, nil
-	}
-
 	_, err := a.logMetricClient.Delete(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting log metric %s: %w", a.fullyQualifiedName(), err)
 	}
 

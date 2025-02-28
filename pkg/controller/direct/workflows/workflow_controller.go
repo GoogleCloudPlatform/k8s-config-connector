@@ -296,11 +296,6 @@ func (a *WorkflowsWorkflowAdapter) Delete(ctx context.Context, deleteOp *directb
 	req := &workflowspb.DeleteWorkflowRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteWorkflow(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent Workflow, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting Workflow %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted Workflow", "name", a.id)

@@ -422,9 +422,6 @@ func (a *instanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	op, err := a.gcpClient.DeleteInstance(ctx, req)
 	if err != nil {
 		log.V(2).Info("error deleting instance", "name", a.id, "error", err)
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting instance %s: %w", a.id, err)
 	}
 

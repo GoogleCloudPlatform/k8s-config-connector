@@ -238,11 +238,6 @@ func (a *dataflowFlexTemplateJobAdapter) Find(ctx context.Context) (bool, error)
 func (a *dataflowFlexTemplateJobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 
-	// Already deleted
-	if a.actual == nil {
-		return false, nil
-	}
-
 	jobID := a.actual.Id
 
 	// To terminate a dataflow job, we update the job with a requested

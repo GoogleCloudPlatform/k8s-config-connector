@@ -234,11 +234,6 @@ func (a *apiAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 	req := &pb.DeleteApiRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteApi(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent apigateway api, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting apigateway api %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted apigateway api", "name", a.id)

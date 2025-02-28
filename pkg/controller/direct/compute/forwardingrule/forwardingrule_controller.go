@@ -443,10 +443,6 @@ func (a *forwardingRuleAdapter) Export(ctx context.Context) (*unstructured.Unstr
 
 // Delete implements the Adapter interface.
 func (a *forwardingRuleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	if a.id.forwardingRule == "" {
-		return false, fmt.Errorf("resourceID is empty")
-	}
-
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting ComputeForwardingRule", "name", a.id.forwardingRule)
 

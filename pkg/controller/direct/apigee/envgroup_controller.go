@@ -240,11 +240,6 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	op, err := a.envgroupsClient.Delete(a.fullyQualifiedName()).Context(ctx).Do()
 
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent ApigeeEnvgroup, assuming it was already deleted", "name", a.id.String())
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting ApigeeEnvgroup %s: %w", a.id, err)
 	}
 

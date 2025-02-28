@@ -225,10 +225,6 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting AutokeyConfig", "name", a.id)
-	_, err := a.Find(ctx)
-	if err != nil {
-		return false, err
-	}
 	mapCtx := &direct.MapContext{}
 	// make a copy of the a.actual i.e. from krm.AutokeyConfig to kmspb.AutokeyConfig
 	tempKrmAutokeyResource := AutokeyConfig_FromProto(mapCtx, a.actual)

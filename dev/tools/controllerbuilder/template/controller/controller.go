@@ -293,11 +293,6 @@ func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *direct
 	req := &{{.KCCService}}pb.Delete{{.ProtoResource}}Request{Name: a.id.String()}
 	op, err := a.gcpClient.Delete{{.ProtoResource}}(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent {{.ProtoResource}}, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id)

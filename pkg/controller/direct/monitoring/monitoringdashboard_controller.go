@@ -168,25 +168,12 @@ func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
 
 // Delete implements the Adapter interface.
 func (a *dashboardAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	// Check if exists / already deleted
-	// Technically we can just delete, but this is a little cleaner in logs etc.
-	exists, err := a.Find(ctx)
-	if err != nil {
-		return false, err
-	}
-	if !exists {
-		return false, nil
-	}
-
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteDashboardRequest{
 		Name: a.fullyQualifiedName(),
 	}
 
 	if err := a.dashboardsClient.DeleteDashboard(ctx, req); err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting dashboard %s: %w", a.fullyQualifiedName(), err)
 	}
 

@@ -287,9 +287,6 @@ func (a *SecretVersionAdapter) Delete(ctx context.Context, deleteOp *directbase.
 		Name: a.id.String(), Etag: a.actual.Etag}
 	_, err := a.gcpClient.DestroySecretVersion(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting SecretVersion %s: %w", a.id, err)
 	}
 	log.Info("destroyed SecretVersion", "name", a.id)

@@ -233,11 +233,6 @@ func (a *ExecutionAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	req := &executionpb.CancelExecutionRequest{Name: a.id.External}
 	_, err = a.gcpClient.CancelExecution(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent Execution, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting Execution %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted Execution", "name", a.id)

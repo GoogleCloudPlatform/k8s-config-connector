@@ -195,25 +195,12 @@ func (a *serviceConnectionPolicyAdapter) waitForOperation(ctx context.Context, o
 
 // Delete implements the Adapter interface.
 func (a *serviceConnectionPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	// Check if exists / already deleted
-	// Technically we can just delete, but this is a little cleaner in logs etc.
-	exists, err := a.Find(ctx)
-	if err != nil {
-		return false, err
-	}
-	if !exists {
-		return false, nil
-	}
-
 	// TODO: Delete via status selfLink?
 
 	fqn := a.fullyQualifiedName()
 
 	op, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Delete(fqn).Context(ctx).Do()
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting serviceConnectionPolicy %q: %w", fqn, err)
 	}
 
