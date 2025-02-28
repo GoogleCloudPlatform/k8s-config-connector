@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.bigquery.biglake.v1.HiveTableOptions
 type HiveTableOptions struct {
 	// Stores user supplied Hive table parameters.
