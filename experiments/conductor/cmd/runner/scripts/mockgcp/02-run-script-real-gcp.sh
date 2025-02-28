@@ -62,7 +62,7 @@ echo "Running test"
 # HACK: refresh token
 gcloud auth print-access-token > /dev/null
 # We ignore test failures, because we expect the golden output to be volatile at this stage
-(go test ./mockgcptests -v -run TestScripts/${RUN_TEST} || true) | tee ${LOG_DIR}/test-realgcp.log
+(go test ./mockgcptests -v -run TestScripts/${RUN_TEST} --timeout=4800s || true) | tee ${LOG_DIR}/test-realgcp.log
 
 git status
 # We add some files by name to force an error if not generated

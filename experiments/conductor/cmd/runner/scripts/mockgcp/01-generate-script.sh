@@ -48,21 +48,29 @@ if [[ -z "${EXPECTED_PATH}" ]]; then
   exit 1
 fi
 
+echo "LOG_DIR: ${LOG_DIR}"
 mkdir -p ${LOG_DIR}
+echo "GCLOUD_COMMAND: ${GCLOUD_COMMAND}"
+echo "EXPECTED_PATH: ${EXPECTED_PATH}"
 cat ${PROMPT} | \
     envsubst '$GCLOUD_COMMAND,$EXPECTED_PATH' > ${LOG_DIR}/prompt
 
 cd ${WORKDIR}
 
+pwd
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 git co master
-git co ${BRANCH_NAME}
+echo "BRANCH_NAME: ${BRANCH_NAME}"
+git switchoc ${BRANCH_NAME}
 
+
+echo "REPO_ROOT: ${REPO_ROOT}"
 cd ${REPO_ROOT}/mockgcp
 
-codebot --prompt=${LOG_DIR}/prompt | tee ${LOG_DIR}/codebot.log
+codebot --prompt=${LOG_DIR}/prompt --ui-type=prompt | tee ${LOG_DIR}/codebot.log
 
 git status
 git add ${EXPECTED_PATH}/script.yaml
