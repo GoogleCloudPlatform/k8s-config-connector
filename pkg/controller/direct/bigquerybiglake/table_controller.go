@@ -17,7 +17,6 @@ package bigquerybiglake
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -27,11 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/bigquerybiglake/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	bigquerybiglakepb "cloud.google.com/go/bigquerybiglake/v1/bigquerybiglakepb"
+	gcp "cloud.google.com/go/bigquery/biglake/apiv1"
+	bigquerybiglakepb "cloud.google.com/go/bigquery/biglake/apiv1/biglakepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -56,13 +52,13 @@ type modelTable struct {
 	config config.ControllerConfig
 }
 
-func (m *modelTable) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelTable) client(ctx context.Context) (*gcp.MetastoreClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewMetastoreRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Table client: %w", err)
 	}
@@ -99,7 +95,7 @@ func (m *modelTable) AdapterForURL(ctx context.Context, url string) (directbase.
 
 type TableAdapter struct {
 	id        *krm.TableIdentity
-	gcpClient *gcp.Client
+	gcpClient *gcp.MetastoreClient
 	desired   *krm.BigLakeTable
 	actual    *bigquerybiglakepb.Table
 }
@@ -139,18 +135,14 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 		return mapCtx.Err()
 	}
 
-	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &bigquerybiglakepb.CreateTableRequest{
-		Parent: a.id.Parent().String(),
-		Table:  resource,
+		Parent:  a.id.Parent().String(),
+		Table:   resource,
+		TableId: a.id.ID(),
 	}
-	op, err := a.gcpClient.CreateTable(ctx, req)
+	created, err := a.gcpClient.CreateTable(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating Table %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Table %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Table", "name", a.id)
 
@@ -174,22 +166,12 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return mapCtx.Err()
 	}
 
-	paths := []string{}
-	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
-	// TODO(contributor): If choosing this option, remove the "Option 2" code.
+	paths := make(sets.Set[string])
 	{
 		var err error
 		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 		if err != nil {
 			return err
-		}
-	}
-
-	// Option 2: manually add all mutable fields.
-	// TODO(contributor): If choosing this option, remove the "Option 1" code.
-	{
-		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-			paths = append(paths, "display_name")
 		}
 	}
 
@@ -200,21 +182,17 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}
+	desiredPb.Name = a.id.String()
 
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &bigquerybiglakepb.UpdateTableRequest{
-		Name:       a.id.String(),
 		UpdateMask: updateMask,
 		Table:      desiredPb,
 	}
-	op, err := a.gcpClient.UpdateTable(ctx, req)
+	updated, err := a.gcpClient.UpdateTable(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Table %s: %w", a.id, err)
 	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Table %s waiting update: %w", a.id, err)
-	}
+
 	log.V(2).Info("successfully updated Table", "name", a.id)
 
 	status := &krm.BigLakeTableStatus{}
@@ -245,7 +223,7 @@ func (a *TableAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.BigLakeTableGVK)
 
 	u.Object = uObj
@@ -258,7 +236,7 @@ func (a *TableAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 	log.V(2).Info("deleting Table", "name", a.id)
 
 	req := &bigquerybiglakepb.DeleteTableRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteTable(ctx, req)
+	_, err := a.gcpClient.DeleteTable(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -269,9 +247,5 @@ func (a *TableAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 	}
 	log.V(2).Info("successfully deleted Table", "name", a.id)
 
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete Table %s: %w", a.id, err)
-	}
 	return true, nil
 }
