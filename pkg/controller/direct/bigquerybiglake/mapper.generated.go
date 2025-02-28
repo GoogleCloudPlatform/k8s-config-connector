@@ -18,8 +18,8 @@ import (
 	pb "cloud.google.com/go/bigquery/biglake/apiv1/biglakepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
+
 func HiveTableOptions_FromProto(mapCtx *direct.MapContext, in *pb.HiveTableOptions) *krm.HiveTableOptions {
 	if in == nil {
 		return nil
