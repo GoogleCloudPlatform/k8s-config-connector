@@ -154,7 +154,7 @@ func gitAdd(workDir string, out *strings.Builder, files ...string) {
 
 func gitCommit(workDir string, out *strings.Builder, msg string) {
 	log.Printf("COMMAND: git commit -m %q", msg)
-	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("%q", msg))
+	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
 	gitcommit.Dir = workDir
 	gitcommit.Stdout = out
 	gitcommit.Stderr = out
