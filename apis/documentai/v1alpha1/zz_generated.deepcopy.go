@@ -22,7 +22,6 @@ import (
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	apisk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -368,7 +367,7 @@ func (in *DocumentAIProcessorVersionStatus) DeepCopyInto(out *DocumentAIProcesso
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]apisk8sv1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
