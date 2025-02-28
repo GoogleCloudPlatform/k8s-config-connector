@@ -64,6 +64,6 @@ EOF
 
 git status
 git add .
-git commit -m ""${CRD_KIND}: Create fuzz test"
+git commit -m "${CRD_KIND}: Create fuzz test"
 
 echo "Done"

@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: vertexaifeaturestores.vertexai.cnrm.cloud.google.com
 spec:
   group: vertexai.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: VertexAIFeaturestore
+    listKind: VertexAIFeaturestoreList
     plural: vertexaifeaturestores
     shortNames:
     - gcpvertexaifeaturestore
@@ -43,118 +42,36 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: VertexAIFeaturestore is the Schema for the VertexAIFeaturestore
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: VertexAIFeaturestoreSpec defines the desired state of VertexAIFeaturestore
             properties:
-              encryptionSpec:
-                description: If set, both of the online and offline data storage will
-                  be secured by this key.
-                properties:
-                  kmsKeyName:
-                    description: 'The Cloud KMS resource identifier of the customer
-                      managed encryption key used to protect a resource. Has the form:
-                      projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
-                      The key needs to be in the same region as where the compute
-                      resource is created.'
-                    type: string
-                required:
-                - kmsKeyName
-                type: object
-              forceDestroy:
-                description: If set to true, any EntityTypes and Features for this
-                  Featurestore will also be deleted.
-                type: boolean
-              onlineServingConfig:
-                description: Config for online serving resources.
-                properties:
-                  fixedNodeCount:
-                    description: The number of nodes for each cluster. The number
-                      of nodes will not scale automatically but can be scaled manually
-                      by providing different values when updating.
-                    type: integer
-                  scaling:
-                    description: Online serving scaling configuration. Only one of
-                      fixedNodeCount and scaling can be set. Setting one will reset
-                      the other.
-                    properties:
-                      maxNodeCount:
-                        description: The maximum number of nodes to scale up to. Must
-                          be greater than minNodeCount, and less than or equal to
-                          10 times of 'minNodeCount'.
-                        type: integer
-                      minNodeCount:
-                        description: The minimum number of nodes to scale down to.
-                          Must be greater than or equal to 1.
-                        type: integer
-                    required:
-                    - maxNodeCount
-                    - minNodeCount
-                    type: object
-                type: object
-              onlineStorageTtlDays:
-                description: TTL in days for feature values that will be stored in
-                  online serving storage. The Feature Store online storage periodically
-                  removes obsolete feature values older than onlineStorageTtlDays
-                  since the feature generation time. Note that onlineStorageTtlDays
-                  should be less than or equal to offlineStorageTtlDays for each EntityType
-                  under a featurestore. If not set, default to 4000 days.
-                type: integer
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
-              region:
-                description: Immutable. The region of the dataset. eg us-central1.
-                type: string
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The VertexAIFeaturestore name. If not given, the metadata.name
+                  will be used.
                 type: string
-            required:
-            - projectRef
-            - region
             type: object
           status:
+            description: VertexAIFeaturestoreStatus defines the config connector machine
+              state of VertexAIFeaturestore
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -178,13 +95,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The timestamp of when the featurestore was created in
-                  RFC3339 UTC "Zulu" format, with nanosecond resolution and up to
-                  nine fractional digits.
-                type: string
-              etag:
-                description: Used to perform consistent read-modify-write updates.
+              externalRef:
+                description: A unique specifier for the VertexAIFeaturestore resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -192,12 +105,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              updateTime:
-                description: The timestamp of when the featurestore was last updated
-                  in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
-                  to nine fractional digits.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -206,9 +119,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
