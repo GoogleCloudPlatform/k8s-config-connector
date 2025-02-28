@@ -68,6 +68,6 @@ git status
 # We add some files by name to force an error if not generated
 git add ${RUN_TEST}/_http.log
 git add .
-git commit -m "autogen: Capture golden output for ${RUN_TEST}"
+git commit -m "mockgcp: Capture golden output for ${RUN_TEST}"
 
 echo "Done"

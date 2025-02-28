@@ -105,7 +105,7 @@ git add mock${SERVICE}/service.go
 git add mock${SERVICE}/${RESOURCE}.go
 git add mock_http_roundtrip.go
 git add .
-git commit -m "autogen: generate mockgcp for ${SERVICE} ${RESOURCE}"
+git commit -m "mockgcp: support for ${SERVICE} ${RESOURCE}"
 
 echo "Done"
 

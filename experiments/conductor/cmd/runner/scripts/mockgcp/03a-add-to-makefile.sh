@@ -65,7 +65,7 @@ codebot --prompt=${LOG_DIR}/03-add-to-makefile.prompt
 git status
 git add Makefile
 git add .
-git commit -m "autogen: update Makefile for ${PROTO_PACKAGE}"
+git commit -m "mockgcp: update Makefile for ${PROTO_PACKAGE}"
 
 make generate-grpc-for-google-protos
 
