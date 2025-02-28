@@ -51,6 +51,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudfunctions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudidentity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcomposer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontaineranalysis"
@@ -89,7 +90,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvpcaccess"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcomposer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )

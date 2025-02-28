@@ -24,6 +24,7 @@ import (
 	"strings"
 	"time"
 
+	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -32,7 +33,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/orchestration/airflow/service/v1"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
 func (s *ComposerV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentRequest) (*pb.Environment, error) {
@@ -47,62 +47,71 @@ func (s *ComposerV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentR
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	if obj.Config.DatabaseConfig.MachineType == "db-custom-2-7680" {
+		obj.Config.DatabaseConfig.MachineType = ""
+	}
+	if obj.Config.NodeConfig.IpAllocationPolicy.UseIpAliases {
+		obj.Config.NodeConfig.IpAllocationPolicy.UseIpAliases = false
+	}
+	if obj.Config.SoftwareConfig.PythonVersion == "3" {
+		obj.Config.SoftwareConfig.PythonVersion = ""
+	}
 	return obj, nil
 }
 
 func (s *ComposerV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnvironmentRequest) (*longrunningpb.Operation, error) {
-	// The parent field is projects/{projectId}/locations/{locationId}.
-	name, err := s.parseParentEnvironment(req.Parent)
-	if err != nil {
-		return nil, err
-	}
-	obj := proto.Clone(req.GetEnvironment()).(*pb.Environment)
-	// The resource name of the environment.
-	obj.Name = fmt.Sprintf("projects/%s/locations/%s/environments/%s", name.Project.ID, name.Location, "TEMP")
 
-	obj.CreateTime = timestamppb.New(time.Now())
-	obj.UpdateTime = timestamppb.New(time.Now())
-
-	s.populateDefaultsForEnvironment(obj)
-
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s/environments", name.Project.ID, name.Location)
-	lroRet := proto.Clone(obj).(*pb.Environment)
-	lroRet.CreateTime = nil
-	lroRet.UpdateTime = nil
-	lroRet.Uuid = ""
-	// State can only be set to running with UpdateEnvironment
-	lroRet.State = pb.Environment_CREATING
-	return s.operations.StartLRO(ctx, lroPrefix, nil, func() (proto.Message, error) {
-		// Environment ID is parsed from environment.Name, projects/*/locations/*/environments/*
-		tokens := strings.Split(lroRet.Name, "/")
-		environmentId := tokens[5]
-		// The resource name of the environment.
-		obj.Name = fmt.Sprintf("projects/%s/locations/%s/environments/%s", name.Project.ID, name.Location, environmentId)
-		fqn := obj.Name
-		obj.Uuid = "123e4567-e89b-12d3-a456-426614174000" // this doesn't seem to be configurable
-
-		// Create needs to set state
-		obj.State = pb.Environment_CREATING
-
-		if err := s.storage.Create(ctx, fqn, obj); err != nil {
-			return nil, err
-		}
-		return obj, nil
-	})
-}
-
-func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnvironmentRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseEnvironmentName(req.Name)
+	name, err := s.parseEnvironmentName(req.Environment.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
-	obj := &pb.Environment{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	obj := proto.Clone(req.Environment).(*pb.Environment)
+	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.State = pb.Environment_RUNNING
+	obj.Uuid = "test-uuid" // TODO: real value
+	s.populateDefaultsForEnvironment(obj)
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	// By default, immediately finish the LRO with success.
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{
+		OperationType: pb.OperationMetadata_CREATE,
+		CreateTime:    timestamppb.New(now),
+		Resource:      name.String(),
+		State:         pb.OperationMetadata_PENDING,
+		ResourceUuid:  "test-uuid",
+	}
+
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		lroMetadata.State = pb.OperationMetadata_SUCCEEDED
+		return obj, nil
+	})
+}
+
+func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnvironmentRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseEnvironmentName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	existing := &pb.Environment{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+	now := time.Now()
+	updated := proto.Clone(existing).(*pb.Environment)
 
 	// Required. The update mask applies to the resource.
 	paths := req.GetUpdateMask().GetPaths()
@@ -110,33 +119,38 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	// TODO: support update mask
-
-	// TODO:  only labels are updateable with a mask
-	proto.Merge(obj, req.GetEnvironment())
-
-	s.populateDefaultsForEnvironment(obj)
-
-	obj.State = pb.Environment_UPDATING
-	obj.UpdateTime = timestamppb.New(time.Now())
-
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		tokens := strings.Split(path, ".")
+		switch tokens[0] {
+		case "labels":
+			updated.Labels = req.GetEnvironment().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+	updated.UpdateTime = timestamppb.New(now)
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
-	updatedObj := proto.Clone(obj).(*pb.Environment)
-	updatedObj.CreateTime = nil
-	updatedObj.UpdateTime = nil
-	updatedObj.Uuid = ""
-	prefix := fmt.Sprintf("projects/%s/locations/%s/environments", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, prefix, nil, func() (proto.Message, error) {
-		// State can only be set to running with UpdateEnvironment
-		updatedObj.State = pb.Environment_RUNNING
-		obj.State = pb.Environment_RUNNING
-		obj.UpdateTime = timestamppb.New(time.Now())
-		if err := s.storage.Update(ctx, fqn, obj); err != nil {
-			return nil, err
-		}
-		return updatedObj, nil
+
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	// // Returns with no createTime
+	// lroRet := proto.Clone(obj).(*pb.Workflow)
+	// lroRet.CreateTime = nil
+	// lroRet.UpdateTime = nil
+	// lroRet.RevisionCreateTime = nil
+	lroMetadata := &pb.OperationMetadata{
+		OperationType: pb.OperationMetadata_UPDATE,
+		CreateTime:    timestamppb.New(now),
+		Resource:      name.String(),
+		State:         pb.OperationMetadata_PENDING,
+		ResourceUuid:  "test-uuid", // TODO: Real values
+	}
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		lroMetadata.State = pb.OperationMetadata_SUCCEEDED
+		return updated, nil
 	})
 }
 
@@ -148,22 +162,34 @@ func (s *ComposerV1) DeleteEnvironment(ctx context.Context, req *pb.DeleteEnviro
 
 	fqn := name.String()
 
-	deletedObj := &pb.Environment{}
-	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	deleted := &pb.Environment{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
-	prefix := fmt.Sprintf("projects/%s/locations/%s/environments", name.Project.ID, name.Location)
-	deletedObj.CreateTime = nil
-	deletedObj.UpdateTime = nil
-	deletedObj.Uuid = ""
-	// State can only be set to running with UpdateEnvironment
-	deletedObj.State = pb.Environment_DELETING
-	return s.operations.StartLRO(ctx, prefix, nil, func() (proto.Message, error) {
+
+	// By default, immediately finish the LRO with success.
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{
+		OperationType: pb.OperationMetadata_DELETE,
+		CreateTime:    timestamppb.Now(),
+		Resource:      name.String(),
+		State:         pb.OperationMetadata_PENDING,
+	}
+
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		lroMetadata.State = pb.OperationMetadata_SUCCEEDED
 		return &emptypb.Empty{}, nil
 	})
 }
 
 func (s *ComposerV1) populateDefaultsForEnvironment(obj *pb.Environment) {
+	if obj.StorageConfig == nil {
+		obj.StorageConfig = &pb.StorageConfig{}
+	}
+	if obj.StorageConfig.Bucket == "" {
+		obj.StorageConfig.Bucket = "us-central1-test-123456-asdfg-bucket"
+	}
 	if obj.Config == nil {
 		obj.Config = &pb.EnvironmentConfig{}
 	}
@@ -172,78 +198,193 @@ func (s *ComposerV1) populateDefaultsForEnvironment(obj *pb.Environment) {
 }
 
 func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.EnvironmentConfig) {
-	if config.NodeCount == 0 {
-		config.NodeCount = 3
+	config.AirflowByoidUri = "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com"
+	config.AirflowUri = "https://123456qwert-dot-us-central1.composer.googleusercontent.com"
+	config.DagGcsPrefix = "gs://us-central1-test-123456-asdfg-bucket/dags"
+	config.GkeCluster = "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke"
+	if config.DataRetentionConfig == nil {
+		config.DataRetentionConfig = &pb.DataRetentionConfig{}
+	}
+	if config.DataRetentionConfig.AirflowMetadataRetentionConfig == nil {
+		config.DataRetentionConfig.AirflowMetadataRetentionConfig = &pb.AirflowMetadataRetentionPolicyConfig{}
+	}
+	if config.DataRetentionConfig.AirflowMetadataRetentionConfig.RetentionMode == pb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_UNSPECIFIED {
+		config.DataRetentionConfig.AirflowMetadataRetentionConfig.RetentionMode = pb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_DISABLED
+	}
+	if config.DataRetentionConfig.TaskLogsRetentionConfig == nil {
+		config.DataRetentionConfig.TaskLogsRetentionConfig = &pb.TaskLogsRetentionConfig{}
+	}
+	if config.DataRetentionConfig.TaskLogsRetentionConfig.StorageMode == pb.TaskLogsRetentionConfig_TASK_LOGS_STORAGE_MODE_UNSPECIFIED {
+		config.DataRetentionConfig.TaskLogsRetentionConfig.StorageMode = pb.TaskLogsRetentionConfig_CLOUD_LOGGING_ONLY
+	}
+	if config.DatabaseConfig == nil {
+		config.DatabaseConfig = &pb.DatabaseConfig{}
+	}
+	if config.DatabaseConfig.MachineType == "" {
+		config.DatabaseConfig.MachineType = "db-custom-2-7680"
+	}
+	if config.EncryptionConfig == nil {
+		config.EncryptionConfig = &pb.EncryptionConfig{}
+	}
+	if config.EnvironmentSize == pb.EnvironmentConfig_ENVIRONMENT_SIZE_UNSPECIFIED {
+		config.EnvironmentSize = pb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL
+	}
+	if config.MaintenanceWindow == nil {
+		config.MaintenanceWindow = &pb.MaintenanceWindow{}
+	}
+	if config.MaintenanceWindow.StartTime == nil {
+		config.MaintenanceWindow.StartTime = timestamppb.New(time.Unix(0, 0)) // "1970-01-01T00:00:00Z"
+	}
+	if config.MaintenanceWindow.EndTime == nil {
+		config.MaintenanceWindow.EndTime = timestamppb.New(time.Unix(14400, 0)) // "1970-01-01T04:00:00Z"
+	}
+	if config.MaintenanceWindow.Recurrence == "" {
+		config.MaintenanceWindow.Recurrence = "FREQ=WEEKLY;BYDAY=FR,SA,SU"
+	}
+
+	if config.NodeConfig == nil {
+		config.NodeConfig = &pb.NodeConfig{}
+	}
+	if config.NodeConfig.IpAllocationPolicy == nil {
+		config.NodeConfig.IpAllocationPolicy = &pb.IPAllocationPolicy{}
+	}
+	if !config.NodeConfig.IpAllocationPolicy.UseIpAliases {
+		config.NodeConfig.IpAllocationPolicy.UseIpAliases = true
+	}
+	if config.NodeConfig.Network == "" {
+		config.NodeConfig.Network = "projects/${projectId}/global/networks/default"
+	}
+	if config.NodeConfig.ServiceAccount == "" {
+		config.NodeConfig.ServiceAccount = "${projectNumber}-compute@developer.gserviceaccount.com"
+	}
+
+	if config.PrivateEnvironmentConfig == nil {
+		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
+	}
+	if config.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock == "" {
+		config.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock = "172.31.245.0/24"
+	}
+	if config.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock == "" {
+		config.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock = "10.0.0.0/12"
+	}
+	if config.PrivateEnvironmentConfig.PrivateClusterConfig == nil {
+		config.PrivateEnvironmentConfig.PrivateClusterConfig = &pb.PrivateClusterConfig{}
 	}
 
 	if config.SoftwareConfig == nil {
 		config.SoftwareConfig = &pb.SoftwareConfig{}
 	}
+	if config.SoftwareConfig.CloudDataLineageIntegration == nil {
+		config.SoftwareConfig.CloudDataLineageIntegration = &pb.CloudDataLineageIntegration{}
+	}
+	if config.SoftwareConfig.PythonVersion == "" {
+		config.SoftwareConfig.PythonVersion = "3"
+	}
 
-	s.populateDefaultsForSoftwareConfig(config.SoftwareConfig)
+	// While 'imageVersion' is unlikely to be unset, the following handles it anyway for completeness.
+	// Note:  Consider using a proper default if unset, instead of the value below.
+	if config.SoftwareConfig.ImageVersion == "" {
+		config.SoftwareConfig.ImageVersion = "composer-2.11.3-airflow-2.10.2"
+	}
+
+	//if config.WebServerNetworkAccessControl == nil {
+	//	config.WebServerNetworkAccessControl = &pb.WebServerNetworkAccessControl{}
+	//}
+	//if len(config.WebServerNetworkAccessControl.AllowedIpRanges) == 0 {
+	//	config.WebServerNetworkAccessControl.AllowedIpRanges = []*pb.WebServerNetworkAccessControl_AllowedIpRange{
+	//		{
+	//			Description: "Allows access from all IPv4 addresses (default value)",
+	//			Value:       "0.0.0.0/0",
+	//		},
+	//		{
+	//			Description: "Allows access from all IPv6 addresses (default value)",
+	//			Value:       "::0/0",
+	//		},
+	//	}
+	//}
+
+	if config.WorkloadsConfig == nil {
+		config.WorkloadsConfig = &pb.WorkloadsConfig{}
+	}
+
+	if config.WorkloadsConfig.Scheduler == nil {
+		config.WorkloadsConfig.Scheduler = &pb.WorkloadsConfig_SchedulerResource{}
+	}
+	if config.WorkloadsConfig.Scheduler.Count == 0 {
+		config.WorkloadsConfig.Scheduler.Count = 1
+	}
+	if config.WorkloadsConfig.Scheduler.Cpu == 0 {
+		config.WorkloadsConfig.Scheduler.Cpu = 0.5
+	}
+	if config.WorkloadsConfig.Scheduler.MemoryGb == 0 {
+		config.WorkloadsConfig.Scheduler.MemoryGb = 2
+	}
+	if config.WorkloadsConfig.Scheduler.StorageGb == 0 {
+		config.WorkloadsConfig.Scheduler.StorageGb = 1
+	}
+
+	if config.WorkloadsConfig.WebServer == nil {
+		config.WorkloadsConfig.WebServer = &pb.WorkloadsConfig_WebServerResource{}
+	}
+	if config.WorkloadsConfig.WebServer.Cpu == 0 {
+		config.WorkloadsConfig.WebServer.Cpu = 0.5
+	}
+	if config.WorkloadsConfig.WebServer.MemoryGb == 0 {
+		config.WorkloadsConfig.WebServer.MemoryGb = 2
+	}
+	if config.WorkloadsConfig.WebServer.StorageGb == 0 {
+		config.WorkloadsConfig.WebServer.StorageGb = 1
+	}
+
+	if config.WorkloadsConfig.Worker == nil {
+		config.WorkloadsConfig.Worker = &pb.WorkloadsConfig_WorkerResource{}
+	}
+	if config.WorkloadsConfig.Worker.Cpu == 0 {
+		config.WorkloadsConfig.Worker.Cpu = 0.5
+	}
+	if config.WorkloadsConfig.Worker.MaxCount == 0 {
+		config.WorkloadsConfig.Worker.MaxCount = 3
+	}
+	if config.WorkloadsConfig.Worker.MemoryGb == 0 {
+		config.WorkloadsConfig.Worker.MemoryGb = 2
+	}
+	if config.WorkloadsConfig.Worker.MinCount == 0 {
+		config.WorkloadsConfig.Worker.MinCount = 1
+	}
+	if config.WorkloadsConfig.Worker.StorageGb == 0 {
+		config.WorkloadsConfig.Worker.StorageGb = 1
+	}
 
 	if config.PrivateEnvironmentConfig == nil {
 		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
 	}
-	// TODO: more populating
-
-}
-
-func (s *ComposerV1) populateDefaultsForSoftwareConfig(config *pb.SoftwareConfig) {
-	// TODO:
 }
 
 type environmentName struct {
-	Project         *projects.ProjectData
-	Location        string
-	EnvironmentName string
+	Project  *projects.ProjectData
+	Location string
+	Name     string
 }
 
 func (n *environmentName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/environments/" + n.EnvironmentName
+	return fmt.Sprintf("projects/%s/locations/%s/environments/%s", n.Project.ID, n.Location, n.Name)
 }
 
-// parseEnvironmentName parses a string into a environmentName.
-// The expected form is `projects/*/locations/*/environments/*`.
 func (s *MockService) parseEnvironmentName(name string) (*environmentName, error) {
 	tokens := strings.Split(name, "/")
-
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "environments" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
-		name := &environmentName{
-			Project:         project,
-			Location:        tokens[3],
-			EnvironmentName: tokens[5],
-		}
-
-		return name, nil
-	}
-
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
-}
-
-// parseParentEnvironment parses a string into project and location.
-// The expected form is `projects/*/locations/*`.
-func (s *MockService) parseParentEnvironment(name string) (*environmentName, error) {
-	tokens := strings.Split(name, "/")
-
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		name := &environmentName{
+		n := &environmentName{
 			Project:  project,
 			Location: tokens[3],
+			Name:     tokens[5],
 		}
 
-		return name, nil
+		return n, nil
 	}
-
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
 }

@@ -2,9 +2,8 @@ POST https://composer.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 352
+Content-Length: 346
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "config": {
@@ -25,6 +24,7 @@ X-Goog-User-Project: ${projectId}
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -40,7 +40,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "CREATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
+    "resourceUuid": "test-uuid",
     "state": "PENDING"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -53,9 +53,9 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 0
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -73,16 +73,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "CREATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
+    "resourceUuid": "test-uuid",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-test-18282361c5-cafeadcc-bucket/dags",
+      "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionMode": "RETENTION_MODE_DISABLED"
@@ -96,7 +96,7 @@ X-Xss-Protection: 0
       },
       "encryptionConfig": {},
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
-      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18282361c5-cafeadcc-gke",
+      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
       "maintenanceWindow": {
         "endTime": "1970-01-01T04:00:00Z",
         "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -156,10 +156,10 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
     "state": "RUNNING",
     "storageConfig": {
-      "bucket": "us-central1-test-18282361c5-cafeadcc-bucket"
+      "bucket": "us-central1-test-123456-asdfg-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea"
+    "uuid": "test-uuid"
   }
 }
 
@@ -170,9 +170,9 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 0
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -184,9 +184,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-test-18282361c5-cafeadcc-bucket/dags",
+    "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionMode": "RETENTION_MODE_DISABLED"
@@ -198,7 +198,7 @@ X-Xss-Protection: 0
     "databaseConfig": {},
     "encryptionConfig": {},
     "environmentSize": "ENVIRONMENT_SIZE_SMALL",
-    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18282361c5-cafeadcc-gke",
+    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
     "maintenanceWindow": {
       "endTime": "1970-01-01T04:00:00Z",
       "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -255,10 +255,10 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
   "state": "RUNNING",
   "storageConfig": {
-    "bucket": "us-central1-test-18282361c5-cafeadcc-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea"
+  "uuid": "test-uuid"
 }
 
 ---
@@ -268,9 +268,9 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 0
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -282,9 +282,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-test-18282361c5-cafeadcc-bucket/dags",
+    "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionMode": "RETENTION_MODE_DISABLED"
@@ -296,7 +296,7 @@ X-Xss-Protection: 0
     "databaseConfig": {},
     "encryptionConfig": {},
     "environmentSize": "ENVIRONMENT_SIZE_SMALL",
-    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18282361c5-cafeadcc-gke",
+    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
     "maintenanceWindow": {
       "endTime": "1970-01-01T04:00:00Z",
       "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -353,10 +353,10 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
   "state": "RUNNING",
   "storageConfig": {
-    "bucket": "us-central1-test-18282361c5-cafeadcc-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea"
+  "uuid": "test-uuid"
 }
 
 ---
@@ -367,7 +367,6 @@ Authorization: (removed)
 Connection: keep-alive
 Content-Length: 28
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "labels": {
@@ -376,6 +375,7 @@ X-Goog-User-Project: ${projectId}
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -391,7 +391,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "UPDATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
+    "resourceUuid": "test-uuid",
     "state": "PENDING"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -404,9 +404,9 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 0
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -424,16 +424,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "UPDATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
+    "resourceUuid": "test-uuid",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://bf8b83d9fcd4487cbee591bc000026ea-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-test-18282361c5-cafeadcc-bucket/dags",
+      "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionMode": "RETENTION_MODE_DISABLED"
@@ -447,7 +447,7 @@ X-Xss-Protection: 0
       },
       "encryptionConfig": {},
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
-      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-18282361c5-cafeadcc-gke",
+      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
       "maintenanceWindow": {
         "endTime": "1970-01-01T04:00:00Z",
         "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -510,10 +510,10 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
     "state": "RUNNING",
     "storageConfig": {
-      "bucket": "us-central1-test-18282361c5-cafeadcc-bucket"
+      "bucket": "us-central1-test-123456-asdfg-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea"
+    "uuid": "test-uuid"
   }
 }
 
@@ -524,9 +524,9 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 0
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -542,7 +542,6 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "DELETE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
     "state": "PENDING"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -555,9 +554,9 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Length: 0
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -575,7 +574,6 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "DELETE",
     "resource": "projects/${projectId}/locations/us-central1/environments/test-${uniqueId}",
-    "resourceUuid": "bf8b83d9-fcd4-487c-bee5-91bc000026ea",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
