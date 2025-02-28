@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	runtime "k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -80,4 +81,32 @@ func (r *KMSKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.
 	}
 	r.External = actualExternalRef
 	return r.External, nil
+}
+
+func (r *KMSKeyHandleRef) NormalizedCryptoKey(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if r.Name == "" {
+		return "", fmt.Errorf("use KMS autokey requries referring to the Config Connector `KMSKeyHanle` object. please provide the `name` of your  `KMSKeyHanle`.")
+	}
+	// From the Config Connector object
+	if r.Namespace == "" {
+		r.Namespace = otherNamespace
+	}
+	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(KMSKeyHandleGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return "", fmt.Errorf("reading referenced %s %s: %w", KMSKeyHandleGVK, key, err)
+	}
+	obj := &KMSKeyHandle{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return "", fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+	if obj.Status.ObservedState != nil {
+		return *obj.Status.ObservedState.KMSKey, nil
+	}
+
+	return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 }
