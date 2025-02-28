@@ -2,7 +2,6 @@ POST https://composer.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 346
 Content-Type: application/json
 
 {
@@ -52,7 +51,6 @@ GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -169,7 +167,6 @@ GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -267,7 +264,6 @@ GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -365,7 +361,6 @@ PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-cent
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 28
 Content-Type: application/json
 
 {
@@ -403,7 +398,6 @@ GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -523,7 +517,6 @@ DELETE https://composer.googleapis.com/v1/projects/${projectId}/locations/us-cen
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
@@ -553,7 +546,6 @@ GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Length: 0
 
 200 OK
 Cache-Control: private
