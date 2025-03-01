@@ -15,11 +15,12 @@
 package composer
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func AirflowMetadataRetentionPolicyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AirflowMetadataRetentionPolicyConfig) *krm.AirflowMetadataRetentionPolicyConfig {
 	if in == nil {
 		return nil
@@ -60,15 +61,13 @@ func ComposerEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krm.ComposerEnvironmentObservedState{}
 	// MISSING: Name
-	// MISSING: Config
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: StorageConfig
+	out.Config = EnvironmentConfigObservedState_FromProto(mapCtx, in.GetConfig())
+	out.Uuid = direct.LazyPtr(in.GetUuid())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
 func ComposerEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComposerEnvironmentObservedState) *pb.Environment {
@@ -77,15 +76,13 @@ func ComposerEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.Environment{}
 	// MISSING: Name
-	// MISSING: Config
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: StorageConfig
+	out.Config = EnvironmentConfigObservedState_ToProto(mapCtx, in.Config)
+	out.Uuid = direct.ValueOf(in.Uuid)
+	out.State = direct.Enum_ToProto[pb.Environment_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
 func ComposerEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.ComposerEnvironmentSpec {
@@ -94,15 +91,9 @@ func ComposerEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environ
 	}
 	out := &krm.ComposerEnvironmentSpec{}
 	// MISSING: Name
-	// MISSING: Config
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: StorageConfig
+	out.Config = EnvironmentConfig_FromProto(mapCtx, in.GetConfig())
+	out.Labels = in.Labels
+	out.StorageConfig = StorageConfig_FromProto(mapCtx, in.GetStorageConfig())
 	return out
 }
 func ComposerEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComposerEnvironmentSpec) *pb.Environment {
@@ -111,15 +102,9 @@ func ComposerEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Composer
 	}
 	out := &pb.Environment{}
 	// MISSING: Name
-	// MISSING: Config
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	// MISSING: StorageConfig
+	out.Config = EnvironmentConfig_ToProto(mapCtx, in.Config)
+	out.Labels = in.Labels
+	out.StorageConfig = StorageConfig_ToProto(mapCtx, in.StorageConfig)
 	return out
 }
 func DataRetentionConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataRetentionConfig) *krm.DataRetentionConfig {
@@ -163,7 +148,7 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 		return nil
 	}
 	out := &krm.EncryptionConfig{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	// MISSING: KMSKeyName
 	return out
 }
 func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
@@ -171,41 +156,7 @@ func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfi
 		return nil
 	}
 	out := &pb.EncryptionConfig{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	return out
-}
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Config = EnvironmentConfig_FromProto(mapCtx, in.GetConfig())
-	out.Uuid = direct.LazyPtr(in.GetUuid())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Labels = in.Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	out.StorageConfig = StorageConfig_FromProto(mapCtx, in.GetStorageConfig())
-	return out
-}
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Config = EnvironmentConfig_ToProto(mapCtx, in.Config)
-	out.Uuid = direct.ValueOf(in.Uuid)
-	out.State = direct.Enum_ToProto[pb.Environment_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Labels = in.Labels
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	out.StorageConfig = StorageConfig_ToProto(mapCtx, in.StorageConfig)
+	// MISSING: KMSKeyName
 	return out
 }
 func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentConfig) *krm.EnvironmentConfig {
@@ -213,8 +164,8 @@ func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentCo
 		return nil
 	}
 	out := &krm.EnvironmentConfig{}
-	out.GkeCluster = direct.LazyPtr(in.GetGkeCluster())
-	out.DagGcsPrefix = direct.LazyPtr(in.GetDagGcsPrefix())
+	// MISSING: GkeCluster
+	// MISSING: DagGcsPrefix
 	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
 	out.SoftwareConfig = SoftwareConfig_FromProto(mapCtx, in.GetSoftwareConfig())
 	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
@@ -226,7 +177,7 @@ func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentCo
 	out.MaintenanceWindow = MaintenanceWindow_FromProto(mapCtx, in.GetMaintenanceWindow())
 	out.WorkloadsConfig = WorkloadsConfig_FromProto(mapCtx, in.GetWorkloadsConfig())
 	out.EnvironmentSize = direct.Enum_FromProto(mapCtx, in.GetEnvironmentSize())
-	out.AirflowURI = direct.LazyPtr(in.GetAirflowUri())
+	// MISSING: AirflowURI
 	// MISSING: AirflowByoidURI
 	out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_FromProto(mapCtx, in.GetMasterAuthorizedNetworksConfig())
 	out.RecoveryConfig = RecoveryConfig_FromProto(mapCtx, in.GetRecoveryConfig())
@@ -239,8 +190,8 @@ func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentCon
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	out.GkeCluster = direct.ValueOf(in.GkeCluster)
-	out.DagGcsPrefix = direct.ValueOf(in.DagGcsPrefix)
+	// MISSING: GkeCluster
+	// MISSING: DagGcsPrefix
 	out.NodeCount = direct.ValueOf(in.NodeCount)
 	out.SoftwareConfig = SoftwareConfig_ToProto(mapCtx, in.SoftwareConfig)
 	out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
@@ -252,7 +203,7 @@ func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentCon
 	out.MaintenanceWindow = MaintenanceWindow_ToProto(mapCtx, in.MaintenanceWindow)
 	out.WorkloadsConfig = WorkloadsConfig_ToProto(mapCtx, in.WorkloadsConfig)
 	out.EnvironmentSize = direct.Enum_ToProto[pb.EnvironmentConfig_EnvironmentSize](mapCtx, in.EnvironmentSize)
-	out.AirflowUri = direct.ValueOf(in.AirflowURI)
+	// MISSING: AirflowURI
 	// MISSING: AirflowByoidURI
 	out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_ToProto(mapCtx, in.MasterAuthorizedNetworksConfig)
 	out.RecoveryConfig = RecoveryConfig_ToProto(mapCtx, in.RecoveryConfig)
@@ -265,8 +216,8 @@ func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.EnvironmentConfigObservedState{}
-	// MISSING: GkeCluster
-	// MISSING: DagGcsPrefix
+	out.GkeCluster = direct.LazyPtr(in.GetGkeCluster())
+	out.DagGcsPrefix = direct.LazyPtr(in.GetDagGcsPrefix())
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
 	// MISSING: NodeConfig
@@ -278,7 +229,7 @@ func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: MaintenanceWindow
 	// MISSING: WorkloadsConfig
 	// MISSING: EnvironmentSize
-	// MISSING: AirflowURI
+	out.AirflowURI = direct.LazyPtr(in.GetAirflowUri())
 	out.AirflowByoidURI = direct.LazyPtr(in.GetAirflowByoidUri())
 	// MISSING: MasterAuthorizedNetworksConfig
 	// MISSING: RecoveryConfig
@@ -291,8 +242,8 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	// MISSING: GkeCluster
-	// MISSING: DagGcsPrefix
+	out.GkeCluster = direct.ValueOf(in.GkeCluster)
+	out.DagGcsPrefix = direct.ValueOf(in.DagGcsPrefix)
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
 	// MISSING: NodeConfig
@@ -304,78 +255,12 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 	// MISSING: MaintenanceWindow
 	// MISSING: WorkloadsConfig
 	// MISSING: EnvironmentSize
-	// MISSING: AirflowURI
+	out.AirflowUri = direct.ValueOf(in.AirflowURI)
 	out.AirflowByoidUri = direct.ValueOf(in.AirflowByoidURI)
 	// MISSING: MasterAuthorizedNetworksConfig
 	// MISSING: RecoveryConfig
 	// MISSING: ResilienceMode
 	// MISSING: DataRetentionConfig
-	return out
-}
-func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EnvironmentObservedState{}
-	// MISSING: Name
-	out.Config = EnvironmentConfigObservedState_FromProto(mapCtx, in.GetConfig())
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	// MISSING: StorageConfig
-	return out
-}
-func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	out.Config = EnvironmentConfigObservedState_ToProto(mapCtx, in.Config)
-	// MISSING: Uuid
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
-	// MISSING: StorageConfig
-	return out
-}
-func IPAllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.IPAllocationPolicy) *krm.IPAllocationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IPAllocationPolicy{}
-	out.UseIPAliases = direct.LazyPtr(in.GetUseIpAliases())
-	out.ClusterSecondaryRangeName = direct.LazyPtr(in.GetClusterSecondaryRangeName())
-	out.ClusterIPV4CIDRBlock = direct.LazyPtr(in.GetClusterIpv4CidrBlock())
-	out.ServicesSecondaryRangeName = direct.LazyPtr(in.GetServicesSecondaryRangeName())
-	out.ServicesIPV4CIDRBlock = direct.LazyPtr(in.GetServicesIpv4CidrBlock())
-	return out
-}
-func IPAllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.IPAllocationPolicy) *pb.IPAllocationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IPAllocationPolicy{}
-	out.UseIpAliases = direct.ValueOf(in.UseIPAliases)
-	if oneof := IPAllocationPolicy_ClusterSecondaryRangeName_ToProto(mapCtx, in.ClusterSecondaryRangeName); oneof != nil {
-		out.ClusterIpAllocation = oneof
-	}
-	if oneof := IPAllocationPolicy_ClusterIpv4CidrBlock_ToProto(mapCtx, in.ClusterIPV4CIDRBlock); oneof != nil {
-		out.ClusterIpAllocation = oneof
-	}
-	if oneof := IPAllocationPolicy_ServicesSecondaryRangeName_ToProto(mapCtx, in.ServicesSecondaryRangeName); oneof != nil {
-		out.ServicesIpAllocation = oneof
-	}
-	if oneof := IPAllocationPolicy_ServicesIpv4CidrBlock_ToProto(mapCtx, in.ServicesIPV4CIDRBlock); oneof != nil {
-		out.ServicesIpAllocation = oneof
-	}
 	return out
 }
 func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krm.MaintenanceWindow {
@@ -396,24 +281,6 @@ func MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceWin
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.Recurrence = direct.ValueOf(in.Recurrence)
-	return out
-}
-func MasterAuthorizedNetworksConfig_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuthorizedNetworksConfig) *krm.MasterAuthorizedNetworksConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MasterAuthorizedNetworksConfig{}
-	out.Enabled = direct.LazyPtr(in.GetEnabled())
-	out.CIDRBlocks = direct.Slice_FromProto(mapCtx, in.CIDRBlocks, MasterAuthorizedNetworksConfig_CIDRBlock_FromProto)
-	return out
-}
-func MasterAuthorizedNetworksConfig_ToProto(mapCtx *direct.MapContext, in *krm.MasterAuthorizedNetworksConfig) *pb.MasterAuthorizedNetworksConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MasterAuthorizedNetworksConfig{}
-	out.Enabled = direct.ValueOf(in.Enabled)
-	out.CidrBlocks = direct.Slice_ToProto(mapCtx, in.CIDRBlocks, MasterAuthorizedNetworksConfig_CIDRBlock_ToProto)
 	return out
 }
 func MasterAuthorizedNetworksConfig_CIDRBlock_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuthorizedNetworksConfig_CidrBlock) *krm.MasterAuthorizedNetworksConfig_CIDRBlock {
@@ -457,15 +324,23 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out := &krm.NodeConfig{}
 	out.Location = direct.LazyPtr(in.GetLocation())
 	out.MachineType = direct.LazyPtr(in.GetMachineType())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.Subnetwork = direct.LazyPtr(in.GetSubnetwork())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
 	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
 	out.OauthScopes = in.OauthScopes
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refs.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.Tags = in.Tags
 	out.IPAllocationPolicy = IPAllocationPolicy_FromProto(mapCtx, in.GetIpAllocationPolicy())
 	out.EnableIPMasqAgent = direct.LazyPtr(in.GetEnableIpMasqAgent())
-	out.ComposerNetworkAttachment = direct.LazyPtr(in.GetComposerNetworkAttachment())
+	if in.GetComposerNetworkAttachment() != "" {
+		out.ComposerNetworkAttachmentRef = &refs.ComputeNetworkAttachmentRef{External: in.GetComposerNetworkAttachment()}
+	}
 	out.ComposerInternalIPV4CIDRBlock = direct.LazyPtr(in.GetComposerInternalIpv4CidrBlock())
 	return out
 }
@@ -476,15 +351,23 @@ func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeC
 	out := &pb.NodeConfig{}
 	out.Location = direct.ValueOf(in.Location)
 	out.MachineType = direct.ValueOf(in.MachineType)
-	out.Network = direct.ValueOf(in.Network)
-	out.Subnetwork = direct.ValueOf(in.Subnetwork)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = in.SubnetworkRef.External
+	}
 	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
 	out.OauthScopes = in.OauthScopes
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.Tags = in.Tags
 	out.IpAllocationPolicy = IPAllocationPolicy_ToProto(mapCtx, in.IPAllocationPolicy)
 	out.EnableIpMasqAgent = direct.ValueOf(in.EnableIPMasqAgent)
-	out.ComposerNetworkAttachment = direct.ValueOf(in.ComposerNetworkAttachment)
+	if in.ComposerNetworkAttachmentRef != nil {
+		out.ComposerNetworkAttachment = in.ComposerNetworkAttachmentRef.External
+	}
 	out.ComposerInternalIpv4CidrBlock = direct.ValueOf(in.ComposerInternalIPV4CIDRBlock)
 	return out
 }
@@ -542,7 +425,9 @@ func PrivateEnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.Privat
 	out.CloudComposerNetworkIPV4CIDRBlock = direct.LazyPtr(in.GetCloudComposerNetworkIpv4CidrBlock())
 	// MISSING: CloudComposerNetworkIPV4ReservedRange
 	out.EnablePrivatelyUsedPublicIps = direct.LazyPtr(in.GetEnablePrivatelyUsedPublicIps())
-	out.CloudComposerConnectionSubnetwork = direct.LazyPtr(in.GetCloudComposerConnectionSubnetwork())
+	if in.GetCloudComposerConnectionSubnetwork() != "" {
+		out.CloudComposerConnectionSubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
+	}
 	out.NetworkingConfig = NetworkingConfig_FromProto(mapCtx, in.GetNetworkingConfig())
 	return out
 }
@@ -560,7 +445,9 @@ func PrivateEnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.Private
 	out.CloudComposerNetworkIpv4CidrBlock = direct.ValueOf(in.CloudComposerNetworkIPV4CIDRBlock)
 	// MISSING: CloudComposerNetworkIPV4ReservedRange
 	out.EnablePrivatelyUsedPublicIps = direct.ValueOf(in.EnablePrivatelyUsedPublicIps)
-	out.CloudComposerConnectionSubnetwork = direct.ValueOf(in.CloudComposerConnectionSubnetwork)
+	if in.CloudComposerConnectionSubnetworkRef != nil {
+		out.CloudComposerConnectionSubnetwork = in.CloudComposerConnectionSubnetworkRef.External
+	}
 	out.NetworkingConfig = NetworkingConfig_ToProto(mapCtx, in.NetworkingConfig)
 	return out
 }
@@ -673,7 +560,9 @@ func StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *k
 		return nil
 	}
 	out := &krm.StorageConfig{}
-	out.Bucket = direct.LazyPtr(in.GetBucket())
+	if in.GetBucket() != "" {
+		out.BucketRef = &refs.StorageBucketRef{External: in.GetBucket()}
+	}
 	return out
 }
 func StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.StorageConfig) *pb.StorageConfig {
@@ -681,7 +570,9 @@ func StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.StorageConfig) *pb
 		return nil
 	}
 	out := &pb.StorageConfig{}
-	out.Bucket = direct.ValueOf(in.Bucket)
+	if in.BucketRef != nil {
+		out.Bucket = in.BucketRef.External
+	}
 	return out
 }
 func TaskLogsRetentionConfig_FromProto(mapCtx *direct.MapContext, in *pb.TaskLogsRetentionConfig) *krm.TaskLogsRetentionConfig {
@@ -714,22 +605,6 @@ func WebServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.WebServerConfig)
 	}
 	out := &pb.WebServerConfig{}
 	out.MachineType = direct.ValueOf(in.MachineType)
-	return out
-}
-func WebServerNetworkAccessControl_FromProto(mapCtx *direct.MapContext, in *pb.WebServerNetworkAccessControl) *krm.WebServerNetworkAccessControl {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WebServerNetworkAccessControl{}
-	out.AllowedIPRanges = direct.Slice_FromProto(mapCtx, in.AllowedIPRanges, WebServerNetworkAccessControl_AllowedIPRange_FromProto)
-	return out
-}
-func WebServerNetworkAccessControl_ToProto(mapCtx *direct.MapContext, in *krm.WebServerNetworkAccessControl) *pb.WebServerNetworkAccessControl {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WebServerNetworkAccessControl{}
-	out.AllowedIpRanges = direct.Slice_ToProto(mapCtx, in.AllowedIPRanges, WebServerNetworkAccessControl_AllowedIPRange_ToProto)
 	return out
 }
 func WebServerNetworkAccessControl_AllowedIPRange_FromProto(mapCtx *direct.MapContext, in *pb.WebServerNetworkAccessControl_AllowedIpRange) *krm.WebServerNetworkAccessControl_AllowedIPRange {
