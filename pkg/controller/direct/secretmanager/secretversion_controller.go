@@ -275,6 +275,13 @@ func (a *SecretVersionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 // Delete implements the Adapter interface.
 func (a *SecretVersionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
+
+	// If the secret version is already in DESTROYED state, no need to call DestroySecretVersion.
+	if a.actual != nil && a.actual.State == pb.SecretVersion_DESTROYED {
+		log.Info("SecretVersion already in DESTROYED state", "name", a.id)
+		return true, nil
+	}
+
 	log.Info("destroying SecretVersion", "name", a.id)
 	req := &pb.DestroySecretVersionRequest{
 		Name: a.id.String(), Etag: a.actual.Etag}
