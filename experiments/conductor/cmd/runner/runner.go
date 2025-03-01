@@ -208,12 +208,12 @@ func printHelp() {
 	log.Println("\t1 - Check the repo director and metadata")
 	log.Println("\t2 - Create the local github branches from the metadata")
 	log.Println("\t3 - Delete the local github branches from the metadata")
-	log.Println("\t4 - Create script.yaml for mock gcp generation in each github branch")
-	log.Println("\t5 - Create _http.log for mock gcp generation in each github branch")
-	log.Println("\t6 - Generate mock Service and Resource go files in each github branch")
-	log.Println("\t7 - Add service to mock_http_roundtrip.go in each github branch")
-	log.Println("\t8 - Add proto to makefile in each github branch")
-	log.Println("\t9 - Run mockgcptests on generated mocks in each github branch")
+	log.Println("\t4 - [Mock] Create script.yaml for mock gcp generation in each github branch")
+	log.Println("\t5 - [Mock] Create _http.log for mock gcp generation in each github branch")
+	log.Println("\t6 - [Mock] Generate mock Service and Resource go files in each github branch")
+	log.Println("\t7 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
+	log.Println("\t8 - [Mock] Add proto to makefile in each github branch")
+	log.Println("\t9 - [Mock] Run mockgcptests on generated mocks in each github branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
