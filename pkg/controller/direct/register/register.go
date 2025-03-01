@@ -25,6 +25,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/certificatemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudbuild"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudidentity"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/composer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/firewallpolicyrule"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/forwardingrule"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/targettcpproxy"
@@ -53,5 +54,4 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflows"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workstations"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/composer"
 )

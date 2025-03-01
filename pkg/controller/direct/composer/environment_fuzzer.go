@@ -19,7 +19,7 @@
 package composer
 
 import (
-	pb "cloud.google.com/go/composer/apiv1/composerpb"
+	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -33,19 +33,19 @@ func composerEnvironmentFuzzer() fuzztesting.KRMFuzzer {
 		ComposerEnvironmentObservedState_FromProto, ComposerEnvironmentObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")          // special field
-	f.UnimplementedFields.Insert(".satisfies_pzi") // NOTYET
-	f.UnimplementedFields.Insert(".satisfies_pzs") // NOTYET
+	f.UnimplementedFields.Insert(".name") // special field
 
 	f.SpecFields.Insert(".config")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".storage_config")
 
+	f.StatusFields.Insert(".config")
 	f.StatusFields.Insert(".uuid")
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".satisfies_pzs")
+	f.StatusFields.Insert(".satisfies_pzi")
+
 	return f
 }
-
-
