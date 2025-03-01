@@ -102,7 +102,7 @@ func generateCRDScripts(opts *RunnerOptions, branch Branch) {
 	cmd.Stdout = &out
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
-		log.Printf("Generator script error: %q\n", out.String())
+		log.Printf("Generator script error: %q\n", formatCommandOutput(out.String()))
 		out.Reset()
 		log.Fatal(err)
 	}
@@ -139,7 +139,7 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) {
 	log.Printf("With stdin input: %s", stdinInput)
 
 	if err := cmd.Run(); err != nil {
-		log.Printf("Spec/Status generation error:\n%s\n", strings.ReplaceAll(strings.ReplaceAll(out.String(), "\\n", "\n"), "\\t", "\t"))
+		log.Printf("Spec/Status generation error:\n%s\n", formatCommandOutput(out.String()))
 		out.Reset()
 		log.Fatal(err)
 	}
@@ -175,7 +175,7 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	cmd.Stdout = &fuzzerOut
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
-		log.Printf("Fuzzer generation error: %q\n", out.String())
+		log.Printf("Fuzzer generation error: %q\n", formatCommandOutput(out.String()))
 		out.Reset()
 		log.Fatal(err)
 	}
@@ -195,7 +195,7 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	cmd.Stdout = &out
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
-		log.Printf("Import addition error: %q\n", out.String())
+		log.Printf("Import addition error: %q\n", formatCommandOutput(out.String()))
 		out.Reset()
 		log.Fatal(err)
 	}

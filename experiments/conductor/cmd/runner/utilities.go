@@ -100,7 +100,7 @@ func checkoutBranch(branch Branch, workDir string, out *strings.Builder) {
 	if err := checkout.Run(); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH CHECKOUT: %q\n", out.String())
+	log.Printf("BRANCH CHECKOUT: %q\n", formatCommandOutput(out.String()))
 	out.Reset()
 }
 
@@ -147,11 +147,11 @@ func gitAdd(workDir string, out *strings.Builder, files ...string) {
 	gitadd.Stdout = out
 	gitadd.Stderr = out
 	if err := gitadd.Run(); err != nil {
-		log.Printf("GIT add error: %q\n", out.String())
+		log.Printf("GIT add error: %q\n", formatCommandOutput(out.String()))
 		out.Reset()
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH ADD: %q\n", out.String())
+	log.Printf("BRANCH ADD: %q\n", formatCommandOutput(out.String()))
 	out.Reset()
 }
 
@@ -162,11 +162,11 @@ func gitCommit(workDir string, out *strings.Builder, msg string) {
 	gitcommit.Stdout = out
 	gitcommit.Stderr = out
 	if err := gitcommit.Run(); err != nil {
-		log.Printf("GIT commit error: %q\n", out.String())
+		log.Printf("GIT commit error: %q\n", formatCommandOutput(out.String()))
 		out.Reset()
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH COMMIT: %q\n", out.String())
+	log.Printf("BRANCH COMMIT: %q\n", formatCommandOutput(out.String()))
 	out.Reset()
 }
 
@@ -226,4 +226,11 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 }
 
 func noOp() {
+}
+
+func formatCommandOutput(output string) string {
+	// Replace escaped newlines and tabs with their actual characters
+	formatted := strings.ReplaceAll(output, "\\n", "\n")
+	formatted = strings.ReplaceAll(formatted, "\\t", "\t")
+	return formatted
 }
