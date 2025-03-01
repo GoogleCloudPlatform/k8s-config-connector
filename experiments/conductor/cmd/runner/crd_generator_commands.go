@@ -103,6 +103,7 @@ func generateCRDScripts(opts *RunnerOptions, branch Branch) {
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
 		log.Printf("Generator script error: %q\n", out.String())
+		out.Reset()
 		log.Fatal(err)
 	}
 
@@ -128,11 +129,18 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) {
 		"--src-dir", workDir,
 		"--proto-dir", filepath.Join(workDir, ".build/third_party/googleapis/"))
 	cmd.Dir = workDir
-	cmd.Stdin = strings.NewReader(fmt.Sprintf("// +kcc:proto=%s.%s\n", branch.ProtoSvc, branch.Proto))
+	stdinInput := fmt.Sprintf("// +kcc:proto=%s.%s\n", branch.ProtoSvc, branch.Proto)
+	cmd.Stdin = strings.NewReader(stdinInput)
 	cmd.Stdout = &out
 	cmd.Stderr = &out
+
+	log.Printf("Running command: controllerbuilder prompt --src-dir %s --proto-dir %s",
+		workDir, filepath.Join(workDir, ".build/third_party/googleapis/"))
+	log.Printf("With stdin input: %s", stdinInput)
+
 	if err := cmd.Run(); err != nil {
-		log.Printf("Spec/Status generation error: %q\n", out.String())
+		log.Printf("Spec/Status generation error:\n%s\n", strings.ReplaceAll(strings.ReplaceAll(out.String(), "\\n", "\n"), "\\t", "\t"))
+		out.Reset()
 		log.Fatal(err)
 	}
 
@@ -168,6 +176,7 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
 		log.Printf("Fuzzer generation error: %q\n", out.String())
+		out.Reset()
 		log.Fatal(err)
 	}
 
@@ -187,6 +196,7 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
 		log.Printf("Import addition error: %q\n", out.String())
+		out.Reset()
 		log.Fatal(err)
 	}
 

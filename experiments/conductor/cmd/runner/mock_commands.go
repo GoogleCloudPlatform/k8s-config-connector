@@ -101,11 +101,13 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 		stop := time.Now()
 		diff := stop.Sub(start)
 		log.Printf("CODEBOT GENERATE ERROR (%v): %q\n", diff, out.String())
+		out.Reset()
 		log.Fatal(err)
 	}
 	stop := time.Now()
 	diff := stop.Sub(start)
 	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, out.String())
+	out.Reset()
 
 	// Check to see if the script file was created
 	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
@@ -183,12 +185,14 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	test.Stderr = &out
 	if err := test.Run(); err != nil {
 		log.Printf("TEST GENERATE error: %q\n", out.String())
+		out.Reset()
 		// Currently ignoring error and just basing on if the _http.log was generated.
 		// log.Fatal(err)
 	}
 	stop := time.Now()
 	diff := stop.Sub(start)
 	log.Printf("TEST GENERATE (%v): %q\n", diff, out.String())
+	out.Reset()
 
 	// Check to see if the script file was created
 	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
@@ -255,6 +259,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 		service_go.Stderr = &out
 		if err := service_go.Run(); err != nil {
 			log.Println(out.String())
+			out.Reset()
 			log.Printf("MOCK SERVICE GENERATE error: %q\n", err)
 			// Currently ignoring error and just basing on if the _http.log was generated.
 			// log.Fatal(err)
@@ -265,6 +270,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 			log.Printf("WRITE MOCK SERVICE %s error: %q\n", serviceFile, err)
 		}
 		log.Printf("MOCK SERVICE GENERATE (%v): %q\n", diff, serviceOut.String())
+		serviceOut.Reset()
 
 		// Check to see if the service go file was created
 		if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
@@ -296,6 +302,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 		resource_go.Stderr = &out
 		if err := resource_go.Run(); err != nil {
 			log.Println(out.String())
+			out.Reset()
 			log.Printf("MOCK RESOURCE GENERATE error: %q\n", err)
 			// Currently ignoring error and just basing on if the _http.log was generated.
 			// log.Fatal(err)
@@ -306,6 +313,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 			log.Printf("WRITE MOCK RESOURCE %s error: %q\n", resourceFile, err)
 		}
 		log.Printf("MOCK RESOURCE GENERATE (%v): %q\n", diff, resourceOut.String())
+		resourceOut.Reset()
 
 		// Check to see if the service go file was created
 		if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
@@ -366,11 +374,13 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 		stop := time.Now()
 		diff := stop.Sub(start)
 		log.Printf("CODEBOT GENERATE ERROR (%v): %q\n", diff, out.String())
+		out.Reset()
 		log.Fatal(err)
 	}
 	stop := time.Now()
 	diff := stop.Sub(start)
 	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, out.String())
+	out.Reset()
 
 	// Add the new files to the current branch.
 	gitAdd(workDir, &out, "mock_http_roundtrip.go")
@@ -424,19 +434,20 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 		stop := time.Now()
 		diff := stop.Sub(start)
 		log.Printf("CODEBOT GENERATE ERROR (%v): %q\n", diff, out.String())
+		out.Reset()
 		log.Fatal(err)
 	}
 
 	stop := time.Now()
 	diff := stop.Sub(start)
 	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, out.String())
+	out.Reset()
 
 	// Add the new files to the current branch.
 	gitAdd(workDir, &out, "Makefile")
 
 	// Commit the change to the current branch.
 	gitCommit(workDir, &out, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
-
 }
 
 func runMockgcpTests(opts *RunnerOptions, branch Branch) {
@@ -463,12 +474,14 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 	test.Stderr = &out
 	if err := test.Run(); err != nil {
 		log.Printf("TEST RUN error: %q\n", out.String())
+		out.Reset()
 		// Currently ignoring error and just basing on if the _http.log was generated.
 		// log.Fatal(err)
 	}
 	stop := time.Now()
 	diff := stop.Sub(start)
 	log.Printf("TEST RUN (%v): %q\n", diff, out.String())
+	out.Reset()
 
 	// Check to see if the script file was created
 	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {

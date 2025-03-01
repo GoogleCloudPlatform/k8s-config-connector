@@ -101,6 +101,7 @@ func checkoutBranch(branch Branch, workDir string, out *strings.Builder) {
 		log.Fatal(err)
 	}
 	log.Printf("BRANCH CHECKOUT: %q\n", out.String())
+	out.Reset()
 }
 
 func writeTemplateToFile(branch Branch, filePath string, template string) {
@@ -147,9 +148,11 @@ func gitAdd(workDir string, out *strings.Builder, files ...string) {
 	gitadd.Stderr = out
 	if err := gitadd.Run(); err != nil {
 		log.Printf("GIT add error: %q\n", out.String())
+		out.Reset()
 		log.Fatal(err)
 	}
 	log.Printf("BRANCH ADD: %q\n", out.String())
+	out.Reset()
 }
 
 func gitCommit(workDir string, out *strings.Builder, msg string) {
@@ -160,9 +163,11 @@ func gitCommit(workDir string, out *strings.Builder, msg string) {
 	gitcommit.Stderr = out
 	if err := gitcommit.Run(); err != nil {
 		log.Printf("GIT commit error: %q\n", out.String())
+		out.Reset()
 		log.Fatal(err)
 	}
 	log.Printf("BRANCH COMMIT: %q\n", out.String())
+	out.Reset()
 }
 
 type closer func()
