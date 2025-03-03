@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -966,7 +967,7 @@ func (in *ApigeeInstanceSpec) DeepCopyInto(out *ApigeeInstanceSpec) {
 	}
 	if in.DiskEncryptionKMSCryptoKeyRef != nil {
 		in, out := &in.DiskEncryptionKMSCryptoKeyRef, &out.DiskEncryptionKMSCryptoKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.DisplayName != nil {
