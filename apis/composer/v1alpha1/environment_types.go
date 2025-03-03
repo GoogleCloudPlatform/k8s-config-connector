@@ -16,15 +16,29 @@ package v1alpha1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var ComposerEnvironmentGVK = GroupVersion.WithKind("ComposerEnvironment")
 
+type Parent struct {
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	// Immutable. The name of the location where the Environment will be created.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable."
+	// Required.
+	Location string `json:"location"`
+}
+
 // ComposerEnvironmentSpec defines the desired state of ComposerEnvironment
 // +kcc:proto=google.cloud.orchestration.airflow.service.v1.Environment
 type ComposerEnvironmentSpec struct {
+	Parent `json:",inline"`
+
 	// The ComposerEnvironment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -42,14 +56,6 @@ type ComposerEnvironmentSpec struct {
 	//  size.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.labels
 	Labels map[string]string `json:"labels,omitempty"`
-
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// Immutable. The name of the location where the Environment will be created.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable."
-	// Required.
-	Location string `json:"location"`
 
 	// Optional. Storage configuration for this environment.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.storage_config
@@ -378,7 +384,7 @@ type NodeConfig struct {
 	//  This field is supported for Cloud Composer environments in versions
 	//  composer-1.*.*-airflow-*.*.*.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.oauth_scopes
-	OauthScopes []string `json:"oauthScopes,omitempty"`
+	OAuthScopes []string `json:"oauthScopes,omitempty"`
 
 	// Optional. The Google Cloud Platform Service Account to be used by the node
 	//  VMs. If a service account is not specified, the "default" Compute Engine
@@ -419,7 +425,7 @@ type NodeConfig struct {
 	//  This field is supported for Cloud Composer environments in versions
 	//  composer-3.*.*-airflow-*.*.* and newer.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.composer_network_attachment
-	ComposerNetworkAttachmentRef *refs.ComputeNetworkAttachmentRef `json:"composerNetworkAttachmentRef,omitempty"`
+	ComposerNetworkAttachmentRef *computev1alpha1.ComputeNetworkAttachmentRef `json:"composerNetworkAttachmentRef,omitempty"`
 
 	// Optional. The IP range in CIDR notation to use internally by Cloud
 	//  Composer. IP addresses are not reserved - and the same range can be used by
@@ -430,7 +436,7 @@ type NodeConfig struct {
 	//  This field is supported for Cloud Composer environments in versions
 	//  composer-3.*.*-airflow-*.*.* and newer.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.composer_internal_ipv4_cidr_block
-	ComposerInternalIPV4CIDRBlock *string `json:"composerInternalIPV4CIDRBlock,omitempty"`
+	ComposerInternalIPv4CIDRBlock *string `json:"composerInternalIPv4CIDRBlock,omitempty"`
 }
 
 // +kcc:proto=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig
@@ -467,13 +473,13 @@ type PrivateEnvironmentConfig struct {
 	//  This field is supported for Cloud Composer environments in versions
 	//  composer-1.*.*-airflow-*.*.*.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.web_server_ipv4_cidr_block
-	WebServerIPV4CIDRBlock *string `json:"webServerIPV4CIDRBlock,omitempty"`
+	WebServerIPv4CIDRBlock *string `json:"webServerIPv4CIDRBlock,omitempty"`
 
 	// Optional. The CIDR block from which IP range in tenant project will be
 	//  reserved for Cloud SQL. Needs to be disjoint from
 	//  `web_server_ipv4_cidr_block`.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.cloud_sql_ipv4_cidr_block
-	CloudSQLIPV4CIDRBlock *string `json:"cloudSQLIPV4CIDRBlock,omitempty"`
+	CloudSQLIPv4CIDRBlock *string `json:"cloudSQLIPv4CIDRBlock,omitempty"`
 
 	// Optional. The CIDR block from which IP range for Cloud Composer Network in
 	//  tenant project will be reserved. Needs to be disjoint from
@@ -483,13 +489,13 @@ type PrivateEnvironmentConfig struct {
 	//  This field is supported for Cloud Composer environments in versions
 	//  composer-2.*.*-airflow-*.*.* and newer.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.cloud_composer_network_ipv4_cidr_block
-	CloudComposerNetworkIPV4CIDRBlock *string `json:"cloudComposerNetworkIPV4CIDRBlock,omitempty"`
+	CloudComposerNetworkIPv4CIDRBlock *string `json:"cloudComposerNetworkIPv4CIDRBlock,omitempty"`
 
 	// Optional. When enabled, IPs from public (non-RFC1918) ranges can be used
 	//  for `IPAllocationPolicy.cluster_ipv4_cidr_block` and
 	//  `IPAllocationPolicy.service_ipv4_cidr_block`.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.enable_privately_used_public_ips
-	EnablePrivatelyUsedPublicIps *bool `json:"enablePrivatelyUsedPublicIps,omitempty"`
+	EnablePrivatelyUsedPublicIPs *bool `json:"enablePrivatelyUsedPublicIPs,omitempty"`
 
 	// Optional. When specified, the environment will use Private Service Connect
 	//  instead of VPC peerings to connect to Cloud SQL in the Tenant Project,
@@ -516,7 +522,7 @@ type PrivateEnvironmentConfigObservedState struct {
 	//  This field is supported for Cloud Composer environments in versions
 	//  composer-1.*.*-airflow-*.*.*.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.web_server_ipv4_reserved_range
-	WebServerIPV4ReservedRange *string `json:"webServerIPV4ReservedRange,omitempty"`
+	WebServerIPv4ReservedRange *string `json:"webServerIPv4ReservedRange,omitempty"`
 
 	// Output only. The IP range reserved for the tenant project's Cloud Composer
 	//  network.
@@ -524,7 +530,7 @@ type PrivateEnvironmentConfigObservedState struct {
 	//  This field is supported for Cloud Composer environments in versions
 	//  composer-2.*.*-airflow-*.*.* and newer.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.cloud_composer_network_ipv4_reserved_range
-	CloudComposerNetworkIPV4ReservedRange *string `json:"cloudComposerNetworkIPV4ReservedRange,omitempty"`
+	CloudComposerNetworkIPv4ReservedRange *string `json:"cloudComposerNetworkIPv4ReservedRange,omitempty"`
 }
 
 // +kcc:proto=google.cloud.orchestration.airflow.service.v1.StorageConfig
@@ -533,4 +539,104 @@ type StorageConfig struct {
 	//  `gs://` prefix.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.StorageConfig.bucket
 	BucketRef *refs.StorageBucketRef `json:"bucketRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource
+type WorkloadsConfig_DagProcessorResource struct {
+	// Optional. CPU request and limit for a single Airflow DAG processor
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource.cpu
+	CPU *string `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for a single Airflow DAG
+	//  processor replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource.memory_gb
+	MemoryGB *string `json:"memoryGB,omitempty"`
+
+	// Optional. Storage (GB) request and limit for a single Airflow DAG
+	//  processor replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource.storage_gb
+	StorageGB *string `json:"storageGB,omitempty"`
+
+	// Optional. The number of DAG processors. If not provided or set to 0, a
+	//  single DAG processor instance will be created.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.DagProcessorResource.count
+	Count *int32 `json:"count,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource
+type WorkloadsConfig_SchedulerResource struct {
+	// Optional. CPU request and limit for a single Airflow scheduler replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource.cpu
+	CPU *string `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for a single Airflow scheduler
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource.memory_gb
+	MemoryGB *string `json:"memoryGB,omitempty"`
+
+	// Optional. Storage (GB) request and limit for a single Airflow scheduler
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource.storage_gb
+	StorageGB *string `json:"storageGB,omitempty"`
+
+	// Optional. The number of schedulers.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.SchedulerResource.count
+	Count *int32 `json:"count,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.TriggererResource
+type WorkloadsConfig_TriggererResource struct {
+	// Optional. The number of triggerers.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.TriggererResource.count
+	Count *int32 `json:"count,omitempty"`
+
+	// Optional. CPU request and limit for a single Airflow triggerer replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.TriggererResource.cpu
+	CPU *string `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for a single Airflow triggerer
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.TriggererResource.memory_gb
+	MemoryGB *string `json:"memoryGB,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WebServerResource
+type WorkloadsConfig_WebServerResource struct {
+	// Optional. CPU request and limit for Airflow web server.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WebServerResource.cpu
+	CPU *string `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for Airflow web server.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WebServerResource.memory_gb
+	MemoryGB *string `json:"memoryGB,omitempty"`
+
+	// Optional. Storage (GB) request and limit for Airflow web server.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WebServerResource.storage_gb
+	StorageGB *string `json:"storageGB,omitempty"`
+}
+
+// +kcc:proto=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource
+type WorkloadsConfig_WorkerResource struct {
+	// Optional. CPU request and limit for a single Airflow worker replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.cpu
+	CPU *string `json:"cpu,omitempty"`
+
+	// Optional. Memory (GB) request and limit for a single Airflow worker
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.memory_gb
+	MemoryGB *string `json:"memoryGB,omitempty"`
+
+	// Optional. Storage (GB) request and limit for a single Airflow worker
+	//  replica.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.storage_gb
+	StorageGB *string `json:"storageGB,omitempty"`
+
+	// Optional. Minimum number of workers for autoscaling.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.min_count
+	MinCount *int32 `json:"minCount,omitempty"`
+
+	// Optional. Maximum number of workers for autoscaling.
+	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.WorkerResource.max_count
+	MaxCount *int32 `json:"maxCount,omitempty"`
 }

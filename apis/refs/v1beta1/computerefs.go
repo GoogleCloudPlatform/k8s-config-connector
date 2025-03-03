@@ -421,17 +421,3 @@ func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src
 	return &ComputeFirewallPolicyRef{
 		External: fmt.Sprintf("%s", resourceID)}, nil
 }
-
-type ComputeNetworkAttachmentRef struct {
-	/* The ComputeNetworkAttachment selflink in the form "projects/{{project}}/regions/{{region}}/networkAttachments/{{name}}" when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-
-	// ComputeNetworkAttachment not yet supported in Config Connector, users
-	// should only use 'external' field to reference existing resources.
-	/* NOTYET
-	// The `name` field of a `ComputeNetworkAttachment` resource.
-	Name string `json:"name,omitempty"`
-	// The `namespace` field of a `ComputeNetworkAttachment` resource.
-	Namespace string `json:"namespace,omitempty"`
-	*/
-}

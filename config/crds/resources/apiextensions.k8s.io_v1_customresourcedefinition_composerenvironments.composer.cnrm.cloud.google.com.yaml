@@ -220,7 +220,7 @@ spec:
                     description: Optional. The configuration used for the Kubernetes
                       Engine cluster.
                     properties:
-                      composerInternalIPV4CIDRBlock:
+                      composerInternalIPv4CIDRBlock:
                         description: |-
                           Optional. The IP range in CIDR notation to use internally by Cloud
                            Composer. IP addresses are not reserved - and the same range can be used by
@@ -246,9 +246,8 @@ spec:
                            composer-3.*.*-airflow-*.*.* and newer.
                         properties:
                           external:
-                            description: The ComputeNetworkAttachment selflink in
-                              the form "projects/{{project}}/regions/{{region}}/networkAttachments/{{name}}"
-                              when not managed by Config Connector.
+                            description: The value of an externally managed ComputeNetworkAttachment
+                              resource in the form "projects/{{project}}/regions/{{region}}/networkAttachments/{{name}}".
                             type: string
                         type: object
                       diskSizeGB:
@@ -562,7 +561,7 @@ spec:
                               resource.
                             type: string
                         type: object
-                      cloudComposerNetworkIPV4CIDRBlock:
+                      cloudComposerNetworkIPv4CIDRBlock:
                         description: |-
                           Optional. The CIDR block from which IP range for Cloud Composer Network in
                            tenant project will be reserved. Needs to be disjoint from
@@ -572,7 +571,7 @@ spec:
                            This field is supported for Cloud Composer environments in versions
                            composer-2.*.*-airflow-*.*.* and newer.
                         type: string
-                      cloudSQLIPV4CIDRBlock:
+                      cloudSQLIPv4CIDRBlock:
                         description: Optional. The CIDR block from which IP range
                           in tenant project will be reserved for Cloud SQL. Needs
                           to be disjoint from `web_server_ipv4_cidr_block`.
@@ -595,7 +594,7 @@ spec:
                           must be set to true for Cloud Composer environments in versions
                           composer-1.*.*-airflow-*.*.*.
                         type: boolean
-                      enablePrivatelyUsedPublicIps:
+                      enablePrivatelyUsedPublicIPs:
                         description: Optional. When enabled, IPs from public (non-RFC1918)
                           ranges can be used for `IPAllocationPolicy.cluster_ipv4_cidr_block`
                           and `IPAllocationPolicy.service_ipv4_cidr_block`.
@@ -625,7 +624,7 @@ spec:
                               the default value of '172.16.0.0/23' is used.
                             type: string
                         type: object
-                      webServerIPV4CIDRBlock:
+                      webServerIPv4CIDRBlock:
                         description: |-
                           Optional. The CIDR block from which IP range for web server will be
                            reserved. Needs to be disjoint from
@@ -868,15 +867,15 @@ spec:
                           cpu:
                             description: Optional. CPU request and limit for a single
                               Airflow DAG processor replica.
-                            type: number
+                            type: string
                           memoryGB:
                             description: Optional. Memory (GB) request and limit for
                               a single Airflow DAG processor replica.
-                            type: number
+                            type: string
                           storageGB:
                             description: Optional. Storage (GB) request and limit
                               for a single Airflow DAG processor replica.
-                            type: number
+                            type: string
                         type: object
                       scheduler:
                         description: Optional. Resources used by Airflow schedulers.
@@ -888,15 +887,15 @@ spec:
                           cpu:
                             description: Optional. CPU request and limit for a single
                               Airflow scheduler replica.
-                            type: number
+                            type: string
                           memoryGB:
                             description: Optional. Memory (GB) request and limit for
                               a single Airflow scheduler replica.
-                            type: number
+                            type: string
                           storageGB:
                             description: Optional. Storage (GB) request and limit
                               for a single Airflow scheduler replica.
-                            type: number
+                            type: string
                         type: object
                       triggerer:
                         description: Optional. Resources used by Airflow triggerers.
@@ -908,11 +907,11 @@ spec:
                           cpu:
                             description: Optional. CPU request and limit for a single
                               Airflow triggerer replica.
-                            type: number
+                            type: string
                           memoryGB:
                             description: Optional. Memory (GB) request and limit for
                               a single Airflow triggerer replica.
-                            type: number
+                            type: string
                         type: object
                       webServer:
                         description: Optional. Resources used by Airflow web server.
@@ -920,15 +919,15 @@ spec:
                           cpu:
                             description: Optional. CPU request and limit for Airflow
                               web server.
-                            type: number
+                            type: string
                           memoryGB:
                             description: Optional. Memory (GB) request and limit for
                               Airflow web server.
-                            type: number
+                            type: string
                           storageGB:
                             description: Optional. Storage (GB) request and limit
                               for Airflow web server.
-                            type: number
+                            type: string
                         type: object
                       worker:
                         description: Optional. Resources used by Airflow workers.
@@ -936,7 +935,7 @@ spec:
                           cpu:
                             description: Optional. CPU request and limit for a single
                               Airflow worker replica.
-                            type: number
+                            type: string
                           maxCount:
                             description: Optional. Maximum number of workers for autoscaling.
                             format: int32
@@ -944,7 +943,7 @@ spec:
                           memoryGB:
                             description: Optional. Memory (GB) request and limit for
                               a single Airflow worker replica.
-                            type: number
+                            type: string
                           minCount:
                             description: Optional. Minimum number of workers for autoscaling.
                             format: int32
@@ -952,7 +951,7 @@ spec:
                           storageGB:
                             description: Optional. Storage (GB) request and limit
                               for a single Airflow worker replica.
-                            type: number
+                            type: string
                         type: object
                     type: object
                 type: object
@@ -1125,7 +1124,7 @@ spec:
                         description: Optional. The configuration used for the Private
                           IP Cloud Composer environment.
                         properties:
-                          cloudComposerNetworkIPV4ReservedRange:
+                          cloudComposerNetworkIPv4ReservedRange:
                             description: |-
                               Output only. The IP range reserved for the tenant project's Cloud Composer
                                network.
@@ -1147,7 +1146,7 @@ spec:
                                   the cluster's network.
                                 type: string
                             type: object
-                          webServerIPV4ReservedRange:
+                          webServerIPv4ReservedRange:
                             description: |-
                               Output only. The IP range reserved for the tenant project's App Engine VMs.
 
