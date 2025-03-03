@@ -20,6 +20,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/
 
-export ONLY_TEST_APIGROUPS="sql.cnrm.cloud.google.com"
+export ONLY_TEST_APIGROUPS="vertexai.cnrm.cloud.google.com"
 
 ${REPO_ROOT}/dev/tasks/run-e2e
