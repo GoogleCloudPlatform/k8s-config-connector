@@ -344,6 +344,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - composer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - compute.cnrm.cloud.google.com
   resources:
   - '*'

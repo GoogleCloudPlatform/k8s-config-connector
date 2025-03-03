@@ -26,6 +26,7 @@ require (
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.21.2
 	cloud.google.com/go/notebooks v1.12.2
+	cloud.google.com/go/orchestration v1.11.1
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
 	cloud.google.com/go/profiler v0.4.1
 	cloud.google.com/go/redis v1.17.2
