@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "metadataStore \"projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "metadataStore \"projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }

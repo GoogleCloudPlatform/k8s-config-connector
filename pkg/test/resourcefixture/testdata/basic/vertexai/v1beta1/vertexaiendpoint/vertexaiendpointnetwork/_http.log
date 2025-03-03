@@ -532,13 +532,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "endpoint \"projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "endpoint \"projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
