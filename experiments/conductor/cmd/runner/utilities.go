@@ -112,6 +112,12 @@ func writeTemplateToFile(branch Branch, filePath string, template string) {
 	tmp = strings.ReplaceAll(tmp, "<HTTP_HOST>", branch.HostName)
 	tmp = strings.ReplaceAll(tmp, "<PROTO_SERVICE>", branch.ProtoSvc)
 	tmp = strings.ReplaceAll(tmp, "<PROTO_MESSAGE>", branch.ProtoMsg)
+	tmp = strings.ReplaceAll(tmp, "<PROTO_PACKAGE>", branch.Package)
+	tmp = strings.ReplaceAll(tmp, "<CRD_GROUP>", fmt.Sprintf("%s.cnrm.cloud.google.com", branch.Group))
+	tmp = strings.ReplaceAll(tmp, "<CRD_VERSION>", "v1alpha1")
+	tmp = strings.ReplaceAll(tmp, "<CRD_KIND>", branch.Kind)
+	tmp = strings.ReplaceAll(tmp, "<PROTO_RESOURCE>", branch.Proto)
+
 	contents := strings.ReplaceAll(tmp, "<RESOURCE>", strings.ToLower(branch.Resource))
 	log.Printf("TEMPLATE %s %s", filePath, contents)
 
@@ -226,6 +232,18 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 }
 
 func noOp() {
+}
+
+func printCommandOutput(output string) {
+	// Replace escaped newlines and tabs with their actual characters
+	formatted := strings.ReplaceAll(output, "\\n", "\n")
+	formatted = strings.ReplaceAll(formatted, "\\t", "\t")
+
+	// Split the string into lines and format each line
+	lines := strings.Split(formatted, "\n")
+	for _, line := range lines {
+		log.Printf("  > %s\n", line)
+	}
 }
 
 func formatCommandOutput(output string) string {

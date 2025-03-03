@@ -15,15 +15,18 @@
 package runner
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
-const generatorScriptTemplate = `#!/bin/bash
+const GENERATOR_SCRIPT_TEMPLATE = `#!/bin/bash
 # Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -60,6 +63,21 @@ dev/tasks/generate-crds
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg/controller/direct/<SERVICE>/
 `
 
+const UPDATE_GENERATE_SCRIPT_PROMPT = `
+Please update the apis/<SERVICE>/v1alpha1/generate.sh script for the <SERVICE> API to generate the CRD for the <CRD_KIND> resource.
+
+The generate.sh script is located at apis/<SERVICE>/v1alpha1/generate.sh.
+
+Add the parameter <TICK> --resource <CRD_KIND>:<PROTO_RESOURCE><TICK> to the <TICK>go run . generate-types --api-version <CRD_GROUP>/<CRD_VERSION>  <TICK> command.
+
+At the end of the script, ensure the following lines are present:
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg/controller/direct/<SERVICE>/
+`
+
 func generateCRDScripts(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
 	defer close()
@@ -76,24 +94,49 @@ func generateCRDScripts(opts *RunnerOptions, branch Branch) {
 
 	// Create or update generate.sh
 	scriptPath := filepath.Join(serviceDir, "generate.sh")
+	// Check if generate.sh already exists.
+	if _, err := os.Stat(scriptPath); errors.Is(err, os.ErrNotExist) {
+		// File doesn't exist, use template approach
+		log.Printf("Creating new generate.sh at %s", scriptPath)
 
-	// Replace template markers with actual values
-	scriptContent := generatorScriptTemplate
-	scriptContent = strings.ReplaceAll(scriptContent, "<PROTO_PACKAGE>", branch.Package)
-	scriptContent = strings.ReplaceAll(scriptContent, "<CRD_GROUP>", fmt.Sprintf("%s.cnrm.cloud.google.com", branch.Group))
-	scriptContent = strings.ReplaceAll(scriptContent, "<CRD_VERSION>", "v1alpha1")
-	scriptContent = strings.ReplaceAll(scriptContent, "<CRD_KIND>", branch.Kind)
-	scriptContent = strings.ReplaceAll(scriptContent, "<PROTO_RESOURCE>", branch.Proto)
-	scriptContent = strings.ReplaceAll(scriptContent, "<SERVICE>", branch.Group)
+		// Replace template markers with actual values and write to file
+		writeTemplateToFile(branch, scriptPath, GENERATOR_SCRIPT_TEMPLATE)
+	} else {
+		// File exists, use codebot to update it
+		log.Printf("Updating existing generate.sh at %s", scriptPath)
 
-	if err := os.WriteFile(scriptPath, []byte(scriptContent), 0755); err != nil {
-		log.Fatal(err)
+		// Delete then write the prompt file.
+		promptPath := filepath.Join(workDir, "mockgcp", "crdgen_prompt.txt")
+		writeTemplateToFile(branch, promptPath, UPDATE_GENERATE_SCRIPT_PROMPT)
+
+		// Run codebot
+		start := time.Now()
+		log.Println("COMMAND: codebot --ui-type=prompt --prompt=crdgen_prompt.txt")
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+		defer cancel()
+		codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=mockgcp/crdgen_prompt.txt")
+		codebot.Dir = workDir
+		codebot.Stdout = &out
+		codebot.Stderr = &out
+		if err := codebot.Run(); err != nil {
+			stop := time.Now()
+			diff := stop.Sub(start)
+			log.Printf("CODEBOT GENERATE ERROR (%v): \n", diff)
+			printCommandOutput(out.String())
+			out.Reset()
+			log.Fatal(err)
+		}
+		stop := time.Now()
+		diff := stop.Sub(start)
+		log.Printf("CODEBOT GENERATE output in %v: \n", diff)
+		printCommandOutput(out.String())
+		out.Reset()
 	}
 
 	// Add and commit changes
 	scriptRelativePath := fmt.Sprintf("apis/%s/v1alpha1/generate.sh", branch.Group)
 	gitAdd(workDir, &out, scriptRelativePath)
-	gitCommit(workDir, &out, fmt.Sprintf("add crd generation script for %s", branch.Group))
+	gitCommit(workDir, &out, fmt.Sprintf("add/update crd generation script for %s", branch.Group))
 
 	// Run the generator script
 	log.Printf("Running generator script %s", scriptPath)
@@ -102,11 +145,14 @@ func generateCRDScripts(opts *RunnerOptions, branch Branch) {
 	cmd.Stdout = &out
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
-		log.Printf("Generator script error: %q\n", formatCommandOutput(out.String()))
+		log.Printf("Generator script error: \n")
+		printCommandOutput(out.String())
 		out.Reset()
 		log.Fatal(err)
 	}
-
+	log.Printf("Generator script output: \n")
+	printCommandOutput(out.String())
+	out.Reset()
 	// Add and commit generated files
 	gitAdd(workDir, &out,
 		fmt.Sprintf("apis/%s/v1alpha1/", branch.Group),
@@ -139,10 +185,14 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) {
 	log.Printf("With stdin input: %s", stdinInput)
 
 	if err := cmd.Run(); err != nil {
-		log.Printf("Spec/Status generation error:\n%s\n", formatCommandOutput(out.String()))
+		log.Printf("Spec/Status generation error:\n")
+		printCommandOutput(out.String())
 		out.Reset()
 		log.Fatal(err)
 	}
+	log.Printf("Spec/Status generation output: \n")
+	printCommandOutput(out.String())
+	out.Reset()
 
 	// Add and commit changes
 	gitAdd(workDir, &out, fmt.Sprintf("apis/%s/v1alpha1/%s_types.go", branch.Group, strings.ToLower(branch.Resource)))
@@ -175,10 +225,14 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	cmd.Stdout = &fuzzerOut
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
-		log.Printf("Fuzzer generation error: %q\n", formatCommandOutput(out.String()))
+		log.Printf("Fuzzer generation error: \n")
+		printCommandOutput(out.String())
 		out.Reset()
 		log.Fatal(err)
 	}
+	log.Printf("Fuzzer generation output: \n")
+	printCommandOutput(fuzzerOut.String())
+	fuzzerOut.Reset()
 
 	if err := os.WriteFile(fuzzerPath, []byte(fuzzerOut.String()), 0644); err != nil {
 		log.Fatal(err)
@@ -195,10 +249,14 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	cmd.Stdout = &out
 	cmd.Stderr = &out
 	if err := cmd.Run(); err != nil {
-		log.Printf("Import addition error: %q\n", formatCommandOutput(out.String()))
+		log.Printf("Import addition error: \n")
+		printCommandOutput(out.String())
 		out.Reset()
 		log.Fatal(err)
 	}
+	log.Printf("Import addition output: \n")
+	printCommandOutput(out.String())
+	out.Reset()
 
 	// Add and commit changes
 	gitAdd(workDir, &out,
