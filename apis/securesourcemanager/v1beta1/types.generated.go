@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfigObservedState struct {
@@ -188,10 +188,6 @@ type Repository_InitialConfig struct {
 	//  Valid template name(s) are: default.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.InitialConfig.readme
 	Readme *string `json:"readme,omitempty"`
-}
-
-// +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
-type Repository_URIs struct {
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
