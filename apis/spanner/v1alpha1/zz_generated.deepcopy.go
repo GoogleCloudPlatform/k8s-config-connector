@@ -122,13 +122,13 @@ func (in *CreateBackupEncryptionConfig) DeepCopyInto(out *CreateBackupEncryption
 		*out = new(string)
 		**out = **in
 	}
-	if in.KMSKeyNameRef != nil {
-		in, out := &in.KMSKeyNameRef, &out.KMSKeyNameRef
+	if in.KMSKeyRef != nil {
+		in, out := &in.KMSKeyRef, &out.KMSKeyRef
 		*out = new(v1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
-	if in.KMSKeyNameRefs != nil {
-		in, out := &in.KMSKeyNameRefs, &out.KMSKeyNameRefs
+	if in.KMSKeyRefs != nil {
+		in, out := &in.KMSKeyRefs, &out.KMSKeyRefs
 		*out = make([]*v1beta1.KMSCryptoKeyRef, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {

@@ -28,7 +28,7 @@ func CreateBackupEncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cr
 	out := &krm.CreateBackupEncryptionConfig{}
 	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	kmsKeyNameRefs := []*refs.KMSCryptoKeyRef{}
 	if in.GetKmsKeyNames() != nil {
@@ -36,7 +36,7 @@ func CreateBackupEncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cr
 			kmsKeyNameRefs = append(kmsKeyNameRefs, &refs.KMSCryptoKeyRef{External: kmsKeyName})
 		}
 	}
-	out.KMSKeyNameRefs = kmsKeyNameRefs
+	out.KMSKeyRefs = kmsKeyNameRefs
 	return out
 }
 func CreateBackupEncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.CreateBackupEncryptionConfig) *pb.CreateBackupEncryptionConfig {
@@ -45,12 +45,12 @@ func CreateBackupEncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cre
 	}
 	out := &pb.CreateBackupEncryptionConfig{}
 	out.EncryptionType = direct.Enum_ToProto[pb.CreateBackupEncryptionConfig_EncryptionType](mapCtx, in.EncryptionType)
-	if in.KMSKeyNameRef != nil {
-		out.KmsKeyName = in.KMSKeyNameRef.External
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
 	}
 	kmsKeyNames := []string{}
-	if in.KMSKeyNameRefs != nil {
-		for _, kmsKeyNameRef := range in.KMSKeyNameRefs {
+	if in.KMSKeyRefs != nil {
+		for _, kmsKeyNameRef := range in.KMSKeyRefs {
 			if kmsKeyNameRef != nil {
 				kmsKeyNames = append(kmsKeyNames, kmsKeyNameRef.External)
 			}

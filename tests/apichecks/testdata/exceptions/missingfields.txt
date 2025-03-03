@@ -2975,7 +2975,6 @@
 [missing_field] crd=servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com version=v1beta1: field ".spec.reservedPeeringRanges[].namespace" is not set in unstructured objects
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.databaseDialect" is not set in unstructured objects
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.enableDropProtection" is not set in unstructured objects
-[missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.versionRetentionPeriod" is not set in unstructured objects
 [missing_field] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingConfig.autoscalingLimits.maxProcessingUnits" is not set in unstructured objects
 [missing_field] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingConfig.autoscalingLimits.minProcessingUnits" is not set in unstructured objects
