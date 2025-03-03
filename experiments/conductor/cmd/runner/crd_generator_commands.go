@@ -15,15 +15,12 @@
 package runner
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 const GENERATOR_SCRIPT_TEMPLATE = `#!/bin/bash
@@ -109,28 +106,15 @@ func generateCRDScripts(opts *RunnerOptions, branch Branch) {
 		promptPath := filepath.Join(workDir, "mockgcp", "crdgen_prompt.txt")
 		writeTemplateToFile(branch, promptPath, UPDATE_GENERATE_SCRIPT_PROMPT)
 
-		// Run codebot
-		start := time.Now()
-		log.Println("COMMAND: codebot --ui-type=prompt --prompt=crdgen_prompt.txt")
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-		defer cancel()
-		codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=mockgcp/crdgen_prompt.txt")
-		codebot.Dir = workDir
-		codebot.Stdout = &out
-		codebot.Stderr = &out
-		if err := codebot.Run(); err != nil {
-			stop := time.Now()
-			diff := stop.Sub(start)
-			log.Printf("CODEBOT GENERATE ERROR (%v): \n", diff)
-			printCommandOutput(out.String())
-			out.Reset()
+		cfg := CommandConfig{
+			Name:    "CODEBOT GENERATE",
+			Cmd:     "codebot",
+			Args:    []string{"--ui-type=prompt", "--prompt=mockgcp/crdgen_prompt.txt"},
+			WorkDir: workDir,
+		}
+		if err := executeCommand(cfg, &out); err != nil {
 			log.Fatal(err)
 		}
-		stop := time.Now()
-		diff := stop.Sub(start)
-		log.Printf("CODEBOT GENERATE output in %v: \n", diff)
-		printCommandOutput(out.String())
-		out.Reset()
 	}
 
 	// Add and commit changes
@@ -139,20 +123,15 @@ func generateCRDScripts(opts *RunnerOptions, branch Branch) {
 	gitCommit(workDir, &out, fmt.Sprintf("add/update crd generation script for %s", branch.Group))
 
 	// Run the generator script
-	log.Printf("Running generator script %s", scriptPath)
-	cmd := exec.Command(scriptPath)
-	cmd.Dir = workDir
-	cmd.Stdout = &out
-	cmd.Stderr = &out
-	if err := cmd.Run(); err != nil {
-		log.Printf("Generator script error: \n")
-		printCommandOutput(out.String())
-		out.Reset()
+	cfg := CommandConfig{
+		Name:    "Generator script",
+		Cmd:     scriptPath,
+		WorkDir: workDir,
+	}
+	if err := executeCommand(cfg, &out); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Generator script output: \n")
-	printCommandOutput(out.String())
-	out.Reset()
+
 	// Add and commit generated files
 	gitAdd(workDir, &out,
 		fmt.Sprintf("apis/%s/v1alpha1/", branch.Group),
@@ -171,28 +150,18 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) {
 
 	// Run controllerbuilder to generate spec and status
 	log.Printf("Generating spec and status for %s", branch.Name)
-	cmd := exec.Command("controllerbuilder", "prompt",
-		"--src-dir", workDir,
-		"--proto-dir", filepath.Join(workDir, ".build/third_party/googleapis/"))
-	cmd.Dir = workDir
 	stdinInput := fmt.Sprintf("// +kcc:proto=%s.%s\n", branch.ProtoSvc, branch.Proto)
-	cmd.Stdin = strings.NewReader(stdinInput)
-	cmd.Stdout = &out
-	cmd.Stderr = &out
 
-	log.Printf("Running command: controllerbuilder prompt --src-dir %s --proto-dir %s",
-		workDir, filepath.Join(workDir, ".build/third_party/googleapis/"))
-	log.Printf("With stdin input: %s", stdinInput)
-
-	if err := cmd.Run(); err != nil {
-		log.Printf("Spec/Status generation error:\n")
-		printCommandOutput(out.String())
-		out.Reset()
+	cfg := CommandConfig{
+		Name:    "Spec/Status generation",
+		Cmd:     "controllerbuilder",
+		Args:    []string{"prompt", "--src-dir", workDir, "--proto-dir", filepath.Join(workDir, ".build/third_party/googleapis/")},
+		WorkDir: workDir,
+		Stdin:   strings.NewReader(stdinInput),
+	}
+	if err := executeCommand(cfg, &out); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Spec/Status generation output: \n")
-	printCommandOutput(out.String())
-	out.Reset()
 
 	// Add and commit changes
 	gitAdd(workDir, &out, fmt.Sprintf("apis/%s/v1alpha1/%s_types.go", branch.Group, strings.ToLower(branch.Resource)))
@@ -214,25 +183,21 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	}
 
 	fuzzerPath := filepath.Join(fuzzerDir, fmt.Sprintf("%s_fuzzer.go", strings.ToLower(branch.Resource)))
-	cmd := exec.Command("controllerbuilder", "prompt",
-		"--src-dir", workDir,
-		"--proto-dir", filepath.Join(workDir, ".build/third_party/googleapis/"))
-	cmd.Dir = workDir
-	cmd.Stdin = strings.NewReader(fmt.Sprintf(`// +tool:fuzz-gen
+	stdinInput := fmt.Sprintf(`// +tool:fuzz-gen
 // proto.message: %s
-`, branch.ProtoMsg))
+`, branch.ProtoMsg)
+
 	var fuzzerOut strings.Builder
-	cmd.Stdout = &fuzzerOut
-	cmd.Stderr = &out
-	if err := cmd.Run(); err != nil {
-		log.Printf("Fuzzer generation error: \n")
-		printCommandOutput(out.String())
-		out.Reset()
+	cfg := CommandConfig{
+		Name:    "Fuzzer generation",
+		Cmd:     "controllerbuilder",
+		Args:    []string{"prompt", "--src-dir", workDir, "--proto-dir", filepath.Join(workDir, ".build/third_party/googleapis/")},
+		WorkDir: workDir,
+		Stdin:   strings.NewReader(stdinInput),
+	}
+	if err := executeCommand(cfg, &fuzzerOut); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Fuzzer generation output: \n")
-	printCommandOutput(fuzzerOut.String())
-	fuzzerOut.Reset()
 
 	if err := os.WriteFile(fuzzerPath, []byte(fuzzerOut.String()), 0644); err != nil {
 		log.Fatal(err)
@@ -241,22 +206,18 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	// Update register.go to import the new package
 	registerPath := filepath.Join(workDir, "pkg/controller/direct/register/register.go")
 	importLine := fmt.Sprintf(`_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/%s"`, branch.Group)
+	stdinInput = fmt.Sprintf("Add an unnamed (_) go import for %s to the imports in %s", importLine, registerPath)
 
-	// Use codebot to add the import
-	cmd = exec.Command("codebot", "--prompt=/dev/stdin")
-	cmd.Dir = workDir
-	cmd.Stdin = strings.NewReader(fmt.Sprintf("Add an unnamed (_) go import for %s to the imports in %s", importLine, registerPath))
-	cmd.Stdout = &out
-	cmd.Stderr = &out
-	if err := cmd.Run(); err != nil {
-		log.Printf("Import addition error: \n")
-		printCommandOutput(out.String())
-		out.Reset()
+	cfg = CommandConfig{
+		Name:    "Import addition",
+		Cmd:     "codebot",
+		Args:    []string{"--prompt=/dev/stdin"},
+		WorkDir: workDir,
+		Stdin:   strings.NewReader(stdinInput),
+	}
+	if err := executeCommand(cfg, &out); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Import addition output: \n")
-	printCommandOutput(out.String())
-	out.Reset()
 
 	// Add and commit changes
 	gitAdd(workDir, &out,

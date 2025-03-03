@@ -15,6 +15,7 @@
 package runner
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -23,6 +24,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 type exitBash func()
@@ -251,4 +253,53 @@ func formatCommandOutput(output string) string {
 	formatted := strings.ReplaceAll(output, "\\n", "\n")
 	formatted = strings.ReplaceAll(formatted, "\\t", "\t")
 	return formatted
+}
+
+// CommandConfig holds the configuration for executing a command
+type CommandConfig struct {
+	Name    string        // Name of the command for logging
+	Cmd     string        // The command to run
+	Args    []string      // Command arguments
+	WorkDir string        // Working directory
+	Stdin   io.Reader     // Optional stdin
+	Timeout time.Duration // Timeout duration (default 5m)
+}
+
+// Helper function to execute a command with timing and logging
+func executeCommand(cfg CommandConfig, out *strings.Builder) error {
+	if cfg.Timeout == 0 {
+		cfg.Timeout = 5 * time.Minute
+	}
+
+	log.Printf("Starting command step: %s", cfg.Name)
+	log.Printf("[%s] working directory: %s", cfg.Name, cfg.WorkDir)
+	log.Printf("[%s] command: %s %s", cfg.Name, cfg.Cmd, strings.Join(cfg.Args, " "))
+	if cfg.Stdin != nil {
+		log.Printf("[%s] stdin: %s", cfg.Name, cfg.Stdin)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, cfg.Cmd, cfg.Args...)
+	cmd.Dir = cfg.WorkDir
+	cmd.Stdout = out
+	cmd.Stderr = out
+	if cfg.Stdin != nil {
+		cmd.Stdin = cfg.Stdin
+	}
+
+	start := time.Now()
+
+	err := cmd.Run()
+	stop := time.Now()
+	diff := stop.Sub(start)
+	if err != nil {
+		log.Printf("[%s] ERROR (%v): \n", cfg.Name, diff)
+		log.Printf("[%s] err: %q\n", cfg.Name, err)
+	} else {
+		log.Printf("[%s] SUCCESS (%v): \n", cfg.Name, diff)
+	}
+	printCommandOutput(out.String())
+	out.Reset()
+	return err
 }
