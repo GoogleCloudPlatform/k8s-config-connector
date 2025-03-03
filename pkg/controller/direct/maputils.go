@@ -23,6 +23,8 @@ import (
 	"time"
 
 	"github.com/googleapis/gax-go/v2/apierror"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -255,9 +257,9 @@ func ValueOf[T any](p *T) T {
 	return v
 }
 
-// IsNotFound returns true if the given error is an HTTP 404.
+// IsNotFound returns true if the given error is an HTTP 404 or a NotFound GRPC status.
 func IsNotFound(err error) bool {
-	return HasHTTPCode(err, 404)
+	return HasHTTPCode(err, 404) || HasGRPCStatus(err, codes.NotFound)
 }
 
 // IsBadRequest returns true if the given error is an HTTP 400.
@@ -279,6 +281,17 @@ func HasHTTPCode(err error, code int) bool {
 		klog.Warningf("unexpected error type %T", err)
 	}
 	return false
+}
+
+func HasGRPCStatus(err error, code codes.Code) bool {
+	if err == nil {
+		return false
+	}
+	grpcStatus, ok := status.FromError(err) 
+	if !ok {
+		return false
+	}
+	return grpcStatus.Code() == code
 }
 
 func Duration_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
