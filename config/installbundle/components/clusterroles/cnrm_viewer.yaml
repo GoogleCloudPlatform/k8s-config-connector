@@ -87,6 +87,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - bigquerybiglake.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - bigqueryconnection.cnrm.cloud.google.com
   resources:
   - '*'
