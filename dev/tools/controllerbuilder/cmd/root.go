@@ -43,6 +43,7 @@ func Execute() {
 	rootCmd.AddCommand(generatedirectreconciler.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatecontroller.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatetypes.BuildCommand(&generateOptions))
+	rootCmd.AddCommand(generatetypes.BuildV2Command(&generateOptions))
 	rootCmd.AddCommand(generatemapper.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(updatetypes.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(exportcsv.BuildCommand(&generateOptions))

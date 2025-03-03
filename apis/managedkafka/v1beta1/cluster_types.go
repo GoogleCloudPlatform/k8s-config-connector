@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,99 +15,12 @@
 package v1beta1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 )
 
 var ManagedKafkaClusterGVK = GroupVersion.WithKind("ManagedKafkaCluster")
-
-// +kcc:proto=google.cloud.managedkafka.v1.AccessConfig
-type AccessConfig struct {
-	// Required. Virtual Private Cloud (VPC) networks that must be granted direct
-	//  access to the Kafka cluster. Minimum of 1 network is required. Maximum 10
-	//  networks can be specified.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.AccessConfig.network_configs
-	// +required
-	NetworkConfigs []NetworkConfig `json:"networkConfigs,omitempty"`
-}
-
-// +kcc:proto=google.cloud.managedkafka.v1.CapacityConfig
-type CapacityConfig struct {
-	// Required. The number of vCPUs to provision for the cluster. Minimum: 3.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.CapacityConfig.vcpu_count
-	// +required
-	VcpuCount *int64 `json:"vcpuCount,omitempty"`
-
-	// Required. The memory to provision for the cluster in bytes.
-	//  The CPU:memory ratio (vCPU:GiB) must be between 1:1 and 1:8.
-	//  Minimum: 3221225472 (3 GiB).
-	// +kcc:proto:field=google.cloud.managedkafka.v1.CapacityConfig.memory_bytes
-	// +required
-	MemoryBytes *int64 `json:"memoryBytes,omitempty"`
-}
-
-// +kcc:proto=google.cloud.managedkafka.v1.NetworkConfig
-type NetworkConfig struct {
-	// Required. Reference to the VPC subnet in which to create Private Service Connect
-	//  (PSC) endpoints for the Kafka brokers and bootstrap address.
-	//
-	//  The subnet must be located in the same region as the Kafka cluster. The
-	//  project may differ. Multiple subnets from the same parent network must not
-	//  be specified.
-	//
-	//  The CIDR range of the subnet must be within the IPv4 address ranges for
-	//  private networks, as specified in RFC 1918.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.NetworkConfig.subnet
-	// +required
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef"`
-}
-
-// +kcc:proto=google.cloud.managedkafka.v1.GcpConfig
-type GcpConfig struct {
-	// Required. Access configuration for the Kafka cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.GcpConfig.access_config
-	// +required
-	AccessConfig *AccessConfig `json:"accessConfig,omitempty"`
-
-	// Optional. Immutable. The Cloud KMS Key name to use for encryption. The key
-	//  must be located in the same region as the cluster and cannot be changed.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.GcpConfig.kms_key
-	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
-}
-
-// ManagedKafkaClusterSpec defines the desired state of ManagedKafkaCluster
-// +kcc:proto=google.cloud.managedkafka.v1.Cluster
-type ManagedKafkaClusterSpec struct {
-	commonv1alpha1.CommonSpec `json:",inline"`
-
-	// +required
-	Location string `json:"location"`
-
-	// The ManagedKafkaCluster name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
-
-	// Required. Configuration properties for a Kafka cluster deployed to Google
-	//  Cloud Platform.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.gcp_config
-	// +required
-	GcpConfig *GcpConfig `json:"gcpConfig,omitempty"`
-
-	// Optional. Labels as key value pairs.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Required. Capacity configuration for the Kafka cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.capacity_config
-	// +required
-	CapacityConfig *CapacityConfig `json:"capacityConfig,omitempty"`
-
-	// Optional. Rebalance configuration for the Kafka cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.rebalance_config
-	RebalanceConfig *RebalanceConfig `json:"rebalanceConfig,omitempty"`
-}
 
 // ManagedKafkaClusterStatus defines the config connector machine state of ManagedKafkaCluster
 type ManagedKafkaClusterStatus struct {
@@ -125,32 +38,6 @@ type ManagedKafkaClusterStatus struct {
 	ObservedState *ManagedKafkaClusterObservedState `json:"observedState,omitempty"`
 }
 
-// ManagedKafkaClusterObservedState is the state of the ManagedKafkaCluster resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.managedkafka.v1.Cluster
-type ManagedKafkaClusterObservedState struct {
-	// Output only. The time when the cluster was created.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time when the cluster was last updated.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. The current state of the cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.state
-	State *string `json:"state,omitempty"`
-
-	// NOTYET
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.satisfies_pzi
-	// SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-
-	// NOTYET
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.satisfies_pzs
-	// SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
-}
-
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // TODO(user): make sure the pluralizaiton below is correct
@@ -161,7 +48,6 @@ type ManagedKafkaClusterObservedState struct {
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
-// +kubebuilder:storageversion
 
 // ManagedKafkaCluster is the Schema for the ManagedKafkaCluster API
 // +k8s:openapi-gen=true
