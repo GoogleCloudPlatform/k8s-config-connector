@@ -92,6 +92,8 @@ func TestMissingRefs(t *testing.T) {
 
 // Looks for fields that looks like refs, but are in the status.
 // These fields should not be refs, they should be "external style" links.
+// Persistence of the mutable-but-unreadable SecretKeyRef fields can be exempted
+// manually by being added to no_refs_in_status.txt.
 func TestNoRefsInStatus(t *testing.T) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
