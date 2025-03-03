@@ -13,31 +13,49 @@
 # limitations under the License.
 
 branches:
-    - name: notebooks-instance
-      local: resource-notebooks-instance
-      remote: resource-notebooks-instance
-      command: gcloud notebooks instances
-      group: notebooks
-      resource: instance
-      controller: Unknown
-      kind: NotebooksInstance
-      package: google.cloud.notebooks.v1
-      proto: Instance
-      proto-path: google/cloud/notebooks/v1/service.proto
-      proto-service: "google.cloud.notebooks.v1.NotebookService"
-      proto-msg: google.cloud.notebooks.v1.Instance
-      host-name: "notebooks.googleapis.com"
-      notes: []
-skipped:
-    - name: workbench-instance
-      local: resource-workbench-instance
-      remote: resource-workbench-instance
-      command: gcloud workbench instances
-      group: workbench
-      resource: instance
-      controller: Unknown
-      kind: WorkbenchInstance
-      package: google.cloud.notebooks.v2
-      proto: Instance
-      proto-path: google.cloud.notebooks.v2.Instance
-      notes: []
+  - name: accessapproval-approvalrequest
+    local: resource-accessapproval-approvalrequest
+    remote: resource-accessapproval-approvalrequest
+    command: ""
+    group: accessapproval
+    resource: approvalrequest
+    controller: Unknown
+    kind: AccessApprovalApprovalRequest
+    package: google.cloud.accessapproval.v1
+    proto: ApprovalRequest
+    proto-path: google/cloud/accessapproval/v1/accessapproval.proto
+    proto-service: ""
+    proto-msg: google.cloud.accessapproval.v1.ApprovalRequest
+    host-name: ""
+    notes:
+      - No gcloud command found
+  - name: ai-customjobs
+    local: resource-ai-customjobs
+    remote: resource-ai-customjobs
+    command: gcloud ai custom-jobs
+    group: ai
+    resource: customjobs
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computebackendservice
+    local: resource-compute-computebackendservice
+    remote: resource-compute-computebackendservice
+    command: gcloud compute backend-services
+    group: compute
+    resource: computebackendservice
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: BackendService
+    proto-path: google/cloud/compute/v1/compute.proto
+    proto-service: google.cloud.compute.v1.BackendServices
+    proto-msg: google.cloud.compute.v1.BackendService
+    host-name: compute.googleapis.com
+    notes: []
