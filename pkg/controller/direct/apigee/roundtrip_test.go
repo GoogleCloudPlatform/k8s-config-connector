@@ -183,7 +183,7 @@ func FuzzApigeeEnvgroupAttachmentSpec(f *testing.F) {
 		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
 
 		// To KRM
-		k1 := &krmv1alpha1.ApigeeEnvgroupAttachmentSpec{}
+		k1 := &krm.ApigeeEnvgroupAttachmentSpec{}
 		filler.Fill(t, k1)
 
 		// To API
@@ -200,8 +200,8 @@ func FuzzApigeeEnvgroupAttachmentSpec(f *testing.F) {
 		}
 
 		opts := cmp.Options{
-			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEnvgroupAttachmentSpec{}, "EnvgroupRef"),
-			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEnvgroupAttachmentSpec{}, "ResourceID"),
+			cmpopts.IgnoreFields(krm.ApigeeEnvgroupAttachmentSpec{}, "EnvgroupRef"),
+			cmpopts.IgnoreFields(krm.ApigeeEnvgroupAttachmentSpec{}, "ResourceID"),
 			cmpopts.IgnoreFields(krm.ApigeeEnvironmentRef{}, "Name"),
 			cmpopts.IgnoreFields(krm.ApigeeEnvironmentRef{}, "Namespace"),
 		}
@@ -229,7 +229,7 @@ func FuzzApigeeEnvgroupAttachmentObservedState(f *testing.F) {
 
 		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream, FieldOverrides: overrides})
 
-		k1 := &krmv1alpha1.ApigeeEnvgroupAttachmentObservedState{}
+		k1 := &krm.ApigeeEnvgroupAttachmentObservedState{}
 		filler.Fill(t, k1)
 
 		// KRM -> API
