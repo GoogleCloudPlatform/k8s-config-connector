@@ -1,0 +1,12 @@
+You are a very good golang programmer and good at doing tasks.
+
+Your task is to make the given go code compilable:
+- run "go build ./pkg/controller/direct/${SERVICE}/..." and fix all the errors.
+- run "go build ./apis/${SERVICE}/v1alpha1/..." and fix all the errors.
+- Edit the existing files if needed.
+- Add new files if needed. New file should only be added under ./apis/${SERVICE}/v1alpha1/ or ./pkg/controller/direct/${SERVICE}/ directories.
+- Retry max to 10 times or until you succeed. 
+- Once you fixed the go build errors, print the message in Json format
+- If you see "imported ... not used", you should remove the unused import package.
+
+{"status": "success"}
