@@ -12,28 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Adds namespace to all resources.
-namespace: configconnector-operator-system
-
-# Labels to add to all resources and selectors.
-commonLabels:
-  # This is required by GKE addon manager
-  addonmanager.kubernetes.io/mode: Reconcile
-  cnrm.cloud.google.com/operator-system: "true"
-
-commonAnnotations:
-  cnrm.cloud.google.com/operator-version: "1.125.0"
-
-bases:
-- ../crd/overlays/minimal
-- ../rbac
-- ../manager
+# This kustomization.yaml is not intended to be run by itself,
+# since it depends on service name and namespace that are out of this kustomize package.
+# It should be run by config/default
+resources:
+- bases/core.cnrm.cloud.google.com_configconnectors.yaml
+- bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
 
 patchesJson6902:
 - target:
-    group: apps
+    group: apiextensions.k8s.io
     version: v1
-    kind: StatefulSet
-    name: configconnector-operator
-    namespace: configconnector-operator-system
-  path: manager_patch.yaml
+    kind: CustomResourceDefinition
+    name: configconnectors.core.cnrm.cloud.google.com
+  path: crd_patch.yaml
