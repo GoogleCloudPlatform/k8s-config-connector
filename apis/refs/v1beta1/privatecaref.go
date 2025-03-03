@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -87,6 +88,13 @@ func ResolvePrivateCACAPoolRef(ctx context.Context, reader client.Reader, src cl
 			return nil, fmt.Errorf("referenced PrivateCACAPool %v not found", key)
 		}
 		return nil, fmt.Errorf("error reading referenced PrivateCACAPool %v: %w", key, err)
+	}
+	resource, err := k8s.NewResource(caPool)
+	if err != nil {
+		return nil, fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return nil, k8s.NewReferenceNotReadyError(caPool.GroupVersionKind(), key)
 	}
 
 	caPoolResourceID, err := GetResourceID(caPool)
