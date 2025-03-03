@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -169,10 +169,6 @@ func (a *TopicAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
-	}
-
-	if paths.Has("replication_factor") {
-		return fmt.Errorf("replicationFactor field is immutable")
 	}
 
 	if len(paths) == 0 {

@@ -12,18 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
-kind: ManagedKafkaTopic
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
 metadata:
-  name: managedkafkatopic-${uniqueId}
+  name: managedkafkatopic-dep
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
-  clusterRef:
-    name: managedkafkacluster-${uniqueId}
-  partitionCount: 3 # 2 -> 3
-  replicationFactor: 3
-  configs:
-    cleanup.policy: delete # compact -> delete
-    min.insync.replicas: "3" # new entry
+  autoCreateSubnetworks: false
