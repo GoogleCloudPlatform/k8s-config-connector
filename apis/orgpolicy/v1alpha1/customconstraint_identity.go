@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v2
+package v1alpha1
 
 import (
 	"context"
@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type CustomConstraintIdentity struct {
 	parent *CustomConstraintParent
-	id     string
+	id string
 }
 
 func (i *CustomConstraintIdentity) String() string {
-	return i.parent.String() + "/customconstraints/" + i.id
+	return  i.parent.String() + "/customconstraints/" + i.id
 }
 
 func (i *CustomConstraintIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *CustomConstraintIdentity) ID() string {
 }
 
 func (i *CustomConstraintIdentity) Parent() *CustomConstraintParent {
-	return i.parent
+	return  i.parent
 }
 
 type CustomConstraintParent struct {
@@ -51,6 +51,7 @@ type CustomConstraintParent struct {
 func (p *CustomConstraintParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
+
 
 // New builds a CustomConstraintIdentity from the Config Connector CustomConstraint object.
 func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj *OrgpolicyCustomConstraint) (*CustomConstraintIdentity, error) {

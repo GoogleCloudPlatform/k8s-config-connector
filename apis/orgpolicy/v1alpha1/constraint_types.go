@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v2
+package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var OrgpolicyPolicyGVK = GroupVersion.WithKind("OrgpolicyPolicy")
+var OrgpolicyConstraintGVK = GroupVersion.WithKind("OrgpolicyConstraint")
 
-// OrgpolicyPolicySpec defines the desired state of OrgpolicyPolicy
-// +kcc:proto=google.cloud.orgpolicy.v2.Policy
-type OrgpolicyPolicySpec struct {
-	// The OrgpolicyPolicy name. If not given, the metadata.name will be used.
+// OrgpolicyConstraintSpec defines the desired state of OrgpolicyConstraint
+// +kcc:proto=google.cloud.orgpolicy.v2.Constraint
+type OrgpolicyConstraintSpec struct {
+	// The OrgpolicyConstraint name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-// OrgpolicyPolicyStatus defines the config connector machine state of OrgpolicyPolicy
-type OrgpolicyPolicyStatus struct {
+// OrgpolicyConstraintStatus defines the config connector machine state of OrgpolicyConstraint
+type OrgpolicyConstraintStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -37,23 +37,22 @@ type OrgpolicyPolicyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the OrgpolicyPolicy resource in GCP.
+	// A unique specifier for the OrgpolicyConstraint resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *OrgpolicyPolicyObservedState `json:"observedState,omitempty"`
+	ObservedState *OrgpolicyConstraintObservedState `json:"observedState,omitempty"`
 }
 
-// OrgpolicyPolicySpec defines the desired state of OrgpolicyPolicy
-// +kcc:proto=google.cloud.orgpolicy.v2.Policy
-// OrgpolicyPolicyObservedState is the state of the OrgpolicyPolicy resource as most recently observed in GCP.
-type OrgpolicyPolicyObservedState struct {
+// OrgpolicyConstraintObservedState is the state of the OrgpolicyConstraint resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.orgpolicy.v2.Constraint
+type OrgpolicyConstraintObservedState struct {
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // TODO(user): make sure the pluralizaiton below is correct
-// +kubebuilder:resource:categories=gcp,shortName=gcporgpolicypolicy;gcporgpolicypolicys
+// +kubebuilder:resource:categories=gcp,shortName=gcporgpolicyconstraint;gcporgpolicyconstraints
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
@@ -61,25 +60,25 @@ type OrgpolicyPolicyObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// OrgpolicyPolicy is the Schema for the OrgpolicyPolicy API
+// OrgpolicyConstraint is the Schema for the OrgpolicyConstraint API
 // +k8s:openapi-gen=true
-type OrgpolicyPolicy struct {
+type OrgpolicyConstraint struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   OrgpolicyPolicySpec   `json:"spec,omitempty"`
-	Status OrgpolicyPolicyStatus `json:"status,omitempty"`
+	Spec   OrgpolicyConstraintSpec   `json:"spec,omitempty"`
+	Status OrgpolicyConstraintStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// OrgpolicyPolicyList contains a list of OrgpolicyPolicy
-type OrgpolicyPolicyList struct {
+// OrgpolicyConstraintList contains a list of OrgpolicyConstraint
+type OrgpolicyConstraintList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []OrgpolicyPolicy `json:"items"`
+	Items           []OrgpolicyConstraint `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&OrgpolicyPolicy{}, &OrgpolicyPolicyList{})
+	SchemeBuilder.Register(&OrgpolicyConstraint{}, &OrgpolicyConstraintList{})
 }

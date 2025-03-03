@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v2
+package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -44,9 +44,8 @@ type OrgpolicyCustomConstraintStatus struct {
 	ObservedState *OrgpolicyCustomConstraintObservedState `json:"observedState,omitempty"`
 }
 
-// OrgpolicyCustomConstraintSpec defines the desired state of OrgpolicyCustomConstraint
-// +kcc:proto=google.cloud.orgpolicy.v2.CustomConstraint
 // OrgpolicyCustomConstraintObservedState is the state of the OrgpolicyCustomConstraint resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.orgpolicy.v2.CustomConstraint
 type OrgpolicyCustomConstraintObservedState struct {
 }
 

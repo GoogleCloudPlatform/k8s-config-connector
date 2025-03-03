@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v2
+package v1alpha1
 
 import (
 	"context"
@@ -24,36 +24,37 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// PolicyIdentity defines the resource reference to OrgpolicyPolicy, which "External" field
+// ConstraintIdentity defines the resource reference to OrgpolicyConstraint, which "External" field
 // holds the GCP identifier for the KRM object.
-type PolicyIdentity struct {
-	parent *PolicyParent
-	id     string
+type ConstraintIdentity struct {
+	parent *ConstraintParent
+	id string
 }
 
-func (i *PolicyIdentity) String() string {
-	return i.parent.String() + "/policys/" + i.id
+func (i *ConstraintIdentity) String() string {
+	return  i.parent.String() + "/constraints/" + i.id
 }
 
-func (i *PolicyIdentity) ID() string {
+func (i *ConstraintIdentity) ID() string {
 	return i.id
 }
 
-func (i *PolicyIdentity) Parent() *PolicyParent {
-	return i.parent
+func (i *ConstraintIdentity) Parent() *ConstraintParent {
+	return  i.parent
 }
 
-type PolicyParent struct {
+type ConstraintParent struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *PolicyParent) String() string {
+func (p *ConstraintParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a PolicyIdentity from the Config Connector Policy object.
-func NewPolicyIdentity(ctx context.Context, reader client.Reader, obj *OrgpolicyPolicy) (*PolicyIdentity, error) {
+
+// New builds a ConstraintIdentity from the Config Connector Constraint object.
+func NewConstraintIdentity(ctx context.Context, reader client.Reader, obj *OrgpolicyConstraint) (*ConstraintIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -79,7 +80,7 @@ func NewPolicyIdentity(ctx context.Context, reader client.Reader, obj *Orgpolicy
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParsePolicyExternal(externalRef)
+		actualParent, actualResourceID, err := ParseConstraintExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -94,8 +95,8 @@ func NewPolicyIdentity(ctx context.Context, reader client.Reader, obj *Orgpolicy
 				resourceID, actualResourceID)
 		}
 	}
-	return &PolicyIdentity{
-		parent: &PolicyParent{
+	return &ConstraintIdentity{
+		parent: &ConstraintParent{
 			ProjectID: projectID,
 			Location:  location,
 		},
@@ -103,12 +104,12 @@ func NewPolicyIdentity(ctx context.Context, reader client.Reader, obj *Orgpolicy
 	}, nil
 }
 
-func ParsePolicyExternal(external string) (parent *PolicyParent, resourceID string, err error) {
+func ParseConstraintExternal(external string) (parent *ConstraintParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "policys" {
-		return nil, "", fmt.Errorf("format of OrgpolicyPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/policys/{{policyID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "constraints" {
+		return nil, "", fmt.Errorf("format of OrgpolicyConstraint external=%q was not known (use projects/{{projectID}}/locations/{{location}}/constraints/{{constraintID}})", external)
 	}
-	parent = &PolicyParent{
+	parent = &ConstraintParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}
