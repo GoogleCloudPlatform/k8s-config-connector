@@ -326,7 +326,7 @@ func FuzzApigeeInstanceAttachmentSpec(f *testing.F) {
 		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
 
 		// To KRM
-		k1 := &krmv1alpha1.ApigeeInstanceAttachmentSpec{}
+		k1 := &krm.ApigeeInstanceAttachmentSpec{}
 		filler.Fill(t, k1)
 
 		// To API
@@ -343,8 +343,8 @@ func FuzzApigeeInstanceAttachmentSpec(f *testing.F) {
 		}
 
 		opts := cmp.Options{
-			cmpopts.IgnoreFields(krmv1alpha1.ApigeeInstanceAttachmentSpec{}, "InstanceRef"),
-			cmpopts.IgnoreFields(krmv1alpha1.ApigeeInstanceAttachmentSpec{}, "ResourceID"),
+			cmpopts.IgnoreFields(krm.ApigeeInstanceAttachmentSpec{}, "InstanceRef"),
+			cmpopts.IgnoreFields(krm.ApigeeInstanceAttachmentSpec{}, "ResourceID"),
 			cmpopts.IgnoreFields(krm.ApigeeEnvironmentRef{}, "Name"),
 			cmpopts.IgnoreFields(krm.ApigeeEnvironmentRef{}, "Namespace"),
 		}
@@ -372,7 +372,7 @@ func FuzzApigeeInstanceAttachmentObservedState(f *testing.F) {
 
 		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream, FieldOverrides: overrides})
 
-		k1 := &krmv1alpha1.ApigeeInstanceAttachmentObservedState{}
+		k1 := &krm.ApigeeInstanceAttachmentObservedState{}
 		filler.Fill(t, k1)
 
 		// KRM -> API
