@@ -143,6 +143,8 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	}
 
 	switch opts.command {
+	case -2:
+		splitMetadata(opts, branches)
 	case -1:
 		fixMetadata(opts, branches)
 	case 0:
@@ -205,15 +207,15 @@ func printHelp() {
 	log.Println("conductor runner --branch-repo=? --branch-conf=<META> --command=<CMD>")
 	log.Println("\t<CMD>")
 	log.Println("\t0 - Print help")
-	log.Println("\t1 - Check the repo director and metadata")
-	log.Println("\t2 - Create the local github branches from the metadata")
-	log.Println("\t3 - Delete the local github branches from the metadata")
-	log.Println("\t4 - Create script.yaml for mock gcp generation in each github branch")
-	log.Println("\t5 - Create _http.log for mock gcp generation in each github branch")
-	log.Println("\t6 - Generate mock Service and Resource go files in each github branch")
-	log.Println("\t7 - Add service to mock_http_roundtrip.go in each github branch")
-	log.Println("\t8 - Add proto to makefile in each github branch")
-	log.Println("\t9 - Run mockgcptests on generated mocks in each github branch")
+	log.Println("\t1 - [Validate] Repo directory and metadata")
+	log.Println("\t2 - [Branch] Create the local github branches from the metadata")
+	log.Println("\t3 - [Branch] Delete the local github branches from the metadata")
+	log.Println("\t4 - [Mock] Create script.yaml for mock gcp generation in each github branch")
+	log.Println("\t5 - [Mock] Create _http.log for mock gcp generation in each github branch")
+	log.Println("\t6 - [Mock] Generate mock Service and Resource go files in each github branch")
+	log.Println("\t7 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
+	log.Println("\t8 - [Mock] Add proto to makefile in each github branch")
+	log.Println("\t9 - [Mock] Run mockgcptests on generated mocks in each github branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
@@ -533,4 +535,43 @@ func inferProtoPath(branch Branch, workDir string) string {
 		return ""
 	}
 	return vals[0]
+}
+
+// Trying to put all resources with the same group together while
+// keeping the buckets roughly the same size.
+func splitMetadata(opts *RunnerOptions, branches Branches) {
+	var newBranches [7]Branches
+	groupSplitMap := make(map[string]int)
+	for _, branch := range branches.Branches {
+		if branch.Command == "" {
+			continue
+		}
+		if split, present := groupSplitMap[branch.Group]; present {
+			newBranches[split].Branches = append(newBranches[split].Branches, branch)
+			continue
+		}
+		smallest := len(newBranches[0].Branches)
+		bucket := 0
+		for cntr := 1; cntr < 7; cntr++ {
+			if len(newBranches[cntr].Branches) < smallest {
+				smallest = len(newBranches[cntr].Branches)
+				bucket = cntr
+			}
+		}
+		newBranches[bucket].Branches = append(newBranches[bucket].Branches, branch)
+		groupSplitMap[branch.Group] = bucket
+	}
+	// Hard coding splitting into 7 files
+	for cntr := 0; cntr < 7; cntr++ {
+		data := []byte(COPYRIGHT_HEADER)
+		yamlData, err := yaml.Marshal(newBranches[cntr])
+		if err != nil {
+			log.Fatal(err)
+		}
+		data = append(data, yamlData...)
+		err = os.WriteFile(fmt.Sprintf("branches-%d.yaml", cntr), data, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
