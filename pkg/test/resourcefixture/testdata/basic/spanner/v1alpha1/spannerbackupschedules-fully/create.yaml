@@ -26,6 +26,6 @@ spec:
   retentionDuration: "1209600s"
   encryptionConfig:
     encryptionType: "GOOGLE_DEFAULT_ENCRYPTION"
-    kmsKeyNameRef:
+    kmsKeyRef:
       name: kmscryptokey-${uniqueId}
 

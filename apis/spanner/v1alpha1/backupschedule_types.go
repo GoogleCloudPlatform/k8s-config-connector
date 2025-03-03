@@ -42,6 +42,8 @@ type SpannerBackupScheduleSpec struct {
 	// +kcc:proto:field=google.spanner.admin.database.v1.BackupSchedule.encryption_config
 	EncryptionConfig *CreateBackupEncryptionConfig `json:"encryptionConfig,omitempty"`
 
+	// TODO: Confirm whether FullBackupSpec and IncrementalBackupSpec should be references before promoting to beta.
+
 	// The schedule creates only full backups.
 	// +kcc:proto:field=google.spanner.admin.database.v1.BackupSchedule.full_backup_spec
 	FullBackupSpec *FullBackupSpec `json:"fullBackupSpec,omitempty"`
@@ -69,7 +71,7 @@ type CreateBackupEncryptionConfig struct {
 	//  is `CUSTOMER_MANAGED_ENCRYPTION`. Values are of the form
 	//  `projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>`.
 	// +kcc:proto:field=google.spanner.admin.database.v1.CreateBackupEncryptionConfig.kms_key_name
-	KMSKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
+	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Optional. Specifies the KMS configuration for the one or more keys used to
 	//  protect the backup. Values are of the form
@@ -87,7 +89,7 @@ type CreateBackupEncryptionConfig struct {
 	//  Multi-regional location KMS keys are not supported for USER_MANAGED
 	//  instance configs.
 	// +kcc:proto:field=google.spanner.admin.database.v1.CreateBackupEncryptionConfig.kms_key_names
-	KMSKeyNameRefs []*refs.KMSCryptoKeyRef `json:"kmsKeyNameRefs,omitempty"`
+	KMSKeyRefs []*refs.KMSCryptoKeyRef `json:"kmsKeyRefs,omitempty"`
 }
 
 // SpannerBackupScheduleStatus defines the config connector machine state of SpannerBackupSchedule
