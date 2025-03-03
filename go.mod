@@ -22,6 +22,7 @@ require (
 	cloud.google.com/go/iam v1.2.2
 	cloud.google.com/go/iap v1.10.2
 	cloud.google.com/go/kms v1.20.1
+	cloud.google.com/go/logging v1.12.0
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.21.2
 	cloud.google.com/go/notebooks v1.12.2
