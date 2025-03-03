@@ -37,6 +37,8 @@ toc:
   section:
   - title: "ApigeeEnvgroup"
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvgroup.md
+  - title: "ApigeeEnvgroupAttachment"
+    path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvgroupattachment.md
   - title: "ApigeeEnvironment"
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvironment.md
   - title: "ApigeeInstance"

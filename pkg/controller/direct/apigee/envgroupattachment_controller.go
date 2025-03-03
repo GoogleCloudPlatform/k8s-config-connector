@@ -19,8 +19,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
-	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -214,9 +213,9 @@ func (a *ApigeeEnvgroupAttachmentAdapter) Export(ctx context.Context) (*unstruct
 	// HACK: Environment field format returned from GCP API is name-only, not fully-qualified ID.
 	// So, we fix this by building a fully-qualified environment ID.
 	if obj.Spec.EnvironmentRef != nil {
-		environmentID := &apigeev1beta1.ApigeeEnvironmentIdentity{}
+		environmentID := &krm.ApigeeEnvironmentIdentity{}
 		environmentName := obj.Spec.EnvironmentRef.External
-		if err := environmentID.FromExternal(a.id.ParentID.ParentID.String() + "/" + apigeev1beta1.ApigeeEnvironmentIDToken + "/" + environmentName); err != nil {
+		if err := environmentID.FromExternal(a.id.ParentID.ParentID.String() + "/" + krm.ApigeeEnvironmentIDToken + "/" + environmentName); err != nil {
 			return nil, err
 		}
 		obj.Spec.EnvironmentRef.External = environmentID.String()

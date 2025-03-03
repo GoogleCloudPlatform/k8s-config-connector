@@ -89,6 +89,7 @@ func addResourceConfig(t *testing.T, smLoader *servicemappingloader.ServiceMappi
 func IsPureDirectResource(gk schema.GroupKind) bool {
 	pureDirectResources := []string{
 		"ApigeeEnvgroup",
+		"ApigeeEnvgroupAttachment",
 		"ApigeeInstance",
 		"ApigeeInstanceAttachment",
 		"BigQueryConnectionConnection",
