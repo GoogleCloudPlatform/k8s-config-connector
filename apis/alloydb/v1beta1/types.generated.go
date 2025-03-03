@@ -142,10 +142,6 @@ type ContinuousBackupConfig struct {
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.ContinuousBackupInfo
-type ContinuousBackupInfo struct {
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
 type EncryptionInfo struct {
 }
@@ -174,7 +170,7 @@ type Instance_ClientConnectionConfig struct {
 type Instance_InstanceNetworkConfig_AuthorizedNetwork struct {
 	// CIDR range for one authorzied network of the instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork.cidr_range
-	CidrRange *string `json:"cidrRange,omitempty"`
+	CIDRRange *string `json:"cidrRange,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.MachineConfig
@@ -306,10 +302,6 @@ type MaintenanceUpdatePolicy struct {
 	// Preferred windows to perform maintenance. Currently limited to 1.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.maintenance_windows
 	MaintenanceWindows []MaintenanceUpdatePolicy_MaintenanceWindow `json:"maintenanceWindows,omitempty"`
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.MigrationSource
-type MigrationSource struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.SslConfig
