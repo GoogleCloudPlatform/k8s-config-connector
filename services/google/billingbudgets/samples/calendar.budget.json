@@ -1,0 +1,36 @@
+{
+  "billingAccount": "{{billing_account_for_budgets}}",
+  "displayName": "sample-budget",
+  "budgetFilter": {
+    "projects": ["projects/{{ref:first.cloudresourcemanager.project.json:name}}"],
+    "creditTypes": ["DISCOUNT"],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "services": ["services/0017-8C5E-5B91"],
+    "subaccounts": [],
+    "labels": {
+      "label-one": {
+        "values": ["value-one"]
+      }
+    },
+    "calendarPeriod": "MONTH"
+  },
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": 9000000,
+      "nanos": 0
+    }
+  },
+  "thresholdRules": [
+    {
+      "thresholdPercent": 0.5,
+      "spendBasis": "CURRENT_SPEND"
+    }
+  ],
+  "allUpdatesRule": {
+    "pubsubTopic": "projects/{{project}}/topics/{{ref:first.pubsub.topic.json:name}}",
+    "schemaVersion": "1.0",
+    "monitoringNotificationChannels": ["projects/{{project}}/notificationChannels/{{ref:first.monitoring.notification_channel.json:name}}"],
+    "disableDefaultIamRecipients": false
+  }
+}

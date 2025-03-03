@@ -1,0 +1,36 @@
+{
+  "project": "{{project}}",
+  "name": "{{ca_name}}",
+  "location": "{{region}}",
+  "type": "SELF_SIGNED",
+  "caPool": "no-delete-test",
+  "lifetime": "86400s",
+  "config": {
+    "subjectConfig": {
+      "subject": {
+        "organization": "Example",
+        "common-name": "my-certificate-authority"
+      },
+      "subjectAltName": {
+        "dnsNames": ["example.com"]
+      }
+    },
+   "x509Config": {
+    "caOptions": {
+      "isCa": true
+    },
+     "keyUsage": {
+       "baseKeyUsage": {
+         "certSign": true,
+         "crlSign": true
+       }
+     },
+     "extendedKeyUsage": {
+       "serverAuth": true
+     }
+   }
+  },
+  "keySpec": {
+    "algorithm": "RSA_PKCS1_4096_SHA256"
+  }
+}

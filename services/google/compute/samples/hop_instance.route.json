@@ -1,0 +1,8 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "destRange": "0.0.0.0/0",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "nextHopInstance": "{{ref:basic.instance.json:selfLink}}",
+  "priority": 100
+}

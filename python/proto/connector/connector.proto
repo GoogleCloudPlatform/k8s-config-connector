@@ -1,0 +1,63 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package connector;
+
+import "google/rpc/status.proto";
+
+
+
+// InitializeRequest contains the parameters for the Initialize method
+// call (currently none).
+message InitializeRequest {}
+
+// InitializeResponse relays the result of the Initialize call.
+message InitializeResponse {
+  // Standard gRPC status code + message from the Initialize call.
+  google.rpc.Status status = 1;
+}
+
+// Header represents a single HTTP request or response header line.
+message Header {
+  string header = 1;
+  string value = 2;
+}
+
+// UnaryCallRequest wraps a method request for transmission across
+// the Magic Modules C library boundary.
+message UnaryCallRequest {
+  // Method path from the gRPC request; e.g., /compute_v1/apply_address
+  string method = 1;
+  // Marshaled request object.
+  bytes request = 2;
+  // Any headers included with the originating request.
+  repeated Header headers = 3;
+  // Credentials (e.g., service account private key) to be use for the
+  // underlying GCP API calls.
+  string credentials = 4;
+  // User agent string to be included with calls to the GCP API (optional).
+  string user_agent = 5;
+}
+
+// UnaryCallResponse wraps the response for a method call across the Magic
+// modules C library boundary.
+message UnaryCallResponse {
+  // Standard gRPC status code + message from the method call.
+  google.rpc.Status status = 1;
+  // Marshaled response object.
+  bytes response = 2;
+  // Any headers returned from the method call.
+  repeated Header headers = 3;
+}

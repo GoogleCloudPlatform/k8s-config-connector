@@ -1,0 +1,6 @@
+{
+  "name": "{{log_exclusion_name}}",
+  "parent": "organizations/{{org_id}}",
+  "description": "A basic log exclusion",
+  "filter": "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+}

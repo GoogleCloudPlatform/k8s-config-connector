@@ -1,0 +1,27 @@
+{
+  "priority": 9000,
+  "project": "{{project}}",
+  "location": "global",
+  "firewallPolicy": "projects/{{project}}/global/firewallPolicies/{{ref:global.network_firewall_policy.json:name}}",
+  "description": "sample global policy rule",
+  "ruleName": "rule9000-allow-probe",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "tcp",
+        "ports": ["123"]
+      }
+    ],
+    "srcSecureTags": [{"name": "tagValues/{{ref:first.cloudresourcemanager.tag_value.json:name}}"}],
+    "srcIPRanges": ["10.100.0.1/32"],
+    "srcFqdns": ["wikipedia.org"],
+    "srcRegionCodes": ["US"],
+    "srcThreatIntelligences": ["iplist-public-clouds"],
+    "srcAddressGroups": ["projects/{{project}}/locations/global/addressGroups/{{ref:global.networksecurity.address_group.json:name}}"]
+  },
+  "enableLogging" : false,
+  "targetServiceAccounts" : ["261421534184-compute@developer.gserviceaccount.com"],
+  "action": "deny",
+  "direction": "INGRESS",
+  "disabled" : false
+}

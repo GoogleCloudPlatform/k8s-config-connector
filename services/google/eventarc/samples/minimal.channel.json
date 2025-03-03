@@ -1,0 +1,5 @@
+{
+  "name": "{{channel}}",
+  "project": "{{project}}",
+  "location": "{{region}}"
+ }

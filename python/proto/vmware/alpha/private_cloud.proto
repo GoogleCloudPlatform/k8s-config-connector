@@ -1,0 +1,131 @@
+// Copyright 2023 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VmwareAlphaPrivateCloudStateEnum {
+  VmwareAlphaPrivateCloudStateEnumNO_VALUE_DO_NOT_USE = 0;
+  VmwareAlphaPrivateCloudStateEnumSTATE_UNSPECIFIED = 1;
+  VmwareAlphaPrivateCloudStateEnumACTIVE = 2;
+  VmwareAlphaPrivateCloudStateEnumCREATING = 3;
+  VmwareAlphaPrivateCloudStateEnumUPDATING = 4;
+  VmwareAlphaPrivateCloudStateEnumFAILED = 5;
+  VmwareAlphaPrivateCloudStateEnumDELETED = 6;
+  VmwareAlphaPrivateCloudStateEnumPURGING = 7;
+}
+
+enum VmwareAlphaPrivateCloudHcxStateEnum {
+  VmwareAlphaPrivateCloudHcxStateEnumNO_VALUE_DO_NOT_USE = 0;
+  VmwareAlphaPrivateCloudHcxStateEnumSTATE_UNSPECIFIED = 1;
+  VmwareAlphaPrivateCloudHcxStateEnumACTIVE = 2;
+  VmwareAlphaPrivateCloudHcxStateEnumCREATING = 3;
+}
+
+enum VmwareAlphaPrivateCloudNsxStateEnum {
+  VmwareAlphaPrivateCloudNsxStateEnumNO_VALUE_DO_NOT_USE = 0;
+  VmwareAlphaPrivateCloudNsxStateEnumSTATE_UNSPECIFIED = 1;
+  VmwareAlphaPrivateCloudNsxStateEnumACTIVE = 2;
+  VmwareAlphaPrivateCloudNsxStateEnumCREATING = 3;
+}
+
+enum VmwareAlphaPrivateCloudVcenterStateEnum {
+  VmwareAlphaPrivateCloudVcenterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  VmwareAlphaPrivateCloudVcenterStateEnumSTATE_UNSPECIFIED = 1;
+  VmwareAlphaPrivateCloudVcenterStateEnumACTIVE = 2;
+  VmwareAlphaPrivateCloudVcenterStateEnumCREATING = 3;
+}
+
+message VmwareAlphaPrivateCloud {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  string delete_time = 4;
+  string expire_time = 5;
+  VmwareAlphaPrivateCloudStateEnum state = 6;
+  VmwareAlphaPrivateCloudNetworkConfig network_config = 7;
+  VmwareAlphaPrivateCloudManagementCluster management_cluster = 8;
+  string description = 9;
+  VmwareAlphaPrivateCloudHcx hcx = 10;
+  VmwareAlphaPrivateCloudNsx nsx = 11;
+  VmwareAlphaPrivateCloudVcenter vcenter = 12;
+  string uid = 13;
+  string project = 14;
+  string location = 15;
+}
+
+message VmwareAlphaPrivateCloudNetworkConfig {
+  string management_cidr = 1;
+  string vmware_engine_network = 2;
+  string vmware_engine_network_canonical = 3;
+  int64 management_ip_address_layout_version = 4;
+}
+
+message VmwareAlphaPrivateCloudManagementCluster {
+  string cluster_id = 1;
+}
+
+message VmwareAlphaPrivateCloudHcx {
+  string internal_ip = 1;
+  string version = 2;
+  VmwareAlphaPrivateCloudHcxStateEnum state = 3;
+  string fqdn = 4;
+}
+
+message VmwareAlphaPrivateCloudNsx {
+  string internal_ip = 1;
+  string version = 2;
+  VmwareAlphaPrivateCloudNsxStateEnum state = 3;
+  string fqdn = 4;
+}
+
+message VmwareAlphaPrivateCloudVcenter {
+  string internal_ip = 1;
+  string version = 2;
+  VmwareAlphaPrivateCloudVcenterStateEnum state = 3;
+  string fqdn = 4;
+}
+
+message ApplyVmwareAlphaPrivateCloudRequest {
+  VmwareAlphaPrivateCloud resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVmwareAlphaPrivateCloudRequest {
+  string service_account_file = 1;
+  VmwareAlphaPrivateCloud resource = 2;
+}
+
+message ListVmwareAlphaPrivateCloudRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListVmwareAlphaPrivateCloudResponse {
+  repeated VmwareAlphaPrivateCloud items = 1;
+}
+
+service VmwareAlphaPrivateCloudService {
+  rpc ApplyVmwareAlphaPrivateCloud(ApplyVmwareAlphaPrivateCloudRequest) returns (VmwareAlphaPrivateCloud);
+  rpc DeleteVmwareAlphaPrivateCloud(DeleteVmwareAlphaPrivateCloudRequest) returns (google.protobuf.Empty);
+  rpc ListVmwareAlphaPrivateCloud(ListVmwareAlphaPrivateCloudRequest) returns (ListVmwareAlphaPrivateCloudResponse);
+}

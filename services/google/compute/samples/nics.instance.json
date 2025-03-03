@@ -1,0 +1,30 @@
+{
+  "name": "{{instance2}}",
+  "project": "{{project}}",
+  "machineType": "zones/{{zone}}/machineTypes/e2-medium",
+  "disks": [
+    {
+      "type": "PERSISTENT",
+      "autoDelete": true,
+      "boot": true,
+      "initializeParams": {
+        "sourceImage": "projects/debian-cloud/global/images/debian-10-buster-v20210817"
+      }
+    }
+  ],
+  "networkInterfaces": [
+    {
+      "subnetwork": "{{ref:minimal.subnetwork.json:selfLink}}"
+    },
+    {
+      "network": "global/networks/default",
+      "accessConfigs": [
+        {
+          "type": "ONE_TO_ONE_NAT",
+          "name": "External NAT"
+        }
+      ]
+    }
+  ],
+  "zone": "{{zone}}"
+}

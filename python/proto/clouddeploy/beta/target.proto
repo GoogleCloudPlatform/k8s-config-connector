@@ -1,0 +1,102 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ClouddeployBetaTargetExecutionConfigsUsagesEnum {
+  ClouddeployBetaTargetExecutionConfigsUsagesEnumNO_VALUE_DO_NOT_USE = 0;
+  ClouddeployBetaTargetExecutionConfigsUsagesEnumEXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED = 1;
+  ClouddeployBetaTargetExecutionConfigsUsagesEnumRENDER = 2;
+  ClouddeployBetaTargetExecutionConfigsUsagesEnumDEPLOY = 3;
+}
+
+message ClouddeployBetaTarget {
+  string name = 1;
+  string target_id = 2;
+  string uid = 3;
+  string description = 4;
+  map<string, string> annotations = 5;
+  map<string, string> labels = 6;
+  bool require_approval = 7;
+  string create_time = 8;
+  string update_time = 9;
+  ClouddeployBetaTargetGke gke = 10;
+  ClouddeployBetaTargetAnthosCluster anthos_cluster = 11;
+  string etag = 12;
+  repeated ClouddeployBetaTargetExecutionConfigs execution_configs = 13;
+  string project = 14;
+  string location = 15;
+  ClouddeployBetaTargetRun run = 16;
+  ClouddeployBetaTargetMultiTarget multi_target = 17;
+  map<string, string> deploy_parameters = 18;
+}
+
+message ClouddeployBetaTargetGke {
+  string cluster = 1;
+  bool internal_ip = 2;
+}
+
+message ClouddeployBetaTargetAnthosCluster {
+  string membership = 1;
+}
+
+message ClouddeployBetaTargetExecutionConfigs {
+  repeated ClouddeployBetaTargetExecutionConfigsUsagesEnum usages = 1;
+  string worker_pool = 2;
+  string service_account = 3;
+  string artifact_storage = 4;
+  string execution_timeout = 5;
+}
+
+message ClouddeployBetaTargetRun {
+  string location = 1;
+}
+
+message ClouddeployBetaTargetMultiTarget {
+  repeated string target_ids = 1;
+}
+
+message ApplyClouddeployBetaTargetRequest {
+  ClouddeployBetaTarget resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteClouddeployBetaTargetRequest {
+  string service_account_file = 1;
+  ClouddeployBetaTarget resource = 2;
+}
+
+message ListClouddeployBetaTargetRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListClouddeployBetaTargetResponse {
+  repeated ClouddeployBetaTarget items = 1;
+}
+
+service ClouddeployBetaTargetService {
+  rpc ApplyClouddeployBetaTarget(ApplyClouddeployBetaTargetRequest) returns (ClouddeployBetaTarget);
+  rpc DeleteClouddeployBetaTarget(DeleteClouddeployBetaTargetRequest) returns (google.protobuf.Empty);
+  rpc ListClouddeployBetaTarget(ListClouddeployBetaTargetRequest) returns (ListClouddeployBetaTargetResponse);
+}

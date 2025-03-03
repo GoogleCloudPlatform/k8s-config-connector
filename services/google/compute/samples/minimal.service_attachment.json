@@ -1,0 +1,8 @@
+{
+  "name": "{{attachment}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "targetService": "{{ref:first_internal.forwarding_rule.json:selfLink}}",
+  "connectionPreference": "ACCEPT_MANUAL",
+  "natSubnets": ["{{ref:first_private_service_connect.subnetwork.json:selfLink}}"]
+}

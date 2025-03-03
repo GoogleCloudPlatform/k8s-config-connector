@@ -1,0 +1,156 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum RedisInstanceStateEnum {
+  RedisInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  RedisInstanceStateEnumCREATING = 2;
+  RedisInstanceStateEnumREADY = 3;
+  RedisInstanceStateEnumUPDATING = 4;
+  RedisInstanceStateEnumDELETING = 5;
+  RedisInstanceStateEnumREPAIRING = 6;
+  RedisInstanceStateEnumPERFORMING_MAINTENANCE = 7;
+  RedisInstanceStateEnumIMPORTING = 8;
+  RedisInstanceStateEnumFAILING_OVER = 9;
+}
+
+enum RedisInstanceTierEnum {
+  RedisInstanceTierEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisInstanceTierEnumTIER_UNSPECIFIED = 1;
+  RedisInstanceTierEnumBASIC = 2;
+  RedisInstanceTierEnumSTANDARD_HA = 3;
+}
+
+enum RedisInstanceConnectModeEnum {
+  RedisInstanceConnectModeEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisInstanceConnectModeEnumCONNECT_MODE_UNSPECIFIED = 1;
+  RedisInstanceConnectModeEnumDIRECT_PEERING = 2;
+  RedisInstanceConnectModeEnumPRIVATE_SERVICE_ACCESS = 3;
+}
+
+enum RedisInstanceTransitEncryptionModeEnum {
+  RedisInstanceTransitEncryptionModeEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisInstanceTransitEncryptionModeEnumTRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 1;
+  RedisInstanceTransitEncryptionModeEnumSERVER_AUTHENTICATION = 2;
+  RedisInstanceTransitEncryptionModeEnumDISABLED = 3;
+}
+
+enum RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnum {
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumNO_VALUE_DO_NOT_USE = 0;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumDAY_OF_WEEK_UNSPECIFIED = 1;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumMONDAY = 2;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumTUESDAY = 3;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumWEDNESDAY = 4;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumTHURSDAY = 5;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumFRIDAY = 6;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumSATURDAY = 7;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnumSUNDAY = 8;
+}
+
+message RedisInstance {
+  string name = 1;
+  string display_name = 2;
+  map<string, string> labels = 3;
+  string location_id = 4;
+  string alternative_location_id = 5;
+  string redis_version = 6;
+  string reserved_ip_range = 7;
+  string host = 8;
+  int64 port = 9;
+  string current_location_id = 10;
+  string create_time = 11;
+  RedisInstanceStateEnum state = 12;
+  string status_message = 13;
+  map<string, string> redis_configs = 14;
+  RedisInstanceTierEnum tier = 15;
+  int64 memory_size_gb = 16;
+  string authorized_network = 17;
+  string persistence_iam_identity = 18;
+  RedisInstanceConnectModeEnum connect_mode = 19;
+  bool auth_enabled = 20;
+  repeated RedisInstanceServerCaCerts server_ca_certs = 21;
+  RedisInstanceTransitEncryptionModeEnum transit_encryption_mode = 22;
+  RedisInstanceMaintenancePolicy maintenance_policy = 23;
+  RedisInstanceMaintenanceSchedule maintenance_schedule = 24;
+  string project = 25;
+  string location = 26;
+}
+
+message RedisInstanceServerCaCerts {
+  string serial_number = 1;
+  string cert = 2;
+  string create_time = 3;
+  string expire_time = 4;
+  string sha1_fingerprint = 5;
+}
+
+message RedisInstanceMaintenancePolicy {
+  string create_time = 1;
+  string update_time = 2;
+  string description = 3;
+  repeated RedisInstanceMaintenancePolicyWeeklyMaintenanceWindow weekly_maintenance_window = 4;
+}
+
+message RedisInstanceMaintenancePolicyWeeklyMaintenanceWindow {
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDayEnum day = 1;
+  RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime start_time = 2;
+  string duration = 3;
+}
+
+message RedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime {
+  int64 hours = 1;
+  int64 minutes = 2;
+  int64 seconds = 3;
+  int64 nanos = 4;
+}
+
+message RedisInstanceMaintenanceSchedule {
+  string start_time = 1;
+  string end_time = 2;
+  bool can_reschedule = 3;
+  string schedule_deadline_time = 4;
+}
+
+message ApplyRedisInstanceRequest {
+  RedisInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteRedisInstanceRequest {
+  string service_account_file = 1;
+  RedisInstance resource = 2;
+}
+
+message ListRedisInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListRedisInstanceResponse {
+  repeated RedisInstance items = 1;
+}
+
+service RedisInstanceService {
+  rpc ApplyRedisInstance(ApplyRedisInstanceRequest) returns (RedisInstance);
+  rpc DeleteRedisInstance(DeleteRedisInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListRedisInstance(ListRedisInstanceRequest) returns (ListRedisInstanceResponse);
+}

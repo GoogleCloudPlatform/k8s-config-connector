@@ -1,0 +1,201 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: VPCAccess/Connector
+  description: The VPCAccess Connector resource
+  x-dcl-struct-name: Connector
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Connector
+    parameters:
+    - name: connector
+      required: true
+      description: A full instance of a Connector
+  apply:
+    description: The function used to apply information about a Connector
+    parameters:
+    - name: connector
+      required: true
+      description: A full instance of a Connector
+  delete:
+    description: The function used to delete a Connector
+    parameters:
+    - name: connector
+      required: true
+      description: A full instance of a Connector
+  deleteAll:
+    description: The function used to delete all Connector
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Connector
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Connector:
+      title: Connector
+      x-dcl-id: projects/{{project}}/locations/{{location}}/connectors/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - project
+      - location
+      properties:
+        connectedProjects:
+          type: array
+          x-dcl-go-name: ConnectedProjects
+          readOnly: true
+          description: Output only. List of projects using the connector.
+          x-kubernetes-immutable: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+        ipCidrRange:
+          type: string
+          x-dcl-go-name: IPCidrRange
+          description: 'The range of internal addresses that follows RFC 4632 notation.
+            Example: `10.132.0.0/28`.'
+          x-kubernetes-immutable: true
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        machineType:
+          type: string
+          x-dcl-go-name: MachineType
+          description: Machine type of VM Instance underlying connector. Default is
+            e2-micro
+          x-kubernetes-immutable: true
+          x-dcl-server-default: true
+        maxInstances:
+          type: integer
+          format: int64
+          x-dcl-go-name: MaxInstances
+          description: Maximum value of instances in autoscaling group underlying
+            the connector.
+          x-kubernetes-immutable: true
+          x-dcl-server-default: true
+        maxThroughput:
+          type: integer
+          format: int64
+          x-dcl-go-name: MaxThroughput
+          description: Maximum throughput of the connector in Mbps. Default is 200,
+            max is 1000.
+          x-kubernetes-immutable: true
+          x-dcl-server-default: true
+        minInstances:
+          type: integer
+          format: int64
+          x-dcl-go-name: MinInstances
+          description: Minimum value of instances in autoscaling group underlying
+            the connector.
+          x-kubernetes-immutable: true
+          x-dcl-server-default: true
+        minThroughput:
+          type: integer
+          format: int64
+          x-dcl-go-name: MinThroughput
+          description: Minimum throughput of the connector in Mbps. Default and min
+            is 200.
+          x-kubernetes-immutable: true
+          x-dcl-server-default: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: The resource name in the format `projects/*/locations/*/connectors/*`.
+          x-kubernetes-immutable: true
+        network:
+          type: string
+          x-dcl-go-name: Network
+          description: Name of a VPC network.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Compute/Network
+            field: name
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: ConnectorStateEnum
+          readOnly: true
+          description: 'Output only. State of the VPC access connector. Possible values:
+            STATE_UNSPECIFIED, READY, CREATING, DELETING, ERROR, UPDATING'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - READY
+          - CREATING
+          - DELETING
+          - ERROR
+          - UPDATING
+        subnet:
+          type: object
+          x-dcl-go-name: Subnet
+          x-dcl-go-type: ConnectorSubnet
+          description: The subnet in which to house the VPC Access Connector.
+          x-kubernetes-immutable: true
+          properties:
+            name:
+              type: string
+              x-dcl-go-name: Name
+              description: 'Subnet name (relative, not fully qualified). E.g. if the
+                full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName}
+                the correct input for this field would be: {subnetName}'
+              x-kubernetes-immutable: true
+              x-dcl-references:
+              - resource: Compute/Subnetwork
+                field: name
+                parent: true
+            projectId:
+              type: string
+              x-dcl-go-name: ProjectId
+              description: Project in which the subnet exists. If not set, this project
+                is assumed to be the project for which the connector create request
+                was issued.
+              x-kubernetes-immutable: true
+              x-dcl-references:
+              - resource: Cloudresourcemanager/Project
+                field: name

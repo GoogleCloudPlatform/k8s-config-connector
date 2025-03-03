@@ -1,0 +1,30 @@
+{
+  "name": "{{policy_inst}}",
+  "project": "{{project}}",
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "initializeParams": {
+        "sourceImage": "https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-9-stretch-v20210217"
+      },
+      "mode": "READ_WRITE"
+    }
+  ],
+  "canIpForward": false,
+  "deletionProtection": false,
+  "machineType": "zones/us-central1-a/machineTypes/e2-medium",
+  "metadata": {
+    "foo": "bar"
+  },
+  "networkInterfaces": [
+    {
+      "network": "global/networks/default"
+    }
+  ],
+  "tags": [
+    "bar",
+    "foo"
+  ],
+  "zone": "us-central1-a"
+}

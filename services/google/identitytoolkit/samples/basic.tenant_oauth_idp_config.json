@@ -1,0 +1,9 @@
+{
+  "name": "oidc.{{oauthidpconfig}}",
+  "project": "{{ref:basic.tenant.json:project}}",
+  "tenant": "{{ref:basic.tenant.json:name}}",
+  "clientId": "{{client}}",
+  "issuer": "issuer",
+  "enabled": true,
+  "clientSecret": "secret"
+}

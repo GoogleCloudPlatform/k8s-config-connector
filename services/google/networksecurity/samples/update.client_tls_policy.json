@@ -1,0 +1,18 @@
+{
+  "name": "{{policy}}",
+  "project": "{{project}}",
+  "location": "global",
+  "description": "Updated client tls policy sample.",
+  "clientCertificate": {
+    "certificateProviderInstance": {
+      "pluginInstance": "google_cloud_private_spiffe"
+    }
+  },
+  "serverValidationCa": [
+    {
+      "certificateProviderInstance": {
+        "pluginInstance": "google_cloud_private_spiffe"
+      }
+    }
+  ]
+}

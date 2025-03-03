@@ -1,0 +1,141 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaInterconnectAttachmentOperationalStatusEnum {
+  ComputeBetaInterconnectAttachmentOperationalStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectAttachmentOperationalStatusEnumOS_ACTIVE = 1;
+  ComputeBetaInterconnectAttachmentOperationalStatusEnumOS_UNPROVISIONED = 2;
+}
+
+enum ComputeBetaInterconnectAttachmentTypeEnum {
+  ComputeBetaInterconnectAttachmentTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectAttachmentTypeEnumPATH = 1;
+  ComputeBetaInterconnectAttachmentTypeEnumOTHER = 2;
+  ComputeBetaInterconnectAttachmentTypeEnumPARAMETER = 3;
+}
+
+enum ComputeBetaInterconnectAttachmentEdgeAvailabilityDomainEnum {
+  ComputeBetaInterconnectAttachmentEdgeAvailabilityDomainEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_ANY = 1;
+  ComputeBetaInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_1 = 2;
+  ComputeBetaInterconnectAttachmentEdgeAvailabilityDomainEnumAVAILABILITY_DOMAIN_2 = 3;
+}
+
+enum ComputeBetaInterconnectAttachmentBandwidthEnum {
+  ComputeBetaInterconnectAttachmentBandwidthEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_50M = 1;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_100M = 2;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_200M = 3;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_300M = 4;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_400M = 5;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_500M = 6;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_1G = 7;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_2G = 8;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_5G = 9;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_10G = 10;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_20G = 11;
+  ComputeBetaInterconnectAttachmentBandwidthEnumBPS_50G = 12;
+}
+
+enum ComputeBetaInterconnectAttachmentStateEnum {
+  ComputeBetaInterconnectAttachmentStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectAttachmentStateEnumDEPRECATED = 1;
+  ComputeBetaInterconnectAttachmentStateEnumOBSOLETE = 2;
+  ComputeBetaInterconnectAttachmentStateEnumDELETED = 3;
+  ComputeBetaInterconnectAttachmentStateEnumACTIVE = 4;
+}
+
+enum ComputeBetaInterconnectAttachmentEncryptionEnum {
+  ComputeBetaInterconnectAttachmentEncryptionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectAttachmentEncryptionEnumNONE = 1;
+  ComputeBetaInterconnectAttachmentEncryptionEnumIPSEC = 2;
+}
+
+message ComputeBetaInterconnectAttachment {
+  string description = 1;
+  string self_link = 2;
+  int64 id = 3;
+  string name = 4;
+  string interconnect = 5;
+  string router = 6;
+  string region = 7;
+  int64 mtu = 8;
+  ComputeBetaInterconnectAttachmentPrivateInterconnectInfo private_interconnect_info = 9;
+  ComputeBetaInterconnectAttachmentOperationalStatusEnum operational_status = 10;
+  string cloud_router_ip_address = 11;
+  string customer_router_ip_address = 12;
+  ComputeBetaInterconnectAttachmentTypeEnum type = 13;
+  string pairing_key = 14;
+  bool admin_enabled = 15;
+  int64 vlan_tag8021q = 16;
+  ComputeBetaInterconnectAttachmentEdgeAvailabilityDomainEnum edge_availability_domain = 17;
+  repeated string candidate_subnets = 18;
+  ComputeBetaInterconnectAttachmentBandwidthEnum bandwidth = 19;
+  ComputeBetaInterconnectAttachmentPartnerMetadata partner_metadata = 20;
+  ComputeBetaInterconnectAttachmentStateEnum state = 21;
+  int64 partner_asn = 22;
+  ComputeBetaInterconnectAttachmentEncryptionEnum encryption = 23;
+  repeated string ipsec_internal_addresses = 24;
+  int64 dataplane_version = 25;
+  bool satisfies_pzs = 26;
+  map<string, string> labels = 27;
+  string label_fingerprint = 28;
+  string project = 29;
+}
+
+message ComputeBetaInterconnectAttachmentPrivateInterconnectInfo {
+  int64 tag8021q = 1;
+}
+
+message ComputeBetaInterconnectAttachmentPartnerMetadata {
+  string partner_name = 1;
+  string interconnect_name = 2;
+  string portal_url = 3;
+}
+
+message ApplyComputeBetaInterconnectAttachmentRequest {
+  ComputeBetaInterconnectAttachment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaInterconnectAttachmentRequest {
+  string service_account_file = 1;
+  ComputeBetaInterconnectAttachment resource = 2;
+}
+
+message ListComputeBetaInterconnectAttachmentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeBetaInterconnectAttachmentResponse {
+  repeated ComputeBetaInterconnectAttachment items = 1;
+}
+
+service ComputeBetaInterconnectAttachmentService {
+  rpc ApplyComputeBetaInterconnectAttachment(ApplyComputeBetaInterconnectAttachmentRequest) returns (ComputeBetaInterconnectAttachment);
+  rpc DeleteComputeBetaInterconnectAttachment(DeleteComputeBetaInterconnectAttachmentRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaInterconnectAttachment(ListComputeBetaInterconnectAttachmentRequest) returns (ListComputeBetaInterconnectAttachmentResponse);
+}

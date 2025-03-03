@@ -1,0 +1,214 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeInstanceTemplatePropertiesDisksInterfaceEnum {
+  ComputeInstanceTemplatePropertiesDisksInterfaceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceTemplatePropertiesDisksInterfaceEnumSCSI = 1;
+  ComputeInstanceTemplatePropertiesDisksInterfaceEnumNVME = 2;
+}
+
+enum ComputeInstanceTemplatePropertiesDisksModeEnum {
+  ComputeInstanceTemplatePropertiesDisksModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceTemplatePropertiesDisksModeEnumREAD_WRITE = 1;
+  ComputeInstanceTemplatePropertiesDisksModeEnumREAD_ONLY = 2;
+}
+
+enum ComputeInstanceTemplatePropertiesDisksTypeEnum {
+  ComputeInstanceTemplatePropertiesDisksTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceTemplatePropertiesDisksTypeEnumSCRATCH = 1;
+  ComputeInstanceTemplatePropertiesDisksTypeEnumPERSISTENT = 2;
+}
+
+enum ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsTypeEnum {
+  ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsTypeEnumONE_TO_ONE_NAT = 1;
+}
+
+enum ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnum {
+  ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnumPREMIUM = 1;
+  ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnum {
+  ComputeInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnumIN = 1;
+  ComputeInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnumNOT_IN = 2;
+}
+
+message ComputeInstanceTemplate {
+  string creation_timestamp = 1;
+  string description = 2;
+  int64 id = 3;
+  string self_link = 4;
+  string name = 5;
+  ComputeInstanceTemplateProperties properties = 6;
+  string project = 7;
+}
+
+message ComputeInstanceTemplateProperties {
+  bool can_ip_forward = 1;
+  string description = 2;
+  repeated ComputeInstanceTemplatePropertiesDisks disks = 3;
+  map<string, string> labels = 4;
+  string machine_type = 5;
+  string min_cpu_platform = 6;
+  map<string, string> metadata = 7;
+  ComputeInstanceTemplatePropertiesReservationAffinity reservation_affinity = 8;
+  repeated ComputeInstanceTemplatePropertiesGuestAccelerators guest_accelerators = 9;
+  repeated ComputeInstanceTemplatePropertiesNetworkInterfaces network_interfaces = 10;
+  ComputeInstanceTemplatePropertiesShieldedInstanceConfig shielded_instance_config = 11;
+  ComputeInstanceTemplatePropertiesScheduling scheduling = 12;
+  repeated ComputeInstanceTemplatePropertiesServiceAccounts service_accounts = 13;
+  repeated string tags = 14;
+}
+
+message ComputeInstanceTemplatePropertiesDisks {
+  bool auto_delete = 1;
+  bool boot = 2;
+  string device_name = 3;
+  ComputeInstanceTemplatePropertiesDisksDiskEncryptionKey disk_encryption_key = 4;
+  int64 index = 5;
+  ComputeInstanceTemplatePropertiesDisksInitializeParams initialize_params = 6;
+  repeated ComputeInstanceTemplatePropertiesDisksGuestOSFeatures guest_os_features = 7;
+  ComputeInstanceTemplatePropertiesDisksInterfaceEnum interface = 8;
+  ComputeInstanceTemplatePropertiesDisksModeEnum mode = 9;
+  string source = 10;
+  ComputeInstanceTemplatePropertiesDisksTypeEnum type = 11;
+}
+
+message ComputeInstanceTemplatePropertiesDisksDiskEncryptionKey {
+  string raw_key = 1;
+  string rsa_encrypted_key = 2;
+  string sha256 = 3;
+}
+
+message ComputeInstanceTemplatePropertiesDisksInitializeParams {
+  string disk_name = 1;
+  int64 disk_size_gb = 2;
+  string disk_type = 3;
+  string source_image = 4;
+  map<string, string> labels = 5;
+  string source_snapshot = 6;
+  ComputeInstanceTemplatePropertiesDisksInitializeParamsSourceSnapshotEncryptionKey source_snapshot_encryption_key = 7;
+  string description = 8;
+  repeated string resource_policies = 9;
+  string on_update_action = 10;
+  ComputeInstanceTemplatePropertiesDisksInitializeParamsSourceImageEncryptionKey source_image_encryption_key = 11;
+}
+
+message ComputeInstanceTemplatePropertiesDisksInitializeParamsSourceSnapshotEncryptionKey {
+  string raw_key = 1;
+  string sha256 = 2;
+  string kms_key_name = 3;
+}
+
+message ComputeInstanceTemplatePropertiesDisksInitializeParamsSourceImageEncryptionKey {
+  string raw_key = 1;
+  string sha256 = 2;
+  string kms_key_name = 3;
+}
+
+message ComputeInstanceTemplatePropertiesDisksGuestOSFeatures {
+  string type = 1;
+}
+
+message ComputeInstanceTemplatePropertiesReservationAffinity {
+  string key = 1;
+  repeated string value = 2;
+}
+
+message ComputeInstanceTemplatePropertiesGuestAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ComputeInstanceTemplatePropertiesNetworkInterfaces {
+  repeated ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigs access_configs = 1;
+  repeated ComputeInstanceTemplatePropertiesNetworkInterfacesAliasIPRanges alias_ip_ranges = 2;
+  string name = 3;
+  string network = 4;
+  string network_ip = 5;
+  string subnetwork = 6;
+}
+
+message ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigs {
+  string name = 1;
+  string nat_ip = 2;
+  ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsTypeEnum type = 3;
+  bool set_public_ptr = 4;
+  string public_ptr_domain_name = 5;
+  ComputeInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnum network_tier = 6;
+}
+
+message ComputeInstanceTemplatePropertiesNetworkInterfacesAliasIPRanges {
+  string ip_cidr_range = 1;
+  string subnetwork_range_name = 2;
+}
+
+message ComputeInstanceTemplatePropertiesShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_vtpm = 2;
+  bool enable_integrity_monitoring = 3;
+}
+
+message ComputeInstanceTemplatePropertiesScheduling {
+  bool automatic_restart = 1;
+  string on_host_maintenance = 2;
+  bool preemptible = 3;
+  repeated ComputeInstanceTemplatePropertiesSchedulingNodeAffinities node_affinities = 4;
+}
+
+message ComputeInstanceTemplatePropertiesSchedulingNodeAffinities {
+  string key = 1;
+  ComputeInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnum operator = 2;
+  repeated string values = 3;
+}
+
+message ComputeInstanceTemplatePropertiesServiceAccounts {
+  string email = 1;
+  repeated string scopes = 2;
+}
+
+message ApplyComputeInstanceTemplateRequest {
+  ComputeInstanceTemplate resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeInstanceTemplateRequest {
+  string service_account_file = 1;
+  ComputeInstanceTemplate resource = 2;
+}
+
+message ListComputeInstanceTemplateRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeInstanceTemplateResponse {
+  repeated ComputeInstanceTemplate items = 1;
+}
+
+service ComputeInstanceTemplateService {
+  rpc ApplyComputeInstanceTemplate(ApplyComputeInstanceTemplateRequest) returns (ComputeInstanceTemplate);
+  rpc DeleteComputeInstanceTemplate(DeleteComputeInstanceTemplateRequest) returns (google.protobuf.Empty);
+  rpc ListComputeInstanceTemplate(ListComputeInstanceTemplateRequest) returns (ListComputeInstanceTemplateResponse);
+}

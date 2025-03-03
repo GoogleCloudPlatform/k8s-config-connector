@@ -1,0 +1,5 @@
+{
+  "name": "test-ring",
+  "project": "{{project}}",
+  "location": "{{region}}"
+}

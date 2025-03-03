@@ -1,0 +1,27 @@
+{
+  "type": "custom.googleapis.com/{{suffix}}",
+  "project": "{{project}}",
+  "labels": [
+    {
+      "key": "mass",
+      "valueType": "STRING",
+      "description": "amount of matter"
+    },
+    {
+      "key": "sku",
+      "valueType": "INT64",
+      "description": "Identifying number for item"
+    }
+  ],
+  "metricKind": "CUMULATIVE",
+  "valueType": "DISTRIBUTION",
+  "unit": "1",
+  "description": "A sample monitoring metric descriptor",
+  "displayName": "sample-descriptor",
+  "metadata": {
+    "launchStage": "GA",
+    "samplePeriod": "10s",
+    "ingestDelay": "10s"
+  },
+  "launchStage": "UNIMPLEMENTED"
+}

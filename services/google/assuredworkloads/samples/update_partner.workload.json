@@ -1,0 +1,11 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "organization": "{{org_id}}",
+  "location": "europe-west9",
+  "displayName": "updated-partner-example",
+  "billingAccount": "billingAccounts/{{billing_account}}",
+  "complianceRegime": "ASSURED_WORKLOADS_FOR_PARTNERS",
+  "labels": {
+    "label-two": "value-two-partner"
+  }
+}

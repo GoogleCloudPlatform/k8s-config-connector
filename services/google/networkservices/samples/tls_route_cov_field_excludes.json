@@ -1,0 +1,5 @@
+{
+  "exclude_create_coverage": ["rules.action.originalDestination", "rules.matches.ipAddress", "rules.matches.port"],
+  "exclude_update_coverage": ["name", "rules.action.originalDestination", "rules.matches.ipAddress", "rules.matches.port"],
+  "allow_in_minimal_sample": ["rules.matches.sniHost"]
+}

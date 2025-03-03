@@ -1,0 +1,218 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaInstanceDisksInterfaceEnum {
+  ComputeBetaInstanceDisksInterfaceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceDisksInterfaceEnumSCSI = 1;
+  ComputeBetaInstanceDisksInterfaceEnumNVME = 2;
+}
+
+enum ComputeBetaInstanceDisksModeEnum {
+  ComputeBetaInstanceDisksModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceDisksModeEnumREAD_WRITE = 1;
+  ComputeBetaInstanceDisksModeEnumREAD_ONLY = 2;
+}
+
+enum ComputeBetaInstanceDisksTypeEnum {
+  ComputeBetaInstanceDisksTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceDisksTypeEnumSCRATCH = 1;
+  ComputeBetaInstanceDisksTypeEnumPERSISTENT = 2;
+}
+
+enum ComputeBetaInstanceNetworkInterfacesAccessConfigsNetworkTierEnum {
+  ComputeBetaInstanceNetworkInterfacesAccessConfigsNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceNetworkInterfacesAccessConfigsNetworkTierEnumPREMIUM = 1;
+  ComputeBetaInstanceNetworkInterfacesAccessConfigsNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeBetaInstanceNetworkInterfacesAccessConfigsTypeEnum {
+  ComputeBetaInstanceNetworkInterfacesAccessConfigsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceNetworkInterfacesAccessConfigsTypeEnumONE_TO_ONE_NAT = 1;
+}
+
+enum ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnum {
+  ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumPREMIUM = 1;
+  ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsTypeEnum {
+  ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsTypeEnumONE_TO_ONE_NAT = 1;
+}
+
+enum ComputeBetaInstanceStatusEnum {
+  ComputeBetaInstanceStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceStatusEnumPROVISIONING = 1;
+  ComputeBetaInstanceStatusEnumSTAGING = 2;
+  ComputeBetaInstanceStatusEnumRUNNING = 3;
+  ComputeBetaInstanceStatusEnumSTOPPING = 4;
+  ComputeBetaInstanceStatusEnumSUSPENDING = 5;
+  ComputeBetaInstanceStatusEnumSUSPENDED = 6;
+  ComputeBetaInstanceStatusEnumTERMINATED = 7;
+}
+
+message ComputeBetaInstance {
+  bool can_ip_forward = 1;
+  string cpu_platform = 2;
+  string creation_timestamp = 3;
+  bool deletion_protection = 4;
+  string description = 5;
+  repeated ComputeBetaInstanceDisks disks = 6;
+  repeated ComputeBetaInstanceGuestAccelerators guest_accelerators = 7;
+  string hostname = 8;
+  string id = 9;
+  map<string, string> labels = 10;
+  map<string, string> metadata = 11;
+  string machine_type = 12;
+  string min_cpu_platform = 13;
+  string name = 14;
+  repeated ComputeBetaInstanceNetworkInterfaces network_interfaces = 15;
+  ComputeBetaInstanceScheduling scheduling = 16;
+  repeated ComputeBetaInstanceServiceAccounts service_accounts = 17;
+  ComputeBetaInstanceShieldedInstanceConfig shielded_instance_config = 18;
+  ComputeBetaInstanceStatusEnum status = 19;
+  string status_message = 20;
+  repeated string tags = 21;
+  string zone = 22;
+  string project = 23;
+  string self_link = 24;
+}
+
+message ComputeBetaInstanceDisks {
+  bool auto_delete = 1;
+  bool boot = 2;
+  string device_name = 3;
+  ComputeBetaInstanceDisksDiskEncryptionKey disk_encryption_key = 4;
+  int64 index = 5;
+  ComputeBetaInstanceDisksInitializeParams initialize_params = 6;
+  ComputeBetaInstanceDisksInterfaceEnum interface = 7;
+  ComputeBetaInstanceDisksModeEnum mode = 8;
+  string source = 9;
+  ComputeBetaInstanceDisksTypeEnum type = 10;
+}
+
+message ComputeBetaInstanceDisksDiskEncryptionKey {
+  string raw_key = 1;
+  string rsa_encrypted_key = 2;
+  string sha256 = 3;
+}
+
+message ComputeBetaInstanceDisksInitializeParams {
+  string disk_name = 1;
+  int64 disk_size_gb = 2;
+  string disk_type = 3;
+  string source_image = 4;
+  ComputeBetaInstanceDisksInitializeParamsSourceImageEncryptionKey source_image_encryption_key = 5;
+}
+
+message ComputeBetaInstanceDisksInitializeParamsSourceImageEncryptionKey {
+  string raw_key = 1;
+  string sha256 = 2;
+}
+
+message ComputeBetaInstanceGuestAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ComputeBetaInstanceNetworkInterfaces {
+  repeated ComputeBetaInstanceNetworkInterfacesAccessConfigs access_configs = 1;
+  repeated ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigs ipv6_access_configs = 2;
+  repeated ComputeBetaInstanceNetworkInterfacesAliasIPRanges alias_ip_ranges = 3;
+  string name = 4;
+  string network = 5;
+  string network_ip = 6;
+  string subnetwork = 7;
+}
+
+message ComputeBetaInstanceNetworkInterfacesAccessConfigs {
+  string name = 1;
+  string nat_ip = 2;
+  string external_ipv6 = 3;
+  string external_ipv6_prefix_length = 4;
+  bool set_public_ptr = 5;
+  string public_ptr_domain_name = 6;
+  ComputeBetaInstanceNetworkInterfacesAccessConfigsNetworkTierEnum network_tier = 7;
+  ComputeBetaInstanceNetworkInterfacesAccessConfigsTypeEnum type = 8;
+}
+
+message ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigs {
+  string name = 1;
+  string nat_ip = 2;
+  string external_ipv6 = 3;
+  string external_ipv6_prefix_length = 4;
+  bool set_public_ptr = 5;
+  string public_ptr_domain_name = 6;
+  ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnum network_tier = 7;
+  ComputeBetaInstanceNetworkInterfacesIPv6AccessConfigsTypeEnum type = 8;
+}
+
+message ComputeBetaInstanceNetworkInterfacesAliasIPRanges {
+  string ip_cidr_range = 1;
+  string subnetwork_range_name = 2;
+}
+
+message ComputeBetaInstanceScheduling {
+  bool automatic_restart = 1;
+  string on_host_maintenance = 2;
+  bool preemptible = 3;
+}
+
+message ComputeBetaInstanceServiceAccounts {
+  string email = 1;
+  repeated string scopes = 2;
+}
+
+message ComputeBetaInstanceShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_vtpm = 2;
+  bool enable_integrity_monitoring = 3;
+}
+
+message ApplyComputeBetaInstanceRequest {
+  ComputeBetaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaInstanceRequest {
+  string service_account_file = 1;
+  ComputeBetaInstance resource = 2;
+}
+
+message ListComputeBetaInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Zone = 3;
+}
+
+message ListComputeBetaInstanceResponse {
+  repeated ComputeBetaInstance items = 1;
+}
+
+service ComputeBetaInstanceService {
+  rpc ApplyComputeBetaInstance(ApplyComputeBetaInstanceRequest) returns (ComputeBetaInstance);
+  rpc DeleteComputeBetaInstance(DeleteComputeBetaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaInstance(ListComputeBetaInstanceRequest) returns (ListComputeBetaInstanceResponse);
+}

@@ -1,0 +1,41 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "launchStage": "GA",
+  "template": {
+    "scaling": {
+      "maxInstanceCount": 2
+    },
+    "volumes": [ {
+      "name": "cloudsql",
+      "cloudSqlInstance": {
+        "instances": ["careful-yew-216722:us-central1:testing-v22"]
+      }
+    } ],
+    "containers": [ {
+      "image": "gcr.io/cloudrun/hello",
+      "env": [ {
+        "name": "FOO",
+        "value": "bar"
+      }, {
+        "name": "latestdclsecret",
+        "valueSource": {
+          "secretKeyRef" : {
+            "secret": "dclsecret",
+            "version": "1"
+          }
+        }
+      } ],
+      "volumeMounts": [ {
+        "name" : "cloudsql",
+        "mountPath": "/cloudsql"
+      } ]
+    } ]
+  },
+  "traffic": [ {
+    "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+    "percent": 100
+  } ]
+}

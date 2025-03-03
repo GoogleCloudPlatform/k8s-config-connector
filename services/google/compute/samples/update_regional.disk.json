@@ -1,0 +1,16 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{disk}}",
+  "diskEncryptionKey": {
+    "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  },
+  "replicaZones": [
+    "https://www.googleapis.com/compute/v1/projects/{{project}}/zones/{{region}}-a",
+    "https://www.googleapis.com/compute/v1/projects/{{project}}/zones/{{region}}-c"
+  ],
+  "sizeGb": 240,
+  "labels": {
+    "label-one": "value-one"
+  }
+}

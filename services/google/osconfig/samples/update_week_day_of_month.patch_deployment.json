@@ -1,0 +1,100 @@
+{
+  "name": "{{deployment}}",
+  "project": "{{project}}",
+  "description": "An updated osconfig patch deployment with a recurring schedule",
+  "instanceFilter": {
+    "groupLabels": [
+      {
+        "labels": {
+          "new-env": "new-dev",
+          "new-app": "new-web"
+        }
+      }
+    ],
+    "zones": ["us-central1-b", "us-central1-c"],
+    "instanceNamePrefixes": ["test"]
+  },
+  "patchConfig": {
+    "rebootConfig": "DEFAULT",
+    "apt": {
+      "type": "UPGRADE",
+      "excludes": ["xsel"]
+    },
+    "yum": {
+      "security": false,
+      "minimal": false,
+      "excludes": ["zsh"]
+    },
+    "goo": {
+    },
+    "zypper": {
+      "withOptional": true,
+      "withUpdate": true,
+      "categories": ["recommended"],
+      "severities": ["important", "moderate"],
+      "excludes": ["zsh"]
+    },
+    "windowsUpdate": {
+      "classifications": ["CRITICAL", "SECURITY", "DEFINITION"],
+      "excludes": ["zsh"]
+    },
+    "preStep": {
+      "linuxExecStepConfig": {
+        "allowedSuccessCodes": [0, 2],
+        "localPath": "/tmp/new-prePatchScript.sh"
+      },
+      "windowsExecStepConfig": {
+        "interpreter": "POWERSHELL",
+        "allowedSuccessCodes": [0, 3],
+        "localPath": "C:\\Users\\user\\new-pre-patch-script.cmd"
+      }
+    },
+    "postStep": {
+      "linuxExecStepConfig": {
+        "allowedSuccessCodes": [0, 2],
+        "gcsObject": {
+          "bucket": "my-new-patch-scripts",
+          "generationNumber": 1523477886881,
+          "object": "linux/newPostPatchScript"
+        }
+      },
+      "windowsExecStepConfig": {
+        "allowedSuccessCodes": [0, 3],
+        "interpreter": "SHELL",
+        "gcsObject": {
+          "bucket": "my-new-patch-scripts",
+          "generationNumber": 135920493448,
+          "object": "windows/newPostPatchScript.ps1"
+        }
+      }
+    }
+  },
+  "duration": "3600s",
+  "recurringSchedule": {
+    "timeZone": {
+      "id": "America/Los_Angeles",
+      "version": "2019b"
+    },
+    "startTime": "2014-10-02T15:01:24Z",
+    "endTime": "2140-10-02T15:01:24Z",
+    "timeOfDay": {
+      "hours": 1,
+      "minutes": 31,
+      "seconds": 31,
+      "nanos": 21
+    },
+    "frequency": "MONTHLY",
+    "monthly": {
+      "weekDayOfMonth": {
+        "weekOrdinal": 1,
+        "dayOfWeek": "WEDNESDAY"
+      }
+    }
+  },
+  "rollout": {
+    "mode": "CONCURRENT_ZONES",
+    "disruptionBudget": {
+      "fixed": 2
+    }
+  }
+}

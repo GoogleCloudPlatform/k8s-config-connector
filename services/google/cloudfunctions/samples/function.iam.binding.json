@@ -1,0 +1,5 @@
+{
+  "role": "roles/cloudfunctions.invoker",
+  "members": ["serviceAccount:{{ref:basic.iam.service_account.json:email}}"],
+  "resource": "{{ref:https.function.json:__resource__}}"
+}

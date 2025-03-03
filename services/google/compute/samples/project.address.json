@@ -1,0 +1,5 @@
+{
+    "project":     "{{ref:compute.serviceusage.service.json:project}}",
+    "location":    "{{region}}",
+    "name":        "{{address}}"
+}

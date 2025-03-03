@@ -1,0 +1,8 @@
+{
+  "parent": "projects/{{project}}/locations/{{region}}",
+  "dictionary": {
+    "wordList": {
+      "words": ["aye", "nay"]
+    }
+  }
+}

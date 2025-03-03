@@ -1,0 +1,94 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message BigqueryAlphaDataset {
+  string etag = 1;
+  string id = 2;
+  string self_link = 3;
+  string name = 4;
+  string project = 5;
+  string friendly_name = 6;
+  string description = 7;
+  string default_table_expiration_ms = 8;
+  string default_partition_expiration_ms = 9;
+  map<string, string> labels = 10;
+  repeated BigqueryAlphaDatasetAccess access = 11;
+  int64 creation_time = 12;
+  int64 last_modified_time = 13;
+  string location = 14;
+  bool published = 15;
+  BigqueryAlphaDatasetDefaultEncryptionConfiguration default_encryption_configuration = 16;
+}
+
+message BigqueryAlphaDatasetAccess {
+  string role = 1;
+  string user_by_email = 2;
+  string group_by_email = 3;
+  string domain = 4;
+  string special_group = 5;
+  string iam_member = 6;
+  BigqueryAlphaDatasetAccessView view = 7;
+  BigqueryAlphaDatasetAccessRoutine routine = 8;
+}
+
+message BigqueryAlphaDatasetAccessView {
+  string project_id = 1;
+  string dataset_id = 2;
+  string table_id = 3;
+}
+
+message BigqueryAlphaDatasetAccessRoutine {
+  string project_id = 1;
+  string dataset_id = 2;
+  string routine_id = 3;
+}
+
+message BigqueryAlphaDatasetDefaultEncryptionConfiguration {
+  string kms_key_name = 1;
+}
+
+message ApplyBigqueryAlphaDatasetRequest {
+  BigqueryAlphaDataset resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBigqueryAlphaDatasetRequest {
+  string service_account_file = 1;
+  BigqueryAlphaDataset resource = 2;
+}
+
+message ListBigqueryAlphaDatasetRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListBigqueryAlphaDatasetResponse {
+  repeated BigqueryAlphaDataset items = 1;
+}
+
+service BigqueryAlphaDatasetService {
+  rpc ApplyBigqueryAlphaDataset(ApplyBigqueryAlphaDatasetRequest) returns (BigqueryAlphaDataset);
+  rpc DeleteBigqueryAlphaDataset(DeleteBigqueryAlphaDatasetRequest) returns (google.protobuf.Empty);
+  rpc ListBigqueryAlphaDataset(ListBigqueryAlphaDatasetRequest) returns (ListBigqueryAlphaDatasetResponse);
+}

@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 # Copyright 2022 Google LLC
 #
+=======
+# Copyright 2020 Google Inc.
+>>>>>>> 6d1d7645d (Squashed 'third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library/' content from commit a0e375a780)
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
+<<<<<<< HEAD
 #      http://www.apache.org/licenses/LICENSE-2.0
+=======
+#     http://www.apache.org/licenses/LICENSE-2.0
+>>>>>>> 6d1d7645d (Squashed 'third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library/' content from commit a0e375a780)
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,6 +20,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+<<<<<<< HEAD
 # IntelliJ/Goland config
 .idea
 *.iml
@@ -160,3 +169,26 @@ e2e.log
 testlogs/
 log
 experiments/conductor/logs
+=======
+# Temp files
+*~
+*#
+*.swp
+
+# IDEA files
+.idea/*
+*.iml
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+# Bazel symlink directories.
+python/bazel-*
+bazel-*
+python/go.sum
+>>>>>>> 6d1d7645d (Squashed 'third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library/' content from commit a0e375a780)

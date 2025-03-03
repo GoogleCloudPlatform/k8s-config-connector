@@ -1,0 +1,353 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ContaineranalysisAlphaNoteVulnerabilitySeverityEnum {
+  ContaineranalysisAlphaNoteVulnerabilitySeverityEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilitySeverityEnumSEVERITY_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilitySeverityEnumMINIMAL = 2;
+  ContaineranalysisAlphaNoteVulnerabilitySeverityEnumLOW = 3;
+  ContaineranalysisAlphaNoteVulnerabilitySeverityEnumMEDIUM = 4;
+  ContaineranalysisAlphaNoteVulnerabilitySeverityEnumHIGH = 5;
+  ContaineranalysisAlphaNoteVulnerabilitySeverityEnumCRITICAL = 6;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnum {
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumNOTE_KIND_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumVULNERABILITY = 2;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumBUILD = 3;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumIMAGE = 4;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumPACKAGE = 5;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumDEPLOYMENT = 6;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumDISCOVERY = 7;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumATTESTATION = 8;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnumUPGRADE = 9;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnum {
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumNOTE_KIND_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumVULNERABILITY = 2;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumBUILD = 3;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumIMAGE = 4;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumPACKAGE = 5;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumDEPLOYMENT = 6;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumDISCOVERY = 7;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumATTESTATION = 8;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnumUPGRADE = 9;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnum {
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumNOTE_KIND_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumVULNERABILITY = 2;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumBUILD = 3;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumIMAGE = 4;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumPACKAGE = 5;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumDEPLOYMENT = 6;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumDISCOVERY = 7;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumATTESTATION = 8;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnumUPGRADE = 9;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackVectorEnum {
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackVectorEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackVectorEnumATTACK_VECTOR_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackVectorEnumATTACK_VECTOR_NETWORK = 2;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackVectorEnumATTACK_VECTOR_ADJACENT = 3;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackVectorEnumATTACK_VECTOR_LOCAL = 4;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackVectorEnumATTACK_VECTOR_PHYSICAL = 5;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackComplexityEnum {
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackComplexityEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackComplexityEnumATTACK_COMPLEXITY_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackComplexityEnumATTACK_COMPLEXITY_LOW = 2;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackComplexityEnumATTACK_COMPLEXITY_HIGH = 3;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityCvssV3PrivilegesRequiredEnum {
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3PrivilegesRequiredEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3PrivilegesRequiredEnumPRIVILEGES_REQUIRED_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3PrivilegesRequiredEnumPRIVILEGES_REQUIRED_NONE = 2;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3PrivilegesRequiredEnumPRIVILEGES_REQUIRED_LOW = 3;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3PrivilegesRequiredEnumPRIVILEGES_REQUIRED_HIGH = 4;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityCvssV3UserInteractionEnum {
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3UserInteractionEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3UserInteractionEnumUSER_INTERACTION_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3UserInteractionEnumUSER_INTERACTION_NONE = 2;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3UserInteractionEnumUSER_INTERACTION_REQUIRED = 3;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityCvssV3ScopeEnum {
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ScopeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ScopeEnumSCOPE_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ScopeEnumSCOPE_UNCHANGED = 2;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ScopeEnumSCOPE_CHANGED = 3;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityCvssV3ConfidentialityImpactEnum {
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ConfidentialityImpactEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ConfidentialityImpactEnumIMPACT_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ConfidentialityImpactEnumIMPACT_HIGH = 2;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ConfidentialityImpactEnumIMPACT_LOW = 3;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ConfidentialityImpactEnumIMPACT_NONE = 4;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityCvssV3IntegrityImpactEnum {
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3IntegrityImpactEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3IntegrityImpactEnumIMPACT_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3IntegrityImpactEnumIMPACT_HIGH = 2;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3IntegrityImpactEnumIMPACT_LOW = 3;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3IntegrityImpactEnumIMPACT_NONE = 4;
+}
+
+enum ContaineranalysisAlphaNoteVulnerabilityCvssV3AvailabilityImpactEnum {
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AvailabilityImpactEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AvailabilityImpactEnumIMPACT_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AvailabilityImpactEnumIMPACT_HIGH = 2;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AvailabilityImpactEnumIMPACT_LOW = 3;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AvailabilityImpactEnumIMPACT_NONE = 4;
+}
+
+enum ContaineranalysisAlphaNoteBuildSignatureKeyTypeEnum {
+  ContaineranalysisAlphaNoteBuildSignatureKeyTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteBuildSignatureKeyTypeEnumKEY_TYPE_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteBuildSignatureKeyTypeEnumPGP_ASCII_ARMORED = 2;
+  ContaineranalysisAlphaNoteBuildSignatureKeyTypeEnumPKIX_PEM = 3;
+}
+
+enum ContaineranalysisAlphaNotePackageDistributionArchitectureEnum {
+  ContaineranalysisAlphaNotePackageDistributionArchitectureEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNotePackageDistributionArchitectureEnumARCHITECTURE_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNotePackageDistributionArchitectureEnumX86 = 2;
+  ContaineranalysisAlphaNotePackageDistributionArchitectureEnumX64 = 3;
+}
+
+enum ContaineranalysisAlphaNotePackageDistributionLatestVersionKindEnum {
+  ContaineranalysisAlphaNotePackageDistributionLatestVersionKindEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNotePackageDistributionLatestVersionKindEnumVERSION_KIND_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNotePackageDistributionLatestVersionKindEnumNORMAL = 2;
+  ContaineranalysisAlphaNotePackageDistributionLatestVersionKindEnumMINIMUM = 3;
+  ContaineranalysisAlphaNotePackageDistributionLatestVersionKindEnumMAXIMUM = 4;
+}
+
+enum ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnum {
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumNO_VALUE_DO_NOT_USE = 0;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumNOTE_KIND_UNSPECIFIED = 1;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumVULNERABILITY = 2;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumBUILD = 3;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumIMAGE = 4;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumPACKAGE = 5;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumDEPLOYMENT = 6;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumDISCOVERY = 7;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumATTESTATION = 8;
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnumUPGRADE = 9;
+}
+
+message ContaineranalysisAlphaNote {
+  string name = 1;
+  string short_description = 2;
+  string long_description = 3;
+  repeated ContaineranalysisAlphaNoteRelatedUrl related_url = 4;
+  string expiration_time = 5;
+  string create_time = 6;
+  string update_time = 7;
+  repeated string related_note_names = 8;
+  ContaineranalysisAlphaNoteVulnerability vulnerability = 9;
+  ContaineranalysisAlphaNoteBuild build = 10;
+  ContaineranalysisAlphaNoteImage image = 11;
+  ContaineranalysisAlphaNotePackage package = 12;
+  ContaineranalysisAlphaNoteDiscovery discovery = 13;
+  ContaineranalysisAlphaNoteDeployment deployment = 14;
+  ContaineranalysisAlphaNoteAttestation attestation = 15;
+  string project = 16;
+}
+
+message ContaineranalysisAlphaNoteRelatedUrl {
+  string url = 1;
+  string label = 2;
+}
+
+message ContaineranalysisAlphaNoteVulnerability {
+  double cvss_score = 1;
+  ContaineranalysisAlphaNoteVulnerabilitySeverityEnum severity = 2;
+  repeated ContaineranalysisAlphaNoteVulnerabilityDetails details = 3;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3 cvss_v3 = 4;
+  repeated ContaineranalysisAlphaNoteVulnerabilityWindowsDetails windows_details = 5;
+  string source_update_time = 6;
+}
+
+message ContaineranalysisAlphaNoteVulnerabilityDetails {
+  string severity_name = 1;
+  string description = 2;
+  string package_type = 3;
+  string affected_cpe_uri = 4;
+  string affected_package = 5;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStart affected_version_start = 6;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEnd affected_version_end = 7;
+  string fixed_cpe_uri = 8;
+  string fixed_package = 9;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersion fixed_version = 10;
+  bool is_obsolete = 11;
+  string source_update_time = 12;
+}
+
+message ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStart {
+  int64 epoch = 1;
+  string name = 2;
+  string revision = 3;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionStartKindEnum kind = 4;
+  string full_name = 5;
+}
+
+message ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEnd {
+  int64 epoch = 1;
+  string name = 2;
+  string revision = 3;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsAffectedVersionEndKindEnum kind = 4;
+  string full_name = 5;
+}
+
+message ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersion {
+  int64 epoch = 1;
+  string name = 2;
+  string revision = 3;
+  ContaineranalysisAlphaNoteVulnerabilityDetailsFixedVersionKindEnum kind = 4;
+  string full_name = 5;
+}
+
+message ContaineranalysisAlphaNoteVulnerabilityCvssV3 {
+  double base_score = 1;
+  double exploitability_score = 2;
+  double impact_score = 3;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackVectorEnum attack_vector = 4;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AttackComplexityEnum attack_complexity = 5;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3PrivilegesRequiredEnum privileges_required = 6;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3UserInteractionEnum user_interaction = 7;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ScopeEnum scope = 8;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3ConfidentialityImpactEnum confidentiality_impact = 9;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3IntegrityImpactEnum integrity_impact = 10;
+  ContaineranalysisAlphaNoteVulnerabilityCvssV3AvailabilityImpactEnum availability_impact = 11;
+}
+
+message ContaineranalysisAlphaNoteVulnerabilityWindowsDetails {
+  string cpe_uri = 1;
+  string name = 2;
+  string description = 3;
+  repeated ContaineranalysisAlphaNoteVulnerabilityWindowsDetailsFixingKbs fixing_kbs = 4;
+}
+
+message ContaineranalysisAlphaNoteVulnerabilityWindowsDetailsFixingKbs {
+  string name = 1;
+  string url = 2;
+}
+
+message ContaineranalysisAlphaNoteBuild {
+  string builder_version = 1;
+  ContaineranalysisAlphaNoteBuildSignature signature = 2;
+}
+
+message ContaineranalysisAlphaNoteBuildSignature {
+  string public_key = 1;
+  string signature = 2;
+  string key_id = 3;
+  ContaineranalysisAlphaNoteBuildSignatureKeyTypeEnum key_type = 4;
+}
+
+message ContaineranalysisAlphaNoteImage {
+  string resource_url = 1;
+  ContaineranalysisAlphaNoteImageFingerprint fingerprint = 2;
+}
+
+message ContaineranalysisAlphaNoteImageFingerprint {
+  string v1_name = 1;
+  repeated string v2_blob = 2;
+  string v2_name = 3;
+}
+
+message ContaineranalysisAlphaNotePackage {
+  string name = 1;
+  repeated ContaineranalysisAlphaNotePackageDistribution distribution = 2;
+}
+
+message ContaineranalysisAlphaNotePackageDistribution {
+  string cpe_uri = 1;
+  ContaineranalysisAlphaNotePackageDistributionArchitectureEnum architecture = 2;
+  ContaineranalysisAlphaNotePackageDistributionLatestVersion latest_version = 3;
+  string maintainer = 4;
+  string url = 5;
+  string description = 6;
+}
+
+message ContaineranalysisAlphaNotePackageDistributionLatestVersion {
+  int64 epoch = 1;
+  string name = 2;
+  string revision = 3;
+  ContaineranalysisAlphaNotePackageDistributionLatestVersionKindEnum kind = 4;
+  string full_name = 5;
+}
+
+message ContaineranalysisAlphaNoteDiscovery {
+  ContaineranalysisAlphaNoteDiscoveryAnalysisKindEnum analysis_kind = 1;
+}
+
+message ContaineranalysisAlphaNoteDeployment {
+  repeated string resource_uri = 1;
+}
+
+message ContaineranalysisAlphaNoteAttestation {
+  ContaineranalysisAlphaNoteAttestationHint hint = 1;
+}
+
+message ContaineranalysisAlphaNoteAttestationHint {
+  string human_readable_name = 1;
+}
+
+message ApplyContaineranalysisAlphaNoteRequest {
+  ContaineranalysisAlphaNote resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContaineranalysisAlphaNoteRequest {
+  string service_account_file = 1;
+  ContaineranalysisAlphaNote resource = 2;
+}
+
+message ListContaineranalysisAlphaNoteRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListContaineranalysisAlphaNoteResponse {
+  repeated ContaineranalysisAlphaNote items = 1;
+}
+
+service ContaineranalysisAlphaNoteService {
+  rpc ApplyContaineranalysisAlphaNote(ApplyContaineranalysisAlphaNoteRequest) returns (ContaineranalysisAlphaNote);
+  rpc DeleteContaineranalysisAlphaNote(DeleteContaineranalysisAlphaNoteRequest) returns (google.protobuf.Empty);
+  rpc ListContaineranalysisAlphaNote(ListContaineranalysisAlphaNoteRequest) returns (ListContaineranalysisAlphaNoteResponse);
+}

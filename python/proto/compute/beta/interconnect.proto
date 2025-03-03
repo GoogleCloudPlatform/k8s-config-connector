@@ -1,0 +1,134 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaInterconnectLinkTypeEnum {
+  ComputeBetaInterconnectLinkTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectLinkTypeEnumLINK_TYPE_ETHERNET_10G_LR = 1;
+  ComputeBetaInterconnectLinkTypeEnumLINK_TYPE_ETHERNET_100G_LR = 2;
+}
+
+enum ComputeBetaInterconnectInterconnectTypeEnum {
+  ComputeBetaInterconnectInterconnectTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectInterconnectTypeEnumIT_PRIVATE = 1;
+  ComputeBetaInterconnectInterconnectTypeEnumPARTNER = 2;
+  ComputeBetaInterconnectInterconnectTypeEnumDEDICATED = 3;
+}
+
+enum ComputeBetaInterconnectOperationalStatusEnum {
+  ComputeBetaInterconnectOperationalStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectOperationalStatusEnumOS_ACTIVE = 1;
+  ComputeBetaInterconnectOperationalStatusEnumOS_UNPROVISIONED = 2;
+  ComputeBetaInterconnectOperationalStatusEnumOS_UNDER_MAINTENANCE = 3;
+}
+
+enum ComputeBetaInterconnectExpectedOutagesSourceEnum {
+  ComputeBetaInterconnectExpectedOutagesSourceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectExpectedOutagesSourceEnumGOOGLE = 1;
+}
+
+enum ComputeBetaInterconnectExpectedOutagesStateEnum {
+  ComputeBetaInterconnectExpectedOutagesStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectExpectedOutagesStateEnumACTIVE = 1;
+  ComputeBetaInterconnectExpectedOutagesStateEnumCANCELLED = 2;
+}
+
+enum ComputeBetaInterconnectExpectedOutagesIssueTypeEnum {
+  ComputeBetaInterconnectExpectedOutagesIssueTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectExpectedOutagesIssueTypeEnumOUTAGE = 1;
+  ComputeBetaInterconnectExpectedOutagesIssueTypeEnumPARTIAL_OUTAGE = 2;
+}
+
+enum ComputeBetaInterconnectStateEnum {
+  ComputeBetaInterconnectStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInterconnectStateEnumDEPRECATED = 1;
+  ComputeBetaInterconnectStateEnumOBSOLETE = 2;
+  ComputeBetaInterconnectStateEnumDELETED = 3;
+  ComputeBetaInterconnectStateEnumACTIVE = 4;
+}
+
+message ComputeBetaInterconnect {
+  string description = 1;
+  string self_link = 2;
+  int64 id = 3;
+  string name = 4;
+  string location = 5;
+  ComputeBetaInterconnectLinkTypeEnum link_type = 6;
+  int64 requested_link_count = 7;
+  ComputeBetaInterconnectInterconnectTypeEnum interconnect_type = 8;
+  bool admin_enabled = 9;
+  string noc_contact_email = 10;
+  string customer_name = 11;
+  ComputeBetaInterconnectOperationalStatusEnum operational_status = 12;
+  int64 provisioned_link_count = 13;
+  repeated string interconnect_attachments = 14;
+  string peer_ip_address = 15;
+  string google_ip_address = 16;
+  string google_reference_id = 17;
+  repeated ComputeBetaInterconnectExpectedOutages expected_outages = 18;
+  repeated ComputeBetaInterconnectCircuitInfos circuit_infos = 19;
+  ComputeBetaInterconnectStateEnum state = 20;
+  string project = 21;
+}
+
+message ComputeBetaInterconnectExpectedOutages {
+  string name = 1;
+  string description = 2;
+  ComputeBetaInterconnectExpectedOutagesSourceEnum source = 3;
+  ComputeBetaInterconnectExpectedOutagesStateEnum state = 4;
+  ComputeBetaInterconnectExpectedOutagesIssueTypeEnum issue_type = 5;
+  repeated string affected_circuits = 6;
+  int64 start_time = 7;
+  int64 end_time = 8;
+}
+
+message ComputeBetaInterconnectCircuitInfos {
+  string google_circuit_id = 1;
+  string google_demarc_id = 2;
+  string customer_demarc_id = 3;
+}
+
+message ApplyComputeBetaInterconnectRequest {
+  ComputeBetaInterconnect resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaInterconnectRequest {
+  string service_account_file = 1;
+  ComputeBetaInterconnect resource = 2;
+}
+
+message ListComputeBetaInterconnectRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeBetaInterconnectResponse {
+  repeated ComputeBetaInterconnect items = 1;
+}
+
+service ComputeBetaInterconnectService {
+  rpc ApplyComputeBetaInterconnect(ApplyComputeBetaInterconnectRequest) returns (ComputeBetaInterconnect);
+  rpc DeleteComputeBetaInterconnect(DeleteComputeBetaInterconnectRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaInterconnect(ListComputeBetaInterconnectRequest) returns (ListComputeBetaInterconnectResponse);
+}

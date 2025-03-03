@@ -1,0 +1,70 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeTargetPoolSessionAffinityEnum {
+  ComputeTargetPoolSessionAffinityEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeTargetPoolSessionAffinityEnumNONE = 1;
+  ComputeTargetPoolSessionAffinityEnumCLIENT_IP = 2;
+  ComputeTargetPoolSessionAffinityEnumCLIENT_IP_PROTO = 3;
+  ComputeTargetPoolSessionAffinityEnumGENERATED_COOKIE = 4;
+  ComputeTargetPoolSessionAffinityEnumCLIENT_IP_PORT_PROTO = 5;
+  ComputeTargetPoolSessionAffinityEnumHTTP_COOKIE = 6;
+  ComputeTargetPoolSessionAffinityEnumHEADER_FIELD = 7;
+}
+
+message ComputeTargetPool {
+  string backup_pool = 1;
+  string description = 2;
+  double failover_ratio = 3;
+  repeated string health_checks = 4;
+  repeated string instances = 5;
+  string name = 6;
+  string region = 7;
+  string self_link = 8;
+  ComputeTargetPoolSessionAffinityEnum session_affinity = 9;
+  string project = 10;
+}
+
+message ApplyComputeTargetPoolRequest {
+  ComputeTargetPool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeTargetPoolRequest {
+  string service_account_file = 1;
+  ComputeTargetPool resource = 2;
+}
+
+message ListComputeTargetPoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeTargetPoolResponse {
+  repeated ComputeTargetPool items = 1;
+}
+
+service ComputeTargetPoolService {
+  rpc ApplyComputeTargetPool(ApplyComputeTargetPoolRequest) returns (ComputeTargetPool);
+  rpc DeleteComputeTargetPool(DeleteComputeTargetPoolRequest) returns (google.protobuf.Empty);
+  rpc ListComputeTargetPool(ListComputeTargetPoolRequest) returns (ListComputeTargetPoolResponse);
+}

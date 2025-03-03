@@ -1,0 +1,32 @@
+{
+  "name": "{{mirroring}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "An updated sample packet mirroring",
+  "network": {
+    "url": "projects/{{project}}/global/networks/default"
+  },
+  "priority": 1001,
+  "collectorIlb": {
+    "url": "{{ref:second_mirroring_internal.forwarding_rule.json:selfLink}}"
+  },
+  "mirroredResources": {
+    "subnetworks": [
+      {
+        "url": "projects/{{project}}/regions/{{region}}/subnetworks/default"
+      }
+    ],
+    "instances": [
+      {
+        "url": "{{ref:nics.instance.json:selfLink}}"
+      }
+    ],
+    "tags": ["tag-two"]
+  },
+  "filter": {
+    "cidrRanges": ["192.168.0.0/22"],
+    "ipProtocols": ["udp"],
+    "direction": "EGRESS"
+  },
+  "enable": "FALSE"
+}

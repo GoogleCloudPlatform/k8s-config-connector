@@ -1,0 +1,10 @@
+{
+  "name": "{{check}}",
+  "project": "{{project}}",
+  "type": "HTTP",
+  "timeoutSec": 1,
+  "checkIntervalSec": 1,
+  "httpHealthCheck": {
+    "port": 443
+  }
+}

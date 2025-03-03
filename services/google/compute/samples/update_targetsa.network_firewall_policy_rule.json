@@ -1,0 +1,31 @@
+{
+  "priority": 9000,
+  "project": "{{ref:__state__:project}}",
+  "location": "global",
+  "firewallPolicy": "projects/{{project}}/global/firewallPolicies/{{ref:global.network_firewall_policy.json:name}}",
+  "description": "Updated sample global network firewall policy rule",
+  "ruleName": "rule9000-allow-probe-updated",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "udp",
+        "ports": ["1234"]
+      }
+    ],
+    "srcSecureTags" : [],
+    "destIPRanges": ["10.100.0.2/32"],
+    "srcFqdns": [],
+    "destFqdns": ["wikipedia.org"],
+    "srcRegionCodes": [],
+    "destRegionCodes": ["US"],
+    "srcThreatIntelligences": [],
+    "destThreatIntelligences": ["iplist-known-malicious-ips"],
+    "srcAddressGroups": [],
+    "destAddressGroups": ["projects/{{project}}/locations/global/addressGroups/{{ref:global.networksecurity.address_group.json:name}}"]
+  },
+  "enableLogging" : true,
+  "targetServiceAccounts" : ["update-261421534184-compute@developer.gserviceaccount.com"],
+  "action": "allow",
+  "direction": "EGRESS",
+  "disabled" : true
+}

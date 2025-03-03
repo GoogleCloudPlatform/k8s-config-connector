@@ -1,0 +1,10 @@
+{
+  "name": "{{lake_name}}",
+  "displayName": "Lake for DCL",
+  "location": "{{region}}",
+  "project": "{{project}}",
+  "labels": {
+    "my-lake": "exists"
+  },
+  "description": "Updated description for lake"
+}

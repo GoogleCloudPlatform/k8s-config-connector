@@ -1,0 +1,17 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "goal": 0.8,
+  "displayName": "{{displayname}}",
+  "calendarPeriod": "WEEK",
+  "userLabels":{
+    "test1":"value2"
+  },
+  "service":"{{ref:basic.service.json:name}}",
+  "serviceLevelIndicator":{
+    "windowsBased":{
+      "windowPeriod": "120s",
+      "goodBadMetricFilter": "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" \n resource.type=\"uptime_url\""
+    }
+  }
+}

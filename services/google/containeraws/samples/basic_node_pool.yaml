@@ -1,0 +1,50 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: basic_node_pool
+description: A basic example of a containeraws aws node pool
+type: node_pool
+versions:
+- ga
+resource: samples/basic.node_pool.json
+dependencies:
+- samples/minimal.cluster.json
+updates:
+- resource: samples/update.node_pool.json
+  dependencies:
+  - samples/minimal.cluster.json
+variables:
+- name: aws_account_id
+  type: aws_account_id
+- name: aws_database_encryption_key
+  type: aws_database_encryption_key
+- name: aws_region
+  type: aws_region
+- name: aws_security_group
+  type: aws_security_group
+- name: aws_subnet
+  type: aws_subnet
+- name: aws_volume_encryption_key
+  type: aws_volume_encryption_key
+- name: aws_vpc
+  type: aws_vpc
+- name: byo_multicloud_prefix
+  type: byo_multicloud_prefix
+- name: cluster
+  type: resource_name
+- name: pool
+  type: resource_name
+- name: project
+  type: project
+- name: project_number
+  type: project_number

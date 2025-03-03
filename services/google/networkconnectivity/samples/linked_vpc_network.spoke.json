@@ -1,0 +1,13 @@
+{
+  "name": "{{spoke}}",
+  "project": "{{ref:networkconnectivity.serviceusage.service.json:project}}",
+  "location": "global",
+  "hub": "projects/{{ref:networkconnectivity.serviceusage.service.json:project}}/locations/global/hubs/{{ref:basic.hub.json:name}}",
+  "linkedVPCNetwork": {
+    "uri": "{{ref:first.compute.network.json:selfLink}}",
+    "excludeExportRanges": [
+      "198.51.100.0/24",
+      "10.10.0.0/16"
+    ]
+  }
+}

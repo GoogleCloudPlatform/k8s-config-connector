@@ -1,0 +1,371 @@
+// Copyright 2023 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum RunAlphaJobLaunchStageEnum {
+  RunAlphaJobLaunchStageEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobLaunchStageEnumLAUNCH_STAGE_UNSPECIFIED = 1;
+  RunAlphaJobLaunchStageEnumUNIMPLEMENTED = 2;
+  RunAlphaJobLaunchStageEnumPRELAUNCH = 3;
+  RunAlphaJobLaunchStageEnumEARLY_ACCESS = 4;
+  RunAlphaJobLaunchStageEnumALPHA = 5;
+  RunAlphaJobLaunchStageEnumBETA = 6;
+  RunAlphaJobLaunchStageEnumGA = 7;
+  RunAlphaJobLaunchStageEnumDEPRECATED = 8;
+}
+
+enum RunAlphaJobTemplateTemplateExecutionEnvironmentEnum {
+  RunAlphaJobTemplateTemplateExecutionEnvironmentEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTemplateTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_UNSPECIFIED = 1;
+  RunAlphaJobTemplateTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_DEFAULT = 2;
+  RunAlphaJobTemplateTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_GEN2 = 3;
+}
+
+enum RunAlphaJobTemplateTemplateVPCAccessEgressEnum {
+  RunAlphaJobTemplateTemplateVPCAccessEgressEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTemplateTemplateVPCAccessEgressEnumVPC_EGRESS_UNSPECIFIED = 1;
+  RunAlphaJobTemplateTemplateVPCAccessEgressEnumALL_TRAFFIC = 2;
+  RunAlphaJobTemplateTemplateVPCAccessEgressEnumPRIVATE_RANGES_ONLY = 3;
+}
+
+enum RunAlphaJobTerminalConditionStateEnum {
+  RunAlphaJobTerminalConditionStateEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTerminalConditionStateEnumSTATE_UNSPECIFIED = 1;
+  RunAlphaJobTerminalConditionStateEnumCONDITION_PENDING = 2;
+  RunAlphaJobTerminalConditionStateEnumCONDITION_RECONCILING = 3;
+  RunAlphaJobTerminalConditionStateEnumCONDITION_FAILED = 4;
+  RunAlphaJobTerminalConditionStateEnumCONDITION_SUCCEEDED = 5;
+}
+
+enum RunAlphaJobTerminalConditionSeverityEnum {
+  RunAlphaJobTerminalConditionSeverityEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTerminalConditionSeverityEnumSEVERITY_UNSPECIFIED = 1;
+  RunAlphaJobTerminalConditionSeverityEnumERROR = 2;
+  RunAlphaJobTerminalConditionSeverityEnumWARNING = 3;
+  RunAlphaJobTerminalConditionSeverityEnumINFO = 4;
+}
+
+enum RunAlphaJobTerminalConditionReasonEnum {
+  RunAlphaJobTerminalConditionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTerminalConditionReasonEnumCOMMON_REASON_UNDEFINED = 1;
+  RunAlphaJobTerminalConditionReasonEnumUNKNOWN = 2;
+  RunAlphaJobTerminalConditionReasonEnumROUTE_MISSING = 3;
+  RunAlphaJobTerminalConditionReasonEnumREVISION_FAILED = 4;
+  RunAlphaJobTerminalConditionReasonEnumPROGRESS_DEADLINE_EXCEEDED = 5;
+  RunAlphaJobTerminalConditionReasonEnumCONTAINER_MISSING = 6;
+  RunAlphaJobTerminalConditionReasonEnumCONTAINER_PERMISSION_DENIED = 7;
+  RunAlphaJobTerminalConditionReasonEnumCONTAINER_IMAGE_UNAUTHORIZED = 8;
+  RunAlphaJobTerminalConditionReasonEnumCONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED = 9;
+  RunAlphaJobTerminalConditionReasonEnumENCRYPTION_KEY_PERMISSION_DENIED = 10;
+  RunAlphaJobTerminalConditionReasonEnumENCRYPTION_KEY_CHECK_FAILED = 11;
+  RunAlphaJobTerminalConditionReasonEnumSECRETS_ACCESS_CHECK_FAILED = 12;
+  RunAlphaJobTerminalConditionReasonEnumWAITING_FOR_OPERATION = 13;
+  RunAlphaJobTerminalConditionReasonEnumIMMEDIATE_RETRY = 14;
+  RunAlphaJobTerminalConditionReasonEnumPOSTPONED_RETRY = 15;
+}
+
+enum RunAlphaJobTerminalConditionInternalReasonEnum {
+  RunAlphaJobTerminalConditionInternalReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTerminalConditionInternalReasonEnumINTERNAL_REASON_UNDEFINED = 1;
+  RunAlphaJobTerminalConditionInternalReasonEnumCONFLICTING_REVISION_NAME = 2;
+  RunAlphaJobTerminalConditionInternalReasonEnumREVISION_MISSING = 3;
+  RunAlphaJobTerminalConditionInternalReasonEnumCONFIGURATION_MISSING = 4;
+  RunAlphaJobTerminalConditionInternalReasonEnumASSIGNING_TRAFFIC = 5;
+  RunAlphaJobTerminalConditionInternalReasonEnumUPDATING_INGRESS_TRAFFIC_ALLOWED = 6;
+  RunAlphaJobTerminalConditionInternalReasonEnumREVISION_ORG_POLICY_VIOLATION = 7;
+  RunAlphaJobTerminalConditionInternalReasonEnumENABLING_GCFV2_URI_SUPPORT = 8;
+}
+
+enum RunAlphaJobTerminalConditionDomainMappingReasonEnum {
+  RunAlphaJobTerminalConditionDomainMappingReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTerminalConditionDomainMappingReasonEnumDOMAIN_MAPPING_REASON_UNDEFINED = 1;
+  RunAlphaJobTerminalConditionDomainMappingReasonEnumROUTE_NOT_READY = 2;
+  RunAlphaJobTerminalConditionDomainMappingReasonEnumPERMISSION_DENIED = 3;
+  RunAlphaJobTerminalConditionDomainMappingReasonEnumCERTIFICATE_ALREADY_EXISTS = 4;
+  RunAlphaJobTerminalConditionDomainMappingReasonEnumMAPPING_ALREADY_EXISTS = 5;
+  RunAlphaJobTerminalConditionDomainMappingReasonEnumCERTIFICATE_PENDING = 6;
+  RunAlphaJobTerminalConditionDomainMappingReasonEnumCERTIFICATE_FAILED = 7;
+}
+
+enum RunAlphaJobTerminalConditionRevisionReasonEnum {
+  RunAlphaJobTerminalConditionRevisionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTerminalConditionRevisionReasonEnumREVISION_REASON_UNDEFINED = 1;
+  RunAlphaJobTerminalConditionRevisionReasonEnumPENDING = 2;
+  RunAlphaJobTerminalConditionRevisionReasonEnumRESERVE = 3;
+  RunAlphaJobTerminalConditionRevisionReasonEnumRETIRED = 4;
+  RunAlphaJobTerminalConditionRevisionReasonEnumRETIRING = 5;
+  RunAlphaJobTerminalConditionRevisionReasonEnumRECREATING = 6;
+  RunAlphaJobTerminalConditionRevisionReasonEnumHEALTH_CHECK_CONTAINER_ERROR = 7;
+  RunAlphaJobTerminalConditionRevisionReasonEnumCUSTOMIZED_PATH_RESPONSE_PENDING = 8;
+  RunAlphaJobTerminalConditionRevisionReasonEnumMIN_INSTANCES_NOT_PROVISIONED = 9;
+  RunAlphaJobTerminalConditionRevisionReasonEnumACTIVE_REVISION_LIMIT_REACHED = 10;
+  RunAlphaJobTerminalConditionRevisionReasonEnumNO_DEPLOYMENT = 11;
+  RunAlphaJobTerminalConditionRevisionReasonEnumHEALTH_CHECK_SKIPPED = 12;
+}
+
+enum RunAlphaJobTerminalConditionExecutionReasonEnum {
+  RunAlphaJobTerminalConditionExecutionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobTerminalConditionExecutionReasonEnumEXECUTION_REASON_UNDEFINED = 1;
+  RunAlphaJobTerminalConditionExecutionReasonEnumJOB_STATUS_SERVICE_POLLING_ERROR = 2;
+  RunAlphaJobTerminalConditionExecutionReasonEnumNON_ZERO_EXIT_CODE = 3;
+}
+
+enum RunAlphaJobConditionsStateEnum {
+  RunAlphaJobConditionsStateEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobConditionsStateEnumSTATE_UNSPECIFIED = 1;
+  RunAlphaJobConditionsStateEnumCONDITION_PENDING = 2;
+  RunAlphaJobConditionsStateEnumCONDITION_RECONCILING = 3;
+  RunAlphaJobConditionsStateEnumCONDITION_FAILED = 4;
+  RunAlphaJobConditionsStateEnumCONDITION_SUCCEEDED = 5;
+}
+
+enum RunAlphaJobConditionsSeverityEnum {
+  RunAlphaJobConditionsSeverityEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobConditionsSeverityEnumSEVERITY_UNSPECIFIED = 1;
+  RunAlphaJobConditionsSeverityEnumERROR = 2;
+  RunAlphaJobConditionsSeverityEnumWARNING = 3;
+  RunAlphaJobConditionsSeverityEnumINFO = 4;
+}
+
+enum RunAlphaJobConditionsReasonEnum {
+  RunAlphaJobConditionsReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobConditionsReasonEnumCOMMON_REASON_UNDEFINED = 1;
+  RunAlphaJobConditionsReasonEnumUNKNOWN = 2;
+  RunAlphaJobConditionsReasonEnumREVISION_FAILED = 3;
+  RunAlphaJobConditionsReasonEnumPROGRESS_DEADLINE_EXCEEDED = 4;
+  RunAlphaJobConditionsReasonEnumBUILD_STEP_FAILED = 5;
+  RunAlphaJobConditionsReasonEnumCONTAINER_MISSING = 6;
+  RunAlphaJobConditionsReasonEnumCONTAINER_PERMISSION_DENIED = 7;
+  RunAlphaJobConditionsReasonEnumCONTAINER_IMAGE_UNAUTHORIZED = 8;
+  RunAlphaJobConditionsReasonEnumCONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED = 9;
+  RunAlphaJobConditionsReasonEnumENCRYPTION_KEY_PERMISSION_DENIED = 10;
+  RunAlphaJobConditionsReasonEnumENCRYPTION_KEY_CHECK_FAILED = 11;
+  RunAlphaJobConditionsReasonEnumSECRETS_ACCESS_CHECK_FAILED = 12;
+  RunAlphaJobConditionsReasonEnumWAITING_FOR_OPERATION = 13;
+  RunAlphaJobConditionsReasonEnumIMMEDIATE_RETRY = 14;
+  RunAlphaJobConditionsReasonEnumPOSTPONED_RETRY = 15;
+}
+
+enum RunAlphaJobConditionsRevisionReasonEnum {
+  RunAlphaJobConditionsRevisionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobConditionsRevisionReasonEnumREVISION_REASON_UNDEFINED = 1;
+  RunAlphaJobConditionsRevisionReasonEnumPENDING = 2;
+  RunAlphaJobConditionsRevisionReasonEnumRESERVE = 3;
+  RunAlphaJobConditionsRevisionReasonEnumRETIRED = 4;
+  RunAlphaJobConditionsRevisionReasonEnumRETIRING = 5;
+  RunAlphaJobConditionsRevisionReasonEnumRECREATING = 6;
+  RunAlphaJobConditionsRevisionReasonEnumHEALTH_CHECK_CONTAINER_ERROR = 7;
+  RunAlphaJobConditionsRevisionReasonEnumCUSTOMIZED_PATH_RESPONSE_PENDING = 8;
+  RunAlphaJobConditionsRevisionReasonEnumMIN_INSTANCES_NOT_PROVISIONED = 9;
+  RunAlphaJobConditionsRevisionReasonEnumACTIVE_REVISION_LIMIT_REACHED = 10;
+  RunAlphaJobConditionsRevisionReasonEnumNO_DEPLOYMENT = 11;
+  RunAlphaJobConditionsRevisionReasonEnumHEALTH_CHECK_SKIPPED = 12;
+}
+
+enum RunAlphaJobConditionsExecutionReasonEnum {
+  RunAlphaJobConditionsExecutionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaJobConditionsExecutionReasonEnumEXECUTION_REASON_UNDEFINED = 1;
+  RunAlphaJobConditionsExecutionReasonEnumJOB_STATUS_SERVICE_POLLING_ERROR = 2;
+  RunAlphaJobConditionsExecutionReasonEnumNON_ZERO_EXIT_CODE = 3;
+}
+
+message RunAlphaJob {
+  string name = 1;
+  string uid = 2;
+  int64 generation = 3;
+  map<string, string> labels = 4;
+  map<string, string> annotations = 5;
+  string create_time = 6;
+  string update_time = 7;
+  string delete_time = 8;
+  string expire_time = 9;
+  string creator = 10;
+  string last_modifier = 11;
+  string client = 12;
+  string client_version = 13;
+  RunAlphaJobLaunchStageEnum launch_stage = 14;
+  RunAlphaJobBinaryAuthorization binary_authorization = 15;
+  RunAlphaJobTemplate template = 16;
+  int64 observed_generation = 17;
+  RunAlphaJobTerminalCondition terminal_condition = 18;
+  repeated RunAlphaJobConditions conditions = 19;
+  int64 execution_count = 20;
+  RunAlphaJobLatestSucceededExecution latest_succeeded_execution = 21;
+  RunAlphaJobLatestCreatedExecution latest_created_execution = 22;
+  bool reconciling = 23;
+  string etag = 24;
+  string project = 25;
+  string location = 26;
+}
+
+message RunAlphaJobBinaryAuthorization {
+  bool use_default = 1;
+  string breakglass_justification = 2;
+}
+
+message RunAlphaJobTemplate {
+  map<string, string> labels = 1;
+  map<string, string> annotations = 2;
+  int64 parallelism = 3;
+  int64 task_count = 4;
+  RunAlphaJobTemplateTemplate template = 5;
+}
+
+message RunAlphaJobTemplateTemplate {
+  repeated RunAlphaJobTemplateTemplateContainers containers = 1;
+  repeated RunAlphaJobTemplateTemplateVolumes volumes = 2;
+  int64 max_retries = 3;
+  string timeout = 4;
+  string service_account = 5;
+  RunAlphaJobTemplateTemplateExecutionEnvironmentEnum execution_environment = 6;
+  string encryption_key = 7;
+  RunAlphaJobTemplateTemplateVPCAccess vpc_access = 8;
+}
+
+message RunAlphaJobTemplateTemplateContainers {
+  string name = 1;
+  string image = 2;
+  repeated string command = 3;
+  repeated string args = 4;
+  repeated RunAlphaJobTemplateTemplateContainersEnv env = 5;
+  RunAlphaJobTemplateTemplateContainersResources resources = 6;
+  repeated RunAlphaJobTemplateTemplateContainersPorts ports = 7;
+  repeated RunAlphaJobTemplateTemplateContainersVolumeMounts volume_mounts = 8;
+}
+
+message RunAlphaJobTemplateTemplateContainersEnv {
+  string name = 1;
+  string value = 2;
+  RunAlphaJobTemplateTemplateContainersEnvValueSource value_source = 3;
+}
+
+message RunAlphaJobTemplateTemplateContainersEnvValueSource {
+  RunAlphaJobTemplateTemplateContainersEnvValueSourceSecretKeyRef secret_key_ref = 1;
+}
+
+message RunAlphaJobTemplateTemplateContainersEnvValueSourceSecretKeyRef {
+  string secret = 1;
+  string version = 2;
+}
+
+message RunAlphaJobTemplateTemplateContainersResources {
+  map<string, string> limits = 1;
+  bool cpu_idle = 2;
+}
+
+message RunAlphaJobTemplateTemplateContainersPorts {
+  string name = 1;
+  int64 container_port = 2;
+}
+
+message RunAlphaJobTemplateTemplateContainersVolumeMounts {
+  string name = 1;
+  string mount_path = 2;
+}
+
+message RunAlphaJobTemplateTemplateVolumes {
+  string name = 1;
+  RunAlphaJobTemplateTemplateVolumesSecret secret = 2;
+  RunAlphaJobTemplateTemplateVolumesCloudSqlInstance cloud_sql_instance = 3;
+}
+
+message RunAlphaJobTemplateTemplateVolumesSecret {
+  string secret = 1;
+  repeated RunAlphaJobTemplateTemplateVolumesSecretItems items = 2;
+  int64 default_mode = 3;
+}
+
+message RunAlphaJobTemplateTemplateVolumesSecretItems {
+  string path = 1;
+  string version = 2;
+  int64 mode = 3;
+}
+
+message RunAlphaJobTemplateTemplateVolumesCloudSqlInstance {
+  repeated string instances = 1;
+}
+
+message RunAlphaJobTemplateTemplateVPCAccess {
+  string connector = 1;
+  RunAlphaJobTemplateTemplateVPCAccessEgressEnum egress = 2;
+}
+
+message RunAlphaJobTerminalCondition {
+  string type = 1;
+  RunAlphaJobTerminalConditionStateEnum state = 2;
+  string message = 3;
+  string last_transition_time = 4;
+  RunAlphaJobTerminalConditionSeverityEnum severity = 5;
+  RunAlphaJobTerminalConditionReasonEnum reason = 6;
+  RunAlphaJobTerminalConditionInternalReasonEnum internal_reason = 7;
+  RunAlphaJobTerminalConditionDomainMappingReasonEnum domain_mapping_reason = 8;
+  RunAlphaJobTerminalConditionRevisionReasonEnum revision_reason = 9;
+  RunAlphaJobTerminalConditionExecutionReasonEnum execution_reason = 10;
+}
+
+message RunAlphaJobConditions {
+  string type = 1;
+  RunAlphaJobConditionsStateEnum state = 2;
+  string message = 3;
+  string last_transition_time = 4;
+  RunAlphaJobConditionsSeverityEnum severity = 5;
+  RunAlphaJobConditionsReasonEnum reason = 6;
+  RunAlphaJobConditionsRevisionReasonEnum revision_reason = 7;
+  RunAlphaJobConditionsExecutionReasonEnum execution_reason = 8;
+}
+
+message RunAlphaJobLatestSucceededExecution {
+  string name = 1;
+  string create_time = 2;
+}
+
+message RunAlphaJobLatestCreatedExecution {
+  string name = 1;
+  string create_time = 2;
+}
+
+message ApplyRunAlphaJobRequest {
+  RunAlphaJob resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteRunAlphaJobRequest {
+  string service_account_file = 1;
+  RunAlphaJob resource = 2;
+}
+
+message ListRunAlphaJobRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListRunAlphaJobResponse {
+  repeated RunAlphaJob items = 1;
+}
+
+service RunAlphaJobService {
+  rpc ApplyRunAlphaJob(ApplyRunAlphaJobRequest) returns (RunAlphaJob);
+  rpc DeleteRunAlphaJob(DeleteRunAlphaJobRequest) returns (google.protobuf.Empty);
+  rpc ListRunAlphaJob(ListRunAlphaJobRequest) returns (ListRunAlphaJobResponse);
+}

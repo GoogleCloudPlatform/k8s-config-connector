@@ -1,0 +1,78 @@
+{
+  "name": "{{template}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "predefinedValues": {
+    "keyUsage": {
+      "baseKeyUsage": {
+        "digitalSignature": false,
+        "contentCommitment": false,
+        "keyEncipherment": false,
+        "dataEncipherment": false,
+        "keyAgreement": false,
+        "certSign": true,
+        "crlSign": true,
+        "encipherOnly": false,
+        "decipherOnly": false
+      },
+      "extendedKeyUsage": {
+        "serverAuth": false,
+        "clientAuth": false,
+        "codeSigning": false,
+        "emailProtection": false,
+        "timeStamping": false,
+        "ocspSigning": false
+      },
+      "unknownExtendedKeyUsages": [
+        {
+          "objectIdPath": [1, 7]
+        }
+      ]
+    },
+    "caOptions": {
+      "isCa": true,
+      "maxIssuerPathLength": 7
+    },
+    "policyIds": [
+      {
+        "objectIdPath": [1, 7]
+      }
+    ],
+    "aiaOcspServers": [
+      "new-string"
+    ],
+    "additionalExtensions": [
+      {
+        "objectId": {
+          "objectIdPath": [1, 7]
+        },
+        "critical": false,
+        "value": "bmV3LXN0cmluZw=="
+      }
+    ]
+  },
+  "identityConstraints": {
+    "celExpression": {
+      "title": "New sample expression",
+      "description": "Always false",
+      "expression": "false",
+      "location": "update.certificate_template.json"
+    },
+    "allowSubjectPassthrough": false,
+    "allowSubjectAltNamesPassthrough": false
+  },
+  "passthroughExtensions": {
+    "knownExtensions": [
+      "BASE_KEY_USAGE"
+    ],
+    "additionalExtensions": [
+      {
+        "objectIdPath": [1, 7]
+      }
+    ]
+  },
+  "description": "A sample certificate template",
+  "labels": {
+    "label-one": "value-one"
+  }
+}

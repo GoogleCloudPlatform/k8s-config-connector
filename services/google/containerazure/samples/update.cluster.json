@@ -1,0 +1,71 @@
+{
+  "name": "{{cluster}}",
+  "project": "{{project}}",
+  "location": "us-west1",
+  "description": "An updated sample azure cluster",
+  "azureRegion": "westus2",
+  "azureServicesAuthentication": {
+    "tenantId": "{{azure_ad_tenant}}",
+    "applicationId": "{{azure_application}}"
+  },
+  "networking": {
+    "virtualNetworkId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-byo/providers/Microsoft.Network/virtualNetworks/{{byo_multicloud_prefix}}-dev-vnet",
+    "podAddressCidrBlocks": ["10.200.0.0/16"],
+    "serviceAddressCidrBlocks": ["10.32.0.0/24"]
+  },
+  "resourceGroupId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-cluster",
+  "controlPlane": {
+    "version": "1.27.4-gke.1600",
+    "subnetId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-byo/providers/Microsoft.Network/virtualNetworks/{{byo_multicloud_prefix}}-dev-vnet/subnets/default",
+    "vmSize": "Standard_DS3_v2",
+    "sshConfig": {
+      "authorizedKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDctA0BqkuJDYneFVDSRgpyAWXFK4X18sytpbF7KVV50zQ2d1Flg0uFsMgB426J/BAQ5NYp4mnfpiNsdSMYdjbbAH09I1ltyBTfUPakwb5c3QmRlr83SW07phtHF08GHARtjCpETEuhDAdDZoBuF8E1EEfAFUma0VsfWetKvzUW6lihLM7plKpz/4Fz9Da661y3DhvxFysnuYzKqntfSLZWT9oIl0UapNLQ5SISnMaAtSs7H8P256Yb/pXR5fN4D8OMDBDv64/2f89iHiWsz02iwv85mJ8S4SASX7Ir/OeXeeZ1tFgF4QgEFvsqSt6zUkoxZrpg5jo50kP8CuQ2M23qa3R68897me2wiluH4Q4EVJryTglOMrkExBtwrHXgRS/JFjPx/I9atxQn6aCYW2BEA2obc3a+uBiDCRXeX4hUyac4D+XfpIJiKcbnlxu1WKJksqrvf8+5u/dpW4DvHXihByEGXi04mW5UGO5rPpkYNS2Q4Bep9PD4FEtS+1KWoMKvZwGvturQXylhe1DHVZk7bYzP/lV0fXk7Zc9BWYqPuv5ZAd4Dy+xnW0Bod6ZFHaaaUxSArj/KidM4JBlCD6SHXA2TYChURIrPgnFLpfmdbS5orvbXNP0CidOmkgBmWvwxCF+8n35R6A/fw+mN2fEFPvCvXWN0ODp9BMMfNfAvhQ== updateduser"
+    },
+    "rootVolume": {
+      "sizeGib": 32
+    },
+    "mainVolume": {
+      "sizeGib": 8
+    },
+    "databaseEncryption": {
+      "resourceGroupId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-cluster",
+      "keyId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-cluster/providers/Microsoft.KeyVault/vaults/{{byo_multicloud_prefix}}-dev-keyvault/keys/{{byo_multicloud_prefix}}-dev-key"
+    },
+    "tags": {
+      "owner": "mmv2",
+      "creation time": "2021-07-15T21:46:05Z",
+      "googleinternal:user": "mmv2"
+    },
+    "proxyConfig": {
+      "resourceGroupId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-cluster",
+      "secretId": "https://{{byo_multicloud_prefix}}-dev-keyvault.vault.azure.net/secrets/{{byo_multicloud_prefix}}-dev-secret/{{azure_proxy_config_secret_version}}"
+    },
+    "replicaPlacements": [
+      {
+        "subnetId": "/subscriptions/{{azure_subscription}}/resourceGroups/{{byo_multicloud_prefix}}-dev-byo/providers/Microsoft.Network/virtualNetworks/{{byo_multicloud_prefix}}-dev-vnet/subnets/default",
+        "azureAvailabilityZone": "1"
+      }
+    ]
+  },
+  "authorization": {
+    "adminUsers": [
+      {
+        "username": "user@domain.com"
+      },
+      {
+        "username": "foo@google.com"
+      }
+    ],
+    "adminGroups": [
+      {
+        "group": "bar@domain.com"
+      }
+    ]
+  },
+  "annotations": {
+    "annotation-one": "value-one"
+  },
+  "fleet": {
+    "project": "{{project_number}}"
+  }
+}

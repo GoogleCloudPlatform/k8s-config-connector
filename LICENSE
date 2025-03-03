@@ -187,7 +187,11 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
+<<<<<<< HEAD
    Copyright 2022 Google LLC
+=======
+   Copyright [yyyy] [name of copyright owner]
+>>>>>>> 6d1d7645d (Squashed 'third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library/' content from commit a0e375a780)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

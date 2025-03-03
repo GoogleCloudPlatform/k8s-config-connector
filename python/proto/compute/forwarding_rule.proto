@@ -1,0 +1,148 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeForwardingRuleIPProtocolEnum {
+  ComputeForwardingRuleIPProtocolEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeForwardingRuleIPProtocolEnumTCP = 1;
+  ComputeForwardingRuleIPProtocolEnumUDP = 2;
+  ComputeForwardingRuleIPProtocolEnumESP = 3;
+  ComputeForwardingRuleIPProtocolEnumAH = 4;
+  ComputeForwardingRuleIPProtocolEnumSCTP = 5;
+  ComputeForwardingRuleIPProtocolEnumICMP = 6;
+  ComputeForwardingRuleIPProtocolEnumL3_DEFAULT = 7;
+}
+
+enum ComputeForwardingRuleIPVersionEnum {
+  ComputeForwardingRuleIPVersionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeForwardingRuleIPVersionEnumUNSPECIFIED_VERSION = 1;
+  ComputeForwardingRuleIPVersionEnumIPV4 = 2;
+  ComputeForwardingRuleIPVersionEnumIPV6 = 3;
+}
+
+enum ComputeForwardingRuleLoadBalancingSchemeEnum {
+  ComputeForwardingRuleLoadBalancingSchemeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeForwardingRuleLoadBalancingSchemeEnumINVALID = 1;
+  ComputeForwardingRuleLoadBalancingSchemeEnumINTERNAL = 2;
+  ComputeForwardingRuleLoadBalancingSchemeEnumINTERNAL_MANAGED = 3;
+  ComputeForwardingRuleLoadBalancingSchemeEnumINTERNAL_SELF_MANAGED = 4;
+  ComputeForwardingRuleLoadBalancingSchemeEnumEXTERNAL = 5;
+  ComputeForwardingRuleLoadBalancingSchemeEnumEXTERNAL_MANAGED = 6;
+}
+
+enum ComputeForwardingRuleMetadataFilterFilterMatchCriteriaEnum {
+  ComputeForwardingRuleMetadataFilterFilterMatchCriteriaEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeForwardingRuleMetadataFilterFilterMatchCriteriaEnumNOT_SET = 1;
+  ComputeForwardingRuleMetadataFilterFilterMatchCriteriaEnumMATCH_ALL = 2;
+  ComputeForwardingRuleMetadataFilterFilterMatchCriteriaEnumMATCH_ANY = 3;
+}
+
+enum ComputeForwardingRuleNetworkTierEnum {
+  ComputeForwardingRuleNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeForwardingRuleNetworkTierEnumPREMIUM = 1;
+  ComputeForwardingRuleNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeForwardingRulePscConnectionStatusEnum {
+  ComputeForwardingRulePscConnectionStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeForwardingRulePscConnectionStatusEnumSTATUS_UNSPECIFIED = 1;
+  ComputeForwardingRulePscConnectionStatusEnumPENDING = 2;
+  ComputeForwardingRulePscConnectionStatusEnumACCEPTED = 3;
+  ComputeForwardingRulePscConnectionStatusEnumREJECTED = 4;
+  ComputeForwardingRulePscConnectionStatusEnumCLOSED = 5;
+}
+
+message ComputeForwardingRule {
+  map<string, string> labels = 1;
+  bool all_ports = 2;
+  bool allow_global_access = 3;
+  string label_fingerprint = 4;
+  string backend_service = 5;
+  string creation_timestamp = 6;
+  string description = 7;
+  string ip_address = 8;
+  ComputeForwardingRuleIPProtocolEnum ip_protocol = 9;
+  ComputeForwardingRuleIPVersionEnum ip_version = 10;
+  bool is_mirroring_collector = 11;
+  ComputeForwardingRuleLoadBalancingSchemeEnum load_balancing_scheme = 12;
+  repeated ComputeForwardingRuleMetadataFilter metadata_filter = 13;
+  string name = 14;
+  string network = 15;
+  ComputeForwardingRuleNetworkTierEnum network_tier = 16;
+  string port_range = 17;
+  repeated string ports = 18;
+  string region = 19;
+  string self_link = 20;
+  string service_label = 21;
+  string service_name = 22;
+  string subnetwork = 23;
+  string target = 24;
+  string project = 25;
+  string location = 26;
+  repeated ComputeForwardingRuleServiceDirectoryRegistrations service_directory_registrations = 27;
+  string psc_connection_id = 28;
+  ComputeForwardingRulePscConnectionStatusEnum psc_connection_status = 29;
+  repeated string source_ip_ranges = 30;
+  string base_forwarding_rule = 31;
+}
+
+message ComputeForwardingRuleMetadataFilter {
+  ComputeForwardingRuleMetadataFilterFilterMatchCriteriaEnum filter_match_criteria = 1;
+  repeated ComputeForwardingRuleMetadataFilterFilterLabel filter_label = 2;
+}
+
+message ComputeForwardingRuleMetadataFilterFilterLabel {
+  string name = 1;
+  string value = 2;
+}
+
+message ComputeForwardingRuleServiceDirectoryRegistrations {
+  string namespace = 1;
+  string service = 2;
+}
+
+message ApplyComputeForwardingRuleRequest {
+  ComputeForwardingRule resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeForwardingRuleRequest {
+  string service_account_file = 1;
+  ComputeForwardingRule resource = 2;
+}
+
+message ListComputeForwardingRuleRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeForwardingRuleResponse {
+  repeated ComputeForwardingRule items = 1;
+}
+
+service ComputeForwardingRuleService {
+  rpc ApplyComputeForwardingRule(ApplyComputeForwardingRuleRequest) returns (ComputeForwardingRule);
+  rpc DeleteComputeForwardingRule(DeleteComputeForwardingRuleRequest) returns (google.protobuf.Empty);
+  rpc ListComputeForwardingRule(ListComputeForwardingRuleRequest) returns (ListComputeForwardingRuleResponse);
+}

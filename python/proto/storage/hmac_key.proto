@@ -1,0 +1,62 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum StorageHmacKeyStateEnum {
+  StorageHmacKeyStateEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageHmacKeyStateEnumACTIVE = 1;
+  StorageHmacKeyStateEnumINACTIVE = 2;
+  StorageHmacKeyStateEnumDELETED = 3;
+}
+
+message StorageHmacKey {
+  string name = 1;
+  string time_created = 2;
+  string updated = 3;
+  string secret = 4;
+  StorageHmacKeyStateEnum state = 5;
+  string project = 6;
+  string service_account_email = 7;
+}
+
+message ApplyStorageHmacKeyRequest {
+  StorageHmacKey resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteStorageHmacKeyRequest {
+  string service_account_file = 1;
+  StorageHmacKey resource = 2;
+}
+
+message ListStorageHmacKeyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListStorageHmacKeyResponse {
+  repeated StorageHmacKey items = 1;
+}
+
+service StorageHmacKeyService {
+  rpc ApplyStorageHmacKey(ApplyStorageHmacKeyRequest) returns (StorageHmacKey);
+  rpc DeleteStorageHmacKey(DeleteStorageHmacKeyRequest) returns (google.protobuf.Empty);
+  rpc ListStorageHmacKey(ListStorageHmacKeyRequest) returns (ListStorageHmacKeyResponse);
+}

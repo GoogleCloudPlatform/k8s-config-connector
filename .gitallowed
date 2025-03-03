@@ -1,3 +1,11 @@
+<<<<<<< HEAD
 # Allows fake secrets to be used in test code
 ya29.a0Ae4lvC1p3hHnvX2ECJOSUUBr_JQFDUP7o6pta6leAGg95k58XLQwuISGU9it0bnwmTvN-sFp-6stn42xTwbUxH-FzWbrM1NohqBuhpd6J_0oimF4ZAc5pIb27PJ8mHBFPUZFqSauNu9TQfxgQukKIBm7IJ8xKdCVUxWtJC71u1EF
 ya29.CjWdA4GiBPTt
+=======
+# Test key from services/google/compute/samples/update_global.backend_service.json
+251703766494-zsgtba1zc8s3gz1lthj0lvnxtth5qcbc\.apps\.googleusercontent\.com
+# Test keys from services/google/storage/samples/basic.object.json
+grfGFkZz3Srvr6ump6D4q48BAIN3vy7Kf\+uJNWEfKak=
+LuEWS2yxdKG3xR9w\+eX6AEhZ\+v1IV4dVWk/sU13WuW8=
+>>>>>>> 6d1d7645d (Squashed 'third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library/' content from commit a0e375a780)

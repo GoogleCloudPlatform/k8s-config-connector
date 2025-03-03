@@ -1,0 +1,6 @@
+{
+  "name":"{{ref:__state__:name}}",
+  "project": "{{ref:__state__:project}}",
+  "location": "{{ref:__state__:location}}",
+  "description": "Updated sample regional network firewall policy."
+}

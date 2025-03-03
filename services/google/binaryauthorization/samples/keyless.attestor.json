@@ -1,0 +1,8 @@
+{
+  "name": "{{attestor}}",
+  "project": "{{project}}",
+  "description": "A basic binary authorization attestor",
+  "userOwnedDrydockNote": {
+    "noteReference": "projects/{{project}}/notes/{{ref:basic.containeranalysis.note.json:name}}"
+  }
+}

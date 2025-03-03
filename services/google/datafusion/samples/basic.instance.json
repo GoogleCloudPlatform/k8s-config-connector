@@ -1,0 +1,23 @@
+{
+  "name": "{{instance}}",
+  "project": "projects/{{ref:datafusion.serviceusage.service.json:project}}",
+  "location": "us-central1",
+  "description": "A sample datafusion instance",
+  "type": "DEVELOPER",
+  "enableStackdriverLogging": true,
+  "enableStackdriverMonitoring": true,
+  "privateInstance": true,
+  "labels": {
+    "examplekey": "examplevalue"
+  },
+  "options": {
+    "examplekey": "examplevalue"
+  },
+  "networkConfig": {
+    "network": "projects/{{ref:datafusion.serviceusage.service.json:project}}/global/netowrks/{{ref:basic.compute.network.json:name}}",
+    "ipAllocation": "10.89.48.0/22"
+  },
+  "zone": "{{zone}}",
+  "version": "6.7.0",
+  "displayName": "basic-instance"
+}

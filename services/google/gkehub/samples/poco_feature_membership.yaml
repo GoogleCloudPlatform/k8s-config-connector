@@ -1,0 +1,75 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: poco_feature_membership
+description: A basic example for a GKEHub Policy Controller feature membership
+type: feature_membership
+versions:
+- beta
+resource: samples/poco.feature_membership.json
+dependencies:
+- samples/poco.feature.json
+- samples/first.membership.json
+- samples/first.container.cluster.json
+- samples/first.iam.service_account.json
+- samples/second.iam.service_account.json
+- samples/anthospolicycontroller.serviceusage.service.json
+- samples/anthos.serviceusage.service.json
+- samples/gkehub.serviceusage.service.json
+- samples/container.serviceusage.service.json
+- samples/basic.cloudbilling.project_billing_info.json
+- samples/basic.cloudresourcemanager.project.json
+updates:
+- resource: samples/update_1_poco.feature_membership.json
+  dependencies:
+  - samples/poco.feature.json
+  - samples/first.membership.json
+  - samples/first.container.cluster.json
+  - samples/first.iam.service_account.json
+  - samples/second.iam.service_account.json
+  - samples/anthospolicycontroller.serviceusage.service.json
+  - samples/anthos.serviceusage.service.json
+  - samples/gkehub.serviceusage.service.json
+  - samples/container.serviceusage.service.json
+  - samples/basic.cloudbilling.project_billing_info.json
+  - samples/basic.cloudresourcemanager.project.json
+- resource: samples/update_2_poco.feature_membership.json
+  dependencies:
+  - samples/poco.feature.json
+  - samples/first.membership.json
+  - samples/first.container.cluster.json
+  - samples/first.iam.service_account.json
+  - samples/second.iam.service_account.json
+  - samples/anthospolicycontroller.serviceusage.service.json
+  - samples/anthos.serviceusage.service.json
+  - samples/gkehub.serviceusage.service.json
+  - samples/container.serviceusage.service.json
+  - samples/basic.cloudbilling.project_billing_info.json
+  - samples/basic.cloudresourcemanager.project.json
+variables:
+- name: billing_account
+  type: billing_account
+- name: cluster1
+  type: resource_name
+- name: id
+  type: resource_name
+- name: id1
+  type: resource_name
+- name: id2
+  type: resource_name
+- name: membership1
+  type: resource_name
+- name: org_id
+  type: org_id
+- name: zone
+  type: zone

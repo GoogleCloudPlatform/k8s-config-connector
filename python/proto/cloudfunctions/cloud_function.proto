@@ -1,0 +1,112 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum CloudfunctionsCloudFunctionStatusEnum {
+  CloudfunctionsCloudFunctionStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudfunctionsCloudFunctionStatusEnumCLOUD_FUNCTION_STATUS_UNSPECIFIED = 1;
+  CloudfunctionsCloudFunctionStatusEnumACTIVE = 2;
+  CloudfunctionsCloudFunctionStatusEnumOFFLINE = 3;
+  CloudfunctionsCloudFunctionStatusEnumDEPLOY_IN_PROGRESS = 4;
+  CloudfunctionsCloudFunctionStatusEnumDELETE_IN_PROGRESS = 5;
+  CloudfunctionsCloudFunctionStatusEnumUNKNOWN = 6;
+}
+
+enum CloudfunctionsCloudFunctionVPCConnectorEgressSettingsEnum {
+  CloudfunctionsCloudFunctionVPCConnectorEgressSettingsEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudfunctionsCloudFunctionVPCConnectorEgressSettingsEnumVPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED = 1;
+  CloudfunctionsCloudFunctionVPCConnectorEgressSettingsEnumPRIVATE_RANGES_ONLY = 2;
+  CloudfunctionsCloudFunctionVPCConnectorEgressSettingsEnumALL_TRAFFIC = 3;
+}
+
+enum CloudfunctionsCloudFunctionIngressSettingsEnum {
+  CloudfunctionsCloudFunctionIngressSettingsEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudfunctionsCloudFunctionIngressSettingsEnumINGRESS_SETTINGS_UNSPECIFIED = 1;
+  CloudfunctionsCloudFunctionIngressSettingsEnumALLOW_ALL = 2;
+  CloudfunctionsCloudFunctionIngressSettingsEnumALLOW_INTERNAL_ONLY = 3;
+  CloudfunctionsCloudFunctionIngressSettingsEnumALLOW_INTERNAL_AND_GCLB = 4;
+}
+
+message CloudfunctionsCloudFunction {
+  string name = 1;
+  string description = 2;
+  string source_archive_url = 3;
+  CloudfunctionsCloudFunctionSourceRepository source_repository = 4;
+  CloudfunctionsCloudFunctionHttpsTrigger https_trigger = 5;
+  CloudfunctionsCloudFunctionEventTrigger event_trigger = 6;
+  CloudfunctionsCloudFunctionStatusEnum status = 7;
+  string entry_point = 8;
+  string runtime = 9;
+  int64 timeout = 10;
+  int64 available_memory_mb = 11;
+  string service_account_email = 12;
+  string update_time = 13;
+  int64 version_id = 14;
+  map<string, string> labels = 15;
+  map<string, string> environment_variables = 16;
+  string network = 17;
+  int64 max_instances = 18;
+  string vpc_connector = 19;
+  CloudfunctionsCloudFunctionVPCConnectorEgressSettingsEnum vpc_connector_egress_settings = 20;
+  CloudfunctionsCloudFunctionIngressSettingsEnum ingress_settings = 21;
+  string region = 22;
+  string project = 23;
+}
+
+message CloudfunctionsCloudFunctionSourceRepository {
+  string url = 1;
+  string deployed_url = 2;
+}
+
+message CloudfunctionsCloudFunctionHttpsTrigger {
+  string url = 1;
+}
+
+message CloudfunctionsCloudFunctionEventTrigger {
+  string event_type = 1;
+  string resource = 2;
+  string service = 3;
+  bool failure_policy = 4;
+}
+
+message ApplyCloudfunctionsCloudFunctionRequest {
+  CloudfunctionsCloudFunction resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudfunctionsCloudFunctionRequest {
+  string service_account_file = 1;
+  CloudfunctionsCloudFunction resource = 2;
+}
+
+message ListCloudfunctionsCloudFunctionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListCloudfunctionsCloudFunctionResponse {
+  repeated CloudfunctionsCloudFunction items = 1;
+}
+service CloudfunctionsCloudFunctionService {
+  rpc ApplyCloudfunctionsCloudFunction(ApplyCloudfunctionsCloudFunctionRequest) returns (CloudfunctionsCloudFunction);
+  rpc DeleteCloudfunctionsCloudFunction(DeleteCloudfunctionsCloudFunctionRequest) returns (google.protobuf.Empty);
+  rpc ListCloudfunctionsCloudFunction(ListCloudfunctionsCloudFunctionRequest) returns (ListCloudfunctionsCloudFunctionResponse);
+}
