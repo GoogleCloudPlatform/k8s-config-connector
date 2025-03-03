@@ -17,7 +17,6 @@ package workstations
 import (
 	"context"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -32,10 +31,12 @@ func ResolveWorkstationConfigRefs(ctx context.Context, kube client.Reader, obj *
 	}
 	if obj.Spec.EncryptionKey != nil {
 		if obj.Spec.EncryptionKey.KmsCryptoKeyRef != nil {
-			obj.Spec.EncryptionKey.KmsCryptoKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, obj, obj.Spec.EncryptionKey.KmsCryptoKeyRef)
+			kmsKeyRef := obj.Spec.EncryptionKey.KmsCryptoKeyRef
+			normalizedExternal, err := kmsKeyRef.NormalizedExternal(ctx, kube, obj.GetNamespace())
 			if err != nil {
 				return err
 			}
+			obj.Spec.EncryptionKey.KmsCryptoKeyRef.External = normalizedExternal
 		}
 		if obj.Spec.EncryptionKey.ServiceAccountRef != nil {
 			err = obj.Spec.EncryptionKey.ServiceAccountRef.Resolve(ctx, kube, obj)

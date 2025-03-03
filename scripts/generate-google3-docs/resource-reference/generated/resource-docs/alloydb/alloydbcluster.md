@@ -218,7 +218,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]{% endverbatim %}</p>
+            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/{{PROJECT}}/locations/{{REGION}}/keyRings/{{RING}}/cryptoKeys/{{KEY_NAME}}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +228,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -458,7 +458,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]{% endverbatim %}</p>
+            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/{{PROJECT}}/locations/{{REGION}}/keyRings/{{RING}}/cryptoKeys/{{KEY_NAME}}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -468,7 +468,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -538,7 +538,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]{% endverbatim %}</p>
+            <p>{% verbatim %}The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/{{PROJECT}}/locations/{{REGION}}/keyRings/{{RING}}/cryptoKeys/{{KEY_NAME}}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -548,7 +548,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

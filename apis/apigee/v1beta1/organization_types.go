@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
@@ -103,7 +104,7 @@ type ApigeeOrganizationSpec struct {
 
 	// Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. If not specified or [RuntimeType](#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: "projects/foo/locations/us/keyRings/bar/cryptoKeys/baz". **Note:** Not supported for Apigee hybrid.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization.runtime_database_encryption_key_name
-	RuntimeDatabaseEncryptionKeyRef *refs.KMSCryptoKeyRef `json:"runtimeDatabaseEncryptionKeyRef,omitempty"`
+	RuntimeDatabaseEncryptionKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"runtimeDatabaseEncryptionKeyRef,omitempty"`
 
 	// Required. Runtime type of the Apigee organization based on the Apigee subscription purchased.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization.runtime_type

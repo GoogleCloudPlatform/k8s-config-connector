@@ -144,11 +144,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
+		kmsRef := a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef
+		normalizedExternal, err := kmsRef.NormalizedExternal(ctx, a.reader, a.desired.GetNamespace())
 		if err != nil {
 			return err
 		}
-		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
+		desiredDataset.DefaultEncryptionConfig.KMSKeyName = normalizedExternal
 	}
 	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
 	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
@@ -234,11 +235,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
 		// Resolve KMS key reference
 		if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-			kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
+			kmsRef := a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef
+			normalizedExternal, err := kmsRef.NormalizedExternal(ctx, a.reader, a.desired.GetNamespace())
 			if err != nil {
 				return err
 			}
-			desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
+			desired.DefaultEncryptionConfig.KMSKeyName = normalizedExternal
 		}
 		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
 		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")

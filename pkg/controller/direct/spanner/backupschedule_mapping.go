@@ -16,7 +16,7 @@ package spanner
 
 import (
 	pb "cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -28,12 +28,12 @@ func CreateBackupEncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cr
 	out := &krm.CreateBackupEncryptionConfig{}
 	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
-	kmsKeyNameRefs := []*refs.KMSCryptoKeyRef{}
+	kmsKeyNameRefs := []*kmsv1beta1.KMSCryptoKeyRef{}
 	if in.GetKmsKeyNames() != nil {
 		for _, kmsKeyName := range in.GetKmsKeyNames() {
-			kmsKeyNameRefs = append(kmsKeyNameRefs, &refs.KMSCryptoKeyRef{External: kmsKeyName})
+			kmsKeyNameRefs = append(kmsKeyNameRefs, &kmsv1beta1.KMSCryptoKeyRef{External: kmsKeyName})
 		}
 	}
 	out.KMSKeyRefs = kmsKeyNameRefs

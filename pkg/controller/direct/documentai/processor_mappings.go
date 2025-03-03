@@ -17,7 +17,7 @@ package documentai
 import (
 	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -31,7 +31,7 @@ func DocumentAIProcessorSpec_FromProto(mapCtx *direct.MapContext, in *pb.Process
 	// NOTYET
 	// out.DefaultProcessorVersion = direct.LazyPtr(in.GetDefaultProcessorVersion())
 	if in.GetKmsKeyName() != "" {
-		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	return out
 }

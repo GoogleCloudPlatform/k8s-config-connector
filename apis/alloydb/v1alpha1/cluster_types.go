@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -172,9 +173,9 @@ type AlloyDBClusterSpec struct {
 type EncryptionConfig struct {
 	// The fully-qualified resource name of the KMS key.
 	//  Each Cloud KMS key is regionalized and has the following format:
-	//  projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
+	//  projects/{{PROJECT}}/locations/{{REGION}}/keyRings/{{RING}}/cryptoKeys/{{KEY_NAME}}
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.EncryptionConfig.kms_key_name
-	KMSKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
+	KMSKeyNameRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.AutomatedBackupPolicy.WeeklySchedule

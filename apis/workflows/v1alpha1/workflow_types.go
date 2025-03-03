@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -73,7 +74,7 @@ type WorkflowsWorkflowSpec struct {
 	// If not provided, data associated with the workflow will not be
 	// CMEK-encrypted.
 	// +optional
-	KMSCryptoKeyRef *refs.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
+	KMSCryptoKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
 
 	// Optional. Describes the level of platform logging to apply to calls and
 	// call responses during executions of this workflow. If both the workflow and
