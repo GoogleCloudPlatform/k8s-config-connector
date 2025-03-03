@@ -34,6 +34,27 @@ const (
 # Run commands in multiple branches.
 conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/cheftako/k8s-config-connector_branches
 `
+
+	// flag names.
+	branchConfigurationFlag = "branch-conf"
+	branchRepoFlag          = "branch-repo"
+	commandFlag             = "command"
+	loggingDirFlag          = "logging-dir"
+
+	// Command values
+	cmdHelp                = 0
+	cmdCheckRepo           = 1
+	cmdCreateGitBranch     = 2
+	cmdDeleteGitBranch     = 3
+	cmdCreateScriptYaml    = 4
+	cmdCaptureHttpLog      = 5
+	cmdGenerateMockGo      = 6
+	cmdAddServiceRoundTrip = 7
+	cmdAddProtoMakefile    = 8
+	cmdRunMockTests        = 9
+	cmdGenerateCRDScripts  = 10
+	cmdGenerateSpecStatus  = 11
+	cmdGenerateFuzzer      = 12
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -60,14 +81,6 @@ func BuildRunnerCmd() *cobra.Command {
 
 	return cmd
 }
-
-const (
-	// flag names.
-	branchConfigurationFlag = "branch-conf"
-	branchRepoFlag          = "branch-repo"
-	commandFlag             = "command"
-	loggingDirFlag          = "logging-dir"
-)
 
 type RunnerOptions struct {
 	branchConfFile string
@@ -147,11 +160,11 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		splitMetadata(opts, branches)
 	case -1:
 		fixMetadata(opts, branches)
-	case 0:
+	case cmdHelp: // 0
 		printHelp()
-	case 1:
+	case cmdCheckRepo: // 1
 		checkRepoDir(opts, branches)
-	case 2:
+	case cmdCreateGitBranch: // 2
 		for idx, branch := range branches.Branches {
 			/*
 				if branch.Controller != "Unknown" {
@@ -162,43 +175,58 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Create GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createGithubBranch(opts, branch)
 		}
-	case 3:
+	case cmdDeleteGitBranch: // 3
 		for idx, branch := range branches.Branches {
 			log.Printf("Delete GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			deleteGithubBranch(opts, branch)
 		}
-	case 4:
+	case cmdCreateScriptYaml: // 4
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createScriptYaml(opts, branch)
 		}
-	case 5:
+	case cmdCaptureHttpLog: // 5
 		for idx, branch := range branches.Branches {
 			log.Printf("Capture HTTP Log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			captureHttpLog(opts, branch)
 		}
-	case 6:
+	case cmdGenerateMockGo: // 6
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate mock Service and Resource go files: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateMockGo(opts, branch)
 		}
-	case 7:
+	case cmdAddServiceRoundTrip: // 7
 		for idx, branch := range branches.Branches {
 			log.Printf("Add service to mock_http_roundtrip.go: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			addServiceToRoundTrip(opts, branch)
 		}
-	case 8:
+	case cmdAddProtoMakefile: // 8
 		for idx, branch := range branches.Branches {
 			log.Printf("Add proto to makefile: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			addProtoToMakfile(opts, branch)
 		}
-	case 9:
+	case cmdRunMockTests: // 9
 		for idx, branch := range branches.Branches {
 			log.Printf("Run mockgcptests on generated mocks: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			runMockgcpTests(opts, branch)
 		}
+	case cmdGenerateCRDScripts: // 10
+		for idx, branch := range branches.Branches {
+			log.Printf("Generate CRD Scripts: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			generateCRDScripts(opts, branch)
+		}
+	case cmdGenerateSpecStatus: // 11
+		for idx, branch := range branches.Branches {
+			log.Printf("Generate Spec and Status: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			generateSpecStatus(opts, branch)
+		}
+	case cmdGenerateFuzzer: // 12
+		for idx, branch := range branches.Branches {
+			log.Printf("Generate Fuzzer: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			generateFuzzer(opts, branch)
+		}
 	default:
-		log.Fatalf("unrecognixed command: %d", opts.command)
+		log.Fatalf("unrecognized command: %d", opts.command)
 	}
 	return nil
 }
@@ -216,6 +244,9 @@ func printHelp() {
 	log.Println("\t7 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
 	log.Println("\t8 - [Mock] Add proto to makefile in each github branch")
 	log.Println("\t9 - [Mock] Run mockgcptests on generated mocks in each github branch")
+	log.Println("\t10 - [CRD] Generate CRD scripts for each branch")
+	log.Println("\t11 - [CRD] Generate spec and status for each branch")
+	log.Println("\t12 - [Fuzzer] Generate fuzzer for each branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
