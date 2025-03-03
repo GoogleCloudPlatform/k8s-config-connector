@@ -108,6 +108,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "advisorynotifications.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AdvisorynotificationsSettings",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "alloydb.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "AlloyDBBackup",
