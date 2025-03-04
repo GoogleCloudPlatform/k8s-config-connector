@@ -41,10 +41,11 @@ func (i *DatabaseIdentity) Parent() *DatabaseParent {
 type DatabaseParent struct {
 	ProjectID string
 	Location  string
+	CatalogID string
 }
 
 func (p *DatabaseParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/catalogs/" + p.CatalogID
 }
 
 // NOT YET
@@ -101,13 +102,14 @@ func (p *DatabaseParent) String() string {
 
 func ParseDatabaseExternal(external string) (parent *DatabaseParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "databases" {
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "catalogs" || tokens[6] != "databases" {
 		return nil, "", fmt.Errorf("format of BigLakeDatabase external=%q was not known (use projects/{{projectID}}/locations/{{location}}/databases/{{databaseID}})", external)
 	}
 	parent = &DatabaseParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
+		CatalogID: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
