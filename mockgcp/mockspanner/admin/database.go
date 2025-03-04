@@ -23,6 +23,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"unicode"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
@@ -193,13 +194,23 @@ func (s *SpannerDatabaseV1) CreateBackupSchedule(ctx context.Context, req *pb.Cr
 	now := time.Now()
 	obj := req.GetBackupSchedule()
 	obj.Name = fqn
+	cronSpecText := ""
+	if obj.Spec.ScheduleSpec != nil {
+		cronSpecText = obj.Spec.GetCronSpec().Text
+	}
 	obj.Spec.ScheduleSpec = &pb.BackupScheduleSpec_CronSpec{
 		CronSpec: &pb.CrontabSpec{
 			TimeZone:       "UTC",
 			CreationWindow: durationpb.New(14400 * time.Second),
+			Text:           cronSpecText,
 		},
 	}
 	obj.UpdateTime = timestamppb.New(now)
+	if obj.EncryptionConfig == nil {
+		obj.EncryptionConfig = &pb.CreateBackupEncryptionConfig{
+			EncryptionType: 1,
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -235,6 +246,18 @@ func (s *SpannerDatabaseV1) GetBackupSchedule(ctx context.Context, req *pb.GetBa
 	obj := &pb.BackupSchedule{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
+	}
+	obj.Name = fqn
+	cronSpecText := ""
+	if obj.Spec.ScheduleSpec != nil {
+		cronSpecText = obj.Spec.GetCronSpec().Text
+	}
+	obj.Spec.ScheduleSpec = &pb.BackupScheduleSpec_CronSpec{
+		CronSpec: &pb.CrontabSpec{
+			TimeZone:       "UTC",
+			CreationWindow: durationpb.New(14400 * time.Second),
+			Text:           cronSpecText,
+		},
 	}
 	return obj, nil
 }
@@ -276,16 +299,10 @@ func (s *SpannerDatabaseV1) UpdateBackupSchedule(ctx context.Context, req *pb.Up
 	}
 
 	obj.Name = fqn
-	obj.Spec.ScheduleSpec = &pb.BackupScheduleSpec_CronSpec{
-		CronSpec: &pb.CrontabSpec{
-			TimeZone:       "UTC",
-			CreationWindow: durationpb.New(2 * time.Minute),
-		},
-	}
 	obj.UpdateTime = timestamppb.New(now)
 
 	for _, path := range req.GetUpdateMask().GetPaths() {
-		switch path {
+		switch camelToUnderscore(path) {
 		case "spec":
 			obj.Spec = req.GetBackupSchedule().GetSpec()
 		case "retention_duration":
@@ -303,6 +320,17 @@ func (s *SpannerDatabaseV1) UpdateBackupSchedule(ctx context.Context, req *pb.Up
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "UpdateBackupSchedule does not support field mask path: %q", path)
 		}
+	}
+	cronSpecText := ""
+	if obj.Spec.ScheduleSpec != nil {
+		cronSpecText = obj.Spec.GetCronSpec().Text
+	}
+	obj.Spec.ScheduleSpec = &pb.BackupScheduleSpec_CronSpec{
+		CronSpec: &pb.CrontabSpec{
+			TimeZone:       "UTC",
+			CreationWindow: durationpb.New(14400 * time.Second),
+			Text:           cronSpecText,
+		},
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -345,4 +373,23 @@ func (s *MockService) parseBackupScheduleName(name string) (*backupScheduleName,
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func camelToUnderscore(input string) string {
+	// Split by dots first to handle paths
+	parts := strings.Split(input, ".")
+	for i, part := range parts {
+		if part == "" {
+			continue
+		}
+		var result strings.Builder
+		for j, r := range part {
+			if j > 0 && unicode.IsUpper(r) {
+				result.WriteRune('_')
+			}
+			result.WriteRune(unicode.ToLower(r))
+		}
+		parts[i] = result.String()
+	}
+	return strings.Join(parts, ".")
 }
