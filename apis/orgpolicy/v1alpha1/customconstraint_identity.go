@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type CustomConstraintIdentity struct {
 	parent *CustomConstraintParent
-	id string
+	id     string
 }
 
 func (i *CustomConstraintIdentity) String() string {
-	return  i.parent.String() + "/customconstraints/" + i.id
+	return i.parent.String() + "/customconstraints/" + i.id
 }
 
 func (i *CustomConstraintIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *CustomConstraintIdentity) ID() string {
 }
 
 func (i *CustomConstraintIdentity) Parent() *CustomConstraintParent {
-	return  i.parent
+	return i.parent
 }
 
 type CustomConstraintParent struct {
@@ -51,7 +51,6 @@ type CustomConstraintParent struct {
 func (p *CustomConstraintParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a CustomConstraintIdentity from the Config Connector CustomConstraint object.
 func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj *OrgpolicyCustomConstraint) (*CustomConstraintIdentity, error) {
