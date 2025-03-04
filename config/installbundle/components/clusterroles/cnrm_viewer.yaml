@@ -231,6 +231,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - composer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - compute.cnrm.cloud.google.com
   resources:
   - '*'

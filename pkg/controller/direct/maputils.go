@@ -367,6 +367,21 @@ func Int64Value_ToProto(mapCtx *MapContext, s int64) *wrapperspb.Int64Value {
 	return wrapperspb.Int64(s)
 }
 
+func Float32ToString(mapCtx *MapContext, in float32) string {
+	return strconv.FormatFloat(float64(in), 'f', -1, 32)
+}
+
+func StringToFloat32(mapCtx *MapContext, in string) float32 {
+	if in == "" {
+		return 0.0
+	}
+	out64, err := strconv.ParseFloat(in, 32)
+	if err != nil {
+		mapCtx.Errorf("parsing float %v: %w", in, err)
+	}
+	return float32(out64)
+}
+
 func FloatValue_FromProto(mapCtx *MapContext, in *wrapperspb.FloatValue) *float32 {
 	if in == nil {
 		return nil
