@@ -328,3 +328,13 @@ func executeCommand(cfg CommandConfig, out *strings.Builder, stderr *strings.Bui
 	out.Reset()
 	return err
 }
+
+func repoRoot() (string, error) {
+	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	output, err := cmd.Output()
+	if err != nil {
+		return "", err
+	}
+	repoRoot := strings.TrimSpace(string(output))
+	return repoRoot, nil
+}

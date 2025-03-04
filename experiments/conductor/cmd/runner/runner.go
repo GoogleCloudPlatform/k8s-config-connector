@@ -60,10 +60,18 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 func BuildRunnerCmd() *cobra.Command {
 	var opts RunnerOptions
 
+	if err := initDefaults(&opts); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing flag defaults: %v\n", err)
+		os.Exit(1)
+	}
+
 	cmd := &cobra.Command{
 		Use:     "runner",
 		Short:   "runner Run commands in various branches.",
 		Example: examples,
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			return opts.validateFlags()
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return RunRunner(cmd.Context(), &opts)
 		},
@@ -71,9 +79,9 @@ func BuildRunnerCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVarP(&opts.branchConfFile, branchConfigurationFlag,
-		"", "branches.yaml", "File containing the branch configurations.")
+		"", opts.branchConfFile, "File containing the branch configurations.")
 	cmd.Flags().StringVarP(&opts.branchRepoDir, branchRepoFlag,
-		"", "", "Directory in which to do the work.")
+		"", opts.branchRepoDir, "Directory in which to do the work.")
 	cmd.Flags().Int64VarP(&opts.command, commandFlag,
 		"", 0, "Which commands to you on the directory.")
 	cmd.Flags().StringVarP(&opts.loggingDir, loggingDirFlag,
@@ -89,7 +97,23 @@ type RunnerOptions struct {
 	loggingDir     string
 }
 
+func initDefaults(opts *RunnerOptions) error {
+	repoRoot, err := repoRoot()
+	if err != nil {
+		return err
+	}
+	opts.branchConfFile = "branches.yaml"
+	opts.branchRepoDir = repoRoot
+	return nil
+}
+
 func (opts *RunnerOptions) validateFlags() error {
+	if opts.branchConfFile == "" {
+		return fmt.Errorf("%s is required", branchConfigurationFlag)
+	}
+	if opts.branchRepoDir == "" {
+		return fmt.Errorf("%s is required", branchRepoFlag)
+	}
 	return nil
 }
 
