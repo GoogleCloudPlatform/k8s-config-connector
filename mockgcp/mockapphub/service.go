@@ -32,13 +32,19 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
+// MockService represents a mocked App Hub service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
 	operations *operations.Operations
 
-	v1 *AppHubV1Service
+	v1 *apphubV1
+}
+
+type apphubV1 struct {
+	*MockService
+	pb.UnimplementedAppHubServer
 }
 
 // New creates a MockService.
@@ -48,7 +54,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &AppHubV1Service{MockService: s}
+	s.v1 = &apphubV1{MockService: s}
 	return s
 }
 
@@ -63,8 +69,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterAppHubHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
