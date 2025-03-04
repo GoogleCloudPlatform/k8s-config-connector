@@ -1,0 +1,167 @@
+POST https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-east1/applications?alt=json&applicationId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "attributes": {},
+  "scope": {
+    "type": "REGIONAL"
+  }
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "googleapis.com",
+        "metadata": {
+          "activationUrl": "https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId}",
+          "consumer": "projects/${projectId}",
+          "containerInfo": "${projectId}",
+          "service": "apphub.googleapis.com",
+          "serviceTitle": "App Hub API"
+        },
+        "reason": "SERVICE_DISABLED"
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+        "locale": "en-US",
+        "message": "App Hub API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Google developers console API activation",
+            "url": "https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId}"
+          }
+        ]
+      }
+    ],
+    "message": "App Hub API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-east1/applications/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "googleapis.com",
+        "metadata": {
+          "activationUrl": "https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId}",
+          "consumer": "projects/${projectId}",
+          "containerInfo": "${projectId}",
+          "service": "apphub.googleapis.com",
+          "serviceTitle": "App Hub API"
+        },
+        "reason": "SERVICE_DISABLED"
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+        "locale": "en-US",
+        "message": "App Hub API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Google developers console API activation",
+            "url": "https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId}"
+          }
+        ]
+      }
+    ],
+    "message": "App Hub API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+DELETE https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-east1/applications/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "googleapis.com",
+        "metadata": {
+          "activationUrl": "https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId}",
+          "consumer": "projects/${projectId}",
+          "containerInfo": "${projectId}",
+          "service": "apphub.googleapis.com",
+          "serviceTitle": "App Hub API"
+        },
+        "reason": "SERVICE_DISABLED"
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+        "locale": "en-US",
+        "message": "App Hub API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Google developers console API activation",
+            "url": "https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId}"
+          }
+        ]
+      }
+    ],
+    "message": "App Hub API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/apphub.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+    "status": "PERMISSION_DENIED"
+  }
+}
