@@ -14,6 +14,7 @@
 
 package v1alpha1
 
+
 // +kcc:proto=google.cloud.notebooks.v1.ContainerImage
 type ContainerImage struct {
 	// Required. The path to the container image repository. For example:
@@ -25,6 +26,376 @@ type ContainerImage struct {
 	//  to the latest tag.
 	// +kcc:proto:field=google.cloud.notebooks.v1.ContainerImage.tag
 	Tag *string `json:"tag,omitempty"`
+}
+
+// +kcc:proto=google.cloud.notebooks.v1.Instance
+type Instance struct {
+
+	// Use a Compute Engine VM image to start the notebook instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.vm_image
+	VmImage *VmImage `json:"vmImage,omitempty"`
+
+	// Use a container image to start the notebook instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.container_image
+	ContainerImage *ContainerImage `json:"containerImage,omitempty"`
+
+	// Path to a Bash script that automatically runs after a notebook instance
+	//  fully boots up. The path must be a URL or
+	//  Cloud Storage path (`gs://path-to-file/file-name`).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.post_startup_script
+	PostStartupScript *string `json:"postStartupScript,omitempty"`
+
+	// Input only. The owner of this instance after creation. Format: `alias@example.com`
+	//
+	//  Currently supports one owner only. If not specified, all of the service
+	//  account users of your VM instance's service account can use
+	//  the instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.instance_owners
+	InstanceOwners []string `json:"instanceOwners,omitempty"`
+
+	// The service account on this instance, giving access to other Google
+	//  Cloud services.
+	//  You can use any service account within the same project, but you
+	//  must have the service account user permission to use the instance.
+	//
+	//  If not specified, the [Compute Engine default service
+	//  account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
+	//  is used.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. The URIs of service account scopes to be included in
+	//  Compute Engine instances.
+	//
+	//  If not specified, the following
+	//  [scopes](https://cloud.google.com/compute/docs/access/service-accounts#accesscopesiam)
+	//  are defined:
+	//   - https://www.googleapis.com/auth/cloud-platform
+	//   - https://www.googleapis.com/auth/userinfo.email
+	//  If not using default scopes, you need at least:
+	//     https://www.googleapis.com/auth/compute
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.service_account_scopes
+	ServiceAccountScopes []string `json:"serviceAccountScopes,omitempty"`
+
+	// Required. The [Compute Engine machine
+	//  type](https://cloud.google.com/compute/docs/machine-types) of this
+	//  instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// The hardware accelerator used on this instance. If you use
+	//  accelerators, make sure that your configuration has
+	//  [enough vCPUs and memory to support the `machine_type` you have
+	//  selected](https://cloud.google.com/compute/docs/gpus/#gpus-list).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.accelerator_config
+	AcceleratorConfig *Instance_AcceleratorConfig `json:"acceleratorConfig,omitempty"`
+
+	// Whether the end user authorizes Google Cloud to install GPU driver
+	//  on this instance.
+	//  If this field is empty or set to false, the GPU driver won't be installed.
+	//  Only applicable to instances with GPUs.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.install_gpu_driver
+	InstallGpuDriver *bool `json:"installGpuDriver,omitempty"`
+
+	// Specify a custom Cloud Storage path where the GPU driver is stored.
+	//  If not specified, we'll automatically choose from official GPU drivers.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.custom_gpu_driver_path
+	CustomGpuDriverPath *string `json:"customGpuDriverPath,omitempty"`
+
+	// Input only. The type of the boot disk attached to this instance, defaults to
+	//  standard persistent disk (`PD_STANDARD`).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.boot_disk_type
+	BootDiskType *string `json:"bootDiskType,omitempty"`
+
+	// Input only. The size of the boot disk in GB attached to this instance, up to a maximum
+	//  of 64000 GB (64 TB). The minimum recommended value is 100 GB. If not
+	//  specified, this defaults to 100.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.boot_disk_size_gb
+	BootDiskSizeGB *int64 `json:"bootDiskSizeGB,omitempty"`
+
+	// Input only. The type of the data disk attached to this instance, defaults to
+	//  standard persistent disk (`PD_STANDARD`).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.data_disk_type
+	DataDiskType *string `json:"dataDiskType,omitempty"`
+
+	// Input only. The size of the data disk in GB attached to this instance, up to a maximum
+	//  of 64000 GB (64 TB). You can choose the size of the data disk based on how
+	//  big your notebooks and data are. If not specified, this defaults to 100.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.data_disk_size_gb
+	DataDiskSizeGB *int64 `json:"dataDiskSizeGB,omitempty"`
+
+	// Input only. If true, the data disk will not be auto deleted when deleting the instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.no_remove_data_disk
+	NoRemoveDataDisk *bool `json:"noRemoveDataDisk,omitempty"`
+
+	// Input only. Disk encryption method used on the boot and data disks, defaults to GMEK.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.disk_encryption
+	DiskEncryption *string `json:"diskEncryption,omitempty"`
+
+	// Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption
+	//  is CMEK.
+	//  Format:
+	//  `projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}`
+	//
+	//  Learn more about [using your own encryption keys](/kms/docs/quickstart).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
+	// Optional. Shielded VM configuration.
+	//  [Images using supported Shielded VM
+	//  features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.shielded_instance_config
+	ShieldedInstanceConfig *Instance_ShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	// If true, no public IP will be assigned to this instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.no_public_ip
+	NoPublicIP *bool `json:"noPublicIP,omitempty"`
+
+	// If true, the notebook instance will not register with the proxy.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.no_proxy_access
+	NoProxyAccess *bool `json:"noProxyAccess,omitempty"`
+
+	// The name of the VPC that this instance is in.
+	//  Format:
+	//  `projects/{project_id}/global/networks/{network_id}`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.network
+	Network *string `json:"network,omitempty"`
+
+	// The name of the subnet that this instance is in.
+	//  Format:
+	//  `projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.subnet
+	Subnet *string `json:"subnet,omitempty"`
+
+	// Labels to apply to this instance.
+	//  These can be later modified by the setLabels method.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Custom metadata to apply to this instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// Optional. The Compute Engine tags to add to runtime (see [Tagging
+	//  instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.tags
+	Tags []string `json:"tags,omitempty"`
+
+	// The upgrade history of this instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.upgrade_history
+	UpgradeHistory []Instance_UpgradeHistoryEntry `json:"upgradeHistory,omitempty"`
+
+	// Optional. The type of vNIC to be used on this interface. This may be gVNIC or
+	//  VirtioNet.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.nic_type
+	NicType *string `json:"nicType,omitempty"`
+
+	// Optional. The optional reservation affinity. Setting this field will apply
+	//  the specified [Zonal Compute
+	//  Reservation](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources)
+	//  to this notebook instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.reservation_affinity
+	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
+
+	// Optional. Flag to enable ip forwarding or not, default false/off.
+	//  https://cloud.google.com/vpc/docs/using-routes#canipforward
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.can_ip_forward
+	CanIPForward *bool `json:"canIPForward,omitempty"`
+}
+
+// +kcc:proto=google.cloud.notebooks.v1.Instance.AcceleratorConfig
+type Instance_AcceleratorConfig struct {
+	// Type of this accelerator.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.AcceleratorConfig.type
+	Type *string `json:"type,omitempty"`
+
+	// Count of cores of this accelerator.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.AcceleratorConfig.core_count
+	CoreCount *int64 `json:"coreCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.notebooks.v1.Instance.Disk
+type Instance_Disk struct {
+	// Indicates whether the disk will be auto-deleted when the instance is
+	//  deleted (but not when the disk is detached from the instance).
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.auto_delete
+	AutoDelete *bool `json:"autoDelete,omitempty"`
+
+	// Indicates that this is a boot disk. The virtual machine will use the
+	//  first partition of the disk for its root filesystem.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.boot
+	Boot *bool `json:"boot,omitempty"`
+
+	// Indicates a unique device name of your choice that is reflected into the
+	//  `/dev/disk/by-id/google-*` tree of a Linux operating system running
+	//  within the instance. This name can be used to reference the device for
+	//  mounting, resizing, and so on, from within the instance.
+	//
+	//  If not specified, the server chooses a default device name to apply to
+	//  this disk, in the form persistent-disk-x, where x is a number assigned by
+	//  Google Compute Engine.This field is only applicable for persistent disks.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.device_name
+	DeviceName *string `json:"deviceName,omitempty"`
+
+	// Indicates the size of the disk in base-2 GB.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
+
+	// Indicates a list of features to enable on the guest operating system.
+	//  Applicable only for bootable images. Read  Enabling guest operating
+	//  system features to see a list of available options.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.guest_os_features
+	GuestOSFeatures []Instance_Disk_GuestOSFeature `json:"guestOSFeatures,omitempty"`
+
+	// A zero-based index to this disk, where 0 is reserved for the
+	//  boot disk. If you have many disks attached to an instance, each disk
+	//  would have a unique index number.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.index
+	Index *int64 `json:"index,omitempty"`
+
+	// Indicates the disk interface to use for attaching this disk, which is
+	//  either SCSI or NVME. The default is SCSI. Persistent disks must always
+	//  use SCSI and the request will fail if you attempt to attach a persistent
+	//  disk in any other format than SCSI. Local SSDs can use either NVME or
+	//  SCSI. For performance characteristics of SCSI over NVMe, see Local SSD
+	//  performance.
+	//  Valid values:
+	//
+	//  * `NVME`
+	//  * `SCSI`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.interface
+	Interface *string `json:"interface,omitempty"`
+
+	// Type of the resource. Always compute#attachedDisk for attached
+	//  disks.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A list of publicly visible licenses. Reserved for Google's use.
+	//  A License represents billing and aggregate usage data for public
+	//  and marketplace images.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.licenses
+	Licenses []string `json:"licenses,omitempty"`
+
+	// The mode in which to attach this disk, either `READ_WRITE` or
+	//  `READ_ONLY`. If not specified, the default is to attach the disk in
+	//  `READ_WRITE` mode. Valid values:
+	//
+	//  * `READ_ONLY`
+	//  * `READ_WRITE`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Indicates a valid partial or full URL to an existing Persistent Disk
+	//  resource.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.source
+	Source *string `json:"source,omitempty"`
+
+	// Indicates the type of the disk, either `SCRATCH` or `PERSISTENT`.
+	//  Valid values:
+	//
+	//  * `PERSISTENT`
+	//  * `SCRATCH`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.notebooks.v1.Instance.Disk.GuestOsFeature
+type Instance_Disk_GuestOSFeature struct {
+	// The ID of a supported feature. Read  Enabling guest operating system
+	//  features to see a list of available options.
+	//  Valid values:
+	//
+	//  * `FEATURE_TYPE_UNSPECIFIED`
+	//  * `MULTI_IP_SUBNET`
+	//  * `SECURE_BOOT`
+	//  * `UEFI_COMPATIBLE`
+	//  * `VIRTIO_SCSI_MULTIQUEUE`
+	//  * `WINDOWS`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.Disk.GuestOsFeature.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.notebooks.v1.Instance.ShieldedInstanceConfig
+type Instance_ShieldedInstanceConfig struct {
+	// Defines whether the instance has Secure Boot enabled.
+	//
+	//  Secure Boot helps ensure that the system only runs authentic software by
+	//  verifying the digital signature of all boot components, and halting the
+	//  boot process if signature verification fails. Disabled by default.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.ShieldedInstanceConfig.enable_secure_boot
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+
+	// Defines whether the instance has the vTPM enabled. Enabled by default.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.ShieldedInstanceConfig.enable_vtpm
+	EnableVTPM *bool `json:"enableVTPM,omitempty"`
+
+	// Defines whether the instance has integrity monitoring enabled.
+	//
+	//  Enables monitoring and attestation of the boot integrity of the instance.
+	//  The attestation is performed against the integrity policy baseline. This
+	//  baseline is initially derived from the implicitly trusted boot image when
+	//  the instance is created. Enabled by default.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.ShieldedInstanceConfig.enable_integrity_monitoring
+	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
+}
+
+// +kcc:proto=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry
+type Instance_UpgradeHistoryEntry struct {
+	// The snapshot of the boot disk of this notebook instance before upgrade.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.snapshot
+	Snapshot *string `json:"snapshot,omitempty"`
+
+	// The VM image before this instance upgrade.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.vm_image
+	VmImage *string `json:"vmImage,omitempty"`
+
+	// The container image before this instance upgrade.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.container_image
+	ContainerImage *string `json:"containerImage,omitempty"`
+
+	// The framework of this notebook instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.framework
+	Framework *string `json:"framework,omitempty"`
+
+	// The version of the notebook instance before this upgrade.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.version
+	Version *string `json:"version,omitempty"`
+
+	// The state of this instance upgrade history entry.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.state
+	State *string `json:"state,omitempty"`
+
+	// The time that this instance upgrade history entry is created.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Target VM Image. Format: `ainotebooks-vm/project/image-name/name`.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.target_image
+	TargetImage *string `json:"targetImage,omitempty"`
+
+	// Action. Rolloback or Upgrade.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.action
+	Action *string `json:"action,omitempty"`
+
+	// Target VM Version, like m63.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.UpgradeHistoryEntry.target_version
+	TargetVersion *string `json:"targetVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.notebooks.v1.ReservationAffinity
+type ReservationAffinity struct {
+	// Optional. Type of reservation to consume
+	// +kcc:proto:field=google.cloud.notebooks.v1.ReservationAffinity.consume_reservation_type
+	ConsumeReservationType *string `json:"consumeReservationType,omitempty"`
+
+	// Optional. Corresponds to the label key of reservation resource.
+	// +kcc:proto:field=google.cloud.notebooks.v1.ReservationAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. Corresponds to the label values of reservation resource.
+	// +kcc:proto:field=google.cloud.notebooks.v1.ReservationAffinity.values
+	Values []string `json:"values,omitempty"`
 }
 
 // +kcc:proto=google.cloud.notebooks.v1.VmImage
@@ -42,4 +413,36 @@ type VmImage struct {
 	//  family will be used.
 	// +kcc:proto:field=google.cloud.notebooks.v1.VmImage.image_family
 	ImageFamily *string `json:"imageFamily,omitempty"`
+}
+
+// +kcc:proto=google.cloud.notebooks.v1.Instance
+type InstanceObservedState struct {
+	// Output only. The name of this notebook instance. Format:
+	//  `projects/{project_id}/locations/{location}/instances/{instance_id}`
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The proxy endpoint that is used to access the Jupyter notebook.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.proxy_uri
+	ProxyURI *string `json:"proxyURI,omitempty"`
+
+	// Output only. The state of this instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Attached disks to notebook instance.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.disks
+	Disks []Instance_Disk `json:"disks,omitempty"`
+
+	// Output only. Email address of entity that sent original CreateInstance request.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.creator
+	Creator *string `json:"creator,omitempty"`
+
+	// Output only. Instance creation time.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Instance update time.
+	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
