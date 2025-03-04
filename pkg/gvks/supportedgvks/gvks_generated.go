@@ -4049,7 +4049,28 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "securesourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SecureSourceManagerInstance",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc":  "true",
+			"cnrm.cloud.google.com/stability-level": "alpha",
+			"cnrm.cloud.google.com/system":          "true",
+		},
+	},
+	{
+		Group:   "securesourcemanager.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "SecureSourceManagerRepository",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "securesourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
 		Kind:    "SecureSourceManagerRepository",
 	}: {
 		Labels: map[string]string{
