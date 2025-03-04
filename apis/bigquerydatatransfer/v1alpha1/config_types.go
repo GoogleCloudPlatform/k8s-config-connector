@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,7 +27,7 @@ var BigQueryDataTransferConfigGVK = GroupVersion.WithKind("BigQueryDataTransferC
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EncryptionConfiguration
 type EncryptionConfiguration struct {
 	// The KMS key used for encrypting BigQuery data.
-	KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig

@@ -19,6 +19,8 @@ import (
 	"testing"
 	"time"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	"math/rand"
 
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
@@ -279,8 +281,8 @@ func FuzzApigeeInstanceSpec(f *testing.F) {
 		opts := cmp.Options{
 			cmpopts.IgnoreFields(krm.ApigeeInstanceSpec{}, "OrganizationRef"),
 			cmpopts.IgnoreFields(krm.ApigeeInstanceSpec{}, "ResourceID"),
-			cmpopts.IgnoreFields(refs.KMSCryptoKeyRef{}, "Name"),
-			cmpopts.IgnoreFields(refs.KMSCryptoKeyRef{}, "Namespace"),
+			cmpopts.IgnoreFields(kmsv1beta1.KMSCryptoKeyRef{}, "Name"),
+			cmpopts.IgnoreFields(kmsv1beta1.KMSCryptoKeyRef{}, "Namespace"),
 		}
 		if diff := cmp.Diff(k1, k2, opts...); diff != "" {
 			t.Logf("k1 = %v", k1)

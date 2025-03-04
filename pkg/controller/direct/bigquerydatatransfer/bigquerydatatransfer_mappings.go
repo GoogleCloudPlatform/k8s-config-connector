@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
 	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
@@ -107,7 +108,7 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 	}
 	out := &krm.EncryptionConfiguration{}
 	if in.GetKmsKeyName() != nil {
-		out.KmsKeyRef = &refv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName().GetValue()}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName().GetValue()}
 	}
 	return out
 }

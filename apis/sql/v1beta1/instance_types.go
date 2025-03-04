@@ -17,6 +17,8 @@ package v1beta1
 import (
 	"reflect"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -447,7 +449,7 @@ type SQLInstanceSpec struct {
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
 	// +optional
-	EncryptionKMSCryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
+	EncryptionKMSCryptoKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
 
 	/* The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'. */
 	// +optional
