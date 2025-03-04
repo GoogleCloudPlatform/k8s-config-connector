@@ -89,6 +89,7 @@ import (
 	mockspanner "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspanner/admin"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvpcaccess"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"

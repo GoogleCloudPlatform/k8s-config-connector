@@ -498,8 +498,10 @@ func (o *objectWalker) visitMap(m map[string]any, path string) error {
 		}
 
 		if v2, found := o.replacePaths[childPath]; found {
-			m[k] = v2
-			continue // replacement value is assumed to be normalized
+			if v != nil && v != "null" { // don't replace nil/null values
+				m[k] = v2
+				continue // replacement value is assumed to be normalized
+			}
 		}
 
 		v2, err := o.visitAny(v, childPath)
