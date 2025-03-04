@@ -6,16 +6,15 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com
 spec:
   group: orgpolicy.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: OrgPolicyCustomConstraint
+    kind: OrgpolicyCustomConstraint
+    listKind: OrgpolicyCustomConstraintList
     plural: orgpolicycustomconstraints
     shortNames:
     - gcporgpolicycustomconstraint
@@ -43,73 +42,37 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: OrgpolicyCustomConstraint is the Schema for the OrgpolicyCustomConstraint
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: OrgpolicyCustomConstraintSpec defines the desired state of
+              OrgpolicyCustomConstraint
             properties:
-              actionType:
-                description: 'The action to take if the condition is met. Possible
-                  values: ["ALLOW", "DENY"].'
-                type: string
-              condition:
-                description: A CEL condition that refers to a supported service resource,
-                  for example 'resource.management.autoUpgrade == false'. For details
-                  about CEL usage, see [Common Expression Language](https://cloud.google.com/resource-manager/docs/organization-policy/creating-managing-custom-constraints#common_expression_language).
-                type: string
-              description:
-                description: A human-friendly description of the constraint to display
-                  as an error message when the policy is violated.
-                type: string
-              displayName:
-                description: A human-friendly name for the constraint.
-                type: string
-              methodTypes:
-                description: A list of RESTful methods for which to enforce the constraint.
-                  Can be 'CREATE', 'UPDATE', or both. Not all Google Cloud services
-                  support both methods. To see supported methods for each service,
-                  find the service in [Supported services](https://cloud.google.com/resource-manager/docs/organization-policy/custom-constraint-supported-services).
-                items:
-                  type: string
-                type: array
-              parent:
-                description: Immutable. The parent of the resource, an organization.
-                  Format should be 'organizations/{organization_id}'.
-                type: string
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The OrgpolicyCustomConstraint name. If not given, the
+                  metadata.name will be used.
                 type: string
-              resourceTypes:
-                description: Immutable. Immutable. The fully qualified name of the
-                  Google Cloud REST resource containing the object and field you want
-                  to restrict. For example, 'container.googleapis.com/NodePool'.
-                items:
-                  type: string
-                type: array
-            required:
-            - actionType
-            - condition
-            - methodTypes
-            - parent
-            - resourceTypes
             type: object
           status:
+            description: OrgpolicyCustomConstraintStatus defines the config connector
+              machine state of OrgpolicyCustomConstraint
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -133,17 +96,22 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the OrgpolicyCustomConstraint
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              updateTime:
-                description: Output only. The timestamp representing when the constraint
-                  was last updated.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -152,9 +120,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
