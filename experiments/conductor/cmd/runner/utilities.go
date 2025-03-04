@@ -15,6 +15,7 @@
 package runner
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -23,6 +24,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 type exitBash func()
@@ -100,7 +102,8 @@ func checkoutBranch(branch Branch, workDir string, out *strings.Builder) {
 	if err := checkout.Run(); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH CHECKOUT: %q\n", out.String())
+	log.Printf("BRANCH CHECKOUT: %q\n", formatCommandOutput(out.String()))
+	out.Reset()
 }
 
 func writeTemplateToFile(branch Branch, filePath string, template string) {
@@ -111,6 +114,12 @@ func writeTemplateToFile(branch Branch, filePath string, template string) {
 	tmp = strings.ReplaceAll(tmp, "<HTTP_HOST>", branch.HostName)
 	tmp = strings.ReplaceAll(tmp, "<PROTO_SERVICE>", branch.ProtoSvc)
 	tmp = strings.ReplaceAll(tmp, "<PROTO_MESSAGE>", branch.ProtoMsg)
+	tmp = strings.ReplaceAll(tmp, "<PROTO_PACKAGE>", branch.Package)
+	tmp = strings.ReplaceAll(tmp, "<CRD_GROUP>", fmt.Sprintf("%s.cnrm.cloud.google.com", branch.Group))
+	tmp = strings.ReplaceAll(tmp, "<CRD_VERSION>", "v1alpha1")
+	tmp = strings.ReplaceAll(tmp, "<CRD_KIND>", branch.Kind)
+	tmp = strings.ReplaceAll(tmp, "<PROTO_RESOURCE>", branch.Proto)
+
 	contents := strings.ReplaceAll(tmp, "<RESOURCE>", strings.ToLower(branch.Resource))
 	log.Printf("TEMPLATE %s %s", filePath, contents)
 
@@ -146,23 +155,27 @@ func gitAdd(workDir string, out *strings.Builder, files ...string) {
 	gitadd.Stdout = out
 	gitadd.Stderr = out
 	if err := gitadd.Run(); err != nil {
-		log.Printf("GIT add error: %q\n", out.String())
+		log.Printf("GIT add error: %q\n", formatCommandOutput(out.String()))
+		out.Reset()
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH ADD: %q\n", out.String())
+	log.Printf("BRANCH ADD: %q\n", formatCommandOutput(out.String()))
+	out.Reset()
 }
 
 func gitCommit(workDir string, out *strings.Builder, msg string) {
 	log.Printf("COMMAND: git commit -m %q", msg)
-	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("%q", msg))
+	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
 	gitcommit.Dir = workDir
 	gitcommit.Stdout = out
 	gitcommit.Stderr = out
 	if err := gitcommit.Run(); err != nil {
-		log.Printf("GIT commit error: %q\n", out.String())
+		log.Printf("GIT commit error: %q\n", formatCommandOutput(out.String()))
+		out.Reset()
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH COMMIT: %q\n", out.String())
+	log.Printf("BRANCH COMMIT: %q\n", formatCommandOutput(out.String()))
+	out.Reset()
 }
 
 type closer func()
@@ -221,4 +234,72 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 }
 
 func noOp() {
+}
+
+func printCommandOutput(output string) {
+	// Replace escaped newlines and tabs with their actual characters
+	formatted := strings.ReplaceAll(output, "\\n", "\n")
+	formatted = strings.ReplaceAll(formatted, "\\t", "\t")
+
+	// Split the string into lines and format each line
+	lines := strings.Split(formatted, "\n")
+	for _, line := range lines {
+		log.Printf("  > %s\n", line)
+	}
+}
+
+func formatCommandOutput(output string) string {
+	// Replace escaped newlines and tabs with their actual characters
+	formatted := strings.ReplaceAll(output, "\\n", "\n")
+	formatted = strings.ReplaceAll(formatted, "\\t", "\t")
+	return formatted
+}
+
+// CommandConfig holds the configuration for executing a command
+type CommandConfig struct {
+	Name    string        // Name of the command for logging
+	Cmd     string        // The command to run
+	Args    []string      // Command arguments
+	WorkDir string        // Working directory
+	Stdin   io.Reader     // Optional stdin
+	Timeout time.Duration // Timeout duration (default 5m)
+}
+
+// Helper function to execute a command with timing and logging
+func executeCommand(cfg CommandConfig, out *strings.Builder) error {
+	if cfg.Timeout == 0 {
+		cfg.Timeout = 5 * time.Minute
+	}
+
+	log.Printf("Starting command step: %s", cfg.Name)
+	log.Printf("[%s] working directory: %s", cfg.Name, cfg.WorkDir)
+	log.Printf("[%s] command: %s %s", cfg.Name, cfg.Cmd, strings.Join(cfg.Args, " "))
+	if cfg.Stdin != nil {
+		log.Printf("[%s] stdin: %s", cfg.Name, cfg.Stdin)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, cfg.Cmd, cfg.Args...)
+	cmd.Dir = cfg.WorkDir
+	cmd.Stdout = out
+	cmd.Stderr = out
+	if cfg.Stdin != nil {
+		cmd.Stdin = cfg.Stdin
+	}
+
+	start := time.Now()
+
+	err := cmd.Run()
+	stop := time.Now()
+	diff := stop.Sub(start)
+	if err != nil {
+		log.Printf("[%s] ERROR (%v): \n", cfg.Name, diff)
+		log.Printf("[%s] err: %q\n", cfg.Name, err)
+	} else {
+		log.Printf("[%s] SUCCESS (%v): \n", cfg.Name, diff)
+	}
+	printCommandOutput(out.String())
+	out.Reset()
+	return err
 }
