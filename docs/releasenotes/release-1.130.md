@@ -17,15 +17,13 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 
 ## New Beta Resources (Direct Reconciler):
 
-* [`SAMPLE_BigQueryConnectionConnection`](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection) (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
-
-     * Manage [connections](https://cloud.google.com/bigquery/docs/working-with-connections) to connect to Google services and external data sources
+* [`ManagedKafkaTopic`](https://cloud.google.com/config-connector/docs/reference/resource-docs/managedkafka/managedkafkatopic)
 
 ## New Alpha Resources (Direct Reconciler):
 
-* `SAMPLE_KMSAutokeyConfig` (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
- 
-    * Manage the [KMS auto key](https://cloud.google.com/kms/docs/autokey-overview) which simplifies the CMEKs provisioning and assignment. 
+* `VertexAIFeaturestore`
+* `NotebooksEnvironment`
+* `DocumentAIProcessor`
  
 ## New Fields:
 
