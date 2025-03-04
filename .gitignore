@@ -159,4 +159,7 @@ go.work.sum
 e2e.log
 testlogs/
 log
+
+# experiments/conductor
 experiments/conductor/logs
+experiments/conductor/branches.yaml
