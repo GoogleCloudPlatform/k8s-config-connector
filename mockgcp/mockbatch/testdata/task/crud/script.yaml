@@ -1,0 +1,5 @@
+
+- exec: gcloud batch jobs submit test-${uniqueId} --location us-central1 --config job.json
+- exec: gcloud batch jobs describe test-${uniqueId} --location us-central1
+- exec: gcloud batch jobs list --location us-central1
+- exec: gcloud batch jobs delete test-${uniqueId} --location us-central1
