@@ -290,14 +290,14 @@ func getQualifiedFieldName(prefix string, fieldName string) string {
 }
 
 func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource) admission.Response {
+	isDirect := supportedgvks.IsDirectByGVK(obj.GroupVersionKind())
+	if isDirect && obj.GetKind() != "SQLInstance" {
+		return allowedResponse
+	}
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("couldn't get ResourceConfig for kind %v: %w", obj.GetKind(), err))
-	}
-	isDirect := supportedgvks.IsDirectByGVK(obj.GroupVersionKind())
-	if isDirect && rc.Name != "google_sql_database_instance" {
-		return allowedResponse
 	}
 
 	if err := validateContainerAnnotationsForResource(obj.GetKind(), obj.GetAnnotations(), oldObj.GetAnnotations(), rc.Containers, rc.HierarchicalReferences); err != nil {
