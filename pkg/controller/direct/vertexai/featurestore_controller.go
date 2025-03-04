@@ -125,6 +125,7 @@ func (a *FeaturestoreAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+// TODO: resolve reference fields in CREATE and UPDATE.
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *FeaturestoreAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
