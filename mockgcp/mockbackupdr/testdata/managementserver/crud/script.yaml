@@ -1,0 +1,4 @@
+
+- exec: gcloud backup-dr management-servers create test-${uniqueId} --location=us-central1 --network=projects/sample-project/global/networks/sample-network
+- exec: gcloud backup-dr management-servers describe test-${uniqueId} --location=us-central1
+- exec: gcloud backup-dr management-servers delete test-${uniqueId} --location=us-central1
