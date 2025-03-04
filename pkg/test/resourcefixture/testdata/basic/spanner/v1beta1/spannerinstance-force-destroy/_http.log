@@ -31,7 +31,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 {
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "displayName": "Spanner Instance Sample",
+    "displayName": "Instance Sample",
     "edition": 1,
     "labels": {
       "cnrm-test": "true",
@@ -61,7 +61,7 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "defaultBackupScheduleType": 2,
-      "displayName": "Spanner Instance Sample",
+      "displayName": "Instance Sample",
       "edition": 1,
       "labels": {
         "cnrm-test": "true",
@@ -112,7 +112,7 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "Spanner Instance Sample",
+      "displayName": "Instance Sample",
       "edition": "STANDARD",
       "labels": {
         "cnrm-test": "true",
@@ -133,7 +133,7 @@ X-Xss-Protection: 0
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
-    "displayName": "Spanner Instance Sample",
+    "displayName": "Instance Sample",
     "edition": "STANDARD",
     "labels": {
       "cnrm-test": "true",
@@ -169,7 +169,7 @@ X-Xss-Protection: 0
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
-  "displayName": "Spanner Instance Sample",
+  "displayName": "Instance Sample",
   "edition": 1,
   "labels": {
     "cnrm-test": "true",
@@ -194,7 +194,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
   "fieldMask": "displayName",
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "displayName": "New Spanner Instance Sample",
+    "displayName": "Updated Instance Sample",
     "edition": 1,
     "labels": {
       "cnrm-test": "true",
@@ -222,7 +222,7 @@ X-Xss-Protection: 0
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": 2,
-      "displayName": "New Spanner Instance Sample",
+      "displayName": "Updated Instance Sample",
       "edition": 1,
       "labels": {
         "cnrm-test": "true",
@@ -273,7 +273,7 @@ X-Xss-Protection: 0
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "New Spanner Instance Sample",
+      "displayName": "Updated Instance Sample",
       "edition": "STANDARD",
       "labels": {
         "cnrm-test": "true",
@@ -292,7 +292,7 @@ X-Xss-Protection: 0
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
-    "displayName": "New Spanner Instance Sample",
+    "displayName": "Updated Instance Sample",
     "edition": "STANDARD",
     "labels": {
       "cnrm-test": "true",
@@ -326,7 +326,7 @@ X-Xss-Protection: 0
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
-  "displayName": "New Spanner Instance Sample",
+  "displayName": "Updated Instance Sample",
   "edition": 1,
   "labels": {
     "cnrm-test": "true",
@@ -337,6 +337,24 @@ X-Xss-Protection: 0
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
+
+---
+
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/backups?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
 
 ---
 
