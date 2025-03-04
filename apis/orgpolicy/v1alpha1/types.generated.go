@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.orgpolicy.v2.CustomConstraint
 type CustomConstraint struct {
 	// Immutable. Name of the constraint. This is unique within the organization.
