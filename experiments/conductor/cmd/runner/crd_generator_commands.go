@@ -121,7 +121,7 @@ func generateCRDFromScripts(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Add and commit changes
-	scriptRelativePath := fmt.Sprintf("apis/%s/v1alpha1/generate.sh", branch.Group)
+	scriptRelativePath := filepath.Join("apis", branch.Group, "v1alpha1", "generate.sh")
 	gitAdd(workDir, &out, scriptRelativePath)
 	gitCommit(workDir, &out, fmt.Sprintf("add/update crd generation script for %s", branch.Group))
 
@@ -146,13 +146,13 @@ func generateCRDFromScripts(opts *RunnerOptions, branch Branch) {
 func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
 	defer close()
-	workDir := filepath.Join(opts.branchRepoDir)
+	workDir := opts.branchRepoDir
 
 	var out strings.Builder
 	checkoutBranch(branch, workDir, &out)
 
 	// Change to controllerbuilder directory
-	controllerBuilderDir := filepath.Join(workDir, "dev/tools/controllerbuilder")
+	controllerBuilderDir := filepath.Join(workDir, "dev", "tools", "controllerbuilder")
 
 	// Generate types
 	cfg := CommandConfig{
