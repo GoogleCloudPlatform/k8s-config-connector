@@ -257,16 +257,17 @@ func formatCommandOutput(output string) string {
 
 // CommandConfig holds the configuration for executing a command
 type CommandConfig struct {
-	Name    string        // Name of the command for logging
-	Cmd     string        // The command to run
-	Args    []string      // Command arguments
-	WorkDir string        // Working directory
-	Stdin   io.Reader     // Optional stdin
-	Timeout time.Duration // Timeout duration (default 5m)
+	Name    string            // Name of the command for logging
+	Cmd     string            // The command to run
+	Args    []string          // Command arguments
+	WorkDir string            // Working directory
+	Stdin   io.Reader         // Optional stdin
+	Env     map[string]string // Optional environment variables
+	Timeout time.Duration     // Timeout duration (default 5m)
 }
 
 // Helper function to execute a command with timing and logging
-func executeCommand(cfg CommandConfig, out *strings.Builder) error {
+func executeCommand(cfg CommandConfig, out *strings.Builder, stderr *strings.Builder) error {
 	if cfg.Timeout == 0 {
 		cfg.Timeout = 5 * time.Minute
 	}
@@ -277,15 +278,34 @@ func executeCommand(cfg CommandConfig, out *strings.Builder) error {
 	if cfg.Stdin != nil {
 		log.Printf("[%s] stdin: %s", cfg.Name, cfg.Stdin)
 	}
+	if len(cfg.Env) > 0 {
+		log.Printf("[%s] environment:", cfg.Name)
+		for k, v := range cfg.Env {
+			log.Printf("  %s=%s", k, v)
+		}
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, cfg.Cmd, cfg.Args...)
 	cmd.Dir = cfg.WorkDir
 	cmd.Stdout = out
-	cmd.Stderr = out
+	if stderr != nil {
+		cmd.Stderr = stderr
+	} else {
+		cmd.Stderr = out
+	}
 	if cfg.Stdin != nil {
 		cmd.Stdin = cfg.Stdin
+	}
+
+	// Set up environment variables
+	if len(cfg.Env) > 0 {
+		cmd.Env = os.Environ() // Start with current environment
+		for k, v := range cfg.Env {
+			cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+		}
 	}
 
 	start := time.Now()
@@ -300,6 +320,11 @@ func executeCommand(cfg CommandConfig, out *strings.Builder) error {
 		log.Printf("[%s] SUCCESS (%v): \n", cfg.Name, diff)
 	}
 	printCommandOutput(out.String())
+	if stderr != nil && stderr.Len() > 0 {
+		log.Printf("[%s] stderr output:\n", cfg.Name)
+		printCommandOutput(stderr.String())
+		stderr.Reset()
+	}
 	out.Reset()
 	return err
 }
