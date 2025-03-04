@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockgenerativelanguage
+package mockaigenerativelanguage
 
 // +tool:mockgcp-service
 // http.host: generativelanguage.googleapis.com
@@ -25,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/ai/generativelanguage/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/ai/generativelanguage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 )
@@ -52,14 +52,12 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterModelServiceServer(grpcServer, &ModelService{MockService: s})
-	pb.RegisterTunedModelServiceServer(grpcServer, &TunedModelService{MockService: s})
+	pb.RegisterModelServiceServer(grpcServer, &modelService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterModelServiceHandler,
-		pb.RegisterTunedModelServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err

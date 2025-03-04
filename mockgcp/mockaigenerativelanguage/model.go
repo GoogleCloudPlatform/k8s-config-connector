@@ -16,7 +16,7 @@
 // proto.service: google.ai.generativelanguage.v1.Models
 // proto.message: google.ai.generativelanguage.v1.Model
 
-package mockgenerativelanguage
+package mockaigenerativelanguage
 
 import (
 	"context"
@@ -26,7 +26,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/ai/generativelanguage/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/ai/generativelanguage/v1"
 )
 
 type modelService struct {
@@ -51,6 +51,8 @@ func (s *modelService) GetModel(ctx context.Context, req *pb.GetModelRequest) (*
 	}
 	return obj, nil
 }
+
+// TODO acpana there is not Delete or Create in the pb
 
 type modelName struct {
 	Model string
