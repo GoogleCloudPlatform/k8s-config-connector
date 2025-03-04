@@ -56,6 +56,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterEndpointServiceServer(grpcServer, &endpointService{MockService: s})
 	pb.RegisterMetadataServiceServer(grpcServer, &metadataStoreService{MockService: s})
 	pb.RegisterFeaturestoreServiceServer(grpcServer, &featurestoreService{MockService: s})
+	pb.RegisterModelServiceServer(grpcServer, &modelService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -65,6 +66,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterEndpointServiceHandler,
 		pb.RegisterMetadataServiceHandler,
 		pb.RegisterFeaturestoreServiceHandler,
+		pb.RegisterModelServiceHandler,
 		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
 		s.operations.RegisterOperationsPath("/ui/{prefix=**}/operations/{name}"))
 	if err != nil {
