@@ -1,0 +1,102 @@
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: com.google.cloud.hadoop.services.common.error.DataprocException: Not found: Autoscaling Policy projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId} (NOT_FOUND) (CONFIG) [google.rpc.error_details_ext] { message: \"Not found: Autoscaling Policy projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}\" }"
+      }
+    ],
+    "message": "Not found: Autoscaling Policy projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies?alt=json&pageSize=100
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "policies": [
+    {
+      "basicAlgorithm": {
+        "cooldownPeriod": "120s",
+        "yarnConfig": {
+          "gracefulDecommissionTimeout": "30s",
+          "scaleDownFactor": 0.5,
+          "scaleUpFactor": 0.5
+        }
+      },
+      "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+      "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+      "secondaryWorkerConfig": {
+        "maxInstances": 2,
+        "weight": 1
+      },
+      "workerConfig": {
+        "maxInstances": 2,
+        "minInstances": 2,
+        "weight": 1
+      }
+    }
+  ]
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: com.google.cloud.hadoop.services.common.error.DataprocException: Not found: Autoscaling Policy projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId} (NOT_FOUND) (CONFIG) [google.rpc.error_details_ext] { message: \"Not found: Autoscaling Policy projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}\" }"
+      }
+    ],
+    "message": "Not found: Autoscaling Policy projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
