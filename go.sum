@@ -85,6 +85,8 @@ cloud.google.com/go/monitoring v1.21.2 h1:FChwVtClH19E7pJ+e0xUhJPGksctZNVOk2UhMm
 cloud.google.com/go/monitoring v1.21.2/go.mod h1:hS3pXvaG8KgWTSz+dAdyzPrGUYmi2Q+WFX8g2hqVEZU=
 cloud.google.com/go/notebooks v1.12.2 h1:BHIH9kf/02wSCcLAVttEXHSFAgSotgRg2y1YjR7VDCc=
 cloud.google.com/go/notebooks v1.12.2/go.mod h1:EkLwv8zwr8DUXnvzl944+sRBG+b73HEKzV632YYAGNI=
+cloud.google.com/go/orchestration v1.11.1 h1:uZOwdQoAamx8+X0UdMqY/lro3/h/Zhb7SnfArufNVcc=
+cloud.google.com/go/orchestration v1.11.1/go.mod h1:RFHf4g88Lbx6oKhwFstYiId2avwb6oswGeAQ7Tjjtfw=
 cloud.google.com/go/privilegedaccessmanager v0.2.1 h1:8a9N5vXTVaEUsTOVxpY7bI354vjS9jVOY8FjwMRfWTI=
 cloud.google.com/go/privilegedaccessmanager v0.2.1/go.mod h1:SLpUBHDUJXkaiBy5N8h9HLYb5/a+5me8I881Yy8NISE=
 cloud.google.com/go/profiler v0.4.1 h1:Q7+lOvikTGMJ/IAWocpYYGit4SIIoILmVZfEEWTORSY=
