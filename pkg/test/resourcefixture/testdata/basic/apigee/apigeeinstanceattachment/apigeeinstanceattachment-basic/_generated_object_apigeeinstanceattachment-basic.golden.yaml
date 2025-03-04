@@ -1,4 +1,4 @@
-apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeInstanceAttachment
 metadata:
   finalizers:

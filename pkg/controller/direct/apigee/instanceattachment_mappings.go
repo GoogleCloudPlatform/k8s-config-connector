@@ -15,8 +15,7 @@
 package apigee
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
-	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	api "google.golang.org/api/apigee/v1"
@@ -51,7 +50,7 @@ func ApigeeInstanceAttachmentSpec_FromAPI(mapCtx *direct.MapContext, in *api.Goo
 	}
 	out := &krm.ApigeeInstanceAttachmentSpec{}
 	if in.Environment != "" {
-		out.EnvironmentRef = &apigeev1beta1.ApigeeEnvironmentRef{External: in.Environment}
+		out.EnvironmentRef = &krm.ApigeeEnvironmentRef{External: in.Environment}
 	}
 	return out
 }
