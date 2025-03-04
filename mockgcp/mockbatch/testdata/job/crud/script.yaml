@@ -1,0 +1,5 @@
+
+- exec: gcloud batch jobs submit test-${uniqueId} --location us-central1 --script-text "echo hello world"
+- exec: gcloud batch jobs describe test-${uniqueId} --location us-central1
+- exec: gcloud batch jobs list --location us-central1 --filter="name:test-${uniqueId}"
+- exec: gcloud batch jobs delete test-${uniqueId} --location us-central1
