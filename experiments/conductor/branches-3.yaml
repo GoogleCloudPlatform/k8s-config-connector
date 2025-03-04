@@ -28,36 +28,6 @@ branches:
       proto-msg: google.appengine.v1.Instance
       host-name: ""
       notes: []
-    - name: apigeeregistry-api
-      local: resource-apigeeregistry-api
-      remote: resource-apigeeregistry-api
-      command: gcloud apigee apis
-      group: apigeeregistry
-      resource: api
-      controller: Unknown
-      kind: APIgeeRegistryApi
-      package: google.cloud.apigeeregistry.v1
-      proto: Api
-      proto-path: google/cloud/apigeeregistry/v1/provisioning_service.proto
-      proto-service: ""
-      proto-msg: google.cloud.apigeeregistry.v1.Api
-      host-name: ""
-      notes: []
-    - name: apigeeregistry-apideployment
-      local: resource-apigeeregistry-apideployment
-      remote: resource-apigeeregistry-apideployment
-      command: gcloud apigee deployments
-      group: apigeeregistry
-      resource: apideployment
-      controller: Unknown
-      kind: APIgeeRegistryApiDeployment
-      package: google.cloud.apigeeregistry.v1
-      proto: ApiDeployment
-      proto-path: google/cloud/apigeeregistry/v1/provisioning_service.proto
-      proto-service: ""
-      proto-msg: google.cloud.apigeeregistry.v1.ApiDeployment
-      host-name: ""
-      notes: []
     - name: assuredworkloads-workload
       local: resource-assuredworkloads-workload
       remote: resource-assuredworkloads-workload
@@ -110,7 +80,7 @@ branches:
       group: baremetalsolution
       resource: nfsshare
       controller: Unknown
-      kind: BareMetalSolutionNfsShare
+      kind: BareMetalSolutionNFSShare
       package: google.cloud.baremetalsolution.v2
       proto: NfsShare
       proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
@@ -245,7 +215,7 @@ branches:
       group: ids
       resource: endpoint
       controller: Unknown
-      kind: IDsEndpoint
+      kind: IDSEndpoint
       package: google.cloud.ids.v1
       proto: Endpoint
       proto-path: google/cloud/ids/v1/ids.proto
@@ -260,7 +230,7 @@ branches:
       group: kms
       resource: ekmconnection
       controller: Unknown
-      kind: KMSEkmConnection
+      kind: KMSEKMConnection
       package: google.cloud.kms.v1
       proto: EkmConnection
       proto-path: google/cloud/kms/v1/autokey.proto
@@ -275,7 +245,7 @@ branches:
       group: kms
       resource: ekmconfig
       controller: Unknown
-      kind: KMSEkmConfig
+      kind: KMSEKMConfig
       package: google.cloud.kms.v1
       proto: EkmConfig
       proto-path: google/cloud/kms/v1/autokey.proto
@@ -320,42 +290,12 @@ branches:
       group: networkmanagement
       resource: vpcflowlogsconfig
       controller: Unknown
-      kind: NetworkManagementVpcFlowLogsConfig
+      kind: NetworkManagementVPCFlowLogsConfig
       package: google.cloud.networkmanagement.v1
       proto: VpcFlowLogsConfig
       proto-path: google/cloud/networkmanagement/v1/reachability.proto
       proto-service: ""
       proto-msg: google.cloud.networkmanagement.v1.VpcFlowLogsConfig
-      host-name: ""
-      notes: []
-    - name: orgpolicy-policy
-      local: resource-orgpolicy-policy
-      remote: resource-orgpolicy-policy
-      command: gcloud org-policies
-      group: orgpolicy
-      resource: policy
-      controller: Unknown
-      kind: OrgPolicyPolicy
-      package: google.cloud.orgpolicy.v2
-      proto: Policy
-      proto-path: google/cloud/orgpolicy/v2/orgpolicy.proto
-      proto-service: ""
-      proto-msg: google.cloud.orgpolicy.v2.Policy
-      host-name: ""
-      notes: []
-    - name: parallelstore-instance
-      local: resource-parallelstore-instance
-      remote: resource-parallelstore-instance
-      command: gcloud parallelstore instances
-      group: parallelstore
-      resource: instance
-      controller: Unknown
-      kind: ParallelstoreInstance
-      package: google.cloud.parallelstore.v1
-      proto: Instance
-      proto-path: google/cloud/parallelstore/v1/parallelstore.proto
-      proto-service: ""
-      proto-msg: google.cloud.parallelstore.v1.Instance
       host-name: ""
       notes: []
     - name: recaptchaenterprise-key
@@ -386,36 +326,6 @@ branches:
       proto-path: google/cloud/recaptchaenterprise/v1/recaptchaenterprise.proto
       proto-service: ""
       proto-msg: google.cloud.recaptchaenterprise.v1.FirewallPolicy
-      host-name: ""
-      notes: []
-    - name: secrets-secret
-      local: resource-secrets-secret
-      remote: resource-secrets-secret
-      command: gcloud secrets
-      group: secrets
-      resource: secret
-      controller: Unknown
-      kind: SecretsSecret
-      package: google.cloud.secrets.v1beta1
-      proto: Secret
-      proto-path: google/cloud/secrets/v1beta1/service.proto
-      proto-service: ""
-      proto-msg: google.cloud.secrets.v1beta1.Secret
-      host-name: ""
-      notes: []
-    - name: secrets-secretversion
-      local: resource-secrets-secretversion
-      remote: resource-secrets-secretversion
-      command: gcloud secrets versions
-      group: secrets
-      resource: secretversion
-      controller: Unknown
-      kind: SecretsSecretVersion
-      package: google.cloud.secrets.v1beta1
-      proto: SecretVersion
-      proto-path: google/cloud/secrets/v1beta1/service.proto
-      proto-service: ""
-      proto-msg: google.cloud.secrets.v1beta1.SecretVersion
       host-name: ""
       notes: []
     - name: servicedirectory-endpoint
@@ -508,81 +418,6 @@ branches:
       proto-msg: google.firestore.admin.v1.Index
       host-name: ""
       notes: []
-    - name: apigeeregistry-applications
-      local: resource-apigeeregistry-applications
-      remote: resource-apigeeregistry-applications
-      command: gcloud apigee applications
-      group: apigeeregistry
-      resource: applications
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: apigeeregistry-developers
-      local: resource-apigeeregistry-developers
-      remote: resource-apigeeregistry-developers
-      command: gcloud apigee developers
-      group: apigeeregistry
-      resource: developers
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: apigeeregistry-environments
-      local: resource-apigeeregistry-environments
-      remote: resource-apigeeregistry-environments
-      command: gcloud apigee environments
-      group: apigeeregistry
-      resource: environments
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: apigeeregistry-organizations
-      local: resource-apigeeregistry-organizations
-      remote: resource-apigeeregistry-organizations
-      command: gcloud apigee organizations
-      group: apigeeregistry
-      resource: organizations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: apigeeregistry-products
-      local: resource-apigeeregistry-products
-      remote: resource-apigeeregistry-products
-      command: gcloud apigee products
-      group: apigeeregistry
-      resource: products
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
     - name: appengine-domainmappings
       local: resource-appengine-domainmappings
       remote: resource-appengine-domainmappings
@@ -604,66 +439,6 @@ branches:
       command: gcloud app firewall-rules
       group: appengine
       resource: firewallrules
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: appengine-logs
-      local: resource-appengine-logs
-      remote: resource-appengine-logs
-      command: gcloud app logs
-      group: appengine
-      resource: logs
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: appengine-operations
-      local: resource-appengine-operations
-      remote: resource-appengine-operations
-      command: gcloud app operations
-      group: appengine
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: appengine-regions
-      local: resource-appengine-regions
-      remote: resource-appengine-regions
-      command: gcloud app regions
-      group: appengine
-      resource: regions
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: appengine-runtimes
-      local: resource-appengine-runtimes
-      remote: resource-appengine-runtimes
-      command: gcloud app runtimes
-      group: appengine
-      resource: runtimes
       controller: Unknown
       kind: ""
       package: ""
@@ -718,117 +493,12 @@ branches:
       proto-msg: ""
       host-name: ""
       notes: []
-    - name: assuredworkloads-operations
-      local: resource-assuredworkloads-operations
-      remote: resource-assuredworkloads-operations
-      command: gcloud assured operations
-      group: assuredworkloads
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: baremetalsolution-operations
-      local: resource-baremetalsolution-operations
-      remote: resource-baremetalsolution-operations
-      command: gcloud bms operations
-      group: baremetalsolution
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: filestore-locations
-      local: resource-filestore-locations
-      remote: resource-filestore-locations
-      command: gcloud filestore locations
-      group: filestore
-      resource: locations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: filestore-operations
-      local: resource-filestore-operations
-      remote: resource-filestore-operations
-      command: gcloud filestore operations
-      group: filestore
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: filestore-regions
-      local: resource-filestore-regions
-      remote: resource-filestore-regions
-      command: gcloud filestore regions
-      group: filestore
-      resource: regions
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: filestore-zones
-      local: resource-filestore-zones
-      remote: resource-filestore-zones
-      command: gcloud filestore zones
-      group: filestore
-      resource: zones
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
     - name: firestore-databases
       local: resource-firestore-databases
       remote: resource-firestore-databases
       command: gcloud firestore databases
       group: firestore
       resource: databases
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: firestore-locations
-      local: resource-firestore-locations
-      remote: resource-firestore-locations
-      command: gcloud firestore locations
-      group: firestore
-      resource: locations
       controller: Unknown
       kind: ""
       package: ""
@@ -853,117 +523,12 @@ branches:
       proto-msg: ""
       host-name: ""
       notes: []
-    - name: kms-inventory
-      local: resource-kms-inventory
-      remote: resource-kms-inventory
-      command: gcloud kms inventory
-      group: kms
-      resource: inventory
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: kms-location
-      local: resource-kms-location
-      remote: resource-kms-location
-      command: gcloud kms locations
-      group: kms
-      resource: location
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
     - name: networkmanagement-operations
       local: resource-networkmanagement-operations
       remote: resource-networkmanagement-operations
       command: gcloud network-management operations
       group: networkmanagement
       resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: parallelstore-locations
-      local: resource-parallelstore-locations
-      remote: resource-parallelstore-locations
-      command: gcloud parallelstore locations
-      group: parallelstore
-      resource: locations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: parallelstore-operations
-      local: resource-parallelstore-operations
-      remote: resource-parallelstore-operations
-      command: gcloud parallelstore operations
-      group: parallelstore
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: secrets-locations
-      local: resource-secrets-locations
-      remote: resource-secrets-locations
-      command: gcloud secrets locations
-      group: secrets
-      resource: locations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: secrets-replication
-      local: resource-secrets-replication
-      remote: resource-secrets-replication
-      command: gcloud secrets replication
-      group: secrets
-      resource: replication
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: servicedirectory-locations
-      local: resource-servicedirectory-locations
-      remote: resource-servicedirectory-locations
-      command: gcloud service-directory locations
-      group: servicedirectory
-      resource: locations
       controller: Unknown
       kind: ""
       package: ""
