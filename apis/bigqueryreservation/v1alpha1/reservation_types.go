@@ -28,6 +28,8 @@ type Parent struct {
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
 	// Immutable.
+	// You can configure spec.secondaryLocation to enable the reservation fail-over to a secondary location,
+	// in which case the primary location could be different from the spec.location.
 	// +required
 	Location string `json:"location"`
 }
@@ -82,11 +84,18 @@ type BigQueryReservationReservationSpec struct {
 
 	// Optional. The current location of the reservation's secondary replica. This
 	//  field is only set for reservations using the managed disaster recovery
-	//  feature. Users can set this in create reservation calls
-	//  to create a failover reservation or in update reservation calls to convert
-	//  a non-failover reservation to a failover reservation(or vice versa).
+	//  feature. Users can set this in create reservation calls to create a failover
+	//  reservation.
 	//
-	//  NOTE: If the field is removed, the field is externally managed.
+	// Users can update this field to convert a non-failover reservation to a
+	// failover reservation (by setting a specific region value) or convert a
+	// failover reservation to a non-failover reservation (by setting an empty value).
+	// However, changes from one region to another region will be ignored by the
+	// controller. Additionally, if the value of this field changes during manual failover
+	// by the API, the controller will not attempt to revert these changes.
+	// If the field is removed, the field is externally managed.
+	//
+	// Note: This field is only available for ENTERPRISE_PLUS edition reservations.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.secondary_location
 	SecondaryLocation *string `json:"secondaryLocation,omitempty"`
 }

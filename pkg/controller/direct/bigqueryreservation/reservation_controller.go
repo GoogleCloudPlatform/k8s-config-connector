@@ -154,27 +154,6 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// The secondaryLocation is output-only, in the event of manual failover, skip the reconciliation of this field.
-func processSecondaryLocation(desired *pb.Reservation, actual *pb.Reservation, specToApply *krm.BigQueryReservationReservationSpec) (*pb.Reservation, error) {
-	if actual.SecondaryLocation != "" {
-		if desired.SecondaryLocation != "" {
-			// Ignore change of the secondaryLocation. This happens when:
-			// 1) Change the field in YAML intentionally
-			// 2) Failover the reservation to the secondary region using the API
-			if !reflect.DeepEqual(desired.SecondaryLocation, actual.SecondaryLocation) {
-				desired.SecondaryLocation = actual.SecondaryLocation
-				return desired, nil
-			}
-		}
-		// Removing the secondaryLocation from spec makes it externally managed
-		// Rather than setting the field to an empty string, set it back to the previously applied.
-		if specToApply.SecondaryLocation == nil {
-			desired.SecondaryLocation = actual.SecondaryLocation
-		}
-	}
-	return desired, nil
-}
-
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
@@ -200,17 +179,24 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		paths = append(paths, "concurrency")
 	}
 
-	desiredPb, err := processSecondaryLocation(desiredPb, a.actual, desiredSpec)
-	if err != nil {
-		return fmt.Errorf("updating Reservation %s: %w", a.id.String(), err)
-	}
+	// Handle secondaryLocation field which can be modified by API during failover
+	shouldUpdateSecondaryLocation := false
 
-	if !reflect.DeepEqual(desiredPb.SecondaryLocation, a.actual.SecondaryLocation) {
+	if a.actual.SecondaryLocation == "" && desiredPb.SecondaryLocation != "" {
+		// Case 1: Switching from non-failover to failover mode (empty to non-empty)
+		shouldUpdateSecondaryLocation = true
+	} else if a.actual.SecondaryLocation != "" && desiredSpec.SecondaryLocation != nil && *desiredSpec.SecondaryLocation == "" {
+		// Case 2: Switching from failover to non-failover mode (non-empty to empty)
+		shouldUpdateSecondaryLocation = true
+	} // In all other cases, ignore the diff in this field
+
+	if shouldUpdateSecondaryLocation {
 		if desiredPb.Edition != pb.Edition_ENTERPRISE_PLUS {
 			return fmt.Errorf("updating Reservation %s: %s", a.id.String(), "secondaryLocation is only available for ENTERPRISE_PLUS")
 		}
 		paths = append(paths, "secondary_location")
 	}
+
 	if desiredPb.Autoscale != nil && !reflect.DeepEqual(desiredPb.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
 		paths = append(paths, "autoscale")
 	}
