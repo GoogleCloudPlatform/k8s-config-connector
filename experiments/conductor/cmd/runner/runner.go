@@ -52,9 +52,10 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdAddServiceRoundTrip = 7
 	cmdAddProtoMakefile    = 8
 	cmdRunMockTests        = 9
-	cmdGenerateCRDScripts  = 10
-	cmdGenerateSpecStatus  = 11
-	cmdGenerateFuzzer      = 12
+	cmdGenerateTypes       = 10
+	cmdGenerateCRD         = 11
+	cmdGenerateSpecStatus  = 12
+	cmdGenerateFuzzer      = 13
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -210,17 +211,22 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Run mockgcptests on generated mocks: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			runMockgcpTests(opts, branch)
 		}
-	case cmdGenerateCRDScripts: // 10
+	case cmdGenerateTypes: // 10
 		for idx, branch := range branches.Branches {
-			log.Printf("Generate CRD Scripts: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			generateCRDScripts(opts, branch)
+			log.Printf("Generate Types and Mapper: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			generateTypesAndMapper(opts, branch)
 		}
-	case cmdGenerateSpecStatus: // 11
+	case cmdGenerateCRD: // 11
+		for idx, branch := range branches.Branches {
+			log.Printf("Generate CRD: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			generateCRD(opts, branch)
+		}
+	case cmdGenerateSpecStatus: // 12
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate Spec and Status: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateSpecStatus(opts, branch)
 		}
-	case cmdGenerateFuzzer: // 12
+	case cmdGenerateFuzzer: // 13
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate Fuzzer: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateFuzzer(opts, branch)
