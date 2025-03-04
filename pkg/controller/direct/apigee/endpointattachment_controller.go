@@ -18,8 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -180,7 +179,7 @@ func (a *ApigeeEndpointAttachmentAdapter) Export(ctx context.Context) (*unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.OrganizationRef = &krmv1beta1.ApigeeOrganizationRef{External: a.id.ParentID.String()}
+	obj.Spec.OrganizationRef = &krm.ApigeeOrganizationRef{External: a.id.ParentID.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

@@ -21,7 +21,6 @@ import (
 
 	"math/rand"
 
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -37,7 +36,7 @@ func FuzzApigeeEndpointAttachmentSpec(f *testing.F) {
 		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
 
 		// To KRM
-		k1 := &krmv1alpha1.ApigeeEndpointAttachmentSpec{}
+		k1 := &krm.ApigeeEndpointAttachmentSpec{}
 		filler.Fill(t, k1)
 
 		// To API
@@ -54,8 +53,8 @@ func FuzzApigeeEndpointAttachmentSpec(f *testing.F) {
 		}
 
 		opts := cmp.Options{
-			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEndpointAttachmentSpec{}, "OrganizationRef"),
-			cmpopts.IgnoreFields(krmv1alpha1.ApigeeEndpointAttachmentSpec{}, "ResourceID"),
+			cmpopts.IgnoreFields(krm.ApigeeEndpointAttachmentSpec{}, "OrganizationRef"),
+			cmpopts.IgnoreFields(krm.ApigeeEndpointAttachmentSpec{}, "ResourceID"),
 			cmpopts.IgnoreFields(refs.ComputeServiceAttachmentRef{}, "Name"),
 			cmpopts.IgnoreFields(refs.ComputeServiceAttachmentRef{}, "Namespace"),
 		}
@@ -83,7 +82,7 @@ func FuzzApigeeEndpointAttachmentObservedState(f *testing.F) {
 
 		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream, FieldOverrides: overrides})
 
-		k1 := &krmv1alpha1.ApigeeEndpointAttachmentObservedState{}
+		k1 := &krm.ApigeeEndpointAttachmentObservedState{}
 		filler.Fill(t, k1)
 
 		// KRM -> API
