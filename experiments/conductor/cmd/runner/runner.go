@@ -54,8 +54,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdRunMockTests        = 9
 	cmdGenerateTypes       = 10
 	cmdGenerateCRD         = 11
-	cmdGenerateSpecStatus  = 12
-	cmdGenerateFuzzer      = 13
+	cmdGenerateFuzzer      = 12
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -220,13 +219,9 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate CRD: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateCRD(opts, branch)
+			//generateSpecStatus(opts, branch)
 		}
-	case cmdGenerateSpecStatus: // 12
-		for idx, branch := range branches.Branches {
-			log.Printf("Generate Spec and Status: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			generateSpecStatus(opts, branch)
-		}
-	case cmdGenerateFuzzer: // 13
+	case cmdGenerateFuzzer: // 12
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate Fuzzer: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateFuzzer(opts, branch)
@@ -250,8 +245,8 @@ func printHelp() {
 	log.Println("\t7 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
 	log.Println("\t8 - [Mock] Add proto to makefile in each github branch")
 	log.Println("\t9 - [Mock] Run mockgcptests on generated mocks in each github branch")
-	log.Println("\t10 - [CRD] Generate CRD scripts for each branch")
-	log.Println("\t11 - [CRD] Generate spec and status for each branch")
+	log.Println("\t10 - [CRD] Generate Types and Mapper for each branch")
+	log.Println("\t11 - [CRD] Generate CRD for each branch")
 	log.Println("\t12 - [Fuzzer] Generate fuzzer for each branch")
 }
 
