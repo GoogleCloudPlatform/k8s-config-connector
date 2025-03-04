@@ -1,0 +1,1 @@
+- exec: gcloud apphub discovered-services list --location=us-east1
