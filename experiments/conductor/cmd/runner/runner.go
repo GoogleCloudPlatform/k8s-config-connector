@@ -123,8 +123,12 @@ type Branch struct {
 	ProtoMsg  string `yaml:"proto-msg"`     // google.ai.generativelanguage.v1beta.Model
 	HostName  string `yaml:"host-name"`     // generativelanguage.googleapis.com
 
-	Notes []string `yaml:"notes"` // Observation goes here
+	Notes       []string `yaml:"notes"`        // Observation goes here
+	ApisEnabled []string `yaml:"apis-enabled"` // GCP APIs that need to be enabled
 }
+
+// BranchModifier is a function type that takes a Branch and returns a modified Branch
+type BranchModifier func(opts *RunnerOptions, branch Branch, workDir string) Branch
 
 func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	log.Printf("Running conductor runner with branch config: %s", opts.branchConfFile)
@@ -156,10 +160,12 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	}
 
 	switch opts.command {
+	case -3:
+		fixMetadata(opts, branches, addEnableAPIsModifier)
 	case -2:
 		splitMetadata(opts, branches)
 	case -1:
-		fixMetadata(opts, branches)
+		fixMetadata(opts, branches, inferProtoPathModifier)
 	case cmdHelp: // 0
 		printHelp()
 	case cmdCheckRepo: // 1
@@ -443,15 +449,13 @@ const COPYRIGHT_HEADER string = `# Copyright 2025 Google LLC
 
 `
 
-func fixMetadata(opts *RunnerOptions, branches Branches) {
+func fixMetadata(opts *RunnerOptions, branches Branches, modifier BranchModifier) {
 	workDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 	var newBranches Branches
 	for _, branch := range branches.Branches {
-		if branch.ProtoPath == "" {
-			branch.ProtoPath = inferProtoPath(branch, workDir)
-			log.Printf("ProtoPath for %s should be %s", branch.Name, branch.ProtoPath)
-		}
-		newBranches.Branches = append(newBranches.Branches, branch)
+		log.Printf("Finding APIs for %s, command: %s", branch.Name, branch.Command)
+		newBranch := modifier(opts, branch, workDir)
+		newBranches.Branches = append(newBranches.Branches, newBranch)
 	}
 	data := []byte(COPYRIGHT_HEADER)
 	yamlData, err := yaml.Marshal(newBranches)
@@ -465,9 +469,71 @@ func fixMetadata(opts *RunnerOptions, branches Branches) {
 	}
 }
 
+func inferProtoPathModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
+	if branch.ProtoPath == "" {
+		branch.ProtoPath = inferProtoPath(branch, workDir)
+		log.Printf("ProtoPath for %s should be %s", branch.Name, branch.ProtoPath)
+	}
+	return branch
+}
+
+func addEnableAPIsModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	if branch.Command == "" {
+		return branch
+	}
+	if branch.ApisEnabled != nil && len(branch.ApisEnabled) > 0 {
+		return branch
+	}
+
+	cfg := CommandConfig{
+		Name:    "API Discovery",
+		Cmd:     "codebot",
+		Args:    []string{"--prompt=/dev/stdin"},
+		WorkDir: workDir,
+		Stdin: strings.NewReader(fmt.Sprintf(`Given the gcloud command %q, what Google Cloud APIs need to be enabled to use this command?
+Try inferring the apis required from the command.
+If needed use gcloud command to instrospect the error message to get the API name.
+Please respond with a list of API service names in the format needed for 'gcloud services enable'.
+For example, if a command needs the Cloud Storage API, respond with 'storage.googleapis.com'.
+If you are using gcloud to create something, make sure you are deleting it after you are done.
+Print the list of APIs, one on each line in this format api-required: <api-name>
+Only include APIs that are directly needed by this command.
+`, branch.Command)),
+	}
+
+	output, _, err := executeCommand(cfg)
+	if err != nil {
+		log.Printf("Failed to get APIs for %s: %v", branch.Name, err)
+		return branch
+	}
+
+	// Parse the codebot output to get API list
+	var filteredLines []string
+	for _, line := range strings.Split(strings.TrimSpace(output), "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "api-required:") {
+			filteredLines = append(filteredLines, line)
+		}
+	}
+
+	// split the structred output into a list of APIs
+	var cleanedAPIs []string
+	for _, api := range filteredLines {
+		api = strings.TrimSpace(api)
+		api = strings.TrimPrefix(api, "api-required:")
+		api = strings.TrimSpace(api)
+		if api != "" {
+			cleanedAPIs = append(cleanedAPIs, api)
+		}
+	}
+
+	branch.ApisEnabled = cleanedAPIs
+	return branch
+}
+
 func inferProtoPath(branch Branch, workDir string) string {
-	var out strings.Builder
-	var errOut strings.Builder
 	var protoDir = ""
 	var svcNm = ""
 	if branch.Proto != "" {
@@ -520,13 +586,14 @@ func inferProtoPath(branch Branch, workDir string) string {
 		}
 	}
 
-	service_go := exec.Command("egrep", args...)
-
-	service_go.Dir = workDir
-	service_go.Stdout = &out
-	service_go.Stderr = &errOut
-
-	if err := service_go.Run(); err != nil {
+	cfg := CommandConfig{
+		Name:    "Search for service",
+		Cmd:     "egrep",
+		Args:    args,
+		WorkDir: workDir,
+	}
+	output, errOutput, err := executeCommand(cfg)
+	if err != nil {
 		var exitError *exec.ExitError
 		if errors.As(err, &exitError) {
 			args := []string{"-iH", "^service"}
@@ -541,14 +608,16 @@ func inferProtoPath(branch Branch, workDir string) string {
 				}
 			}
 
-			var errOut2 strings.Builder
-			service_go := exec.Command("egrep", args...)
-			service_go.Dir = workDir
-			service_go.Stdout = &out
-			service_go.Stderr = &errOut2
-			if err := service_go.Run(); err != nil {
+			cfg = CommandConfig{
+				Name:    "Search for any service",
+				Cmd:     "egrep",
+				Args:    args,
+				WorkDir: workDir,
+			}
+			output, errOutput, err = executeCommand(cfg)
+			if err != nil {
 				log.Printf("Working in directory %s", workDir)
-				log.Printf("Got response2 %v", errOut2.String())
+				log.Printf("Got response2 %v", errOutput)
 				log.Printf("Find proto file error: %q\n", err)
 				return ""
 			}
@@ -559,11 +628,9 @@ func inferProtoPath(branch Branch, workDir string) string {
 		}
 	}
 
-	response := out.String()
-
-	vals := strings.Split(response, ":")
+	vals := strings.Split(output, ":")
 	if len(vals) <= 1 {
-		log.Printf("ERROR: something wrong with grep response: %q\n", response)
+		log.Printf("ERROR: something wrong with grep response: %q\n", output)
 		return ""
 	}
 	return vals[0]

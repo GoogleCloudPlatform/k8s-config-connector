@@ -172,7 +172,8 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		},
 		WorkDir: controllerBuilderDir,
 	}
-	if err := executeCommand(cfg, &out, nil); err != nil {
+	_, _, err := executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -188,7 +189,8 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		},
 		WorkDir: controllerBuilderDir,
 	}
-	if err := executeCommand(cfg, &out, nil); err != nil {
+	_, _, err = executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -204,7 +206,8 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		},
 		WorkDir: workDir,
 	}
-	if err := executeCommand(cfg, &out, nil); err != nil {
+	_, _, err = executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -231,7 +234,8 @@ func generateCRD(opts *RunnerOptions, branch Branch) {
 		Cmd:     filepath.Join(workDir, "dev", "tasks", "generate-crds"),
 		WorkDir: workDir,
 	}
-	if err := executeCommand(cfg, &out, nil); err != nil {
+	_, _, err := executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -261,7 +265,8 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) {
 		WorkDir: workDir,
 		Stdin:   strings.NewReader(stdinInput),
 	}
-	if err := executeCommand(cfg, &out, nil); err != nil {
+	_, _, err := executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -291,7 +296,6 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 // proto.message: %s
 `, branch.ProtoMsg)
 
-	var fuzzerOut strings.Builder
 	cfg := CommandConfig{
 		Name:    "Fuzzer generation",
 		Cmd:     "controllerbuilder",
@@ -299,11 +303,12 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 		WorkDir: workDir,
 		Stdin:   strings.NewReader(stdinInput),
 	}
-	if err := executeCommand(cfg, &fuzzerOut, nil); err != nil {
+	output, _, err := executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err := os.WriteFile(fuzzerPath, []byte(fuzzerOut.String()), 0644); err != nil {
+	if err := os.WriteFile(fuzzerPath, []byte(output), 0644); err != nil {
 		log.Fatal(err)
 	}
 
@@ -319,7 +324,8 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 		WorkDir: workDir,
 		Stdin:   strings.NewReader(stdinInput),
 	}
-	if err := executeCommand(cfg, &out, nil); err != nil {
+	_, _, err = executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
 

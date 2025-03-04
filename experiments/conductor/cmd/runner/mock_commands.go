@@ -15,15 +15,12 @@
 package runner
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 const SCRIPT_YAML_PROMPT string = `I am trying to create a test case for mockgcp.
@@ -88,26 +85,16 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	writeTemplateToFile(branch, promptPath, SCRIPT_YAML_PROMPT)
 
 	// Run the LLM to generate the file.
-	start := time.Now()
-	log.Println("COMMAND: codebot --ui-type=prompt --prompt=prompt.txt")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-	defer cancel()
-	codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=prompt.txt")
-	// codebot := exec.Command("codebot", "--ui-type=prompt", "--prompt=prompt.txt")
-	codebot.Dir = workDir
-	codebot.Stdout = &out
-	codebot.Stderr = &out
-	if err := codebot.Run(); err != nil {
-		stop := time.Now()
-		diff := stop.Sub(start)
-		log.Printf("CODEBOT GENERATE ERROR (%v): %q\n", diff, formatCommandOutput(out.String()))
-		out.Reset()
+	cfg := CommandConfig{
+		Name:    "Generate script",
+		Cmd:     "codebot",
+		Args:    []string{"--ui-type=prompt", "--prompt=prompt.txt"},
+		WorkDir: workDir,
+	}
+	_, _, err := executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
-	stop := time.Now()
-	diff := stop.Sub(start)
-	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, formatCommandOutput(out.String()))
-	out.Reset()
 
 	// Check to see if the script file was created
 	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
@@ -174,25 +161,22 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	// Current HTTP Log generation is determenistic not ML generated.
 
 	// Run the test to generate the log.
-	start := time.Now()
-	log.Printf("COMMAND: go test ./mockgcptests -run TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource)
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-	defer cancel()
-	test := exec.CommandContext(ctx, "go", "test", "./mockgcptests", "-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource))
-	test.Dir = workDir
-	test.Env = append(os.Environ(), "WRITE_GOLDEN_OUTPUT=1", "E2E_GCP_TARGET=real")
-	test.Stdout = &out
-	test.Stderr = &out
-	if err := test.Run(); err != nil {
-		log.Printf("TEST GENERATE error: %q\n", formatCommandOutput(out.String()))
-		out.Reset()
+	cfg := CommandConfig{
+		Name: "Generate HTTP log",
+		Cmd:  "go",
+		Args: []string{
+			"test", "./mockgcptests",
+			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
+		},
+		WorkDir: workDir,
+		Env:     map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
+	}
+	_, _, err := executeCommand(cfg)
+	if err != nil {
+		log.Printf("TEST GENERATE error: %q\n", err)
 		// Currently ignoring error and just basing on if the _http.log was generated.
 		// log.Fatal(err)
 	}
-	stop := time.Now()
-	diff := stop.Sub(start)
-	log.Printf("TEST GENERATE (%v): %q\n", diff, formatCommandOutput(out.String()))
-	out.Reset()
 
 	// Check to see if the script file was created
 	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
@@ -245,32 +229,28 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	// Run the controller builder to generate the service go file.
 	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
 	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
-		start := time.Now()
-		log.Printf("COMMAND: controllerbuilder prompt --src-dir %s --proto-dir %s/.build/third_party/googleapis/ --input-file=service_prompt.txt", opts.branchRepoDir, opts.branchRepoDir)
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-		defer cancel()
-		service_go := exec.CommandContext(ctx, "controllerbuilder", "prompt",
-			"--src-dir", opts.branchRepoDir,
-			"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
-			"--input-file", "service_prompt.txt")
-		service_go.Dir = workDir
-		var serviceOut strings.Builder
-		service_go.Stdout = &serviceOut
-		service_go.Stderr = &out
-		if err := service_go.Run(); err != nil {
-			log.Println(formatCommandOutput(out.String()))
-			out.Reset()
+		cfg := CommandConfig{
+			Name: "Generate service mock",
+			Cmd:  "controllerbuilder",
+			Args: []string{
+				"prompt",
+				"--src-dir", opts.branchRepoDir,
+				"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
+				"--input-file", "service_prompt.txt",
+			},
+			WorkDir: workDir,
+		}
+		output, _, err := executeCommand(cfg)
+		if err != nil {
 			log.Printf("MOCK SERVICE GENERATE error: %q\n", err)
 			// Currently ignoring error and just basing on if the _http.log was generated.
 			// log.Fatal(err)
+		} else {
+			if err := os.WriteFile(serviceFile, []byte(output), 0755); err != nil {
+				log.Printf("WRITE MOCK SERVICE %s error: %q\n", serviceFile, err)
+			}
+			log.Printf("MOCK SERVICE GENERATE: %q\n", formatCommandOutput(output))
 		}
-		stop := time.Now()
-		diff := stop.Sub(start)
-		if err := os.WriteFile(serviceFile, []byte(serviceOut.String()), 0755); err != nil {
-			log.Printf("WRITE MOCK SERVICE %s error: %q\n", serviceFile, err)
-		}
-		log.Printf("MOCK SERVICE GENERATE (%v): %q\n", diff, formatCommandOutput(serviceOut.String()))
-		serviceOut.Reset()
 
 		// Check to see if the service go file was created
 		if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
@@ -288,32 +268,28 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	// Run the controller builder to generate the resource go file.
 	resourceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
 	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
-		start := time.Now()
-		log.Printf("COMMAND: controllerbuilder prompt --src-dir %s --proto-dir %s/.build/third_party/googleapis/ --input-file=resource_prompt.txt", opts.branchRepoDir, opts.branchRepoDir)
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-		defer cancel()
-		resource_go := exec.CommandContext(ctx, "controllerbuilder", "prompt",
-			"--src-dir", opts.branchRepoDir,
-			"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
-			"--input-file", "resource_prompt.txt")
-		resource_go.Dir = workDir
-		var resourceOut strings.Builder
-		resource_go.Stdout = &resourceOut
-		resource_go.Stderr = &out
-		if err := resource_go.Run(); err != nil {
-			log.Println(formatCommandOutput(out.String()))
-			out.Reset()
+		cfg := CommandConfig{
+			Name: "Generate resource mock",
+			Cmd:  "controllerbuilder",
+			Args: []string{
+				"prompt",
+				"--src-dir", opts.branchRepoDir,
+				"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
+				"--input-file", "resource_prompt.txt",
+			},
+			WorkDir: workDir,
+		}
+		output, _, err := executeCommand(cfg)
+		if err != nil {
 			log.Printf("MOCK RESOURCE GENERATE error: %q\n", err)
 			// Currently ignoring error and just basing on if the _http.log was generated.
 			// log.Fatal(err)
+		} else {
+			if err := os.WriteFile(resourceFile, []byte(output), 0755); err != nil {
+				log.Printf("WRITE MOCK RESOURCE %s error: %q\n", resourceFile, err)
+			}
+			log.Printf("MOCK RESOURCE GENERATE: %q\n", formatCommandOutput(output))
 		}
-		stop := time.Now()
-		diff := stop.Sub(start)
-		if err := os.WriteFile(resourceFile, []byte(resourceOut.String()), 0755); err != nil {
-			log.Printf("WRITE MOCK RESOURCE %s error: %q\n", resourceFile, err)
-		}
-		log.Printf("MOCK RESOURCE GENERATE (%v): %q\n", diff, formatCommandOutput(resourceOut.String()))
-		resourceOut.Reset()
 
 		// Check to see if the service go file was created
 		if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
@@ -361,26 +337,17 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 	roundtripPromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "roundtrip_prompt.txt")
 	writeTemplateToFile(branch, roundtripPromptPath, ADD_SERVICE_TO_ROUNDTRIP)
 
-	// Run the LLM to add the service to roundtrip file..
-	start := time.Now()
-	log.Println("COMMAND: codebot --ui-type=prompt --prompt=roundtrip_prompt.txt")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-	defer cancel()
-	codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=roundtrip_prompt.txt")
-	codebot.Dir = workDir
-	codebot.Stdout = &out
-	codebot.Stderr = &out
-	if err := codebot.Run(); err != nil {
-		stop := time.Now()
-		diff := stop.Sub(start)
-		log.Printf("CODEBOT GENERATE ERROR (%v): %q\n", diff, formatCommandOutput(out.String()))
-		out.Reset()
+	// Run the LLM to add the service to roundtrip file.
+	cfg := CommandConfig{
+		Name:    "Add service to roundtrip",
+		Cmd:     "codebot",
+		Args:    []string{"--ui-type=prompt", "--prompt=roundtrip_prompt.txt"},
+		WorkDir: workDir,
+	}
+	_, _, err := executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
-	stop := time.Now()
-	diff := stop.Sub(start)
-	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, formatCommandOutput(out.String()))
-	out.Reset()
 
 	// Add the new files to the current branch.
 	gitAdd(workDir, &out, "mock_http_roundtrip.go")
@@ -421,27 +388,17 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 	template := strings.ReplaceAll(ADD_PROTO_TO_MAKEFILE, "<PROTO_PACKAGE>", branch.ProtoPath)
 	writeTemplateToFile(branch, roundtripPromptPath, template)
 
-	// Run the LLM to add the service to roundtrip file..
-	start := time.Now()
-	log.Println("COMMAND: codebot --ui-type=prompt --prompt=makefile_prompt.txt")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-	defer cancel()
-	codebot := exec.CommandContext(ctx, "codebot", "--ui-type=prompt", "--prompt=makefile_prompt.txt")
-	codebot.Dir = workDir
-	codebot.Stdout = &out
-	codebot.Stderr = &out
-	if err := codebot.Run(); err != nil {
-		stop := time.Now()
-		diff := stop.Sub(start)
-		log.Printf("CODEBOT GENERATE ERROR (%v): %q\n", diff, formatCommandOutput(out.String()))
-		out.Reset()
+	// Run the LLM to add the service to roundtrip file.
+	cfg := CommandConfig{
+		Name:    "Add proto to makefile",
+		Cmd:     "codebot",
+		Args:    []string{"--ui-type=prompt", "--prompt=makefile_prompt.txt"},
+		WorkDir: workDir,
+	}
+	_, _, err := executeCommand(cfg)
+	if err != nil {
 		log.Fatal(err)
 	}
-
-	stop := time.Now()
-	diff := stop.Sub(start)
-	log.Printf("CODEBOT GENERATE (%v): %q\n", diff, formatCommandOutput(out.String()))
-	out.Reset()
 
 	// Add the new files to the current branch.
 	gitAdd(workDir, &out, "Makefile")
@@ -463,25 +420,22 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 	logFullPath := filepath.Join(workDir, logFile)
 
 	// Run the test against the generated mocks to determine quality
-	start := time.Now()
-	log.Printf("COMMAND: go test ./mockgcptests -v -run TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource)
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-	defer cancel()
-	test := exec.CommandContext(ctx, "go", "test", "./mockgcptests", "-v", "-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource))
-	test.Dir = workDir
-	test.Env = append(os.Environ(), "WRITE_GOLDEN_OUTPUT=1", "E2E_GCP_TARGET=mock")
-	test.Stdout = &out
-	test.Stderr = &out
-	if err := test.Run(); err != nil {
-		log.Printf("TEST RUN error: %q\n", formatCommandOutput(out.String()))
-		out.Reset()
+	cfg := CommandConfig{
+		Name: "Run mock tests",
+		Cmd:  "go",
+		Args: []string{
+			"test", "./mockgcptests", "-v",
+			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
+		},
+		WorkDir: workDir,
+		Env:     map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
+	}
+	_, _, err := executeCommand(cfg)
+	if err != nil {
+		log.Printf("TEST RUN error: %q\n", err)
 		// Currently ignoring error and just basing on if the _http.log was generated.
 		// log.Fatal(err)
 	}
-	stop := time.Now()
-	diff := stop.Sub(start)
-	log.Printf("TEST RUN (%v): %q\n", diff, formatCommandOutput(out.String()))
-	out.Reset()
 
 	// Check to see if the script file was created
 	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
