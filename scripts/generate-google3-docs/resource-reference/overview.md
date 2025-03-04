@@ -64,10 +64,9 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
-</tr>
-<tr>
+</tr><tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeenvironment.md">ApigeeEnvironment</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeendpointattachment.md">ApigeeEndpointAttachment</a></td>
 </tr>
 <tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
@@ -76,6 +75,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeenvgroupattachment.md">ApigeeEnvgroupAttachment</a></td>
+</tr>
+<tr>
+  <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeenvironment.md">ApigeeEnvironment</a></td>
 </tr>
 <tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>

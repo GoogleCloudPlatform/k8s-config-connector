@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,10 @@
 apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeEndpointAttachment
 metadata:
-  name: apgea-${uniqueId}
+  name: apgepa-sample
 spec:
   organizationRef:
-    # Note: This refers to a manually-created organization with default settings. This is 
-    # because it is impossible to create multiple Apigee organizations in the same GCP project,
-    # and it is also infeasible to create + delete organizations quickly enough for automated
-    # testing. Deleting an organization takes 24 hours. For more information, see
-    # https://cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations/delete#deletionretention).
-    external: organizations/${projectId}
+    external: organizations/${PROJECT_ID?}
   location: us-west3
   serviceAttachmentRef:
-    name: computeserviceattachment-${uniqueId}
+    name: computeserviceattachment-dep

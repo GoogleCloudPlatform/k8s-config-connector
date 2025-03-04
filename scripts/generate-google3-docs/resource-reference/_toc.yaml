@@ -35,6 +35,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md
 - title: "Apigee"
   section:
+  - title: "ApigeeEndpointAttachment"
+    path: /config-connector/docs/reference/resource-docs/apigee/apigeeendpointattachment.md
   - title: "ApigeeEnvgroup"
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvgroup.md
   - title: "ApigeeEnvgroupAttachment"

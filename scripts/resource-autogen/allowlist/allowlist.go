@@ -39,7 +39,6 @@ var (
 		"api_gateway/google_api_gateway_api_config",
 		"api_gateway/google_api_gateway_gateway",
 		"apigee/google_apigee_addons_config",
-		"apigee/google_apigee_endpoint_attachment",
 		"apigee/google_apigee_nat_address",
 		"apigee/google_apigee_sync_authorization",
 		"app_engine/google_app_engine_domain_mapping",
