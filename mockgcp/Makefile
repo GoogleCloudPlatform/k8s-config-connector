@@ -87,6 +87,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/types.proto \
 		./third_party/googleapis/mockgcp/cloud/apphub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
+		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/connection/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
@@ -166,6 +167,7 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
 		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto
 		./third_party/googleapis/google/storage/control/v2/*.proto
+		./third_party/googleapis/google/cloud/batch/v1/batch.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
