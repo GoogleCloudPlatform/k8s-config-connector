@@ -119,6 +119,7 @@ type Branch struct {
 	Group      string `yaml:"group"`      // ai
 	Resource   string `yaml:"resource"`   // model
 	Controller string `yaml:"controller"` // Unknown
+	Skip       bool   `yaml:"skip"`       // Skip this branch in processing
 
 	Kind      string `yaml:"kind"`          // AIModel
 	Package   string `yaml:"package"`       // google.ai.generativelanguage.v1beta
@@ -168,6 +169,15 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
+
+	// Filter out skipped branches
+	var filteredBranches []Branch
+	for _, branch := range branches.Branches {
+		if !branch.Skip {
+			filteredBranches = append(filteredBranches, branch)
+		}
+	}
+	branches.Branches = filteredBranches
 
 	switch opts.command {
 	case -3:
