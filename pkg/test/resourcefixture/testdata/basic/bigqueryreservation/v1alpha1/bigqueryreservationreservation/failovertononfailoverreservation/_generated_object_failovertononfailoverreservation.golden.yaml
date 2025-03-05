@@ -12,14 +12,15 @@ metadata:
 spec:
   autoscale:
     maxSlots: 50
-  concurrency: 0
+  concurrency: 10
   edition: ENTERPRISE_PLUS
+  failover:
+    secondaryLocation: us-east1
   ignoreIdleSlots: false
   location: us-west2
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
-  secondaryLocation: ""
   slotCapacity: 0
 status:
   conditions:
@@ -30,4 +31,8 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}
   observedGeneration: 2
-  observedState: {}
+  observedState:
+    failover:
+      originalPrimaryLocation: us-west2
+      primaryLocation: us-west2
+      secondaryLocation: us-east1

@@ -29,9 +29,8 @@ func BigqueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *k
 	out.IgnoreIdleSlots = direct.ValueOf(in.IgnoreIdleSlots)
 	out.Autoscale = AutoscaleSpec_ToProto(mapCtx, in.Autoscale)
 	out.Concurrency = direct.ValueOf(in.Concurrency)
-	// MISSING: MultiRegionAuxiliary. Deprecated in v1beta1
 	out.Edition = direct.Enum_ToProto[pb.Edition](mapCtx, in.Edition)
-	out.SecondaryLocation = direct.ValueOf(in.SecondaryLocation)
+	out.SecondaryLocation = FailoverSpec_ToProto(mapCtx, in.FailOver)
 	return out
 }
 
@@ -45,7 +44,7 @@ func BigqueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in 
 	out.Autoscale = AutoscaleSpec_FromProto(mapCtx, in.GetAutoscale())
 	out.Concurrency = direct.LazyPtr(in.GetConcurrency())
 	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
-	out.SecondaryLocation = direct.LazyPtr(in.GetSecondaryLocation())
+	out.FailOver = FailoverSpec_FromProto(mapCtx, in)
 	return out
 }
 
@@ -55,9 +54,7 @@ func BigqueryReservationReservationObservedState_ToProto(mapCtx *direct.MapConte
 	}
 	out := &pb.Reservation{}
 	out.Autoscale = AutoscaleObservedState_ToProto(mapCtx, in.Autoscale)
-	out.PrimaryLocation = direct.ValueOf(in.PrimaryLocation)
-	out.SecondaryLocation = direct.ValueOf(in.SecondaryLocation)
-	out.OriginalPrimaryLocation = direct.ValueOf(in.OriginalPrimaryLocation)
+	out.PrimaryLocation, out.SecondaryLocation, out.OriginalPrimaryLocation = FailoverObservedState_ToProto(mapCtx, in.FailOver)
 	return out
 }
 
@@ -66,11 +63,46 @@ func BigqueryReservationReservationObservedState_FromProto(mapCtx *direct.MapCon
 		return nil
 	}
 	out := &krm.BigQueryReservationReservationObservedState{}
-	out.PrimaryLocation = direct.LazyPtr(in.GetPrimaryLocation())
-	out.SecondaryLocation = direct.LazyPtr(in.GetSecondaryLocation())
-	out.OriginalPrimaryLocation = direct.LazyPtr(in.GetOriginalPrimaryLocation())
+	out.FailOver = FailoverObservedState_FromProto(mapCtx, in)
 	out.Autoscale = AutoscaleObservedState_FromProto(mapCtx, in.Autoscale)
 	return out
+}
+
+func FailoverSpec_ToProto(mapCtx *direct.MapContext, in *krm.FailoverSpec) string {
+	if in == nil {
+		return ""
+	}
+	return direct.ValueOf(in.SecondaryLocation)
+}
+
+func FailoverSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.FailoverSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FailoverSpec{}
+	out.SecondaryLocation = direct.LazyPtr(in.SecondaryLocation)
+	return out
+}
+
+func FailoverObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.FailoverObservedState {
+	if in == nil {
+		return nil
+	}
+	if in.PrimaryLocation == "" && in.SecondaryLocation == "" && in.OriginalPrimaryLocation == "" {
+		return nil
+	}
+	out := &krm.FailoverObservedState{}
+	out.PrimaryLocation = direct.LazyPtr(in.PrimaryLocation)
+	out.SecondaryLocation = direct.LazyPtr(in.SecondaryLocation)
+	out.OriginalPrimaryLocation = direct.LazyPtr(in.OriginalPrimaryLocation)
+	return out
+}
+
+func FailoverObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FailoverObservedState) (string, string, string) {
+	if in == nil {
+		return "", "", ""
+	}
+	return direct.ValueOf(in.PrimaryLocation), direct.ValueOf(in.SecondaryLocation), direct.ValueOf(in.OriginalPrimaryLocation)
 }
 
 func AutoscaleSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoscaleSpec) *pb.Reservation_Autoscale {

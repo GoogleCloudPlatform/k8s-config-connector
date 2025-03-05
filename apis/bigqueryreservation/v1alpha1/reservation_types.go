@@ -82,22 +82,9 @@ type BigQueryReservationReservationSpec struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.edition
 	Edition *string `json:"edition,omitempty"`
 
-	// Optional. The current location of the reservation's secondary replica. This
-	//  field is only set for reservations using the managed disaster recovery
-	//  feature. Users can set this in create reservation calls to create a failover
-	//  reservation.
-	//
-	// Users can update this field to convert a non-failover reservation to a
-	// failover reservation (by setting a specific region value) or convert a
-	// failover reservation to a non-failover reservation (by setting an empty value).
-	// However, changes from one region to another region will be ignored by the
-	// controller. Additionally, if the value of this field changes during manual failover
-	// by the API, the controller will not attempt to revert these changes.
-	// If the field is removed, the field is externally managed.
-	//
-	// Note: This field is only available for ENTERPRISE_PLUS edition reservations.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.secondary_location
-	SecondaryLocation *string `json:"secondaryLocation,omitempty"`
+	// Optional. This field is only set for reservations using the managed disaster recovery
+	//  feature. Users can set this to create a failover reservation.
+	FailOver *FailoverSpec `json:"failover,omitempty"`
 }
 
 // BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation
@@ -120,24 +107,7 @@ type BigQueryReservationReservationStatus struct {
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation
 // BigQueryReservationReservationObservedState is the state of the BigQueryReservationReservation resource as most recently observed in GCP.
 type BigQueryReservationReservationObservedState struct {
-	// The current location of the reservation's primary replica. This
-	//  field is only set for reservations using the managed disaster recovery
-	//  feature.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.primary_location
-	PrimaryLocation *string `json:"primaryLocation,omitempty"`
-	// The current location of the reservation's secondary replica. This
-	//  field is only set for reservations using the managed disaster recovery
-	//  feature. Users can set this in create reservation calls
-	//  to create a failover reservation or in update reservation calls to convert
-	//  a non-failover reservation to a failover reservation(or vice versa).
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.secondary_location
-	SecondaryLocation *string `json:"secondaryLocation,omitempty"`
-	// The location where the reservation was originally created. This
-	//  is set only during the failover reservation's creation. All billing charges
-	//  for the failover reservation will be applied to this location.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.original_primary_location
-	OriginalPrimaryLocation *string `json:"originalPrimaryLocation,omitempty"`
-
+	FailOver  *FailoverObservedState  `json:"failover,omitempty"`
 	Autoscale *AutoscaleObservedState `json:"autoscale,omitempty"`
 }
 
@@ -176,6 +146,42 @@ type AutoscaleSpec struct {
 	// Number of slots to be scaled when needed.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.Autoscale.max_slots
 	MaxSlots *int64 `json:"maxSlots,omitempty"`
+}
+
+type FailoverSpec struct {
+	// Users can update this field to convert a non-failover reservation to a
+	// failover reservation (by setting a specific region value) or convert a
+	// failover reservation to a non-failover reservation (by removing spec.failover).
+	// However, changes from one region to another region will be ignored by the
+	// controller. Additionally, if the value of this field changes during manual failover
+	// by the API, the controller will not attempt to revert these changes.
+	//
+	// Note: This field is only available for ENTERPRISE_PLUS edition reservations.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="secondaryLocation field is immutable"
+	// Immutable.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.secondary_location
+	SecondaryLocation *string `json:"secondaryLocation,omitempty"`
+}
+
+type FailoverObservedState struct {
+	// The current location of the reservation's primary replica. This
+	//  field is only set for reservations using the managed disaster recovery
+	//  feature.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.primary_location
+	PrimaryLocation *string `json:"primaryLocation,omitempty"`
+	// The current location of the reservation's secondary replica. This
+	//  field is only set for reservations using the managed disaster recovery
+	//  feature. Users can set this in create reservation calls
+	//  to create a failover reservation or in update reservation calls to convert
+	//  a non-failover reservation to a failover reservation(or vice versa).
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.secondary_location
+	SecondaryLocation *string `json:"secondaryLocation,omitempty"`
+	// The location where the reservation was originally created. This
+	//  is set only during the failover reservation's creation. All billing charges
+	//  for the failover reservation will be applied to this location.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.original_primary_location
+	OriginalPrimaryLocation *string `json:"originalPrimaryLocation,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.Autoscale

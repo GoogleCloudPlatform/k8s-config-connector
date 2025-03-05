@@ -17,14 +17,10 @@ kind: BigQueryReservationReservation
 metadata:
   name: bigqueryreservationreservation-${uniqueId}
 spec:
-  autoscale:
-    maxSlots: 50
-  concurrency: 0
+  concurrency: 10
   edition: ENTERPRISE_PLUS
   ignoreIdleSlots: false
   location: us-west2
-  secondaryLocation: ""
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
-  slotCapacity: 0
