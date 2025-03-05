@@ -14,12 +14,13 @@ spec:
     maxSlots: 50
   concurrency: 0
   edition: ENTERPRISE_PLUS
+  failover:
+    secondaryLocation: us-east1
   ignoreIdleSlots: false
   location: us-west2
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
-  secondaryLocation: us-east1
   slotCapacity: 0
 status:
   conditions:
@@ -31,6 +32,7 @@ status:
   externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}
   observedGeneration: 2
   observedState:
-    originalPrimaryLocation: us-west2
-    primaryLocation: us-west2
-    secondaryLocation: us-east1
+    failover:
+      originalPrimaryLocation: us-west2
+      primaryLocation: us-west2
+      secondaryLocation: us-east1

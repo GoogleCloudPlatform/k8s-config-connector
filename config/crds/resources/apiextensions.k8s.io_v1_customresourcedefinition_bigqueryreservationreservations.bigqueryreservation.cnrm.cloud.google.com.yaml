@@ -84,6 +84,29 @@ spec:
                 description: Immutable. Optional. Edition of the reservation. Valid
                   values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS
                 type: string
+              failover:
+                description: Optional. This field is only set for reservations using
+                  the managed disaster recovery feature. Users can set this to create
+                  a failover reservation.
+                properties:
+                  secondaryLocation:
+                    description: |-
+                      Users can update this field to convert a non-failover reservation to a
+                      failover reservation (by setting a specific region value) or convert a
+                      failover reservation to a non-failover reservation (by setting an empty value).
+                      However, changes from one region to another region will be ignored by the
+                      controller. Additionally, if the value of this field changes during manual failover
+                      by the API, the controller will not attempt to revert these changes.
+
+                      Note: This field is only available for ENTERPRISE_PLUS edition reservations.
+                      Immutable.
+                    type: string
+                    x-kubernetes-validations:
+                    - message: secondaryLocation field is immutable
+                      rule: self == oldSelf
+                required:
+                - secondaryLocation
+                type: object
               ignoreIdleSlots:
                 description: If false, any query or pipeline job using this reservation
                   will use idle slots from other reservations within the same admin
@@ -140,23 +163,6 @@ spec:
                   ID. If not provided, a UUID will be generated and assigned as the
                   Reservation ID. For acquisition: This field must be provided to
                   identify the Reservation resource to acquire.'
-                type: string
-              secondaryLocation:
-                description: |-
-                  Optional. The current location of the reservation's secondary replica. This
-                   field is only set for reservations using the managed disaster recovery
-                   feature. Users can set this in create reservation calls to create a failover
-                   reservation.
-
-                  Users can update this field to convert a non-failover reservation to a
-                  failover reservation (by setting a specific region value) or convert a
-                  failover reservation to a non-failover reservation (by setting an empty value).
-                  However, changes from one region to another region will be ignored by the
-                  controller. Additionally, if the value of this field changes during manual failover
-                  by the API, the controller will not attempt to revert these changes.
-                  If the field is removed, the field is externally managed.
-
-                  Note: This field is only available for ENTERPRISE_PLUS edition reservations.
                 type: string
               slotCapacity:
                 description: |-
@@ -229,25 +235,28 @@ spec:
                         format: int64
                         type: integer
                     type: object
-                  originalPrimaryLocation:
-                    description: The location where the reservation was originally
-                      created. This is set only during the failover reservation's
-                      creation. All billing charges for the failover reservation will
-                      be applied to this location.
-                    type: string
-                  primaryLocation:
-                    description: The current location of the reservation's primary
-                      replica. This field is only set for reservations using the managed
-                      disaster recovery feature.
-                    type: string
-                  secondaryLocation:
-                    description: The current location of the reservation's secondary
-                      replica. This field is only set for reservations using the managed
-                      disaster recovery feature. Users can set this in create reservation
-                      calls to create a failover reservation or in update reservation
-                      calls to convert a non-failover reservation to a failover reservation(or
-                      vice versa).
-                    type: string
+                  failover:
+                    properties:
+                      originalPrimaryLocation:
+                        description: The location where the reservation was originally
+                          created. This is set only during the failover reservation's
+                          creation. All billing charges for the failover reservation
+                          will be applied to this location.
+                        type: string
+                      primaryLocation:
+                        description: The current location of the reservation's primary
+                          replica. This field is only set for reservations using the
+                          managed disaster recovery feature.
+                        type: string
+                      secondaryLocation:
+                        description: The current location of the reservation's secondary
+                          replica. This field is only set for reservations using the
+                          managed disaster recovery feature. Users can set this in
+                          create reservation calls to create a failover reservation
+                          or in update reservation calls to convert a non-failover
+                          reservation to a failover reservation(or vice versa).
+                        type: string
+                    type: object
                 type: object
             type: object
         required:

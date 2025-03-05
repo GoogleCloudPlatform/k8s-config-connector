@@ -183,10 +183,13 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	shouldUpdateSecondaryLocation := false
 
 	if a.actual.SecondaryLocation == "" && desiredPb.SecondaryLocation != "" {
-		// Case 1: Switching from non-failover to failover mode (empty to non-empty)
+		// Case 1: Switching from non-failover to failover mode
 		shouldUpdateSecondaryLocation = true
-	} else if a.actual.SecondaryLocation != "" && desiredSpec.SecondaryLocation != nil && *desiredSpec.SecondaryLocation == "" {
-		// Case 2: Switching from failover to non-failover mode (non-empty to empty)
+	} else if a.actual.SecondaryLocation != "" && desiredPb.SecondaryLocation == "" {
+		// Case 2: Switching from failover to non-failover mode
+		if a.actual.PrimaryLocation != desiredSpec.Location {
+			return fmt.Errorf("updating Reservation %s: %s", a.id.String(), "Reservation is not available for change in secondary region")
+		}
 		shouldUpdateSecondaryLocation = true
 	} // In all other cases, ignore the diff in this field
 
