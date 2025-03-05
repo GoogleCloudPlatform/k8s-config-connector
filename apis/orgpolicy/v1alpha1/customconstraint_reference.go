@@ -28,26 +28,26 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &CustomConstraintRef{}
 
-// CustomConstraintRef defines the resource reference to OrgpolicyCustomConstraint, which "External" field
+// CustomConstraintRef defines the resource reference to OrgPolicyCustomConstraint, which "External" field
 // holds the GCP identifier for the KRM object.
 type CustomConstraintRef struct {
-	// A reference to an externally managed OrgpolicyCustomConstraint resource.
+	// A reference to an externally managed OrgPolicyCustomConstraint resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/customconstraints/{{customconstraintID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a OrgpolicyCustomConstraint resource.
+	// The name of a OrgPolicyCustomConstraint resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a OrgpolicyCustomConstraint resource.
+	// The namespace of a OrgPolicyCustomConstraint resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on OrgpolicyCustomConstraint.
-// If the "External" is given in the other resource's spec.OrgpolicyCustomConstraintRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual OrgpolicyCustomConstraint object from the cluster.
+// NormalizedExternal provision the "External" value for other resource that depends on OrgPolicyCustomConstraint.
+// If the "External" is given in the other resource's spec.OrgPolicyCustomConstraintRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual OrgPolicyCustomConstraint object from the cluster.
 func (r *CustomConstraintRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", OrgpolicyCustomConstraintGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", OrgPolicyCustomConstraintGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
@@ -63,12 +63,12 @@ func (r *CustomConstraintRef) NormalizedExternal(ctx context.Context, reader cli
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(OrgpolicyCustomConstraintGVK)
+	u.SetGroupVersionKind(OrgPolicyCustomConstraintGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", OrgpolicyCustomConstraintGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", OrgPolicyCustomConstraintGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
