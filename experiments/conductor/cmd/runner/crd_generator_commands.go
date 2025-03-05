@@ -15,6 +15,7 @@
 package runner
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -153,71 +154,98 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 	defer close()
 	workDir := opts.branchRepoDir
 
+	if branch.Kind == "" || branch.Proto == "" || branch.Group == "" {
+		if branch.Kind == "" {
+			log.Printf("SKIPPING %s, missing Kind", branch.Name)
+		}
+		if branch.Proto == "" {
+			log.Printf("SKIPPING %s, missing Proto", branch.Name)
+		}
+		if branch.Group == "" {
+			log.Printf("SKIPPING %s, missing Group", branch.Name)
+		}
+		return
+	}
+
 	var out strings.Builder
 	checkoutBranch(branch, workDir, &out)
 
 	// Change to controllerbuilder directory
 	controllerBuilderDir := filepath.Join(workDir, "dev", "tools", "controllerbuilder")
+	hasChange := false
 
 	// Generate types
-	cfg := CommandConfig{
-		Name: "Generate types",
-		Cmd:  "go",
-		Args: []string{
-			"run", ".",
-			"generate-types",
-			"--service", branch.Package,
-			"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
-			"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
-		},
-		WorkDir: controllerBuilderDir,
-	}
-	_, _, err := executeCommand(opts, cfg)
-	if err != nil {
-		log.Fatal(err)
+	apisDir := filepath.Join(opts.branchRepoDir, "apis", branch.Group, "v1alpha1", string(filepath.Separator))
+	if _, err := os.Stat(apisDir); errors.Is(err, os.ErrNotExist) {
+		cfg := CommandConfig{
+			Name: "Generate types",
+			Cmd:  "go",
+			Args: []string{
+				"run", ".",
+				"generate-types",
+				"--service", branch.Package,
+				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
+				"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
+			},
+			WorkDir: controllerBuilderDir,
+		}
+		_, _, err := executeCommand(opts, cfg)
+		if err != nil {
+			log.Fatal(err)
+		}
+		gitAdd(workDir, &out, apisDir)
+		hasChange = true
+	} else {
+		log.Printf("SKIPPING generating apis, %s already exists", apisDir)
 	}
 
 	// Generate mapper
-	cfg = CommandConfig{
-		Name: "Generate mapper",
-		Cmd:  "go",
-		Args: []string{
-			"run", ".",
-			"generate-mapper",
-			"--service", branch.Package,
-			"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
-		},
-		WorkDir: controllerBuilderDir,
-	}
-	_, _, err = executeCommand(opts, cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
+	mapperDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group, string(filepath.Separator))
+	if _, err := os.Stat(mapperDir); errors.Is(err, os.ErrNotExist) {
+		cfg := CommandConfig{
+			Name: "Generate mapper",
+			Cmd:  "go",
+			Args: []string{
+				"run", ".",
+				"generate-mapper",
+				"--service", branch.Package,
+				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
+			},
+			WorkDir: controllerBuilderDir,
+		}
+		_, _, err := executeCommand(opts, cfg)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	// Run goimports
-	cfg = CommandConfig{
-		Name: "Format generated code",
-		Cmd:  "go",
-		Args: []string{
-			"run", "-mod=readonly",
-			"golang.org/x/tools/cmd/goimports@latest",
-			"-w",
-			fmt.Sprintf("pkg/controller/direct/%s/", branch.Group),
-		},
-		WorkDir: workDir,
+		// Run goimports
+		cfg = CommandConfig{
+			Name: "Format generated code",
+			Cmd:  "go",
+			Args: []string{
+				"run", "-mod=readonly",
+				"golang.org/x/tools/cmd/goimports@latest",
+				"-w",
+				mapperDir,
+			},
+			WorkDir: workDir,
+		}
+		_, _, err = executeCommand(opts, cfg)
+		if err != nil {
+			log.Fatal(err)
+		}
+		gitAdd(workDir, &out, mapperDir)
+		hasChange = true
+	} else {
+		log.Printf("SKIPPING generating mappers, %s already exists", mapperDir)
 	}
-	_, _, err = executeCommand(opts, cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Stage the changed files
-	gitAdd(workDir, &out,
-		fmt.Sprintf("apis/%s/v1alpha1/", branch.Group),
-		fmt.Sprintf("pkg/controller/direct/%s/", branch.Group))
 
 	// Commit the changes
-	gitCommit(workDir, &out, fmt.Sprintf("Generated types and mapper for %s", branch.Kind))
+	if hasChange {
+		gitCommit(workDir, &out, fmt.Sprintf("Generated types and mapper for %s", branch.Kind))
+	} else {
+		log.Printf("SKIPPING git commit, no new changes for %s", branch.Name)
+	}
 }
 
 func generateCRD(opts *RunnerOptions, branch Branch) {
