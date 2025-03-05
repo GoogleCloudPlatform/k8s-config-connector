@@ -1,0 +1,4 @@
+
+- exec: gcloud colab schedules create test-${uniqueId} --region=us-central1 --display-name="test-${uniqueId}" --cron-schedule="* * * * *" --gcs-output-uri="gs://test-${uniqueId}" --gcs-notebook-uri="gs://test-${uniqueId}/test.ipynb"  --execution-display-name="test-exec-${uniqueId}" --service-account="test@test.com"
+- exec: gcloud colab schedules describe test-${uniqueId} --region=us-central1
+- exec: gcloud colab schedules delete test-${uniqueId} --region=us-central1 --async
