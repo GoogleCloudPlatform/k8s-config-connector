@@ -178,51 +178,6 @@ branches:
       proto-msg: google.cloud.dialogflow.v2.Agent
       host-name: ""
       notes: []
-    - name: filestore-instance
-      local: resource-filestore-instance
-      remote: resource-filestore-instance
-      command: gcloud filestore instances
-      group: filestore
-      resource: instance
-      controller: Unknown
-      kind: FilestoreInstance
-      package: google.cloud.filestore.v1
-      proto: Instance
-      proto-path: google/cloud/filestore/v1/cloud_filestore_service.proto
-      proto-service: ""
-      proto-msg: google.cloud.filestore.v1.Instance
-      host-name: ""
-      notes: []
-    - name: filestore-backup
-      local: resource-filestore-backup
-      remote: resource-filestore-backup
-      command: gcloud filestore backups
-      group: filestore
-      resource: backup
-      controller: Unknown
-      kind: FilestoreBackup
-      package: google.cloud.filestore.v1
-      proto: Backup
-      proto-path: google/cloud/filestore/v1/cloud_filestore_service.proto
-      proto-service: ""
-      proto-msg: google.cloud.filestore.v1.Backup
-      host-name: ""
-      notes: []
-    - name: ids-endpoint
-      local: resource-ids-endpoint
-      remote: resource-ids-endpoint
-      command: gcloud ids endpoints
-      group: ids
-      resource: endpoint
-      controller: Unknown
-      kind: IDSEndpoint
-      package: google.cloud.ids.v1
-      proto: Endpoint
-      proto-path: google/cloud/ids/v1/ids.proto
-      proto-service: ""
-      proto-msg: google.cloud.ids.v1.Endpoint
-      host-name: ""
-      notes: []
     - name: kms-ekmconnection
       local: resource-kms-ekmconnection
       remote: resource-kms-ekmconnection
@@ -298,21 +253,6 @@ branches:
       proto-msg: google.cloud.networkmanagement.v1.VpcFlowLogsConfig
       host-name: ""
       notes: []
-    - name: recaptchaenterprise-key
-      local: resource-recaptchaenterprise-key
-      remote: resource-recaptchaenterprise-key
-      command: gcloud recaptcha keys
-      group: recaptchaenterprise
-      resource: key
-      controller: Unknown
-      kind: ReCAPTCHAEnterpriseKey
-      package: google.cloud.recaptchaenterprise.v1
-      proto: Key
-      proto-path: google/cloud/recaptchaenterprise/v1/recaptchaenterprise.proto
-      proto-service: ""
-      proto-msg: google.cloud.recaptchaenterprise.v1.Key
-      host-name: ""
-      notes: []
     - name: recaptchaenterprise-firewallpolicy
       local: resource-recaptchaenterprise-firewallpolicy
       remote: resource-recaptchaenterprise-firewallpolicy
@@ -326,51 +266,6 @@ branches:
       proto-path: google/cloud/recaptchaenterprise/v1/recaptchaenterprise.proto
       proto-service: ""
       proto-msg: google.cloud.recaptchaenterprise.v1.FirewallPolicy
-      host-name: ""
-      notes: []
-    - name: servicedirectory-endpoint
-      local: resource-servicedirectory-endpoint
-      remote: resource-servicedirectory-endpoint
-      command: gcloud service-directory endpoints
-      group: servicedirectory
-      resource: endpoint
-      controller: Unknown
-      kind: ServiceDirectoryEndpoint
-      package: google.cloud.servicedirectory.v1
-      proto: Endpoint
-      proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
-      proto-service: ""
-      proto-msg: google.cloud.servicedirectory.v1.Endpoint
-      host-name: ""
-      notes: []
-    - name: servicedirectory-namespace
-      local: resource-servicedirectory-namespace
-      remote: resource-servicedirectory-namespace
-      command: gcloud service-directory namespaces
-      group: servicedirectory
-      resource: namespace
-      controller: Unknown
-      kind: ServiceDirectoryNamespace
-      package: google.cloud.servicedirectory.v1
-      proto: Namespace
-      proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
-      proto-service: ""
-      proto-msg: google.cloud.servicedirectory.v1.Namespace
-      host-name: ""
-      notes: []
-    - name: servicedirectory-service
-      local: resource-servicedirectory-service
-      remote: resource-servicedirectory-service
-      command: gcloud service-directory services
-      group: servicedirectory
-      resource: service
-      controller: Unknown
-      kind: ServiceDirectoryService
-      package: google.cloud.servicedirectory.v1
-      proto: Service
-      proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
-      proto-service: ""
-      proto-msg: google.cloud.servicedirectory.v1.Service
       host-name: ""
       notes: []
     - name: firestore-backup
@@ -401,21 +296,6 @@ branches:
       proto-path: google/firestore/admin/v1/firestore_admin.proto
       proto-service: ""
       proto-msg: google.firestore.admin.v1.Field
-      host-name: ""
-      notes: []
-    - name: firestore-index
-      local: resource-firestore-index
-      remote: resource-firestore-index
-      command: gcloud firestore indexes
-      group: firestore
-      resource: index
-      controller: Unknown
-      kind: FirestoreIndex
-      package: google.firestore.admin.v1
-      proto: Index
-      proto-path: google/firestore/admin/v1/firestore_admin.proto
-      proto-service: ""
-      proto-msg: google.firestore.admin.v1.Index
       host-name: ""
       notes: []
     - name: appengine-domainmappings
@@ -484,21 +364,6 @@ branches:
       command: gcloud app versions
       group: appengine
       resource: versions
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: firestore-databases
-      local: resource-firestore-databases
-      remote: resource-firestore-databases
-      command: gcloud firestore databases
-      group: firestore
-      resource: databases
       controller: Unknown
       kind: ""
       package: ""
