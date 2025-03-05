@@ -1,0 +1,181 @@
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "not found: resource not found",
+        "stackEntries": [
+          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc005a4af40, 0x1d})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x5595829bf278?, 0xc005a5b960?})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:556 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x559582b191c8, 0xc105dc6120}, {0x559575bf3370, 0x10}, {0xc15a77dc20, 0x4a}, {0x5595829bf278, 0xc005a5b960})",
+          "cloud/control2/frontend/userfriendly/userfriendly_store.go:89 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x559582b191c8, 0xc105dc6120}, 0xc13fa31c80, {0x5595829bf278, 0xc005a5b960})",
+          "cloud/control2/frontend/handler/readonly.go:279 +0x15e6 google3/cloud/control2/frontend/handler/handler.Handler.handleGet({{{0x559582b23010, 0xc000f4bcc0}, {0x0, 0x0}}, {{0xc00df3e5a0, 0x1, 0x1}, 0xc00d0b94a0, 0xc00df3e590, {0x559582b31618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:395 +0xec6 google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x559582b23010, 0xc000f4bcc0}, {0x0, 0x0}}, {{0xc00df3e5a0, 0x1, 0x1}, 0xc00d0b94a0, 0xc00df3e590, {0x559582b31618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x559582b23010, 0xc000f4bcc0}, {0x0, 0x0}}, {{0xc00df3e5a0, 0x1, 0x1}, 0xc00d0b94a0, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x559582b23010, 0xc000f4bcc0}, {0x0, 0x0}}, {{0xc00df3e5a0, 0x1, 0x1}, 0xc00d0b94a0, 0xc00df3e590, {0x559582b31618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00d13fe60, {0x559582b191c8, 0xc11b403620}, 0xc1037085c0, 0xc14442d218, 0xc14442d5c0, {0xc13b885f90?, 0x559578a9d987?})",
+          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00d13fe60, {0x559582b191c8, 0xc11b403620}, 0xc14442d218, 0xc14442d5c0)",
+          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc09fe15308?, {0x559582b191c8, 0xc11b403620}, 0x5595807f30e0?, 0xc036a26a01?)",
+          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc009622ae0, {0x559582b191c8, 0xc11b403620}, 0xc14442d218)",
+          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x559582b191c8?, 0xc11b403620?}, 0xc14442d218?, {0x0?, 0x0?}, {0x559582b2e3a0, 0xc13a581450})",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x559582b191c8?, 0xc1513d1c80?}, 0xc06c5a98d0)",
+          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc0b22c60e0, {0x559582b19438, 0xc1310b30e0}, 0xc13fa31100)"
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/jobs/test-${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/jobs/test-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jobs": [
+    {
+      "allocationPolicy": {
+        "labels": {
+          "batch-job-id": "test-1829c31aaf5e7fbe"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "serviceAccount": {
+          "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+        }
+      },
+      "createTime": "2025-03-05T01:14:14.160383081Z",
+      "name": "projects/${projectId}/locations/us-central1/jobs/test-1829c31aaf5e7fbe",
+      "status": {
+        "runDuration": "0s",
+        "state": "DELETION_IN_PROGRESS",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to DELETION_IN_PROGRESS for job projects/${projectNumber}/locations/us-central1/jobs/test-1829c31aaf5e7fbe.",
+            "eventTime": "2025-03-05T01:14:17.717679968Z",
+            "type": "STATUS_CHANGED"
+          }
+        ]
+      },
+      "taskGroups": [
+        {
+          "name": "projects/${projectNumber}/locations/us-central1/jobs/test-1829c31aaf5e7fbe/taskGroups/group0",
+          "parallelism": "1",
+          "taskCount": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "2000",
+              "memoryMib": "2000"
+            },
+            "runnables": [
+              {
+                "script": {
+                  "text": "echo hello world"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "test-1829c31aaf5e7-49cb33ef-b067-400b0",
+      "updateTime": "2025-03-05T01:14:17.717679968Z"
+    }
+  ]
+}
+
+---
+
+DELETE https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "not found: resource not found",
+        "stackEntries": [
+          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc0046bd5a0, 0x1d})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x555f6a1bf278?, 0xc005a0b140?})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:556 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x555f6a3191c8, 0xc11608b920}, {0x555f5d3f3370, 0x10}, {0xc14eeb4b40, 0x4a}, {0x555f6a1bf278, 0xc005a0b140})",
+          "cloud/control2/frontend/userfriendly/userfriendly_store.go:89 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x555f6a3191c8, 0xc11608b920}, 0xc0e9dba800, {0x555f6a1bf278, 0xc005a0b140})",
+          "cloud/control2/frontend/handler/mutate.go:125 +0x30e google3/cloud/control2/frontend/handler/handler.(*handlerContext).getExistingResourceDetails(0xc16899b088, {0x555f6a3191c8, 0xc11608b920}, {0x555f6a1c60c0, 0xc11bba16c0})",
+          "cloud/control2/frontend/handler/mutate.go:310 +0x12f8 google3/cloud/control2/frontend/handler/handler.Handler.handleResourceMutation({{{0x555f6a323010, 0xc0062d2080}, {0x0, 0x0}}, {{0xc009c53a40, 0x1, 0x1}, 0xc008885728, 0xc009c53a30, {0x555f6a331618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:375 +0xbbb google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x555f6a323010, 0xc0062d2080}, {0x0, 0x0}}, {{0xc009c53a40, 0x1, 0x1}, 0xc008885728, 0xc009c53a30, {0x555f6a331618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x555f6a323010, 0xc0062d2080}, {0x0, 0x0}}, {{0xc009c53a40, 0x1, 0x1}, 0xc008885728, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x555f6a323010, 0xc0062d2080}, {0x0, 0x0}}, {{0xc009c53a40, 0x1, 0x1}, 0xc008885728, 0xc009c53a30, {0x555f6a331618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc008e23d40, {0x555f6a3191c8, 0xc11608a600}, 0xc127af56c0, 0xc0d4daef78, 0xc0d4daf2c0, {0xc14e0a3130?, 0x555f6029d987?})",
+          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc008e23d40, {0x555f6a3191c8, 0xc11608a600}, 0xc0d4daef78, 0xc0d4daf2c0)",
+          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc08c1e1308?, {0x555f6a3191c8, 0xc11608a600}, 0x555f67ff30e0?, 0xc1140bd001?)",
+          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc00a73fe90, {0x555f6a3191c8, 0xc11608a600}, 0xc0d4daef78)",
+          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x555f6a3191c8?, 0xc11608a600?}, 0xc0d4daef78?, {0x0?, 0x0?}, {0x555f6a32e3a0, 0xc131d83ef0})",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x555f6a3191c8?, 0xc1003419b0?}, 0xc06f7358d0)",
+          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc0a35cbb40, {0x555f6a319438, 0xc0ece698c0}, 0xc04b59cf00)"
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/jobs/test-${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/jobs/test-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
