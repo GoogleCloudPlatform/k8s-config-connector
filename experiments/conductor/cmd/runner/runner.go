@@ -24,6 +24,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -46,15 +47,16 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdCheckRepo           = 1
 	cmdCreateGitBranch     = 2
 	cmdDeleteGitBranch     = 3
-	cmdCreateScriptYaml    = 4
-	cmdCaptureHttpLog      = 5
-	cmdGenerateMockGo      = 6
-	cmdAddServiceRoundTrip = 7
-	cmdAddProtoMakefile    = 8
-	cmdRunMockTests        = 9
-	cmdGenerateTypes       = 10
-	cmdGenerateCRD         = 11
-	cmdGenerateFuzzer      = 12
+	cmdEnableGCPAPIs       = 4
+	cmdCreateScriptYaml    = 10
+	cmdCaptureHttpLog      = 11
+	cmdGenerateMockGo      = 12
+	cmdAddServiceRoundTrip = 13
+	cmdAddProtoMakefile    = 14
+	cmdRunMockTests        = 15
+	cmdGenerateTypes       = 20
+	cmdGenerateCRD         = 21
+	cmdGenerateFuzzer      = 22
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -78,6 +80,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", 0, "Which commands to you on the directory.")
 	cmd.Flags().StringVarP(&opts.loggingDir, loggingDirFlag,
 		"", "", "dedicated directory for logging, empty for stdout.")
+	cmd.Flags().DurationVarP(&opts.timeout, "timeout",
+		"t", 5*time.Minute, "Global timeout for commands.")
 
 	return cmd
 }
@@ -87,6 +91,7 @@ type RunnerOptions struct {
 	branchRepoDir  string
 	command        int64
 	loggingDir     string
+	timeout        time.Duration
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -124,7 +129,16 @@ type Branch struct {
 	HostName  string `yaml:"host-name"`     // generativelanguage.googleapis.com
 
 	Notes []string `yaml:"notes"` // Observation goes here
+
+	// GCP APIs that need to be enabled for the branch.
+	// example:
+	// - eventarc.googleapis.com
+	// - aiplatform.googleapis.com
+	ApisEnabled []string `yaml:"apis-enabled"`
 }
+
+// BranchModifier is a function type that takes a Branch and returns a modified Branch
+type BranchModifier func(opts *RunnerOptions, branch Branch, workDir string) Branch
 
 func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	log.Printf("Running conductor runner with branch config: %s", opts.branchConfFile)
@@ -156,10 +170,12 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	}
 
 	switch opts.command {
+	case -3:
+		fixMetadata(opts, branches, addEnableAPIsModifier)
 	case -2:
 		splitMetadata(opts, branches)
 	case -1:
-		fixMetadata(opts, branches)
+		fixMetadata(opts, branches, inferProtoPathModifier)
 	case cmdHelp: // 0
 		printHelp()
 	case cmdCheckRepo: // 1
@@ -180,48 +196,53 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Delete GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			deleteGithubBranch(opts, branch)
 		}
-	case cmdCreateScriptYaml: // 4
+	case cmdEnableGCPAPIs: // 4
+		for idx, branch := range branches.Branches {
+			log.Printf("Enable GCP APIs: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			enableAPIs(opts, branch)
+		}
+	case cmdCreateScriptYaml: // 10
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createScriptYaml(opts, branch)
 		}
-	case cmdCaptureHttpLog: // 5
+	case cmdCaptureHttpLog: // 11
 		for idx, branch := range branches.Branches {
 			log.Printf("Capture HTTP Log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			captureHttpLog(opts, branch)
 		}
-	case cmdGenerateMockGo: // 6
+	case cmdGenerateMockGo: // 12
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate mock Service and Resource go files: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateMockGo(opts, branch)
 		}
-	case cmdAddServiceRoundTrip: // 7
+	case cmdAddServiceRoundTrip: // 13
 		for idx, branch := range branches.Branches {
 			log.Printf("Add service to mock_http_roundtrip.go: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			addServiceToRoundTrip(opts, branch)
 		}
-	case cmdAddProtoMakefile: // 8
+	case cmdAddProtoMakefile: // 14
 		for idx, branch := range branches.Branches {
 			log.Printf("Add proto to makefile: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			addProtoToMakfile(opts, branch)
 		}
-	case cmdRunMockTests: // 9
+	case cmdRunMockTests: // 15
 		for idx, branch := range branches.Branches {
 			log.Printf("Run mockgcptests on generated mocks: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			runMockgcpTests(opts, branch)
 		}
-	case cmdGenerateTypes: // 10
+	case cmdGenerateTypes: // 20
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate Types and Mapper: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateTypesAndMapper(opts, branch)
 		}
-	case cmdGenerateCRD: // 11
+	case cmdGenerateCRD: // 21
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate CRD: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateCRD(opts, branch)
 			//generateSpecStatus(opts, branch)
 		}
-	case cmdGenerateFuzzer: // 12
+	case cmdGenerateFuzzer: // 22
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate Fuzzer: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateFuzzer(opts, branch)
@@ -239,15 +260,16 @@ func printHelp() {
 	log.Println("\t1 - [Validate] Repo directory and metadata")
 	log.Println("\t2 - [Branch] Create the local github branches from the metadata")
 	log.Println("\t3 - [Branch] Delete the local github branches from the metadata")
-	log.Println("\t4 - [Mock] Create script.yaml for mock gcp generation in each github branch")
-	log.Println("\t5 - [Mock] Create _http.log for mock gcp generation in each github branch")
-	log.Println("\t6 - [Mock] Generate mock Service and Resource go files in each github branch")
-	log.Println("\t7 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
-	log.Println("\t8 - [Mock] Add proto to makefile in each github branch")
-	log.Println("\t9 - [Mock] Run mockgcptests on generated mocks in each github branch")
-	log.Println("\t10 - [CRD] Generate Types and Mapper for each branch")
-	log.Println("\t11 - [CRD] Generate CRD for each branch")
-	log.Println("\t12 - [Fuzzer] Generate fuzzer for each branch")
+	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
+	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
+	log.Println("\t11 - [Mock] Create _http.log for mock gcp generation in each github branch")
+	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")
+	log.Println("\t13 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
+	log.Println("\t14 - [Mock] Add proto to makefile in each github branch")
+	log.Println("\t15 - [Mock] Run mockgcptests on generated mocks in each github branch")
+	log.Println("\t20 - [CRD] Generate Types and Mapper for each branch")
+	log.Println("\t21 - [CRD] Generate CRD for each branch")
+	log.Println("\t22 - [Fuzzer] Generate fuzzer for each branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
@@ -443,15 +465,13 @@ const COPYRIGHT_HEADER string = `# Copyright 2025 Google LLC
 
 `
 
-func fixMetadata(opts *RunnerOptions, branches Branches) {
+func fixMetadata(opts *RunnerOptions, branches Branches, modifier BranchModifier) {
 	workDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 	var newBranches Branches
 	for _, branch := range branches.Branches {
-		if branch.ProtoPath == "" {
-			branch.ProtoPath = inferProtoPath(branch, workDir)
-			log.Printf("ProtoPath for %s should be %s", branch.Name, branch.ProtoPath)
-		}
-		newBranches.Branches = append(newBranches.Branches, branch)
+		log.Printf("Finding APIs for %s, command: %s", branch.Name, branch.Command)
+		newBranch := modifier(opts, branch, workDir)
+		newBranches.Branches = append(newBranches.Branches, newBranch)
 	}
 	data := []byte(COPYRIGHT_HEADER)
 	yamlData, err := yaml.Marshal(newBranches)
@@ -465,9 +485,71 @@ func fixMetadata(opts *RunnerOptions, branches Branches) {
 	}
 }
 
-func inferProtoPath(branch Branch, workDir string) string {
-	var out strings.Builder
-	var errOut strings.Builder
+func inferProtoPathModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
+	if branch.ProtoPath == "" {
+		branch.ProtoPath = inferProtoPath(opts, branch, workDir)
+		log.Printf("ProtoPath for %s should be %s", branch.Name, branch.ProtoPath)
+	}
+	return branch
+}
+
+func addEnableAPIsModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	if branch.Command == "" {
+		return branch
+	}
+	if branch.ApisEnabled != nil && len(branch.ApisEnabled) > 0 {
+		return branch
+	}
+
+	cfg := CommandConfig{
+		Name:    "API Discovery",
+		Cmd:     "codebot",
+		Args:    []string{"--prompt=/dev/stdin"},
+		WorkDir: workDir,
+		Stdin: strings.NewReader(fmt.Sprintf(`Given the gcloud command %q, what Google Cloud APIs need to be enabled to use this command?
+Try inferring the apis required from the command.
+If needed use gcloud command to instrospect the error message to get the API name.
+Please respond with a list of API service names in the format needed for 'gcloud services enable'.
+For example, if a command needs the Cloud Storage API, respond with 'storage.googleapis.com'.
+If you are using gcloud to create something, make sure you are deleting it after you are done.
+Print the list of APIs, one on each line in this format api-required: <api-name>
+Only include APIs that are directly needed by this command.
+`, branch.Command)),
+	}
+
+	output, _, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Failed to get APIs for %s: %v", branch.Name, err)
+		return branch
+	}
+
+	// Parse the codebot output to get API list
+	var filteredLines []string
+	for _, line := range strings.Split(strings.TrimSpace(output), "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "api-required:") {
+			filteredLines = append(filteredLines, line)
+		}
+	}
+
+	// split the structred output into a list of APIs
+	var cleanedAPIs []string
+	for _, api := range filteredLines {
+		api = strings.TrimSpace(api)
+		api = strings.TrimPrefix(api, "api-required:")
+		api = strings.TrimSpace(api)
+		if api != "" {
+			cleanedAPIs = append(cleanedAPIs, api)
+		}
+	}
+
+	branch.ApisEnabled = cleanedAPIs
+	return branch
+}
+
+func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 	var protoDir = ""
 	var svcNm = ""
 	if branch.Proto != "" {
@@ -520,13 +602,14 @@ func inferProtoPath(branch Branch, workDir string) string {
 		}
 	}
 
-	service_go := exec.Command("egrep", args...)
-
-	service_go.Dir = workDir
-	service_go.Stdout = &out
-	service_go.Stderr = &errOut
-
-	if err := service_go.Run(); err != nil {
+	cfg := CommandConfig{
+		Name:    "Search for service",
+		Cmd:     "egrep",
+		Args:    args,
+		WorkDir: workDir,
+	}
+	output, errOutput, err := executeCommand(opts, cfg)
+	if err != nil {
 		var exitError *exec.ExitError
 		if errors.As(err, &exitError) {
 			args := []string{"-iH", "^service"}
@@ -541,14 +624,16 @@ func inferProtoPath(branch Branch, workDir string) string {
 				}
 			}
 
-			var errOut2 strings.Builder
-			service_go := exec.Command("egrep", args...)
-			service_go.Dir = workDir
-			service_go.Stdout = &out
-			service_go.Stderr = &errOut2
-			if err := service_go.Run(); err != nil {
+			cfg = CommandConfig{
+				Name:    "Search for any service",
+				Cmd:     "egrep",
+				Args:    args,
+				WorkDir: workDir,
+			}
+			output, errOutput, err = executeCommand(opts, cfg)
+			if err != nil {
 				log.Printf("Working in directory %s", workDir)
-				log.Printf("Got response2 %v", errOut2.String())
+				log.Printf("Got response2 %v", errOutput)
 				log.Printf("Find proto file error: %q\n", err)
 				return ""
 			}
@@ -559,11 +644,9 @@ func inferProtoPath(branch Branch, workDir string) string {
 		}
 	}
 
-	response := out.String()
-
-	vals := strings.Split(response, ":")
+	vals := strings.Split(output, ":")
 	if len(vals) <= 1 {
-		log.Printf("ERROR: something wrong with grep response: %q\n", response)
+		log.Printf("ERROR: something wrong with grep response: %q\n", output)
 		return ""
 	}
 	return vals[0]

@@ -190,6 +190,7 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 		return noOp
 	}
 	logDir := filepath.Join(opts.loggingDir, branch.Name)
+	log.Printf("Logging dir: %s", logDir)
 	if _, err := os.Stat(logDir); os.IsNotExist(err) {
 		err = os.MkdirAll(logDir, 0755)
 		if err != nil {
@@ -267,9 +268,13 @@ type CommandConfig struct {
 }
 
 // Helper function to execute a command with timing and logging
-func executeCommand(cfg CommandConfig, out *strings.Builder, stderr *strings.Builder) error {
+func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, error) {
 	if cfg.Timeout == 0 {
-		cfg.Timeout = 5 * time.Minute
+		if opts != nil && opts.timeout != 0 {
+			cfg.Timeout = opts.timeout
+		} else {
+			cfg.Timeout = 5 * time.Minute
+		}
 	}
 
 	log.Printf("Starting command step: %s", cfg.Name)
@@ -290,12 +295,11 @@ func executeCommand(cfg CommandConfig, out *strings.Builder, stderr *strings.Bui
 
 	cmd := exec.CommandContext(ctx, cfg.Cmd, cfg.Args...)
 	cmd.Dir = cfg.WorkDir
-	cmd.Stdout = out
-	if stderr != nil {
-		cmd.Stderr = stderr
-	} else {
-		cmd.Stderr = out
-	}
+
+	var outBuf, errBuf strings.Builder
+	cmd.Stdout = &outBuf
+	cmd.Stderr = &errBuf
+
 	if cfg.Stdin != nil {
 		cmd.Stdin = cfg.Stdin
 	}
@@ -319,12 +323,15 @@ func executeCommand(cfg CommandConfig, out *strings.Builder, stderr *strings.Bui
 	} else {
 		log.Printf("[%s] SUCCESS (%v): \n", cfg.Name, diff)
 	}
-	printCommandOutput(out.String())
-	if stderr != nil && stderr.Len() > 0 {
+
+	output := outBuf.String()
+	errOutput := errBuf.String()
+
+	printCommandOutput(output)
+	if errBuf.Len() > 0 {
 		log.Printf("[%s] stderr output:\n", cfg.Name)
-		printCommandOutput(stderr.String())
-		stderr.Reset()
+		printCommandOutput(errOutput)
 	}
-	out.Reset()
-	return err
+
+	return output, errOutput, err
 }
