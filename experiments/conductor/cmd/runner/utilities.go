@@ -27,6 +27,10 @@ import (
 	"time"
 )
 
+const (
+	GenerativeCommandRetryBackoff = 60 * time.Second
+)
+
 var commandMap = map[int64]string{
 	cmdEnableGCPAPIs:       "enablegcpapis",
 	cmdCreateScriptYaml:    "createscriptyaml",
@@ -277,13 +281,15 @@ func formatCommandOutput(output string) string {
 
 // CommandConfig holds the configuration for executing a command
 type CommandConfig struct {
-	Name    string            // Name of the command for logging
-	Cmd     string            // The command to run
-	Args    []string          // Command arguments
-	WorkDir string            // Working directory
-	Stdin   io.Reader         // Optional stdin
-	Env     map[string]string // Optional environment variables
-	Timeout time.Duration     // Timeout duration (default 5m)
+	Name         string            // Name of the command for logging
+	Cmd          string            // The command to run
+	Args         []string          // Command arguments
+	WorkDir      string            // Working directory
+	Stdin        io.Reader         // Optional stdin
+	Env          map[string]string // Optional environment variables
+	Timeout      time.Duration     // Timeout duration (default 5m)
+	MaxRetries   int               // Maximum number of retries allowed for this command
+	RetryBackoff time.Duration     // Time to wait between retries (default 1s)
 }
 
 // Helper function to execute a command with timing and logging
@@ -296,61 +302,90 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 		}
 	}
 
-	log.Printf("Starting command step: %s", cfg.Name)
-	log.Printf("[%s] working directory: %s", cfg.Name, cfg.WorkDir)
-	log.Printf("[%s] command: %s %s", cfg.Name, cfg.Cmd, strings.Join(cfg.Args, " "))
-	if cfg.Stdin != nil {
-		log.Printf("[%s] stdin: %s", cfg.Name, cfg.Stdin)
+	if cfg.RetryBackoff == 0 {
+		cfg.RetryBackoff = time.Second
 	}
-	if len(cfg.Env) > 0 {
-		log.Printf("[%s] environment:", cfg.Name)
-		for k, v := range cfg.Env {
-			log.Printf("  %s=%s", k, v)
+
+	maxRetries := opts.defaultRetries
+	// If MaxRetries is set in config, cap it at that
+	if cfg.MaxRetries > 0 && cfg.MaxRetries < maxRetries {
+		maxRetries = cfg.MaxRetries
+	}
+
+	var lastErr error
+	var output, errOutput string
+	retryCount := 0
+
+	for {
+		log.Printf("Starting command step: %s (attempt %d/%d)", cfg.Name, retryCount+1, maxRetries+1)
+		log.Printf("[%s] working directory: %s", cfg.Name, cfg.WorkDir)
+		log.Printf("[%s] command: %s %s", cfg.Name, cfg.Cmd, strings.Join(cfg.Args, " "))
+		if cfg.Stdin != nil {
+			log.Printf("[%s] stdin: %s", cfg.Name, cfg.Stdin)
 		}
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
-	defer cancel()
-
-	cmd := exec.CommandContext(ctx, cfg.Cmd, cfg.Args...)
-	cmd.Dir = cfg.WorkDir
-
-	var outBuf, errBuf strings.Builder
-	cmd.Stdout = &outBuf
-	cmd.Stderr = &errBuf
-
-	if cfg.Stdin != nil {
-		cmd.Stdin = cfg.Stdin
-	}
-
-	// Set up environment variables
-	if len(cfg.Env) > 0 {
-		cmd.Env = os.Environ() // Start with current environment
-		for k, v := range cfg.Env {
-			cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+		if len(cfg.Env) > 0 {
+			log.Printf("[%s] environment:", cfg.Name)
+			for k, v := range cfg.Env {
+				log.Printf("  %s=%s", k, v)
+			}
 		}
+
+		ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
+		cmd := exec.CommandContext(ctx, cfg.Cmd, cfg.Args...)
+		cmd.Dir = cfg.WorkDir
+
+		var outBuf, errBuf strings.Builder
+		cmd.Stdout = &outBuf
+		cmd.Stderr = &errBuf
+
+		if cfg.Stdin != nil {
+			cmd.Stdin = cfg.Stdin
+		}
+
+		// Set up environment variables
+		if len(cfg.Env) > 0 {
+			cmd.Env = os.Environ() // Start with current environment
+			for k, v := range cfg.Env {
+				cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+			}
+		}
+
+		start := time.Now()
+		err := cmd.Run()
+		stop := time.Now()
+		diff := stop.Sub(start)
+		cancel()
+
+		output = outBuf.String()
+		errOutput = errBuf.String()
+
+		if err == nil {
+			log.Printf("[%s] SUCCESS (%v)", cfg.Name, diff)
+			printCommandOutput(output)
+			if errBuf.Len() > 0 {
+				log.Printf("[%s] stderr output:", cfg.Name)
+				printCommandOutput(errOutput)
+			}
+			return output, errOutput, nil
+		}
+
+		lastErr = err
+		log.Printf("[%s] ERROR (%v): %v", cfg.Name, diff, err)
+		printCommandOutput(output)
+		if errBuf.Len() > 0 {
+			log.Printf("[%s] stderr output:", cfg.Name)
+			printCommandOutput(errOutput)
+		}
+
+		retryCount++
+		if maxRetries >= 0 && retryCount > maxRetries {
+			log.Printf("[%s] Exceeded maximum retries (%d), giving up", cfg.Name, maxRetries)
+			break
+		}
+
+		log.Printf("[%s] Retrying in %v...", cfg.Name, cfg.RetryBackoff)
+		time.Sleep(cfg.RetryBackoff)
 	}
 
-	start := time.Now()
-
-	err := cmd.Run()
-	stop := time.Now()
-	diff := stop.Sub(start)
-	if err != nil {
-		log.Printf("[%s] ERROR (%v): \n", cfg.Name, diff)
-		log.Printf("[%s] err: %q\n", cfg.Name, err)
-	} else {
-		log.Printf("[%s] SUCCESS (%v): \n", cfg.Name, diff)
-	}
-
-	output := outBuf.String()
-	errOutput := errBuf.String()
-
-	printCommandOutput(output)
-	if errBuf.Len() > 0 {
-		log.Printf("[%s] stderr output:\n", cfg.Name)
-		printCommandOutput(errOutput)
-	}
-
-	return output, errOutput, err
+	return output, errOutput, fmt.Errorf("command failed after %d attempts: %w", retryCount, lastErr)
 }

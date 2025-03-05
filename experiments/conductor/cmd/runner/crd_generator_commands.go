@@ -187,7 +187,8 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
 				"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
 			},
-			WorkDir: controllerBuilderDir,
+			WorkDir:    controllerBuilderDir,
+			MaxRetries: 2,
 		}
 		_, _, err := executeCommand(opts, cfg)
 		if err != nil {
@@ -211,7 +212,8 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 				"--service", branch.Package,
 				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
 			},
-			WorkDir: controllerBuilderDir,
+			WorkDir:    controllerBuilderDir,
+			MaxRetries: 2,
 		}
 		_, _, err := executeCommand(opts, cfg)
 		if err != nil {
@@ -228,7 +230,8 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 				"-w",
 				mapperDir,
 			},
-			WorkDir: workDir,
+			WorkDir:    workDir,
+			MaxRetries: 2,
 		}
 		_, _, err = executeCommand(opts, cfg)
 		if err != nil {
@@ -258,9 +261,10 @@ func generateCRD(opts *RunnerOptions, branch Branch) {
 
 	// Generate CRDs
 	cfg := CommandConfig{
-		Name:    "Generate CRDs",
-		Cmd:     filepath.Join(workDir, "dev", "tasks", "generate-crds"),
-		WorkDir: workDir,
+		Name:       "Generate CRDs",
+		Cmd:        filepath.Join(workDir, "dev", "tasks", "generate-crds"),
+		WorkDir:    workDir,
+		MaxRetries: 2,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -287,11 +291,12 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) {
 	stdinInput := fmt.Sprintf("// +kcc:proto=%s.%s\n", branch.ProtoSvc, branch.Proto)
 
 	cfg := CommandConfig{
-		Name:    "Spec/Status generation",
-		Cmd:     "controllerbuilder",
-		Args:    []string{"prompt", "--src-dir", workDir, "--proto-dir", filepath.Join(workDir, ".build", "third_party", "googleapis")},
-		WorkDir: workDir,
-		Stdin:   strings.NewReader(stdinInput),
+		Name:         "Spec/Status generation",
+		Cmd:          "controllerbuilder",
+		Args:         []string{"prompt", "--src-dir", workDir, "--proto-dir", filepath.Join(workDir, ".build", "third_party", "googleapis")},
+		WorkDir:      workDir,
+		Stdin:        strings.NewReader(stdinInput),
+		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -325,11 +330,12 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 `, branch.ProtoMsg)
 
 	cfg := CommandConfig{
-		Name:    "Fuzzer generation",
-		Cmd:     "controllerbuilder",
-		Args:    []string{"prompt", "--src-dir", workDir, "--proto-dir", filepath.Join(workDir, ".build", "third_party", "googleapis")},
-		WorkDir: workDir,
-		Stdin:   strings.NewReader(stdinInput),
+		Name:         "Fuzzer generation",
+		Cmd:          "controllerbuilder",
+		Args:         []string{"prompt", "--src-dir", workDir, "--proto-dir", filepath.Join(workDir, ".build", "third_party", "googleapis")},
+		WorkDir:      workDir,
+		Stdin:        strings.NewReader(stdinInput),
+		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 	output, _, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -346,11 +352,12 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	stdinInput = fmt.Sprintf("Add an unnamed (_) go import for %s to the imports in %s", importLine, registerPath)
 
 	cfg = CommandConfig{
-		Name:    "Import addition",
-		Cmd:     "codebot",
-		Args:    []string{"--prompt=/dev/stdin"},
-		WorkDir: workDir,
-		Stdin:   strings.NewReader(stdinInput),
+		Name:         "Import addition",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		WorkDir:      workDir,
+		Stdin:        strings.NewReader(stdinInput),
+		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 	_, _, err = executeCommand(opts, cfg)
 	if err != nil {
