@@ -23,8 +23,10 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "name": "projects/${projectId}/regions/us-central1/workflowTemplates/test-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "version": 1
+  "placement": {
+    "managedCluster": {}
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -48,8 +50,10 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "name": "projects/${projectId}/regions/us-central1/workflowTemplates/test-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "version": 1
+  "placement": {
+    "managedCluster": {}
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
