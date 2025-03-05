@@ -236,11 +236,6 @@ func (in *OrgPolicyCustomConstraintSpec) DeepCopyInto(out *OrgPolicyCustomConstr
 		*out = new(string)
 		**out = **in
 	}
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceTypes != nil {
 		in, out := &in.ResourceTypes, &out.ResourceTypes
 		*out = make([]string, len(*in))
