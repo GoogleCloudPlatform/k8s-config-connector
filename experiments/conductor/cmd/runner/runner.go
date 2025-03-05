@@ -128,8 +128,13 @@ type Branch struct {
 	ProtoMsg  string `yaml:"proto-msg"`     // google.ai.generativelanguage.v1beta.Model
 	HostName  string `yaml:"host-name"`     // generativelanguage.googleapis.com
 
-	Notes       []string `yaml:"notes"`        // Observation goes here
-	ApisEnabled []string `yaml:"apis-enabled"` // GCP APIs that need to be enabled
+	Notes []string `yaml:"notes"` // Observation goes here
+
+	// GCP APIs that need to be enabled for the branch.
+	// example:
+	// - eventarc.googleapis.com
+	// - aiplatform.googleapis.com
+	ApisEnabled []string `yaml:"apis-enabled"`
 }
 
 // BranchModifier is a function type that takes a Branch and returns a modified Branch
