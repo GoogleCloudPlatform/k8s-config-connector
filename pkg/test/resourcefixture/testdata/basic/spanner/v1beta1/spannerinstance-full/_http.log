@@ -32,6 +32,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "Spanner Instance Sample",
+    "edition": 1,
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
@@ -190,10 +191,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 {
-  "fieldMask": "displayName,nodeCount,labels,edition",
+  "fieldMask": "displayName,nodeCount,labels",
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "New spanner Instance Sample",
+    "edition": 1,
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
@@ -223,6 +225,7 @@ X-Xss-Protection: 0
       "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": 2,
       "displayName": "New spanner Instance Sample",
+      "edition": 1,
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
@@ -276,6 +279,7 @@ X-Xss-Protection: 0
       "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "New spanner Instance Sample",
+      "edition": "STANDARD",
       "labels": {
         "cnrm-test": "true",
         "label-one": "value-one",
@@ -297,6 +301,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "New spanner Instance Sample",
+    "edition": "STANDARD",
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
@@ -333,6 +338,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
   "displayName": "New spanner Instance Sample",
+  "edition": 1,
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
