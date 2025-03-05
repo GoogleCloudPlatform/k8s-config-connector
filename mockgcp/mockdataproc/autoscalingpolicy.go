@@ -41,7 +41,7 @@ type autoscalingPolicyServiceServer struct {
 }
 
 func (s *autoscalingPolicyServiceServer) CreateAutoscalingPolicy(ctx context.Context, req *pb.CreateAutoscalingPolicyRequest) (*pb.AutoscalingPolicy, error) {
-	reqName := fmt.Sprintf("%s/autoscalingPolicies/%s", req.GetParent(), "test-autoscaling-policy")
+	reqName := fmt.Sprintf("%s/autoscalingPolicies/%s", req.GetParent(), req.Policy.Id)
 	name, err := s.parseAutoscalingPolicyName(reqName)
 	if err != nil {
 		return nil, err
@@ -107,18 +107,13 @@ func (s *autoscalingPolicyServiceServer) UpdateAutoscalingPolicy(ctx context.Con
 	return obj, nil
 }
 
-func (s *autoscalingPolicyServiceServer) ListAutoscalingPolicy(ctx context.Context, req *pb.ListAutoscalingPoliciesRequest) (*pb.ListAutoscalingPoliciesResponse, error) {
-	name, err := s.parseAutoscalingPolicyName(req.Parent)
-	if err != nil {
-		return nil, err
-	}
-
+func (s *autoscalingPolicyServiceServer) ListAutoscalingPolicies(ctx context.Context, req *pb.ListAutoscalingPoliciesRequest) (*pb.ListAutoscalingPoliciesResponse, error) {
 	response := &pb.ListAutoscalingPoliciesResponse{}
 
 	AutoscalingPolicyKind := (&pb.AutoscalingPolicy{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, AutoscalingPolicyKind, storage.ListOptions{}, func(obj proto.Message) error {
 		autoScalingPolicy := obj.(*pb.AutoscalingPolicy)
-		if strings.HasPrefix(autoScalingPolicy.GetName(), name.String()) {
+		if strings.HasPrefix(autoScalingPolicy.GetName(), req.Parent) {
 			response.Policies = append(response.Policies, autoScalingPolicy)
 		}
 		return nil
