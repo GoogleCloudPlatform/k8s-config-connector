@@ -50,20 +50,6 @@ jobs:
           COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
-  validate-generated-types:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          # This is to get all the commits in order to validate them
-          fetch-depth: 0
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Validate Generated Go Types"
-        run: |
-          dev/ci/presubmits/validate-generated-types.sh
   unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -102,132 +88,6 @@ jobs:
         with:
           name: artifacts-tests-e2e-samples
           path: /tmp/artifacts/
-  tests-e2e-fixtures:
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run mock fixtures tests"
-        run: |
-          ./scripts/github-actions/tests-e2e-fixtures
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-e2e-fixtures
-          path: /tmp/artifacts/
-  tests-e2e-fixtures-compute:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run mock fixtures tests for compute service"
-        run: |
-          ./scripts/github-actions/tests-e2e-fixtures-compute
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-e2e-fixtures-compute
-          path: /tmp/artifacts/
-  tests-e2e-fixtures-gkehub:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run mock fixtures tests for gkehub service"
-        run: |
-          ./scripts/github-actions/tests-e2e-fixtures-gkehub
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-e2e-fixtures-gkehub
-          path: /tmp/artifacts/
-  tests-e2e-fixtures-sql:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run mock fixtures tests for sql service"
-        run: |
-          ./scripts/github-actions/tests-e2e-fixtures-sql
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-e2e-fixtures-sql
-          path: /tmp/artifacts/
-  tests-e2e-fixtures-vertexai:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run mock fixtures tests for vertexai service"
-        run: |
-          ./scripts/github-actions/tests-e2e-fixtures-vertexai
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-e2e-fixtures-vertexai
-          path: /tmp/artifacts/
-  tests-e2e-fixtures-apigee:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run mock fixtures tests for apigee service"
-        run: |
-          ./scripts/github-actions/tests-e2e-fixtures-apigee
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-e2e-fixtures-apigee
-          path: /tmp/artifacts/
-  tests-e2e-fixtures-secretmanager:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run mock fixtures tests for secretmanager service"
-        run: |
-          ./scripts/github-actions/tests-e2e-fixtures-secretmanager
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-e2e-fixtures-secretmanager
-          path: /tmp/artifacts/
   pause-tests:
     runs-on: ubuntu-22.04
     timeout-minutes: 90
@@ -239,17 +99,7 @@ jobs:
       - name: "Run pause tests"
         run: |
           ./scripts/github-actions/ga-pause-test.sh
-  scenarios-tests:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "run scenarios-tests"
-        run: |
-          ./dev/ci/scenarios-tests
+
   tests-e2e-fixtures-vcr:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
@@ -285,17 +135,6 @@ jobs:
           dev/tasks/build-images
     env:
       PROJECT_ID: cnrm-test
-  test-mockgcp:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "dev/ci/presubmits/test-mockgcp"
-        run: |
-          dev/ci/presubmits/test-mockgcp
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true

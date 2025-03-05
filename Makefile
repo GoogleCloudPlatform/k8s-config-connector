@@ -378,7 +378,7 @@ powertool-tests:
 
 .PHONY: e2e-scenario-tests
 e2e-scenario-tests:
-	dev/ci/scenarios-tests
+	dev/ci/presubmits/scenarios-tests
 
 # indicate which samples testcases will be run
 SAMPLE_TESTCASE ?= TestAllInSeries/samples
