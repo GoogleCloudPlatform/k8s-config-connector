@@ -61,10 +61,26 @@ spec:
             description: OrgpolicyCustomConstraintSpec defines the desired state of
               OrgpolicyCustomConstraint
             properties:
+              location:
+                description: The location for the resource.
+                type: string
+              organizationRef:
+                description: The Organization that this resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               resourceID:
                 description: The OrgpolicyCustomConstraint name. If not given, the
                   metadata.name will be used.
                 type: string
+            required:
+            - location
+            - organizationRef
             type: object
           status:
             description: OrgpolicyCustomConstraintStatus defines the config connector
