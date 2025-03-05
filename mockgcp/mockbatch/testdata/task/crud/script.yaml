@@ -1,5 +1,7 @@
 
-- exec: gcloud batch jobs submit test-${uniqueId} --location us-central1 --config job.json
-- exec: gcloud batch jobs describe test-${uniqueId} --location us-central1
-- exec: gcloud batch jobs list --location us-central1
-- exec: gcloud batch jobs delete test-${uniqueId} --location us-central1
+- exec: gcloud batch jobs submit test-${uniqueId} --location=us-central1 --script-text="echo hello"
+- exec: gcloud batch jobs describe test-${uniqueId} --location=us-central1
+- exec: gcloud batch jobs list --location=us-central1
+- exec: gcloud batch tasks list --job=test-${uniqueId} --location=us-central1
+- exec: gcloud batch tasks describe projects/${project}/locations/us-central1/jobs/test-${uniqueId}/taskGroups/group0/tasks/0 --location=us-central1
+- exec: gcloud batch jobs delete test-${uniqueId} --location=us-central1
