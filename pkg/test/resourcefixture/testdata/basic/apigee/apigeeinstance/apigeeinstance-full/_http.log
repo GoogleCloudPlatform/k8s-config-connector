@@ -635,7 +635,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://apigee.googleapis.com/v1/organizations/${projectId}/instances/apigeeinstance-${uniqueId}?alt=json&prettyPrint=false&updateMask=access_logging_config%2Cconsumer_accept_list
+PATCH https://apigee.googleapis.com/v1/organizations/${projectId}/instances/apigeeinstance-${uniqueId}?alt=json&prettyPrint=false&updateMask=access_logging_config.enabled%2Caccess_logging_config.filter%2Cconsumer_accept_list
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
