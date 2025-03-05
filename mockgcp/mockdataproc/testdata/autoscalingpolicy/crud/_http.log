@@ -1,0 +1,157 @@
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "240s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "3600s",
+      "scaleDownFactor": 1,
+      "scaleUpFactor": 0.05
+    }
+  },
+  "id": "000000000000000000000",
+  "secondaryWorkerConfig": {
+    "maxInstances": 50
+  },
+  "workerConfig": {
+    "maxInstances": 10,
+    "minInstances": 10
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "240s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "3600s",
+      "scaleDownFactor": 1,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.05,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 50
+  },
+  "workerConfig": {
+    "maxInstances": 10,
+    "minInstances": 10
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "240s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "3600s",
+      "scaleDownFactor": 1,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.05,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 50
+  },
+  "workerConfig": {
+    "maxInstances": 10,
+    "minInstances": 10
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies?alt=json&pageSize=100
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "policies": [
+    {
+      "basicAlgorithm": {
+        "cooldownPeriod": "240s",
+        "yarnConfig": {
+          "gracefulDecommissionTimeout": "3600s",
+          "scaleDownFactor": 1,
+          "scaleDownMinWorkerFraction": 1,
+          "scaleUpFactor": 0.05,
+          "scaleUpMinWorkerFraction": 0.5
+        }
+      },
+      "id": "test-${uniqueId}",
+      "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}",
+      "secondaryWorkerConfig": {
+        "maxInstances": 50
+      },
+      "workerConfig": {
+        "maxInstances": 10,
+        "minInstances": 10
+      }
+    }
+  ]
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
