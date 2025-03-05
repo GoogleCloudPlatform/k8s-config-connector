@@ -133,8 +133,16 @@ func (s *instancesServer) PatchOrganizationsInstance(ctx context.Context, req *p
 
 	for _, path := range fieldMask.GetPaths() {
 		switch path {
-		case "access_logging_config":
-			obj.AccessLoggingConfig = req.OrganizationsInstance.AccessLoggingConfig
+		case "access_logging_config.enabled":
+			if obj.AccessLoggingConfig == nil {
+				obj.AccessLoggingConfig = &pb.GoogleCloudApigeeV1AccessLoggingConfig{}
+			}
+			obj.AccessLoggingConfig.Enabled = req.OrganizationsInstance.AccessLoggingConfig.Enabled
+		case "access_logging_config.filter":
+			if obj.AccessLoggingConfig == nil {
+				obj.AccessLoggingConfig = &pb.GoogleCloudApigeeV1AccessLoggingConfig{}
+			}
+			obj.AccessLoggingConfig.Filter = req.OrganizationsInstance.AccessLoggingConfig.Filter
 		case "consumer_accept_list":
 			obj.ConsumerAcceptList = req.OrganizationsInstance.ConsumerAcceptList
 		default:

@@ -173,37 +173,19 @@ func (a *ApigeeInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 
-	if resource.AccessLoggingConfig != nil && !reflect.DeepEqual(resource.AccessLoggingConfig, a.actual.AccessLoggingConfig) {
-		log.V(2).Info("change detected: accessLoggingConfig")
-		updateMask.Paths = append(updateMask.Paths, "access_logging_config")
+	if resource.AccessLoggingConfig != nil {
+		if resource.AccessLoggingConfig.Enabled != a.actual.AccessLoggingConfig.Enabled {
+			log.V(2).Info("change detected: accessLoggingConfig.enabled")
+			updateMask.Paths = append(updateMask.Paths, "access_logging_config.enabled")
+		}
+		if resource.AccessLoggingConfig.Filter != a.actual.AccessLoggingConfig.Filter {
+			log.V(2).Info("change detected: accessLoggingConfig.filter")
+			updateMask.Paths = append(updateMask.Paths, "access_logging_config.filter")
+		}
 	}
 	if resource.ConsumerAcceptList != nil && !reflect.DeepEqual(asSortedCopy(resource.ConsumerAcceptList), asSortedCopy(a.actual.ConsumerAcceptList)) {
 		log.V(2).Info("change detected: consumerAcceptList")
 		updateMask.Paths = append(updateMask.Paths, "consumer_accept_list")
-	}
-	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		log.V(2).Info("change detected: description")
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-	if !reflect.DeepEqual(resource.DiskEncryptionKeyName, a.actual.DiskEncryptionKeyName) {
-		log.V(2).Info("change detected: diskEncryptionKeyName")
-		updateMask.Paths = append(updateMask.Paths, "disk_encryption_key_name")
-	}
-	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
-		log.V(2).Info("change detected: displayName")
-		updateMask.Paths = append(updateMask.Paths, "display_name")
-	}
-	if !reflect.DeepEqual(resource.IpRange, a.actual.IpRange) {
-		log.V(2).Info("change detected: ipRange")
-		updateMask.Paths = append(updateMask.Paths, "ip_range")
-	}
-	if !reflect.DeepEqual(resource.Location, a.actual.Location) {
-		log.V(2).Info("change detected: location")
-		updateMask.Paths = append(updateMask.Paths, "location")
-	}
-	if !reflect.DeepEqual(resource.PeeringCidrRange, a.actual.PeeringCidrRange) {
-		log.V(2).Info("change detected: peeringCIDRRange")
-		updateMask.Paths = append(updateMask.Paths, "peering_cidr_range")
 	}
 
 	if len(updateMask.Paths) == 0 {
