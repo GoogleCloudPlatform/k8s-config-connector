@@ -24,6 +24,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -78,6 +79,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", 0, "Which commands to you on the directory.")
 	cmd.Flags().StringVarP(&opts.loggingDir, loggingDirFlag,
 		"", "", "dedicated directory for logging, empty for stdout.")
+	cmd.Flags().DurationVarP(&opts.timeout, "timeout",
+		"t", 5*time.Minute, "Global timeout for commands.")
 
 	return cmd
 }
@@ -87,6 +90,7 @@ type RunnerOptions struct {
 	branchRepoDir  string
 	command        int64
 	loggingDir     string
+	timeout        time.Duration
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -471,7 +475,7 @@ func fixMetadata(opts *RunnerOptions, branches Branches, modifier BranchModifier
 
 func inferProtoPathModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
 	if branch.ProtoPath == "" {
-		branch.ProtoPath = inferProtoPath(branch, workDir)
+		branch.ProtoPath = inferProtoPath(opts, branch, workDir)
 		log.Printf("ProtoPath for %s should be %s", branch.Name, branch.ProtoPath)
 	}
 	return branch
@@ -503,7 +507,7 @@ Only include APIs that are directly needed by this command.
 `, branch.Command)),
 	}
 
-	output, _, err := executeCommand(cfg)
+	output, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Printf("Failed to get APIs for %s: %v", branch.Name, err)
 		return branch
@@ -533,7 +537,7 @@ Only include APIs that are directly needed by this command.
 	return branch
 }
 
-func inferProtoPath(branch Branch, workDir string) string {
+func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 	var protoDir = ""
 	var svcNm = ""
 	if branch.Proto != "" {
@@ -592,7 +596,7 @@ func inferProtoPath(branch Branch, workDir string) string {
 		Args:    args,
 		WorkDir: workDir,
 	}
-	output, errOutput, err := executeCommand(cfg)
+	output, errOutput, err := executeCommand(opts, cfg)
 	if err != nil {
 		var exitError *exec.ExitError
 		if errors.As(err, &exitError) {
@@ -614,7 +618,7 @@ func inferProtoPath(branch Branch, workDir string) string {
 				Args:    args,
 				WorkDir: workDir,
 			}
-			output, errOutput, err = executeCommand(cfg)
+			output, errOutput, err = executeCommand(opts, cfg)
 			if err != nil {
 				log.Printf("Working in directory %s", workDir)
 				log.Printf("Got response2 %v", errOutput)

@@ -268,9 +268,13 @@ type CommandConfig struct {
 }
 
 // Helper function to execute a command with timing and logging
-func executeCommand(cfg CommandConfig) (string, string, error) {
+func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, error) {
 	if cfg.Timeout == 0 {
-		cfg.Timeout = 5 * time.Minute
+		if opts != nil && opts.timeout != 0 {
+			cfg.Timeout = opts.timeout
+		} else {
+			cfg.Timeout = 5 * time.Minute
+		}
 	}
 
 	log.Printf("Starting command step: %s", cfg.Name)

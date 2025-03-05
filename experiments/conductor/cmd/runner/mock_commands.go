@@ -91,7 +91,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 		Args:    []string{"--ui-type=prompt", "--prompt=prompt.txt"},
 		WorkDir: workDir,
 	}
-	_, _, err := executeCommand(cfg)
+	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -147,7 +147,7 @@ func enableAPIs(opts *RunnerOptions, branch Branch) error {
 			Args:    []string{"services", "enable", api},
 			WorkDir: workDir,
 		}
-		_, _, err := executeCommand(cfg)
+		_, _, err := executeCommand(opts, cfg)
 		if err != nil {
 			return fmt.Errorf("failed to enable API %s: %w", api, err)
 		}
@@ -198,7 +198,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 		WorkDir: workDir,
 		Env:     map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
 	}
-	_, _, err := executeCommand(cfg)
+	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Printf("TEST GENERATE error: %q\n", err)
 		// Currently ignoring error and just basing on if the _http.log was generated.
@@ -267,7 +267,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 			},
 			WorkDir: workDir,
 		}
-		output, _, err := executeCommand(cfg)
+		output, _, err := executeCommand(opts, cfg)
 		if err != nil {
 			log.Printf("MOCK SERVICE GENERATE error: %q\n", err)
 			// Currently ignoring error and just basing on if the _http.log was generated.
@@ -306,7 +306,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 			},
 			WorkDir: workDir,
 		}
-		output, _, err := executeCommand(cfg)
+		output, _, err := executeCommand(opts, cfg)
 		if err != nil {
 			log.Printf("MOCK RESOURCE GENERATE error: %q\n", err)
 			// Currently ignoring error and just basing on if the _http.log was generated.
@@ -371,7 +371,7 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 		Args:    []string{"--ui-type=prompt", "--prompt=roundtrip_prompt.txt"},
 		WorkDir: workDir,
 	}
-	_, _, err := executeCommand(cfg)
+	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -422,7 +422,7 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 		Args:    []string{"--ui-type=prompt", "--prompt=makefile_prompt.txt"},
 		WorkDir: workDir,
 	}
-	_, _, err := executeCommand(cfg)
+	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -457,7 +457,7 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 		WorkDir: workDir,
 		Env:     map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
 	}
-	_, _, err := executeCommand(cfg)
+	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Printf("TEST RUN error: %q\n", err)
 		// Currently ignoring error and just basing on if the _http.log was generated.

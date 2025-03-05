@@ -172,7 +172,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		},
 		WorkDir: controllerBuilderDir,
 	}
-	_, _, err := executeCommand(cfg)
+	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -189,7 +189,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		},
 		WorkDir: controllerBuilderDir,
 	}
-	_, _, err = executeCommand(cfg)
+	_, _, err = executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -206,7 +206,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		},
 		WorkDir: workDir,
 	}
-	_, _, err = executeCommand(cfg)
+	_, _, err = executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -234,7 +234,7 @@ func generateCRD(opts *RunnerOptions, branch Branch) {
 		Cmd:     filepath.Join(workDir, "dev", "tasks", "generate-crds"),
 		WorkDir: workDir,
 	}
-	_, _, err := executeCommand(cfg)
+	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -265,7 +265,7 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) {
 		WorkDir: workDir,
 		Stdin:   strings.NewReader(stdinInput),
 	}
-	_, _, err := executeCommand(cfg)
+	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -303,7 +303,7 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 		WorkDir: workDir,
 		Stdin:   strings.NewReader(stdinInput),
 	}
-	output, _, err := executeCommand(cfg)
+	output, _, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -324,7 +324,7 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 		WorkDir: workDir,
 		Stdin:   strings.NewReader(stdinInput),
 	}
-	_, _, err = executeCommand(cfg)
+	_, _, err = executeCommand(opts, cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
