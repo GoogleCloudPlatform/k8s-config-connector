@@ -1,0 +1,133 @@
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles?alt=json&appProfileId=test-app-profile-${uniqueId}&ignoreWarnings=False
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "description": "Test App Profile",
+  "multiClusterRoutingUseAny": {
+    "failoverRadius": "ANY_REGION"
+  }
+}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId} : GlobalInstances(${projectNumber},test-instance-${uniqueId}) [google.rpc.error_details_ext] { message: \"Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId}\" }"
+      }
+    ],
+    "message": "Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectNumber}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId} : GlobalInstances(${projectNumber},test-instance-${uniqueId}) [google.rpc.error_details_ext] { message: \"Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId}\" }"
+      }
+    ],
+    "message": "Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectNumber}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId} : GlobalInstances(${projectNumber},test-instance-${uniqueId}) [google.rpc.error_details_ext] { message: \"Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId}\" }"
+      }
+    ],
+    "message": "Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectNumber}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId} : GlobalInstances(${projectNumber},test-instance-${uniqueId}) [google.rpc.error_details_ext] { message: \"Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId}\" }"
+      }
+    ],
+    "message": "Failed to read: projects/{${projectNumber}}/instances/test-instance-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
