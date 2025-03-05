@@ -37,6 +37,8 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
+
+	v1 *AppHubV1Service
 }
 
 // New creates a MockService.
@@ -46,7 +48,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-
+	s.v1 = &AppHubV1Service{MockService: s}
 	return s
 }
 
@@ -55,7 +57,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterAppHubServer(grpcServer, &appHubV1Service{MockService: s})
+	pb.RegisterAppHubServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

@@ -24,7 +24,7 @@ import (
 	"strings"
 	"time"
 
-	"cloud.google.com/go/longrunning"
+	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -36,12 +36,12 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-type appHubV1Service struct {
+type AppHubV1Service struct {
 	*MockService
 	pb.UnimplementedAppHubServer
 }
 
-func (s *appHubV1Service) GetApplication(ctx context.Context, req *pb.GetApplicationRequest) (*pb.Application, error) {
+func (s *AppHubV1Service) GetApplication(ctx context.Context, req *pb.GetApplicationRequest) (*pb.Application, error) {
 	name, err := s.parseApplicationName(req.Name)
 	if err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func (s *appHubV1Service) GetApplication(ctx context.Context, req *pb.GetApplica
 	return obj, nil
 }
 
-func (s *appHubV1Service) UpdateApplication(ctx context.Context, req *pb.UpdateApplicationRequest) (*longrunning.Operation, error) {
+func (s *AppHubV1Service) UpdateApplication(ctx context.Context, req *pb.UpdateApplicationRequest) (*longrunning.Operation, error) {
 	name, err := s.parseApplicationName(req.GetApplication().GetName())
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (s *appHubV1Service) UpdateApplication(ctx context.Context, req *pb.UpdateA
 	})
 }
 
-func (s *appHubV1Service) CreateApplication(ctx context.Context, req *pb.CreateApplicationRequest) (*longrunningpb.Operation, error) {
+func (s *AppHubV1Service) CreateApplication(ctx context.Context, req *pb.CreateApplicationRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/applications/" + req.ApplicationId
 	name, err := s.parseApplicationName(reqName)
 	if err != nil {
@@ -120,7 +120,7 @@ func (s *appHubV1Service) CreateApplication(ctx context.Context, req *pb.CreateA
 	})
 }
 
-func (s *appHubV1Service) DeleteApplication(ctx context.Context, req *pb.DeleteApplicationRequest) (*longrunningpb.Operation, error) {
+func (s *AppHubV1Service) DeleteApplication(ctx context.Context, req *pb.DeleteApplicationRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseApplicationName(req.Name)
 	if err != nil {
 		return nil, err
@@ -158,7 +158,7 @@ func (n *applicationName) String() string {
 
 // parseApplicationName parses a string into an applicationName.
 // The expected form is `projects/*/locations/*/applications/*`.
-func (s *MockService) parseApplicationName(name string) (*applicationName, error) {
+func (s *AppHubV1Service) parseApplicationName(name string) (*applicationName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "applications" {
