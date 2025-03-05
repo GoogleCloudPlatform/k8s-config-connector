@@ -71,7 +71,7 @@ func (m *modelSecureSourceManagerRepository) AdapterForObject(ctx context.Contex
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewSecureSourceManagerRepositoryRef(ctx, reader, obj)
+	id, err := krm.NewRepositoryIdentity(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (m *modelSecureSourceManagerRepository) AdapterForURL(ctx context.Context, 
 }
 
 type SecureSourceManagerRepositoryAdapter struct {
-	id            *krm.SecureSourceManagerRepositoryRef
+	id            *krm.RepositoryIdentity
 	projectClient *cloudresourcemanager.ProjectsClient
 	gcpClient     *gcp.Client
 	reader        client.Reader
@@ -127,15 +127,15 @@ var _ directbase.Adapter = &SecureSourceManagerRepositoryAdapter{}
 
 func (a *SecureSourceManagerRepositoryAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting SecureSourceManagerRepository", "name", a.id.External)
+	log.V(2).Info("getting SecureSourceManagerRepository", "name", a.id)
 
-	req := &securesourcemanagerpb.GetRepositoryRequest{Name: a.id.External}
+	req := &securesourcemanagerpb.GetRepositoryRequest{Name: a.id.String()}
 	repositorypb, err := a.gcpClient.GetRepository(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting SecureSourceManagerRepository %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting SecureSourceManagerRepository %q: %w", a.id, err)
 	}
 
 	a.actual = repositorypb
@@ -144,7 +144,7 @@ func (a *SecureSourceManagerRepositoryAdapter) Find(ctx context.Context) (bool, 
 
 func (a *SecureSourceManagerRepositoryAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating Repository", "name", a.id.External)
+	log.V(2).Info("creating Repository", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -165,14 +165,8 @@ func (a *SecureSourceManagerRepositoryAdapter) Create(ctx context.Context, creat
 		return mapCtx.Err()
 	}
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return err
-	}
-	repositoryID, err := a.id.ResourceID()
-	if err != nil {
-		return err
-	}
+	parent := a.id.Parent()
+	repositoryID := a.id.ID()
 
 	req := &securesourcemanagerpb.CreateRepositoryRequest{
 		Parent:       parent.String(),
@@ -181,20 +175,21 @@ func (a *SecureSourceManagerRepositoryAdapter) Create(ctx context.Context, creat
 	}
 	op, err := a.gcpClient.CreateRepository(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Repository %s: %w", a.id.External, err)
+		return fmt.Errorf("creating Repository %s: %w", a.id, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Repository %s waiting creation: %w", a.id.External, err)
+		return fmt.Errorf("Repository %s waiting creation: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created Repository", "name", a.id.External)
+	log.V(2).Info("successfully created Repository", "name", a.id)
 
 	status := &krm.SecureSourceManagerRepositoryStatus{}
 	status.ObservedState = SecureSourceManagerRepositoryObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	externalRef := created.Name
+	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -216,14 +211,9 @@ func (a *SecureSourceManagerRepositoryAdapter) Export(ctx context.Context) (*uns
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, err
-	}
-	repositoryID, err := a.id.ResourceID()
-	if err != nil {
-		return nil, err
-	}
+	parent := a.id.Parent()
+	repositoryID := a.id.ID()
+
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: parent.ProjectID}
 	obj.Spec.Location = parent.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -239,15 +229,15 @@ func (a *SecureSourceManagerRepositoryAdapter) Export(ctx context.Context) (*uns
 // Delete implements the Adapter interface.
 func (a *SecureSourceManagerRepositoryAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Repository", "name", a.id.External)
+	log.V(2).Info("deleting Repository", "name", a.id)
 
-	req := &securesourcemanagerpb.DeleteRepositoryRequest{Name: a.id.External}
+	req := &securesourcemanagerpb.DeleteRepositoryRequest{Name: a.id.String()}
 	_, err := a.gcpClient.DeleteRepository(ctx, req)
 	// TODO - remove after the Go protobuf fix is in. https://github.com/golang/protobuf/issues/1620#issuecomment-2402608919
 	// Handles the LRO parsing error.
 	if err != nil {
 		if !strings.Contains(err.Error(), "(line 14:3): missing \"value\" field") {
-			return false, fmt.Errorf("deleting Repository %s: %w", a.id.External, err)
+			return false, fmt.Errorf("deleting Repository %s: %w", a.id, err)
 		}
 	}
 	return true, nil
