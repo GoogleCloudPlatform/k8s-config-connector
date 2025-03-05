@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// CustomConstraintIdentity defines the resource reference to OrgpolicyCustomConstraint, which "External" field
+// CustomConstraintIdentity defines the resource reference to OrgPolicyCustomConstraint, which "External" field
 // holds the GCP identifier for the KRM object.
 type CustomConstraintIdentity struct {
 	parent *CustomConstraintParent
@@ -44,27 +44,25 @@ func (i *CustomConstraintIdentity) Parent() *CustomConstraintParent {
 }
 
 type CustomConstraintParent struct {
-	ProjectID string
-	Location  string
+	OrganizationID string
 }
 
 func (p *CustomConstraintParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "organizations/" + p.OrganizationID
 }
 
 // New builds a CustomConstraintIdentity from the Config Connector CustomConstraint object.
-func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj *OrgpolicyCustomConstraint) (*CustomConstraintIdentity, error) {
+func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj *OrgPolicyCustomConstraint) (*CustomConstraintIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	organizationID := organizationRef.OrganizationID
+	if organizationID == "" {
+		return nil, fmt.Errorf("cannot resolve organization")
 	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +81,8 @@ func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj 
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.OrganizationID != organizationID {
+			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, organizationID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,8 +91,7 @@ func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj 
 	}
 	return &CustomConstraintIdentity{
 		parent: &CustomConstraintParent{
-			ProjectID: projectID,
-			Location:  location,
+			OrganizationID: organizationID,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +99,12 @@ func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseCustomConstraintExternal(external string) (parent *CustomConstraintParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customconstraints" {
-		return nil, "", fmt.Errorf("format of OrgpolicyCustomConstraint external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customconstraints/{{customconstraintID}})", external)
+	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "customconstraints" {
+		return nil, "", fmt.Errorf("format of OrgPolicyCustomConstraint external=%q was not known (use organizations/{{organizationID}}/customconstraints/{{customconstraintID}})", external)
 	}
 	parent = &CustomConstraintParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		OrganizationID: tokens[1],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[3]
 	return parent, resourceID, nil
 }

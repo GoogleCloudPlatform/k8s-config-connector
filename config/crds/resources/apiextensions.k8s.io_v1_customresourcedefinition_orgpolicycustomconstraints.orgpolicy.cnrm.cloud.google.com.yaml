@@ -13,8 +13,8 @@ spec:
   names:
     categories:
     - gcp
-    kind: OrgpolicyCustomConstraint
-    listKind: OrgpolicyCustomConstraintList
+    kind: OrgPolicyCustomConstraint
+    listKind: OrgPolicyCustomConstraintList
     plural: orgpolicycustomconstraints
     shortNames:
     - gcporgpolicycustomconstraint
@@ -42,7 +42,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: OrgpolicyCustomConstraint is the Schema for the OrgpolicyCustomConstraint
+        description: OrgPolicyCustomConstraint is the Schema for the OrgPolicyCustomConstraint
           API
         properties:
           apiVersion:
@@ -58,17 +58,62 @@ spec:
           metadata:
             type: object
           spec:
-            description: OrgpolicyCustomConstraintSpec defines the desired state of
-              OrgpolicyCustomConstraint
+            description: OrgPolicyCustomConstraintSpec defines the desired state of
+              OrgPolicyCustomConstraint
             properties:
+              actionType:
+                description: Allow or deny type.
+                type: string
+              condition:
+                description: |-
+                  Org policy condition/expression. For example:
+                   `resource.instanceName.matches("[production|test]_.*_(\d)+")` or,
+                   `resource.management.auto_upgrade == true`
+
+                   The max length of the condition is 1000 characters.
+                type: string
+              description:
+                description: Detailed information about this custom policy constraint.
+                  The max length of the description is 2000 characters.
+                type: string
+              displayName:
+                description: One line display name for the UI. The max length of the
+                  display_name is 200 characters.
+                type: string
+              methodTypes:
+                description: All the operations being applied for this constraint.
+                items:
+                  type: string
+                type: array
+              organizationRef:
+                description: The Organization that this resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               resourceID:
-                description: The OrgpolicyCustomConstraint name. If not given, the
+                description: The OrgPolicyCustomConstraint name. If not given, the
                   metadata.name will be used.
                 type: string
+              resourceTypes:
+                description: |-
+                  Immutable. The resource instance type on which this policy applies. Format
+                   will be of the form : `<canonical service name>/<type>` Example:
+
+                    * `compute.googleapis.com/Instance`.
+                items:
+                  type: string
+                type: array
+            required:
+            - organizationRef
             type: object
           status:
-            description: OrgpolicyCustomConstraintStatus defines the config connector
-              machine state of OrgpolicyCustomConstraint
+            description: OrgPolicyCustomConstraintStatus defines the config connector
+              machine state of OrgPolicyCustomConstraint
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -97,7 +142,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the OrgpolicyCustomConstraint
+                description: A unique specifier for the OrgPolicyCustomConstraint
                   resource in GCP.
                 type: string
               observedGeneration:
@@ -111,6 +156,12 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  updateTime:
+                    description: Output only. The last time this custom constraint
+                      was updated. This represents the last time that the `CreateCustomConstraint`
+                      or `UpdateCustomConstraint` RPC was called
+                    type: string
                 type: object
             type: object
         required:
