@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// CustomConstraintIdentity defines the resource reference to OrgpolicyCustomConstraint, which "External" field
+// CustomConstraintIdentity defines the resource reference to OrgPolicyCustomConstraint, which "External" field
 // holds the GCP identifier for the KRM object.
 type CustomConstraintIdentity struct {
 	parent *CustomConstraintParent
@@ -52,7 +52,7 @@ func (p *CustomConstraintParent) String() string {
 }
 
 // New builds a CustomConstraintIdentity from the Config Connector CustomConstraint object.
-func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj *OrgpolicyCustomConstraint) (*CustomConstraintIdentity, error) {
+func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj *OrgPolicyCustomConstraint) (*CustomConstraintIdentity, error) {
 
 	// Get Parent
 	organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
@@ -100,7 +100,7 @@ func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj 
 func ParseCustomConstraintExternal(external string) (parent *CustomConstraintParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "customconstraints" {
-		return nil, "", fmt.Errorf("format of OrgpolicyCustomConstraint external=%q was not known (use organizations/{{organizationID}}/customconstraints/{{customconstraintID}})", external)
+		return nil, "", fmt.Errorf("format of OrgPolicyCustomConstraint external=%q was not known (use organizations/{{organizationID}}/customconstraints/{{customconstraintID}})", external)
 	}
 	parent = &CustomConstraintParent{
 		OrganizationID: tokens[1],
