@@ -5,7 +5,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "name": "test-${uniqueId}",
+  "name": "test${uniqueId}",
   "onlinePredictionConsoleLogging": false,
   "onlinePredictionLogging": false,
   "regions": [
@@ -13,7 +13,7 @@ Content-Type: application/json
   ]
 }
 
-403 Forbidden
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -25,49 +25,21 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 403,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-        "domain": "googleapis.com",
-        "metadata": {
-          "activationUrl": "https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId}",
-          "consumer": "projects/${projectId}",
-          "containerInfo": "${projectId}",
-          "service": "ml.googleapis.com",
-          "serviceTitle": "AI Platform Training \u0026 Prediction API"
-        },
-        "reason": "SERVICE_DISABLED"
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
-        "locale": "en-US",
-        "message": "AI Platform Training \u0026 Prediction API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.Help",
-        "links": [
-          {
-            "description": "Google developers console API activation",
-            "url": "https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId}"
-          }
-        ]
-      }
-    ],
-    "message": "AI Platform Training \u0026 Prediction API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
-    "status": "PERMISSION_DENIED"
-  }
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/models/test${uniqueId}",
+  "regions": [
+    "us-central1"
+  ]
 }
 
 ---
 
-GET https://us-central1-ml.googleapis.com/v1/projects/${projectId}/models/test-${uniqueId}?alt=json
+GET https://us-central1-ml.googleapis.com/v1/projects/${projectId}/models/test${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
-403 Forbidden
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -79,49 +51,21 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 403,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-        "domain": "googleapis.com",
-        "metadata": {
-          "activationUrl": "https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId}",
-          "consumer": "projects/${projectId}",
-          "containerInfo": "${projectId}",
-          "service": "ml.googleapis.com",
-          "serviceTitle": "AI Platform Training \u0026 Prediction API"
-        },
-        "reason": "SERVICE_DISABLED"
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
-        "locale": "en-US",
-        "message": "AI Platform Training \u0026 Prediction API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.Help",
-        "links": [
-          {
-            "description": "Google developers console API activation",
-            "url": "https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId}"
-          }
-        ]
-      }
-    ],
-    "message": "AI Platform Training \u0026 Prediction API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
-    "status": "PERMISSION_DENIED"
-  }
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/models/test${uniqueId}",
+  "regions": [
+    "us-central1"
+  ]
 }
 
 ---
 
-DELETE https://us-central1-ml.googleapis.com/v1/projects/${projectId}/models/test-${uniqueId}?alt=json
+DELETE https://us-central1-ml.googleapis.com/v1/projects/${projectId}/models/test${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
-403 Forbidden
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -133,37 +77,44 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 403,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-        "domain": "googleapis.com",
-        "metadata": {
-          "activationUrl": "https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId}",
-          "consumer": "projects/${projectId}",
-          "containerInfo": "${projectId}",
-          "service": "ml.googleapis.com",
-          "serviceTitle": "AI Platform Training \u0026 Prediction API"
-        },
-        "reason": "SERVICE_DISABLED"
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
-        "locale": "en-US",
-        "message": "AI Platform Training \u0026 Prediction API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.Help",
-        "links": [
-          {
-            "description": "Google developers console API activation",
-            "url": "https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId}"
-          }
-        ]
-      }
-    ],
-    "message": "AI Platform Training \u0026 Prediction API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/ml.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
-    "status": "PERMISSION_DENIED"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ml.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "modelName": "projects/${projectId}/models/test${uniqueId}",
+    "operationType": "DELETE_MODEL"
+  },
+  "name": "projects/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-ml.googleapis.com/v1/projects/${projectId}/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.ml.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "modelName": "projects/${projectId}/models/test${uniqueId}",
+    "operationType": "DELETE_MODEL"
+  },
+  "name": "projects/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
