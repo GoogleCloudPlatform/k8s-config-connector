@@ -134,6 +134,27 @@ If you have problems, please output a JSON result like this:
 
 { "status": "failure", "reason": "Fill in any information on why you could not complete the task" }`
 
+func enableAPIs(opts *RunnerOptions, branch Branch) error {
+	if branch.ApisEnabled == nil || len(branch.ApisEnabled) == 0 {
+		return nil
+	}
+
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+	for _, api := range branch.ApisEnabled {
+		cfg := CommandConfig{
+			Name:    fmt.Sprintf("Enable API %s", api),
+			Cmd:     "gcloud",
+			Args:    []string{"services", "enable", api},
+			WorkDir: workDir,
+		}
+		_, _, err := executeCommand(cfg)
+		if err != nil {
+			return fmt.Errorf("failed to enable API %s: %w", api, err)
+		}
+	}
+	return nil
+}
+
 func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
 	defer close()
@@ -155,6 +176,12 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	logFullPath := filepath.Join(workDir, logFile)
 	if _, err := os.Stat(logFullPath); !errors.Is(err, os.ErrNotExist) {
 		log.Printf("SKIPPING %s, %s already exists", branch.Name, logFullPath)
+		return
+	}
+
+	// Enable required APIs before running tests
+	if err := enableAPIs(opts, branch); err != nil {
+		log.Printf("Failed to enable APIs for %s: %v", branch.Name, err)
 		return
 	}
 
