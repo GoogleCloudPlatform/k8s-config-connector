@@ -1,0 +1,32 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: dataflowflextemplateconfigs.idp.mycompany.com
+spec:
+  group: idp.mycompany.com
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              projectName:
+                type: string
+              region:
+                type: string
+              yamlPipelineFilePath:
+                type: string
+              pathToTemplate:
+                type: string
+  scope: Namespaced
+  names:
+    plural: dataflowflextemplateconfigs
+    singular: dataflowflextemplateconfig
+    kind: DataflowFlexTemplateConfig
+    shortNames:
+    - dftc

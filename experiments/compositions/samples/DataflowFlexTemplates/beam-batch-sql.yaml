@@ -1,0 +1,13 @@
+pipeline:
+  type: chain
+  transforms:
+    - type: ReadFromBigQuery
+      name: read-from-bigquery
+      config:
+        table_spec: # project.dataset.table
+    - type: Sql
+      config:
+        query: "SELECT * from PCOLLECTION"
+    - type: WriteToJson
+      config:
+        path: # gs://your-output-bucket/
