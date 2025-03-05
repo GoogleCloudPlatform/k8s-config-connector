@@ -101,14 +101,6 @@ func (s *BatchV1) ListJobs(ctx context.Context, req *pb.ListJobsRequest) (*pb.Li
 	return &pb.ListJobsResponse{}, nil
 }
 
-func (s *BatchV1) GetTask(ctx context.Context, req *pb.GetTaskRequest) (*pb.Task, error) {
-	return &pb.Task{}, status.Errorf(codes.Unimplemented, "method not implemented")
-}
-
-func (s *BatchV1) ListTasks(ctx context.Context, req *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
-	return &pb.ListTasksResponse{}, status.Errorf(codes.Unimplemented, "method not implemented")
-}
-
 type jobName struct {
 	Project  *projects.ProjectData
 	Location string
