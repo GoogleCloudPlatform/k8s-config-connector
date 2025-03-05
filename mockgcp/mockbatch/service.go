@@ -34,12 +34,13 @@ import (
 // MockService represents a mocked batch service.
 type MockService struct {
 	*common.MockEnvironment
-	storage    storage.Storage
+	storage storage.Storage
+
 	operations *operations.Operations
-	v1         *BatchV1
+
+	v1 *BatchV1
 }
 
-// BatchV1 contains methods to mock the v1 API of the batch service.
 type BatchV1 struct {
 	*MockService
 	pb.UnimplementedBatchServiceServer
@@ -56,17 +57,14 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-// ExpectedHosts implements MockService.
 func (s *MockService) ExpectedHosts() []string {
 	return []string{"batch.googleapis.com"}
 }
 
-// Register implements MockService.
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBatchServiceServer(grpcServer, s.v1)
 }
 
-// NewHTTPMux implements MockService.
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterBatchServiceHandler,
