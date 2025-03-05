@@ -1,4 +1,9 @@
-
-- exec: gcloud backup-dr management-servers create test-${uniqueId} --location=us-central1 --network=projects/sample-project/global/networks/sample-network
+- exec: gcloud compute networks create test-network-${uniqueId} --subnet-mode=custom
+- exec: gcloud compute addresses create google-managed-services-${uniqueId} --global --purpose=VPC_PEERING --addresses=192.168.0.0 --prefix-length=16 --network=test-network-${uniqueId}
+- exec: gcloud services vpc-peerings connect --service=servicenetworking.googleapis.com --ranges=google-managed-services-${uniqueId} --network=test-network-${uniqueId} --project=${projectId}
+- exec: gcloud backup-dr management-servers create test-${uniqueId} --location=us-central1 --network=projects/${projectId}/global/networks/test-network-${uniqueId} --no-async
 - exec: gcloud backup-dr management-servers describe test-${uniqueId} --location=us-central1
-- exec: gcloud backup-dr management-servers delete test-${uniqueId} --location=us-central1
+- exec: gcloud backup-dr management-servers delete test-${uniqueId} --location=us-central1 --no-async --quiet
+- exec: gcloud services vpc-peerings delete --service=servicenetworking.googleapis.com --network=test-network-${uniqueId} --project=${projectId} --quiet
+- exec: gcloud compute addresses delete google-managed-services-${uniqueId} --global --quiet
+- exec: gcloud compute networks delete test-network-${uniqueId} --quiet
