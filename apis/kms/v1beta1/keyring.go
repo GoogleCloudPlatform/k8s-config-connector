@@ -17,16 +17,9 @@ package v1beta1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-var (
-	KMSKeyRingGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    "KMSKeyRing",
-	}
-)
+var KMSKeyRingGVK = SchemeGroupVersion.WithKind("KMSKeyRing")
 
 // +kcc:proto=google.cloud.kms.v1.KeyRing
 type KMSKeyRingSpec struct {
