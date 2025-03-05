@@ -13,8 +13,8 @@ spec:
   names:
     categories:
     - gcp
-    kind: OrgpolicyCustomConstraint
-    listKind: OrgpolicyCustomConstraintList
+    kind: OrgPolicyCustomConstraint
+    listKind: OrgPolicyCustomConstraintList
     plural: orgpolicycustomconstraints
     shortNames:
     - gcporgpolicycustomconstraint
@@ -42,7 +42,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: OrgpolicyCustomConstraint is the Schema for the OrgpolicyCustomConstraint
+        description: OrgPolicyCustomConstraint is the Schema for the OrgPolicyCustomConstraint
           API
         properties:
           apiVersion:
@@ -58,8 +58,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: OrgpolicyCustomConstraintSpec defines the desired state of
-              OrgpolicyCustomConstraint
+            description: OrgPolicyCustomConstraintSpec defines the desired state of
+              OrgPolicyCustomConstraint
             properties:
               location:
                 description: The location for the resource.
@@ -75,7 +75,7 @@ spec:
                 - external
                 type: object
               resourceID:
-                description: The OrgpolicyCustomConstraint name. If not given, the
+                description: The OrgPolicyCustomConstraint name. If not given, the
                   metadata.name will be used.
                 type: string
             required:
@@ -83,8 +83,8 @@ spec:
             - organizationRef
             type: object
           status:
-            description: OrgpolicyCustomConstraintStatus defines the config connector
-              machine state of OrgpolicyCustomConstraint
+            description: OrgPolicyCustomConstraintStatus defines the config connector
+              machine state of OrgPolicyCustomConstraint
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -113,7 +113,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the OrgpolicyCustomConstraint
+                description: A unique specifier for the OrgPolicyCustomConstraint
                   resource in GCP.
                 type: string
               observedGeneration:
