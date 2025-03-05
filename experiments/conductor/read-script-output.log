@@ -1,0 +1,247 @@
+2025/03/05 04:13:43 Running conductor runner with branch config: branches-3.yaml
+2025/03/05 04:13:43 Starting Runner
+2025/03/05 04:13:43 Read and verify Script YAML: 0 name: appengine-instance, branch: resource-appengine-instance
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script contains a LIST command
+
+- exec: gcloud app instances list --service=default --version=v1
+- exec: gcloud app instances describe test-${uniqueId} --service=default --version=v1
+- exec: gcloud app instances delete test-${uniqueId} --service=default --version=v1
+
+2025/03/05 04:13:43 Read and verify Script YAML: 1 name: assuredworkloads-workload, branch: resource-assuredworkloads-workload
+WARNING: Script doesn't contain an UPDATE command
+- exec: gcloud assured workloads create --organization=12345 --location=us-central1 --compliance-regime=FEDRAMP_MODERATE --display-name=test-${uniqueId} --billing-account=billingAccounts/000000-000000-000000
+- exec: gcloud assured workloads describe organizations/12345/locations/us-central1/workloads/test-${uniqueId}
+- exec: gcloud assured workloads delete organizations/12345/locations/us-central1/workloads/test-${uniqueId}
+
+2025/03/05 04:13:43 Read and verify Script YAML: 2 name: baremetalsolution-instance, branch: resource-baremetalsolution-instance
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain a DELETE command
+WARNING: Script contains a LIST command
+- exec: gcloud bms instances describe test-${uniqueId} --region us-central1
+- exec: gcloud bms instances list --region us-central1
+- exec: gcloud bms instances update test-${uniqueId} --region us-central1 --update-labels=testkey=testvalue
+
+2025/03/05 04:13:43 Read and verify Script YAML: 3 name: baremetalsolution-network, branch: resource-baremetalsolution-network
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain a DELETE command
+WARNING: Script contains a LIST command
+- exec: gcloud bms networks list --region=us-central1
+- exec: gcloud bms networks describe test-${uniqueId} --region=us-central1
+- exec: gcloud bms networks update test-${uniqueId} --region=us-central1 --update-labels=testkey=testvalue
+
+2025/03/05 04:13:43 Read and verify Script YAML: 4 name: baremetalsolution-nfsshare, branch: resource-baremetalsolution-nfsshare
+
+- exec: gcloud bms nfs-shares create test-${uniqueId} --region=us-central1 --allowed-client=network=test-network,cidr=10.0.0.0/24,mount-permissions=READ_WRITE,allow-dev=no,allow-suid=no,enable-root-squash=no --size-gib=100 --storage-type=HDD
+- exec: gcloud bms nfs-shares describe test-${uniqueId} --region=us-central1
+- exec: gcloud bms nfs-shares update test-${uniqueId} --region=us-central1 --update-labels=testkey=testvalue
+- exec: gcloud bms nfs-shares delete test-${uniqueId} --region=us-central1
+
+2025/03/05 04:13:43 Read and verify Script YAML: 5 name: baremetalsolution-osimage, branch: resource-baremetalsolution-osimage
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script doesn't contain a DELETE command
+WARNING: Script contains a LIST command
+- exec: gcloud bms os-images list
+- exec: gcloud bms os-images describe test-image --region=global
+
+2025/03/05 04:13:44 Read and verify Script YAML: 6 name: baremetalsolution-sshkey, branch: resource-baremetalsolution-sshkey
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script doesn't contain a DELETE command
+WARNING: Script contains a LIST command
+
+- exec: gcloud bms ssh-keys add test-${uniqueId} --key=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtestkey mock@example.com
+- exec: gcloud bms ssh-keys list
+- exec: gcloud bms ssh-keys remove test-${uniqueId}
+
+2025/03/05 04:13:44 Read and verify Script YAML: 7 name: baremetalsolution-volume, branch: resource-baremetalsolution-volume
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain a DELETE command
+WARNING: Script contains a LIST command
+- exec: gcloud bms volumes list --region=us-central1
+- exec: gcloud bms volumes describe test-volume --region=us-central1
+- exec: gcloud bms volumes update test-volume --region=us-central1 --update-labels=testkey=testvalue
+
+2025/03/05 04:13:44 Read and verify Script YAML: 8 name: dialogflow-entitytype, branch: resource-dialogflow-entitytype
+
+- exec: gcloud alpha dialogflow entity-types create --display-name test-${uniqueId}
+- exec: gcloud alpha dialogflow entity-types describe test-${uniqueId}
+- exec: gcloud alpha dialogflow entity-types update test-${uniqueId} --display-name test2-${uniqueId}
+- exec: gcloud alpha dialogflow entity-types delete test-${uniqueId}
+
+2025/03/05 04:13:44 Read and verify Script YAML: 9 name: dialogflow-intent, branch: resource-dialogflow-intent
+WARNING: Script contains a LIST command
+
+- exec: gcloud alpha dialogflow intents create --display-name=test-${uniqueId} --project=${PROJECT_ID}
+- exec: gcloud alpha dialogflow intents describe test-${uniqueId} --project=${PROJECT_ID}
+- exec: gcloud alpha dialogflow intents list --project=${PROJECT_ID}
+- exec: gcloud alpha dialogflow intents update test-${uniqueId} --display-name=updated-test-${uniqueId} --project=${PROJECT_ID}
+- exec: gcloud alpha dialogflow intents delete test-${uniqueId} --project=${PROJECT_ID}
+
+2025/03/05 04:13:44 Read and verify Script YAML: 10 name: dialogflow-agent, branch: resource-dialogflow-agent
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script doesn't contain a DELETE command
+
+- exec: gcloud alpha dialogflow agent export --destination=gs://test-${uniqueId}/agent.zip
+- exec: gcloud alpha dialogflow agent describe
+
+2025/03/05 04:13:44 Read and verify Script YAML: 11 name: kms-ekmconnection, branch: resource-kms-ekmconnection
+WARNING: Script doesn't contain a DELETE command
+
+- exec: gcloud kms ekm-connections create test-${uniqueId} --location=us-central1 --hostname=host.example.com --service-directory-service=projects/my-project/locations/us-central1/namespaces/my-namespace/services/my-service --server-certificates-files=cert.pem
+- exec: gcloud kms ekm-connections describe test-${uniqueId} --location=us-central1
+- exec: gcloud kms ekm-connections update test-${uniqueId} --location=us-central1 --hostname=updated.example.com
+
+2025/03/05 04:13:44 Read and verify Script YAML: 12 name: kms-ekmconfig, branch: resource-kms-ekmconfig
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain a DELETE command
+
+- exec: gcloud kms ekm-config describe --location=${location}
+- exec: gcloud kms ekm-config update --location=${location} --default-ekm-connection=""
+
+2025/03/05 04:13:44 Read and verify Script YAML: 13 name: kms-importjob, branch: resource-kms-importjob
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script doesn't contain a DELETE command
+WARNING: Script contains a LIST command
+
+- exec: gcloud kms import-jobs create test-${uniqueId} --location=us-central1 --keyring=test-keyring --import-method=rsa-oaep-3072-sha1-aes-256 --protection-level=hsm
+- exec: gcloud kms import-jobs describe test-${uniqueId} --location=us-central1 --keyring=test-keyring
+- exec: gcloud kms import-jobs list --location=us-central1 --keyring=test-keyring
+
+2025/03/05 04:13:44 Read and verify Script YAML: 14 name: networkmanagement-connectivitytest, branch: resource-networkmanagement-connectivitytest
+
+- exec: gcloud network-management connectivity-tests create test-${uniqueId} --source-ip-address=10.0.0.1 --destination-ip-address=10.0.0.2 --description="Test connectivity test" --protocol=TCP
+- exec: gcloud network-management connectivity-tests describe test-${uniqueId}
+- exec: gcloud network-management connectivity-tests update test-${uniqueId} --description="Updated description"
+- exec: gcloud network-management connectivity-tests delete test-${uniqueId}
+
+2025/03/05 04:13:44 Read and verify Script YAML: 15 name: networkmanagement-vpcflowlogsconfig, branch: resource-networkmanagement-vpcflowlogsconfig
+WARNING: Script doesn't contain an UPDATE command
+
+- exec: gcloud network-management vpc-flow-logs-configs create test-${uniqueId} --location=global --interconnect-attachment="projects/my-project/regions/us-central1/interconnectAttachments/my-attachment"
+- exec: gcloud network-management vpc-flow-logs-configs describe test-${uniqueId} --location=global
+- exec: gcloud network-management vpc-flow-logs-configs delete test-${uniqueId} --location=global
+
+2025/03/05 04:13:44 Read and verify Script YAML: 16 name: recaptchaenterprise-firewallpolicy, branch: resource-recaptchaenterprise-firewallpolicy
+WARNING: Script doesn't contain an UPDATE command
+
+- exec: gcloud recaptcha firewall-policies create --path=/testpath/* --condition="true" --actions=allow --description="test policy" test-${uniqueId}
+- exec: gcloud recaptcha firewall-policies describe test-${uniqueId}
+- exec: gcloud recaptcha firewall-policies delete test-${uniqueId}
+
+2025/03/05 04:13:44 Read and verify Script YAML: 17 name: firestore-backup, branch: resource-firestore-backup
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script contains a LIST command
+- exec: gcloud firestore backups list --location=us-central1
+- exec: gcloud firestore backups describe --location=us-central1 --backup=test-${uniqueId}
+- exec: gcloud firestore backups delete --location=us-central1 --backup=test-${uniqueId}
+
+2025/03/05 04:13:44 Read and verify Script YAML: 18 name: firestore-field, branch: resource-firestore-field
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain a DELETE command
+WARNING: Script contains a LIST command
+
+- exec: gcloud firestore indexes fields update --database=\"(default)\" --collection-group=testcollection testfield --index=order=ASCENDING
+- exec: gcloud firestore indexes fields list --database=\"(default)\" --collection-group=testcollection --format=yaml
+- exec: gcloud firestore indexes fields describe --database=\"(default)\" --collection-group=testcollection testfield
+- exec: gcloud firestore indexes fields update --database=\"(default)\" --collection-group=testcollection testfield --disable-indexes
+- exec: gcloud firestore indexes fields update --database=\"(default)\" --collection-group=testcollection testfield --clear-exemption
+
+2025/03/05 04:13:45 Read and verify Script YAML: 19 name: appengine-domainmappings, branch: resource-appengine-domainmappings
+WARNING: Script doesn't contain an UPDATE command
+
+- exec: gcloud app domain-mappings create test-${uniqueId}.com
+- exec: gcloud app domain-mappings describe test-${uniqueId}.com
+- exec: gcloud app domain-mappings delete test-${uniqueId}.com
+
+2025/03/05 04:13:45 Read and verify Script YAML: 20 name: appengine-firewallrules, branch: resource-appengine-firewallrules
+WARNING: Script contains a LIST command
+
+- exec: gcloud app firewall-rules create 10 --action allow --source-range '1.2.3.4'
+- exec: gcloud app firewall-rules describe 10
+- exec: gcloud app firewall-rules update 10 --action deny
+- exec: gcloud app firewall-rules list
+- exec: gcloud app firewall-rules delete 10
+
+2025/03/05 04:13:45 Read and verify Script YAML: 21 name: appengine-services, branch: resource-appengine-services
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script contains a LIST command
+- exec: gcloud app services list
+- exec: gcloud app services describe default
+- exec: gcloud app services update default --ingress=internal-only
+- exec: gcloud app services update default --ingress=all
+- exec: gcloud app services delete default --quiet
+
+2025/03/05 04:13:45 Read and verify Script YAML: 22 name: appengine-sslcertificates, branch: resource-appengine-sslcertificates
+
+- exec: gcloud app ssl-certificates create --certificate=cert.pem --private-key=key.pem --display-name=test-${uniqueId}
+- exec: gcloud app ssl-certificates describe ${uniqueId}
+- exec: gcloud app ssl-certificates update ${uniqueId} --display-name=updated-test-${uniqueId}
+- exec: gcloud app ssl-certificates delete ${uniqueId}
+
+2025/03/05 04:13:45 Read and verify Script YAML: 23 name: appengine-versions, branch: resource-appengine-versions
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain an UPDATE command
+
+- exec: gcloud app deploy --version=test-${uniqueId} --no-promote --quiet
+- exec: gcloud app versions describe test-${uniqueId} --service=default
+- exec: gcloud app versions delete test-${uniqueId} --service=default --quiet
+
+2025/03/05 04:13:45 Read and verify Script YAML: 24 name: firestore-operations, branch: resource-firestore-operations
+WARNING: Script doesn't contain a CREATE command
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script contains a LIST command
+
+- exec: gcloud firestore operations list --database="(default)"
+- exec: gcloud firestore operations describe ${uniqueId} --database="(default)"
+- exec: gcloud firestore operations delete ${uniqueId} --database="(default)"
+
+2025/03/05 04:13:45 Read and verify Script YAML: 25 name: networkmanagement-operations, branch: resource-networkmanagement-operations
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script contains a LIST command
+
+- exec: gcloud network-management connectivity-tests create test-${uniqueId} --source-ip-address=10.0.0.1 --destination-ip-address=10.0.0.2 --async
+- exec: gcloud network-management operations list --filter="metadata.target:test-${uniqueId}"
+- exec: gcloud network-management operations describe ${0}
+- exec: gcloud network-management connectivity-tests delete test-${uniqueId} --async
+
+2025/03/05 04:13:45 Read and verify Script YAML: 26 name: immersivestream-xrcontents, branch: resource-immersivestream-xrcontents
+WARNING: Script doesn't contain an UPDATE command
+- exec: gcloud immersive-stream xr contents create test-${uniqueId}
+- exec: gcloud immersive-stream xr contents describe test-${uniqueId}
+- exec: gcloud immersive-stream xr contents delete test-${uniqueId} --quiet
+
+2025/03/05 04:13:45 Read and verify Script YAML: 27 name: immersivestream-xrinstances, branch: resource-immersivestream-xrinstances
+2025/03/05 04:13:45 Read and verify Script YAML: 28 name: colab-executions, branch: resource-colab-executions
+WARNING: Script doesn't contain an UPDATE command
+
+- exec: gcloud colab executions create --display-name=test-${uniqueId} --gcs-notebook-uri=gs://cloud-samples-data/ai-platform/notebooks/samples/tensorflow/colab-execution.ipynb  --service-account=default --gcs-output-uri=gs://cloud-samples-data/ai-platform/notebook_results/${uniqueId} --region=us-central1
+- exec: gcloud colab executions describe test-${uniqueId} --region=us-central1
+- exec: gcloud colab executions delete test-${uniqueId} --region=us-central1 --async
+
+2025/03/05 04:13:45 Read and verify Script YAML: 29 name: colab-runtimetemplates, branch: resource-colab-runtimetemplates
+WARNING: Script doesn't contain an UPDATE command
+
+- exec: gcloud colab runtime-templates create --display-name=test-${uniqueId} --runtime-template-id=test-${uniqueId} --region=us-central1
+- exec: gcloud colab runtime-templates describe test-${uniqueId} --region=us-central1
+- exec: gcloud colab runtime-templates delete test-${uniqueId} --region=us-central1
+
+2025/03/05 04:13:45 Read and verify Script YAML: 30 name: colab-runtimes, branch: resource-colab-runtimes
+WARNING: Script doesn't contain an UPDATE command
+WARNING: Script contains a LIST command
+- exec: gcloud colab runtimes create --region=us-central1 --runtime-template=default --runtime-id=test-${uniqueId}
+- exec: gcloud colab runtimes describe test-${uniqueId} --region=us-central1
+- exec: gcloud colab runtimes list --region=us-central1
+- exec: gcloud colab runtimes delete test-${uniqueId} --region=us-central1
+
+2025/03/05 04:13:45 Read and verify Script YAML: 31 name: colab-schedules, branch: resource-colab-schedules
+WARNING: Script doesn't contain an UPDATE command
+
+- exec: gcloud colab schedules create test-${uniqueId} --region=us-central1 --display-name="test-${uniqueId}" --cron-schedule="* * * * *" --gcs-output-uri="gs://test-${uniqueId}" --gcs-notebook-uri="gs://test-${uniqueId}/test.ipynb"  --execution-display-name="test-exec-${uniqueId}" --service-account="test@test.com"
+- exec: gcloud colab schedules describe test-${uniqueId} --region=us-central1
+- exec: gcloud colab schedules delete test-${uniqueId} --region=us-central1 --async
+
