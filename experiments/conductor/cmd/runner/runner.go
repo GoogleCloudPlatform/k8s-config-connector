@@ -47,15 +47,16 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdCheckRepo           = 1
 	cmdCreateGitBranch     = 2
 	cmdDeleteGitBranch     = 3
-	cmdCreateScriptYaml    = 4
-	cmdCaptureHttpLog      = 5
-	cmdGenerateMockGo      = 6
-	cmdAddServiceRoundTrip = 7
-	cmdAddProtoMakefile    = 8
-	cmdRunMockTests        = 9
-	cmdGenerateTypes       = 10
-	cmdGenerateCRD         = 11
-	cmdGenerateFuzzer      = 12
+	cmdEnableGCPAPIs       = 4
+	cmdCreateScriptYaml    = 10
+	cmdCaptureHttpLog      = 11
+	cmdGenerateMockGo      = 12
+	cmdAddServiceRoundTrip = 13
+	cmdAddProtoMakefile    = 14
+	cmdRunMockTests        = 15
+	cmdGenerateTypes       = 20
+	cmdGenerateCRD         = 21
+	cmdGenerateFuzzer      = 22
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -190,48 +191,53 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Delete GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			deleteGithubBranch(opts, branch)
 		}
-	case cmdCreateScriptYaml: // 4
+	case cmdEnableGCPAPIs: // 4
+		for idx, branch := range branches.Branches {
+			log.Printf("Enable GCP APIs: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			enableAPIs(opts, branch)
+		}
+	case cmdCreateScriptYaml: // 10
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createScriptYaml(opts, branch)
 		}
-	case cmdCaptureHttpLog: // 5
+	case cmdCaptureHttpLog: // 11
 		for idx, branch := range branches.Branches {
 			log.Printf("Capture HTTP Log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			captureHttpLog(opts, branch)
 		}
-	case cmdGenerateMockGo: // 6
+	case cmdGenerateMockGo: // 12
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate mock Service and Resource go files: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateMockGo(opts, branch)
 		}
-	case cmdAddServiceRoundTrip: // 7
+	case cmdAddServiceRoundTrip: // 13
 		for idx, branch := range branches.Branches {
 			log.Printf("Add service to mock_http_roundtrip.go: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			addServiceToRoundTrip(opts, branch)
 		}
-	case cmdAddProtoMakefile: // 8
+	case cmdAddProtoMakefile: // 14
 		for idx, branch := range branches.Branches {
 			log.Printf("Add proto to makefile: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			addProtoToMakfile(opts, branch)
 		}
-	case cmdRunMockTests: // 9
+	case cmdRunMockTests: // 15
 		for idx, branch := range branches.Branches {
 			log.Printf("Run mockgcptests on generated mocks: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			runMockgcpTests(opts, branch)
 		}
-	case cmdGenerateTypes: // 10
+	case cmdGenerateTypes: // 20
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate Types and Mapper: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateTypesAndMapper(opts, branch)
 		}
-	case cmdGenerateCRD: // 11
+	case cmdGenerateCRD: // 21
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate CRD: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateCRD(opts, branch)
 			//generateSpecStatus(opts, branch)
 		}
-	case cmdGenerateFuzzer: // 12
+	case cmdGenerateFuzzer: // 22
 		for idx, branch := range branches.Branches {
 			log.Printf("Generate Fuzzer: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			generateFuzzer(opts, branch)
@@ -249,15 +255,16 @@ func printHelp() {
 	log.Println("\t1 - [Validate] Repo directory and metadata")
 	log.Println("\t2 - [Branch] Create the local github branches from the metadata")
 	log.Println("\t3 - [Branch] Delete the local github branches from the metadata")
-	log.Println("\t4 - [Mock] Create script.yaml for mock gcp generation in each github branch")
-	log.Println("\t5 - [Mock] Create _http.log for mock gcp generation in each github branch")
-	log.Println("\t6 - [Mock] Generate mock Service and Resource go files in each github branch")
-	log.Println("\t7 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
-	log.Println("\t8 - [Mock] Add proto to makefile in each github branch")
-	log.Println("\t9 - [Mock] Run mockgcptests on generated mocks in each github branch")
-	log.Println("\t10 - [CRD] Generate Types and Mapper for each branch")
-	log.Println("\t11 - [CRD] Generate CRD for each branch")
-	log.Println("\t12 - [Fuzzer] Generate fuzzer for each branch")
+	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
+	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
+	log.Println("\t11 - [Mock] Create _http.log for mock gcp generation in each github branch")
+	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")
+	log.Println("\t13 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
+	log.Println("\t14 - [Mock] Add proto to makefile in each github branch")
+	log.Println("\t15 - [Mock] Run mockgcptests on generated mocks in each github branch")
+	log.Println("\t20 - [CRD] Generate Types and Mapper for each branch")
+	log.Println("\t21 - [CRD] Generate CRD for each branch")
+	log.Println("\t22 - [Fuzzer] Generate fuzzer for each branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
