@@ -33,18 +33,6 @@ type OrgPolicyCustomConstraintSpec struct {
 	// The OrgPolicyCustomConstraint name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Immutable. Name of the constraint. This is unique within the organization.
-	//  Format of the name should be
-	//
-	//  * `organizations/{organization_id}/customConstraints/{custom_constraint_id}`
-	//
-	//  Example: `organizations/123/customConstraints/custom.createOnlyE2TypeVms`
-	//
-	//  The max length is 70 characters and the minimum length is 1. Note that the
-	//  prefix `organizations/{organization_id}/customConstraints/` is not counted.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.CustomConstraint.name
-	Name *string `json:"name,omitempty"`
-
 	// Immutable. The resource instance type on which this policy applies. Format
 	//  will be of the form : `<canonical service name>/<type>` Example:
 	//
