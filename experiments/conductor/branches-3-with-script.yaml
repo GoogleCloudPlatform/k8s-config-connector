@@ -1,0 +1,497 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+branches:
+    - name: appengine-instance
+      local: resource-appengine-instance
+      remote: resource-appengine-instance
+      command: gcloud app instances
+      group: appengine
+      resource: instance
+      controller: Unknown
+      kind: AppEngineInstance
+      package: google.appengine.v1
+      proto: Instance
+      proto-path: google/appengine/v1/appengine.proto
+      proto-service: ""
+      proto-msg: google.appengine.v1.Instance
+      host-name: ""
+      notes: ["cannot create instance directly"]
+      skip: true
+      script:
+        prerequisites: # commands needed to enable service, grant permissions, and create prerequisite resources
+          - exec: gcloud services enable appengine.googleapis.com
+        content:
+          - exec: gcloud app instances list --service=default --version=v1
+          - exec: gcloud app instances describe test-${uniqueId} --service=default --version=v1
+          - exec: gcloud app instances delete test-${uniqueId} --service=default --version=v1
+    - name: assuredworkloads-workload
+      local: resource-assuredworkloads-workload
+      remote: resource-assuredworkloads-workload
+      command: gcloud assured workloads
+      group: assuredworkloads
+      resource: workload
+      controller: Unknown
+      kind: AssuredWorkloadsWorkload
+      package: google.cloud.assuredworkloads.v1
+      proto: Workload
+      proto-path: google/cloud/assuredworkloads/v1/assuredworkloads.proto
+      proto-service: ""
+      proto-msg: google.cloud.assuredworkloads.v1.Workload
+      host-name: ""
+      notes: ["service-generated resource ID"]
+      skip: true
+      script:
+        content:
+          - exec: gcloud assured workloads create --organization=${organizationId} --location=us-central1 --compliance-regime=FEDRAMP_MODERATE --display-name=test-${uniqueId} --billing-account=billingAccounts/${billingAccountId}
+          - exec: gcloud assured workloads describe organizations/${organizationId}/locations/us-central1/workloads/test-${uniqueId}
+          - exec: gcloud assured workloads delete organizations/${organizationId}/locations/us-central1/workloads/test-${uniqueId}
+    - name: baremetalsolution-instance
+      local: resource-baremetalsolution-instance
+      remote: resource-baremetalsolution-instance
+      command: gcloud bms instances
+      group: baremetalsolution
+      resource: instance
+      controller: Unknown
+      kind: BareMetalSolutionInstance
+      package: google.cloud.baremetalsolution.v2
+      proto: Instance
+      proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+      proto-service: ""
+      proto-msg: google.cloud.baremetalsolution.v2.Instance
+      host-name: ""
+      notes: ["cannot create instance directly"]
+      skip: true
+    - name: baremetalsolution-network
+      local: resource-baremetalsolution-network
+      remote: resource-baremetalsolution-network
+      command: gcloud bms networks
+      group: baremetalsolution
+      resource: network
+      controller: Unknown
+      kind: BareMetalSolutionNetwork
+      package: google.cloud.baremetalsolution.v2
+      proto: Network
+      proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+      proto-service: ""
+      proto-msg: google.cloud.baremetalsolution.v2.Network
+      host-name: ""
+      notes: ["cannot create instance directly"]
+      skip: true
+    - name: baremetalsolution-nfsshare
+      local: resource-baremetalsolution-nfsshare
+      remote: resource-baremetalsolution-nfsshare
+      command: gcloud bms nfs-shares
+      group: baremetalsolution
+      resource: nfsshare
+      controller: Unknown
+      kind: BareMetalSolutionNFSShare
+      package: google.cloud.baremetalsolution.v2
+      proto: NfsShare
+      proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+      proto-service: ""
+      proto-msg: google.cloud.baremetalsolution.v2.NfsShare
+      host-name: ""
+      notes: []
+    - name: baremetalsolution-sshkey
+      local: resource-baremetalsolution-sshkey
+      remote: resource-baremetalsolution-sshkey
+      command: gcloud bms ssh-keys
+      group: baremetalsolution
+      resource: sshkey
+      controller: Unknown
+      kind: BareMetalSolutionSSHKey
+      package: google.cloud.baremetalsolution.v2
+      proto: SSHKey
+      proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+      proto-service: ""
+      proto-msg: google.cloud.baremetalsolution.v2.SSHKey
+      host-name: ""
+      notes: []
+    - name: baremetalsolution-volume
+      local: resource-baremetalsolution-volume
+      remote: resource-baremetalsolution-volume
+      command: gcloud bms volumes
+      group: baremetalsolution
+      resource: volume
+      controller: Unknown
+      kind: BareMetalSolutionVolume
+      package: google.cloud.baremetalsolution.v2
+      proto: Volume
+      proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+      proto-service: ""
+      proto-msg: google.cloud.baremetalsolution.v2.Volume
+      host-name: ""
+      notes: ["cannot create instance directly"]
+      skip: true
+    - name: dialogflow-entitytype
+      local: resource-dialogflow-entitytype
+      remote: resource-dialogflow-entitytype
+      command: gcloud alpha dialogflow entity-types
+      group: dialogflow
+      resource: entitytype
+      controller: Unknown
+      kind: DialogflowEntityType
+      package: google.cloud.dialogflow.cx.v3
+      proto: EntityType
+      proto-path: google/cloud/dialogflow/cx/v3/entity_type.proto
+      proto-service: ""
+      proto-msg: google.cloud.dialogflow.cx.v3.EntityType
+      host-name: ""
+      notes: []
+    - name: dialogflow-intent
+      local: resource-dialogflow-intent
+      remote: resource-dialogflow-intent
+      command: gcloud alpha dialogflow intents
+      group: dialogflow
+      resource: intent
+      controller: Unknown
+      kind: DialogflowIntent
+      package: google.cloud.dialogflow.cx.v3
+      proto: Intent
+      proto-path: google/cloud/dialogflow/cx/v3/intent.proto
+      proto-service: ""
+      proto-msg: google.cloud.dialogflow.cx.v3.Intent
+      host-name: ""
+      notes: []
+    - name: dialogflow-agent
+      local: resource-dialogflow-agent
+      remote: resource-dialogflow-agent
+      command: gcloud alpha dialogflow agent
+      group: dialogflow
+      resource: agent
+      controller: Unknown
+      kind: DialogflowAgent
+      package: google.cloud.dialogflow.v2
+      proto: Agent
+      proto-path: google/cloud/dialogflow/v2/agent.proto
+      proto-service: ""
+      proto-msg: google.cloud.dialogflow.v2.Agent
+      host-name: ""
+      notes: []
+    - name: kms-ekmconnection
+      local: resource-kms-ekmconnection
+      remote: resource-kms-ekmconnection
+      command: gcloud kms ekm-connections
+      group: kms
+      resource: ekmconnection
+      controller: Unknown
+      kind: KMSEKMConnection
+      package: google.cloud.kms.v1
+      proto: EkmConnection
+      proto-path: google/cloud/kms/v1/autokey.proto
+      proto-service: ""
+      proto-msg: google.cloud.kms.v1.EkmConnection
+      host-name: ""
+      notes: []
+    - name: kms-ekmconfig
+      local: resource-kms-ekmconfig
+      remote: resource-kms-ekmconfig
+      command: gcloud kms ekm-config
+      group: kms
+      resource: ekmconfig
+      controller: Unknown
+      kind: KMSEKMConfig
+      package: google.cloud.kms.v1
+      proto: EkmConfig
+      proto-path: google/cloud/kms/v1/autokey.proto
+      proto-service: ""
+      proto-msg: google.cloud.kms.v1.EkmConfig
+      host-name: ""
+      notes: []
+    - name: kms-importjob
+      local: resource-kms-importjob
+      remote: resource-kms-importjob
+      command: gcloud kms import-jobs
+      group: kms
+      resource: importjob
+      controller: Unknown
+      kind: KMSImportJob
+      package: google.cloud.kms.v1
+      proto: ImportJob
+      proto-path: google/cloud/kms/v1/autokey.proto
+      proto-service: ""
+      proto-msg: google.cloud.kms.v1.ImportJob
+      host-name: ""
+      notes: []
+    - name: networkmanagement-connectivitytest
+      local: resource-networkmanagement-connectivitytest
+      remote: resource-networkmanagement-connectivitytest
+      command: gcloud network-management connectivity-tests
+      group: networkmanagement
+      resource: connectivitytest
+      controller: Unknown
+      kind: NetworkManagementConnectivityTest
+      package: google.cloud.networkmanagement.v1
+      proto: ConnectivityTest
+      proto-path: google/cloud/networkmanagement/v1/reachability.proto
+      proto-service: ""
+      proto-msg: google.cloud.networkmanagement.v1.ConnectivityTest
+      host-name: ""
+      notes: []
+    - name: networkmanagement-vpcflowlogsconfig
+      local: resource-networkmanagement-vpcflowlogsconfig
+      remote: resource-networkmanagement-vpcflowlogsconfig
+      command: gcloud network-management vpc-flow-logs-configs
+      group: networkmanagement
+      resource: vpcflowlogsconfig
+      controller: Unknown
+      kind: NetworkManagementVPCFlowLogsConfig
+      package: google.cloud.networkmanagement.v1
+      proto: VpcFlowLogsConfig
+      proto-path: google/cloud/networkmanagement/v1/reachability.proto
+      proto-service: ""
+      proto-msg: google.cloud.networkmanagement.v1.VpcFlowLogsConfig
+      host-name: ""
+      notes: []
+    - name: recaptchaenterprise-firewallpolicy
+      local: resource-recaptchaenterprise-firewallpolicy
+      remote: resource-recaptchaenterprise-firewallpolicy
+      command: gcloud recaptcha firewall-policies
+      group: recaptchaenterprise
+      resource: firewallpolicy
+      controller: Unknown
+      kind: ReCAPTCHAEnterpriseFirewallPolicy
+      package: google.cloud.recaptchaenterprise.v1
+      proto: FirewallPolicy
+      proto-path: google/cloud/recaptchaenterprise/v1/recaptchaenterprise.proto
+      proto-service: ""
+      proto-msg: google.cloud.recaptchaenterprise.v1.FirewallPolicy
+      host-name: ""
+      notes: []
+    - name: firestore-backup
+      local: resource-firestore-backup
+      remote: resource-firestore-backup
+      command: gcloud firestore backups
+      group: firestore
+      resource: backup
+      controller: Unknown
+      kind: FirestoreBackup
+      package: google.firestore.admin.v1
+      proto: Backup
+      proto-path: google/firestore/admin/v1/firestore_admin.proto
+      proto-service: ""
+      proto-msg: google.firestore.admin.v1.Backup
+      host-name: ""
+      notes: []
+    - name: firestore-field
+      local: resource-firestore-field
+      remote: resource-firestore-field
+      command: gcloud firestore fields
+      group: firestore
+      resource: field
+      controller: Unknown
+      kind: FirestoreField
+      package: google.firestore.admin.v1
+      proto: Field
+      proto-path: google/firestore/admin/v1/firestore_admin.proto
+      proto-service: ""
+      proto-msg: google.firestore.admin.v1.Field
+      host-name: ""
+      notes: []
+    - name: appengine-domainmappings
+      local: resource-appengine-domainmappings
+      remote: resource-appengine-domainmappings
+      command: gcloud app domain-mappings
+      group: appengine
+      resource: domainmappings
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: appengine-firewallrules
+      local: resource-appengine-firewallrules
+      remote: resource-appengine-firewallrules
+      command: gcloud app firewall-rules
+      group: appengine
+      resource: firewallrules
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: appengine-services
+      local: resource-appengine-services
+      remote: resource-appengine-services
+      command: gcloud app services
+      group: appengine
+      resource: services
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: appengine-sslcertificates
+      local: resource-appengine-sslcertificates
+      remote: resource-appengine-sslcertificates
+      command: gcloud app ssl-certificates
+      group: appengine
+      resource: sslcertificates
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: appengine-versions
+      local: resource-appengine-versions
+      remote: resource-appengine-versions
+      command: gcloud app versions
+      group: appengine
+      resource: versions
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: firestore-operations
+      local: resource-firestore-operations
+      remote: resource-firestore-operations
+      command: gcloud firestore operations
+      group: firestore
+      resource: operations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networkmanagement-operations
+      local: resource-networkmanagement-operations
+      remote: resource-networkmanagement-operations
+      command: gcloud network-management operations
+      group: networkmanagement
+      resource: operations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: immersivestream-xrcontents
+      local: resource-immersivestream-xrcontents
+      remote: resource-immersivestream-xrcontents
+      command: gcloud immersivestream xr contents
+      group: immersivestream
+      resource: immersivestream-xrcontents
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: immersivestream-xrinstances
+      local: resource-immersivestream-xrinstances
+      remote: resource-immersivestream-xrinstances
+      command: gcloud immersivestream xr instances
+      group: immersivestream
+      resource: immersivestream-xrinstances
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: colab-executions
+      local: resource-colab-executions
+      remote: resource-colab-executions
+      command: gcloud colab executions
+      group: colab
+      resource: executions
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: colab-runtimetemplates
+      local: resource-colab-runtimetemplates
+      remote: resource-colab-runtimetemplates
+      command: gcloud colab runtime-templates
+      group: colab
+      resource: runtimetemplates
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: colab-runtimes
+      local: resource-colab-runtimes
+      remote: resource-colab-runtimes
+      command: gcloud colab runtimes
+      group: colab
+      resource: runtimes
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: colab-schedules
+      local: resource-colab-schedules
+      remote: resource-colab-schedules
+      command: gcloud colab schedules
+      group: colab
+      resource: schedules
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []

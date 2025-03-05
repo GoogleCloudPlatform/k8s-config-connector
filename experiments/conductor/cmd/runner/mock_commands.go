@@ -122,6 +122,54 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	gitCommit(workDir, &out, fmt.Sprintf("Adding LLM/gcloud generated test script.yaml for %s", branch.Name))
 }
 
+func readScriptYaml(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	if branch.Command == "" {
+		log.Printf("SKIPPING %s, no gcloud command", branch.Name)
+		return
+	}
+
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, &out)
+
+	// Check to see if the script file already exists
+	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
+	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", scriptFile)
+	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, %s doesn't exists", branch.Name, scriptFullPath)
+		return
+	}
+
+	// Check to see if the script file was created
+	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, %s was not created", branch.Name, scriptFullPath)
+		return
+	}
+
+	data, err := os.ReadFile(scriptFullPath)
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+	dataStr := string(data)
+	if !strings.Contains(dataStr, " create") {
+		fmt.Println("WARNING: Script doesn't contain a CREATE command")
+	}
+	if !strings.Contains(dataStr, " update") {
+		fmt.Println("WARNING: Script doesn't contain an UPDATE command")
+	}
+	if !strings.Contains(dataStr, " delete") {
+		fmt.Println("WARNING: Script doesn't contain a DELETE command")
+	}
+	if strings.Contains(dataStr, " list") {
+		fmt.Println("WARNING: Script contains a LIST command")
+	}
+	fmt.Println(string(data))
+}
+
 const CAPTURE_HTTP_LOG string = `I need to capture the logs from GCP for running a mockgcp test that I just created.  I then need to create a git commit.
 
 For example, if I just created a script mockpubsub/testdata/topic/crud/script.yaml, then I should run

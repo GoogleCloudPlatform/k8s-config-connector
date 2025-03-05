@@ -55,6 +55,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdGenerateTypes       = 10
 	cmdGenerateCRD         = 11
 	cmdGenerateFuzzer      = 12
+	cmdReadScriptYaml      = 13
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -184,6 +185,12 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createScriptYaml(opts, branch)
+		}
+
+	case cmdReadScriptYaml: // 13
+		for idx, branch := range branches.Branches {
+			log.Printf("Read and verify Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			readScriptYaml(opts, branch)
 		}
 	case cmdCaptureHttpLog: // 5
 		for idx, branch := range branches.Branches {
