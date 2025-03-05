@@ -1,5 +1,5 @@
 
-- exec: gcloud dataproc autoscaling-policies import test-${uniqueId} --source=mockdataproc/testdata/autoscalingpolicy/crud/policy.yaml --region=us-central1
+- exec: gcloud dataproc autoscaling-policies import test-${uniqueId} --source=policy.yaml --region=us-central1
 - exec: gcloud dataproc autoscaling-policies describe test-${uniqueId} --region=us-central1
 - exec: gcloud dataproc autoscaling-policies list --region=us-central1
 - exec: gcloud dataproc autoscaling-policies delete test-${uniqueId} --region=us-central1
