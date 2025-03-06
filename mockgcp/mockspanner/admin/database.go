@@ -169,12 +169,6 @@ func databaseNameFromCreateStatement(createStatement string) string {
 	return dbname
 }
 
-func (s *SpannerDatabaseV1) ListBackups(ctx context.Context, req *pb.ListBackupsRequest) (*pb.ListBackupsResponse, error) {
-	return &pb.ListBackupsResponse{
-		Backups: []*pb.Backup{},
-	}, nil
-}
-
 // Given a list of DDL extra statement strings, find one with the format
 // "ALTER DATABASE `%s` SET OPTIONS (version_retention_period = '%s')"
 // and return the version_retention_period, or "1h" if no match.
