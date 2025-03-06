@@ -1,0 +1,4 @@
+
+- exec: gcloud apphub applications create test-${uniqueId} --location=us-east1 --scope-type=REGIONAL
+- exec: gcloud apphub applications describe test-${uniqueId} --location=us-east1
+- exec: gcloud apphub applications delete test-${uniqueId} --location=us-east1 --async
