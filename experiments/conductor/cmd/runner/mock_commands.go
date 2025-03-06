@@ -21,6 +21,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 const SCRIPT_YAML_PROMPT string = `I am trying to create a test case for mockgcp.
@@ -86,10 +87,11 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 
 	// Run the LLM to generate the file.
 	cfg := CommandConfig{
-		Name:    "Generate script",
-		Cmd:     "codebot",
-		Args:    []string{"--ui-type=prompt", "--prompt=prompt.txt"},
-		WorkDir: workDir,
+		Name:         "Generate script",
+		Cmd:          "codebot",
+		Args:         []string{"--ui-type=prompt", "--prompt=prompt.txt"},
+		WorkDir:      workDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -121,10 +123,12 @@ func enableAPIs(opts *RunnerOptions, branch Branch) {
 	for _, api := range branch.ApisEnabled {
 		log.Printf("[Enable APIs] Enabling API %s", api)
 		cfg := CommandConfig{
-			Name:    fmt.Sprintf("Enable API %s", api),
-			Cmd:     "gcloud",
-			Args:    []string{"services", "enable", api},
-			WorkDir: workDir,
+			Name:         fmt.Sprintf("Enable API %s", api),
+			Cmd:          "gcloud",
+			Args:         []string{"services", "enable", api},
+			WorkDir:      workDir,
+			MaxRetries:   3,
+			RetryBackoff: 10 * time.Second,
 		}
 		_, _, err := executeCommand(opts, cfg)
 		if err != nil {
@@ -234,8 +238,9 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 			"test", "./mockgcptests",
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
 		},
-		WorkDir: workDir,
-		Env:     map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
+		WorkDir:    workDir,
+		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
+		MaxRetries: 2,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -327,7 +332,8 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 				"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
 				"--input-file", "service_prompt.txt",
 			},
-			WorkDir: workDir,
+			WorkDir:      workDir,
+			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
 		output, _, err := executeCommand(opts, cfg)
 		if err != nil {
@@ -366,7 +372,8 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 				"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
 				"--input-file", "resource_prompt.txt",
 			},
-			WorkDir: workDir,
+			WorkDir:      workDir,
+			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
 		output, _, err := executeCommand(opts, cfg)
 		if err != nil {
@@ -459,10 +466,11 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 
 	// Run the LLM to add the service to roundtrip file.
 	cfg := CommandConfig{
-		Name:    "Add service to roundtrip",
-		Cmd:     "codebot",
-		Args:    []string{"--ui-type=prompt", "--prompt=roundtrip_prompt.txt"},
-		WorkDir: workDir,
+		Name:         "Add service to roundtrip",
+		Cmd:          "codebot",
+		Args:         []string{"--ui-type=prompt", "--prompt=roundtrip_prompt.txt"},
+		WorkDir:      workDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -510,10 +518,11 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 
 	// Run the LLM to add the service to roundtrip file.
 	cfg := CommandConfig{
-		Name:    "Add proto to makefile",
-		Cmd:     "codebot",
-		Args:    []string{"--ui-type=prompt", "--prompt=makefile_prompt.txt"},
-		WorkDir: workDir,
+		Name:         "Add proto to makefile",
+		Cmd:          "codebot",
+		Args:         []string{"--ui-type=prompt", "--prompt=makefile_prompt.txt"},
+		WorkDir:      workDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -547,8 +556,9 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 			"test", "./mockgcptests", "-v",
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
 		},
-		WorkDir: workDir,
-		Env:     map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
+		WorkDir:    workDir,
+		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
+		MaxRetries: 2,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {

@@ -92,6 +92,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "dedicated directory for logging, empty for stdout.")
 	cmd.Flags().DurationVarP(&opts.timeout, "timeout",
 		"t", 5*time.Minute, "Global timeout for commands.")
+	cmd.Flags().IntVarP(&opts.defaultRetries, "retries",
+		"r", 10, "Default number of retries for failed commands.")
 
 	return cmd
 }
@@ -103,9 +105,13 @@ type RunnerOptions struct {
 	loggingDir     string
 	timeout        time.Duration
 	readFileType   string
+	defaultRetries int // Default number of retries for commands
 }
 
 func (opts *RunnerOptions) validateFlags() error {
+	if opts.defaultRetries < 0 {
+		return fmt.Errorf("retries flag cannot be negative, got %d", opts.defaultRetries)
+	}
 	return nil
 }
 
@@ -559,6 +565,7 @@ If you are using gcloud to create something, make sure you are deleting it after
 Print the list of APIs, one on each line in this format api-required: <api-name>
 Only include APIs that are directly needed by this command.
 `, branch.Command)),
+		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 
 	output, _, err := executeCommand(opts, cfg)
@@ -645,10 +652,11 @@ func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 	}
 
 	cfg := CommandConfig{
-		Name:    "Search for service",
-		Cmd:     "egrep",
-		Args:    args,
-		WorkDir: workDir,
+		Name:       "Search for service",
+		Cmd:        "egrep",
+		Args:       args,
+		WorkDir:    workDir,
+		MaxRetries: 2,
 	}
 	output, errOutput, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -667,10 +675,11 @@ func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 			}
 
 			cfg = CommandConfig{
-				Name:    "Search for any service",
-				Cmd:     "egrep",
-				Args:    args,
-				WorkDir: workDir,
+				Name:       "Search for any service",
+				Cmd:        "egrep",
+				Args:       args,
+				WorkDir:    workDir,
+				MaxRetries: 2,
 			}
 			output, errOutput, err = executeCommand(opts, cfg)
 			if err != nil {
