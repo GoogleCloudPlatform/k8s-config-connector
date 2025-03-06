@@ -33,6 +33,19 @@ type Parent struct {
 	Location string `json:"location"`
 }
 
+// +kcc:proto=google.cloud.backupdr.v1.NetworkConfig
+type NetworkConfig struct {
+	// Optional. The resource name of the Google Compute Engine VPC network to
+	//  which the ManagementServer instance is connected.
+	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.network
+	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+
+	// Optional. The network connect mode of the ManagementServer instance. For
+	//  this version, only PRIVATE_SERVICE_ACCESS is supported.
+	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.peering_mode
+	PeeringMode *string `json:"peeringMode,omitempty"`
+}
+
 // +kcc:proto=google.cloud.backupdr.v1.ManagementURI
 type ManagementURIObservedState struct {
 	// Output only. The ManagementServer AGM/RD WebUI URL.
