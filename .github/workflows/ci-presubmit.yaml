@@ -134,6 +134,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-bigquery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run scripts/github-actions/tests-e2e-fixtures-bigquery"
+        run: |
+          ./scripts/github-actions/tests-e2e-fixtures-bigquery
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-bigquery
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-compute:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -171,6 +191,26 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-gkehub
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-monitoring:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run scripts/github-actions/tests-e2e-fixtures-monitoring"
+        run: |
+          ./scripts/github-actions/tests-e2e-fixtures-monitoring
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-monitoring
           path: /tmp/artifacts/
 
 

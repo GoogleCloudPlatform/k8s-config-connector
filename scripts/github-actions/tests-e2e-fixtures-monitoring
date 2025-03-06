@@ -20,16 +20,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/
 
-SKIP_TEST_APIGROUPS=(
-    "apigee.cnrm.cloud.google.com"
-    "bigquery.cnrm.cloud.google.com"
-    "compute.cnrm.cloud.google.com"
-    "gkehub.cnrm.cloud.google.com"
-    "monitoring.cnrm.cloud.google.com"
-    "secretmanager.cnrm.cloud.google.com"
-    "sql.cnrm.cloud.google.com"
-    "vertexai.cnrm.cloud.google.com"
-)
+export ONLY_TEST_APIGROUPS="monitoring.cnrm.cloud.google.com"
 
-export SKIP_TEST_APIGROUP=$(IFS=, ; echo "${SKIP_TEST_APIGROUPS[*]}")
 ${REPO_ROOT}/dev/tasks/run-e2e
