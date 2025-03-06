@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -50,7 +51,7 @@ type DocumentAIProcessorVersionSpec struct {
 
 	// The KMS key version with which data is encrypted.
 	// +optional
-	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+	KMSKeyVersionNameRef *kmsv1alpha1.KMSCryptoKeyVersionRef `json:"kmsKeyVersionNameRef,omitempty"`
 }
 
 type Parent struct {

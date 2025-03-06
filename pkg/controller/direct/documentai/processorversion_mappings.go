@@ -17,6 +17,7 @@ package documentai
 import (
 	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
+	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -61,7 +62,7 @@ func DocumentAIProcessorVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.KMSKeyNameRef = DocumentAIProcessorVersionSpec_KMSKeyNameRef_FromProto(mapCtx, in.GetKmsKeyName())
-	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
+	out.KMSKeyVersionNameRef = DocumentAIProcessorVersionSpec_KMSKeyVersionNameRef_FromProto(mapCtx, in.GetKmsKeyVersionName())
 	out.DeprecationInfo = ProcessorVersion_DeprecationInfo_FromProto(mapCtx, in.GetDeprecationInfo())
 	return out
 }
@@ -73,7 +74,7 @@ func DocumentAIProcessorVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.KmsKeyName = DocumentAIProcessorVersionSpec_KMSKeyNameRef_ToProto(mapCtx, in.KMSKeyNameRef)
-	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
+	out.KmsKeyVersionName = DocumentAIProcessorVersionSpec_KMSKeyVersionNameRef_ToProto(mapCtx, in.KMSKeyVersionNameRef)
 	out.DeprecationInfo = ProcessorVersion_DeprecationInfo_ToProto(mapCtx, in.DeprecationInfo)
 	return out
 }
@@ -92,6 +93,23 @@ func DocumentAIProcessorVersionSpec_KMSKeyNameRef_ToProto(mapCtx *direct.MapCont
 	if in.External == "" {
 		mapCtx.Errorf("reference %s was not pre-resolved", in.Name)
 	}
+	return in.External
+}
+func DocumentAIProcessorVersionSpec_KMSKeyVersionNameRef_FromProto(mapCtx *direct.MapContext, in string) *kmsv1alpha1.KMSCryptoKeyVersionRef {
+	if in == "" {
+		return nil
+	}
+	return &kmsv1alpha1.KMSCryptoKeyVersionRef{
+		External: in,
+	}
+}
+func DocumentAIProcessorVersionSpec_KMSKeyVersionNameRef_ToProto(mapCtx *direct.MapContext, in *kmsv1alpha1.KMSCryptoKeyVersionRef) string {
+	if in == nil {
+		return ""
+	}
+	//if in.External == "" {
+	//	mapCtx.Errorf("reference %s was not pre-resolved", in.Name)
+	//}
 	return in.External
 }
 func DocumentSchema_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema) *krm.DocumentSchema {
