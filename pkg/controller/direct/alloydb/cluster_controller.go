@@ -144,16 +144,8 @@ func (a *clusterAdapter) Find(ctx context.Context) (bool, error) {
 
 // Delete implements the Adapter interface.
 func (a *clusterAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	// Already deleted
-	if a.resourceID == "" {
-		return false, nil
-	}
-
 	op, err := a.client.Projects.Locations.Clusters.Delete(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting cluster %s: %w", a.fullyQualifiedName(), err)
 	}
 
