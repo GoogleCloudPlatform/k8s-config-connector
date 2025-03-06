@@ -50,7 +50,6 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdCreateGitBranch     = 2
 	cmdDeleteGitBranch     = 3
 	cmdEnableGCPAPIs       = 4
-	cmdSetSkipOnBranch     = 5
 	cmdCreateScriptYaml    = 10
 	cmdCaptureHttpLog      = 11
 	cmdGenerateMockGo      = 12
@@ -707,6 +706,14 @@ func splitMetadata(opts *RunnerOptions, branches Branches) {
 }
 
 func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+
+	if branch.Command == "" {
+		branch.Skip = true
+		branch.Notes = append(branch.Notes, "no gcloud command")
+	}
+
 	// Run gcloud xxx --help to see if it implements CRUD methods
 	gcloudCommand := branch.Command
 	gcloudCommand = strings.TrimPrefix(gcloudCommand, "gcloud")
