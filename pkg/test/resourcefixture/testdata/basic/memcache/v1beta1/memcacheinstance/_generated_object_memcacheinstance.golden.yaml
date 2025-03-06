@@ -1,0 +1,53 @@
+apiVersion: memcache.cnrm.cloud.google.com/v1beta1
+kind: MemcacheInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    process-style: long-queue
+    process-type: long-queue
+    size: smallish
+  name: memcacheinstance-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Sample Memcache Instance
+  memcacheParameters:
+    params:
+      listen-backlog: "10000"
+      max-item-size: "524288"
+      max-reqs-per-event: "1"
+  networkRef:
+    name: computenetwork-${uniqueId}
+  nodeConfig:
+    cpuCount: 1
+    memorySizeMb: 1024
+  nodeCount: 1
+  region: us-central1
+  resourceID: memcacheinstance-${uniqueId}
+  zones:
+  - us-central1-a
+  - us-central1-c
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  discoveryEndpoint: 10.191.0.4:11211
+  memcacheFullVersion: memcached-1.5.16
+  memcacheNodes:
+  - host: 10.191.0.5
+    nodeId: node-a-1
+    port: 11211
+    state: READY
+    zone: us-central1-a
+  observedGeneration: 3
