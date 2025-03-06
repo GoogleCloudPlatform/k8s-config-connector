@@ -105,9 +105,14 @@ spec:
                     description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
-              kmsKeyVersionName:
+              kmsKeyVersionNameRef:
                 description: The KMS key version with which data is encrypted.
-                type: string
+                properties:
+                  external:
+                    description: A reference to an externally managed cryptoKeyVersion.
+                      Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.
+                    type: string
+                type: object
               location:
                 description: 'The location of the resource, for example: "us" or "europe".'
                 type: string
