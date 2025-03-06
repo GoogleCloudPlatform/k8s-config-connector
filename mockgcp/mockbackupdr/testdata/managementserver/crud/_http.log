@@ -378,8 +378,8 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "managementUri": {
-      "api": "https://bmc-${projectNumber}-ff2yswpp-dot-us-central1.backupdr.googleusercontent.com/actifio",
-      "webUi": "https://bmc-${projectNumber}-ff2yswpp-dot-us-central1.backupdr.googleusercontent.com"
+      "api": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com/actifio",
+      "webUi": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com"
     },
     "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
     "networks": [
@@ -387,7 +387,7 @@ X-Xss-Protection: 0
         "network": "projects/${projectId}/global/networks/test-network-${uniqueId}"
       }
     ],
-    "oauth2ClientId": "914126025596-ptsqsgid1qrnoci18vr95njnhfuih488.apps.googleusercontent.com",
+    "oauth2ClientId": "888888888888888888888",
     "state": "READY",
     "type": "BACKUP_RESTORE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -416,8 +416,8 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "managementUri": {
-    "api": "https://bmc-${projectNumber}-ff2yswpp-dot-us-central1.backupdr.googleusercontent.com/actifio",
-    "webUi": "https://bmc-${projectNumber}-ff2yswpp-dot-us-central1.backupdr.googleusercontent.com"
+    "api": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com/actifio",
+    "webUi": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com"
   },
   "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
   "networks": [
@@ -453,8 +453,8 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "managementUri": {
-    "api": "https://bmc-${projectNumber}-ff2yswpp-dot-us-central1.backupdr.googleusercontent.com/actifio",
-    "webUi": "https://bmc-${projectNumber}-ff2yswpp-dot-us-central1.backupdr.googleusercontent.com"
+    "api": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com/actifio",
+    "webUi": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com"
   },
   "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
   "networks": [
