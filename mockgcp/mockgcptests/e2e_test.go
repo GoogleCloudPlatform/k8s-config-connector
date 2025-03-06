@@ -50,6 +50,8 @@ func TestScripts(t *testing.T) {
 
 	for _, scriptPath := range scriptPaths {
 		t.Run(scriptPath, func(t *testing.T) {
+			t.Parallel()
+
 			ctx := context.TODO()
 			ctx, closeContext := context.WithCancel(ctx)
 			t.Cleanup(closeContext)
