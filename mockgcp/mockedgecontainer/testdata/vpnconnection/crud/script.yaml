@@ -1,0 +1,4 @@
+
+- exec: gcloud edge-cloud container vpn-connections create test-${uniqueId} --location=us-central1 --cluster=test-cluster --vpc-network=test-vpc-network
+- exec: gcloud edge-cloud container vpn-connections describe test-${uniqueId} --location=us-central1
+- exec: gcloud edge-cloud container vpn-connections delete test-${uniqueId} --location=us-central1 --async
