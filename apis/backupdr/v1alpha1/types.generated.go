@@ -18,19 +18,6 @@ package v1alpha1
 type ManagementURI struct {
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.NetworkConfig
-type NetworkConfig struct {
-	// Optional. The resource name of the Google Compute Engine VPC network to
-	//  which the ManagementServer instance is connected.
-	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.network
-	Network *string `json:"network,omitempty"`
-
-	// Optional. The network connect mode of the ManagementServer instance. For
-	//  this version, only PRIVATE_SERVICE_ACCESS is supported.
-	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.peering_mode
-	PeeringMode *string `json:"peeringMode,omitempty"`
-}
-
 // +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI
 type WorkforceIdentityBasedManagementURI struct {
 }
