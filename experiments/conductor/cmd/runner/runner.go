@@ -501,6 +501,7 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 	log.Printf("ls-alh: %s", results.Stdout)
 
 	// Check for uniqueness constraints in the metadata.
+	violations := false
 	gcloudMap := make(map[string]string)
 	nameMap := make(map[string]Branch)
 	gitMap := make(map[string]string)
@@ -509,18 +510,21 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 	for idx, branch := range branches.Branches {
 		if branch.Command != "" {
 			if existing, ok := gcloudMap[branch.Command]; ok {
+				violations = true
 				log.Printf("Command (%s) uniqueness constraint between %s and (%d)%s\r",
 					branch.Command, existing, idx, branch.Name)
 			}
 			gcloudMap[branch.Command] = branch.Name
 		}
 		if existing, ok := nameMap[branch.Name]; ok {
+			violations = true
 			log.Printf("Name uniqueness constraint between %s at and %s\r",
 				branch.Name, existing.Name)
 		}
 		nameMap[branch.Name] = branch
 
 		if existing, ok := gitMap[branch.Local]; ok {
+			violations = true
 			log.Printf("Github uniqueness constraint between %s and (%d)%s\r",
 				existing, idx, branch.Name)
 		}
@@ -528,6 +532,7 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 
 		gr := branch.Group + ":" + branch.Resource
 		if existing, ok := grMap[gr]; ok {
+			violations = true
 			log.Printf("Branch:Resource uniqueness constraint between %s and (%d)%s\r",
 				existing.Name, idx, branch.Name)
 		}
@@ -535,11 +540,17 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 
 		if branch.Kind != "" {
 			if existing, ok := kindMap[branch.Kind]; ok {
+				violations = true
 				log.Printf("Kind uniqueness (%s) constraint between names: %s and (%d)%s\r",
 					branch.Kind, existing, idx, branch.Name)
 			}
 		}
 		kindMap[branch.Kind] = branch.Name
+	}
+
+	if violations {
+		log.Printf("Uniqueness constrains violated for file %s", opts.branchConfFile)
+		os.Exit(1)
 	}
 
 	// Fix the data and write back
