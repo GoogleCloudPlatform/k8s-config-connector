@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectNumber}
 
 {
   "clusters": {
@@ -23,6 +22,7 @@ X-Goog-User-Project: ${projectNumber}
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -40,7 +40,6 @@ X-Xss-Protection: 0
         "test-cluster-${uniqueId}": {
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-east1-c",
-          "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
           "serveNodes": 1
         }
       },
@@ -62,9 +61,9 @@ GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/ins
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -84,7 +83,6 @@ X-Xss-Protection: 0
         "test-cluster-${uniqueId}": {
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-east1-c",
-          "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
           "serveNodes": 1
         }
       },
@@ -113,9 +111,9 @@ GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -140,7 +138,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectNumber}
 
 {
   "description": "Test App Profile",
@@ -150,6 +147,7 @@ X-Goog-User-Project: ${projectNumber}
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -174,9 +172,9 @@ GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -197,13 +195,106 @@ X-Xss-Protection: 0
 
 ---
 
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json&ignoreWarnings=False&updateMask=multiClusterRoutingUseAny%2Cdescription
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "Updated Test App Profile",
+  "multiClusterRoutingUseAny": {}
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
+    "description": "Updated Test App Profile",
+    "multiClusterRoutingUseAny": {},
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+    "standardIsolation": {
+      "priority": "PRIORITY_HIGH"
+    }
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated Test App Profile",
+  "multiClusterRoutingUseAny": {},
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+  "standardIsolation": {
+    "priority": "PRIORITY_HIGH"
+  }
+}
+
+---
+
 GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -216,18 +307,7 @@ X-Xss-Protection: 0
 {
   "appProfiles": [
     {
-      "description": "Default application profile for this instance. This profile is used if you do not supply a different profile ID at connection time.",
-      "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/default",
-      "singleClusterRouting": {
-        "allowTransactionalWrites": true,
-        "clusterId": "test-cluster-${uniqueId}"
-      },
-      "standardIsolation": {
-        "priority": "PRIORITY_HIGH"
-      }
-    },
-    {
-      "description": "Test App Profile",
+      "description": "Updated Test App Profile",
       "multiClusterRoutingUseAny": {},
       "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
       "standardIsolation": {
@@ -239,13 +319,33 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json&ignoreWarnings=True
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
 DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

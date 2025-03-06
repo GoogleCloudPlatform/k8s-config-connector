@@ -1,320 +1,4 @@
- google.bigtable.admin.v2.BigtableInstanceAdmin
-in.proto.service.definition: service BigtableInstanceAdmin {
-  option (google.api.default_host) = "bigtableadmin.googleapis.com";
-  option (google.api.oauth_scopes) =
-      "https://www.googleapis.com/auth/bigtable.admin,"
-      "https://www.googleapis.com/auth/bigtable.admin.instance,"
-      "https://www.googleapis.com/auth/cloud-platform,"
-      "https://www.googleapis.com/auth/cloud-platform.read-only";
-
-  // Create an instance within a project.
-  //
-  // Note that exactly one of Cluster.serve_nodes and
-  // Cluster.cluster_config.cluster_autoscaling_config can be set. If
-  // serve_nodes is set to non-zero, then the cluster is manually scaled. If
-  // cluster_config.cluster_autoscaling_config is non-empty, then autoscaling is
-  // enabled.
-  rpc CreateInstance(CreateInstanceRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*}/instances"
-      body: "instance"
-    };
-    option (google.api.method_signature) =
-        "parent,instance_id,instance,clusters";
-    option (google.longrunning.operation_info) = {
-      response_type: "Instance"
-      metadata_type: "CreateInstanceMetadata"
-    };
-  }
-
-  // Gets information about an instance.
-  rpc GetInstance(GetInstanceRequest) returns (Instance) {
-    option (google.api.http) = { get: "/v2/{name=projects/*/instances/*}" };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Lists information about instances in a project.
-  rpc ListInstances(ListInstancesRequest) returns (ListInstancesResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*}/instances"
-    };
-    option (google.api.method_signature) = "parent";
-  }
-
-  // Updates an instance within a project. This method updates only the display
-  // name and type for an Instance. To update other Instance properties, such as
-  // labels, use PartialUpdateInstance.
-  rpc UpdateInstance(Instance) returns (Instance) {
-    option (google.api.http) = {
-      put: "/v2/{name=projects/*/instances/*}"
-      body: "*"
-    };
-    option (google.api.method_signature) = "name,display_name,type,labels";
-  }
-
-  // Partially updates an instance within a project. This method can modify all
-  // fields of an Instance and is the preferred way to update an Instance.
-  rpc PartialUpdateInstance(PartialUpdateInstanceRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      patch: "/v2/{instance.name=projects/*/instances/*}"
-      body: "instance"
-    };
-    option (google.api.method_signature) = "instance,update_mask";
-    option (google.longrunning.operation_info) = {
-      response_type: "Instance"
-      metadata_type: "UpdateInstanceMetadata"
-    };
-  }
-
-  // Delete an instance from a project.
-  rpc DeleteInstance(DeleteInstanceRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/instances/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Creates a cluster within an instance.
-  //
-  // Note that exactly one of Cluster.serve_nodes and
-  // Cluster.cluster_config.cluster_autoscaling_config can be set. If
-  // serve_nodes is set to non-zero, then the cluster is manually scaled. If
-  // cluster_config.cluster_autoscaling_config is non-empty, then autoscaling is
-  // enabled.
-  rpc CreateCluster(CreateClusterRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*/instances/*}/clusters"
-      body: "cluster"
-    };
-    option (google.api.method_signature) = "parent,cluster_id,cluster";
-    option (google.longrunning.operation_info) = {
-      response_type: "Cluster"
-      metadata_type: "CreateClusterMetadata"
-    };
-  }
-
-  // Gets information about a cluster.
-  rpc GetCluster(GetClusterRequest) returns (Cluster) {
-    option (google.api.http) = {
-      get: "/v2/{name=projects/*/instances/*/clusters/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Lists information about clusters in an instance.
-  rpc ListClusters(ListClustersRequest) returns (ListClustersResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*/instances/*}/clusters"
-    };
-    option (google.api.method_signature) = "parent";
-  }
-
-  // Updates a cluster within an instance.
-  rpc UpdateCluster(Cluster) returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      put: "/v2/{name=projects/*/instances/*/clusters/*}"
-      body: "*"
-    };
-    option (google.api.method_signature) = "name,location,serve_nodes";
-    option (google.longrunning.operation_info) = {
-      response_type: "Cluster"
-      metadata_type: "UpdateClusterMetadata"
-    };
-  }
-
-  // Partially updates a cluster within a project. This method is the preferred
-  // way to update a Cluster.
-  rpc PartialUpdateCluster(PartialUpdateClusterRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      patch: "/v2/{cluster.name=projects/*/instances/*/clusters/*}"
-      body: "cluster"
-    };
-    option (google.longrunning.operation_info) = {
-      response_type: "Cluster"
-      metadata_type: "UpdateClusterMetadata"
-    };
-  }
-
-  // Deletes a cluster from an instance.
-  rpc DeleteCluster(DeleteClusterRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/instances/*/clusters/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Creates an app profile within an instance.
-  rpc CreateAppProfile(CreateAppProfileRequest) returns (AppProfile) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*/instances/*}/appProfiles"
-      body: "app_profile"
-    };
-    option (google.api.method_signature) =
-        "parent,app_profile_id,app_profile";
-  }
-
-  // Gets information about an app profile.
-  rpc GetAppProfile(GetAppProfileRequest) returns (AppProfile) {
-    option (google.api.http) = {
-      get: "/v2/{name=projects/*/instances/*/appProfiles/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Lists information about app profiles in an instance.
-  rpc ListAppProfiles(ListAppProfilesRequest) returns (ListAppProfilesResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*/instances/*}/appProfiles"
-    };
-    option (google.api.method_signature) = "parent";
-  }
-
-  // Updates an app profile within an instance.
-  rpc UpdateAppProfile(UpdateAppProfileRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      patch: "/v2/{app_profile.name=projects/*/instances/*/appProfiles/*}"
-      body: "app_profile"
-    };
-    option (google.api.method_signature) = "app_profile,update_mask";
-    option (google.longrunning.operation_info) = {
-      response_type: "AppProfile"
-      metadata_type: "UpdateAppProfileMetadata"
-    };
-  }
-
-  // Deletes an app profile from an instance.
-  rpc DeleteAppProfile(DeleteAppProfileRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/instances/*/appProfiles/*}"
-    };
-    option (google.api.method_signature) = "name,ignore_warnings";
-  }
-
-  // Gets the access control policy for an instance resource. Returns an empty
-  // policy if an instance exists but does not have a policy set.
-  rpc GetIamPolicy(google.iam.v1.GetIamPolicyRequest)
-      returns (google.iam.v1.Policy) {
-    option (google.api.http) = {
-      post: "/v2/{resource=projects/*/instances/*}:getIamPolicy"
-      body: "*"
-    };
-    option (google.api.method_signature) = "resource";
-  }
-
-  // Sets the access control policy on an instance resource. Replaces any
-  // existing policy.
-  rpc SetIamPolicy(google.iam.v1.SetIamPolicyRequest)
-      returns (google.iam.v1.Policy) {
-    option (google.api.http) = {
-      post: "/v2/{resource=projects/*/instances/*}:setIamPolicy"
-      body: "*"
-    };
-    option (google.api.method_signature) = "resource,policy";
-  }
-
-  // Returns permissions that the caller has on the specified instance resource.
-  rpc TestIamPermissions(google.iam.v1.TestIamPermissionsRequest)
-      returns (google.iam.v1.TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v2/{resource=projects/*/instances/*}:testIamPermissions"
-      body: "*"
-    };
-    option (google.api.method_signature) = "resource,permissions";
-  }
-
-  // Lists Cloud Bigtable backups. Returns both completed and pending
-  // backups.
-  rpc ListBackups(ListBackupsRequest) returns (ListBackupsResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*/instances/*/clusters/*}/backups"
-    };
-  }
-
-  // Gets metadata on a pending or completed Cloud Bigtable Backup.
-  rpc GetBackup(GetBackupRequest) returns (Backup) {
-    option (google.api.http) = {
-      get: "/v2/{name=projects/*/instances/*/clusters/*/backups/*}"
-    };
-  }
-
-  // Updates a pending or completed Cloud Bigtable Backup.
-  rpc UpdateBackup(UpdateBackupRequest) returns (Backup) {
-    option (google.api.http) = {
-      patch: "/v2/{backup.name=projects/*/instances/*/clusters/*/backups/*}"
-      body: "backup"
-    };
-  }
-
-  // Deletes a pending or completed Cloud Bigtable backup.
-  rpc DeleteBackup(DeleteBackupRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/instances/*/clusters/*/backups/*}"
-    };
-  }
-
-  // Create a new table by restoring a completed backup to it, and begin
-  // restoring the new table's data from the backup immediately. The new
-  // table is readable as soon as (and shortly after) the operation is
-  // completed. If the `parent` backup's source cluster's storage_type is
-  // `STORAGE_TYPE_UNSPECIFIED`, then the source cluster and the new table must
-  // have the same cluster storage type. If the `parent` backup's source
-  // cluster's storage type is `HDD`, then the new table must have `HDD`
-  // clusters. If the `parent` backup's source cluster's storage type is `SSD`,
-  // then the new table must have `SSD` clusters.
-  //
-  // Any servers in clusters lacking the required storage type will not be able
-  // to serve the new table.
-  rpc RestoreTable(RestoreTableRequest) returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*/instances/*}/tables:restore"
-      body: "*"
-    };
-    option (google.longrunning.operation_info) = {
-      response_type: "Table"
-      metadata_type: "RestoreTableMetadata"
-    };
-  }
-
-  // Get a Cloud Bigtable Backup.
-  rpc GetBackupIamPolicy(google.iam.v1.GetIamPolicyRequest)
-      returns (google.iam.v1.Policy) {
-    option (google.api.http) = {
-      post: "/v2/{resource=projects/*/instances/*/clusters/*/backups/*}:getIamPolicy"
-      body: "*"
-    };
-    option (google.api.method_signature) = "resource";
-  }
-
-  // Set a Cloud Bigtable Backup IAM Policy.
-  rpc SetBackupIamPolicy(google.iam.v1.SetIamPolicyRequest)
-      returns (google.iam.v1.Policy) {
-    option (google.api.http) = {
-      post: "/v2/{resource=projects/*/instances/*/clusters/*/backups/*}:setIamPolicy"
-      body: "*"
-    };
-    option (google.api.method_signature) = "resource";
-  }
-
-  // Test a Cloud Bigtable Backup IAM Permissions.
-  rpc TestBackupIamPermissions(google.iam.v1.TestIamPermissionsRequest)
-      returns (google.iam.v1.TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v2/{resource=projects/*/instances/*/clusters/*/backups/*}:testIamPermissions"
-      body: "*"
-    };
-    option (google.api.method_signature) = "resource,permissions";
-  }
-}
-
-```
-out:
-```go
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -337,16 +21,22 @@ package mockbigtable
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/bigtable/admin/v2"
+	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 )
 
-func (s *MockService) GetAppProfile(ctx context.Context, req *pb.GetAppProfileRequest) (*pb.AppProfile, error) {
+func (s *instanceAdminServer) GetAppProfile(ctx context.Context, req *pb.GetAppProfileRequest) (*pb.AppProfile, error) {
 	name, err := s.parseAppProfileName(req.Name)
 	if err != nil {
 		return nil, err
@@ -365,7 +55,7 @@ func (s *MockService) GetAppProfile(ctx context.Context, req *pb.GetAppProfileRe
 	return obj, nil
 }
 
-func (s *MockService) CreateAppProfile(ctx context.Context, req *pb.CreateAppProfileRequest) (*pb.AppProfile, error) {
+func (s *instanceAdminServer) CreateAppProfile(ctx context.Context, req *pb.CreateAppProfileRequest) (*pb.AppProfile, error) {
 	reqName := req.Parent + "/appProfiles/" + req.AppProfileId
 	name, err := s.parseAppProfileName(reqName)
 	if err != nil {
@@ -376,6 +66,8 @@ func (s *MockService) CreateAppProfile(ctx context.Context, req *pb.CreateAppPro
 
 	obj := proto.Clone(req.AppProfile).(*pb.AppProfile)
 	obj.Name = fqn
+	obj.Isolation =
+		&pb.AppProfile_StandardIsolation_{StandardIsolation: &pb.AppProfile_StandardIsolation{Priority: pb.AppProfile_PRIORITY_HIGH}}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -384,7 +76,7 @@ func (s *MockService) CreateAppProfile(ctx context.Context, req *pb.CreateAppPro
 	return obj, nil
 }
 
-func (s *MockService) UpdateAppProfile(ctx context.Context, req *pb.UpdateAppProfileRequest) (*longrunningpb.Operation, error) {
+func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.UpdateAppProfileRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseAppProfileName(req.GetAppProfile().GetName())
 	if err != nil {
 		return nil, err
@@ -409,7 +101,7 @@ func (s *MockService) UpdateAppProfile(ctx context.Context, req *pb.UpdateAppPro
 		switch path {
 		case "description":
 			updated.Description = req.GetAppProfile().GetDescription()
-		case "multi_cluster_routing_use_any":
+		case "multiClusterRoutingUseAny":
 			updated.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{
 				MultiClusterRoutingUseAny: req.GetAppProfile().GetMultiClusterRoutingUseAny(),
 			}
@@ -422,7 +114,69 @@ func (s *MockService) UpdateAppProfile(ctx context.Context, req *pb.UpdateAppPro
 		return nil, err
 	}
 
-	return s.operations.notImplementedLRO(), nil
+	metadata := &pb.UpdateAppProfileMetadata{}
+	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), "us-east1-c")
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		return updated, nil
+	})
+}
+
+func (s *instanceAdminServer) ListAppProfiles(ctx context.Context, req *pb.ListAppProfilesRequest) (*pb.ListAppProfilesResponse, error) {
+	instanceName, err := s.parseInstanceName(req.GetParent())
+	if err != nil {
+		return nil, err
+	}
+
+	appProfile, err := s.listAppProfilesForInstance(ctx, instanceName)
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.ListAppProfilesResponse{}
+	response.AppProfiles = appProfile
+
+	return response, nil
+}
+
+func (s *instanceAdminServer) listAppProfilesForInstance(ctx context.Context, instanceName *instanceName) ([]*pb.AppProfile, error) {
+	if instanceName.InstanceName == "-" {
+		return nil, fmt.Errorf("mock does not implement ListAppProfiles for wildcard instances")
+	}
+
+	var response []*pb.AppProfile
+
+	findKind := (&pb.AppProfile{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{
+		Prefix: instanceName.String() + "/appProfiles/",
+	}, func(obj proto.Message) error {
+		appProfile := obj.(*pb.AppProfile)
+		response = append(response, appProfile)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	sort.Slice(response, func(i, j int) bool {
+		return response[i].Name < response[j].Name
+	})
+
+	return response, nil
+}
+
+func (s *instanceAdminServer) DeleteAppProfile(ctx context.Context, req *pb.DeleteAppProfileRequest) (*emptypb.Empty, error) {
+	name, err := s.parseAppProfileName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	deleted := &pb.AppProfile{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
 
 type appProfileName struct {
@@ -437,7 +191,7 @@ func (n *appProfileName) String() string {
 
 // parseAppProfileName parses a string into a appProfileName.
 // The expected form is `projects/*/instances/*/appProfiles/*`.
-func (s *MockService) parseAppProfileName(name string) (*appProfileName, error) {
+func (s *instanceAdminServer) parseAppProfileName(name string) (*appProfileName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "instances" && tokens[4] == "appProfiles" {
@@ -452,6 +206,3 @@ func (s *MockService) parseAppProfileName(name string) (*appProfileName, error) 
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
-

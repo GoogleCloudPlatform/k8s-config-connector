@@ -213,6 +213,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	events.RemoveHTTPRequestHeader("X-Goog-User-Project")
 	// Remove headers in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
