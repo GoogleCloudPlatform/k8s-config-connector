@@ -16,7 +16,9 @@ package backupdr
 
 import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -105,7 +107,11 @@ func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *k
 		return nil
 	}
 	out := &krm.NetworkConfig{}
-	out.Network = direct.LazyPtr(in.GetNetwork())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{
+			External: in.GetNetwork(),
+		}
+	}
 	out.PeeringMode = direct.Enum_FromProto(mapCtx, in.GetPeeringMode())
 	return out
 }
@@ -114,7 +120,9 @@ func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb
 		return nil
 	}
 	out := &pb.NetworkConfig{}
-	out.Network = direct.ValueOf(in.Network)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	out.PeeringMode = direct.Enum_ToProto[pb.NetworkConfig_PeeringMode](mapCtx, in.PeeringMode)
 	return out
 }

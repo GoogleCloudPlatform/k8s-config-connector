@@ -88,11 +88,37 @@ spec:
                   supported. This field is optional if MS is created without PSA
                 items:
                   properties:
-                    network:
+                    networkRef:
                       description: Optional. The resource name of the Google Compute
                         Engine VPC network to which the ManagementServer instance
                         is connected.
-                      type: string
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed Compute
+                            Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                          type: string
+                        name:
+                          description: The `name` field of a `ComputeNetwork` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` field of a `ComputeNetwork`
+                            resource.
+                          type: string
+                      type: object
                     peeringMode:
                       description: Optional. The network connect mode of the ManagementServer
                         instance. For this version, only PRIVATE_SERVICE_ACCESS is
