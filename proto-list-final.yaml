@@ -1,98 +1,84 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 service: ai
 package: google.ai.generativelanguage.v1beta
 proto: CachedContent
-kind: AiCachedContent
+kind: AICachedContent
 protopath: google.ai.generativelanguage.v1beta.CachedContent
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta
 proto: File
-kind: AiFile
+kind: AIFile
 protopath: google.ai.generativelanguage.v1beta.File
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta
 proto: Model
-kind: AiModel
+kind: AIModel
 protopath: google.ai.generativelanguage.v1beta.Model
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta
 proto: Permission
-kind: AiPermission
+kind: AIPermission
 protopath: google.ai.generativelanguage.v1beta.Permission
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta
 proto: Corpus
-kind: AiCorpus
+kind: AICorpus
 protopath: google.ai.generativelanguage.v1beta.Corpus
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta
 proto: Document
-kind: AiDocument
+kind: AIDocument
 protopath: google.ai.generativelanguage.v1beta.Document
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta
 proto: Chunk
-kind: AiChunk
+kind: AIChunk
 protopath: google.ai.generativelanguage.v1beta.Chunk
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta
 proto: TunedModel
-kind: AiTunedModel
+kind: AITunedModel
 protopath: google.ai.generativelanguage.v1beta.TunedModel
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta2
 proto: Model
-kind: AiModel
+kind: AIModel
 protopath: google.ai.generativelanguage.v1beta2.Model
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta3
 proto: Model
-kind: AiModel
+kind: AIModel
 protopath: google.ai.generativelanguage.v1beta3.Model
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta3
 proto: Permission
-kind: AiPermission
+kind: AIPermission
 protopath: google.ai.generativelanguage.v1beta3.Permission
 validated: null
 ---
 service: ai
 package: google.ai.generativelanguage.v1beta3
 proto: TunedModel
-kind: AiTunedModel
+kind: AITunedModel
 protopath: google.ai.generativelanguage.v1beta3.TunedModel
 validated: null
 ---
@@ -204,63 +190,63 @@ validated: null
 service: api
 package: google.api.apikeys.v2
 proto: Key
-kind: ApiKey
+kind: APIKey
 protopath: google.api.apikeys.v2.Key
 validated: null
 ---
 service: api
 package: google.api.cloudquotas.v1
 proto: QuotaInfo
-kind: ApiQuotaInfo
+kind: APIQuotaInfo
 protopath: google.api.cloudquotas.v1.QuotaInfo
 validated: null
 ---
 service: api
 package: google.api.cloudquotas.v1
 proto: QuotaPreference
-kind: ApiQuotaPreference
+kind: APIQuotaPreference
 protopath: google.api.cloudquotas.v1.QuotaPreference
 validated: null
 ---
 service: api
 package: google.api.cloudquotas.v1beta
 proto: QuotaAdjusterSettings
-kind: ApiQuotaAdjusterSettings
+kind: APIQuotaAdjusterSettings
 protopath: google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 validated: null
 ---
 service: api
 package: google.api.cloudquotas.v1beta
 proto: QuotaInfo
-kind: ApiQuotaInfo
+kind: APIQuotaInfo
 protopath: google.api.cloudquotas.v1beta.QuotaInfo
 validated: null
 ---
 service: api
 package: google.api.cloudquotas.v1beta
 proto: QuotaPreference
-kind: ApiQuotaPreference
+kind: APIQuotaPreference
 protopath: google.api.cloudquotas.v1beta.QuotaPreference
 validated: null
 ---
 service: api
 package: google.api.serviceusage.v1
 proto: Service
-kind: ApiService
+kind: APIService
 protopath: google.api.serviceusage.v1.Service
 validated: null
 ---
 service: appengine
 package: google.appengine.v1
 proto: Instance
-kind: AppengineInstance
+kind: AppEngineInstance
 protopath: google.appengine.v1.Instance
 validated: null
 ---
 service: appengine
 package: google.appengine.v1beta
 proto: Instance
-kind: AppengineInstance
+kind: AppEngineInstance
 protopath: google.appengine.v1beta.Instance
 validated: null
 ---
@@ -323,798 +309,798 @@ validated: null
 service: accessapproval
 package: google.cloud.accessapproval.v1
 proto: ApprovalRequest
-kind: AccessapprovalApprovalRequest
+kind: AccessApprovalApprovalRequest
 protopath: google.cloud.accessapproval.v1.ApprovalRequest
 validated: null
 ---
 service: accessapproval
 package: google.cloud.accessapproval.v1
 proto: AccessApprovalSettings
-kind: AccessapprovalAccessApprovalSettings
+kind: AccessApprovalAccessApprovalSettings
 protopath: google.cloud.accessapproval.v1.AccessApprovalSettings
 validated: null
 ---
 service: accessapproval
 package: google.cloud.accessapproval.v1
 proto: AccessApprovalServiceAccount
-kind: AccessapprovalAccessApprovalServiceAccount
+kind: AccessApprovalAccessApprovalServiceAccount
 protopath: google.cloud.accessapproval.v1.AccessApprovalServiceAccount
 validated: null
 ---
 service: advisorynotifications
 package: google.cloud.advisorynotifications.v1
 proto: Notification
-kind: AdvisorynotificationsNotification
+kind: AdvisoryNotificationsNotification
 protopath: google.cloud.advisorynotifications.v1.Notification
 validated: null
 ---
 service: advisorynotifications
 package: google.cloud.advisorynotifications.v1
 proto: Settings
-kind: AdvisorynotificationsSettings
+kind: AdvisoryNotificationsSettings
 protopath: google.cloud.advisorynotifications.v1.Settings
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Annotation
-kind: AiplatformAnnotation
+kind: AIPlatformAnnotation
 protopath: google.cloud.aiplatform.v1.Annotation
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: AnnotationSpec
-kind: AiplatformAnnotationSpec
+kind: AIPlatformAnnotationSpec
 protopath: google.cloud.aiplatform.v1.AnnotationSpec
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Artifact
-kind: AiplatformArtifact
+kind: AIPlatformArtifact
 protopath: google.cloud.aiplatform.v1.Artifact
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: BatchPredictionJob
-kind: AiplatformBatchPredictionJob
+kind: AIPlatformBatchPredictionJob
 protopath: google.cloud.aiplatform.v1.BatchPredictionJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: CachedContent
-kind: AiplatformCachedContent
+kind: AIPlatformCachedContent
 protopath: google.cloud.aiplatform.v1.CachedContent
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Context
-kind: AiplatformContext
+kind: AIPlatformContext
 protopath: google.cloud.aiplatform.v1.Context
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: CustomJob
-kind: AiplatformCustomJob
+kind: AIPlatformCustomJob
 protopath: google.cloud.aiplatform.v1.CustomJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: DataItem
-kind: AiplatformDataItem
+kind: AIPlatformDataItem
 protopath: google.cloud.aiplatform.v1.DataItem
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: DataLabelingJob
-kind: AiplatformDataLabelingJob
+kind: AIPlatformDataLabelingJob
 protopath: google.cloud.aiplatform.v1.DataLabelingJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Dataset
-kind: AiplatformDataset
+kind: AIPlatformDataset
 protopath: google.cloud.aiplatform.v1.Dataset
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: DatasetVersion
-kind: AiplatformDatasetVersion
+kind: AIPlatformDatasetVersion
 protopath: google.cloud.aiplatform.v1.DatasetVersion
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: DeploymentResourcePool
-kind: AiplatformDeploymentResourcePool
+kind: AIPlatformDeploymentResourcePool
 protopath: google.cloud.aiplatform.v1.DeploymentResourcePool
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Endpoint
-kind: AiplatformEndpoint
+kind: AIPlatformEndpoint
 protopath: google.cloud.aiplatform.v1.Endpoint
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: EntityType
-kind: AiplatformEntityType
+kind: AIPlatformEntityType
 protopath: google.cloud.aiplatform.v1.EntityType
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Execution
-kind: AiplatformExecution
+kind: AIPlatformExecution
 protopath: google.cloud.aiplatform.v1.Execution
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Feature
-kind: AiplatformFeature
+kind: AIPlatformFeature
 protopath: google.cloud.aiplatform.v1.Feature
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: FeatureGroup
-kind: AiplatformFeatureGroup
+kind: AIPlatformFeatureGroup
 protopath: google.cloud.aiplatform.v1.FeatureGroup
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: FeatureOnlineStore
-kind: AiplatformFeatureOnlineStore
+kind: AIPlatformFeatureOnlineStore
 protopath: google.cloud.aiplatform.v1.FeatureOnlineStore
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: FeatureView
-kind: AiplatformFeatureView
+kind: AIPlatformFeatureView
 protopath: google.cloud.aiplatform.v1.FeatureView
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: FeatureViewSync
-kind: AiplatformFeatureViewSync
+kind: AIPlatformFeatureViewSync
 protopath: google.cloud.aiplatform.v1.FeatureViewSync
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Featurestore
-kind: AiplatformFeaturestore
+kind: AIPlatformFeaturestore
 protopath: google.cloud.aiplatform.v1.Featurestore
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: HyperparameterTuningJob
-kind: AiplatformHyperparameterTuningJob
+kind: AIPlatformHyperparameterTuningJob
 protopath: google.cloud.aiplatform.v1.HyperparameterTuningJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Index
-kind: AiplatformIndex
+kind: AIPlatformIndex
 protopath: google.cloud.aiplatform.v1.Index
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: IndexEndpoint
-kind: AiplatformIndexEndpoint
+kind: AIPlatformIndexEndpoint
 protopath: google.cloud.aiplatform.v1.IndexEndpoint
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: MetadataSchema
-kind: AiplatformMetadataSchema
+kind: AIPlatformMetadataSchema
 protopath: google.cloud.aiplatform.v1.MetadataSchema
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: MetadataStore
-kind: AiplatformMetadataStore
+kind: AIPlatformMetadataStore
 protopath: google.cloud.aiplatform.v1.MetadataStore
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Model
-kind: AiplatformModel
+kind: AIPlatformModel
 protopath: google.cloud.aiplatform.v1.Model
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: ModelDeploymentMonitoringJob
-kind: AiplatformModelDeploymentMonitoringJob
+kind: AIPlatformModelDeploymentMonitoringJob
 protopath: google.cloud.aiplatform.v1.ModelDeploymentMonitoringJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: ModelEvaluation
-kind: AiplatformModelEvaluation
+kind: AIPlatformModelEvaluation
 protopath: google.cloud.aiplatform.v1.ModelEvaluation
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: ModelEvaluationSlice
-kind: AiplatformModelEvaluationSlice
+kind: AIPlatformModelEvaluationSlice
 protopath: google.cloud.aiplatform.v1.ModelEvaluationSlice
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: NasJob
-kind: AiplatformNasJob
+kind: AIPlatformNasJob
 protopath: google.cloud.aiplatform.v1.NasJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: NasTrialDetail
-kind: AiplatformNasTrialDetail
+kind: AIPlatformNasTrialDetail
 protopath: google.cloud.aiplatform.v1.NasTrialDetail
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: NotebookExecutionJob
-kind: AiplatformNotebookExecutionJob
+kind: AIPlatformNotebookExecutionJob
 protopath: google.cloud.aiplatform.v1.NotebookExecutionJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: NotebookRuntimeTemplate
-kind: AiplatformNotebookRuntimeTemplate
+kind: AIPlatformNotebookRuntimeTemplate
 protopath: google.cloud.aiplatform.v1.NotebookRuntimeTemplate
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: NotebookRuntime
-kind: AiplatformNotebookRuntime
+kind: AIPlatformNotebookRuntime
 protopath: google.cloud.aiplatform.v1.NotebookRuntime
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: PersistentResource
-kind: AiplatformPersistentResource
+kind: AIPlatformPersistentResource
 protopath: google.cloud.aiplatform.v1.PersistentResource
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: PipelineJob
-kind: AiplatformPipelineJob
+kind: AIPlatformPipelineJob
 protopath: google.cloud.aiplatform.v1.PipelineJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: PublisherModel
-kind: AiplatformPublisherModel
+kind: AIPlatformPublisherModel
 protopath: google.cloud.aiplatform.v1.PublisherModel
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: ReasoningEngine
-kind: AiplatformReasoningEngine
+kind: AIPlatformReasoningEngine
 protopath: google.cloud.aiplatform.v1.ReasoningEngine
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: SavedQuery
-kind: AiplatformSavedQuery
+kind: AIPlatformSavedQuery
 protopath: google.cloud.aiplatform.v1.SavedQuery
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Schedule
-kind: AiplatformSchedule
+kind: AIPlatformSchedule
 protopath: google.cloud.aiplatform.v1.Schedule
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: SpecialistPool
-kind: AiplatformSpecialistPool
+kind: AIPlatformSpecialistPool
 protopath: google.cloud.aiplatform.v1.SpecialistPool
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Study
-kind: AiplatformStudy
+kind: AIPlatformStudy
 protopath: google.cloud.aiplatform.v1.Study
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Trial
-kind: AiplatformTrial
+kind: AIPlatformTrial
 protopath: google.cloud.aiplatform.v1.Trial
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: Tensorboard
-kind: AiplatformTensorboard
+kind: AIPlatformTensorboard
 protopath: google.cloud.aiplatform.v1.Tensorboard
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: TensorboardExperiment
-kind: AiplatformTensorboardExperiment
+kind: AIPlatformTensorboardExperiment
 protopath: google.cloud.aiplatform.v1.TensorboardExperiment
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: TensorboardRun
-kind: AiplatformTensorboardRun
+kind: AIPlatformTensorboardRun
 protopath: google.cloud.aiplatform.v1.TensorboardRun
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: TensorboardTimeSeries
-kind: AiplatformTensorboardTimeSeries
+kind: AIPlatformTensorboardTimeSeries
 protopath: google.cloud.aiplatform.v1.TensorboardTimeSeries
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: TrainingPipeline
-kind: AiplatformTrainingPipeline
+kind: AIPlatformTrainingPipeline
 protopath: google.cloud.aiplatform.v1.TrainingPipeline
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: TuningJob
-kind: AiplatformTuningJob
+kind: AIPlatformTuningJob
 protopath: google.cloud.aiplatform.v1.TuningJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: RagCorpus
-kind: AiplatformRagCorpus
+kind: AIPlatformRagCorpus
 protopath: google.cloud.aiplatform.v1.RagCorpus
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1
 proto: RagFile
-kind: AiplatformRagFile
+kind: AIPlatformRagFile
 protopath: google.cloud.aiplatform.v1.RagFile
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Annotation
-kind: AiplatformAnnotation
+kind: AIPlatformAnnotation
 protopath: google.cloud.aiplatform.v1beta1.Annotation
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: AnnotationSpec
-kind: AiplatformAnnotationSpec
+kind: AIPlatformAnnotationSpec
 protopath: google.cloud.aiplatform.v1beta1.AnnotationSpec
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Artifact
-kind: AiplatformArtifact
+kind: AIPlatformArtifact
 protopath: google.cloud.aiplatform.v1beta1.Artifact
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: BatchPredictionJob
-kind: AiplatformBatchPredictionJob
+kind: AIPlatformBatchPredictionJob
 protopath: google.cloud.aiplatform.v1beta1.BatchPredictionJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: CachedContent
-kind: AiplatformCachedContent
+kind: AIPlatformCachedContent
 protopath: google.cloud.aiplatform.v1beta1.CachedContent
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Context
-kind: AiplatformContext
+kind: AIPlatformContext
 protopath: google.cloud.aiplatform.v1beta1.Context
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: CustomJob
-kind: AiplatformCustomJob
+kind: AIPlatformCustomJob
 protopath: google.cloud.aiplatform.v1beta1.CustomJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: DataItem
-kind: AiplatformDataItem
+kind: AIPlatformDataItem
 protopath: google.cloud.aiplatform.v1beta1.DataItem
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: DataLabelingJob
-kind: AiplatformDataLabelingJob
+kind: AIPlatformDataLabelingJob
 protopath: google.cloud.aiplatform.v1beta1.DataLabelingJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Dataset
-kind: AiplatformDataset
+kind: AIPlatformDataset
 protopath: google.cloud.aiplatform.v1beta1.Dataset
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: DatasetVersion
-kind: AiplatformDatasetVersion
+kind: AIPlatformDatasetVersion
 protopath: google.cloud.aiplatform.v1beta1.DatasetVersion
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: DeploymentResourcePool
-kind: AiplatformDeploymentResourcePool
+kind: AIPlatformDeploymentResourcePool
 protopath: google.cloud.aiplatform.v1beta1.DeploymentResourcePool
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Endpoint
-kind: AiplatformEndpoint
+kind: AIPlatformEndpoint
 protopath: google.cloud.aiplatform.v1beta1.Endpoint
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: EntityType
-kind: AiplatformEntityType
+kind: AIPlatformEntityType
 protopath: google.cloud.aiplatform.v1beta1.EntityType
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Execution
-kind: AiplatformExecution
+kind: AIPlatformExecution
 protopath: google.cloud.aiplatform.v1beta1.Execution
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Extension
-kind: AiplatformExtension
+kind: AIPlatformExtension
 protopath: google.cloud.aiplatform.v1beta1.Extension
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Feature
-kind: AiplatformFeature
+kind: AIPlatformFeature
 protopath: google.cloud.aiplatform.v1beta1.Feature
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: FeatureGroup
-kind: AiplatformFeatureGroup
+kind: AIPlatformFeatureGroup
 protopath: google.cloud.aiplatform.v1beta1.FeatureGroup
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: FeatureMonitor
-kind: AiplatformFeatureMonitor
+kind: AIPlatformFeatureMonitor
 protopath: google.cloud.aiplatform.v1beta1.FeatureMonitor
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: FeatureMonitorJob
-kind: AiplatformFeatureMonitorJob
+kind: AIPlatformFeatureMonitorJob
 protopath: google.cloud.aiplatform.v1beta1.FeatureMonitorJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: FeatureOnlineStore
-kind: AiplatformFeatureOnlineStore
+kind: AIPlatformFeatureOnlineStore
 protopath: google.cloud.aiplatform.v1beta1.FeatureOnlineStore
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: FeatureView
-kind: AiplatformFeatureView
+kind: AIPlatformFeatureView
 protopath: google.cloud.aiplatform.v1beta1.FeatureView
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: FeatureViewSync
-kind: AiplatformFeatureViewSync
+kind: AIPlatformFeatureViewSync
 protopath: google.cloud.aiplatform.v1beta1.FeatureViewSync
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Featurestore
-kind: AiplatformFeaturestore
+kind: AIPlatformFeaturestore
 protopath: google.cloud.aiplatform.v1beta1.Featurestore
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: HyperparameterTuningJob
-kind: AiplatformHyperparameterTuningJob
+kind: AIPlatformHyperparameterTuningJob
 protopath: google.cloud.aiplatform.v1beta1.HyperparameterTuningJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Index
-kind: AiplatformIndex
+kind: AIPlatformIndex
 protopath: google.cloud.aiplatform.v1beta1.Index
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: IndexEndpoint
-kind: AiplatformIndexEndpoint
+kind: AIPlatformIndexEndpoint
 protopath: google.cloud.aiplatform.v1beta1.IndexEndpoint
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: MetadataSchema
-kind: AiplatformMetadataSchema
+kind: AIPlatformMetadataSchema
 protopath: google.cloud.aiplatform.v1beta1.MetadataSchema
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: MetadataStore
-kind: AiplatformMetadataStore
+kind: AIPlatformMetadataStore
 protopath: google.cloud.aiplatform.v1beta1.MetadataStore
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Model
-kind: AiplatformModel
+kind: AIPlatformModel
 protopath: google.cloud.aiplatform.v1beta1.Model
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: ModelDeploymentMonitoringJob
-kind: AiplatformModelDeploymentMonitoringJob
+kind: AIPlatformModelDeploymentMonitoringJob
 protopath: google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: ModelEvaluation
-kind: AiplatformModelEvaluation
+kind: AIPlatformModelEvaluation
 protopath: google.cloud.aiplatform.v1beta1.ModelEvaluation
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: ModelEvaluationSlice
-kind: AiplatformModelEvaluationSlice
+kind: AIPlatformModelEvaluationSlice
 protopath: google.cloud.aiplatform.v1beta1.ModelEvaluationSlice
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: ModelMonitor
-kind: AiplatformModelMonitor
+kind: AIPlatformModelMonitor
 protopath: google.cloud.aiplatform.v1beta1.ModelMonitor
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: ModelMonitoringJob
-kind: AiplatformModelMonitoringJob
+kind: AIPlatformModelMonitoringJob
 protopath: google.cloud.aiplatform.v1beta1.ModelMonitoringJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: NasJob
-kind: AiplatformNasJob
+kind: AIPlatformNasJob
 protopath: google.cloud.aiplatform.v1beta1.NasJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: NasTrialDetail
-kind: AiplatformNasTrialDetail
+kind: AIPlatformNasTrialDetail
 protopath: google.cloud.aiplatform.v1beta1.NasTrialDetail
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: NotebookExecutionJob
-kind: AiplatformNotebookExecutionJob
+kind: AIPlatformNotebookExecutionJob
 protopath: google.cloud.aiplatform.v1beta1.NotebookExecutionJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: NotebookRuntimeTemplate
-kind: AiplatformNotebookRuntimeTemplate
+kind: AIPlatformNotebookRuntimeTemplate
 protopath: google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: NotebookRuntime
-kind: AiplatformNotebookRuntime
+kind: AIPlatformNotebookRuntime
 protopath: google.cloud.aiplatform.v1beta1.NotebookRuntime
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: PersistentResource
-kind: AiplatformPersistentResource
+kind: AIPlatformPersistentResource
 protopath: google.cloud.aiplatform.v1beta1.PersistentResource
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: PipelineJob
-kind: AiplatformPipelineJob
+kind: AIPlatformPipelineJob
 protopath: google.cloud.aiplatform.v1beta1.PipelineJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: PublisherModel
-kind: AiplatformPublisherModel
+kind: AIPlatformPublisherModel
 protopath: google.cloud.aiplatform.v1beta1.PublisherModel
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: ReasoningEngine
-kind: AiplatformReasoningEngine
+kind: AIPlatformReasoningEngine
 protopath: google.cloud.aiplatform.v1beta1.ReasoningEngine
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: SavedQuery
-kind: AiplatformSavedQuery
+kind: AIPlatformSavedQuery
 protopath: google.cloud.aiplatform.v1beta1.SavedQuery
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Schedule
-kind: AiplatformSchedule
+kind: AIPlatformSchedule
 protopath: google.cloud.aiplatform.v1beta1.Schedule
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: SpecialistPool
-kind: AiplatformSpecialistPool
+kind: AIPlatformSpecialistPool
 protopath: google.cloud.aiplatform.v1beta1.SpecialistPool
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Study
-kind: AiplatformStudy
+kind: AIPlatformStudy
 protopath: google.cloud.aiplatform.v1beta1.Study
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Trial
-kind: AiplatformTrial
+kind: AIPlatformTrial
 protopath: google.cloud.aiplatform.v1beta1.Trial
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: Tensorboard
-kind: AiplatformTensorboard
+kind: AIPlatformTensorboard
 protopath: google.cloud.aiplatform.v1beta1.Tensorboard
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: TensorboardExperiment
-kind: AiplatformTensorboardExperiment
+kind: AIPlatformTensorboardExperiment
 protopath: google.cloud.aiplatform.v1beta1.TensorboardExperiment
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: TensorboardRun
-kind: AiplatformTensorboardRun
+kind: AIPlatformTensorboardRun
 protopath: google.cloud.aiplatform.v1beta1.TensorboardRun
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: TensorboardTimeSeries
-kind: AiplatformTensorboardTimeSeries
+kind: AIPlatformTensorboardTimeSeries
 protopath: google.cloud.aiplatform.v1beta1.TensorboardTimeSeries
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: TrainingPipeline
-kind: AiplatformTrainingPipeline
+kind: AIPlatformTrainingPipeline
 protopath: google.cloud.aiplatform.v1beta1.TrainingPipeline
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: TuningJob
-kind: AiplatformTuningJob
+kind: AIPlatformTuningJob
 protopath: google.cloud.aiplatform.v1beta1.TuningJob
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: RagCorpus
-kind: AiplatformRagCorpus
+kind: AIPlatformRagCorpus
 protopath: google.cloud.aiplatform.v1beta1.RagCorpus
 validated: null
 ---
 service: aiplatform
 package: google.cloud.aiplatform.v1beta1
 proto: RagFile
-kind: AiplatformRagFile
+kind: AIPlatformRagFile
 protopath: google.cloud.aiplatform.v1beta1.RagFile
 validated: null
 ---
@@ -1219,203 +1205,203 @@ validated: null
 service: apigateway
 package: google.cloud.apigateway.v1
 proto: Api
-kind: ApigatewayApi
+kind: APIGatewayAPI
 protopath: google.cloud.apigateway.v1.Api
 validated: null
 ---
 service: apigateway
 package: google.cloud.apigateway.v1
 proto: ApiConfig
-kind: ApigatewayApiConfig
+kind: APIGatewayAPIConfig
 protopath: google.cloud.apigateway.v1.ApiConfig
 validated: null
 ---
 service: apigateway
 package: google.cloud.apigateway.v1
 proto: Gateway
-kind: ApigatewayGateway
+kind: APIGatewayGateway
 protopath: google.cloud.apigateway.v1.Gateway
 validated: null
 ---
 service: apigeeregistry
 package: google.cloud.apigeeregistry.v1
 proto: Instance
-kind: ApigeeregistryInstance
+kind: APIgeeRegistryInstance
 protopath: google.cloud.apigeeregistry.v1.Instance
 validated: null
 ---
 service: apigeeregistry
 package: google.cloud.apigeeregistry.v1
 proto: Api
-kind: ApigeeregistryApi
+kind: APIgeeRegistryApi
 protopath: google.cloud.apigeeregistry.v1.Api
 validated: null
 ---
 service: apigeeregistry
 package: google.cloud.apigeeregistry.v1
 proto: ApiVersion
-kind: ApigeeregistryApiVersion
+kind: APIgeeRegistryApiVersion
 protopath: google.cloud.apigeeregistry.v1.ApiVersion
 validated: null
 ---
 service: apigeeregistry
 package: google.cloud.apigeeregistry.v1
 proto: ApiSpec
-kind: ApigeeregistryApiSpec
+kind: APIgeeRegistryApiSpec
 protopath: google.cloud.apigeeregistry.v1.ApiSpec
 validated: null
 ---
 service: apigeeregistry
 package: google.cloud.apigeeregistry.v1
 proto: ApiDeployment
-kind: ApigeeregistryApiDeployment
+kind: APIgeeRegistryApiDeployment
 protopath: google.cloud.apigeeregistry.v1.ApiDeployment
 validated: null
 ---
 service: apigeeregistry
 package: google.cloud.apigeeregistry.v1
 proto: Artifact
-kind: ApigeeregistryArtifact
+kind: APIgeeRegistryArtifact
 protopath: google.cloud.apigeeregistry.v1.Artifact
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: Api
-kind: ApihubApi
+kind: APIHubApi
 protopath: google.cloud.apihub.v1.Api
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: Version
-kind: ApihubVersion
+kind: APIHubVersion
 protopath: google.cloud.apihub.v1.Version
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: Spec
-kind: ApihubSpec
+kind: APIHubSpec
 protopath: google.cloud.apihub.v1.Spec
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: Deployment
-kind: ApihubDeployment
+kind: APIHubDeployment
 protopath: google.cloud.apihub.v1.Deployment
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: ApiOperation
-kind: ApihubApiOperation
+kind: APIHubAPIOperation
 protopath: google.cloud.apihub.v1.ApiOperation
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: Definition
-kind: ApihubDefinition
+kind: APIHubDefinition
 protopath: google.cloud.apihub.v1.Definition
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: Attribute
-kind: ApihubAttribute
+kind: APIHubAttribute
 protopath: google.cloud.apihub.v1.Attribute
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: Dependency
-kind: ApihubDependency
+kind: APIHubDependency
 protopath: google.cloud.apihub.v1.Dependency
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: ApiHubInstance
-kind: ApihubApiHubInstance
+kind: APIHubAPIHubInstance
 protopath: google.cloud.apihub.v1.ApiHubInstance
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: ExternalApi
-kind: ApihubExternalApi
+kind: APIHubExternalAPI
 protopath: google.cloud.apihub.v1.ExternalApi
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: HostProjectRegistration
-kind: ApihubHostProjectRegistration
+kind: APIHubHostProjectRegistration
 protopath: google.cloud.apihub.v1.HostProjectRegistration
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: StyleGuide
-kind: ApihubStyleGuide
+kind: APIHubStyleGuide
 protopath: google.cloud.apihub.v1.StyleGuide
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: Plugin
-kind: ApihubPlugin
+kind: APIHubPlugin
 protopath: google.cloud.apihub.v1.Plugin
 validated: null
 ---
 service: apihub
 package: google.cloud.apihub.v1
 proto: RuntimeProjectAttachment
-kind: ApihubRuntimeProjectAttachment
+kind: APIHubRuntimeProjectAttachment
 protopath: google.cloud.apihub.v1.RuntimeProjectAttachment
 validated: null
 ---
 service: apphub
 package: google.cloud.apphub.v1
 proto: Application
-kind: ApphubApplication
+kind: AppHubApplication
 protopath: google.cloud.apphub.v1.Application
 validated: null
 ---
 service: apphub
 package: google.cloud.apphub.v1
 proto: Service
-kind: ApphubService
+kind: AppHubService
 protopath: google.cloud.apphub.v1.Service
 validated: null
 ---
 service: apphub
 package: google.cloud.apphub.v1
 proto: DiscoveredService
-kind: ApphubDiscoveredService
+kind: AppHubDiscoveredService
 protopath: google.cloud.apphub.v1.DiscoveredService
 validated: null
 ---
 service: apphub
 package: google.cloud.apphub.v1
 proto: ServiceProjectAttachment
-kind: ApphubServiceProjectAttachment
+kind: AppHubServiceProjectAttachment
 protopath: google.cloud.apphub.v1.ServiceProjectAttachment
 validated: null
 ---
 service: apphub
 package: google.cloud.apphub.v1
 proto: Workload
-kind: ApphubWorkload
+kind: AppHubWorkload
 protopath: google.cloud.apphub.v1.Workload
 validated: null
 ---
 service: apphub
 package: google.cloud.apphub.v1
 proto: DiscoveredWorkload
-kind: ApphubDiscoveredWorkload
+kind: AppHubDiscoveredWorkload
 protopath: google.cloud.apphub.v1.DiscoveredWorkload
 validated: null
 ---
@@ -1471,238 +1457,238 @@ validated: null
 service: assuredworkloads
 package: google.cloud.assuredworkloads.v1
 proto: Workload
-kind: AssuredworkloadsWorkload
+kind: AssuredWorkloadsWorkload
 protopath: google.cloud.assuredworkloads.v1.Workload
 validated: null
 ---
 service: assuredworkloads
 package: google.cloud.assuredworkloads.v1
 proto: Violation
-kind: AssuredworkloadsViolation
+kind: AssuredWorkloadsViolation
 protopath: google.cloud.assuredworkloads.v1.Violation
 validated: null
 ---
 service: assuredworkloads
 package: google.cloud.assuredworkloads.v1beta1
 proto: Workload
-kind: AssuredworkloadsWorkload
+kind: AssuredWorkloadsWorkload
 protopath: google.cloud.assuredworkloads.v1beta1.Workload
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1
 proto: AnnotationSpec
-kind: AutomlAnnotationSpec
+kind: AutoMLAnnotationSpec
 protopath: google.cloud.automl.v1.AnnotationSpec
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1
 proto: Dataset
-kind: AutomlDataset
+kind: AutoMLDataset
 protopath: google.cloud.automl.v1.Dataset
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1
 proto: Model
-kind: AutomlModel
+kind: AutoMLModel
 protopath: google.cloud.automl.v1.Model
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1
 proto: ModelEvaluation
-kind: AutomlModelEvaluation
+kind: AutoMLModelEvaluation
 protopath: google.cloud.automl.v1.ModelEvaluation
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1beta1
 proto: AnnotationSpec
-kind: AutomlAnnotationSpec
+kind: AutoMLAnnotationSpec
 protopath: google.cloud.automl.v1beta1.AnnotationSpec
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1beta1
 proto: ColumnSpec
-kind: AutomlColumnSpec
+kind: AutoMLColumnSpec
 protopath: google.cloud.automl.v1beta1.ColumnSpec
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1beta1
 proto: Dataset
-kind: AutomlDataset
+kind: AutoMLDataset
 protopath: google.cloud.automl.v1beta1.Dataset
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1beta1
 proto: Model
-kind: AutomlModel
+kind: AutoMLModel
 protopath: google.cloud.automl.v1beta1.Model
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1beta1
 proto: ModelEvaluation
-kind: AutomlModelEvaluation
+kind: AutoMLModelEvaluation
 protopath: google.cloud.automl.v1beta1.ModelEvaluation
 validated: null
 ---
 service: automl
 package: google.cloud.automl.v1beta1
 proto: TableSpec
-kind: AutomlTableSpec
+kind: AutoMLTableSpec
 protopath: google.cloud.automl.v1beta1.TableSpec
 validated: null
 ---
 service: backupdr
 package: google.cloud.backupdr.v1
 proto: ManagementServer
-kind: BackupdrManagementServer
+kind: BackupDRManagementServer
 protopath: google.cloud.backupdr.v1.ManagementServer
 validated: null
 ---
 service: backupdr
 package: google.cloud.backupdr.v1
 proto: BackupPlan
-kind: BackupdrBackupPlan
+kind: BackupDRBackupPlan
 protopath: google.cloud.backupdr.v1.BackupPlan
 validated: null
 ---
 service: backupdr
 package: google.cloud.backupdr.v1
 proto: BackupPlanAssociation
-kind: BackupdrBackupPlanAssociation
+kind: BackupDRBackupPlanAssociation
 protopath: google.cloud.backupdr.v1.BackupPlanAssociation
 validated: null
 ---
 service: backupdr
 package: google.cloud.backupdr.v1
 proto: BackupVault
-kind: BackupdrBackupVault
+kind: BackupDRBackupVault
 protopath: google.cloud.backupdr.v1.BackupVault
 validated: null
 ---
 service: backupdr
 package: google.cloud.backupdr.v1
 proto: DataSource
-kind: BackupdrDataSource
+kind: BackupDRDataSource
 protopath: google.cloud.backupdr.v1.DataSource
 validated: null
 ---
 service: backupdr
 package: google.cloud.backupdr.v1
 proto: Backup
-kind: BackupdrBackup
+kind: BackupDRBackup
 protopath: google.cloud.backupdr.v1.Backup
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: Instance
-kind: BaremetalsolutionInstance
+kind: BareMetalSolutionInstance
 protopath: google.cloud.baremetalsolution.v2.Instance
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: ServerNetworkTemplate
-kind: BaremetalsolutionServerNetworkTemplate
+kind: BareMetalSolutionServerNetworkTemplate
 protopath: google.cloud.baremetalsolution.v2.ServerNetworkTemplate
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: Lun
-kind: BaremetalsolutionLun
+kind: BareMetalSolutionLun
 protopath: google.cloud.baremetalsolution.v2.Lun
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: Network
-kind: BaremetalsolutionNetwork
+kind: BareMetalSolutionNetwork
 protopath: google.cloud.baremetalsolution.v2.Network
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: NfsShare
-kind: BaremetalsolutionNfsShare
+kind: BareMetalSolutionNfsShare
 protopath: google.cloud.baremetalsolution.v2.NfsShare
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: OSImage
-kind: BaremetalsolutionOSImage
+kind: BareMetalSolutionOSImage
 protopath: google.cloud.baremetalsolution.v2.OSImage
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: ProvisioningConfig
-kind: BaremetalsolutionProvisioningConfig
+kind: BareMetalSolutionProvisioningConfig
 protopath: google.cloud.baremetalsolution.v2.ProvisioningConfig
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: ProvisioningQuota
-kind: BaremetalsolutionProvisioningQuota
+kind: BareMetalSolutionProvisioningQuota
 protopath: google.cloud.baremetalsolution.v2.ProvisioningQuota
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: InstanceConfig
-kind: BaremetalsolutionInstanceConfig
+kind: BareMetalSolutionInstanceConfig
 protopath: google.cloud.baremetalsolution.v2.InstanceConfig
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: VolumeConfig
-kind: BaremetalsolutionVolumeConfig
+kind: BareMetalSolutionVolumeConfig
 protopath: google.cloud.baremetalsolution.v2.VolumeConfig
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: NetworkConfig
-kind: BaremetalsolutionNetworkConfig
+kind: BareMetalSolutionNetworkConfig
 protopath: google.cloud.baremetalsolution.v2.NetworkConfig
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: InstanceQuota
-kind: BaremetalsolutionInstanceQuota
+kind: BareMetalSolutionInstanceQuota
 protopath: google.cloud.baremetalsolution.v2.InstanceQuota
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: SSHKey
-kind: BaremetalsolutionSSHKey
+kind: BareMetalSolutionSSHKey
 protopath: google.cloud.baremetalsolution.v2.SSHKey
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: Volume
-kind: BaremetalsolutionVolume
+kind: BareMetalSolutionVolume
 protopath: google.cloud.baremetalsolution.v2.Volume
 validated: null
 ---
 service: baremetalsolution
 package: google.cloud.baremetalsolution.v2
 proto: VolumeSnapshot
-kind: BaremetalsolutionVolumeSnapshot
+kind: BareMetalSolutionVolumeSnapshot
 protopath: google.cloud.baremetalsolution.v2.VolumeSnapshot
 validated: null
 ---
@@ -1730,35 +1716,35 @@ validated: null
 service: beyondcorp
 package: google.cloud.beyondcorp.appconnections.v1
 proto: AppConnection
-kind: BeyondcorpAppConnection
+kind: BeyondCorpAppConnection
 protopath: google.cloud.beyondcorp.appconnections.v1.AppConnection
 validated: null
 ---
 service: beyondcorp
 package: google.cloud.beyondcorp.appconnectors.v1
 proto: AppConnector
-kind: BeyondcorpAppConnector
+kind: BeyondCorpAppConnector
 protopath: google.cloud.beyondcorp.appconnectors.v1.AppConnector
 validated: null
 ---
 service: beyondcorp
 package: google.cloud.beyondcorp.appgateways.v1
 proto: AppGateway
-kind: BeyondcorpAppGateway
+kind: BeyondCorpAppGateway
 protopath: google.cloud.beyondcorp.appgateways.v1.AppGateway
 validated: null
 ---
 service: beyondcorp
 package: google.cloud.beyondcorp.clientconnectorservices.v1
 proto: ClientConnectorService
-kind: BeyondcorpClientConnectorService
+kind: BeyondCorpClientConnectorService
 protopath: google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService
 validated: null
 ---
 service: beyondcorp
 package: google.cloud.beyondcorp.clientgateways.v1
 proto: ClientGateway
-kind: BeyondcorpClientGateway
+kind: BeyondCorpClientGateway
 protopath: google.cloud.beyondcorp.clientgateways.v1.ClientGateway
 validated: null
 ---
@@ -2003,84 +1989,84 @@ validated: null
 service: billing
 package: google.cloud.billing.v1
 proto: Sku
-kind: BillingSku
+kind: BillingSKU
 protopath: google.cloud.billing.v1.Sku
 validated: null
 ---
 service: binaryauthorization
 package: google.cloud.binaryauthorization.v1
 proto: Policy
-kind: BinaryauthorizationPolicy
+kind: BinaryAuthorizationPolicy
 protopath: google.cloud.binaryauthorization.v1.Policy
 validated: null
 ---
 service: binaryauthorization
 package: google.cloud.binaryauthorization.v1
 proto: Attestor
-kind: BinaryauthorizationAttestor
+kind: BinaryAuthorizationAttestor
 protopath: google.cloud.binaryauthorization.v1.Attestor
 validated: null
 ---
 service: binaryauthorization
 package: google.cloud.binaryauthorization.v1beta1
 proto: Policy
-kind: BinaryauthorizationPolicy
+kind: BinaryAuthorizationPolicy
 protopath: google.cloud.binaryauthorization.v1beta1.Policy
 validated: null
 ---
 service: binaryauthorization
 package: google.cloud.binaryauthorization.v1beta1
 proto: Attestor
-kind: BinaryauthorizationAttestor
+kind: BinaryAuthorizationAttestor
 protopath: google.cloud.binaryauthorization.v1beta1.Attestor
 validated: null
 ---
 service: blockchainnodeengine
 package: google.cloud.blockchainnodeengine.v1
 proto: BlockchainNode
-kind: BlockchainnodeengineBlockchainNode
+kind: BlockchainNodeEngineBlockchainNode
 protopath: google.cloud.blockchainnodeengine.v1.BlockchainNode
 validated: null
 ---
 service: certificatemanager
 package: google.cloud.certificatemanager.v1
 proto: CertificateIssuanceConfig
-kind: CertificatemanagerCertificateIssuanceConfig
+kind: CertificateManagerCertificateIssuanceConfig
 protopath: google.cloud.certificatemanager.v1.CertificateIssuanceConfig
 validated: null
 ---
 service: certificatemanager
 package: google.cloud.certificatemanager.v1
 proto: Certificate
-kind: CertificatemanagerCertificate
+kind: CertificateManagerCertificate
 protopath: google.cloud.certificatemanager.v1.Certificate
 validated: null
 ---
 service: certificatemanager
 package: google.cloud.certificatemanager.v1
 proto: CertificateMap
-kind: CertificatemanagerCertificateMap
+kind: CertificateManagerCertificateMap
 protopath: google.cloud.certificatemanager.v1.CertificateMap
 validated: null
 ---
 service: certificatemanager
 package: google.cloud.certificatemanager.v1
 proto: CertificateMapEntry
-kind: CertificatemanagerCertificateMapEntry
+kind: CertificateManagerCertificateMapEntry
 protopath: google.cloud.certificatemanager.v1.CertificateMapEntry
 validated: null
 ---
 service: certificatemanager
 package: google.cloud.certificatemanager.v1
 proto: DnsAuthorization
-kind: CertificatemanagerDnsAuthorization
+kind: CertificateManagerDnsAuthorization
 protopath: google.cloud.certificatemanager.v1.DnsAuthorization
 validated: null
 ---
 service: certificatemanager
 package: google.cloud.certificatemanager.v1
 proto: TrustConfig
-kind: CertificatemanagerTrustConfig
+kind: CertificateManagerTrustConfig
 protopath: google.cloud.certificatemanager.v1.TrustConfig
 validated: null
 ---
@@ -2171,133 +2157,133 @@ validated: null
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1
 proto: AccessApprovalRequest
-kind: CloudcontrolspartnerAccessApprovalRequest
+kind: CloudControlsPartnerAccessApprovalRequest
 protopath: google.cloud.cloudcontrolspartner.v1.AccessApprovalRequest
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1
 proto: Workload
-kind: CloudcontrolspartnerWorkload
+kind: CloudControlsPartnerWorkload
 protopath: google.cloud.cloudcontrolspartner.v1.Workload
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1
 proto: Customer
-kind: CloudcontrolspartnerCustomer
+kind: CloudControlsPartnerCustomer
 protopath: google.cloud.cloudcontrolspartner.v1.Customer
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1
 proto: EkmConnections
-kind: CloudcontrolspartnerEkmConnections
+kind: CloudControlsPartnerEkmConnections
 protopath: google.cloud.cloudcontrolspartner.v1.EkmConnections
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1
 proto: PartnerPermissions
-kind: CloudcontrolspartnerPartnerPermissions
+kind: CloudControlsPartnerPartnerPermissions
 protopath: google.cloud.cloudcontrolspartner.v1.PartnerPermissions
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1
 proto: Partner
-kind: CloudcontrolspartnerPartner
+kind: CloudControlsPartnerPartner
 protopath: google.cloud.cloudcontrolspartner.v1.Partner
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1
 proto: Violation
-kind: CloudcontrolspartnerViolation
+kind: CloudControlsPartnerViolation
 protopath: google.cloud.cloudcontrolspartner.v1.Violation
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1beta
 proto: AccessApprovalRequest
-kind: CloudcontrolspartnerAccessApprovalRequest
+kind: CloudControlsPartnerAccessApprovalRequest
 protopath: google.cloud.cloudcontrolspartner.v1beta.AccessApprovalRequest
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1beta
 proto: Workload
-kind: CloudcontrolspartnerWorkload
+kind: CloudControlsPartnerWorkload
 protopath: google.cloud.cloudcontrolspartner.v1beta.Workload
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1beta
 proto: Customer
-kind: CloudcontrolspartnerCustomer
+kind: CloudControlsPartnerCustomer
 protopath: google.cloud.cloudcontrolspartner.v1beta.Customer
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1beta
 proto: EkmConnections
-kind: CloudcontrolspartnerEkmConnections
+kind: CloudControlsPartnerEkmConnections
 protopath: google.cloud.cloudcontrolspartner.v1beta.EkmConnections
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1beta
 proto: PartnerPermissions
-kind: CloudcontrolspartnerPartnerPermissions
+kind: CloudControlsPartnerPartnerPermissions
 protopath: google.cloud.cloudcontrolspartner.v1beta.PartnerPermissions
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1beta
 proto: Partner
-kind: CloudcontrolspartnerPartner
+kind: CloudControlsPartnerPartner
 protopath: google.cloud.cloudcontrolspartner.v1beta.Partner
 validated: null
 ---
 service: cloudcontrolspartner
 package: google.cloud.cloudcontrolspartner.v1beta
 proto: Violation
-kind: CloudcontrolspartnerViolation
+kind: CloudControlsPartnerViolation
 protopath: google.cloud.cloudcontrolspartner.v1beta.Violation
 validated: null
 ---
 service: clouddms
 package: google.cloud.clouddms.v1
 proto: MigrationJob
-kind: ClouddmsMigrationJob
+kind: CloudDMSMigrationJob
 protopath: google.cloud.clouddms.v1.MigrationJob
 validated: null
 ---
 service: clouddms
 package: google.cloud.clouddms.v1
 proto: ConnectionProfile
-kind: ClouddmsConnectionProfile
+kind: CloudDMSConnectionProfile
 protopath: google.cloud.clouddms.v1.ConnectionProfile
 validated: null
 ---
 service: clouddms
 package: google.cloud.clouddms.v1
 proto: PrivateConnection
-kind: ClouddmsPrivateConnection
+kind: CloudDMSPrivateConnection
 protopath: google.cloud.clouddms.v1.PrivateConnection
 validated: null
 ---
 service: clouddms
 package: google.cloud.clouddms.v1
 proto: ConversionWorkspace
-kind: ClouddmsConversionWorkspace
+kind: CloudDMSConversionWorkspace
 protopath: google.cloud.clouddms.v1.ConversionWorkspace
 validated: null
 ---
 service: clouddms
 package: google.cloud.clouddms.v1
 proto: MappingRule
-kind: ClouddmsMappingRule
+kind: CloudDMSMappingRule
 protopath: google.cloud.clouddms.v1.MappingRule
 validated: null
 ---
@@ -2318,7 +2304,7 @@ validated: null
 service: confidentialcomputing
 package: google.cloud.confidentialcomputing.v1
 proto: Challenge
-kind: ConfidentialcomputingChallenge
+kind: ConfidentialComputingChallenge
 protopath: google.cloud.confidentialcomputing.v1.Challenge
 validated: null
 ---
@@ -2409,252 +2395,252 @@ validated: null
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: Conversation
-kind: ContactcenterinsightsConversation
+kind: ContactCenterInsightsConversation
 protopath: google.cloud.contactcenterinsights.v1.Conversation
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: Analysis
-kind: ContactcenterinsightsAnalysis
+kind: ContactCenterInsightsAnalysis
 protopath: google.cloud.contactcenterinsights.v1.Analysis
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: FeedbackLabel
-kind: ContactcenterinsightsFeedbackLabel
+kind: ContactCenterInsightsFeedbackLabel
 protopath: google.cloud.contactcenterinsights.v1.FeedbackLabel
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: IssueModel
-kind: ContactcenterinsightsIssueModel
+kind: ContactCenterInsightsIssueModel
 protopath: google.cloud.contactcenterinsights.v1.IssueModel
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: Issue
-kind: ContactcenterinsightsIssue
+kind: ContactCenterInsightsIssue
 protopath: google.cloud.contactcenterinsights.v1.Issue
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: PhraseMatcher
-kind: ContactcenterinsightsPhraseMatcher
+kind: ContactCenterInsightsPhraseMatcher
 protopath: google.cloud.contactcenterinsights.v1.PhraseMatcher
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: Settings
-kind: ContactcenterinsightsSettings
+kind: ContactCenterInsightsSettings
 protopath: google.cloud.contactcenterinsights.v1.Settings
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: AnalysisRule
-kind: ContactcenterinsightsAnalysisRule
+kind: ContactCenterInsightsAnalysisRule
 protopath: google.cloud.contactcenterinsights.v1.AnalysisRule
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: EncryptionSpec
-kind: ContactcenterinsightsEncryptionSpec
+kind: ContactCenterInsightsEncryptionSpec
 protopath: google.cloud.contactcenterinsights.v1.EncryptionSpec
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: View
-kind: ContactcenterinsightsView
+kind: ContactCenterInsightsView
 protopath: google.cloud.contactcenterinsights.v1.View
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: QaQuestion
-kind: ContactcenterinsightsQaQuestion
+kind: ContactCenterInsightsQaQuestion
 protopath: google.cloud.contactcenterinsights.v1.QaQuestion
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: QaScorecard
-kind: ContactcenterinsightsQaScorecard
+kind: ContactCenterInsightsQaScorecard
 protopath: google.cloud.contactcenterinsights.v1.QaScorecard
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: QaScorecardRevision
-kind: ContactcenterinsightsQaScorecardRevision
+kind: ContactCenterInsightsQaScorecardRevision
 protopath: google.cloud.contactcenterinsights.v1.QaScorecardRevision
 validated: null
 ---
 service: contactcenterinsights
 package: google.cloud.contactcenterinsights.v1
 proto: QaScorecardResult
-kind: ContactcenterinsightsQaScorecardResult
+kind: ContactCenterInsightsQaScorecardResult
 protopath: google.cloud.contactcenterinsights.v1.QaScorecardResult
 validated: null
 ---
 service: contentwarehouse
 package: google.cloud.contentwarehouse.v1
 proto: Document
-kind: ContentwarehouseDocument
+kind: ContentWarehouseDocument
 protopath: google.cloud.contentwarehouse.v1.Document
 validated: null
 ---
 service: contentwarehouse
 package: google.cloud.contentwarehouse.v1
 proto: DocumentLink
-kind: ContentwarehouseDocumentLink
+kind: ContentWarehouseDocumentLink
 protopath: google.cloud.contentwarehouse.v1.DocumentLink
 validated: null
 ---
 service: contentwarehouse
 package: google.cloud.contentwarehouse.v1
 proto: DocumentSchema
-kind: ContentwarehouseDocumentSchema
+kind: ContentWarehouseDocumentSchema
 protopath: google.cloud.contentwarehouse.v1.DocumentSchema
 validated: null
 ---
 service: contentwarehouse
 package: google.cloud.contentwarehouse.v1
 proto: RuleSet
-kind: ContentwarehouseRuleSet
+kind: ContentWarehouseRuleSet
 protopath: google.cloud.contentwarehouse.v1.RuleSet
 validated: null
 ---
 service: contentwarehouse
 package: google.cloud.contentwarehouse.v1
 proto: SynonymSet
-kind: ContentwarehouseSynonymSet
+kind: ContentWarehouseSynonymSet
 protopath: google.cloud.contentwarehouse.v1.SynonymSet
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.lineage.v1
 proto: Process
-kind: DatacatalogProcess
+kind: DataCatalogProcess
 protopath: google.cloud.datacatalog.lineage.v1.Process
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.lineage.v1
 proto: Run
-kind: DatacatalogRun
+kind: DataCatalogRun
 protopath: google.cloud.datacatalog.lineage.v1.Run
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.lineage.v1
 proto: LineageEvent
-kind: DatacatalogLineageEvent
+kind: DataCatalogLineageEvent
 protopath: google.cloud.datacatalog.lineage.v1.LineageEvent
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1
 proto: Entry
-kind: DatacatalogEntry
+kind: DataCatalogEntry
 protopath: google.cloud.datacatalog.v1.Entry
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1
 proto: EntryGroup
-kind: DatacatalogEntryGroup
+kind: DataCatalogEntryGroup
 protopath: google.cloud.datacatalog.v1.EntryGroup
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1
 proto: Taxonomy
-kind: DatacatalogTaxonomy
+kind: DataCatalogTaxonomy
 protopath: google.cloud.datacatalog.v1.Taxonomy
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1
 proto: PolicyTag
-kind: DatacatalogPolicyTag
+kind: DataCatalogPolicyTag
 protopath: google.cloud.datacatalog.v1.PolicyTag
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1
 proto: Tag
-kind: DatacatalogTag
+kind: DataCatalogTag
 protopath: google.cloud.datacatalog.v1.Tag
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1
 proto: TagTemplate
-kind: DatacatalogTagTemplate
+kind: DataCatalogTagTemplate
 protopath: google.cloud.datacatalog.v1.TagTemplate
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1
 proto: TagTemplateField
-kind: DatacatalogTagTemplateField
+kind: DataCatalogTagTemplateField
 protopath: google.cloud.datacatalog.v1.TagTemplateField
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1beta1
 proto: Entry
-kind: DatacatalogEntry
+kind: DataCatalogEntry
 protopath: google.cloud.datacatalog.v1beta1.Entry
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1beta1
 proto: EntryGroup
-kind: DatacatalogEntryGroup
+kind: DataCatalogEntryGroup
 protopath: google.cloud.datacatalog.v1beta1.EntryGroup
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1beta1
 proto: Taxonomy
-kind: DatacatalogTaxonomy
+kind: DataCatalogTaxonomy
 protopath: google.cloud.datacatalog.v1beta1.Taxonomy
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1beta1
 proto: PolicyTag
-kind: DatacatalogPolicyTag
+kind: DataCatalogPolicyTag
 protopath: google.cloud.datacatalog.v1beta1.PolicyTag
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1beta1
 proto: Tag
-kind: DatacatalogTag
+kind: DataCatalogTag
 protopath: google.cloud.datacatalog.v1beta1.Tag
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1beta1
 proto: TagTemplate
-kind: DatacatalogTagTemplate
+kind: DataCatalogTagTemplate
 protopath: google.cloud.datacatalog.v1beta1.TagTemplate
 validated: null
 ---
 service: datacatalog
 package: google.cloud.datacatalog.v1beta1
 proto: TagTemplateField
-kind: DatacatalogTagTemplateField
+kind: DataCatalogTagTemplateField
 protopath: google.cloud.datacatalog.v1beta1.TagTemplateField
 validated: null
 ---
@@ -2703,77 +2689,77 @@ validated: null
 service: datafusion
 package: google.cloud.datafusion.v1
 proto: Instance
-kind: DatafusionInstance
+kind: DataFusionInstance
 protopath: google.cloud.datafusion.v1.Instance
 validated: null
 ---
 service: datafusion
 package: google.cloud.datafusion.v1beta1
 proto: Instance
-kind: DatafusionInstance
+kind: DataFusionInstance
 protopath: google.cloud.datafusion.v1beta1.Instance
 validated: null
 ---
 service: datafusion
 package: google.cloud.datafusion.v1beta1
 proto: Namespace
-kind: DatafusionNamespace
+kind: DataFusionNamespace
 protopath: google.cloud.datafusion.v1beta1.Namespace
 validated: null
 ---
 service: datalabeling
 package: google.cloud.datalabeling.v1beta1
 proto: AnnotationSpecSet
-kind: DatalabelingAnnotationSpecSet
+kind: DataLabelingAnnotationSpecSet
 protopath: google.cloud.datalabeling.v1beta1.AnnotationSpecSet
 validated: null
 ---
 service: datalabeling
 package: google.cloud.datalabeling.v1beta1
 proto: Dataset
-kind: DatalabelingDataset
+kind: DataLabelingDataset
 protopath: google.cloud.datalabeling.v1beta1.Dataset
 validated: null
 ---
 service: datalabeling
 package: google.cloud.datalabeling.v1beta1
 proto: DataItem
-kind: DatalabelingDataItem
+kind: DataLabelingDataItem
 protopath: google.cloud.datalabeling.v1beta1.DataItem
 validated: null
 ---
 service: datalabeling
 package: google.cloud.datalabeling.v1beta1
 proto: AnnotatedDataset
-kind: DatalabelingAnnotatedDataset
+kind: DataLabelingAnnotatedDataset
 protopath: google.cloud.datalabeling.v1beta1.AnnotatedDataset
 validated: null
 ---
 service: datalabeling
 package: google.cloud.datalabeling.v1beta1
 proto: Example
-kind: DatalabelingExample
+kind: DataLabelingExample
 protopath: google.cloud.datalabeling.v1beta1.Example
 validated: null
 ---
 service: datalabeling
 package: google.cloud.datalabeling.v1beta1
 proto: Evaluation
-kind: DatalabelingEvaluation
+kind: DataLabelingEvaluation
 protopath: google.cloud.datalabeling.v1beta1.Evaluation
 validated: null
 ---
 service: datalabeling
 package: google.cloud.datalabeling.v1beta1
 proto: EvaluationJob
-kind: DatalabelingEvaluationJob
+kind: DataLabelingEvaluationJob
 protopath: google.cloud.datalabeling.v1beta1.EvaluationJob
 validated: null
 ---
 service: datalabeling
 package: google.cloud.datalabeling.v1beta1
 proto: Instruction
-kind: DatalabelingInstruction
+kind: DataLabelingInstruction
 protopath: google.cloud.datalabeling.v1beta1.Instruction
 validated: null
 ---
@@ -3074,14 +3060,14 @@ validated: null
 service: developerconnect
 package: google.cloud.developerconnect.v1
 proto: Connection
-kind: DeveloperconnectConnection
+kind: DeveloperConnectConnection
 protopath: google.cloud.developerconnect.v1.Connection
 validated: null
 ---
 service: developerconnect
 package: google.cloud.developerconnect.v1
 proto: GitRepositoryLink
-kind: DeveloperconnectGitRepositoryLink
+kind: DeveloperConnectGitRepositoryLink
 protopath: google.cloud.developerconnect.v1.GitRepositoryLink
 validated: null
 ---
@@ -3683,308 +3669,308 @@ validated: null
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Answer
-kind: DiscoveryengineAnswer
+kind: DiscoveryEngineAnswer
 protopath: google.cloud.discoveryengine.v1.Answer
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Chunk
-kind: DiscoveryengineChunk
+kind: DiscoveryEngineChunk
 protopath: google.cloud.discoveryengine.v1.Chunk
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Control
-kind: DiscoveryengineControl
+kind: DiscoveryEngineControl
 protopath: google.cloud.discoveryengine.v1.Control
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Conversation
-kind: DiscoveryengineConversation
+kind: DiscoveryEngineConversation
 protopath: google.cloud.discoveryengine.v1.Conversation
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: CustomTuningModel
-kind: DiscoveryengineCustomTuningModel
+kind: DiscoveryEngineCustomTuningModel
 protopath: google.cloud.discoveryengine.v1.CustomTuningModel
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: DataStore
-kind: DiscoveryengineDataStore
+kind: DiscoveryEngineDataStore
 protopath: google.cloud.discoveryengine.v1.DataStore
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Document
-kind: DiscoveryengineDocument
+kind: DiscoveryEngineDocument
 protopath: google.cloud.discoveryengine.v1.Document
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: DocumentProcessingConfig
-kind: DiscoveryengineDocumentProcessingConfig
+kind: DiscoveryEngineDocumentProcessingConfig
 protopath: google.cloud.discoveryengine.v1.DocumentProcessingConfig
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Engine
-kind: DiscoveryengineEngine
+kind: DiscoveryEngineEngine
 protopath: google.cloud.discoveryengine.v1.Engine
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Project
-kind: DiscoveryengineProject
+kind: DiscoveryEngineProject
 protopath: google.cloud.discoveryengine.v1.Project
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Schema
-kind: DiscoveryengineSchema
+kind: DiscoveryEngineSchema
 protopath: google.cloud.discoveryengine.v1.Schema
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: Session
-kind: DiscoveryengineSession
+kind: DiscoveryEngineSession
 protopath: google.cloud.discoveryengine.v1.Session
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: SiteSearchEngine
-kind: DiscoveryengineSiteSearchEngine
+kind: DiscoveryEngineSiteSearchEngine
 protopath: google.cloud.discoveryengine.v1.SiteSearchEngine
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1
 proto: TargetSite
-kind: DiscoveryengineTargetSite
+kind: DiscoveryEngineTargetSite
 protopath: google.cloud.discoveryengine.v1.TargetSite
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Answer
-kind: DiscoveryengineAnswer
+kind: DiscoveryEngineAnswer
 protopath: google.cloud.discoveryengine.v1beta.Answer
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Chunk
-kind: DiscoveryengineChunk
+kind: DiscoveryEngineChunk
 protopath: google.cloud.discoveryengine.v1beta.Chunk
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Control
-kind: DiscoveryengineControl
+kind: DiscoveryEngineControl
 protopath: google.cloud.discoveryengine.v1beta.Control
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Conversation
-kind: DiscoveryengineConversation
+kind: DiscoveryEngineConversation
 protopath: google.cloud.discoveryengine.v1beta.Conversation
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: CustomTuningModel
-kind: DiscoveryengineCustomTuningModel
+kind: DiscoveryEngineCustomTuningModel
 protopath: google.cloud.discoveryengine.v1beta.CustomTuningModel
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: DataStore
-kind: DiscoveryengineDataStore
+kind: DiscoveryEngineDataStore
 protopath: google.cloud.discoveryengine.v1beta.DataStore
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Document
-kind: DiscoveryengineDocument
+kind: DiscoveryEngineDocument
 protopath: google.cloud.discoveryengine.v1beta.Document
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: DocumentProcessingConfig
-kind: DiscoveryengineDocumentProcessingConfig
+kind: DiscoveryEngineDocumentProcessingConfig
 protopath: google.cloud.discoveryengine.v1beta.DocumentProcessingConfig
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Engine
-kind: DiscoveryengineEngine
+kind: DiscoveryEngineEngine
 protopath: google.cloud.discoveryengine.v1beta.Engine
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Evaluation
-kind: DiscoveryengineEvaluation
+kind: DiscoveryEngineEvaluation
 protopath: google.cloud.discoveryengine.v1beta.Evaluation
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: GroundingConfig
-kind: DiscoveryengineGroundingConfig
+kind: DiscoveryEngineGroundingConfig
 protopath: google.cloud.discoveryengine.v1beta.GroundingConfig
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Project
-kind: DiscoveryengineProject
+kind: DiscoveryEngineProject
 protopath: google.cloud.discoveryengine.v1beta.Project
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: SampleQuery
-kind: DiscoveryengineSampleQuery
+kind: DiscoveryEngineSampleQuery
 protopath: google.cloud.discoveryengine.v1beta.SampleQuery
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: SampleQuerySet
-kind: DiscoveryengineSampleQuerySet
+kind: DiscoveryEngineSampleQuerySet
 protopath: google.cloud.discoveryengine.v1beta.SampleQuerySet
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Schema
-kind: DiscoveryengineSchema
+kind: DiscoveryEngineSchema
 protopath: google.cloud.discoveryengine.v1beta.Schema
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: ServingConfig
-kind: DiscoveryengineServingConfig
+kind: DiscoveryEngineServingConfig
 protopath: google.cloud.discoveryengine.v1beta.ServingConfig
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Session
-kind: DiscoveryengineSession
+kind: DiscoveryEngineSession
 protopath: google.cloud.discoveryengine.v1beta.Session
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: SiteSearchEngine
-kind: DiscoveryengineSiteSearchEngine
+kind: DiscoveryEngineSiteSearchEngine
 protopath: google.cloud.discoveryengine.v1beta.SiteSearchEngine
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: TargetSite
-kind: DiscoveryengineTargetSite
+kind: DiscoveryEngineTargetSite
 protopath: google.cloud.discoveryengine.v1beta.TargetSite
 validated: null
 ---
 service: discoveryengine
 package: google.cloud.discoveryengine.v1beta
 proto: Sitemap
-kind: DiscoveryengineSitemap
+kind: DiscoveryEngineSitemap
 protopath: google.cloud.discoveryengine.v1beta.Sitemap
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1
 proto: Evaluation
-kind: DocumentaiEvaluation
+kind: DocumentAIEvaluation
 protopath: google.cloud.documentai.v1.Evaluation
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1
 proto: ProcessorVersion
-kind: DocumentaiProcessorVersion
+kind: DocumentAIProcessorVersion
 protopath: google.cloud.documentai.v1.ProcessorVersion
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1
 proto: Processor
-kind: DocumentaiProcessor
+kind: DocumentAIProcessor
 protopath: google.cloud.documentai.v1.Processor
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1
 proto: ProcessorType
-kind: DocumentaiProcessorType
+kind: DocumentAIProcessorType
 protopath: google.cloud.documentai.v1.ProcessorType
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1beta3
 proto: Dataset
-kind: DocumentaiDataset
+kind: DocumentAIDataset
 protopath: google.cloud.documentai.v1beta3.Dataset
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1beta3
 proto: DatasetSchema
-kind: DocumentaiDatasetSchema
+kind: DocumentAIDatasetSchema
 protopath: google.cloud.documentai.v1beta3.DatasetSchema
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1beta3
 proto: Evaluation
-kind: DocumentaiEvaluation
+kind: DocumentAIEvaluation
 protopath: google.cloud.documentai.v1beta3.Evaluation
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1beta3
 proto: ProcessorVersion
-kind: DocumentaiProcessorVersion
+kind: DocumentAIProcessorVersion
 protopath: google.cloud.documentai.v1beta3.ProcessorVersion
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1beta3
 proto: Processor
-kind: DocumentaiProcessor
+kind: DocumentAIProcessor
 protopath: google.cloud.documentai.v1beta3.Processor
 validated: null
 ---
 service: documentai
 package: google.cloud.documentai.v1beta3
 proto: ProcessorType
-kind: DocumentaiProcessorType
+kind: DocumentAIProcessorType
 protopath: google.cloud.documentai.v1beta3.ProcessorType
 validated: null
 ---
@@ -4005,84 +3991,84 @@ validated: null
 service: edgecontainer
 package: google.cloud.edgecontainer.v1
 proto: Cluster
-kind: EdgecontainerCluster
+kind: EdgeContainerCluster
 protopath: google.cloud.edgecontainer.v1.Cluster
 validated: null
 ---
 service: edgecontainer
 package: google.cloud.edgecontainer.v1
 proto: NodePool
-kind: EdgecontainerNodePool
+kind: EdgeContainerNodePool
 protopath: google.cloud.edgecontainer.v1.NodePool
 validated: null
 ---
 service: edgecontainer
 package: google.cloud.edgecontainer.v1
 proto: Machine
-kind: EdgecontainerMachine
+kind: EdgeContainerMachine
 protopath: google.cloud.edgecontainer.v1.Machine
 validated: null
 ---
 service: edgecontainer
 package: google.cloud.edgecontainer.v1
 proto: VpnConnection
-kind: EdgecontainerVpnConnection
+kind: EdgeContainerVpnConnection
 protopath: google.cloud.edgecontainer.v1.VpnConnection
 validated: null
 ---
 service: edgenetwork
 package: google.cloud.edgenetwork.v1
 proto: Zone
-kind: EdgenetworkZone
+kind: EdgeNetworkZone
 protopath: google.cloud.edgenetwork.v1.Zone
 validated: null
 ---
 service: edgenetwork
 package: google.cloud.edgenetwork.v1
 proto: Network
-kind: EdgenetworkNetwork
+kind: EdgeNetworkNetwork
 protopath: google.cloud.edgenetwork.v1.Network
 validated: null
 ---
 service: edgenetwork
 package: google.cloud.edgenetwork.v1
 proto: Subnet
-kind: EdgenetworkSubnet
+kind: EdgeNetworkSubnet
 protopath: google.cloud.edgenetwork.v1.Subnet
 validated: null
 ---
 service: edgenetwork
 package: google.cloud.edgenetwork.v1
 proto: Interconnect
-kind: EdgenetworkInterconnect
+kind: EdgeNetworkInterconnect
 protopath: google.cloud.edgenetwork.v1.Interconnect
 validated: null
 ---
 service: edgenetwork
 package: google.cloud.edgenetwork.v1
 proto: InterconnectAttachment
-kind: EdgenetworkInterconnectAttachment
+kind: EdgeNetworkInterconnectAttachment
 protopath: google.cloud.edgenetwork.v1.InterconnectAttachment
 validated: null
 ---
 service: edgenetwork
 package: google.cloud.edgenetwork.v1
 proto: Router
-kind: EdgenetworkRouter
+kind: EdgeNetworkRouter
 protopath: google.cloud.edgenetwork.v1.Router
 validated: null
 ---
 service: enterpriseknowledgegraph
 package: google.cloud.enterpriseknowledgegraph.v1
 proto: EntityReconciliationJob
-kind: EnterpriseknowledgegraphEntityReconciliationJob
+kind: EnterpriseKnowledgeGraphEntityReconciliationJob
 protopath: google.cloud.enterpriseknowledgegraph.v1.EntityReconciliationJob
 validated: null
 ---
 service: essentialcontacts
 package: google.cloud.essentialcontacts.v1
 proto: Contact
-kind: EssentialcontactsContact
+kind: EssentialContactsContact
 protopath: google.cloud.essentialcontacts.v1.Contact
 validated: null
 ---
@@ -4222,294 +4208,294 @@ validated: null
 service: gkebackup
 package: google.cloud.gkebackup.v1
 proto: Backup
-kind: GkebackupBackup
+kind: GKEBackupBackup
 protopath: google.cloud.gkebackup.v1.Backup
 validated: null
 ---
 service: gkebackup
 package: google.cloud.gkebackup.v1
 proto: BackupPlan
-kind: GkebackupBackupPlan
+kind: GKEBackupBackupPlan
 protopath: google.cloud.gkebackup.v1.BackupPlan
 validated: null
 ---
 service: gkebackup
 package: google.cloud.gkebackup.v1
 proto: Restore
-kind: GkebackupRestore
+kind: GKEBackupRestore
 protopath: google.cloud.gkebackup.v1.Restore
 validated: null
 ---
 service: gkebackup
 package: google.cloud.gkebackup.v1
 proto: RestorePlan
-kind: GkebackupRestorePlan
+kind: GKEBackupRestorePlan
 protopath: google.cloud.gkebackup.v1.RestorePlan
 validated: null
 ---
 service: gkebackup
 package: google.cloud.gkebackup.v1
 proto: VolumeBackup
-kind: GkebackupVolumeBackup
+kind: GKEBackupVolumeBackup
 protopath: google.cloud.gkebackup.v1.VolumeBackup
 validated: null
 ---
 service: gkebackup
 package: google.cloud.gkebackup.v1
 proto: VolumeRestore
-kind: GkebackupVolumeRestore
+kind: GKEBackupVolumeRestore
 protopath: google.cloud.gkebackup.v1.VolumeRestore
 validated: null
 ---
 service: gkehub
 package: google.cloud.gkehub.v1
 proto: Feature
-kind: GkehubFeature
+kind: GKEHubFeature
 protopath: google.cloud.gkehub.v1.Feature
 validated: null
 ---
 service: gkehub
 package: google.cloud.gkehub.v1
 proto: Membership
-kind: GkehubMembership
+kind: GKEHubMembership
 protopath: google.cloud.gkehub.v1.Membership
 validated: null
 ---
 service: gkehub
 package: google.cloud.gkehub.v1beta
 proto: Feature
-kind: GkehubFeature
+kind: GKEHubFeature
 protopath: google.cloud.gkehub.v1beta.Feature
 validated: null
 ---
 service: gkehub
 package: google.cloud.gkehub.v1beta1
 proto: Membership
-kind: GkehubMembership
+kind: GKEHubMembership
 protopath: google.cloud.gkehub.v1beta1.Membership
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AttachedCluster
-kind: GkemulticloudAttachedCluster
+kind: GkeMultiCloudAttachedCluster
 protopath: google.cloud.gkemulticloud.v1.AttachedCluster
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AttachedServerConfig
-kind: GkemulticloudAttachedServerConfig
+kind: GkeMultiCloudAttachedServerConfig
 protopath: google.cloud.gkemulticloud.v1.AttachedServerConfig
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AwsCluster
-kind: GkemulticloudAwsCluster
+kind: GkeMultiCloudAwsCluster
 protopath: google.cloud.gkemulticloud.v1.AwsCluster
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AwsNodePool
-kind: GkemulticloudAwsNodePool
+kind: GkeMultiCloudAwsNodePool
 protopath: google.cloud.gkemulticloud.v1.AwsNodePool
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AwsServerConfig
-kind: GkemulticloudAwsServerConfig
+kind: GkeMultiCloudAwsServerConfig
 protopath: google.cloud.gkemulticloud.v1.AwsServerConfig
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AzureCluster
-kind: GkemulticloudAzureCluster
+kind: GkeMultiCloudAzureCluster
 protopath: google.cloud.gkemulticloud.v1.AzureCluster
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AzureClient
-kind: GkemulticloudAzureClient
+kind: GkeMultiCloudAzureClient
 protopath: google.cloud.gkemulticloud.v1.AzureClient
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AzureNodePool
-kind: GkemulticloudAzureNodePool
+kind: GkeMultiCloudAzureNodePool
 protopath: google.cloud.gkemulticloud.v1.AzureNodePool
 validated: null
 ---
 service: gkemulticloud
 package: google.cloud.gkemulticloud.v1
 proto: AzureServerConfig
-kind: GkemulticloudAzureServerConfig
+kind: GkeMultiCloudAzureServerConfig
 protopath: google.cloud.gkemulticloud.v1.AzureServerConfig
 validated: null
 ---
 service: gsuiteaddons
 package: google.cloud.gsuiteaddons.v1
 proto: Authorization
-kind: GsuiteaddonsAuthorization
+kind: GSuiteAddonsAuthorization
 protopath: google.cloud.gsuiteaddons.v1.Authorization
 validated: null
 ---
 service: gsuiteaddons
 package: google.cloud.gsuiteaddons.v1
 proto: InstallStatus
-kind: GsuiteaddonsInstallStatus
+kind: GSuiteAddonsInstallStatus
 protopath: google.cloud.gsuiteaddons.v1.InstallStatus
 validated: null
 ---
 service: gsuiteaddons
 package: google.cloud.gsuiteaddons.v1
 proto: Deployment
-kind: GsuiteaddonsDeployment
+kind: GSuiteAddonsDeployment
 protopath: google.cloud.gsuiteaddons.v1.Deployment
 validated: null
 ---
 service: iap
 package: google.cloud.iap.v1
 proto: TunnelDestGroup
-kind: IapTunnelDestGroup
+kind: IAPTunnelDestGroup
 protopath: google.cloud.iap.v1.TunnelDestGroup
 validated: null
 ---
 service: ids
 package: google.cloud.ids.v1
 proto: Endpoint
-kind: IdsEndpoint
+kind: IDsEndpoint
 protopath: google.cloud.ids.v1.Endpoint
 validated: null
 ---
 service: iot
 package: google.cloud.iot.v1
 proto: Device
-kind: IotDevice
+kind: IoTDevice
 protopath: google.cloud.iot.v1.Device
 validated: null
 ---
 service: iot
 package: google.cloud.iot.v1
 proto: DeviceRegistry
-kind: IotDeviceRegistry
+kind: IoTDeviceRegistry
 protopath: google.cloud.iot.v1.DeviceRegistry
 validated: null
 ---
 service: kms
 package: google.cloud.kms.inventory.v1
 proto: ProtectedResourcesSummary
-kind: KmsProtectedResourcesSummary
+kind: KMSProtectedResourcesSummary
 protopath: google.cloud.kms.inventory.v1.ProtectedResourcesSummary
 validated: null
 ---
 service: kms
 package: google.cloud.kms.inventory.v1
 proto: ProtectedResource
-kind: KmsProtectedResource
+kind: KMSProtectedResource
 protopath: google.cloud.kms.inventory.v1.ProtectedResource
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: KeyHandle
-kind: KmsKeyHandle
+kind: KMSKeyHandle
 protopath: google.cloud.kms.v1.KeyHandle
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: AutokeyConfig
-kind: KmsAutokeyConfig
+kind: KMSAutokeyConfig
 protopath: google.cloud.kms.v1.AutokeyConfig
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: EkmConnection
-kind: KmsEkmConnection
+kind: KMSEkmConnection
 protopath: google.cloud.kms.v1.EkmConnection
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: EkmConfig
-kind: KmsEkmConfig
+kind: KMSEkmConfig
 protopath: google.cloud.kms.v1.EkmConfig
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: KeyRing
-kind: KmsKeyRing
+kind: KMSKeyRing
 protopath: google.cloud.kms.v1.KeyRing
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: CryptoKey
-kind: KmsCryptoKey
+kind: KMSCryptoKey
 protopath: google.cloud.kms.v1.CryptoKey
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: CryptoKeyVersion
-kind: KmsCryptoKeyVersion
+kind: KMSCryptoKeyVersion
 protopath: google.cloud.kms.v1.CryptoKeyVersion
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: PublicKey
-kind: KmsPublicKey
+kind: KMSPublicKey
 protopath: google.cloud.kms.v1.PublicKey
 validated: null
 ---
 service: kms
 package: google.cloud.kms.v1
 proto: ImportJob
-kind: KmsImportJob
+kind: KMSImportJob
 protopath: google.cloud.kms.v1.ImportJob
 validated: null
 ---
 service: managedidentities
 package: google.cloud.managedidentities.v1
 proto: Domain
-kind: ManagedidentitiesDomain
+kind: ManagedIdentitiesDomain
 protopath: google.cloud.managedidentities.v1.Domain
 validated: null
 ---
 service: managedidentities
 package: google.cloud.managedidentities.v1beta1
 proto: Domain
-kind: ManagedidentitiesDomain
+kind: ManagedIdentitiesDomain
 protopath: google.cloud.managedidentities.v1beta1.Domain
 validated: null
 ---
 service: managedkafka
 package: google.cloud.managedkafka.v1
 proto: Cluster
-kind: ManagedkafkaCluster
+kind: ManagedKafkaCluster
 protopath: google.cloud.managedkafka.v1.Cluster
 validated: null
 ---
 service: managedkafka
 package: google.cloud.managedkafka.v1
 proto: Topic
-kind: ManagedkafkaTopic
+kind: ManagedKafkaTopic
 protopath: google.cloud.managedkafka.v1.Topic
 validated: null
 ---
 service: managedkafka
 package: google.cloud.managedkafka.v1
 proto: ConsumerGroup
-kind: ManagedkafkaConsumerGroup
+kind: ManagedKafkaConsumerGroup
 protopath: google.cloud.managedkafka.v1.ConsumerGroup
 validated: null
 ---
@@ -4614,357 +4600,357 @@ validated: null
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: Asset
-kind: MigrationcenterAsset
+kind: MigrationCenterAsset
 protopath: google.cloud.migrationcenter.v1.Asset
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: PreferenceSet
-kind: MigrationcenterPreferenceSet
+kind: MigrationCenterPreferenceSet
 protopath: google.cloud.migrationcenter.v1.PreferenceSet
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: ImportJob
-kind: MigrationcenterImportJob
+kind: MigrationCenterImportJob
 protopath: google.cloud.migrationcenter.v1.ImportJob
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: ImportDataFile
-kind: MigrationcenterImportDataFile
+kind: MigrationCenterImportDataFile
 protopath: google.cloud.migrationcenter.v1.ImportDataFile
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: Group
-kind: MigrationcenterGroup
+kind: MigrationCenterGroup
 protopath: google.cloud.migrationcenter.v1.Group
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: ErrorFrame
-kind: MigrationcenterErrorFrame
+kind: MigrationCenterErrorFrame
 protopath: google.cloud.migrationcenter.v1.ErrorFrame
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: Source
-kind: MigrationcenterSource
+kind: MigrationCenterSource
 protopath: google.cloud.migrationcenter.v1.Source
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: ReportConfig
-kind: MigrationcenterReportConfig
+kind: MigrationCenterReportConfig
 protopath: google.cloud.migrationcenter.v1.ReportConfig
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: Report
-kind: MigrationcenterReport
+kind: MigrationCenterReport
 protopath: google.cloud.migrationcenter.v1.Report
 validated: null
 ---
 service: migrationcenter
 package: google.cloud.migrationcenter.v1
 proto: Settings
-kind: MigrationcenterSettings
+kind: MigrationCenterSettings
 protopath: google.cloud.migrationcenter.v1.Settings
 validated: null
 ---
 service: modelarmor
 package: google.cloud.modelarmor.v1
 proto: Template
-kind: ModelarmorTemplate
+kind: ModelArmorTemplate
 protopath: google.cloud.modelarmor.v1.Template
 validated: null
 ---
 service: modelarmor
 package: google.cloud.modelarmor.v1
 proto: FloorSetting
-kind: ModelarmorFloorSetting
+kind: ModelArmorFloorSetting
 protopath: google.cloud.modelarmor.v1.FloorSetting
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: ActiveDirectory
-kind: NetappActiveDirectory
+kind: NetAppActiveDirectory
 protopath: google.cloud.netapp.v1.ActiveDirectory
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: Backup
-kind: NetappBackup
+kind: NetAppBackup
 protopath: google.cloud.netapp.v1.Backup
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: BackupPolicy
-kind: NetappBackupPolicy
+kind: NetAppBackupPolicy
 protopath: google.cloud.netapp.v1.BackupPolicy
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: BackupVault
-kind: NetappBackupVault
+kind: NetAppBackupVault
 protopath: google.cloud.netapp.v1.BackupVault
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: KmsConfig
-kind: NetappKmsConfig
+kind: NetAppKmsConfig
 protopath: google.cloud.netapp.v1.KmsConfig
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: QuotaRule
-kind: NetappQuotaRule
+kind: NetAppQuotaRule
 protopath: google.cloud.netapp.v1.QuotaRule
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: Replication
-kind: NetappReplication
+kind: NetAppReplication
 protopath: google.cloud.netapp.v1.Replication
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: Snapshot
-kind: NetappSnapshot
+kind: NetAppSnapshot
 protopath: google.cloud.netapp.v1.Snapshot
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: StoragePool
-kind: NetappStoragePool
+kind: NetAppStoragePool
 protopath: google.cloud.netapp.v1.StoragePool
 validated: null
 ---
 service: netapp
 package: google.cloud.netapp.v1
 proto: Volume
-kind: NetappVolume
+kind: NetAppVolume
 protopath: google.cloud.netapp.v1.Volume
 validated: null
 ---
 service: networkconnectivity
 package: google.cloud.networkconnectivity.v1
 proto: Hub
-kind: NetworkconnectivityHub
+kind: NetworkConnectivityHub
 protopath: google.cloud.networkconnectivity.v1.Hub
 validated: null
 ---
 service: networkconnectivity
 package: google.cloud.networkconnectivity.v1
 proto: Spoke
-kind: NetworkconnectivitySpoke
+kind: NetworkConnectivitySpoke
 protopath: google.cloud.networkconnectivity.v1.Spoke
 validated: null
 ---
 service: networkconnectivity
 package: google.cloud.networkconnectivity.v1
 proto: RouteTable
-kind: NetworkconnectivityRouteTable
+kind: NetworkConnectivityRouteTable
 protopath: google.cloud.networkconnectivity.v1.RouteTable
 validated: null
 ---
 service: networkconnectivity
 package: google.cloud.networkconnectivity.v1
 proto: Route
-kind: NetworkconnectivityRoute
+kind: NetworkConnectivityRoute
 protopath: google.cloud.networkconnectivity.v1.Route
 validated: null
 ---
 service: networkconnectivity
 package: google.cloud.networkconnectivity.v1
 proto: Group
-kind: NetworkconnectivityGroup
+kind: NetworkConnectivityGroup
 protopath: google.cloud.networkconnectivity.v1.Group
 validated: null
 ---
 service: networkconnectivity
 package: google.cloud.networkconnectivity.v1
 proto: PolicyBasedRoute
-kind: NetworkconnectivityPolicyBasedRoute
+kind: NetworkConnectivityPolicyBasedRoute
 protopath: google.cloud.networkconnectivity.v1.PolicyBasedRoute
 validated: null
 ---
 service: networkmanagement
 package: google.cloud.networkmanagement.v1
 proto: ConnectivityTest
-kind: NetworkmanagementConnectivityTest
+kind: NetworkManagementConnectivityTest
 protopath: google.cloud.networkmanagement.v1.ConnectivityTest
 validated: null
 ---
 service: networkmanagement
 package: google.cloud.networkmanagement.v1
 proto: VpcFlowLogsConfig
-kind: NetworkmanagementVpcFlowLogsConfig
+kind: NetworkManagementVpcFlowLogsConfig
 protopath: google.cloud.networkmanagement.v1.VpcFlowLogsConfig
 validated: null
 ---
 service: networkmanagement
 package: google.cloud.networkmanagement.v1beta1
 proto: ConnectivityTest
-kind: NetworkmanagementConnectivityTest
+kind: NetworkManagementConnectivityTest
 protopath: google.cloud.networkmanagement.v1beta1.ConnectivityTest
 validated: null
 ---
 service: networkmanagement
 package: google.cloud.networkmanagement.v1beta1
 proto: VpcFlowLogsConfig
-kind: NetworkmanagementVpcFlowLogsConfig
+kind: NetworkManagementVpcFlowLogsConfig
 protopath: google.cloud.networkmanagement.v1beta1.VpcFlowLogsConfig
 validated: null
 ---
 service: networksecurity
 package: google.cloud.networksecurity.v1
 proto: AuthorizationPolicy
-kind: NetworksecurityAuthorizationPolicy
+kind: NetworkSecurityAuthorizationPolicy
 protopath: google.cloud.networksecurity.v1.AuthorizationPolicy
 validated: null
 ---
 service: networksecurity
 package: google.cloud.networksecurity.v1
 proto: ClientTlsPolicy
-kind: NetworksecurityClientTlsPolicy
+kind: NetworkSecurityClientTlsPolicy
 protopath: google.cloud.networksecurity.v1.ClientTlsPolicy
 validated: null
 ---
 service: networksecurity
 package: google.cloud.networksecurity.v1
 proto: ServerTlsPolicy
-kind: NetworksecurityServerTlsPolicy
+kind: NetworkSecurityServerTlsPolicy
 protopath: google.cloud.networksecurity.v1.ServerTlsPolicy
 validated: null
 ---
 service: networksecurity
 package: google.cloud.networksecurity.v1beta1
 proto: AuthorizationPolicy
-kind: NetworksecurityAuthorizationPolicy
+kind: NetworkSecurityAuthorizationPolicy
 protopath: google.cloud.networksecurity.v1beta1.AuthorizationPolicy
 validated: null
 ---
 service: networksecurity
 package: google.cloud.networksecurity.v1beta1
 proto: ClientTlsPolicy
-kind: NetworksecurityClientTlsPolicy
+kind: NetworkSecurityClientTlsPolicy
 protopath: google.cloud.networksecurity.v1beta1.ClientTlsPolicy
 validated: null
 ---
 service: networksecurity
 package: google.cloud.networksecurity.v1beta1
 proto: ServerTlsPolicy
-kind: NetworksecurityServerTlsPolicy
+kind: NetworkSecurityServerTlsPolicy
 protopath: google.cloud.networksecurity.v1beta1.ServerTlsPolicy
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: LbTrafficExtension
-kind: NetworkservicesLbTrafficExtension
+kind: NetworkServicesLbTrafficExtension
 protopath: google.cloud.networkservices.v1.LbTrafficExtension
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: LbRouteExtension
-kind: NetworkservicesLbRouteExtension
+kind: NetworkServicesLbRouteExtension
 protopath: google.cloud.networkservices.v1.LbRouteExtension
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: EndpointPolicy
-kind: NetworkservicesEndpointPolicy
+kind: NetworkServicesEndpointPolicy
 protopath: google.cloud.networkservices.v1.EndpointPolicy
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: Gateway
-kind: NetworkservicesGateway
+kind: NetworkServicesGateway
 protopath: google.cloud.networkservices.v1.Gateway
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: GrpcRoute
-kind: NetworkservicesGrpcRoute
+kind: NetworkServicesGrpcRoute
 protopath: google.cloud.networkservices.v1.GrpcRoute
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: HttpRoute
-kind: NetworkservicesHttpRoute
+kind: NetworkServicesHttpRoute
 protopath: google.cloud.networkservices.v1.HttpRoute
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: Mesh
-kind: NetworkservicesMesh
+kind: NetworkServicesMesh
 protopath: google.cloud.networkservices.v1.Mesh
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: ServiceBinding
-kind: NetworkservicesServiceBinding
+kind: NetworkServicesServiceBinding
 protopath: google.cloud.networkservices.v1.ServiceBinding
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: TcpRoute
-kind: NetworkservicesTcpRoute
+kind: NetworkServicesTcpRoute
 protopath: google.cloud.networkservices.v1.TcpRoute
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1
 proto: TlsRoute
-kind: NetworkservicesTlsRoute
+kind: NetworkServicesTlsRoute
 protopath: google.cloud.networkservices.v1.TlsRoute
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1beta1
 proto: LbTrafficExtension
-kind: NetworkservicesLbTrafficExtension
+kind: NetworkServicesLbTrafficExtension
 protopath: google.cloud.networkservices.v1beta1.LbTrafficExtension
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1beta1
 proto: LbRouteExtension
-kind: NetworkservicesLbRouteExtension
+kind: NetworkServicesLbRouteExtension
 protopath: google.cloud.networkservices.v1beta1.LbRouteExtension
 validated: null
 ---
 service: networkservices
 package: google.cloud.networkservices.v1beta1
 proto: EndpointPolicy
-kind: NetworkservicesEndpointPolicy
+kind: NetworkServicesEndpointPolicy
 protopath: google.cloud.networkservices.v1beta1.EndpointPolicy
 validated: null
 ---
@@ -5027,77 +5013,77 @@ validated: null
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: AutonomousDatabase
-kind: OracledatabaseAutonomousDatabase
+kind: OracleDatabaseAutonomousDatabase
 protopath: google.cloud.oracledatabase.v1.AutonomousDatabase
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: AutonomousDatabaseCharacterSet
-kind: OracledatabaseAutonomousDatabaseCharacterSet
+kind: OracleDatabaseAutonomousDatabaseCharacterSet
 protopath: google.cloud.oracledatabase.v1.AutonomousDatabaseCharacterSet
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: AutonomousDatabaseBackup
-kind: OracledatabaseAutonomousDatabaseBackup
+kind: OracleDatabaseAutonomousDatabaseBackup
 protopath: google.cloud.oracledatabase.v1.AutonomousDatabaseBackup
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: AutonomousDbVersion
-kind: OracledatabaseAutonomousDbVersion
+kind: OracleDatabaseAutonomousDbVersion
 protopath: google.cloud.oracledatabase.v1.AutonomousDbVersion
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: DbNode
-kind: OracledatabaseDbNode
+kind: OracleDatabaseDbNode
 protopath: google.cloud.oracledatabase.v1.DbNode
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: DbServer
-kind: OracledatabaseDbServer
+kind: OracleDatabaseDbServer
 protopath: google.cloud.oracledatabase.v1.DbServer
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: DbSystemShape
-kind: OracledatabaseDbSystemShape
+kind: OracleDatabaseDbSystemShape
 protopath: google.cloud.oracledatabase.v1.DbSystemShape
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: Entitlement
-kind: OracledatabaseEntitlement
+kind: OracleDatabaseEntitlement
 protopath: google.cloud.oracledatabase.v1.Entitlement
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: CloudExadataInfrastructure
-kind: OracledatabaseCloudExadataInfrastructure
+kind: OracleDatabaseCloudExadataInfrastructure
 protopath: google.cloud.oracledatabase.v1.CloudExadataInfrastructure
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: GiVersion
-kind: OracledatabaseGiVersion
+kind: OracleDatabaseGiVersion
 protopath: google.cloud.oracledatabase.v1.GiVersion
 validated: null
 ---
 service: oracledatabase
 package: google.cloud.oracledatabase.v1
 proto: CloudVmCluster
-kind: OracledatabaseCloudVmCluster
+kind: OracleDatabaseCloudVmCluster
 protopath: google.cloud.oracledatabase.v1.CloudVmCluster
 validated: null
 ---
@@ -5146,98 +5132,98 @@ validated: null
 service: orgpolicy
 package: google.cloud.orgpolicy.v2
 proto: Constraint
-kind: OrgpolicyConstraint
+kind: OrgPolicyConstraint
 protopath: google.cloud.orgpolicy.v2.Constraint
 validated: null
 ---
 service: orgpolicy
 package: google.cloud.orgpolicy.v2
 proto: CustomConstraint
-kind: OrgpolicyCustomConstraint
+kind: OrgPolicyCustomConstraint
 protopath: google.cloud.orgpolicy.v2.CustomConstraint
 validated: null
 ---
 service: orgpolicy
 package: google.cloud.orgpolicy.v2
 proto: Policy
-kind: OrgpolicyPolicy
+kind: OrgPolicyPolicy
 protopath: google.cloud.orgpolicy.v2.Policy
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1
 proto: Inventory
-kind: OsconfigInventory
+kind: OSConfigInventory
 protopath: google.cloud.osconfig.v1.Inventory
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1
 proto: OSPolicyAssignmentReport
-kind: OsconfigOSPolicyAssignmentReport
+kind: OSConfigOSPolicyAssignmentReport
 protopath: google.cloud.osconfig.v1.OSPolicyAssignmentReport
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1
 proto: OSPolicyAssignment
-kind: OsconfigOSPolicyAssignment
+kind: OSConfigOSPolicyAssignment
 protopath: google.cloud.osconfig.v1.OSPolicyAssignment
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1
 proto: PatchDeployment
-kind: OsconfigPatchDeployment
+kind: OSConfigPatchDeployment
 protopath: google.cloud.osconfig.v1.PatchDeployment
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1
 proto: PatchJob
-kind: OsconfigPatchJob
+kind: OSConfigPatchJob
 protopath: google.cloud.osconfig.v1.PatchJob
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1
 proto: VulnerabilityReport
-kind: OsconfigVulnerabilityReport
+kind: OSConfigVulnerabilityReport
 protopath: google.cloud.osconfig.v1.VulnerabilityReport
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1beta
 proto: GuestPolicy
-kind: OsconfigGuestPolicy
+kind: OSConfigGuestPolicy
 protopath: google.cloud.osconfig.v1beta.GuestPolicy
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1beta
 proto: PatchDeployment
-kind: OsconfigPatchDeployment
+kind: OSConfigPatchDeployment
 protopath: google.cloud.osconfig.v1beta.PatchDeployment
 validated: null
 ---
 service: osconfig
 package: google.cloud.osconfig.v1beta
 proto: PatchJob
-kind: OsconfigPatchJob
+kind: OSConfigPatchJob
 protopath: google.cloud.osconfig.v1beta.PatchJob
 validated: null
 ---
 service: oslogin
 package: google.cloud.oslogin.common
 proto: PosixAccount
-kind: OsloginPosixAccount
+kind: OSLoginPosixAccount
 protopath: google.cloud.oslogin.common.PosixAccount
 validated: null
 ---
 service: oslogin
 package: google.cloud.oslogin.common
 proto: SshPublicKey
-kind: OsloginSshPublicKey
+kind: OSLoginSshPublicKey
 protopath: google.cloud.oslogin.common.SshPublicKey
 validated: null
 ---
@@ -5258,224 +5244,224 @@ validated: null
 service: parametermanager
 package: google.cloud.parametermanager.v1
 proto: Parameter
-kind: ParametermanagerParameter
+kind: ParameterManagerParameter
 protopath: google.cloud.parametermanager.v1.Parameter
 validated: null
 ---
 service: parametermanager
 package: google.cloud.parametermanager.v1
 proto: ParameterVersion
-kind: ParametermanagerParameterVersion
+kind: ParameterManagerParameterVersion
 protopath: google.cloud.parametermanager.v1.ParameterVersion
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.accountmanager.v1
 proto: AccountManagerTransaction
-kind: PaymentgatewayAccountManagerTransaction
+kind: PaymentGatewayAccountManagerTransaction
 protopath: google.cloud.paymentgateway.issuerswitch.accountmanager.v1.AccountManagerTransaction
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.accountmanager.v1
 proto: ManagedAccount
-kind: PaymentgatewayManagedAccount
+kind: PaymentGatewayManagedAccount
 protopath: google.cloud.paymentgateway.issuerswitch.accountmanager.v1.ManagedAccount
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: Complaint
-kind: PaymentgatewayComplaint
+kind: PaymentGatewayComplaint
 protopath: google.cloud.paymentgateway.issuerswitch.v1.Complaint
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: Dispute
-kind: PaymentgatewayDispute
+kind: PaymentGatewayDispute
 protopath: google.cloud.paymentgateway.issuerswitch.v1.Dispute
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: Rule
-kind: PaymentgatewayRule
+kind: PaymentGatewayRule
 protopath: google.cloud.paymentgateway.issuerswitch.v1.Rule
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: RuleMetadata
-kind: PaymentgatewayRuleMetadata
+kind: PaymentGatewayRuleMetadata
 protopath: google.cloud.paymentgateway.issuerswitch.v1.RuleMetadata
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: RuleMetadataValue
-kind: PaymentgatewayRuleMetadataValue
+kind: PaymentGatewayRuleMetadataValue
 protopath: google.cloud.paymentgateway.issuerswitch.v1.RuleMetadataValue
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: MetadataTransaction
-kind: PaymentgatewayMetadataTransaction
+kind: PaymentGatewayMetadataTransaction
 protopath: google.cloud.paymentgateway.issuerswitch.v1.MetadataTransaction
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: FinancialTransaction
-kind: PaymentgatewayFinancialTransaction
+kind: PaymentGatewayFinancialTransaction
 protopath: google.cloud.paymentgateway.issuerswitch.v1.FinancialTransaction
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: MandateTransaction
-kind: PaymentgatewayMandateTransaction
+kind: PaymentGatewayMandateTransaction
 protopath: google.cloud.paymentgateway.issuerswitch.v1.MandateTransaction
 validated: null
 ---
 service: paymentgateway
 package: google.cloud.paymentgateway.issuerswitch.v1
 proto: ComplaintTransaction
-kind: PaymentgatewayComplaintTransaction
+kind: PaymentGatewayComplaintTransaction
 protopath: google.cloud.paymentgateway.issuerswitch.v1.ComplaintTransaction
 validated: null
 ---
 service: policysimulator
 package: google.cloud.policysimulator.v1
 proto: Replay
-kind: PolicysimulatorReplay
+kind: PolicySimulatorReplay
 protopath: google.cloud.policysimulator.v1.Replay
 validated: null
 ---
 service: policysimulator
 package: google.cloud.policysimulator.v1
 proto: ReplayResult
-kind: PolicysimulatorReplayResult
+kind: PolicySimulatorReplayResult
 protopath: google.cloud.policysimulator.v1.ReplayResult
 validated: null
 ---
 service: privatecatalog
 package: google.cloud.privatecatalog.v1beta1
 proto: Catalog
-kind: PrivatecatalogCatalog
+kind: PrivateCatalogCatalog
 protopath: google.cloud.privatecatalog.v1beta1.Catalog
 validated: null
 ---
 service: privatecatalog
 package: google.cloud.privatecatalog.v1beta1
 proto: Product
-kind: PrivatecatalogProduct
+kind: PrivateCatalogProduct
 protopath: google.cloud.privatecatalog.v1beta1.Product
 validated: null
 ---
 service: privatecatalog
 package: google.cloud.privatecatalog.v1beta1
 proto: Version
-kind: PrivatecatalogVersion
+kind: PrivateCatalogVersion
 protopath: google.cloud.privatecatalog.v1beta1.Version
 validated: null
 ---
 service: privilegedaccessmanager
 package: google.cloud.privilegedaccessmanager.v1
 proto: Entitlement
-kind: PrivilegedaccessmanagerEntitlement
+kind: PrivilegedAccessManagerEntitlement
 protopath: google.cloud.privilegedaccessmanager.v1.Entitlement
 validated: null
 ---
 service: privilegedaccessmanager
 package: google.cloud.privilegedaccessmanager.v1
 proto: Grant
-kind: PrivilegedaccessmanagerGrant
+kind: PrivilegedAccessManagerGrant
 protopath: google.cloud.privilegedaccessmanager.v1.Grant
 validated: null
 ---
 service: pubsublite
 package: google.cloud.pubsublite.v1
 proto: Reservation
-kind: PubsubliteReservation
+kind: PubSubliteReservation
 protopath: google.cloud.pubsublite.v1.Reservation
 validated: null
 ---
 service: pubsublite
 package: google.cloud.pubsublite.v1
 proto: Topic
-kind: PubsubliteTopic
+kind: PubSubliteTopic
 protopath: google.cloud.pubsublite.v1.Topic
 validated: null
 ---
 service: pubsublite
 package: google.cloud.pubsublite.v1
 proto: Subscription
-kind: PubsubliteSubscription
+kind: PubSubliteSubscription
 protopath: google.cloud.pubsublite.v1.Subscription
 validated: null
 ---
 service: rapidmigrationassessment
 package: google.cloud.rapidmigrationassessment.v1
 proto: Collector
-kind: RapidmigrationassessmentCollector
+kind: RapidMigrationAssessmentCollector
 protopath: google.cloud.rapidmigrationassessment.v1.Collector
 validated: null
 ---
 service: rapidmigrationassessment
 package: google.cloud.rapidmigrationassessment.v1
 proto: Annotation
-kind: RapidmigrationassessmentAnnotation
+kind: RapidMigrationAssessmentAnnotation
 protopath: google.cloud.rapidmigrationassessment.v1.Annotation
 validated: null
 ---
 service: recaptchaenterprise
 package: google.cloud.recaptchaenterprise.v1
 proto: Assessment
-kind: RecaptchaenterpriseAssessment
+kind: ReCAPTCHAEnterpriseAssessment
 protopath: google.cloud.recaptchaenterprise.v1.Assessment
 validated: null
 ---
 service: recaptchaenterprise
 package: google.cloud.recaptchaenterprise.v1
 proto: Metrics
-kind: RecaptchaenterpriseMetrics
+kind: ReCAPTCHAEnterpriseMetrics
 protopath: google.cloud.recaptchaenterprise.v1.Metrics
 validated: null
 ---
 service: recaptchaenterprise
 package: google.cloud.recaptchaenterprise.v1
 proto: Key
-kind: RecaptchaenterpriseKey
+kind: ReCAPTCHAEnterpriseKey
 protopath: google.cloud.recaptchaenterprise.v1.Key
 validated: null
 ---
 service: recaptchaenterprise
 package: google.cloud.recaptchaenterprise.v1
 proto: FirewallPolicy
-kind: RecaptchaenterpriseFirewallPolicy
+kind: ReCAPTCHAEnterpriseFirewallPolicy
 protopath: google.cloud.recaptchaenterprise.v1.FirewallPolicy
 validated: null
 ---
 service: recaptchaenterprise
 package: google.cloud.recaptchaenterprise.v1
 proto: RelatedAccountGroupMembership
-kind: RecaptchaenterpriseRelatedAccountGroupMembership
+kind: ReCAPTCHAEnterpriseRelatedAccountGroupMembership
 protopath: google.cloud.recaptchaenterprise.v1.RelatedAccountGroupMembership
 validated: null
 ---
 service: recaptchaenterprise
 package: google.cloud.recaptchaenterprise.v1
 proto: RelatedAccountGroup
-kind: RecaptchaenterpriseRelatedAccountGroup
+kind: ReCAPTCHAEnterpriseRelatedAccountGroup
 protopath: google.cloud.recaptchaenterprise.v1.RelatedAccountGroup
 validated: null
 ---
 service: recaptchaenterprise
 package: google.cloud.recaptchaenterprise.v1beta1
 proto: Assessment
-kind: RecaptchaenterpriseAssessment
+kind: ReCAPTCHAEnterpriseAssessment
 protopath: google.cloud.recaptchaenterprise.v1beta1.Assessment
 validated: null
 ---
@@ -5622,63 +5608,63 @@ validated: null
 service: resourcemanager
 package: google.cloud.resourcemanager.v2
 proto: Folder
-kind: ResourcemanagerFolder
+kind: ResourceManagerFolder
 protopath: google.cloud.resourcemanager.v2.Folder
 validated: null
 ---
 service: resourcemanager
 package: google.cloud.resourcemanager.v3
 proto: Folder
-kind: ResourcemanagerFolder
+kind: ResourceManagerFolder
 protopath: google.cloud.resourcemanager.v3.Folder
 validated: null
 ---
 service: resourcemanager
 package: google.cloud.resourcemanager.v3
 proto: Organization
-kind: ResourcemanagerOrganization
+kind: ResourceManagerOrganization
 protopath: google.cloud.resourcemanager.v3.Organization
 validated: null
 ---
 service: resourcemanager
 package: google.cloud.resourcemanager.v3
 proto: Project
-kind: ResourcemanagerProject
+kind: ResourceManagerProject
 protopath: google.cloud.resourcemanager.v3.Project
 validated: null
 ---
 service: resourcemanager
 package: google.cloud.resourcemanager.v3
 proto: TagBinding
-kind: ResourcemanagerTagBinding
+kind: ResourceManagerTagBinding
 protopath: google.cloud.resourcemanager.v3.TagBinding
 validated: null
 ---
 service: resourcemanager
 package: google.cloud.resourcemanager.v3
 proto: TagHold
-kind: ResourcemanagerTagHold
+kind: ResourceManagerTagHold
 protopath: google.cloud.resourcemanager.v3.TagHold
 validated: null
 ---
 service: resourcemanager
 package: google.cloud.resourcemanager.v3
 proto: TagKey
-kind: ResourcemanagerTagKey
+kind: ResourceManagerTagKey
 protopath: google.cloud.resourcemanager.v3.TagKey
 validated: null
 ---
 service: resourcemanager
 package: google.cloud.resourcemanager.v3
 proto: TagValue
-kind: ResourcemanagerTagValue
+kind: ResourceManagerTagValue
 protopath: google.cloud.resourcemanager.v3.TagValue
 validated: null
 ---
 service: resourcesettings
 package: google.cloud.resourcesettings.v1
 proto: Setting
-kind: ResourcesettingsSetting
+kind: ResourceSettingsSetting
 protopath: google.cloud.resourcesettings.v1.Setting
 validated: null
 ---
@@ -5839,42 +5825,42 @@ validated: null
 service: secretmanager
 package: google.cloud.secretmanager.v1
 proto: Secret
-kind: SecretmanagerSecret
+kind: SecretManagerSecret
 protopath: google.cloud.secretmanager.v1.Secret
 validated: null
 ---
 service: secretmanager
 package: google.cloud.secretmanager.v1
 proto: SecretVersion
-kind: SecretmanagerSecretVersion
+kind: SecretManagerSecretVersion
 protopath: google.cloud.secretmanager.v1.SecretVersion
 validated: null
 ---
 service: secretmanager
 package: google.cloud.secretmanager.v1
 proto: Topic
-kind: SecretmanagerTopic
+kind: SecretManagerTopic
 protopath: google.cloud.secretmanager.v1.Topic
 validated: null
 ---
 service: secretmanager
 package: google.cloud.secretmanager.v1beta2
 proto: Secret
-kind: SecretmanagerSecret
+kind: SecretManagerSecret
 protopath: google.cloud.secretmanager.v1beta2.Secret
 validated: null
 ---
 service: secretmanager
 package: google.cloud.secretmanager.v1beta2
 proto: SecretVersion
-kind: SecretmanagerSecretVersion
+kind: SecretManagerSecretVersion
 protopath: google.cloud.secretmanager.v1beta2.SecretVersion
 validated: null
 ---
 service: secretmanager
 package: google.cloud.secretmanager.v1beta2
 proto: Topic
-kind: SecretmanagerTopic
+kind: SecretManagerTopic
 protopath: google.cloud.secretmanager.v1beta2.Topic
 validated: null
 ---
@@ -5895,21 +5881,21 @@ validated: null
 service: securesourcemanager
 package: google.cloud.securesourcemanager.v1
 proto: Instance
-kind: SecuresourcemanagerInstance
+kind: SecureSourceManagerInstance
 protopath: google.cloud.securesourcemanager.v1.Instance
 validated: null
 ---
 service: securesourcemanager
 package: google.cloud.securesourcemanager.v1
 proto: Repository
-kind: SecuresourcemanagerRepository
+kind: SecureSourceManagerRepository
 protopath: google.cloud.securesourcemanager.v1.Repository
 validated: null
 ---
 service: securesourcemanager
 package: google.cloud.securesourcemanager.v1
 proto: BranchRule
-kind: SecuresourcemanagerBranchRule
+kind: SecureSourceManagerBranchRule
 protopath: google.cloud.securesourcemanager.v1.BranchRule
 validated: null
 ---
@@ -5993,434 +5979,434 @@ validated: null
 service: securitycenter
 package: google.cloud.securitycenter.settings.v1beta1
 proto: ComponentSettings
-kind: SecuritycenterComponentSettings
+kind: SecurityCenterComponentSettings
 protopath: google.cloud.securitycenter.settings.v1beta1.ComponentSettings
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.settings.v1beta1
 proto: ServiceAccount
-kind: SecuritycenterServiceAccount
+kind: SecurityCenterServiceAccount
 protopath: google.cloud.securitycenter.settings.v1beta1.ServiceAccount
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.settings.v1beta1
 proto: Settings
-kind: SecuritycenterSettings
+kind: SecurityCenterSettings
 protopath: google.cloud.securitycenter.settings.v1beta1.Settings
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: Asset
-kind: SecuritycenterAsset
+kind: SecurityCenterAsset
 protopath: google.cloud.securitycenter.v1.Asset
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: AttackPath
-kind: SecuritycenterAttackPath
+kind: SecurityCenterAttackPath
 protopath: google.cloud.securitycenter.v1.AttackPath
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: BigQueryExport
-kind: SecuritycenterBigQueryExport
+kind: SecurityCenterBigQueryExport
 protopath: google.cloud.securitycenter.v1.BigQueryExport
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: EffectiveEventThreatDetectionCustomModule
-kind: SecuritycenterEffectiveEventThreatDetectionCustomModule
+kind: SecurityCenterEffectiveEventThreatDetectionCustomModule
 protopath: google.cloud.securitycenter.v1.EffectiveEventThreatDetectionCustomModule
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: EffectiveSecurityHealthAnalyticsCustomModule
-kind: SecuritycenterEffectiveSecurityHealthAnalyticsCustomModule
+kind: SecurityCenterEffectiveSecurityHealthAnalyticsCustomModule
 protopath: google.cloud.securitycenter.v1.EffectiveSecurityHealthAnalyticsCustomModule
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: EventThreatDetectionCustomModule
-kind: SecuritycenterEventThreatDetectionCustomModule
+kind: SecurityCenterEventThreatDetectionCustomModule
 protopath: google.cloud.securitycenter.v1.EventThreatDetectionCustomModule
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: ExternalSystem
-kind: SecuritycenterExternalSystem
+kind: SecurityCenterExternalSystem
 protopath: google.cloud.securitycenter.v1.ExternalSystem
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: Finding
-kind: SecuritycenterFinding
+kind: SecurityCenterFinding
 protopath: google.cloud.securitycenter.v1.Finding
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: MuteConfig
-kind: SecuritycenterMuteConfig
+kind: SecurityCenterMuteConfig
 protopath: google.cloud.securitycenter.v1.MuteConfig
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: NotificationConfig
-kind: SecuritycenterNotificationConfig
+kind: SecurityCenterNotificationConfig
 protopath: google.cloud.securitycenter.v1.NotificationConfig
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: OrgPolicy
-kind: SecuritycenterOrgPolicy
+kind: SecurityCenterOrgPolicy
 protopath: google.cloud.securitycenter.v1.OrgPolicy
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: OrganizationSettings
-kind: SecuritycenterOrganizationSettings
+kind: SecurityCenterOrganizationSettings
 protopath: google.cloud.securitycenter.v1.OrganizationSettings
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: ResourceValueConfig
-kind: SecuritycenterResourceValueConfig
+kind: SecurityCenterResourceValueConfig
 protopath: google.cloud.securitycenter.v1.ResourceValueConfig
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: SecurityHealthAnalyticsCustomModule
-kind: SecuritycenterSecurityHealthAnalyticsCustomModule
+kind: SecurityCenterSecurityHealthAnalyticsCustomModule
 protopath: google.cloud.securitycenter.v1.SecurityHealthAnalyticsCustomModule
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: SecurityMarks
-kind: SecuritycenterSecurityMarks
+kind: SecurityCenterSecurityMarks
 protopath: google.cloud.securitycenter.v1.SecurityMarks
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: Simulation
-kind: SecuritycenterSimulation
+kind: SecurityCenterSimulation
 protopath: google.cloud.securitycenter.v1.Simulation
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: Source
-kind: SecuritycenterSource
+kind: SecurityCenterSource
 protopath: google.cloud.securitycenter.v1.Source
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1
 proto: ValuedResource
-kind: SecuritycenterValuedResource
+kind: SecurityCenterValuedResource
 protopath: google.cloud.securitycenter.v1.ValuedResource
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1beta1
 proto: Asset
-kind: SecuritycenterAsset
+kind: SecurityCenterAsset
 protopath: google.cloud.securitycenter.v1beta1.Asset
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1beta1
 proto: Finding
-kind: SecuritycenterFinding
+kind: SecurityCenterFinding
 protopath: google.cloud.securitycenter.v1beta1.Finding
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1beta1
 proto: OrganizationSettings
-kind: SecuritycenterOrganizationSettings
+kind: SecurityCenterOrganizationSettings
 protopath: google.cloud.securitycenter.v1beta1.OrganizationSettings
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1beta1
 proto: SecurityMarks
-kind: SecuritycenterSecurityMarks
+kind: SecurityCenterSecurityMarks
 protopath: google.cloud.securitycenter.v1beta1.SecurityMarks
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1beta1
 proto: Source
-kind: SecuritycenterSource
+kind: SecurityCenterSource
 protopath: google.cloud.securitycenter.v1beta1.Source
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1p1beta1
 proto: Asset
-kind: SecuritycenterAsset
+kind: SecurityCenterAsset
 protopath: google.cloud.securitycenter.v1p1beta1.Asset
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1p1beta1
 proto: Finding
-kind: SecuritycenterFinding
+kind: SecurityCenterFinding
 protopath: google.cloud.securitycenter.v1p1beta1.Finding
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1p1beta1
 proto: NotificationConfig
-kind: SecuritycenterNotificationConfig
+kind: SecurityCenterNotificationConfig
 protopath: google.cloud.securitycenter.v1p1beta1.NotificationConfig
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1p1beta1
 proto: OrganizationSettings
-kind: SecuritycenterOrganizationSettings
+kind: SecurityCenterOrganizationSettings
 protopath: google.cloud.securitycenter.v1p1beta1.OrganizationSettings
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1p1beta1
 proto: SecurityMarks
-kind: SecuritycenterSecurityMarks
+kind: SecurityCenterSecurityMarks
 protopath: google.cloud.securitycenter.v1p1beta1.SecurityMarks
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v1p1beta1
 proto: Source
-kind: SecuritycenterSource
+kind: SecurityCenterSource
 protopath: google.cloud.securitycenter.v1p1beta1.Source
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: AttackPath
-kind: SecuritycenterAttackPath
+kind: SecurityCenterAttackPath
 protopath: google.cloud.securitycenter.v2.AttackPath
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: BigQueryExport
-kind: SecuritycenterBigQueryExport
+kind: SecurityCenterBigQueryExport
 protopath: google.cloud.securitycenter.v2.BigQueryExport
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: ExternalSystem
-kind: SecuritycenterExternalSystem
+kind: SecurityCenterExternalSystem
 protopath: google.cloud.securitycenter.v2.ExternalSystem
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: Finding
-kind: SecuritycenterFinding
+kind: SecurityCenterFinding
 protopath: google.cloud.securitycenter.v2.Finding
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: MuteConfig
-kind: SecuritycenterMuteConfig
+kind: SecurityCenterMuteConfig
 protopath: google.cloud.securitycenter.v2.MuteConfig
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: NotificationConfig
-kind: SecuritycenterNotificationConfig
+kind: SecurityCenterNotificationConfig
 protopath: google.cloud.securitycenter.v2.NotificationConfig
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: OrgPolicy
-kind: SecuritycenterOrgPolicy
+kind: SecurityCenterOrgPolicy
 protopath: google.cloud.securitycenter.v2.OrgPolicy
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: ResourceValueConfig
-kind: SecuritycenterResourceValueConfig
+kind: SecurityCenterResourceValueConfig
 protopath: google.cloud.securitycenter.v2.ResourceValueConfig
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: SecurityMarks
-kind: SecuritycenterSecurityMarks
+kind: SecurityCenterSecurityMarks
 protopath: google.cloud.securitycenter.v2.SecurityMarks
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: Simulation
-kind: SecuritycenterSimulation
+kind: SecurityCenterSimulation
 protopath: google.cloud.securitycenter.v2.Simulation
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: Source
-kind: SecuritycenterSource
+kind: SecurityCenterSource
 protopath: google.cloud.securitycenter.v2.Source
 validated: null
 ---
 service: securitycenter
 package: google.cloud.securitycenter.v2
 proto: ValuedResource
-kind: SecuritycenterValuedResource
+kind: SecurityCenterValuedResource
 protopath: google.cloud.securitycenter.v2.ValuedResource
 validated: null
 ---
 service: securitycentermanagement
 package: google.cloud.securitycentermanagement.v1
 proto: SecurityCenterService
-kind: SecuritycentermanagementSecurityCenterService
+kind: SecurityCentermanagementSecurityCenterService
 protopath: google.cloud.securitycentermanagement.v1.SecurityCenterService
 validated: null
 ---
 service: securitycentermanagement
 package: google.cloud.securitycentermanagement.v1
 proto: EffectiveSecurityHealthAnalyticsCustomModule
-kind: SecuritycentermanagementEffectiveSecurityHealthAnalyticsCustomModule
+kind: SecurityCentermanagementEffectiveSecurityHealthAnalyticsCustomModule
 protopath: google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule
 validated: null
 ---
 service: securitycentermanagement
 package: google.cloud.securitycentermanagement.v1
 proto: SecurityHealthAnalyticsCustomModule
-kind: SecuritycentermanagementSecurityHealthAnalyticsCustomModule
+kind: SecurityCentermanagementSecurityHealthAnalyticsCustomModule
 protopath: google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule
 validated: null
 ---
 service: securitycentermanagement
 package: google.cloud.securitycentermanagement.v1
 proto: SimulatedFinding
-kind: SecuritycentermanagementSimulatedFinding
+kind: SecurityCentermanagementSimulatedFinding
 protopath: google.cloud.securitycentermanagement.v1.SimulatedFinding
 validated: null
 ---
 service: securitycentermanagement
 package: google.cloud.securitycentermanagement.v1
 proto: EffectiveEventThreatDetectionCustomModule
-kind: SecuritycentermanagementEffectiveEventThreatDetectionCustomModule
+kind: SecurityCentermanagementEffectiveEventThreatDetectionCustomModule
 protopath: google.cloud.securitycentermanagement.v1.EffectiveEventThreatDetectionCustomModule
 validated: null
 ---
 service: securitycentermanagement
 package: google.cloud.securitycentermanagement.v1
 proto: EventThreatDetectionCustomModule
-kind: SecuritycentermanagementEventThreatDetectionCustomModule
+kind: SecurityCentermanagementEventThreatDetectionCustomModule
 protopath: google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule
 validated: null
 ---
 service: securityposture
 package: google.cloud.securityposture.v1
 proto: Posture
-kind: SecurityposturePosture
+kind: SecurityPosturePosture
 protopath: google.cloud.securityposture.v1.Posture
 validated: null
 ---
 service: securityposture
 package: google.cloud.securityposture.v1
 proto: PostureDeployment
-kind: SecurityposturePostureDeployment
+kind: SecurityPosturePostureDeployment
 protopath: google.cloud.securityposture.v1.PostureDeployment
 validated: null
 ---
 service: securityposture
 package: google.cloud.securityposture.v1
 proto: PostureTemplate
-kind: SecurityposturePostureTemplate
+kind: SecurityPosturePostureTemplate
 protopath: google.cloud.securityposture.v1.PostureTemplate
 validated: null
 ---
 service: servicedirectory
 package: google.cloud.servicedirectory.v1
 proto: Endpoint
-kind: ServicedirectoryEndpoint
+kind: ServiceDirectoryEndpoint
 protopath: google.cloud.servicedirectory.v1.Endpoint
 validated: null
 ---
 service: servicedirectory
 package: google.cloud.servicedirectory.v1
 proto: Namespace
-kind: ServicedirectoryNamespace
+kind: ServiceDirectoryNamespace
 protopath: google.cloud.servicedirectory.v1.Namespace
 validated: null
 ---
 service: servicedirectory
 package: google.cloud.servicedirectory.v1
 proto: Service
-kind: ServicedirectoryService
+kind: ServiceDirectoryService
 protopath: google.cloud.servicedirectory.v1.Service
 validated: null
 ---
 service: servicedirectory
 package: google.cloud.servicedirectory.v1beta1
 proto: Endpoint
-kind: ServicedirectoryEndpoint
+kind: ServiceDirectoryEndpoint
 protopath: google.cloud.servicedirectory.v1beta1.Endpoint
 validated: null
 ---
 service: servicedirectory
 package: google.cloud.servicedirectory.v1beta1
 proto: Namespace
-kind: ServicedirectoryNamespace
+kind: ServiceDirectoryNamespace
 protopath: google.cloud.servicedirectory.v1beta1.Namespace
 validated: null
 ---
 service: servicedirectory
 package: google.cloud.servicedirectory.v1beta1
 proto: Service
-kind: ServicedirectoryService
+kind: ServiceDirectoryService
 protopath: google.cloud.servicedirectory.v1beta1.Service
 validated: null
 ---
 service: servicehealth
 package: google.cloud.servicehealth.v1
 proto: Event
-kind: ServicehealthEvent
+kind: ServiceHealthEvent
 protopath: google.cloud.servicehealth.v1.Event
 validated: null
 ---
 service: servicehealth
 package: google.cloud.servicehealth.v1
 proto: OrganizationEvent
-kind: ServicehealthOrganizationEvent
+kind: ServiceHealthOrganizationEvent
 protopath: google.cloud.servicehealth.v1.OrganizationEvent
 validated: null
 ---
 service: servicehealth
 package: google.cloud.servicehealth.v1
 proto: OrganizationImpact
-kind: ServicehealthOrganizationImpact
+kind: ServiceHealthOrganizationImpact
 protopath: google.cloud.servicehealth.v1.OrganizationImpact
 validated: null
 ---
@@ -6490,14 +6476,14 @@ validated: null
 service: storageinsights
 package: google.cloud.storageinsights.v1
 proto: ReportDetail
-kind: StorageinsightsReportDetail
+kind: StorageInsightsReportDetail
 protopath: google.cloud.storageinsights.v1.ReportDetail
 validated: null
 ---
 service: storageinsights
 package: google.cloud.storageinsights.v1
 proto: ReportConfig
-kind: StorageinsightsReportConfig
+kind: StorageInsightsReportConfig
 protopath: google.cloud.storageinsights.v1.ReportConfig
 validated: null
 ---
@@ -6609,98 +6595,98 @@ validated: null
 service: telcoautomation
 package: google.cloud.telcoautomation.v1
 proto: OrchestrationCluster
-kind: TelcoautomationOrchestrationCluster
+kind: TelcoAutomationOrchestrationCluster
 protopath: google.cloud.telcoautomation.v1.OrchestrationCluster
 validated: null
 ---
 service: telcoautomation
 package: google.cloud.telcoautomation.v1
 proto: EdgeSlm
-kind: TelcoautomationEdgeSlm
+kind: TelcoAutomationEdgeSlm
 protopath: google.cloud.telcoautomation.v1.EdgeSlm
 validated: null
 ---
 service: telcoautomation
 package: google.cloud.telcoautomation.v1
 proto: Blueprint
-kind: TelcoautomationBlueprint
+kind: TelcoAutomationBlueprint
 protopath: google.cloud.telcoautomation.v1.Blueprint
 validated: null
 ---
 service: telcoautomation
 package: google.cloud.telcoautomation.v1
 proto: PublicBlueprint
-kind: TelcoautomationPublicBlueprint
+kind: TelcoAutomationPublicBlueprint
 protopath: google.cloud.telcoautomation.v1.PublicBlueprint
 validated: null
 ---
 service: telcoautomation
 package: google.cloud.telcoautomation.v1
 proto: Deployment
-kind: TelcoautomationDeployment
+kind: TelcoAutomationDeployment
 protopath: google.cloud.telcoautomation.v1.Deployment
 validated: null
 ---
 service: telcoautomation
 package: google.cloud.telcoautomation.v1
 proto: HydratedDeployment
-kind: TelcoautomationHydratedDeployment
+kind: TelcoAutomationHydratedDeployment
 protopath: google.cloud.telcoautomation.v1.HydratedDeployment
 validated: null
 ---
 service: timeseriesinsights
 package: google.cloud.timeseriesinsights.v1
 proto: DataSet
-kind: TimeseriesinsightsDataSet
+kind: TimeseriesInsightsDataSet
 protopath: google.cloud.timeseriesinsights.v1.DataSet
 validated: null
 ---
 service: tpu
 package: google.cloud.tpu.v1
 proto: Node
-kind: TpuNode
+kind: TPUNode
 protopath: google.cloud.tpu.v1.Node
 validated: null
 ---
 service: tpu
 package: google.cloud.tpu.v1
 proto: TensorFlowVersion
-kind: TpuTensorFlowVersion
+kind: TPUTensorFlowVersion
 protopath: google.cloud.tpu.v1.TensorFlowVersion
 validated: null
 ---
 service: tpu
 package: google.cloud.tpu.v1
 proto: AcceleratorType
-kind: TpuAcceleratorType
+kind: TPUAcceleratorType
 protopath: google.cloud.tpu.v1.AcceleratorType
 validated: null
 ---
 service: tpu
 package: google.cloud.tpu.v2
 proto: Node
-kind: TpuNode
+kind: TPUNode
 protopath: google.cloud.tpu.v2.Node
 validated: null
 ---
 service: tpu
 package: google.cloud.tpu.v2
 proto: QueuedResource
-kind: TpuQueuedResource
+kind: TPUQueuedResource
 protopath: google.cloud.tpu.v2.QueuedResource
 validated: null
 ---
 service: tpu
 package: google.cloud.tpu.v2
 proto: AcceleratorType
-kind: TpuAcceleratorType
+kind: TPUAcceleratorType
 protopath: google.cloud.tpu.v2.AcceleratorType
 validated: null
 ---
 service: tpu
 package: google.cloud.tpu.v2
 proto: RuntimeVersion
-kind: TpuRuntimeVersion
+kind: TPURuntimeVersion
 protopath: google.cloud.tpu.v2.RuntimeVersion
 validated: null
 ---
@@ -6952,357 +6938,357 @@ validated: null
 service: visionai
 package: google.cloud.visionai.v1
 proto: Cluster
-kind: VisionaiCluster
+kind: VisionAICluster
 protopath: google.cloud.visionai.v1.Cluster
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Operator
-kind: VisionaiOperator
+kind: VisionAIOperator
 protopath: google.cloud.visionai.v1.Operator
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Analysis
-kind: VisionaiAnalysis
+kind: VisionAIAnalysis
 protopath: google.cloud.visionai.v1.Analysis
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Process
-kind: VisionaiProcess
+kind: VisionAIProcess
 protopath: google.cloud.visionai.v1.Process
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Application
-kind: VisionaiApplication
+kind: VisionAIApplication
 protopath: google.cloud.visionai.v1.Application
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Draft
-kind: VisionaiDraft
+kind: VisionAIDraft
 protopath: google.cloud.visionai.v1.Draft
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Instance
-kind: VisionaiInstance
+kind: VisionAIInstance
 protopath: google.cloud.visionai.v1.Instance
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Processor
-kind: VisionaiProcessor
+kind: VisionAIProcessor
 protopath: google.cloud.visionai.v1.Processor
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Stream
-kind: VisionaiStream
+kind: VisionAIStream
 protopath: google.cloud.visionai.v1.Stream
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Event
-kind: VisionaiEvent
+kind: VisionAIEvent
 protopath: google.cloud.visionai.v1.Event
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Series
-kind: VisionaiSeries
+kind: VisionAISeries
 protopath: google.cloud.visionai.v1.Series
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Channel
-kind: VisionaiChannel
+kind: VisionAIChannel
 protopath: google.cloud.visionai.v1.Channel
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Asset
-kind: VisionaiAsset
+kind: VisionAIAsset
 protopath: google.cloud.visionai.v1.Asset
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Collection
-kind: VisionaiCollection
+kind: VisionAICollection
 protopath: google.cloud.visionai.v1.Collection
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Index
-kind: VisionaiIndex
+kind: VisionAIIndex
 protopath: google.cloud.visionai.v1.Index
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Corpus
-kind: VisionaiCorpus
+kind: VisionAICorpus
 protopath: google.cloud.visionai.v1.Corpus
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: DataSchema
-kind: VisionaiDataSchema
+kind: VisionAIDataSchema
 protopath: google.cloud.visionai.v1.DataSchema
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: Annotation
-kind: VisionaiAnnotation
+kind: VisionAIAnnotation
 protopath: google.cloud.visionai.v1.Annotation
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: SearchConfig
-kind: VisionaiSearchConfig
+kind: VisionAISearchConfig
 protopath: google.cloud.visionai.v1.SearchConfig
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: IndexEndpoint
-kind: VisionaiIndexEndpoint
+kind: VisionAIIndexEndpoint
 protopath: google.cloud.visionai.v1.IndexEndpoint
 validated: null
 ---
 service: visionai
 package: google.cloud.visionai.v1
 proto: SearchHypernym
-kind: VisionaiSearchHypernym
+kind: VisionAISearchHypernym
 protopath: google.cloud.visionai.v1.SearchHypernym
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: ReplicationCycle
-kind: VmmigrationReplicationCycle
+kind: VMMigrationReplicationCycle
 protopath: google.cloud.vmmigration.v1.ReplicationCycle
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: MigratingVm
-kind: VmmigrationMigratingVm
+kind: VMMigrationMigratingVm
 protopath: google.cloud.vmmigration.v1.MigratingVm
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: CloneJob
-kind: VmmigrationCloneJob
+kind: VMMigrationCloneJob
 protopath: google.cloud.vmmigration.v1.CloneJob
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: CutoverJob
-kind: VmmigrationCutoverJob
+kind: VMMigrationCutoverJob
 protopath: google.cloud.vmmigration.v1.CutoverJob
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: Source
-kind: VmmigrationSource
+kind: VMMigrationSource
 protopath: google.cloud.vmmigration.v1.Source
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: DatacenterConnector
-kind: VmmigrationDatacenterConnector
+kind: VMMigrationDatacenterConnector
 protopath: google.cloud.vmmigration.v1.DatacenterConnector
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: UtilizationReport
-kind: VmmigrationUtilizationReport
+kind: VMMigrationUtilizationReport
 protopath: google.cloud.vmmigration.v1.UtilizationReport
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: TargetProject
-kind: VmmigrationTargetProject
+kind: VMMigrationTargetProject
 protopath: google.cloud.vmmigration.v1.TargetProject
 validated: null
 ---
 service: vmmigration
 package: google.cloud.vmmigration.v1
 proto: Group
-kind: VmmigrationGroup
+kind: VMMigrationGroup
 protopath: google.cloud.vmmigration.v1.Group
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: PrivateCloud
-kind: VmwareenginePrivateCloud
+kind: VMwareEnginePrivateCloud
 protopath: google.cloud.vmwareengine.v1.PrivateCloud
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: Cluster
-kind: VmwareengineCluster
+kind: VMwareEngineCluster
 protopath: google.cloud.vmwareengine.v1.Cluster
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: Node
-kind: VmwareengineNode
+kind: VMwareEngineNode
 protopath: google.cloud.vmwareengine.v1.Node
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: ExternalAddress
-kind: VmwareengineExternalAddress
+kind: VMwareEngineExternalAddress
 protopath: google.cloud.vmwareengine.v1.ExternalAddress
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: Subnet
-kind: VmwareengineSubnet
+kind: VMwareEngineSubnet
 protopath: google.cloud.vmwareengine.v1.Subnet
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: ExternalAccessRule
-kind: VmwareengineExternalAccessRule
+kind: VMwareEngineExternalAccessRule
 protopath: google.cloud.vmwareengine.v1.ExternalAccessRule
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: LoggingServer
-kind: VmwareengineLoggingServer
+kind: VMwareEngineLoggingServer
 protopath: google.cloud.vmwareengine.v1.LoggingServer
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: NodeType
-kind: VmwareengineNodeType
+kind: VMwareEngineNodeType
 protopath: google.cloud.vmwareengine.v1.NodeType
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: HcxActivationKey
-kind: VmwareengineHcxActivationKey
+kind: VMwareEngineHcxActivationKey
 protopath: google.cloud.vmwareengine.v1.HcxActivationKey
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: DnsForwarding
-kind: VmwareengineDnsForwarding
+kind: VMwareEngineDNSForwarding
 protopath: google.cloud.vmwareengine.v1.DnsForwarding
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: NetworkPeering
-kind: VmwareengineNetworkPeering
+kind: VMwareEngineNetworkPeering
 protopath: google.cloud.vmwareengine.v1.NetworkPeering
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: NetworkPolicy
-kind: VmwareengineNetworkPolicy
+kind: VMwareEngineNetworkPolicy
 protopath: google.cloud.vmwareengine.v1.NetworkPolicy
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: ManagementDnsZoneBinding
-kind: VmwareengineManagementDnsZoneBinding
+kind: VMwareEngineManagementDnsZoneBinding
 protopath: google.cloud.vmwareengine.v1.ManagementDnsZoneBinding
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: VmwareEngineNetwork
-kind: VmwareengineVmwareEngineNetwork
+kind: VMwareEngineVmwareEngineNetwork
 protopath: google.cloud.vmwareengine.v1.VmwareEngineNetwork
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: PrivateConnection
-kind: VmwareenginePrivateConnection
+kind: VMwareEnginePrivateConnection
 protopath: google.cloud.vmwareengine.v1.PrivateConnection
 validated: null
 ---
 service: vmwareengine
 package: google.cloud.vmwareengine.v1
 proto: DnsBindPermission
-kind: VmwareengineDnsBindPermission
+kind: VMwareEngineDnsBindPermission
 protopath: google.cloud.vmwareengine.v1.DnsBindPermission
 validated: null
 ---
 service: vpcaccess
 package: google.cloud.vpcaccess.v1
 proto: Connector
-kind: VpcaccessConnector
+kind: VPCAccessConnector
 protopath: google.cloud.vpcaccess.v1.Connector
 validated: null
 ---
 service: websecurityscanner
 package: google.cloud.websecurityscanner.v1
 proto: Finding
-kind: WebsecurityscannerFinding
+kind: WebSecurityScannerFinding
 protopath: google.cloud.websecurityscanner.v1.Finding
 validated: null
 ---
 service: websecurityscanner
 package: google.cloud.websecurityscanner.v1beta
 proto: Finding
-kind: WebsecurityscannerFinding
+kind: WebSecurityScannerFinding
 protopath: google.cloud.websecurityscanner.v1beta.Finding
 validated: null
 ---
 service: websecurityscanner
 package: google.cloud.websecurityscanner.v1beta
 proto: ScanConfig
-kind: WebsecurityscannerScanConfig
+kind: WebSecurityScannerScanConfig
 protopath: google.cloud.websecurityscanner.v1beta.ScanConfig
 validated: null
 ---
 service: websecurityscanner
 package: google.cloud.websecurityscanner.v1beta
 proto: ScanRun
-kind: WebsecurityscannerScanRun
+kind: WebSecurityScannerScanRun
 protopath: google.cloud.websecurityscanner.v1beta.ScanRun
 validated: null
 ---
@@ -7379,287 +7365,287 @@ validated: null
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: AptArtifact
-kind: ArtifactregistryAptArtifact
+kind: ArtifactRegistryAptArtifact
 protopath: google.devtools.artifactregistry.v1.AptArtifact
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: DockerImage
-kind: ArtifactregistryDockerImage
+kind: ArtifactRegistryDockerImage
 protopath: google.devtools.artifactregistry.v1.DockerImage
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: MavenArtifact
-kind: ArtifactregistryMavenArtifact
+kind: ArtifactRegistryMavenArtifact
 protopath: google.devtools.artifactregistry.v1.MavenArtifact
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: NpmPackage
-kind: ArtifactregistryNpmPackage
+kind: ArtifactRegistryNpmPackage
 protopath: google.devtools.artifactregistry.v1.NpmPackage
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: PythonPackage
-kind: ArtifactregistryPythonPackage
+kind: ArtifactRegistryPythonPackage
 protopath: google.devtools.artifactregistry.v1.PythonPackage
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: Attachment
-kind: ArtifactregistryAttachment
+kind: ArtifactRegistryAttachment
 protopath: google.devtools.artifactregistry.v1.Attachment
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: File
-kind: ArtifactregistryFile
+kind: ArtifactRegistryFile
 protopath: google.devtools.artifactregistry.v1.File
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: GenericArtifact
-kind: ArtifactregistryGenericArtifact
+kind: ArtifactRegistryGenericArtifact
 protopath: google.devtools.artifactregistry.v1.GenericArtifact
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: Package
-kind: ArtifactregistryPackage
+kind: ArtifactRegistryPackage
 protopath: google.devtools.artifactregistry.v1.Package
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: Repository
-kind: ArtifactregistryRepository
+kind: ArtifactRegistryRepository
 protopath: google.devtools.artifactregistry.v1.Repository
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: Rule
-kind: ArtifactregistryRule
+kind: ArtifactRegistryRule
 protopath: google.devtools.artifactregistry.v1.Rule
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: ProjectSettings
-kind: ArtifactregistryProjectSettings
+kind: ArtifactRegistryProjectSettings
 protopath: google.devtools.artifactregistry.v1.ProjectSettings
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: Tag
-kind: ArtifactregistryTag
+kind: ArtifactRegistryTag
 protopath: google.devtools.artifactregistry.v1.Tag
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: Version
-kind: ArtifactregistryVersion
+kind: ArtifactRegistryVersion
 protopath: google.devtools.artifactregistry.v1.Version
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: VPCSCConfig
-kind: ArtifactregistryVPCSCConfig
+kind: ArtifactRegistryVPCSCConfig
 protopath: google.devtools.artifactregistry.v1.VPCSCConfig
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1
 proto: YumArtifact
-kind: ArtifactregistryYumArtifact
+kind: ArtifactRegistryYumArtifact
 protopath: google.devtools.artifactregistry.v1.YumArtifact
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1beta2
 proto: AptArtifact
-kind: ArtifactregistryAptArtifact
+kind: ArtifactRegistryAptArtifact
 protopath: google.devtools.artifactregistry.v1beta2.AptArtifact
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1beta2
 proto: File
-kind: ArtifactregistryFile
+kind: ArtifactRegistryFile
 protopath: google.devtools.artifactregistry.v1beta2.File
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1beta2
 proto: Repository
-kind: ArtifactregistryRepository
+kind: ArtifactRegistryRepository
 protopath: google.devtools.artifactregistry.v1beta2.Repository
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1beta2
 proto: ProjectSettings
-kind: ArtifactregistryProjectSettings
+kind: ArtifactRegistryProjectSettings
 protopath: google.devtools.artifactregistry.v1beta2.ProjectSettings
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1beta2
 proto: Tag
-kind: ArtifactregistryTag
+kind: ArtifactRegistryTag
 protopath: google.devtools.artifactregistry.v1beta2.Tag
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1beta2
 proto: Version
-kind: ArtifactregistryVersion
+kind: ArtifactRegistryVersion
 protopath: google.devtools.artifactregistry.v1beta2.Version
 validated: null
 ---
 service: artifactregistry
 package: google.devtools.artifactregistry.v1beta2
 proto: YumArtifact
-kind: ArtifactregistryYumArtifact
+kind: ArtifactRegistryYumArtifact
 protopath: google.devtools.artifactregistry.v1beta2.YumArtifact
 validated: null
 ---
 service: cloudbuild
 package: google.devtools.cloudbuild.v1
 proto: Build
-kind: CloudbuildBuild
+kind: CloudBuildBuild
 protopath: google.devtools.cloudbuild.v1.Build
 validated: null
 ---
 service: cloudbuild
 package: google.devtools.cloudbuild.v1
 proto: BuildTrigger
-kind: CloudbuildBuildTrigger
+kind: CloudBuildBuildTrigger
 protopath: google.devtools.cloudbuild.v1.BuildTrigger
 validated: null
 ---
 service: cloudbuild
 package: google.devtools.cloudbuild.v1
 proto: GitHubEnterpriseConfig
-kind: CloudbuildGitHubEnterpriseConfig
+kind: CloudBuildGitHubEnterpriseConfig
 protopath: google.devtools.cloudbuild.v1.GitHubEnterpriseConfig
 validated: null
 ---
 service: cloudbuild
 package: google.devtools.cloudbuild.v1
 proto: WorkerPool
-kind: CloudbuildWorkerPool
+kind: CloudBuildWorkerPool
 protopath: google.devtools.cloudbuild.v1.WorkerPool
 validated: null
 ---
 service: cloudbuild
 package: google.devtools.cloudbuild.v2
 proto: Connection
-kind: CloudbuildConnection
+kind: CloudBuildConnection
 protopath: google.devtools.cloudbuild.v2.Connection
 validated: null
 ---
 service: cloudbuild
 package: google.devtools.cloudbuild.v2
 proto: Repository
-kind: CloudbuildRepository
+kind: CloudBuildRepository
 protopath: google.devtools.cloudbuild.v2.Repository
 validated: null
 ---
 service: clouderrorreporting
 package: google.devtools.clouderrorreporting.v1beta1
 proto: ErrorGroup
-kind: ClouderrorreportingErrorGroup
+kind: CloudErrorReportingErrorGroup
 protopath: google.devtools.clouderrorreporting.v1beta1.ErrorGroup
 validated: null
 ---
 service: cloudprofiler
 package: google.devtools.cloudprofiler.v2
 proto: Profile
-kind: CloudprofilerProfile
+kind: CloudProfilerProfile
 protopath: google.devtools.cloudprofiler.v2.Profile
 validated: null
 ---
 service: cloudtrace
 package: google.devtools.cloudtrace.v2
 proto: Span
-kind: CloudtraceSpan
+kind: CloudTraceSpan
 protopath: google.devtools.cloudtrace.v2.Span
 validated: null
 ---
 service: remoteworkers
 package: google.devtools.remoteworkers.v1test2
 proto: BotSession
-kind: RemoteworkersBotSession
+kind: RemoteWorkersBotSession
 protopath: google.devtools.remoteworkers.v1test2.BotSession
 validated: null
 ---
 service: resultstore
 package: google.devtools.resultstore.v2
 proto: Action
-kind: ResultstoreAction
+kind: ResultStoreAction
 protopath: google.devtools.resultstore.v2.Action
 validated: null
 ---
 service: resultstore
 package: google.devtools.resultstore.v2
 proto: Configuration
-kind: ResultstoreConfiguration
+kind: ResultStoreConfiguration
 protopath: google.devtools.resultstore.v2.Configuration
 validated: null
 ---
 service: resultstore
 package: google.devtools.resultstore.v2
 proto: ConfiguredTarget
-kind: ResultstoreConfiguredTarget
+kind: ResultStoreConfiguredTarget
 protopath: google.devtools.resultstore.v2.ConfiguredTarget
 validated: null
 ---
 service: resultstore
 package: google.devtools.resultstore.v2
 proto: DownloadMetadata
-kind: ResultstoreDownloadMetadata
+kind: ResultStoreDownloadMetadata
 protopath: google.devtools.resultstore.v2.DownloadMetadata
 validated: null
 ---
 service: resultstore
 package: google.devtools.resultstore.v2
 proto: FileSet
-kind: ResultstoreFileSet
+kind: ResultStoreFileSet
 protopath: google.devtools.resultstore.v2.FileSet
 validated: null
 ---
 service: resultstore
 package: google.devtools.resultstore.v2
 proto: Invocation
-kind: ResultstoreInvocation
+kind: ResultStoreInvocation
 protopath: google.devtools.resultstore.v2.Invocation
 validated: null
 ---
 service: resultstore
 package: google.devtools.resultstore.v2
 proto: Target
-kind: ResultstoreTarget
+kind: ResultStoreTarget
 protopath: google.devtools.resultstore.v2.Target
 validated: null
 ---
 service: resultstore
 package: google.devtools.resultstore.v2
 proto: UploadMetadata
-kind: ResultstoreUploadMetadata
+kind: ResultStoreUploadMetadata
 protopath: google.devtools.resultstore.v2.UploadMetadata
 validated: null
 ---
@@ -7722,56 +7708,56 @@ validated: null
 service: iam
 package: google.iam.admin.v1
 proto: ServiceAccount
-kind: IamServiceAccount
+kind: IAMServiceAccount
 protopath: google.iam.admin.v1.ServiceAccount
 validated: null
 ---
 service: iam
 package: google.iam.admin.v1
 proto: ServiceAccountKey
-kind: IamServiceAccountKey
+kind: IAMServiceAccountKey
 protopath: google.iam.admin.v1.ServiceAccountKey
 validated: null
 ---
 service: iam
 package: google.iam.v1beta
 proto: WorkloadIdentityPool
-kind: IamWorkloadIdentityPool
+kind: IAMWorkloadIdentityPool
 protopath: google.iam.v1beta.WorkloadIdentityPool
 validated: null
 ---
 service: iam
 package: google.iam.v1beta
 proto: WorkloadIdentityPoolProvider
-kind: IamWorkloadIdentityPoolProvider
+kind: IAMWorkloadIdentityPoolProvider
 protopath: google.iam.v1beta.WorkloadIdentityPoolProvider
 validated: null
 ---
 service: iam
 package: google.iam.v3
 proto: PolicyBinding
-kind: IamPolicyBinding
+kind: IAMPolicyBinding
 protopath: google.iam.v3.PolicyBinding
 validated: null
 ---
 service: iam
 package: google.iam.v3
 proto: PrincipalAccessBoundaryPolicy
-kind: IamPrincipalAccessBoundaryPolicy
+kind: IAMPrincipalAccessBoundaryPolicy
 protopath: google.iam.v3.PrincipalAccessBoundaryPolicy
 validated: null
 ---
 service: iam
 package: google.iam.v3beta
 proto: PolicyBinding
-kind: IamPolicyBinding
+kind: IAMPolicyBinding
 protopath: google.iam.v3beta.PolicyBinding
 validated: null
 ---
 service: iam
 package: google.iam.v3beta
 proto: PrincipalAccessBoundaryPolicy
-kind: IamPrincipalAccessBoundaryPolicy
+kind: IAMPrincipalAccessBoundaryPolicy
 protopath: google.iam.v3beta.PrincipalAccessBoundaryPolicy
 validated: null
 ---
@@ -8044,28 +8030,28 @@ validated: null
 service: pubsub
 package: google.pubsub.v1
 proto: Topic
-kind: PubsubTopic
+kind: PubSubTopic
 protopath: google.pubsub.v1.Topic
 validated: null
 ---
 service: pubsub
 package: google.pubsub.v1
 proto: Subscription
-kind: PubsubSubscription
+kind: PubSubSubscription
 protopath: google.pubsub.v1.Subscription
 validated: null
 ---
 service: pubsub
 package: google.pubsub.v1
 proto: Snapshot
-kind: PubsubSnapshot
+kind: PubSubSnapshot
 protopath: google.pubsub.v1.Snapshot
 validated: null
 ---
 service: pubsub
 package: google.pubsub.v1
 proto: Schema
-kind: PubsubSchema
+kind: PubSubSchema
 protopath: google.pubsub.v1.Schema
 validated: null
 
@@ -8156,14 +8142,7 @@ validated: null
 service: storagetransfer
 package: google.storagetransfer.v1
 proto: AgentPool
-kind: StoragetransferAgentPool
+kind: StorageTransferAgentPool
 protopath: google.storagetransfer.v1.AgentPool
 validated: null
 ---
-
-// removed ai service after: aiplatform
-package: google.cloud.aiplatform.v1
-proto: SavedQuery
-kind: AiplatformSavedQuery
-protopath: google.cloud.aiplatform.v1.SavedQuery
-validated: null
