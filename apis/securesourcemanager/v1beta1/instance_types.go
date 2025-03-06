@@ -25,13 +25,8 @@ var SecureSourceManagerInstanceGVK = GroupVersion.WithKind("SecureSourceManagerI
 // SecureSourceManagerInstanceSpec defines the desired state of SecureSourceManagerInstance
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance
 type SecureSourceManagerInstanceSpec struct {
-	/* Immutable. The Project that this resource belongs to. */
 	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	/* Immutable. Location of the instance. */
-	// +required
-	Location string `json:"location"`
+	Parent `json:",inline"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -45,6 +40,14 @@ type SecureSourceManagerInstanceSpec struct {
 
 	// Optional. PrivateConfig includes settings for private instance.
 	PrivateConfig *Instance_PrivateConfig `json:"privateConfig,omitempty"`
+}
+
+type Parent struct {
+	// +required
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	// +required
+	Location string `json:"location"`
 }
 
 // SecureSourceManagerInstanceStatus defines the config connector machine state of SecureSourceManagerInstance

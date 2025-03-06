@@ -97,7 +97,6 @@ spec:
                 description: Optional. Labels as key value pairs.
                 type: object
               location:
-                description: Immutable. Location of the instance.
                 type: string
               privateConfig:
                 description: Optional. PrivateConfig includes settings for private
@@ -137,7 +136,7 @@ spec:
                     type: boolean
                 type: object
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -174,6 +173,7 @@ spec:
                   is used as the default.
                 type: string
             required:
+            - ""
             - location
             - projectRef
             type: object
@@ -346,7 +346,6 @@ spec:
                 description: Optional. Labels as key value pairs.
                 type: object
               location:
-                description: Immutable. Location of the instance.
                 type: string
               privateConfig:
                 description: Optional. PrivateConfig includes settings for private
@@ -386,7 +385,7 @@ spec:
                     type: boolean
                 type: object
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -423,6 +422,7 @@ spec:
                   is used as the default.
                 type: string
             required:
+            - ""
             - location
             - projectRef
             type: object
