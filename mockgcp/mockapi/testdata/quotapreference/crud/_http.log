@@ -1,0 +1,141 @@
+POST https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaPreferences?alt=json&quotaPreferenceId=testp-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "name": "projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}",
+  "quotaConfig": {
+    "preferredValue": "29"
+  },
+  "quotaId": "GLOBAL-INTERNAL-MANAGED-BACKEND-BUCKETS-per-project",
+  "service": "compute.googleapis.com"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}",
+  "quotaConfig": {
+    "grantedValue": "29",
+    "preferredValue": "29"
+  },
+  "quotaId": "GLOBAL-INTERNAL-MANAGED-BACKEND-BUCKETS-per-project",
+  "service": "compute.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}",
+  "quotaConfig": {
+    "grantedValue": "29",
+    "preferredValue": "29"
+  },
+  "quotaId": "GLOBAL-INTERNAL-MANAGED-BACKEND-BUCKETS-per-project",
+  "service": "compute.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}?alt=json&allowMissing=False&validateOnly=False
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "name": "projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}",
+  "quotaConfig": {
+    "preferredValue": "30"
+  },
+  "quotaId": "GLOBAL-INTERNAL-MANAGED-BACKEND-BUCKETS-per-project",
+  "service": "compute.googleapis.com"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}",
+  "quotaConfig": {
+    "grantedValue": "30",
+    "preferredValue": "30"
+  },
+  "quotaId": "GLOBAL-INTERNAL-MANAGED-BACKEND-BUCKETS-per-project",
+  "service": "compute.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}",
+  "quotaConfig": {
+    "grantedValue": "30",
+    "preferredValue": "30"
+  },
+  "quotaId": "GLOBAL-INTERNAL-MANAGED-BACKEND-BUCKETS-per-project",
+  "service": "compute.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
