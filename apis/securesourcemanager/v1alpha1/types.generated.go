@@ -191,10 +191,6 @@ type Repository_InitialConfig struct {
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
-type Repository_URIs struct {
-}
-
-// +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
 type Repository_URIsObservedState struct {
 	// Output only. HTML is the URI for user to view the repository in a
 	//  browser.

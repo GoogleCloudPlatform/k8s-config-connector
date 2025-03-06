@@ -41,8 +41,6 @@ type SecureSourceManagerRepositoryRef struct {
 
 	// The namespace of a SecureSourceManagerRepository resource.
 	Namespace string `json:"namespace,omitempty"`
-
-	parent *SecureSourceManagerRepositoryParent
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on SecureSourceManagerRepository.
@@ -54,7 +52,7 @@ func (r *SecureSourceManagerRepositoryRef) NormalizedExternal(ctx context.Contex
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := parseSecureSourceManagerRepositoryExternal(r.External); err != nil {
+		if _, err := parseSecureSourceManagerRepositoryExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -85,107 +83,14 @@ func (r *SecureSourceManagerRepositoryRef) NormalizedExternal(ctx context.Contex
 	return r.External, nil
 }
 
-// New builds a SecureSourceManagerRepositoryRef from the Config Connector SecureSourceManagerRepository object.
-func NewSecureSourceManagerRepositoryRef(ctx context.Context, reader client.Reader, obj *SecureSourceManagerRepository) (*SecureSourceManagerRepositoryRef, error) {
-	id := &SecureSourceManagerRepositoryRef{}
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-	id.parent = &SecureSourceManagerRepositoryParent{ProjectID: projectID, Location: location}
-
-	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = asSecureSourceManagerRepositoryExternal(id.parent, resourceID)
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, actualResourceID, err := parseSecureSourceManagerRepositoryExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-	if actualParent.Location != location {
-		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-	}
-	if actualResourceID != resourceID {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
-	}
-	id.External = externalRef
-	id.parent = &SecureSourceManagerRepositoryParent{ProjectID: projectID, Location: location}
-	return id, nil
-}
-
-func (r *SecureSourceManagerRepositoryRef) Parent() (*SecureSourceManagerRepositoryParent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
-	if r.External != "" {
-		parent, _, err := parseSecureSourceManagerRepositoryExternal(r.External)
-		if err != nil {
-			return nil, err
-		}
-		return parent, nil
-	}
-	return nil, fmt.Errorf("SecureSourceManagerRepositoryRef not initialized from `NewSecureSourceManagerRepositoryRef` or `NormalizedExternal`")
-}
-
-func (r *SecureSourceManagerRepositoryRef) ResourceID() (string, error) {
-	if r.External == "" {
-		return "", fmt.Errorf("reference has not been normalized (external is empty)")
-	}
-
-	_, resourceID, err := parseSecureSourceManagerRepositoryExternal(r.External)
-	if err != nil {
-		return "", err
-	}
-	return resourceID, nil
-}
-
-type SecureSourceManagerRepositoryParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *SecureSourceManagerRepositoryParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-func asSecureSourceManagerRepositoryExternal(parent *SecureSourceManagerRepositoryParent, resourceID string) (external string) {
-	return parent.String() + "/repositories/" + resourceID
-}
-
-func parseSecureSourceManagerRepositoryExternal(external string) (parent *SecureSourceManagerRepositoryParent, resourceID string, err error) {
+func parseSecureSourceManagerRepositoryExternal(external string) (*RepositoryIdentity, error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "repositories" {
-		return nil, "", fmt.Errorf("format of SecureSourceManagerRepository external=%q was not known (use projects/{{projectId}}/locations/{{location}}/repositories/{{repositoryID}})", external)
+		return nil, fmt.Errorf("format of SecureSourceManagerRepository external=%q was not known (use projects/{{projectId}}/locations/{{location}}/repositories/{{repositoryID}})", external)
 	}
-	parent = &SecureSourceManagerRepositoryParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return &RepositoryIdentity{
+		parent: &RepositoryParent{ProjectID: tokens[1], Location: tokens[3]},
+		id:     tokens[5],
+	}, nil
 }
