@@ -40,6 +40,12 @@ func init() {
 		ResourceKind: "SQLInstance",
 	}
 
+	resourceContextMap["sqlinstance-replica-direct"] = ResourceContext{
+		// Defaulting behavior of backup configuration requires multiple updates.
+		SkipNoChange: true,
+		ResourceKind: "SQLInstance",
+	}
+
 	resourceContextMap["sqldatabase"] = ResourceContext{
 		ResourceKind: "SQLDatabase",
 	}
