@@ -101,12 +101,12 @@ branches:
       resource: model
       controller: Unknown
       kind: AIModel
-      package: google.ai.generativelanguage.v1beta3
+      package: google.ai.generativelanguage.v1
       proto: Model
-      proto-path: google/ai/generativelanguage/v1beta3/model_service.proto
-      proto-service: ""
-      proto-msg: google.ai.generativelanguage.v1beta3.Model
-      host-name: ""
+      proto-path: google/ai/generativelanguage/v1/model_service.proto
+      proto-service: google.ai.generativelanguage.v1.Models
+      proto-msg: google.ai.generativelanguage.v1.Model
+      host-name: "generativelanguage.googleapis.com"
       notes: []
     - name: ai-permission
       local: resource-ai-permission
