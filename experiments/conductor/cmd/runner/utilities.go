@@ -15,6 +15,7 @@
 package runner
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -193,6 +194,25 @@ func gitCommit(workDir string, out *strings.Builder, msg string) {
 	}
 	log.Printf("BRANCH COMMIT: %q\n", formatCommandOutput(out.String()))
 	out.Reset()
+}
+
+func gitFileHasChange(workDir string, filePath string) bool {
+	log.Printf("COMMAND: git diff -- %s", filePath)
+	args := []string{"diff", "--", filePath}
+	gitdiff := exec.Command("git", args...)
+	gitdiff.Dir = workDir
+	var out bytes.Buffer
+	gitdiff.Stdout = &out
+	if err := gitdiff.Run(); err != nil {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) && exitErr.ExitCode() == 1 {
+			// Exit code 1 means no changes, not an error
+			return false
+		}
+		log.Printf("Git diff on file %s/%s error: %q\n", workDir, filePath, err)
+		return false
+	}
+	return len(strings.TrimSpace(out.String())) > 0
 }
 
 type closer func()

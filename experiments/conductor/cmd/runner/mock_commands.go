@@ -95,7 +95,9 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("SCRIPT FILE GENERATE error: %q\n", err)
+		// Currently ignoring error and just basing on if the script.yaml was generated.
+		// log.Fatal(err)
 	}
 
 	// Check to see if the script file was created
@@ -474,7 +476,12 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("addServiceToRoundTrip error: %q\n", err)
+		// Currently ignoring error and just basing on if the mock_http_roundtrip.go was diff.
+		// log.Fatal(err)
+	}
+	if !gitFileHasChange(workDir, "mock_http_roundtrip.go") {
+		return
 	}
 
 	// Add the new files to the current branch.
@@ -494,7 +501,7 @@ Hints:
 
 * The generate-grpc-for-google-protos command contains a long protoc command, split across multiple lines.  There should be a backslash character (\) on all lines but the last.  Make sure there is a space before the backslash.`
 
-func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
+func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
 	defer close()
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
@@ -526,9 +533,12 @@ func addProtoToMakfile(opts *RunnerOptions, branch Branch) {
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err)
+		log.Printf("updating proto Makefile error: %q\n", err)
 	}
-
+	if !gitFileHasChange(workDir, "Makefile") {
+		return
+	}
 	// Add the new files to the current branch.
 	gitAdd(workDir, &out, "Makefile")
 

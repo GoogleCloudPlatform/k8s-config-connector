@@ -271,7 +271,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	case cmdAddProtoMakefile: // 14
 		for idx, branch := range branches.Branches {
 			log.Printf("Add proto to makefile: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			addProtoToMakfile(opts, branch)
+			addProtoToMakefile(opts, branch)
 		}
 	case cmdRunMockTests: // 15
 		for idx, branch := range branches.Branches {
