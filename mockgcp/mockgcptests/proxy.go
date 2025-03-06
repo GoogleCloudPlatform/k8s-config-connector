@@ -64,7 +64,12 @@ func (p *Proxy) ListenAndServeHTTPS(ctx context.Context) error {
 		IsCA: true,
 	}
 	// tlsCertificateTemplate.IPAddresses = append(tlsCertificateTemplate.IPAddresses, p.httpsEndpoint.IP)
-	tlsCertificateTemplate.DNSNames = []string{"billingbudgets.googleapis.com", "tpu.googleapis.com", "play.googleapis.com"}
+	tlsCertificateTemplate.DNSNames = []string{
+		"billingbudgets.googleapis.com",
+		"tpu.googleapis.com",
+		"play.googleapis.com",
+		"*.googleapis.com",
+	}
 	tlsCertificate, err := CreateSelfSignedCertificate(tlsCertificateTemplate)
 	if err != nil {
 		return fmt.Errorf("creating self-signed certificate: %w", err)
