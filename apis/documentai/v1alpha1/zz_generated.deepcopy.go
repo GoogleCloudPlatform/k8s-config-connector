@@ -330,11 +330,6 @@ func (in *DocumentAIProcessorVersionSpec) DeepCopyInto(out *DocumentAIProcessorV
 		*out = new(string)
 		**out = **in
 	}
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
 	if in.DeprecationInfo != nil {
 		in, out := &in.DeprecationInfo, &out.DeprecationInfo
 		*out = new(ProcessorVersion_DeprecationInfo)

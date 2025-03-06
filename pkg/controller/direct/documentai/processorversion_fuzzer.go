@@ -32,8 +32,8 @@ func DocumentAIProcessorVersionFuzzer() fuzztesting.KRMFuzzer {
 		DocumentAIProcessorVersionSpec_FromProto, DocumentAIProcessorVersionSpec_ToProto,
 		DocumentAIProcessorVersionObservedState_FromProto, DocumentAIProcessorVersionObservedState_ToProto,
 	)
+	f.UnimplementedFields.Insert(".name")
 
-	f.SpecFields.Insert(".name")
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".kms_key_name")
 	f.SpecFields.Insert(".kms_key_version_name")

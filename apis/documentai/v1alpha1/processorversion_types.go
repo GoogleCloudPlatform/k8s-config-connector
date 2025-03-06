@@ -31,12 +31,6 @@ type DocumentAIProcessorVersionSpec struct {
 	// The DocumentAIProcessorVersion name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Identifier. The resource name of the processor version.
-	// Format:
-	// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processor_version}`
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	// If set, information about the eventual deprecation of this version.
 	// +optional
 	DeprecationInfo *ProcessorVersion_DeprecationInfo `json:"deprecationInfo,omitempty"`

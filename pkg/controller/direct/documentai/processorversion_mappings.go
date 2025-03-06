@@ -59,7 +59,6 @@ func DocumentAIProcessorVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.DocumentAIProcessorVersionSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.KMSKeyNameRef = DocumentAIProcessorVersionSpec_KMSKeyNameRef_FromProto(mapCtx, in.GetKmsKeyName())
 	out.KMSKeyVersionNameRef = DocumentAIProcessorVersionSpec_KMSKeyVersionNameRef_FromProto(mapCtx, in.GetKmsKeyVersionName())
@@ -71,7 +70,6 @@ func DocumentAIProcessorVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.D
 		return nil
 	}
 	out := &pb.ProcessorVersion{}
-	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.KmsKeyName = DocumentAIProcessorVersionSpec_KMSKeyNameRef_ToProto(mapCtx, in.KMSKeyNameRef)
 	out.KmsKeyVersionName = DocumentAIProcessorVersionSpec_KMSKeyVersionNameRef_ToProto(mapCtx, in.KMSKeyVersionNameRef)
