@@ -15,7 +15,6 @@
 package runner
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -186,25 +185,27 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-
-	// Filter out skipped branches
-	var filteredBranches []Branch
-	for _, branch := range branches.Branches {
-		if !branch.Skip {
-			filteredBranches = append(filteredBranches, branch)
+	// Only filter skipped branches if not running metadata commands
+	if opts.command >= 0 {
+		// Filter out skipped branches
+		var filteredBranches []Branch
+		for _, branch := range branches.Branches {
+			if !branch.Skip {
+				filteredBranches = append(filteredBranches, branch)
+			}
 		}
+		branches.Branches = filteredBranches
 	}
-	branches.Branches = filteredBranches
 
 	switch opts.command {
 	case -4:
-		fixMetadata(opts, branches, setSkipOnBranchModifier)
+		fixMetadata(opts, branches, "Skip(with reason)", setSkipOnBranchModifier)
 	case -3:
-		fixMetadata(opts, branches, addEnableAPIsModifier)
+		fixMetadata(opts, branches, "EnableAPIs", addEnableAPIsModifier)
 	case -2:
 		splitMetadata(opts, branches)
 	case -1:
-		fixMetadata(opts, branches, inferProtoPathModifier)
+		fixMetadata(opts, branches, "ProtoPath", inferProtoPathModifier)
 	case cmdHelp: // 0
 		printHelp()
 	case cmdCheckRepo: // 1
@@ -513,11 +514,11 @@ const COPYRIGHT_HEADER string = `# Copyright 2025 Google LLC
 
 `
 
-func fixMetadata(opts *RunnerOptions, branches Branches, modifier BranchModifier) {
+func fixMetadata(opts *RunnerOptions, branches Branches, what string, modifier BranchModifier) {
 	workDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 	var newBranches Branches
 	for _, branch := range branches.Branches {
-		log.Printf("Finding APIs for %s, command: %s", branch.Name, branch.Command)
+		log.Printf("Fixing Metadata: %s for branch: %s", what, branch.Name)
 		newBranch := modifier(opts, branch, workDir)
 		newBranches.Branches = append(newBranches.Branches, newBranch)
 	}
@@ -763,21 +764,22 @@ func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string)
 	}
 
 	// Keep if any of CRUD is supported
-	args = append(args, "--help")
-	cmd := exec.Command("gcloud", args...)
-	var stdout bytes.Buffer
-	cmd.Stdout = &stdout
-	err := cmd.Run()
+	// args = append(args, "--help")
+	cfg := CommandConfig{
+		Name:       "Check CRUD Support",
+		Cmd:        "gcloud",
+		Args:       args,
+		WorkDir:    workDir,
+		MaxRetries: 1,
+	}
+	_, errOutput, _ := executeCommand(opts, cfg)
 	// todo: shall we keep when gcloud xxx --help returns error?
 	// Just keep everything for now
-	if err == nil {
-		output := stdout.String()
-		// todo: Do we need to include 'patch'? I thought 'gcloud' primarily uses 'update' for these operations.
-		var operationRegex = regexp.MustCompile(`(create|update|delete)`)
-		if !operationRegex.MatchString(output) {
-			branch.Skip = true
-			branch.Notes = append(branch.Notes, "gcloud command does not contain any of create/update/delete")
-		}
+	// todo: Do we need to include 'patch'? I thought 'gcloud' primarily uses 'update' for these operations.
+	var operationRegex = regexp.MustCompile(`(create|update|delete)`)
+	if !operationRegex.MatchString(errOutput) {
+		branch.Skip = true
+		branch.Notes = append(branch.Notes, "gcloud command does not contain any of create/update/delete")
 	}
 	return branch
 }
