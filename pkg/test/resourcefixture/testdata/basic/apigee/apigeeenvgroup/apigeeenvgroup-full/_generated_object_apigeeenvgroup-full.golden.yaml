@@ -14,7 +14,7 @@ spec:
   - ${uniqueId}.mytesthost.net
   - ${uniqueId}.anothertesthost.net
   organizationRef:
-    external: organizations/${organizationID}
+    name: ${projectId}
   resourceID: apigeeenvgroup-full-${uniqueId}
 status:
   conditions:
@@ -23,7 +23,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${organizationID}/envgroups/apigeeenvgroup-full-${uniqueId}
+  externalRef: organizations/${projectId}/envgroups/apigeeenvgroup-full-${uniqueId}
   observedGeneration: 2
   observedState:
     createdAt: 1711974896

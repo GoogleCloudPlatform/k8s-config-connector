@@ -21,4 +21,4 @@ spec:
     - ${uniqueId}.mytesthost.net
     - ${uniqueId}.anothertesthost.net
   organizationRef:
-    external: organizations/${projectId}
+    name: ${projectId}

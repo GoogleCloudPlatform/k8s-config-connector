@@ -10,9 +10,9 @@ metadata:
   name: apigeeinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  location: us-central1
+  location: us-west1
   organizationRef:
-    external: organizations/${organizationID}
+    name: ${projectId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -20,7 +20,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${organizationID}/instances/apigeeinstance-${uniqueId}
+  externalRef: organizations/${projectId}/instances/apigeeinstance-${uniqueId}
   observedGeneration: 1
   observedState:
     createdAt: 1711974896

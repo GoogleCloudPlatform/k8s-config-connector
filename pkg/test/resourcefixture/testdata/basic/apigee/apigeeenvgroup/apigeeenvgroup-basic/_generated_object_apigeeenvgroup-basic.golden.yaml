@@ -14,7 +14,7 @@ spec:
   - ${uniqueId}.mytesthost.net
   - ${uniqueId}.anothertesthost.net
   organizationRef:
-    external: organizations/${organizationID}
+    name: ${projectId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -22,7 +22,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${organizationID}/envgroups/apigeeenvgroup-${uniqueId}
+  externalRef: organizations/${projectId}/envgroups/apigeeenvgroup-${uniqueId}
   observedGeneration: 2
   observedState:
     createdAt: 1711974896

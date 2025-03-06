@@ -20,4 +20,4 @@ spec:
   hostnames:
     - ${uniqueId}.mytesthost.net
   organizationRef:
-    external: organizations/${projectId}
+    name: ${projectId}

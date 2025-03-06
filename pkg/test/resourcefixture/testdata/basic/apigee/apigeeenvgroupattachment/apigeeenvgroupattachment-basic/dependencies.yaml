@@ -12,6 +12,134 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: project-${uniqueId}
+spec:
+  resourceID: ${projectId}
+  name: "Dependent Project"
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: servicenetworking.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: cloudkms.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: compute.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: apigee.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: apgnet-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: apgsubnet-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  ipCidrRange: 10.138.0.0/20
+  region: us-west1
+  networkRef:
+    name: apgnet-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: svcs-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: global
+  ipVersion: IPV4
+  purpose: VPC_PEERING
+  prefixLength: 22
+  networkRef:
+    name: apgnet-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: support-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: global
+  ipVersion: IPV4
+  purpose: VPC_PEERING
+  prefixLength: 28
+  networkRef:
+    name: apgnet-${uniqueId}
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: apgpeering-${uniqueId}
+spec:
+  networkRef:
+    name: apgnet-${uniqueId}
+  reservedPeeringRanges:
+    - name: svcs-${uniqueId}
+    - name: support-${uniqueId}
+  service: "servicenetworking.googleapis.com"
+---
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
+kind: ApigeeOrganization
+metadata:
+  name: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+  analyticsRegion: "us-west1"
+  authorizedNetworkRef:
+    name: apgnet-${uniqueId}
+  runtimeType: "CLOUD"
+---
 apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeEnvgroup
 metadata:
@@ -20,12 +148,7 @@ spec:
   hostnames:
     - ${uniqueId}.mytesthost.net
   organizationRef:
-    # Note: This refers to a manually-created organization with default settings. This is 
-    # because it is impossible to create multiple Apigee organizations in the same GCP project,
-    # and it is also infeasible to create + delete organizations quickly enough for automated
-    # testing. Deleting an organization takes 24 hours. For more information, see
-    # https://cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations/delete#deletionretention).
-    external: organizations/${projectId}
+    name: ${projectId}
 ---
 apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeEnvironment
@@ -33,9 +156,4 @@ metadata:
   name: apgenv-${uniqueId}
 spec:
   apigeeOrganizationRef:
-    # Note: This refers to a manually-created organization with default settings. This is 
-    # because it is impossible to create multiple Apigee organizations in the same GCP project,
-    # and it is also infeasible to create + delete organizations quickly enough for automated
-    # testing. Deleting an organization takes 24 hours. For more information, see
-    # https://cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations/delete#deletionretention).
-    external: organizations/${projectId}
+    name: ${projectId}
