@@ -27,6 +27,19 @@ import (
 	"time"
 )
 
+var commandMap = map[int64]string{
+	cmdEnableGCPAPIs:       "enablegcpapis",
+	cmdCreateScriptYaml:    "createscriptyaml",
+	cmdCaptureHttpLog:      "capturehttplog",
+	cmdGenerateMockGo:      "generatemockgo",
+	cmdAddServiceRoundTrip: "addserviceroundtrip",
+	cmdAddProtoMakefile:    "addprotomakefile",
+	cmdRunMockTests:        "runmocktests",
+	cmdGenerateTypes:       "generatetypes",
+	cmdGenerateCRD:         "generatecrd",
+	cmdGenerateFuzzer:      "generatefuzzer",
+}
+
 type exitBash func()
 
 func startBash() (io.WriteCloser, io.ReadCloser, exitBash, error) {
@@ -201,7 +214,13 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 
 	var out *os.File
 	var err error
-	logFile := filepath.Join(logDir, "out.log")
+	logFileName := "output.log"
+	commandNumber := opts.command
+	commandMessage, ok := commandMap[commandNumber]
+	if ok {
+		logFileName = fmt.Sprintf("%v_%v.log", commandNumber, commandMessage)
+	}
+	logFile := filepath.Join(logDir, logFileName)
 	if out, err = os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0755); err != nil {
 		log.Printf("Error opening logging file %s, :%v", logFile, err)
 		return noOp
