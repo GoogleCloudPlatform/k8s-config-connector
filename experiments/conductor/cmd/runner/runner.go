@@ -96,6 +96,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"r", 10, "Default number of retries for failed commands.")
 	cmd.Flags().StringVarP(&opts.forResources, "for-resources",
 		"", "", "Comma-separated list of branch names to filter on.")
+	cmd.Flags().BoolVarP(&opts.force, "force",
+		"f", false, "Force operation even if files already exist.")
 
 	return cmd
 }
@@ -109,6 +111,7 @@ type RunnerOptions struct {
 	readFileType   string
 	defaultRetries int    // Default number of retries for commands
 	forResources   string // Comma-separated list of branch names to filter on
+	force          bool   // Force flag to override file existence checks
 }
 
 func (opts *RunnerOptions) validateFlags() error {

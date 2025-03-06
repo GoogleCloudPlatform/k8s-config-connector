@@ -95,7 +95,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	// Check to see if the script file already exists
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
 	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", scriptFile)
-	if _, err := os.Stat(scriptFullPath); !errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(scriptFullPath); !errors.Is(err, os.ErrNotExist) && !opts.force {
 		log.Printf("SKIPPING %s, %s already exists", branch.Name, scriptFullPath)
 		return
 	}
@@ -207,7 +207,7 @@ func readScriptYaml(opts *RunnerOptions, branch Branch) {
 			if strings.Contains(cmd, " delete ") {
 				hasDelete = true
 			}
-			if strings.Contains(cmd, " list ") {
+			if strings.Contains(cmd, " list") {
 				hasList = true
 			}
 		}
@@ -399,7 +399,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	// Check to see if the http log file already exists
 	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
 	logFullPath := filepath.Join(workDir, logFile)
-	if _, err := os.Stat(logFullPath); !errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(logFullPath); !errors.Is(err, os.ErrNotExist) && !opts.force {
 		log.Printf("SKIPPING %s, %s already exists", branch.Name, logFullPath)
 		return
 	}
@@ -498,7 +498,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 
 	// Run the controller builder to generate the service go file.
 	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
-	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate service mock",
 			Cmd:  "controllerbuilder",
@@ -538,7 +538,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 
 	// Run the controller builder to generate the resource go file.
 	resourceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
-	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate resource mock",
 			Cmd:  "controllerbuilder",
