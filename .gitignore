@@ -163,3 +163,4 @@ log
 # experiments/conductor
 experiments/conductor/logs
 experiments/conductor/branches.yaml
+experiments/conductor/bin

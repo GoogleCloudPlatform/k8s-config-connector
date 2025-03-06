@@ -32,3 +32,19 @@ bin:
 .PHONY: clean
 clean:
 	rm -rf bin
+
+
+## ---
+## Build and install development tools
+## ---
+.PHONY: tools
+tools: build controllerbuilder codebot
+	cp bin/conductor $(GOPATH)/bin/
+
+.PHONY: controllerbuilder
+controllerbuilder:
+	cd $(shell git rev-parse --show-toplevel)/dev/tools/controllerbuilder && go build -o $(GOPATH)/bin/controllerbuilder .
+
+.PHONY: codebot
+codebot:
+	cd $(shell git rev-parse --show-toplevel)/dev/tools/controllerbuilder/cmd/codebot && go build -o $(GOPATH)/bin/codebot .
