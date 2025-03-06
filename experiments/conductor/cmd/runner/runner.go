@@ -94,6 +94,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"t", 5*time.Minute, "Global timeout for commands.")
 	cmd.Flags().IntVarP(&opts.defaultRetries, "retries",
 		"r", 10, "Default number of retries for failed commands.")
+	cmd.Flags().StringVarP(&opts.forResources, "for-resources",
+		"", "", "Comma-separated list of branch names to filter on.")
 
 	return cmd
 }
@@ -105,7 +107,8 @@ type RunnerOptions struct {
 	loggingDir     string
 	timeout        time.Duration
 	readFileType   string
-	defaultRetries int // Default number of retries for commands
+	defaultRetries int    // Default number of retries for commands
+	forResources   string // Comma-separated list of branch names to filter on
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -186,6 +189,21 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
+	// Filter based on forResources if specified
+	if opts.forResources != "" {
+		targetBranches := make(map[string]bool)
+		for _, name := range strings.Split(opts.forResources, ",") {
+			targetBranches[strings.TrimSpace(name)] = true
+		}
+
+		var resourceFilteredBranches []Branch
+		for _, branch := range branches.Branches {
+			if targetBranches[branch.Name] {
+				resourceFilteredBranches = append(resourceFilteredBranches, branch)
+			}
+		}
+		branches.Branches = resourceFilteredBranches
+	}
 	// Only filter skipped branches if not running metadata commands
 	if opts.command >= 0 {
 		// Filter out skipped branches
@@ -196,6 +214,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			}
 		}
 		branches.Branches = filteredBranches
+
 	}
 
 	switch opts.command {
