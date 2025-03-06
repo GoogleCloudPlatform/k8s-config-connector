@@ -1,0 +1,6 @@
+
+- exec: gcloud network-connectivity internal-ranges create test-${uniqueId} --region=us-central1 --network=test-network --prefix-length=24
+- exec: gcloud network-connectivity internal-ranges describe test-${uniqueId} --region=us-central1
+- exec: gcloud network-connectivity internal-ranges list --region=us-central1
+- exec: gcloud network-connectivity internal-ranges update test-${uniqueId} --region=us-central1 --prefix-length=28
+- exec: gcloud network-connectivity internal-ranges delete test-${uniqueId} --region=us-central1
