@@ -26,21 +26,16 @@ func BackupDRManagementServerObservedState_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krm.BackupDRManagementServerObservedState{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Type
-	// MISSING: ManagementURI
-	// MISSING: WorkforceIdentityBasedManagementURI
-	// MISSING: State
-	// MISSING: Networks
-	// MISSING: Etag
-	// MISSING: OAUTH2ClientID
-	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
-	// MISSING: BaProxyURI
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ManagementURI = ManagementURIObservedState_FromProto(mapCtx, in.GetManagementUri())
+	out.WorkforceIdentityBasedManagementURI = WorkforceIdentityBasedManagementURIObservedState_FromProto(mapCtx, in.GetWorkforceIdentityBasedManagementUri())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.OAUTH2ClientID = direct.LazyPtr(in.GetOauth2ClientId())
+	out.WorkforceIdentityBasedOAUTH2ClientID = WorkforceIdentityBasedOAuth2ClientIDObservedState_FromProto(mapCtx, in.GetWorkforceIdentityBasedOauth2ClientId())
+	out.BaProxyURI = in.BaProxyUri
+	out.SatisfiesPzs = direct.BoolValue_FromProto(mapCtx, in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
 func BackupDRManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerObservedState) *pb.ManagementServer {
@@ -49,21 +44,16 @@ func BackupDRManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.ManagementServer{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Type
-	// MISSING: ManagementURI
-	// MISSING: WorkforceIdentityBasedManagementURI
-	// MISSING: State
-	// MISSING: Networks
-	// MISSING: Etag
-	// MISSING: OAUTH2ClientID
-	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
-	// MISSING: BaProxyURI
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ManagementUri = ManagementURIObservedState_ToProto(mapCtx, in.ManagementURI)
+	out.WorkforceIdentityBasedManagementUri = WorkforceIdentityBasedManagementURIObservedState_ToProto(mapCtx, in.WorkforceIdentityBasedManagementURI)
+	out.State = direct.Enum_ToProto[pb.ManagementServer_InstanceState](mapCtx, in.State)
+	out.Oauth2ClientId = direct.ValueOf(in.OAUTH2ClientID)
+	out.WorkforceIdentityBasedOauth2ClientId = WorkforceIdentityBasedOAuth2ClientIDObservedState_ToProto(mapCtx, in.WorkforceIdentityBasedOAUTH2ClientID)
+	out.BaProxyUri = in.BaProxyURI
+	out.SatisfiesPzs = direct.BoolValue_ToProto(mapCtx, in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
 func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.BackupDRManagementServerSpec {
@@ -72,21 +62,11 @@ func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ma
 	}
 	out := &krm.BackupDRManagementServerSpec{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Type
-	// MISSING: ManagementURI
-	// MISSING: WorkforceIdentityBasedManagementURI
-	// MISSING: State
-	// MISSING: Networks
-	// MISSING: Etag
-	// MISSING: OAUTH2ClientID
-	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
-	// MISSING: BaProxyURI
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Networks = direct.Slice_FromProto(mapCtx, in.Networks, NetworkConfig_FromProto)
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerSpec) *pb.ManagementServer {
@@ -95,113 +75,11 @@ func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bac
 	}
 	out := &pb.ManagementServer{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Type
-	// MISSING: ManagementURI
-	// MISSING: WorkforceIdentityBasedManagementURI
-	// MISSING: State
-	// MISSING: Networks
-	// MISSING: Etag
-	// MISSING: OAUTH2ClientID
-	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
-	// MISSING: BaProxyURI
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func ManagementServer_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.ManagementServer {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagementServer{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	// MISSING: ManagementURI
-	// MISSING: WorkforceIdentityBasedManagementURI
-	// MISSING: State
-	out.Networks = direct.Slice_FromProto(mapCtx, in.Networks, NetworkConfig_FromProto)
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	// MISSING: OAUTH2ClientID
-	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
-	// MISSING: BaProxyURI
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func ManagementServer_ToProto(mapCtx *direct.MapContext, in *krm.ManagementServer) *pb.ManagementServer {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ManagementServer{}
-	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.Type = direct.Enum_ToProto[pb.ManagementServer_InstanceType](mapCtx, in.Type)
-	// MISSING: ManagementURI
-	// MISSING: WorkforceIdentityBasedManagementURI
-	// MISSING: State
 	out.Networks = direct.Slice_ToProto(mapCtx, in.Networks, NetworkConfig_ToProto)
 	out.Etag = direct.ValueOf(in.Etag)
-	// MISSING: OAUTH2ClientID
-	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
-	// MISSING: BaProxyURI
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func ManagementServerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.ManagementServerObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagementServerObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Description
-	// MISSING: Labels
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Type
-	out.ManagementURI = ManagementURI_FromProto(mapCtx, in.GetManagementUri())
-	out.WorkforceIdentityBasedManagementURI = WorkforceIdentityBasedManagementURI_FromProto(mapCtx, in.GetWorkforceIdentityBasedManagementUri())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: Networks
-	// MISSING: Etag
-	out.OAUTH2ClientID = direct.LazyPtr(in.GetOauth2ClientId())
-	out.WorkforceIdentityBasedOAUTH2ClientID = WorkforceIdentityBasedOAuth2ClientID_FromProto(mapCtx, in.GetWorkforceIdentityBasedOauth2ClientId())
-	out.BaProxyURI = in.BaProxyUri
-	out.SatisfiesPzs = direct.BoolValue_FromProto(mapCtx, in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	return out
-}
-func ManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagementServerObservedState) *pb.ManagementServer {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ManagementServer{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Description
-	// MISSING: Labels
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Type
-	out.ManagementUri = ManagementURI_ToProto(mapCtx, in.ManagementURI)
-	out.WorkforceIdentityBasedManagementUri = WorkforceIdentityBasedManagementURI_ToProto(mapCtx, in.WorkforceIdentityBasedManagementURI)
-	out.State = direct.Enum_ToProto[pb.ManagementServer_InstanceState](mapCtx, in.State)
-	// MISSING: Networks
-	// MISSING: Etag
-	out.Oauth2ClientId = direct.ValueOf(in.OAUTH2ClientID)
-	out.WorkforceIdentityBasedOauth2ClientId = WorkforceIdentityBasedOAuth2ClientID_ToProto(mapCtx, in.WorkforceIdentityBasedOAUTH2ClientID)
-	out.BaProxyUri = in.BaProxyURI
-	out.SatisfiesPzs = direct.BoolValue_ToProto(mapCtx, in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
 func ManagementURI_FromProto(mapCtx *direct.MapContext, in *pb.ManagementURI) *krm.ManagementURI {
@@ -220,24 +98,6 @@ func ManagementURI_ToProto(mapCtx *direct.MapContext, in *krm.ManagementURI) *pb
 	out := &pb.ManagementURI{}
 	// MISSING: WebUi
 	// MISSING: API
-	return out
-}
-func ManagementURIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagementURI) *krm.ManagementURIObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagementURIObservedState{}
-	out.WebUi = direct.LazyPtr(in.GetWebUi())
-	out.API = direct.LazyPtr(in.GetApi())
-	return out
-}
-func ManagementURIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagementURIObservedState) *pb.ManagementURI {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ManagementURI{}
-	out.WebUi = direct.ValueOf(in.WebUi)
-	out.Api = direct.ValueOf(in.API)
 	return out
 }
 func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
