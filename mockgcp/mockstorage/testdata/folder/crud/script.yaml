@@ -1,0 +1,5 @@
+- exec: gcloud storage buckets create gs://bucket${uniqueId} --enable-hierarchical-namespace --uniform-bucket-level-access
+- exec: gcloud storage folders create gs://bucket${uniqueId}/folder${uniqueId} --recursive
+- exec: gcloud storage folders describe gs://bucket${uniqueId}/folder${uniqueId}
+- exec: gcloud storage folders delete gs://bucket${uniqueId}/folder${uniqueId}
+- exec: gcloud storage buckets delete gs://bucket${uniqueId}
