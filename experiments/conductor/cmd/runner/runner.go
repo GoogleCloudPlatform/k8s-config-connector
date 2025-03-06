@@ -15,6 +15,7 @@
 package runner
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -23,6 +24,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -180,6 +182,8 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	branches.Branches = filteredBranches
 
 	switch opts.command {
+	case -4:
+		fixMetadata(opts, branches, setSkipOnBranchModifier)
 	case -3:
 		fixMetadata(opts, branches, addEnableAPIsModifier)
 	case -2:
@@ -699,4 +703,44 @@ func splitMetadata(opts *RunnerOptions, branches Branches) {
 			log.Fatal(err)
 		}
 	}
+}
+
+func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+
+	if branch.Command == "" {
+		branch.Skip = true
+		branch.Notes = append(branch.Notes, "no gcloud command")
+	}
+
+	// Run gcloud xxx --help to see if it implements CRUD methods
+	gcloudCommand := branch.Command
+	gcloudCommand = strings.TrimPrefix(gcloudCommand, "gcloud")
+	args := strings.Fields(gcloudCommand)
+
+	// Skip if gcloud command has no args
+	if len(args) == 0 {
+		branch.Skip = true
+		branch.Notes = append(branch.Notes, "invalid gcloud command")
+	}
+
+	// Keep if any of CRUD is supported
+	args = append(args, "--help")
+	cmd := exec.Command("gcloud", args...)
+	var stdout bytes.Buffer
+	cmd.Stdout = &stdout
+	err := cmd.Run()
+	// todo: shall we keep when gcloud xxx --help returns error?
+	// Just keep everything for now
+	if err == nil {
+		output := stdout.String()
+		// todo: Do we need to include 'patch'? I thought 'gcloud' primarily uses 'update' for these operations.
+		var operationRegex = regexp.MustCompile(`(create|update|delete)`)
+		if !operationRegex.MatchString(output) {
+			branch.Skip = true
+			branch.Notes = append(branch.Notes, "gcloud command does not contain any of create/update/delete")
+		}
+	}
+	return branch
 }
