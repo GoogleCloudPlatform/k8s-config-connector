@@ -21,12 +21,14 @@ on:
       - "**.md"
       - pkg/clients/generated
       - config/tests
+      - "experiments/**"
   pull_request:
     paths-ignore:
       - "third_party/**"
       - "**.md"
       - pkg/clients/generated
       - config/tests
+      - "experiments/**"
 permissions: read-all
 jobs:
   fuzzer:
