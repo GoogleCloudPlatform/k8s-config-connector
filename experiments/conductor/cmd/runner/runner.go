@@ -43,6 +43,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	branchRepoFlag          = "branch-repo"
 	commandFlag             = "command"
 	loggingDirFlag          = "logging-dir"
+	readFileTypeFlag        = "file-type"
 
 	// Command values
 	cmdHelp                = 0
@@ -50,6 +51,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdCreateGitBranch     = 2
 	cmdDeleteGitBranch     = 3
 	cmdEnableGCPAPIs       = 4
+	cmdReadFiles           = 5
 	cmdCreateScriptYaml    = 10
 	cmdCaptureHttpLog      = 11
 	cmdGenerateMockGo      = 12
@@ -59,6 +61,10 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdGenerateTypes       = 20
 	cmdGenerateCRD         = 21
 	cmdGenerateFuzzer      = 22
+
+	typeScriptYaml = "scriptyaml"
+	typeHttpLog    = "httplog"
+	typeMockGo     = "mockgo"
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -78,6 +84,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "branches.yaml", "File containing the branch configurations.")
 	cmd.Flags().StringVarP(&opts.branchRepoDir, branchRepoFlag,
 		"", "", "Directory in which to do the work.")
+	cmd.Flags().StringVarP(&opts.readFileType, readFileTypeFlag,
+		"", "ScriptYaml", "Type of files to read, available values: 'ScriptYaml', 'HttpLog', 'MockGo'.")
 	cmd.Flags().Int64VarP(&opts.command, commandFlag,
 		"", 0, "Which commands to you on the directory.")
 	cmd.Flags().StringVarP(&opts.loggingDir, loggingDirFlag,
@@ -94,6 +102,7 @@ type RunnerOptions struct {
 	command        int64
 	loggingDir     string
 	timeout        time.Duration
+	readFileType   string
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -215,6 +224,24 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Enable GCP APIs: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			enableAPIs(opts, branch)
 		}
+	case cmdReadFiles: // 5
+		switch strings.ToLower(opts.readFileType) {
+		case typeScriptYaml:
+			for idx, branch := range branches.Branches {
+				log.Printf("Read and verify script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+				readScriptYaml(opts, branch)
+			}
+		case typeHttpLog:
+			for idx, branch := range branches.Branches {
+				log.Printf("Read HTTP log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+				readHttpLog(opts, branch)
+			}
+		case typeMockGo:
+			for idx, branch := range branches.Branches {
+				log.Printf("Read mockgcp Go files: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+				readMockGo(opts, branch)
+			}
+		}
 	case cmdCreateScriptYaml: // 10
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
@@ -275,6 +302,7 @@ func printHelp() {
 	log.Println("\t2 - [Branch] Create the local github branches from the metadata")
 	log.Println("\t3 - [Branch] Delete the local github branches from the metadata")
 	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
+	log.Println("\t5 - [View] Read the specific type of generated files in each github branch")
 	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
 	log.Println("\t11 - [Mock] Create _http.log for mock gcp generation in each github branch")
 	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")

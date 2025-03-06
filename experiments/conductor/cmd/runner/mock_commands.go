@@ -133,6 +133,48 @@ func enableAPIs(opts *RunnerOptions, branch Branch) {
 	}
 }
 
+func readScriptYaml(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	if branch.Command == "" {
+		log.Printf("SKIPPING %s, no gcloud command", branch.Name)
+		return
+	}
+
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, &out)
+
+	// Check to see if the script file already exists
+	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
+	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", scriptFile)
+	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, %s doesn't exists", branch.Name, scriptFullPath)
+		return
+	}
+
+	data, err := os.ReadFile(scriptFullPath)
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+	dataStr := string(data)
+	if !strings.Contains(dataStr, " create") {
+		fmt.Println("WARNING: Script doesn't contain a CREATE command")
+	}
+	if !strings.Contains(dataStr, " update") {
+		fmt.Println("WARNING: Script doesn't contain an UPDATE command")
+	}
+	if !strings.Contains(dataStr, " delete") {
+		fmt.Println("WARNING: Script doesn't contain a DELETE command")
+	}
+	if strings.Contains(dataStr, " list") {
+		fmt.Println("WARNING: Script contains a LIST command")
+	}
+	fmt.Println(dataStr)
+}
+
 const CAPTURE_HTTP_LOG string = `I need to capture the logs from GCP for running a mockgcp test that I just created.  I then need to create a git commit.
 
 For example, if I just created a script mockpubsub/testdata/topic/crud/script.yaml, then I should run
@@ -213,6 +255,29 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 
 	// Commit the change to the current branch.
 	gitCommit(workDir, &out, fmt.Sprintf("Adding mockgcptests generated _http.log for %s", branch.Name))
+}
+
+func readHttpLog(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, &out)
+
+	// Check to see if the http log file already exists
+	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
+	logFullPath := filepath.Join(workDir, logFile)
+	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, %s does not exists", branch.Name, logFullPath)
+		return
+	}
+	data, err := os.ReadFile(logFullPath)
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+	fmt.Println(string(data))
 }
 
 const MOCK_SERVICE_GO_GEN string = `// +tool:mockgcp-service
@@ -334,6 +399,37 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	} else {
 		log.Printf("SKIPPING git commit, no new changes for %s", branch.Name)
 	}
+}
+
+func readMockGo(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, &out)
+
+	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
+	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING reading service mock go, %s does not exist", serviceFile)
+	}
+	data, err := os.ReadFile(serviceFile)
+	if err != nil {
+		fmt.Println("Error reading service file:", err)
+		return
+	}
+	fmt.Println(string(data))
+
+	resourceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
+	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING reading resource mock go, %s does not exist", resourceFile)
+	}
+	data, err = os.ReadFile(serviceFile)
+	if err != nil {
+		fmt.Println("Error reading resource file:", err)
+		return
+	}
+	fmt.Println(string(data))
 }
 
 const ADD_SERVICE_TO_ROUNDTRIP string = `Please add the services in <TICK>mock<SERVICE><TICK> to <TICK>mock_http_roundtrip.go<TICK>
