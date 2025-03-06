@@ -37,6 +37,7 @@ func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (
 	ret := &pb.Objects{}
 	ret.Kind = PtrTo("storage#objects")
 	ret.Prefixes = append(ret.Prefixes, "testfolder")
+	ret.Prefixes = append(ret.Prefixes, "testmanagedfolder")
 	return ret, nil
 }
 
