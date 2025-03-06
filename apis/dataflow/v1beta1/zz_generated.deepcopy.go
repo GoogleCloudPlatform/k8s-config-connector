@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -431,7 +432,7 @@ func (in *DataflowFlexTemplateJobSpec) DeepCopyInto(out *DataflowFlexTemplateJob
 	}
 	if in.KmsKeyNameRef != nil {
 		in, out := &in.KmsKeyNameRef, &out.KmsKeyNameRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.IPConfiguration != nil {
