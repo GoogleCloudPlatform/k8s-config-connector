@@ -20,108 +20,66 @@ package mockstorage
 
 import (
 	"context"
-	"strings"
 	"time"
 
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/control/v2"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-func (s *MockService) GetManagedFolder(ctx context.Context, req *pb.GetManagedFolderRequest) (*pb.ManagedFolder, error) {
-	name, err := s.parseManagedFolderName(req.Name)
-	if err != nil {
-		return nil, err
-	}
+type managedFolders struct {
+	*MockService
+	pb.UnimplementedManagedFoldersServerServer
+}
 
-	fqn := name.String()
-
+func (s *managedFolders) GetManagedFolder(ctx context.Context, req *pb.GetManagedFolderRequest) (*pb.ManagedFolder, error) {
 	obj := &pb.ManagedFolder{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.storage.Get(ctx, req.GetName(), obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
 }
 
-func (s *MockService) CreateManagedFolder(ctx context.Context, req *pb.CreateManagedFolderRequest) (*pb.ManagedFolder, error) {
-	reqName := req.Parent + "/managedFolders/" + req.ManagedFolderId
-	name, err := s.parseManagedFolderName(reqName)
-	if err != nil {
+func (s *managedFolders) ListManagedFolders(ctx context.Context, req *pb.ListManagedFoldersRequest) (*pb.ManagedFolders, error) {
+	findPrefix := req.GetPrefix()
+
+	response := &pb.ManagedFolders{}
+
+	findKind := (&pb.ManagedFolder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		managedFolder := obj.(*pb.ManagedFolder)
+		response.Items = append(response.Items, managedFolder)
+		return nil
+	}); err != nil {
 		return nil, err
 	}
-
-	fqn := name.String()
-
+	return response, nil
+}
+func (s *managedFolders) InsertManagedFolder(ctx context.Context, req *pb.InsertManagedFolderRequest) (*pb.ManagedFolder, error) {
 	now := time.Now()
 
-	obj := proto.Clone(req.ManagedFolder).(*pb.ManagedFolder)
-	obj.Name = fqn
+	generation := int64(1)
+	obj := proto.Clone(req.GetManagedFolder()).(*pb.ManagedFolder)
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.Metageneration = 1
+	obj.Metageneration = &generation
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	if err := s.storage.Create(ctx, req.GetManagedFolder().GetName(), obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
 }
 
-func (s *MockService) DeleteManagedFolder(ctx context.Context, req *pb.DeleteManagedFolderRequest) (*emptypb.Empty, error) {
-	name, err := s.parseManagedFolderName(req.Name)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-
+func (s *managedFolders) DeleteManagedFolder(ctx context.Context, req *pb.DeleteManagedFolderRequest) (*emptypb.Empty, error) {
 	deleted := &pb.ManagedFolder{}
-	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+	if err := s.storage.Delete(ctx, req.GetName(), deleted); err != nil {
 		return nil, err
 	}
 
 	return &emptypb.Empty{}, nil
 }
-
-type managedFolderName struct {
-	Project       *projects.ProjectData
-	Bucket        string
-	ManagedFolder string
-}
-
-func (n *managedFolderName) String() string {
-	return "projects/" + n.Project.ID + "/buckets/" + n.Bucket + "/managedFolders/" + n.ManagedFolder
-}
-
-// parseManagedFolderName parses a string into an managedFolderName .
-// The expected form is `projects/*/buckets/*/managedFolders/*`.
-func (s *MockService) parseManagedFolderName(name string) (*managedFolderName, error) {
-	tokens := strings.Split(name, "/")
-
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "buckets" && tokens[4] == "managedFolders" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		name := &managedFolderName{
-			Project:       project,
-			Bucket:        tokens[3],
-			ManagedFolder: tokens[5],
-		}
-
-		return name, nil
-	}
-
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
-}
-
-```
-
-
