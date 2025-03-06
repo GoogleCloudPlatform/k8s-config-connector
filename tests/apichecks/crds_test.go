@@ -185,8 +185,6 @@ func TestCRDsAcronyms(t *testing.T) {
 						isAcronym = true
 					}
 
-					// TODO: Ips, Cidrs
-
 					// TODO: Src / Dest
 
 					if isAcronym {
@@ -194,6 +192,27 @@ func TestCRDsAcronyms(t *testing.T) {
 							tokens[i] = strings.ToLower(token)
 						} else {
 							tokens[i] = strings.ToUpper(token)
+						}
+					}
+				}
+
+				// Check for plural acronyms like externalIps, which should be externalIPs
+				for i, token := range tokens {
+					if !strings.HasSuffix(token, "s") {
+						continue
+					}
+
+					withoutS := token[:len(token)-1]
+					isAcronym := false
+					if slices.Contains(codegen.Acronyms, strings.ToUpper(withoutS)) {
+						isAcronym = true
+					}
+
+					if isAcronym {
+						if i == 0 {
+							tokens[i] = strings.ToLower(withoutS) + "s"
+						} else {
+							tokens[i] = strings.ToUpper(withoutS) + "s"
 						}
 					}
 				}
