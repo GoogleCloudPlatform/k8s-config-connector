@@ -13842,7 +13842,9 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      skip: true
+      notes:
+        - Operations resource
     - name: ai-persistentresources
       local: resource-ai-persistentresources
       remote: resource-ai-persistentresources
@@ -13947,7 +13949,9 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      skip: true
+      notes:
+        - Operations resource
     - name: apigeeregistry-applications
       local: resource-apigeeregistry-applications
       remote: resource-apigeeregistry-applications
@@ -14397,7 +14401,9 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      skip: true
+      notes:
+        - Operations resource
     - name: cloudbuild-workerpools
       local: resource-cloudbuild-workerpools
       remote: resource-cloudbuild-workerpools
@@ -15118,7 +15124,9 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      skip: true
+      notes:
+        - Operations resource
     - name: logging-resourcedescriptors
       local: resource-logging-resourcedescriptors
       remote: resource-logging-resourcedescriptors
@@ -16108,7 +16116,9 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      skip: true
+      notes:
+        - Operations resource
     - name: securitycenter-posturetemplates
       local: resource-securitycenter-posturetemplates
       remote: resource-securitycenter-posturetemplates
@@ -16378,7 +16388,9 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      skip: true
+      notes:
+        - Operations resource
     - name: tasks-cmekconfig
       local: resource-tasks-cmekconfig
       remote: resource-tasks-cmekconfig
