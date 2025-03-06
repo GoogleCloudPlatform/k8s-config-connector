@@ -14,15 +14,15 @@ spec:
     enabled: true
     filter: status_code >= 200 && status_code < 400
   consumerAcceptList:
-  - ${organizationID}
+  - ${projectId}
   description: This is a test apigee instance
   diskEncryptionKMSCryptoKeyRef:
     name: kmscryptokey-${uniqueId}
   displayName: My Apigee Instance
-  ipRange: 10.39.56.0/22,10.14.0.64/28
-  location: us-central1
+  ipRange: 10.92.178.240/28,10.147.56.0/28
+  location: us-west1
   organizationRef:
-    external: organizations/${organizationID}
+    name: ${projectId}
   peeringCIDRRange: SLASH_22
   resourceID: apigeeinstance-${uniqueId}
 status:
@@ -32,7 +32,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${organizationID}/instances/apigeeinstance-${uniqueId}
+  externalRef: organizations/${projectId}/instances/apigeeinstance-${uniqueId}
   observedGeneration: 2
   observedState:
     createdAt: 1711974896

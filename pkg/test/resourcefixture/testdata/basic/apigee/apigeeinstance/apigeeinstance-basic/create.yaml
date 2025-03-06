@@ -18,10 +18,5 @@ metadata:
   name: apigeeinstance-${uniqueId}
 spec:
   organizationRef:
-    # Note: This refers to a manually-created organization with default settings. This is 
-    # because it is impossible to create multiple Apigee organizations in the same GCP project,
-    # and it is also infeasible to create + delete organizations quickly enough for automated
-    # testing. Deleting an organization takes 24 hours. For more information, see
-    # https://cloud.google.com/apigee/docs/reference/apis/apigee/rest/v1/organizations/delete#deletionretention).
-    external: organizations/${projectId}
-  location: us-central1
+    name: ${projectId}
+  location: us-west1

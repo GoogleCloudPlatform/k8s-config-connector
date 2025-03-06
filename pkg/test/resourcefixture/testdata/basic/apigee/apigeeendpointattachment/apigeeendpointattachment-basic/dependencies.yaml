@@ -12,16 +12,133 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-kind: Service
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
 metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: "abandon"
-    cnrm.cloud.google.com/disable-on-destroy: "false"
-  name: compute.googleapis.com
+  name: project-${uniqueId}
+spec:
+  resourceID: ${projectId}
+  name: "Dependent Project"
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: servicenetworking.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
-    external: projects/${projectId}
+    name: "project-${uniqueId}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: cloudkms.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: compute.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: apigee.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: apgnet-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: apgsubnet-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  ipCidrRange: 10.138.0.0/20
+  region: us-west1
+  networkRef:
+    name: apgnet-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: svcs-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: global
+  ipVersion: IPV4
+  purpose: VPC_PEERING
+  prefixLength: 22
+  networkRef:
+    name: apgnet-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: support-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: global
+  ipVersion: IPV4
+  purpose: VPC_PEERING
+  prefixLength: 28
+  networkRef:
+    name: apgnet-${uniqueId}
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: apgpeering-${uniqueId}
+spec:
+  networkRef:
+    name: apgnet-${uniqueId}
+  reservedPeeringRanges:
+    - name: svcs-${uniqueId}
+    - name: support-${uniqueId}
+  service: "servicenetworking.googleapis.com"
+---
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
+kind: ApigeeOrganization
+metadata:
+  name: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: "project-${uniqueId}"
+  analyticsRegion: "us-west1"
+  authorizedNetworkRef:
+    name: apgnet-${uniqueId}
+  runtimeType: "CLOUD"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
@@ -41,7 +158,7 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computesubnetwork-${uniqueId}
 spec:
-  region: us-west3
+  region: us-west1
   ipCidrRange: 10.0.0.0/24
   networkRef:
     name: default
@@ -56,8 +173,8 @@ metadata:
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
 spec:
-  ipCidrRange: 10.180.0.0/20
-  region: us-west3
+  ipCidrRange: 10.138.0.0/20
+  region: us-west1
   networkRef:
     name: default
 ---
@@ -68,7 +185,7 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computebackendservice-${uniqueId}
 spec:
-  location: us-west3
+  location: us-west1
   networkRef:
     name: default
   loadBalancingScheme: INTERNAL
@@ -80,7 +197,7 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computeforwardingrule-${uniqueId}
 spec:
-  location: us-west3
+  location: us-west1
   networkRef:
     name: default
   subnetworkRef:
@@ -98,7 +215,7 @@ metadata:
 spec:
   projectRef:
     external: projects/${projectId}
-  location: us-west3
+  location: us-west1
   description: A sample service attachment
   targetServiceRef:
     name: computeforwardingrule-${uniqueId}

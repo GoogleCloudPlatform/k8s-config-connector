@@ -10,9 +10,9 @@ metadata:
   name: apgea-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  location: us-west3
+  location: us-west1
   organizationRef:
-    external: organizations/${organizationID}
+    name: ${projectId}
   serviceAttachmentRef:
     name: computeserviceattachment-${uniqueId}
 status:
@@ -22,7 +22,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${organizationID}/endpointAttachments/apgea-${uniqueId}
+  externalRef: organizations/${projectId}/endpointAttachments/apgea-${uniqueId}
   observedGeneration: 1
   observedState:
     connectionState: ACCEPTED
