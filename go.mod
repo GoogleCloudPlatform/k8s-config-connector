@@ -55,7 +55,7 @@ require (
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/hashicorp/hcl v1.0.0
-	github.com/hashicorp/hcl/v2 v2.19.1
+	github.com/hashicorp/hcl/v2 v2.23.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.24.0
 	github.com/hashicorp/terraform-provider-google-beta v3.73.0+incompatible
 	github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
@@ -68,8 +68,8 @@ require (
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
-	github.com/tmccombs/hcl2json v0.3.4
-	github.com/zclconf/go-cty v1.13.0
+	github.com/tmccombs/hcl2json v0.6.5
+	github.com/zclconf/go-cty v1.15.1
 	go.opencensus.io v0.24.0
 	go.uber.org/zap v1.26.0
 	golang.org/x/oauth2 v0.25.0
@@ -115,7 +115,6 @@ require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apache/arrow/go/v15 v15.0.2 // indirect
 	github.com/apparentlymart/go-cidr v1.1.0 // indirect
-	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
