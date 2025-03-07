@@ -150,13 +150,6 @@ Use function calling to fix the problems; do not ask me follow-on questions.
 		return err
 	}
 
-	{
-		newMain, err := os.ReadFile(p)
-		if err != nil {
-			return fmt.Errorf("reading file %q: %w", p, err)
-	}
-	log.Info("new build results", "results", buildResults2)
-
 	if _, err := runGoFormat(ctx, tmpDir); err != nil {
 		return err
 	}
@@ -169,6 +162,12 @@ Use function calling to fix the problems; do not ask me follow-on questions.
 		}
 		fmt.Fprintf(os.Stdout, "final main.go is:\n%s", string(newMain))
 	}
+
+	buildResults2, err := runGoBuild(ctx, tmpDir)
+	if err != nil {
+		return err
+	}
+	log.Info("new build results", "results", buildResults2)
 
 	if buildResults2.ExitCode == 0 {
 		fmt.Printf("SUCCESS\n")
