@@ -98,6 +98,8 @@ require (
 
 require cloud.google.com/go/dataproc/v2 v2.10.0 // indirect
 
+require cloud.google.com/go/billing v1.19.2 // indirect
+
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cel.dev/expr v0.16.0 // indirect

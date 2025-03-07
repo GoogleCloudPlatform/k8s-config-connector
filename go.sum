@@ -44,6 +44,8 @@ cloud.google.com/go/bigquery v1.65.0 h1:ZZ1EOJMHTYf6R9lhxIXZJic1qBD4/x9loBIS+82m
 cloud.google.com/go/bigquery v1.65.0/go.mod h1:9WXejQ9s5YkTW4ryDYzKXBooL78u5+akWGXgJqQkY6A=
 cloud.google.com/go/bigtable v1.33.0 h1:2BDaWLRAwXO14DJL/u8crbV2oUbMZkIa2eGq8Yao1bk=
 cloud.google.com/go/bigtable v1.33.0/go.mod h1:HtpnH4g25VT1pejHRtInlFPnN5sjTxbQlsYBjh9t5l0=
+cloud.google.com/go/billing v1.19.2 h1:shcyz1UkrUxbPsqHL6L84ZdtBZ7yocaFFCxMInTsrNo=
+cloud.google.com/go/billing v1.19.2/go.mod h1:AAtih/X2nka5mug6jTAq8jfh1nPye0OjkHbZEZgU59c=
 cloud.google.com/go/certificatemanager v1.9.2 h1:/lO1ejN415kRaiO6DNNCHj0UvQujKP714q3l8gp4lsY=
 cloud.google.com/go/certificatemanager v1.9.2/go.mod h1:PqW+fNSav5Xz8bvUnJpATIRo1aaABP4mUg/7XIeAn6c=
 cloud.google.com/go/cloudbuild v1.19.0 h1:Uo0bL251yvyWsNtO3Og9m5Z4S48cgGf3IUX7xzOcl8s=

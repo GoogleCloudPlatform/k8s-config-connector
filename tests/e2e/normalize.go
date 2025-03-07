@@ -479,7 +479,8 @@ func (o *objectWalker) visitAny(v any, path string) (any, error) {
 	case int64, float64, bool:
 		return o.visitPrimitive(v, path)
 	case string:
-		return o.visitString(v, path)
+		s2 := o.visitString(v, path)
+		return s2, nil
 	default:
 		return nil, fmt.Errorf("unhandled type at path %q: %T", path, v)
 	}
@@ -582,14 +583,18 @@ func (o *objectWalker) visitPrimitive(v any, _ string) (any, error) {
 	return v, nil
 }
 
-func (o *objectWalker) visitString(s string, path string) (string, error) {
+func (o *objectWalker) visitString(s string, path string) string {
 	for k, v := range o.stringReplacements {
 		s = strings.ReplaceAll(s, k, v)
 	}
 	for _, fn := range o.stringTransforms {
 		s = fn(path, s)
 	}
-	return s, nil
+	return s
+}
+
+func (o *objectWalker) ApplyReplacementsToString(path string, s string) string {
+	return o.visitString(s, path)
 }
 
 func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
@@ -745,7 +750,18 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 		}
 	}
 
-	normalizeHTTPResponses(t, services, events)
+	// Build per-service normalizers
+	serviceNormalizers := newObjectWalker()
+	{
+		for _, entry := range events {
+			services.ConfigureVisitor(entry.Request.URL, serviceNormalizers)
+		}
+		for _, entry := range events {
+			services.Previsit(entry, serviceNormalizers)
+		}
+	}
+
+	normalizeHTTPResponses(t, events, serviceNormalizers)
 
 	// Normalize using the KRM normalization function
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
@@ -758,9 +774,14 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 
 	// Apply replacements
 	normalizer.Replacements.ApplyReplacementsToHTTPEvents(events)
+
+	// Apply service normalizers to URLs
+	for _, event := range events {
+		event.Request.URL = serviceNormalizers.ApplyReplacementsToString("<url>", event.Request.URL)
+	}
 }
 
-func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer, events test.LogEntries) {
+func normalizeHTTPResponses(t *testing.T, events test.LogEntries, serviceReplacements *objectWalker) {
 	visitor := newObjectWalker()
 
 	// If we get detailed info, don't record it - it's not part of the API contract
@@ -936,23 +957,11 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	})
 
 	// Run per-service replaceres
-	{
-		replacements := newObjectWalker()
-
-		for _, entry := range events {
-			normalizer.ConfigureVisitor(entry.Request.URL, replacements)
+	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		if err := serviceReplacements.visitMap(obj, ""); err != nil {
+			t.Fatalf("error normalizing response: %v", err)
 		}
-
-		for _, entry := range events {
-			normalizer.Previsit(entry, replacements)
-		}
-
-		events.PrettifyJSON(func(requestURL string, obj map[string]any) {
-			if err := replacements.visitMap(obj, ""); err != nil {
-				t.Fatalf("error normalizing response: %v", err)
-			}
-		})
-	}
+	})
 }
 
 // Compute URLs: Replace any compute beta URLs with v1 URLs
