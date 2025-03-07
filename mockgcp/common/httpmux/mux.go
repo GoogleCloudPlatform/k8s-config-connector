@@ -99,6 +99,9 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 		runtime.WithOutgoingHeaderMatcher(outgoingHeaderMatcher),
 		runtime.WithForwardResponseOption(m.addGCPHeaders),
 		runtime.WithMetadata(m.addMetadata),
+		// // Needed for some tricky URLs, e.g. tagBindings
+		// DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fcloudres
+		runtime.WithUnescapingMode(runtime.UnescapingModeAllExceptReserved),
 	)
 	m.ServeMux = mux
 
@@ -119,6 +122,7 @@ var originalPath originalPathKey = "originalPath"
 
 // RewriteRequest returns a new http.Request for the specified URL,
 // also stashing the original request for addMetadata.
+// NOTE: be sure to rewrite RawPath _and_ Path, not just Path.
 func RewriteRequest(r *http.Request, newURL *url.URL) *http.Request {
 	ctx := r.Context()
 	ctx = context.WithValue(ctx, originalPath, r.URL.Path)
