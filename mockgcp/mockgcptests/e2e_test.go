@@ -34,10 +34,13 @@ import (
 )
 
 type Placeholders struct {
-	ProjectID        string
-	ProjectNumber    int64
-	UniqueID         string
-	BillingAccountID string
+	ProjectID               string
+	ProjectNumber           int64
+	UniqueID                string
+	BillingAccountID        string
+	IAMTestOrganizationID   string
+	IAMTestBillingAccountID string
+	User                    string
 }
 
 func TestScripts(t *testing.T) {
@@ -45,7 +48,6 @@ func TestScripts(t *testing.T) {
 	if err != nil {
 		t.Fatalf("cannot find base dir for mockgcp: %v", err)
 	}
-
 	scriptPaths := findScripts(t, baseDir)
 
 	for _, scriptPath := range scriptPaths {
@@ -64,12 +66,41 @@ func TestScripts(t *testing.T) {
 			project := h.Project
 			testDir := filepath.Join(baseDir, scriptPath)
 			placeholders := Placeholders{
-				ProjectID:        project.ProjectID,
-				ProjectNumber:    project.ProjectNumber,
-				UniqueID:         uniqueID,
-				BillingAccountID: testgcp.TestBillingAccountID.Get(),
+				ProjectID:               project.ProjectID,
+				ProjectNumber:           project.ProjectNumber,
+				UniqueID:                uniqueID,
+				BillingAccountID:        testgcp.TestBillingAccountID.Get(),
+				IAMTestBillingAccountID: testgcp.IAMIntegrationTestsBillingAccountID.Get(),
+				IAMTestOrganizationID:   testgcp.IAMIntegrationTestsOrganizationID.Get(),
+				User:                    GetDefaultAccount(t),
 			}
 			script := loadScript(t, testDir, placeholders)
+
+			for _, step := range script.SetupSteps {
+				if step.Exec != "" {
+					cmd := exec.CommandContext(ctx, "bash", "-c", step.Exec)
+					var stdout bytes.Buffer
+					cmd.Stdout = &stdout
+					var stderr bytes.Buffer
+					cmd.Stderr = &stderr
+
+					cmd.Env = append(cmd.Env, os.Environ()...)
+
+					if h.gcpAccessToken != "" {
+						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))
+					}
+					cmd.Env = append(cmd.Env, "CLOUDSDK_CORE_PROJECT="+h.Project.ProjectID)
+					cmd.Dir = testDir
+
+					t.Logf("executing setup step command %q", step.Exec)
+					if err := cmd.Run(); err != nil {
+						t.Logf("stdout: %v", stdout.String())
+						t.Logf("stderr: %v", stderr.String())
+
+						t.Errorf("error running command %q: %v", step.Exec, err)
+					}
+				}
+			}
 
 			h.StartProxy(ctx)
 
@@ -144,6 +175,31 @@ func TestScripts(t *testing.T) {
 				h.CompareGoldenFile(expectedPath, got)
 			}
 
+			for _, step := range script.TeardownSteps {
+				if step.Exec != "" {
+					cmd := exec.CommandContext(ctx, "bash", "-c", step.Exec)
+					var stdout bytes.Buffer
+					cmd.Stdout = &stdout
+					var stderr bytes.Buffer
+					cmd.Stderr = &stderr
+
+					cmd.Env = append(cmd.Env, os.Environ()...)
+
+					if h.gcpAccessToken != "" {
+						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))
+					}
+					cmd.Env = append(cmd.Env, "CLOUDSDK_CORE_PROJECT="+h.Project.ProjectID)
+					cmd.Dir = testDir
+
+					t.Logf("executing teardown step command %q", step.Exec)
+					if err := cmd.Run(); err != nil {
+						t.Logf("stdout: %v", stdout.String())
+						t.Logf("stderr: %v", stderr.String())
+
+						t.Errorf("error running command %q: %v", step.Exec, err)
+					}
+				}
+			}
 		})
 	}
 }
@@ -172,6 +228,9 @@ type Script struct {
 	Name      string
 	SourceDir string
 	Steps     []*Step
+
+	SetupSteps    []*Step
+	TeardownSteps []*Step
 }
 
 type Step struct {
@@ -185,18 +244,34 @@ func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
 		Name:      dir,
 		SourceDir: dir,
 	}
-	b := test.MustReadFile(t, filepath.Join(dir, "script.yaml"))
+	s.Steps = loadFile(t, dir, "script.yaml", placeholders, true)
+	s.SetupSteps = loadFile(t, dir, "setup.yaml", placeholders, false)
+	s.TeardownSteps = loadFile(t, dir, "teardown.yaml", placeholders, false)
+	return s
+}
+
+func loadFile(t *testing.T, dir, fileName string, placeholders Placeholders, mustRead bool) []*Step {
+	var b []byte
+	var err error
+	if mustRead {
+		b = test.MustReadFile(t, filepath.Join(dir, fileName))
+	} else {
+		b, err = os.ReadFile(filepath.Join(dir, fileName))
+		if err != nil {
+			return nil
+		}
+	}
+	if len(b) == 0 {
+		return nil
+	}
 
 	b = ReplaceTestVars(t, b, placeholders)
 
 	var steps []*Step
 	if err := yaml.Unmarshal(b, &steps); err != nil {
-		t.Fatalf("error unmarshalling steps: %v", err)
+		t.Fatalf("error unmarshalling steps in %s: %v", fileName, err)
 	}
-
-	s.Steps = steps
-
-	return s
+	return steps
 }
 
 // ReplaceTestVars replaces all occurrences of placeholder strings e.g. ${uniqueId} in a given byte slice.
@@ -206,5 +281,8 @@ func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s = strings.Replace(s, "${projectId}", placeholders.ProjectID, -1)
 	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
 	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), placeholders.IAMTestOrganizationID, -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsBillingAccountID.Key), placeholders.IAMTestBillingAccountID, -1)
+	s = strings.Replace(s, "${user}", placeholders.User, -1)
 	return []byte(s)
 }
