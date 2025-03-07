@@ -1,0 +1,498 @@
+GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "not found: resource not found",
+        "stackEntries": [
+          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc005a48e80, 0x1d})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x55e411bbf278?, 0xc005a57e00?})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:556 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x55e411d191c8, 0xc10ddfe630}, {0x55e404df3370, 0x10}, {0xc11b962690, 0x4f}, {0x55e411bbf278, 0xc005a57e00})",
+          "cloud/control2/frontend/userfriendly/userfriendly_store.go:89 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x55e411d191c8, 0xc10ddfe630}, 0xc19fd64800, {0x55e411bbf278, 0xc005a57e00})",
+          "cloud/control2/frontend/handler/readonly.go:279 +0x15e6 google3/cloud/control2/frontend/handler/handler.Handler.handleGet({{{0x55e411d23010, 0xc00508f0c0}, {0x0, 0x0}}, {{0xc00c318480, 0x1, 0x1}, 0xc00b332570, 0xc00c318470, {0x55e411d31618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:395 +0xec6 google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x55e411d23010, 0xc00508f0c0}, {0x0, 0x0}}, {{0xc00c318480, 0x1, 0x1}, 0xc00b332570, 0xc00c318470, {0x55e411d31618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x55e411d23010, 0xc00508f0c0}, {0x0, 0x0}}, {{0xc00c318480, 0x1, 0x1}, 0xc00b332570, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x55e411d23010, 0xc00508f0c0}, {0x0, 0x0}}, {{0xc00c318480, 0x1, 0x1}, 0xc00b332570, 0xc00c318470, {0x55e411d31618, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00a92f7a0, {0x55e411d191c8, 0xc182152360}, 0xc169905540, 0xc14d413878, 0xc14d413bc0, {0xc23b32d0e0?, 0x55e407c9d987?})",
+          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00a92f7a0, {0x55e411d191c8, 0xc182152360}, 0xc14d413878, 0xc14d413bc0)",
+          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc0b05cd308?, {0x55e411d191c8, 0xc182152360}, 0x55e40f9f30e0?, 0xc0a7466c01?)",
+          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc006b94ae0, {0x55e411d191c8, 0xc182152360}, 0xc14d413878)",
+          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x55e411d191c8?, 0xc182152360?}, 0xc14d413878?, {0x0?, 0x0?}, {0x55e411d2e3a0, 0xc157865950})",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x55e411d191c8?, 0xc1ec976f90?}, 0xc1137ef8d0)",
+          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc07921c720, {0x55e411d19438, 0xc1b214c360}, 0xc0e356f880)"
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows?alt=json&workflowId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
+    "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+    "revisionId": "revision-id-placeholder",
+    "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+    "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "revision-id-placeholder",
+  "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://workflowexecutions.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "argument": "null",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "status": {},
+  "workflowRevisionId": "000001-a57"
+}
+
+---
+
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "argument": "null",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "duration": "0.076031159s",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a",
+  "result": "\"us-central1\"",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "SUCCEEDED",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "main",
+        "step": "returnOutput"
+      }
+    ]
+  },
+  "workflowRevisionId": "000001-a57"
+}
+
+---
+
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "executions": [
+    {
+      "createTime": "2025-03-07T01:22:59.642443517Z",
+      "duration": "0.076031159s",
+      "endTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a",
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "state": "SUCCEEDED",
+      "status": {
+        "currentSteps": [
+          {
+            "routine": "main",
+            "step": "returnOutput"
+          }
+        ]
+      },
+      "workflowRevisionId": "000001-a57"
+    }
+  ]
+}
+
+---
+
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "argument": "null",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "duration": "0.076031159s",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a",
+  "result": "\"us-central1\"",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "SUCCEEDED",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "main",
+        "step": "returnOutput"
+      }
+    ]
+  },
+  "workflowRevisionId": "000001-a57"
+}
+
+---
+
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "executions": [
+    {
+      "createTime": "2025-03-07T01:22:59.642443517Z",
+      "duration": "0.076031159s",
+      "endTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a",
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "state": "SUCCEEDED",
+      "status": {
+        "currentSteps": [
+          {
+            "routine": "main",
+            "step": "returnOutput"
+          }
+        ]
+      },
+      "workflowRevisionId": "000001-a57"
+    }
+  ]
+}
+
+---
+
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "executions": [
+    {
+      "createTime": "2025-03-07T01:22:59.642443517Z",
+      "duration": "0.076031159s",
+      "endTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a",
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "state": "SUCCEEDED",
+      "status": {
+        "currentSteps": [
+          {
+            "routine": "main",
+            "step": "returnOutput"
+          }
+        ]
+      },
+      "workflowRevisionId": "000001-a57"
+    }
+  ]
+}
+
+---
+
+POST https://workflowexecutions.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/fa31d742-2efb-4816-bd78-40a74136ac1a:cancel?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "cancelling execution in state SUCCEEDED is not allowed",
+        "stackEntries": [
+          "cloud/eventworkflows/errors/errors.go:103 google3/cloud/eventworkflows/errors/errors.New(...)",
+          "cloud/eventworkflows/errors/apierrors.go:71 +0x3e google3/cloud/eventworkflows/errors/apierrors.New(0x9, {0xc0085f84c0, 0x36})",
+          "cloud/eventworkflows/errors/apierrors.go:122 +0x45 google3/cloud/eventworkflows/errors/apierrors.Errorf(0x9, {0x561e44bc1e45?, 0xc00a1a7800?}, {0xc0107ae058?, 0x561e460d20e5?, 0x178?})",
+          "cloud/eventworkflows/executor/controller.go:660 +0x6cd google3/cloud/eventworkflows/executor/controller.(*Controller).CancelExecution.func1({0x561e4bbf3c48, 0xc004a33200})",
+          "cloud/eventworkflows/hosted/dao/spannertransaction.go:163 +0x11c google3/cloud/eventworkflows/hosted/dao/spannertransaction.(*Runner).RunInTransaction.func2(0xc004a33080)",
+          "spanner/go/transaction.go:324 +0x42 google3/spanner/go/spanner.RunInTransaction.func1()",
+          "spanner/go/transaction.go:374 +0x11f google3/spanner/go/spanner.RunInTransaction({0x561e4bbcf098, 0xc00a1a7800}, 0xc0107ae320, {0xc0107ae300?, 0xc02f8943c0?, 0x18?})",
+          "cloud/eventworkflows/hosted/dao/spannertransaction.go:154 +0x372 google3/cloud/eventworkflows/hosted/dao/spannertransaction.(*Runner).RunInTransaction(0xc002fc01f0, {0x561e4bbcf098, 0xc00a1a7800}, 0xc01f9e4280, {0xc01296eb40, 0x2, 0x0?})",
+          "cloud/eventworkflows/executor/controller.go:639 +0x452 google3/cloud/eventworkflows/executor/controller.(*Controller).CancelExecution(0xc002f9a7e0, {0x561e4bbcf098, 0xc00a1a7800}, {0xc00dd93800, 0x7b}, 0xc0107ae4b8?)",
+          "cloud/eventworkflows/executor/v1/executor.go:152 +0x77 google3/cloud/eventworkflows/executor/v1/executor.(*Service).CancelExecution(0xc002fc02a0, {0x561e4bbcf098, 0xc00a1a7800}, 0xc014888100)",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x561e4bbcf098?, 0xc02133bbc0?}, 0xc0107af588)",
+          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc006e5c680, {0x561e4bbcf460, 0xc014225800}, 0xc012fcee00)",
+          "production/fireaxe/go/filters/rpcserverinterceptor.go:62 +0x2f0 google3/production/fireaxe/go/filters/rpcserverinterceptor.(*Interceptor).MakeHook-fm.(*Interceptor).MakeHook.func2({0x561e4bbcf460, 0xc014225800}, 0xc012fcee00)",
+          "CAUSED BY: cancelling execution in state SUCCEEDED is not allowed"
+        ]
+      }
+    ],
+    "message": "cancelling execution in state SUCCEEDED is not allowed",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+DELETE https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
