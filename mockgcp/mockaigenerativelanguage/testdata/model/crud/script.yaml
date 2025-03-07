@@ -1,0 +1,4 @@
+
+- exec: gcloud ai models upload --display-name=test-${uniqueId} --container-image-uri=gcr.io/google-containers/busybox --region=us-central1 --model-id=test-${uniqueId}
+- exec: gcloud ai models describe test-${uniqueId} --region=us-central1
+- exec: gcloud ai models delete test-${uniqueId} --region=us-central1
