@@ -9,7 +9,6 @@ Content-Type: application/json
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -58,7 +57,6 @@ Content-Type: application/json
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -82,7 +80,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -106,7 +103,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -134,7 +130,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 404 Not Found
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -164,7 +159,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -174,6 +168,7 @@ Vary: X-Origin
 {
   "kind": "storage#objects",
   "prefixes": [
+    "testfolder",
     "testmanagedfolder"
   ]
 }
@@ -186,7 +181,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -210,7 +204,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -228,7 +221,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 204 No Content
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
