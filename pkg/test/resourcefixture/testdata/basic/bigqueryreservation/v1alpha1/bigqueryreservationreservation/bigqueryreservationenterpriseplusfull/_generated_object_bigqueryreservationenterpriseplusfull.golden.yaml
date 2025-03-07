@@ -11,15 +11,17 @@ metadata:
   namespace: ${uniqueId}
 spec:
   autoscale:
-    maxSlots: 100
-  concurrency: 0
+    maxSlots: 50
+  concurrency: 10
   edition: ENTERPRISE_PLUS
+  failover:
+    secondaryLocation: us-east1
   ignoreIdleSlots: true
   location: us-west2
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
-  slotCapacity: 0
+  slotCapacity: 50
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -29,4 +31,8 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}
   observedGeneration: 2
-  observedState: {}
+  observedState:
+    failover:
+      originalPrimaryLocation: us-west2
+      primaryLocation: us-west2
+      secondaryLocation: us-east1
