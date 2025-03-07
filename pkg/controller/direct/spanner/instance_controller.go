@@ -16,6 +16,7 @@ package spanner
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"reflect"
 
@@ -26,9 +27,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 
+	db "cloud.google.com/go/spanner/admin/database/apiv1"
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
 
+	databasepb "cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
 	spannerpb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -67,17 +71,21 @@ type modelSpannerInstance struct {
 	config config.ControllerConfig
 }
 
-func (m *modelSpannerInstance) client(ctx context.Context) (*gcp.InstanceAdminClient, error) {
+func (m *modelSpannerInstance) client(ctx context.Context) (*gcp.InstanceAdminClient, *db.DatabaseAdminClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	gcpClient, err := gcp.NewInstanceAdminRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building Instance client: %w", err)
+		return nil, nil, fmt.Errorf("building Instance client: %w", err)
 	}
-	return gcpClient, err
+	backClient, err := db.NewDatabaseAdminRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, nil, fmt.Errorf("building Backup client: %w", err)
+	}
+	return gcpClient, backClient, err
 }
 
 func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -92,7 +100,7 @@ func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader clie
 	}
 
 	// Get spanner GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, backClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -104,9 +112,10 @@ func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader clie
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 	return &SpannerInstanceAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:           id,
+		gcpClient:    gcpClient,
+		backupClient: backClient,
+		desired:      obj,
 	}, nil
 }
 
@@ -116,10 +125,11 @@ func (m *modelSpannerInstance) AdapterForURL(ctx context.Context, url string) (d
 }
 
 type SpannerInstanceAdapter struct {
-	id        *krm.SpannerInstanceIdentity
-	gcpClient *gcp.InstanceAdminClient
-	desired   *krm.SpannerInstance
-	actual    *spannerpb.Instance
+	id           *krm.SpannerInstanceIdentity
+	gcpClient    *gcp.InstanceAdminClient
+	backupClient *db.DatabaseAdminClient
+	desired      *krm.SpannerInstance
+	actual       *spannerpb.Instance
 }
 
 var _ directbase.Adapter = &SpannerInstanceAdapter{}
@@ -283,6 +293,14 @@ func (a *SpannerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unst
 func (a *SpannerInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting Instance", "name", a.id)
+	v, ok := a.desired.ObjectMeta.Annotations["cnrm.cloud.google.com/force-destroy"]
+	if ok && v == "true" {
+		log.V(2).Info("Force destroy is enabled, trying to delete all backups...")
+		err := a.DeleteBackup(ctx)
+		if err != nil {
+			return false, err
+		}
+	}
 
 	req := &spannerpb.DeleteInstanceRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteInstance(ctx, req)
@@ -296,6 +314,26 @@ func (a *SpannerInstanceAdapter) Delete(ctx context.Context, deleteOp *directbas
 func (a *SpannerInstanceAdapter) SpecValidation() error {
 	if a.desired.Spec.NumNodes != nil && a.desired.Spec.ProcessingUnits != nil {
 		return fmt.Errorf("Only one field can be set between numNodes and processingUnits.")
+	}
+	return nil
+}
+
+func (a *SpannerInstanceAdapter) DeleteBackup(ctx context.Context) error {
+	it := a.backupClient.ListBackups(ctx, &databasepb.ListBackupsRequest{Parent: a.id.String()})
+	for {
+		backup, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			klog.Fatalf("Error listing backups: %v", err)
+			return err
+		}
+		err = a.backupClient.DeleteBackup(ctx, &databasepb.DeleteBackupRequest{Name: backup.Name})
+		if err != nil {
+			klog.Fatalf("Error deleting backup: %v", err)
+			return err
+		}
 	}
 	return nil
 }
