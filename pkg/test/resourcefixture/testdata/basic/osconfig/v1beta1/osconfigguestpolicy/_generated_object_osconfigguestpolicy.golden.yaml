@@ -1,0 +1,127 @@
+apiVersion: osconfig.cnrm.cloud.google.com/v1beta1
+kind: OSConfigGuestPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: osconfigguestpolicy-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  assignment:
+    groupLabels:
+    - labels:
+        app: new
+        env: prod
+    - labels:
+        app: new
+        env: staging
+    instances:
+    - name: computeinstance2-${uniqueId}
+    osTypes:
+    - osArchitecture: x86_64
+      osShortName: debian
+      osVersion: "10"
+    - osArchitecture: x86_64
+      osShortName: windows
+      osVersion: 10.0.14393
+    zones:
+    - us-central1-a
+  description: An OSConfigGuestPolicy for testing.
+  packageRepositories:
+  - apt:
+      archiveType: DEB
+      components:
+      - main
+      distribution: aiy-debian-buster
+      gpgKey: https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg
+      uri: https://packages.cloud.google.com/apt
+  - yum:
+      baseUrl: https://packages.cloud.google.com/yum/repos/liamtest
+      displayName: Liam Test
+      gpgKeys:
+      - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+      - https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg
+      id: liamtest
+  packages:
+  - desiredState: INSTALLED
+    manager: APT
+    name: add-apt-key
+  - desiredState: REMOVED
+    manager: YUM
+    name: ssl
+  - desiredState: UPDATED
+    manager: ANY
+    name: ansible-doc
+  recipes:
+  - artifacts:
+    - allowInsecure: true
+      id: ansible
+      remote:
+        uri: https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
+    desiredState: INSTALLED
+    installSteps:
+    - fileCopy:
+        artifactId: ansible
+        destination: /installbackups/ansible
+        overwrite: true
+        permissions: "555"
+    - archiveExtraction:
+        artifactId: ansible
+        destination: /var/ansible/
+        type: TAR_GZIP
+    name: newest-ansible
+    version: 1.0.0.1
+  - artifacts:
+    - allowInsecure: false
+      gcs:
+        bucketRef:
+          name: storagebucket2-${uniqueId}
+        generation: 1829485032948555
+        object: latest/prod
+      id: web-app
+    desiredState: UPDATED
+    installSteps:
+    - fileCopy:
+        artifactId: web-app
+        destination: /installbackups/prod
+        overwrite: false
+        permissions: "777"
+    - fileExec:
+        allowedExitCodes:
+        - 0
+        args:
+        - prodcompile
+        localPath: /installbackups/prod
+    name: prod-web-app
+    updateSteps:
+    - fileCopy:
+        artifactId: web-app
+        destination: /installbackups/prod
+        permissions: "755"
+    - fileExec:
+        allowedExitCodes:
+        - 0
+        - 4
+        args:
+        - updatecompile
+        localPath: /installbackups/prod
+    version: 2.5.28
+  resourceID: osconfigguestpolicy-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  etag: abcdef123456
+  observedGeneration: 3
+  updateTime: "1970-01-01T00:00:00Z"

@@ -31,3 +31,5 @@ status:
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
   observedGeneration: 2
+  state: PENDING
+  updateTime: "1970-01-01T00:00:00Z"

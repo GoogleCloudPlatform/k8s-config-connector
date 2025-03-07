@@ -27,7 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/klog/v2"
 )
 
@@ -77,17 +77,40 @@ func (s *ProjectsV1) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 		reqV3.Project.Parent = plural + "/" + req.Project.Parent.GetId()
 	}
 
-	lro, err := s.projectsV3.CreateProject(ctx, reqV3)
+	lrov3, err := s.projectsV3.CreateProject(ctx, reqV3)
 	if err != nil {
 		return nil, err
 	}
 
-	lrov1, err := lroV3ToV1(lro)
+	prefix := ""
+	metadata := &emptypb.Empty{} // Should be "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus", but we don't have a definition for that
+	lrov1, err := s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		for {
+			// Wait for operation to complete
+			latest, err := s.operations.GetOperation(ctx, &longrunningpb.GetOperationRequest{
+				Name: lrov3.Name,
+			})
+			if err != nil {
+				return nil, fmt.Errorf("getting v3 operation: %w", err)
+			}
+			if !latest.Done {
+				time.Sleep(time.Second)
+				continue
+			}
+
+			// Return v1 project
+			v1Project, err := s.GetProject(ctx, &pb.GetProjectRequest{Name: "projects/" + req.Project.ProjectId})
+			if err != nil {
+				return nil, fmt.Errorf("getting v1 project: %w", err)
+			}
+			return v1Project, nil
+		}
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	// We actually only return the name from this operation
+	// We actually only return the lro name from this operation
 	return &longrunningpb.Operation{
 		Name: lrov1.Name,
 	}, nil
@@ -104,7 +127,7 @@ func (s *ProjectsV1) DeleteProject(ctx context.Context, req *pb.DeleteProjectReq
 		return nil, err
 	}
 
-	// V1 does not return an LRO (this method is actually fast anyway, we just mark the projet for deletion)
+	// V1 does not return an LRO (this method is actually fast anyway, we just mark the project for deletion)
 	if _, err := s.operations.Wait(ctx, op.Name, time.Minute); err != nil {
 		return nil, err
 	}
@@ -114,7 +137,7 @@ func (s *ProjectsV1) DeleteProject(ctx context.Context, req *pb.DeleteProjectReq
 }
 
 // Updates a project.
-// Only the V3 `display_name` and `labels` fields can be change.
+// Only the V3 `display_name` and `labels` fields can be changed.
 func (s *ProjectsV1) UpdateProject(ctx context.Context, req *pb.UpdateProjectRequest) (*pb.Project, error) {
 	reqV3 := &v3.UpdateProjectRequest{
 		Project: &v3.Project{
@@ -133,44 +156,11 @@ func (s *ProjectsV1) UpdateProject(ctx context.Context, req *pb.UpdateProjectReq
 		return nil, fmt.Errorf("expected updateProject to be immediate")
 	}
 
-	// TODO: Get object from lro
 	project, err := s.GetProject(ctx, &pb.GetProjectRequest{Name: req.GetProject().GetName()})
 	if err != nil {
 		return nil, fmt.Errorf("error fetching project after update: %w", err)
 	}
 	return project, nil
-	// updatedV3, err := s.projectsInternal.updateProject(ctx, reqV3)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// updatedV1 := &pb.Project{}
-	// if err := projectToV1(updatedV3, updatedV1); err != nil {
-	// 	return nil, err
-	// }
-
-	// return updatedV1, nil
-}
-
-// Convert a V3 LRO (with an embedded V3 result) to a V1 LRO
-func lroV3ToV1(lro *longrunningpb.Operation) (*longrunningpb.Operation, error) {
-	if response, ok := lro.Result.(*longrunningpb.Operation_Response); ok {
-		projectV3 := &v3.Project{}
-		if err := anypb.UnmarshalTo(response.Response, projectV3, proto.UnmarshalOptions{}); err != nil {
-			return nil, err
-		}
-		projectV1 := &pb.Project{}
-		if err := projectToV1(projectV3, projectV1); err != nil {
-			return nil, err
-		}
-		anyV1, err := anypb.New(projectV1)
-		if err != nil {
-			return nil, err
-		}
-		response.Response = anyV1
-	}
-
-	return lro, nil
 }
 
 // Convert a V3 project to a V1 project

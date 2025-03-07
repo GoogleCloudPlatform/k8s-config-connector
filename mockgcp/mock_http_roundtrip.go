@@ -161,15 +161,12 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	}
 	env.Workflows = workflowEngine
 
-	resourcemanagerService := mockresourcemanager.New(env, storage)
-	env.Projects = resourcemanagerService.GetProjectStore()
+	env.Projects = mockresourcemanager.NewProjectStore(storage)
 
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
 
 	var services []mockgcpregistry.MockService
-
-	services = append(services, resourcemanagerService)
 
 	registeredServices, err := mockgcpregistry.BuildAllServices(env, storage)
 	if err != nil {

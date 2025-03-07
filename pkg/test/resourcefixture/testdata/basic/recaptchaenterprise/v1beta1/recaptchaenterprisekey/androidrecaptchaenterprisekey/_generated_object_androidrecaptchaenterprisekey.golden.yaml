@@ -1,0 +1,36 @@
+apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
+kind: RecaptchaEnterpriseKey
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+    label-two: value-two
+  name: recaptchaenterprisekey-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  androidSettings:
+    allowAllPackageNames: false
+    allowedPackageNames:
+    - com.android.application
+  displayName: display-name-two
+  projectRef:
+    external: projects/kcc-recaptcha-enterprise
+  resourceID: 6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ
+  testingOptions:
+    testingScore: 0.8
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  observedGeneration: 3
