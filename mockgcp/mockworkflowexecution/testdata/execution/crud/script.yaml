@@ -1,0 +1,7 @@
+
+- exec: gcloud workflows deploy test-${uniqueId} --location us-central1 --source workflow.yaml
+- exec: gcloud workflows run test-${uniqueId} --location us-central1 --project ${projectId}
+- exec: gcloud workflows executions describe --workflow test-${uniqueId} --location us-central1 $(gcloud workflows executions list test-${uniqueId} --location us-central1 --limit 1 --format='value(name)')
+- exec: gcloud workflows executions list test-${uniqueId} --location us-central1
+- exec: gcloud workflows executions cancel --workflow test-${uniqueId} --location us-central1 $(gcloud workflows executions list test-${uniqueId} --location us-central1 --limit 1 --format='value(name)') --quiet
+- exec: gcloud workflows delete test-${uniqueId} --location us-central1 --quiet
