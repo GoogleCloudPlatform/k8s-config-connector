@@ -153,7 +153,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Location of the instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -223,7 +223,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The Project that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

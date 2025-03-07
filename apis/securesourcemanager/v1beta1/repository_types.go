@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,8 +27,13 @@ var SecureSourceManagerRepositoryGVK = GroupVersion.WithKind("SecureSourceManage
 // SecureSourceManagerRepositorySpec defines the desired state of SecureSourceManagerRepository
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository
 type SecureSourceManagerRepositorySpec struct {
+	/* Immutable. The Project that this resource belongs to. */
 	// +required
-	Parent `json:",inline"`
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	/* Immutable. Location of the instance. */
+	// +required
+	Location string `json:"location"`
 
 	// The SecureSourceManagerRepository name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

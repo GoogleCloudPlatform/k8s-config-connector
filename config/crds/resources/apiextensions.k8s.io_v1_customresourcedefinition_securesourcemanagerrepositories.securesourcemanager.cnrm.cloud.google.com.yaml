@@ -233,9 +233,10 @@ spec:
                     type: string
                 type: object
               location:
+                description: Immutable. Location of the instance.
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -271,7 +272,6 @@ spec:
                   the metadata.name will be used.
                 type: string
             required:
-            - ""
             - instanceRef
             - location
             - projectRef
@@ -571,9 +571,10 @@ spec:
                     type: string
                 type: object
               location:
+                description: Immutable. Location of the instance.
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -609,7 +610,6 @@ spec:
                   the metadata.name will be used.
                 type: string
             required:
-            - ""
             - instanceRef
             - location
             - projectRef
