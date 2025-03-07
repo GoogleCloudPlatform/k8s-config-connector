@@ -114,6 +114,7 @@ fmt:
 	-ignore "operator/vendor/**" \
 	-ignore "**/testdata/**/*" \
 	-ignore "experiments/**/testdata/**" \
+	-ignore "pkg/gcpclients/generated/**" \
 	./
 
 .PHONY: lint
