@@ -212,6 +212,12 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
 
+	// Specific to TPUVirtualMachine
+	if u.GetKind() == "TPUVirtualMachine" {
+		// TODO: Only for export?
+		visitor.ReplacePath(".spec.cidrBlock", "10.32.0.0/20")
+	}
+
 	// Specific to WorflowsWorkflow
 	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
 	visitor.replacePaths[".status.observedState.revisionCreateTime"] = "2024-04-01T12:34:56.123456Z"

@@ -48,7 +48,7 @@ func (s *TpuServer) GetNode(ctx context.Context, req *pb.GetNodeRequest) (*pb.No
 	obj := &pb.Node{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "TPU node %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%v' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -161,6 +161,9 @@ func (s *TpuServer) populateNode(obj *pb.Node, name *nodeName) {
 	if obj.NetworkConfig.Subnetwork == "" {
 		obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/default", name.Project.ID, regionForLocation(name.Location))
 	}
+	if obj.SchedulingConfig == nil {
+		obj.SchedulingConfig = &pb.SchedulingConfig{}
+	}
 	if obj.ServiceAccount == nil {
 		obj.ServiceAccount = &pb.ServiceAccount{}
 	}
@@ -177,7 +180,9 @@ func (s *TpuServer) populateNode(obj *pb.Node, name *nodeName) {
 			"https://www.googleapis.com/auth/pubsub",
 		}
 	}
-
+	if obj.ShieldedInstanceConfig == nil {
+		obj.ShieldedInstanceConfig = &pb.ShieldedInstanceConfig{}
+	}
 	if obj.CidrBlock == "" {
 		obj.CidrBlock = "10.32.0.0/20"
 	}
@@ -185,12 +190,13 @@ func (s *TpuServer) populateNode(obj *pb.Node, name *nodeName) {
 	if len(obj.NetworkEndpoints) == 0 {
 		obj.NetworkEndpoints = []*pb.NetworkEndpoint{
 			{
-				IpAddress: "10.32.0.27",
-				Port:      8470,
-				AccessConfig: &pb.AccessConfig{
-					ExternalIp: "8.8.8.8",
-				},
+				IpAddress:    "10.32.0.27",
+				Port:         8470,
+				AccessConfig: &pb.AccessConfig{},
 			},
+		}
+		if obj.GetNetworkConfig().GetEnableExternalIps() {
+			obj.NetworkEndpoints[0].AccessConfig.ExternalIp = "8.8.8.8"
 		}
 	}
 }
