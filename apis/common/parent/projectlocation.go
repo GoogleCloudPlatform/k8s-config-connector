@@ -46,6 +46,16 @@ func (p *ProjectAndLocationParent) MatchActual(actualI Parent) error {
 	return nil
 }
 
+func (i *ProjectAndLocationParent) FromExternal(external string) error {
+	tokens := strings.Split(external, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+		i.ProjectID = tokens[1]
+		i.Location = tokens[3]
+		return nil
+	}
+	return fmt.Errorf("format of project external=%q was not known (use projects/{projectID}/locations/{location})", external)
+}
+
 var _ ParentBuilder = &ProjectAndLocationRef{}
 
 // ProjectAndLocationParent specifies the resource's GCP hierarchy (Project/Folder/Organization) and its geographical location.

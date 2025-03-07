@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -40,6 +41,52 @@ type ProjectRef struct {
 	Kind string `json:"kind,omitempty"`
 }
 
+var _ Ref = &ProjectRef{}
+
+func (r *ProjectRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "Project",
+	}
+}
+
+func (r *ProjectRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ProjectRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ProjectRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *ProjectRef) ValidateExternal(ref string) error {
+	id := &Project{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// No status.externalRef, so can't use default method
+	// return Normalize(ctx, reader, r, defaultNamespace)
+
+	project, err := ResolveProject(ctx, reader, defaultNamespace, r)
+	if err != nil {
+		return err
+	}
+
+	r.External = "projects/" + project.ProjectID
+	return nil
+}
+
 // AsProjectRef converts a generic ResourceRef into a ProjectRef
 func AsProjectRef(in *v1alpha1.ResourceRef) *ProjectRef {
 	if in == nil {
@@ -55,6 +102,25 @@ func AsProjectRef(in *v1alpha1.ResourceRef) *ProjectRef {
 
 type Project struct {
 	ProjectID string
+}
+
+var _ identity.Identity = &Project{}
+
+func (p *Project) String() string {
+	return "projects/" + p.ProjectID
+}
+
+func (p *Project) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 1 {
+		p.ProjectID = tokens[0]
+		return nil
+	}
+	if len(tokens) == 2 && tokens[0] == "projects" {
+		p.ProjectID = tokens[1]
+		return nil
+	}
+	return fmt.Errorf("unknown format for project %q (use projects/{projectId})", ref)
 }
 
 // ResolveProjectFromAnnotation resolves the projectID to use for a resource,
