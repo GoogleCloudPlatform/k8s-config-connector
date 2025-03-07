@@ -4,6 +4,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
 
 404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -16,7 +17,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "No such environment found: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "environment \"projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "environment \"projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -33,6 +41,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -48,7 +57,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 1,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e",
+    "resourceUuid": "test-uuid",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -62,6 +71,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -79,16 +89,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "CREATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e",
+    "resourceUuid": "test-uuid",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-composerenviron-6a740288-bucket/dags",
+      "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionMode": "RETENTION_MODE_DISABLED"
@@ -102,7 +112,7 @@ X-Xss-Protection: 0
       },
       "encryptionConfig": {},
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
-      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-composerenviron-6a740288-gke",
+      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
       "maintenanceWindow": {
         "endTime": "1970-01-01T04:00:00Z",
         "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -162,10 +172,10 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "state": "RUNNING",
     "storageConfig": {
-      "bucket": "us-central1-composerenviron-6a740288-bucket"
+      "bucket": "us-central1-test-123456-asdfg-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e"
+    "uuid": "test-uuid"
   }
 }
 
@@ -177,6 +187,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -188,9 +199,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-6a740288-bucket/dags",
+    "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionMode": 2
@@ -202,7 +213,7 @@ X-Xss-Protection: 0
     "databaseConfig": {},
     "encryptionConfig": {},
     "environmentSize": 1,
-    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-composerenviron-6a740288-gke",
+    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
     "maintenanceWindow": {
       "endTime": "1970-01-01T04:00:00Z",
       "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -259,10 +270,10 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-6a740288-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e"
+  "uuid": "test-uuid"
 }
 
 ---
@@ -274,9 +285,9 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 {
   "config": {
-    "airflowByoidUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-6a740288-bucket/dags",
+    "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionMode": 2
@@ -286,7 +297,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
       }
     },
     "environmentSize": 1,
-    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-composerenviron-6a740288-gke",
+    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
     "maintenanceWindow": {
       "endTime": "1970-01-01T04:00:00Z",
       "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -346,13 +357,14 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-6a740288-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e"
+  "uuid": "test-uuid"
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -368,7 +380,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 3,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e",
+    "resourceUuid": "test-uuid",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -382,6 +394,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -399,16 +412,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "UPDATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e",
+    "resourceUuid": "test-uuid",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-composerenviron-6a740288-bucket/dags",
+      "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionMode": "RETENTION_MODE_DISABLED"
@@ -422,7 +435,7 @@ X-Xss-Protection: 0
       },
       "encryptionConfig": {},
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
-      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-composerenviron-6a740288-gke",
+      "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
       "maintenanceWindow": {
         "endTime": "1970-01-01T04:00:00Z",
         "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -485,10 +498,10 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "state": "RUNNING",
     "storageConfig": {
-      "bucket": "us-central1-composerenviron-6a740288-bucket"
+      "bucket": "us-central1-test-123456-asdfg-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e"
+    "uuid": "test-uuid"
   }
 }
 
@@ -500,6 +513,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -511,9 +525,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-6a740288-bucket/dags",
+    "airflowByoidUri": "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://123456qwert-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-test-123456-asdfg-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionMode": 2
@@ -525,7 +539,7 @@ X-Xss-Protection: 0
     "databaseConfig": {},
     "encryptionConfig": {},
     "environmentSize": 1,
-    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-composerenviron-6a740288-gke",
+    "gkeCluster": "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke",
     "maintenanceWindow": {
       "endTime": "1970-01-01T04:00:00Z",
       "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
@@ -585,10 +599,10 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-6a740288-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e"
+  "uuid": "test-uuid"
 }
 
 ---
@@ -599,6 +613,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -614,7 +629,6 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 2,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -628,6 +642,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -645,7 +660,6 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "DELETE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "26ba48b6-de63-4aeb-abf0-ecf02421684e",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",

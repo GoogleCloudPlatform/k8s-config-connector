@@ -26,13 +26,13 @@ status:
   observedGeneration: 2
   observedState:
     config:
-      airflowByoidURI: https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.byoid.googleusercontent.com
-      airflowURI: https://26ba48b6de634aebabf0ecf02421684e-dot-us-central1.composer.googleusercontent.com
-      dagGcsPrefix: gs://us-central1-composerenviron-6a740288-bucket/dags
-      gkeCluster: projects/${projectId}/locations/us-central1/clusters/us-central1-composerenviron-6a740288-gke
+      airflowByoidURI: https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com
+      airflowURI: https://123456qwert-dot-us-central1.composer.googleusercontent.com
+      dagGcsPrefix: gs://us-central1-test-123456-asdfg-bucket/dags
+      gkeCluster: projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke
       privateEnvironmentConfig:
         privateClusterConfig: {}
     createTime: "1970-01-01T00:00:00Z"
     state: RUNNING
     updateTime: "1970-01-01T00:00:00Z"
-    uuid: 26ba48b6-de63-4aeb-abf0-ecf02421684e
+    uuid: test-uuid
