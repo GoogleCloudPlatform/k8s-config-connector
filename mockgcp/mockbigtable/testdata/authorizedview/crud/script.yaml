@@ -1,6 +1,5 @@
 
-- exec: gcloud bigtable authorized-views create av-test-${uniqueId} --instance=test-instance --table=test-table
-- exec: gcloud bigtable authorized-views describe av-test-${uniqueId} --instance=test-instance --table=test-table
-- exec: gcloud bigtable authorized-views list --instance=test-instance --table=test-table
-- exec: gcloud bigtable authorized-views update av-test-${uniqueId} --instance=test-instance --table=test-table --definition-file=mockbigtable/testdata/authorizedview/crud/update.json
-- exec: gcloud bigtable authorized-views delete av-test-${uniqueId} --instance=test-instance --table=test-table
+- exec: gcloud bigtable authorized-views create av-${uniqueId} --instance=test-instance --table=test-table --definition-file=authorized_view.json
+- exec: gcloud bigtable authorized-views describe av-${uniqueId} --instance=test-instance --table=test-table
+- exec: gcloud bigtable authorized-views update av-${uniqueId} --instance=test-instance --table=test-table --definition-file=authorized_view.json
+- exec: gcloud bigtable authorized-views delete av-${uniqueId} --instance=test-instance --table=test-table
