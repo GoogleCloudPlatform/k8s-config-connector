@@ -1,0 +1,87 @@
+POST https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/test-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/test-${uniqueId}",
+  "rateLimits": {
+    "maxBurstSize": 100,
+    "maxConcurrentDispatches": 1000,
+    "maxDispatchesPerSecond": 500
+  },
+  "retryConfig": {
+    "maxAttempts": 100,
+    "maxBackoff": "3600s",
+    "maxDoublings": 16,
+    "minBackoff": "0.100s"
+  },
+  "state": "RUNNING"
+}
+
+---
+
+GET https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/test-${uniqueId}",
+  "rateLimits": {
+    "maxBurstSize": 100,
+    "maxConcurrentDispatches": 1000,
+    "maxDispatchesPerSecond": 500
+  },
+  "retryConfig": {
+    "maxAttempts": 100,
+    "maxBackoff": "3600s",
+    "maxDoublings": 16,
+    "minBackoff": "0.100s"
+  },
+  "state": "RUNNING"
+}
+
+---
+
+DELETE https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
