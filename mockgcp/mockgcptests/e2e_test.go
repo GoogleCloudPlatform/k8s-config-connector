@@ -74,8 +74,22 @@ func TestScripts(t *testing.T) {
 			h.StartProxy(ctx)
 
 			for _, step := range script.Steps {
-				if step.Exec != "" {
-					cmd := exec.CommandContext(ctx, "bash", "-c", step.Exec)
+				stepCmd := ""
+				stepType := ""
+				needProxy := false
+				if step.Pre != "" {
+					stepCmd = step.Pre
+					stepType = "pre"
+				} else if step.Exec != "" {
+					stepCmd = step.Exec
+					stepType = "exec"
+					needProxy = true
+				} else if step.Post != "" {
+					stepCmd = step.Post
+					stepType = "post"
+				}
+				if stepCmd != "" {
+					cmd := exec.CommandContext(ctx, "bash", "-c", stepCmd)
 					var stdout bytes.Buffer
 					cmd.Stdout = &stdout
 					var stderr bytes.Buffer
@@ -86,17 +100,19 @@ func TestScripts(t *testing.T) {
 					if h.gcpAccessToken != "" {
 						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))
 					}
-					gcloudConfig := h.proxy.BuildGcloudConfig(h.ProxyEndpoint, h.MockGCP)
 					cmd.Env = append(cmd.Env, "CLOUDSDK_CORE_PROJECT="+h.Project.ProjectID)
-					cmd.Env = append(cmd.Env, gcloudConfig.EnvVars...)
+					if needProxy {
+						gcloudConfig := h.proxy.BuildGcloudConfig(h.ProxyEndpoint, h.MockGCP)
+						cmd.Env = append(cmd.Env, gcloudConfig.EnvVars...)
+					}
 					cmd.Dir = testDir
 
-					t.Logf("executing step command %q", step.Exec)
+					t.Logf("executing step type: %s  cmd: %q", stepType, stepCmd)
 					if err := cmd.Run(); err != nil {
 						t.Logf("stdout: %v", stdout.String())
 						t.Logf("stderr: %v", stderr.String())
 
-						t.Errorf("error running command %q: %v", step.Exec, err)
+						t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
 					}
 				}
 			}
@@ -160,6 +176,8 @@ type Script struct {
 
 type Step struct {
 	Exec string `json:"exec"`
+	Pre  string `json:"pre"`
+	Post string `json:"post"`
 }
 
 func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
