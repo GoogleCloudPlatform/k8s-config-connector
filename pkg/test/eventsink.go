@@ -16,6 +16,7 @@ package test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -149,7 +150,13 @@ func (r *DirectoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) 
 func (r *DirectoryEventSink) writeToFile(p string, entry *LogEntry) error {
 	b, err := yaml.Marshal(entry)
 	if err != nil {
-		return fmt.Errorf("failed to marshal data: %w", err)
+		klog.Warningf("failed to marshal data as yaml in DirectoryEventSink: %v", err)
+		// As a special fallback, write it in JSON so we can try to understand what is going wrong here
+		b, err = json.MarshalIndent(entry, "", "  ")
+		if err != nil {
+			return fmt.Errorf("failed to marshal entry %+v as JSON or YAML: %w", entry, err)
+		}
+		// return fmt.Errorf("failed to marshal data: %w", err)
 	}
 
 	// Just in case we are writing to the same file concurrently
