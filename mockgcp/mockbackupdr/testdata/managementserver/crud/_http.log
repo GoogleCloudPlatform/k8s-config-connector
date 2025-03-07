@@ -252,7 +252,7 @@ Content-Type: application/json
   ]
 }
 
-501 Not Implemented
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -264,28 +264,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 501,
-    "message": "method CreateServicesConnection not implemented"
-  }
+  "name": "operations/${operationID}"
 }
 
 ---
 
-POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json
+GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Type: application/json
 
-{
-  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
-  "reservedPeeringRanges": [
-    "google-managed-services-${uniqueId}"
-  ]
-}
-
-501 Not Implemented
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -297,108 +286,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 501,
-    "message": "method CreateServicesConnection not implemented"
-  }
-}
-
----
-
-POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-Content-Type: application/json
-
-{
-  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
-  "reservedPeeringRanges": [
-    "google-managed-services-${uniqueId}"
-  ]
-}
-
-501 Not Implemented
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 501,
-    "message": "method CreateServicesConnection not implemented"
-  }
-}
-
----
-
-POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-Content-Type: application/json
-
-{
-  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
-  "reservedPeeringRanges": [
-    "google-managed-services-${uniqueId}"
-  ]
-}
-
-501 Not Implemented
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 501,
-    "message": "method CreateServicesConnection not implemented"
-  }
-}
-
----
-
-POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-Content-Type: application/json
-
-{
-  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
-  "reservedPeeringRanges": [
-    "google-managed-services-${uniqueId}"
-  ]
-}
-
-501 Not Implemented
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 501,
-    "message": "method CreateServicesConnection not implemented"
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
+    "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
+    "peering": "servicenetworking-googleapis-com",
+    "reservedPeeringRanges": [
+      "google-managed-services-${uniqueId}"
+    ],
+    "service": "services/servicenetworking.googleapis.com"
   }
 }
 
@@ -668,7 +565,7 @@ Content-Type: application/json
   "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
 }
 
-501 Not Implemented
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -680,25 +577,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 501,
-    "message": "method DeleteConnectionServicesConnection not implemented"
-  }
+  "name": "operations/${operationID}"
 }
 
 ---
 
-POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json
+GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Type: application/json
 
-{
-  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
-}
-
-501 Not Implemented
+200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -710,99 +599,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 501,
-    "message": "method DeleteConnectionServicesConnection not implemented"
-  }
-}
-
----
-
-POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-Content-Type: application/json
-
-{
-  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
-}
-
-501 Not Implemented
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 501,
-    "message": "method DeleteConnectionServicesConnection not implemented"
-  }
-}
-
----
-
-POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-Content-Type: application/json
-
-{
-  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
-}
-
-501 Not Implemented
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 501,
-    "message": "method DeleteConnectionServicesConnection not implemented"
-  }
-}
-
----
-
-POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-Content-Type: application/json
-
-{
-  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
-}
-
-501 Not Implemented
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 501,
-    "message": "method DeleteConnectionServicesConnection not implemented"
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
 
