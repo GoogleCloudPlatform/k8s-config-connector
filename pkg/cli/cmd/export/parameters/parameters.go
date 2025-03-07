@@ -21,6 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"golang.org/x/oauth2"
+	"google.golang.org/grpc"
 )
 
 type Parameters struct {
@@ -37,12 +38,16 @@ type Parameters struct {
 
 	// HTTPClient allows for overriding the default HTTP Client
 	HTTPClient *http.Client
+
+	// GRPCUnaryClientInterceptor is the GRPC interceptor for use in tests.
+	GRPCUnaryClientInterceptor grpc.UnaryClientInterceptor
 }
 
 func (p *Parameters) ControllerConfig() *config.ControllerConfig {
 	c := &config.ControllerConfig{
-		HTTPClient: p.HTTPClient,
-		UserAgent:  gcp.KCCUserAgent(),
+		HTTPClient:                 p.HTTPClient,
+		GRPCUnaryClientInterceptor: p.GRPCUnaryClientInterceptor,
+		UserAgent:                  gcp.KCCUserAgent(),
 	}
 	if p.GCPAccessToken != "" {
 		c.GCPTokenSource = oauth2.StaticTokenSource(
