@@ -737,7 +737,7 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 		Name: "Run mock tests",
 		Cmd:  "go",
 		Args: []string{
-			"test", "./mockgcptests", "-v",
+			"test", "./mockgcptests",
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
 		},
 		WorkDir:    workDir,
