@@ -30,14 +30,31 @@ func createGithubBranch(opts *RunnerOptions, branch Branch) {
 
 	cdRepoBranchDirBash(opts, "", stdin, stdout)
 
-	// Check to see if the branch already exists
-	log.Printf("COMMAND: git branch --list %s and echo done\r\n", branch.Local)
-	if _, err = stdin.Write([]byte(fmt.Sprintf("git branch --list %s && echo done\n", branch.Local))); err != nil {
+	// Always create resource branches from master
+	log.Printf("COMMAND: git checkout master and echo done\r\n")
+	if _, err = stdin.Write([]byte("git checkout master && echo done\n")); err != nil {
 		log.Fatal(err)
 	}
 	done := false
 	outBuffer := make([]byte, 1000)
 	var msg string
+	for !done {
+		length, err := stdout.Read(outBuffer)
+		if err != nil {
+			log.Fatal(err)
+		}
+		msg += string(outBuffer[:length])
+		done = strings.HasSuffix(msg, "done\n")
+	}
+	log.Printf("CHECKOUT MASTER %s\r\n", msg)
+
+	// Check to see if the branch already exists
+	log.Printf("COMMAND: git branch --list %s and echo done\r\n", branch.Local)
+	if _, err = stdin.Write([]byte(fmt.Sprintf("git branch --list %s && echo done\n", branch.Local))); err != nil {
+		log.Fatal(err)
+	}
+	done = false
+	outBuffer = make([]byte, 1000)
 	for !done {
 		length, err := stdout.Read(outBuffer)
 		if err != nil {
@@ -84,7 +101,7 @@ func deleteGithubBranch(opts *RunnerOptions, branch Branch) {
 	cdRepoBranchDirBash(opts, "", stdin, stdout)
 
 	// Change to the master branch so we're not the branch we are deleting
-	log.Printf("COMMAND: git checkout -b %s and echo done\r\n", branch.Local)
+	log.Printf("COMMAND: git checkout master and echo done\r\n")
 	if _, err = stdin.Write([]byte("git checkout master && echo done\n")); err != nil {
 		log.Fatal(err)
 	}
@@ -99,7 +116,7 @@ func deleteGithubBranch(opts *RunnerOptions, branch Branch) {
 		msg += string(outBuffer[:length])
 		done = strings.HasSuffix(msg, "done\n")
 	}
-	log.Printf("BRANCH CHECKOUT %s\r\n", msg)
+	log.Printf("CHECKOUT MASTER %s\r\n", msg)
 
 	// Check to see if the branch already exists
 	log.Printf("COMMAND: git branch --list %s and echo done\r\n", branch.Local)
