@@ -54,7 +54,7 @@ Content-Type: application/json
 
 {
   "bucket": "bucket${uniqueId}",
-  "name": "managedfolder${uniqueId}"
+  "name": "testmanagedfolder"
 }
 
 200 OK
@@ -70,18 +70,18 @@ Vary: X-Origin
   "bucket": "bucket${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metageneration": "1",
-  "name": "managedfolder${uniqueId}",
+  "name": "testmanagedfolder",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/managedfolder${uniqueId}?alt=json
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
-404 Not Found
+200 OK
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
@@ -91,18 +91,11 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "managedFolder \"managedfolder${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "managedFolder \"managedfolder${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
+  "bucket": "bucket${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "metageneration": "1",
+  "name": "testmanagedfolder",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -125,17 +118,47 @@ Vary: X-Origin
   "items": [
     {
       "bucket": "bucket${uniqueId}",
-      "createTime": "2025-03-06T23:24:35.699685463Z",
+      "createTime": "2024-04-01T12:34:56.123456Z",
       "metageneration": "1",
-      "name": "managedfolder${uniqueId}",
-      "updateTime": "2025-03-06T23:24:35.699685463Z"
+      "name": "testmanagedfolder",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o/managedfolder${uniqueId}?alt=json&projection=noAcl
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o/testmanagedfolder?alt=json&projection=noAcl
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Cache-Control: private, max-age=0, must-revalidate, no-transform
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "object not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "object not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o?alt=json&delimiter=%2F&includeFoldersAsPrefixes=True&maxResults=1000&prefix=testmanagedfolder&projection=noAcl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -149,8 +172,53 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects"
+  "kind": "storage#objects",
+  "prefixes": [
+    "testmanagedfolder"
+  ]
 }
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "bucket": "bucket${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "metageneration": "1",
+  "name": "testmanagedfolder",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{}
 
 ---
 
