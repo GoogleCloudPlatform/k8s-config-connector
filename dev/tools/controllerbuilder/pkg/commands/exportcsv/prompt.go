@@ -125,12 +125,6 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		x.StrictInputColumnKeys = sets.New(o.StrictInputColumnKeys...)
 	}
 
-	if o.SrcDir != "" {
-		if err := x.VisitCodeDir(ctx, o.SrcDir); err != nil {
-			return err
-		}
-	}
-
 	var b []byte
 	if o.InputFile == "" {
 		if b, err = io.ReadAll(os.Stdin); err != nil {
@@ -155,6 +149,15 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	dataPoint.Output = ""
 
 	log.Info("built data point", "dataPoint", dataPoint)
+
+	if o.SrcDir != "" {
+		filterByType := func(p *toolbot.DataPoint) bool {
+			return p.Type == dataPoint.Type
+		}
+		if err := x.VisitCodeDir(ctx, o.SrcDir, filterByType); err != nil {
+			return err
+		}
+	}
 
 	model := os.Getenv("LLM_MODEL")
 	if model == "" {

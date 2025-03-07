@@ -32,7 +32,7 @@ type ExtractToolMarkers struct {
 var _ Extractor = &ExtractToolMarkers{}
 
 // Extract extracts tool markers from source code.
-func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, src []byte) ([]*DataPoint, error) {
+func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, src []byte, filters ...Filter) ([]*DataPoint, error) {
 	var dataPoints []*DataPoint
 
 	r := bytes.NewReader(src)
@@ -81,7 +81,16 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 						return nil, fmt.Errorf("cannot parse tool line %q", toolLine)
 					}
 				}
-				dataPoints = append(dataPoints, dataPoint)
+
+				shouldAdd := true
+				for _, filter := range filters {
+					if !filter(dataPoint) {
+						shouldAdd = false
+					}
+				}
+				if shouldAdd {
+					dataPoints = append(dataPoints, dataPoint)
+				}
 			}
 
 			if strings.HasPrefix(comment, "+kcc:proto=") {
@@ -113,7 +122,16 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 					}
 				}
 				dataPoint.Output = bb.String()
-				dataPoints = append(dataPoints, dataPoint)
+
+				shouldAdd := true
+				for _, filter := range filters {
+					if !filter(dataPoint) {
+						shouldAdd = false
+					}
+				}
+				if shouldAdd {
+					dataPoints = append(dataPoints, dataPoint)
+				}
 			}
 		}
 	}
