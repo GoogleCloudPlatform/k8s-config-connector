@@ -1,10 +1,11 @@
-go 1.23.0
+go 1.23.2
 
 use (
 	.
 	./dev/tools/controllerbuilder
 	./experiments/kompanion
 	./experiments/kubectl-plan
+	./gcpclients/generated/cloud.google.com/go/tpu/apiv2
 	./mockgcp
 	./mockgcp/tools/patch-proto
 //	./third_party/github.com/hashicorp/terraform-provider-google-beta

@@ -23,6 +23,7 @@ COPY dev/metadata/   dev/metadata/
 COPY pkg/    pkg/
 COPY cmd/    cmd/
 COPY config/ config/
+COPY gcpclients/ gcpclients/
 COPY mockgcp/ mockgcp/
 COPY operator/ operator/
 COPY third_party/ third_party/

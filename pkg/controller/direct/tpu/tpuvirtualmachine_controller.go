@@ -182,11 +182,11 @@ func (a *TPUVirtualMachineAdapter) Create(ctx context.Context, createOp *directb
 
 		op, err := a.tpuClient.CreateNode(ctx, req)
 		if err != nil {
-			return fmt.Errorf("creating tpu node %s: %w", a.id, err)
+			return fmt.Errorf("creating tpu vm node %s: %w", a.id, err)
 		}
 		if !op.GetDone() {
 			if err := a.tpuClient.WaitForLRO(ctx, op); err != nil {
-				return fmt.Errorf("waiting for creating of tpu node %q: %w", a.id, err)
+				return fmt.Errorf("waiting for creation of tpu vm node %q: %w", a.id, err)
 			}
 		}
 	}
@@ -197,7 +197,7 @@ func (a *TPUVirtualMachineAdapter) Create(ctx context.Context, createOp *directb
 
 	created, err := a.tpuClient.GetNode(ctx, &pb.GetNodeRequest{Name: a.id.String()})
 	if err != nil {
-		return fmt.Errorf("getting created tpu node %q: %w", a.id, err)
+		return fmt.Errorf("getting created tpu vm node %q: %w", a.id, err)
 	}
 
 	log.V(2).Info("successfully created tpu vm node", "name", a.id)
@@ -272,7 +272,6 @@ func (a *TPUVirtualMachineAdapter) Update(ctx context.Context, updateOp *directb
 	} else {
 		log.V(2).Info("no field needs update", "name", a.id)
 		latest = a.actual
-
 	}
 
 	status := &krm.TPUVirtualMachineStatus{}

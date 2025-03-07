@@ -25,6 +25,7 @@ COPY operator/channels/ operator/channels/
 COPY operator/autopilot-channels/ operator/autopilot-channels/
 COPY apis/ apis/
 COPY dev/metadata/   dev/metadata/
+COPY gcpclients/ gcpclients/
 COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
 COPY third_party/ third_party/
