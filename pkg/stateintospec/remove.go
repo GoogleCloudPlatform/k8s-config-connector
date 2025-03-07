@@ -67,7 +67,7 @@ func RemoveStateIntoSpecFields(ctx context.Context, u *unstructured.Unstructured
 					return
 				}
 				log.Info("removing field", "field", pathName)
-				errs = append(errs, removeFieldIfLeaf(ctx, u, fieldPath, warnings))
+				errs = append(errs, removeFieldIfNotArray(ctx, u, fieldPath, warnings))
 			case ".status", ".metadata":
 				// Never part of state-into-spec, ignore
 			default:
@@ -79,7 +79,7 @@ func RemoveStateIntoSpecFields(ctx context.Context, u *unstructured.Unstructured
 	return warnings, errors.Join(errs...)
 }
 
-func removeFieldIfLeaf(ctx context.Context, u *unstructured.Unstructured, fieldPath fieldpath.Path, warnings *Warnings) error {
+func removeFieldIfNotArray(ctx context.Context, u *unstructured.Unstructured, fieldPath fieldpath.Path, warnings *Warnings) error {
 	// log := klog.FromContext(ctx)
 
 	pos := u.Object
@@ -111,7 +111,8 @@ func removeFieldIfLeaf(ctx context.Context, u *unstructured.Unstructured, fieldP
 		}
 		switch v := v.(type) {
 		case map[string]any:
-			warnings.AddWarningf("skipping field removal of map field %q (may be an indication of undetermined ownership)", fieldPath)
+			warnings.AddWarningf("deleting map field %q (all the subfields are considered managed)", fieldPath)
+			delete(pos, *last.FieldName)
 			return nil
 		case []any:
 			warnings.AddWarningf("skipping field removal of array field %q (may be an indication of undetermined ownership)", fieldPath)
