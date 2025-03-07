@@ -416,7 +416,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 		},
 		WorkDir:    workDir,
 		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
-		MaxRetries: 2,
+		MaxRetries: 1,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
