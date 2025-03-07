@@ -1,0 +1,5 @@
+- exec: gcloud assured workloads create --organization=${IAM_INTEGRATION_TESTS_ORGANIZATION_ID} --location=us-central1 --compliance-regime=FEDRAMP_MODERATE --display-name=test-${uniqueId} --billing-account=billingAccounts/${IAM_INTEGRATION_TESTS_BILLING_ACCOUNT_ID}
+- exec: gcloud assured workloads describe $(gcloud assured workloads list --organization=${IAM_INTEGRATION_TESTS_ORGANIZATION_ID} --location=us-central1 --filter="displayName=test-${uniqueId}" --format "value(name)")
+- exec: gcloud resource-manager folders delete $(gcloud assured workloads list --organization=${IAM_INTEGRATION_TESTS_ORGANIZATION_ID} --location=us-central1 --filter="displayName=test-${uniqueId}" --format "value(resources[0].resourceId)")
+- exec: sleep 60
+- exec: gcloud assured workloads delete $(gcloud assured workloads list --organization=${IAM_INTEGRATION_TESTS_ORGANIZATION_ID} --location=us-central1 --filter="displayName=test-${uniqueId}" --format "value(name)") --quiet

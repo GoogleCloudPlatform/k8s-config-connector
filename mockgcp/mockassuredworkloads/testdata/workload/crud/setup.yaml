@@ -1,0 +1,3 @@
+- exec: gcloud config set billing/quota_project ${projectId}
+- exec: gcloud organizations add-iam-policy-binding ${IAM_INTEGRATION_TESTS_ORGANIZATION_ID} --member="user:${user}" --role="roles/assuredworkloads.admin"
+- exec: gcloud organizations add-iam-policy-binding ${IAM_INTEGRATION_TESTS_ORGANIZATION_ID} --member="user:${user}" --role="roles/resourcemanager.organizationViewer"
