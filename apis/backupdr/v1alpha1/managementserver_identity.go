@@ -32,7 +32,7 @@ type ManagementServerIdentity struct {
 }
 
 func (i *ManagementServerIdentity) String() string {
-	return i.parent.String() + "/managementservers/" + i.id
+	return i.parent.String() + "/managementServers/" + i.id
 }
 
 func (i *ManagementServerIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewManagementServerIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseManagementServerExternal(external string) (parent *ManagementServerParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "managementservers" {
-		return nil, "", fmt.Errorf("format of BackupDRManagementServer external=%q was not known (use projects/{{projectID}}/locations/{{location}}/managementservers/{{managementserverID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "managementServers" {
+		return nil, "", fmt.Errorf("format of BackupDRManagementServer external=%q was not known (use projects/{{projectID}}/locations/{{location}}/managementServers/{{managementserverID}})", external)
 	}
 	parent = &ManagementServerParent{
 		ProjectID: tokens[1],
