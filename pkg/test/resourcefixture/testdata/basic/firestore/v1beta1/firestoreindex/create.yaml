@@ -18,7 +18,7 @@ metadata:
   annotations:
     # Tests for Firestore resources require Firestore to be enabled for the GCP
     # project, but there is currently no way to enable Firestore for a project
-    # programmatically. So, for now, we use a pre-existing project which already has
+    # programmatically. So, for now, we use a preexisting project which already has
     # Firestore enabled for any test that tests Firestore resources.
     cnrm.cloud.google.com/project-id: ${FIRESTORE_TEST_PROJECT}
   name: firestoreindex-${uniqueId}

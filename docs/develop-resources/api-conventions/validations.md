@@ -101,7 +101,7 @@ If the field contains more complicated GCP behavior, for example the GCP server 
 
 Parent field should be required and immutable.
 
-Note that parent is not a field name. It refers to the pre-requisite of the resource in question. You can identify the parent field through to the cloud resource's parent segment in the URL. For example, for GKE clusters, the [GET request URL](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters/get) `https://container.googleapis.com/v1/projects/{projectId}/zones/{zone}/clusters/{clusterId}` has `projectId` and `zone` in the parent segment. Therefore, for GKE clusters, projectRef and zone will be the parent fields.
+Note that parent is not a field name. It refers to the prerequisite of the resource in question. You can identify the parent field through to the cloud resource's parent segment in the URL. For example, for GKE clusters, the [GET request URL](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.zones.clusters/get) `https://container.googleapis.com/v1/projects/{projectId}/zones/{zone}/clusters/{clusterId}` has `projectId` and `zone` in the parent segment. Therefore, for GKE clusters, projectRef and zone will be the parent fields.
 
 
 ### Required
