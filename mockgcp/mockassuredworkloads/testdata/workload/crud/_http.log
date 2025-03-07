@@ -1,0 +1,342 @@
+POST https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/workloads?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "billingAccount": "billingAccounts/${billingAccountID}",
+  "complianceRegime": "FEDRAMP_MODERATE",
+  "displayName": "test-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.CreateWorkloadOperationMetadata",
+    "complianceRegime": "FEDRAMP_MODERATE",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "test-${uniqueId}",
+    "parent": "organizations/${organizationID}/locations/us-central1"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.CreateWorkloadOperationMetadata",
+    "complianceRegime": "FEDRAMP_MODERATE",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "test-${uniqueId}",
+    "parent": "organizations/${organizationID}/locations/us-central1"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.Workload",
+    "complianceRegime": "FEDRAMP_MODERATE",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "test-${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+    "partnerPermissions": {},
+    "resources": [
+      {
+        "resourceId": "${folderID}",
+        "resourceType": "CONSUMER_FOLDER"
+      }
+    ],
+    "violationNotificationsEnabled": true
+  }
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "complianceRegime": "FEDRAMP_MODERATE",
+  "complianceStatus": {
+    "acknowledgedResourceViolationCount": 0,
+    "acknowledgedViolationCount": 0,
+    "activeResourceViolationCount": 0,
+    "activeViolationCount": 0
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "test-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+  "partnerPermissions": {},
+  "resourceMonitoringEnabled": true,
+  "resources": [
+    {
+      "resourceId": "${folderID}",
+      "resourceType": "CONSUMER_FOLDER"
+    }
+  ],
+  "violationNotificationsEnabled": true
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/workloads?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "workloads": [
+    {
+      "complianceRegime": "FEDRAMP_MODERATE",
+      "complianceStatus": {
+        "acknowledgedResourceViolationCount": 0,
+        "acknowledgedViolationCount": 0,
+        "activeResourceViolationCount": 0,
+        "activeViolationCount": 0
+      },
+      "createTime": "1970-01-01T00:00:00Z",
+      "displayName": "test-${uniqueId}",
+      "etag": "abcdef0123A=",
+      "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+      "partnerPermissions": {},
+      "resourceMonitoringEnabled": true,
+      "resources": [
+        {
+          "resourceId": "${folderID}",
+          "resourceType": "CONSUMER_FOLDER"
+        }
+      ],
+      "violationNotificationsEnabled": true
+    }
+  ]
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "complianceRegime": "FEDRAMP_MODERATE",
+  "complianceStatus": {
+    "acknowledgedResourceViolationCount": 0,
+    "acknowledgedViolationCount": 0,
+    "activeResourceViolationCount": 0,
+    "activeViolationCount": 0
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "test-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+  "partnerPermissions": {},
+  "resourceMonitoringEnabled": true,
+  "resources": [
+    {
+      "resourceId": "${folderID}",
+      "resourceType": "CONSUMER_FOLDER"
+    }
+  ],
+  "violationNotificationsEnabled": true
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/workloads?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "workloads": [
+    {
+      "complianceRegime": "FEDRAMP_MODERATE",
+      "complianceStatus": {
+        "acknowledgedResourceViolationCount": 0,
+        "acknowledgedViolationCount": 0,
+        "activeResourceViolationCount": 0,
+        "activeViolationCount": 0
+      },
+      "createTime": "1970-01-01T00:00:00Z",
+      "displayName": "test-${uniqueId}",
+      "etag": "abcdef0123A=",
+      "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+      "partnerPermissions": {},
+      "resourceMonitoringEnabled": true,
+      "resources": [
+        {
+          "resourceId": "${folderID}",
+          "resourceType": "CONSUMER_FOLDER"
+        }
+      ],
+      "violationNotificationsEnabled": true
+    }
+  ]
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v2/folders/${folderID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "test-${uniqueId}",
+  "lifecycleState": "DELETE_REQUESTED",
+  "name": "folders/${folderID}",
+  "parent": "organizations/${organizationID}"
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/workloads?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "workloads": [
+    {
+      "complianceRegime": "FEDRAMP_MODERATE",
+      "complianceStatus": {
+        "acknowledgedResourceViolationCount": 0,
+        "acknowledgedViolationCount": 0,
+        "activeResourceViolationCount": 0,
+        "activeViolationCount": 0
+      },
+      "createTime": "1970-01-01T00:00:00Z",
+      "displayName": "test-${uniqueId}",
+      "etag": "abcdef0123A=",
+      "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+      "partnerPermissions": {},
+      "resourceMonitoringEnabled": true,
+      "resources": [
+        {
+          "resourceId": "${folderID}",
+          "resourceType": "CONSUMER_FOLDER"
+        }
+      ],
+      "violationNotificationsEnabled": true
+    }
+  ]
+}
+
+---
+
+DELETE https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
