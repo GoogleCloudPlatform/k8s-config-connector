@@ -51,6 +51,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdDeleteGitBranch     = 3
 	cmdEnableGCPAPIs       = 4
 	cmdReadFiles           = 5
+	cmdWriteFiles          = 6
 	cmdCreateScriptYaml    = 10
 	cmdCaptureHttpLog      = 11
 	cmdGenerateMockGo      = 12
@@ -93,6 +94,10 @@ func BuildRunnerCmd() *cobra.Command {
 		"t", 5*time.Minute, "Global timeout for commands.")
 	cmd.Flags().IntVarP(&opts.defaultRetries, "retries",
 		"r", 10, "Default number of retries for failed commands.")
+	cmd.Flags().StringVarP(&opts.forResources, "for-resources",
+		"", "", "Comma-separated list of branch names to filter on.")
+	cmd.Flags().BoolVarP(&opts.force, "force",
+		"f", false, "Force operation even if files already exist.")
 
 	return cmd
 }
@@ -104,7 +109,9 @@ type RunnerOptions struct {
 	loggingDir     string
 	timeout        time.Duration
 	readFileType   string
-	defaultRetries int // Default number of retries for commands
+	defaultRetries int    // Default number of retries for commands
+	forResources   string // Comma-separated list of branch names to filter on
+	force          bool   // Force flag to override file existence checks
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -185,6 +192,21 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
+	// Filter based on forResources if specified
+	if opts.forResources != "" {
+		targetBranches := make(map[string]bool)
+		for _, name := range strings.Split(opts.forResources, ",") {
+			targetBranches[strings.TrimSpace(name)] = true
+		}
+
+		var resourceFilteredBranches []Branch
+		for _, branch := range branches.Branches {
+			if targetBranches[branch.Name] {
+				resourceFilteredBranches = append(resourceFilteredBranches, branch)
+			}
+		}
+		branches.Branches = resourceFilteredBranches
+	}
 	// Only filter skipped branches if not running metadata commands
 	if opts.command >= 0 {
 		// Filter out skipped branches
@@ -195,6 +217,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			}
 		}
 		branches.Branches = filteredBranches
+
 	}
 
 	switch opts.command {
@@ -232,23 +255,31 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			enableAPIs(opts, branch)
 		}
 	case cmdReadFiles: // 5
-		switch strings.ToLower(opts.readFileType) {
-		case typeScriptYaml:
+		readFuncs := map[string]func(*RunnerOptions, Branch){
+			typeScriptYaml: readScriptYaml,
+			typeHttpLog:    readHttpLog,
+			typeMockGo:     readMockGo,
+		}
+
+		if readFunc, ok := readFuncs[strings.ToLower(opts.readFileType)]; ok {
 			for idx, branch := range branches.Branches {
-				log.Printf("Read and verify script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-				readScriptYaml(opts, branch)
-			}
-		case typeHttpLog:
-			for idx, branch := range branches.Branches {
-				log.Printf("Read HTTP log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-				readHttpLog(opts, branch)
-			}
-		case typeMockGo:
-			for idx, branch := range branches.Branches {
-				log.Printf("Read mockgcp Go files: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-				readMockGo(opts, branch)
+				log.Printf("Read %s: %d name: %s, branch: %s\r\n", opts.readFileType, idx, branch.Name, branch.Local)
+				readFunc(opts, branch)
 			}
 		}
+
+	case cmdWriteFiles: // 6
+		writeFuncs := map[string]func(*RunnerOptions, Branch){
+			typeScriptYaml: writeScriptYaml,
+		}
+
+		if writeFunc, ok := writeFuncs[strings.ToLower(opts.readFileType)]; ok {
+			for idx, branch := range branches.Branches {
+				log.Printf("Write %s: %d name: %s, branch: %s\r\n", opts.readFileType, idx, branch.Name, branch.Local)
+				writeFunc(opts, branch)
+			}
+		}
+
 	case cmdCreateScriptYaml: // 10
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
@@ -309,7 +340,8 @@ func printHelp() {
 	log.Println("\t2 - [Branch] Create the local github branches from the metadata")
 	log.Println("\t3 - [Branch] Delete the local github branches from the metadata")
 	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
-	log.Println("\t5 - [View] Read the specific type of generated files in each github branch")
+	log.Println("\t5 - [Generated] Read the specific type of generated files in each github branch")
+	log.Println("\t6 - [Generated] Write the specific type of files from all_scripts.yaml to each github branch")
 	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
 	log.Println("\t11 - [Mock] Create _http.log for mock gcp generation in each github branch")
 	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")

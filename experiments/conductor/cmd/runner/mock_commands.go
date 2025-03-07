@@ -22,6 +22,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"gopkg.in/yaml.v3"
 )
 
 const SCRIPT_YAML_PROMPT string = `I am trying to create a test case for mockgcp.
@@ -53,12 +55,29 @@ If you want to see the flags for any individual commands, you can run the help f
 
 * You should run the help command for each command you output, to verify the flags and arguments of the commands.
 
+* If you must specify a project, use the --project flag with this variable ${projectId}, for example <TICK>gcloud pubsub topics create test-${uniqueId} --project=${projectId}<TICK>.
+
+* If you must use project in a resource path, use this variable ${projectId}, for example <TICK>gcloud data-catalog tags create --entry=projects/${projectId}/locations/us-central1/entryGroups/test-entry-group/entries/test-entry-${uniqueId} --tag=test-tag-${uniqueId}<TICK>
+
 Please create a test case for the gcloud commands under <TICK><GCLOUD_COMMAND><TICK>
 Please create the test case in the file <TICK>mock<GROUP>/testdata/<RESOURCE>/crud/script.yaml<TICK>
 
 When you have completed, please output the name of the test script you have created, in a JSON format like this:
 
 { "path_to_created_test": "mock<GROUP>/testdata/<RESOURCE>/crud/script.yaml" }`
+
+// BranchScript represents script data for a branch
+type BranchScript struct {
+	Name        string              `yaml:"name"`           // Branch name
+	LocalBranch string              `yaml:"localbranch"`    // Local branch name
+	Content     []map[string]string `yaml:"script-content"` // Raw script content with exec commands
+	Warnings    []string            `yaml:"warnings"`       // List of warnings about the script content
+}
+
+// ScriptData represents the collection of scripts
+type ScriptData struct {
+	Branches []BranchScript `yaml:"branches"`
+}
 
 func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
@@ -76,7 +95,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	// Check to see if the script file already exists
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
 	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", scriptFile)
-	if _, err := os.Stat(scriptFullPath); !errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(scriptFullPath); !errors.Is(err, os.ErrNotExist) && !opts.force {
 		log.Printf("SKIPPING %s, %s already exists", branch.Name, scriptFullPath)
 		return
 	}
@@ -148,7 +167,6 @@ func readScriptYaml(opts *RunnerOptions, branch Branch) {
 	}
 
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
-
 	var out strings.Builder
 	checkoutBranch(branch, workDir, &out)
 
@@ -160,25 +178,181 @@ func readScriptYaml(opts *RunnerOptions, branch Branch) {
 		return
 	}
 
+	// Read and parse the script file
 	data, err := os.ReadFile(scriptFullPath)
 	if err != nil {
-		fmt.Println("Error reading file:", err)
+		log.Printf("Error reading file %s: %v", scriptFullPath, err)
 		return
 	}
-	dataStr := string(data)
-	if !strings.Contains(dataStr, " create") {
-		fmt.Println("WARNING: Script doesn't contain a CREATE command")
+
+	// Parse YAML content
+	var scriptContent []map[string]string
+	err = yaml.Unmarshal(data, &scriptContent)
+	if err != nil {
+		log.Printf("Error parsing YAML from %s: %v", scriptFullPath, err)
+		return
 	}
-	if !strings.Contains(dataStr, " update") {
-		fmt.Println("WARNING: Script doesn't contain an UPDATE command")
+
+	// Check commands and collect warnings
+	var warnings []string
+	hasCreate := false
+	hasDelete := false
+	hasList := false
+
+	for _, line := range scriptContent {
+		if cmd, ok := line["exec"]; ok && strings.Contains(cmd, "gcloud") {
+			if strings.Contains(cmd, " create ") {
+				hasCreate = true
+			}
+			if strings.Contains(cmd, " delete ") {
+				hasDelete = true
+			}
+			if strings.Contains(cmd, " list") {
+				hasList = true
+			}
+		}
 	}
-	if !strings.Contains(dataStr, " delete") {
-		fmt.Println("WARNING: Script doesn't contain a DELETE command")
+
+	if !hasCreate {
+		warning := "No Create found"
+		warnings = append(warnings, warning)
+		log.Printf("WARNING: %s in %s", warning, scriptFile)
 	}
-	if strings.Contains(dataStr, " list") {
-		fmt.Println("WARNING: Script contains a LIST command")
+	if !hasDelete {
+		warning := "No Delete found"
+		warnings = append(warnings, warning)
+		log.Printf("WARNING: %s in %s", warning, scriptFile)
 	}
-	fmt.Println(dataStr)
+	if hasList {
+		warning := "List found"
+		warnings = append(warnings, warning)
+		log.Printf("WARNING: %s in %s", warning, scriptFile)
+	}
+
+	// Read existing all_scripts.yaml or create new ScriptData
+	allScriptsPath := filepath.Join(opts.loggingDir, "all_scripts.yaml")
+	var scriptData ScriptData
+
+	if data, err := os.ReadFile(allScriptsPath); err == nil {
+		err = yaml.Unmarshal(data, &scriptData)
+		if err != nil {
+			log.Printf("Error parsing existing all_scripts.yaml: %v", err)
+			return
+		}
+	}
+
+	// Find and update existing branch or add new one
+	newBranchScript := BranchScript{
+		Name:        branch.Name,
+		LocalBranch: branch.Local,
+		Content:     scriptContent,
+		Warnings:    warnings,
+	}
+
+	found := false
+	for i, bs := range scriptData.Branches {
+		if bs.Name == branch.Name {
+			scriptData.Branches[i] = newBranchScript
+			found = true
+			break
+		}
+	}
+	if !found {
+		scriptData.Branches = append(scriptData.Branches, newBranchScript)
+	}
+
+	// Write updated data back to all_scripts.yaml
+	yamlData, err := yaml.Marshal(scriptData)
+	if err != nil {
+		log.Printf("Error marshaling script data: %v", err)
+		return
+	}
+
+	err = os.MkdirAll(opts.loggingDir, 0755)
+	if err != nil {
+		log.Printf("Error creating logs directory: %v", err)
+		return
+	}
+
+	err = os.WriteFile(allScriptsPath, yamlData, 0644)
+	if err != nil {
+		log.Printf("Error writing all_scripts.yaml: %v", err)
+		return
+	}
+}
+
+func writeScriptYaml(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	if branch.Command == "" {
+		log.Printf("SKIPPING %s, no gcloud command", branch.Name)
+		return
+	}
+
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+	var out strings.Builder
+	checkoutBranch(branch, workDir, &out)
+
+	// Read all_scripts.yaml
+	allScriptsPath := filepath.Join(opts.loggingDir, "all_scripts.yaml")
+	data, err := os.ReadFile(allScriptsPath)
+	if err != nil {
+		log.Printf("Error reading all_scripts.yaml: %v", err)
+		return
+	}
+
+	var scriptData ScriptData
+	err = yaml.Unmarshal(data, &scriptData)
+	if err != nil {
+		log.Printf("Error parsing all_scripts.yaml: %v", err)
+		return
+	}
+
+	// Find the branch's script data
+	var branchScript *BranchScript
+	for i := range scriptData.Branches {
+		if scriptData.Branches[i].Name == branch.Name {
+			branchScript = &scriptData.Branches[i]
+			break
+		}
+	}
+
+	if branchScript == nil {
+		log.Printf("No script found for branch %s", branch.Name)
+		return
+	}
+
+	// Create script file path
+	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
+	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", scriptFile)
+
+	// Create directory if it doesn't exist
+	err = os.MkdirAll(filepath.Dir(scriptFullPath), 0755)
+	if err != nil {
+		log.Printf("Error creating script directory: %v", err)
+		return
+	}
+
+	// Write the script content directly
+	yamlData, err := yaml.Marshal(branchScript.Content)
+	if err != nil {
+		log.Printf("Error marshaling script content: %v", err)
+		return
+	}
+
+	err = os.WriteFile(scriptFullPath, yamlData, 0644)
+	if err != nil {
+		log.Printf("Error writing script file: %v", err)
+		return
+	}
+
+	// Add and commit the changes
+	if !gitFileHasChange(workDir, scriptFile) {
+		log.Printf("SKIPPING %s, no changes to %s", branch.Name, scriptFile)
+		return
+	}
+	gitAdd(workDir, &out, scriptFile)
+	gitCommit(workDir, &out, fmt.Sprintf("Manually updated script.yaml for %s", branch.Name))
 }
 
 const CAPTURE_HTTP_LOG string = `I need to capture the logs from GCP for running a mockgcp test that I just created.  I then need to create a git commit.
@@ -225,7 +399,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 	// Check to see if the http log file already exists
 	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
 	logFullPath := filepath.Join(workDir, logFile)
-	if _, err := os.Stat(logFullPath); !errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(logFullPath); !errors.Is(err, os.ErrNotExist) && !opts.force {
 		log.Printf("SKIPPING %s, %s already exists", branch.Name, logFullPath)
 		return
 	}
@@ -324,7 +498,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 
 	// Run the controller builder to generate the service go file.
 	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
-	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate service mock",
 			Cmd:  "controllerbuilder",
@@ -364,7 +538,7 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 
 	// Run the controller builder to generate the resource go file.
 	resourceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
-	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate resource mock",
 			Cmd:  "controllerbuilder",

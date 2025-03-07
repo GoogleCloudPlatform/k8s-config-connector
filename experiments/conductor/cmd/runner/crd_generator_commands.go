@@ -176,7 +176,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 
 	// Generate types
 	apisDir := filepath.Join(opts.branchRepoDir, "apis", branch.Group, "v1alpha1", string(filepath.Separator))
-	if _, err := os.Stat(apisDir); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(apisDir); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate types",
 			Cmd:  "go",
@@ -202,7 +202,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 
 	// Generate mapper
 	mapperDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group, string(filepath.Separator))
-	if _, err := os.Stat(mapperDir); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(mapperDir); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate mapper",
 			Cmd:  "go",
