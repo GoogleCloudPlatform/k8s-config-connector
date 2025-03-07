@@ -1,0 +1,232 @@
+POST https://storage.googleapis.com/storage/v1/b?alt=json&enableObjectRetention=False&project=${projectId}&projection=noAcl
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "hierarchicalNamespace": {
+    "enabled": true
+  },
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
+  "name": "bucket${uniqueId}"
+}
+
+200 OK
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "1741314383623488261",
+  "hierarchicalNamespace": {
+    "enabled": true
+  },
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2025-06-05T02:26:23.896Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2025-06-05T02:26:23.896Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "bucket${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders?alt=json&recursive=True
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "bucket": "bucket${uniqueId}",
+  "name": "folder${uniqueId}"
+}
+
+200 OK
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "bucket": "bucket${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "storage#folder",
+  "metageneration": "1",
+  "name": "folder${uniqueId}/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/folder${uniqueId}%2F",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private, max-age=0, must-revalidate, no-transform
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "bucket": "bucket${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "storage#folder",
+  "metageneration": "1",
+  "name": "folder${uniqueId}/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/folder${uniqueId}%2F",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o/${folderID}?alt=json&projection=noAcl
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "No such object: bucket${uniqueId}/folder${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "No such object: bucket${uniqueId}/folder${uniqueId}"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o?alt=json&delimiter=%2F&includeFoldersAsPrefixes=True&maxResults=1000&prefix=${folderID}&projection=noAcl
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private, max-age=0, must-revalidate, no-transform
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "folder${uniqueId}/"
+  ]
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private, max-age=0, must-revalidate, no-transform
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "bucket": "bucket${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "storage#folder",
+  "metageneration": "1",
+  "name": "folder${uniqueId}/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/folder${uniqueId}%2F",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+204 No Content
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+204 No Content
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
