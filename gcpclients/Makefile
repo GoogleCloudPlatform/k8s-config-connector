@@ -10,12 +10,13 @@ generate-grpc-for-google-protos: tools
 		-I ./.build/googleapis \
 		--experimental_allow_proto3_optional \
 		--go_out ./generated \
-		--go_opt paths=source_relative \
+		--go_opt paths=import \
 		--go-grpc_out ./generated \
-		--go-grpc_opt paths=source_relative \
+		--go-grpc_opt paths=import \
 		./.build/googleapis/google/cloud/tpu/v2/*.proto
 
 	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w generated
+	cd generated/cloud.google.com/go/tpu/apiv2; go mod init cloud.google.com/go/tpu/apiv2; go mod tidy
 
 .PHONY: tools
 tools:
