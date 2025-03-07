@@ -1,4 +1,5 @@
-- exec: gcloud beta quotas preferences create --service=compute.googleapis.com --quota-id=GLOBAL-INTERNAL-MANAGED-BACKEND-BUCKETS-per-project --preferred-value=29 --project=${projectId} --preference-id=testp-${uniqueId}
-- exec: gcloud beta quotas preferences describe testp-${uniqueId} --project=${projectId}
-- exec: gcloud beta quotas preferences update --service=compute.googleapis.com --quota-id=GLOBAL-INTERNAL-MANAGED-BACKEND-BUCKETS-per-project --preferred-value=30 --project=${projectId} testp-${uniqueId}
-- exec: gcloud beta quotas preferences describe testp-${uniqueId} --project=${projectId}
+
+- exec: gcloud beta quotas preferences create test-${uniqueId} --project=${projectId} --location=global --quota-id=test-quota-id --service=compute.googleapis.com --dimensions=region=us-central1 --preferred-value=100
+- exec: gcloud beta quotas preferences describe test-${uniqueId} --project=${projectId} --location=global
+- exec: gcloud beta quotas preferences update test-${uniqueId} --project=${projectId} --location=global --quota-id=test-quota-id --service=compute.googleapis.com --preferred-value=120
+- exec: gcloud beta quotas preferences delete test-${uniqueId} --project=${projectId} --location=global
