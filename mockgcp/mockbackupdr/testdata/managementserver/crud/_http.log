@@ -13,6 +13,7 @@ Content-Type: application/json
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -45,6 +46,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -78,6 +80,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -93,9 +96,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "test-network-${uniqueId}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
@@ -120,6 +121,7 @@ Content-Type: application/json
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -152,6 +154,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -185,6 +188,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -198,17 +202,14 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
   "name": "google-managed-services-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/test-network-${uniqueId}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/google-managed-services-${uniqueId}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/google-managed-services-${uniqueId}"
 }
 
 ---
@@ -219,6 +220,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -230,15 +232,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "128653134652",
-    "type": "organization"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -258,7 +252,8 @@ Content-Type: application/json
   ]
 }
 
-200 OK
+501 Not Implemented
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -269,17 +264,29 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/${operationID}"
+  "error": {
+    "code": 501,
+    "message": "method CreateServicesConnection not implemented"
+  }
 }
 
 ---
 
-GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json
+POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+Content-Type: application/json
 
-200 OK
+{
+  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
+  "reservedPeeringRanges": [
+    "google-managed-services-${uniqueId}"
+  ]
+}
+
+501 Not Implemented
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -290,15 +297,108 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
-    "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
-    "peering": "servicenetworking-googleapis-com",
-    "reservedPeeringRanges": [
-      "google-managed-services-${uniqueId}"
-    ]
+  "error": {
+    "code": 501,
+    "message": "method CreateServicesConnection not implemented"
+  }
+}
+
+---
+
+POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
+  "reservedPeeringRanges": [
+    "google-managed-services-${uniqueId}"
+  ]
+}
+
+501 Not Implemented
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method CreateServicesConnection not implemented"
+  }
+}
+
+---
+
+POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
+  "reservedPeeringRanges": [
+    "google-managed-services-${uniqueId}"
+  ]
+}
+
+501 Not Implemented
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method CreateServicesConnection not implemented"
+  }
+}
+
+---
+
+POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
+  "reservedPeeringRanges": [
+    "google-managed-services-${uniqueId}"
+  ]
+}
+
+501 Not Implemented
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method CreateServicesConnection not implemented"
   }
 }
 
@@ -309,7 +409,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "networks": [
@@ -321,6 +420,7 @@ X-Goog-User-Project: ${projectId}
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -331,12 +431,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
     "verb": "create"
   },
@@ -349,9 +447,9 @@ GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -368,7 +466,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
     "verb": "create"
   },
@@ -378,8 +475,8 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "managementUri": {
-      "api": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com/actifio",
-      "webUi": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com"
+      "api": "https://bmc-${projectNumber}-3aclcdbj-dot-us-central1.backupdr.googleusercontent.com/actifio",
+      "webUi": "https://bmc-${projectNumber}-3aclcdbj-dot-us-central1.backupdr.googleusercontent.com"
     },
     "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
     "networks": [
@@ -388,6 +485,7 @@ X-Xss-Protection: 0
       }
     ],
     "oauth2ClientId": "888888888888888888888",
+    "satisfiesPzi": true,
     "state": "READY",
     "type": "BACKUP_RESTORE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -400,9 +498,9 @@ GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -416,8 +514,8 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "managementUri": {
-    "api": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com/actifio",
-    "webUi": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com"
+    "api": "https://bmc-${projectNumber}-3aclcdbj-dot-us-central1.backupdr.googleusercontent.com/actifio",
+    "webUi": "https://bmc-${projectNumber}-3aclcdbj-dot-us-central1.backupdr.googleusercontent.com"
   },
   "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
   "networks": [
@@ -426,6 +524,7 @@ X-Xss-Protection: 0
     }
   ],
   "oauth2ClientId": "888888888888888888888",
+  "satisfiesPzi": true,
   "state": "READY",
   "type": "BACKUP_RESTORE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -437,9 +536,9 @@ GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -453,8 +552,8 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "managementUri": {
-    "api": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com/actifio",
-    "webUi": "https://bmc-${projectNumber}-eegk2xh4-dot-us-central1.backupdr.googleusercontent.com"
+    "api": "https://bmc-${projectNumber}-3aclcdbj-dot-us-central1.backupdr.googleusercontent.com/actifio",
+    "webUi": "https://bmc-${projectNumber}-3aclcdbj-dot-us-central1.backupdr.googleusercontent.com"
   },
   "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
   "networks": [
@@ -463,6 +562,7 @@ X-Xss-Protection: 0
     }
   ],
   "oauth2ClientId": "888888888888888888888",
+  "satisfiesPzi": true,
   "state": "READY",
   "type": "BACKUP_RESTORE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -474,9 +574,9 @@ DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-cen
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -487,12 +587,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
     "verb": "delete"
   },
@@ -505,9 +603,9 @@ GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-centra
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -524,7 +622,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
     "verb": "delete"
   },
@@ -542,6 +639,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -553,15 +651,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "128653134652",
-    "type": "organization"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -578,7 +668,8 @@ Content-Type: application/json
   "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
 }
 
-200 OK
+501 Not Implemented
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -589,17 +680,26 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/${operationID}"
+  "error": {
+    "code": 501,
+    "message": "method DeleteConnectionServicesConnection not implemented"
+  }
 }
 
 ---
 
-GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json
+POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+Content-Type: application/json
 
-200 OK
+{
+  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
+}
+
+501 Not Implemented
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -610,10 +710,99 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
+  "error": {
+    "code": 501,
+    "message": "method DeleteConnectionServicesConnection not implemented"
+  }
+}
+
+---
+
+POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
+}
+
+501 Not Implemented
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method DeleteConnectionServicesConnection not implemented"
+  }
+}
+
+---
+
+POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
+}
+
+501 Not Implemented
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method DeleteConnectionServicesConnection not implemented"
+  }
+}
+
+---
+
+POST https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
+}
+
+501 Not Implemented
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method DeleteConnectionServicesConnection not implemented"
   }
 }
 
@@ -625,6 +814,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -657,6 +847,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -690,6 +881,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -722,6 +914,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
