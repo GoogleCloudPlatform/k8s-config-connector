@@ -1,0 +1,11 @@
+apiVersion: tpu.cnrm.cloud.google.com/v1alpha1
+kind: TPUVirtualMachine
+metadata:
+  name: tpuvirtualmachine-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1-a
+  description: "Initial description"
+  runtimeVersion: tpu-vm-cos-stable
+  acceleratorType: v5p-8
