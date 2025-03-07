@@ -199,11 +199,6 @@ func (a *ApigeeEndpointAttachmentAdapter) Delete(ctx context.Context, deleteOp *
 
 	op, err := a.attachmentsClient.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent ApigeeEndpointAttachment, assuming it was already deleted", "name", a.id.String())
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting ApigeeEndpointAttachment %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted ApigeeEndpointAttachment", "name", a.id)

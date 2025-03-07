@@ -197,11 +197,6 @@ func (a *EnvironmentAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	req := &pb.DeleteEnvironmentRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteEnvironment(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent Environment, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting Environment %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted Environment", "name", a.id)
