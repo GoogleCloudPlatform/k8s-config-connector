@@ -9,6 +9,7 @@ Content-Type: application/json
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -30,8 +31,7 @@ X-Xss-Protection: 0
     "maxBackoff": "3600s",
     "maxDoublings": 16,
     "minBackoff": "0.100s"
-  },
-  "state": "RUNNING"
+  }
 }
 
 ---
@@ -42,6 +42,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -63,8 +64,7 @@ X-Xss-Protection: 0
     "maxBackoff": "3600s",
     "maxDoublings": 16,
     "minBackoff": "0.100s"
-  },
-  "state": "RUNNING"
+  }
 }
 
 ---
@@ -75,6 +75,7 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
