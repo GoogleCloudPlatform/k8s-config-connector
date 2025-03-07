@@ -388,9 +388,9 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 				continue
 			}
 
+			kind := crd.Spec.Names.Kind
 			visitCRDVersion(version, func(field *CRDField) {
 				fieldPath := field.FieldPath
-
 				// Only consider fields under `spec`
 				if !strings.HasPrefix(fieldPath, ".spec.") {
 					return
@@ -408,6 +408,9 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 
 					// Check for specific related fields
 					for _, obj := range unstructs {
+						if obj.GetKind() != kind {
+							continue
+						}
 						if hasField(obj.Object, fieldPath+".external") {
 							hasExternal = true
 						}
@@ -441,6 +444,9 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 				// Check if field exists in any unstructured object
 				missing := true
 				for _, obj := range unstructs {
+					if obj.GetKind() != kind {
+						continue
+					}
 					if hasField(obj.Object, fieldPath) {
 						missing = false
 						break
