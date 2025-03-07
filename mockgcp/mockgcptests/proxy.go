@@ -217,6 +217,15 @@ func (p *Proxy) runRequest(req *http.Request) (*http.Response, error) {
 		return nil, fmt.Errorf("reading request body: %v", err)
 	}
 
+	// HACK: fix malformed network URLs in the request body
+	if strings.Contains(string(body), "\"network\": \"http://compute.googleapis.com/") {
+		bodyStr := string(body)
+		bodyStr = strings.Replace(bodyStr,
+			"\"network\": \"http://compute.googleapis.com/",
+			"\"network\": \"", -1)
+		body = []byte(bodyStr)
+	}
+
 	u := req.URL
 	u.Scheme = "https"
 	if u.Host == "" {
