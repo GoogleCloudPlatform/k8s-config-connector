@@ -35,11 +35,6 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-type TagKeys struct {
-	*MockService
-	pb.UnimplementedTagKeysServer
-}
-
 func (s *TagKeys) GetTagKey(ctx context.Context, req *pb.GetTagKeyRequest) (*pb.TagKey, error) {
 	name, err := s.parseTagKeyName(req.Name)
 	if err != nil {
@@ -56,6 +51,63 @@ func (s *TagKeys) GetTagKey(ctx context.Context, req *pb.GetTagKeyRequest) (*pb.
 	// We should verify that this is part of on of our projects, but ... it's a mock
 
 	return obj, nil
+}
+
+func (s *TagKeys) ListTagKeys(ctx context.Context, req *pb.ListTagKeysRequest) (*pb.ListTagKeysResponse, error) {
+
+	findParent := ""
+	tokens := strings.Split(req.GetParent(), "/")
+	if len(tokens) == 2 && tokens[0] == "projects" {
+		project, err := s.Projects.GetProjectByIDOrNumber(req.Parent)
+		if err != nil {
+			return nil, err
+		}
+
+		findParent = fmt.Sprintf("projects/%d", project.Number)
+	} else {
+		return nil, fmt.Errorf("parent %q is not valid for mock", req.GetParent())
+	}
+
+	var tagKeys []*pb.TagKey
+
+	tagKeyKind := (&pb.TagKey{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, tagKeyKind, storage.ListOptions{}, func(obj proto.Message) error {
+		tagKey := obj.(*pb.TagKey)
+		if tagKey.Parent == findParent {
+			tagKeys = append(tagKeys, tagKey)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListTagKeysResponse{
+		TagKeys: tagKeys,
+	}, nil
+}
+
+func (s *TagKeys) GetNamespacedTagKey(ctx context.Context, req *pb.GetNamespacedTagKeyRequest) (*pb.TagKey, error) {
+	namespacedName := req.GetName()
+	var tagKeys []*pb.TagKey
+
+	tagKeyKind := (&pb.TagKey{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, tagKeyKind, storage.ListOptions{}, func(obj proto.Message) error {
+		tagKey := obj.(*pb.TagKey)
+		if tagKey.GetNamespacedName() == namespacedName {
+			tagKeys = append(tagKeys, tagKey)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	if len(tagKeys) == 0 {
+		return nil, status.Errorf(codes.PermissionDenied, "Permission denied on resource '%s' (or it may not exist).", req.GetName())
+	}
+	if len(tagKeys) > 1 {
+		return nil, status.Error(codes.Internal, "found multiple matching keys")
+	}
+	return tagKeys[0], nil
 }
 
 func (s *TagKeys) CreateTagKey(ctx context.Context, req *pb.CreateTagKeyRequest) (*longrunningpb.Operation, error) {
@@ -149,10 +201,8 @@ func (s *TagKeys) UpdateTagKey(ctx context.Context, req *pb.UpdateTagKeyRequest)
 		return nil, err
 	}
 
-	metadata := &pb.UpdateTagKeyMetadata{}
-	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
-		return obj, nil
-	})
+	// LRO is immediately done
+	return s.operations.DoneLRO(ctx, "", nil, obj)
 }
 
 func (s *TagKeys) DeleteTagKey(ctx context.Context, req *pb.DeleteTagKeyRequest) (*longrunningpb.Operation, error) {
