@@ -188,7 +188,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 				"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
 			},
 			WorkDir:    controllerBuilderDir,
-			MaxRetries: 2,
+			MaxRetries: 1,
 		}
 		_, _, err := executeCommand(opts, cfg)
 		if err != nil {
@@ -264,7 +264,7 @@ func generateCRD(opts *RunnerOptions, branch Branch) {
 		Name:       "Generate CRDs",
 		Cmd:        filepath.Join(workDir, "dev", "tasks", "generate-crds"),
 		WorkDir:    workDir,
-		MaxRetries: 2,
+		MaxRetries: 1,
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {

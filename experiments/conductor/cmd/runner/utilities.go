@@ -334,10 +334,10 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 
 	var lastErr error
 	var output, errOutput string
-	retryCount := 0
+	retryCount := 1
 
 	for {
-		log.Printf("Starting command step: %s (attempt %d/%d)", cfg.Name, retryCount+1, maxRetries+1)
+		log.Printf("Starting command step: %s (attempt %d/%d)", cfg.Name, retryCount, maxRetries+1)
 		log.Printf("[%s] working directory: %s", cfg.Name, cfg.WorkDir)
 		log.Printf("[%s] command: %s %s", cfg.Name, cfg.Cmd, strings.Join(cfg.Args, " "))
 		if cfg.Stdin != nil {
@@ -407,5 +407,5 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 		time.Sleep(cfg.RetryBackoff)
 	}
 
-	return output, errOutput, fmt.Errorf("command failed after %d attempts: %w", retryCount, lastErr)
+	return output, errOutput, fmt.Errorf("command failed after %d attempts: %w", maxRetries, lastErr)
 }
