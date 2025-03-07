@@ -42,7 +42,9 @@ type CSVExporter struct {
 
 // Extractor is an interface for extracting data points from source code.
 type Extractor interface {
-	Extract(ctx context.Context, description string, b []byte) ([]*DataPoint, error)
+	// Extract returns DataPoints parsed from b
+	// If filters are provided, only matching DataPoints wil be extracted
+	Extract(ctx context.Context, description string, b []byte, filters ...Filter) ([]*DataPoint, error)
 }
 
 // Enhancer is an interface for enhancing a data point.
@@ -63,12 +65,13 @@ func NewCSVExporter(extractor Extractor, enhancers ...Enhancer) (*CSVExporter, e
 }
 
 // visitGoFile visits a Go file and extracts data points from it.
-func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
+// If filters are provided, only matching DataPoints wil be extracted
+func (x *CSVExporter) visitGoFile(ctx context.Context, p string, filters ...Filter) error {
 	b, err := os.ReadFile(p)
 	if err != nil {
 		return fmt.Errorf("reading file %q: %w", p, err)
 	}
-	dataPoints, err := x.BuildDataPoints(ctx, "file://"+p, b)
+	dataPoints, err := x.BuildDataPoints(ctx, "file://"+p, b, filters...)
 	if err != nil {
 		return err
 	}
@@ -76,8 +79,11 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 	return nil
 }
 
+type Filter func(d *DataPoint) bool
+
 // VisitCodeDir visits a directory and extracts data points from all Go files in the directory tree.
-func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
+// If filters are provided, only matching DataPoints wil be extracted
+func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string, filters ...Filter) error {
 	if err := filepath.WalkDir(srcDir, func(p string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -95,9 +101,9 @@ func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 			return nil
 		}
 		// klog.Infof("%v", p)
-		if err := x.visitGoFile(ctx, p); err != nil {
+		if err := x.visitGoFile(ctx, p, filters...); err != nil {
 			if strings.HasSuffix(p, "cmd/runner/mock_commands.go") {
-				 klog.Infof("Skipping file: %v", p)
+				klog.Infof("Skipping file: %v", p)
 				return nil
 			}
 			return fmt.Errorf("processing file %q: %w", p, err)
@@ -182,8 +188,9 @@ func (x *CSVExporter) EnhanceDataPoint(ctx context.Context, d *DataPoint) error 
 }
 
 // BuildDataPoints extracts data points from a byte slice representing a Go file.
-func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, src []byte) ([]*DataPoint, error) {
-	dataPoints, err := x.extractor.Extract(ctx, description, src)
+// If filters are provided, only matching DataPoints wil be extracted
+func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, src []byte, filters ...Filter) ([]*DataPoint, error) {
+	dataPoints, err := x.extractor.Extract(ctx, description, src, filters...)
 	if err != nil {
 		return nil, err
 	}
