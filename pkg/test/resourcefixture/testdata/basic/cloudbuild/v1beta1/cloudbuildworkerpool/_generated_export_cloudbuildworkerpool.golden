@@ -15,4 +15,4 @@ spec:
       diskSizeGb: 150
       machineType: e2-highmem-4
   projectRef:
-    external: //cloudbuild.googleapis.com/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}
+    external: projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}
