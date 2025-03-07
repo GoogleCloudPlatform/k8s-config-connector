@@ -46,6 +46,16 @@ Or to create mockgcp test for the gcloud commands under <TICK>gcloud storage buc
 - exec: gcloud storage buckets delete gs://test-${uniqueId}
 <TICK><TICK><TICK>
 
+Depended resources must be created first and prepended with -pre and cleaned up at the end prepended with -post.  Example pre and post usage:
+<TICK><TICK><TICK>script.yaml
+- pre: gcloud pubsub topics create test-topic-${uniqueId} --project=${projectId}
+- exec: gcloud asset feeds create test-${uniqueId} --pubsub-topic=projects/${projectId}/topics/test-topic-${uniqueId} --project=${projectId}
+- exec: gcloud asset feeds describe test-${uniqueId} --project=${projectId}
+- exec: gcloud asset feeds update test-${uniqueId} --project=${projectId} --content-type=resource
+- exec: gcloud asset feeds delete test-${uniqueId} --project=${projectId}
+- post: gcloud pubsub topics delete test-topic-${uniqueId} --project=${projectId}
+<TICK><TICK><TICK>
+
 Some hints:
 
 * You should use the CreateFile method to create the script.yaml file in the appropriate directory.  You can use ListFilesInWorkspace to make sure that you are creating a test in a new directory.
@@ -58,6 +68,21 @@ If you want to see the flags for any individual commands, you can run the help f
 * If you must specify a project, use the --project flag with this variable ${projectId}, for example <TICK>gcloud pubsub topics create test-${uniqueId} --project=${projectId}<TICK>.
 
 * If you must use project in a resource path, use this variable ${projectId}, for example <TICK>gcloud data-catalog tags create --entry=projects/${projectId}/locations/us-central1/entryGroups/test-entry-group/entries/test-entry-${uniqueId} --tag=test-tag-${uniqueId}<TICK>
+
+* The allowed variables are:
+  * ${projectId} - The project ID to use for the test.
+  * ${uniqueId} - A unique ID to use for the test.
+  * ${BILLING_ACCOUNT_ID} - The billing account ID to use for the test.
+  * ${organizationId} - The organization ID if mandatory in the command.
+  * ${projectNumber} - The project number to use for the test.
+
+* If the resource requires dependent resources, you should create them in the same script.yaml file.
+
+* Depended resources must be created first and prepended with -pre
+
+* Depended resources must be cleaned up at the end prepended with -post
+
+* Most importantly make sure that all required parameters and flags are included in the commands
 
 Please create a test case for the gcloud commands under <TICK><GCLOUD_COMMAND><TICK>
 Please create the test case in the file <TICK>mock<GROUP>/testdata/<RESOURCE>/crud/script.yaml<TICK>
@@ -95,7 +120,19 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	// Check to see if the script file already exists
 	scriptFile := fmt.Sprintf("mock%s/testdata/%s/crud/script.yaml", branch.Group, branch.Resource)
 	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", scriptFile)
-	if _, err := os.Stat(scriptFullPath); !errors.Is(err, os.ErrNotExist) && !opts.force {
+
+	// Check if file exists and handle force flag
+	if _, err := os.Stat(scriptFullPath); err != nil {
+		if !errors.Is(err, os.ErrNotExist) {
+			log.Printf("ERROR checking file %s: %v", scriptFullPath, err)
+			return
+		}
+	} else if opts.force {
+		if err := os.Remove(scriptFullPath); err != nil {
+			log.Printf("ERROR deleting existing file %s: %v", scriptFullPath, err)
+			return
+		}
+	} else {
 		log.Printf("SKIPPING %s, %s already exists", branch.Name, scriptFullPath)
 		return
 	}
