@@ -20,9 +20,17 @@ package tpu
 import (
 	"context"
 	"fmt"
+	"math"
 
+	"cloud.google.com/go/longrunning"
+	lroauto "cloud.google.com/go/longrunning/autogen"
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
+	tpuv2 "cloud.google.com/go/tpu/apiv2/tpupb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients"
+	"google.golang.org/api/option"
+	"google.golang.org/api/option/internaloption"
+	gtransport "google.golang.org/api/transport/grpc"
+	"google.golang.org/grpc"
 )
 
 type gcpClient struct {
@@ -36,14 +44,76 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) newClient(ctx context.Context) (*gcpclients.TPUV2Client, error) {
+func (m *gcpClient) newClient(ctx context.Context) (*TPUV2Client, error) {
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := gcpclients.NewTPUV2ClientGRPC(ctx, opts...)
+	client, err := NewTPUV2ClientGRPC(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building tpu client: %w", err)
 	}
 	return client, err
+}
+
+// When we publish the v2 API, we should switch to using it
+
+type TPUV2Client struct {
+	tpuv2.TpuClient
+	lroClient *lroauto.OperationsClient
+}
+
+func NewTPUV2ClientGRPC(ctx context.Context, opts ...option.ClientOption) (*TPUV2Client, error) {
+	clientOpts := defaultGRPCClientOptions()
+
+	connPool, err := gtransport.DialPool(ctx, append(clientOpts, opts...)...)
+	if err != nil {
+		return nil, fmt.Errorf("building grpc connection pool: %w", err)
+	}
+
+	lroClient, err := lroauto.NewOperationsClient(ctx, gtransport.WithConnPool(connPool))
+	if err != nil {
+		// This error "should not happen", since we are just reusing old connection pool
+		// and never actually need to dial.
+		// If this does happen, we could leak connp. However, we cannot close conn:
+		// If the user invoked the constructor with option.WithGRPCConn,
+		// we would close a connection that's still in use.
+		// TODO: investigate error conditions.
+		return nil, fmt.Errorf("building lro client: %w", err)
+	}
+
+	return &TPUV2Client{
+		TpuClient: tpuv2.NewTpuClient(connPool),
+		lroClient: lroClient,
+	}, nil
+}
+
+func (c *TPUV2Client) WaitForLRO(ctx context.Context, op *longrunningpb.Operation) error {
+	lro := longrunning.InternalNewOperation(c.lroClient, op)
+	if err := lro.Wait(ctx, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func defaultGRPCClientOptions() []option.ClientOption {
+	return []option.ClientOption{
+		internaloption.WithDefaultEndpoint("tpu.googleapis.com:443"),
+		internaloption.WithDefaultEndpointTemplate("tpu.UNIVERSE_DOMAIN:443"),
+		internaloption.WithDefaultMTLSEndpoint("tpu.mtls.googleapis.com:443"),
+		internaloption.WithDefaultUniverseDomain("googleapis.com"),
+		internaloption.WithDefaultAudience("https://tpu.googleapis.com/"),
+		internaloption.WithDefaultScopes(DefaultAuthScopes()...),
+		internaloption.EnableJwtWithScope(),
+		internaloption.EnableNewAuthLibrary(),
+		option.WithGRPCDialOption(grpc.WithDefaultCallOptions(
+			grpc.MaxCallRecvMsgSize(math.MaxInt32))),
+	}
+}
+
+// DefaultAuthScopes reports the default set of authentication scopes to use with this package.
+func DefaultAuthScopes() []string {
+	return []string{
+		"https://www.googleapis.com/auth/cloud-platform",
+	}
 }

@@ -15,10 +15,10 @@
 package tpu
 
 import (
+	pb "cloud.google.com/go/tpu/apiv2/tpupb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tpu/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/tpu/v2"
 )
 
 // ServiceAccount uses email for serviceAccount
