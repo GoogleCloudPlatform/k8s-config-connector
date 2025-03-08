@@ -13,24 +13,8 @@ Content-Type: application/json
   ]
 }
 
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+mockRoundTripper injecting fake response for unknown service us-central1-ml.googleapis.com
 
-{
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/models/test${uniqueId}",
-  "regions": [
-    "us-central1"
-  ]
-}
 
 ---
 
@@ -39,24 +23,8 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+mockRoundTripper injecting fake response for unknown service us-central1-ml.googleapis.com
 
-{
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/models/test${uniqueId}",
-  "regions": [
-    "us-central1"
-  ]
-}
 
 ---
 
@@ -65,56 +33,5 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+mockRoundTripper injecting fake response for unknown service us-central1-ml.googleapis.com
 
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.ml.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "modelName": "projects/${projectId}/models/test${uniqueId}",
-    "operationType": "DELETE_MODEL"
-  },
-  "name": "projects/${projectId}/operations/${operationID}"
-}
-
----
-
-GET https://us-central1-ml.googleapis.com/v1/projects/${projectId}/operations/${operationID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.ml.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "modelName": "projects/${projectId}/models/test${uniqueId}",
-    "operationType": "DELETE_MODEL"
-  },
-  "name": "projects/${projectId}/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}

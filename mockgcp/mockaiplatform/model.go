@@ -32,6 +32,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type modelService struct {
@@ -40,7 +41,7 @@ type modelService struct {
 }
 
 func (s *modelService) UploadModel(ctx context.Context, req *pb.UploadModelRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/models/" + "mockgenerated"
+	reqName := req.Parent + "/models/xia"
 	name, err := s.parseModelName(reqName)
 	if err != nil {
 		return nil, err
@@ -68,9 +69,9 @@ func (s *modelService) UploadModel(ctx context.Context, req *pb.UploadModelReque
 	opPrefix := name.String()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := &pb.UploadModelResponse{
-			Model: obj.Name,
-		}
+		result := proto.Clone(obj).(*pb.Model)
+		result.CreateTime = nil
+		result.UpdateTime = nil
 		return result, nil
 	})
 }
@@ -108,13 +109,21 @@ func (s *MockService) parseModelName(name string) (*ModelName, error) {
 }
 
 func (s *modelService) ListModels(ctx context.Context, req *pb.ListModelsRequest) (*pb.ListModelsResponse, error) {
-	_, err := s.parseModelName(req.Parent + "/models/" + "id-can-be-anything")
-	if err != nil {
+	response := &pb.ListModelsResponse{}
+
+	prefix := req.GetParent()
+	modelKind := (&pb.Model{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, modelKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		model := obj.(*pb.Model)
+		response.Models = append(response.Models, model)
+
+		return nil
+	}); err != nil {
 		return nil, err
 	}
-
-	var models []*pb.Model
-	return &pb.ListModelsResponse{Models: models}, nil
+	return response, nil
 }
 
 func (s *modelService) GetModel(ctx context.Context, req *pb.GetModelRequest) (*pb.Model, error) {
