@@ -15,6 +15,7 @@
 package runner
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -150,6 +151,8 @@ func generateCRDFromScripts(opts *RunnerOptions, branch Branch) {
 */
 
 func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
+	ctx := context.TODO()
+
 	close := setLoggingWriter(opts, branch)
 	defer close()
 	workDir := opts.branchRepoDir
@@ -167,8 +170,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		return
 	}
 
-	var out strings.Builder
-	checkoutBranch(branch, workDir, &out)
+	checkoutBranch(ctx, branch, workDir)
 
 	// Change to controllerbuilder directory
 	controllerBuilderDir := filepath.Join(workDir, "dev", "tools", "controllerbuilder")
@@ -194,7 +196,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		gitAdd(workDir, &out, apisDir)
+		gitAdd(ctx, workDir, apisDir)
 		hasChange = true
 	} else {
 		log.Printf("SKIPPING generating apis, %s already exists", apisDir)
@@ -237,7 +239,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		gitAdd(workDir, &out, mapperDir)
+		gitAdd(ctx, workDir, mapperDir)
 		hasChange = true
 	} else {
 		log.Printf("SKIPPING generating mappers, %s already exists", mapperDir)
@@ -245,19 +247,20 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 
 	// Commit the changes
 	if hasChange {
-		gitCommit(workDir, &out, fmt.Sprintf("Generated types and mapper for %s", branch.Kind))
+		gitCommit(ctx, workDir, fmt.Sprintf("Generated types and mapper for %s", branch.Kind))
 	} else {
 		log.Printf("SKIPPING git commit, no new changes for %s", branch.Name)
 	}
 }
 
 func generateCRD(opts *RunnerOptions, branch Branch) {
+	ctx := context.TODO()
+
 	close := setLoggingWriter(opts, branch)
 	defer close()
 	workDir := opts.branchRepoDir
 
-	var out strings.Builder
-	checkoutBranch(branch, workDir, &out)
+	checkoutBranch(ctx, branch, workDir)
 
 	// Generate CRDs
 	cfg := CommandConfig{
@@ -272,19 +275,20 @@ func generateCRD(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Stage the changed files
-	gitAdd(workDir, &out, "config/crds/resources/")
+	gitAdd(ctx, workDir, "config/crds/resources/")
 
 	// Commit the changes
-	gitCommit(workDir, &out, fmt.Sprintf("Generated CRD for %s", branch.Kind))
+	gitCommit(ctx, workDir, fmt.Sprintf("Generated CRD for %s", branch.Kind))
 }
 
 func generateSpecStatus(opts *RunnerOptions, branch Branch) {
+	ctx := context.TODO()
+
 	close := setLoggingWriter(opts, branch)
 	defer close()
 	workDir := opts.branchRepoDir
 
-	var out strings.Builder
-	checkoutBranch(branch, workDir, &out)
+	checkoutBranch(ctx, branch, workDir)
 
 	// Run controllerbuilder to generate spec and status
 	log.Printf("Generating spec and status for %s", branch.Name)
@@ -304,19 +308,20 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Stage the changed files
-	gitAdd(workDir, &out, fmt.Sprintf("apis/%s/v1alpha1/%s_types.go", branch.Group, strings.ToLower(branch.Resource)))
+	gitAdd(ctx, workDir, fmt.Sprintf("apis/%s/v1alpha1/%s_types.go", branch.Group, strings.ToLower(branch.Resource)))
 
 	// Commit the changes
-	gitCommit(workDir, &out, fmt.Sprintf("%s: Update types from generated", branch.Kind))
+	gitCommit(ctx, workDir, fmt.Sprintf("%s: Update types from generated", branch.Kind))
 }
 
 func generateFuzzer(opts *RunnerOptions, branch Branch) {
+	ctx := context.TODO()
+
 	close := setLoggingWriter(opts, branch)
 	defer close()
 	workDir := opts.branchRepoDir
 
-	var out strings.Builder
-	checkoutBranch(branch, workDir, &out)
+	checkoutBranch(ctx, branch, workDir)
 
 	// Generate fuzzer file
 	fuzzerDir := filepath.Join(workDir, "pkg", "controller", "direct", branch.Group)
@@ -365,10 +370,10 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Stage the changed files
-	gitAdd(workDir, &out,
+	gitAdd(ctx, workDir,
 		fmt.Sprintf("pkg/controller/direct/%s/%s_fuzzer.go", branch.Group, strings.ToLower(branch.Resource)),
 		"pkg/controller/direct/register/register.go")
 
 	// Commit the changes
-	gitCommit(workDir, &out, fmt.Sprintf("%s: Create fuzz test", branch.Kind))
+	gitCommit(ctx, workDir, fmt.Sprintf("%s: Create fuzz test", branch.Kind))
 }
