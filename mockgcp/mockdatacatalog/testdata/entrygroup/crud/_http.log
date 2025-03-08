@@ -1,0 +1,100 @@
+POST https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups?alt=json&entryGroupId=testentrygroup${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataCatalogTimestamps": {
+    "createTime": "2025-03-08T06:49:36.719Z",
+    "updateTime": "2025-03-08T06:49:36.719Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataCatalogTimestamps": {
+    "createTime": "2025-03-08T06:49:36.719Z",
+    "updateTime": "2025-03-08T06:49:36.719Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}"
+}
+
+---
+
+PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}?alt=json&updateMask=description
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "Updated description."
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataCatalogTimestamps": {
+    "createTime": "2025-03-08T06:49:36.719Z",
+    "updateTime": "2025-03-08T06:49:43.628Z"
+  },
+  "description": "Updated description.",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}"
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
