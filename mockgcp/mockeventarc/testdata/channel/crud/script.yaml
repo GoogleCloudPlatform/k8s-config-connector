@@ -1,0 +1,4 @@
+- exec: gcloud eventarc channels create test-${uniqueId} --location=us-central1 --provider=projects/${projectId}/locations/us-central1/providers/google-cloud-storage-v1 --project=${projectId}
+- exec: gcloud eventarc channels describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud eventarc channels update test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud eventarc channels delete test-${uniqueId} --location=us-central1 --project=${projectId}
