@@ -1,0 +1,6 @@
+- exec: gcloud storage buckets create gs://bucket${uniqueId}
+- exec: gcloud storage managed-folders create gs://bucket${uniqueId}/testmanagedfolder
+- exec: gcloud storage managed-folders describe gs://bucket${uniqueId}/testmanagedfolder
+- exec: gcloud storage managed-folders list gs://bucket${uniqueId}
+- exec: gcloud storage managed-folders delete gs://bucket${uniqueId}/testmanagedfolder
+- exec: gcloud storage buckets delete gs://bucket${uniqueId}
