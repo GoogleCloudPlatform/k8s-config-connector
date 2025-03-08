@@ -1,0 +1,5 @@
+
+- exec: gcloud metastore services create test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud metastore services describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud metastore services update test-${uniqueId} --location=us-central1 --project=${projectId} --port=9999
+- exec: gcloud metastore services delete test-${uniqueId} --location=us-central1 --project=${projectId} --quiet
