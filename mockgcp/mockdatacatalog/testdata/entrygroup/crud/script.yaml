@@ -1,0 +1,4 @@
+- exec: gcloud data-catalog entry-groups create test-entry-group-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud data-catalog entry-groups describe test-entry-group-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud data-catalog entry-groups update test-entry-group-${uniqueId} --location=us-central1 --display-name="Updated Display Name" --project=${projectId}
+- exec: gcloud data-catalog entry-groups delete test-entry-group-${uniqueId} --location=us-central1 --project=${projectId}
