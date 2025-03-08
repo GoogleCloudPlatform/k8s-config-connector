@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type RegionalAddressesV1 struct {
@@ -50,6 +51,36 @@ func (s *RegionalAddressesV1) Get(ctx context.Context, req *pb.GetAddressRequest
 	}
 
 	return obj, nil
+}
+
+func (s *RegionalAddressesV1) List(ctx context.Context, req *pb.ListAddressesRequest) (*pb.AddressList, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/addresses/" + "placeholder"
+	name, err := s.parseRegionalAddressName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.GetFilter() != "" {
+		return nil, fmt.Errorf("filter %q not implemented by mockgcp", req.GetFilter())
+	}
+
+	findPrefix := strings.TrimSuffix(name.String(), "placeholder")
+
+	response := &pb.AddressList{}
+	response.Id = PtrTo("0123456789")
+	response.Kind = PtrTo("compute#addressList")
+	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
+
+	findKind := (&pb.Address{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		address := obj.(*pb.Address)
+		response.Items = append(response.Items, address)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s *RegionalAddressesV1) Insert(ctx context.Context, req *pb.InsertAddressRequest) (*pb.Operation, error) {
