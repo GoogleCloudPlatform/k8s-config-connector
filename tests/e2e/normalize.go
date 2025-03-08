@@ -781,7 +781,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
-
 	// Specific to Apigee
 	visitor.replacePaths[".response.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	visitor.replacePaths[".response.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)

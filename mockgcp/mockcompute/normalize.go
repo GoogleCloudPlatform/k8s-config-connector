@@ -15,6 +15,8 @@
 package mockcompute
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -35,8 +37,55 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".items[].address", "8.8.8.8")
 
 	replacements.SortSlice(".subnetworks")
+
+	// BackendBuckets
+
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if isGetOperation(event) {
+		targetLink := ""
+		targetId := ""
 
+		event.VisitResponseStringValues(func(path string, value string) {
+			switch path {
+			case ".targetLink":
+				targetLink = value
+			case ".targetId":
+				targetId = value
+			}
+		})
+
+		if targetLink != "" && targetId != "" {
+			tokens := strings.Split(targetLink, "/")
+			n := len(tokens)
+			if n >= 2 {
+				kind := tokens[n-2]
+
+				placeholder := "${" + strings.TrimSuffix(kind, "s") + "Id}"
+				// We _should_ differentiate between ID and number.
+				// But this causes too many diffs right now.
+				replacements.ReplaceStringValue(targetId, placeholder)
+				replacements.ReplaceStringValue(tokens[n-1], placeholder)
+			}
+		}
+	}
+}
+
+// isGetOperation returns true if this is an operation poll request
+func isGetOperation(event mockgcpregistry.Event) bool {
+	u := event.URL()
+	// A normal GET poll
+	if event.Method() == "GET" && strings.Contains(u, "/operations/") {
+		return true
+	}
+	// A call to the /wait endpoint
+	if event.Method() == "POST" && strings.Contains(u, "/operations/") && strings.Contains(u, "/wait") {
+		return true
+	}
+	// A GRPC call
+	if u == "/google.longrunning.Operations/GetOperation" {
+		return true
+	}
+	return false
 }
