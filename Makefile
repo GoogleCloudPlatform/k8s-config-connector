@@ -254,7 +254,7 @@ run: generate fmt vet
 # Ensures dependencies are up-to-date
 .PHONY: ensure
 ensure:
-	go mod tidy -compat=1.19
+	go mod tidy -compat=1.23
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
