@@ -1,0 +1,6 @@
+
+- exec: gcloud asset saved-queries create test-${uniqueId} --project=${projectId} --query-file-path=./query-content.json --description="Test saved query" --labels="test=test"
+- exec: gcloud asset saved-queries describe test-${uniqueId} --project=${projectId}
+- exec: gcloud asset saved-queries list --project=${projectId}
+- exec: gcloud asset saved-queries update test-${uniqueId} --project=${projectId} --description="Updated test saved query"
+- exec: gcloud asset saved-queries delete test-${uniqueId} --project=${projectId}
