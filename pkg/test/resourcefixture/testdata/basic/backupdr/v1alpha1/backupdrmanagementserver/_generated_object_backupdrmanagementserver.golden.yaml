@@ -29,8 +29,8 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     managementURI:
-      api: https://bmc-${projectNumber}-m5ah276y-dot-us-east1.backupdr.googleusercontent.com/actifio
-      webUI: https://bmc-${projectNumber}-m5ah276y-dot-us-east1.backupdr.googleusercontent.com
-    oauth2ClientID: 914126025596-ptsqsgid1qrnoci18vr95njnhfuih488.apps.googleusercontent.com
+      api: https://bmc-${projectNumber}-3aclcdbj-dot-us-east1.backupdr.googleusercontent.com/actifio
+      webUI: https://bmc-${projectNumber}-3aclcdbj-dot-us-east1.backupdr.googleusercontent.com
+    oauth2ClientID: "888888888888888888888"
     state: READY
     updateTime: "1970-01-01T00:00:00Z"
