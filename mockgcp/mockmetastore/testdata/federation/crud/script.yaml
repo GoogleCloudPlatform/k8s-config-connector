@@ -1,0 +1,7 @@
+
+- pre: gcloud metastore services create test-service-${uniqueId} --location=us-central1 --network=default --project=${projectId}
+- exec: gcloud metastore federations create test-federation-${uniqueId} --location=us-central1 --backends=1=dpms:test-service-${uniqueId} --project=${projectId} --hive-metastore-version=3.1.2
+- exec: gcloud metastore federations describe test-federation-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud metastore federations update test-federation-${uniqueId} --location=us-central1 --project=${projectId} --labels=key1=value1
+- exec: gcloud metastore federations delete test-federation-${uniqueId} --location=us-central1 --project=${projectId} --async
+- post: gcloud metastore services delete test-service-${uniqueId} --location=us-central1 --project=${projectId} --async
