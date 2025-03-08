@@ -1,0 +1,583 @@
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "archiveSizeBytes": "123456789",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Debian, Debian GNU/Linux, 12 (bookworm), amd64 built on 20250212",
+  "diskSizeGb": "10",
+  "enableConfidentialCompute": false,
+  "family": "debian-12",
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "public-image": "true"
+  },
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${imageID}",
+  "rawDisk": {
+    "containerType": "TAR",
+    "source": ""
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/${imageID}",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "eu",
+    "asia",
+    "us"
+  ]
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "name": "${imageID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/${imageID}",
+  "sourceType": "RAW"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${imageID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}/wait?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${imageID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "archiveSizeBytes": "123456789",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskSizeGb": "10",
+  "enableConfidentialCompute": false,
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${imageID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/${imageID}",
+  "sourceImageId": "3433243310150635375",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "us"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "archiveSizeBytes": "123456789",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskSizeGb": "10",
+  "enableConfidentialCompute": false,
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${imageID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/${imageID}",
+  "sourceImageId": "3433243310150635375",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "us"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "archiveSizeBytes": "123456789",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskSizeGb": "10",
+  "enableConfidentialCompute": false,
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${imageID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/${imageID}",
+  "sourceImageId": "3433243310150635375",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "us"
+  ]
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}/setLabels?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${imageID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}/wait?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${imageID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "archiveSizeBytes": "123456789",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskSizeGb": "10",
+  "enableConfidentialCompute": false,
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${imageID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/${imageID}",
+  "sourceImageId": "3433243310150635375",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "us"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "architecture": "X86_64",
+  "archiveSizeBytes": "123456789",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskSizeGb": "10",
+  "enableConfidentialCompute": false,
+  "guestOsFeatures": [
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "GVNIC"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "licenseCodes": [
+    "2147286739765738111"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-12-bookworm"
+  ],
+  "name": "${imageID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/${imageID}",
+  "sourceImageId": "3433243310150635375",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "us"
+  ]
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${imageID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}/wait?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${imageID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "user": "user@example.com"
+}
