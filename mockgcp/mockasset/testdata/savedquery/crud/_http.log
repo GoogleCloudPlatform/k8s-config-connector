@@ -1,0 +1,257 @@
+POST https://cloudasset.googleapis.com/v1/projects/${projectId}/savedQueries?alt=json&savedQueryId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "roles": [
+          "roles/viewer"
+        ]
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "description": "Test query",
+  "labels": {
+    "test": "test"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "roles": [
+          "roles/viewer"
+        ]
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test query",
+  "labels": {
+    "test": "test"
+  },
+  "lastUpdateTime": "2025-03-08T06:48:47.585978Z",
+  "name": "projects/${projectNumber}/savedQueries/test-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "128653134652",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "roles": [
+          "roles/viewer"
+        ]
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test query",
+  "labels": {
+    "test": "test"
+  },
+  "lastUpdateTime": "2025-03-08T06:48:47.585978Z",
+  "name": "projects/${projectNumber}/savedQueries/test-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "128653134652",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/test-${uniqueId}?alt=json&updateMask=content%2Cdescription
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "roles": [
+          "roles/viewer",
+          "roles/iam.serviceAccountUser"
+        ]
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "description": "Test query updated",
+  "labels": {}
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "roles": [
+          "roles/viewer",
+          "roles/iam.serviceAccountUser"
+        ]
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test query updated",
+  "labels": {
+    "test": "test"
+  },
+  "lastUpdateTime": "2025-03-08T06:48:52.704799Z",
+  "name": "projects/${projectNumber}/savedQueries/test-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "128653134652",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
