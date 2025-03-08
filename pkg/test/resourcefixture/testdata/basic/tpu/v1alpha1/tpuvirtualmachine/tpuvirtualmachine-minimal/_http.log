@@ -1,0 +1,543 @@
+GRPC /google.cloud.tpu.v2.Tpu/GetNode
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/CreateNode
+
+{
+  "node": {
+    "acceleratorType": "v5p-8",
+    "description": "Initial description",
+    "runtimeVersion": "tpu-vm-cos-stable"
+  },
+  "nodeId": "tpuvirtualmachine-minimal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1-a"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.tpu.v2.Node",
+    "acceleratorConfig": {
+      "topology": "2x2x1",
+      "type": "V5P"
+    },
+    "acceleratorType": "v5p-8",
+    "apiVersion": "V2",
+    "cidrBlock": "10.20.30.0/24",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "id": "000000000000000000000",
+    "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "networkConfig": {
+      "network": "projects/${projectId}/global/networks/default",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+    },
+    "networkEndpoints": [
+      {
+        "accessConfig": {},
+        "ipAddress": "10.20.30.40",
+        "port": 8470
+      }
+    ],
+    "runtimeVersion": "tpu-vm-cos-stable",
+    "schedulingConfig": {},
+    "serviceAccount": {
+      "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "scope": [
+        "https://www.googleapis.com/auth/devstorage.read_write",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/service.management",
+        "https://www.googleapis.com/auth/servicecontrol",
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/pubsub"
+      ]
+    },
+    "shieldedInstanceConfig": {},
+    "state": "READY"
+  }
+}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/GetNode
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+  "networkConfig": {
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {},
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/GetNode
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+  "networkConfig": {
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {},
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/UpdateNode
+
+{
+  "node": {
+    "acceleratorType": "v5p-8",
+    "description": "Updated description",
+    "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "runtimeVersion": "tpu-vm-cos-stable"
+  },
+  "updateMask": "description"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.tpu.v2.Node",
+    "acceleratorConfig": {
+      "topology": "2x2x1",
+      "type": "V5P"
+    },
+    "acceleratorType": "v5p-8",
+    "apiVersion": "V2",
+    "cidrBlock": "10.20.30.0/24",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "health": "HEALTHY",
+    "id": "000000000000000000000",
+    "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "networkConfig": {
+      "network": "projects/${projectId}/global/networks/default",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+    },
+    "networkEndpoints": [
+      {
+        "accessConfig": {},
+        "ipAddress": "10.20.30.40",
+        "port": 8470
+      }
+    ],
+    "runtimeVersion": "tpu-vm-cos-stable",
+    "schedulingConfig": {},
+    "serviceAccount": {
+      "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "scope": [
+        "https://www.googleapis.com/auth/devstorage.read_write",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/service.management",
+        "https://www.googleapis.com/auth/servicecontrol",
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/pubsub"
+      ]
+    },
+    "shieldedInstanceConfig": {},
+    "state": "READY"
+  }
+}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/GetNode
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+  "networkConfig": {
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {},
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/GetNode
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+  "networkConfig": {
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {},
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/GetNode
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+  "networkConfig": {
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {},
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/GetNode
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "acceleratorConfig": {
+    "topology": "2x2x1",
+    "type": "V5P"
+  },
+  "acceleratorType": "v5p-8",
+  "apiVersion": "V2",
+  "cidrBlock": "10.20.30.0/24",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "health": "HEALTHY",
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+  "networkConfig": {
+    "network": "projects/${projectId}/global/networks/default",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "networkEndpoints": [
+    {
+      "accessConfig": {},
+      "ipAddress": "10.20.30.40",
+      "port": 8470
+    }
+  ],
+  "runtimeVersion": "tpu-vm-cos-stable",
+  "schedulingConfig": {},
+  "serviceAccount": {
+    "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "scope": [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/pubsub"
+    ]
+  },
+  "shieldedInstanceConfig": {},
+  "state": "READY"
+}
+
+---
+
+GRPC /google.cloud.tpu.v2.Tpu/DeleteNode
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v2",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/nodes/tpuvirtualmachine-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

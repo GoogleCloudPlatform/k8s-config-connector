@@ -1,0 +1,31 @@
+apiVersion: tpu.cnrm.cloud.google.com/v1alpha1
+kind: TPUVirtualMachine
+metadata:
+  name: tpuvirtualmachine-minimal-${uniqueId}
+spec:
+  acceleratorConfig:
+    topology: 2x2x1
+    type: V5P
+  acceleratorType: v5p-8
+  cidrBlock: 10.32.0.0/20
+  description: Updated description
+  networkConfig:
+    networkRef:
+      external: projects/${projectId}/global/networks/default
+    subnetworkRef:
+      external: projects/${projectId}/regions/us-central1/subnetworks/default
+  projectRef:
+    external: ${projectId}
+  runtimeVersion: tpu-vm-cos-stable
+  schedulingConfig: {}
+  serviceAccount:
+    scope:
+    - https://www.googleapis.com/auth/devstorage.read_write
+    - https://www.googleapis.com/auth/logging.write
+    - https://www.googleapis.com/auth/service.management
+    - https://www.googleapis.com/auth/servicecontrol
+    - https://www.googleapis.com/auth/cloud-platform
+    - https://www.googleapis.com/auth/pubsub
+    serviceAccountRef:
+      external: ${projectNumber}-compute@developer.gserviceaccount.com
+  shieldedInstanceConfig: {}
