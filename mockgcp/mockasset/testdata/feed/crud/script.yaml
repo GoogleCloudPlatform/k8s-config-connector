@@ -1,0 +1,7 @@
+
+- pre: gcloud pubsub topics create test-topic-${uniqueId} --project=${projectId}
+- exec: gcloud asset feeds create test-${uniqueId} --pubsub-topic=projects/${projectId}/topics/test-topic-${uniqueId} --project=${projectId} --asset-types=compute.googleapis.com/Disk --content-type=resource
+- exec: gcloud asset feeds describe test-${uniqueId} --project=${projectId}
+- exec: gcloud asset feeds update test-${uniqueId} --project=${projectId} --content-type=iam-policy
+- exec: gcloud asset feeds delete test-${uniqueId} --project=${projectId}
+- post: gcloud pubsub topics delete test-topic-${uniqueId} --project=${projectId}
