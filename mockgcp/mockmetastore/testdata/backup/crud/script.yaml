@@ -1,0 +1,6 @@
+- pre: gcloud metastore services create test-service-${uniqueId} --location=us-central1
+- exec: gcloud metastore services backups create test-backup-${uniqueId} --location=us-central1 --service=test-service-${uniqueId}
+- exec: gcloud metastore services backups list --location=us-central1 --service=test-service-${uniqueId}
+- exec: gcloud metastore services backups describe test-backup-${uniqueId} --location=us-central1 --service=test-service-${uniqueId}
+- exec: gcloud metastore services backups delete test-backup-${uniqueId} --location=us-central1 --service=test-service-${uniqueId} --async
+- post: gcloud metastore services delete test-service-${uniqueId} --location=us-central1 --async
