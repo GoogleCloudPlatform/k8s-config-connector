@@ -14,7 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.aiplatform.v1beta1.Featurestore
-// api.group: aiplatform.cnrm.cloud.google.com
+// api.group: vertexai.cnrm.cloud.google.com
 
 package vertexai
 
