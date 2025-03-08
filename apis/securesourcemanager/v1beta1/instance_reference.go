@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -49,7 +49,7 @@ type SecureSourceManagerInstanceRef struct {
 }
 
 func ParseSecureSourceManagerInstanceRef(url string) (*SecureSourceManagerInstanceRef, error) {
-	parent, resourceID, err := parseSecureSourceManagerExternal(url)
+	parent, resourceID, err := parseSecureSourceManagerInstanceExternal(url)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func ParseSecureSourceManagerInstanceRef(url string) (*SecureSourceManagerInstan
 	return &SecureSourceManagerInstanceRef{External: external}, nil
 }
 
-func parseSecureSourceManagerExternal(external string) (*ProjectIDAndLocation, string, error) {
+func parseSecureSourceManagerInstanceExternal(external string) (*ProjectIDAndLocation, string, error) {
 	s := external
 	s = strings.TrimPrefix(s, "/")
 	s = strings.TrimPrefix(s, "securesourcemanager.googleapis.com/")
@@ -81,11 +81,11 @@ func (r *SecureSourceManagerInstanceRef) ConvertToProjectNumber(ctx context.Cont
 		return nil
 	}
 
-	parent, id, err := parseSecureSourceManagerExternal(r.External)
+	parent, id, err := parseSecureSourceManagerInstanceExternal(r.External)
 
 	// Check if the project number is already a valid integer
 	// If not, we need to look it up
-	projectNumber, err := strconv.ParseInt(id, 10, 64)
+	projectNumber, err := strconv.ParseInt(parent.ProjectID, 10, 64)
 	if err != nil {
 		req := &resourcemanagerpb.GetProjectRequest{
 			Name: "projects/" + parent.ProjectID,
@@ -176,7 +176,7 @@ func NewSecureSourceManagerInstanceRef(ctx context.Context, reader client.Reader
 	}
 
 	// Validate desired with actual
-	actualParent, actualResourceID, err := parseSecureSourceManagerExternal(externalRef)
+	actualParent, actualResourceID, err := parseSecureSourceManagerInstanceExternal(externalRef)
 	if err != nil {
 		return nil, err
 	}
@@ -199,7 +199,7 @@ func (r *SecureSourceManagerInstanceRef) Parent() (*ProjectIDAndLocation, error)
 		return nil, fmt.Errorf("reference has not been normalized (external is empty)")
 	}
 
-	parent, _, err := parseSecureSourceManagerExternal(r.External)
+	parent, _, err := parseSecureSourceManagerInstanceExternal(r.External)
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +211,7 @@ func (r *SecureSourceManagerInstanceRef) ResourceID() (string, error) {
 		return "", fmt.Errorf("reference has not been normalized (external is empty)")
 	}
 
-	_, resourceID, err := parseSecureSourceManagerExternal(r.External)
+	_, resourceID, err := parseSecureSourceManagerInstanceExternal(r.External)
 	if err != nil {
 		return "", err
 	}

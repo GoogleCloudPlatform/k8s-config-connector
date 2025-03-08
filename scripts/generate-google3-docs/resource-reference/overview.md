@@ -794,6 +794,14 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md">SecretManagerSecretVersion</a></td>
 </tr>
 <tr>
+  <td><a href="/secure-source-manager/docs/">{{secure_source_manager_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerinstance.md">SecureSourceManagerInstance</a></td>
+</tr>
+<tr>
+  <td><a href="/secure-source-manager/docs/">{{secure_source_manager_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerrepository.md">SecureSourceManagerRepository</a></td>
+</tr>
+<tr>
   <td><a href="/service-directory/docs/">{{sd_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/servicedirectory/servicedirectoryendpoint.md">ServiceDirectoryEndpoint</a></td>
 </tr>
