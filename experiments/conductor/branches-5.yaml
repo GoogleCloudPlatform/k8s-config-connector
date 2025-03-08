@@ -1,0 +1,1054 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+branches:
+    - name: accessapproval-approvalrequest
+      local: resource-accessapproval-approvalrequest
+      remote: resource-accessapproval-approvalrequest
+      command: gcloud access-approval requests
+      group: accessapproval
+      resource: approvalrequest
+      controller: Unknown
+      kind: AccessApprovalApprovalRequest
+      package: google.cloud.accessapproval.v1
+      proto: ApprovalRequest
+      proto-path: google/cloud/accessapproval/v1/accessapproval.proto
+      proto-service: ""
+      proto-msg: google.cloud.accessapproval.v1.ApprovalRequest
+      host-name: ""
+      notes:
+        - No gcloud command found
+    - name: accessapproval-accessapprovalsettings
+      local: resource-accessapproval-accessapprovalsettings
+      remote: resource-accessapproval-accessapprovalsettings
+      command: gcloud access-approval settings
+      group: accessapproval
+      resource: accessapprovalsettings
+      controller: Unknown
+      kind: AccessApprovalAccessApprovalSettings
+      package: google.cloud.accessapproval.v1
+      proto: AccessApprovalSettings
+      proto-path: google/cloud/accessapproval/v1/accessapproval.proto
+      proto-service: ""
+      proto-msg: google.cloud.accessapproval.v1.AccessApprovalSettings
+      host-name: ""
+      notes:
+        - No gcloud command found
+    - name: accessapproval-accessapprovalserviceaccount
+      local: resource-accessapproval-accessapprovalserviceaccount
+      remote: resource-accessapproval-accessapprovalserviceaccount
+      command: gcloud access-approval service-account
+      group: accessapproval
+      resource: accessapprovalserviceaccount
+      controller: Unknown
+      kind: AccessApprovalAccessApprovalServiceAccount
+      package: google.cloud.accessapproval.v1
+      proto: AccessApprovalServiceAccount
+      proto-path: google/cloud/accessapproval/v1/accessapproval.proto
+      proto-service: ""
+      proto-msg: google.cloud.accessapproval.v1.AccessApprovalServiceAccount
+      host-name: ""
+      notes:
+        - No gcloud command found
+    - name: backupdr-managementserver
+      local: resource-backupdr-managementserver
+      remote: resource-backupdr-managementserver
+      command: gcloud backup-dr management-servers
+      group: backupdr
+      resource: managementserver
+      controller: Unknown
+      kind: BackupDRManagementServer
+      package: google.cloud.backupdr.v1
+      proto: ManagementServer
+      proto-path: google/cloud/backupdr/v1/backupdr.proto
+      proto-service: ""
+      proto-msg: google.cloud.backupdr.v1.ManagementServer
+      host-name: ""
+      notes: []
+    - name: backupdr-backupplan
+      local: resource-backupdr-backupplan
+      remote: resource-backupdr-backupplan
+      command: gcloud backup-dr backup-plans
+      group: backupdr
+      resource: backupplan
+      controller: Unknown
+      kind: BackupDRBackupPlan
+      package: google.cloud.backupdr.v1
+      proto: BackupPlan
+      proto-path: google/cloud/backupdr/v1/backupdr.proto
+      proto-service: ""
+      proto-msg: google.cloud.backupdr.v1.BackupPlan
+      host-name: ""
+      notes: []
+    - name: backupdr-backupplanassociation
+      local: resource-backupdr-backupplanassociation
+      remote: resource-backupdr-backupplanassociation
+      command: gcloud backup-dr backup-plan-associations
+      group: backupdr
+      resource: backupplanassociation
+      controller: Unknown
+      kind: BackupDRBackupPlanAssociation
+      package: google.cloud.backupdr.v1
+      proto: BackupPlanAssociation
+      proto-path: google/cloud/backupdr/v1/backupdr.proto
+      proto-service: ""
+      proto-msg: google.cloud.backupdr.v1.BackupPlanAssociation
+      host-name: ""
+      notes: []
+    - name: backupdr-backupvault
+      local: resource-backupdr-backupvault
+      remote: resource-backupdr-backupvault
+      command: gcloud backup-dr backup-vaults
+      group: backupdr
+      resource: backupvault
+      controller: Unknown
+      kind: BackupDRBackupVault
+      package: google.cloud.backupdr.v1
+      proto: BackupVault
+      proto-path: google/cloud/backupdr/v1/backupdr.proto
+      proto-service: ""
+      proto-msg: google.cloud.backupdr.v1.BackupVault
+      host-name: ""
+      notes: []
+    - name: backupdr-datasource
+      local: resource-backupdr-datasource
+      remote: resource-backupdr-datasource
+      command: gcloud backup-dr data-sources
+      group: backupdr
+      resource: datasource
+      controller: Unknown
+      kind: BackupDRDataSource
+      package: google.cloud.backupdr.v1
+      proto: DataSource
+      proto-path: google/cloud/backupdr/v1/backupdr.proto
+      proto-service: ""
+      proto-msg: google.cloud.backupdr.v1.DataSource
+      host-name: ""
+      notes: []
+    - name: backupdr-backup
+      local: resource-backupdr-backup
+      remote: resource-backupdr-backup
+      command: gcloud backup-dr backups
+      group: backupdr
+      resource: backup
+      controller: Unknown
+      kind: BackupDRBackup
+      package: google.cloud.backupdr.v1
+      proto: Backup
+      proto-path: google/cloud/backupdr/v1/backupdr.proto
+      proto-service: ""
+      proto-msg: google.cloud.backupdr.v1.Backup
+      host-name: ""
+      notes: []
+    - name: datastream-privateconnection
+      local: resource-datastream-privateconnection
+      remote: resource-datastream-privateconnection
+      command: gcloud datastream private-connections
+      group: datastream
+      resource: privateconnection
+      controller: Unknown
+      kind: DatastreamPrivateConnection
+      package: google.cloud.datastream.v1
+      proto: PrivateConnection
+      proto-path: google/cloud/datastream/v1/datastream.proto
+      proto-service: ""
+      proto-msg: google.cloud.datastream.v1.PrivateConnection
+      host-name: ""
+      notes: []
+    - name: datastream-route
+      local: resource-datastream-route
+      remote: resource-datastream-route
+      command: gcloud datastream routes
+      group: datastream
+      resource: route
+      controller: Unknown
+      kind: DatastreamRoute
+      package: google.cloud.datastream.v1
+      proto: Route
+      proto-path: google/cloud/datastream/v1/datastream.proto
+      proto-service: ""
+      proto-msg: google.cloud.datastream.v1.Route
+      host-name: ""
+      notes: []
+    - name: datastream-connectionprofile
+      local: resource-datastream-connectionprofile
+      remote: resource-datastream-connectionprofile
+      command: gcloud datastream connection-profiles
+      group: datastream
+      resource: connectionprofile
+      controller: Unknown
+      kind: DatastreamConnectionProfile
+      package: google.cloud.datastream.v1
+      proto: ConnectionProfile
+      proto-path: google/cloud/datastream/v1/datastream.proto
+      proto-service: ""
+      proto-msg: google.cloud.datastream.v1.ConnectionProfile
+      host-name: ""
+      notes: []
+    - name: datastream-stream
+      local: resource-datastream-stream
+      remote: resource-datastream-stream
+      command: gcloud datastream streams
+      group: datastream
+      resource: stream
+      controller: Unknown
+      kind: DatastreamStream
+      package: google.cloud.datastream.v1
+      proto: Stream
+      proto-path: google/cloud/datastream/v1/datastream.proto
+      proto-service: ""
+      proto-msg: google.cloud.datastream.v1.Stream
+      host-name: ""
+      notes: []
+    - name: gkebackup-backup
+      local: resource-gkebackup-backup
+      remote: resource-gkebackup-backup
+      command: gcloud beta container backup-restore backups
+      group: gkebackup
+      resource: backup
+      controller: Unknown
+      kind: GKEBackupBackup
+      package: google.cloud.gkebackup.v1
+      proto: Backup
+      proto-path: google/cloud/gkebackup/v1/gkebackup.proto
+      proto-service: ""
+      proto-msg: google.cloud.gkebackup.v1.Backup
+      host-name: ""
+      notes: []
+    - name: gkebackup-backupplan
+      local: resource-gkebackup-backupplan
+      remote: resource-gkebackup-backupplan
+      command: gcloud beta container backup-restore backup-plans
+      group: gkebackup
+      resource: backupplan
+      controller: Unknown
+      kind: GKEBackupBackupPlan
+      package: google.cloud.gkebackup.v1
+      proto: BackupPlan
+      proto-path: google/cloud/gkebackup/v1/gkebackup.proto
+      proto-service: ""
+      proto-msg: google.cloud.gkebackup.v1.BackupPlan
+      host-name: ""
+      notes: []
+    - name: gkebackup-restore
+      local: resource-gkebackup-restore
+      remote: resource-gkebackup-restore
+      command: gcloud beta container backup-restore restores
+      group: gkebackup
+      resource: restore
+      controller: Unknown
+      kind: GKEBackupRestore
+      package: google.cloud.gkebackup.v1
+      proto: Restore
+      proto-path: google/cloud/gkebackup/v1/gkebackup.proto
+      proto-service: ""
+      proto-msg: google.cloud.gkebackup.v1.Restore
+      host-name: ""
+      notes: []
+    - name: gkebackup-restoreplan
+      local: resource-gkebackup-restoreplan
+      remote: resource-gkebackup-restoreplan
+      command: gcloud beta container backup-restore restore-plans
+      group: gkebackup
+      resource: restoreplan
+      controller: Unknown
+      kind: GKEBackupRestorePlan
+      package: google.cloud.gkebackup.v1
+      proto: RestorePlan
+      proto-path: google/cloud/gkebackup/v1/gkebackup.proto
+      proto-service: ""
+      proto-msg: google.cloud.gkebackup.v1.RestorePlan
+      host-name: ""
+      notes: []
+    - name: gkebackup-volumebackup
+      local: resource-gkebackup-volumebackup
+      remote: resource-gkebackup-volumebackup
+      command: gcloud beta container backup-restore volume-backups
+      group: gkebackup
+      resource: volumebackup
+      controller: Unknown
+      kind: GKEBackupVolumeBackup
+      package: google.cloud.gkebackup.v1
+      proto: VolumeBackup
+      proto-path: google/cloud/gkebackup/v1/gkebackup.proto
+      proto-service: ""
+      proto-msg: google.cloud.gkebackup.v1.VolumeBackup
+      host-name: ""
+      notes: []
+    - name: gkebackup-volumerestore
+      local: resource-gkebackup-volumerestore
+      remote: resource-gkebackup-volumerestore
+      command: gcloud beta container backup-restore volume-restores
+      group: gkebackup
+      resource: volumerestore
+      controller: Unknown
+      kind: GKEBackupVolumeRestore
+      package: google.cloud.gkebackup.v1
+      proto: VolumeRestore
+      proto-path: google/cloud/gkebackup/v1/gkebackup.proto
+      proto-service: ""
+      proto-msg: google.cloud.gkebackup.v1.VolumeRestore
+      host-name: ""
+      notes: []
+    - name: networksecurity-authorizationpolicy
+      local: resource-networksecurity-authorizationpolicy
+      remote: resource-networksecurity-authorizationpolicy
+      command: gcloud network-security authorization-policies
+      group: networksecurity
+      resource: authorizationpolicy
+      controller: Unknown
+      kind: NetworkSecurityAuthorizationPolicy
+      package: google.cloud.networksecurity.v1
+      proto: AuthorizationPolicy
+      proto-path: google/cloud/networksecurity/v1/network_security.proto
+      proto-service: ""
+      proto-msg: google.cloud.networksecurity.v1.AuthorizationPolicy
+      host-name: ""
+      notes: []
+    - name: networksecurity-clienttlspolicy
+      local: resource-networksecurity-clienttlspolicy
+      remote: resource-networksecurity-clienttlspolicy
+      command: gcloud network-security client-tls-policies
+      group: networksecurity
+      resource: clienttlspolicy
+      controller: Unknown
+      kind: NetworkSecurityClientTlsPolicy
+      package: google.cloud.networksecurity.v1
+      proto: ClientTlsPolicy
+      proto-path: google/cloud/networksecurity/v1/network_security.proto
+      proto-service: ""
+      proto-msg: google.cloud.networksecurity.v1.ClientTlsPolicy
+      host-name: ""
+      notes: []
+    - name: networksecurity-servertlspolicy
+      local: resource-networksecurity-servertlspolicy
+      remote: resource-networksecurity-servertlspolicy
+      command: gcloud network-security server-tls-policies
+      group: networksecurity
+      resource: servertlspolicy
+      controller: Unknown
+      kind: NetworkSecurityServerTlsPolicy
+      package: google.cloud.networksecurity.v1
+      proto: ServerTlsPolicy
+      proto-path: google/cloud/networksecurity/v1/network_security.proto
+      proto-service: ""
+      proto-msg: google.cloud.networksecurity.v1.ServerTlsPolicy
+      host-name: ""
+      notes: []
+    - name: privilegedaccessmanager-grant
+      local: resource-privilegedaccessmanager-grant
+      remote: resource-privilegedaccessmanager-grant
+      command: gcloud pam grants
+      group: privilegedaccessmanager
+      resource: grant
+      controller: Unknown
+      kind: PrivilegedAccessManagerGrant
+      package: google.cloud.privilegedaccessmanager.v1
+      proto: Grant
+      proto-path: google/cloud/privilegedaccessmanager/v1/privilegedaccessmanager.proto
+      proto-service: ""
+      proto-msg: google.cloud.privilegedaccessmanager.v1.Grant
+      host-name: ""
+      notes: []
+    - name: resourcemanager-folder
+      local: resource-resourcemanager-folder
+      remote: resource-resourcemanager-folder
+      command: gcloud resource-manager folders
+      group: resourcemanager
+      resource: folders
+      controller: terraform
+      kind: ResourceManagerFolder
+      package: google.cloud.resourcemanager.v3
+      proto: Folder
+      proto-path: google/cloud/resourcemanager/v3/folders.proto
+      proto-service: ""
+      proto-msg: google.cloud.resourcemanager.v3.Folder
+      host-name: ""
+      notes: []
+    - name: run-job
+      local: resource-run-job
+      remote: resource-run-job
+      command: gcloud run jobs
+      group: run
+      resource: job
+      controller: Unknown
+      kind: RunJob
+      package: google.cloud.run.v2
+      proto: Job
+      proto-path: google/cloud/run/v2/job.proto
+      proto-service: ""
+      proto-msg: google.cloud.run.v2.Job
+      host-name: ""
+      notes: []
+    - name: run-revision
+      local: resource-run-revision
+      remote: resource-run-revision
+      command: gcloud run revisions
+      group: run
+      resource: revision
+      controller: Unknown
+      kind: RunRevision
+      package: google.cloud.run.v2
+      proto: Revision
+      proto-path: google/cloud/run/v2/revision.proto
+      proto-service: ""
+      proto-msg: google.cloud.run.v2.Revision
+      host-name: ""
+      notes: []
+    - name: run-service
+      local: resource-run-service
+      remote: resource-run-service
+      command: gcloud run services
+      group: run
+      resource: service
+      controller: Unknown
+      kind: RunService
+      package: google.cloud.run.v2
+      proto: Service
+      proto-path: google/cloud/run/v2/service.proto
+      proto-service: ""
+      proto-msg: google.cloud.run.v2.Service
+      host-name: ""
+      notes: []
+    - name: speech-recognizer
+      local: resource-speech-recognizer
+      remote: resource-speech-recognizer
+      command: gcloud ml speech recognizers
+      group: speech
+      resource: recognizer
+      controller: Unknown
+      kind: SpeechRecognizer
+      package: google.cloud.speech.v2
+      proto: Recognizer
+      proto-path: google/cloud/speech/v2/cloud_speech.proto
+      proto-service: ""
+      proto-msg: google.cloud.speech.v2.Recognizer
+      host-name: ""
+      notes: []
+    - name: vmwareengine-privatecloud
+      local: resource-vmwareengine-privatecloud
+      remote: resource-vmwareengine-privatecloud
+      command: gcloud vmware private-clouds
+      group: vmwareengine
+      resource: privatecloud
+      controller: Unknown
+      kind: VMwareEnginePrivateCloud
+      package: google.cloud.vmwareengine.v1
+      proto: PrivateCloud
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.PrivateCloud
+      host-name: ""
+      notes: []
+    - name: vmwareengine-nodetype
+      local: resource-vmwareengine-nodetype
+      remote: resource-vmwareengine-nodetype
+      command: gcloud vmware node-types
+      group: vmwareengine
+      resource: nodetype
+      controller: Unknown
+      kind: VMwareEngineNodeType
+      package: google.cloud.vmwareengine.v1
+      proto: NodeType
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.NodeType
+      host-name: ""
+      notes: []
+    - name: vmwareengine-networkpeering
+      local: resource-vmwareengine-networkpeering
+      remote: resource-vmwareengine-networkpeering
+      command: gcloud vmware network-peerings
+      group: vmwareengine
+      resource: networkpeering
+      controller: Unknown
+      kind: VMwareEngineNetworkPeering
+      package: google.cloud.vmwareengine.v1
+      proto: NetworkPeering
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.NetworkPeering
+      host-name: ""
+      notes: []
+    - name: vmwareengine-networkpolicy
+      local: resource-vmwareengine-networkpolicy
+      remote: resource-vmwareengine-networkpolicy
+      command: gcloud vmware network-policies
+      group: vmwareengine
+      resource: networkpolicy
+      controller: Unknown
+      kind: VMwareEngineNetworkPolicy
+      package: google.cloud.vmwareengine.v1
+      proto: NetworkPolicy
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.NetworkPolicy
+      host-name: ""
+      notes: []
+    - name: vmwareengine-privateconnection
+      local: resource-vmwareengine-privateconnection
+      remote: resource-vmwareengine-privateconnection
+      command: gcloud vmware private-connections
+      group: vmwareengine
+      resource: privateconnection
+      controller: Unknown
+      kind: VMwareEnginePrivateConnection
+      package: google.cloud.vmwareengine.v1
+      proto: PrivateConnection
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.PrivateConnection
+      host-name: ""
+      notes: []
+    - name: vmwareengine-dnsbindpermission
+      local: resource-vmwareengine-dnsbindpermission
+      remote: resource-vmwareengine-dnsbindpermission
+      command: gcloud vmware dns-bind-permission
+      group: vmwareengine
+      resource: dnsbindpermission
+      controller: Unknown
+      kind: VMwareEngineDnsBindPermission
+      package: google.cloud.vmwareengine.v1
+      proto: DnsBindPermission
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.DnsBindPermission
+      host-name: ""
+      notes: []
+    - name: backupdr-locations
+      local: resource-backupdr-locations
+      remote: resource-backupdr-locations
+      command: gcloud backup-dr locations
+      group: backupdr
+      resource: locations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: backupdr-operations
+      local: resource-backupdr-operations
+      remote: resource-backupdr-operations
+      command: gcloud backup-dr operations
+      group: backupdr
+      resource: operations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: datastream-locations
+      local: resource-datastream-locations
+      remote: resource-datastream-locations
+      command: gcloud datastream locations
+      group: datastream
+      resource: locations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: datastream-objects
+      local: resource-datastream-objects
+      remote: resource-datastream-objects
+      command: gcloud datastream objects
+      group: datastream
+      resource: objects
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: datastream-operations
+      local: resource-datastream-operations
+      remote: resource-datastream-operations
+      command: gcloud datastream operations
+      group: datastream
+      resource: operations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: gkebackup-locations
+      local: resource-gkebackup-locations
+      remote: resource-gkebackup-locations
+      command: gcloud beta container backup-restore locations
+      group: gkebackup
+      resource: locations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: gkebackup-operations
+      local: resource-gkebackup-operations
+      remote: resource-gkebackup-operations
+      command: gcloud beta container backup-restore operations
+      group: gkebackup
+      resource: operations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-addressgroups
+      local: resource-networksecurity-addressgroups
+      remote: resource-networksecurity-addressgroups
+      command: gcloud network-security address-groups
+      group: networksecurity
+      resource: addressgroups
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-firewallendpointassociations
+      local: resource-networksecurity-firewallendpointassociations
+      remote: resource-networksecurity-firewallendpointassociations
+      command: gcloud network-security firewall-endpoint-associations
+      group: networksecurity
+      resource: firewallendpointassociations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-firewallendpoints
+      local: resource-networksecurity-firewallendpoints
+      remote: resource-networksecurity-firewallendpoints
+      command: gcloud network-security firewall-endpoints
+      group: networksecurity
+      resource: firewallendpoints
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-gatewaysecuritypolicies
+      local: resource-networksecurity-gatewaysecuritypolicies
+      remote: resource-networksecurity-gatewaysecuritypolicies
+      command: gcloud network-security gateway-security-policies
+      group: networksecurity
+      resource: gatewaysecuritypolicies
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-orgaddressgroups
+      local: resource-networksecurity-orgaddressgroups
+      remote: resource-networksecurity-orgaddressgroups
+      command: gcloud network-security org-address-groups
+      group: networksecurity
+      resource: orgaddressgroups
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-securityprofilegroups
+      local: resource-networksecurity-securityprofilegroups
+      remote: resource-networksecurity-securityprofilegroups
+      command: gcloud network-security security-profile-groups
+      group: networksecurity
+      resource: securityprofilegroups
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-securityprofiles
+      local: resource-networksecurity-securityprofiles
+      remote: resource-networksecurity-securityprofiles
+      command: gcloud network-security security-profiles
+      group: networksecurity
+      resource: securityprofiles
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-tlsinspectionpolicies
+      local: resource-networksecurity-tlsinspectionpolicies
+      remote: resource-networksecurity-tlsinspectionpolicies
+      command: gcloud network-security tls-inspection-policies
+      group: networksecurity
+      resource: tlsinspectionpolicies
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-urllists
+      local: resource-networksecurity-urllists
+      remote: resource-networksecurity-urllists
+      command: gcloud network-security url-lists
+      group: networksecurity
+      resource: urllists
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-mirroringdeploymentgroups
+      local: resource-networksecurity-mirroringdeploymentgroups
+      remote: resource-networksecurity-mirroringdeploymentgroups
+      command: gcloud network-security mirroring-deployment-groups
+      group: networksecurity
+      resource: mirroringdeploymentgroups
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-mirroringdeployments
+      local: resource-networksecurity-mirroringdeployments
+      remote: resource-networksecurity-mirroringdeployments
+      command: gcloud network-security mirroring-deployments
+      group: networksecurity
+      resource: mirroringdeployments
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-mirroringendpointgroupassociations
+      local: resource-networksecurity-mirroringendpointgroupassociations
+      remote: resource-networksecurity-mirroringendpointgroupassociations
+      command: gcloud network-security mirroring-endpoint-group-associations
+      group: networksecurity
+      resource: mirroringendpointgroupassociations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: networksecurity-mirroringendpointgroups
+      local: resource-networksecurity-mirroringendpointgroups
+      remote: resource-networksecurity-mirroringendpointgroups
+      command: gcloud network-security mirroring-endpoint-groups
+      group: networksecurity
+      resource: mirroringendpointgroups
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: privilegedaccessmanager-entitlements
+      local: resource-privilegedaccessmanager-entitlements
+      remote: resource-privilegedaccessmanager-entitlements
+      command: gcloud pam entitlements
+      group: privilegedaccessmanager
+      resource: entitlements
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: privilegedaccessmanager-operations
+      local: resource-privilegedaccessmanager-operations
+      remote: resource-privilegedaccessmanager-operations
+      command: gcloud pam operations
+      group: privilegedaccessmanager
+      resource: operations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: resourcemanager-orgpolicies
+      local: resource-resourcemanager-orgpolicies
+      remote: resource-resourcemanager-orgpolicies
+      command: gcloud resource-manager org-policies
+      group: resourcemanager
+      resource: orgpolicies
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: resourcemanager-tags
+      local: resource-resourcemanager-tags
+      remote: resource-resourcemanager-tags
+      command: gcloud resource-manager tags
+      group: resourcemanager
+      resource: tags
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: run-domainmappings
+      local: resource-run-domainmappings
+      remote: resource-run-domainmappings
+      command: gcloud run domain-mappings
+      group: run
+      resource: domainmappings
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: run-regions
+      local: resource-run-regions
+      remote: resource-run-regions
+      command: gcloud run regions
+      group: run
+      resource: regions
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: speech-operations
+      local: resource-speech-operations
+      remote: resource-speech-operations
+      command: gcloud ml speech operations
+      group: speech
+      resource: operations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: vmwareengine-locations
+      local: resource-vmwareengine-locations
+      remote: resource-vmwareengine-locations
+      command: gcloud vmware locations
+      group: vmwareengine
+      resource: locations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: vmwareengine-networks
+      local: resource-vmwareengine-networks
+      remote: resource-vmwareengine-networks
+      command: gcloud vmware networks
+      group: vmwareengine
+      resource: networks
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: vmwareengine-operations
+      local: resource-vmwareengine-operations
+      remote: resource-vmwareengine-operations
+      command: gcloud vmware operations
+      group: vmwareengine
+      resource: operations
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: inframanager-deployments
+      local: resource-inframanager-deployments
+      remote: resource-inframanager-deployments
+      command: gcloud infra-manager deployments
+      group: inframanager
+      resource: inframanager-deployments
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: inframanager-previews
+      local: resource-inframanager-previews
+      remote: resource-inframanager-previews
+      command: gcloud infra-manager previews
+      group: inframanager
+      resource: inframanager-previews
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: components-repositories
+      local: resource-components-repositories
+      remote: resource-components-repositories
+      command: gcloud components repositories
+      group: components
+      resource: repositories
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: composer-environments
+      local: resource-composer-environments
+      remote: resource-composer-environments
+      command: gcloud composer environments
+      group: composer
+      resource: environments
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+    - name: composer-operations
+      local: resource-composer-operations
+      remote: resource-composer-operations
+      command: gcloud composer operations
+      group: composer
+      resource: operations
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+
