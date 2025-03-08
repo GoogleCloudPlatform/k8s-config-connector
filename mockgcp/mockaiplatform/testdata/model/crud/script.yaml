@@ -1,0 +1,3 @@
+- exec: gcloud ai-platform models create test${uniqueId} --region=us-central1
+- exec: gcloud ai-platform models describe test${uniqueId} --region=us-central1
+- exec: gcloud ai-platform models delete test${uniqueId} --region=us-central1
