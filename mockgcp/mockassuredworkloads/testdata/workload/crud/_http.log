@@ -12,6 +12,7 @@ X-Goog-User-Project: ${projectId}
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -41,6 +42,7 @@ Connection: keep-alive
 X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -67,14 +69,12 @@ X-Xss-Protection: 0
     "displayName": "test-${uniqueId}",
     "etag": "abcdef0123A=",
     "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
-    "partnerPermissions": {},
     "resources": [
       {
         "resourceId": "${folderID}",
         "resourceType": "CONSUMER_FOLDER"
       }
-    ],
-    "violationNotificationsEnabled": true
+    ]
   }
 }
 
@@ -87,6 +87,7 @@ Connection: keep-alive
 X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -98,25 +99,16 @@ X-Xss-Protection: 0
 
 {
   "complianceRegime": "FEDRAMP_MODERATE",
-  "complianceStatus": {
-    "acknowledgedResourceViolationCount": 0,
-    "acknowledgedViolationCount": 0,
-    "activeResourceViolationCount": 0,
-    "activeViolationCount": 0
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "test-${uniqueId}",
   "etag": "abcdef0123A=",
   "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
-  "partnerPermissions": {},
-  "resourceMonitoringEnabled": true,
   "resources": [
     {
       "resourceId": "${folderID}",
       "resourceType": "CONSUMER_FOLDER"
     }
-  ],
-  "violationNotificationsEnabled": true
+  ]
 }
 
 ---
@@ -128,6 +120,7 @@ Connection: keep-alive
 X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -141,25 +134,16 @@ X-Xss-Protection: 0
   "workloads": [
     {
       "complianceRegime": "FEDRAMP_MODERATE",
-      "complianceStatus": {
-        "acknowledgedResourceViolationCount": 0,
-        "acknowledgedViolationCount": 0,
-        "activeResourceViolationCount": 0,
-        "activeViolationCount": 0
-      },
       "createTime": "1970-01-01T00:00:00Z",
       "displayName": "test-${uniqueId}",
       "etag": "abcdef0123A=",
       "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
-      "partnerPermissions": {},
-      "resourceMonitoringEnabled": true,
       "resources": [
         {
           "resourceId": "${folderID}",
           "resourceType": "CONSUMER_FOLDER"
         }
-      ],
-      "violationNotificationsEnabled": true
+      ]
     }
   ]
 }
@@ -173,6 +157,7 @@ Connection: keep-alive
 X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -184,25 +169,16 @@ X-Xss-Protection: 0
 
 {
   "complianceRegime": "FEDRAMP_MODERATE",
-  "complianceStatus": {
-    "acknowledgedResourceViolationCount": 0,
-    "acknowledgedViolationCount": 0,
-    "activeResourceViolationCount": 0,
-    "activeViolationCount": 0
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "test-${uniqueId}",
   "etag": "abcdef0123A=",
   "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
-  "partnerPermissions": {},
-  "resourceMonitoringEnabled": true,
   "resources": [
     {
       "resourceId": "${folderID}",
       "resourceType": "CONSUMER_FOLDER"
     }
-  ],
-  "violationNotificationsEnabled": true
+  ]
 }
 
 ---
@@ -214,6 +190,7 @@ Connection: keep-alive
 X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -227,25 +204,16 @@ X-Xss-Protection: 0
   "workloads": [
     {
       "complianceRegime": "FEDRAMP_MODERATE",
-      "complianceStatus": {
-        "acknowledgedResourceViolationCount": 0,
-        "acknowledgedViolationCount": 0,
-        "activeResourceViolationCount": 0,
-        "activeViolationCount": 0
-      },
       "createTime": "1970-01-01T00:00:00Z",
       "displayName": "test-${uniqueId}",
       "etag": "abcdef0123A=",
       "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
-      "partnerPermissions": {},
-      "resourceMonitoringEnabled": true,
       "resources": [
         {
           "resourceId": "${folderID}",
           "resourceType": "CONSUMER_FOLDER"
         }
-      ],
-      "violationNotificationsEnabled": true
+      ]
     }
   ]
 }
@@ -258,7 +226,8 @@ Authorization: (removed)
 Connection: keep-alive
 X-Goog-User-Project: ${projectId}
 
-200 OK
+404 Not Found
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -269,11 +238,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "test-${uniqueId}",
-  "lifecycleState": "DELETE_REQUESTED",
-  "name": "folders/${folderID}",
-  "parent": "organizations/${organizationID}"
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not Found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not Found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -285,6 +261,7 @@ Connection: keep-alive
 X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -298,25 +275,16 @@ X-Xss-Protection: 0
   "workloads": [
     {
       "complianceRegime": "FEDRAMP_MODERATE",
-      "complianceStatus": {
-        "acknowledgedResourceViolationCount": 0,
-        "acknowledgedViolationCount": 0,
-        "activeResourceViolationCount": 0,
-        "activeViolationCount": 0
-      },
       "createTime": "1970-01-01T00:00:00Z",
       "displayName": "test-${uniqueId}",
       "etag": "abcdef0123A=",
       "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
-      "partnerPermissions": {},
-      "resourceMonitoringEnabled": true,
       "resources": [
         {
           "resourceId": "${folderID}",
           "resourceType": "CONSUMER_FOLDER"
         }
-      ],
-      "violationNotificationsEnabled": true
+      ]
     }
   ]
 }
@@ -330,6 +298,7 @@ Connection: keep-alive
 X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

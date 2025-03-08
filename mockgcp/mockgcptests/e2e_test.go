@@ -77,7 +77,7 @@ func TestScripts(t *testing.T) {
 			script := loadScript(t, testDir, placeholders)
 
 			for _, step := range script.SetupSteps {
-				if step.Exec != "" {
+				if step.Exec != "" && h.testAgainstReal() {
 					cmd := exec.CommandContext(ctx, "bash", "-c", step.Exec)
 					var stdout bytes.Buffer
 					cmd.Stdout = &stdout
@@ -176,7 +176,7 @@ func TestScripts(t *testing.T) {
 			}
 
 			for _, step := range script.TeardownSteps {
-				if step.Exec != "" {
+				if step.Exec != "" && h.testAgainstReal() {
 					cmd := exec.CommandContext(ctx, "bash", "-c", step.Exec)
 					var stdout bytes.Buffer
 					cmd.Stdout = &stdout

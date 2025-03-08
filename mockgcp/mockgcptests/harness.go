@@ -353,3 +353,7 @@ func (t *Harness) RunCommand(cmdline string) {
 		t.Fatalf("running command %q: %v", strings.Join(args, " "), err)
 	}
 }
+
+func (t *Harness) testAgainstReal() bool {
+	return t.MockGCP == nil
+}

@@ -12,20 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mock
+package mockassuredworkloads
 
 // +tool:mockgcp-service
-// http.host: 
-// proto.service: 
+// http.host: assuredworkloads.googleapis.com
+// proto.service:
 
 import (
 	"context"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"net/http"
 
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/assuredworkloads/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -42,21 +44,26 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
-		operations:   operations.NewOperationsService(storage),
+		operations:      operations.NewOperationsService(storage),
 	}
 	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{""}
+	return []string{"{region}-assuredworkloads.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
+	pb.RegisterAssuredWorkloadsServiceServer(grpcServer, &assuredWorkloadsV1Service{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := http.NewServeMux()
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb.RegisterAssuredWorkloadsServiceHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+	if err != nil {
+		return nil, err
+	}
+
 	return mux, nil
 }
-
-

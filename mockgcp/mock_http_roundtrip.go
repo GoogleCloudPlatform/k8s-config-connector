@@ -19,6 +19,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockassuredworkloads"
 	"io"
 	"log"
 	"net"
@@ -235,6 +236,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockdocumentai.New(env, storage))
 	services = append(services, mockapphub.New(env, storage))
 	services = append(services, mocktasks.New(env, storage))
+	services = append(services, mockassuredworkloads.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
