@@ -65,7 +65,15 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
 	typeMockGo     = "mockgo"
+	typeLog        = "log"
 )
+
+var readFuncs = map[string]func(opts *RunnerOptions, branch Branch){
+	typeScriptYaml: readScriptYaml,
+	typeHttpLog:    readHttpLog,
+	typeMockGo:     readMockGo,
+	typeLog:        readLog,
+}
 
 func BuildRunnerCmd() *cobra.Command {
 	var opts RunnerOptions
@@ -85,7 +93,7 @@ func BuildRunnerCmd() *cobra.Command {
 	cmd.Flags().StringVarP(&opts.branchRepoDir, branchRepoFlag,
 		"", "", "Directory in which to do the work.")
 	cmd.Flags().StringVarP(&opts.readFileType, readFileTypeFlag,
-		"", "ScriptYaml", "Type of files to read, available values: 'ScriptYaml', 'HttpLog', 'MockGo'.")
+		"", "ScriptYaml", "Type of files to read, available values: 'ScriptYaml', 'HttpLog', 'MockGo', 'log-[commandNumber]'.")
 	cmd.Flags().Int64VarP(&opts.command, commandFlag,
 		"", 0, "Which commands to you on the directory.")
 	cmd.Flags().StringVarP(&opts.loggingDir, loggingDirFlag,
@@ -255,16 +263,20 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			enableAPIs(opts, branch)
 		}
 	case cmdReadFiles: // 5
-		readFuncs := map[string]func(*RunnerOptions, Branch){
-			typeScriptYaml: readScriptYaml,
-			typeHttpLog:    readHttpLog,
-			typeMockGo:     readMockGo,
-		}
-
-		if readFunc, ok := readFuncs[strings.ToLower(opts.readFileType)]; ok {
+		readFileTypeLower := strings.ToLower(opts.readFileType)
+		if strings.HasPrefix(readFileTypeLower, "log-") {
 			for idx, branch := range branches.Branches {
-				log.Printf("Read %s: %d name: %s, branch: %s\r\n", opts.readFileType, idx, branch.Name, branch.Local)
-				readFunc(opts, branch)
+				log.Printf("Read %s: %d name: %s, branch: %s\r\n", readFileTypeLower, idx, branch.Name, branch.Local)
+				readFuncs[typeLog](opts, branch)
+			}
+		} else {
+			if readFunc, ok := readFuncs[readFileTypeLower]; ok {
+				for idx, branch := range branches.Branches {
+					log.Printf("Read %s: %d name: %s, branch: %s\r\n", opts.readFileType, idx, branch.Name, branch.Local)
+					readFunc(opts, branch)
+				}
+			} else {
+				log.Fatalf("invalid file type %s", opts.readFileType)
 			}
 		}
 
