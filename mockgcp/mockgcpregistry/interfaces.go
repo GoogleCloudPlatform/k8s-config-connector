@@ -52,6 +52,9 @@ type NormalizingVisitor interface {
 
 	// ReplaceStringValue replaces the given string value with the provided string value
 	ReplaceStringValue(oldValue string, newValue string)
+
+	// SortSlice will sort the slice at the given path
+	SortSlice(path string)
 }
 
 type Normalizer interface {
