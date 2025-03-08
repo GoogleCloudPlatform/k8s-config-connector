@@ -450,6 +450,7 @@ func captureHttpLog(opts *RunnerOptions, branch Branch) {
 		Args: []string{
 			"test", "./mockgcptests",
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
+			"-timeout", fmt.Sprintf("%s", opts.timeout),
 		},
 		WorkDir:    workDir,
 		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
@@ -776,6 +777,7 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 		Args: []string{
 			"test", "./mockgcptests",
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
+			"-timeout", fmt.Sprintf("%s", opts.timeout),
 		},
 		WorkDir:    workDir,
 		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
