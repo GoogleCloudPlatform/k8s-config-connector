@@ -526,6 +526,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("id", "000000000000000000000")
 					addReplacement("uniqueId", "111111111111111111111")
 					addReplacement("oauth2ClientId", "888888888888888888888")
+					addReplacement("response.oauth2ClientId", "888888888888888888888")
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("expireTime", "2024-04-01T12:34:56.123456Z")
