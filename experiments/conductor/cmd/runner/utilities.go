@@ -249,7 +249,8 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 		log.Printf("Error opening logging file %s, :%v", logFile, err)
 		return noOp
 	}
-	log.SetOutput(out)
+	log.Printf("Logging to %s", logFile)
+	log.SetOutput(io.MultiWriter(os.Stderr, out))
 
 	/*
 		var errF *os.File
