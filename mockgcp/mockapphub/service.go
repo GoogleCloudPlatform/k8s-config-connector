@@ -39,12 +39,7 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *apphubV1
-}
-
-type apphubV1 struct {
-	*MockService
-	pb.UnimplementedAppHubServer
+	v1 *AppHubV1Service
 }
 
 // New creates a MockService.
@@ -54,7 +49,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &apphubV1{MockService: s}
+	s.v1 = &AppHubV1Service{MockService: s}
 	return s
 }
 
