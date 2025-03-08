@@ -71,6 +71,10 @@ func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { /
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
+	// HACK: Filter oauth events
+	if strings.Contains(entry.Request.URL, "oauth2.googleapis.com") {
+		return
+	}
 	s.HTTPEvents = append(s.HTTPEvents, entry)
 }
 
