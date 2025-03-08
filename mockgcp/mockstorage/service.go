@@ -58,6 +58,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBucketsServerServer(grpcServer, &buckets{MockService: s})
 	pb.RegisterObjectsServerServer(grpcServer, &objects{MockService: s})
+	pb.RegisterFoldersServerServer(grpcServer, &folder{MockService: s})
 	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
 }
 
@@ -66,6 +67,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterBucketsServerHandler,
 		pb.RegisterObjectsServerHandler,
 		pb.RegisterNotificationsServerHandler,
+		pb.RegisterFoldersServerHandler,
 	)
 	if err != nil {
 		return nil, err

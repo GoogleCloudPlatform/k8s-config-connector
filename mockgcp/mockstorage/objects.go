@@ -20,6 +20,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type objects struct {
@@ -34,5 +36,14 @@ func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (
 
 	ret := &pb.Objects{}
 	ret.Kind = PtrTo("storage#objects")
+	ret.Prefixes = append(ret.Prefixes, "testfolder")
 	return ret, nil
+}
+
+func (s *objects) GetObject(ctx context.Context, req *pb.GetObjectRequest) (*pb.Object, error) {
+	// A stub implementation, just to support deletion (for now)
+
+	httpmux.SetExpiresHeader(ctx, time.Now())
+
+	return nil, status.Errorf(codes.NotFound, "object not found")
 }
