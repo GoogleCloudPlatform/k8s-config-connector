@@ -293,6 +293,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 	}
 
+	// TODO: Remove this, it should now be done in normalize in mockcompute
 	// Extract resource IDs / numbers from compute operations.
 	// The number / id is in the targetID field, we infer the type from the targetLink field.
 	for _, event := range events {
