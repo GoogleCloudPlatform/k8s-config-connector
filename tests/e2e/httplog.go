@@ -143,6 +143,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("id", "000000000000000000000")
 	addReplacement("uniqueId", "111111111111111111111")
 	addReplacement("oauth2ClientId", "888888888888888888888")
+	addReplacement("response.oauth2ClientId", "888888888888888888888")
 
 	addReplacement("etag", "abcdef0123A=")
 	addReplacement("serviceAccount.etag", "abcdef0123A=")
