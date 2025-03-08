@@ -1,0 +1,520 @@
+POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services?alt=json&serviceId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "databaseType": "MYSQL",
+  "deletionProtection": false,
+  "hiveMetastoreConfig": {
+    "endpointProtocol": "THRIFT"
+  },
+  "metadataIntegration": {
+    "dataCatalogConfig": {
+      "enabled": false
+    }
+  },
+  "port": 9083,
+  "releaseChannel": "STABLE",
+  "scheduledBackup": {
+    "enabled": false
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.Service",
+    "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseType": "MYSQL",
+    "encryptionConfig": {},
+    "endpointUri": "thrift://10.34.64.28:9083",
+    "hiveMetastoreConfig": {
+      "configOverrides": {
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+      },
+      "endpointProtocol": "THRIFT",
+      "version": "3.1.2"
+    },
+    "metadataIntegration": {
+      "dataCatalogConfig": {}
+    },
+    "metadataManagementActivity": {},
+    "name": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/default",
+    "networkConfig": {},
+    "port": 9083,
+    "releaseChannel": "STABLE",
+    "scheduledBackup": {},
+    "state": "ACTIVE",
+    "stateMessage": "The service is ready to use",
+    "telemetryConfig": {
+      "logFormat": "JSON"
+    },
+    "tier": "DEVELOPER",
+    "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseType": "MYSQL",
+  "encryptionConfig": {},
+  "endpointUri": "thrift://10.34.64.28:9083",
+  "hiveMetastoreConfig": {
+    "configOverrides": {
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+    },
+    "endpointProtocol": "THRIFT",
+    "version": "3.1.2"
+  },
+  "metadataIntegration": {
+    "dataCatalogConfig": {}
+  },
+  "metadataManagementActivity": {},
+  "name": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "networkConfig": {},
+  "port": 9083,
+  "releaseChannel": "STABLE",
+  "scheduledBackup": {},
+  "state": "ACTIVE",
+  "stateMessage": "The service is ready to use",
+  "telemetryConfig": {
+    "logFormat": "JSON"
+  },
+  "tier": "DEVELOPER",
+  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseType": "MYSQL",
+  "encryptionConfig": {},
+  "endpointUri": "thrift://10.34.64.28:9083",
+  "hiveMetastoreConfig": {
+    "configOverrides": {
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+    },
+    "endpointProtocol": "THRIFT",
+    "version": "3.1.2"
+  },
+  "metadataIntegration": {
+    "dataCatalogConfig": {}
+  },
+  "metadataManagementActivity": {},
+  "name": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "networkConfig": {},
+  "port": 9083,
+  "releaseChannel": "STABLE",
+  "scheduledBackup": {},
+  "state": "ACTIVE",
+  "stateMessage": "The service is ready to use",
+  "telemetryConfig": {
+    "logFormat": "JSON"
+  },
+  "tier": "DEVELOPER",
+  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseType": "MYSQL",
+  "encryptionConfig": {},
+  "endpointUri": "thrift://10.34.64.28:9083",
+  "hiveMetastoreConfig": {
+    "configOverrides": {
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+    },
+    "endpointProtocol": "THRIFT",
+    "version": "3.1.2"
+  },
+  "metadataIntegration": {
+    "dataCatalogConfig": {}
+  },
+  "metadataManagementActivity": {},
+  "name": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "networkConfig": {},
+  "port": 9083,
+  "releaseChannel": "STABLE",
+  "scheduledBackup": {},
+  "state": "ACTIVE",
+  "stateMessage": "The service is ready to use",
+  "telemetryConfig": {
+    "logFormat": "JSON"
+  },
+  "tier": "DEVELOPER",
+  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-${uniqueId}?alt=json&updateMask=labels
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Goog-User-Project: ${projectId}
+
+{
+  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseType": "MYSQL",
+  "deletionProtection": false,
+  "encryptionConfig": {},
+  "endpointUri": "thrift://10.34.64.28:9083",
+  "hiveMetastoreConfig": {
+    "configOverrides": {},
+    "endpointProtocol": "THRIFT",
+    "version": "3.1.2"
+  },
+  "metadataIntegration": {
+    "dataCatalogConfig": {
+      "enabled": false
+    }
+  },
+  "metadataManagementActivity": {},
+  "name": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "networkConfig": {},
+  "port": 9083,
+  "releaseChannel": "STABLE",
+  "scalingConfig": {
+    "autoscalingConfig": {
+      "autoscalingEnabled": false
+    }
+  },
+  "scheduledBackup": {
+    "enabled": false
+  },
+  "state": "ACTIVE",
+  "stateMessage": "The service is ready to use",
+  "telemetryConfig": {
+    "logFormat": "JSON"
+  },
+  "tier": "DEVELOPER",
+  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.Service",
+    "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseType": "MYSQL",
+    "encryptionConfig": {},
+    "endpointUri": "thrift://10.34.64.28:9083",
+    "hiveMetastoreConfig": {
+      "configOverrides": {
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+      },
+      "endpointProtocol": "THRIFT",
+      "version": "3.1.2"
+    },
+    "metadataIntegration": {
+      "dataCatalogConfig": {}
+    },
+    "metadataManagementActivity": {},
+    "name": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/default",
+    "networkConfig": {},
+    "port": 9083,
+    "releaseChannel": "STABLE",
+    "scheduledBackup": {},
+    "state": "ACTIVE",
+    "stateMessage": "The service is ready to use",
+    "telemetryConfig": {
+      "logFormat": "JSON"
+    },
+    "tier": "DEVELOPER",
+    "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseType": "MYSQL",
+  "encryptionConfig": {},
+  "endpointUri": "thrift://10.34.64.28:9083",
+  "hiveMetastoreConfig": {
+    "configOverrides": {
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+    },
+    "endpointProtocol": "THRIFT",
+    "version": "3.1.2"
+  },
+  "metadataIntegration": {
+    "dataCatalogConfig": {}
+  },
+  "metadataManagementActivity": {},
+  "name": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "networkConfig": {},
+  "port": 9083,
+  "releaseChannel": "STABLE",
+  "scheduledBackup": {},
+  "state": "ACTIVE",
+  "stateMessage": "The service is ready to use",
+  "telemetryConfig": {
+    "logFormat": "JSON"
+  },
+  "tier": "DEVELOPER",
+  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
