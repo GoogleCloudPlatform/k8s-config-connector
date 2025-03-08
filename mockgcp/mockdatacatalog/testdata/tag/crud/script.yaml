@@ -1,0 +1,11 @@
+
+- pre: gcloud data-catalog entry-groups create test-entry-group-${uniqueId} --location=us-central1 --project=${projectId}
+- pre: gcloud data-catalog entries create test-entry-${uniqueId} --location=us-central1 --entry-group=test-entry-group-${uniqueId} --type=FILESET --gcs-file-patterns="gs://bucket1/*" --project=${projectId}
+- pre: gcloud data-catalog tag-templates create test-tag-template-${uniqueId} --location=us-central1 --field="id=test-field,type=string" --project=${projectId}
+- exec: gcloud data-catalog tags create --entry=projects/${projectId}/locations/us-central1/entryGroups/test-entry-group-${uniqueId}/entries/test-entry-${uniqueId} --tag-template=projects/${projectId}/locations/us-central1/tagTemplates/test-tag-template-${uniqueId} --tag-file=tag.yaml --project=${projectId}
+- exec: gcloud data-catalog tags list --entry=projects/${projectId}/locations/us-central1/entryGroups/test-entry-group-${uniqueId}/entries/test-entry-${uniqueId} --project=${projectId}
+- exec: gcloud data-catalog tags update --entry=projects/${projectId}/locations/us-central1/entryGroups/test-entry-group-${uniqueId}/entries/test-entry-${uniqueId} --tag-template=projects/${projectId}/locations/us-central1/tagTemplates/test-tag-template-${uniqueId} --tag-file=updated_tag.yaml --project=${projectId}
+- exec: gcloud data-catalog tags delete --entry=projects/${projectId}/locations/us-central1/entryGroups/test-entry-group-${uniqueId}/entries/test-entry-${uniqueId} --tag-template=projects/${projectId}/locations/us-central1/tagTemplates/test-tag-template-${uniqueId} --project=${projectId}
+- post: gcloud data-catalog tag-templates delete test-tag-template-${uniqueId} --location=us-central1 --project=${projectId}
+- post: gcloud data-catalog entries delete test-entry-${uniqueId} --location=us-central1 --entry-group=test-entry-group-${uniqueId} --project=${projectId}
+- post: gcloud data-catalog entry-groups delete test-entry-group-${uniqueId} --location=us-central1 --project=${projectId}
