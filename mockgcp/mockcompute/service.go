@@ -57,6 +57,8 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
+	pb.RegisterBackendBucketsServer(grpcServer, &backendBuckets{MockService: s})
+
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 	pb.RegisterVpnGatewaysServer(grpcServer, &VPNGatewaysV1{MockService: s})
@@ -113,6 +115,10 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{})
 	if err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterBackendBucketsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
