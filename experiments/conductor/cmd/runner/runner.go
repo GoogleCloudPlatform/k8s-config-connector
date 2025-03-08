@@ -96,6 +96,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"r", 10, "Default number of retries for failed commands.")
 	cmd.Flags().StringVarP(&opts.forResources, "for-resources",
 		"", "", "Comma-separated list of branch names to filter on.")
+	cmd.Flags().StringVarP(&opts.forResourcesRegex, "for-resources-regex",
+		"", "", "Regex to filter branch names to filter on.")
 	cmd.Flags().BoolVarP(&opts.force, "force",
 		"f", false, "Force operation even if files already exist.")
 
@@ -111,7 +113,11 @@ type RunnerOptions struct {
 	readFileType   string
 	defaultRetries int    // Default number of retries for commands
 	forResources   string // Comma-separated list of branch names to filter on
-	force          bool   // Force flag to override file existence checks
+
+	// forResourcesRegex filters branches, only branches that match the regex are processed
+	forResourcesRegex string
+
+	force bool // Force flag to override file existence checks
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -207,6 +213,20 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 		branches.Branches = resourceFilteredBranches
 	}
+	if opts.forResourcesRegex != "" {
+		resourceFilteredBranches := make([]Branch, 0)
+		for _, branch := range branches.Branches {
+			match, err := regexp.MatchString(opts.forResourcesRegex, branch.Name)
+			if err != nil {
+				return fmt.Errorf("error matching regex %q: %w", opts.forResourcesRegex, err)
+			}
+			if match {
+				resourceFilteredBranches = append(resourceFilteredBranches, branch)
+			}
+		}
+		branches.Branches = resourceFilteredBranches
+	}
+
 	// Only filter skipped branches if not running metadata commands
 	if opts.command >= 0 {
 		// Filter out skipped branches
