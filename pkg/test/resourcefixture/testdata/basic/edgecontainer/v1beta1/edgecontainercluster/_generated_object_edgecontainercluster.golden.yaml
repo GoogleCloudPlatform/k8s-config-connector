@@ -39,4 +39,3 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 2
-  status: STATUS_UNSPECIFIED

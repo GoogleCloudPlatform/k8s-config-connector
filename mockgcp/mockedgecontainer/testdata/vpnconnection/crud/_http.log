@@ -3,15 +3,14 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
-  "cluster": "projects/${projectId}/locations/us-central1/clusters/test-cluster",
+  "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
   "enableHighAvailability": false,
   "vpc": "test-vpc-network"
 }
 
-400 Bad Request
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -22,34 +21,49 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 400,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.DebugInfo",
-        "detail": "generic::invalid_argument: invalid argument: cluster \"projects/${projectId}/locations/us-central1/clusters/test-cluster\" is invalid",
-        "stackEntries": [
-          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc066f10fc0, 0x87})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x5595829bf578?, 0xc1ebe4ba80?})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1066 +0x2f4 google3/cloud/control2/shared/userfriendly/userfriendly.FromExternalUserFriendlyStatus({0x559582b191c8, 0xc18a9f0420}, {0x559575be2a10, 0xd}, 0xc1ebe4ba80, 0x1, 0x0)",
-          "cloud/control2/frontend/clhprotocol/clh_client.go:192 +0x614 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.callBackendMethod({0x559581c7aaa0?}, {0x559582b191c8, 0xc18a9f0420}, {0xc140643344, 0xb}, 0xb0c1ebe3ae, {0x559582b0b3b8, 0xc173039a40}, {0x5595829bf8b8, 0xc0fcc06880}, ...)",
-          "cloud/control2/frontend/clhprotocol/clh_client.go:56 +0x78 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.CallPreprocess({0xc0287385d0?}, {0x559582b191c8, 0xc18a9f0420}, 0x0, {0xc140643344?, 0xc173039950?}, 0x0?, 0xc0af8f7f50?, {0x5595829bf8b8, 0xc0fcc06880}, ...)",
-          "cloud/control2/frontend/handler/mutate.go:492 +0x34a5 google3/cloud/control2/frontend/handler/handler.Handler.handleResourceMutation({{{0x559582b23010, 0xc000f4bcc0}, {0x0, 0x0}}, {{0xc00df3e5a0, 0x1, 0x1}, 0xc00d0b94a0, 0xc00df3e590, {0x559582b31618, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:375 +0xbbb google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x559582b23010, 0xc000f4bcc0}, {0x0, 0x0}}, {{0xc00df3e5a0, 0x1, 0x1}, 0xc00d0b94a0, 0xc00df3e590, {0x559582b31618, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x559582b23010, 0xc000f4bcc0}, {0x0, 0x0}}, {{0xc00df3e5a0, 0x1, 0x1}, 0xc00d0b94a0, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x559582b23010, 0xc000f4bcc0}, {0x0, 0x0}}, {{0xc00df3e5a0, 0x1, 0x1}, 0xc00d0b94a0, 0xc00df3e590, {0x559582b31618, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00d13fe60, {0x559582b191c8, 0xc18a9f00c0}, 0xc0fcc062c0, 0xc111857968, 0xc111857d10, {0xc1af950dc0?, 0x559578a9d987?})",
-          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00d13fe60, {0x559582b191c8, 0xc18a9f00c0}, 0xc111857968, 0xc111857d10)",
-          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc0fd243308?, {0x559582b191c8, 0xc18a9f00c0}, 0x5595807f30e0?, 0xc040752501?)",
-          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc009622ae0, {0x559582b191c8, 0xc18a9f00c0}, 0xc111857968)",
-          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x559582b191c8?, 0xc18a9f00c0?}, 0xc111857968?, {0x0?, 0x0?}, {0x559582b2e3a0, 0xc173039860})",
-          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x559582b191c8?, 0xc1772a31d0?}, 0xc0287398d0)",
-          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc0b22c60e0, {0x559582b19438, 0xc168a1bce0}, 0xc1d66c5280)"
-        ]
-      }
-    ],
-    "message": "invalid argument: cluster \"projects/${projectId}/locations/us-central1/clusters/test-cluster\" is invalid",
-    "status": "INVALID_ARGUMENT"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.VpnConnection",
+    "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vpc": "test-vpc-network"
   }
 }
 
@@ -59,9 +73,8 @@ GET https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-c
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -72,36 +85,61 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.DebugInfo",
-        "detail": "not found: resource not found",
-        "stackEntries": [
-          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc004c89c40, 0x1d})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x555d97bbf278?, 0xc005a3c4c0?})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:556 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x555d97d191c8, 0xc070026630}, {0x555d8adf3370, 0x10}, {0xc19423cde0, 0x54}, {0x555d97bbf278, 0xc005a3c4c0})",
-          "cloud/control2/frontend/userfriendly/userfriendly_store.go:89 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x555d97d191c8, 0xc070026630}, 0xc1c421da00, {0x555d97bbf278, 0xc005a3c4c0})",
-          "cloud/control2/frontend/handler/readonly.go:279 +0x15e6 google3/cloud/control2/frontend/handler/handler.Handler.handleGet({{{0x555d97d23010, 0xc001c1c700}, {0x0, 0x0}}, {{0xc00da81970, 0x1, 0x1}, 0xc00b872a20, 0xc00da81960, {0x555d97d31618, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:395 +0xec6 google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x555d97d23010, 0xc001c1c700}, {0x0, 0x0}}, {{0xc00da81970, 0x1, 0x1}, 0xc00b872a20, 0xc00da81960, {0x555d97d31618, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x555d97d23010, 0xc001c1c700}, {0x0, 0x0}}, {{0xc00da81970, 0x1, 0x1}, 0xc00b872a20, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x555d97d23010, 0xc001c1c700}, {0x0, 0x0}}, {{0xc00da81970, 0x1, 0x1}, 0xc00b872a20, 0xc00da81960, {0x555d97d31618, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00a916a20, {0x555d97d191c8, 0xc24bb13140}, 0xc16d8a4d00, 0xc12cf20ac8, 0xc14c4c32a8, {0xc150552660?, 0x555d8dc9d987?})",
-          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00a916a20, {0x555d97d191c8, 0xc24bb13140}, 0xc12cf20ac8, 0xc14c4c32a8)",
-          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc07c43d308?, {0x555d97d191c8, 0xc24bb13140}, 0x555d959f30e0?, 0xc0b7031001?)",
-          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc0077c1110, {0x555d97d191c8, 0xc24bb13140}, 0xc12cf20ac8)",
-          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x555d97d191c8?, 0xc24bb13140?}, 0xc12cf20ac8?, {0x0?, 0x0?}, {0x555d97d2e3a0, 0xc1685985f0})",
-          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x555d97d191c8?, 0xc1d7f925d0?}, 0xc07c43d8d0)",
-          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc092f6a240, {0x555d97d19438, 0xc1422eab40}, 0xc15dd5b180)"
-        ]
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
-        "resourceName": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}"
-      }
-    ],
-    "message": "Resource 'projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
+  "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpc": "test-vpc-network"
+}
+
+---
+
+GET https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpc": "test-vpc-network"
+}
+
+---
+
+DELETE https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
