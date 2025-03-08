@@ -382,7 +382,6 @@ X-Xss-Protection: 0
       }
     ],
     "oauth2ClientId": "888888888888888888888",
-    "satisfiesPzi": true,
     "state": "READY",
     "type": "BACKUP_RESTORE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -421,7 +420,6 @@ X-Xss-Protection: 0
     }
   ],
   "oauth2ClientId": "888888888888888888888",
-  "satisfiesPzi": true,
   "state": "READY",
   "type": "BACKUP_RESTORE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -459,7 +457,6 @@ X-Xss-Protection: 0
     }
   ],
   "oauth2ClientId": "888888888888888888888",
-  "satisfiesPzi": true,
   "state": "READY",
   "type": "BACKUP_RESTORE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
