@@ -287,21 +287,21 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 		config.SoftwareConfig.ImageVersion = "composer-2.11.3-airflow-2.10.2"
 	}
 
-	//if config.WebServerNetworkAccessControl == nil {
-	//	config.WebServerNetworkAccessControl = &pb.WebServerNetworkAccessControl{}
-	//}
-	//if len(config.WebServerNetworkAccessControl.AllowedIpRanges) == 0 {
-	//	config.WebServerNetworkAccessControl.AllowedIpRanges = []*pb.WebServerNetworkAccessControl_AllowedIpRange{
-	//		{
-	//			Description: "Allows access from all IPv4 addresses (default value)",
-	//			Value:       "0.0.0.0/0",
-	//		},
-	//		{
-	//			Description: "Allows access from all IPv6 addresses (default value)",
-	//			Value:       "::0/0",
-	//		},
-	//	}
-	//}
+	if config.WebServerNetworkAccessControl == nil {
+		config.WebServerNetworkAccessControl = &pb.WebServerNetworkAccessControl{}
+	}
+	if len(config.WebServerNetworkAccessControl.AllowedIpRanges) == 0 {
+		config.WebServerNetworkAccessControl.AllowedIpRanges = []*pb.WebServerNetworkAccessControl_AllowedIpRange{
+			{
+				Description: "Allows access from all IPv4 addresses (default value)",
+				Value:       "0.0.0.0/0",
+			},
+			{
+				Description: "Allows access from all IPv6 addresses (default value)",
+				Value:       "::0/0",
+			},
+		}
+	}
 
 	if config.WorkloadsConfig == nil {
 		config.WorkloadsConfig = &pb.WorkloadsConfig{}
