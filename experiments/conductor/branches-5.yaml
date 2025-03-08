@@ -81,6 +81,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.backupdr.v1.ManagementServer
       host-name: ""
+      apis-enabled:
+        - "backupdr.googleapis.com"
       notes:
         - gcloud command defaults "--async", need to explicity set "--no-async"
         - long running operation
@@ -98,6 +100,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.backupdr.v1.BackupPlan
       host-name: ""
+      apis-enabled:
+        - "backupdr.googleapis.com"
       notes:
         - long running operation
     - name: backupdr-backupplanassociation
@@ -114,6 +118,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.backupdr.v1.BackupPlanAssociation
       host-name: ""
+      apis-enabled:
+        - "backupdr.googleapis.com"
       notes:
         - long running operation
     - name: backupdr-backupvault
@@ -130,6 +136,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.backupdr.v1.BackupVault
       host-name: ""
+      apis-enabled:
+        - "backupdr.googleapis.com"
       notes:
         - long running operation
     - name: backupdr-datasource
@@ -182,6 +190,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.datastream.v1.PrivateConnection
       host-name: ""
+      apis-enabled:
+        - "datastream.googleapis.com"
       notes:
         - long running operation
     - name: datastream-route
@@ -198,6 +208,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.datastream.v1.Route
       host-name: ""
+      apis-enabled:
+        - "datastream.googleapis.com"
       notes:
         - long running operation
         - subresource of privateconnection
@@ -215,6 +227,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.datastream.v1.ConnectionProfile
       host-name: ""
+      apis-enabled:
+        - "datastream.googleapis.com"
       notes:
         - long running operation
     - name: datastream-stream
@@ -231,6 +245,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.datastream.v1.Stream
       host-name: ""
+      apis-enabled:
+        - "datastream.googleapis.com"
       notes:
         - long running operation
     - name: gkebackup-backup
@@ -247,6 +263,9 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.gkebackup.v1.Backup
       host-name: ""
+      apis-enabled:
+        - "gkebackup.googleapis.com"
+        - "container.googleapis.com"
       notes:
         - long running operation
         - subresource of backupplan
@@ -264,6 +283,9 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.gkebackup.v1.BackupPlan
       host-name: ""
+      apis-enabled:
+        - "gkebackup.googleapis.com"
+        - "container.googleapis.com"
       notes:
         - long running operation
     - name: gkebackup-restore
@@ -280,6 +302,9 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.gkebackup.v1.Restore
       host-name: ""
+      apis-enabled:
+        - "gkebackup.googleapis.com"
+        - "container.googleapis.com"
       notes:
         - long running operation
         - subresource of restoreplan
@@ -297,6 +322,9 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.gkebackup.v1.RestorePlan
       host-name: ""
+      apis-enabled:
+        - "gkebackup.googleapis.com"
+        - "container.googleapis.com"
       notes:
         - long running operation
     - name: gkebackup-volumebackup
@@ -349,6 +377,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.networksecurity.v1.AuthorizationPolicy
       host-name: ""
+      apis-enabled:
+        - "networksecurity.googleapis.com"
       notes:
         - long running operation
     - name: networksecurity-clienttlspolicy
@@ -365,6 +395,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.networksecurity.v1.ClientTlsPolicy
       host-name: ""
+      apis-enabled:
+        - "networksecurity.googleapis.com"
       notes:
         - long running operation
     - name: networksecurity-servertlspolicy
@@ -381,6 +413,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.networksecurity.v1.ServerTlsPolicy
       host-name: ""
+      apis-enabled:
+        - "networksecurity.googleapis.com"
       notes:
         - long running operation
     - name: privilegedaccessmanager-grant
@@ -397,6 +431,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.privilegedaccessmanager.v1.Grant
       host-name: ""
+      apis-enabled:
+        - "privilegedaccessmanager.googleapis.com"
       notes:
         - subresource of entitlement
     - name: resourcemanager-folder
@@ -447,6 +483,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.run.v2.Revision
       host-name: ""
+      apis-enabled:
+        - "run.googleapis.com"
       notes:
         - No CREATE
         - subresource of service
@@ -481,6 +519,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.speech.v2.Recognizer
       host-name: ""
+      apis-enabled:
+        - "speech.googleapis.com"
       notes:
         - long running operation
     - name: vmwareengine-privatecloud
@@ -497,6 +537,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.vmwareengine.v1.PrivateCloud
       host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
       notes:
         - long running operation
     - name: vmwareengine-nodetype
@@ -530,6 +572,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.vmwareengine.v1.NetworkPeering
       host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
       notes:
         - long running operation
     - name: vmwareengine-networkpolicy
@@ -546,6 +590,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.vmwareengine.v1.NetworkPolicy
       host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
       notes:
         - long running operation
     - name: vmwareengine-privateconnection
@@ -562,6 +608,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.vmwareengine.v1.PrivateConnection
       host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
       notes:
         - long running operation
     - name: vmwareengine-dnsbindpermission
