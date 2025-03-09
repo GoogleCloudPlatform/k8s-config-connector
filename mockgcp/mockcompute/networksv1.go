@@ -69,6 +69,7 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%d", name.Project.ID, id)))
 	obj.Kind = PtrTo("compute#network")
 
+	s.populateDefaultsForNetwork(obj)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -88,6 +89,17 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 		}
 		return obj, nil
 	})
+}
+
+func (s *NetworksV1) populateDefaultsForNetwork(obj *pb.Network) {
+	if obj.NetworkFirewallPolicyEnforcementOrder == nil {
+		obj.NetworkFirewallPolicyEnforcementOrder = PtrTo("AFTER_CLASSIC_FIREWALL")
+	}
+	if obj.RoutingConfig != nil {
+		if obj.RoutingConfig.BgpBestPathSelectionMode == nil {
+			obj.RoutingConfig.BgpBestPathSelectionMode = PtrTo("LEGACY")
+		}
+	}
 }
 
 // Patches the specified network with the data included in the request.
