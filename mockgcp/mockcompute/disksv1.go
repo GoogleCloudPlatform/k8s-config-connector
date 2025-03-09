@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.cloud.compute.v1.Disks
+// proto.message: google.cloud.compute.v1.Disk
+
 package mockcompute
 
 import (
@@ -22,6 +26,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -74,7 +79,9 @@ func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Op
 	if obj.PhysicalBlockSizeBytes == nil {
 		obj.PhysicalBlockSizeBytes = PtrTo(int64(4096))
 	}
-
+	if obj.EnableConfidentialCompute == nil {
+		obj.EnableConfidentialCompute = PtrTo(false)
+	}
 	if obj.SourceImage != nil {
 		tokens := strings.Split(*obj.SourceImage, "/")
 		if len(tokens) == 2 {
@@ -88,12 +95,22 @@ func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Op
 			obj.SourceImageId = PtrTo("2443108620951880213")
 		}
 	}
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.GetLabels()))
+	obj.SatisfiesPzi = PtrTo(true)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		OperationType: PtrTo("insert"),
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a Disk resource in the specified project using the data included in the request.
@@ -117,7 +134,15 @@ func (s *DisksV1) Update(ctx context.Context, req *pb.UpdateDiskRequest) (*pb.Op
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		OperationType: PtrTo("update"),
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *DisksV1) Delete(ctx context.Context, req *pb.DeleteDiskRequest) (*pb.Operation, error) {
@@ -134,7 +159,15 @@ func (s *DisksV1) Delete(ctx context.Context, req *pb.DeleteDiskRequest) (*pb.Op
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		OperationType: PtrTo("delete"),
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type zonalDiskName struct {
