@@ -1,4 +1,4 @@
- // Copyright 2024 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -79,7 +80,7 @@ func (s *ApiGatewayV1) CreateApi(ctx context.Context, req *pb.CreateApiRequest) 
 		return nil, err
 	}
 
-	lroPrefix := name.Parent.String()
+	lroPrefix := name.Parent()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
@@ -128,7 +129,7 @@ func (s *ApiGatewayV1) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) 
 		return nil, err
 	}
 
-	lroPrefix := name.Parent.String()
+	lroPrefix := name.Parent()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: obj.CreateTime,
 		Target:     name.String(),
@@ -153,7 +154,7 @@ func (s *ApiGatewayV1) DeleteApi(ctx context.Context, req *pb.DeleteApiRequest) 
 		return nil, err
 	}
 
-	lroPrefix := name.Parent.String()
+	lroPrefix := name.Parent()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.Now(),
 		Target:     name.String(),
@@ -168,12 +169,17 @@ func (s *ApiGatewayV1) DeleteApi(ctx context.Context, req *pb.DeleteApiRequest) 
 }
 
 type apiName struct {
-	Parent projects.ParentData
-	Api    string
+	Project  *projects.ProjectData
+	Location string
+	Api      string
+}
+
+func (n *apiName) Parent() string {
+	return fmt.Sprintf("projects/%s/locations/%s)", n.Project.ID, n.Location)
 }
 
 func (n *apiName) String() string {
-	return fmt.Sprintf("%s/apis/%s", n.Parent.String(), n.Api)
+	return fmt.Sprintf("%s/apis/%s", n.Parent(), n.Api)
 }
 
 // parseAPIName parses a string into an apiName.
@@ -185,19 +191,22 @@ func (s *MockService) parseAPIName(name string) (*apiName, error) {
 		if tokens[3] != "global" {
 			return nil, status.Errorf(codes.InvalidArgument, "only 'global' location is supported, but got %q", tokens[3])
 		}
-		parent, err := projects.ParseParentData(tokens[0] + "/" + tokens[1])
+		projectName, err := projects.ParseProjectName(tokens[0] + "/" + tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		project, err := s.Projects.GetProject(projectName)
 		if err != nil {
 			return nil, err
 		}
 
 		name := &apiName{
-			Parent: parent,
-			Api:    tokens[5],
+			Project:  project,
+			Location: tokens[3],
+			Api:      tokens[5],
 		}
 
 		return name, nil
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
