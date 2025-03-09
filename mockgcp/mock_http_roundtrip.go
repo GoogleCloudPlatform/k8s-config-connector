@@ -95,6 +95,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapi"
 )
 
 type mockRoundTripper struct {
@@ -233,6 +235,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockcomposer.New(env, storage))
 	services = append(services, mockdocumentai.New(env, storage))
 	services = append(services, mockapphub.New(env, storage))
+	services = append(services, mockapi.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
