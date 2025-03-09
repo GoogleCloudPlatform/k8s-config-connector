@@ -173,5 +173,3 @@ func (s *MockService) parseChannelName(name string) (*channelName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
