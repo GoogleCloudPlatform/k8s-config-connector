@@ -52,6 +52,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdEnableGCPAPIs       = 4
 	cmdReadFiles           = 5
 	cmdWriteFiles          = 6
+	cmdDiff                = 7
 	cmdCreateScriptYaml    = 10
 	cmdCaptureHttpLog      = 11
 	cmdGenerateMockGo      = 12
@@ -100,6 +101,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Regex to filter branch names to filter on.")
 	cmd.Flags().BoolVarP(&opts.force, "force",
 		"f", false, "Force operation even if files already exist.")
+	cmd.Flags().IntVarP(&opts.numCommits, "num-commits",
+		"n", 1, "Number of commits to diff (default: 1)")
 
 	return cmd
 }
@@ -117,7 +120,8 @@ type RunnerOptions struct {
 	// forResourcesRegex filters branches, only branches that match the regex are processed
 	forResourcesRegex string
 
-	force bool // Force flag to override file existence checks
+	force      bool // Force flag to override file existence checks
+	numCommits int  // Number of commits to diff (default: 1)
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -300,6 +304,12 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			}
 		}
 
+	case cmdDiff: // 7
+		for idx, branch := range branches.Branches {
+			log.Printf("Showing diff for last %d commits: %d name: %s, branch: %s\r\n", opts.numCommits, idx, branch.Name, branch.Local)
+			diffLastNCommits(opts, branch)
+		}
+
 	case cmdCreateScriptYaml: // 10
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
@@ -353,7 +363,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 }
 
 func printHelp() {
-	log.Println("conductor runner --branch-repo=? --branch-conf=<META> --command=<CMD>")
+	log.Println("conductor runner --branch-repo=? --branch-conf=< META > --command=<CMD>")
 	log.Println("\t<CMD>")
 	log.Println("\t0 - Print help")
 	log.Println("\t1 - [Validate] Repo directory and metadata")
@@ -362,6 +372,7 @@ func printHelp() {
 	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
 	log.Println("\t5 - [Generated] Read the specific type of generated files in each github branch")
 	log.Println("\t6 - [Generated] Write the specific type of files from all_scripts.yaml to each github branch")
+	log.Println("\t7 - [Git] Show diff of last N commits in each branch (use -n to specify N)")
 	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
 	log.Println("\t11 - [Mock] Create _http.log for mock gcp generation in each github branch")
 	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")
@@ -834,4 +845,35 @@ func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string)
 		branch.Notes = append(branch.Notes, "gcloud command does not contain any of create/update/delete")
 	}
 	return branch
+}
+
+func diffLastNCommits(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := opts.branchRepoDir
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, &out)
+
+	// Run git diff command
+	cfg := CommandConfig{
+		Name: "Git diff",
+		Cmd:  "git",
+		Args: []string{
+			"diff",
+			"-r",
+			fmt.Sprintf("HEAD~%d", opts.numCommits),
+		},
+		WorkDir:    workDir,
+		MaxRetries: 1,
+	}
+	output, _, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Git diff error for branch %s: %v", branch.Name, err)
+		return
+	}
+
+	// Print the diff output
+	log.Printf("Diff for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output)
+	fmt.Printf("Diff for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output)
 }
