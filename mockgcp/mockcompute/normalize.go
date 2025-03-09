@@ -42,6 +42,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.SortSlice(".subnetworks")
 	}
 
+	// Image
+	{
+		replacements.ReplacePath(".archiveSizeBytes", "123456789")
+	}
+
 	// InstanceTemplates
 	{
 		replacements.ReplacePath(".properties.metadata.fingerprint", "abcdef0123A=")
