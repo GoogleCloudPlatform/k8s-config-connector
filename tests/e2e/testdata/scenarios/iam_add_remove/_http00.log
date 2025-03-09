@@ -2,7 +2,6 @@ GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa1-${un
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -41,7 +40,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -67,7 +65,6 @@ GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa1-${un
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -93,7 +90,6 @@ GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa1-${un
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -119,7 +115,6 @@ GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa1-${un
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

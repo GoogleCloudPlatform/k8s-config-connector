@@ -2,7 +2,6 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -65,7 +64,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -128,7 +126,6 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -206,7 +203,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -334,7 +330,6 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -385,7 +380,6 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -405,7 +399,6 @@ DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${unique
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache

@@ -21,11 +21,17 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked compute service.
 type MockService struct {
@@ -36,7 +42,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment:   env,
 		storage:           storage,
@@ -241,6 +247,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		// Does not return status (at least for 404)
 		error.Status = ""
+	}
+
+	// Does not return Cache-Control header
+	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+		response.Header().Del("Cache-Control")
 	}
 
 	// Terraform uses the /beta/ endpoints, but we have protos only for v1.

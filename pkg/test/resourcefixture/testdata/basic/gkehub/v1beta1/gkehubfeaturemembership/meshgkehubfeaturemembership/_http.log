@@ -2,7 +2,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?a
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 403 Forbidden
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -33,7 +32,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -69,7 +67,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -90,7 +87,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -133,7 +129,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -156,7 +151,6 @@ GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingIn
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -179,7 +173,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?a
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -211,7 +204,6 @@ GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingIn
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -234,7 +226,6 @@ GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -255,7 +246,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -280,7 +270,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -313,7 +302,6 @@ GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -339,7 +327,6 @@ GET https://container.googleapis.com/v1beta1/projects/example-project-01/locatio
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -424,7 +411,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -450,7 +436,6 @@ GET https://container.googleapis.com/v1beta1/projects/example-project-01/locatio
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -505,7 +490,6 @@ GET https://container.googleapis.com/v1beta1/projects/example-project-01/locatio
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -724,7 +708,6 @@ GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -753,7 +736,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -778,7 +760,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -811,7 +792,6 @@ GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -845,7 +825,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -870,7 +849,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -903,7 +881,6 @@ GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -942,7 +919,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -967,7 +943,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1000,7 +975,6 @@ GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1042,7 +1016,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1075,7 +1048,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1102,7 +1074,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1143,7 +1114,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1168,7 +1138,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1210,7 +1179,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1237,7 +1205,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1292,7 +1259,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1335,7 +1301,6 @@ GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/g
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1375,7 +1340,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1401,7 +1365,6 @@ GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/g
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1447,7 +1410,6 @@ GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/g
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1496,7 +1458,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1522,7 +1483,6 @@ GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/g
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1568,7 +1528,6 @@ GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/g
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1613,7 +1572,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1639,7 +1597,6 @@ GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/g
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1682,7 +1639,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1726,7 +1682,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1757,7 +1712,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1782,7 +1736,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1811,7 +1764,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1842,7 +1794,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1866,7 +1817,6 @@ GET https://container.googleapis.com/v1beta1/projects/example-project-01/locatio
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -2085,7 +2035,6 @@ DELETE https://container.googleapis.com/v1beta1/projects/example-project-01/loca
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -2111,7 +2060,6 @@ GET https://container.googleapis.com/v1beta1/projects/example-project-01/locatio
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

@@ -15,7 +15,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -70,7 +69,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -125,7 +123,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -180,7 +177,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -265,7 +261,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -320,7 +315,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -375,7 +369,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

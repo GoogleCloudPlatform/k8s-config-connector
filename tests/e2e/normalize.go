@@ -717,6 +717,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
 	events.RemoveHTTPResponseHeader("Etag")
 	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
+	events.RemoveHTTPResponseHeader("Cache-Control")  // not really relevant to us
 
 	// Replace any expires headers with (rounded) relative offsets
 	for _, event := range events {
@@ -780,9 +781,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
-
-	// Compute resources
-	visitor.sortSlices.Insert(".subnetworks")
 
 	// Specific to Apigee
 	visitor.replacePaths[".response.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
@@ -911,14 +909,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".response.revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
 		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
-	}
-
-	// Compute
-	{
-		visitor.sortSlices.Insert(".subnetworks")
-
-		visitor.replacePaths[".labelFingerprint"] = "abcdef0123A="
-		visitor.replacePaths[".address"] = "8.8.8.8"
 	}
 
 	// DocumentAI

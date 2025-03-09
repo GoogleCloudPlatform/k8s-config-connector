@@ -4,7 +4,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 X-Goog-User-Project: ${projectNumber}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -49,7 +48,6 @@ X-Goog-User-Project: ${projectNumber}
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -105,7 +103,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 X-Goog-User-Project: ${projectNumber}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -163,7 +160,6 @@ X-Goog-User-Project: ${projectNumber}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -194,7 +190,6 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -221,7 +216,6 @@ X-Goog-User-Project: ${projectNumber}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -276,7 +270,6 @@ x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2FUS%2FdataExc
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -330,7 +323,6 @@ X-Goog-User-Project: ${projectNumber}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -414,7 +406,6 @@ x-goog-request-params: listing.name=projects%2F${projectId}%2Flocations%2FUS%2Fd
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -468,7 +459,6 @@ X-Goog-User-Project: ${projectNumber}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -522,7 +512,6 @@ X-Goog-User-Project: ${projectNumber}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -542,7 +531,6 @@ X-Goog-User-Project: ${projectNumber}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -569,7 +557,6 @@ X-Goog-User-Project: ${projectNumber}
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
 Vary: Origin
@@ -588,7 +575,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 X-Goog-User-Project: ${projectNumber}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
