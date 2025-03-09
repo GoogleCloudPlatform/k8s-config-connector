@@ -520,37 +520,38 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 
 	close := setLoggingWriter(opts, branch)
 	defer close()
-	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+	workDir := opts.branchRepoDir
 
 	var hasChange = false
 	checkoutBranch(ctx, branch, workDir)
 
 	// Check to see if the http log file already exists
-	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
-	logFullPath := filepath.Join(workDir, logFile)
+	mockfolder := fmt.Sprintf("mock%s", branch.Group)
+
+	logFullPath := filepath.Join(workDir, "mockgcp", mockfolder, "testdata", branch.Resource, "crud", "_http.log")
 	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
 		log.Printf("SKIPPING %s, missing %s", branch.Name, logFullPath)
 		return
 	}
 
 	// Delete then write the service go prompt file.
-	servicePromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "service_prompt.txt")
+	servicePromptPath := filepath.Join(workDir, "service_prompt.txt")
 	writeTemplateToFile(branch, servicePromptPath, MOCK_SERVICE_GO_GEN)
 
 	// Delete then write the resource go prompt file.
-	resourcePromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "resource_prompt.txt")
+	resourcePromptPath := filepath.Join(workDir, "resource_prompt.txt")
 	writeTemplateToFile(branch, resourcePromptPath, MOCK_RESOURCE_GO_GEN)
 
 	// Run the controller builder to generate the service go file.
-	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
+	serviceFile := filepath.Join(workDir, "mockgcp", mockfolder, "service.go")
 	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate service mock",
 			Cmd:  "controllerbuilder",
 			Args: []string{
 				"prompt",
-				"--src-dir", opts.branchRepoDir,
-				"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
+				"--src-dir", "./mockgcp",
+				"--proto-dir", fmt.Sprintf(".build/third_party/googleapis/"),
 				"--input-file", "service_prompt.txt",
 			},
 			WorkDir:      workDir,
@@ -582,15 +583,15 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Run the controller builder to generate the resource go file.
-	resourceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
+	resourceFile := filepath.Join(workDir, "mockgcp", mockfolder, fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
 	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate resource mock",
 			Cmd:  "controllerbuilder",
 			Args: []string{
 				"prompt",
-				"--src-dir", opts.branchRepoDir,
-				"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
+				"--src-dir", "./mockgcp",
+				"--proto-dir", ".build/third_party/googleapis/",
 				"--input-file", "resource_prompt.txt",
 			},
 			WorkDir:      workDir,
