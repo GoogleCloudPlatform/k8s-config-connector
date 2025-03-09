@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.cloud.compute.v1.BackendServices
+// proto.message: google.cloud.compute.v1.BackendService
+
 package mockcompute
 
 import (
@@ -23,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type GlobalBackendServicesV1 struct {
@@ -64,11 +69,51 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#backendService")
 
+	s.populateDefaultsForBackendService(obj)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		OperationType: PtrTo("insert"),
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) populateDefaultsForBackendService(obj *pb.BackendService) {
+	if obj.AffinityCookieTtlSec == nil {
+		obj.AffinityCookieTtlSec = PtrTo(int32(0))
+	}
+	if obj.ConnectionDraining == nil {
+		obj.ConnectionDraining = &pb.ConnectionDraining{}
+	}
+	if obj.ConnectionDraining.DrainingTimeoutSec == nil {
+		obj.ConnectionDraining.DrainingTimeoutSec = PtrTo(int32(0))
+	}
+	if obj.Description == nil {
+		obj.Description = PtrTo("")
+	}
+	if obj.EnableCDN == nil {
+		obj.EnableCDN = PtrTo(false)
+	}
+	if obj.LoadBalancingScheme == nil {
+		obj.LoadBalancingScheme = PtrTo("EXTERNAL")
+	}
+	if obj.Port == nil {
+		obj.Port = PtrTo(int32(80))
+	}
+	if obj.SessionAffinity == nil {
+		obj.SessionAffinity = PtrTo("NONE")
+
+	}
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 }
 
 func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBackendServiceRequest) (*pb.Operation, error) {
@@ -91,7 +136,46 @@ func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBack
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		OperationType: PtrTo("insert"),
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) Patch(ctx context.Context, req *pb.PatchBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendServiceResource().GetName()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// TODO: Implement helper to implement the full rules here
+	proto.Merge(obj, req.GetBackendServiceResource())
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		OperationType: PtrTo("patch"),
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteBackendServiceRequest) (*pb.Operation, error) {
@@ -108,7 +192,15 @@ func (s *GlobalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteBack
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		OperationType: PtrTo("delete"),
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type globalBackendServiceName struct {
