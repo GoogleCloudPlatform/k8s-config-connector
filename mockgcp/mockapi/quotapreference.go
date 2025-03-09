@@ -32,11 +32,6 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1"
 )
 
-type CloudQuotasV1 struct {
-	*MockService
-	pb.UnimplementedCloudQuotasServer
-}
-
 func (s *CloudQuotasV1) GetQuotaPreference(ctx context.Context, req *pb.GetQuotaPreferenceRequest) (*pb.QuotaPreference, error) {
 	name, err := s.parseQuotaPreferenceName(req.Name)
 	if err != nil {
@@ -58,7 +53,7 @@ func (s *CloudQuotasV1) CreateQuotaPreference(ctx context.Context, req *pb.Creat
 	name, err := s.parseQuotaPreferenceName(reqName)
 	if err != nil {
 		return nil, err
-		}
+	}
 
 	fqn := name.String()
 
@@ -132,6 +127,3 @@ func (s *MockService) parseQuotaPreferenceName(name string) (*quotaPreferenceNam
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
-
