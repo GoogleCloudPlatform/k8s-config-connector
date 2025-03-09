@@ -34,6 +34,11 @@ type MockService interface {
 	ExpectedHosts() []string
 }
 
+// SupportsPreload allows for a service to preload some data (e.g. common images, regions etc)
+type SupportsPreload interface {
+	Preload(ctx context.Context) error
+}
+
 // SupportsNormalization can be implemented to support normalization
 type SupportsNormalization interface {
 	// ConfigureVisitor sets up simple replacements
