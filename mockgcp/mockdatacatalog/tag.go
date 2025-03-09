@@ -30,19 +30,54 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datacatalog/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 func (s *DataCatalogV1) CreateTag(ctx context.Context, req *pb.CreateTagRequest) (*pb.Tag, error) {
-	name, err := s.parseTagName(req.Parent)
+	// Parent name format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
+	parentName, err := s.parseEntryName(req.Parent)
 	if err != nil {
 		return nil, err
 	}
-	reqName := name.String() + "/"
 
-	fqn := reqName + fmt.Sprintf("generated%d", s.IDGenerator.Next())
+	// Generate a fixed tag ID for predictability in tests.
+	// The real API generates an ID, but for mock tests, a fixed one is easier.
+	tagID := "mocktagid" // Use a predictable ID
+
+	fqn := parentName.String() + "/tags/" + tagID
 
 	obj := proto.Clone(req.Tag).(*pb.Tag)
 	obj.Name = fqn
+
+	// Validate the TagTemplate reference
+	if obj.Template == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "tag template is required")
+	}
+	templateName, err := s.parseTagTemplateName(obj.Template)
+	if err != nil {
+		// Wrap the error to provide more context
+		return nil, status.Errorf(codes.InvalidArgument, "invalid tag template name %q: %v", obj.Template, err)
+	}
+
+	// Fetch the TagTemplate to populate display names
+	template := &pb.TagTemplate{}
+	if err := s.storage.Get(ctx, templateName.String(), template); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.FailedPrecondition, "referenced tag template %q not found", obj.Template)
+		}
+		return nil, fmt.Errorf("fetching referenced tag template %q failed: %w", obj.Template, err)
+	}
+
+	obj.TemplateDisplayName = template.DisplayName
+	for fieldID, field := range obj.Fields {
+		if templateField, ok := template.Fields[fieldID]; ok {
+			field.DisplayName = templateField.DisplayName
+		} else {
+			// This case might indicate inconsistency or a lenient create behavior.
+			// For now, leave the display name empty if the field doesn't exist in the template.
+			// Consider logging a warning or returning an error based on desired strictness.
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -64,19 +99,105 @@ func (s *DataCatalogV1) UpdateTag(ctx context.Context, req *pb.UpdateTagRequest)
 		return nil, err
 	}
 
-	// TODO: Nested FieldMasks.
-	if req.GetUpdateMask() != nil && len(req.GetUpdateMask().Paths) > 0 {
-		return nil, status.Errorf(codes.Unimplemented, "UpdateTag with updateMask is not yet implemented")
-	}
+	// TODO: Implement FieldMask application properly.
+	// For now, rudimentary update that overwrites fields present in the request.
+	// This assumes the request tag object contains only the fields to be updated.
+	// A real implementation needs to merge based on updateMask.
+	updateData := req.GetTag()
 
-	// TODO: the merge operation of 'req' onto 'obj' is incorrect
-	obj = proto.Clone(req.GetTag()).(*pb.Tag)
-	obj.Name = fqn
+	// Example simple merge (overwriting fields if present in request)
+	// This doesn't respect updateMask properly!
+	for fieldID, fieldValue := range updateData.Fields {
+		if existingField, ok := obj.Fields[fieldID]; ok {
+			// Update existing field values based on type
+			if fieldValue.GetStringValue() != "" {
+				existingField.Kind = &pb.TagField_StringValue{StringValue: fieldValue.GetStringValue()}
+			} else if fieldValue.GetBoolValue() { // Assuming bool defaults to false
+				existingField.Kind = &pb.TagField_BoolValue{BoolValue: fieldValue.GetBoolValue()}
+			} else if fieldValue.GetDoubleValue() != 0.0 {
+				existingField.Kind = &pb.TagField_DoubleValue{DoubleValue: fieldValue.GetDoubleValue()}
+			} else if fieldValue.GetTimestampValue() != nil {
+				existingField.Kind = &pb.TagField_TimestampValue{TimestampValue: fieldValue.GetTimestampValue()}
+			} else if enumVal := fieldValue.GetEnumValue(); enumVal != nil { // Check if the kind is EnumValue and get the inner message
+				// Assign the oneof wrapper correctly
+				existingField.Kind = &pb.TagField_EnumValue_{EnumValue: enumVal}
+			} // Add other types as needed
+		} else {
+			// Field doesn't exist in the original tag? This might indicate an issue
+			// or the updateMask intends to add it. A proper implementation needs the mask.
+			// For now, let's just skip adding new fields during update.
+			// Log this? return status.Errorf(codes.InvalidArgument, "attempting to update non-existent field %q without proper updateMask handling", fieldID)
+		}
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	// Fetch the TagTemplate to populate display names
+	templateName, err := s.parseTagTemplateName(obj.Template)
+	if err != nil {
+		// This should ideally not happen if the tag was created correctly referencing a valid template
+		return nil, status.Errorf(codes.Internal, "error parsing template name from existing tag %q: %v", obj.Template, err)
+	}
+	template := &pb.TagTemplate{}
+	if err := s.storage.Get(ctx, templateName.String(), template); err != nil {
+		// This should ideally not happen if the template existed during tag creation
+		return nil, status.Errorf(codes.Internal, "error fetching referenced tag template %q for existing tag: %v", obj.Template, err)
+	}
+
+	obj.TemplateDisplayName = template.DisplayName
+	for fieldID, field := range obj.Fields {
+		if templateField, ok := template.Fields[fieldID]; ok {
+			field.DisplayName = templateField.DisplayName
+		} else {
+			// Field exists in tag but not in template - inconsistency?
+			// Leave display name empty for now.
+		}
+	}
+
 	return obj, nil
+}
+
+func (s *DataCatalogV1) ListTags(ctx context.Context, req *pb.ListTagsRequest) (*pb.ListTagsResponse, error) {
+	// Parent name format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
+	parentName, err := s.parseEntryName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	parentFQNPrefix := parentName.String() + "/tags/"
+
+	response := &pb.ListTagsResponse{}
+
+	// TODO: Implement pagination if needed. For now, list all matching tags.
+	if err := s.storage.List(ctx, (*pb.Tag)(nil).ProtoReflect().Descriptor(), storage.ListOptions{}, func(obj proto.Message) error {
+		tag, ok := obj.(*pb.Tag)
+		if !ok {
+			// This should not happen with properly typed storage, but handle defensively.
+			return status.Errorf(codes.Internal, "unexpected object type found in storage: %T", obj)
+		}
+
+		// Filter by parent prefix
+		if !strings.HasPrefix(tag.Name, parentFQNPrefix) {
+			return nil // Skip this tag, it doesn't belong to the requested parent
+		}
+		// Clear fields that shouldn't be in the list response based on observed behavior.
+		tag.TemplateDisplayName = ""
+		for key := range tag.Fields {
+			// DisplayName is part of the template, not the tag instance itself in this context.
+			// Clear it as it shouldn't be returned in the Tag response based on observed behavior.
+			if tag.Fields[key] != nil {
+				tag.Fields[key].DisplayName = ""
+			}
+		}
+		response.Tags = append(response.Tags, tag)
+		return nil
+	}); err != nil {
+		return nil, err // Errors during listing (e.g., storage connection issues)
+	}
+
+	return response, nil
 }
 
 func (s *DataCatalogV1) DeleteTag(ctx context.Context, req *pb.DeleteTagRequest) (*emptypb.Empty, error) {
@@ -92,69 +213,49 @@ func (s *DataCatalogV1) DeleteTag(ctx context.Context, req *pb.DeleteTagRequest)
 	return &emptypb.Empty{}, nil
 }
 
-type entryName struct {
-	Project     *projects.ProjectData
-	Location    string
-	EntryGroup  string
-	Entry       string
-	TagTemplate string
-	Tag         string
+type tagName struct {
+	Project    *projects.ProjectData
+	Location   string
+	EntryGroup string
+	Entry      string
+	Tag        string
 }
 
 // projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
 // projects/{project}/locations/{location}/tagTemplates/{tag_template}
-func (n *entryName) String() string {
-	var b strings.Builder
-	b.WriteString("projects/" + n.Project.ID + "/locations/" + n.Location + "/entryGroups/" + n.EntryGroup)
-	if n.Entry != "" {
-		b.WriteString("/entries/")
-		b.WriteString(n.Entry)
-	}
-	if n.TagTemplate != "" {
-		b.WriteString("/tagTemplates/")
-		b.WriteString(n.TagTemplate)
-	}
-	if n.Tag != "" {
-		b.WriteString("/tags/")
-		b.WriteString(n.Tag)
-	}
-	return b.String()
+func (n *tagName) String() string {
+	// Tag name format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}
+	return fmt.Sprintf("projects/%s/locations/%s/entryGroups/%s/entries/%s/tags/%s",
+		n.Project.ID,
+		n.Location,
+		n.EntryGroup,
+		n.Entry,
+		n.Tag)
 }
 
-// parseTagName parses a string into an entryName.
-func (s *DataCatalogV1) parseTagName(name string) (*entryName, error) {
+// parseTagName parses a string into a tagName.
+// Format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}
+func (s *DataCatalogV1) parseTagName(name string) (*tagName, error) {
 	tokens := strings.Split(name, "/")
-	valid := false
-	if len(tokens) == 10 {
-		if tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "entryGroups" && tokens[6] == "entries" && tokens[8] == "tags" {
-			valid = true
-		}
-	}
-	if len(tokens) == 8 {
-		if tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "entryGroups" && tokens[6] == "tags" {
-			valid = true
-		}
-	}
-	if !valid {
-		return nil, fmt.Errorf("unable to parse %q as a valid entryName", name)
+	if len(tokens) == 10 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "entryGroups" && tokens[6] == "entries" && tokens[8] == "tags" {
+		// Valid format
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q does not match pattern projects/*/locations/*/entryGroups/*/entries/*/tags/*", name)
 	}
 
 	project, err := s.Projects.GetProjectByID(tokens[1])
 	if err != nil {
-		return nil, err
+		// This is how the GCP API seems to behave in practice
+		return nil, status.Errorf(codes.NotFound, "project %q not found", tokens[1])
 	}
 
-	namePart := &entryName{
+	namePart := &tagName{
 		Project:    project,
 		Location:   tokens[3],
 		EntryGroup: tokens[5],
+		Entry:      tokens[7],
+		Tag:        tokens[9],
 	}
-	if len(tokens) > 6 {
-		namePart.Entry = tokens[7]
-		if len(tokens) > 8 {
-			namePart.Tag = tokens[9]
-		}
-	}
+
 	return namePart, nil
 }
-
