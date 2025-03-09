@@ -20,12 +20,18 @@ package mockmetastore
 
 import (
 	"context"
+	"fmt"
 	"strings"
+	"time"
 
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/metastore/v1"
 )
 
@@ -70,7 +76,7 @@ func (s *DataprocMetastoreV1) CreateBackup(ctx context.Context, req *pb.CreateBa
 		return nil, err
 	}
 
-	lroPrefix := name.Parent.String() + "/operations/" + name.BackupName
+	lroPrefix := name.Parent().String() + "/operations/" + name.BackupName
 
 	return s.operations.StartLRO(ctx, lroPrefix, nil, func() (proto.Message, error) {
 		return obj, nil
@@ -90,10 +96,20 @@ func (s *DataprocMetastoreV1) DeleteBackup(ctx context.Context, req *pb.DeleteBa
 		return nil, err
 	}
 
-	prefix := name.Parent.String() + "/operations/" + name.BackupName
+	prefix := name.Parent().String() + "/operations/" + name.BackupName
 	return s.operations.StartLRO(ctx, prefix, nil, func() (proto.Message, error) {
 		return &emptypb.Empty{}, nil
 	})
+}
+
+type serviceName struct {
+	Project   *projects.ProjectData
+	Location  string
+	ServiceID string
+}
+
+func (n *serviceName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/services/%s", n.Project.ID, n.Location, n.ServiceID)
 }
 
 type backupName struct {
@@ -138,5 +154,3 @@ func (s *MockService) parseBackupName(name string) (*backupName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
