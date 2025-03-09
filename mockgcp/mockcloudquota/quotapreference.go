@@ -30,6 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
+	"github.com/golang/protobuf/ptypes/wrappers"
+	"github.com/google/uuid"
 )
 
 func (s *CloudQuotasV1) GetQuotaPreference(ctx context.Context, req *pb.GetQuotaPreferenceRequest) (*pb.QuotaPreference, error) {
@@ -62,6 +64,8 @@ func (s *CloudQuotasV1) CreateQuotaPreference(ctx context.Context, req *pb.Creat
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
+	obj.Etag = uuid.New().String()
+	obj.QuotaConfig.GrantedValue = &wrappers.Int64Value{Value: obj.QuotaConfig.PreferredValue}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -93,6 +97,7 @@ func (s *CloudQuotasV1) UpdateQuotaPreference(ctx context.Context, req *pb.Updat
 	obj.UpdateTime = timestamppb.New(now)
 
 	proto.Merge(obj, req.QuotaPreference)
+	obj.QuotaConfig.GrantedValue = &wrappers.Int64Value{Value: obj.QuotaConfig.PreferredValue}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
