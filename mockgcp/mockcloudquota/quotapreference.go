@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
 )
 
 func (s *CloudQuotasV1) GetQuotaPreference(ctx context.Context, req *pb.GetQuotaPreferenceRequest) (*pb.QuotaPreference, error) {
