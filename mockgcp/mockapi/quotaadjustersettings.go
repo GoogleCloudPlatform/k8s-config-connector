@@ -1,4 +1,4 @@
- // Copyright 2025 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package mockcloudquotas
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -31,11 +32,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
 )
-
-type QuotaAdjusterSettingsManagerV1Beta struct {
-	*MockService
-	pb.UnimplementedQuotaAdjusterSettingsManagerServer
-}
 
 func (s *QuotaAdjusterSettingsManagerV1Beta) GetQuotaAdjusterSettings(ctx context.Context, req *pb.GetQuotaAdjusterSettingsRequest) (*pb.QuotaAdjusterSettings, error) {
 	name, err := s.parseQuotaAdjusterSettingsName(req.Name)
@@ -135,5 +131,3 @@ func (s *MockService) parseQuotaAdjusterSettingsName(name string) (*quotaAdjuste
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
 }
-
-
