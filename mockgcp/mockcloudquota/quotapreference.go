@@ -16,7 +16,7 @@
 // proto.service: google.api.cloudquotas.v1.CloudQuotas
 // proto.message: google.api.cloudquotas.v1.QuotaPreference
 
-package mockcloudquotas
+package mockcloudquota
 
 import (
 	"context"
