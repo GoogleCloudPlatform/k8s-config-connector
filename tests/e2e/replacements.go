@@ -91,8 +91,8 @@ func (r *Replacements) ApplyReplacements(s string) string {
 	return s
 }
 
-// placeholderForGCPResource returns the placeholder we use for the value, if we recognize the GCP resource type
-func (r *Replacements) placeholderForGCPResource(resource string) string {
+// PlaceholderForGCPResource returns the placeholder we use for the value, if we recognize the GCP resource type
+func PlaceholderForGCPResource(resource string) string {
 	switch resource {
 	case "addresses":
 		return "${addressID}"
@@ -154,9 +154,22 @@ func (r *Replacements) placeholderForGCPResource(resource string) string {
 		return "${processorID}"
 	case "processorVersions":
 		return "${processorVersionID}"
-	default:
+	case "projects":
+		// Handled specially
+		return ""
+	case "regions":
+		// Not normally volatile, don't use placeholder
 		return ""
 	}
+
+	if strings.HasSuffix(resource, "ies") {
+		return "${" + strings.TrimSuffix(resource, "ies") + "yID}"
+	}
+	if strings.HasSuffix(resource, "s") {
+		return "${" + strings.TrimSuffix(resource, "s") + "ID}"
+	}
+
+	return ""
 }
 
 // ExtractIDsFromLinks parses the URL or partial URL, and extracts generated IDs from it.
@@ -164,7 +177,7 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 	u, _ := ParseGCPLink(link)
 	if u != nil {
 		for _, item := range u.PathItems {
-			placeholder := r.placeholderForGCPResource(item.Resource)
+			placeholder := PlaceholderForGCPResource(item.Resource)
 			if placeholder != "" {
 				r.PathIDs[item.Name] = placeholder
 			}

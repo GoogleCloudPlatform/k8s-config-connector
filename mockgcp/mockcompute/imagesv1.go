@@ -16,11 +16,12 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -30,25 +31,32 @@ type ImagesV1 struct {
 }
 
 func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImageRequest) (*pb.Image, error) {
-	obj := &pb.Image{}
+	ret := &pb.Image{}
 
-	// Details from gcloud compute images describe-from-family debian-11 --project debian-cloud --log-http
-	obj.Kind = PtrTo("compute#image")
-	obj.Name = PtrTo("debian-11-bullseye-v20231010")
-	obj.Description = PtrTo("Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20231010")
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
-	obj.Family = PtrTo("debian-11")
-	obj.Status = PtrTo("UP")
+	findKind := (&pb.Image{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{}, func(obj proto.Message) error {
+		image := obj.(*pb.Image)
+		if req.GetFamily() != image.GetFamily() {
+			return nil
+		}
 
-	return obj, nil
+		name, err := s.parseImageSelfLink(image.GetSelfLink())
+		if err != nil {
+			return err
+		}
+		if req.GetProject() != "" && req.GetProject() != name.Project.ID {
+			return nil
+		}
+		ret = image
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return ret, nil
 }
 
 func (s *ImagesV1) Get(ctx context.Context, req *pb.GetImageRequest) (*pb.Image, error) {
-	// Get from family
-	if req.GetProject() == "debian-cloud" && req.GetImage() == "debian-11" {
-		return nil, status.Errorf(codes.NotFound, "image not found")
-	}
-
 	name, err := s.parseImageName(req.GetProject(), req.GetImage())
 	if err != nil {
 		return nil, err
@@ -172,4 +180,23 @@ func (s *MockService) parseImageName(projectName, name string) (*ImageName, erro
 		Project: project,
 		Name:    name,
 	}, nil
+}
+
+// parseImageName parses a string into an imageName.
+// The expected form is `projects/*/global/images/*`.
+func (s *MockService) parseImageSelfLink(selfLink string) (*ImageName, error) {
+	fqn := strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/v1/")
+	tokens := strings.Split(fqn, "/")
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "images" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &ImageName{
+			Project: project,
+			Name:    tokens[4],
+		}, nil
+	}
+	return nil, fmt.Errorf("invalid image self link %q", selfLink)
 }
