@@ -210,11 +210,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}' was not found"
   }
 }
 
@@ -226,7 +226,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "A target gRPC proxy intended for load balancing gRPC traffic, referenced by global forwarding rules. References a URL map which specifies how traffic routes to gRPC backend services.",
-  "name": "computetargetgrpcproxy-${uniqueId}",
+  "name": "${targetGrpcProxyID}",
   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
   "validateForProxyless": true
 }
@@ -252,7 +252,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -283,7 +283,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -309,8 +309,8 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetGrpcProxy",
-  "name": "computetargetgrpcproxy-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "name": "${targetGrpcProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
   "validateForProxyless": true
@@ -343,7 +343,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -374,7 +374,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
