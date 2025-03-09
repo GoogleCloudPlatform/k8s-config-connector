@@ -154,6 +154,10 @@ func (r *Replacements) placeholderForGCPResource(resource string) string {
 		return "${processorID}"
 	case "processorVersions":
 		return "${processorVersionID}"
+	case "workloads":
+		return "${workloadID}"
+	case "organizations":
+		return "${organizationID}"
 	default:
 		return ""
 	}
@@ -165,7 +169,11 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 	if u != nil {
 		for _, item := range u.PathItems {
 			placeholder := r.placeholderForGCPResource(item.Resource)
-			if placeholder != "" {
+			// Apigee organization maps to GCP project but not GCP organization,
+			// so when we have "organizations/mock-project", it's likely an
+			// Apigee organization, and we don't replace the value with
+			// ${organizationID} placeholder.
+			if placeholder != "" && !(item.Resource == "organizations" && item.Name == "mock-project") {
 				r.PathIDs[item.Name] = placeholder
 			}
 
