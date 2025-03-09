@@ -112,16 +112,43 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	return msg
 }
 
-func checkoutBranch(branch Branch, workDir string, out *strings.Builder) {
-	log.Printf("COMMAND: git checkout %s", branch.Local)
-	checkout := exec.Command("git", "checkout", branch.Local)
+func checkoutBranch(ctx context.Context, branch Branch, workDir string) {
+	checkout := exec.CommandContext(ctx, "git", "checkout", branch.Local)
 	checkout.Dir = workDir
-	checkout.Stdout = out
-	if err := checkout.Run(); err != nil {
+
+	results, err := execCommand(checkout)
+	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH CHECKOUT: %q\n", formatCommandOutput(out.String()))
-	out.Reset()
+	log.Printf("BRANCH CHECKOUT: %v\n", formatCommandOutput(results.Stdout))
+}
+
+type ExecResults struct {
+	Stdout   string
+	Stderr   string
+	ExitCode int
+}
+
+func execCommand(cmd *exec.Cmd) (ExecResults, error) {
+	var stdout strings.Builder
+	var stderr strings.Builder
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	log.Printf("COMMAND: %s", cmd.String())
+	err := cmd.Run()
+	if err != nil {
+		// var exitErr *exec.ExitError
+		// if errors.As(err, &exitErr) {
+		// 	return ExecResults{Stdout: stdout.String(), Stderr: stderr.String(), ExitCode: exitErr.ExitCode()}, nil
+		// }
+
+		log.Printf("error running command %v: %v", cmd.String(), err)
+		log.Printf("stdout: %s", stdout.String())
+		log.Printf("stderr: %s", stderr.String())
+		return ExecResults{}, err
+	}
+	return ExecResults{Stdout: stdout.String(), Stderr: stderr.String(), ExitCode: cmd.ProcessState.ExitCode()}, nil
 }
 
 func writeTemplateToFile(branch Branch, filePath string, template string) {
@@ -154,46 +181,31 @@ func writeTemplateToFile(branch Branch, filePath string, template string) {
 	}
 }
 
-func gitAdd(workDir string, out *strings.Builder, files ...string) {
-	params := ""
-	first := true
+func gitAdd(ctx context.Context, workDir string, files ...string) {
+	args := []string{"git", "add"}
 	for _, file := range files {
-		if first {
-			first = false
-		} else {
-			params += " "
-		}
-		params += file
+		args = append(args, file)
 	}
-	log.Printf("COMMAND: git add %s", params)
-	args := []string{"add"}
-	args = append(args, files...)
-	gitadd := exec.Command("git", args...)
+	gitadd := exec.CommandContext(ctx, args[0], args[1:]...)
 	gitadd.Dir = workDir
-	gitadd.Stdout = out
-	gitadd.Stderr = out
-	if err := gitadd.Run(); err != nil {
-		log.Printf("GIT add error: %q\n", formatCommandOutput(out.String()))
-		out.Reset()
+
+	results, err := execCommand(gitadd)
+	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH ADD: %q\n", formatCommandOutput(out.String()))
-	out.Reset()
+	log.Printf("BRANCH ADD: %v\n", formatCommandOutput(results.Stdout))
 }
 
-func gitCommit(workDir string, out *strings.Builder, msg string) {
+func gitCommit(ctx context.Context, workDir string, msg string) {
 	log.Printf("COMMAND: git commit -m %q", msg)
-	gitcommit := exec.Command("git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
+	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
 	gitcommit.Dir = workDir
-	gitcommit.Stdout = out
-	gitcommit.Stderr = out
-	if err := gitcommit.Run(); err != nil {
-		log.Printf("GIT commit error: %q\n", formatCommandOutput(out.String()))
-		out.Reset()
+
+	results, err := execCommand(gitcommit)
+	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BRANCH COMMIT: %q\n", formatCommandOutput(out.String()))
-	out.Reset()
+	log.Printf("BRANCH COMMIT: %v\n", formatCommandOutput(results.Stdout))
 }
 
 func gitFileHasChange(workDir string, filePath string) bool {
