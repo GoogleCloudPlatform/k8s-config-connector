@@ -93,5 +93,3 @@ func (s *DataCatalogV1) parseEntryGroupName(name string) (*entryGroupName, error
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
