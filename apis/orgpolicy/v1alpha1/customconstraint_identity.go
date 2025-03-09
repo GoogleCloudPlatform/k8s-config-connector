@@ -32,7 +32,7 @@ type CustomConstraintIdentity struct {
 }
 
 func (i *CustomConstraintIdentity) String() string {
-	return i.parent.String() + "/customconstraints/" + i.id
+	return i.parent.String() + "/customConstraints/" + i.id
 }
 
 func (i *CustomConstraintIdentity) ID() string {
@@ -99,8 +99,8 @@ func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseCustomConstraintExternal(external string) (parent *CustomConstraintParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "customconstraints" {
-		return nil, "", fmt.Errorf("format of OrgPolicyCustomConstraint external=%q was not known (use organizations/{{organizationID}}/customconstraints/{{customconstraintID}})", external)
+	if len(tokens) != 4 || tokens[0] != "organizations" || tokens[2] != "customConstraints" {
+		return nil, "", fmt.Errorf("format of OrgPolicyCustomConstraint external=%q was not known (use organizations/{{organizationID}}/customConstraints/{{customconstraintID}})", external)
 	}
 	parent = &CustomConstraintParent{
 		OrganizationID: tokens[1],
