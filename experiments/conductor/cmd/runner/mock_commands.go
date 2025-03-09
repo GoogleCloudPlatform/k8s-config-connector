@@ -583,7 +583,13 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Run the controller builder to generate the resource go file.
-	resourceFile := filepath.Join(workDir, "mockgcp", mockfolder, fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
+	resourceName := strings.ToLower(branch.Resource)
+	if resourceName == "service" {
+		// Special case for service, it's actually a resource.
+		log.Printf("WARNING: Special case for resource with names 'service', setting file name to 'resourceservice.go'")
+		resourceName = "resourceservice"
+	}
+	resourceFile := filepath.Join(workDir, "mockgcp", mockfolder, fmt.Sprintf("%s.go", resourceName))
 	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate resource mock",
