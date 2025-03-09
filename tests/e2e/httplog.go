@@ -26,15 +26,13 @@ import (
 )
 
 type Normalizer struct {
-	uniqueID string
-	project  testgcp.GCPProject
+	project testgcp.GCPProject
 
 	*Replacements
 }
 
-func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
+func NewNormalizer(project testgcp.GCPProject) *Normalizer {
 	return &Normalizer{
-		uniqueID:     uniqueID,
 		project:      project,
 		Replacements: NewReplacements(),
 	}
@@ -229,7 +227,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 
 	got := events.FormatHTTP()
 	normalizers := []func(string) string{}
-	normalizers = append(normalizers, ReplaceString(x.uniqueID, "${uniqueId}"))
 	normalizers = append(normalizers, ReplaceString(x.project.ProjectID, "${projectId}"))
 	normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", x.project.ProjectNumber), "${projectNumber}"))
 	for k, v := range x.PathIDs {

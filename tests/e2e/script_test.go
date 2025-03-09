@@ -354,7 +354,7 @@ func TestE2EScript(t *testing.T) {
 
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					{
-						x := NewNormalizer(uniqueID, project)
+						x := NewNormalizer(project)
 
 						for _, stepEvents := range eventsByStep {
 							x.Preprocess(stepEvents)
