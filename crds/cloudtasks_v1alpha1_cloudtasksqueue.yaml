@@ -195,7 +195,7 @@ spec:
                       The time between retries will double maxDoublings times.
 
                       A task's retry interval starts at minBackoff, then doubles maxDoublings times,
-                      then increases linearly, and finally retries retries at intervals of maxBackoff
+                      then increases linearly, and finally retries at intervals of maxBackoff
                       up to maxAttempts times.
                     type: integer
                   maxRetryDuration:
