@@ -291,6 +291,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 	}
 
+	// TODO: Remove this, it should now be done in normalize in mockcompute
 	// Extract resource IDs / numbers from compute operations.
 	// The number / id is in the targetID field, we infer the type from the targetLink field.
 	for _, event := range events {
@@ -305,7 +306,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			if u != nil {
 				kind := u.PathItems[len(u.PathItems)-1].Resource
 
-				placeholder := x.placeholderForGCPResource(kind)
+				placeholder := PlaceholderForGCPResource(kind)
 				if placeholder != "" {
 					// We _should_ differentiate between ID and number.
 					// But this causes too many diffs right now.

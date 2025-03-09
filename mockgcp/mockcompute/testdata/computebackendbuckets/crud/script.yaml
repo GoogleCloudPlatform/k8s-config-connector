@@ -1,0 +1,7 @@
+
+- pre: gcloud storage buckets create gs://testbucket-${uniqueId}
+- exec: gcloud compute backend-buckets create test-${uniqueId} --gcs-bucket-name=testbucket-${uniqueId} --project=${projectId}
+- exec: gcloud compute backend-buckets describe test-${uniqueId} --project=${projectId}
+- exec: gcloud compute backend-buckets update test-${uniqueId} --description="test updated" --project=${projectId}
+- exec: gcloud compute backend-buckets delete test-${uniqueId} --project=${projectId}
+- post: gcloud storage buckets delete gs://testbucket-${uniqueId}

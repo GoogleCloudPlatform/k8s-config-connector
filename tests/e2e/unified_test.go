@@ -568,7 +568,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Specific to Compute
 					addReplacement("natIP", "192.0.0.10")
-					addReplacement("labelFingerprint", "abcdef0123A=")
 					addReplacement("fingerprint", "abcdef0123A=")
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")

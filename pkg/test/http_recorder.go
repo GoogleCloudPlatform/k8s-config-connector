@@ -39,6 +39,10 @@ func (e *LogEntry) URL() string {
 	return e.Request.URL
 }
 
+func (e *LogEntry) Method() string {
+	return e.Request.Method
+}
+
 // VisitRequestStringValues calls callback for any string values in the request body
 func (e *LogEntry) VisitRequestStringValues(callback func(path, value string)) {
 	body := e.Request.Body
