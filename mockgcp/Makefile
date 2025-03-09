@@ -166,9 +166,10 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
 		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
+		./third_party/googleapis/google/api/cloudquotas/v1beta/quota_adjuster_settings.proto \
 		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
-		./third_party/googleapis/google/storage/control/v2/*.proto
-		./third_party/googleapis/google/cloud/batch/v1/*.proto
+		./third_party/googleapis/google/storage/control/v2/*.proto \
+		./third_party/googleapis/google/cloud/batch/v1/*.proto \
 		./third_party/googleapis/google/cloud/edgecontainer/v1/*.proto
 
 .PHONY: generate-protos-from-openapi
