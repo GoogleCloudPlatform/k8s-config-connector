@@ -1,0 +1,3 @@
+- exec: gcloud compute networks create test-${uniqueId} --project=${projectId}
+- exec: gcloud compute networks describe test-${uniqueId} --project=${projectId}
+- exec: gcloud compute networks delete test-${uniqueId} --project=${projectId}
