@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "name": "projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}",
@@ -43,7 +42,6 @@ GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/gl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -75,7 +73,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "name": "projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}",
@@ -115,7 +112,6 @@ GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/gl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
