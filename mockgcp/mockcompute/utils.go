@@ -87,3 +87,14 @@ func makeFullyQualifiedRegion(ctx context.Context, projectID string, region stri
 	}
 	return s
 }
+
+// makeFullyQualifiedNetwork will convert a short-form region name to a fully-qualified name
+func makeFullyQualifiedNetwork(ctx context.Context, network string) string {
+	s := network
+	s = strings.TrimPrefix(s, "https://compute.googleapis.com/compute/v1/")
+	tokens := strings.Split(s, "/")
+	if len(tokens) == 5 {
+		s = buildComputeSelfLink(ctx, s)
+	}
+	return s
+}

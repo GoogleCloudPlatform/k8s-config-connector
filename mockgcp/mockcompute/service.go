@@ -61,6 +61,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterExternalVpnGatewaysServer(grpcServer, &externalVPNGateways{MockService: s})
 
+	pb.RegisterInstanceTemplatesServer(grpcServer, &instanceTemplates{MockService: s})
+
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
 
 	pb.RegisterResourcePoliciesServer(grpcServer, &resourcePolicies{MockService: s})
@@ -137,6 +139,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterExternalVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterInstanceTemplatesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

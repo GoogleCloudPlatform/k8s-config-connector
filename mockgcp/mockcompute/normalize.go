@@ -26,20 +26,26 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// General
-	replacements.ReplacePath(".creationTimestamp", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].creationTimestamp", PlaceholderTimestamp)
+	{
+		replacements.ReplacePath(".creationTimestamp", PlaceholderTimestamp)
+		replacements.ReplacePath(".items[].creationTimestamp", PlaceholderTimestamp)
+	}
 
 	// Addresses
-	replacements.ReplacePath(".labelFingerprint", "abcdef0123A=")
-	replacements.ReplacePath(".items[].labelFingerprint", "abcdef0123A=")
+	{
+		replacements.ReplacePath(".labelFingerprint", "abcdef0123A=")
+		replacements.ReplacePath(".items[].labelFingerprint", "abcdef0123A=")
 
-	replacements.ReplacePath(".address", "8.8.8.8")
-	replacements.ReplacePath(".items[].address", "8.8.8.8")
+		replacements.ReplacePath(".address", "8.8.8.8")
+		replacements.ReplacePath(".items[].address", "8.8.8.8")
 
-	replacements.SortSlice(".subnetworks")
+		replacements.SortSlice(".subnetworks")
+	}
 
-	// BackendBuckets
-
+	// InstanceTemplates
+	{
+		replacements.ReplacePath(".properties.metadata.fingerprint", "abcdef0123A=")
+	}
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
