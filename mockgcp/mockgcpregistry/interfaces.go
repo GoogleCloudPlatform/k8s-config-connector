@@ -55,6 +55,9 @@ type NormalizingVisitor interface {
 
 	// SortSlice will sort the slice at the given path
 	SortSlice(path string)
+
+	// PlaceholderForGCPResource returns the placeholder we use for the value, if we recognize the GCP resource type
+	PlaceholderForGCPResource(resource string) string
 }
 
 type Normalizer interface {

@@ -62,7 +62,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			if n >= 2 {
 				kind := tokens[n-2]
 
-				placeholder := "${" + strings.TrimSuffix(kind, "s") + "Id}"
+				placeholder := "${" + replacements.PlaceholderForGCPResource(kind) + "Id}"
 				// We _should_ differentiate between ID and number.
 				// But this causes too many diffs right now.
 				replacements.ReplaceStringValue(targetId, placeholder)
