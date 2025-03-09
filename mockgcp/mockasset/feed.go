@@ -30,12 +30,12 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/asset/v1"
 )
 
-type assetService struct {
+type AssetService struct {
 	*MockService
 	pb.UnimplementedAssetServiceServer
 }
 
-func (s *assetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb.Feed, error) {
+func (s *AssetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb.Feed, error) {
 	name, err := s.parseFeedName(req.Name)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (s *assetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb
 	return obj, nil
 }
 
-func (s *assetService) CreateFeed(ctx context.Context, req *pb.CreateFeedRequest) (*pb.Feed, error) {
+func (s *AssetService) CreateFeed(ctx context.Context, req *pb.CreateFeedRequest) (*pb.Feed, error) {
 	reqName := req.Parent + "/feeds/" + req.FeedId
 	name, err := s.parseFeedName(reqName)
 	if err != nil {
@@ -68,7 +68,7 @@ func (s *assetService) CreateFeed(ctx context.Context, req *pb.CreateFeedRequest
 	return req.Feed, nil
 }
 
-func (s *assetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest) (*pb.Feed, error) {
+func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest) (*pb.Feed, error) {
 	name, err := s.parseFeedName(req.GetFeed().GetName())
 	if err != nil {
 		return nil, err
@@ -106,7 +106,7 @@ func (s *assetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest
 	return obj, nil
 }
 
-func (s *assetService) DeleteFeed(ctx context.Context, req *pb.DeleteFeedRequest) (*emptypb.Empty, error) {
+func (s *AssetService) DeleteFeed(ctx context.Context, req *pb.DeleteFeedRequest) (*emptypb.Empty, error) {
 	name, err := s.parseFeedName(req.Name)
 	if err != nil {
 		return nil, err
@@ -143,6 +143,3 @@ func (s *MockService) parseFeedName(name string) (*feedName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
-

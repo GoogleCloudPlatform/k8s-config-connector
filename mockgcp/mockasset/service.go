@@ -16,7 +16,7 @@
 // http.host: cloudasset.googleapis.com
 // proto.service: google.cloud.asset.v1.AssetService
 
-package mockcloudasset
+package mockasset
 
 import (
 	"context"
@@ -39,11 +39,6 @@ type MockService struct {
 	operations *operations.Operations
 }
 
-type assetV1 struct {
-	*MockService
-	pb.UnimplementedAssetServiceServer
-}
-
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
@@ -59,7 +54,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterAssetServiceServer(grpcServer, &assetV1{MockService: s})
+	pb.RegisterAssetServiceServer(grpcServer, &AssetService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -72,5 +67,3 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	return mux, nil
 }
-
-
