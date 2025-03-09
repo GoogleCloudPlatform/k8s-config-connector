@@ -96,7 +96,22 @@ func (s *CloudQuotasV1) UpdateQuotaPreference(ctx context.Context, req *pb.Updat
 
 	obj.UpdateTime = timestamppb.New(now)
 
-	proto.Merge(obj, req.QuotaPreference)
+	for _, path := range paths {
+		switch path {
+		case "quota_config.preferred_value":
+			obj.QuotaConfig.PreferredValue = req.GetQuotaPreference().GetQuotaConfig().GetPreferredValue()
+		case "quota_config":
+			obj.QuotaConfig = req.GetQuotaPreference().GetQuotaConfig()
+		case "quota_id":
+			obj.QuotaId = req.GetQuotaPreference().GetQuotaId()
+		case "service":
+			obj.Service = req.GetQuotaPreference().GetService()
+		case "name":
+			obj.Name = req.GetQuotaPreference().GetName()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "unsupported update path: %q", path)
+		}
+	}
 	obj.QuotaConfig.GrantedValue = &wrappers.Int64Value{Value: obj.QuotaConfig.PreferredValue}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
