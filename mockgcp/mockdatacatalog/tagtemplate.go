@@ -158,12 +158,11 @@ func (s *MockService) parseTagTemplateName(name string) (*tagTemplateName, error
 		return nil, err
 	}
 
-	name := &tagTemplateName{
+	templateName := &tagTemplateName{
 		Project:  project,
 		Location: tokens[locationTokenIdx],
 		Id:       tokens[idTokenIdx],
 	}
 
-	return name, nil
+	return templateName, nil
 }
-
