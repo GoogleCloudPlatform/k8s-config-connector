@@ -1,0 +1,5 @@
+
+- exec: gcloud compute addresses create test-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud compute addresses describe test-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud compute addresses list --regions=us-central1 --project=${projectId}
+- exec: gcloud compute addresses delete test-${uniqueId} --region=us-central1 --project=${projectId} --quiet
