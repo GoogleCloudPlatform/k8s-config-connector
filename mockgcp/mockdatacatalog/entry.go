@@ -31,6 +31,11 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datacatalog/v1"
 )
 
+type DataCatalogV1 struct {
+	*MockService
+	pb.UnimplementedDataCatalogServer
+}
+
 func (s *DataCatalogV1) GetEntry(ctx context.Context, req *pb.GetEntryRequest) (*pb.Entry, error) {
 	name, err := s.parseEntryName(req.Name)
 	if err != nil {
@@ -112,10 +117,10 @@ func (s *DataCatalogV1) DeleteEntry(ctx context.Context, req *pb.DeleteEntryRequ
 }
 
 type entryName struct {
-	Project       string
-	Location      string
-	EntryGroup    string
-	EntryName     string
+	Project    string
+	Location   string
+	EntryGroup string
+	EntryName  string
 }
 
 func (n *entryName) String() string {
@@ -127,10 +132,10 @@ func (s *MockService) parseEntryName(name string) (*entryName, error) {
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "entryGroups" && tokens[6] == "entries" {
 
 		name := &entryName{
-			Project:     tokens[1],
+			Project:    tokens[1],
 			Location:   tokens[3],
 			EntryGroup: tokens[5],
-			EntryName:    tokens[7],
+			EntryName:  tokens[7],
 		}
 
 		return name, nil
@@ -138,5 +143,3 @@ func (s *MockService) parseEntryName(name string) (*entryName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
