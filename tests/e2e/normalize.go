@@ -464,6 +464,10 @@ func (o *objectWalker) SortSlice(path string) {
 	o.sortSlices.Insert(path)
 }
 
+func (o *objectWalker) PlaceholderForGCPResource(kind string) string {
+	return PlaceholderForGCPResource(kind)
+}
+
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
 	if v == nil {
 		return v, nil
