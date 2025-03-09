@@ -4,7 +4,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -42,7 +41,6 @@ x-goog-request-params: parent=projects%2F${uniqueId}%2Flocations%2Fus-central1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -64,7 +62,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -92,7 +89,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${uniqueId}%2Flocations%2Fus-central1%2FkeyHandles%2F5a4fa10e-995d-4ee0-a426-a220aa390320
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
