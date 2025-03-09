@@ -136,7 +136,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto
+		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
+		./third_party/googleapis/mockgcp/api/cloudquotas/v1/*.proto
 
 
 .PHONY: generate-grpc-for-google-protos
@@ -157,7 +158,6 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
 		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
-		./third_party/googleapis/google/api/cloudquotas/v1/cloudquotas.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

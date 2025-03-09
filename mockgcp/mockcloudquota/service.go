@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockcloudquotas
+package mockcloudquota
 
 // +tool:mockgcp-service
 // http.host: cloudquotas.googleapis.com
@@ -27,7 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloudquotas/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
