@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -103,7 +104,7 @@ type DataflowFlexTemplateJobSpec struct {
 	*/
 
 	// The Cloud KMS key for the job.
-	KmsKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
+	KmsKeyNameRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
 
 	// Configuration for VM IPs.
 	IPConfiguration *string `json:"ipConfiguration,omitempty"`

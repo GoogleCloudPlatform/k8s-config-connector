@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -71,7 +72,7 @@ type CreateBackupEncryptionConfig struct {
 	//  is `CUSTOMER_MANAGED_ENCRYPTION`. Values are of the form
 	//  `projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>`.
 	// +kcc:proto:field=google.spanner.admin.database.v1.CreateBackupEncryptionConfig.kms_key_name
-	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Optional. Specifies the KMS configuration for the one or more keys used to
 	//  protect the backup. Values are of the form
@@ -89,7 +90,7 @@ type CreateBackupEncryptionConfig struct {
 	//  Multi-regional location KMS keys are not supported for USER_MANAGED
 	//  instance configs.
 	// +kcc:proto:field=google.spanner.admin.database.v1.CreateBackupEncryptionConfig.kms_key_names
-	KMSKeyRefs []*refs.KMSCryptoKeyRef `json:"kmsKeyRefs,omitempty"`
+	KMSKeyRefs []*kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRefs,omitempty"`
 }
 
 // SpannerBackupScheduleStatus defines the config connector machine state of SpannerBackupSchedule
