@@ -96,6 +96,8 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
+require cloud.google.com/go/apigateway v1.7.3
+
 require (
 	cloud.google.com/go/dataproc/v2 v2.10.1 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
