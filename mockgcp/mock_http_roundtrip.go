@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/workflows"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigee"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
@@ -96,7 +97,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvpcaccess"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
