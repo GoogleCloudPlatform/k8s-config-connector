@@ -22,10 +22,12 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -33,7 +35,7 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-func (s *dataprocMetastoreService) GetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.Service, error) {
+func (s *DataprocMetastoreV1) GetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.Service, error) {
 	name, err := s.parseServiceName(req.Name)
 	if err != nil {
 		return nil, err
@@ -52,7 +54,7 @@ func (s *dataprocMetastoreService) GetService(ctx context.Context, req *pb.GetSe
 	return obj, nil
 }
 
-func (s *dataprocMetastoreService) CreateService(ctx context.Context, req *pb.CreateServiceRequest) (*longrunningpb.Operation, error) {
+func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateServiceRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/services/" + req.ServiceId
 	name, err := s.parseServiceName(reqName)
 	if err != nil {
@@ -88,7 +90,7 @@ func (s *dataprocMetastoreService) CreateService(ctx context.Context, req *pb.Cr
 	})
 }
 
-func (s *dataprocMetastoreService) UpdateService(ctx context.Context, req *pb.UpdateServiceRequest) (*longrunningpb.Operation, error) {
+func (s *DataprocMetastoreV1) UpdateService(ctx context.Context, req *pb.UpdateServiceRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseServiceName(req.GetService().GetName())
 	if err != nil {
 		return nil, err
@@ -126,7 +128,7 @@ func (s *dataprocMetastoreService) UpdateService(ctx context.Context, req *pb.Up
 	})
 }
 
-func (s *dataprocMetastoreService) DeleteService(ctx context.Context, req *pb.DeleteServiceRequest) (*longrunningpb.Operation, error) {
+func (s *DataprocMetastoreV1) DeleteService(ctx context.Context, req *pb.DeleteServiceRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseServiceName(req.Name)
 	if err != nil {
 		return nil, err
@@ -154,7 +156,7 @@ func (s *dataprocMetastoreService) DeleteService(ctx context.Context, req *pb.De
 }
 
 // updateService will read-modify-write the object with optimistic locking
-func (s *dataprocMetastoreService) updateService(ctx context.Context, fqn string, update func(obj *pb.Service)) (*pb.Service, error) {
+func (s *DataprocMetastoreV1) updateService(ctx context.Context, fqn string, update func(obj *pb.Service)) (*pb.Service, error) {
 	obj := &pb.Service{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -215,4 +217,3 @@ func (s *MockService) buildServiceName(projectName, region, service string) (*se
 		Name:     service,
 	}, nil
 }
-
