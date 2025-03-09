@@ -1,0 +1,3 @@
+- exec: gcloud compute disks create test-${uniqueId} --zone=us-central1-a --project=${projectId}
+- exec: gcloud compute disks describe test-${uniqueId} --zone=us-central1-a --project=${projectId}
+- exec: gcloud compute disks delete test-${uniqueId} --zone=us-central1-a --project=${projectId} --quiet
