@@ -73,20 +73,23 @@ func TestScripts(t *testing.T) {
 
 			h.StartProxy(ctx)
 
+			var httpEvents []*test.LogEntry
+
 			for _, step := range script.Steps {
 				stepCmd := ""
 				stepType := ""
-				needProxy := false
+				captureEvents := true
 				if step.Pre != "" {
 					stepCmd = step.Pre
 					stepType = "pre"
+					captureEvents = false
 				} else if step.Exec != "" {
 					stepCmd = step.Exec
 					stepType = "exec"
-					needProxy = true
 				} else if step.Post != "" {
 					stepCmd = step.Post
 					stepType = "post"
+					captureEvents = false
 				}
 				if stepCmd != "" {
 					cmd := exec.CommandContext(ctx, "bash", "-c", stepCmd)
@@ -101,10 +104,8 @@ func TestScripts(t *testing.T) {
 						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))
 					}
 					cmd.Env = append(cmd.Env, "CLOUDSDK_CORE_PROJECT="+h.Project.ProjectID)
-					if needProxy {
-						gcloudConfig := h.proxy.BuildGcloudConfig(h.ProxyEndpoint, h.MockGCP)
-						cmd.Env = append(cmd.Env, gcloudConfig.EnvVars...)
-					}
+					gcloudConfig := h.proxy.BuildGcloudConfig(h.ProxyEndpoint, h.MockGCP)
+					cmd.Env = append(cmd.Env, gcloudConfig.EnvVars...)
 					cmd.Dir = testDir
 
 					t.Logf("executing step type: %s  cmd: %q", stepType, stepCmd)
@@ -114,12 +115,15 @@ func TestScripts(t *testing.T) {
 
 						t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
 					}
+
+					if captureEvents {
+						httpEvents = append(httpEvents, h.Events.HTTPEvents...)
+					}
+					h.Events.HTTPEvents = nil
 				}
 			}
 
 			{
-				httpEvents := h.Events.HTTPEvents
-
 				for _, httpEvent := range httpEvents {
 					// gcloud includes a UUID in the user-agent, along with a lot of other client info (e.g. kernel version, python version)
 					// Just remove it from the golden output.
