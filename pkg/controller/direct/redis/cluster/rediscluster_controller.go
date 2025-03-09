@@ -172,11 +172,6 @@ func (a *redisClusterAdapter) Find(ctx context.Context) (bool, error) {
 
 // Delete implements the Adapter interface.
 func (a *redisClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	// Already deleted
-	if a.resourceID == "" {
-		return false, nil
-	}
-
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteClusterRequest{
 		Name: a.fullyQualifiedName(),
@@ -184,9 +179,6 @@ func (a *redisClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 
 	op, err := a.clustersClient.DeleteCluster(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
 		if !strings.Contains(err.Error(), "missing \"value\" field") {
 			return false, fmt.Errorf("deleting redisCluster %s: %w", a.fullyQualifiedName(), err)
 		}
