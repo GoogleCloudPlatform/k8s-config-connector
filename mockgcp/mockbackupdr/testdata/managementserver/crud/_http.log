@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "autoCreateSubnetworks": false,
-  "name": "test-network-${uniqueId}",
+  "name": "${networkID}",
   "routingConfig": {
     "routingMode": "REGIONAL"
   }
@@ -33,7 +33,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -66,7 +66,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -92,11 +92,11 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "test-network-${uniqueId}",
+  "name": "${networkID}",
   "routingConfig": {
     "routingMode": "REGIONAL"
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
@@ -111,8 +111,8 @@ Content-Type: application/json
 {
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
-  "name": "google-managed-services-${uniqueId}",
-  "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
+  "name": "${addressID}",
+  "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING"
 }
@@ -138,7 +138,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/google-managed-services-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -171,7 +171,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/google-managed-services-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -199,11 +199,11 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "name": "google-managed-services-${uniqueId}",
-  "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
+  "name": "${addressID}",
+  "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/google-managed-services-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -239,9 +239,9 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "reservedPeeringRanges": [
-    "google-managed-services-${uniqueId}"
+    "${addressID}"
   ]
 }
 
@@ -281,10 +281,10 @@ X-Xss-Protection: 0
   "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
-    "network": "projects/${projectNumber}/global/networks/test-network-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "peering": "servicenetworking-googleapis-com",
     "reservedPeeringRanges": [
-      "google-managed-services-${uniqueId}"
+      "${addressID}"
     ],
     "service": "services/servicenetworking.googleapis.com"
   }
@@ -301,7 +301,7 @@ Content-Type: application/json
 {
   "networks": [
     {
-      "network": "projects/${projectId}/global/networks/test-network-${uniqueId}"
+      "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
   "type": "BACKUP_RESTORE"
@@ -367,7 +367,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
     "networks": [
       {
-        "network": "projects/${projectId}/global/networks/test-network-${uniqueId}"
+        "network": "projects/${projectId}/global/networks/${networkID}"
       }
     ],
     "oauth2ClientId": "888888888888888888888",
@@ -404,7 +404,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
   "networks": [
     {
-      "network": "projects/${projectId}/global/networks/test-network-${uniqueId}"
+      "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
   "oauth2ClientId": "888888888888888888888",
@@ -440,7 +440,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
   "networks": [
     {
-      "network": "projects/${projectId}/global/networks/test-network-${uniqueId}"
+      "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
   "oauth2ClientId": "888888888888888888888",
@@ -543,7 +543,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "consumerNetwork": "projects/${projectNumber}/global/networks/test-network-${uniqueId}"
+  "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}"
 }
 
 200 OK
@@ -613,7 +613,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/google-managed-services-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -646,7 +646,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/google-managed-services-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -678,7 +678,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -711,6 +711,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/test-network-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }

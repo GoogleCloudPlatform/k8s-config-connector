@@ -329,11 +329,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}' was not found"
   }
 }
 
@@ -348,7 +348,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
+  "name": "${subnetworkID}",
   "network": "projects/${projectId}/global/networks/${subnetworkID}",
   "purpose": "PRIVATE_SERVICE_CONNECT",
   "region": "projects/${projectId}/global/regions/us-west3"
@@ -376,7 +376,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -408,7 +408,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -439,13 +439,13 @@ X-Xss-Protection: 0
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
+  "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY"
 }
 
@@ -726,11 +726,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}' was not found"
   }
 }
 
@@ -748,7 +748,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",
-  "name": "computeforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "projects/${projectId}/global/networks/${subnetworkID}",
   "networkTier": "PREMIUM",
   "region": "projects/${projectId}/global/regions/us-west3",
@@ -777,7 +777,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -809,7 +809,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -839,11 +839,11 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "loadBalancingScheme": "INTERNAL",
-  "name": "computeforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}"
 }
 
@@ -884,7 +884,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -918,11 +918,11 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",
-  "name": "computeforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}"
 }
 
@@ -969,9 +969,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "enableProxyProtocol": false,
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}"
   ],
-  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}"
+  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}"
 }
 
 200 OK
@@ -1059,10 +1059,10 @@ X-Xss-Protection: 0
   "kind": "compute#serviceAttachment",
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}"
   ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/serviceAttachments/computeserviceattachment-${uniqueId}",
-  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}"
+  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}"
 }
 
 ---
@@ -1262,10 +1262,10 @@ X-Xss-Protection: 0
   "kind": "compute#serviceAttachment",
   "name": "computeserviceattachment-${uniqueId}",
   "natSubnets": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}"
   ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/serviceAttachments/computeserviceattachment-${uniqueId}",
-  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}"
+  "targetService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}"
 }
 
 ---
@@ -1393,11 +1393,11 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",
-  "name": "computeforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}"
 }
 
@@ -1429,7 +1429,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1461,7 +1461,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/computeforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1557,13 +1557,13 @@ X-Xss-Protection: 0
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
+  "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE_SERVICE_CONNECT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY"
 }
 
@@ -1595,7 +1595,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -1627,6 +1627,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }

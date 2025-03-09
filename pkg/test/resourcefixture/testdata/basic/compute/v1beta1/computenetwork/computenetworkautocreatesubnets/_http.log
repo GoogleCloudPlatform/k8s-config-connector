@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
   }
 }
 
@@ -34,7 +34,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "autoCreateSubnetworks": true,
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
     "routingMode": "REGIONAL"
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -93,7 +93,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -118,54 +118,54 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
     "routingMode": "REGIONAL"
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computenetwork-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
   ]
 }
 
@@ -203,7 +203,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -234,7 +234,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -259,54 +259,54 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
     "routingMode": "GLOBAL"
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computenetwork-${uniqueId}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/computenetwork-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
   ]
 }
 
@@ -337,7 +337,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -368,6 +368,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }

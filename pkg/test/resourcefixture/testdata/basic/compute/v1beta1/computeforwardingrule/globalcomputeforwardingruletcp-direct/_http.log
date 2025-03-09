@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found"
   }
 }
 
@@ -38,7 +38,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}"
+  "name": "${addressID}"
 }
 
 200 OK
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -93,7 +93,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -124,8 +124,8 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -190,8 +190,8 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -432,11 +432,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found"
   }
 }
 
@@ -448,7 +448,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "test description",
-  "name": "computetargettcpproxy-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
@@ -474,7 +474,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -505,7 +505,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -530,9 +530,9 @@ X-Xss-Protection: 0
   "description": "test description",
   "id": "000000000000000000000",
   "kind": "compute#targetTcpProxy",
-  "name": "computetargettcpproxy-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
@@ -558,11 +558,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found"
   }
 }
 
@@ -574,7 +574,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "other test description",
-  "name": "computetargettcpproxy2-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
@@ -600,7 +600,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -631,7 +631,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -656,9 +656,9 @@ X-Xss-Protection: 0
   "description": "other test description",
   "id": "000000000000000000000",
   "kind": "compute#targetTcpProxy",
-  "name": "computetargettcpproxy2-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
@@ -685,11 +685,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
   }
 }
 
@@ -710,9 +710,9 @@ X-Goog-Request-Params: project=${projectId}
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "portRange": "110",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}"
 }
 
 200 OK
@@ -736,7 +736,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -769,7 +769,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -800,11 +800,11 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "networkTier": "PREMIUM",
   "portRange": "110-110",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}"
 }
 
 ---
@@ -845,7 +845,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -881,11 +881,11 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "networkTier": "PREMIUM",
   "portRange": "110-110",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}"
 }
 
 ---
@@ -926,7 +926,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -938,7 +938,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 {
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}"
 }
 
 200 OK
@@ -962,7 +962,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -995,7 +995,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1031,11 +1031,11 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "networkTier": "PREMIUM",
   "portRange": "110-110",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}"
 }
 
 ---
@@ -1066,7 +1066,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1099,7 +1099,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1124,9 +1124,9 @@ X-Xss-Protection: 0
   "description": "other test description",
   "id": "000000000000000000000",
   "kind": "compute#targetTcpProxy",
-  "name": "computetargettcpproxy2-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
@@ -1157,7 +1157,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -1188,7 +1188,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -1213,9 +1213,9 @@ X-Xss-Protection: 0
   "description": "test description",
   "id": "000000000000000000000",
   "kind": "compute#targetTcpProxy",
-  "name": "computetargettcpproxy-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
@@ -1246,7 +1246,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -1277,7 +1277,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -1433,8 +1433,8 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -1464,7 +1464,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -1495,6 +1495,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
