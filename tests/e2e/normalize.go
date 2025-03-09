@@ -717,6 +717,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
 	events.RemoveHTTPResponseHeader("Etag")
 	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
+	events.RemoveHTTPResponseHeader("Cache-Control")  // not really relevant to us
 
 	// Replace any expires headers with (rounded) relative offsets
 	for _, event := range events {
