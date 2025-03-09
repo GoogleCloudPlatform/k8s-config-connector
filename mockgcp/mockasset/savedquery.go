@@ -16,7 +16,7 @@
 // proto.service: google.cloud.asset.v1.AssetService
 // proto.message: google.cloud.asset.v1.SavedQuery
 
-package mockcloudasset
+package mockasset
 
 import (
 	"context"
@@ -33,7 +33,12 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/asset/v1"
 )
 
-func (s *assetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
+type SavedQueryService struct {
+	*MockService
+	pb.UnimplementedSavedQueryServiceServer
+}
+
+func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
 	name, err := s.parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
@@ -52,7 +57,7 @@ func (s *assetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryR
 	return obj, nil
 }
 
-func (s *assetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSavedQueryRequest) (*pb.SavedQuery, error) {
+func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSavedQueryRequest) (*pb.SavedQuery, error) {
 	reqName := fmt.Sprintf("%s/savedQueries/%s", req.GetParent(), req.GetSavedQueryId())
 	name, err := s.parseSavedQueryName(reqName)
 	if err != nil {
@@ -68,7 +73,7 @@ func (s *assetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 	obj.CreateTime = timestamppb.New(now)
 	obj.LastUpdateTime = timestamppb.New(now)
 
-	obj.Creator = "test-only@example.com"    //TODO: to populate a valid value if necessary
+	obj.Creator = "test-only@example.com"     //TODO: to populate a valid value if necessary
 	obj.LastUpdater = "test-only@example.com" //TODO: to populate a valid value if necessary
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -78,7 +83,7 @@ func (s *assetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 	return obj, nil
 }
 
-func (s *assetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSavedQueryRequest) (*pb.SavedQuery, error) {
+func (s *AssetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSavedQueryRequest) (*pb.SavedQuery, error) {
 	name, err := s.parseSavedQueryName(req.GetSavedQuery().GetName())
 	if err != nil {
 		return nil, err
@@ -104,7 +109,7 @@ func (s *assetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSaved
 	return obj, nil
 }
 
-func (s *assetService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSavedQueryRequest) (*emptypb.Empty, error) {
+func (s *AssetService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSavedQueryRequest) (*emptypb.Empty, error) {
 	name, err := s.parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
@@ -121,8 +126,8 @@ func (s *assetService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSaved
 }
 
 type savedQueryName struct {
-	Parent    string
-	Kind      string
+	Parent     string
+	Kind       string
 	SavedQuery string
 }
 
@@ -132,13 +137,13 @@ func (n *savedQueryName) String() string {
 
 // parseSavedQueryName parses a string into an savedQueryName.
 // The expected form is `projects/*/savedQueries/*`.
-func (s *assetService) parseSavedQueryName(name string) (*savedQueryName, error) {
+func (s *AssetService) parseSavedQueryName(name string) (*savedQueryName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && (tokens[0] == "projects" || tokens[0] == "folders" || tokens[0] == "organizations") && tokens[2] == "savedQueries" {
 		savedQueryName := &savedQueryName{
-			Kind:      tokens[0],
-			Parent:    tokens[1],
+			Kind:       tokens[0],
+			Parent:     tokens[1],
 			SavedQuery: tokens[3],
 		}
 
@@ -146,6 +151,3 @@ func (s *assetService) parseSavedQueryName(name string) (*savedQueryName, error)
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
-
