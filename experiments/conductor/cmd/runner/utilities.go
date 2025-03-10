@@ -43,6 +43,7 @@ var commandMap = map[int64]string{
 	cmdGenerateTypes:       "generatetypes",
 	cmdGenerateCRD:         "generatecrd",
 	cmdGenerateFuzzer:      "generatefuzzer",
+	cmdBuildProto:          "buildproto",
 }
 
 type exitBash func()

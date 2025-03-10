@@ -59,7 +59,8 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdGenerateMockGo      = 12
 	cmdAddServiceRoundTrip = 13
 	cmdAddProtoMakefile    = 14
-	cmdRunMockTests        = 15
+	cmdBuildProto          = 15
+	cmdRunMockTests        = 16
 	cmdGenerateTypes       = 20
 	cmdGenerateCRD         = 21
 	cmdGenerateFuzzer      = 22
@@ -349,7 +350,12 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Add proto to makefile: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			addProtoToMakefile(opts, branch)
 		}
-	case cmdRunMockTests: // 15
+	case cmdBuildProto: // 15
+		for idx, branch := range branches.Branches {
+			log.Printf("Build proto files in mockgcp directory: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			buildProtoFiles(opts, branch)
+		}
+	case cmdRunMockTests: // 16
 		for idx, branch := range branches.Branches {
 			log.Printf("Run mockgcptests on generated mocks: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			runMockgcpTests(opts, branch)
@@ -393,7 +399,8 @@ func printHelp() {
 	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")
 	log.Println("\t13 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
 	log.Println("\t14 - [Mock] Add proto to makefile in each github branch")
-	log.Println("\t15 - [Mock] Run mockgcptests on generated mocks in each github branch")
+	log.Println("\t15 - [Proto] Build proto files in mockgcp directory")
+	log.Println("\t16 - [Mock] Run mockgcptests on generated mocks in each github branch")
 	log.Println("\t20 - [CRD] Generate Types and Mapper for each branch")
 	log.Println("\t21 - [CRD] Generate CRD for each branch")
 	log.Println("\t22 - [Fuzzer] Generate fuzzer for each branch")

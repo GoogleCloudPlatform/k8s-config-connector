@@ -732,12 +732,11 @@ Hints:
 
 Please inspect <TICK>fixup-third-party.sh<TICK> to see if it is correct:
 
-* If the generated proto path is new and does not exist in fixup-third-party.sh, we need to add something like  <TICK>mv mockgcp/newpath/<GROUP>/ mockgcp/newpath/<GROUP><TICK>
+* If the generated proto path is does not contain google/cloud, google/api, or google/iam, we need to add something like  <TICK>mv mockgcp/newpath/<GROUP>/ mockgcp/newpath<TICK>
 
-* We may need to add find replace lines if the proto path is new. Something like this :
+* If the generated proto path is does not contain google/cloud, google/api, or google/iam, we need to add something like:
 <TICK>find . -type f -print0 | xargs -0 sed -i -e "s@google/newpath/@mockgcp/newpath/@g"<TICK>
 <TICK>find . -type f -print0 | xargs -0 sed -i -e "s@google\.newpath@mockgcp.newpath@g"<TICK>
-
 `
 
 func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
@@ -793,7 +792,7 @@ func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
 	// Add the new files to the current branch.
 	if hasChange {
 		// Commit the change to the current branch.
-		gitCommit(ctx, opts.branchRepoDir, fmt.Sprintf("Adding proto to Makefile and fixup-third-party.sh for %s", branch.Name))
+		gitCommit(ctx, opts.branchRepoDir, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
 	}
 }
 
@@ -835,4 +834,46 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 		log.Printf("SKIPPING %s, %s was not created", branch.Name, logFullPath)
 		return
 	}
+}
+
+func buildProtoFiles(opts *RunnerOptions, branch Branch) {
+	ctx := context.TODO()
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	checkoutBranch(ctx, branch, workDir)
+
+	// Run make gen-proto command
+	cfg := CommandConfig{
+		Name:       "Generate proto files",
+		Cmd:        "make",
+		Args:       []string{"gen-proto"},
+		WorkDir:    workDir,
+		MaxRetries: 1,
+	}
+
+	_, _, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Proto generation error: %v", err)
+		return
+	}
+
+	// Check if the generated directory exists and has changes
+	generatedDir := filepath.Join(workDir, "generated")
+	if _, err := os.Stat(generatedDir); err != nil {
+		log.Printf("Generated directory not found: %v", err)
+		return
+	}
+
+	if !gitFileHasChange(workDir, "generated") {
+		log.Printf("SKIPPING %s, no changes to generated directory", branch.Name)
+		return
+	}
+
+	// Add the generated directory to git
+	gitAdd(ctx, workDir, "generated")
+
+	// Commit the changes
+	gitCommit(ctx, workDir, fmt.Sprintf("Generated proto files for %s", branch.Name))
 }
