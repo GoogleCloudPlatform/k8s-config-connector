@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "mysql": {
@@ -28,12 +27,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
     "verb": "create"
   },
@@ -46,7 +43,6 @@ GET https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-c
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -65,7 +61,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
     "verb": "create"
   },
@@ -73,7 +68,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.clouddms.v1.ConnectionProfile",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "test-${uniqueId}",
     "mysql": {
       "host": "1.2.3.4",
       "passwordSet": true,
@@ -82,8 +76,6 @@ X-Xss-Protection: 0
       "username": "my-user"
     },
     "name": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
-    "satisfiesPzi": false,
-    "satisfiesPzs": false,
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -95,7 +87,6 @@ GET https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-c
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -109,7 +100,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "test-${uniqueId}",
   "mysql": {
     "host": "1.2.3.4",
     "passwordSet": true,
@@ -118,8 +108,6 @@ X-Xss-Protection: 0
     "username": "my-user"
   },
   "name": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
-  "satisfiesPzi": false,
-  "satisfiesPzs": false,
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -130,7 +118,6 @@ GET https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-c
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -144,7 +131,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "test-${uniqueId}",
   "mysql": {
     "host": "1.2.3.4",
     "passwordSet": true,
@@ -153,8 +139,6 @@ X-Xss-Protection: 0
     "username": "my-user"
   },
   "name": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
-  "satisfiesPzi": false,
-  "satisfiesPzs": false,
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -166,7 +150,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -179,8 +162,6 @@ X-Goog-User-Project: ${projectId}
     "username": "my-user"
   },
   "name": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
-  "satisfiesPzi": false,
-  "satisfiesPzs": false,
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -196,12 +177,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
     "verb": "update"
   },
@@ -210,11 +189,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}?alt=json&force=False
+GET https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -227,12 +205,55 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
+  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.ConnectionProfile",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "updated-test",
+    "mysql": {
+      "host": "1.2.3.4",
+      "passwordSet": true,
+      "port": 3306,
+      "ssl": {},
+      "username": "my-user"
+    },
+    "name": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
+    "state": "READY",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}?alt=json&force=False
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
     "verb": "delete"
   },
