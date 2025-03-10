@@ -56,7 +56,8 @@ func (p *ApplicationParent) String() string {
 func NewApplicationIdentity(ctx context.Context, reader client.Reader, obj *AppHubApplication) (*ApplicationIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	parent := obj.Spec.Parent
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), parent.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +65,7 @@ func NewApplicationIdentity(ctx context.Context, reader client.Reader, obj *AppH
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := parent.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

@@ -21,7 +21,6 @@ package apphub
 import (
 	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func init() {
@@ -30,8 +29,8 @@ func init() {
 
 func apphubApplicationFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Application{},
-		apphubApplicationSpec_FromProto, apphubApplicationSpec_ToProto,
-		apphubApplicationObservedState_FromProto, apphubApplicationObservedState_ToProto,
+		AppHubApplicationSpec_FromProto, AppHubApplicationSpec_ToProto,
+		AppHubApplicationStatus_FromProto, AppHubApplicationStatus_ToProto,
 	)
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".description")
@@ -44,9 +43,5 @@ func apphubApplicationFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 
 	f.UnimplementedFields.Insert(".name")
-
-	f.TargetNames.Insert(metav1.ObjectName{Name: "kube-system", Namespace: "apphubapplication"})
 	return f
 }
-
-

@@ -25,10 +25,6 @@ var AppHubApplicationGVK = GroupVersion.WithKind("AppHubApplication")
 // AppHubApplicationSpec defines the desired state of AppHubApplication
 // +kcc:proto=google.cloud.apphub.v1.Application
 type AppHubApplicationSpec struct {
-	// Identifier. The resource name of an Application. Format:
-	//  "projects/{host-project-id}/locations/{location}/applications/{application-id}"
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.name
-	Name *string `json:"name,omitempty"`
 
 	// Optional. User-defined name for the Application.
 	//  Can have a maximum length of 63 characters.
@@ -49,14 +45,19 @@ type AppHubApplicationSpec struct {
 	// +kcc:proto:field=google.cloud.apphub.v1.Application.scope
 	Scope *Scope `json:"scope,omitempty"`
 
-	// Required. The location of the application.
-	Location *string `json:"location,omitempty"`
-
-	// Required. The host project of the application.
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+	// Required. Defines the parent path of the resource.
+	Parent *Parent `json:"parent,omitempty"`
 
 	// The AppHubApplication name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type Parent struct {
+	// Required. The location of the application.
+	Location string `json:"location,omitempty"`
+
+	// Required. The host project of the application.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // AppHubApplicationStatus defines the config connector machine state of AppHubApplication

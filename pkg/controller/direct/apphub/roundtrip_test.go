@@ -32,7 +32,7 @@ func FuzzApphubApplicationSpec(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int64) {
 		randStream := rand.New(rand.NewSource(seed))
 
-		p1 := &pb.TransferConfig{}
+		p1 := &pb.Application{}
 		fuzz.FillWithRandom(t, randStream, p1)
 
 		// Status fields
@@ -40,7 +40,7 @@ func FuzzApphubApplicationSpec(f *testing.F) {
 			".state",
 			".update_time",
 			".create_time",
-			".user_id",
+			".uid",
 		)
 
 		clearFields := &fuzz.ClearFields{
