@@ -89,6 +89,12 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Etag() {
 	f.UnimplementedFields.Insert(".etag")
 }
 
+// Unimplemented_Volatile marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are volatile and not very useful in status (e.g. etag, resourceVersion, uid, etc)
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Volatile(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
 // Unimplemented_NotYetTriaged marks the specified fieldPath as not round-tripped,
 // and should be used for fields that are added by the service and where we haven't decided whether or not to implement them.
 // This should be the "starting point" for new fields added by services.
