@@ -729,14 +729,11 @@ Hints:
 
 * The gen-proto-no-fixup command contains a long protoc command, split across multiple lines.  There should be a backslash character (\) on all lines but the last.  Make sure there is a space before the backslash.
 
+* The generation path being added  should begin with <TICK>./third_party/googleapis/mockgcp/<RESOURCE><TICK> and should not contain google after mockgcp.
 
-Please inspect <TICK>fixup-third-party.sh<TICK> to see if it is correct:
+* This is not a correct path: <TICK>./third_party/googleapis/mockgcp/google/cloud/metastore/...<TICK>
 
-* If the generated proto path is does not contain google/cloud, google/api, or google/iam, we need to add something like  <TICK>mv mockgcp/newpath/<GROUP>/ mockgcp/newpath<TICK>
-
-* If the generated proto path is does not contain google/cloud, google/api, or google/iam, we need to add something like:
-<TICK>find . -type f -print0 | xargs -0 sed -i -e "s@google/newpath/@mockgcp/newpath/@g"<TICK>
-<TICK>find . -type f -print0 | xargs -0 sed -i -e "s@google\.newpath@mockgcp.newpath@g"<TICK>
+* This is the correct path: <TICK>./third_party/googleapis/cloud/mockgcp/metastore/...<TICK>
 `
 
 func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
