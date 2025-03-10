@@ -67,6 +67,12 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/execution.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/event.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/metadata*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/model*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/deploy*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/env_var.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/evaluated_annotation.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/job_state.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/publisher_model.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/io.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/operation.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/saved_query.proto \
@@ -156,7 +162,8 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/discoveryengine/v1/data_store_service.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
-		./third_party/googleapis/google/cloud/dataproc/v1/*.proto
+		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
+		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
