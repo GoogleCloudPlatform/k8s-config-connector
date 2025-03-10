@@ -16,9 +16,13 @@ package mockedgecontainer
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgecontainer/v1"
 )
@@ -54,7 +58,20 @@ func (s *EdgeContainerV1) CreateCluster(ctx context.Context, req *pb.CreateClust
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	now := time.Now()
+	op := &pb.OperationMetadata{
+		CreateTime: timestamppb.New(now),
+		EndTime:    timestamppb.New(now),
+	}
+	opPrefix := req.GetParent()
+	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
+		// Many fields are not populated in the LRO result
+		result := proto.Clone(obj).(*pb.Cluster)
+		result.CreateTime = nil
+		result.UpdateTime = nil
+
+		return result, nil
+	})
 }
 
 func (s *EdgeContainerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClusterRequest) (*longrunning.Operation, error) {
@@ -69,6 +86,11 @@ func (s *EdgeContainerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClust
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
-
-	return s.operations.NewLRO(ctx)
+	now := time.Now()
+	op := &pb.OperationMetadata{
+		CreateTime: timestamppb.New(now),
+		EndTime:    timestamppb.New(now),
+	}
+	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
 }

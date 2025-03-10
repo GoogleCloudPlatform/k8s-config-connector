@@ -1,0 +1,145 @@
+POST https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/vpnConnections?alt=json&vpnConnectionId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
+  "enableHighAvailability": false,
+  "vpc": "test-vpc-network"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.VpnConnection",
+    "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vpc": "test-vpc-network"
+  }
+}
+
+---
+
+GET https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpc": "test-vpc-network"
+}
+
+---
+
+GET https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpc": "test-vpc-network"
+}
+
+---
+
+DELETE https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
