@@ -24,7 +24,7 @@ import (
 	"strings"
 	"time"
 
-	"cloud.google.com/go/longrunning"
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -54,7 +54,7 @@ func (s *DataMigrationServiceV1) GetConnectionProfile(ctx context.Context, req *
 	return obj, nil
 }
 
-func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, req *pb.CreateConnectionProfileRequest) (*longrunning.Operation, error) {
+func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, req *pb.CreateConnectionProfileRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/connectionProfiles/" + req.ConnectionProfileId
 	name, err := s.parseConnectionProfileName(reqName)
 	if err != nil {
@@ -70,11 +70,13 @@ func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, re
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.ConnectionProfile_READY
-
+  if obj.GetMysql().GetPassword() != "" {
+    obj.GetMysql().Password = ""
+    obj.GetMysql().PasswordSet = true
+  }
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(now),
@@ -89,7 +91,7 @@ func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, re
 	})
 }
 
-func (s *DataMigrationServiceV1) UpdateConnectionProfile(ctx context.Context, req *pb.UpdateConnectionProfileRequest) (*longrunning.Operation, error) {
+func (s *DataMigrationServiceV1) UpdateConnectionProfile(ctx context.Context, req *pb.UpdateConnectionProfileRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseConnectionProfileName(req.GetConnectionProfile().GetName())
 	if err != nil {
 		return nil, err
@@ -124,7 +126,7 @@ func (s *DataMigrationServiceV1) UpdateConnectionProfile(ctx context.Context, re
 	})
 }
 
-func (s *DataMigrationServiceV1) DeleteConnectionProfile(ctx context.Context, req *pb.DeleteConnectionProfileRequest) (*longrunning.Operation, error) {
+func (s *DataMigrationServiceV1) DeleteConnectionProfile(ctx context.Context, req *pb.DeleteConnectionProfileRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseConnectionProfileName(req.Name)
 	if err != nil {
 		return nil, err
