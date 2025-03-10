@@ -863,7 +863,7 @@ func buildProtoFiles(opts *RunnerOptions, branch Branch) {
 		return
 	}
 
-	if !gitFileHasChange(workDir, "generated") {
+	if !gitStatusCheck(workDir, "generated") && !gitFileHasChange(workDir, "generated") {
 		log.Printf("SKIPPING %s, no changes to generated directory", branch.Name)
 		return
 	}

@@ -209,6 +209,21 @@ func gitCommit(ctx context.Context, workDir string, msg string) {
 	log.Printf("BRANCH COMMIT: %v\n", formatCommandOutput(results.Stdout))
 }
 
+func gitStatusCheck(workDir string, filePath string) bool {
+	log.Printf("COMMAND: git status -- %s", filePath)
+	args := []string{"status", "-s", filePath}
+	gitstatus := exec.Command("git", args...)
+	gitstatus.Dir = workDir
+	var out bytes.Buffer
+	gitstatus.Stdout = &out
+	if err := gitstatus.Run(); err != nil {
+		log.Printf("Git status on file %s/%s error: %q\n", workDir, filePath, err)
+		return false
+	}
+	log.Printf("Git status on file %s/%s: %s", workDir, filePath, out.String())
+	return len(strings.TrimSpace(out.String())) > 0
+}
+
 func gitFileHasChange(workDir string, filePath string) bool {
 	log.Printf("COMMAND: git diff -- %s", filePath)
 	args := []string{"diff", "--", filePath}
