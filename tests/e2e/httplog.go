@@ -16,7 +16,6 @@ package e2e
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -292,6 +291,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 	}
 
+	// TODO: Remove this, it should now be done in normalize in mockcompute
 	// Extract resource IDs / numbers from compute operations.
 	// The number / id is in the targetID field, we infer the type from the targetLink field.
 	for _, event := range events {
@@ -320,11 +320,6 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			}
 		}
 	}
-}
-
-func isNumber(s string) bool {
-	_, err := strconv.ParseInt(s, 10, 64)
-	return err == nil
 }
 
 // ReplaceString is a normalization function that replaces a string, useful for e.g. project IDs.
