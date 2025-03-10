@@ -16,7 +16,7 @@
 // proto.service: google.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager
 // proto.message: google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 
-package mockcloudquotas
+package mockcloudquota
 
 import (
 	"context"
