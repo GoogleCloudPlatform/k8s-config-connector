@@ -1,0 +1,4 @@
+- exec: gcloud compute backend-services create test-${uniqueId} --region=us-central1 --load-balancing-scheme=EXTERNAL --protocol=TCP --port-name=http --project=${projectId}
+- exec: gcloud compute backend-services describe test-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud compute backend-services update test-${uniqueId} --region=us-central1 --description="Updated description" --project=${projectId}
+- exec: gcloud compute backend-services delete test-${uniqueId} --region=us-central1 --quiet --project=${projectId}
