@@ -907,10 +907,46 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 	ctx := context.TODO()
 	checkoutBranch(ctx, branch, workDir)
 
-	// First show the diff
+	// First check for merge commits
+	cfg := CommandConfig{
+		Name: "Check for merge commits",
+		Cmd:  "git",
+		Args: []string{
+			"log",
+			fmt.Sprintf("-n%d", opts.numCommits),
+			"--oneline",
+		},
+		WorkDir:    workDir,
+		MaxRetries: 1,
+	}
+	output, _, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Git log error for branch %s: %v", branch.Name, err)
+		return
+	}
+
+	// Print the last N commits
+	mergeCommit := false
+	lines := strings.Split(strings.TrimSpace(output), "\n")
+	if len(lines) > 0 {
+		log.Printf("Last %d commits in branch %s:", opts.numCommits, branch.Name)
+		for _, line := range lines {
+			if strings.Contains(line, "Merge pull request") {
+				mergeCommit = true
+			}
+			log.Printf("%s", line)
+		}
+	}
+	if mergeCommit {
+		log.Printf("ERROR: Found merge commits in the last %d commits for branch %s:", opts.numCommits, branch.Name)
+		fmt.Printf("\nERROR: Found merge commits in the last %d commits that would be reverted:\n%s\n", opts.numCommits, output)
+		return
+	}
+
+	// Show the diff
 	diffLastNCommits(opts, branch)
 
-	// Ask for confirmation
+	// Ask for final confirmation
 	fmt.Printf("Are you sure you want to revert the last %d commits in branch %s? [y/N]: ", opts.numCommits, branch.Name)
 	var response string
 	if _, err := fmt.Scanln(&response); err != nil {
@@ -923,7 +959,7 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Run git reset command
-	cfg := CommandConfig{
+	cfg = CommandConfig{
 		Name: "Git reset",
 		Cmd:  "git",
 		Args: []string{
@@ -934,7 +970,7 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 		WorkDir:    workDir,
 		MaxRetries: 1,
 	}
-	output, _, err := executeCommand(opts, cfg)
+	output, _, err = executeCommand(opts, cfg)
 	if err != nil {
 		log.Printf("Git reset error for branch %s: %v", branch.Name, err)
 		return
