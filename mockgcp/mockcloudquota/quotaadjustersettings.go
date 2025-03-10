@@ -31,6 +31,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
+	"github.com/google/uuid"
 )
 
 func (s *QuotaAdjusterSettingsManagerV1Beta) GetQuotaAdjusterSettings(ctx context.Context, req *pb.GetQuotaAdjusterSettingsRequest) (*pb.QuotaAdjusterSettings, error) {
@@ -45,6 +46,9 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) GetQuotaAdjusterSettings(ctx contex
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			obj = s.buildDefaultQuotaAdjusterSettings(name)
+			if err := s.storage.Create(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
 			return obj, nil
 		}
 		return nil, err
@@ -77,12 +81,15 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 
 	updated := proto.Clone(existing).(*pb.QuotaAdjusterSettings)
 	updated.UpdateTime = timestamppb.Now()
+	updated.Etag = uuid.New().String()
 
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
 		case "enablement":
 			updated.Enablement = req.GetQuotaAdjusterSettings().GetEnablement()
+		case "name":
+			updated.Name = req.GetQuotaAdjusterSettings().GetName()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -102,6 +109,7 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 func (s *QuotaAdjusterSettingsManagerV1Beta) buildDefaultQuotaAdjusterSettings(n *quotaAdjusterSettingsName) *pb.QuotaAdjusterSettings {
 	return &pb.QuotaAdjusterSettings{
 		Name:       n.String(),
+		Etag:       uuid.New().String(),
 		Enablement: pb.QuotaAdjusterSettings_DISABLED,
 		UpdateTime: timestamppb.New(time.Now()),
 	}
