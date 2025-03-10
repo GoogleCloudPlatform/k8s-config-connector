@@ -1,0 +1,5 @@
+- exec: gcloud resource-manager tags keys create test-${uniqueId} --parent=projects/${projectId}
+- exec: gcloud resource-manager tags keys describe ${projectId}/test-${uniqueId}
+- exec: gcloud resource-manager tags keys update ${projectId}/test-${uniqueId} --description="description-v2"
+- exec: gcloud resource-manager tags keys describe ${projectId}/test-${uniqueId}
+- exec: gcloud resource-manager tags keys delete ${projectId}/test-${uniqueId} --quiet
