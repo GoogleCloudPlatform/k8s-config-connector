@@ -1,0 +1,358 @@
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "clusters": {
+    "test-cluster-${uniqueId}": {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-east1-c",
+      "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
+      "serveNodes": 1
+    }
+  },
+  "instance": {
+    "displayName": "test-instance",
+    "type": "PRODUCTION"
+  },
+  "instanceId": "test-instance-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "originalRequest": {
+      "clusters": {
+        "test-cluster-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-east1-c",
+          "serveNodes": 1
+        }
+      },
+      "instance": {
+        "displayName": "test-instance",
+        "type": "PRODUCTION"
+      },
+      "instanceId": "test-instance-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "clusters": {
+        "test-cluster-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-east1-c",
+          "serveNodes": 1
+        }
+      },
+      "instance": {
+        "displayName": "test-instance",
+        "type": "PRODUCTION"
+      },
+      "instanceId": "test-instance-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "displayName": "test-instance",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
+    "state": "READY",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "test-instance",
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
+  "state": "READY",
+  "type": "PRODUCTION"
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles?alt=json&appProfileId=test-app-profile-${uniqueId}&ignoreWarnings=False
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "Test App Profile",
+  "multiClusterRoutingUseAny": {
+    "failoverRadius": "ANY_REGION"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test App Profile",
+  "multiClusterRoutingUseAny": {},
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+  "standardIsolation": {
+    "priority": "PRIORITY_HIGH"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test App Profile",
+  "multiClusterRoutingUseAny": {},
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+  "standardIsolation": {
+    "priority": "PRIORITY_HIGH"
+  }
+}
+
+---
+
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json&ignoreWarnings=False&updateMask=multiClusterRoutingUseAny%2Cdescription
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "Updated Test App Profile",
+  "multiClusterRoutingUseAny": {}
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
+    "description": "Updated Test App Profile",
+    "multiClusterRoutingUseAny": {},
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+    "standardIsolation": {
+      "priority": "PRIORITY_HIGH"
+    }
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated Test App Profile",
+  "multiClusterRoutingUseAny": {},
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+  "standardIsolation": {
+    "priority": "PRIORITY_HIGH"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "appProfiles": [
+    {
+      "description": "Updated Test App Profile",
+      "multiClusterRoutingUseAny": {},
+      "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+      "standardIsolation": {
+        "priority": "PRIORITY_HIGH"
+      }
+    }
+  ]
+}
+
+---
+
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json&ignoreWarnings=True
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
