@@ -77,3 +77,24 @@ func buildComputeSelfLink(ctx context.Context, fqn string) string {
 	version := getAPIVersion(ctx)
 	return "https://www.googleapis.com/compute/" + version + "/" + fqn
 }
+
+// makeFullyQualifiedRegion will convert a short-form region name to a fully-qualified name
+func makeFullyQualifiedRegion(ctx context.Context, projectID string, region string) string {
+	s := region
+	tokens := strings.Split(s, "/")
+	if len(tokens) == 1 {
+		s = buildComputeSelfLink(ctx, "projects/"+projectID+"/regions/"+region)
+	}
+	return s
+}
+
+// makeFullyQualifiedNetwork will convert a short-form region name to a fully-qualified name
+func makeFullyQualifiedNetwork(ctx context.Context, network string) string {
+	s := network
+	s = strings.TrimPrefix(s, "https://compute.googleapis.com/compute/v1/")
+	tokens := strings.Split(s, "/")
+	if len(tokens) == 5 {
+		s = buildComputeSelfLink(ctx, s)
+	}
+	return s
+}

@@ -240,6 +240,12 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 
 	for _, service := range services {
 		service.Register(server)
+
+		if preload, ok := service.(mockgcpregistry.SupportsPreload); ok {
+			if err := preload.Preload(ctx); err != nil {
+				return nil, fmt.Errorf("error preloading %T: %w", service, err)
+			}
+		}
 	}
 
 	mockRoundTripper.server = server

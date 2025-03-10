@@ -1,0 +1,6 @@
+
+- exec: gcloud compute images create test-image-${uniqueId} --source-image-family=debian-12 --source-image-project=debian-cloud --project=${projectId}
+- exec: gcloud compute images describe test-image-${uniqueId} --project=${projectId}
+- exec: gcloud compute images add-labels test-image-${uniqueId} --project=${projectId} --labels=foo=bar
+- exec: gcloud compute images describe test-image-${uniqueId} --project=${projectId}
+- exec: gcloud compute images delete test-image-${uniqueId} --project=${projectId} --quiet
