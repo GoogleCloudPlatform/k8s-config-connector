@@ -14,34 +14,6 @@
 
 package v1alpha1
 
-
-// +kcc:proto=google.cloud.apphub.v1.Application
-type Application struct {
-	// Identifier. The resource name of an Application. Format:
-	//  "projects/{host-project-id}/locations/{location}/applications/{application-id}"
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. User-defined name for the Application.
-	//  Can have a maximum length of 63 characters.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. User-defined description of an Application.
-	//  Can have a maximum length of 2048 characters.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. Consumer provided attributes.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.attributes
-	Attributes *Attributes `json:"attributes,omitempty"`
-
-	// Required. Immutable. Defines what data can be included into this
-	//  Application. Limits which Services and Workloads can be registered.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.scope
-	Scope *Scope `json:"scope,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apphub.v1.Attributes
 type Attributes struct {
 	// Optional. User-defined criticality information.
@@ -97,24 +69,4 @@ type Scope struct {
 	// Required. Scope Type.
 	// +kcc:proto:field=google.cloud.apphub.v1.Scope.type
 	Type *string `json:"type,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apphub.v1.Application
-type ApplicationObservedState struct {
-	// Output only. Create time.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Update time.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. A universally unique identifier (in UUID4 format) for the
-	//  `Application`.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Application state.
-	// +kcc:proto:field=google.cloud.apphub.v1.Application.state
-	State *string `json:"state,omitempty"`
 }

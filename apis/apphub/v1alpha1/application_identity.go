@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ApplicationIdentity struct {
 	parent *ApplicationParent
-	id string
+	id     string
 }
 
 func (i *ApplicationIdentity) String() string {
-	return  i.parent.String() + "/applications/" + i.id
+	return i.parent.String() + "/applications/" + i.id
 }
 
 func (i *ApplicationIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ApplicationIdentity) ID() string {
 }
 
 func (i *ApplicationIdentity) Parent() *ApplicationParent {
-	return  i.parent
+	return i.parent
 }
 
 type ApplicationParent struct {
@@ -51,7 +51,6 @@ type ApplicationParent struct {
 func (p *ApplicationParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ApplicationIdentity from the Config Connector Application object.
 func NewApplicationIdentity(ctx context.Context, reader client.Reader, obj *AppHubApplication) (*ApplicationIdentity, error) {

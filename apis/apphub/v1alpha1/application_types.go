@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -47,6 +48,12 @@ type AppHubApplicationSpec struct {
 	//  Application. Limits which Services and Workloads can be registered.
 	// +kcc:proto:field=google.cloud.apphub.v1.Application.scope
 	Scope *Scope `json:"scope,omitempty"`
+
+	// Required. The location of the application.
+	Location *string `json:"location,omitempty"`
+
+	// Required. The host project of the application.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// The AppHubApplication name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
