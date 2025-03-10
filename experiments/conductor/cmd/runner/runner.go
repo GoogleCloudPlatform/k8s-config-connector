@@ -53,6 +53,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdReadFiles           = 5
 	cmdWriteFiles          = 6
 	cmdDiff                = 7
+	cmdRevert              = 8
 	cmdCreateScriptYaml    = 10
 	cmdCaptureHttpLog      = 11
 	cmdGenerateMockGo      = 12
@@ -102,7 +103,7 @@ func BuildRunnerCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&opts.force, "force",
 		"f", false, "Force operation even if files already exist.")
 	cmd.Flags().IntVarP(&opts.numCommits, "num-commits",
-		"n", 1, "Number of commits to diff (default: 1)")
+		"n", 0, "Number of commits to diff/revert (default: 0)")
 
 	return cmd
 }
@@ -310,6 +311,16 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			diffLastNCommits(opts, branch)
 		}
 
+	case cmdRevert: // 8
+		if opts.numCommits <= 0 {
+			log.Printf("Skipping revert, num-commits must be positive (got %d)", opts.numCommits)
+			return nil
+		}
+		for idx, branch := range branches.Branches {
+			log.Printf("Reverting last %d commits in branch %s: %d name: %s, branch: %s\r\n", opts.numCommits, branch.Name, idx, branch.Name, branch.Local)
+			revertLastNCommits(opts, branch)
+		}
+
 	case cmdCreateScriptYaml: // 10
 		for idx, branch := range branches.Branches {
 			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
@@ -373,6 +384,7 @@ func printHelp() {
 	log.Println("\t5 - [Generated] Read the specific type of generated files in each github branch")
 	log.Println("\t6 - [Generated] Write the specific type of files from all_scripts.yaml to each github branch")
 	log.Println("\t7 - [Git] Show diff of last N commits in each branch (use -n to specify N)")
+	log.Println("\t8 - [Git] Revert last N commits in each branch (use -n to specify N)")
 	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
 	log.Println("\t11 - [Mock] Create _http.log for mock gcp generation in each github branch")
 	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")
@@ -876,4 +888,49 @@ func diffLastNCommits(opts *RunnerOptions, branch Branch) {
 	// Print the diff output
 	log.Printf("Diff for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output)
 	fmt.Printf("Diff for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output)
+}
+
+func revertLastNCommits(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := opts.branchRepoDir
+
+	var out strings.Builder
+	checkoutBranch(branch, workDir, &out)
+
+	// First show the diff
+	diffLastNCommits(opts, branch)
+
+	// Ask for confirmation
+	fmt.Printf("Are you sure you want to revert the last %d commits in branch %s? [y/N]: ", opts.numCommits, branch.Name)
+	var response string
+	if _, err := fmt.Scanln(&response); err != nil {
+		log.Printf("Error reading input: %v", err)
+		return
+	}
+	if response != "y" && response != "Y" {
+		log.Printf("Skipping revert for branch %s", branch.Name)
+		return
+	}
+
+	// Run git reset command
+	cfg := CommandConfig{
+		Name: "Git reset",
+		Cmd:  "git",
+		Args: []string{
+			"reset",
+			"--hard",
+			fmt.Sprintf("HEAD~%d", opts.numCommits),
+		},
+		WorkDir:    workDir,
+		MaxRetries: 1,
+	}
+	output, _, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Git reset error for branch %s: %v", branch.Name, err)
+		return
+	}
+
+	// Print the reset output
+	log.Printf("Reset output for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output)
 }
