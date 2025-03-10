@@ -1,0 +1,3 @@
+#!/bin/bash
+export E2E_GCP_TARGET=mock
+go test github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcptests/...
