@@ -34,10 +34,13 @@ import (
 )
 
 type Placeholders struct {
-	ProjectID        string
-	ProjectNumber    int64
-	UniqueID         string
-	BillingAccountID string
+	ProjectID               string
+	ProjectNumber           int64
+	UniqueID                string
+	BillingAccountID        string
+	IAMTestOrganizationID   string
+	IAMTestBillingAccountID string
+	User                    string
 }
 
 func TestScripts(t *testing.T) {
@@ -45,7 +48,6 @@ func TestScripts(t *testing.T) {
 	if err != nil {
 		t.Fatalf("cannot find base dir for mockgcp: %v", err)
 	}
-
 	scriptPaths := findScripts(t, baseDir)
 
 	for _, scriptPath := range scriptPaths {
@@ -71,10 +73,13 @@ func TestScripts(t *testing.T) {
 			project := h.Project
 			testDir := filepath.Join(baseDir, scriptPath)
 			placeholders := Placeholders{
-				ProjectID:        project.ProjectID,
-				ProjectNumber:    project.ProjectNumber,
-				UniqueID:         uniqueID,
-				BillingAccountID: testgcp.TestBillingAccountID.Get(),
+				ProjectID:               project.ProjectID,
+				ProjectNumber:           project.ProjectNumber,
+				UniqueID:                uniqueID,
+				BillingAccountID:        testgcp.TestBillingAccountID.Get(),
+				IAMTestBillingAccountID: testgcp.IAMIntegrationTestsBillingAccountID.Get(),
+				IAMTestOrganizationID:   testgcp.IAMIntegrationTestsOrganizationID.Get(),
+				User:                    GetDefaultAccount(t),
 			}
 			script := loadScript(t, testDir, placeholders)
 
@@ -217,5 +222,8 @@ func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s = strings.Replace(s, "${projectId}", placeholders.ProjectID, -1)
 	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
 	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), placeholders.IAMTestOrganizationID, -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsBillingAccountID.Key), placeholders.IAMTestBillingAccountID, -1)
+	s = strings.Replace(s, "${user}", placeholders.User, -1)
 	return []byte(s)
 }

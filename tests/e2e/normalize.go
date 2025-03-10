@@ -395,8 +395,25 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	}
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-		return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
-
+		if testgcp.TestOrgID.Get() != "" {
+			return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
+		}
+		if testgcp.IAMIntegrationTestsOrganizationID.Get() != "" {
+			return strings.ReplaceAll(s, "organizations/"+testgcp.IAMIntegrationTestsOrganizationID.Get(), "organizations/${organizationID}")
+		}
+		return ""
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if testgcp.TestBillingAccountID.Get() != "" {
+			return strings.ReplaceAll(s, "billingAccounts/"+testgcp.TestBillingAccountID.Get(), "billingAccounts/${billingAccountID}")
+		}
+		if testgcp.IAMIntegrationTestsBillingAccountID.Get() != "" {
+			return strings.ReplaceAll(s, "billingAccounts/"+testgcp.IAMIntegrationTestsBillingAccountID.Get(), "billingAccounts/${billingAccountID}")
+		}
+		if testgcp.TestBillingAccountIDForBillingResources.Get() != "" {
+			return strings.ReplaceAll(s, "billingAccounts/"+testgcp.TestBillingAccountIDForBillingResources.Get(), "billingAccounts/${billingAccountID}")
+		}
+		return ""
 	})
 
 	return visitor.VisitUnstructured(u)
@@ -915,6 +932,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	{
 		visitor.ReplacePath(".metadata.commonMetadata.createTime", "2025-01-01T12:34:56.123456Z")
 		visitor.ReplacePath(".metadata.commonMetadata.updateTime", "2025-01-02T12:34:56.123456Z")
+	}
+
+	// AssuredWorkloads
+	{
+		visitor.ReplacePath(".workloads[].etag", "abcdef0123A=")
+		visitor.ReplacePath(".workloads[].createTime", "1970-01-01T00:00:00Z")
 	}
 
 	// Run visitors
