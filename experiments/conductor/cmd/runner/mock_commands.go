@@ -719,7 +719,7 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 	gitCommit(ctx, workDir, fmt.Sprintf("Adding service to mock_http_roundtrip.go for %s", branch.Name))
 }
 
-const ADD_PROTO_TO_MAKEFILE string = `Please add the generation for <TICK><PROTO_PACKAGE><TICK> to the <TICK>generate-grpc-for-google-protos<TICK> target in <TICK>Makefile<TICK>.
+const ADD_PROTO_TO_MAKEFILE string = `Please add the generation for <TICK><PROTO_PACKAGE><TICK> to the <TICK>gen-proto-no-fixup<TICK> target in <TICK>Makefile<TICK>.
 
 Hints:
 
@@ -727,7 +727,18 @@ Hints:
 
 * Use the EditFile command to insert the appropriate third_party directory into the list of paths.
 
-* The generate-grpc-for-google-protos command contains a long protoc command, split across multiple lines.  There should be a backslash character (\) on all lines but the last.  Make sure there is a space before the backslash.`
+* The gen-proto-no-fixup command contains a long protoc command, split across multiple lines.  There should be a backslash character (\) on all lines but the last.  Make sure there is a space before the backslash.
+
+
+Please inspect <TICK>fixup-third-party.sh<TICK> to see if it is correct:
+
+* If the generated proto path is new and does not exist in fixup-third-party.sh, we need to add something like  <TICK>mv mockgcp/newpath/<GROUP>/ mockgcp/newpath/<GROUP><TICK>
+
+* We may need to add find replace lines if the proto path is new. Something like this :
+<TICK>find . -type f -print0 | xargs -0 sed -i -e "s@google/newpath/@mockgcp/newpath/@g"<TICK>
+<TICK>find . -type f -print0 | xargs -0 sed -i -e "s@google\.newpath@mockgcp.newpath@g"<TICK>
+
+`
 
 func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
 	ctx := context.TODO()
@@ -764,14 +775,26 @@ func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
 		// log.Fatal(err)
 		log.Printf("updating proto Makefile error: %q\n", err)
 	}
-	if !gitFileHasChange(workDir, "Makefile") {
-		return
-	}
-	// Add the new files to the current branch.
-	gitAdd(ctx, workDir, "Makefile")
 
-	// Commit the change to the current branch.
-	gitCommit(ctx, workDir, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
+	hasChange := false
+
+	makefile := filepath.Join("mockgcp", "Makefile")
+	if gitFileHasChange(opts.branchRepoDir, makefile) {
+		hasChange = true
+		gitAdd(ctx, opts.branchRepoDir, makefile)
+	}
+
+	fixup := filepath.Join("mockgcp", "fixup-third-party.sh")
+	if gitFileHasChange(opts.branchRepoDir, fixup) {
+		hasChange = true
+		gitAdd(ctx, opts.branchRepoDir, fixup)
+	}
+
+	// Add the new files to the current branch.
+	if hasChange {
+		// Commit the change to the current branch.
+		gitCommit(ctx, opts.branchRepoDir, fmt.Sprintf("Adding proto to Makefile and fixup-third-party.sh for %s", branch.Name))
+	}
 }
 
 func runMockgcpTests(opts *RunnerOptions, branch Branch) {

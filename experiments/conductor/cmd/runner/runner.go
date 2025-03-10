@@ -864,8 +864,8 @@ func diffLastNCommits(opts *RunnerOptions, branch Branch) {
 	defer close()
 	workDir := opts.branchRepoDir
 
-	var out strings.Builder
-	checkoutBranch(branch, workDir, &out)
+	ctx := context.TODO()
+	checkoutBranch(ctx, branch, workDir)
 
 	// Run git diff command
 	cfg := CommandConfig{
@@ -894,9 +894,8 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 	close := setLoggingWriter(opts, branch)
 	defer close()
 	workDir := opts.branchRepoDir
-
-	var out strings.Builder
-	checkoutBranch(branch, workDir, &out)
+	ctx := context.TODO()
+	checkoutBranch(ctx, branch, workDir)
 
 	// First show the diff
 	diffLastNCommits(opts, branch)
