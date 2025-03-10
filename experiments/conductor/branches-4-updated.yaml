@@ -1,0 +1,1781 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+branches:
+    - name: bigtable-instance
+      local: resource-bigtable-instance
+      remote: resource-bigtable-instance
+      command: gcloud bigtable instances
+      group: bigtable
+      resource: instance
+      controller: Unknown
+      kind: BigtableInstance
+      package: google.bigtable.admin.v2
+      proto: Instance
+      proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+      proto-service: google.bigtable.admin.v2.Bigtable
+      proto-msg: google.bigtable.admin.v2.Instance
+      host-name: bigtableadmin.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: bigtable-cluster
+      local: resource-bigtable-cluster
+      remote: resource-bigtable-cluster
+      command: gcloud bigtable clusters
+      group: bigtable
+      resource: cluster
+      controller: Unknown
+      kind: BigtableCluster
+      package: google.bigtable.admin.v2
+      proto: Cluster
+      proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+      proto-service: google.bigtable.admin.v2.Bigtable
+      proto-msg: google.bigtable.admin.v2.Cluster
+      host-name: bigtableadmin.googleapis.com
+      notes:
+        - mock exists
+    - name: bigtable-appprofile
+      local: resource-bigtable-appprofile
+      remote: resource-bigtable-appprofile
+      command: gcloud bigtable app-profiles
+      group: bigtable
+      resource: appprofile
+      controller: Unknown
+      kind: BigtableAppProfile
+      package: google.bigtable.admin.v2
+      proto: AppProfile
+      proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+      proto-service: google.bigtable.admin.v2.Bigtable
+      proto-msg: google.bigtable.admin.v2.AppProfile
+      host-name: bigtableadmin.googleapis.com
+      notes:
+        - TF beta
+    - name: bigtable-hottablet
+      local: resource-bigtable-hottablet
+      remote: resource-bigtable-hottablet
+      command: gcloud bigtable hot-tablets
+      group: bigtable
+      resource: hottablet
+      controller: Unknown
+      kind: BigtableHotTablet
+      package: google.bigtable.admin.v2
+      proto: HotTablet
+      proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+      proto-service: google.bigtable.admin.v2.Bigtable
+      proto-msg: google.bigtable.admin.v2.HotTablet
+      host-name: bigtableadmin.googleapis.com
+      notes:
+        - gcloud command does not contain any of create/update/delete
+    - name: bigtable-table
+      local: resource-bigtable-table
+      remote: resource-bigtable-table
+      command: gcloud bigtable tables
+      group: bigtable
+      resource: table
+      controller: Unknown
+      kind: BigtableTable
+      package: google.bigtable.admin.v2
+      proto: Table
+      proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+      proto-service: google.bigtable.admin.v2.Bigtable
+      proto-msg: google.bigtable.admin.v2.Table
+      host-name: bigtableadmin.googleapis.com
+      notes:
+        - TF beta
+    - name: bigtable-authorizedview
+      local: resource-bigtable-authorizedview
+      remote: resource-bigtable-authorizedview
+      command: gcloud bigtable authorized-views
+      group: bigtable
+      resource: authorizedview
+      controller: Unknown
+      kind: BigtableAuthorizedView
+      package: google.bigtable.admin.v2
+      proto: AuthorizedView
+      proto-path: google/bigtable/admin/v2/bigtable_table_admin.proto
+      proto-service: google.bigtable.admin.v2.Bigtable
+      proto-msg: google.bigtable.admin.v2.AuthorizedView
+      host-name: bigtableadmin.googleapis.com
+      notes: []
+    - name: bigtable-backup
+      local: resource-bigtable-backup
+      remote: resource-bigtable-backup
+      command: gcloud bigtable backups
+      group: bigtable
+      resource: backup
+      controller: Unknown
+      kind: BigtableBackup
+      package: google.bigtable.admin.v2
+      proto: Backup
+      proto-path: google/bigtable/admin/v2/bigtable_table_admin.proto
+      proto-service: google.bigtable.admin.v2.Bigtable
+      proto-msg: google.bigtable.admin.v2.Backup
+      host-name: bigtableadmin.googleapis.com
+      notes: []
+    - name: dataplex-environment
+      local: resource-dataplex-environment
+      remote: resource-dataplex-environment
+      command: gcloud dataplex environments
+      group: dataplex
+      resource: environment
+      controller: Unknown
+      kind: DataplexEnvironment
+      package: google.cloud.dataplex.v1
+      proto: Environment
+      proto-path: google/cloud/dataplex/v1/analyze.proto
+      proto-service: google.cloud.dataplex.v1.DataplexService
+      proto-msg: google.cloud.dataplex.v1.Environment
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-content
+      local: resource-dataplex-content
+      remote: resource-dataplex-content
+      command: gcloud dataplex content
+      group: dataplex
+      resource: content
+      controller: Unknown
+      kind: DataplexContent
+      package: google.cloud.dataplex.v1
+      proto: Content
+      proto-path: google/cloud/dataplex/v1/analyze.proto
+      proto-service: google.cloud.dataplex.v1.ContentService
+      proto-msg: google.cloud.dataplex.v1.Content
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-aspecttype
+      local: resource-dataplex-aspecttype
+      remote: resource-dataplex-aspecttype
+      command: gcloud dataplex aspect-types
+      group: dataplex
+      resource: aspecttype
+      controller: Unknown
+      kind: DataplexAspectType
+      package: google.cloud.dataplex.v1
+      proto: AspectType
+      proto-path: google/cloud/dataplex/v1/catalog.proto
+      proto-service: google.cloud.dataplex.v1.CatalogService
+      proto-msg: google.cloud.dataplex.v1.AspectType
+      host-name: dataplex.googleapis.com
+      notes:
+        - proto contains recursive fields
+    - name: dataplex-entrygroup
+      local: resource-dataplex-entrygroup
+      remote: resource-dataplex-entrygroup
+      command: gcloud dataplex entry-groups
+      group: dataplex
+      resource: entrygroup
+      controller: Unknown
+      kind: DataplexEntryGroup
+      package: google.cloud.dataplex.v1
+      proto: EntryGroup
+      proto-path: google/cloud/dataplex/v1/catalog.proto
+      proto-service: google.cloud.dataplex.v1.CatalogService
+      proto-msg: google.cloud.dataplex.v1.EntryGroup
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-entrytype
+      local: resource-dataplex-entrytype
+      remote: resource-dataplex-entrytype
+      command: gcloud dataplex entry-types
+      group: dataplex
+      resource: entrytype
+      controller: Unknown
+      kind: DataplexEntryType
+      package: google.cloud.dataplex.v1
+      proto: EntryType
+      proto-path: google/cloud/dataplex/v1/catalog.proto
+      proto-service: google.cloud.dataplex.v1.CatalogService
+      proto-msg: google.cloud.dataplex.v1.EntryType
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-entry
+      local: resource-dataplex-entry
+      remote: resource-dataplex-entry
+      command: gcloud dataplex entries
+      group: dataplex
+      resource: entry
+      controller: Unknown
+      kind: DataplexEntry
+      package: google.cloud.dataplex.v1
+      proto: Entry
+      proto-path: google/cloud/dataplex/v1/catalog.proto
+      proto-service: google.cloud.dataplex.v1.CatalogService
+      proto-msg: google.cloud.dataplex.v1.Entry
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-datascan
+      local: resource-dataplex-datascan
+      remote: resource-dataplex-datascan
+      command: gcloud dataplex datascans
+      group: dataplex
+      resource: datascan
+      controller: Unknown
+      kind: DataplexDataScan
+      package: google.cloud.dataplex.v1
+      proto: DataScan
+      proto-path: google/cloud/dataplex/v1/datascans.proto
+      proto-service: google.cloud.dataplex.v1.DataScanService
+      proto-msg: google.cloud.dataplex.v1.DataScan
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-lake
+      local: resource-dataplex-lake
+      remote: resource-dataplex-lake
+      command: gcloud dataplex lakes
+      group: dataplex
+      resource: lake
+      controller: Unknown
+      kind: DataplexLake
+      package: google.cloud.dataplex.v1
+      proto: Lake
+      proto-path: google/cloud/dataplex/v1/resources.proto
+      proto-service: google.cloud.dataplex.v1.DataplexService
+      proto-msg: google.cloud.dataplex.v1.Lake
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-zone
+      local: resource-dataplex-zone
+      remote: resource-dataplex-zone
+      command: gcloud dataplex zones
+      group: dataplex
+      resource: zone
+      controller: Unknown
+      kind: DataplexZone
+      package: google.cloud.dataplex.v1
+      proto: Zone
+      proto-path: google/cloud/dataplex/v1/resources.proto
+      proto-service: google.cloud.dataplex.v1.DataplexService
+      proto-msg: google.cloud.dataplex.v1.Zone
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-asset
+      local: resource-dataplex-asset
+      remote: resource-dataplex-asset
+      command: gcloud dataplex assets
+      group: dataplex
+      resource: asset
+      controller: Unknown
+      kind: DataplexAsset
+      package: google.cloud.dataplex.v1
+      proto: Asset
+      proto-path: google/cloud/dataplex/v1/resources.proto
+      proto-service: google.cloud.dataplex.v1.DataplexService
+      proto-msg: google.cloud.dataplex.v1.Asset
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: dataplex-task
+      local: resource-dataplex-task
+      remote: resource-dataplex-task
+      command: gcloud dataplex tasks
+      group: dataplex
+      resource: task
+      controller: Unknown
+      kind: DataplexTask
+      package: google.cloud.dataplex.v1
+      proto: Task
+      proto-path: google/cloud/dataplex/v1/tasks.proto
+      proto-service: google.cloud.dataplex.v1.DataplexService
+      proto-msg: google.cloud.dataplex.v1.Task
+      host-name: dataplex.googleapis.com
+      notes: []
+    - name: modelarmor-template
+      local: resource-modelarmor-template
+      remote: resource-modelarmor-template
+      command: gcloud model-armor templates
+      group: modelarmor
+      resource: template
+      controller: Unknown
+      kind: ModelArmorTemplate
+      package: google.cloud.modelarmor.v1
+      proto: Template
+      proto-path: google/cloud/modelarmor/v1/service.proto
+      proto-service: google.cloud.modelarmor.v1.ModelArmor
+      proto-msg: google.cloud.modelarmor.v1.Template
+      host-name: modelarmor.googleapis.com
+      notes: []
+    - name: modelarmor-floorsetting
+      local: resource-modelarmor-floorsetting
+      remote: resource-modelarmor-floorsetting
+      command: gcloud model-armor floorsettings
+      group: modelarmor
+      resource: floorsetting
+      controller: Unknown
+      kind: ModelArmorFloorSetting
+      package: google.cloud.modelarmor.v1
+      proto: FloorSetting
+      proto-path: google/cloud/modelarmor/v1/service.proto
+      proto-service: google.cloud.modelarmor.v1.ModelArmor
+      proto-msg: google.cloud.modelarmor.v1.FloorSetting
+      host-name: modelarmor.googleapis.com
+      notes:
+        - only Get and Update methods
+    - name: notebooks-environment
+      local: resource-notebooks-environment
+      remote: resource-notebooks-environment
+      command: gcloud notebooks environments
+      group: notebooks
+      resource: environment
+      controller: Unknown
+      kind: NotebooksEnvironment
+      package: google.cloud.notebooks.v1
+      proto: Environment
+      proto-path: google/cloud/notebooks/v1/environment.proto
+      proto-service: google.cloud.notebooks.v1.NotebookService
+      proto-msg: google.cloud.notebooks.v1.Environment
+      host-name: notebooks.googleapis.com
+      notes:
+        - mock exists
+        - direct Beta
+    - name: notebooks-runtime
+      local: resource-notebooks-runtime
+      remote: resource-notebooks-runtime
+      command: gcloud notebooks runtimes
+      group: notebooks
+      resource: runtime
+      controller: Unknown
+      kind: NotebooksRuntime
+      package: google.cloud.notebooks.v1
+      proto: Runtime
+      proto-path: google/cloud/notebooks/v1/runtime.proto
+      proto-service: google.cloud.notebooks.v1.ManagedNotebookService
+      proto-msg: google.cloud.notebooks.v1.Runtime
+      host-name: notebooks.googleapis.com
+      notes: []
+    - name: notebooks-instance
+      local: resource-notebooks-instance
+      remote: resource-notebooks-instance
+      command: gcloud notebooks instances
+      group: notebooks
+      resource: instance
+      controller: Unknown
+      kind: NotebooksInstance
+      package: google.cloud.notebooks.v2
+      proto: Instance
+      proto-path: google/cloud/notebooks/v2/service.proto
+      proto-service: google.cloud.notebooks.v1.NotebookService
+      proto-msg: google.cloud.notebooks.v2.Instance
+      host-name: notebooks.googleapis.com
+      notes:
+        - mock exists
+    - name: recommender-insight
+      local: resource-recommender-insight
+      remote: resource-recommender-insight
+      command: gcloud recommender insights
+      group: recommender
+      resource: insight
+      controller: Unknown
+      kind: RecommenderInsight
+      package: google.cloud.recommender.v1
+      proto: Insight
+      proto-path: google/cloud/recommender/v1/insight.proto
+      proto-service: google.cloud.recommender.v1.Recommender
+      proto-msg: google.cloud.recommender.v1.Insight
+      host-name: recommender.googleapis.com
+      notes:
+        - gcloud command does not contain any of create/update/delete
+    - name: recommender-insighttypeconfig
+      local: resource-recommender-insighttypeconfig
+      remote: resource-recommender-insighttypeconfig
+      command: gcloud recommender insight-type-config
+      group: recommender
+      resource: insighttypeconfig
+      controller: Unknown
+      kind: RecommenderInsightTypeConfig
+      package: google.cloud.recommender.v1
+      proto: InsightTypeConfig
+      proto-path: google/cloud/recommender/v1/insight_type_config.proto
+      proto-service: google.cloud.recommender.v1.Recommender
+      proto-msg: google.cloud.recommender.v1.InsightTypeConfig
+      host-name: recommender.googleapis.com
+      notes: []
+    - name: recommender-recommendation
+      local: resource-recommender-recommendation
+      remote: resource-recommender-recommendation
+      command: gcloud recommender recommendations
+      group: recommender
+      resource: recommendation
+      controller: Unknown
+      kind: RecommenderRecommendation
+      package: google.cloud.recommender.v1
+      proto: Recommendation
+      proto-path: google/cloud/recommender/v1/recommendation.proto
+      proto-service: google.cloud.recommender.v1.Recommender
+      proto-msg: google.cloud.recommender.v1.Recommendation
+      host-name: recommender.googleapis.com
+      notes:
+        - gcloud command does not contain any of create/update/delete
+    - name: recommender-recommenderconfig
+      local: resource-recommender-recommenderconfig
+      remote: resource-recommender-recommenderconfig
+      command: gcloud recommender recommender-config
+      group: recommender
+      resource: recommenderconfig
+      controller: Unknown
+      kind: RecommenderRecommenderConfig
+      package: google.cloud.recommender.v1
+      proto: RecommenderConfig
+      proto-path: google/cloud/recommender/v1/recommender_config.proto
+      proto-service: google.cloud.recommender.v1.Recommender
+      proto-msg: google.cloud.recommender.v1.RecommenderConfig
+      host-name: recommender.googleapis.com
+      notes: []
+    - name: shell-environment
+      local: resource-shell-environment
+      remote: resource-shell-environment
+      command: ""
+      group: shell
+      resource: environment
+      controller: Unknown
+      kind: ShellEnvironment
+      package: google.cloud.shell.v1
+      proto: Environment
+      proto-path: google/cloud/shell/v1/cloudshell.proto
+      proto-service: google.cloud.shell.v1.CloudShellService
+      proto-msg: google.cloud.shell.v1.Environment
+      host-name: cloudshell.googleapis.com
+      notes:
+        - No gcloud command found
+    - name: tpu-node
+      local: resource-tpu-node
+      remote: resource-tpu-node
+      command: gcloud compute tpus
+      group: tpu
+      resource: node
+      controller: terraform
+      kind: TPUNode
+      package: google.cloud.tpu.v2
+      proto: Node
+      proto-path: google/cloud/tpu/v2/cloud_tpu.proto
+      proto-service: google.cloud.tpu.v2.Tpu
+      proto-msg: google.cloud.tpu.v2.Node
+      host-name: tpu.googleapis.com
+      notes:
+        - mock exists
+        - TF alpha
+    - name: tpu-queuedresource
+      local: resource-tpu-queuedresource
+      remote: resource-tpu-queuedresource
+      command: gcloud compute tpus queued-resources
+      group: tpu
+      resource: queuedresource
+      controller: Unknown
+      kind: TPUQueuedResource
+      package: google.cloud.tpu.v2
+      proto: QueuedResource
+      proto-path: google/cloud/tpu/v2/cloud_tpu.proto
+      proto-service: google.cloud.tpu.v2.Tpu
+      proto-msg: google.cloud.tpu.v2.QueuedResource
+      host-name: tpu.googleapis.com
+      notes: []
+    - name: tpu-acceleratortype
+      local: resource-tpu-acceleratortype
+      remote: resource-tpu-acceleratortype
+      command: gcloud compute tpus accelerator-types
+      group: tpu
+      resource: acceleratortype
+      controller: Unknown
+      kind: TPUAcceleratorType
+      package: google.cloud.tpu.v2
+      proto: AcceleratorType
+      proto-path: google/cloud/tpu/v2/cloud_tpu.proto
+      proto-service: google.cloud.tpu.v2.Tpu
+      proto-msg: google.cloud.tpu.v2.AcceleratorType
+      host-name: tpu.googleapis.com
+      notes:
+        - gcloud command does not contain any of create/update/delete
+    - name: pubsub-snapshot
+      local: resource-pubsub-snapshot
+      remote: resource-pubsub-snapshot
+      command: gcloud pubsub snapshots
+      group: pubsub
+      resource: snapshot
+      controller: Unknown
+      kind: PubSubSnapshot
+      package: google.pubsub.v1
+      proto: Snapshot
+      proto-path: google/pubsub/v1/pubsub.proto
+      proto-service: google.pubsub.v1.Subscriber
+      proto-msg: google.pubsub.v1.Snapshot
+      host-name: pubsub.googleapis.com
+      notes: []
+    - name: spanner-backup
+      local: resource-spanner-backup
+      remote: resource-spanner-backup
+      command: gcloud spanner backups
+      group: spanner
+      resource: backup
+      controller: Unknown
+      kind: SpannerBackup
+      package: google.spanner.admin.database.v1
+      proto: Backup
+      proto-path: google/spanner/admin/database/v1/backup.proto
+      proto-service: google.spanner.admin.database.v1.DatabaseAdmin
+      proto-msg: google.spanner.admin.database.v1.Backup
+      host-name: spanner.googleapis.com
+      notes:
+        - require special handling(Anh)
+    - name: spanner-backupschedule
+      local: resource-spanner-backupschedule
+      remote: resource-spanner-backupschedule
+      command: gcloud spanner backup-schedules
+      group: spanner
+      resource: backupschedule
+      controller: Unknown
+      kind: SpannerBackupSchedule
+      package: google.spanner.admin.database.v1
+      proto: BackupSchedule
+      proto-path: google/spanner/admin/database/v1/backup_schedule.proto
+      proto-service: google.spanner.admin.database.v1.DatabaseAdmin
+      proto-msg: google.spanner.admin.database.v1.BackupSchedule
+      host-name: spanner.googleapis.com
+      notes: []
+    - name: spanner-instanceconfig
+      local: resource-spanner-instanceconfig
+      remote: resource-spanner-instanceconfig
+      command: gcloud spanner instance-configs
+      group: spanner
+      resource: instanceconfig
+      controller: Unknown
+      kind: SpannerInstanceConfig
+      package: google.spanner.admin.instance.v1
+      proto: InstanceConfig
+      proto-path: google/spanner/admin/instance/v1/spanner_instance_admin.proto
+      proto-service: google.spanner.admin.instance.v1.InstanceAdmin
+      proto-msg: google.spanner.admin.instance.v1.InstanceConfig
+      host-name: spanner.googleapis.com
+      notes: []
+    - name: functions-eventtype
+      local: resource-functions-eventtype
+      remote: resource-functions-eventtype
+      command: gcloud functions event-types
+      group: functions
+      resource: eventtype
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - no proto found
+    - name: functions-log
+      local: resource-functions-log
+      remote: resource-functions-log
+      command: gcloud functions logs
+      group: functions
+      resource: log
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - no proto found
+    - name: functions-runtime
+      local: resource-functions-runtime
+      remote: resource-functions-runtime
+      command: gcloud functions runtimes
+      group: functions
+      resource: runtime
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - no proto found
+    - name: migration-vmsimageimport
+      local: resource-migration-vmsimageimport
+      remote: resource-migration-vmsimageimport
+      command: gcloud migration vms image-imports
+      group: migration
+      resource: migrationvmsimageimport
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - no proto found
+    - name: migration-vmsmachineimageimport
+      local: resource-migration-vmsmachineimageimport
+      remote: resource-migration-vmsmachineimageimport
+      command: gcloud migration vms machine-image-imports
+      group: migration
+      resource: migrationvmsmachineimageimport
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - no proto found
+    - name: compute-osloginsshkey
+      local: resource-compute-osloginsshkey
+      remote: resource-compute-osloginsshkey
+      command: gcloud compute os-login ssh-keys
+      group: compute
+      resource: osloginsshkey
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - no proto found
+    - name: compute-projectinfo
+      local: resource-projectinfo
+      remote: resource-projectinfo
+      command: gcloud compute project-info
+      group: compute
+      resource: projectinfo
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - no proto found
+    - name: pubsublite-reservation
+      local: resource-pubsublite-reservation
+      remote: resource-pubsublite-reservation
+      command: gcloud pubsub lite-reservations
+      group: pubsublite
+      resource: reservation
+      controller: Unknown
+      kind: PubsubLiteReservation
+      package: google.cloud.pubsublite.v1
+      proto: Reservation
+      proto-path: google/cloud/pubsublite/v1/common.proto
+      proto-service: google.cloud.pubsublite.v1.AdminService
+      proto-msg: google.cloud.pubsublite.v1.Reservation
+      host-name: pubsublite.googleapis.com
+      notes:
+        - TF beta
+    - name: pubsublite-subscription
+      local: resource-pubsublite-subscription
+      remote: resource-pubsublite-subscription
+      command: gcloud pubsub lite-subscriptions
+      group: pubsublite
+      resource: subscription
+      controller: Unknown
+      kind: PubsubLiteSubscription
+      package: google.cloud.pubsublite.v1
+      proto: Reservation
+      proto-path: google/cloud/pubsublite/v1/common.proto
+      proto-service: google.cloud.pubsublite.v1.AdminService
+      proto-msg: google.cloud.pubsublite.v1.Subscription
+      host-name: pubsublite.googleapis.com
+      notes:
+        - TF alpha
+    - name: pubsublite-topic
+      local: resource-pubsublite-topic
+      remote: resource-pubsublite-topic
+      command: gcloud pubsub lite-topics
+      group: pubsublite
+      resource: topic
+      controller: Unknown
+      kind: PubsubLiteTopic
+      package: google.cloud.pubsublite.v1
+      proto: Reservation
+      proto-path: google/cloud/pubsublite/v1/common.proto
+      proto-service: google.cloud.pubsublite.v1.AdminService
+      proto-msg: google.cloud.pubsublite.v1.Topic
+      host-name: pubsublite.googleapis.com
+      notes:
+        - mock exists
+        - TF alpha
+    - name: pubsub-schema
+      local: resource-pubsub-schema
+      remote: resource-pubsub-schema
+      command: gcloud pubsub schemas
+      group: pubsub
+      resource: schema
+      controller: Unknown
+      kind: PubsubSchema
+      package: google.pubsub.v1
+      proto: Schema
+      proto-path: google/pubsub/v1/schema.proto
+      proto-service: google.pubsub.v1.SchemaService
+      proto-msg: google.pubsub.v1.Schema
+      host-name: pubsub.googleapis.com
+      notes: []
+    - name: spanner-row
+      local: resource-spanner-row
+      remote: resource-spanner-row
+      command: gcloud spanner rows
+      group: spanner
+      resource: row
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - no proto found
+    - name: spanner-sample
+      local: resource-spanner-sample
+      remote: resource-spanner-sample
+      command: gcloud spanner samples
+      group: spanner
+      resource: sample
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - no proto found
+    - name: tpu-executiongroup
+      local: resource-tpu-executiongroup
+      remote: resource-tpu-executiongroup
+      command: gcloud compute tpus execution-groups
+      group: tpu
+      resource: executiongroup
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - no proto found
+    - name: tpu-topology
+      local: resource-tpu-topology
+      remote: resource-tpu-topology
+      command: gcloud compute tpus topologies
+      group: tpu
+      resource: topology
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - no proto found
+    - name: tpu-vm
+      local: resource-tpu-vm
+      remote: resource-tpu-vm
+      command: gcloud compute tpus tpu-vm
+      group: tpu
+      resource: vm
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - no proto found
+    - name: tpu-version
+      local: resource-tpu-version
+      remote: resource-tpu-version
+      command: gcloud compute tpus versions
+      group: tpu
+      resource: version
+      controller: Unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - no proto found
+    - name: compute-address
+      local: resource-compute-address
+      remote: resource-compute-address
+      command: gcloud compute addresses
+      group: compute
+      resource: address
+      controller: terraform
+      kind: ComputeAddress
+      package: google.cloud.compute.v1
+      proto: Address
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Addresses
+      proto-msg: google.cloud.compute.v1.Address
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-backendbucket
+      local: resource-compute-backendbucket
+      remote: resource-compute-backendbucket
+      command: gcloud compute backend-buckets
+      group: compute
+      resource: backendbucket
+      controller: terraform
+      kind: ComputeBackendBucket
+      package: google.cloud.compute.v1
+      proto: BackendBucket
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.BackendBuckets
+      proto-msg: google.cloud.compute.v1.BackendBucket
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-backendservice
+      local: resource-compute-backendservice
+      remote: resource-compute-backendservice
+      command: gcloud compute backend-services
+      group: compute
+      resource: backendservice
+      controller: terraform
+      kind: ComputeBackendService
+      package: google.cloud.compute.v1
+      proto: BackendService
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.BackendServices
+      proto-msg: google.cloud.compute.v1.BackendService
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-disk
+      local: resource-compute-disk
+      remote: resource-compute-disk
+      command: gcloud compute disks
+      group: compute
+      resource: computedisk
+      controller: terraform
+      kind: ComputeDisk
+      package: google.cloud.compute.v1
+      proto: Disk
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Disks
+      proto-msg: google.cloud.compute.v1.Disk
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-disksbulk
+      local: resource-compute-disksbulk
+      remote: resource-compute-disksbulk
+      command: gcloud compute disks bulk
+      group: compute
+      resource: disksbulk
+      controller: unknown
+      kind: ComputeDisksBulk
+      package: google.cloud.compute.v1
+      proto:
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: ""
+      proto-msg: ""
+      host-name: compute.googleapis.com
+      notes:
+        - no proto found
+        - a bulk method of disk CRUD
+    - name: compute-externalvpngateway
+      local: resource-compute-externalvpngateway
+      remote: resource-compute-externalvpngateway
+      command: gcloud compute external-vpn-gateways
+      group: compute
+      resource: externalvpngateway
+      controller: terraform
+      kind: ComputeExternalVpnGateway
+      package: google.cloud.compute.v1
+      proto: ExternalVpnGateway
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.ExternalVpnGateways
+      proto-msg: google.cloud.compute.v1.ExternalVpnGateway
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-forwardingrule
+      local: resource-compute-forwardingrule
+      remote: resource-compute-forwardingrules
+      command: gcloud compute forwarding-rule
+      group: compute
+      resource: forwardingrule
+      controller: terraform
+      kind: ComputeForwardingRule
+      package: google.cloud.compute.v1
+      proto: ForwardingRule
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.ForwardingRules
+      proto-msg: google.cloud.compute.v1.ForwardingRule
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-healthcheck
+      local: resource-compute-healthcheck
+      remote: resource-compute-healthcheck
+      command: gcloud compute health-checks
+      group: compute
+      resource: healthcheck
+      controller: terraform
+      kind: ComputeHealthCheck
+      package: google.cloud.compute.v1
+      proto: HealthCheck
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.HealthChecks
+      proto-msg: google.cloud.compute.v1.HealthCheck
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-httphealthcheck
+      local: resource-compute-httphealthcheck
+      remote: resource-compute-httphealthcheck
+      command: gcloud compute http-health-checks
+      group: compute
+      resource: httphealthcheck
+      controller: terraform
+      kind: ComputeHTTPHealthCheck
+      package: google.cloud.compute.v1
+      proto: HTTPHealthCheck
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.HTTPHealthChecks
+      proto-msg: google.cloud.compute.v1.HTTPHealthCheck
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-httpshealthcheck
+      local: resource-compute-httpshealthcheck
+      remote: resource-compute-httpshealthcheck
+      command: gcloud compute https-health-checks
+      group: compute
+      resource: httpshealthcheck
+      controller: terraform
+      kind: ComputeHTTPSHealthCheck
+      package: google.cloud.compute.v1
+      proto: HTTPSHealthCheck
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.HTTPSHealthChecks
+      proto-msg: google.cloud.compute.v1.HTTPSHealthCheck
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-image
+      local: resource-compute-image
+      remote: resource-compute-image
+      command: gcloud compute images
+      group: compute
+      resource: image
+      controller: terraform
+      kind: ComputeImage
+      package: google.cloud.compute.v1
+      proto: Image
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Images
+      proto-msg: google.cloud.compute.v1.Image
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-instancegroup
+      local: resource-compute-instancegroup
+      remote: resource-compute-instancegroup
+      command: gcloud compute instance-groups
+      group: compute
+      resource: instancegroup
+      controller: terraform
+      kind: ComputeInstanceGroup
+      package: google.cloud.compute.v1
+      proto: InstanceGroup
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.InstanceGroups
+      proto-msg: google.cloud.compute.v1.InstanceGroup
+      host-name: compute.googleapis.com
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - TF beta
+    - name: compute-instance
+      local: resource-compute-instance
+      remote: resource-compute-instance
+      command: gcloud compute instances
+      group: compute
+      resource: instance
+      controller: terraform
+      kind: ComputeInstance
+      package: google.cloud.compute.v1
+      proto: Instance
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Instances
+      proto-msg: google.cloud.compute.v1.Instance
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-instancetemplate
+      local: resource-compute-instancetemplate
+      remote: resource-compute-instancetemplate
+      command: gcloud compute instance-templates
+      group: compute
+      resource: instancetemplate
+      controller: terraform
+      kind: ComputeInstanceTemplate
+      package: google.cloud.compute.v1
+      proto: InstanceTemplate
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.InstanceTemplates
+      proto-msg: google.cloud.compute.v1.InstanceTemplate
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-interconnect
+      local: resource-compute-interconnect
+      remote: resource-compute-interconnect
+      command: gcloud compute interconnects
+      group: compute
+      resource: interconnect
+      controller: unknown
+      kind: ComputeInterconnect
+      package: google.cloud.compute.v1
+      proto: Interconnect
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Interconnects
+      proto-msg: google.cloud.compute.v1.Interconnect
+      host-name: compute.googleapis.com
+      notes: []
+    - name: compute-interconnectattachment
+      local: resource-compute-interconnectattachment
+      remote: resource-compute-interconnectattachment
+      command: gcloud compute interconnects attachments
+      group: compute
+      resource: interconnectattachment
+      controller: terraform
+      kind: ComputeInterconnectAttachment
+      package: google.cloud.compute.v1
+      proto: InterconnectAttachment
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.InterconnectAttachments
+      proto-msg: google.cloud.compute.v1.InterconnectAttachment
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-machineimage
+      local: resource-compute-machineimage
+      remote: resource-compute-machineimage
+      command: gcloud compute machine-images
+      group: compute
+      resource: machineimage
+      controller: terraform
+      kind: ComputeMachineImage
+      package: google.cloud.compute.v1
+      proto: MachineImage
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.MachineImages
+      proto-msg: google.cloud.compute.v1.MachineImage
+      host-name: compute.googleapis.com
+      notes:
+        - TF alpha
+    - name: compute-networkattachment
+      local: resource-compute-networkattachment
+      remote: resource-compute-networkattachment
+      command: gcloud compute network-attachments
+      group: compute
+      resource: networkattachment
+      controller: unknown
+      kind: ComputeNetworkAttachment
+      package: google.cloud.compute.v1
+      proto: NetworkAttachment
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.NetworkAttachments
+      proto-msg: google.cloud.compute.v1.NetworkAttachment
+      host-name: compute.googleapis.com
+      notes: []
+    - name: compute-networkendpointgroup
+      local: resource-compute-networkendpointgroup
+      remote: resource-compute-networkendpointgroup
+      command: gcloud compute network-endpoint-groups
+      group: compute
+      resource: networkendpointgroup
+      controller: terraform
+      kind: ComputeNetworkEndpointGroup
+      package: google.cloud.compute.v1
+      proto: NetworkEndpointGroup
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.NetworkEndpointGroups
+      proto-msg: google.cloud.compute.v1.NetworkEndpointGroup
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-networkedgesecurityservice
+      local: resource-compute-networkedgesecurityservice
+      remote: resource-compute-networkedgesecurityservice
+      command: gcloud compute network-edge-security-services
+      group: compute
+      resource: networkedgesecurityservice
+      controller: unknown
+      kind: ComputeNetworkEdgeSecurityService
+      package: google.cloud.compute.v1
+      proto: NetworkEdgeSecurityService
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.NetworkEdgeSecurityServices
+      proto-msg: google.cloud.compute.v1.NetworkEdgeSecurityService
+      host-name: compute.googleapis.com
+      notes: []
+    - name: compute-networkfirewallpolicy
+      local: resource-compute-networkfirewallpolicy
+      remote: resource-compute-networkfirewallpolicy
+      command: gcloud compute network-firewall-policies
+      group: compute
+      resource: networkfirewallpolicy
+      controller: terraform
+      kind: ComputeNetworkFirewallPolicy
+      package: google.cloud.compute.v1
+      proto: ""
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: ""
+      proto-msg: ""
+      host-name: compute.googleapis.com
+      notes:
+        - TF alpha
+        - proto not found
+    - name: compute-network
+      local: resource-compute-network
+      remote: resource-compute-network
+      command: gcloud compute networks
+      group: compute
+      resource: network
+      controller: terraform
+      kind: ComputeNetwork
+      package: google.cloud.compute.v1
+      proto: Network
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Networks
+      proto-msg: google.cloud.compute.v1.Network
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-networkpeering
+      local: resource-compute-networkpeering
+      remote: resource-compute-networkpeering
+      command: gcloud compute networks peerings
+      group: compute
+      resource: networkpeering
+      controller: unknown
+      kind: ComputeNetworkPeering
+      package: google.cloud.compute.v1
+      proto: ""
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: ""
+      proto-msg: google.cloud.compute.v1.NetworkPeering
+      host-name: ""
+      notes:
+        - TF beta
+    - name: compute-subnetwork
+      local: resource-compute-subnetwork
+      remote: resource-compute-subnetwork
+      command: gcloud compute networks subnets
+      group: compute
+      resource: subnetwork
+      controller: unknown
+      kind: ComputeSubnetwork
+      package: google.cloud.compute.v1
+      proto: Subnetwork
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Subnetworks
+      proto-msg: google.cloud.compute.v1.Subnetwork
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-networksvpcaccessconnector
+      local: resource-compute-networksvpcaccessconnector
+      remote: resource-compute-networksvpcaccessconnector
+      command: gcloud compute networks vpc-access connectors
+      group: compute
+      resource: networksvpcaccessconnector
+      controller: unknown
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - no proto found
+    - name: compute-computeprojectmetadata
+      local: resource-compute-projectmetadata
+      remote: resource-compute-projectmetadata
+      command: gcloud compute project-zonal-metadata
+      group: compute
+      resource: projectmetadata
+      controller: terraform
+      kind: ComputeProjectMetadata
+      package: google.cloud.compute.v1
+      proto: ""
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: ""
+      proto-msg: ""
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+        - no proto found
+    - name: compute-reservation
+      local: resource-compute-reservation
+      remote: resource-compute-reservation
+      command: gcloud compute reservations
+      group: compute
+      resource: reservation
+      controller: terraform
+      kind: ComputeReservation
+      package: google.cloud.compute.v1
+      proto: Reservation
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Reservations
+      proto-msg: google.cloud.compute.v1.Reservation
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-resourcepolicy
+      local: resource-compute-resourcepolicy
+      remote: resource-compute-resourcepolicy
+      command: gcloud compute resource-policies
+      group: compute
+      resource: resourcepolicy
+      controller: terraform
+      kind: ComputeResourcePolicy
+      package: google.cloud.compute.v1
+      proto: ResourcePolicy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.ResourcePolicies
+      proto-msg: google.cloud.compute.v1.ResourcePolicy
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-routernat
+      local: resource-compute-routernat
+      remote: resource-compute-routernat
+      command: gcloud compute routers nats
+      group: compute
+      resource: routernat
+      controller: terraform
+      kind: ComputeRouterNat
+      package: google.cloud.compute.v1
+      proto: ""
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: ""
+      proto-msg: google.cloud.compute.v1.RouterNat
+      host-name: ""
+      notes:
+        - TF beta
+    - name: compute-router
+      local: resource-compute-router
+      remote: resource-compute-router
+      command: gcloud compute routers
+      group: compute
+      resource: router
+      controller: terraform
+      kind: ComputeRouter
+      package: google.cloud.compute.v1
+      proto: Router
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Routers
+      proto-msg: google.cloud.compute.v1.Router
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-route
+      local: resource-compute-route
+      remote: resource-compute-route
+      command: gcloud compute routes
+      group: compute
+      resource: route
+      controller: terraform
+      kind: ComputeRoute
+      package: google.cloud.compute.v1
+      proto: Route
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Routes
+      proto-msg: google.cloud.compute.v1.Route
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-securitypolicy
+      local: resource-compute-securitypolicy
+      remote: resource-compute-securitypolicy
+      command: gcloud compute security-policies
+      group: compute
+      resource: securitypolicy
+      controller: terraform
+      kind: ComputeSecurityPolicy
+      package: google.cloud.compute.v1
+      proto: SecurityPolicy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.SecurityPolicies
+      proto-msg: google.cloud.compute.v1.SecurityPolicy
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-sharedvpchostproject
+      local: resource-compute-sharedvpchostproject
+      remote: resource-compute-sharedvpchostproject
+      command: gcloud compute shared-vpc
+      group: compute
+      resource: sharedvpchostproject
+      controller: terraform
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - no proto found
+    - name: compute-sharedvpcserviceproject
+      local: resource-compute-sharedvpcserviceproject
+      remote: resource-compute-sharedvpcserviceproject
+      command: gcloud compute shared-vpc associated-projects
+      group: compute
+      resource: sharedvpcserviceproject
+      controller: terraform
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - gcloud command does not contain any of create/update/delete
+        - no proto found
+      apis-enabled: []
+    - name: compute-snapshot
+      local: resource-compute-snapshot
+      remote: resource-compute-snapshot
+      command: gcloud compute snapshots
+      group: compute
+      resource: snapshot
+      controller: terraform
+      kind: ComputeSnapshot
+      package: google.cloud.compute.v1
+      proto: ""
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: ""
+      proto-msg: google.cloud.compute.v1.Snapshot
+      host-name: compute.googleapis.com
+      notes: []
+    - name: compute-instantsnapshot
+      local: resource-compute-instantsnapshot
+      remote: resource-compute-instantsnapshot
+      command: gcloud compute instant-snapshots
+      group: compute
+      resource: instantsnapshot
+      controller: unknown
+      kind: ComputeInstantSnapshot
+      package: google.cloud.compute.v1
+      proto: InstantSnapshot
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.InstantSnapshots
+      proto-msg: google.cloud.compute.v1.InstantSnapshot
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-snapshotsettings
+      local: resource-compute-snapshotsettings
+      remote: resource-compute-snapshotsettings
+      command: gcloud compute snapshot-settings
+      group: compute
+      resource: snapshotsettings
+      controller: unknown
+      kind: ComputeSnapshotSettings
+      package: google.cloud.compute.v1
+      proto: SnapshotSettings
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.SnapshotSettingsService
+      proto-msg: google.cloud.compute.v1.SnapshotSettings
+      host-name: compute.googleapis.com
+      notes: []
+    - name: compute-sslcertificate
+      local: resource-compute-sslcertificate
+      remote: resource-compute-sslcertificate
+      command: gcloud compute ssl-certificates
+      group: compute
+      resource: sslcertificate
+      controller: terraform
+      kind: ComputeSslCertificate
+      package: google.cloud.compute.v1
+      proto: SslCertificate
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.SslCertificates
+      proto-msg: google.cloud.compute.v1.SslCertificate
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-sslpolicy
+      local: resource-compute-sslpolicy
+      remote: resource-compute-sslpolicy
+      command: gcloud compute ssl-policies
+      group: compute
+      resource: sslpolicy
+      controller: terraform
+      kind: ComputeSslPolicy
+      package: google.cloud.compute.v1
+      proto: SslPolicy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.SslPolicies
+      proto-msg: google.cloud.compute.v1.SslPolicy
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-storagepool
+      local: resource-compute-storagepool
+      remote: resource-compute-storagepool
+      command: gcloud compute storage-pools
+      group: compute
+      resource: storagepool
+      controller: unknown
+      kind: ComputeStoragePool
+      package: google.cloud.compute.v1
+      proto: StoragePool
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.StoragePools
+      proto-msg: google.cloud.compute.v1.StoragePool
+      host-name: compute.googleapis.com
+      notes: []
+    - name: compute-targetgrpcproxy
+      local: resource-compute-targetgrpcproxy
+      remote: resource-compute-targetgrpcproxy
+      command: gcloud compute target-grpc-proxies
+      group: compute
+      resource: targetgrpcproxy
+      controller: terraform
+      kind: ComputeTargetGrpcProxy
+      package: google.cloud.compute.v1
+      proto: TargetGrpcProxy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.TargetGrpcProxies
+      proto-msg: google.cloud.compute.v1.TargetGrpcProxy
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-targethttpproxy
+      local: resource-compute-targethttpproxy
+      remote: resource-compute-targethttpproxy
+      command: gcloud compute target-http-proxies
+      group: compute
+      resource: targethttpproxy
+      controller: terraform
+      kind: ComputeTargetHttpProxy
+      package: google.cloud.compute.v1
+      proto: TargetHttpProxy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.TargetHttpProxies
+      proto-msg: google.cloud.compute.v1.TargetHttpProxy
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-targethttpsproxy
+      local: resource-compute-targethttpsproxy
+      remote: resource-compute-targethttpsproxy
+      command: gcloud compute target-https-proxies
+      group: compute
+      resource: targethttpsproxy
+      controller: terraform
+      kind: ComputeTargetHttpsProxy
+      package: google.cloud.compute.v1
+      proto: TargetHttpsProxy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.TargetHttpsProxies
+      proto-msg: google.cloud.compute.v1.TargetHttpsProxy
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-targetinstance
+      local: resource-compute-targetinstance
+      remote: resource-compute-targetinstance
+      command: gcloud compute target-instances
+      group: compute
+      resource: targetinstance
+      controller: terraform
+      kind: ComputeTargetInstance
+      package: google.cloud.compute.v1
+      proto: TargetInstance
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.TargetInstances
+      proto-msg: google.cloud.compute.v1.TargetInstance
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-targetpool
+      local: resource-compute-targetpool
+      remote: resource-compute-targetpool
+      command: gcloud compute target-pools
+      group: compute
+      resource: targetpool
+      controller: terraform
+      kind: ComputeTargetPool
+      package: google.cloud.compute.v1
+      proto: TargetPool
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.TargetPools
+      proto-msg: google.cloud.compute.v1.TargetPool
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-targetsslproxy
+      local: resource-compute-targetsslproxy
+      remote: resource-compute-targetsslproxy
+      command: gcloud compute target-ssl-proxies
+      group: compute
+      resource: targetsslproxy
+      controller: terraform
+      kind: ComputeTargetSslProxy
+      package: google.cloud.compute.v1
+      proto: TargetSslProxy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.TargetSslProxies
+      proto-msg: google.cloud.compute.v1.TargetSslProxy
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-targettcpproxy
+      local: resource-compute-targettcpproxy
+      remote: resource-compute-targettcpproxy
+      command: gcloud compute target-tcp-proxies
+      group: compute
+      resource: targettcpproxy
+      controller: terraform
+      kind: ComputeTargetTcpProxy
+      package: google.cloud.compute.v1
+      proto: TargetTcpProxy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.TargetTcpProxies
+      proto-msg: google.cloud.compute.v1.TargetTcpProxy
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-targetvpngateway
+      local: resource-compute-targetvpngateway
+      remote: resource-compute-targetvpngateway
+      command: gcloud compute target-vpn-gateways
+      group: compute
+      resource: targetvpngateway
+      controller: terraform
+      kind: ComputeTargetVpnGateway
+      package: google.cloud.compute.v1
+      proto: TargetVpnGateway
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.TargetVpnGateways
+      proto-msg: google.cloud.compute.v1.TargetVpnGateway
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-urlmap
+      local: resource-compute-urlmap
+      remote: resource-compute-urlmap
+      command: gcloud compute url-maps
+      group: compute
+      resource: urlmap
+      controller: terraform
+      kind: ComputeUrlMap
+      package: google.cloud.compute.v1
+      proto: UrlMap
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.UrlMaps
+      proto-msg: google.cloud.compute.v1.UrlMap
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-vpngateway
+      local: resource-compute-vpngateway
+      remote: resource-compute-vpngateway
+      command: gcloud compute vpn-gateways
+      group: compute
+      resource: vpngateway
+      controller: terraform
+      kind: ComputeVpnGateway
+      package: google.cloud.compute.v1
+      proto: VpnGateway
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.VpnGateways
+      proto-msg: google.cloud.compute.v1.VpnGateway
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
+    - name: compute-vpntunnel
+      local: resource-compute-vpntunnel
+      remote: resource-compute-vpntunnel
+      command: gcloud compute vpn-tunnels
+      group: compute
+      resource: vpntunnel
+      controller: terraform
+      kind: ComputeVpnTunnel
+      package: google.cloud.compute.v1
+      proto: VpnTunnel
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.VpnTunnels
+      proto-msg: google.cloud.compute.v1.VpnTunnel
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+    - name: compute-firewallpolicy
+      local: resource-compute-firewallpolicy
+      remote: resource-compute-firewallpolicy
+      command: gcloud compute firewall-policies
+      group: compute
+      resource: firewallpolicy
+      controller: dcl
+      kind: ComputeFirewallPolicy
+      package: google.cloud.compute.v1
+      proto: FirewallPolicy
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.FirewallPolicies
+      proto-msg: google.cloud.compute.v1.FirewallPolicy
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - DCL beta
+    - name: compute-packetmirroring
+      local: resource-compute-packetmirroring
+      remote: resource-compute-packetmirroring
+      command: gcloud compute packet-mirrorings
+      group: compute
+      resource: packetmirroring
+      controller: dcl
+      kind: ComputePacketMirroring
+      package: google.cloud.compute.v1
+      proto: PacketMirroring
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.PacketMirrorings
+      proto-msg: google.cloud.compute.v1.PacketMirroring
+      host-name: compute.googleapis.com
+      notes:
+        - DCL Beta
+    - name: compute-publicadvertisedprefix
+      local: resource-compute-publicadvertisedprefix
+      remote: resource-compute-publicadvertisedprefix
+      command: gcloud compute public-advertised-prefixes
+      group: compute
+      resource: publicadvertisedprefix
+      controller: unknown
+      kind: ComputePublicAdvertisedPrefix
+      package: google.cloud.compute.v1
+      proto: PublicAdvertisedPrefix
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.PublicAdvertisedPrefixes
+      proto-msg: google.cloud.compute.v1.PublicAdvertisedPrefix
+      host-name: compute.googleapis.com
+      notes: []
+    - name: compute-publicdelegatedprefix
+      local: resource-compute-publicdelegatedprefix
+      remote: resource-compute-publicdelegatedprefix
+      command: gcloud compute public-delegated-prefixes
+      group: compute
+      resource: publicdelegatedprefix
+      controller: unknown
+      kind: ComputePublicDelegatedPrefix
+      package: google.cloud.compute.v1
+      proto: PublicDelegatedPrefix
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.PublicDelegatedPrefixes
+      proto-msg: google.cloud.compute.v1.PublicDelegatedPrefix
+      host-name: compute.googleapis.com
+      notes: []
+    - name: compute-serviceattachment
+      local: resource-compute-serviceattachment
+      remote: resource-compute-serviceattachment
+      command: gcloud compute service-attachments
+      group: compute
+      resource: serviceattachment
+      controller: dcl
+      kind: ComputeServiceAttachment
+      package: google.cloud.compute.v1
+      proto: ServiceAttachment
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.ServiceAttachments
+      proto-msg: google.cloud.compute.v1.ServiceAttachment
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - DCL beta
+    - name: compute-firewallpolicyrule
+      local: resource-compute-firewallpolicyrule
+      remote: resource-compute-firewallpolicyrule
+      command: gcloud compute firewall-rules
+      group: compute
+      resource: firewallpolicyrule
+      controller: direct
+      kind: ComputeFirewallPolicyRule
+      package: google.cloud.compute.v1
+      proto: FirewallPolicyRule
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.FirewallPolicyRules
+      proto-msg: google.cloud.compute.v1.FirewallPolicyRule
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - direct beta
+    - name: compute-commitment
+      local: resource-compute-commitment
+      remote: resource-compute-commitment
+      command: gcloud compute commitments
+      group: compute
+      resource: commitments
+      controller: unknown
+      kind: ComputeCommitment
+      package: google.cloud.compute.v1
+      proto: Commitment
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Commitments
+      proto-msg: google.cloud.compute.v1.Commitment
+      host-name: compute.googleapis.com
+      notes: []
