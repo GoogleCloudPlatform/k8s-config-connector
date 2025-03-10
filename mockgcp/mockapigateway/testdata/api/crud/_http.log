@@ -3,13 +3,13 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "name": "projects/${projectId}/locations/global/apis/test-${uniqueId}"
 }
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -20,12 +20,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.apigateway.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
     "verb": "create"
   },
@@ -38,9 +36,9 @@ GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -57,7 +55,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
     "verb": "create"
   },
@@ -66,7 +63,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigateway.v1.Api",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "test-${uniqueId}",
-    "managedService": "test-${uniqueId}-386hc7afnub93.apigateway.${projectId}.cloud.goog",
     "name": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -79,9 +75,9 @@ GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -94,7 +90,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "test-${uniqueId}",
-  "managedService": "test-${uniqueId}-386hc7afnub93.apigateway.${projectId}.cloud.goog",
   "name": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -106,9 +101,9 @@ GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -121,7 +116,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "test-${uniqueId}",
-  "managedService": "test-${uniqueId}-386hc7afnub93.apigateway.${projectId}.cloud.goog",
   "name": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -133,9 +127,9 @@ DELETE https://apigateway.googleapis.com/v1/projects/${projectId}/locations/glob
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -146,12 +140,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.apigateway.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
     "verb": "delete"
   },
@@ -164,9 +156,9 @@ GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
+Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -183,7 +175,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
     "verb": "delete"
   },
