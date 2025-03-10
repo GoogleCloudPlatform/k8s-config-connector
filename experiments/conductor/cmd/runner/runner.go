@@ -104,6 +104,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"f", false, "Force operation even if files already exist.")
 	cmd.Flags().IntVarP(&opts.numCommits, "num-commits",
 		"n", 0, "Number of commits to diff/revert (default: 0)")
+	cmd.Flags().BoolVarP(&opts.verbose, "verbose",
+		"v", false, "Enable verbose output logging")
 
 	return cmd
 }
@@ -123,6 +125,7 @@ type RunnerOptions struct {
 
 	force      bool // Force flag to override file existence checks
 	numCommits int  // Number of commits to diff (default: 1)
+	verbose    bool // Verbose output flag
 }
 
 func (opts *RunnerOptions) validateFlags() error {
