@@ -1,0 +1,1786 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+branches:
+  - name: bigtable-instance
+    local: resource-bigtable-instance
+    remote: resource-bigtable-instance
+    command: gcloud bigtable instances
+    group: bigtable
+    resource: instance
+    controller: Unknown
+    kind: BigtableInstance
+    package: google.bigtable.admin.v2
+    proto: Instance
+    proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.bigtable.admin.v2.Instance
+    host-name: ""
+    notes: []
+  - name: bigtable-cluster
+    local: resource-bigtable-cluster
+    remote: resource-bigtable-cluster
+    command: gcloud bigtable clusters
+    group: bigtable
+    resource: cluster
+    controller: Unknown
+    kind: BigtableCluster
+    package: google.bigtable.admin.v2
+    proto: Cluster
+    proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.bigtable.admin.v2.Cluster
+    host-name: ""
+    notes: []
+  - name: bigtable-appprofile
+    local: resource-bigtable-appprofile
+    remote: resource-bigtable-appprofile
+    command: gcloud bigtable app-profiles
+    group: bigtable
+    resource: appprofile
+    controller: Unknown
+    kind: BigtableAppProfile
+    package: google.bigtable.admin.v2
+    proto: AppProfile
+    proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.bigtable.admin.v2.AppProfile
+    host-name: ""
+    notes: []
+  - name: bigtable-hottablet
+    local: resource-bigtable-hottablet
+    remote: resource-bigtable-hottablet
+    command: gcloud bigtable hot-tablets
+    group: bigtable
+    resource: hottablet
+    controller: Unknown
+    kind: BigtableHotTablet
+    package: google.bigtable.admin.v2
+    proto: HotTablet
+    proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.bigtable.admin.v2.HotTablet
+    host-name: ""
+    notes: []
+  - name: bigtable-table
+    local: resource-bigtable-table
+    remote: resource-bigtable-table
+    command: gcloud bigtable tables
+    group: bigtable
+    resource: table
+    controller: Unknown
+    kind: BigtableTable
+    package: google.bigtable.admin.v2
+    proto: Table
+    proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.bigtable.admin.v2.Table
+    host-name: ""
+    notes: []
+  - name: bigtable-authorizedview
+    local: resource-bigtable-authorizedview
+    remote: resource-bigtable-authorizedview
+    command: gcloud bigtable authorized-views
+    group: bigtable
+    resource: authorizedview
+    controller: Unknown
+    kind: BigtableAuthorizedView
+    package: google.bigtable.admin.v2
+    proto: AuthorizedView
+    proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.bigtable.admin.v2.AuthorizedView
+    host-name: ""
+    notes: []
+  - name: bigtable-backup
+    local: resource-bigtable-backup
+    remote: resource-bigtable-backup
+    command: gcloud bigtable backups
+    group: bigtable
+    resource: backup
+    controller: Unknown
+    kind: BigtableBackup
+    package: google.bigtable.admin.v2
+    proto: Backup
+    proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.bigtable.admin.v2.Backup
+    host-name: ""
+    notes: []
+  - name: dataplex-environment
+    local: resource-dataplex-environment
+    remote: resource-dataplex-environment
+    command: gcloud dataplex environments
+    group: dataplex
+    resource: environment
+    controller: Unknown
+    kind: DataplexEnvironment
+    package: google.cloud.dataplex.v1
+    proto: Environment
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.Environment
+    host-name: ""
+    notes: []
+  - name: dataplex-content
+    local: resource-dataplex-content
+    remote: resource-dataplex-content
+    command: gcloud dataplex content
+    group: dataplex
+    resource: content
+    controller: Unknown
+    kind: DataplexContent
+    package: google.cloud.dataplex.v1
+    proto: Content
+    proto-path: google/cloud/dataplex/v1/content.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.Content
+    host-name: ""
+    notes: []
+  - name: dataplex-aspecttype
+    local: resource-dataplex-aspecttype
+    remote: resource-dataplex-aspecttype
+    command: gcloud dataplex aspect-types
+    group: dataplex
+    resource: aspecttype
+    controller: Unknown
+    kind: DataplexAspectType
+    package: google.cloud.dataplex.v1
+    proto: AspectType
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.AspectType
+    host-name: ""
+    notes: []
+  - name: dataplex-entrygroup
+    local: resource-dataplex-entrygroup
+    remote: resource-dataplex-entrygroup
+    command: gcloud dataplex entry-groups
+    group: dataplex
+    resource: entrygroup
+    controller: Unknown
+    kind: DataplexEntryGroup
+    package: google.cloud.dataplex.v1
+    proto: EntryGroup
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.EntryGroup
+    host-name: ""
+    notes: []
+  - name: dataplex-entrytype
+    local: resource-dataplex-entrytype
+    remote: resource-dataplex-entrytype
+    command: gcloud dataplex entry-types
+    group: dataplex
+    resource: entrytype
+    controller: Unknown
+    kind: DataplexEntryType
+    package: google.cloud.dataplex.v1
+    proto: EntryType
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.EntryType
+    host-name: ""
+    notes: []
+  - name: dataplex-entry
+    local: resource-dataplex-entry
+    remote: resource-dataplex-entry
+    command: gcloud dataplex entries
+    group: dataplex
+    resource: entry
+    controller: Unknown
+    kind: DataplexEntry
+    package: google.cloud.dataplex.v1
+    proto: Entry
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.Entry
+    host-name: ""
+    notes: []
+  - name: dataplex-datascan
+    local: resource-dataplex-datascan
+    remote: resource-dataplex-datascan
+    command: gcloud dataplex datascans
+    group: dataplex
+    resource: datascan
+    controller: Unknown
+    kind: DataplexDataScan
+    package: google.cloud.dataplex.v1
+    proto: DataScan
+    proto-path: google/cloud/dataplex/v1/datascans.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.DataScan
+    host-name: ""
+    notes: []
+  - name: dataplex-lake
+    local: resource-dataplex-lake
+    remote: resource-dataplex-lake
+    command: gcloud dataplex lakes
+    group: dataplex
+    resource: lake
+    controller: Unknown
+    kind: DataplexLake
+    package: google.cloud.dataplex.v1
+    proto: Lake
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.Lake
+    host-name: ""
+    notes: []
+  - name: dataplex-zone
+    local: resource-dataplex-zone
+    remote: resource-dataplex-zone
+    command: gcloud dataplex zones
+    group: dataplex
+    resource: zone
+    controller: Unknown
+    kind: DataplexZone
+    package: google.cloud.dataplex.v1
+    proto: Zone
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.Zone
+    host-name: ""
+    notes: []
+  - name: dataplex-asset
+    local: resource-dataplex-asset
+    remote: resource-dataplex-asset
+    command: gcloud dataplex assets
+    group: dataplex
+    resource: asset
+    controller: Unknown
+    kind: DataplexAsset
+    package: google.cloud.dataplex.v1
+    proto: Asset
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.Asset
+    host-name: ""
+    notes: []
+  - name: dataplex-task
+    local: resource-dataplex-task
+    remote: resource-dataplex-task
+    command: gcloud dataplex tasks
+    group: dataplex
+    resource: task
+    controller: Unknown
+    kind: DataplexTask
+    package: google.cloud.dataplex.v1
+    proto: Task
+    proto-path: google/cloud/dataplex/v1/catalog.proto
+    proto-service: ""
+    proto-msg: google.cloud.dataplex.v1.Task
+    host-name: ""
+    notes: []
+  - name: modelarmor-template
+    local: resource-modelarmor-template
+    remote: resource-modelarmor-template
+    command: gcloud model-armor templates
+    group: modelarmor
+    resource: template
+    controller: Unknown
+    kind: ModelArmorTemplate
+    package: google.cloud.modelarmor.v1
+    proto: Template
+    proto-path: google/cloud/modelarmor/v1/service.proto
+    proto-service: ""
+    proto-msg: google.cloud.modelarmor.v1.Template
+    host-name: ""
+    notes: []
+  - name: modelarmor-floorsetting
+    local: resource-modelarmor-floorsetting
+    remote: resource-modelarmor-floorsetting
+    command: gcloud model-armor floorsettings
+    group: modelarmor
+    resource: floorsetting
+    controller: Unknown
+    kind: ModelArmorFloorSetting
+    package: google.cloud.modelarmor.v1
+    proto: FloorSetting
+    proto-path: google/cloud/modelarmor/v1/service.proto
+    proto-service: ""
+    proto-msg: google.cloud.modelarmor.v1.FloorSetting
+    host-name: ""
+    notes: []
+  - name: notebooks-environment
+    local: resource-notebooks-environment
+    remote: resource-notebooks-environment
+    command: gcloud notebooks environments
+    group: notebooks
+    resource: environment
+    controller: Unknown
+    kind: NotebooksEnvironment
+    package: google.cloud.notebooks.v1
+    proto: Environment
+    proto-path: google/cloud/notebooks/v1/managed_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.notebooks.v1.Environment
+    host-name: ""
+    notes: []
+  - name: notebooks-runtime
+    local: resource-notebooks-runtime
+    remote: resource-notebooks-runtime
+    command: gcloud notebooks runtimes
+    group: notebooks
+    resource: runtime
+    controller: Unknown
+    kind: NotebooksRuntime
+    package: google.cloud.notebooks.v1
+    proto: Runtime
+    proto-path: google/cloud/notebooks/v1/managed_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.notebooks.v1.Runtime
+    host-name: ""
+    notes: []
+  - name: notebooks-instance
+    local: resource-notebooks-instance
+    remote: resource-notebooks-instance
+    command: gcloud notebooks instances
+    group: notebooks
+    resource: instance
+    controller: Unknown
+    kind: NotebooksInstance
+    package: google.cloud.notebooks.v2
+    proto: Instance
+    proto-path: google/cloud/notebooks/v2/service.proto
+    proto-service: ""
+    proto-msg: google.cloud.notebooks.v2.Instance
+    host-name: ""
+    notes: []
+  - name: recommender-insight
+    local: resource-recommender-insight
+    remote: resource-recommender-insight
+    command: gcloud recommender insights
+    group: recommender
+    resource: insight
+    controller: Unknown
+    kind: RecommenderInsight
+    package: google.cloud.recommender.v1
+    proto: Insight
+    proto-path: google/cloud/recommender/v1/recommender_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.recommender.v1.Insight
+    host-name: ""
+    notes: []
+  - name: recommender-insighttypeconfig
+    local: resource-recommender-insighttypeconfig
+    remote: resource-recommender-insighttypeconfig
+    command: gcloud recommender insight-type-config
+    group: recommender
+    resource: insighttypeconfig
+    controller: Unknown
+    kind: RecommenderInsightTypeConfig
+    package: google.cloud.recommender.v1
+    proto: InsightTypeConfig
+    proto-path: google/cloud/recommender/v1/recommender_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.recommender.v1.InsightTypeConfig
+    host-name: ""
+    notes: []
+  - name: recommender-recommendation
+    local: resource-recommender-recommendation
+    remote: resource-recommender-recommendation
+    command: gcloud recommender recommendations
+    group: recommender
+    resource: recommendation
+    controller: Unknown
+    kind: RecommenderRecommendation
+    package: google.cloud.recommender.v1
+    proto: Recommendation
+    proto-path: google/cloud/recommender/v1/recommender_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.recommender.v1.Recommendation
+    host-name: ""
+    notes: []
+  - name: recommender-recommenderconfig
+    local: resource-recommender-recommenderconfig
+    remote: resource-recommender-recommenderconfig
+    command: gcloud recommender recommender-config
+    group: recommender
+    resource: recommenderconfig
+    controller: Unknown
+    kind: RecommenderRecommenderConfig
+    package: google.cloud.recommender.v1
+    proto: RecommenderConfig
+    proto-path: google/cloud/recommender/v1/recommender_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.recommender.v1.RecommenderConfig
+    host-name: ""
+    notes: []
+  - name: shell-environment
+    local: resource-shell-environment
+    remote: resource-shell-environment
+    command: gcloud shell Environment
+    group: shell
+    resource: environment
+    controller: Unknown
+    kind: ShellEnvironment
+    package: google.cloud.shell.v1
+    proto: Environment
+    proto-path: google/cloud/shell/v1/cloudshell.proto
+    proto-service: ""
+    proto-msg: google.cloud.shell.v1.Environment
+    host-name: ""
+    notes:
+      - No gcloud command found
+  - name: tpu-node
+    local: resource-tpu-node
+    remote: resource-tpu-node
+    command: gcloud compute tpus
+    group: tpu
+    resource: node
+    controller: terraform
+    kind: TPUNode
+    package: google.cloud.tpu.v2
+    proto: Node
+    proto-path: google/cloud/tpu/v2/cloud_tpu.proto
+    proto-service: ""
+    proto-msg: google.cloud.tpu.v2.Node
+    host-name: ""
+    notes: []
+  - name: tpu-queuedresource
+    local: resource-tpu-queuedresource
+    remote: resource-tpu-queuedresource
+    command: gcloud compute tpus queued-resources
+    group: tpu
+    resource: queuedresource
+    controller: Unknown
+    kind: TPUQueuedResource
+    package: google.cloud.tpu.v2
+    proto: QueuedResource
+    proto-path: google/cloud/tpu/v2/cloud_tpu.proto
+    proto-service: ""
+    proto-msg: google.cloud.tpu.v2.QueuedResource
+    host-name: ""
+    notes: []
+  - name: tpu-acceleratortype
+    local: resource-tpu-acceleratortype
+    remote: resource-tpu-acceleratortype
+    command: gcloud compute tpus accelerator-types
+    group: tpu
+    resource: acceleratortype
+    controller: Unknown
+    kind: TPUAcceleratorType
+    package: google.cloud.tpu.v2
+    proto: AcceleratorType
+    proto-path: google/cloud/tpu/v2/cloud_tpu.proto
+    proto-service: ""
+    proto-msg: google.cloud.tpu.v2.AcceleratorType
+    host-name: ""
+    notes: []
+  - name: pubsub-snapshot
+    local: resource-pubsub-snapshot
+    remote: resource-pubsub-snapshot
+    command: gcloud pubsub snapshots
+    group: pubsub
+    resource: snapshot
+    controller: Unknown
+    kind: PubSubSnapshot
+    package: google.pubsub.v1
+    proto: Snapshot
+    proto-path: google/pubsub/v1/pubsub.proto
+    proto-service: ""
+    proto-msg: google.pubsub.v1.Snapshot
+    host-name: ""
+    notes: []
+  - name: spanner-backup
+    local: resource-spanner-backup
+    remote: resource-spanner-backup
+    command: gcloud spanner backups
+    group: spanner
+    resource: backup
+    controller: Unknown
+    kind: SpannerBackup
+    package: google.spanner.admin.database.v1
+    proto: Backup
+    proto-path: google/spanner/admin/database/v1/spanner_database_admin.proto
+    proto-service: ""
+    proto-msg: google.spanner.admin.database.v1.Backup
+    host-name: ""
+    notes: []
+  - name: spanner-backupschedule
+    local: resource-spanner-backupschedule
+    remote: resource-spanner-backupschedule
+    command: gcloud spanner backup-schedules
+    group: spanner
+    resource: backupschedule
+    controller: Unknown
+    kind: SpannerBackupSchedule
+    package: google.spanner.admin.database.v1
+    proto: BackupSchedule
+    proto-path: google/spanner/admin/database/v1/spanner_database_admin.proto
+    proto-service: ""
+    proto-msg: google.spanner.admin.database.v1.BackupSchedule
+    host-name: ""
+    notes: []
+  - name: spanner-instanceconfig
+    local: resource-spanner-instanceconfig
+    remote: resource-spanner-instanceconfig
+    command: gcloud spanner instance-configs
+    group: spanner
+    resource: instanceconfig
+    controller: Unknown
+    kind: SpannerInstanceConfig
+    package: google.spanner.admin.instance.v1
+    proto: InstanceConfig
+    proto-path: google/spanner/admin/instance/v1/spanner_instance_admin.proto
+    proto-service: ""
+    proto-msg: google.spanner.admin.instance.v1.InstanceConfig
+    host-name: ""
+    notes: []
+  - name: bigtable-operations
+    local: resource-bigtable-operations
+    remote: resource-bigtable-operations
+    command: gcloud bigtable operations
+    group: bigtable
+    resource: operations
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: functions-eventtypes
+    local: resource-functions-eventtypes
+    remote: resource-functions-eventtypes
+    command: gcloud functions event-types
+    group: functions
+    resource: eventtypes
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: functions-logs
+    local: resource-functions-logs
+    remote: resource-functions-logs
+    command: gcloud functions logs
+    group: functions
+    resource: logs
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: functions-regions
+    local: resource-functions-regions
+    remote: resource-functions-regions
+    command: gcloud functions regions
+    group: functions
+    resource: regions
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: functions-runtimes
+    local: resource-functions-runtimes
+    remote: resource-functions-runtimes
+    command: gcloud functions runtimes
+    group: functions
+    resource: runtimes
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: migration-vmsimageimports
+    local: resource-migration-vmsimageimports
+    remote: resource-migration-vmsimageimports
+    command: gcloud migration vms image-imports
+    group: migration
+    resource: migrationvmsimageimports
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: migration-vmsmachineimageimports
+    local: resource-migration-vmsmachineimageimports
+    remote: resource-migration-vmsmachineimageimports
+    command: gcloud migration vms machine-image-imports
+    group: migration
+    resource: migrationvmsmachineimageimports
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: notebooks-locations
+    local: resource-notebooks-locations
+    remote: resource-notebooks-locations
+    command: gcloud notebooks locations
+    group: notebooks
+    resource: locations
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-osloginsshkeys
+    local: resource-compute-osloginsshkeys
+    remote: resource-compute-osloginsshkeys
+    command: gcloud compute os-login ssh-keys
+    group: compute
+    resource: osloginsshkeys
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-projectinfo
+    local: resource-projectinfo
+    remote: resource-projectinfo
+    command: gcloud compute project-info
+    group: compute
+    resource: projectinfo
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: pubsub-liteoperations
+    local: resource-pubsub-liteoperations
+    remote: resource-pubsub-liteoperations
+    command: gcloud pubsub lite-operations
+    group: pubsub
+    resource: liteoperations
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: pubsub-litereservations
+    local: resource-pubsub-litereservations
+    remote: resource-pubsub-litereservations
+    command: gcloud pubsub lite-reservations
+    group: pubsub
+    resource: litereservations
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: pubsub-litesubscriptions
+    local: resource-pubsub-litesubscriptions
+    remote: resource-pubsub-litesubscriptions
+    command: gcloud pubsub lite-subscriptions
+    group: pubsub
+    resource: litesubscriptions
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: pubsub-litetopics
+    local: resource-pubsub-litetopics
+    remote: resource-pubsub-litetopics
+    command: gcloud pubsub lite-topics
+    group: pubsub
+    resource: litetopics
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: pubsub-schemas
+    local: resource-pubsub-schemas
+    remote: resource-pubsub-schemas
+    command: gcloud pubsub schemas
+    group: pubsub
+    resource: schemas
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: spanner-operation
+    local: resource-spanner-operation
+    remote: resource-spanner-operation
+    command: gcloud spanner operations
+    group: spanner
+    resource: operation
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: spanner-row
+    local: resource-spanner-row
+    remote: resource-spanner-row
+    command: gcloud spanner rows
+    group: spanner
+    resource: row
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: spanner-sample
+    local: resource-spanner-sample
+    remote: resource-spanner-sample
+    command: gcloud spanner samples
+    group: spanner
+    resource: sample
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: tpu-executiongroup
+    local: resource-tpu-executiongroup
+    remote: resource-tpu-executiongroup
+    command: gcloud compute tpus execution-groups
+    group: tpu
+    resource: executiongroup
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: tpu-location
+    local: resource-tpu-location
+    remote: resource-tpu-location
+    command: gcloud compute tpus locations
+    group: tpu
+    resource: location
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: tpu-topology
+    local: resource-tpu-topology
+    remote: resource-tpu-topology
+    command: gcloud compute tpus topologies
+    group: tpu
+    resource: topology
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: tpu-vm
+    local: resource-tpu-vm
+    remote: resource-tpu-vm
+    command: gcloud compute tpus tpu-vm
+    group: tpu
+    resource: tpuvm
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: tpu-version
+    local: resource-tpu-version
+    remote: resource-tpu-version
+    command: gcloud compute tpus versions
+    group: tpu
+    resource: version
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeaddresses
+    local: resource-compute-computeaddresses
+    remote: resource-compute-computeaddresses
+    command: gcloud compute addresses
+    group: compute
+    resource: computeaddresses
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computebackendbuckets
+    local: resource-compute-computebackendbuckets
+    remote: resource-compute-computebackendbuckets
+    command: gcloud compute backend-buckets
+    group: compute
+    resource: computebackendbuckets
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computebackendservice
+    local: resource-compute-computebackendservice
+    remote: resource-compute-computebackendservice
+    command: gcloud compute backend-services
+    group: compute
+    resource: computebackendservice
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: BackendService
+    proto-path: google/cloud/compute/v1/compute.proto
+    proto-service: google.cloud.compute.v1.BackendServices
+    proto-msg: google.cloud.compute.v1.BackendService
+    host-name: compute.googleapis.com
+    notes: []
+  - name: compute-computedisks
+    local: resource-compute-computedisks
+    remote: resource-compute-computedisks
+    command: gcloud compute disks
+    group: compute
+    resource: computedisks
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computedisksbulk
+    local: resource-compute-computedisksbulk
+    remote: resource-compute-computedisksbulk
+    command: gcloud compute disks bulk
+    group: compute
+    resource: computedisksbulk
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeexternalvpngateways
+    local: resource-compute-computeexternalvpngateways
+    remote: resource-compute-computeexternalvpngateways
+    command: gcloud compute external-vpn-gateways
+    group: compute
+    resource: computeexternalvpngateways
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeforwardingrules
+    local: resource-compute-computeforwardingrules
+    remote: resource-compute-computeforwardingrules
+    command: gcloud compute forwarding-rules
+    group: compute
+    resource: computeforwardingrules
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computehealthchecks
+    local: resource-compute-computehealthchecks
+    remote: resource-compute-computehealthchecks
+    command: gcloud compute health-checks
+    group: compute
+    resource: computehealthchecks
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computehttphealthchecks
+    local: resource-compute-computehttphealthchecks
+    remote: resource-compute-computehttphealthchecks
+    command: gcloud compute http-health-checks
+    group: compute
+    resource: computehttphealthchecks
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computehttpshealthchecks
+    local: resource-compute-computehttpshealthchecks
+    remote: resource-compute-computehttpshealthchecks
+    command: gcloud compute https-health-checks
+    group: compute
+    resource: computehttpshealthchecks
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeimages
+    local: resource-compute-computeimages
+    remote: resource-compute-computeimages
+    command: gcloud compute images
+    group: compute
+    resource: computeimages
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeinstancegroups
+    local: resource-compute-computeinstancegroups
+    remote: resource-compute-computeinstancegroups
+    command: gcloud compute instance-groups
+    group: compute
+    resource: computeinstancegroups
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeinstances
+    local: resource-compute-computeinstances
+    remote: resource-compute-computeinstances
+    command: gcloud compute instances
+    group: compute
+    resource: computeinstances
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeinstancetemplates
+    local: resource-compute-computeinstancetemplates
+    remote: resource-compute-computeinstancetemplates
+    command: gcloud compute instance-templates
+    group: compute
+    resource: computeinstancetemplates
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeinterconnect
+    local: resource-compute-computeinterconnect
+    remote: resource-compute-computeinterconnect
+    command: gcloud compute interconnects
+    group: compute
+    resource: computeinterconnect
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeinterconnectattachments
+    local: resource-compute-computeinterconnectattachments
+    remote: resource-compute-computeinterconnectattachments
+    command: gcloud compute interconnects attachments
+    group: compute
+    resource: computeinterconnectattachments
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computemachineimages
+    local: resource-compute-computemachineimages
+    remote: resource-compute-computemachineimages
+    command: gcloud compute machine-images
+    group: compute
+    resource: computemachineimages
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworkattachments
+    local: resource-compute-computenetworkattachments
+    remote: resource-compute-computenetworkattachments
+    command: gcloud compute network-attachments
+    group: compute
+    resource: computenetworkattachments
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworkendpointgroups
+    local: resource-compute-computenetworkendpointgroups
+    remote: resource-compute-computenetworkendpointgroups
+    command: gcloud compute network-endpoint-groups
+    group: compute
+    resource: computenetworkendpointgroups
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworkedgesecurityservices
+    local: resource-compute-computenetworkedgesecurityservices
+    remote: resource-compute-computenetworkedgesecurityservices
+    command: gcloud compute network-edge-security-services
+    group: compute
+    resource: computenetworkedgesecurityservices
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworkfirewallpolicies
+    local: resource-compute-computenetworkfirewallpolicies
+    remote: resource-compute-computenetworkfirewallpolicies
+    command: gcloud compute network-firewall-policies
+    group: compute
+    resource: computenetworkfirewallpolicies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworks
+    local: resource-compute-computenetworks
+    remote: resource-compute-computenetworks
+    command: gcloud compute networks
+    group: compute
+    resource: computenetworks
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworkspeerings
+    local: resource-compute-computenetworkspeerings
+    remote: resource-compute-computenetworkspeerings
+    command: gcloud compute networks peerings
+    group: compute
+    resource: computenetworkspeerings
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworkssubnets
+    local: resource-compute-computenetworkssubnets
+    remote: resource-compute-computenetworkssubnets
+    command: gcloud compute networks subnets
+    group: compute
+    resource: computenetworkssubnets
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworksvpcaccessconnectors
+    local: resource-compute-computenetworksvpcaccessconnectors
+    remote: resource-compute-computenetworksvpcaccessconnectors
+    command: gcloud compute networks vpc-access connectors
+    group: compute
+    resource: computenetworksvpcaccessconnectors
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworksvpcaccesslocations
+    local: resource-compute-computenetworksvpcaccesslocations
+    remote: resource-compute-computenetworksvpcaccesslocations
+    command: gcloud compute networks vpc-access locations
+    group: compute
+    resource: computenetworksvpcaccesslocations
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computenetworksvpcaccessoperations
+    local: resource-compute-computenetworksvpcaccessoperations
+    remote: resource-compute-computenetworksvpcaccessoperations
+    command: gcloud compute networks vpc-access operations
+    group: compute
+    resource: computenetworksvpcaccessoperations
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeprojectmetadatas
+    local: resource-compute-computeprojectmetadatas
+    remote: resource-compute-computeprojectmetadatas
+    command: gcloud compute project-zonal-metadata
+    group: compute
+    resource: computeprojectmetadatas
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computereservations
+    local: resource-compute-computereservations
+    remote: resource-compute-computereservations
+    command: gcloud compute reservations
+    group: compute
+    resource: computereservations
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeresourcepolicies
+    local: resource-compute-computeresourcepolicies
+    remote: resource-compute-computeresourcepolicies
+    command: gcloud compute resource-policies
+    group: compute
+    resource: computeresourcepolicies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computerouternats
+    local: resource-compute-computerouternats
+    remote: resource-compute-computerouternats
+    command: gcloud compute routers nats
+    group: compute
+    resource: computerouternats
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computerouters
+    local: resource-compute-computerouters
+    remote: resource-compute-computerouters
+    command: gcloud compute routers
+    group: compute
+    resource: computerouters
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeroutes
+    local: resource-compute-computeroutes
+    remote: resource-compute-computeroutes
+    command: gcloud compute routes
+    group: compute
+    resource: computeroutes
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computesecuritypolicies
+    local: resource-compute-computesecuritypolicies
+    remote: resource-compute-computesecuritypolicies
+    command: gcloud compute security-policies
+    group: compute
+    resource: computesecuritypolicies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computesharedvpchostprojects
+    local: resource-compute-computesharedvpchostprojects
+    remote: resource-compute-computesharedvpchostprojects
+    command: gcloud compute shared-vpc
+    group: compute
+    resource: computesharedvpchostprojects
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computesharedvpcserviceprojects
+    local: resource-compute-computesharedvpcserviceprojects
+    remote: resource-compute-computesharedvpcserviceprojects
+    command: gcloud compute shared-vpc associated-projects
+    group: compute
+    resource: computesharedvpcserviceprojects
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computesnapshots
+    local: resource-compute-computesnapshots
+    remote: resource-compute-computesnapshots
+    command: gcloud compute snapshots
+    group: compute
+    resource: computesnapshots
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeinstantsnapshots
+    local: resource-compute-computeinstantsnapshots
+    remote: resource-compute-computeinstantsnapshots
+    command: gcloud compute instant-snapshots
+    group: compute
+    resource: computeinstantsnapshots
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computesnapshotsettings
+    local: resource-compute-computesnapshotsettings
+    remote: resource-compute-computesnapshotsettings
+    command: gcloud compute snapshot-settings
+    group: compute
+    resource: computesnapshotsettings
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computesslcertificates
+    local: resource-compute-computesslcertificates
+    remote: resource-compute-computesslcertificates
+    command: gcloud compute ssl-certificates
+    group: compute
+    resource: computesslcertificates
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computesslpolicies
+    local: resource-compute-computesslpolicies
+    remote: resource-compute-computesslpolicies
+    command: gcloud compute ssl-policies
+    group: compute
+    resource: computesslpolicies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computestoragepools
+    local: resource-compute-computestoragepools
+    remote: resource-compute-computestoragepools
+    command: gcloud compute storage-pools
+    group: compute
+    resource: computestoragepools
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computetargetgrpcproxies
+    local: resource-compute-computetargetgrpcproxies
+    remote: resource-compute-computetargetgrpcproxies
+    command: gcloud compute target-grpc-proxies
+    group: compute
+    resource: computetargetgrpcproxies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computetargethttpproxies
+    local: resource-compute-computetargethttpproxies
+    remote: resource-compute-computetargethttpproxies
+    command: gcloud compute target-http-proxies
+    group: compute
+    resource: computetargethttpproxies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computetargethttpsproxies
+    local: resource-compute-computetargethttpsproxies
+    remote: resource-compute-computetargethttpsproxies
+    command: gcloud compute target-https-proxies
+    group: compute
+    resource: computetargethttpsproxies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computetargetinstances
+    local: resource-compute-computetargetinstances
+    remote: resource-compute-computetargetinstances
+    command: gcloud compute target-instances
+    group: compute
+    resource: computetargetinstances
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computetargetpools
+    local: resource-compute-computetargetpools
+    remote: resource-compute-computetargetpools
+    command: gcloud compute target-pools
+    group: compute
+    resource: computetargetpools
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computetargetsslproxies
+    local: resource-compute-computetargetsslproxies
+    remote: resource-compute-computetargetsslproxies
+    command: gcloud compute target-ssl-proxies
+    group: compute
+    resource: computetargetsslproxies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computetargettcpproxies
+    local: resource-compute-computetargettcpproxies
+    remote: resource-compute-computetargettcpproxies
+    command: gcloud compute target-tcp-proxies
+    group: compute
+    resource: computetargettcpproxies
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computetargetvpngateways
+    local: resource-compute-computetargetvpngateways
+    remote: resource-compute-computetargetvpngateways
+    command: gcloud compute target-vpn-gateways
+    group: compute
+    resource: computetargetvpngateways
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeurlmaps
+    local: resource-compute-computeurlmaps
+    remote: resource-compute-computeurlmaps
+    command: gcloud compute url-maps
+    group: compute
+    resource: computeurlmaps
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computevpngateways
+    local: resource-compute-computevpngateways
+    remote: resource-compute-computevpngateways
+    command: gcloud compute vpn-gateways
+    group: compute
+    resource: computevpngateways
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computevpntunnels
+    local: resource-compute-computevpntunnels
+    remote: resource-compute-computevpntunnels
+    command: gcloud compute vpn-tunnels
+    group: compute
+    resource: computevpntunnels
+    controller: terraform
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computefirewallpolicies
+    local: resource-compute-computefirewallpolicies
+    remote: resource-compute-computefirewallpolicies
+    command: gcloud compute firewall-policies
+    group: compute
+    resource: computefirewallpolicies
+    controller: dcl
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computepacketmirrorings
+    local: resource-compute-computepacketmirrorings
+    remote: resource-compute-computepacketmirrorings
+    command: gcloud compute packet-mirrorings
+    group: compute
+    resource: computepacketmirrorings
+    controller: dcl
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computepublicadvertisedprefixes
+    local: resource-compute-computepublicadvertisedprefixes
+    remote: resource-compute-computepublicadvertisedprefixes
+    command: gcloud compute public-advertised-prefixes
+    group: compute
+    resource: computepublicadvertisedprefixes
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computepublicdelegatedprefixes
+    local: resource-compute-computepublicdelegatedprefixes
+    remote: resource-compute-computepublicdelegatedprefixes
+    command: gcloud compute public-delegated-prefixes
+    group: compute
+    resource: computepublicdelegatedprefixes
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computeserviceattachments
+    local: resource-compute-computeserviceattachments
+    remote: resource-compute-computeserviceattachments
+    command: gcloud compute service-attachments
+    group: compute
+    resource: computeserviceattachments
+    controller: dcl
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-computefirewallpolicyrules
+    local: resource-compute-computefirewallpolicyrules
+    remote: resource-compute-computefirewallpolicyrules
+    command: gcloud compute firewall-rules
+    group: compute
+    resource: computefirewallpolicyrules
+    controller: direct
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
+  - name: compute-commitments
+    local: resource-compute-commitments
+    remote: resource-compute-commitments
+    command: gcloud compute commitments
+    group: compute
+    resource: commitments
+    controller: unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: []
