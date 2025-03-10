@@ -137,7 +137,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterQuotaAdjusterSettingsManagerServer(grpcServer, &QuotaAdjusterSettingsManagerV1Beta{s})
+	pb.RegisterQuotaAdjusterSettingsManagerServer(grpcServer, &QuotaAdjusterSettingsManagerV1Beta{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

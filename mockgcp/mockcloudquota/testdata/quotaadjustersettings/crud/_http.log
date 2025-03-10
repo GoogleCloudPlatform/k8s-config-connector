@@ -2,7 +2,6 @@ GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/gl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -28,7 +27,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "enablement": "ENABLED",
@@ -58,7 +56,6 @@ GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/gl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -84,7 +81,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "enablement": "DISABLED",
@@ -114,7 +110,6 @@ GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/gl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
