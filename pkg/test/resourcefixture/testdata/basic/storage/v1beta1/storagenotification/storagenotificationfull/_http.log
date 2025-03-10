@@ -553,7 +553,8 @@ Vary: X-Origin
 {
   "kind": "storage#objects",
   "prefixes": [
-    "testfolder"
+    "testfolder",
+    "testmanagedfolder"
   ]
 }
 

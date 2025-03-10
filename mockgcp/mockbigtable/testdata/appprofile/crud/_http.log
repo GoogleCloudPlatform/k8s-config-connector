@@ -22,7 +22,6 @@ Content-Type: application/json
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -40,6 +39,7 @@ X-Xss-Protection: 0
         "test-cluster-${uniqueId}": {
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-east1-c",
+          "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
           "serveNodes": 1
         }
       },
@@ -63,7 +63,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -83,6 +82,7 @@ X-Xss-Protection: 0
         "test-cluster-${uniqueId}": {
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-east1-c",
+          "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
           "serveNodes": 1
         }
       },
@@ -113,7 +113,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -147,7 +146,6 @@ Content-Type: application/json
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -174,7 +172,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -207,7 +204,6 @@ Content-Type: application/json
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -232,7 +228,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -267,7 +262,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -294,7 +288,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -325,7 +318,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -345,7 +337,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

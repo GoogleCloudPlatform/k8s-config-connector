@@ -5,14 +5,6 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "hierarchicalNamespace": {
-    "enabled": true
-  },
-  "iamConfiguration": {
-    "uniformBucketLevelAccess": {
-      "enabled": true
-    }
-  },
   "name": "bucket${uniqueId}"
 }
 
@@ -26,17 +18,12 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "hierarchicalNamespace": {
-    "enabled": true
-  },
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
     },
     "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true
-    }
+    "uniformBucketLevelAccess": {}
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
@@ -58,7 +45,7 @@ Vary: X-Origin
 
 ---
 
-POST https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders?alt=json&recursive=True
+POST https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -66,7 +53,7 @@ Content-Type: application/json
 
 {
   "bucket": "bucket${uniqueId}",
-  "name": "${folderID}"
+  "name": "testmanagedfolder"
 }
 
 200 OK
@@ -81,13 +68,13 @@ Vary: X-Origin
   "bucket": "bucket${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metageneration": "1",
-  "name": "${folderID}",
+  "name": "testmanagedfolder",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -104,13 +91,40 @@ Vary: X-Origin
   "bucket": "bucket${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metageneration": "1",
-  "name": "${folderID}",
+  "name": "testmanagedfolder",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o/${folderID}?alt=json&projection=noAcl
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders?alt=json&pageSize=1000
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "items": [
+    {
+      "bucket": "bucket${uniqueId}",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "metageneration": "1",
+      "name": "testmanagedfolder",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o/testmanagedfolder?alt=json&projection=noAcl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -139,7 +153,7 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o?alt=json&delimiter=%2F&includeFoldersAsPrefixes=True&maxResults=1000&prefix=${folderID}&projection=noAcl
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o?alt=json&delimiter=%2F&includeFoldersAsPrefixes=True&maxResults=1000&prefix=testmanagedfolder&projection=noAcl
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -154,14 +168,14 @@ Vary: X-Origin
 {
   "kind": "storage#objects",
   "prefixes": [
-    "${folderID}",
+    "testfolder",
     "testmanagedfolder"
   ]
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -178,13 +192,13 @@ Vary: X-Origin
   "bucket": "bucket${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metageneration": "1",
-  "name": "${folderID}",
+  "name": "testmanagedfolder",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/folders/${folderID}?alt=json
+DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
