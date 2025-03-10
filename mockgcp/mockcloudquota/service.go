@@ -16,7 +16,7 @@
 // http.host: cloudquotas.googleapis.com
 // proto.service: google.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager
 
-package mockcloudquotas
+package mockcloudquota
 
 import (
 	"context"
@@ -69,5 +69,3 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 	return mux, nil
 }
-
-
