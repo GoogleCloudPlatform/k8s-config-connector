@@ -35,11 +35,6 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-type ApiGatewayV1 struct {
-	*MockService
-	pb.UnimplementedApiGatewayServiceServer
-}
-
 func (s *ApiGatewayV1) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.Api, error) {
 	name, err := s.parseAPIName(req.Name)
 	if err != nil {
@@ -75,6 +70,7 @@ func (s *ApiGatewayV1) CreateApi(ctx context.Context, req *pb.CreateApiRequest) 
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Api_ACTIVE
+	obj.DisplayName = name.Api
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -175,7 +171,7 @@ type apiName struct {
 }
 
 func (n *apiName) Parent() string {
-	return fmt.Sprintf("projects/%s/locations/%s)", n.Project.ID, n.Location)
+	return fmt.Sprintf("projects/%s/locations/%s", n.Project.ID, n.Location)
 }
 
 func (n *apiName) String() string {

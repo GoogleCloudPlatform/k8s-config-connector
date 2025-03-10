@@ -38,7 +38,12 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *APIGatewayV1
+	v1 *ApiGatewayV1
+}
+
+type ApiGatewayV1 struct {
+	*MockService
+	pb.UnimplementedApiGatewayServiceServer
 }
 
 // New creates a MockService.
@@ -48,7 +53,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &APIGatewayV1{MockService: s}
+	s.v1 = &ApiGatewayV1{MockService: s}
 	return s
 }
 
@@ -68,9 +73,4 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	return mux, nil
-}
-
-type APIGatewayV1 struct {
-	*MockService
-	pb.UnimplementedApiGatewayServiceServer
 }
