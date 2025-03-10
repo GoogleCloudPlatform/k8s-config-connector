@@ -274,6 +274,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockkms.New(env, storage))
 	services = append(services, mockgkebackup.New(env, storage))
 	services = append(services, mockrecaptchaenterprise.New(env, storage))
+	services = append(services, mockmetastore.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
