@@ -23,9 +23,10 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
+    "google.golang.org/protobuf/proto"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/essentialcontacts/v1"
-
+    
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -48,15 +49,15 @@ type EssentialContactsV1 struct {
 }
 
 func (s *EssentialContactsV1) CreateContact(ctx context.Context, req *pb.CreateContactRequest) (*pb.Contact, error) {
-	name, err := s.storage.GenerateName(req.Parent)
+	name, err := common.NewResourceID(req.Parent, "", "")
 	if err != nil {
 		return nil, err
 	}
 
-	contact := req.Contact
+        contact := proto.Clone(req.GetContact()).(*pb.Contact)
 	contact.Name = name
 
-	if err := s.storage.Create(ctx, contact); err != nil {
+	if err := s.storage.Create(ctx, name, contact); err != nil {
 		return nil, err
 	}
 
@@ -97,16 +98,15 @@ func (s *MockService) Do(req *http.Request) (*http.Response, error) {
 	case "/v1/projects/mock-project/contacts":
 		if req.Method == http.MethodPost {
 			var createReq pb.CreateContactRequest
-			if err := httpmux.ReadRequest(req, &createReq); err != nil {
+			if err := httpmux.ReadProtoRequest(req, &createReq); err != nil {
 				return nil, err
 			}
 			contact, err := s.v1.CreateContact(req.Context(), &createReq)
 			if err != nil {
 				return nil, err
 			}
-			return httpmux.RespondProto(req, contact)
+			return httpmux.RespondJSON(req, contact)
 		}
 	}
-	return nil, common.NotFoundError(req.URL.Path)
+	return nil, common.NotFound(req.URL.Path)
 }
-
