@@ -169,11 +169,13 @@ type BackupDRManagementServerObservedState struct {
 
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.satisfies_pzs
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+	// NOTYET
+	// SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
 
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.satisfies_pzi
-	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+	// NOTYET
+	// SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
 }
 
 // +genclient

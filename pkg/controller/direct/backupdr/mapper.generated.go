@@ -36,6 +36,8 @@ func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ma
 	// MISSING: OAUTH2ClientID
 	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
 	// MISSING: BaProxyURI
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerSpec) *pb.ManagementServer {
@@ -52,6 +54,8 @@ func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bac
 	// MISSING: OAUTH2ClientID
 	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
 	// MISSING: BaProxyURI
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func ManagementURI_FromProto(mapCtx *direct.MapContext, in *pb.ManagementURI) *krm.ManagementURI {

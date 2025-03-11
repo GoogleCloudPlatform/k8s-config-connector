@@ -244,12 +244,6 @@ spec:
                       This is the value that should be provided in the 'aud' field
                       of the OIDC ID Token (see openid specification https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
                     type: string
-                  satisfiesPzi:
-                    description: Output only. Reserved for future use.
-                    type: boolean
-                  satisfiesPzs:
-                    description: Output only. Reserved for future use.
-                    type: boolean
                   state:
                     description: Output only. The ManagementServer state.
                     type: string

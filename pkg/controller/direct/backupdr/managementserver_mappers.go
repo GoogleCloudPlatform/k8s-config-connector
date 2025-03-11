@@ -74,8 +74,6 @@ func BackupDRManagementServerObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.OAuth2ClientID = direct.LazyPtr(in.GetOauth2ClientId())
 	out.WorkforceIdentityBasedOAuth2ClientID = WorkforceIdentityBasedOAuth2ClientIDObservedState_FromProto(mapCtx, in.GetWorkforceIdentityBasedOauth2ClientId())
 	out.BAProxyURIs = in.BaProxyUri
-	out.SatisfiesPzs = direct.BoolValue_FromProto(mapCtx, in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
 func BackupDRManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerObservedState) *pb.ManagementServer {
@@ -92,7 +90,5 @@ func BackupDRManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Oauth2ClientId = direct.ValueOf(in.OAuth2ClientID)
 	out.WorkforceIdentityBasedOauth2ClientId = WorkforceIdentityBasedOAuth2ClientIDObservedState_ToProto(mapCtx, in.WorkforceIdentityBasedOAuth2ClientID)
 	out.BaProxyUri = in.BAProxyURIs
-	out.SatisfiesPzs = direct.BoolValue_ToProto(mapCtx, in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }

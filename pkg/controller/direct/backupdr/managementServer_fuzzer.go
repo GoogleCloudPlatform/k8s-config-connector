@@ -47,10 +47,10 @@ func backupDRManagementServerFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".ba_proxy_uri")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".satisfies_pzs")
-	f.StatusFields.Insert(".satisfies_pzi")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".satisfies_pzs")
+	f.UnimplementedFields.Insert(".satisfies_pzi")
 
 	return f
 }
