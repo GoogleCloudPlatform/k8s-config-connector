@@ -41,7 +41,7 @@ func (s *DataCatalogV1) GetEntryGroup(ctx context.Context, req *pb.GetEntryGroup
 	obj := &pb.EntryGroup{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "EntryGroup %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "EntryGroup %%q not found", fqn)
 		}
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func (s *DataCatalogV1) UpdateEntryGroup(ctx context.Context, req *pb.UpdateEntr
 	return obj, nil
 }
 
-func (s *DataCatalogV1) DeleteEntryGroup(ctx context.Context, req *pb.DeleteEntryGroupRequest) (*empty.Empty, error) {
+func (s *DataCatalogV1) DeleteEntryGroup(ctx context.Context, req *pb.DeleteEntryGroupRequest) (*emptypb.Empty, error) {
 	name, err := s.parseEntryGroupName(req.Name)
 	if err != nil {
 		return nil, err
