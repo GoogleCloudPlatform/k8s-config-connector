@@ -520,40 +520,51 @@ func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, comm
 // Add this type definition
 type BranchProcessor func(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error)
 
+// processBranch handles the processing of a single branch
+func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, processor BranchProcessor, description string, commitMsg string) error {
+	log.Printf("Processing branch %s: %s", branch.Name, description)
+
+	// Skip if branch should be skipped
+	if branch.Skip {
+		log.Printf("Skipping branch %s: marked as Skip", branch.Name)
+		return nil
+	}
+
+	close := setLoggingWriter(opts, branch)
+	defer close()
+
+	checkoutBranch(ctx, branch, opts.branchRepoDir)
+
+	// Process the branch
+	affectedPaths, err := processor(ctx, opts, branch)
+	if err != nil {
+		return fmt.Errorf("failed to process branch %s: %w", branch.Name, err)
+	}
+
+	// Run basic linting
+	if err := runLinters(opts); err != nil {
+		log.Printf("linting failed for branch %s: %v", branch.Name, err)
+		// Continue despite linting errors
+	}
+
+	//if err := checkMakeReadyPR(opts); err != nil {
+	//	log.Printf("verification failed for branch %s: %v", branch.Name, err)
+	//}
+
+	// Stage and commit changes
+	if err := stageChanges(ctx, opts, affectedPaths, commitMsg); err != nil {
+		return fmt.Errorf("failed to commit changes for branch %s: %w", branch.Name, err)
+	}
+
+	return nil
+}
+
 func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch, processor BranchProcessor, description string, commitMsg string) {
 	for _, branch := range branches {
-		log.Printf("Processing branch %s: %s", branch.Name, description)
-
-		// Skip if branch should be skipped
-		if branch.Skip {
-			log.Printf("Skipping branch %s: marked as Skip", branch.Name)
-			continue
-		}
-
-		close := setLoggingWriter(opts, branch)
-		checkoutBranch(ctx, branch, opts.branchRepoDir)
-		// Process the branch
-		affectedPaths, err := processor(ctx, opts, branch)
+		err := processBranch(ctx, opts, branch, processor, description, commitMsg)
 		if err != nil {
-			log.Printf("failed to process branch %s: %v", branch.Name, err)
-			close()
-			continue
+			log.Printf("Error processing branch %s: %v", branch.Name, err)
+			// Continue with next branch despite errors
 		}
-
-		// Run basic linting
-		if err := runLinters(opts); err != nil {
-			log.Printf("linting failed for branch %s: %v", branch.Name, err)
-		}
-		//if err := checkMakeReadyPR(opts); err != nil {
-		//	log.Printf("verification failed for branch %s: %v", branch.Name, err)
-		//}
-
-		// Stage and commit changes
-		if err := stageChanges(ctx, opts, affectedPaths, commitMsg); err != nil {
-			log.Printf("failed to commit changes for branch %s: %v", branch.Name, err)
-			// We cannot continue if we failed to commit changes, since branch is now in a bad state
-			// TODO: Add a cleanup step to revert the changes
-		}
-		close()
 	}
 }
