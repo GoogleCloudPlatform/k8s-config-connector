@@ -86,6 +86,8 @@ branches:
       notes:
         - gcloud command defaults "--async", need to explicity set "--no-async"
         - long running operation
+        - already implemented
+      skip: true
     - name: backupdr-backupplan
       local: resource-backupdr-backupplan
       remote: resource-backupdr-backupplan
@@ -388,7 +390,7 @@ branches:
       group: networksecurity
       resource: clienttlspolicy
       controller: Unknown
-      kind: NetworkSecurityClientTlsPolicy
+      kind: NetworkSecurityClientTLSPolicy
       package: google.cloud.networksecurity.v1
       proto: ClientTlsPolicy
       proto-path: google/cloud/networksecurity/v1/network_security.proto
@@ -406,7 +408,7 @@ branches:
       group: networksecurity
       resource: servertlspolicy
       controller: Unknown
-      kind: NetworkSecurityServerTlsPolicy
+      kind: NetworkSecurityServerTLSPolicy
       package: google.cloud.networksecurity.v1
       proto: ServerTlsPolicy
       proto-path: google/cloud/networksecurity/v1/network_security.proto
@@ -619,7 +621,7 @@ branches:
       group: vmwareengine
       resource: dnsbindpermission
       controller: Unknown
-      kind: VMwareEngineDnsBindPermission
+      kind: VMwareEngineDNSBindPermission
       package: google.cloud.vmwareengine.v1
       proto: DnsBindPermission
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
