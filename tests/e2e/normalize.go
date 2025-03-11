@@ -428,7 +428,12 @@ type objectWalker struct {
 	objectTransforms         []func(path string, value map[string]any)
 	sliceTransforms          []func(path string, value []any) []any
 
-	stringReplacements map[string]string
+	stringReplacements []stringReplacement
+}
+
+type stringReplacement struct {
+	Find    string
+	Replace string
 }
 
 func newObjectWalker() *objectWalker {
@@ -437,7 +442,6 @@ func newObjectWalker() *objectWalker {
 		sortSlices:               sets.New[string](),
 		sortAndDeduplicateSlices: sets.New[string](),
 		replacePaths:             make(map[string]any),
-		stringReplacements:       make(map[string]string),
 	}
 }
 
@@ -450,11 +454,24 @@ func (o *objectWalker) ReplacePath(path string, v any) {
 }
 
 func (o *objectWalker) ReplaceStringValue(oldValue string, newValue string) {
-	if v2, found := o.stringReplacements[oldValue]; found && v2 != newValue {
-		klog.Fatalf("objectWalker has duplicate ReplaceStringValue %q", oldValue)
+	// Check for duplicates
+	for _, replacement := range o.stringReplacements {
+		if replacement.Find == oldValue {
+			if replacement.Replace == newValue {
+				// Already have this replacement, no point adding it twice
+				return
+			}
+			klog.Fatalf("objectWalker has duplicate ReplaceStringValue %q=%q and %q=%q", oldValue, replacement.Replace, oldValue, newValue)
+		}
 	}
 
-	o.stringReplacements[oldValue] = newValue
+	o.stringReplacements = append(o.stringReplacements, stringReplacement{Find: oldValue, Replace: newValue})
+
+	// Make sure the biggest replacements are first, to avoid substring replacement non-determinism
+	// e.g. subnetwork-a => ${subnet} but network-a => ${network}
+	sort.Slice(o.stringReplacements, func(i, j int) bool {
+		return len(o.stringReplacements[i].Find) > len(o.stringReplacements[j].Find)
+	})
 }
 
 func (o *objectWalker) RemovePath(path string) {
@@ -584,8 +601,8 @@ func (o *objectWalker) visitPrimitive(v any, _ string) (any, error) {
 }
 
 func (o *objectWalker) visitString(s string, path string) (string, error) {
-	for k, v := range o.stringReplacements {
-		s = strings.ReplaceAll(s, k, v)
+	for _, stringReplacement := range o.stringReplacements {
+		s = strings.ReplaceAll(s, stringReplacement.Find, stringReplacement.Replace)
 	}
 	for _, fn := range o.stringTransforms {
 		s = fn(path, s)
