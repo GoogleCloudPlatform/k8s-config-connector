@@ -20,6 +20,7 @@ package mockspanner
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -153,6 +154,9 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 		case "display_name":
 			obj.DisplayName = updated.DisplayName
 		case "edition":
+			if updated.Edition == pb.Instance_EDITION_UNSPECIFIED && obj.Edition > updated.Edition {
+				return nil, fmt.Errorf("Cannot downgrade edition from %s to %s", obj.Edition, updated.Edition)
+			}
 			obj.Edition = updated.Edition
 		case "labels":
 			obj.Labels = updated.Labels

@@ -93,6 +93,12 @@ func SpannerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInsta
 	out.DisplayName = in.DisplayName
 	out.NodeCount = direct.ValueOf(in.NumNodes)
 	out.ProcessingUnits = direct.ValueOf(in.ProcessingUnits)
+	// if edition is unspecified, Spanner API default edition to STANDARD.
+	// Spanner API bans downgrade edition from STANDARD to unspecifed,
+	// which cause infinite reconcile loop.
+	if in.Edition == nil {
+		in.Edition = direct.LazyPtr("STANDARD")
+	}
 	out.Edition = direct.Enum_ToProto[pb.Instance_Edition](mapCtx, in.Edition)
 	out.AutoscalingConfig = AutoscalingConfig_ToProto(mapCtx, in.AutoscalingConfig)
 	return out
