@@ -21,6 +21,7 @@ package mockasset
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -55,17 +56,27 @@ func (s *AssetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb
 }
 
 func (s *AssetService) CreateFeed(ctx context.Context, req *pb.CreateFeedRequest) (*pb.Feed, error) {
-	reqName := req.Parent + "/feeds/" + req.FeedId
+	parent, projectNumber, err := s.parseParent(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+	reqName := parent + "/feeds/" + req.FeedId
+
 	name, err := s.parseFeedName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
+	feed := req.Feed
+	// Create creates the resource in the storage and returns the object to the caller.
+	// The returned object is what is stored.
+	feed.Name = fmt.Sprintf("projects/%s/feeds/%s", projectNumber, req.FeedId)
+
 	fqn := name.String()
-	if err := s.storage.Create(ctx, fqn, req.Feed); err != nil {
+	if err := s.storage.Create(ctx, fqn, feed); err != nil {
 		return nil, err
 	}
-	return req.Feed, nil
+	return feed, nil
 }
 
 func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest) (*pb.Feed, error) {
@@ -79,6 +90,7 @@ func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest
 		return nil, err
 	}
 
+	// Apply field mask updates.
 	if req.UpdateMask != nil {
 		for _, path := range req.UpdateMask.Paths {
 			switch path {
@@ -89,7 +101,11 @@ func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest
 			case "content_type":
 				obj.ContentType = req.Feed.ContentType
 			case "feed_output_config":
-				obj.FeedOutputConfig = req.Feed.FeedOutputConfig
+				if req.Feed.FeedOutputConfig.GetPubsubDestination().GetTopic() != "" {
+					obj.FeedOutputConfig.GetPubsubDestination().Topic = req.Feed.FeedOutputConfig.GetPubsubDestination().GetTopic()
+				} else {
+					obj.FeedOutputConfig = nil
+				}
 			case "condition":
 				obj.Condition = req.Feed.Condition
 			case "relationship_types":
@@ -134,7 +150,7 @@ func (s *MockService) parseFeedName(name string) (*feedName, error) {
 
 	if len(tokens) == 4 && tokens[0] != "" && tokens[2] == "feeds" {
 		name := &feedName{
-			parent: strings.Join(tokens[0:3], "/"),
+			parent: strings.Join(tokens[0:2], "/"),
 			feedID: tokens[3],
 		}
 
@@ -142,4 +158,24 @@ func (s *MockService) parseFeedName(name string) (*feedName, error) {
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+var parentRegex = regexp.MustCompile(`^projects/([^/]+)$`)
+
+// parseParent extracts the project id and number from a parent string.
+// It returns an error if the parent string is invalid.
+func (s *MockService) parseParent(parent string) (string, string, error) {
+	match := parentRegex.FindStringSubmatch(parent)
+	if len(match) != 2 {
+		return "", "", fmt.Errorf("invalid parent format: %q", parent)
+	}
+
+	projectID := match[1]
+	projectData, err := s.Projects.GetProjectByID(projectID)
+	if err != nil {
+		return "", "", err
+	}
+	projectNumber := projectData.Number
+
+	return fmt.Sprintf("projects/%s", projectID), fmt.Sprintf("%d", projectNumber), nil
 }
