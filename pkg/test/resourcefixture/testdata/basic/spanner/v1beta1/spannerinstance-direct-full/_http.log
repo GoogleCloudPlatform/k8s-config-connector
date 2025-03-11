@@ -40,7 +40,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
       }
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "displayName": "Spanner Instance Sample",
+    "displayName": "Instance Sample",
     "edition": 2,
     "labels": {
       "cnrm-test": "true",
@@ -78,7 +78,7 @@ X-Xss-Protection: 0
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "defaultBackupScheduleType": 2,
-      "displayName": "Spanner Instance Sample",
+      "displayName": "Instance Sample",
       "edition": 2,
       "labels": {
         "cnrm-test": "true",
@@ -138,7 +138,7 @@ X-Xss-Protection: 0
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "Spanner Instance Sample",
+      "displayName": "Instance Sample",
       "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
@@ -169,7 +169,7 @@ X-Xss-Protection: 0
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
-    "displayName": "Spanner Instance Sample",
+    "displayName": "Instance Sample",
     "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
@@ -214,7 +214,7 @@ X-Xss-Protection: 0
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
-  "displayName": "Spanner Instance Sample",
+  "displayName": "Instance Sample",
   "edition": 2,
   "labels": {
     "cnrm-test": "true",
@@ -249,7 +249,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
       }
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "displayName": "Updated spanner Instance Sample",
+    "displayName": "Updated Instance Sample",
     "edition": 3,
     "labels": {
       "cnrm-test": "true",
@@ -286,7 +286,7 @@ X-Xss-Protection: 0
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": 2,
-      "displayName": "Updated spanner Instance Sample",
+      "displayName": "Updated Instance Sample",
       "edition": 3,
       "labels": {
         "cnrm-test": "true",
@@ -348,7 +348,7 @@ X-Xss-Protection: 0
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "Updated spanner Instance Sample",
+      "displayName": "Updated Instance Sample",
       "edition": "ENTERPRISE_PLUS",
       "labels": {
         "cnrm-test": "true",
@@ -379,7 +379,7 @@ X-Xss-Protection: 0
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
-    "displayName": "Updated spanner Instance Sample",
+    "displayName": "Updated Instance Sample",
     "edition": "ENTERPRISE_PLUS",
     "labels": {
       "cnrm-test": "true",
@@ -424,7 +424,7 @@ X-Xss-Protection: 0
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultBackupScheduleType": 2,
-  "displayName": "Updated spanner Instance Sample",
+  "displayName": "Updated Instance Sample",
   "edition": 3,
   "labels": {
     "cnrm-test": "true",

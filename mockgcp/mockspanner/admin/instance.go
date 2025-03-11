@@ -75,6 +75,9 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	s.populateDefaultsForSpannerInstance(obj, obj)
 	obj.State = pb.Instance_READY
 	obj.DefaultBackupScheduleType = pb.Instance_AUTOMATIC
+	if len(obj.DisplayName) < 4 || len(obj.DisplayName) > 30 {
+		return nil, fmt.Errorf("Display name must be between 4-30 characters long")
+	}
 	if obj.Edition == pb.Instance_EDITION_UNSPECIFIED {
 		obj.Edition = pb.Instance_STANDARD
 	}
@@ -152,9 +155,12 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 	for _, path := range req.GetFieldMask().GetPaths() {
 		switch path {
 		case "display_name":
+			if len(updated.DisplayName) < 4 || len(updated.DisplayName) > 30 {
+				return nil, fmt.Errorf("Display name must be between 4-30 characters long")
+			}
 			obj.DisplayName = updated.DisplayName
 		case "edition":
-			if updated.Edition == pb.Instance_EDITION_UNSPECIFIED && obj.Edition > updated.Edition {
+			if obj.Edition > updated.Edition {
 				return nil, fmt.Errorf("Cannot downgrade edition from %s to %s", obj.Edition, updated.Edition)
 			}
 			obj.Edition = updated.Edition

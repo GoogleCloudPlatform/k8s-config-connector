@@ -23,7 +23,7 @@ spec:
       highPriorityCpuUtilizationPercent: 90
       storageUtilizationPercent: 90
   config: regional-us-west1
-  displayName: Updated spanner Instance Sample
+  displayName: Updated Instance Sample
   edition: ENTERPRISE_PLUS
 status:
   conditions:
