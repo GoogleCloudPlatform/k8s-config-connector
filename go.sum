@@ -24,6 +24,8 @@ cloud.google.com/go v0.79.0/go.mod h1:3bzgcEeQlzbuEAYu4mrWhKqWjmpprinYgKJLgKHnbb
 cloud.google.com/go v0.81.0/go.mod h1:mk/AM35KwGk/Nm2YSeZbxXdrNK3KZOYHmLkOqC2V6E0=
 cloud.google.com/go v0.118.3 h1:jsypSnrE/w4mJysioGdMBg4MiW/hHx/sArFpaBWHdME=
 cloud.google.com/go v0.118.3/go.mod h1:Lhs3YLnBlwJ4KA6nuObNMZ/fCbOQBPuWKPoE0Wa/9Vc=
+cloud.google.com/go/accesscontextmanager v1.9.3 h1:8zVoeiBa4erMCLEXltOcqVEsZhS26JZ5/Vrgs59eQiI=
+cloud.google.com/go/accesscontextmanager v1.9.3/go.mod h1:S1MEQV5YjkAKBoMekpGrkXKfrBdsi4x6Dybfq6gZ8BU=
 cloud.google.com/go/aiplatform v1.70.0 h1:vnqsPkgcwlDEpWl9t6C3/HLfHeweuGXs2gcYTzH6dMs=
 cloud.google.com/go/aiplatform v1.70.0/go.mod h1:1cewyC4h+yvRs0qVvlCuU3V6j1pJ41doIcroYX3uv8o=
 cloud.google.com/go/alloydb v1.14.0 h1:aEmmIHmiHDs46wTr/YqXuumuUGNc5QKYA7317nEFj2Y=
@@ -87,6 +89,10 @@ cloud.google.com/go/notebooks v1.12.3 h1:+9DrGJcZhCu6B2t0JJorekjIUBvg/KvBmXJYGmf
 cloud.google.com/go/notebooks v1.12.3/go.mod h1:I0pMxZct+8Rega2LYrXL8jGAGZgLchSmh8Ksc+0xNyA=
 cloud.google.com/go/orchestration v1.11.4 h1:SFAsKyqvtS8VFcsq+JgXAeRkrksB9UH+AH7iFamkmlc=
 cloud.google.com/go/orchestration v1.11.4/go.mod h1:UKR2JwogaZmDGnAcBgAQgCPn89QMqhXFUCYVhHd31vs=
+cloud.google.com/go/orgpolicy v1.14.2 h1:WFvgmjq/FO5GiXlhebltA9N14KdbLMcgG88ME+SWeBo=
+cloud.google.com/go/orgpolicy v1.14.2/go.mod h1:2fTDMT3X048iFKxc6DEgkG+a/gN+68qEgtPrHItKMzo=
+cloud.google.com/go/osconfig v1.14.3 h1:cyf1PMK5c2/WOIr5r2lxjH/XBJMA9P4zC8Tm10i0z3M=
+cloud.google.com/go/osconfig v1.14.3/go.mod h1:9D2MS1Etne18r/mAeW5jtto3toc9H1qu9wLNDG3NvQg=
 cloud.google.com/go/privilegedaccessmanager v0.2.1 h1:8a9N5vXTVaEUsTOVxpY7bI354vjS9jVOY8FjwMRfWTI=
 cloud.google.com/go/privilegedaccessmanager v0.2.1/go.mod h1:SLpUBHDUJXkaiBy5N8h9HLYb5/a+5me8I881Yy8NISE=
 cloud.google.com/go/profiler v0.4.1 h1:Q7+lOvikTGMJ/IAWocpYYGit4SIIoILmVZfEEWTORSY=

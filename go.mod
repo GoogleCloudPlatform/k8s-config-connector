@@ -97,7 +97,10 @@ require (
 )
 
 require (
+	cloud.google.com/go/accesscontextmanager v1.9.3 // indirect
 	cloud.google.com/go/dataproc/v2 v2.10.1 // indirect
+	cloud.google.com/go/orgpolicy v1.14.2 // indirect
+	cloud.google.com/go/osconfig v1.14.3 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 )
 
