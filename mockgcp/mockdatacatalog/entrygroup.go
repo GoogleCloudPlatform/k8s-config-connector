@@ -25,6 +25,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+        "google.golang.org/protobuf/types/known/emptypb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datacatalog/v1"
 )
@@ -46,6 +47,64 @@ func (s *DataCatalogV1) GetEntryGroup(ctx context.Context, req *pb.GetEntryGroup
 	}
 
 	return obj, nil
+}
+
+func (s *DataCatalogV1) UpdateEntryGroup(ctx context.Context, req *pb.UpdateEntryGroupRequest) (*pb.EntryGroup, error) {
+	if req.EntryGroup == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "entry_group is required")
+	}
+	name, err := s.parseEntryGroupName(req.EntryGroup.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.EntryGroup{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "EntryGroup %q not found", fqn)
+		}
+		return nil, err
+	}
+
+	// Apply field mask updates.
+	if req.UpdateMask != nil && len(req.UpdateMask.Paths) > 0 {
+		for _, path := range req.UpdateMask.Paths {
+			switch path {
+			case "description":
+				obj.Description = req.EntryGroup.Description
+			// Add other updatable fields here.
+			}
+		}
+	} else {
+	       //If no field mask is provided update all fields.
+	       proto.Merge(obj,req.EntryGroup)
+        }
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *DataCatalogV1) DeleteEntryGroup(ctx context.Context, req *pb.DeleteEntryGroupRequest) (*empty.Empty, error) {
+	name, err := s.parseEntryGroupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	if err := s.storage.Delete(ctx, fqn, &pb.EntryGroup{}); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "EntryGroup %q not found", fqn)
+		}
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
 
 func (s *DataCatalogV1) CreateEntryGroup(ctx context.Context, req *pb.CreateEntryGroupRequest) (*pb.EntryGroup, error) {
