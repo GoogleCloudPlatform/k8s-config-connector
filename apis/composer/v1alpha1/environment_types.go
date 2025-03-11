@@ -263,7 +263,7 @@ type EnvironmentConfigObservedState struct {
 	//  objects for this environment reside in a simulated directory with the given
 	//  prefix.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.dag_gcs_prefix
-	DagGcsPrefix *string `json:"dagGcsPrefix,omitempty"`
+	DagGCSPrefix *string `json:"dagGCSPrefix,omitempty"`
 
 	// Optional. The configuration used for the Private IP Cloud Composer
 	//  environment.
@@ -276,7 +276,7 @@ type EnvironmentConfigObservedState struct {
 	//  with workforce identity
 	//  federation](/composer/docs/composer-2/access-environments-with-workforce-identity-federation)).
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.airflow_byoid_uri
-	AirflowByoidURI *string `json:"airflowByoidURI,omitempty"`
+	AirflowBYOIDURI *string `json:"airflowBYOIDURI,omitempty"`
 
 	// Output only. The URI of the Apache Airflow Web UI hosted within this
 	//  environment (see [Airflow web

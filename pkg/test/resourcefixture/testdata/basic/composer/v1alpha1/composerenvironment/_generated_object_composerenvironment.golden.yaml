@@ -26,9 +26,9 @@ status:
   observedGeneration: 2
   observedState:
     config:
-      airflowByoidURI: https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com
+      airflowBYOIDURI: https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com
       airflowURI: https://123456qwert-dot-us-central1.composer.googleusercontent.com
-      dagGcsPrefix: gs://us-central1-test-123456-asdfg-bucket/dags
+      dagGCSPrefix: gs://us-central1-test-123456-asdfg-bucket/dags
       gkeCluster: projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke
       privateEnvironmentConfig:
         privateClusterConfig: {}
