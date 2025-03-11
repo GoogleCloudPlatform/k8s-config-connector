@@ -1,4 +1,8 @@
-- exec: gcloud bigtable backups create test-${uniqueId} --instance=test-instance --cluster=test-cluster --table=test-table --expiration-date=2024-05-03T00:00:00Z
-- exec: gcloud bigtable backups describe test-${uniqueId} --instance=test-instance --cluster=test-cluster
-- exec: gcloud bigtable backups update test-${uniqueId} --instance=test-instance --cluster=test-cluster --expiration-date=2024-05-04T00:00:00Z
-- exec: gcloud bigtable backups delete test-${uniqueId} --instance=test-instance --cluster=test-cluster
+- exec: gcloud bigtable instances create test-instance-${uniqueId} --display-name=test-instance --cluster-config=id=test-cluster-${uniqueId},zone=us-east1-c
+- exec: gcloud bigtable tables create test-table-${uniqueId} --instance=test-instance-${uniqueId} --column-families="test-family"
+- exec: gcloud bigtable backups create test-${uniqueId} --instance=test-instance-${uniqueId} --cluster=test-cluster-${uniqueId} --table=test-table-${uniqueId} --expiration-date=2025-05-03T00:00:00Z
+- exec: gcloud bigtable backups describe test-${uniqueId} --instance=test-instance-${uniqueId} --cluster=test-cluster-${uniqueId}
+- exec: gcloud bigtable backups update test-${uniqueId} --instance=test-instance-${uniqueId} --cluster=test-cluster-${uniqueId} --expiration-date=2025-05-04T00:00:00Z
+- exec: gcloud bigtable backups delete test-${uniqueId} --instance=test-instance-${uniqueId} --cluster=test-cluster-${uniqueId} --quiet
+- exec: gcloud bigtable tables delete test-table-${uniqueId} --instance=test-instance-${uniqueId} --quiet
+- exec: gcloud bigtable instances delete test-instance-${uniqueId} --quiet
