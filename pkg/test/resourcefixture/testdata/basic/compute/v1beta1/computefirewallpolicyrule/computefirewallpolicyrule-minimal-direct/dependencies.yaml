@@ -15,7 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewallPolicy
 metadata:
-  name: firewallpolicyrule-${uniqueId}
+  name: firewallpolicy-${uniqueId}
 spec:
   organizationRef:
     external: "organizations/${TEST_ORG_ID}"
