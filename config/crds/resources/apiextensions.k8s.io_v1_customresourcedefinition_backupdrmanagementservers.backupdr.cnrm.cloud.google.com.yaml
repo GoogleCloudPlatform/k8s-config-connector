@@ -215,7 +215,7 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  baProxyURI:
+                  baProxyURIs:
                     description: Output only. The hostname or ip address of the exposed
                       AGM endpoints, used by BAs to connect to BA proxy.
                     items:

@@ -22,42 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BackupDRManagementServerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.BackupDRManagementServerObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BackupDRManagementServerObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.ManagementURI = ManagementURIObservedState_FromProto(mapCtx, in.GetManagementUri())
-	out.WorkforceIdentityBasedManagementURI = WorkforceIdentityBasedManagementURIObservedState_FromProto(mapCtx, in.GetWorkforceIdentityBasedManagementUri())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.OAUTH2ClientID = direct.LazyPtr(in.GetOauth2ClientId())
-	out.WorkforceIdentityBasedOAUTH2ClientID = WorkforceIdentityBasedOAuth2ClientIDObservedState_FromProto(mapCtx, in.GetWorkforceIdentityBasedOauth2ClientId())
-	out.BaProxyURI = in.BaProxyUri
-	out.SatisfiesPzs = direct.BoolValue_FromProto(mapCtx, in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	return out
-}
-func BackupDRManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerObservedState) *pb.ManagementServer {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ManagementServer{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.ManagementUri = ManagementURIObservedState_ToProto(mapCtx, in.ManagementURI)
-	out.WorkforceIdentityBasedManagementUri = WorkforceIdentityBasedManagementURIObservedState_ToProto(mapCtx, in.WorkforceIdentityBasedManagementURI)
-	out.State = direct.Enum_ToProto[pb.ManagementServer_InstanceState](mapCtx, in.State)
-	out.Oauth2ClientId = direct.ValueOf(in.OAUTH2ClientID)
-	out.WorkforceIdentityBasedOauth2ClientId = WorkforceIdentityBasedOAuth2ClientIDObservedState_ToProto(mapCtx, in.WorkforceIdentityBasedOAUTH2ClientID)
-	out.BaProxyUri = in.BaProxyURI
-	out.SatisfiesPzs = direct.BoolValue_ToProto(mapCtx, in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
-	return out
-}
 func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.BackupDRManagementServerSpec {
 	if in == nil {
 		return nil

@@ -154,7 +154,7 @@ type BackupDRManagementServerObservedState struct {
 	// Output only. The hostname or ip address of the exposed AGM endpoints, used
 	//  by BAs to connect to BA proxy.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.ba_proxy_uri
-	BaProxyURI []string `json:"baProxyURI,omitempty"`
+	BAProxyURIs []string `json:"baProxyURIs,omitempty"`
 
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.satisfies_pzs

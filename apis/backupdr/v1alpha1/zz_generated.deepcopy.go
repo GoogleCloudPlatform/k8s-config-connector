@@ -121,8 +121,8 @@ func (in *BackupDRManagementServerObservedState) DeepCopyInto(out *BackupDRManag
 		*out = new(WorkforceIdentityBasedOAuth2ClientIDObservedState)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.BaProxyURI != nil {
-		in, out := &in.BaProxyURI, &out.BaProxyURI
+	if in.BAProxyURIs != nil {
+		in, out := &in.BAProxyURIs, &out.BAProxyURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
