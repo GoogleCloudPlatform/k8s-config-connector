@@ -33,6 +33,9 @@ func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ma
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Networks = direct.Slice_FromProto(mapCtx, in.Networks, NetworkConfig_FromProto)
 	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: OAUTH2ClientID
+	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
+	// MISSING: BaProxyURI
 	return out
 }
 func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerSpec) *pb.ManagementServer {
@@ -46,6 +49,9 @@ func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bac
 	out.Type = direct.Enum_ToProto[pb.ManagementServer_InstanceType](mapCtx, in.Type)
 	out.Networks = direct.Slice_ToProto(mapCtx, in.Networks, NetworkConfig_ToProto)
 	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: OAUTH2ClientID
+	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
+	// MISSING: BaProxyURI
 	return out
 }
 func ManagementURI_FromProto(mapCtx *direct.MapContext, in *pb.ManagementURI) *krm.ManagementURI {
@@ -72,9 +78,7 @@ func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *k
 	}
 	out := &krm.NetworkConfig{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{
-			External: in.GetNetwork(),
-		}
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.PeeringMode = direct.Enum_FromProto(mapCtx, in.GetPeeringMode())
 	return out
@@ -142,23 +146,5 @@ func WorkforceIdentityBasedOAuth2ClientID_ToProto(mapCtx *direct.MapContext, in 
 	out := &pb.WorkforceIdentityBasedOAuth2ClientID{}
 	// MISSING: FirstPartyOAUTH2ClientID
 	// MISSING: ThirdPartyOAUTH2ClientID
-	return out
-}
-func WorkforceIdentityBasedOAuth2ClientIDObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedOAuth2ClientID) *krm.WorkforceIdentityBasedOAuth2ClientIDObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkforceIdentityBasedOAuth2ClientIDObservedState{}
-	out.FirstPartyOAUTH2ClientID = direct.LazyPtr(in.GetFirstPartyOauth2ClientId())
-	out.ThirdPartyOAUTH2ClientID = direct.LazyPtr(in.GetThirdPartyOauth2ClientId())
-	return out
-}
-func WorkforceIdentityBasedOAuth2ClientIDObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkforceIdentityBasedOAuth2ClientIDObservedState) *pb.WorkforceIdentityBasedOAuth2ClientID {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkforceIdentityBasedOAuth2ClientID{}
-	out.FirstPartyOauth2ClientId = direct.ValueOf(in.FirstPartyOAUTH2ClientID)
-	out.ThirdPartyOauth2ClientId = direct.ValueOf(in.ThirdPartyOAUTH2ClientID)
 	return out
 }

@@ -46,6 +46,17 @@ type NetworkConfig struct {
 	PeeringMode *string `json:"peeringMode,omitempty"`
 }
 
+// +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID
+type WorkforceIdentityBasedOAuth2ClientIDObservedState struct {
+	// Output only. First party OAuth Client ID for Google Identities.
+	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID.first_party_oauth2_client_id
+	FirstPartyOAuth2ClientID *string `json:"firstPartyOAuth2ClientID,omitempty"`
+
+	// Output only. Third party OAuth Client ID for External Identity Providers.
+	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID.third_party_oauth2_client_id
+	ThirdPartyOAuth2ClientID *string `json:"thirdPartyOAuth2ClientID,omitempty"`
+}
+
 // +kcc:proto=google.cloud.backupdr.v1.ManagementURI
 type ManagementURIObservedState struct {
 	// Output only. The ManagementServer AGM/RD WebUI URL.
@@ -145,11 +156,11 @@ type BackupDRManagementServerObservedState struct {
 	//  specification
 	//  https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.oauth2_client_id
-	OAUTH2ClientID *string `json:"oauth2ClientID,omitempty"`
+	OAuth2ClientID *string `json:"oauth2ClientID,omitempty"`
 
 	// Output only. The OAuth client IDs for both types of user i.e. 1p and 3p.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.workforce_identity_based_oauth2_client_id
-	WorkforceIdentityBasedOAUTH2ClientID *WorkforceIdentityBasedOAuth2ClientIDObservedState `json:"workforceIdentityBasedOAUTH2ClientID,omitempty"`
+	WorkforceIdentityBasedOAuth2ClientID *WorkforceIdentityBasedOAuth2ClientIDObservedState `json:"workforceIdentityBasedOAuth2ClientID,omitempty"`
 
 	// Output only. The hostname or ip address of the exposed AGM endpoints, used
 	//  by BAs to connect to BA proxy.

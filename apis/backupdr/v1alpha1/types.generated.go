@@ -36,14 +36,3 @@ type WorkforceIdentityBasedManagementURIObservedState struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI.third_party_management_uri
 	ThirdPartyManagementURI *string `json:"thirdPartyManagementURI,omitempty"`
 }
-
-// +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID
-type WorkforceIdentityBasedOAuth2ClientIDObservedState struct {
-	// Output only. First party OAuth Client ID for Google Identities.
-	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID.first_party_oauth2_client_id
-	FirstPartyOAUTH2ClientID *string `json:"firstPartyOAUTH2ClientID,omitempty"`
-
-	// Output only. Third party OAuth Client ID for External Identity Providers.
-	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID.third_party_oauth2_client_id
-	ThirdPartyOAUTH2ClientID *string `json:"thirdPartyOAUTH2ClientID,omitempty"`
-}

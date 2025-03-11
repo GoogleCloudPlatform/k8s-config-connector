@@ -270,15 +270,15 @@ spec:
                           Identity Providers.
                         type: string
                     type: object
-                  workforceIdentityBasedOAUTH2ClientID:
+                  workforceIdentityBasedOAuth2ClientID:
                     description: Output only. The OAuth client IDs for both types
                       of user i.e. 1p and 3p.
                     properties:
-                      firstPartyOAUTH2ClientID:
+                      firstPartyOAuth2ClientID:
                         description: Output only. First party OAuth Client ID for
                           Google Identities.
                         type: string
-                      thirdPartyOAUTH2ClientID:
+                      thirdPartyOAuth2ClientID:
                         description: Output only. Third party OAuth Client ID for
                           External Identity Providers.
                         type: string
