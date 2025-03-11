@@ -120,29 +120,6 @@ type TasksQueueStatus struct {
 // +kcc:proto=google.cloud.tasks.v2.Queue
 type TasksQueueObservedState struct {
 
-	// Caller-specified and required in
-	//  [CreateQueue][google.cloud.tasks.v2.CloudTasks.CreateQueue], after which it
-	//  becomes output only.
-	//
-	//  The queue name.
-	//
-	//  The queue name must have the following format:
-	//  `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
-	//
-	//  * `PROJECT_ID` can contain letters ([A-Za-z]), numbers ([0-9]),
-	//     hyphens (-), colons (:), or periods (.).
-	//     For more information, see
-	//     [Identifying
-	//     projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects)
-	//  * `LOCATION_ID` is the canonical ID for the queue's location.
-	//     The list of available locations can be obtained by calling
-	//     [ListLocations][google.cloud.location.Locations.ListLocations].
-	//     For more information, see https://cloud.google.com/about/locations/.
-	//  * `QUEUE_ID` can contain letters ([A-Za-z]), numbers ([0-9]), or
-	//    hyphens (-). The maximum length is 100 characters.
-	// +kcc:proto:field=google.cloud.tasks.v2.Queue.name
-	Name *string `json:"name,omitempty"`
-
 	// Output only. The last time this queue was purged.
 	//
 	//  All tasks that were [created][google.cloud.tasks.v2.Task.create_time]

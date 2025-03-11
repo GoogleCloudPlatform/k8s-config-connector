@@ -807,6 +807,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - tasks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - tpu.cnrm.cloud.google.com
   resources:
   - '*'

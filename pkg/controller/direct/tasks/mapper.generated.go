@@ -107,7 +107,6 @@ func TasksQueueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Queue) 
 		return nil
 	}
 	out := &krm.TasksQueueObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.PurgeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPurgeTime())
 	return out
@@ -117,7 +116,6 @@ func TasksQueueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TasksQue
 		return nil
 	}
 	out := &pb.Queue{}
-	out.Name = direct.ValueOf(in.Name)
 	out.State = direct.Enum_ToProto[pb.Queue_State](mapCtx, in.State)
 	out.PurgeTime = direct.StringTimestamp_ToProto(mapCtx, in.PurgeTime)
 	return out
