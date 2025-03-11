@@ -151,6 +151,14 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 		return err
 	}
 	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
+
+	// if edition is unspecified, Spanner API default edition to STANDARD.
+	// Spanner API bans downgrade edition from STANDARD to unspecifed,
+	// which cause infinite reconcile loop.
+	if desired.Spec.Edition == nil {
+		resource.Edition = spannerpb.Instance_STANDARD
+	}
+
 	// If node count or processing unit and auto-scaling config is not specify,
 	// Default NodeCount to 1.
 	if resource.NodeCount == 0 && resource.ProcessingUnits == 0 && resource.AutoscalingConfig == nil {
@@ -225,7 +233,8 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		updateMask.Paths = append(updateMask.Paths, "autoscaling_config")
 	}
 
-	if !reflect.DeepEqual(resource.Edition, a.actual.Edition) {
+	// If edition field is removed, the field become unmanaged.
+	if desired.Spec.Edition != nil && !reflect.DeepEqual(resource.Edition, a.actual.Edition) {
 		if resource.Edition < a.actual.Edition {
 			log.V(2).Info("Downgrading Spanner Instance edition is not supported")
 			return nil

@@ -191,7 +191,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "New spanner Instance Sample",
-    "edition": 1,
     "labels": {
       "cnrm-test": "true",
       "label-one": "value-one",
