@@ -165,7 +165,7 @@ func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentCo
 	}
 	out := &krm.EnvironmentConfig{}
 	// MISSING: GkeCluster
-	// MISSING: DagGcsPrefix
+	// MISSING: DagGCSPrefix
 	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
 	out.SoftwareConfig = SoftwareConfig_FromProto(mapCtx, in.GetSoftwareConfig())
 	out.NodeConfig = NodeConfig_FromProto(mapCtx, in.GetNodeConfig())
@@ -178,7 +178,7 @@ func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentCo
 	out.WorkloadsConfig = WorkloadsConfig_FromProto(mapCtx, in.GetWorkloadsConfig())
 	out.EnvironmentSize = direct.Enum_FromProto(mapCtx, in.GetEnvironmentSize())
 	// MISSING: AirflowURI
-	// MISSING: AirflowByoidURI
+	// MISSING: AirflowBYOIDURI
 	out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_FromProto(mapCtx, in.GetMasterAuthorizedNetworksConfig())
 	out.RecoveryConfig = RecoveryConfig_FromProto(mapCtx, in.GetRecoveryConfig())
 	out.ResilienceMode = direct.Enum_FromProto(mapCtx, in.GetResilienceMode())
@@ -191,7 +191,7 @@ func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentCon
 	}
 	out := &pb.EnvironmentConfig{}
 	// MISSING: GkeCluster
-	// MISSING: DagGcsPrefix
+	// MISSING: DagGCSPrefix
 	out.NodeCount = direct.ValueOf(in.NodeCount)
 	out.SoftwareConfig = SoftwareConfig_ToProto(mapCtx, in.SoftwareConfig)
 	out.NodeConfig = NodeConfig_ToProto(mapCtx, in.NodeConfig)
@@ -204,7 +204,7 @@ func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentCon
 	out.WorkloadsConfig = WorkloadsConfig_ToProto(mapCtx, in.WorkloadsConfig)
 	out.EnvironmentSize = direct.Enum_ToProto[pb.EnvironmentConfig_EnvironmentSize](mapCtx, in.EnvironmentSize)
 	// MISSING: AirflowURI
-	// MISSING: AirflowByoidURI
+	// MISSING: AirflowBYOIDURI
 	out.MasterAuthorizedNetworksConfig = MasterAuthorizedNetworksConfig_ToProto(mapCtx, in.MasterAuthorizedNetworksConfig)
 	out.RecoveryConfig = RecoveryConfig_ToProto(mapCtx, in.RecoveryConfig)
 	out.ResilienceMode = direct.Enum_ToProto[pb.EnvironmentConfig_ResilienceMode](mapCtx, in.ResilienceMode)
@@ -217,7 +217,7 @@ func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.EnvironmentConfigObservedState{}
 	out.GkeCluster = direct.LazyPtr(in.GetGkeCluster())
-	out.DagGcsPrefix = direct.LazyPtr(in.GetDagGcsPrefix())
+	out.DagGCSPrefix = direct.LazyPtr(in.GetDagGcsPrefix())
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
 	// MISSING: NodeConfig
@@ -230,7 +230,7 @@ func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: WorkloadsConfig
 	// MISSING: EnvironmentSize
 	out.AirflowURI = direct.LazyPtr(in.GetAirflowUri())
-	out.AirflowByoidURI = direct.LazyPtr(in.GetAirflowByoidUri())
+	out.AirflowBYOIDURI = direct.LazyPtr(in.GetAirflowByoidUri())
 	// MISSING: MasterAuthorizedNetworksConfig
 	// MISSING: RecoveryConfig
 	// MISSING: ResilienceMode
@@ -243,7 +243,7 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 	}
 	out := &pb.EnvironmentConfig{}
 	out.GkeCluster = direct.ValueOf(in.GkeCluster)
-	out.DagGcsPrefix = direct.ValueOf(in.DagGcsPrefix)
+	out.DagGcsPrefix = direct.ValueOf(in.DagGCSPrefix)
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
 	// MISSING: NodeConfig
@@ -256,7 +256,7 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 	// MISSING: WorkloadsConfig
 	// MISSING: EnvironmentSize
 	out.AirflowUri = direct.ValueOf(in.AirflowURI)
-	out.AirflowByoidUri = direct.ValueOf(in.AirflowByoidURI)
+	out.AirflowByoidUri = direct.ValueOf(in.AirflowBYOIDURI)
 	// MISSING: MasterAuthorizedNetworksConfig
 	// MISSING: RecoveryConfig
 	// MISSING: ResilienceMode

@@ -420,8 +420,8 @@ func (in *EnvironmentConfigObservedState) DeepCopyInto(out *EnvironmentConfigObs
 		*out = new(string)
 		**out = **in
 	}
-	if in.DagGcsPrefix != nil {
-		in, out := &in.DagGcsPrefix, &out.DagGcsPrefix
+	if in.DagGCSPrefix != nil {
+		in, out := &in.DagGCSPrefix, &out.DagGCSPrefix
 		*out = new(string)
 		**out = **in
 	}
@@ -430,8 +430,8 @@ func (in *EnvironmentConfigObservedState) DeepCopyInto(out *EnvironmentConfigObs
 		*out = new(PrivateEnvironmentConfigObservedState)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.AirflowByoidURI != nil {
-		in, out := &in.AirflowByoidURI, &out.AirflowByoidURI
+	if in.AirflowBYOIDURI != nil {
+		in, out := &in.AirflowBYOIDURI, &out.AirflowBYOIDURI
 		*out = new(string)
 		**out = **in
 	}

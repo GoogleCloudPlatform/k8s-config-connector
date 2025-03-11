@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbackupdr"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryanalyticshub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryconnection"
@@ -53,6 +54,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudfunctions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudidentity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudquota"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcomposer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontainer"
@@ -98,6 +100,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockasset"
 )
 
 type mockRoundTripper struct {
@@ -193,6 +197,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockcertificatemanager.New(env, storage))
 	services = append(services, mockdataflow.New(env, storage))
 	services = append(services, mockdiscoveryengine.New(env, storage))
+	services = append(services, mockedgecontainer.New(env, storage))
 	services = append(services, mockfirestore.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockkms.New(env, storage))
@@ -214,7 +219,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mocksql.New(env, storage))
 	services = append(services, mockcloudfunctions.New(env, storage))
 	services = append(services, mockedgenetwork.New(env, storage))
-	services = append(services, mockedgecontainer.New(env, storage))
 	services = append(services, mockartifactregistry.New(env, storage))
 	services = append(services, mockgkehub.New(env, storage))
 	services = append(services, mockalloydb.New(env, storage))
@@ -235,8 +239,11 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockcomposer.New(env, storage))
 	services = append(services, mockdocumentai.New(env, storage))
 	services = append(services, mockapphub.New(env, storage))
+	services = append(services, mockcloudquota.New(env, storage))
+	services = append(services, mockasset.New(env, storage))
 	services = append(services, mocktasks.New(env, storage))
 	services = append(services, mockbackupdr.New(env, storage))
+	services = append(services, mockbatch.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
@@ -413,6 +420,8 @@ func (m *mockRoundTripper) modifyUpdateMask(o map[string]any) error {
 				switch token {
 				case "display_name":
 					tokens[i] = "displayName"
+				case "content_type":
+					tokens[i] = "contentType"
 				}
 			}
 			o[k] = strings.Join(tokens, ",")
