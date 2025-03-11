@@ -174,7 +174,8 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 
 	// Change to controllerbuilder directory
 	controllerBuilderDir := filepath.Join(workDir, "dev", "tools", "controllerbuilder")
-	hasChange := false
+	hasAPIChange := false
+	hasMapperChange := false
 
 	// Generate types
 	apisDir := filepath.Join(opts.branchRepoDir, "apis", branch.Group, "v1alpha1", string(filepath.Separator))
@@ -196,8 +197,7 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		gitAdd(ctx, workDir, apisDir)
-		hasChange = true
+		hasAPIChange = true
 	} else {
 		log.Printf("SKIPPING generating apis, %s already exists", apisDir)
 	}
@@ -221,32 +221,47 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		hasMapperChange = true
+	} else {
+		log.Printf("SKIPPING generating mappers, %s already exists", mapperDir)
+	}
 
-		// Run goimports
-		cfg = CommandConfig{
-			Name: "Format generated code",
-			Cmd:  "go",
-			Args: []string{
-				"run", "-mod=readonly",
-				"golang.org/x/tools/cmd/goimports@latest",
-				"-w",
-				mapperDir,
-			},
+	// Run fix-gofmt script if any changes were made
+	if hasAPIChange || hasMapperChange {
+		// Run goimports on the generated code
+		cfg := CommandConfig{
+			Name:       "Fix imports",
+			Cmd:        "go",
+			Args:       []string{"run", "-mod=readonly", "golang.org/x/tools/cmd/goimports@latest", "-w", mapperDir},
 			WorkDir:    workDir,
 			MaxRetries: 2,
+		}
+		_, _, err := executeCommand(opts, cfg)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Run the fix-gofmt script
+		cfg = CommandConfig{
+			Name:       "Fix Go formatting",
+			Cmd:        filepath.Join(workDir, "dev", "tasks", "fix-gofmt"),
+			WorkDir:    workDir,
+			MaxRetries: 1,
 		}
 		_, _, err = executeCommand(opts, cfg)
 		if err != nil {
 			log.Fatal(err)
 		}
-		gitAdd(ctx, workDir, mapperDir)
-		hasChange = true
-	} else {
-		log.Printf("SKIPPING generating mappers, %s already exists", mapperDir)
-	}
 
-	// Commit the changes
-	if hasChange {
+		// Stage the changed files - do this after formatting to include any formatting changes
+		if hasAPIChange {
+			gitAdd(ctx, workDir, apisDir)
+		}
+		if hasMapperChange {
+			gitAdd(ctx, workDir, mapperDir)
+		}
+
+		// Commit the changes
 		gitCommit(ctx, workDir, fmt.Sprintf("Generated types and mapper for %s", branch.Kind))
 	} else {
 		log.Printf("SKIPPING git commit, no new changes for %s", branch.Name)
@@ -276,6 +291,7 @@ func generateCRD(opts *RunnerOptions, branch Branch) {
 
 	// Stage the changed files
 	gitAdd(ctx, workDir, "config/crds/resources/")
+	gitAdd(ctx, workDir, "apis/") // stage the zz_generated.deepcopy.go file
 
 	// Commit the changes
 	gitCommit(ctx, workDir, fmt.Sprintf("Generated CRD for %s", branch.Kind))
