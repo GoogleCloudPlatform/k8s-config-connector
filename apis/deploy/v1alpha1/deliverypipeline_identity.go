@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type DeliveryPipelineIdentity struct {
 	parent *DeliveryPipelineParent
-	id string
+	id     string
 }
 
 func (i *DeliveryPipelineIdentity) String() string {
-	return  i.parent.String() + "/deliverypipelines/" + i.id
+	return i.parent.String() + "/deliverypipelines/" + i.id
 }
 
 func (i *DeliveryPipelineIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *DeliveryPipelineIdentity) ID() string {
 }
 
 func (i *DeliveryPipelineIdentity) Parent() *DeliveryPipelineParent {
-	return  i.parent
+	return i.parent
 }
 
 type DeliveryPipelineParent struct {
@@ -51,7 +51,6 @@ type DeliveryPipelineParent struct {
 func (p *DeliveryPipelineParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a DeliveryPipelineIdentity from the Config Connector DeliveryPipeline object.
 func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj *DeployDeliveryPipeline) (*DeliveryPipelineIdentity, error) {
@@ -66,6 +65,9 @@ func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj 
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
+	if location == nil || *location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -87,8 +89,8 @@ func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj 
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Location != *location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, *location)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -98,7 +100,7 @@ func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj 
 	return &DeliveryPipelineIdentity{
 		parent: &DeliveryPipelineParent{
 			ProjectID: projectID,
-			Location:  location,
+			Location:  *location,
 		},
 		id: resourceID,
 	}, nil

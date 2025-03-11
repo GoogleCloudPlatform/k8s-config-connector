@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.deploy.v1.Canary
 type Canary struct {
 	// Optional. Runtime specific configurations for the deployment strategy. The
