@@ -1,0 +1,851 @@
+POST https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests?alt=json&testId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "bypassFirewallChecks": false,
+  "description": "Test connectivity test",
+  "destination": {
+    "ipAddress": "10.0.0.2"
+  },
+  "protocol": "TCP",
+  "roundTrip": false,
+  "source": {
+    "ipAddress": "10.0.0.1",
+    "networkType": "GCP_NETWORK"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.ConnectivityTest",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Test connectivity test",
+    "destination": {
+      "ipAddress": "10.0.0.2"
+    },
+    "name": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+    "protocol": "TCP",
+    "reachabilityDetails": {
+      "result": "UNDETERMINED",
+      "traces": [
+        {
+          "endpointInfo": {
+            "destinationIp": "10.0.0.2",
+            "destinationPort": 80,
+            "protocol": "TCP",
+            "sourceIp": "10.0.0.1",
+            "sourceNetworkUri": "projects/${projectId}/global/networks/default",
+            "sourcePort": 55896
+          },
+          "forwardTraceId": 1,
+          "steps": [
+            {
+              "description": "Initial state: packet originating from a VPC network default.",
+              "network": {
+                "displayName": "default",
+                "matchedIpRange": "10.0.0.0/20",
+                "matchedSubnetUri": "projects/${projectId}/regions/us-east4/subnetworks/default",
+                "region": "us-east4",
+                "uri": "projects/${projectId}/global/networks/default"
+              },
+              "projectId": "${projectId}",
+              "state": "START_FROM_PRIVATE_NETWORK"
+            },
+            {
+              "description": "Config checking state: verify EGRESS firewall rule.",
+              "firewall": {
+                "action": "ALLOW",
+                "direction": "EGRESS",
+                "displayName": "default-allow-egress",
+                "firewallRuleType": "IMPLIED_VPC_FIREWALL_RULE",
+                "networkUri": "projects/${projectId}/global/networks/default",
+                "priority": 65535
+              },
+              "projectId": "${projectId}",
+              "state": "APPLY_EGRESS_FIREWALL_RULE"
+            },
+            {
+              "description": "Config checking state: verify route.",
+              "projectId": "${projectId}",
+              "route": {
+                "destIpRange": "10.0.0.0/20",
+                "displayName": "default-route-f17b1d9b115a2c1e",
+                "networkUri": "projects/${projectId}/global/networks/default",
+                "nextHop": "network gateway",
+                "nextHopType": "NEXT_HOP_NETWORK",
+                "routeScope": "NETWORK",
+                "routeType": "SUBNET",
+                "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
+              },
+              "state": "APPLY_ROUTE"
+            },
+            {
+              "abort": {
+                "cause": "UNKNOWN_IP",
+                "ipAddress": "10.0.0.2",
+                "resourceUri": "projects/${projectId}/global/networks/default"
+              },
+              "description": "Final state: analysis is aborted due to no endpoints with destination IP address are found in network.",
+              "projectId": "${projectId}",
+              "state": "ABORT"
+            }
+          ]
+        }
+      ],
+      "verifyTime": "2025-03-11T06:54:04.139013489Z"
+    },
+    "source": {
+      "ipAddress": "10.0.0.1",
+      "networkType": "GCP_NETWORK"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test connectivity test",
+  "destination": {
+    "ipAddress": "10.0.0.2"
+  },
+  "name": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+  "protocol": "TCP",
+  "reachabilityDetails": {
+    "result": "UNDETERMINED",
+    "traces": [
+      {
+        "endpointInfo": {
+          "destinationIp": "10.0.0.2",
+          "destinationPort": 80,
+          "protocol": "TCP",
+          "sourceIp": "10.0.0.1",
+          "sourceNetworkUri": "projects/${projectId}/global/networks/default",
+          "sourcePort": 55896
+        },
+        "forwardTraceId": 1,
+        "steps": [
+          {
+            "description": "Initial state: packet originating from a VPC network default.",
+            "network": {
+              "displayName": "default",
+              "matchedIpRange": "10.0.0.0/20",
+              "matchedSubnetUri": "projects/${projectId}/regions/us-east4/subnetworks/default",
+              "region": "us-east4",
+              "uri": "projects/${projectId}/global/networks/default"
+            },
+            "projectId": "${projectId}",
+            "state": "START_FROM_PRIVATE_NETWORK"
+          },
+          {
+            "description": "Config checking state: verify EGRESS firewall rule.",
+            "firewall": {
+              "action": "ALLOW",
+              "direction": "EGRESS",
+              "displayName": "default-allow-egress",
+              "firewallRuleType": "IMPLIED_VPC_FIREWALL_RULE",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "priority": 65535
+            },
+            "projectId": "${projectId}",
+            "state": "APPLY_EGRESS_FIREWALL_RULE"
+          },
+          {
+            "description": "Config checking state: verify route.",
+            "projectId": "${projectId}",
+            "route": {
+              "destIpRange": "10.0.0.0/20",
+              "displayName": "default-route-f17b1d9b115a2c1e",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "nextHop": "network gateway",
+              "nextHopType": "NEXT_HOP_NETWORK",
+              "routeScope": "NETWORK",
+              "routeType": "SUBNET",
+              "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
+            },
+            "state": "APPLY_ROUTE"
+          },
+          {
+            "abort": {
+              "cause": "UNKNOWN_IP",
+              "ipAddress": "10.0.0.2",
+              "resourceUri": "projects/${projectId}/global/networks/default"
+            },
+            "description": "Final state: analysis is aborted due to no endpoints with destination IP address are found in network.",
+            "projectId": "${projectId}",
+            "state": "ABORT"
+          }
+        ]
+      }
+    ],
+    "verifyTime": "2025-03-11T06:54:04.139013489Z"
+  },
+  "source": {
+    "ipAddress": "10.0.0.1",
+    "networkType": "GCP_NETWORK"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test connectivity test",
+  "destination": {
+    "ipAddress": "10.0.0.2"
+  },
+  "name": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+  "protocol": "TCP",
+  "reachabilityDetails": {
+    "result": "UNDETERMINED",
+    "traces": [
+      {
+        "endpointInfo": {
+          "destinationIp": "10.0.0.2",
+          "destinationPort": 80,
+          "protocol": "TCP",
+          "sourceIp": "10.0.0.1",
+          "sourceNetworkUri": "projects/${projectId}/global/networks/default",
+          "sourcePort": 55896
+        },
+        "forwardTraceId": 1,
+        "steps": [
+          {
+            "description": "Initial state: packet originating from a VPC network default.",
+            "network": {
+              "displayName": "default",
+              "matchedIpRange": "10.0.0.0/20",
+              "matchedSubnetUri": "projects/${projectId}/regions/us-east4/subnetworks/default",
+              "region": "us-east4",
+              "uri": "projects/${projectId}/global/networks/default"
+            },
+            "projectId": "${projectId}",
+            "state": "START_FROM_PRIVATE_NETWORK"
+          },
+          {
+            "description": "Config checking state: verify EGRESS firewall rule.",
+            "firewall": {
+              "action": "ALLOW",
+              "direction": "EGRESS",
+              "displayName": "default-allow-egress",
+              "firewallRuleType": "IMPLIED_VPC_FIREWALL_RULE",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "priority": 65535
+            },
+            "projectId": "${projectId}",
+            "state": "APPLY_EGRESS_FIREWALL_RULE"
+          },
+          {
+            "description": "Config checking state: verify route.",
+            "projectId": "${projectId}",
+            "route": {
+              "destIpRange": "10.0.0.0/20",
+              "displayName": "default-route-f17b1d9b115a2c1e",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "nextHop": "network gateway",
+              "nextHopType": "NEXT_HOP_NETWORK",
+              "routeScope": "NETWORK",
+              "routeType": "SUBNET",
+              "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
+            },
+            "state": "APPLY_ROUTE"
+          },
+          {
+            "abort": {
+              "cause": "UNKNOWN_IP",
+              "ipAddress": "10.0.0.2",
+              "resourceUri": "projects/${projectId}/global/networks/default"
+            },
+            "description": "Final state: analysis is aborted due to no endpoints with destination IP address are found in network.",
+            "projectId": "${projectId}",
+            "state": "ABORT"
+          }
+        ]
+      }
+    ],
+    "verifyTime": "2025-03-11T06:54:04.139013489Z"
+  },
+  "source": {
+    "ipAddress": "10.0.0.1",
+    "networkType": "GCP_NETWORK"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test connectivity test",
+  "destination": {
+    "ipAddress": "10.0.0.2"
+  },
+  "name": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+  "protocol": "TCP",
+  "reachabilityDetails": {
+    "result": "UNDETERMINED",
+    "traces": [
+      {
+        "endpointInfo": {
+          "destinationIp": "10.0.0.2",
+          "destinationPort": 80,
+          "protocol": "TCP",
+          "sourceIp": "10.0.0.1",
+          "sourceNetworkUri": "projects/${projectId}/global/networks/default",
+          "sourcePort": 55896
+        },
+        "forwardTraceId": 1,
+        "steps": [
+          {
+            "description": "Initial state: packet originating from a VPC network default.",
+            "network": {
+              "displayName": "default",
+              "matchedIpRange": "10.0.0.0/20",
+              "matchedSubnetUri": "projects/${projectId}/regions/us-east4/subnetworks/default",
+              "region": "us-east4",
+              "uri": "projects/${projectId}/global/networks/default"
+            },
+            "projectId": "${projectId}",
+            "state": "START_FROM_PRIVATE_NETWORK"
+          },
+          {
+            "description": "Config checking state: verify EGRESS firewall rule.",
+            "firewall": {
+              "action": "ALLOW",
+              "direction": "EGRESS",
+              "displayName": "default-allow-egress",
+              "firewallRuleType": "IMPLIED_VPC_FIREWALL_RULE",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "priority": 65535
+            },
+            "projectId": "${projectId}",
+            "state": "APPLY_EGRESS_FIREWALL_RULE"
+          },
+          {
+            "description": "Config checking state: verify route.",
+            "projectId": "${projectId}",
+            "route": {
+              "destIpRange": "10.0.0.0/20",
+              "displayName": "default-route-f17b1d9b115a2c1e",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "nextHop": "network gateway",
+              "nextHopType": "NEXT_HOP_NETWORK",
+              "routeScope": "NETWORK",
+              "routeType": "SUBNET",
+              "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
+            },
+            "state": "APPLY_ROUTE"
+          },
+          {
+            "abort": {
+              "cause": "UNKNOWN_IP",
+              "ipAddress": "10.0.0.2",
+              "resourceUri": "projects/${projectId}/global/networks/default"
+            },
+            "description": "Final state: analysis is aborted due to no endpoints with destination IP address are found in network.",
+            "projectId": "${projectId}",
+            "state": "ABORT"
+          }
+        ]
+      }
+    ],
+    "verifyTime": "2025-03-11T06:54:04.139013489Z"
+  },
+  "source": {
+    "ipAddress": "10.0.0.1",
+    "networkType": "GCP_NETWORK"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}?alt=json&updateMask=description
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "bypassFirewallChecks": false,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "destination": {
+    "ipAddress": "10.0.0.2"
+  },
+  "name": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+  "protocol": "TCP",
+  "reachabilityDetails": {
+    "result": "UNDETERMINED",
+    "traces": [
+      {
+        "endpointInfo": {
+          "destinationIp": "10.0.0.2",
+          "destinationPort": 80,
+          "protocol": "TCP",
+          "sourceIp": "10.0.0.1",
+          "sourceNetworkUri": "projects/${projectId}/global/networks/default",
+          "sourcePort": 55896
+        },
+        "forwardTraceId": 1,
+        "steps": [
+          {
+            "description": "Initial state: packet originating from a VPC network default.",
+            "network": {
+              "displayName": "default",
+              "matchedIpRange": "10.0.0.0/20",
+              "matchedSubnetUri": "projects/${projectId}/regions/us-east4/subnetworks/default",
+              "region": "us-east4",
+              "uri": "projects/${projectId}/global/networks/default"
+            },
+            "projectId": "${projectId}",
+            "state": "START_FROM_PRIVATE_NETWORK"
+          },
+          {
+            "description": "Config checking state: verify EGRESS firewall rule.",
+            "firewall": {
+              "action": "ALLOW",
+              "direction": "EGRESS",
+              "displayName": "default-allow-egress",
+              "firewallRuleType": "IMPLIED_VPC_FIREWALL_RULE",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "priority": 65535
+            },
+            "projectId": "${projectId}",
+            "state": "APPLY_EGRESS_FIREWALL_RULE"
+          },
+          {
+            "description": "Config checking state: verify route.",
+            "projectId": "${projectId}",
+            "route": {
+              "destIpRange": "10.0.0.0/20",
+              "displayName": "default-route-f17b1d9b115a2c1e",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "nextHop": "network gateway",
+              "nextHopType": "NEXT_HOP_NETWORK",
+              "routeScope": "NETWORK",
+              "routeType": "SUBNET",
+              "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
+            },
+            "state": "APPLY_ROUTE"
+          },
+          {
+            "abort": {
+              "cause": "UNKNOWN_IP",
+              "ipAddress": "10.0.0.2",
+              "resourceUri": "projects/${projectId}/global/networks/default"
+            },
+            "description": "Final state: analysis is aborted due to no endpoints with destination IP address are found in network.",
+            "projectId": "${projectId}",
+            "state": "ABORT"
+          }
+        ]
+      }
+    ],
+    "verifyTime": "2025-03-11T06:54:04.139013489Z"
+  },
+  "roundTrip": false,
+  "source": {
+    "ipAddress": "10.0.0.1",
+    "networkType": "GCP_NETWORK"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.ConnectivityTest",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "destination": {
+      "ipAddress": "10.0.0.2"
+    },
+    "name": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+    "protocol": "TCP",
+    "reachabilityDetails": {
+      "result": "UNDETERMINED",
+      "traces": [
+        {
+          "endpointInfo": {
+            "destinationIp": "10.0.0.2",
+            "destinationPort": 80,
+            "protocol": "TCP",
+            "sourceIp": "10.0.0.1",
+            "sourceNetworkUri": "projects/${projectId}/global/networks/default",
+            "sourcePort": 56101
+          },
+          "forwardTraceId": 1,
+          "steps": [
+            {
+              "description": "Initial state: packet originating from a VPC network default.",
+              "network": {
+                "displayName": "default",
+                "matchedIpRange": "10.0.0.0/20",
+                "matchedSubnetUri": "projects/${projectId}/regions/us-east4/subnetworks/default",
+                "region": "us-east4",
+                "uri": "projects/${projectId}/global/networks/default"
+              },
+              "projectId": "${projectId}",
+              "state": "START_FROM_PRIVATE_NETWORK"
+            },
+            {
+              "description": "Config checking state: verify EGRESS firewall rule.",
+              "firewall": {
+                "action": "ALLOW",
+                "direction": "EGRESS",
+                "displayName": "default-allow-egress",
+                "firewallRuleType": "IMPLIED_VPC_FIREWALL_RULE",
+                "networkUri": "projects/${projectId}/global/networks/default",
+                "priority": 65535
+              },
+              "projectId": "${projectId}",
+              "state": "APPLY_EGRESS_FIREWALL_RULE"
+            },
+            {
+              "description": "Config checking state: verify route.",
+              "projectId": "${projectId}",
+              "route": {
+                "destIpRange": "10.0.0.0/20",
+                "displayName": "default-route-f17b1d9b115a2c1e",
+                "networkUri": "projects/${projectId}/global/networks/default",
+                "nextHop": "network gateway",
+                "nextHopType": "NEXT_HOP_NETWORK",
+                "routeScope": "NETWORK",
+                "routeType": "SUBNET",
+                "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
+              },
+              "state": "APPLY_ROUTE"
+            },
+            {
+              "abort": {
+                "cause": "UNKNOWN_IP",
+                "ipAddress": "10.0.0.2",
+                "resourceUri": "projects/${projectId}/global/networks/default"
+              },
+              "description": "Final state: analysis is aborted due to no endpoints with destination IP address are found in network.",
+              "projectId": "${projectId}",
+              "state": "ABORT"
+            }
+          ]
+        }
+      ],
+      "verifyTime": "2025-03-11T06:54:08.622386944Z"
+    },
+    "source": {
+      "ipAddress": "10.0.0.1",
+      "networkType": "GCP_NETWORK"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "destination": {
+    "ipAddress": "10.0.0.2"
+  },
+  "name": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+  "protocol": "TCP",
+  "reachabilityDetails": {
+    "result": "UNDETERMINED",
+    "traces": [
+      {
+        "endpointInfo": {
+          "destinationIp": "10.0.0.2",
+          "destinationPort": 80,
+          "protocol": "TCP",
+          "sourceIp": "10.0.0.1",
+          "sourceNetworkUri": "projects/${projectId}/global/networks/default",
+          "sourcePort": 56101
+        },
+        "forwardTraceId": 1,
+        "steps": [
+          {
+            "description": "Initial state: packet originating from a VPC network default.",
+            "network": {
+              "displayName": "default",
+              "matchedIpRange": "10.0.0.0/20",
+              "matchedSubnetUri": "projects/${projectId}/regions/us-east4/subnetworks/default",
+              "region": "us-east4",
+              "uri": "projects/${projectId}/global/networks/default"
+            },
+            "projectId": "${projectId}",
+            "state": "START_FROM_PRIVATE_NETWORK"
+          },
+          {
+            "description": "Config checking state: verify EGRESS firewall rule.",
+            "firewall": {
+              "action": "ALLOW",
+              "direction": "EGRESS",
+              "displayName": "default-allow-egress",
+              "firewallRuleType": "IMPLIED_VPC_FIREWALL_RULE",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "priority": 65535
+            },
+            "projectId": "${projectId}",
+            "state": "APPLY_EGRESS_FIREWALL_RULE"
+          },
+          {
+            "description": "Config checking state: verify route.",
+            "projectId": "${projectId}",
+            "route": {
+              "destIpRange": "10.0.0.0/20",
+              "displayName": "default-route-f17b1d9b115a2c1e",
+              "networkUri": "projects/${projectId}/global/networks/default",
+              "nextHop": "network gateway",
+              "nextHopType": "NEXT_HOP_NETWORK",
+              "routeScope": "NETWORK",
+              "routeType": "SUBNET",
+              "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
+            },
+            "state": "APPLY_ROUTE"
+          },
+          {
+            "abort": {
+              "cause": "UNKNOWN_IP",
+              "ipAddress": "10.0.0.2",
+              "resourceUri": "projects/${projectId}/global/networks/default"
+            },
+            "description": "Final state: analysis is aborted due to no endpoints with destination IP address are found in network.",
+            "projectId": "${projectId}",
+            "state": "ABORT"
+          }
+        ]
+      }
+    ],
+    "verifyTime": "2025-03-11T06:54:08.622386944Z"
+  },
+  "source": {
+    "ipAddress": "10.0.0.1",
+    "networkType": "GCP_NETWORK"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/connectivityTests/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
