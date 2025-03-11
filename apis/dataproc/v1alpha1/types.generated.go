@@ -14,227 +14,471 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.dataproc.v1.DriverSchedulingConfig
-type DriverSchedulingConfig struct {
-	// Required. The amount of memory in MB the driver is requesting.
-	// +kcc:proto:field=google.cloud.dataproc.v1.DriverSchedulingConfig.memory_mb
-	MemoryMb *int32 `json:"memoryMb,omitempty"`
-
-	// Required. The number of vCPUs the driver is requesting.
-	// +kcc:proto:field=google.cloud.dataproc.v1.DriverSchedulingConfig.vcores
-	Vcores *int32 `json:"vcores,omitempty"`
+// +kcc:proto=google.cloud.dataproc.v1.AutotuningConfig
+type AutotuningConfig struct {
+	// Optional. Scenarios for which tunings are applied.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AutotuningConfig.scenarios
+	Scenarios []string `json:"scenarios,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.JobPlacement
-type JobPlacement struct {
-	// Required. The name of the cluster where the job will be submitted.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobPlacement.cluster_name
-	ClusterName *string `json:"clusterName,omitempty"`
+// +kcc:proto=google.cloud.dataproc.v1.Batch
+type Batch struct {
 
-	// Optional. Cluster labels to identify a cluster where the job will be
-	//  submitted.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobPlacement.cluster_labels
-	ClusterLabels map[string]string `json:"clusterLabels,omitempty"`
+	// Optional. PySpark batch config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.pyspark_batch
+	PysparkBatch *PySparkBatch `json:"pysparkBatch,omitempty"`
+
+	// Optional. Spark batch config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.spark_batch
+	SparkBatch *SparkBatch `json:"sparkBatch,omitempty"`
+
+	// Optional. SparkR batch config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.spark_r_batch
+	SparkRBatch *SparkRBatch `json:"sparkRBatch,omitempty"`
+
+	// Optional. SparkSql batch config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.spark_sql_batch
+	SparkSQLBatch *SparkSQLBatch `json:"sparkSQLBatch,omitempty"`
+
+	// Optional. The labels to associate with this batch.
+	//  Label **keys** must contain 1 to 63 characters, and must conform to
+	//  [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
+	//  Label **values** may be empty, but, if present, must contain 1 to 63
+	//  characters, and must conform to [RFC
+	//  1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be
+	//  associated with a batch.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Runtime configuration for the batch execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.runtime_config
+	RuntimeConfig *RuntimeConfig `json:"runtimeConfig,omitempty"`
+
+	// Optional. Environment configuration for the batch execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.environment_config
+	EnvironmentConfig *EnvironmentConfig `json:"environmentConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.JobReference
-type JobReference struct {
-	// Optional. The ID of the Google Cloud Platform project that the job belongs
-	//  to. If specified, must match the request project ID.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobReference.project_id
-	ProjectID *string `json:"projectID,omitempty"`
-
-	// Optional. The job ID, which must be unique within the project.
-	//
-	//  The ID must contain only letters (a-z, A-Z), numbers (0-9),
-	//  underscores (_), or hyphens (-). The maximum length is 100 characters.
-	//
-	//  If not specified by the caller, the job ID will be provided by the server.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobReference.job_id
-	JobID *string `json:"jobID,omitempty"`
+// +kcc:proto=google.cloud.dataproc.v1.Batch.StateHistory
+type Batch_StateHistory struct {
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.JobScheduling
-type JobScheduling struct {
-	// Optional. Maximum number of times per hour a driver can be restarted as
-	//  a result of driver exiting with non-zero code before job is
-	//  reported failed.
-	//
-	//  A job might be reported as thrashing if the driver exits with a non-zero
-	//  code four times within a 10-minute window.
-	//
-	//  Maximum value is 10.
-	//
-	//  **Note:** This restartable job option is not supported in Dataproc
-	//  [workflow templates]
-	//  (https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template).
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobScheduling.max_failures_per_hour
-	MaxFailuresPerHour *int32 `json:"maxFailuresPerHour,omitempty"`
+// +kcc:proto=google.cloud.dataproc.v1.EnvironmentConfig
+type EnvironmentConfig struct {
+	// Optional. Execution configuration for a workload.
+	// +kcc:proto:field=google.cloud.dataproc.v1.EnvironmentConfig.execution_config
+	ExecutionConfig *ExecutionConfig `json:"executionConfig,omitempty"`
 
-	// Optional. Maximum total number of times a driver can be restarted as a
-	//  result of the driver exiting with a non-zero code. After the maximum number
-	//  is reached, the job will be reported as failed.
-	//
-	//  Maximum value is 240.
-	//
-	//  **Note:** Currently, this restartable job option is
-	//  not supported in Dataproc
-	//  [workflow
-	//  templates](https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template).
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobScheduling.max_failures_total
-	MaxFailuresTotal *int32 `json:"maxFailuresTotal,omitempty"`
+	// Optional. Peripherals configuration that workload has access to.
+	// +kcc:proto:field=google.cloud.dataproc.v1.EnvironmentConfig.peripherals_config
+	PeripheralsConfig *PeripheralsConfig `json:"peripheralsConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.JobStatus
-type JobStatus struct {
+// +kcc:proto=google.cloud.dataproc.v1.ExecutionConfig
+type ExecutionConfig struct {
+	// Optional. Service account that used to execute workload.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. Network URI to connect workload to.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.network_uri
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	// Optional. Subnetwork URI to connect workload to.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.subnetwork_uri
+	SubnetworkURI *string `json:"subnetworkURI,omitempty"`
+
+	// Optional. Tags used for network traffic control.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.network_tags
+	NetworkTags []string `json:"networkTags,omitempty"`
+
+	// Optional. The Cloud KMS key to use for encryption.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
+	// Optional. Applies to sessions only. The duration to keep the session alive
+	//  while it's idling. Exceeding this threshold causes the session to
+	//  terminate. This field cannot be set on a batch workload. Minimum value is
+	//  10 minutes; maximum value is 14 days (see JSON representation of
+	//  [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+	//  Defaults to 1 hour if not set.
+	//  If both `ttl` and `idle_ttl` are specified for an interactive session,
+	//  the conditions are treated as `OR` conditions: the workload will be
+	//  terminated when it has been idle for `idle_ttl` or when `ttl` has been
+	//  exceeded, whichever occurs first.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.idle_ttl
+	IdleTtl *string `json:"idleTtl,omitempty"`
+
+	// Optional. The duration after which the workload will be terminated,
+	//  specified as the JSON representation for
+	//  [Duration](https://protobuf.dev/programming-guides/proto3/#json).
+	//  When the workload exceeds this duration, it will be unconditionally
+	//  terminated without waiting for ongoing work to finish. If `ttl` is not
+	//  specified for a batch workload, the workload will be allowed to run until
+	//  it exits naturally (or run forever without exiting). If `ttl` is not
+	//  specified for an interactive session, it defaults to 24 hours. If `ttl` is
+	//  not specified for a batch that uses 2.1+ runtime version, it defaults to 4
+	//  hours. Minimum value is 10 minutes; maximum value is 14 days. If both `ttl`
+	//  and `idle_ttl` are specified (for an interactive session), the conditions
+	//  are treated as `OR` conditions: the workload will be terminated when it has
+	//  been idle for `idle_ttl` or when `ttl` has been exceeded, whichever occurs
+	//  first.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.ttl
+	Ttl *string `json:"ttl,omitempty"`
+
+	// Optional. A Cloud Storage bucket used to stage workload dependencies,
+	//  config files, and store workload output and other ephemeral data, such as
+	//  Spark history files. If you do not specify a staging bucket, Cloud Dataproc
+	//  will determine a Cloud Storage location according to the region where your
+	//  workload is running, and then create and manage project-level, per-location
+	//  staging and temporary buckets.
+	//  **This field requires a Cloud Storage bucket name, not a `gs://...` URI to
+	//  a Cloud Storage bucket.**
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.staging_bucket
+	StagingBucket *string `json:"stagingBucket,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.LoggingConfig
-type LoggingConfig struct {
+// +kcc:proto=google.cloud.dataproc.v1.PeripheralsConfig
+type PeripheralsConfig struct {
+	// Optional. Resource name of an existing Dataproc Metastore service.
+	//
+	//  Example:
+	//
+	//  * `projects/[project_id]/locations/[region]/services/[service_id]`
+	// +kcc:proto:field=google.cloud.dataproc.v1.PeripheralsConfig.metastore_service
+	MetastoreService *string `json:"metastoreService,omitempty"`
 
-	// TODO: unsupported map type with key string and value enum
-
+	// Optional. The Spark History Server configuration for the workload.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PeripheralsConfig.spark_history_server_config
+	SparkHistoryServerConfig *SparkHistoryServerConfig `json:"sparkHistoryServerConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.PrestoJob
-type PrestoJob struct {
-	// The HCFS URI of the script that contains SQL queries.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PrestoJob.query_file_uri
-	QueryFileURI *string `json:"queryFileURI,omitempty"`
+// +kcc:proto=google.cloud.dataproc.v1.PyPiRepositoryConfig
+type PyPiRepositoryConfig struct {
+	// Optional. PyPi repository address
+	// +kcc:proto:field=google.cloud.dataproc.v1.PyPiRepositoryConfig.pypi_repository
+	PypiRepository *string `json:"pypiRepository,omitempty"`
+}
 
-	// A list of queries.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PrestoJob.query_list
-	QueryList *QueryList `json:"queryList,omitempty"`
+// +kcc:proto=google.cloud.dataproc.v1.PySparkBatch
+type PySparkBatch struct {
+	// Required. The HCFS URI of the main Python file to use as the Spark driver.
+	//  Must be a .py file.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.main_python_file_uri
+	MainPythonFileURI *string `json:"mainPythonFileURI,omitempty"`
 
-	// Optional. Whether to continue executing queries if a query fails.
-	//  The default value is `false`. Setting to `true` can be useful when
-	//  executing independent parallel queries.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PrestoJob.continue_on_failure
-	ContinueOnFailure *bool `json:"continueOnFailure,omitempty"`
+	// Optional. The arguments to pass to the driver. Do not include arguments
+	//  that can be set as batch properties, such as `--conf`, since a collision
+	//  can occur that causes an incorrect batch submission.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.args
+	Args []string `json:"args,omitempty"`
 
-	// Optional. The format in which query output will be displayed. See the
-	//  Presto documentation for supported output formats
-	// +kcc:proto:field=google.cloud.dataproc.v1.PrestoJob.output_format
-	OutputFormat *string `json:"outputFormat,omitempty"`
+	// Optional. HCFS file URIs of Python files to pass to the PySpark
+	//  framework. Supported file types: `.py`, `.egg`, and `.zip`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.python_file_uris
+	PythonFileUris []string `json:"pythonFileUris,omitempty"`
 
-	// Optional. Presto client tags to attach to this query
-	// +kcc:proto:field=google.cloud.dataproc.v1.PrestoJob.client_tags
-	ClientTags []string `json:"clientTags,omitempty"`
+	// Optional. HCFS URIs of jar files to add to the classpath of the
+	//  Spark driver and tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.jar_file_uris
+	JarFileUris []string `json:"jarFileUris,omitempty"`
 
-	// Optional. A mapping of property names to values. Used to set Presto
-	//  [session properties](https://prestodb.io/docs/current/sql/set-session.html)
-	//  Equivalent to using the --session flag in the Presto CLI
-	// +kcc:proto:field=google.cloud.dataproc.v1.PrestoJob.properties
+	// Optional. HCFS URIs of files to be placed in the working directory of
+	//  each executor.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.file_uris
+	FileUris []string `json:"fileUris,omitempty"`
+
+	// Optional. HCFS URIs of archives to be extracted into the working directory
+	//  of each executor. Supported file types:
+	//  `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.archive_uris
+	ArchiveUris []string `json:"archiveUris,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.RepositoryConfig
+type RepositoryConfig struct {
+	// Optional. Configuration for PyPi repository.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RepositoryConfig.pypi_repository_config
+	PypiRepositoryConfig *PyPiRepositoryConfig `json:"pypiRepositoryConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.RuntimeConfig
+type RuntimeConfig struct {
+	// Optional. Version of the batch runtime.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeConfig.version
+	Version *string `json:"version,omitempty"`
+
+	// Optional. Optional custom container image for the job runtime environment.
+	//  If not specified, a default container image will be used.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeConfig.container_image
+	ContainerImage *string `json:"containerImage,omitempty"`
+
+	// Optional. A mapping of property names to values, which are used to
+	//  configure workload execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeConfig.properties
 	Properties map[string]string `json:"properties,omitempty"`
 
-	// Optional. The runtime log config for job execution.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PrestoJob.logging_config
-	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+	// Optional. Dependency repository configuration.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeConfig.repository_config
+	RepositoryConfig *RepositoryConfig `json:"repositoryConfig,omitempty"`
+
+	// Optional. Autotuning configuration of the workload.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeConfig.autotuning_config
+	AutotuningConfig *AutotuningConfig `json:"autotuningConfig,omitempty"`
+
+	// Optional. Cohort identifier. Identifies families of the workloads having
+	//  the same shape, e.g. daily ETL jobs.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeConfig.cohort
+	Cohort *string `json:"cohort,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.QueryList
-type QueryList struct {
-	// Required. The queries to execute. You do not need to end a query expression
-	//  with a semicolon. Multiple queries can be specified in one
-	//  string by separating each with a semicolon. Here is an example of a
-	//  Dataproc API snippet that uses a QueryList to specify a HiveJob:
+// +kcc:proto=google.cloud.dataproc.v1.RuntimeInfo
+type RuntimeInfo struct {
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.SparkBatch
+type SparkBatch struct {
+	// Optional. The HCFS URI of the jar file that contains the main class.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.main_jar_file_uri
+	MainJarFileURI *string `json:"mainJarFileURI,omitempty"`
+
+	// Optional. The name of the driver main class. The jar file that contains
+	//  the class must be in the classpath or specified in `jar_file_uris`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.main_class
+	MainClass *string `json:"mainClass,omitempty"`
+
+	// Optional. The arguments to pass to the driver. Do not include arguments
+	//  that can be set as batch properties, such as `--conf`, since a collision
+	//  can occur that causes an incorrect batch submission.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.args
+	Args []string `json:"args,omitempty"`
+
+	// Optional. HCFS URIs of jar files to add to the classpath of the
+	//  Spark driver and tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.jar_file_uris
+	JarFileUris []string `json:"jarFileUris,omitempty"`
+
+	// Optional. HCFS URIs of files to be placed in the working directory of
+	//  each executor.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.file_uris
+	FileUris []string `json:"fileUris,omitempty"`
+
+	// Optional. HCFS URIs of archives to be extracted into the working directory
+	//  of each executor. Supported file types:
+	//  `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.archive_uris
+	ArchiveUris []string `json:"archiveUris,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.SparkHistoryServerConfig
+type SparkHistoryServerConfig struct {
+	// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+	//  History Server for the workload.
 	//
-	//      "hiveJob": {
-	//        "queryList": {
-	//          "queries": [
-	//            "query1",
-	//            "query2",
-	//            "query3;query4",
-	//          ]
-	//        }
-	//      }
-	// +kcc:proto:field=google.cloud.dataproc.v1.QueryList.queries
-	Queries []string `json:"queries,omitempty"`
+	//  Example:
+	//
+	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkHistoryServerConfig.dataproc_cluster
+	DataprocCluster *string `json:"dataprocCluster,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.TrinoJob
-type TrinoJob struct {
-	// The HCFS URI of the script that contains SQL queries.
-	// +kcc:proto:field=google.cloud.dataproc.v1.TrinoJob.query_file_uri
+// +kcc:proto=google.cloud.dataproc.v1.SparkRBatch
+type SparkRBatch struct {
+	// Required. The HCFS URI of the main R file to use as the driver.
+	//  Must be a `.R` or `.r` file.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRBatch.main_r_file_uri
+	MainRFileURI *string `json:"mainRFileURI,omitempty"`
+
+	// Optional. The arguments to pass to the Spark driver. Do not include
+	//  arguments that can be set as batch properties, such as `--conf`, since a
+	//  collision can occur that causes an incorrect batch submission.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRBatch.args
+	Args []string `json:"args,omitempty"`
+
+	// Optional. HCFS URIs of files to be placed in the working directory of
+	//  each executor.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRBatch.file_uris
+	FileUris []string `json:"fileUris,omitempty"`
+
+	// Optional. HCFS URIs of archives to be extracted into the working directory
+	//  of each executor. Supported file types:
+	//  `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRBatch.archive_uris
+	ArchiveUris []string `json:"archiveUris,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.SparkSqlBatch
+type SparkSQLBatch struct {
+	// Required. The HCFS URI of the script that contains Spark SQL queries to
+	//  execute.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlBatch.query_file_uri
 	QueryFileURI *string `json:"queryFileURI,omitempty"`
 
-	// A list of queries.
-	// +kcc:proto:field=google.cloud.dataproc.v1.TrinoJob.query_list
-	QueryList *QueryList `json:"queryList,omitempty"`
+	// Optional. Mapping of query variable names to values (equivalent to the
+	//  Spark SQL command: `SET name="value";`).
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlBatch.query_variables
+	QueryVariables map[string]string `json:"queryVariables,omitempty"`
 
-	// Optional. Whether to continue executing queries if a query fails.
-	//  The default value is `false`. Setting to `true` can be useful when
-	//  executing independent parallel queries.
-	// +kcc:proto:field=google.cloud.dataproc.v1.TrinoJob.continue_on_failure
-	ContinueOnFailure *bool `json:"continueOnFailure,omitempty"`
-
-	// Optional. The format in which query output will be displayed. See the
-	//  Trino documentation for supported output formats
-	// +kcc:proto:field=google.cloud.dataproc.v1.TrinoJob.output_format
-	OutputFormat *string `json:"outputFormat,omitempty"`
-
-	// Optional. Trino client tags to attach to this query
-	// +kcc:proto:field=google.cloud.dataproc.v1.TrinoJob.client_tags
-	ClientTags []string `json:"clientTags,omitempty"`
-
-	// Optional. A mapping of property names to values. Used to set Trino
-	//  [session properties](https://trino.io/docs/current/sql/set-session.html)
-	//  Equivalent to using the --session flag in the Trino CLI
-	// +kcc:proto:field=google.cloud.dataproc.v1.TrinoJob.properties
-	Properties map[string]string `json:"properties,omitempty"`
-
-	// Optional. The runtime log config for job execution.
-	// +kcc:proto:field=google.cloud.dataproc.v1.TrinoJob.logging_config
-	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+	// Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlBatch.jar_file_uris
+	JarFileUris []string `json:"jarFileUris,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.YarnApplication
-type YarnApplication struct {
-	// Required. The application name.
-	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.name
+// +kcc:proto=google.cloud.dataproc.v1.UsageMetrics
+type UsageMetrics struct {
+	// Optional. DCU (Dataproc Compute Units) usage in (`milliDCU` x `seconds`)
+	//  (see [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.milli_dcu_seconds
+	MilliDcuSeconds *int64 `json:"milliDcuSeconds,omitempty"`
+
+	// Optional. Shuffle storage usage in (`GB` x `seconds`) (see
+	//  [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.shuffle_storage_gb_seconds
+	ShuffleStorageGBSeconds *int64 `json:"shuffleStorageGBSeconds,omitempty"`
+
+	// Optional. Accelerator usage in (`milliAccelerator` x `seconds`) (see
+	//  [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.milli_accelerator_seconds
+	MilliAcceleratorSeconds *int64 `json:"milliAcceleratorSeconds,omitempty"`
+
+	// Optional. Accelerator type being used, if any
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.UsageSnapshot
+type UsageSnapshot struct {
+	// Optional. Milli (one-thousandth) Dataproc Compute Units (DCUs) (see
+	//  [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_dcu
+	MilliDcu *int64 `json:"milliDcu,omitempty"`
+
+	// Optional. Shuffle Storage in gigabytes (GB). (see [Dataproc Serverless
+	//  pricing] (https://cloud.google.com/dataproc-serverless/pricing))
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.shuffle_storage_gb
+	ShuffleStorageGB *int64 `json:"shuffleStorageGB,omitempty"`
+
+	// Optional. Milli (one-thousandth) Dataproc Compute Units (DCUs) charged at
+	//  premium tier (see [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_dcu_premium
+	MilliDcuPremium *int64 `json:"milliDcuPremium,omitempty"`
+
+	// Optional. Shuffle Storage in gigabytes (GB) charged at premium tier. (see
+	//  [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing))
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.shuffle_storage_gb_premium
+	ShuffleStorageGBPremium *int64 `json:"shuffleStorageGBPremium,omitempty"`
+
+	// Optional. Milli (one-thousandth) accelerator. (see [Dataproc
+	//  Serverless pricing] (https://cloud.google.com/dataproc-serverless/pricing))
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.milli_accelerator
+	MilliAccelerator *int64 `json:"milliAccelerator,omitempty"`
+
+	// Optional. Accelerator type being used, if any
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// Optional. The timestamp of the usage snapshot.
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.snapshot_time
+	SnapshotTime *string `json:"snapshotTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.Batch
+type BatchObservedState struct {
+	// Output only. The resource name of the batch.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. The application state.
-	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.state
+	// Output only. A batch UUID (Unique Universal Identifier). The service
+	//  generates this value when it creates the batch.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.uuid
+	Uuid *string `json:"uuid,omitempty"`
+
+	// Output only. The time when the batch was created.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Runtime information about batch execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.runtime_info
+	RuntimeInfo *RuntimeInfo `json:"runtimeInfo,omitempty"`
+
+	// Output only. The state of the batch.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state
 	State *string `json:"state,omitempty"`
 
-	// Required. The numerical progress of the application, from 1 to 100.
-	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.progress
-	Progress *float32 `json:"progress,omitempty"`
+	// Output only. Batch state details, such as a failure
+	//  description if the state is `FAILED`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_message
+	StateMessage *string `json:"stateMessage,omitempty"`
 
-	// Optional. The HTTP URL of the ApplicationMaster, HistoryServer, or
-	//  TimelineServer that provides application-specific information. The URL uses
-	//  the internal hostname, and requires a proxy server for resolution and,
-	//  possibly, access.
-	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.tracking_url
-	TrackingURL *string `json:"trackingURL,omitempty"`
+	// Output only. The time when the batch entered a current state.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_time
+	StateTime *string `json:"stateTime,omitempty"`
+
+	// Output only. The email address of the user who created the batch.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.creator
+	Creator *string `json:"creator,omitempty"`
+
+	// Output only. The resource name of the operation associated with this batch.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.operation
+	Operation *string `json:"operation,omitempty"`
+
+	// Output only. Historical state information for the batch.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_history
+	StateHistory []Batch_StateHistory `json:"stateHistory,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.JobPlacement
-type JobPlacementObservedState struct {
-	// Output only. A cluster UUID generated by the Dataproc service when
-	//  the job is submitted.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobPlacement.cluster_uuid
-	ClusterUuid *string `json:"clusterUuid,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataproc.v1.JobStatus
-type JobStatusObservedState struct {
-	// Output only. A state message specifying the overall job state.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobStatus.state
+// +kcc:proto=google.cloud.dataproc.v1.Batch.StateHistory
+type Batch_StateHistoryObservedState struct {
+	// Output only. The state of the batch at this point in history.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.StateHistory.state
 	State *string `json:"state,omitempty"`
 
-	// Optional. Output only. Job state details, such as an error
-	//  description if the state is `ERROR`.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobStatus.details
-	Details *string `json:"details,omitempty"`
+	// Output only. Details about the state at this point in history.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.StateHistory.state_message
+	StateMessage *string `json:"stateMessage,omitempty"`
 
-	// Output only. The time when this state was entered.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobStatus.state_start_time
+	// Output only. The time when the batch entered the historical state.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.StateHistory.state_start_time
 	StateStartTime *string `json:"stateStartTime,omitempty"`
+}
 
-	// Output only. Additional state information, which includes
-	//  status reported by the agent.
-	// +kcc:proto:field=google.cloud.dataproc.v1.JobStatus.substate
-	Substate *string `json:"substate,omitempty"`
+// +kcc:proto=google.cloud.dataproc.v1.RuntimeInfo
+type RuntimeInfoObservedState struct {
+	// Output only. Map of remote access endpoints (such as web interfaces and
+	//  APIs) to their URIs.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeInfo.endpoints
+	Endpoints map[string]string `json:"endpoints,omitempty"`
+
+	// Output only. A URI pointing to the location of the stdout and stderr of the
+	//  workload.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeInfo.output_uri
+	OutputURI *string `json:"outputURI,omitempty"`
+
+	// Output only. A URI pointing to the location of the diagnostics tarball.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeInfo.diagnostic_output_uri
+	DiagnosticOutputURI *string `json:"diagnosticOutputURI,omitempty"`
+
+	// Output only. Approximate workload resource usage, calculated when
+	//  the workload completes (see [Dataproc Serverless pricing]
+	//  (https://cloud.google.com/dataproc-serverless/pricing)).
+	//
+	//  **Note:** This metric calculation may change in the future, for
+	//  example, to capture cumulative workload resource
+	//  consumption during workload execution (see the
+	//  [Dataproc Serverless release notes]
+	//  (https://cloud.google.com/dataproc-serverless/docs/release-notes)
+	//  for announcements, changes, fixes
+	//  and other Dataproc developments).
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeInfo.approximate_usage
+	ApproximateUsage *UsageMetrics `json:"approximateUsage,omitempty"`
+
+	// Output only. Snapshot of current workload resource usage.
+	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeInfo.current_usage
+	CurrentUsage *UsageSnapshot `json:"currentUsage,omitempty"`
 }
