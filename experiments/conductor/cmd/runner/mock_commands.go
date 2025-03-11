@@ -795,6 +795,9 @@ func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
 }
 
 func runMockgcpTests(opts *RunnerOptions, branch Branch) {
+    if opts.defaultRetries > 0 {
+        log.Printf("Command does not support retries")
+    }
 	ctx := context.TODO()
 
 	close := setLoggingWriter(opts, branch)
@@ -818,7 +821,7 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 		},
 		WorkDir:    workDir,
 		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
-		MaxRetries: 2,
+        MaxRetries: -1, // no retries, even if user defined
 	}
 	_, _, err := executeCommand(opts, cfg)
 	if err != nil {
