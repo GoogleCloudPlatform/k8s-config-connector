@@ -226,7 +226,12 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	}
 
 	if !reflect.DeepEqual(resource.Edition, a.actual.Edition) {
-		updateMask.Paths = append(updateMask.Paths, "edition")
+		if resource.Edition < a.actual.Edition {
+			log.V(2).Info("Downgrading Spanner Instance edition is not supported")
+			return nil
+		} else {
+			updateMask.Paths = append(updateMask.Paths, "edition")
+		}
 	}
 
 	if len(updateMask.Paths) == 0 {
