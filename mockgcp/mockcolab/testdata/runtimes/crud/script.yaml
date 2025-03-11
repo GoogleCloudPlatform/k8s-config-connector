@@ -1,4 +1,5 @@
-- exec: gcloud colab runtimes create --region=us-central1 --runtime-template=default --runtime-id=test-${uniqueId}
+- pre: gcloud colab runtime-templates create --display-name=test-${uniqueId} --runtime-template-id=test-${uniqueId} --region=us-central1
+- exec: gcloud colab runtimes create --region=us-central1 --runtime-template=test-${uniqueId} --runtime-id=test-${uniqueId} --display-name="Runtime ${uniqueId}"
 - exec: gcloud colab runtimes describe test-${uniqueId} --region=us-central1
-- exec: gcloud colab runtimes list --region=us-central1
 - exec: gcloud colab runtimes delete test-${uniqueId} --region=us-central1
+- post: gcloud colab runtime-templates delete test-${uniqueId} --region=us-central1
