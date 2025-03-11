@@ -93,7 +93,7 @@ spec:
                     description: |-
                       Users can update this field to convert a non-failover reservation to a
                       failover reservation (by setting a specific region value) or convert a
-                      failover reservation to a non-failover reservation (by setting an empty value).
+                      failover reservation to a non-failover reservation (by removing spec.failover).
                       However, changes from one region to another region will be ignored by the
                       controller. Additionally, if the value of this field changes during manual failover
                       by the API, the controller will not attempt to revert these changes.
