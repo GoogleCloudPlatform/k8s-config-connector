@@ -47,6 +47,23 @@ type EssentialContactsV1 struct {
 	pb.UnimplementedEssentialContactsServiceServer
 }
 
+func (s *EssentialContactsV1) CreateContact(ctx context.Context, req *pb.CreateContactRequest) (*pb.Contact, error) {
+	name, err := s.storage.GenerateName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	contact := req.Contact
+	contact.Name = name
+
+	if err := s.storage.Create(ctx, contact); err != nil {
+		return nil, err
+	}
+
+	return contact, nil
+}
+
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
@@ -74,3 +91,22 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	return mux, nil
 }
+
+func (s *MockService) Do(req *http.Request) (*http.Response, error) {
+	switch req.URL.Path {
+	case "/v1/projects/mock-project/contacts":
+		if req.Method == http.MethodPost {
+			var createReq pb.CreateContactRequest
+			if err := httpmux.ReadRequest(req, &createReq); err != nil {
+				return nil, err
+			}
+			contact, err := s.v1.CreateContact(req.Context(), &createReq)
+			if err != nil {
+				return nil, err
+			}
+			return httpmux.RespondProto(req, contact)
+		}
+	}
+	return nil, common.NotFoundError(req.URL.Path)
+}
+
