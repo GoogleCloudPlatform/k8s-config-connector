@@ -347,9 +347,13 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 	}
 
 	maxRetries := opts.defaultRetries
-	// If MaxRetries is set in config, cap it at that
-	if cfg.MaxRetries > 0 && cfg.MaxRetries < maxRetries {
-		maxRetries = cfg.MaxRetries
+	if cfg.MaxRetries == -1 { // cancel all retries for this command
+		maxRetries = 0
+	} else {
+		// If MaxRetries is set in config, cap it at that
+		if cfg.MaxRetries > 0 && cfg.MaxRetries < maxRetries {
+			maxRetries = cfg.MaxRetries
+		}
 	}
 
 	var lastErr error
