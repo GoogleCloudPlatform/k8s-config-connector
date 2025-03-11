@@ -573,12 +573,28 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "cluster \"projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "cluster \"projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "cluster \"projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -612,13 +628,73 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.Cluster",
+    "authorization": {
+      "adminUsers": {
+        "username": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      }
+    },
+    "fleet": {
+      "project": "projects/${projectNumber}"
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}",
+    "networking": {
+      "clusterIpv4CidrBlocks": [
+        "10.0.0.0/16"
+      ],
+      "servicesIpv4CidrBlocks": [
+        "10.1.0.0/16"
+      ]
+    }
+  }
 }
 
 ---
@@ -628,8 +704,14 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "authorization": {
@@ -637,18 +719,7 @@ Grpc-Metadata-Content-Type: application/grpc
       "username": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
     }
   },
-  "clusterCaCertificate": "",
-  "connectionState": null,
-  "controlPlane": null,
-  "controlPlaneEncryption": null,
-  "controlPlaneVersion": "",
-  "createTime": null,
-  "defaultMaxPodsPerNode": 0,
-  "endpoint": "",
-  "externalLoadBalancerIpv4AddressPools": [],
-  "externalLoadBalancerIpv6AddressPools": [],
   "fleet": {
-    "membership": "",
     "project": "projects/${projectNumber}"
   },
   "labels": {
@@ -656,8 +727,6 @@ Grpc-Metadata-Content-Type: application/grpc
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "maintenanceEvents": [],
-  "maintenancePolicy": null,
   "name": "projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}",
   "networking": {
     "clusterIpv4CidrBlocks": [
@@ -666,15 +735,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "servicesIpv4CidrBlocks": [
       "10.1.0.0/16"
     ]
-  },
-  "nodeVersion": "",
-  "port": 0,
-  "releaseChannel": "RELEASE_CHANNEL_UNSPECIFIED",
-  "status": "STATUS_UNSPECIFIED",
-  "survivabilityConfig": null,
-  "systemAddonsConfig": null,
-  "targetVersion": "",
-  "updateTime": null
+  }
 }
 
 ---
@@ -684,12 +745,28 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "nodePool \"projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}/nodePools/edgecontainernodepools-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "nodePool \"projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}/nodePools/edgecontainernodepools-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "nodePool \"projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}/nodePools/edgecontainernodepools-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -709,12 +786,17 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -725,24 +807,24 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "localDiskEncryption": null,
-  "machineFilter": "",
   "name": "projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}/nodePools/edgecontainernodepools-${uniqueId}",
-  "nodeConfig": null,
   "nodeCount": 1,
-  "nodeLocation": "edge-site-node-123",
-  "nodeVersion": "",
-  "updateTime": null
+  "nodeLocation": "edge-site-node-123"
 }
 
 ---
@@ -752,12 +834,17 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -768,8 +855,14 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "authorization": {
@@ -777,18 +870,7 @@ Grpc-Metadata-Content-Type: application/grpc
       "username": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
     }
   },
-  "clusterCaCertificate": "",
-  "connectionState": null,
-  "controlPlane": null,
-  "controlPlaneEncryption": null,
-  "controlPlaneVersion": "",
-  "createTime": null,
-  "defaultMaxPodsPerNode": 0,
-  "endpoint": "",
-  "externalLoadBalancerIpv4AddressPools": [],
-  "externalLoadBalancerIpv6AddressPools": [],
   "fleet": {
-    "membership": "",
     "project": "projects/${projectNumber}"
   },
   "labels": {
@@ -796,8 +878,6 @@ Grpc-Metadata-Content-Type: application/grpc
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "maintenanceEvents": [],
-  "maintenancePolicy": null,
   "name": "projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}",
   "networking": {
     "clusterIpv4CidrBlocks": [
@@ -806,15 +886,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "servicesIpv4CidrBlocks": [
       "10.1.0.0/16"
     ]
-  },
-  "nodeVersion": "",
-  "port": 0,
-  "releaseChannel": "RELEASE_CHANNEL_UNSPECIFIED",
-  "status": "STATUS_UNSPECIFIED",
-  "survivabilityConfig": null,
-  "systemAddonsConfig": null,
-  "targetVersion": "",
-  "updateTime": null
+  }
 }
 
 ---
@@ -824,13 +896,26 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.edgecontainer.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
