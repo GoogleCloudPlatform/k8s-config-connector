@@ -34,12 +34,11 @@ import (
 )
 
 type SavedQueryService struct {
-	*MockService
 	pb.UnimplementedSavedQueryServiceServer
 }
 
-func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
-	name, err := s.parseSavedQueryName(req.Name)
+func (s *SavedQueryService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
+	name, err := parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -57,9 +56,9 @@ func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryR
 	return obj, nil
 }
 
-func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSavedQueryRequest) (*pb.SavedQuery, error) {
+func (s *SavedQueryService) CreateSavedQuery(ctx context.Context, req *pb.CreateSavedQueryRequest) (*pb.SavedQuery, error) {
 	reqName := fmt.Sprintf("%s/savedQueries/%s", req.GetParent(), req.GetSavedQueryId())
-	name, err := s.parseSavedQueryName(reqName)
+	name, err := parseSavedQueryName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -83,8 +82,8 @@ func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 	return obj, nil
 }
 
-func (s *AssetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSavedQueryRequest) (*pb.SavedQuery, error) {
-	name, err := s.parseSavedQueryName(req.GetSavedQuery().GetName())
+func (s *SavedQueryService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSavedQueryRequest) (*pb.SavedQuery, error) {
+	name, err := parseSavedQueryName(req.GetSavedQuery().GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -109,8 +108,8 @@ func (s *AssetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSaved
 	return obj, nil
 }
 
-func (s *AssetService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSavedQueryRequest) (*emptypb.Empty, error) {
-	name, err := s.parseSavedQueryName(req.Name)
+func (s *SavedQueryService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSavedQueryRequest) (*emptypb.Empty, error) {
+	name, err := parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -137,7 +136,7 @@ func (n *savedQueryName) String() string {
 
 // parseSavedQueryName parses a string into an savedQueryName.
 // The expected form is `projects/*/savedQueries/*`.
-func (s *AssetService) parseSavedQueryName(name string) (*savedQueryName, error) {
+func (s *SavedQueryService) parseSavedQueryName(name string) (*savedQueryName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && (tokens[0] == "projects" || tokens[0] == "folders" || tokens[0] == "organizations") && tokens[2] == "savedQueries" {
