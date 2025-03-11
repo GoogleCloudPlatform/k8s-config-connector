@@ -106,6 +106,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"n", 0, "Number of commits to diff/revert (default: 0)")
 	cmd.Flags().BoolVarP(&opts.verbose, "verbose",
 		"v", false, "Enable verbose output logging")
+	cmd.Flags().StringVarP(&opts.scriptFile, "script",
+		"", "", "File containing your script to run on the resource branches.")
 
 	return cmd
 }
@@ -126,6 +128,8 @@ type RunnerOptions struct {
 	force      bool // Force flag to override file existence checks
 	numCommits int  // Number of commits to diff (default: 1)
 	verbose    bool // Verbose output flag
+
+	scriptFile string
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -246,6 +250,13 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	}
 
 	switch opts.command {
+	case -5:
+		for idx, branch := range branches.Branches {
+			log.Printf("Executing script on branch: %d script: %s, branch: %s\r\n", idx, opts.scriptFile, branch.Local)
+			if err := executeScript(opts, branch); err != nil {
+				log.Printf("Failed to execute script: %v", err)
+			}
+		}
 	case -4:
 		fixMetadata(opts, branches, "Skip(with reason)", setSkipOnBranchModifier)
 	case -3:
