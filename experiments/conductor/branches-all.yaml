@@ -9391,14 +9391,15 @@ branches:
       local: resource-resourcemanager-tagbinding
       remote: resource-resourcemanager-tagbinding
       command: ""
-      group: resourcemanager
+      group: tags
       resource: tagbinding
       controller: Unknown
-      kind: ResourceManagerTagBinding
+      kind: TagsTagBinding
+      crd-version: v1beta1
       package: google.cloud.resourcemanager.v3
       proto: TagBinding
       proto-path: google/cloud/resourcemanager/v3/tag_bindings.proto
-      proto-service: ""
+      proto-service: google.cloud.resourcemanager.v3.TagBindings
       proto-msg: google.cloud.resourcemanager.v3.TagBinding
       host-name: ""
       notes:
@@ -9407,7 +9408,7 @@ branches:
       local: resource-resourcemanager-taghold
       remote: resource-resourcemanager-taghold
       command: ""
-      group: resourcemanager
+      group: tags
       resource: taghold
       controller: Unknown
       kind: ResourceManagerTagHold
@@ -9423,14 +9424,15 @@ branches:
       local: resource-resourcemanager-tagkey
       remote: resource-resourcemanager-tagkey
       command: ""
-      group: resourcemanager
+      group: tags
       resource: tagkey
       controller: Unknown
-      kind: ResourceManagerTagKey
+      kind: TagsTagKey
+      crd-version: v1beta1
       package: google.cloud.resourcemanager.v3
       proto: TagKey
       proto-path: google/cloud/resourcemanager/v3/tag_keys.proto
-      proto-service: ""
+      proto-service: google.cloud.resourcemanager.v3.TagKeys
       proto-msg: google.cloud.resourcemanager.v3.TagKey
       host-name: ""
       notes:
@@ -9438,19 +9440,18 @@ branches:
     - name: resourcemanager-tagvalue
       local: resource-resourcemanager-tagvalue
       remote: resource-resourcemanager-tagvalue
-      command: ""
-      group: resourcemanager
+      command: gcloud resource-manager tags values
+      group: tags
       resource: tagvalue
       controller: Unknown
-      kind: ResourceManagerTagValue
+      kind: TagsTagValue
+      crd-version: v1beta1
       package: google.cloud.resourcemanager.v3
       proto: TagValue
       proto-path: google/cloud/resourcemanager/v3/tag_values.proto
-      proto-service: ""
+      proto-service: google.cloud.resourcemanager.v3.TagValues
       proto-msg: google.cloud.resourcemanager.v3.TagValue
       host-name: ""
-      notes:
-        - No gcloud command found
     - name: resourcesettings-setting
       local: resource-resourcesettings-setting
       remote: resource-resourcesettings-setting
