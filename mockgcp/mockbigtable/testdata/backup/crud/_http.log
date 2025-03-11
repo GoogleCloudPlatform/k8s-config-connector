@@ -222,7 +222,6 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateBackupMetadata",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "name": "test-${uniqueId}",
     "sourceTable": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table-${uniqueId}",
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -234,11 +233,11 @@ X-Xss-Protection: 0
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "endTime": "2025-03-11T08:15:46.521614Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "expireTime": "2025-05-03T00:00:00Z",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/clusters/test-cluster-${uniqueId}/backups/test-${uniqueId}",
     "sourceTable": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table-${uniqueId}",
-    "startTime": "2025-03-11T08:15:45.857016Z",
+    "startTime": "2024-04-01T12:34:56.123456Z",
     "state": "READY"
   }
 }
