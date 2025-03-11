@@ -437,6 +437,8 @@ branches:
         - "privilegedaccessmanager.googleapis.com"
       notes:
         - subresource of entitlement
+        - API diretory already has files for entitlement, need to skip otherwise it will override the existing files
+      skip: true
     - name: resourcemanager-folder
       local: resource-resourcemanager-folder
       remote: resource-resourcemanager-folder
