@@ -66,11 +66,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "128653134652",
-    "type": "organization"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -127,11 +122,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "128653134652",
-    "type": "organization"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -232,11 +222,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "128653134652",
-    "type": "organization"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
