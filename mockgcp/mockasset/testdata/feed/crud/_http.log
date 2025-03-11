@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "feed": {
@@ -53,7 +52,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=jso
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -83,7 +81,6 @@ GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/test-${
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -116,7 +113,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=jso
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -146,7 +142,6 @@ GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/test-${
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -180,7 +175,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "feed": {
@@ -224,7 +218,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=jso
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -254,7 +247,6 @@ DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/test
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
