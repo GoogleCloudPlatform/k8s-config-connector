@@ -75,12 +75,48 @@ spec:
                   value of other fields, and may be sent on update and delete requests
                   to ensure the client has an up-to-date value before proceeding.
                 type: string
+              location:
+                description: Immutable. The location where the DeliveryPipeline should
+                  reside.
+                type: string
               name:
                 description: Optional. Name of the `DeliveryPipeline`. Format is `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}`.
                   The `deliveryPipeline` component must match `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
                 type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
-                description: The DeployDeliveryPipeline name. If not given, the metadata.name
+                description: The GCP resource identifier. If not given, the metadata.name
                   will be used.
                 type: string
               serialPipeline:
@@ -448,6 +484,9 @@ spec:
                 description: When suspended, no new releases or rollouts can be created,
                   but in-progress ones will complete.
                 type: boolean
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: DeployDeliveryPipelineStatus defines the config connector

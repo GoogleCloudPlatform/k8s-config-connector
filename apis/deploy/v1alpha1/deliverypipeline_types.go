@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,8 +25,12 @@ var DeployDeliveryPipelineGVK = GroupVersion.WithKind("DeployDeliveryPipeline")
 // DeployDeliveryPipelineSpec defines the desired state of DeployDeliveryPipeline
 // +kcc:proto=google.cloud.deploy.v1.DeliveryPipeline
 type DeployDeliveryPipelineSpec struct {
-	// The DeployDeliveryPipeline name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+	commonv1alpha1.CommonSpec `json:",inline"`
+
+	// Immutable. The location where the DeliveryPipeline should reside.
+	// +required
+	Location *string `json:"location,omitempty"`
+
 	// Optional. Name of the `DeliveryPipeline`. Format is
 	//  `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}`.
 	//  The `deliveryPipeline` component must match
