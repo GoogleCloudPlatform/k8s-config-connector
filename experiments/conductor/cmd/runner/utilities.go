@@ -43,6 +43,7 @@ var commandMap = map[int64]string{
 	cmdGenerateTypes:       "generatetypes",
 	cmdGenerateCRD:         "generatecrd",
 	cmdGenerateFuzzer:      "generatefuzzer",
+	cmdBuildProto:          "buildproto",
 }
 
 type exitBash func()
@@ -208,6 +209,21 @@ func gitCommit(ctx context.Context, workDir string, msg string) {
 	log.Printf("BRANCH COMMIT: %v\n", formatCommandOutput(results.Stdout))
 }
 
+func gitStatusCheck(workDir string, filePath string) bool {
+	log.Printf("COMMAND: git status -- %s", filePath)
+	args := []string{"status", "-s", filePath}
+	gitstatus := exec.Command("git", args...)
+	gitstatus.Dir = workDir
+	var out bytes.Buffer
+	gitstatus.Stdout = &out
+	if err := gitstatus.Run(); err != nil {
+		log.Printf("Git status on file %s/%s error: %q\n", workDir, filePath, err)
+		return false
+	}
+	log.Printf("Git status on file %s/%s: %s", workDir, filePath, out.String())
+	return len(strings.TrimSpace(out.String())) > 0
+}
+
 func gitFileHasChange(workDir string, filePath string) bool {
 	log.Printf("COMMAND: git diff -- %s", filePath)
 	args := []string{"diff", "--", filePath}
@@ -261,31 +277,22 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 		log.Printf("Error opening logging file %s, :%v", logFile, err)
 		return noOp
 	}
-	log.Printf("Logging to %s", logFile)
-	log.SetOutput(io.MultiWriter(os.Stderr, out))
 
-	/*
-		var errF *os.File
-		errFile := filepath.Join(logDir, "err.log")
-		if _, err := os.Stat(errFile); os.IsNotExist(err) {
-			errF, err = os.Create(errFile)
-			if err != nil {
-				return os.Stdout, os.Stderr
-			}
-		} else {
-			errF, err = os.OpenFile(errFile, os.O_APPEND, 0755)
-			if err != nil {
-				return os.Stdout, os.Stderr
-			}
-		}
-	*/
+	log.Printf("Logging to %s", logFile)
+	if opts.verbose {
+		// In verbose mode, write to both stderr and the log file
+		log.SetOutput(io.MultiWriter(os.Stderr, out))
+	} else {
+		// In non-verbose mode, write only to the log file
+		log.SetOutput(out)
+	}
 
 	return func() {
 		// Initially force out to stdout in case we hit an error we don't
 		// want to pollute a different runs logs with our logs.
 		log.SetOutput(os.Stdout)
 		if err := out.Close(); err != nil {
-			log.Printf("Failed to clode logging file %s, :%v", logFile, err)
+			log.Printf("Failed to close logging file %s, :%v", logFile, err)
 		}
 	}
 }

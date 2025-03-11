@@ -520,37 +520,38 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 
 	close := setLoggingWriter(opts, branch)
 	defer close()
-	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+	workDir := opts.branchRepoDir
 
 	var hasChange = false
 	checkoutBranch(ctx, branch, workDir)
 
 	// Check to see if the http log file already exists
-	logFile := fmt.Sprintf("mock%s/testdata/%s/crud/_http.log", branch.Group, branch.Resource)
-	logFullPath := filepath.Join(workDir, logFile)
+	mockfolder := fmt.Sprintf("mock%s", branch.Group)
+
+	logFullPath := filepath.Join(workDir, "mockgcp", mockfolder, "testdata", branch.Resource, "crud", "_http.log")
 	if _, err := os.Stat(logFullPath); errors.Is(err, os.ErrNotExist) {
 		log.Printf("SKIPPING %s, missing %s", branch.Name, logFullPath)
 		return
 	}
 
 	// Delete then write the service go prompt file.
-	servicePromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "service_prompt.txt")
+	servicePromptPath := filepath.Join(workDir, "service_prompt.txt")
 	writeTemplateToFile(branch, servicePromptPath, MOCK_SERVICE_GO_GEN)
 
 	// Delete then write the resource go prompt file.
-	resourcePromptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "resource_prompt.txt")
+	resourcePromptPath := filepath.Join(workDir, "resource_prompt.txt")
 	writeTemplateToFile(branch, resourcePromptPath, MOCK_RESOURCE_GO_GEN)
 
 	// Run the controller builder to generate the service go file.
-	serviceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), "service.go")
+	serviceFile := filepath.Join(workDir, "mockgcp", mockfolder, "service.go")
 	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate service mock",
 			Cmd:  "controllerbuilder",
 			Args: []string{
 				"prompt",
-				"--src-dir", opts.branchRepoDir,
-				"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
+				"--src-dir", "./mockgcp",
+				"--proto-dir", fmt.Sprintf(".build/third_party/googleapis/"),
 				"--input-file", "service_prompt.txt",
 			},
 			WorkDir:      workDir,
@@ -582,15 +583,21 @@ func generateMockGo(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Run the controller builder to generate the resource go file.
-	resourceFile := filepath.Join(workDir, fmt.Sprintf("mock%s", branch.Group), fmt.Sprintf("%s.go", strings.ToLower(branch.Resource)))
+	resourceName := strings.ToLower(branch.Resource)
+	if resourceName == "service" {
+		// Special case for service, it's actually a resource.
+		log.Printf("WARNING: Special case for resource with names 'service', setting file name to 'resourceservice.go'")
+		resourceName = "resourceservice"
+	}
+	resourceFile := filepath.Join(workDir, "mockgcp", mockfolder, fmt.Sprintf("%s.go", resourceName))
 	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate resource mock",
 			Cmd:  "controllerbuilder",
 			Args: []string{
 				"prompt",
-				"--src-dir", opts.branchRepoDir,
-				"--proto-dir", fmt.Sprintf("%s/.build/third_party/googleapis/", opts.branchRepoDir),
+				"--src-dir", "./mockgcp",
+				"--proto-dir", ".build/third_party/googleapis/",
 				"--input-file", "resource_prompt.txt",
 			},
 			WorkDir:      workDir,
@@ -712,7 +719,7 @@ func addServiceToRoundTrip(opts *RunnerOptions, branch Branch) {
 	gitCommit(ctx, workDir, fmt.Sprintf("Adding service to mock_http_roundtrip.go for %s", branch.Name))
 }
 
-const ADD_PROTO_TO_MAKEFILE string = `Please add the generation for <TICK><PROTO_PACKAGE><TICK> to the <TICK>generate-grpc-for-google-protos<TICK> target in <TICK>Makefile<TICK>.
+const ADD_PROTO_TO_MAKEFILE string = `Please add the generation for <TICK><PROTO_PACKAGE><TICK> to the <TICK>gen-proto-no-fixup<TICK> target in <TICK>Makefile<TICK>.
 
 Hints:
 
@@ -720,7 +727,14 @@ Hints:
 
 * Use the EditFile command to insert the appropriate third_party directory into the list of paths.
 
-* The generate-grpc-for-google-protos command contains a long protoc command, split across multiple lines.  There should be a backslash character (\) on all lines but the last.  Make sure there is a space before the backslash.`
+* The gen-proto-no-fixup command contains a long protoc command, split across multiple lines.  There should be a backslash character (\) on all lines but the last.  Make sure there is a space before the backslash.
+
+* The generation path being added  should begin with <TICK>./third_party/googleapis/mockgcp/<RESOURCE><TICK> and should not contain google after mockgcp.
+
+* This is not a correct path: <TICK>./third_party/googleapis/mockgcp/google/cloud/metastore/...<TICK>
+
+* This is the correct path: <TICK>./third_party/googleapis/cloud/mockgcp/metastore/...<TICK>
+`
 
 func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
 	ctx := context.TODO()
@@ -757,14 +771,26 @@ func addProtoToMakefile(opts *RunnerOptions, branch Branch) {
 		// log.Fatal(err)
 		log.Printf("updating proto Makefile error: %q\n", err)
 	}
-	if !gitFileHasChange(workDir, "Makefile") {
-		return
-	}
-	// Add the new files to the current branch.
-	gitAdd(ctx, workDir, "Makefile")
 
-	// Commit the change to the current branch.
-	gitCommit(ctx, workDir, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
+	hasChange := false
+
+	makefile := filepath.Join("mockgcp", "Makefile")
+	if gitFileHasChange(opts.branchRepoDir, makefile) {
+		hasChange = true
+		gitAdd(ctx, opts.branchRepoDir, makefile)
+	}
+
+	fixup := filepath.Join("mockgcp", "fixup-third-party.sh")
+	if gitFileHasChange(opts.branchRepoDir, fixup) {
+		hasChange = true
+		gitAdd(ctx, opts.branchRepoDir, fixup)
+	}
+
+	// Add the new files to the current branch.
+	if hasChange {
+		// Commit the change to the current branch.
+		gitCommit(ctx, opts.branchRepoDir, fmt.Sprintf("Adding proto to Makefile for %s", branch.Name))
+	}
 }
 
 func runMockgcpTests(opts *RunnerOptions, branch Branch) {
@@ -805,4 +831,46 @@ func runMockgcpTests(opts *RunnerOptions, branch Branch) {
 		log.Printf("SKIPPING %s, %s was not created", branch.Name, logFullPath)
 		return
 	}
+}
+
+func buildProtoFiles(opts *RunnerOptions, branch Branch) {
+	ctx := context.TODO()
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+
+	checkoutBranch(ctx, branch, workDir)
+
+	// Run make gen-proto command
+	cfg := CommandConfig{
+		Name:       "Generate proto files",
+		Cmd:        "make",
+		Args:       []string{"gen-proto"},
+		WorkDir:    workDir,
+		MaxRetries: 1,
+	}
+
+	_, _, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Proto generation error: %v", err)
+		return
+	}
+
+	// Check if the generated directory exists and has changes
+	generatedDir := filepath.Join(workDir, "generated")
+	if _, err := os.Stat(generatedDir); err != nil {
+		log.Printf("Generated directory not found: %v", err)
+		return
+	}
+
+	if !gitStatusCheck(workDir, "generated") && !gitFileHasChange(workDir, "generated") {
+		log.Printf("SKIPPING %s, no changes to generated directory", branch.Name)
+		return
+	}
+
+	// Add the generated directory to git
+	gitAdd(ctx, workDir, "generated")
+
+	// Commit the changes
+	gitCommit(ctx, workDir, fmt.Sprintf("Generated proto files for %s", branch.Name))
 }
