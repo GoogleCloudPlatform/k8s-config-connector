@@ -39,11 +39,11 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 
 var Acronyms = []string{
 	"API",
-	"BGP",
+	"BGP", "BYOID",
 	"CA", "CDN", "CIDR", "CPU",
 	"DNS",
 	"FS",
-	"GCE", "GB",
+	"GCE", "GB", "GCS",
 	"HTML", "HTTP", "HTTPS",
 	"IAM", "IAP", "ID", "IP", "IPV4", "IPV6",
 	"KMS",
