@@ -420,6 +420,8 @@ func (m *mockRoundTripper) modifyUpdateMask(o map[string]any) error {
 				switch token {
 				case "display_name":
 					tokens[i] = "displayName"
+				case "content_type":
+					tokens[i] = "contentType"
 				}
 			}
 			o[k] = strings.Join(tokens, ",")
