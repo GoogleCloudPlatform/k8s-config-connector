@@ -378,6 +378,9 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 		cmd.Stdout = &outBuf
 		cmd.Stderr = &errBuf
 
+		cmd.Stdout = io.MultiWriter(os.Stdout, cmd.Stdout)
+		cmd.Stderr = io.MultiWriter(os.Stderr, cmd.Stderr)
+
 		if cfg.Stdin != nil {
 			cmd.Stdin = cfg.Stdin
 		}
