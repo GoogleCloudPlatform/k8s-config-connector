@@ -68,7 +68,12 @@ func (s *EventarcV1) CreateChannel(ctx context.Context, req *pb.CreateChannelReq
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Channel_ACTIVE // By default, new resources are considered ACTIVE.
-	s.populateDefaultsForChannel(obj)
+	parsedName, err := s.parseChannelName(obj.Name)
+        if err != nil {
+            return nil, err
+        }
+        obj.State = pb.Channel_ACTIVE
+	obj.Transport = &pb.Channel_PubsubTopic{PubsubTopic: fmt.Sprintf("projects/%s/topics/eventarc-channel-%s-%s-368", parsedName.Project.ID, parsedName.Location, parsedName.Channel)}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -103,6 +108,13 @@ func (s *EventarcV1) UpdateChannel(ctx context.Context, req *pb.UpdateChannelReq
         switch path {
         case "crypto_key_name", "cryptoKeyName":
             obj.CryptoKeyName = req.GetChannel().GetCryptoKeyName()
+        case "labels":
+            if obj.Labels == nil {
+                obj.Labels = make(map[string]string)
+            }
+            for k, v := range req.GetChannel().Labels {
+                obj.Labels[k] = v
+            }
         default:
             return nil, status.Errorf(codes.InvalidArgument, "field %q is not supported for update", path)
         }
@@ -137,13 +149,7 @@ func (s *EventarcV1) DeleteChannel(ctx context.Context, req *pb.DeleteChannelReq
 }
 
 func (s *EventarcV1) populateDefaultsForChannel(obj *pb.Channel) {
-	if obj.GetTransport() == nil {
-                name, err := s.parseChannelName(obj.Name)
-                if err != nil {
-                    return
-                }
-		obj.Transport = &pb.Channel_PubsubTopic{PubsubTopic: fmt.Sprintf("projects/%s/topics/eventarc-channel-%s-%s-368", name.Project.ID, name.Location, name.Channel)}
-	}
+
 }
 
 type channelName struct {
