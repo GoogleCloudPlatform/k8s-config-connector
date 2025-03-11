@@ -1,0 +1,101 @@
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance/clusters/test-cluster/backups?alt=json&backupId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "sourceTable": "projects/${projectId}/instances/test-instance/tables/test-table"
+}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Failed to read: projects/{${projectNumber}}/instances/test-instance : GlobalInstances(${projectNumber},test-instance) [google.rpc.error_details_ext] { message: \"Failed to read: projects/{${projectNumber}}/instances/test-instance\" }"
+      }
+    ],
+    "message": "Failed to read: projects/{${projectNumber}}/instances/test-instance",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance/clusters/test-cluster/backups/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Failed to read: projects/{${projectNumber}}/instances/test-instance : GlobalInstances(${projectNumber},test-instance) [google.rpc.error_details_ext] { message: \"Failed to read: projects/{${projectNumber}}/instances/test-instance\" }"
+      }
+    ],
+    "message": "Failed to read: projects/{${projectNumber}}/instances/test-instance",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance/clusters/test-cluster/backups/test-${uniqueId}?alt=json&updateMask=expire_time
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "expireTime": "2024-04-01T12:34:56.123456Z"
+}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Failed to read: projects/{${projectNumber}}/instances/test-instance : GlobalInstances(${projectNumber},test-instance) [google.rpc.error_details_ext] { message: \"Failed to read: projects/{${projectNumber}}/instances/test-instance\" }"
+      }
+    ],
+    "message": "Failed to read: projects/{${projectNumber}}/instances/test-instance",
+    "status": "NOT_FOUND"
+  }
+}
