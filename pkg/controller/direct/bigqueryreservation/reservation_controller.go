@@ -200,7 +200,9 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		paths = append(paths, "secondary_location")
 	}
 
-	if desiredPb.Autoscale != nil && !reflect.DeepEqual(desiredPb.Autoscale.MaxSlots, a.actual.Autoscale.MaxSlots) {
+	if desiredPb.Autoscale != nil && a.actual.Autoscale != nil && desiredPb.Autoscale.MaxSlots != a.actual.Autoscale.MaxSlots {
+		paths = append(paths, "autoscale")
+	} else if desiredPb.Autoscale != nil && a.actual.Autoscale == nil {
 		paths = append(paths, "autoscale")
 	}
 
