@@ -32,6 +32,7 @@ type generateFuzzerOptions struct {
 	*options.GenerateOptions
 	message     string
 	apiVersion  string
+	Kind        string
 	maxAttempts int
 	llmModel    string
 }
@@ -39,6 +40,7 @@ type generateFuzzerOptions struct {
 func (o *generateFuzzerOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.message, "message", o.message, "Proto message to generate fuzzer for")
 	cmd.Flags().StringVar(&o.apiVersion, "api-version", o.apiVersion, "API version to generate fuzzer for")
+	cmd.Flags().StringVar(&o.Kind, "kind", o.Kind, "Kind to generate fuzzer for")
 	cmd.Flags().StringVar(&o.llmModel, "llm-model", o.llmModel, "LLM model to use for fuzzer generation")
 	cmd.Flags().IntVar(&o.maxAttempts, "max-attempts", 5, "Maximum number of attempts to generate a valid fuzzer")
 }
@@ -62,6 +64,9 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 			}
 			if opt.apiVersion == "" {
 				return fmt.Errorf("--api-version flag is required")
+			}
+			if opt.Kind == "" {
+				return fmt.Errorf("--kind flag is required")
 			}
 			return nil
 		},
@@ -111,7 +116,7 @@ func RunGenerateFuzzer(ctx context.Context, opt *generateFuzzerOptions) error {
 			cmd.Env = append(cmd.Env, fmt.Sprintf("LLM_MODEL=%s", opt.llmModel))
 		}
 
-		input := fmt.Sprintf("// +tool:fuzz-gen\n// proto.message: %s\n// api.group: %s\n", opt.message, gv.Group)
+		input := fmt.Sprintf("// +tool:fuzz-gen\n// proto.message: %s\n// api.group: %s\n// crd.kind: %s\n", opt.message, gv.Group, opt.Kind)
 		cmd.Stdin = strings.NewReader(input)
 
 		outputFile := filepath.Join(root, "pkg/controller/direct", goPackage, fmt.Sprintf("%s_fuzzer.go", resource))
