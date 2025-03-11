@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type QueueIdentity struct {
 	parent *QueueParent
-	id string
+	id     string
 }
 
 func (i *QueueIdentity) String() string {
-	return  i.parent.String() + "/queues/" + i.id
+	return i.parent.String() + "/queues/" + i.id
 }
 
 func (i *QueueIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *QueueIdentity) ID() string {
 }
 
 func (i *QueueIdentity) Parent() *QueueParent {
-	return  i.parent
+	return i.parent
 }
 
 type QueueParent struct {
@@ -52,12 +52,11 @@ func (p *QueueParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-
 // New builds a QueueIdentity from the Config Connector Queue object.
 func NewQueueIdentity(ctx context.Context, reader client.Reader, obj *TasksQueue) (*QueueIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

@@ -16,12 +16,11 @@
 // proto.message: google.cloud.tasks.v2.Queue
 // api.group: cloudtasks.cnrm.cloud.google.com
 
-package cloudtasks
+package tasks
 
 import (
 	pb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	tasks "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/v1beta1/transformers/alpha/tasks"
 )
 
 func init() {
@@ -30,8 +29,8 @@ func init() {
 
 func tasksQueueFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Queue{},
-		tasks.TasksQueueSpec_FromProto, tasks.TasksQueueSpec_ToProto,
-		tasks.TasksQueueObservedState_FromProto, tasks.TasksQueueObservedState_ToProto,
+		TasksQueueSpec_FromProto, TasksQueueSpec_ToProto,
+		TasksQueueObservedState_FromProto, TasksQueueObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // special field
@@ -46,4 +45,3 @@ func tasksQueueFuzzer() fuzztesting.KRMFuzzer {
 
 	return f
 }
-

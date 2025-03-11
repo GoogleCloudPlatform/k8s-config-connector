@@ -42,34 +42,6 @@ func AppEngineRouting_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineRoutin
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
-func Queue_FromProto(mapCtx *direct.MapContext, in *pb.Queue) *krm.Queue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Queue{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.AppEngineRoutingOverride = AppEngineRouting_FromProto(mapCtx, in.GetAppEngineRoutingOverride())
-	out.RateLimits = RateLimits_FromProto(mapCtx, in.GetRateLimits())
-	out.RetryConfig = RetryConfig_FromProto(mapCtx, in.GetRetryConfig())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.PurgeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPurgeTime())
-	out.StackdriverLoggingConfig = StackdriverLoggingConfig_FromProto(mapCtx, in.GetStackdriverLoggingConfig())
-	return out
-}
-func Queue_ToProto(mapCtx *direct.MapContext, in *krm.Queue) *pb.Queue {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Queue{}
-	out.Name = direct.ValueOf(in.Name)
-	out.AppEngineRoutingOverride = AppEngineRouting_ToProto(mapCtx, in.AppEngineRoutingOverride)
-	out.RateLimits = RateLimits_ToProto(mapCtx, in.RateLimits)
-	out.RetryConfig = RetryConfig_ToProto(mapCtx, in.RetryConfig)
-	out.State = direct.Enum_ToProto[pb.Queue_State](mapCtx, in.State)
-	out.PurgeTime = direct.StringTimestamp_ToProto(mapCtx, in.PurgeTime)
-	out.StackdriverLoggingConfig = StackdriverLoggingConfig_ToProto(mapCtx, in.StackdriverLoggingConfig)
-	return out
-}
 func RateLimits_FromProto(mapCtx *direct.MapContext, in *pb.RateLimits) *krm.RateLimits {
 	if in == nil {
 		return nil
@@ -135,13 +107,9 @@ func TasksQueueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Queue) 
 		return nil
 	}
 	out := &krm.TasksQueueObservedState{}
-	// MISSING: Name
-	// MISSING: AppEngineRoutingOverride
-	// MISSING: RateLimits
-	// MISSING: RetryConfig
-	// MISSING: State
-	// MISSING: PurgeTime
-	// MISSING: StackdriverLoggingConfig
+	out.Name = direct.LazyPtr(in.GetName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.PurgeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPurgeTime())
 	return out
 }
 func TasksQueueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TasksQueueObservedState) *pb.Queue {
@@ -149,13 +117,9 @@ func TasksQueueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TasksQue
 		return nil
 	}
 	out := &pb.Queue{}
-	// MISSING: Name
-	// MISSING: AppEngineRoutingOverride
-	// MISSING: RateLimits
-	// MISSING: RetryConfig
-	// MISSING: State
-	// MISSING: PurgeTime
-	// MISSING: StackdriverLoggingConfig
+	out.Name = direct.ValueOf(in.Name)
+	out.State = direct.Enum_ToProto[pb.Queue_State](mapCtx, in.State)
+	out.PurgeTime = direct.StringTimestamp_ToProto(mapCtx, in.PurgeTime)
 	return out
 }
 func TasksQueueSpec_FromProto(mapCtx *direct.MapContext, in *pb.Queue) *krm.TasksQueueSpec {
@@ -163,13 +127,10 @@ func TasksQueueSpec_FromProto(mapCtx *direct.MapContext, in *pb.Queue) *krm.Task
 		return nil
 	}
 	out := &krm.TasksQueueSpec{}
-	// MISSING: Name
-	// MISSING: AppEngineRoutingOverride
-	// MISSING: RateLimits
-	// MISSING: RetryConfig
-	// MISSING: State
-	// MISSING: PurgeTime
-	// MISSING: StackdriverLoggingConfig
+	out.AppEngineRoutingOverride = AppEngineRouting_FromProto(mapCtx, in.GetAppEngineRoutingOverride())
+	out.RateLimits = RateLimits_FromProto(mapCtx, in.GetRateLimits())
+	out.RetryConfig = RetryConfig_FromProto(mapCtx, in.GetRetryConfig())
+	out.StackdriverLoggingConfig = StackdriverLoggingConfig_FromProto(mapCtx, in.GetStackdriverLoggingConfig())
 	return out
 }
 func TasksQueueSpec_ToProto(mapCtx *direct.MapContext, in *krm.TasksQueueSpec) *pb.Queue {
@@ -177,12 +138,9 @@ func TasksQueueSpec_ToProto(mapCtx *direct.MapContext, in *krm.TasksQueueSpec) *
 		return nil
 	}
 	out := &pb.Queue{}
-	// MISSING: Name
-	// MISSING: AppEngineRoutingOverride
-	// MISSING: RateLimits
-	// MISSING: RetryConfig
-	// MISSING: State
-	// MISSING: PurgeTime
-	// MISSING: StackdriverLoggingConfig
+	out.AppEngineRoutingOverride = AppEngineRouting_ToProto(mapCtx, in.AppEngineRoutingOverride)
+	out.RateLimits = RateLimits_ToProto(mapCtx, in.RateLimits)
+	out.RetryConfig = RetryConfig_ToProto(mapCtx, in.RetryConfig)
+	out.StackdriverLoggingConfig = StackdriverLoggingConfig_ToProto(mapCtx, in.StackdriverLoggingConfig)
 	return out
 }
