@@ -1,5 +1,8 @@
-
-- exec: gcloud bigtable authorized-views create av-${uniqueId} --instance=test-instance --table=test-table --definition-file=authorized_view.json
-- exec: gcloud bigtable authorized-views describe av-${uniqueId} --instance=test-instance --table=test-table
-- exec: gcloud bigtable authorized-views update av-${uniqueId} --instance=test-instance --table=test-table --definition-file=authorized_view.json
-- exec: gcloud bigtable authorized-views delete av-${uniqueId} --instance=test-instance --table=test-table
+- exec: gcloud bigtable instances create test-instance-${uniqueId} --display-name=test-instance --cluster-config=id=test-cluster-${uniqueId},zone=us-east1-c
+- exec: gcloud bigtable tables create test-table --instance=test-instance-${uniqueId} --column-families="customer"
+- exec: gcloud bigtable authorized-views create av-${uniqueId} --instance=test-instance-${uniqueId} --table=test-table --definition-file=authorized_view.json
+- exec: gcloud bigtable authorized-views describe av-${uniqueId} --instance=test-instance-${uniqueId} --table=test-table
+- exec: gcloud bigtable authorized-views update av-${uniqueId} --instance=test-instance-${uniqueId} --table=test-table --definition-file=authorized_view.json
+- exec: gcloud bigtable authorized-views delete av-${uniqueId} --instance=test-instance-${uniqueId} --table=test-table --quiet
+- exec: gcloud bigtable tables delete test-table --instance=test-instance-${uniqueId} --quiet
+- exec: gcloud bigtable instances delete test-instance-${uniqueId} --quiet

@@ -1,0 +1,15 @@
+{
+  "subsetView":
+  {
+    "rowPrefixes": ["examplestore1#"],
+    "familySubsets":
+    {
+      "customer":
+      {
+        "qualifiers":["address"],
+        "qualifierPrefixes":["tel"]
+      }
+    }
+  },
+  "deletionProtection": false
+}
