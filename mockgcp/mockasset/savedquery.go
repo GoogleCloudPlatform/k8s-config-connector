@@ -31,10 +31,13 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/asset/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
 
 type SavedQueryService struct {
 	pb.UnimplementedSavedQueryServiceServer
+	storage storage.Storage
 }
 
 func (s *SavedQueryService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
@@ -136,7 +139,7 @@ func (n *savedQueryName) String() string {
 
 // parseSavedQueryName parses a string into an savedQueryName.
 // The expected form is `projects/*/savedQueries/*`.
-func (s *SavedQueryService) parseSavedQueryName(name string) (*savedQueryName, error) {
+func parseSavedQueryName(name string) (*savedQueryName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && (tokens[0] == "projects" || tokens[0] == "folders" || tokens[0] == "organizations") && tokens[2] == "savedQueries" {
