@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectNumber}
 
 {
   "instance": {
@@ -31,8 +30,6 @@ X-Xss-Protection: 0
       "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Test Instance",
       "edition": "STANDARD",
-      "instanceType": "PROVISIONED",
-      "name": "projects/${projectId}/instances/test-${uniqueId}",
       "nodeCount": 1,
       "processingUnits": 1000,
       "replicaComputeCapacity": [
@@ -43,7 +40,6 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "resourceLocation": "us-central1",
       "state": "READY"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -57,7 +53,6 @@ GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${uni
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -76,23 +71,12 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
-      "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Test Instance",
       "edition": "STANDARD",
-      "instanceType": "PROVISIONED",
       "name": "projects/${projectId}/instances/test-${uniqueId}",
       "nodeCount": 1,
       "processingUnits": 1000,
-      "replicaComputeCapacity": [
-        {
-          "nodeCount": 1,
-          "replicaSelection": {
-            "location": "us-central1"
-          }
-        }
-      ],
-      "resourceLocation": "us-central1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -106,19 +90,9 @@ X-Xss-Protection: 0
     "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Test Instance",
     "edition": "STANDARD",
-    "instanceType": "PROVISIONED",
     "name": "projects/${projectId}/instances/test-${uniqueId}",
     "nodeCount": 1,
     "processingUnits": 1000,
-    "replicaComputeCapacity": [
-      {
-        "nodeCount": 1,
-        "replicaSelection": {
-          "location": "us-central1"
-        }
-      }
-    ],
-    "resourceLocation": "us-central1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -130,7 +104,6 @@ GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${uni
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -147,19 +120,8 @@ X-Xss-Protection: 0
   "defaultBackupScheduleType": "AUTOMATIC",
   "displayName": "Test Instance",
   "edition": "STANDARD",
-  "instanceType": "PROVISIONED",
-  "name": "projects/${projectId}/instances/test-${uniqueId}",
   "nodeCount": 1,
   "processingUnits": 1000,
-  "replicaComputeCapacity": [
-    {
-      "nodeCount": 1,
-      "replicaSelection": {
-        "location": "us-central1"
-      }
-    }
-  ],
-  "resourceLocation": "us-central1",
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -171,7 +133,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectNumber}
 
 {
   "createStatement": "CREATE DATABASE `testdb-${uniqueId}`"
@@ -200,7 +161,6 @@ GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${uni
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -222,7 +182,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseDialect": "GOOGLE_STANDARD_SQL",
-    "earliestVersionTime": "2025-03-07T21:37:02.018534Z",
     "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}",
     "state": "READY",
     "versionRetentionPeriod": "1h"
@@ -236,7 +195,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectNumber}
 
 {
   "fullBackupSpec": {},
@@ -281,7 +239,6 @@ GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${uni
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -292,42 +249,7 @@ Vary: Referer
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{
-  "backupSchedules": [
-    {
-      "encryptionConfig": {
-        "encryptionType": "USE_DATABASE_ENCRYPTION"
-      },
-      "fullBackupSpec": {},
-      "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}/backupSchedules/default_daily_full_backup_schedule",
-      "retentionDuration": "604800s",
-      "spec": {
-        "cronSpec": {
-          "creationWindow": "14400s",
-          "text": "28 13 * * *",
-          "timeZone": "UTC"
-        }
-      },
-      "updateTime": "2025-03-07T21:37:02.018534Z"
-    },
-    {
-      "encryptionConfig": {
-        "encryptionType": "USE_DATABASE_ENCRYPTION"
-      },
-      "fullBackupSpec": {},
-      "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}/backupSchedules/test-schedule-${uniqueId}",
-      "retentionDuration": "1209600s",
-      "spec": {
-        "cronSpec": {
-          "creationWindow": "14400s",
-          "text": "0 2 * * *",
-          "timeZone": "UTC"
-        }
-      },
-      "updateTime": "2025-03-07T21:37:07.203333Z"
-    }
-  ]
-}
+{}
 
 ---
 
@@ -335,7 +257,6 @@ GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${uni
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -370,7 +291,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectNumber}
 
 {
   "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}/backupSchedules/test-schedule-${uniqueId}",
@@ -413,7 +333,6 @@ DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -432,7 +351,6 @@ GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${uni
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -443,26 +361,7 @@ Vary: Referer
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{
-  "backupSchedules": [
-    {
-      "encryptionConfig": {
-        "encryptionType": "USE_DATABASE_ENCRYPTION"
-      },
-      "fullBackupSpec": {},
-      "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}/backupSchedules/default_daily_full_backup_schedule",
-      "retentionDuration": "604800s",
-      "spec": {
-        "cronSpec": {
-          "creationWindow": "14400s",
-          "text": "28 13 * * *",
-          "timeZone": "UTC"
-        }
-      },
-      "updateTime": "2025-03-07T21:37:02.018534Z"
-    }
-  ]
-}
+{}
 
 ---
 
@@ -470,7 +369,6 @@ GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${uni
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -484,12 +382,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
-  "earliestVersionTime": "2025-03-07T21:37:02.018534Z",
-  "encryptionInfo": [
-    {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-    }
-  ],
   "name": "projects/${projectId}/instances/test-${uniqueId}/databases/testdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
@@ -501,7 +393,6 @@ DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -520,7 +411,6 @@ DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/test-${
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

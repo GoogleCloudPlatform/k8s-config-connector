@@ -1,296 +1,180 @@
-in.proto.service.definition: service BigtableTableAdmin {
-  option (google.api.default_host) = "bigtableadmin.googleapis.com";
-  option (google.api.oauth_scopes) =
-      "https://www.googleapis.com/auth/bigtable.admin,"
-      "https://www.googleapis.com/auth/bigtable.admin.table,"
-      "https://www.googleapis.com/auth/cloud-bigtable.admin,"
-      "https://www.googleapis.com/auth/cloud-bigtable.admin.table,"
-      "https://www.googleapis.com/auth/cloud-platform,"
-      "https://www.googleapis.com/auth/cloud-platform.read-only";
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-  // Creates a new table in the specified instance.
-  // The table can be created with a full set of initial column families,
-  // specified in the request.
-  rpc CreateTable(CreateTableRequest) returns (Table) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*/instances/*}/tables"
-      body: "table"
-    };
-    option (google.api.method_signature) = "parent,table_id,table";
-  }
+// +tool:mockgcp-support
+// proto.service: google.bigtable.admin.v2.BigtableTableAdmin
+// proto.message: google.bigtable.admin.v2.AuthorizedView
 
-  // Creates a new table from the specified snapshot. The target table must
-  // not exist. The snapshot and the table must be in the same instance.
-  //
-  // Note: This is a private alpha release of Cloud Bigtable snapshots. This
-  // feature is not currently available to most Cloud Bigtable customers. This
-  // feature might be changed in backward-incompatible ways and is not
-  // recommended for production use. It is not subject to any SLA or deprecation
-  // policy.
-  rpc CreateTableFromSnapshot(CreateTableFromSnapshotRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*/instances/*}/tables:createFromSnapshot"
-      body: "*"
-    };
-    option (google.longrunning.operation_info) = {
-      response_type: "Table"
-      metadata_type: "CreateTableFromSnapshotMetadata"
-    };
-    option (google.api.method_signature) = "parent,table_id,source_snapshot";
-  }
+package mockbigtable
 
-  // Lists all tables served from a specified instance.
-  rpc ListTables(ListTablesRequest) returns (ListTablesResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*/instances/*}/tables"
-    };
-    option (google.api.method_signature) = "parent";
-  }
+import (
+	"context"
+	"fmt"
+	"strings"
+	"time"
 
-  // Gets metadata information about the specified table.
-  rpc GetTable(GetTableRequest) returns (Table) {
-    option (google.api.http) = {
-      get: "/v2/{name=projects/*/instances/*/tables/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
+	"google.golang.org/protobuf/types/known/timestamppb"
 
-  // Updates a specified table.
-  rpc UpdateTable(UpdateTableRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      patch: "/v2/{table.name=projects/*/instances/*/tables/*}"
-      body: "table"
-    };
-    option (google.longrunning.operation_info) = {
-      response_type: "Table"
-      metadata_type: "UpdateTableMetadata"
-    };
-  }
+	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 
-  // Permanently deletes a specified table and all of its data.
-  rpc DeleteTable(DeleteTableRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/instances/*/tables/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
+	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
+)
 
-  // Performs a series of column family modifications on the specified table.
-  // Either all or none of the modifications will occur before this method
-  // returns, but data requests received prior to that point may see a table
-  // where only some modifications have taken effect.
-  rpc ModifyColumnFamilies(ModifyColumnFamiliesRequest) returns (Table) {
-    option (google.api.http) = {
-      post: "/v2/{name=projects/*/instances/*/tables/*}:modifyColumnFamilies"
-      body: "*"
-    };
-    option (google.api.method_signature) = "name,modifications";
-  }
+func (s *tableAdminServer) GetAuthorizedView(ctx context.Context, req *pb.GetAuthorizedViewRequest) (*pb.AuthorizedView, error) {
+	name, err := s.parseAuthorizedViewName(req.Name)
+	if err != nil {
+		return nil, err
+	}
 
-  // Permanently drop/delete a row range from a specified table. The request can
-  // specify whether to delete all rows in a table, or only those that match a
-  // particular prefix.
-  rpc DropRowRange(DropRowRangeRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      post: "/v2/{name=projects/*/instances/*/tables/*}:dropRowRange"
-      body: "*"
-    };
-    option (google.api.method_signature) = "name";
-  }
+	fqn := name.String()
 
-  // Generates a series of tokens to be used for API responded that are wrapped
-  // in stream.
-  rpc GenerateConsistencyToken(GenerateConsistencyTokenRequest)
-      returns (GenerateConsistencyTokenResponse) {
-    option (google.api.http) = {
-      post: "/v2/{name=projects/*/instances/*/tables/*}:generateConsistencyToken"
-      body: "*"
-    };
-    option (google.api.method_signature) = "name";
-  }
+	obj := &pb.AuthorizedView{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "authorizedView %q not found", name)
+		}
+		return nil, err
+	}
 
-  // Checks replication consistency based on a consistency token, that is, if
-  // replication has caught up based on the conditions specified in the token
-  // and the check request.
-  rpc CheckConsistency(CheckConsistencyRequest)
-      returns (CheckConsistencyResponse) {
-    option (google.api.http) = {
-      post: "/v2/{name=projects/*/instances/*/tables/*}:checkConsistency"
-      body: "*"
-    };
-    option (google.api.method_signature) = "name,consistency_token";
-  }
-
-  // Creates a new snapshot in the specified cluster from the specified
-  // source table. The cluster and the table must be in the same instance.
-  //
-  // Note: This is a private alpha release of Cloud Bigtable snapshots. This
-  // feature is not currently available to most Cloud Bigtable customers. This
-  // feature might be changed in backward-incompatible ways and is not
-  // recommended for production use. It is not subject to any SLA or deprecation
-  // policy.
-  rpc SnapshotTable(SnapshotTableRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v2/{name=projects/*/instances/*/tables/*}:snapshot"
-      body: "*"
-    };
-    option (google.longrunning.operation_info) = {
-      response_type: "Snapshot"
-      metadata_type: "SnapshotTableMetadata"
-    };
-    option (google.api.method_signature) = "name,cluster,snapshot_id";
-  }
-
-  // Gets metadata information about the specified snapshot.
-  //
-  // Note: This is a private alpha release of Cloud Bigtable snapshots. This
-  // feature is not currently available to most Cloud Bigtable customers. This
-  // feature might be changed in backward-incompatible ways and is not
-  // recommended for production use. It is not subject to any SLA or deprecation
-  // policy.
-  rpc GetSnapshot(GetSnapshotRequest) returns (Snapshot) {
-    option (google.api.http) = {
-      get: "/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Lists all snapshots in a cluster.
-  //
-  // Note: This is a private alpha release of Cloud Bigtable snapshots. This
-  // feature is not currently available to most Cloud Bigtable customers. This
-  // feature might be changed in backward-incompatible ways and is not
-  // recommended for production use. It is not subject to any SLA or deprecation
-  // policy.
-  rpc ListSnapshots(ListSnapshotsRequest) returns (ListSnapshotsResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*/instances/*/clusters/*}/snapshots"
-    };
-    option (google.api.method_signature) = "parent";
-  }
-
-  // Permanently deletes the specified snapshot.
-  //
-  // Note: This is a private alpha release of Cloud Bigtable snapshots. This
-  // feature is not currently available to most Cloud Bigtable customers. This
-  // feature might be changed in backward-incompatible ways and is not
-  // recommended for production use. It is not subject to any SLA or deprecation
-  // policy.
-  rpc DeleteSnapshot(DeleteSnapshotRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Starts creating a new Cloud Bigtable Backup. The returned backup
-  // [long-running operation][google.longrunning.Operation] can be used to
-  // track creation of the backup. The
-  // [metadata][google.longrunning.Operation.metadata] field type is
-  // [CreateBackupMetadata][google.bigtable.admin.v2.CreateBackupMetadata]. The
-  // [response][google.longrunning.Operation.response] type is
-  // [Backup][google.bigtable.admin.v2.Backup], if successful. Cancelling the
-  // long-running operation will cause the new backup to be deleted.
-  rpc CreateBackup(CreateBackupRequest) returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*/instances/*/clusters/*}/backups"
-      body: "backup"
-    };
-    option (google.api.method_signature) = "parent,backup,backup_id";
-    option (google.longrunning.operation_info) = {
-      response_type: "Backup"
-      metadata_type: "CreateBackupMetadata"
-    };
-  }
-
-  // Gets metadata on a pending or completed Cloud Bigtable Backup.
-  rpc GetBackup(GetBackupRequest) returns (Backup) {
-    option (google.api.http) = {
-      get: "/v2/{name=projects/*/instances/*/clusters/*/backups/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Updates a pending or completed Cloud Bigtable Backup.
-  rpc UpdateBackup(UpdateBackupRequest) returns (Backup) {
-    option (google.api.http) = {
-      patch: "/v2/{backup.name=projects/*/instances/*/clusters/*/backups/*}"
-      body: "backup"
-    };
-    option (google.api.method_signature) = "backup,update_mask";
-  }
-
-  // Deletes a pending or completed Cloud Bigtable backup.
-  rpc DeleteBackup(DeleteBackupRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/instances/*/clusters/*/backups/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Lists Cloud Bigtable backups. Returns both completed and pending
-  // backups.
-  rpc ListBackups(ListBackupsRequest) returns (ListBackupsResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*/instances/*/clusters/*}/backups"
-    };
-    option (google.api.method_signature) = "parent";
-  }
-
-  // Create a new AuthorizedView in the specified table.
-  rpc CreateAuthorizedView(CreateAuthorizedViewRequest)
-      returns (AuthorizedView) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*/instances/*/tables/*}/authorizedViews"
-      body: "authorized_view"
-    };
-    option (google.api.method_signature) = "parent,authorized_view,view_id";
-  }
-
-  // Lists all AuthorizedViews to the specified table.
-  rpc ListAuthorizedViews(ListAuthorizedViewsRequest)
-      returns (ListAuthorizedViewsResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*/instances/*/tables/*}/authorizedViews"
-    };
-    option (google.api.method_signature) = "parent";
-  }
-
-  // Gets information about the specified authorized view.
-  rpc GetAuthorizedView(GetAuthorizedViewRequest) returns (AuthorizedView) {
-    option (google.api.http) = {
-      get: "/v2/{name=projects/*/instances/*/tables/*/authorizedViews/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Updates a specified authorized view.
-  rpc UpdateAuthorizedView(UpdateAuthorizedViewRequest)
-      returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      patch: "/v2/{authorized_view.name=projects/*/instances/*/tables/*/authorizedViews/*}"
-      body: "authorized_view"
-    };
-    option (google.api.method_signature) = "authorized_view,update_mask";
-    option (google.longrunning.operation_info) = {
-      response_type: "AuthorizedView"
-      metadata_type: "UpdateAuthorizedViewMetadata"
-    };
-  }
-
-  // Permanently deletes the specified authorized view.
-  rpc DeleteAuthorizedView(DeleteAuthorizedViewRequest)
-      returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/instances/*/tables/*/authorizedViews/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
+	return obj, nil
 }
 
-```
+func (s *tableAdminServer) CreateAuthorizedView(ctx context.Context, req *pb.CreateAuthorizedViewRequest) (*longrunningpb.Operation, error) {
+	reqName := req.GetParent() + "/authorizedViews/" + req.GetAuthorizedViewId()
+	name, err := s.parseAuthorizedViewName(reqName)
+	if err != nil {
+		return nil, err
+	}
 
+	fqn := name.String()
 
+	obj := proto.Clone(req.AuthorizedView).(*pb.AuthorizedView)
+	obj.Name = fqn
+	obj.Etag = "abcdef0123A="
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.CreateAuthorizedViewMetadata{
+		RequestTime:     timestamppb.New(time.Now()),
+		OriginalRequest: &pb.CreateAuthorizedViewRequest{},
+	}
+	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), "us-east1-c")
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.FinishTime = timestamppb.New(time.Now().Add(5 * time.Minute))
+		return obj, nil
+	})
+}
+
+func (s *tableAdminServer) UpdateAuthorizedView(ctx context.Context, req *pb.UpdateAuthorizedViewRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseAuthorizedViewName(req.GetAuthorizedView().GetName())
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	existing := &pb.AuthorizedView{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	updated := proto.Clone(existing).(*pb.AuthorizedView)
+
+	// Required. The set of fields to update.
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+	}
+
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		switch path {
+		case "subset_view":
+			updated.AuthorizedView = &pb.AuthorizedView_SubsetView_{
+				SubsetView: &pb.AuthorizedView_SubsetView{
+					RowPrefixes:   req.GetAuthorizedView().GetSubsetView().GetRowPrefixes(),
+					FamilySubsets: req.GetAuthorizedView().GetSubsetView().GetFamilySubsets(),
+				},
+			}
+		case "deletion_protection":
+			updated.DeletionProtection = false
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.UpdateAuthorizedViewMetadata{
+		RequestTime:     timestamppb.New(time.Now()),
+		OriginalRequest: req,
+		FinishTime:      timestamppb.New(time.Now().Add(5 * time.Minute)),
+	}
+	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), "us-east1-c")
+	return s.operations.DoneLRO(ctx, prefix, metadata, updated)
+}
+
+func (s *tableAdminServer) DeleteAuthorizedView(ctx context.Context, req *pb.DeleteAuthorizedViewRequest) (*emptypb.Empty, error) {
+	name, err := s.parseAuthorizedViewName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	deleted := &pb.AuthorizedView{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
+}
+
+type authorizedViewName struct {
+	Project        string
+	InstanceID     string
+	TableID        string
+	AuthorizedView string
+}
+
+func (n *authorizedViewName) String() string {
+	return fmt.Sprintf("projects/%s/instances/%s/tables/%s/authorizedViews/%s", n.Project, n.InstanceID, n.TableID, n.AuthorizedView)
+}
+
+// parseAuthorizedViewName parses a string into a authorizedViewName.
+// The expected form is `projects/*/instances/*/tables/*/authorizedViews/*`.
+func (s *tableAdminServer) parseAuthorizedViewName(name string) (*authorizedViewName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "instances" && tokens[4] == "tables" && tokens[6] == "authorizedViews" {
+		name := &authorizedViewName{
+			Project:        tokens[1],
+			InstanceID:     tokens[3],
+			TableID:        tokens[5],
+			AuthorizedView: tokens[7],
+		}
+
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}

@@ -33,7 +33,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
 
 func (s *instanceAdminServer) GetAppProfile(ctx context.Context, req *pb.GetAppProfileRequest) (*pb.AppProfile, error) {
