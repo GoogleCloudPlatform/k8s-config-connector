@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2024 Google LLC
+=======
+// Copyright 2025 Google LLC
+>>>>>>> e9922e25c (conductor: "Generated types and mapper for EdgeContainerCluster")
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +21,10 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+<<<<<<< HEAD
 	"strings"
+=======
+>>>>>>> e9922e25c (conductor: "Generated types and mapper for EdgeContainerCluster")
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
