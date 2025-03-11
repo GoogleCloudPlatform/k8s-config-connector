@@ -103,28 +103,6 @@ func (s *EventarcV1) UpdateChannel(ctx context.Context, req *pb.UpdateChannelReq
         switch path {
         case "crypto_key_name", "cryptoKeyName":
             obj.CryptoKeyName = req.GetChannel().GetCryptoKeyName()
-		case \"labels\":
-            if req.GetChannel().Labels == nil {
-                obj.Labels = nil
-            } else {
-                if obj.Labels == nil {
-                    obj.Labels = make(map[string]string)
-                }
-                for k, v := range req.GetChannel().Labels {
-                    obj.Labels[k] = v
-                }
-            }
-					case "labels":
-							if req.GetChannel().Labels == nil {
-									obj.Labels = nil
-							} else {
-									if obj.Labels == nil {
-											obj.Labels = make(map[string]string)
-									}
-									for k, v := range req.GetChannel().Labels {
-											obj.Labels[k] = v
-									}
-							}
         default:
             return nil, status.Errorf(codes.InvalidArgument, "field %q is not supported for update", path)
         }
@@ -151,6 +129,8 @@ func (s *EventarcV1) DeleteChannel(ctx context.Context, req *pb.DeleteChannelReq
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
+        deletedObj.State = pb.Channel_INACTIVE
+        deletedObj.Transport = &pb.Channel_PubsubTopic{PubsubTopic: ""}
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.DoneLRO(ctx, prefix, nil, deletedObj)
@@ -158,7 +138,11 @@ func (s *EventarcV1) DeleteChannel(ctx context.Context, req *pb.DeleteChannelReq
 
 func (s *EventarcV1) populateDefaultsForChannel(obj *pb.Channel) {
 	if obj.GetTransport() == nil {
-		obj.Transport = &pb.Channel_PubsubTopic{PubsubTopic: fmt.Sprintf("projects/%s/topics/eventarc-channel-%s-%s", obj.Name, obj.GetUid(), obj.GetProvider())}
+                name, err := s.parseChannelName(obj.Name)
+                if err != nil {
+                    return
+                }
+		obj.Transport = &pb.Channel_PubsubTopic{PubsubTopic: fmt.Sprintf("projects/%s/topics/eventarc-channel-%s-%s-368", name.Project.ID, name.Location, name.Channel)}
 	}
 }
 
