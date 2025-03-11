@@ -37,17 +37,13 @@ type AssetService struct {
 }
 
 func (s *AssetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb.Feed, error) {
-	name, err := s.parseFeedName(req.Name)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-
 	obj := &pb.Feed{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.storage.Get(ctx, req.Name, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "feed %q not found in %q", name.feedID, name.parent)
+			parts := strings.Split(req.Name, "/")
+			feedID := parts[len(parts)-1]
+			parent := strings.Join(parts[:len(parts)-2], "/")
+			return nil, status.Errorf(codes.NotFound, "feed %q not found in %q", feedID, parent)
 		}
 		return nil, err
 	}
@@ -56,41 +52,29 @@ func (s *AssetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb
 }
 
 func (s *AssetService) CreateFeed(ctx context.Context, req *pb.CreateFeedRequest) (*pb.Feed, error) {
-	parent, projectNumber, err := s.parseParent(req.Parent)
+	_, projectNumber, err := s.parseParent(req.Parent)
 	if err != nil {
 		return nil, err
 	}
-	reqName := parent + "/feeds/" + req.FeedId
 
-	name, err := s.parseFeedName(reqName)
-	if err != nil {
-		return nil, err
-	}
+	feedName := fmt.Sprintf("projects/%s/feeds/%s", projectNumber, req.FeedId)
 
 	feed := req.Feed
-	// Create creates the resource in the storage and returns the object to the caller.
-	// The returned object is what is stored.
-	feed.Name = fmt.Sprintf("projects/%s/feeds/%s", projectNumber, req.FeedId)
+	feed.Name = feedName
 
-	fqn := name.String()
-	if err := s.storage.Create(ctx, fqn, feed); err != nil {
+	if err := s.storage.Create(ctx, feedName, feed); err != nil {
 		return nil, err
 	}
+
 	return feed, nil
 }
 
 func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest) (*pb.Feed, error) {
-	name, err := s.parseFeedName(req.GetFeed().GetName())
-	if err != nil {
-		return nil, err
-	}
-	fqn := name.String()
 	obj := &pb.Feed{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.storage.Get(ctx, req.Feed.Name, obj); err != nil {
 		return nil, err
 	}
 
-	// Apply field mask updates.
 	if req.UpdateMask != nil {
 		for _, path := range req.UpdateMask.Paths {
 			switch path {
@@ -102,9 +86,7 @@ func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest
 				obj.ContentType = req.Feed.ContentType
 			case "feed_output_config":
 				if req.Feed.FeedOutputConfig.GetPubsubDestination().GetTopic() != "" {
-					obj.FeedOutputConfig.GetPubsubDestination().Topic = req.Feed.FeedOutputConfig.GetPubsubDestination().GetTopic()
-				} else {
-					obj.FeedOutputConfig = nil
+					obj.FeedOutputConfig = req.Feed.FeedOutputConfig
 				}
 			case "condition":
 				obj.Condition = req.Feed.Condition
@@ -116,20 +98,18 @@ func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest
 		}
 	}
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	if err := s.storage.Update(ctx, req.Feed.Name, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
 }
 
 func (s *AssetService) DeleteFeed(ctx context.Context, req *pb.DeleteFeedRequest) (*emptypb.Empty, error) {
-	name, err := s.parseFeedName(req.Name)
-	if err != nil {
-		return nil, err
-	}
-	fqn := name.String()
 	deletedObj := &pb.Feed{}
-	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	if err := s.storage.Delete(ctx, req.Name, deletedObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "feed %q not found", req.Name)
+		}
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
