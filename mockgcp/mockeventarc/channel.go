@@ -74,50 +74,70 @@ func (s *EventarcV1) CreateChannel(ctx context.Context, req *pb.CreateChannelReq
 		return nil, err
 	}
 
-	// Returns with no createTime
-	lroRet := proto.Clone(obj).(*pb.Channel)
-	lroRet.CreateTime = nil
+	// Returns the created object
+        lroRet := proto.Clone(obj).(*pb.Channel)
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.DoneLRO(ctx, prefix, nil, lroRet)
 }
 
 func (s *EventarcV1) UpdateChannel(ctx context.Context, req *pb.UpdateChannelRequest) (*longrunningpb.Operation, error) {
-	reqName := req.GetChannel().GetName()
-	name, err := s.parseChannelName(reqName)
-	if err != nil {
-		return nil, err
-	}
-	fqn := name.String()
-	obj := &pb.Channel{}
+    reqName := req.GetChannel().GetName()
+    name, err := s.parseChannelName(reqName)
+    if err != nil {
+        return nil, err
+    }
+    fqn := name.String()
+    obj := &pb.Channel{}
 
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
+    if err := s.storage.Get(ctx, fqn, obj); err != nil {
+        return nil, err
+    }
 
-	paths := req.GetUpdateMask().GetPaths()
-	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
-	}
+    paths := req.GetUpdateMask().GetPaths()
+    if len(paths) == 0 {
+        return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+    }
 
-	for _, path := range paths {
-		switch path {
-		case "crypto_key_name", "cryptoKeyName":
-			obj.CryptoKeyName = req.GetChannel().GetCryptoKeyName()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "field %q is not supported for update", path)
-		}
-	}
+    for _, path := range paths {
+        switch path {
+        case "crypto_key_name", "cryptoKeyName":
+            obj.CryptoKeyName = req.GetChannel().GetCryptoKeyName()
+		case \"labels\":
+            if req.GetChannel().Labels == nil {
+                obj.Labels = nil
+            } else {
+                if obj.Labels == nil {
+                    obj.Labels = make(map[string]string)
+                }
+                for k, v := range req.GetChannel().Labels {
+                    obj.Labels[k] = v
+                }
+            }
+					case "labels":
+							if req.GetChannel().Labels == nil {
+									obj.Labels = nil
+							} else {
+									if obj.Labels == nil {
+											obj.Labels = make(map[string]string)
+									}
+									for k, v := range req.GetChannel().Labels {
+											obj.Labels[k] = v
+									}
+							}
+        default:
+            return nil, status.Errorf(codes.InvalidArgument, "field %q is not supported for update", path)
+        }
+    }
 
-	obj.UpdateTime = timestamppb.New(time.Now())
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
+    obj.UpdateTime = timestamppb.New(time.Now())
+    if err := s.storage.Update(ctx, fqn, obj); err != nil {
+        return nil, err
+    }
 
-	lroRet := proto.Clone(obj).(*pb.Channel)
-	lroRet.UpdateTime = nil
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.DoneLRO(ctx, prefix, nil, lroRet)
+    lroRet := proto.Clone(obj).(*pb.Channel)
+    prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+    return s.operations.DoneLRO(ctx, prefix, nil, lroRet)
 }
 
 func (s *EventarcV1) DeleteChannel(ctx context.Context, req *pb.DeleteChannelRequest) (*longrunningpb.Operation, error) {
@@ -137,8 +157,8 @@ func (s *EventarcV1) DeleteChannel(ctx context.Context, req *pb.DeleteChannelReq
 }
 
 func (s *EventarcV1) populateDefaultsForChannel(obj *pb.Channel) {
-	if obj.PubsubTopic == "" {
-		obj.PubsubTopic = fmt.Sprintf("projects/%s/topics/eventarc-Channel-%s-%s", obj.Name, obj.GetUid(), obj.GetProvider())
+	if obj.GetTransport() == nil {
+		obj.Transport = &pb.Channel_PubsubTopic{PubsubTopic: fmt.Sprintf("projects/%s/topics/eventarc-channel-%s-%s", obj.Name, obj.GetUid(), obj.GetProvider())}
 	}
 }
 
