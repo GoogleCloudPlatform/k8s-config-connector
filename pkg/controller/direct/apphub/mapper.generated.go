@@ -110,3 +110,155 @@ func Scope_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
 	out.Type = direct.Enum_ToProto[pb.Scope_Type](mapCtx, in.Type)
 	return out
 }
+func AppHubDiscoveredWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.AppHubDiscoveredWorkloadObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppHubDiscoveredWorkloadObservedState{}
+	// MISSING: Name
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func AppHubDiscoveredWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubDiscoveredWorkloadObservedState) *pb.DiscoveredWorkload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredWorkload{}
+	// MISSING: Name
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func AppHubDiscoveredWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.AppHubDiscoveredWorkloadSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppHubDiscoveredWorkloadSpec{}
+	// MISSING: Name
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func AppHubDiscoveredWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubDiscoveredWorkloadSpec) *pb.DiscoveredWorkload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredWorkload{}
+	// MISSING: Name
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func DiscoveredWorkload_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.DiscoveredWorkload {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveredWorkload{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func DiscoveredWorkload_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredWorkload) *pb.DiscoveredWorkload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredWorkload{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: WorkloadReference
+	// MISSING: WorkloadProperties
+	return out
+}
+func DiscoveredWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.DiscoveredWorkloadObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveredWorkloadObservedState{}
+	// MISSING: Name
+	out.WorkloadReference = WorkloadReference_FromProto(mapCtx, in.GetWorkloadReference())
+	out.WorkloadProperties = WorkloadProperties_FromProto(mapCtx, in.GetWorkloadProperties())
+	return out
+}
+func DiscoveredWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredWorkloadObservedState) *pb.DiscoveredWorkload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredWorkload{}
+	// MISSING: Name
+	out.WorkloadReference = WorkloadReference_ToProto(mapCtx, in.WorkloadReference)
+	out.WorkloadProperties = WorkloadProperties_ToProto(mapCtx, in.WorkloadProperties)
+	return out
+}
+func WorkloadProperties_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkloadProperties{}
+	// MISSING: GcpProject
+	// MISSING: Location
+	// MISSING: Zone
+	return out
+}
+func WorkloadProperties_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadProperties) *pb.WorkloadProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkloadProperties{}
+	// MISSING: GcpProject
+	// MISSING: Location
+	// MISSING: Zone
+	return out
+}
+func WorkloadPropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadPropertiesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkloadPropertiesObservedState{}
+	out.GcpProject = direct.LazyPtr(in.GetGcpProject())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	return out
+}
+func WorkloadPropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadPropertiesObservedState) *pb.WorkloadProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkloadProperties{}
+	out.GcpProject = direct.ValueOf(in.GcpProject)
+	out.Location = direct.ValueOf(in.Location)
+	out.Zone = direct.ValueOf(in.Zone)
+	return out
+}
+func WorkloadReference_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krm.WorkloadReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkloadReference{}
+	// MISSING: URI
+	return out
+}
+func WorkloadReference_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadReference) *pb.WorkloadReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkloadReference{}
+	// MISSING: URI
+	return out
+}
+func WorkloadReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krm.WorkloadReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkloadReferenceObservedState{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func WorkloadReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadReferenceObservedState) *pb.WorkloadReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkloadReference{}
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
