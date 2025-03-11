@@ -538,7 +538,8 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, proc
 	// Process the branch
 	affectedPaths, err := processor(ctx, opts, branch)
 	if err != nil {
-		return fmt.Errorf("failed to process branch %s: %w", branch.Name, err)
+		log.Printf("failed to process branch %s: %v", branch.Name, err)
+		// Continue despite errors
 	}
 
 	// Run basic linting
