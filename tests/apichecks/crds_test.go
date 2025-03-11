@@ -65,6 +65,9 @@ func TestMissingRefs(t *testing.T) {
 				if strings.HasSuffix(fieldPath, "Ref.external") {
 					return
 				}
+				if strings.HasSuffix(fieldPath, "Refs[].external") {
+					return
+				}
 				if strings.HasSuffix(fieldPath, "Ref.name") {
 					return
 				}
@@ -75,9 +78,40 @@ func TestMissingRefs(t *testing.T) {
 				if strings.Contains(desc, " projects/") {
 					isRef = true
 				}
+				if strings.Contains(desc, "projects/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "locations/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "zones/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "regions/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "organizations/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "folders/{") {
+					isRef = true
+				}
 
 				if isRef {
-					errs = append(errs, fmt.Sprintf("[refs] crd=%s version=%v: field %q should be a reference", crd.Name, version.Name, fieldPath))
+					// We don't require refs for zones or regions, nor for instanceTypes
+					switch {
+					case strings.HasSuffix(fieldPath, ".zone"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".location"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".machineType"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".acceleratorType"):
+						// ok
+					default:
+						errs = append(errs, fmt.Sprintf("[refs] crd=%s version=%v: field %q should be a reference", crd.Name, version.Name, fieldPath))
+
+					}
 				}
 			})
 		}
