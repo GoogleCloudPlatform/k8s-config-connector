@@ -322,56 +322,25 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 
 	case cmdCreateScriptYaml: // 10
-		for idx, branch := range branches.Branches {
-			log.Printf("Create Script YAML: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			createScriptYaml(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, createScriptYaml, "Script YAML", "Create gcloud script.yaml")
 	case cmdCaptureHttpLog: // 11
-		for idx, branch := range branches.Branches {
-			log.Printf("Capture HTTP Log: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			captureHttpLog(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, captureHttpLog, "HTTP Log", "Capture HTTP Log for mocks")
 	case cmdGenerateMockGo: // 12
-		for idx, branch := range branches.Branches {
-			log.Printf("Generate mock Service and Resource go files: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			generateMockGo(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, generateMockGo, "Mock Go Files", "Add generated mock files")
 	case cmdAddServiceRoundTrip: // 13
-		for idx, branch := range branches.Branches {
-			log.Printf("Add service to mock_http_roundtrip.go: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			addServiceToRoundTrip(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, addServiceToRoundTrip, "Service RoundTrip", "Add service to mock_http_roundtrip.go")
 	case cmdAddProtoMakefile: // 14
-		for idx, branch := range branches.Branches {
-			log.Printf("Add proto to makefile: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			addProtoToMakefile(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, addProtoToMakefile, "Proto Makefile", "Add proto generation to makefile")
 	case cmdBuildProto: // 15
-		for idx, branch := range branches.Branches {
-			log.Printf("Build proto files in mockgcp directory: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			buildProtoFiles(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, buildProtoFiles, "Build Proto", "Build and add generated proto files")
 	case cmdRunMockTests: // 16
-		for idx, branch := range branches.Branches {
-			log.Printf("Run mockgcptests on generated mocks: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			runMockgcpTests(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, runMockgcpTests, "Mock Tests", "Run mock tests")
 	case cmdGenerateTypes: // 20
-		for idx, branch := range branches.Branches {
-			log.Printf("Generate Types and Mapper: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			generateTypesAndMapper(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, generateTypesAndMapper, "Types and Mapper", "Add generated types and mapper")
 	case cmdGenerateCRD: // 21
-		for idx, branch := range branches.Branches {
-			log.Printf("Generate CRD: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			generateCRD(opts, branch)
-			//generateSpecStatus(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, generateCRD, "CRD", "Add generated CRD")
 	case cmdGenerateFuzzer: // 22
-		for idx, branch := range branches.Branches {
-			log.Printf("Generate Fuzzer: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			generateFuzzer(opts, branch)
-		}
+		processBranches(ctx, opts, branches.Branches, generateFuzzer, "Fuzzer", "Add generated fuzzer")
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
