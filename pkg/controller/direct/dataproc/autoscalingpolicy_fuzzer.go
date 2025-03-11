@@ -21,7 +21,6 @@ package dataproc
 import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 )
 
 func init() {
@@ -30,19 +29,16 @@ func init() {
 
 func autoscalingPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.AutoscalingPolicy{},
-		AutoscalingPolicySpec_FromProto, AutoscalingPolicySpec_ToProto,
-		AutoscalingPolicyObservedState_FromProto, AutoscalingPolicyObservedState_ToProto,
+		DataprocAutoscalingPolicySpec_FromProto, DataprocAutoscalingPolicySpec_ToProto,
+		DataprocAutoscalingPolicyStatus_FromProto, DataprocAutoscalingPolicyStatus_ToProto,
 	)
 
 	f.SpecFields.Insert(".basic_algorithm")
 	f.SpecFields.Insert(".worker_config")
 	f.SpecFields.Insert(".secondary_worker_config")
 	f.SpecFields.Insert(".labels")
+	f.SpecFields.Insert(".id")
 
 	f.StatusFields.Insert(".name")
-	f.SpecFields.Insert("." + util.AutoscalingPolicyIdFieldPath)
-
 	return f
 }
-
-

@@ -14,39 +14,6 @@
 
 package v1alpha1
 
-
-// +kcc:proto=google.cloud.dataproc.v1.AutoscalingPolicy
-type AutoscalingPolicy struct {
-	// Required. The policy id.
-	//
-	//  The id must contain only letters (a-z, A-Z), numbers (0-9),
-	//  underscores (_), and hyphens (-). Cannot begin or end with underscore
-	//  or hyphen. Must consist of between 3 and 50 characters.
-	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.id
-	ID *string `json:"id,omitempty"`
-
-	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.basic_algorithm
-	BasicAlgorithm *BasicAutoscalingAlgorithm `json:"basicAlgorithm,omitempty"`
-
-	// Required. Describes how the autoscaler will operate for primary workers.
-	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.worker_config
-	WorkerConfig *InstanceGroupAutoscalingPolicyConfig `json:"workerConfig,omitempty"`
-
-	// Optional. Describes how the autoscaler will operate for secondary workers.
-	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.secondary_worker_config
-	SecondaryWorkerConfig *InstanceGroupAutoscalingPolicyConfig `json:"secondaryWorkerConfig,omitempty"`
-
-	// Optional. The labels to associate with this autoscaling policy.
-	//  Label **keys** must contain 1 to 63 characters, and must conform to
-	//  [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
-	//  Label **values** may be empty, but, if present, must contain 1 to 63
-	//  characters, and must conform to [RFC
-	//  1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be
-	//  associated with an autoscaling policy.
-	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.labels
-	Labels map[string]string `json:"labels,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dataproc.v1.BasicAutoscalingAlgorithm
 type BasicAutoscalingAlgorithm struct {
 	// Required. YARN autoscaling configuration.
@@ -157,20 +124,4 @@ type InstanceGroupAutoscalingPolicyConfig struct {
 	//  secondary workers.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupAutoscalingPolicyConfig.weight
 	Weight *int32 `json:"weight,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataproc.v1.AutoscalingPolicy
-type AutoscalingPolicyObservedState struct {
-	// Output only. The "resource name" of the autoscaling policy, as described
-	//  in https://cloud.google.com/apis/design/resource_names.
-	//
-	//  * For `projects.regions.autoscalingPolicies`, the resource name of the
-	//    policy has the following format:
-	//    `projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}`
-	//
-	//  * For `projects.locations.autoscalingPolicies`, the resource name of the
-	//    policy has the following format:
-	//    `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
-	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.name
-	Name *string `json:"name,omitempty"`
 }

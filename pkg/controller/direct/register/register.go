@@ -15,7 +15,6 @@
 package register
 
 import (
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
@@ -32,6 +31,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/targettcpproxy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataform"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/documentai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firestore"
