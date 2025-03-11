@@ -18,7 +18,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -182,31 +181,28 @@ type BranchModifier func(opts *RunnerOptions, branch Branch, workDir string) Bra
 func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	log.Printf("Running conductor runner with branch config: %s", opts.branchConfFile)
 
+	if opts.loggingDir == "" {
+		return fmt.Errorf("logging-dir is required")
+	}
+
 	if err := opts.validateFlags(); err != nil {
 		return err
 	}
 
 	log.Printf("Starting Runner")
 
-	file, err := os.Open(opts.branchConfFile) // For read access.
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	data, err := ioutil.ReadAll(file)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// log.Printf("Read file %s: %v", opts.branchConfFile, string(data))
-
 	var branches Branches
+	{
+		b, err := os.ReadFile(opts.branchConfFile) // For read access.
+		if err != nil {
+			return fmt.Errorf("reading branch config file %q: %w", opts.branchConfFile, err)
+		}
 
-	err = yaml.Unmarshal(data, &branches)
-	if err != nil {
-		log.Fatalf("error: %v", err)
+		if err := yaml.Unmarshal(b, &branches); err != nil {
+			return fmt.Errorf("parsing branch config file %q: %w", opts.branchConfFile, err)
+		}
 	}
+
 	// Filter based on forResources if specified
 	if opts.forResources != "" {
 		targetBranches := make(map[string]bool)

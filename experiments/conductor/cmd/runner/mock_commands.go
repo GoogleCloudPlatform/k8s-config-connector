@@ -116,6 +116,7 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	}
 
 	workDir := filepath.Join(opts.branchRepoDir, "mockgcp")
+	logDir := filepath.Join(opts.loggingDir, branch.Name)
 
 	checkoutBranch(ctx, branch, workDir)
 
@@ -140,14 +141,14 @@ func createScriptYaml(opts *RunnerOptions, branch Branch) {
 	}
 
 	// Delete then write the prompt file.
-	promptPath := filepath.Join(opts.branchRepoDir, "mockgcp", "prompt.txt")
+	promptPath := filepath.Join(logDir, "create-script-prompt.txt")
 	writeTemplateToFile(branch, promptPath, SCRIPT_YAML_PROMPT)
 
 	// Run the LLM to generate the file.
 	cfg := CommandConfig{
 		Name:         "Generate script",
 		Cmd:          "codebot",
-		Args:         []string{"--ui-type=prompt", "--prompt=prompt.txt"},
+		Args:         []string{"--ui-type=prompt", "--prompt=" + promptPath},
 		WorkDir:      workDir,
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
