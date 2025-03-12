@@ -116,6 +116,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - batch.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - beyondcorp.cnrm.cloud.google.com
   resources:
   - '*'
