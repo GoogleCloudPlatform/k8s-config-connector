@@ -17,7 +17,6 @@ package dataproc
 import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
