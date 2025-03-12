@@ -44,6 +44,7 @@ func GKEBackupBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".backup_schedule")
 	f.StatusFields.Insert(".etag")
 	f.StatusFields.Insert(".protected_pod_count")
 	f.StatusFields.Insert(".state")

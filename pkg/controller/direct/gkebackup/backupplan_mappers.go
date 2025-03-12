@@ -152,20 +152,20 @@ func Date_ToProto(mapCtx *direct.MapContext, in *krm.Date) *datepb.Date {
 	return out
 }
 func BackupPlan_BackupConfig_AllNamespaces_ToProto(mapCtx *direct.MapContext, allNamespaces *bool) *pb.BackupPlan_BackupConfig_AllNamespaces {
-	if allNamespaces == nil || !*allNamespaces {
+	if allNamespaces == nil {
 		return nil
 	}
 	out := &pb.BackupPlan_BackupConfig_AllNamespaces{
-		AllNamespaces: true,
+		AllNamespaces: direct.ValueOf(allNamespaces),
 	}
 	return out
 }
 func ExclusionWindow_Daily_ToProto(mapCtx *direct.MapContext, daily *bool) *pb.ExclusionWindow_Daily {
-	if daily == nil || !*daily {
+	if daily == nil {
 		return nil
 	}
 	out := &pb.ExclusionWindow_Daily{
-		Daily: true,
+		Daily: direct.ValueOf(daily),
 	}
 	return out
 }
@@ -189,5 +189,24 @@ func EncryptionKey_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionKey) *pb
 	if in.KMSKeyRef != nil {
 		out.GcpKmsEncryptionKey = in.KMSKeyRef.External
 	}
+	return out
+}
+func BackupPlan_BackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan_BackupConfig) *krm.BackupPlan_BackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupPlan_BackupConfig{}
+	// out.AllNamespaces = direct.LazyPtr(in.GetAllNamespaces())
+	// out.AllNamespaces = direct.PtrTo(in.GetAllNamespaces())
+	if _, ok := in.BackupScope.(*pb.BackupPlan_BackupConfig_AllNamespaces); ok {
+		// special handling for oneof bool field to ensure it is round-trippable
+		out.AllNamespaces = direct.PtrTo(in.GetAllNamespaces())
+	}
+	out.SelectedNamespaces = Namespaces_FromProto(mapCtx, in.GetSelectedNamespaces())
+	out.SelectedApplications = NamespacedNames_FromProto(mapCtx, in.GetSelectedApplications())
+	out.IncludeVolumeData = direct.LazyPtr(in.GetIncludeVolumeData())
+	out.IncludeSecrets = direct.LazyPtr(in.GetIncludeSecrets())
+	out.EncryptionKey = EncryptionKey_FromProto(mapCtx, in.GetEncryptionKey())
+	out.PermissiveMode = direct.LazyPtr(in.GetPermissiveMode())
 	return out
 }

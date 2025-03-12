@@ -21,20 +21,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BackupPlan_BackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan_BackupConfig) *krm.BackupPlan_BackupConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BackupPlan_BackupConfig{}
-	out.AllNamespaces = direct.LazyPtr(in.GetAllNamespaces())
-	out.SelectedNamespaces = Namespaces_FromProto(mapCtx, in.GetSelectedNamespaces())
-	out.SelectedApplications = NamespacedNames_FromProto(mapCtx, in.GetSelectedApplications())
-	out.IncludeVolumeData = direct.LazyPtr(in.GetIncludeVolumeData())
-	out.IncludeSecrets = direct.LazyPtr(in.GetIncludeSecrets())
-	out.EncryptionKey = EncryptionKey_FromProto(mapCtx, in.GetEncryptionKey())
-	out.PermissiveMode = direct.LazyPtr(in.GetPermissiveMode())
-	return out
-}
 func BackupPlan_BackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.BackupPlan_BackupConfig) *pb.BackupPlan_BackupConfig {
 	if in == nil {
 		return nil
