@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.workflows.executions.v1.Execution.Error
 type Execution_Error struct {
 	// Error message and data returned represented as a JSON string.

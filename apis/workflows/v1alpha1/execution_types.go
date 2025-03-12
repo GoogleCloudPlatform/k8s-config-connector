@@ -52,13 +52,13 @@ type WorkflowsExecutionSpec struct {
 	// Required. Name of the workflow for which an execution should be created.
 	// Format: projects/{project}/locations/{location}/workflows/{workflow}.
 	// The latest revision of the workflow will be used.
-	Parent *Parent `json:"parent,omitempty"`
+	Parent *WorkflowExecutionParent `json:"parent,omitempty"`
 
 	// The WorkflowsExecution name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type Parent struct {
+type WorkflowExecutionParent struct {
 	// Required. The location of the application.
 	Location string `json:"location,omitempty"`
 
