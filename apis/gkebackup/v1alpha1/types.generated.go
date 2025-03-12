@@ -105,14 +105,6 @@ type BackupPlan_RetentionPolicy struct {
 	Locked *bool `json:"locked,omitempty"`
 }
 
-// +kcc:proto=google.cloud.gkebackup.v1.EncryptionKey
-type EncryptionKey struct {
-	// Optional. Google Cloud KMS encryption key. Format:
-	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`
-	// +kcc:proto:field=google.cloud.gkebackup.v1.EncryptionKey.gcp_kms_encryption_key
-	GcpKMSEncryptionKey *string `json:"gcpKMSEncryptionKey,omitempty"`
-}
-
 // +kcc:proto=google.cloud.gkebackup.v1.ExclusionWindow
 type ExclusionWindow struct {
 	// Required. Specifies the start time of the window using time of the day in

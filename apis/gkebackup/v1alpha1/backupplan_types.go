@@ -24,6 +24,13 @@ import (
 
 var GKEBackupBackupPlanGVK = GroupVersion.WithKind("GKEBackupBackupPlan")
 
+// +kcc:proto=google.cloud.gkebackup.v1.EncryptionKey
+type EncryptionKey struct {
+	// Optional. Google Cloud KMS encryption key.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.EncryptionKey.gcp_kms_encryption_key
+	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
 // +kcc:proto=google.cloud.gkebackup.v1.RpoConfig
 type RPOConfig struct {
 	// Required. Defines the target RPO for the BackupPlan in minutes, which means
