@@ -15,6 +15,7 @@
 package register
 
 import (
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
@@ -79,5 +80,4 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflowexecutions"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflows"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workstations"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform"
 )
