@@ -14,49 +14,12 @@
 
 package v1alpha1
 
+
 // +kcc:proto=google.cloud.dataproc.v1.AutotuningConfig
 type AutotuningConfig struct {
 	// Optional. Scenarios for which tunings are applied.
 	// +kcc:proto:field=google.cloud.dataproc.v1.AutotuningConfig.scenarios
 	Scenarios []string `json:"scenarios,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataproc.v1.Batch
-type Batch struct {
-
-	// Optional. PySpark batch config.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.pyspark_batch
-	PysparkBatch *PySparkBatch `json:"pysparkBatch,omitempty"`
-
-	// Optional. Spark batch config.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.spark_batch
-	SparkBatch *SparkBatch `json:"sparkBatch,omitempty"`
-
-	// Optional. SparkR batch config.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.spark_r_batch
-	SparkRBatch *SparkRBatch `json:"sparkRBatch,omitempty"`
-
-	// Optional. SparkSql batch config.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.spark_sql_batch
-	SparkSQLBatch *SparkSQLBatch `json:"sparkSQLBatch,omitempty"`
-
-	// Optional. The labels to associate with this batch.
-	//  Label **keys** must contain 1 to 63 characters, and must conform to
-	//  [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
-	//  Label **values** may be empty, but, if present, must contain 1 to 63
-	//  characters, and must conform to [RFC
-	//  1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be
-	//  associated with a batch.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. Runtime configuration for the batch execution.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.runtime_config
-	RuntimeConfig *RuntimeConfig `json:"runtimeConfig,omitempty"`
-
-	// Optional. Environment configuration for the batch execution.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.environment_config
-	EnvironmentConfig *EnvironmentConfig `json:"environmentConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.Batch.StateHistory
@@ -386,51 +349,6 @@ type UsageSnapshot struct {
 	// Optional. The timestamp of the usage snapshot.
 	// +kcc:proto:field=google.cloud.dataproc.v1.UsageSnapshot.snapshot_time
 	SnapshotTime *string `json:"snapshotTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataproc.v1.Batch
-type BatchObservedState struct {
-	// Output only. The resource name of the batch.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. A batch UUID (Unique Universal Identifier). The service
-	//  generates this value when it creates the batch.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.uuid
-	Uuid *string `json:"uuid,omitempty"`
-
-	// Output only. The time when the batch was created.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Runtime information about batch execution.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.runtime_info
-	RuntimeInfo *RuntimeInfo `json:"runtimeInfo,omitempty"`
-
-	// Output only. The state of the batch.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Batch state details, such as a failure
-	//  description if the state is `FAILED`.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_message
-	StateMessage *string `json:"stateMessage,omitempty"`
-
-	// Output only. The time when the batch entered a current state.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_time
-	StateTime *string `json:"stateTime,omitempty"`
-
-	// Output only. The email address of the user who created the batch.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.creator
-	Creator *string `json:"creator,omitempty"`
-
-	// Output only. The resource name of the operation associated with this batch.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.operation
-	Operation *string `json:"operation,omitempty"`
-
-	// Output only. Historical state information for the batch.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_history
-	StateHistory []Batch_StateHistory `json:"stateHistory,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.Batch.StateHistory

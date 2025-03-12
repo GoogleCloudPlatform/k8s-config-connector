@@ -36,110 +36,6 @@ func AutotuningConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutotuningConfi
 	out.Scenarios = direct.EnumSlice_ToProto[pb.AutotuningConfig_Scenario](mapCtx, in.Scenarios)
 	return out
 }
-func Batch_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.Batch {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Batch{}
-	// MISSING: Name
-	// MISSING: Uuid
-	// MISSING: CreateTime
-	out.PysparkBatch = PySparkBatch_FromProto(mapCtx, in.GetPysparkBatch())
-	out.SparkBatch = SparkBatch_FromProto(mapCtx, in.GetSparkBatch())
-	out.SparkRBatch = SparkRBatch_FromProto(mapCtx, in.GetSparkRBatch())
-	out.SparkSQLBatch = SparkSQLBatch_FromProto(mapCtx, in.GetSparkSqlBatch())
-	// MISSING: RuntimeInfo
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: StateTime
-	// MISSING: Creator
-	out.Labels = in.Labels
-	out.RuntimeConfig = RuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
-	out.EnvironmentConfig = EnvironmentConfig_FromProto(mapCtx, in.GetEnvironmentConfig())
-	// MISSING: Operation
-	// MISSING: StateHistory
-	return out
-}
-func Batch_ToProto(mapCtx *direct.MapContext, in *krm.Batch) *pb.Batch {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Batch{}
-	// MISSING: Name
-	// MISSING: Uuid
-	// MISSING: CreateTime
-	if oneof := PySparkBatch_ToProto(mapCtx, in.PysparkBatch); oneof != nil {
-		out.BatchConfig = &pb.Batch_PysparkBatch{PysparkBatch: oneof}
-	}
-	if oneof := SparkBatch_ToProto(mapCtx, in.SparkBatch); oneof != nil {
-		out.BatchConfig = &pb.Batch_SparkBatch{SparkBatch: oneof}
-	}
-	if oneof := SparkRBatch_ToProto(mapCtx, in.SparkRBatch); oneof != nil {
-		out.BatchConfig = &pb.Batch_SparkRBatch{SparkRBatch: oneof}
-	}
-	if oneof := SparkSQLBatch_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
-		out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
-	}
-	// MISSING: RuntimeInfo
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: StateTime
-	// MISSING: Creator
-	out.Labels = in.Labels
-	out.RuntimeConfig = RuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
-	out.EnvironmentConfig = EnvironmentConfig_ToProto(mapCtx, in.EnvironmentConfig)
-	// MISSING: Operation
-	// MISSING: StateHistory
-	return out
-}
-func BatchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.BatchObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BatchObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Uuid = direct.LazyPtr(in.GetUuid())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: PysparkBatch
-	// MISSING: SparkBatch
-	// MISSING: SparkRBatch
-	// MISSING: SparkSQLBatch
-	out.RuntimeInfo = RuntimeInfo_FromProto(mapCtx, in.GetRuntimeInfo())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
-	out.StateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateTime())
-	out.Creator = direct.LazyPtr(in.GetCreator())
-	// MISSING: Labels
-	// MISSING: RuntimeConfig
-	// MISSING: EnvironmentConfig
-	out.Operation = direct.LazyPtr(in.GetOperation())
-	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Batch_StateHistory_FromProto)
-	return out
-}
-func BatchObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchObservedState) *pb.Batch {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Batch{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Uuid = direct.ValueOf(in.Uuid)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: PysparkBatch
-	// MISSING: SparkBatch
-	// MISSING: SparkRBatch
-	// MISSING: SparkSQLBatch
-	out.RuntimeInfo = RuntimeInfo_ToProto(mapCtx, in.RuntimeInfo)
-	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
-	out.StateMessage = direct.ValueOf(in.StateMessage)
-	out.StateTime = direct.StringTimestamp_ToProto(mapCtx, in.StateTime)
-	out.Creator = direct.ValueOf(in.Creator)
-	// MISSING: Labels
-	// MISSING: RuntimeConfig
-	// MISSING: EnvironmentConfig
-	out.Operation = direct.ValueOf(in.Operation)
-	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Batch_StateHistory_ToProto)
-	return out
-}
 func Batch_StateHistory_FromProto(mapCtx *direct.MapContext, in *pb.Batch_StateHistory) *krm.Batch_StateHistory {
 	if in == nil {
 		return nil
@@ -186,22 +82,15 @@ func DataprocBatchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batc
 	}
 	out := &krm.DataprocBatchObservedState{}
 	// MISSING: Name
-	// MISSING: Uuid
-	// MISSING: CreateTime
-	// MISSING: PysparkBatch
-	// MISSING: SparkBatch
-	// MISSING: SparkRBatch
-	// MISSING: SparkSQLBatch
-	// MISSING: RuntimeInfo
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: StateTime
-	// MISSING: Creator
-	// MISSING: Labels
-	// MISSING: RuntimeConfig
-	// MISSING: EnvironmentConfig
-	// MISSING: Operation
-	// MISSING: StateHistory
+	out.Uuid = direct.LazyPtr(in.GetUuid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.RuntimeInfo = RuntimeInfo_FromProto(mapCtx, in.GetRuntimeInfo())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
+	out.StateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.Operation = direct.LazyPtr(in.GetOperation())
+	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Batch_StateHistory_FromProto)
 	return out
 }
 func DataprocBatchObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataprocBatchObservedState) *pb.Batch {
@@ -210,22 +99,15 @@ func DataprocBatchObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datap
 	}
 	out := &pb.Batch{}
 	// MISSING: Name
-	// MISSING: Uuid
-	// MISSING: CreateTime
-	// MISSING: PysparkBatch
-	// MISSING: SparkBatch
-	// MISSING: SparkRBatch
-	// MISSING: SparkSQLBatch
-	// MISSING: RuntimeInfo
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: StateTime
-	// MISSING: Creator
-	// MISSING: Labels
-	// MISSING: RuntimeConfig
-	// MISSING: EnvironmentConfig
-	// MISSING: Operation
-	// MISSING: StateHistory
+	out.Uuid = direct.ValueOf(in.Uuid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.RuntimeInfo = RuntimeInfo_ToProto(mapCtx, in.RuntimeInfo)
+	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
+	out.StateMessage = direct.ValueOf(in.StateMessage)
+	out.StateTime = direct.StringTimestamp_ToProto(mapCtx, in.StateTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.Operation = direct.ValueOf(in.Operation)
+	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Batch_StateHistory_ToProto)
 	return out
 }
 func DataprocBatchSpec_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.DataprocBatchSpec {
@@ -234,22 +116,13 @@ func DataprocBatchSpec_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.D
 	}
 	out := &krm.DataprocBatchSpec{}
 	// MISSING: Name
-	// MISSING: Uuid
-	// MISSING: CreateTime
-	// MISSING: PysparkBatch
-	// MISSING: SparkBatch
-	// MISSING: SparkRBatch
-	// MISSING: SparkSQLBatch
-	// MISSING: RuntimeInfo
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: StateTime
-	// MISSING: Creator
-	// MISSING: Labels
-	// MISSING: RuntimeConfig
-	// MISSING: EnvironmentConfig
-	// MISSING: Operation
-	// MISSING: StateHistory
+	out.PysparkBatch = PySparkBatch_FromProto(mapCtx, in.GetPysparkBatch())
+	out.SparkBatch = SparkBatch_FromProto(mapCtx, in.GetSparkBatch())
+	out.SparkRBatch = SparkRBatch_FromProto(mapCtx, in.GetSparkRBatch())
+	out.SparkSQLBatch = SparkSQLBatch_FromProto(mapCtx, in.GetSparkSqlBatch())
+	out.Labels = in.Labels
+	out.RuntimeConfig = RuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.EnvironmentConfig = EnvironmentConfig_FromProto(mapCtx, in.GetEnvironmentConfig())
 	return out
 }
 func DataprocBatchSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocBatchSpec) *pb.Batch {
@@ -258,22 +131,21 @@ func DataprocBatchSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocBatchS
 	}
 	out := &pb.Batch{}
 	// MISSING: Name
-	// MISSING: Uuid
-	// MISSING: CreateTime
-	// MISSING: PysparkBatch
-	// MISSING: SparkBatch
-	// MISSING: SparkRBatch
-	// MISSING: SparkSQLBatch
-	// MISSING: RuntimeInfo
-	// MISSING: State
-	// MISSING: StateMessage
-	// MISSING: StateTime
-	// MISSING: Creator
-	// MISSING: Labels
-	// MISSING: RuntimeConfig
-	// MISSING: EnvironmentConfig
-	// MISSING: Operation
-	// MISSING: StateHistory
+	if oneof := PySparkBatch_ToProto(mapCtx, in.PysparkBatch); oneof != nil {
+		out.BatchConfig = &pb.Batch_PysparkBatch{PysparkBatch: oneof}
+	}
+	if oneof := SparkBatch_ToProto(mapCtx, in.SparkBatch); oneof != nil {
+		out.BatchConfig = &pb.Batch_SparkBatch{SparkBatch: oneof}
+	}
+	if oneof := SparkRBatch_ToProto(mapCtx, in.SparkRBatch); oneof != nil {
+		out.BatchConfig = &pb.Batch_SparkRBatch{SparkRBatch: oneof}
+	}
+	if oneof := SparkSQLBatch_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
+		out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
+	}
+	out.Labels = in.Labels
+	out.RuntimeConfig = RuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
+	out.EnvironmentConfig = EnvironmentConfig_ToProto(mapCtx, in.EnvironmentConfig)
 	return out
 }
 func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentConfig) *krm.EnvironmentConfig {
