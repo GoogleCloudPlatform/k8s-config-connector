@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.dataproc.v1.AutotuningConfig
 type AutotuningConfig struct {
 	// Optional. Scenarios for which tunings are applied.
