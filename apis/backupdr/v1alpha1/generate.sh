@@ -21,13 +21,19 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-go run . generate-types     --service google.cloud.backupdr.v1     --api-version backupdr.cnrm.cloud.google.com/v1alpha1     --resource BackupDRManagementServer:ManagementServer
+go run . generate-types \
+    --service google.cloud.backupdr.v1 \
+    --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
+    --resource BackupDRManagementServer:ManagementServer \
+    --resource BackupDRBackupPlan:BackupPlan
 
-go run . generate-mapper     --service google.cloud.backupdr.v1     --api-version backupdr.cnrm.cloud.google.com/v1alpha1
+go run . generate-mapper \
+    --service google.cloud.backupdr.v1 \
+    --api-version backupdr.cnrm.cloud.google.com/v1alpha1
 
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/backupdr/
+${REPO_ROOT}/dev/tasks/fix-gofmt
 
