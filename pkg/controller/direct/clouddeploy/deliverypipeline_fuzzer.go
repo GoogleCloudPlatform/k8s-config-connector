@@ -50,5 +50,3 @@ func deployDeliveryPipelineFuzzer() fuzztesting.KRMFuzzer {
 
 	return f
 }
-
-
