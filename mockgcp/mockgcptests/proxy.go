@@ -270,6 +270,17 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 	// Note: we used to use api_endpoint_overrides here; however that seems to change the behaviour of gcloud,
 	// particularly when normalizing compute urls?
 
+	// Customize the api endpoint overrides for reCAPTCHA Enterprise when
+	// the test talks to real GCP API.
+	// Gcloud commands for reCAPTCHA Enterprise works only when pointing
+	// to public-preview-recaptchaenterprise.googleapis.com.
+	// Note that we shouldn't need the same customization for mock calls.
+	if mockgcp == nil {
+		config.AddConfig(fmt.Sprintf("api_endpoint_overrides/recaptchaenterprise"), "http://public-preview-recaptchaenterprise.googleapis.com/")
+	} else {
+		config.AddConfig(fmt.Sprintf("api_endpoint_overrides/recaptchaenterprise"), "http://recaptchaenterprise.googleapis.com/")
+	}
+	
 	return config
 }
 
