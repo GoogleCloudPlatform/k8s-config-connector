@@ -88,3 +88,68 @@ func BatchJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobSpec) *pb.J
 	out.Notifications = direct.Slice_ToProto(mapCtx, in.Notifications, JobNotification_ToProto)
 	return out
 }
+func Runnable_Script_Path_ToProto(mapCtx *direct.MapContext, in *string) *pb.Runnable_Script_Path {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Runnable_Script_Path{
+		Path: direct.ValueOf(in),
+	}
+	return out
+}
+func Runnable_Script_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Runnable_Script_Text {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Runnable_Script_Text{
+		Text: direct.ValueOf(in),
+	}
+	return out
+}
+func Volume_DeviceName_ToProto(mapCtx *direct.MapContext, in *string) *pb.Volume_DeviceName {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Volume_DeviceName{
+		DeviceName: direct.ValueOf(in),
+	}
+	return out
+}
+func AllocationPolicy_Disk_Image_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Image {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_Disk_Image{
+		Image: direct.ValueOf(in),
+	}
+	return out
+}
+func AllocationPolicy_Disk_Snapshot_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_Disk_Snapshot{
+		Snapshot: direct.ValueOf(in),
+	}
+	return out
+}
+func AllocationPolicy_AttachedDisk_ExistingDisk_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_AttachedDisk_ExistingDisk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_AttachedDisk_ExistingDisk{
+		ExistingDisk: direct.ValueOf(in),
+	}
+	return out
+}
+func AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_InstancePolicyOrTemplate_Policy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_InstancePolicyOrTemplate_Policy{
+		Policy: &pb.AllocationPolicy_InstancePolicy{
+			MachineType: direct.ValueOf(in),
+		},
+	}
+	return out
+}
