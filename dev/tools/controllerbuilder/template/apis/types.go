@@ -7,6 +7,11 @@ type APIArgs struct {
 	ProtoResource   string
 	PackageProtoTag string
 	KindProtoTag    string
+
+	// ProtoMessageName is the last component of the proto message name, e.g. for google.cloud.v1.Foo, it will be "Foo"
+	ProtoMessageName string
+	// ProtoMessageFullName is the fully qualified proto message name, e.g. google.cloud.v1.Foo
+	ProtoMessageFullName string
 }
 
 const TypesTemplate = `
