@@ -443,49 +443,6 @@ type Gcs struct {
 	RemotePath *string `json:"remotePath,omitempty"`
 }
 
-// +kcc:proto=google.cloud.batch.v1.Job
-type Job struct {
-
-	// Priority of the Job.
-	//  The valid value range is [0, 100). Default value is 0.
-	//  Higher value indicates higher priority.
-	//  A job with higher priority value is more likely to run earlier if all other
-	//  requirements are satisfied.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.priority
-	Priority *int64 `json:"priority,omitempty"`
-
-	// Required. TaskGroups in the Job. Only one TaskGroup is supported now.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.task_groups
-	TaskGroups []TaskGroup `json:"taskGroups,omitempty"`
-
-	// Compute resource allocation for all TaskGroups in the Job.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.allocation_policy
-	AllocationPolicy *AllocationPolicy `json:"allocationPolicy,omitempty"`
-
-	// Custom labels to apply to the job and any Cloud Logging
-	//  [LogEntry](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry)
-	//  that it generates.
-	//
-	//  Use labels to group and describe the resources they are applied to. Batch
-	//  automatically applies predefined labels and supports multiple `labels`
-	//  fields for each job, which each let you apply custom labels to various
-	//  resources. Label names that start with "goog-" or "google-" are
-	//  reserved for predefined labels. For more information about labels with
-	//  Batch, see
-	//  [Organize resources using
-	//  labels](https://cloud.google.com/batch/docs/organize-resources-using-labels).
-	// +kcc:proto:field=google.cloud.batch.v1.Job.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Log preservation policy for the Job.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.logs_policy
-	LogsPolicy *LogsPolicy `json:"logsPolicy,omitempty"`
-
-	// Notification configurations.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.notifications
-	Notifications []JobNotification `json:"notifications,omitempty"`
-}
-
 // +kcc:proto=google.cloud.batch.v1.JobNotification
 type JobNotification struct {
 	// The Pub/Sub topic where notifications for the job, like state
@@ -1069,34 +1026,6 @@ type Volume struct {
 	//    mount options provided by the `mount` command are supported.
 	// +kcc:proto:field=google.cloud.batch.v1.Volume.mount_options
 	MountOptions []string `json:"mountOptions,omitempty"`
-}
-
-// +kcc:proto=google.cloud.batch.v1.Job
-type JobObservedState struct {
-	// Output only. Job name.
-	//  For example: "projects/123456/locations/us-central1/jobs/job01".
-	// +kcc:proto:field=google.cloud.batch.v1.Job.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. A system generated unique ID for the Job.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Required. TaskGroups in the Job. Only one TaskGroup is supported now.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.task_groups
-	TaskGroups []TaskGroupObservedState `json:"taskGroups,omitempty"`
-
-	// Output only. Job status. It is read only for users.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.status
-	Status *JobStatus `json:"status,omitempty"`
-
-	// Output only. When the Job was created.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The last time the Job was updated.
-	// +kcc:proto:field=google.cloud.batch.v1.Job.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.batch.v1.TaskGroup
