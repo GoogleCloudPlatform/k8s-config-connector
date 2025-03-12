@@ -43,7 +43,6 @@ func (i *EntryTypeIdentity) Parent() *EntryTypeParent {
 	return i.parent
 }
 
-// No changes were needed as the existing structure and methods align with the resource definition.
 type EntryTypeParent struct {
 	ProjectID string
 	Location  string
