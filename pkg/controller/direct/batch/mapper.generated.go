@@ -18,8 +18,8 @@ import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-
 func AllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy) *krm.AllocationPolicy {
 	if in == nil {
 		return nil
@@ -322,42 +322,6 @@ func Gcs_ToProto(mapCtx *direct.MapContext, in *krm.Gcs) *pb.GCS {
 	out.RemotePath = direct.ValueOf(in.RemotePath)
 	return out
 }
-func Job_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Job {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Job{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Priority = direct.LazyPtr(in.GetPriority())
-	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroup_FromProto)
-	out.AllocationPolicy = AllocationPolicy_FromProto(mapCtx, in.GetAllocationPolicy())
-	out.Labels = in.Labels
-	// MISSING: Status
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.LogsPolicy = LogsPolicy_FromProto(mapCtx, in.GetLogsPolicy())
-	out.Notifications = direct.Slice_FromProto(mapCtx, in.Notifications, JobNotification_FromProto)
-	return out
-}
-func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Priority = direct.ValueOf(in.Priority)
-	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroup_ToProto)
-	out.AllocationPolicy = AllocationPolicy_ToProto(mapCtx, in.AllocationPolicy)
-	out.Labels = in.Labels
-	// MISSING: Status
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.LogsPolicy = LogsPolicy_ToProto(mapCtx, in.LogsPolicy)
-	out.Notifications = direct.Slice_ToProto(mapCtx, in.Notifications, JobNotification_ToProto)
-	return out
-}
 func JobNotification_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification) *krm.JobNotification {
 	if in == nil {
 		return nil
@@ -394,42 +358,6 @@ func JobNotification_Message_ToProto(mapCtx *direct.MapContext, in *krm.JobNotif
 	out.Type = direct.Enum_ToProto[pb.JobNotification_Type](mapCtx, in.Type)
 	out.NewJobState = direct.Enum_ToProto[pb.JobStatus_State](mapCtx, in.NewJobState)
 	out.NewTaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.NewTaskState)
-	return out
-}
-func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.JobObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: Priority
-	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroupObservedState_FromProto)
-	// MISSING: AllocationPolicy
-	// MISSING: Labels
-	out.Status = JobStatus_FromProto(mapCtx, in.GetStatus())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: LogsPolicy
-	// MISSING: Notifications
-	return out
-}
-func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedState) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: Priority
-	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroupObservedState_ToProto)
-	// MISSING: AllocationPolicy
-	// MISSING: Labels
-	out.Status = JobStatus_ToProto(mapCtx, in.Status)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: LogsPolicy
-	// MISSING: Notifications
 	return out
 }
 func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatus {
