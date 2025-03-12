@@ -14,6 +14,7 @@
 
 package v1alpha1
 
+
 // +kcc:proto=google.cloud.dataproc.v1.AcceleratorConfig
 type AcceleratorConfig struct {
 	// Full URL, partial URI, or short name of the accelerator type resource to
@@ -267,32 +268,6 @@ type InstanceReference struct {
 type ManagedGroupConfig struct {
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.NodeGroup
-type NodeGroup struct {
-	// The Node group [resource name](https://aip.dev/122).
-	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. Node group roles.
-	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.roles
-	Roles []string `json:"roles,omitempty"`
-
-	// Optional. The node group instance group configuration.
-	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.node_group_config
-	NodeGroupConfig *InstanceGroupConfig `json:"nodeGroupConfig,omitempty"`
-
-	// Optional. Node group labels.
-	//
-	//  * Label **keys** must consist of from 1 to 63 characters and conform to
-	//    [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
-	//  * Label **values** can be empty. If specified, they must consist of from
-	//    1 to 63 characters and conform to [RFC 1035]
-	//    (https://www.ietf.org/rfc/rfc1035.txt).
-	//  * The node group must have no more than 32 labels.
-	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.labels
-	Labels map[string]string `json:"labels,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dataproc.v1.StartupConfig
 type StartupConfig struct {
 	// Optional. The config setting to enable cluster creation/ updation to be
@@ -366,11 +341,4 @@ type ManagedGroupConfigObservedState struct {
 	//  E.g. projects/my-project/regions/us-central1/instanceGroupManagers/my-igm.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ManagedGroupConfig.instance_group_manager_uri
 	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataproc.v1.NodeGroup
-type NodeGroupObservedState struct {
-	// Optional. The node group instance group configuration.
-	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.node_group_config
-	NodeGroupConfig *InstanceGroupConfigObservedState `json:"nodeGroupConfig,omitempty"`
 }
