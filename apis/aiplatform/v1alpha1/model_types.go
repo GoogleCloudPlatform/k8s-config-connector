@@ -159,7 +159,7 @@ type AIPlatformModelSpec struct {
 	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
 
 	// Optional. User input field to specify the base model source. Currently it
-	//  only supports specifing the Model Garden models and Genie models.
+	//  only supports specifying the Model Garden models and Genie models.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.base_model_source
 	BaseModelSource *Model_BaseModelSource `json:"baseModelSource,omitempty"`
 

@@ -66,7 +66,7 @@ spec:
                 type: string
               baseModelSource:
                 description: Optional. User input field to specify the base model
-                  source. Currently it only supports specifing the Model Garden models
+                  source. Currently it only supports specifying the Model Garden models
                   and Genie models.
                 properties:
                   genieSource:
