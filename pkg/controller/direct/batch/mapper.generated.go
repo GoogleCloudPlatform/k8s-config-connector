@@ -561,6 +561,43 @@ func ServiceAccount_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccount) *
 	out.Scopes = in.Scopes
 	return out
 }
+
+func BatchTaskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.BatchTaskObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchTaskObservedState{}
+	// MISSING: Name
+	// MISSING: Status
+	return out
+}
+func BatchTaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchTaskObservedState) *pb.Task {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task{}
+	// MISSING: Name
+	// MISSING: Status
+	return out
+}
+func BatchTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.BatchTaskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BatchTaskSpec{}
+	// MISSING: Name
+	// MISSING: Status
+	return out
+}
+func BatchTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.BatchTaskSpec) *pb.Task {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task{}
+	// MISSING: Name
+	// MISSING: Status
+	return out
+}
 func StatusEvent_FromProto(mapCtx *direct.MapContext, in *pb.StatusEvent) *krm.StatusEvent {
 	if in == nil {
 		return nil
@@ -583,6 +620,24 @@ func StatusEvent_ToProto(mapCtx *direct.MapContext, in *krm.StatusEvent) *pb.Sta
 	out.EventTime = direct.StringTimestamp_ToProto(mapCtx, in.EventTime)
 	out.TaskExecution = TaskExecution_ToProto(mapCtx, in.TaskExecution)
 	out.TaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.TaskState)
+	return out
+}
+func Task_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.Task {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Status = TaskStatus_FromProto(mapCtx, in.GetStatus())
+	return out
+}
+func Task_ToProto(mapCtx *direct.MapContext, in *krm.Task) *pb.Task {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Status = TaskStatus_ToProto(mapCtx, in.Status)
 	return out
 }
 func TaskExecution_FromProto(mapCtx *direct.MapContext, in *pb.TaskExecution) *krm.TaskExecution {
@@ -727,5 +782,24 @@ func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
 	}
 	out.MountPath = direct.ValueOf(in.MountPath)
 	out.MountOptions = in.MountOptions
+	return out
+}
+
+func TaskStatus_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krm.TaskStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_FromProto)
+	return out
+}
+func TaskStatus_ToProto(mapCtx *direct.MapContext, in *krm.TaskStatus) *pb.TaskStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskStatus{}
+	out.State = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.State)
+	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
 	return out
 }

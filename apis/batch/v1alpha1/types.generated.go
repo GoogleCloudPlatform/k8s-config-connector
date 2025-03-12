@@ -501,6 +501,20 @@ type StatusEvent struct {
 	TaskState *string `json:"taskState,omitempty"`
 }
 
+// +kcc:proto=google.cloud.batch.v1.Task
+type Task struct {
+	// Task name.
+	//  The name is generated from the parent TaskGroup name and 'id' field.
+	//  For example:
+	//  "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01/tasks/task01".
+	// +kcc:proto:field=google.cloud.batch.v1.Task.name
+	Name *string `json:"name,omitempty"`
+
+	// Task Status.
+	// +kcc:proto:field=google.cloud.batch.v1.Task.status
+	Status *TaskStatus `json:"status,omitempty"`
+}
+
 // +kcc:proto=google.cloud.batch.v1.TaskExecution
 type TaskExecution struct {
 	// The exit code of a finished task.
@@ -689,4 +703,15 @@ type TaskGroupObservedState struct {
 	//  "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01".
 	// +kcc:proto:field=google.cloud.batch.v1.TaskGroup.name
 	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:proto=google.cloud.batch.v1.TaskStatus
+type TaskStatus struct {
+	// Task state.
+	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Detailed info about why the state is reached.
+	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.status_events
+	StatusEvents []StatusEvent `json:"statusEvents,omitempty"`
 }
