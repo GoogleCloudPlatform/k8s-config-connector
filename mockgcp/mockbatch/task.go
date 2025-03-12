@@ -51,12 +51,7 @@ func (s *BatchV1) GetTask(ctx context.Context, req *pb.GetTaskRequest) (*pb.Task
 }
 
 func (s *BatchV1) ListTasks(ctx context.Context, req *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
-	name, err := s.parseTaskName(req.Parent)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String() + "/tasks"
+	fqn := req.GetParent() + "/tasks"
 	response := &pb.ListTasksResponse{}
 
 	if err := s.storage.List(ctx, (&pb.Task{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: fqn}, func(obj proto.Message) error {

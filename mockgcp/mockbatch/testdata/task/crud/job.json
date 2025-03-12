@@ -1,0 +1,40 @@
+{
+    "taskGroups": [
+      {
+        "taskSpec": {
+          "runnables": [
+            {
+              "script": {
+                "text": "echo 'Hello from task'"
+              }
+            }
+          ],
+          "computeResource": {
+            "cpuMilli": 2000,
+            "memoryMib": 2048
+          },
+          "maxRetryCount": 2,
+          "maxRunDuration": "3600s"
+        },
+        "taskCount": 4,
+        "parallelism": 2
+      }
+    ],
+    "allocationPolicy": {
+      "location": {
+        "allowedLocations": [
+          "regions/us-central1"
+        ]
+      },
+      "instances": [
+        {
+          "policy": {
+            "machineType": "e2-standard-4"
+          }
+        }
+      ]
+    },
+    "logsPolicy": {
+      "destination": "CLOUD_LOGGING"
+    }
+  }

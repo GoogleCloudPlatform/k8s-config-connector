@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "taskGroups": [
@@ -32,39 +31,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allocationPolicy": {
-    "labels": {
-      "batch-job-id": "${jobID}"
-    },
-    "location": {
-      "allowedLocations": [
-        "regions/us-central1",
-        "zones/us-central1-a",
-        "zones/us-central1-b",
-        "zones/us-central1-c",
-        "zones/us-central1-f"
-      ]
-    },
-    "serviceAccount": {
-      "email": "${projectNumber}-compute@developer.gserviceaccount.com"
-    }
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
   "status": {
-    "runDuration": "0s",
     "state": "QUEUED"
   },
   "taskGroups": [
     {
-      "name": "projects/${projectNumber}/locations/us-central1/jobs/${jobID}/taskGroups/group0",
-      "parallelism": "1",
-      "taskCount": "1",
       "taskSpec": {
-        "computeResource": {
-          "cpuMilli": "2000",
-          "memoryMib": "2000"
-        },
         "runnables": [
           {
             "script": {
@@ -75,7 +49,7 @@ X-Xss-Protection: 0
       }
     }
   ],
-  "uid": "test-1829c54bea29f-93081cd2-4cda-4ad50",
+  "uid": "b9a676df-c595-4c81-9963-f44b8e44e50c",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -85,7 +59,6 @@ GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -98,39 +71,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allocationPolicy": {
-    "labels": {
-      "batch-job-id": "${jobID}"
-    },
-    "location": {
-      "allowedLocations": [
-        "regions/us-central1",
-        "zones/us-central1-a",
-        "zones/us-central1-b",
-        "zones/us-central1-c",
-        "zones/us-central1-f"
-      ]
-    },
-    "serviceAccount": {
-      "email": "${projectNumber}-compute@developer.gserviceaccount.com"
-    }
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
   "status": {
-    "runDuration": "0s",
-    "state": "QUEUED"
+    "state": "SUCCEEDED"
   },
   "taskGroups": [
     {
-      "name": "projects/${projectNumber}/locations/us-central1/jobs/${jobID}/taskGroups/group0",
-      "parallelism": "1",
-      "taskCount": "1",
       "taskSpec": {
-        "computeResource": {
-          "cpuMilli": "2000",
-          "memoryMib": "2000"
-        },
         "runnables": [
           {
             "script": {
@@ -141,7 +89,7 @@ X-Xss-Protection: 0
       }
     }
   ],
-  "uid": "test-1829c54bea29f-93081cd2-4cda-4ad50",
+  "uid": "b9a676df-c595-4c81-9963-f44b8e44e50c",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -151,77 +99,6 @@ GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "jobs": [
-    {
-      "allocationPolicy": {
-        "labels": {
-          "batch-job-id": "${jobID}"
-        },
-        "location": {
-          "allowedLocations": [
-            "regions/us-central1",
-            "zones/us-central1-a",
-            "zones/us-central1-b",
-            "zones/us-central1-c",
-            "zones/us-central1-f"
-          ]
-        },
-        "serviceAccount": {
-          "email": "${projectNumber}-compute@developer.gserviceaccount.com"
-        }
-      },
-      "createTime": "2025-03-05T01:54:23.001100884Z",
-      "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
-      "status": {
-        "runDuration": "0s",
-        "state": "QUEUED"
-      },
-      "taskGroups": [
-        {
-          "name": "projects/${projectNumber}/locations/us-central1/jobs/${jobID}/taskGroups/group0",
-          "parallelism": "1",
-          "taskCount": "1",
-          "taskSpec": {
-            "computeResource": {
-              "cpuMilli": "2000",
-              "memoryMib": "2000"
-            },
-            "runnables": [
-              {
-                "script": {
-                  "text": "echo hello"
-                }
-              }
-            ]
-          }
-        }
-      ],
-      "uid": "test-1829c54bea29f-93081cd2-4cda-4ad50",
-      "updateTime": "2025-03-05T01:54:23.001100884Z"
-    }
-  ]
-}
-
----
-
-GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0/tasks?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -237,11 +114,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0/tasks?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -254,14 +130,57 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
+  "tasks": [
+    {
+      "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0/tasks/0",
+      "status": {}
+    }
+  ]
+}
+
+---
+
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0/tasks/0?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0/tasks/0",
+  "status": {}
+}
+
+---
+
+DELETE https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.batch.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
-    "verb": "delete"
+    "@type": "type.googleapis.com/google.cloud.batch.v1.OperationMetadata"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/operations/${operationID}"
 }

@@ -71,6 +71,15 @@ func (s *BatchV1) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*pb.
 		return nil, err
 	}
 
+	// create a task within the job
+	taskObj := &pb.Task{}
+	taskObjName := fqn + "/taskGroups/group0/tasks/0"
+	taskObj.Name = taskObjName
+	taskObj.Status = &pb.TaskStatus{}
+	if err := s.storage.Create(ctx, taskObjName, taskObj); err != nil {
+		return nil, err
+	}
+
 	return obj, nil
 }
 
@@ -84,6 +93,14 @@ func (s *BatchV1) DeleteJob(ctx context.Context, req *pb.DeleteJobRequest) (*lon
 
 	deleted := &pb.Job{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	taskObj := &pb.Task{}
+	taskObjName := fqn + "/taskGroups/group0/tasks/0"
+	taskObj.Name = taskObjName
+	taskObj.Status = &pb.TaskStatus{}
+	if err := s.storage.Delete(ctx, taskObjName, taskObj); err != nil {
 		return nil, err
 	}
 
