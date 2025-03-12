@@ -101,10 +101,6 @@ type WorkloadReferenceObservedState struct {
 
 // +kcc:proto=google.cloud.apphub.v1.DiscoveredService
 type DiscoveredService struct {
-	// Identifier. The resource name of the discovered service. Format:
-	//  "projects/{host-project-id}/locations/{location}/discoveredServices/{uuid}""
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.name
-	Name *string `json:"name,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apphub.v1.ServiceProperties
@@ -130,20 +126,6 @@ type DiscoveredServiceObservedState struct {
 
 // +kcc:proto=google.cloud.apphub.v1.ServiceProperties
 type ServicePropertiesObservedState struct {
-	// Output only. The service project identifier that the underlying cloud
-	//  resource resides in.
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.gcp_project
-	GcpProject *string `json:"gcpProject,omitempty"`
-
-	// Output only. The location that the underlying resource resides in, for
-	//  example, us-west1.
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.location
-	Location *string `json:"location,omitempty"`
-
-	// Output only. The location that the underlying resource resides in if it is
-	//  zonal, for example, us-west1-a).
-	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.zone
-	Zone *string `json:"zone,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apphub.v1.ServiceReference
