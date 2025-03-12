@@ -26,37 +26,37 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// {{.ProtoResource}}Identity defines the resource reference to {{.Kind}}, which "External" field
+// {{.ProtoMessageName}}Identity defines the resource reference to {{.Kind}}, which "External" field
 // holds the GCP identifier for the KRM object.
-type {{.ProtoResource}}Identity struct {
-	parent *{{.ProtoResource}}Parent
+type {{.ProtoMessageName}}Identity struct {
+	parent *{{.ProtoMessageName}}Parent
 	id string
 }
 
-func (i *{{.ProtoResource}}Identity) String() string {
-	return  i.parent.String() + "/{{.ProtoResource | ToLower}}s/" + i.id
+func (i *{{.ProtoMessageName}}Identity) String() string {
+	return  i.parent.String() + "/{{.ProtoMessageName | ToLower}}s/" + i.id
 }
 
-func (i *{{.ProtoResource}}Identity) ID() string {
+func (i *{{.ProtoMessageName}}Identity) ID() string {
 	return i.id
 }
 
-func (i *{{.ProtoResource}}Identity) Parent() *{{.ProtoResource}}Parent {
+func (i *{{.ProtoMessageName}}Identity) Parent() *{{.ProtoMessageName}}Parent {
 	return  i.parent
 }
 
-type {{.ProtoResource}}Parent struct {
+type {{.ProtoMessageName}}Parent struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *{{.ProtoResource}}Parent) String() string {
+func (p *{{.ProtoMessageName}}Parent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
 
-// New builds a {{.ProtoResource}}Identity from the Config Connector {{.ProtoResource}} object.
-func New{{.ProtoResource}}Identity(ctx context.Context, reader client.Reader, obj *{{.Kind}}) (*{{.ProtoResource}}Identity, error) {
+// New builds a {{.ProtoMessageName}}Identity from the Config Connector {{.ProtoMessageName}} object.
+func New{{.ProtoMessageName}}Identity(ctx context.Context, reader client.Reader, obj *{{.Kind}}) (*{{.ProtoMessageName}}Identity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -82,7 +82,7 @@ func New{{.ProtoResource}}Identity(ctx context.Context, reader client.Reader, ob
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := Parse{{.ProtoResource}}External(externalRef)
+		actualParent, actualResourceID, err := Parse{{.ProtoMessageName}}External(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -97,8 +97,8 @@ func New{{.ProtoResource}}Identity(ctx context.Context, reader client.Reader, ob
 				resourceID, actualResourceID)
 		}
 	}
-	return &{{.ProtoResource}}Identity{
-		parent: &{{.ProtoResource}}Parent{
+	return &{{.ProtoMessageName}}Identity{
+		parent: &{{.ProtoMessageName}}Parent{
 			ProjectID: projectID,
 			Location:  location,
 		},
@@ -106,12 +106,12 @@ func New{{.ProtoResource}}Identity(ctx context.Context, reader client.Reader, ob
 	}, nil
 }
 
-func Parse{{.ProtoResource}}External(external string) (parent *{{.ProtoResource}}Parent, resourceID string, err error) {
+func Parse{{.ProtoMessageName}}External(external string) (parent *{{.ProtoMessageName}}Parent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "{{.ProtoResource | ToLower }}s" {
-		return nil, "", fmt.Errorf("format of {{.Kind}} external=%q was not known (use projects/{{"{{"}}projectID{{"}}"}}/locations/{{"{{"}}location{{"}}"}}/{{.ProtoResource | ToLower }}s/{{"{{"}}{{.ProtoResource | ToLower }}ID{{"}}"}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "{{.ProtoMessageName | ToLower }}s" {
+		return nil, "", fmt.Errorf("format of {{.Kind}} external=%q was not known (use projects/{{"{{"}}projectID{{"}}"}}/locations/{{"{{"}}location{{"}}"}}/{{.ProtoMessageName | ToLower }}s/{{"{{"}}{{.ProtoMessageName | ToLower }}ID{{"}}"}})", external)
 	}
-	parent = &{{.ProtoResource}}Parent{
+	parent = &{{.ProtoMessageName}}Parent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}

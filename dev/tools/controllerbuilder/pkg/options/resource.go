@@ -27,6 +27,27 @@ type Resource struct {
 	SkipScaffoldFiles bool
 }
 
+// ProtoMessageName returns just the last component of the the proto name, even if it is fully qualified.
+// e.g. google.cloud.v1.Foo => Foo
+func (r *Resource) ProtoMessageName() string {
+	s := r.ProtoName
+	ix := strings.LastIndex(s, ".")
+	if ix > 0 {
+		s = s[ix+1:]
+	}
+	return s
+}
+
+// ProtoMessageFullName returns the fully-qualified proto resource name, adding the package if it is not already fully qualified.
+// e.g. Foo => google.cloud.v1.Foo
+func (r *Resource) ProtoMessageFullName(protoPackage string) string {
+	s := r.ProtoName
+	if !strings.Contains(s, ".") {
+		s = protoPackage + "." + s
+	}
+	return s
+}
+
 var _ pflag.Value = &Resource{}
 
 func (r *Resource) Type() string { return "resource" }
