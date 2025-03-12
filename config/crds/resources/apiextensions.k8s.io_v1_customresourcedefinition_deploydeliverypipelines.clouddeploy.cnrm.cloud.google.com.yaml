@@ -356,7 +356,7 @@ spec:
                                                 If unspecified, the HTTPRoute will
                                                 only be deployed to the Target cluster.
                                               properties:
-                                                destinationIds:
+                                                destinationIDs:
                                                   description: Required. The clusters
                                                     where the Gateway API HTTPRoute
                                                     resource will be deployed to.
