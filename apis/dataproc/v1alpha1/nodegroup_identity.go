@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type NodeGroupIdentity struct {
 	parent *NodeGroupParent
-	id string
+	id     string
 }
 
 func (i *NodeGroupIdentity) String() string {
-	return  i.parent.String() + "/nodegroups/" + i.id
+	return i.parent.String() + "/nodegroups/" + i.id
 }
 
 func (i *NodeGroupIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *NodeGroupIdentity) ID() string {
 }
 
 func (i *NodeGroupIdentity) Parent() *NodeGroupParent {
-	return  i.parent
+	return i.parent
 }
 
 type NodeGroupParent struct {
@@ -51,7 +51,6 @@ type NodeGroupParent struct {
 func (p *NodeGroupParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a NodeGroupIdentity from the Config Connector NodeGroup object.
 func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *DataprocNodeGroup) (*NodeGroupIdentity, error) {
