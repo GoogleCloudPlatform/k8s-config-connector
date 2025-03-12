@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	container "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -52,7 +53,7 @@ type GKEBackupBackupPlanSpec struct {
 	//  - `projects/*/zones/*/clusters/*`
 	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.cluster
 	// +required
-	Cluster *string `json:"cluster,omitempty"`
+	ClusterRef *container.ContainerClusterRef `json:"clusterRef,omitempty"`
 
 	// Optional. RetentionPolicy governs lifecycle of Backups created under this
 	//  plan.
@@ -169,7 +170,6 @@ type GKEBackupBackupPlanObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkebackupbackupplan;gcpgkebackupbackupplans
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
