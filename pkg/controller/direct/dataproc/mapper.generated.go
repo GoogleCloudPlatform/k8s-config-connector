@@ -18,8 +18,8 @@ import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
-
 func AcceleratorConfig_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.AcceleratorConfig {
 	if in == nil {
 		return nil
@@ -44,9 +44,7 @@ func DataprocNodeGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.DataprocNodeGroupObservedState{}
 	// MISSING: Name
-	// MISSING: Roles
-	// MISSING: NodeGroupConfig
-	// MISSING: Labels
+	out.NodeGroupConfig = InstanceGroupConfigObservedState_FromProto(mapCtx, in.GetNodeGroupConfig())
 	return out
 }
 func DataprocNodeGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataprocNodeGroupObservedState) *pb.NodeGroup {
@@ -55,9 +53,7 @@ func DataprocNodeGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	}
 	out := &pb.NodeGroup{}
 	// MISSING: Name
-	// MISSING: Roles
-	// MISSING: NodeGroupConfig
-	// MISSING: Labels
+	out.NodeGroupConfig = InstanceGroupConfigObservedState_ToProto(mapCtx, in.NodeGroupConfig)
 	return out
 }
 func DataprocNodeGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krm.DataprocNodeGroupSpec {
@@ -66,9 +62,9 @@ func DataprocNodeGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup
 	}
 	out := &krm.DataprocNodeGroupSpec{}
 	// MISSING: Name
-	// MISSING: Roles
-	// MISSING: NodeGroupConfig
-	// MISSING: Labels
+	out.Roles = direct.EnumSlice_FromProto(mapCtx, in.Roles)
+	out.NodeGroupConfig = InstanceGroupConfig_FromProto(mapCtx, in.GetNodeGroupConfig())
+	out.Labels = in.Labels
 	return out
 }
 func DataprocNodeGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocNodeGroupSpec) *pb.NodeGroup {
@@ -77,9 +73,9 @@ func DataprocNodeGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocNo
 	}
 	out := &pb.NodeGroup{}
 	// MISSING: Name
-	// MISSING: Roles
-	// MISSING: NodeGroupConfig
-	// MISSING: Labels
+	out.Roles = direct.EnumSlice_ToProto[pb.NodeGroup_Role](mapCtx, in.Roles)
+	out.NodeGroupConfig = InstanceGroupConfig_ToProto(mapCtx, in.NodeGroupConfig)
+	out.Labels = in.Labels
 	return out
 }
 func DiskConfig_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krm.DiskConfig {
@@ -364,50 +360,6 @@ func ManagedGroupConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.InstanceTemplateName = direct.ValueOf(in.InstanceTemplateName)
 	out.InstanceGroupManagerName = direct.ValueOf(in.InstanceGroupManagerName)
 	out.InstanceGroupManagerUri = direct.ValueOf(in.InstanceGroupManagerURI)
-	return out
-}
-func NodeGroup_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krm.NodeGroup {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NodeGroup{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Roles = direct.EnumSlice_FromProto(mapCtx, in.Roles)
-	out.NodeGroupConfig = InstanceGroupConfig_FromProto(mapCtx, in.GetNodeGroupConfig())
-	out.Labels = in.Labels
-	return out
-}
-func NodeGroup_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroup) *pb.NodeGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NodeGroup{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Roles = direct.EnumSlice_ToProto[pb.NodeGroup_Role](mapCtx, in.Roles)
-	out.NodeGroupConfig = InstanceGroupConfig_ToProto(mapCtx, in.NodeGroupConfig)
-	out.Labels = in.Labels
-	return out
-}
-func NodeGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeGroup) *krm.NodeGroupObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NodeGroupObservedState{}
-	// MISSING: Name
-	// MISSING: Roles
-	out.NodeGroupConfig = InstanceGroupConfigObservedState_FromProto(mapCtx, in.GetNodeGroupConfig())
-	// MISSING: Labels
-	return out
-}
-func NodeGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NodeGroupObservedState) *pb.NodeGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NodeGroup{}
-	// MISSING: Name
-	// MISSING: Roles
-	out.NodeGroupConfig = InstanceGroupConfigObservedState_ToProto(mapCtx, in.NodeGroupConfig)
-	// MISSING: Labels
 	return out
 }
 func StartupConfig_FromProto(mapCtx *direct.MapContext, in *pb.StartupConfig) *krm.StartupConfig {
