@@ -18,8 +18,8 @@ import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
+
 func AllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy) *krm.AllocationPolicy {
 	if in == nil {
 		return nil
