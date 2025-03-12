@@ -15,17 +15,26 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DataplexEnvironmentGVK = GroupVersion.WithKind("DataplexEnvironment")
 
+type DataplexEnvironmentParent struct {
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	Location string `json:"location"`
+}
+
 // DataplexEnvironmentSpec defines the desired state of DataplexEnvironment
 // +kcc:proto=google.cloud.dataplex.v1.Environment
 type DataplexEnvironmentSpec struct {
 	// The DataplexEnvironment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	DataplexEnvironmentParent `json:",inline"`
 
 	// Optional. User friendly display name.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.display_name

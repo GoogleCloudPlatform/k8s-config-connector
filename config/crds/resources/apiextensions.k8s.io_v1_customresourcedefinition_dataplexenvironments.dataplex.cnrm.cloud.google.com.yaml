@@ -125,6 +125,40 @@ spec:
                   type: string
                 description: Optional. User defined labels for the environment.
                 type: object
+              location:
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The DataplexEnvironment name. If not given, the metadata.name
                   will be used.
@@ -145,6 +179,9 @@ spec:
                       The session will be auto-terminated at the end of this period.
                     type: string
                 type: object
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: DataplexEnvironmentStatus defines the config connector machine
