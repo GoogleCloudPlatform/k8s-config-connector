@@ -27,7 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
 
 type tableAdminServer struct {
