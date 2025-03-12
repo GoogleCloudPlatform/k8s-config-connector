@@ -87,6 +87,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/types.proto \
 		./third_party/googleapis/mockgcp/cloud/apphub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
+		./third_party/googleapis/mockgcp/cloud/batch/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/analyticshub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/connection/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/datatransfer/v1/*.proto \
@@ -143,8 +144,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto
-
+		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
+		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
+		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
@@ -164,7 +166,10 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
 		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
-		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto
+		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
+		./third_party/googleapis/google/storage/control/v2/*.proto
+		./third_party/googleapis/google/cloud/batch/v1/batch.proto
+		./third_party/googleapis/google/cloud/edgecontainer/v1/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

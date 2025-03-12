@@ -24,3 +24,5 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types     --service google.cloud.orchestration.airflow.service.v1     --api-version composer.cnrm.cloud.google.com/v1alpha1     --resource ComposerEnvironment:Environment
 
 go run . generate-mapper     --service google.cloud.orchestration.airflow.service.v1     --api-version composer.cnrm.cloud.google.com/v1alpha1
+
+go run . generate-controller     --service google.cloud.orchestration.airflow.service.v1     --api-version composer.cnrm.cloud.google.com/v1alpha1 ---resource ComposerEnvironment:Environment

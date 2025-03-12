@@ -29,6 +29,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".items[].updated", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".acl[].etag", "abcdef0123A")
 	replacements.ReplacePath(".defaultObjectAcl[].etag", "abcdef0123A=")
+
+	// Managed Folder
+	replacements.ReplacePath(".items[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".items[].updateTime", "2024-04-01T12:34:56.123456Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

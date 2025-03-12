@@ -1097,7 +1097,7 @@ spec:
                   config:
                     description: Optional. Configuration parameters for this environment.
                     properties:
-                      airflowByoidURI:
+                      airflowBYOIDURI:
                         description: Output only. The 'bring your own identity' variant
                           of the URI of the Apache Airflow Web UI hosted within this
                           environment, to be accessed with external identities using
@@ -1108,7 +1108,7 @@ spec:
                         description: Output only. The URI of the Apache Airflow Web
                           UI hosted within this environment (see [Airflow web interface](/composer/docs/how-to/accessing/airflow-web-interface)).
                         type: string
-                      dagGcsPrefix:
+                      dagGCSPrefix:
                         description: Output only. The Cloud Storage prefix of the
                           DAGs for this environment. Although Cloud Storage objects
                           reside in a flat namespace, a hierarchical file tree can

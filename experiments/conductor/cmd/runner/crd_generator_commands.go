@@ -150,13 +150,10 @@ func generateCRDFromScripts(opts *RunnerOptions, branch Branch) {
 }
 */
 
-func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
-	ctx := context.TODO()
-
-	close := setLoggingWriter(opts, branch)
-	defer close()
-	workDir := opts.branchRepoDir
-
+func generateTypesAndMapper(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+	var affectedPaths []string
+	generatedCode := false
+	// Check parameters
 	if branch.Kind == "" || branch.Proto == "" || branch.Group == "" {
 		if branch.Kind == "" {
 			log.Printf("SKIPPING %s, missing Kind", branch.Name)
@@ -167,18 +164,13 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 		if branch.Group == "" {
 			log.Printf("SKIPPING %s, missing Group", branch.Name)
 		}
-		return
+		return affectedPaths, fmt.Errorf("missing required parameters")
 	}
 
-	checkoutBranch(ctx, branch, workDir)
-
-	// Change to controllerbuilder directory
-	controllerBuilderDir := filepath.Join(workDir, "dev", "tools", "controllerbuilder")
-	hasChange := false
-
 	// Generate types
-	apisDir := filepath.Join(opts.branchRepoDir, "apis", branch.Group, "v1alpha1", string(filepath.Separator))
-	if _, err := os.Stat(apisDir); errors.Is(err, os.ErrNotExist) || opts.force {
+	apiDirPathRelative := filepath.Join("apis", branch.Group, "v1alpha1", string(filepath.Separator))
+	apiDirPath := filepath.Join(opts.branchRepoDir, apiDirPathRelative)
+	if _, err := os.Stat(apiDirPath); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate types",
 			Cmd:  "go",
@@ -189,22 +181,23 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
 				"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
 			},
-			WorkDir:    controllerBuilderDir,
+			WorkDir:    filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
 			MaxRetries: 1,
 		}
 		_, _, err := executeCommand(opts, cfg)
 		if err != nil {
-			log.Fatal(err)
+			return affectedPaths, fmt.Errorf("failed to generate types: %w", err)
 		}
-		gitAdd(ctx, workDir, apisDir)
-		hasChange = true
+		affectedPaths = append(affectedPaths, apiDirPathRelative)
+		generatedCode = true
 	} else {
-		log.Printf("SKIPPING generating apis, %s already exists", apisDir)
+		log.Printf("SKIPPING generating apis, %s already exists", apiDirPathRelative)
 	}
 
 	// Generate mapper
-	mapperDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group, string(filepath.Separator))
-	if _, err := os.Stat(mapperDir); errors.Is(err, os.ErrNotExist) || opts.force {
+	mapperDirPathRelative := filepath.Join("pkg", "controller", "direct", branch.Group, string(filepath.Separator))
+	mapperDirPath := filepath.Join(opts.branchRepoDir, mapperDirPathRelative)
+	if _, err := os.Stat(mapperDirPath); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate mapper",
 			Cmd:  "go",
@@ -214,119 +207,78 @@ func generateTypesAndMapper(opts *RunnerOptions, branch Branch) {
 				"--service", branch.Package,
 				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
 			},
-			WorkDir:    controllerBuilderDir,
+			WorkDir:    filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
 			MaxRetries: 2,
 		}
 		_, _, err := executeCommand(opts, cfg)
 		if err != nil {
-			log.Fatal(err)
+			return affectedPaths, fmt.Errorf("failed to generate mapper: %w", err)
 		}
 
-		// Run goimports
-		cfg = CommandConfig{
-			Name: "Format generated code",
-			Cmd:  "go",
-			Args: []string{
-				"run", "-mod=readonly",
-				"golang.org/x/tools/cmd/goimports@latest",
-				"-w",
-				mapperDir,
-			},
-			WorkDir:    workDir,
-			MaxRetries: 2,
-		}
-		_, _, err = executeCommand(opts, cfg)
-		if err != nil {
-			log.Fatal(err)
-		}
-		gitAdd(ctx, workDir, mapperDir)
-		hasChange = true
+		affectedPaths = append(affectedPaths, mapperDirPathRelative)
+		generatedCode = true
 	} else {
-		log.Printf("SKIPPING generating mappers, %s already exists", mapperDir)
+		log.Printf("SKIPPING generating mappers, %s already exists", mapperDirPathRelative)
 	}
 
-	// Commit the changes
-	if hasChange {
-		gitCommit(ctx, workDir, fmt.Sprintf("Generated types and mapper for %s", branch.Kind))
-	} else {
-		log.Printf("SKIPPING git commit, no new changes for %s", branch.Name)
+	if !generatedCode {
+		log.Printf("No new changes for %s", branch.Name)
 	}
+
+	return affectedPaths, nil
 }
 
-func generateCRD(opts *RunnerOptions, branch Branch) {
-	ctx := context.TODO()
-
-	close := setLoggingWriter(opts, branch)
-	defer close()
-	workDir := opts.branchRepoDir
-
-	checkoutBranch(ctx, branch, workDir)
+func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+	apiDirPathRelative := filepath.Join("apis", branch.Group, "v1alpha1", string(filepath.Separator))
+	affectedPaths := []string{"config/crds/resources/", apiDirPathRelative}
 
 	// Generate CRDs
 	cfg := CommandConfig{
 		Name:       "Generate CRDs",
-		Cmd:        filepath.Join(workDir, "dev", "tasks", "generate-crds"),
-		WorkDir:    workDir,
+		Cmd:        filepath.Join(opts.branchRepoDir, "dev", "tasks", "generate-crds"),
+		WorkDir:    opts.branchRepoDir,
 		MaxRetries: 1,
 	}
+
 	_, _, err := executeCommand(opts, cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Stage the changed files
-	gitAdd(ctx, workDir, "config/crds/resources/")
-
-	// Commit the changes
-	gitCommit(ctx, workDir, fmt.Sprintf("Generated CRD for %s", branch.Kind))
+	return affectedPaths, err
 }
 
-func generateSpecStatus(opts *RunnerOptions, branch Branch) {
-	ctx := context.TODO()
-
-	close := setLoggingWriter(opts, branch)
-	defer close()
-	workDir := opts.branchRepoDir
-
-	checkoutBranch(ctx, branch, workDir)
+func generateSpecStatus(opts *RunnerOptions, branch Branch) ([]string, error) {
+	affectedPaths := []string{
+		filepath.Join("apis", branch.Group, "v1alpha1",
+			fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource))),
+	}
 
 	// Run controllerbuilder to generate spec and status
 	log.Printf("Generating spec and status for %s", branch.Name)
 	stdinInput := fmt.Sprintf("// +kcc:proto=%s.%s\n", branch.ProtoSvc, branch.Proto)
 
 	cfg := CommandConfig{
-		Name:         "Spec/Status generation",
-		Cmd:          "controllerbuilder",
-		Args:         []string{"prompt", "--src-dir", workDir, "--proto-dir", filepath.Join(workDir, ".build", "third_party", "googleapis")},
-		WorkDir:      workDir,
+		Name: "Spec/Status generation",
+		Cmd:  "controllerbuilder",
+		Args: []string{
+			"prompt",
+			"--src-dir", opts.branchRepoDir,
+			"--proto-dir", filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis"),
+		},
+		WorkDir:      opts.branchRepoDir,
 		Stdin:        strings.NewReader(stdinInput),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 	_, _, err := executeCommand(opts, cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Stage the changed files
-	gitAdd(ctx, workDir, fmt.Sprintf("apis/%s/v1alpha1/%s_types.go", branch.Group, strings.ToLower(branch.Resource)))
-
-	// Commit the changes
-	gitCommit(ctx, workDir, fmt.Sprintf("%s: Update types from generated", branch.Kind))
+	//commitMsg := fmt.Sprintf("Generated spec and status for %s", branch.Kind)
+	return affectedPaths, err
 }
 
-func generateFuzzer(opts *RunnerOptions, branch Branch) {
-	ctx := context.TODO()
-
-	close := setLoggingWriter(opts, branch)
-	defer close()
+func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
 	workDir := opts.branchRepoDir
-
-	checkoutBranch(ctx, branch, workDir)
+	affectedPaths := []string{}
 
 	// Generate fuzzer file
-	fuzzerDir := filepath.Join(workDir, "pkg", "controller", "direct", branch.Group)
+	fuzzerDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group)
 	if err := os.MkdirAll(fuzzerDir, 0755); err != nil {
-		log.Fatal(err)
+		return affectedPaths, fmt.Errorf("failed to create fuzzer directory: %w", err)
 	}
 
 	fuzzerPath := filepath.Join(fuzzerDir, fmt.Sprintf("%s_fuzzer.go", strings.ToLower(branch.Resource)))
@@ -344,15 +296,17 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	}
 	output, _, err := executeCommand(opts, cfg)
 	if err != nil {
-		log.Fatal(err)
+		return affectedPaths, fmt.Errorf("failed to generate fuzzer: %w", err)
 	}
 
 	if err := os.WriteFile(fuzzerPath, []byte(output), 0644); err != nil {
-		log.Fatal(err)
+		return affectedPaths, fmt.Errorf("failed to write fuzzer file: %w", err)
 	}
 
+	affectedPaths = append(affectedPaths, fuzzerPath)
+
 	// Update register.go to import the new package
-	registerPath := filepath.Join(workDir, "pkg", "controller", "direct", "register", "register.go")
+	registerPath := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", "register", "register.go")
 	importLine := fmt.Sprintf(`_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/%s"`, branch.Group)
 	stdinInput = fmt.Sprintf("Add an unnamed (_) go import for %s to the imports in %s", importLine, registerPath)
 
@@ -366,14 +320,10 @@ func generateFuzzer(opts *RunnerOptions, branch Branch) {
 	}
 	_, _, err = executeCommand(opts, cfg)
 	if err != nil {
-		log.Fatal(err)
+		return affectedPaths, fmt.Errorf("failed to add import: %w", err)
 	}
 
-	// Stage the changed files
-	gitAdd(ctx, workDir,
-		fmt.Sprintf("pkg/controller/direct/%s/%s_fuzzer.go", branch.Group, strings.ToLower(branch.Resource)),
-		"pkg/controller/direct/register/register.go")
+	affectedPaths = append(affectedPaths, registerPath)
 
-	// Commit the changes
-	gitCommit(ctx, workDir, fmt.Sprintf("%s: Create fuzz test", branch.Kind))
+	return affectedPaths, nil
 }

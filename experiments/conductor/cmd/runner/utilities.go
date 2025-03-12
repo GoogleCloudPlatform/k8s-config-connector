@@ -43,6 +43,7 @@ var commandMap = map[int64]string{
 	cmdGenerateTypes:       "generatetypes",
 	cmdGenerateCRD:         "generatecrd",
 	cmdGenerateFuzzer:      "generatefuzzer",
+	cmdBuildProto:          "buildproto",
 }
 
 type exitBash func()
@@ -181,7 +182,7 @@ func writeTemplateToFile(branch Branch, filePath string, template string) {
 	}
 }
 
-func gitAdd(ctx context.Context, workDir string, files ...string) {
+func gitAdd(ctx context.Context, workDir string, files ...string) error {
 	args := []string{"git", "add"}
 	for _, file := range files {
 		args = append(args, file)
@@ -191,21 +192,38 @@ func gitAdd(ctx context.Context, workDir string, files ...string) {
 
 	results, err := execCommand(gitadd)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("git add failed: %w", err)
 	}
 	log.Printf("BRANCH ADD: %v\n", formatCommandOutput(results.Stdout))
+	return nil
 }
 
-func gitCommit(ctx context.Context, workDir string, msg string) {
+func gitCommit(ctx context.Context, workDir string, msg string) error {
 	log.Printf("COMMAND: git commit -m %q", msg)
 	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
 	gitcommit.Dir = workDir
 
 	results, err := execCommand(gitcommit)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("git commit failed: %w", err)
 	}
 	log.Printf("BRANCH COMMIT: %v\n", formatCommandOutput(results.Stdout))
+	return nil
+}
+
+func gitStatusCheck(workDir string, filePath string) (bool, error) {
+	log.Printf("COMMAND: git status -- %s", filePath)
+	args := []string{"status", "-s", filePath}
+	gitstatus := exec.Command("git", args...)
+	gitstatus.Dir = workDir
+	var out bytes.Buffer
+	gitstatus.Stdout = &out
+	if err := gitstatus.Run(); err != nil {
+		log.Printf("Git status on file %s/%s error: %q\n", workDir, filePath, err)
+		return false, err
+	}
+	log.Printf("Git status on file %s/%s: %s", workDir, filePath, out.String())
+	return len(strings.TrimSpace(out.String())) > 0, nil
 }
 
 func gitFileHasChange(workDir string, filePath string) bool {
@@ -261,31 +279,22 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 		log.Printf("Error opening logging file %s, :%v", logFile, err)
 		return noOp
 	}
-	log.Printf("Logging to %s", logFile)
-	log.SetOutput(io.MultiWriter(os.Stderr, out))
 
-	/*
-		var errF *os.File
-		errFile := filepath.Join(logDir, "err.log")
-		if _, err := os.Stat(errFile); os.IsNotExist(err) {
-			errF, err = os.Create(errFile)
-			if err != nil {
-				return os.Stdout, os.Stderr
-			}
-		} else {
-			errF, err = os.OpenFile(errFile, os.O_APPEND, 0755)
-			if err != nil {
-				return os.Stdout, os.Stderr
-			}
-		}
-	*/
+	log.Printf("Logging to %s", logFile)
+	if opts.verbose {
+		// In verbose mode, write to both stderr and the log file
+		log.SetOutput(io.MultiWriter(os.Stderr, out))
+	} else {
+		// In non-verbose mode, write only to the log file
+		log.SetOutput(out)
+	}
 
 	return func() {
 		// Initially force out to stdout in case we hit an error we don't
 		// want to pollute a different runs logs with our logs.
 		log.SetOutput(os.Stdout)
 		if err := out.Close(); err != nil {
-			log.Printf("Failed to clode logging file %s, :%v", logFile, err)
+			log.Printf("Failed to close logging file %s, :%v", logFile, err)
 		}
 	}
 }
@@ -371,6 +380,9 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 		cmd.Stdout = &outBuf
 		cmd.Stderr = &errBuf
 
+		cmd.Stdout = io.MultiWriter(os.Stdout, cmd.Stdout)
+		cmd.Stderr = io.MultiWriter(os.Stderr, cmd.Stderr)
+
 		if cfg.Stdin != nil {
 			cmd.Stdin = cfg.Stdin
 		}
@@ -421,4 +433,139 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 	}
 
 	return output, errOutput, fmt.Errorf("command failed after %d attempts: %w", maxRetries, lastErr)
+}
+
+func runLinters(opts *RunnerOptions) error {
+	log.Printf("Running linters")
+
+	cfg := CommandConfig{
+		Name:       "Go Fmt",
+		Cmd:        "go",
+		Args:       []string{"fmt", "./..."},
+		WorkDir:    opts.branchRepoDir,
+		MaxRetries: 1,
+	}
+	if _, _, err := executeCommand(opts, cfg); err != nil {
+		return fmt.Errorf("make lint failed: %w", err)
+	}
+
+	return nil
+}
+
+func checkMakeReadyPR(opts *RunnerOptions) error {
+	log.Printf("Running make ready-pr verification")
+
+	cfg := CommandConfig{
+		Name:       "Make Ready-PR",
+		Cmd:        "make",
+		Args:       []string{"ready-pr"},
+		WorkDir:    opts.branchRepoDir,
+		MaxRetries: 1,
+	}
+
+	if _, _, err := executeCommand(opts, cfg); err != nil {
+		return fmt.Errorf("make ready-pr failed: %w", err)
+	}
+
+	return nil
+}
+
+func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, commitMsg string) error {
+	// First check for changes in specified paths
+	var changedFiles []string
+	for _, path := range paths {
+		log.Printf("Checking for changes in %s", path)
+		changed, err := gitStatusCheck(opts.branchRepoDir, path)
+		if err != nil {
+			return fmt.Errorf("git status failed for %s: %w", path, err)
+		}
+		if changed {
+			changedFiles = append(changedFiles, path)
+		}
+	}
+
+	// If we have changes in specified paths, add and commit them
+	if len(changedFiles) > 0 {
+		for _, file := range changedFiles {
+			if err := gitAdd(ctx, opts.branchRepoDir, file); err != nil {
+				log.Printf("[ERROR GIT ADD]failed to stage %s: %v", file, err)
+				// best effort to continue
+			}
+		}
+		if err := gitCommit(ctx, opts.branchRepoDir, commitMsg); err != nil {
+			log.Printf("failed to commit changes: %v", err)
+		}
+	}
+
+	// Check for any other uncommitted changes
+	changed, err := gitStatusCheck(opts.branchRepoDir, ".")
+	if err != nil {
+		return fmt.Errorf("git status failed: %w", err)
+	}
+
+	if changed {
+		log.Printf("WARNING: Found unexpected changes. Trying to stage and commit them")
+		if err := gitAdd(ctx, opts.branchRepoDir, "."); err != nil {
+			return fmt.Errorf("failed to stage extra files: %w", err)
+		}
+		if err := gitCommit(ctx, opts.branchRepoDir, fmt.Sprintf("%s. WARN: extra files found, committing them", commitMsg)); err != nil {
+			return fmt.Errorf("failed to commit extra files: %w", err)
+		}
+		log.Printf("WARNING: Committed unexpected changes")
+	}
+
+	return nil
+}
+
+// Add this type definition
+type BranchProcessor func(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error)
+
+// processBranch handles the processing of a single branch
+func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, processor BranchProcessor, description string, commitMsg string) error {
+	log.Printf("Processing branch %s: %s", branch.Name, description)
+
+	// Skip if branch should be skipped
+	if branch.Skip {
+		log.Printf("Skipping branch %s: marked as Skip", branch.Name)
+		return nil
+	}
+
+	close := setLoggingWriter(opts, branch)
+	defer close()
+
+	checkoutBranch(ctx, branch, opts.branchRepoDir)
+
+	// Process the branch
+	affectedPaths, err := processor(ctx, opts, branch)
+	if err != nil {
+		log.Printf("failed to process branch %s: %v", branch.Name, err)
+		// Continue despite errors
+	}
+
+	// Run basic linting
+	if err := runLinters(opts); err != nil {
+		log.Printf("linting failed for branch %s: %v", branch.Name, err)
+		// Continue despite linting errors
+	}
+
+	//if err := checkMakeReadyPR(opts); err != nil {
+	//	log.Printf("verification failed for branch %s: %v", branch.Name, err)
+	//}
+
+	// Stage and commit changes
+	if err := stageChanges(ctx, opts, affectedPaths, commitMsg); err != nil {
+		return fmt.Errorf("failed to commit changes for branch %s: %w", branch.Name, err)
+	}
+
+	return nil
+}
+
+func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch, processor BranchProcessor, description string, commitMsg string) {
+	for _, branch := range branches {
+		err := processBranch(ctx, opts, branch, processor, description, commitMsg)
+		if err != nil {
+			log.Printf("Error processing branch %s: %v", branch.Name, err)
+			// Continue with next branch despite errors
+		}
+	}
 }
