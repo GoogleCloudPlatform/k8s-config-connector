@@ -13828,21 +13828,6 @@ branches:
       proto-msg: ""
       host-name: ""
       notes: []
-    - name: ai-operations
-      local: resource-ai-operations
-      remote: resource-ai-operations
-      command: gcloud ai operations
-      group: ai
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
     - name: ai-persistentresources
       local: resource-ai-persistentresources
       remote: resource-ai-persistentresources
@@ -13924,21 +13909,6 @@ branches:
       command: gcloud ai-platform versions
       group: aiplatform
       resource: versions
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: alloydb-operations
-      local: resource-alloydb-operations
-      remote: resource-alloydb-operations
-      command: gcloud alloydb operations
-      group: alloydb
-      resource: operations
       controller: Unknown
       kind: ""
       package: ""
@@ -14374,21 +14344,6 @@ branches:
       command: gcloud certificate-manager maps
       group: certificatemanager
       resource: maps
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: certificatemanager-operations
-      local: resource-certificatemanager-operations
-      remote: resource-certificatemanager-operations
-      command: gcloud certificate-manager operations
-      group: certificatemanager
-      resource: operations
       controller: Unknown
       kind: ""
       package: ""
@@ -15095,21 +15050,6 @@ branches:
       command: gcloud logging metrics
       group: logging
       resource: metrics
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: logging-operations
-      local: resource-logging-operations
-      remote: resource-logging-operations
-      command: gcloud logging operations
-      group: logging
-      resource: operations
       controller: Unknown
       kind: ""
       package: ""
@@ -16094,21 +16034,6 @@ branches:
       proto-msg: ""
       host-name: ""
       notes: []
-    - name: securitycenter-postureoperations
-      local: resource-securitycenter-postureoperations
-      remote: resource-securitycenter-postureoperations
-      command: gcloud scc posture-operations
-      group: securitycenter
-      resource: postureoperations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
     - name: securitycenter-posturetemplates
       local: resource-securitycenter-posturetemplates
       remote: resource-securitycenter-posturetemplates
@@ -16355,21 +16280,6 @@ branches:
       command: gcloud transfer jobs
       group: storagetransfer
       resource: jobs
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: storagetransfer-operations
-      local: resource-storagetransfer-operations
-      remote: resource-storagetransfer-operations
-      command: gcloud transfer operations
-      group: storagetransfer
-      resource: operations
       controller: Unknown
       kind: ""
       package: ""
