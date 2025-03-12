@@ -26,32 +26,32 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &TopicRef{}
+var _ refsv1beta1.ExternalNormalizer = &ConsumerGroupRef{}
 
-// TopicRef defines the resource reference to ManagedKafkaTopic, which "External" field
+// ConsumerGroupRef defines the resource reference to ManagedKafkaConsumerGroup, which "External" field
 // holds the GCP identifier for the KRM object.
-type TopicRef struct {
-	// A reference to an externally managed ManagedKafkaTopic resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}/topics/{{topicID}}".
+type ConsumerGroupRef struct {
+	// A reference to an externally managed ManagedKafkaConsumerGroup resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/consumergroups/{{consumergroupID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ManagedKafkaTopic resource.
+	// The name of a ManagedKafkaConsumerGroup resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ManagedKafkaTopic resource.
+	// The namespace of a ManagedKafkaConsumerGroup resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on ManagedKafkaTopic.
-// If the "External" is given in the other resource's spec.ManagedKafkaTopicRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual ManagedKafkaTopic object from the cluster.
-func (r *TopicRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for other resource that depends on ManagedKafkaConsumerGroup.
+// If the "External" is given in the other resource's spec.ManagedKafkaConsumerGroupRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual ManagedKafkaConsumerGroup object from the cluster.
+func (r *ConsumerGroupRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ManagedKafkaTopicGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", ManagedKafkaConsumerGroupGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseTopicExternal(r.External); err != nil {
+		if _, _, err := ParseConsumerGroupExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -63,12 +63,12 @@ func (r *TopicRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ManagedKafkaTopicGVK)
+	u.SetGroupVersionKind(ManagedKafkaConsumerGroupGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ManagedKafkaTopicGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", ManagedKafkaConsumerGroupGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
