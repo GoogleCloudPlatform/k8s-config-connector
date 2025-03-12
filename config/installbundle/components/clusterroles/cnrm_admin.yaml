@@ -284,6 +284,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - clouddeploy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudfunctions.cnrm.cloud.google.com
   resources:
   - '*'
