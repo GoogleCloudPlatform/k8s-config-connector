@@ -114,7 +114,6 @@ func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformMo
 	out.DataStats = Model_DataStats_ToProto(mapCtx, in.DataStats)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	out.BaseModelSource = Model_BaseModelSource_ToProto(mapCtx, in.BaseModelSource)
-
 	return out
 }
 
@@ -123,7 +122,7 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 		return nil
 	}
 	out := &structpb.Value{}
-	if direct.ValueOf(in.BoolValue) {
+	if in.BoolValue != nil {
 		out.Kind = &structpb.Value_BoolValue{
 			BoolValue: direct.ValueOf(in.BoolValue),
 		}
@@ -165,18 +164,22 @@ func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 		return nil
 	}
 	out := &krm.Value{}
-	switch in.GetKind() {
-	case &structpb.Value_StringValue{}:
-		out.StringValue = direct.LazyPtr(in.GetStringValue())
-	case &structpb.Value_NumberValue{}:
-		out.NumberValue = direct.LazyPtr(in.GetNumberValue())
-	case &structpb.Value_NullValue{}:
-		out.NullValue = direct.LazyPtr(in.GetNullValue().String())
-	case &structpb.Value_BoolValue{}:
-		out.BoolValue = direct.LazyPtr(in.GetBoolValue())
-	case &structpb.Value_ListValue{}:
+	switch in.GetKind().(type) {
+	case *structpb.Value_StringValue:
+		value := in.GetStringValue()
+		out.StringValue = &value
+	case *structpb.Value_NumberValue:
+		value := in.GetNumberValue()
+		out.NumberValue = &value
+	case *structpb.Value_NullValue:
+		value := in.GetNullValue().String()
+		out.NullValue = &value
+	case *structpb.Value_BoolValue:
+		value := in.GetBoolValue()
+		out.BoolValue = &value
+	case *structpb.Value_ListValue:
 		out.ListValue = ListValue_FromProto(mapCtx, in.GetListValue())
-	case &structpb.Value_StructValue{}:
+	case *structpb.Value_StructValue:
 		out.StructValue = StructValue_FromProto(mapCtx, in.GetStructValue())
 	}
 	return out
@@ -208,7 +211,7 @@ func StructValue_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[s
 	if in == nil {
 		return nil
 	}
-	var out map[string]string
+	out := make(map[string]string)
 	for key, val := range in.Fields {
 		out[key] = val.GetStringValue()
 	}
