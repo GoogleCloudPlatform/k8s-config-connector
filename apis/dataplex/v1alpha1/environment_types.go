@@ -26,6 +26,26 @@ var DataplexEnvironmentGVK = GroupVersion.WithKind("DataplexEnvironment")
 type DataplexEnvironmentSpec struct {
 	// The DataplexEnvironment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. User friendly display name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User defined labels for the environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Description of the environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Infrastructure specification for the Environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.infrastructure_spec
+	InfrastructureSpec *Environment_InfrastructureSpec `json:"infrastructureSpec,omitempty"`
+
+	// Optional. Configuration for sessions created for this environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.session_spec
+	SessionSpec *Environment_SessionSpec `json:"sessionSpec,omitempty"`
 }
 
 // DataplexEnvironmentStatus defines the config connector machine state of DataplexEnvironment
@@ -47,6 +67,32 @@ type DataplexEnvironmentStatus struct {
 // DataplexEnvironmentObservedState is the state of the DataplexEnvironment resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.dataplex.v1.Environment
 type DataplexEnvironmentObservedState struct {
+	// Output only. System generated globally unique ID for the environment. This
+	//  ID will be different if the environment is deleted and re-created with the
+	//  same name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Environment creation time.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the environment was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Current state of the environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Status of sessions created for this environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.session_status
+	SessionStatus *Environment_SessionStatus `json:"sessionStatus,omitempty"`
+
+	// Output only. URI Endpoints to access sessions associated with the
+	//  Environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.endpoints
+	Endpoints *Environment_Endpoints `json:"endpoints,omitempty"`
 }
 
 // +genclient
