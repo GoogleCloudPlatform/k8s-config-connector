@@ -16,7 +16,7 @@ package clouddeploy
 
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/deploy/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
