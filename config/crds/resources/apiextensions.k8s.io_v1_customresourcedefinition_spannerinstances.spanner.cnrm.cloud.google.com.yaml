@@ -131,8 +131,7 @@ spec:
               edition:
                 description: Optional. The `Edition` of the current instance. Currently
                   accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS If edition
-                  is unspecified, the default value is STANDARD. Downgrading edition
-                  is not supported for the moment.
+                  is unspecified, the default value is STANDARD.
                 type: string
               numNodes:
                 format: int32

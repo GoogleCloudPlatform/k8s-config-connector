@@ -55,7 +55,6 @@ type SpannerInstanceSpec struct {
 	// Optional. The `Edition` of the current instance.
 	// Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS
 	// If edition is unspecified, the default value is STANDARD.
-	// Downgrading edition is not supported for the moment.
 	// +optional
 	Edition *string `json:"edition,omitempty"`
 
