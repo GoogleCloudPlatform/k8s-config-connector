@@ -15,33 +15,6 @@
 package v1alpha1
 
 
-// +kcc:proto=google.cloud.workflows.executions.v1.Execution
-type Execution struct {
-
-	// Input parameters of the execution represented as a JSON string.
-	//  The size limit is 32KB.
-	//
-	//  *Note*: If you are using the REST API directly to run your workflow, you
-	//  must escape any JSON string value of `argument`. Example:
-	//  `'{"argument":"{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"}'`
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.argument
-	Argument *string `json:"argument,omitempty"`
-
-	// The call logging level associated to this execution.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.call_log_level
-	CallLogLevel *string `json:"callLogLevel,omitempty"`
-
-	// Labels associated with this execution.
-	//  Labels can contain at most 64 entries. Keys and values can be no longer
-	//  than 63 characters and can only contain lowercase letters, numeric
-	//  characters, underscores, and dashes. Label keys must start with a letter.
-	//  International characters are allowed.
-	//  By default, labels are inherited from the workflow but are overridden by
-	//  any labels associated with the execution.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.labels
-	Labels map[string]string `json:"labels,omitempty"`
-}
-
 // +kcc:proto=google.cloud.workflows.executions.v1.Execution.Error
 type Execution_Error struct {
 	// Error message and data returned represented as a JSON string.
@@ -128,55 +101,4 @@ type Execution_Status_Step struct {
 	// Name of a step within the routine.
 	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.Status.Step.step
 	Step *string `json:"step,omitempty"`
-}
-
-// +kcc:proto=google.cloud.workflows.executions.v1.Execution
-type ExecutionObservedState struct {
-	// Output only. The resource name of the execution.
-	//  Format:
-	//  projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Marks the beginning of execution.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// Output only. Marks the end of execution, successful or not.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.end_time
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Output only. Measures the duration of the execution.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.duration
-	Duration *string `json:"duration,omitempty"`
-
-	// Output only. Current state of the execution.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Output of the execution represented as a JSON string. The
-	//  value can only be present if the execution's state is `SUCCEEDED`.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.result
-	Result *string `json:"result,omitempty"`
-
-	// Output only. The error which caused the execution to finish prematurely.
-	//  The value is only present if the execution's state is `FAILED`
-	//  or `CANCELLED`.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.error
-	Error *Execution_Error `json:"error,omitempty"`
-
-	// Output only. Revision of the workflow this execution is using.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.workflow_revision_id
-	WorkflowRevisionID *string `json:"workflowRevisionID,omitempty"`
-
-	// Output only. Status tracks the current steps and progress data of this
-	//  execution.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.status
-	Status *Execution_Status `json:"status,omitempty"`
-
-	// Output only. Error regarding the state of the Execution resource. For
-	//  example, this field will have error details if the execution data is
-	//  unavailable due to revoked KMS key permissions.
-	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.state_error
-	StateError *Execution_StateError `json:"stateError,omitempty"`
 }
