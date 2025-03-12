@@ -17,7 +17,6 @@ package dataproc
 import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -26,28 +25,14 @@ func DataprocJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *
 		return nil
 	}
 	out := &krm.DataprocJobObservedState{}
-	// MISSING: Reference
-	// MISSING: Placement
-	// MISSING: HadoopJob
-	// MISSING: SparkJob
-	// MISSING: PysparkJob
-	// MISSING: HiveJob
-	// MISSING: PigJob
-	// MISSING: SparkRJob
-	// MISSING: SparkSQLJob
-	// MISSING: PrestoJob
-	// MISSING: TrinoJob
-	// MISSING: FlinkJob
-	// MISSING: Status
-	// MISSING: StatusHistory
-	// MISSING: YarnApplications
-	// MISSING: DriverOutputResourceURI
-	// MISSING: DriverControlFilesURI
-	// MISSING: Labels
-	// MISSING: Scheduling
-	// MISSING: JobUuid
-	// MISSING: Done
-	// MISSING: DriverSchedulingConfig
+	out.Placement = JobPlacementObservedState_FromProto(mapCtx, in.GetPlacement())
+	out.Status = JobStatus_FromProto(mapCtx, in.GetStatus())
+	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, JobStatus_FromProto)
+	out.YarnApplications = direct.Slice_FromProto(mapCtx, in.YarnApplications, YarnApplication_FromProto)
+	out.DriverOutputResourceURI = direct.LazyPtr(in.GetDriverOutputResourceUri())
+	out.DriverControlFilesURI = direct.LazyPtr(in.GetDriverControlFilesUri())
+	out.JobUuid = direct.LazyPtr(in.GetJobUuid())
+	out.Done = direct.LazyPtr(in.GetDone())
 	return out
 }
 func DataprocJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataprocJobObservedState) *pb.Job {
@@ -55,28 +40,14 @@ func DataprocJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datapro
 		return nil
 	}
 	out := &pb.Job{}
-	// MISSING: Reference
-	// MISSING: Placement
-	// MISSING: HadoopJob
-	// MISSING: SparkJob
-	// MISSING: PysparkJob
-	// MISSING: HiveJob
-	// MISSING: PigJob
-	// MISSING: SparkRJob
-	// MISSING: SparkSQLJob
-	// MISSING: PrestoJob
-	// MISSING: TrinoJob
-	// MISSING: FlinkJob
-	// MISSING: Status
-	// MISSING: StatusHistory
-	// MISSING: YarnApplications
-	// MISSING: DriverOutputResourceURI
-	// MISSING: DriverControlFilesURI
-	// MISSING: Labels
-	// MISSING: Scheduling
-	// MISSING: JobUuid
-	// MISSING: Done
-	// MISSING: DriverSchedulingConfig
+	out.Placement = JobPlacementObservedState_ToProto(mapCtx, in.Placement)
+	out.Status = JobStatus_ToProto(mapCtx, in.Status)
+	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, JobStatus_ToProto)
+	out.YarnApplications = direct.Slice_ToProto(mapCtx, in.YarnApplications, YarnApplication_ToProto)
+	out.DriverOutputResourceUri = direct.ValueOf(in.DriverOutputResourceURI)
+	out.DriverControlFilesUri = direct.ValueOf(in.DriverControlFilesURI)
+	out.JobUuid = direct.ValueOf(in.JobUuid)
+	out.Done = direct.ValueOf(in.Done)
 	return out
 }
 func DataprocJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.DataprocJobSpec {
@@ -84,28 +55,21 @@ func DataprocJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Datap
 		return nil
 	}
 	out := &krm.DataprocJobSpec{}
-	// MISSING: Reference
-	// MISSING: Placement
-	// MISSING: HadoopJob
-	// MISSING: SparkJob
-	// MISSING: PysparkJob
-	// MISSING: HiveJob
-	// MISSING: PigJob
-	// MISSING: SparkRJob
-	// MISSING: SparkSQLJob
-	// MISSING: PrestoJob
-	// MISSING: TrinoJob
-	// MISSING: FlinkJob
-	// MISSING: Status
-	// MISSING: StatusHistory
-	// MISSING: YarnApplications
-	// MISSING: DriverOutputResourceURI
-	// MISSING: DriverControlFilesURI
-	// MISSING: Labels
-	// MISSING: Scheduling
-	// MISSING: JobUuid
-	// MISSING: Done
-	// MISSING: DriverSchedulingConfig
+	out.Reference = JobReference_FromProto(mapCtx, in.GetReference())
+	out.Placement = JobPlacement_FromProto(mapCtx, in.GetPlacement())
+	out.HadoopJob = HadoopJob_FromProto(mapCtx, in.GetHadoopJob())
+	out.SparkJob = SparkJob_FromProto(mapCtx, in.GetSparkJob())
+	out.PysparkJob = PySparkJob_FromProto(mapCtx, in.GetPysparkJob())
+	out.HiveJob = HiveJob_FromProto(mapCtx, in.GetHiveJob())
+	out.PigJob = PigJob_FromProto(mapCtx, in.GetPigJob())
+	out.SparkRJob = SparkRJob_FromProto(mapCtx, in.GetSparkRJob())
+	out.SparkSQLJob = SparkSQLJob_FromProto(mapCtx, in.GetSparkSqlJob())
+	out.PrestoJob = PrestoJob_FromProto(mapCtx, in.GetPrestoJob())
+	out.TrinoJob = TrinoJob_FromProto(mapCtx, in.GetTrinoJob())
+	out.FlinkJob = FlinkJob_FromProto(mapCtx, in.GetFlinkJob())
+	out.Labels = in.Labels
+	out.Scheduling = JobScheduling_FromProto(mapCtx, in.GetScheduling())
+	out.DriverSchedulingConfig = DriverSchedulingConfig_FromProto(mapCtx, in.GetDriverSchedulingConfig())
 	return out
 }
 func DataprocJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocJobSpec) *pb.Job {
@@ -113,28 +77,41 @@ func DataprocJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocJobSpec)
 		return nil
 	}
 	out := &pb.Job{}
-	// MISSING: Reference
-	// MISSING: Placement
-	// MISSING: HadoopJob
-	// MISSING: SparkJob
-	// MISSING: PysparkJob
-	// MISSING: HiveJob
-	// MISSING: PigJob
-	// MISSING: SparkRJob
-	// MISSING: SparkSQLJob
-	// MISSING: PrestoJob
-	// MISSING: TrinoJob
-	// MISSING: FlinkJob
-	// MISSING: Status
-	// MISSING: StatusHistory
-	// MISSING: YarnApplications
-	// MISSING: DriverOutputResourceURI
-	// MISSING: DriverControlFilesURI
-	// MISSING: Labels
-	// MISSING: Scheduling
-	// MISSING: JobUuid
-	// MISSING: Done
-	// MISSING: DriverSchedulingConfig
+	out.Reference = JobReference_ToProto(mapCtx, in.Reference)
+	out.Placement = JobPlacement_ToProto(mapCtx, in.Placement)
+	if oneof := HadoopJob_ToProto(mapCtx, in.HadoopJob); oneof != nil {
+		out.TypeJob = &pb.Job_HadoopJob{HadoopJob: oneof}
+	}
+	if oneof := SparkJob_ToProto(mapCtx, in.SparkJob); oneof != nil {
+		out.TypeJob = &pb.Job_SparkJob{SparkJob: oneof}
+	}
+	if oneof := PySparkJob_ToProto(mapCtx, in.PysparkJob); oneof != nil {
+		out.TypeJob = &pb.Job_PysparkJob{PysparkJob: oneof}
+	}
+	if oneof := HiveJob_ToProto(mapCtx, in.HiveJob); oneof != nil {
+		out.TypeJob = &pb.Job_HiveJob{HiveJob: oneof}
+	}
+	if oneof := PigJob_ToProto(mapCtx, in.PigJob); oneof != nil {
+		out.TypeJob = &pb.Job_PigJob{PigJob: oneof}
+	}
+	if oneof := SparkRJob_ToProto(mapCtx, in.SparkRJob); oneof != nil {
+		out.TypeJob = &pb.Job_SparkRJob{SparkRJob: oneof}
+	}
+	if oneof := SparkSQLJob_ToProto(mapCtx, in.SparkSQLJob); oneof != nil {
+		out.TypeJob = &pb.Job_SparkSqlJob{SparkSqlJob: oneof}
+	}
+	if oneof := PrestoJob_ToProto(mapCtx, in.PrestoJob); oneof != nil {
+		out.TypeJob = &pb.Job_PrestoJob{PrestoJob: oneof}
+	}
+	if oneof := TrinoJob_ToProto(mapCtx, in.TrinoJob); oneof != nil {
+		out.TypeJob = &pb.Job_TrinoJob{TrinoJob: oneof}
+	}
+	if oneof := FlinkJob_ToProto(mapCtx, in.FlinkJob); oneof != nil {
+		out.TypeJob = &pb.Job_FlinkJob{FlinkJob: oneof}
+	}
+	out.Labels = in.Labels
+	out.Scheduling = JobScheduling_ToProto(mapCtx, in.Scheduling)
+	out.DriverSchedulingConfig = DriverSchedulingConfig_ToProto(mapCtx, in.DriverSchedulingConfig)
 	return out
 }
 func DriverSchedulingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DriverSchedulingConfig) *krm.DriverSchedulingConfig {
@@ -249,142 +226,6 @@ func HiveJob_ToProto(mapCtx *direct.MapContext, in *krm.HiveJob) *pb.HiveJob {
 	out.ScriptVariables = in.ScriptVariables
 	out.Properties = in.Properties
 	out.JarFileUris = in.JarFileUris
-	return out
-}
-func Job_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Job {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Job{}
-	out.Reference = JobReference_FromProto(mapCtx, in.GetReference())
-	out.Placement = JobPlacement_FromProto(mapCtx, in.GetPlacement())
-	out.HadoopJob = HadoopJob_FromProto(mapCtx, in.GetHadoopJob())
-	out.SparkJob = SparkJob_FromProto(mapCtx, in.GetSparkJob())
-	out.PysparkJob = PySparkJob_FromProto(mapCtx, in.GetPysparkJob())
-	out.HiveJob = HiveJob_FromProto(mapCtx, in.GetHiveJob())
-	out.PigJob = PigJob_FromProto(mapCtx, in.GetPigJob())
-	out.SparkRJob = SparkRJob_FromProto(mapCtx, in.GetSparkRJob())
-	out.SparkSQLJob = SparkSQLJob_FromProto(mapCtx, in.GetSparkSqlJob())
-	out.PrestoJob = PrestoJob_FromProto(mapCtx, in.GetPrestoJob())
-	out.TrinoJob = TrinoJob_FromProto(mapCtx, in.GetTrinoJob())
-	out.FlinkJob = FlinkJob_FromProto(mapCtx, in.GetFlinkJob())
-	// MISSING: Status
-	// MISSING: StatusHistory
-	// MISSING: YarnApplications
-	// MISSING: DriverOutputResourceURI
-	// MISSING: DriverControlFilesURI
-	out.Labels = in.Labels
-	out.Scheduling = JobScheduling_FromProto(mapCtx, in.GetScheduling())
-	// MISSING: JobUuid
-	// MISSING: Done
-	out.DriverSchedulingConfig = DriverSchedulingConfig_FromProto(mapCtx, in.GetDriverSchedulingConfig())
-	return out
-}
-func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	out.Reference = JobReference_ToProto(mapCtx, in.Reference)
-	out.Placement = JobPlacement_ToProto(mapCtx, in.Placement)
-	if oneof := HadoopJob_ToProto(mapCtx, in.HadoopJob); oneof != nil {
-		out.TypeJob = &pb.Job_HadoopJob{HadoopJob: oneof}
-	}
-	if oneof := SparkJob_ToProto(mapCtx, in.SparkJob); oneof != nil {
-		out.TypeJob = &pb.Job_SparkJob{SparkJob: oneof}
-	}
-	if oneof := PySparkJob_ToProto(mapCtx, in.PysparkJob); oneof != nil {
-		out.TypeJob = &pb.Job_PysparkJob{PysparkJob: oneof}
-	}
-	if oneof := HiveJob_ToProto(mapCtx, in.HiveJob); oneof != nil {
-		out.TypeJob = &pb.Job_HiveJob{HiveJob: oneof}
-	}
-	if oneof := PigJob_ToProto(mapCtx, in.PigJob); oneof != nil {
-		out.TypeJob = &pb.Job_PigJob{PigJob: oneof}
-	}
-	if oneof := SparkRJob_ToProto(mapCtx, in.SparkRJob); oneof != nil {
-		out.TypeJob = &pb.Job_SparkRJob{SparkRJob: oneof}
-	}
-	if oneof := SparkSQLJob_ToProto(mapCtx, in.SparkSQLJob); oneof != nil {
-		out.TypeJob = &pb.Job_SparkSqlJob{SparkSqlJob: oneof}
-	}
-	if oneof := PrestoJob_ToProto(mapCtx, in.PrestoJob); oneof != nil {
-		out.TypeJob = &pb.Job_PrestoJob{PrestoJob: oneof}
-	}
-	if oneof := TrinoJob_ToProto(mapCtx, in.TrinoJob); oneof != nil {
-		out.TypeJob = &pb.Job_TrinoJob{TrinoJob: oneof}
-	}
-	if oneof := FlinkJob_ToProto(mapCtx, in.FlinkJob); oneof != nil {
-		out.TypeJob = &pb.Job_FlinkJob{FlinkJob: oneof}
-	}
-	// MISSING: Status
-	// MISSING: StatusHistory
-	// MISSING: YarnApplications
-	// MISSING: DriverOutputResourceURI
-	// MISSING: DriverControlFilesURI
-	out.Labels = in.Labels
-	out.Scheduling = JobScheduling_ToProto(mapCtx, in.Scheduling)
-	// MISSING: JobUuid
-	// MISSING: Done
-	out.DriverSchedulingConfig = DriverSchedulingConfig_ToProto(mapCtx, in.DriverSchedulingConfig)
-	return out
-}
-func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.JobObservedState{}
-	// MISSING: Reference
-	out.Placement = JobPlacementObservedState_FromProto(mapCtx, in.GetPlacement())
-	// MISSING: HadoopJob
-	// MISSING: SparkJob
-	// MISSING: PysparkJob
-	// MISSING: HiveJob
-	// MISSING: PigJob
-	// MISSING: SparkRJob
-	// MISSING: SparkSQLJob
-	// MISSING: PrestoJob
-	// MISSING: TrinoJob
-	// MISSING: FlinkJob
-	out.Status = JobStatus_FromProto(mapCtx, in.GetStatus())
-	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, JobStatus_FromProto)
-	out.YarnApplications = direct.Slice_FromProto(mapCtx, in.YarnApplications, YarnApplication_FromProto)
-	out.DriverOutputResourceURI = direct.LazyPtr(in.GetDriverOutputResourceUri())
-	out.DriverControlFilesURI = direct.LazyPtr(in.GetDriverControlFilesUri())
-	// MISSING: Labels
-	// MISSING: Scheduling
-	out.JobUuid = direct.LazyPtr(in.GetJobUuid())
-	out.Done = direct.LazyPtr(in.GetDone())
-	// MISSING: DriverSchedulingConfig
-	return out
-}
-func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedState) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	// MISSING: Reference
-	out.Placement = JobPlacementObservedState_ToProto(mapCtx, in.Placement)
-	// MISSING: HadoopJob
-	// MISSING: SparkJob
-	// MISSING: PysparkJob
-	// MISSING: HiveJob
-	// MISSING: PigJob
-	// MISSING: SparkRJob
-	// MISSING: SparkSQLJob
-	// MISSING: PrestoJob
-	// MISSING: TrinoJob
-	// MISSING: FlinkJob
-	out.Status = JobStatus_ToProto(mapCtx, in.Status)
-	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, JobStatus_ToProto)
-	out.YarnApplications = direct.Slice_ToProto(mapCtx, in.YarnApplications, YarnApplication_ToProto)
-	out.DriverOutputResourceUri = direct.ValueOf(in.DriverOutputResourceURI)
-	out.DriverControlFilesUri = direct.ValueOf(in.DriverControlFilesURI)
-	// MISSING: Labels
-	// MISSING: Scheduling
-	out.JobUuid = direct.ValueOf(in.JobUuid)
-	out.Done = direct.ValueOf(in.Done)
-	// MISSING: DriverSchedulingConfig
 	return out
 }
 func JobPlacement_FromProto(mapCtx *direct.MapContext, in *pb.JobPlacement) *krm.JobPlacement {

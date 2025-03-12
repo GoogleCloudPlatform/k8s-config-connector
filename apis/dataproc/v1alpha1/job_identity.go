@@ -56,7 +56,7 @@ func (p *JobParent) String() string {
 func NewJobIdentity(ctx context.Context, reader client.Reader, obj *DataprocJob) (*JobIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.projectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func NewJobIdentity(ctx context.Context, reader client.Reader, obj *DataprocJob)
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := obj.Spec.Parent.region
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
