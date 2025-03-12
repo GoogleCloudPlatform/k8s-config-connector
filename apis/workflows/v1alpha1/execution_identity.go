@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ExecutionIdentity struct {
 	parent *ExecutionParent
-	id string
+	id     string
 }
 
 func (i *ExecutionIdentity) String() string {
-	return  i.parent.String() + "/executions/" + i.id
+	return i.parent.String() + "/executions/" + i.id
 }
 
 func (i *ExecutionIdentity) ID() string {
@@ -40,24 +40,24 @@ func (i *ExecutionIdentity) ID() string {
 }
 
 func (i *ExecutionIdentity) Parent() *ExecutionParent {
-	return  i.parent
+	return i.parent
 }
 
 type ExecutionParent struct {
 	ProjectID string
 	Location  string
+	Workflow  string
 }
 
 func (p *ExecutionParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/workflows/" + p.Workflow
 }
-
 
 // New builds a ExecutionIdentity from the Config Connector Execution object.
 func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *WorkflowsExecution) (*ExecutionIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *Workfl
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := obj.Spec.Parent.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -106,13 +106,14 @@ func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *Workfl
 
 func ParseExecutionExternal(external string) (parent *ExecutionParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "executions" {
-		return nil, "", fmt.Errorf("format of WorkflowsExecution external=%q was not known (use projects/{{projectID}}/locations/{{location}}/executions/{{executionID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workflows" || tokens[6] != "executions" {
+		return nil, "", fmt.Errorf("format of WorkflowsExecution external=%q was not known (use projects/{{projectID}}/locations/{{location}}/workflows/{{workflow}}/executions/{{executionID}})", external)
 	}
 	parent = &ExecutionParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
+		Workflow:  tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
