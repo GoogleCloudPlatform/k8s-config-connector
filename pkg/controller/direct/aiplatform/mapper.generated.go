@@ -15,11 +15,11 @@
 package aiplatform
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-
 func BlurBaselineConfig_FromProto(mapCtx *direct.MapContext, in *pb.BlurBaselineConfig) *krm.BlurBaselineConfig {
 	if in == nil {
 		return nil
@@ -272,73 +272,6 @@ func IntegratedGradientsAttribution_ToProto(mapCtx *direct.MapContext, in *krm.I
 	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
-func Model_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.Model {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Model{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: VersionID
-	out.VersionAliases = in.VersionAliases
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.VersionDescription = direct.LazyPtr(in.GetVersionDescription())
-	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
-	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
-	out.PipelineJob = direct.LazyPtr(in.GetPipelineJob())
-	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
-	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
-	out.ExplanationSpec = ExplanationSpec_FromProto(mapCtx, in.GetExplanationSpec())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
-	out.DataStats = Model_DataStats_FromProto(mapCtx, in.GetDataStats())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.BaseModelSource = Model_BaseModelSource_FromProto(mapCtx, in.GetBaseModelSource())
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func Model_ToProto(mapCtx *direct.MapContext, in *krm.Model) *pb.Model {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Model{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: VersionID
-	out.VersionAliases = in.VersionAliases
-	// MISSING: VersionCreateTime
-	// MISSING: VersionUpdateTime
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.VersionDescription = direct.ValueOf(in.VersionDescription)
-	out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
-	out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
-	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
-	// MISSING: SupportedExportFormats
-	// MISSING: TrainingPipeline
-	out.PipelineJob = direct.ValueOf(in.PipelineJob)
-	out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
-	out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
-	// MISSING: SupportedDeploymentResourcesTypes
-	// MISSING: SupportedInputStorageFormats
-	// MISSING: SupportedOutputStorageFormats
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeployedModels
-	out.ExplanationSpec = ExplanationSpec_ToProto(mapCtx, in.ExplanationSpec)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
-	out.DataStats = Model_DataStats_ToProto(mapCtx, in.DataStats)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	// MISSING: ModelSourceInfo
-	// MISSING: OriginalModelInfo
-	// MISSING: MetadataArtifact
-	out.BaseModelSource = Model_BaseModelSource_ToProto(mapCtx, in.BaseModelSource)
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
 func ModelContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelContainerSpec) *krm.ModelContainerSpec {
 	if in == nil {
 		return nil
@@ -391,86 +324,6 @@ func ModelGardenSource_ToProto(mapCtx *direct.MapContext, in *krm.ModelGardenSou
 	}
 	out := &pb.ModelGardenSource{}
 	out.PublicModelName = direct.ValueOf(in.PublicModelName)
-	return out
-}
-func ModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.ModelObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ModelObservedState{}
-	// MISSING: Name
-	out.VersionID = direct.LazyPtr(in.GetVersionId())
-	// MISSING: VersionAliases
-	out.VersionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVersionCreateTime())
-	out.VersionUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVersionUpdateTime())
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VersionDescription
-	// MISSING: PredictSchemata
-	// MISSING: MetadataSchemaURI
-	// MISSING: Metadata
-	out.SupportedExportFormats = direct.Slice_FromProto(mapCtx, in.SupportedExportFormats, Model_ExportFormat_FromProto)
-	out.TrainingPipeline = direct.LazyPtr(in.GetTrainingPipeline())
-	// MISSING: PipelineJob
-	// MISSING: ContainerSpec
-	// MISSING: ArtifactURI
-	out.SupportedDeploymentResourcesTypes = direct.EnumSlice_FromProto(mapCtx, in.SupportedDeploymentResourcesTypes)
-	out.SupportedInputStorageFormats = in.SupportedInputStorageFormats
-	out.SupportedOutputStorageFormats = in.SupportedOutputStorageFormats
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeployedModels = direct.Slice_FromProto(mapCtx, in.DeployedModels, DeployedModelRef_FromProto)
-	// MISSING: ExplanationSpec
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: DataStats
-	// MISSING: EncryptionSpec
-	out.ModelSourceInfo = ModelSourceInfo_FromProto(mapCtx, in.GetModelSourceInfo())
-	out.OriginalModelInfo = Model_OriginalModelInfo_FromProto(mapCtx, in.GetOriginalModelInfo())
-	out.MetadataArtifact = direct.LazyPtr(in.GetMetadataArtifact())
-	// MISSING: BaseModelSource
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	return out
-}
-func ModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelObservedState) *pb.Model {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Model{}
-	// MISSING: Name
-	out.VersionId = direct.ValueOf(in.VersionID)
-	// MISSING: VersionAliases
-	out.VersionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.VersionCreateTime)
-	out.VersionUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.VersionUpdateTime)
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: VersionDescription
-	// MISSING: PredictSchemata
-	// MISSING: MetadataSchemaURI
-	// MISSING: Metadata
-	out.SupportedExportFormats = direct.Slice_ToProto(mapCtx, in.SupportedExportFormats, Model_ExportFormat_ToProto)
-	out.TrainingPipeline = direct.ValueOf(in.TrainingPipeline)
-	// MISSING: PipelineJob
-	// MISSING: ContainerSpec
-	// MISSING: ArtifactURI
-	out.SupportedDeploymentResourcesTypes = direct.EnumSlice_ToProto[pb.Model_DeploymentResourcesType](mapCtx, in.SupportedDeploymentResourcesTypes)
-	out.SupportedInputStorageFormats = in.SupportedInputStorageFormats
-	out.SupportedOutputStorageFormats = in.SupportedOutputStorageFormats
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeployedModels = direct.Slice_ToProto(mapCtx, in.DeployedModels, DeployedModelRef_ToProto)
-	// MISSING: ExplanationSpec
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: DataStats
-	// MISSING: EncryptionSpec
-	out.ModelSourceInfo = ModelSourceInfo_ToProto(mapCtx, in.ModelSourceInfo)
-	out.OriginalModelInfo = Model_OriginalModelInfo_ToProto(mapCtx, in.OriginalModelInfo)
-	out.MetadataArtifact = direct.ValueOf(in.MetadataArtifact)
-	// MISSING: BaseModelSource
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
 func ModelSourceInfo_FromProto(mapCtx *direct.MapContext, in *pb.ModelSourceInfo) *krm.ModelSourceInfo {
