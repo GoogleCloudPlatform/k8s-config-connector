@@ -248,7 +248,7 @@ type KubernetesConfig_GatewayServiceMesh_RouteDestinations struct {
 	//  configured in the Target resource and "@self" to include the Target
 	//  cluster.
 	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.RouteDestinations.destination_ids
-	DestinationIds []string `json:"destinationIds,omitempty"`
+	DestinationIDs []string `json:"destinationIDs,omitempty"`
 
 	// Optional. Whether to propagate the Kubernetes Service to the route
 	//  destination clusters. The Service will always be deployed to the Target

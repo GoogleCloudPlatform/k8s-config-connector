@@ -278,7 +278,7 @@ func KubernetesConfig_GatewayServiceMesh_RouteDestinations_FromProto(mapCtx *dir
 		return nil
 	}
 	out := &krm.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
-	out.DestinationIds = in.DestinationIds
+	out.DestinationIDs = in.DestinationIds
 	out.PropagateService = direct.LazyPtr(in.GetPropagateService())
 	return out
 }
@@ -287,7 +287,7 @@ func KubernetesConfig_GatewayServiceMesh_RouteDestinations_ToProto(mapCtx *direc
 		return nil
 	}
 	out := &pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
-	out.DestinationIds = in.DestinationIds
+	out.DestinationIds = in.DestinationIDs
 	out.PropagateService = direct.ValueOf(in.PropagateService)
 	return out
 }
