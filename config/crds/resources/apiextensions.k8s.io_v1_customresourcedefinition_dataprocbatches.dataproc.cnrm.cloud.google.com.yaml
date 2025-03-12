@@ -1,0 +1,471 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: dataprocbatches.dataproc.cnrm.cloud.google.com
+spec:
+  group: dataproc.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataprocBatch
+    listKind: DataprocBatchList
+    plural: dataprocbatches
+    shortNames:
+    - gcpdataprocbatch
+    - gcpdataprocbatchs
+    singular: dataprocbatch
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DataprocBatch is the Schema for the DataprocBatch API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DataprocBatchSpec defines the desired state of DataprocBatch
+            properties:
+              environmentConfig:
+                description: Optional. Environment configuration for the batch execution.
+                properties:
+                  executionConfig:
+                    description: Optional. Execution configuration for a workload.
+                    properties:
+                      idleTtl:
+                        description: 'Optional. Applies to sessions only. The duration
+                          to keep the session alive while it''s idling. Exceeding
+                          this threshold causes the session to terminate. This field
+                          cannot be set on a batch workload. Minimum value is 10 minutes;
+                          maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+                          Defaults to 1 hour if not set. If both `ttl` and `idle_ttl`
+                          are specified for an interactive session, the conditions
+                          are treated as `OR` conditions: the workload will be terminated
+                          when it has been idle for `idle_ttl` or when `ttl` has been
+                          exceeded, whichever occurs first.'
+                        type: string
+                      kmsKey:
+                        description: Optional. The Cloud KMS key to use for encryption.
+                        type: string
+                      networkTags:
+                        description: Optional. Tags used for network traffic control.
+                        items:
+                          type: string
+                        type: array
+                      networkURI:
+                        description: Optional. Network URI to connect workload to.
+                        type: string
+                      serviceAccount:
+                        description: Optional. Service account that used to execute
+                          workload.
+                        type: string
+                      stagingBucket:
+                        description: Optional. A Cloud Storage bucket used to stage
+                          workload dependencies, config files, and store workload
+                          output and other ephemeral data, such as Spark history files.
+                          If you do not specify a staging bucket, Cloud Dataproc will
+                          determine a Cloud Storage location according to the region
+                          where your workload is running, and then create and manage
+                          project-level, per-location staging and temporary buckets.
+                          **This field requires a Cloud Storage bucket name, not a
+                          `gs://...` URI to a Cloud Storage bucket.**
+                        type: string
+                      subnetworkURI:
+                        description: Optional. Subnetwork URI to connect workload
+                          to.
+                        type: string
+                      ttl:
+                        description: 'Optional. The duration after which the workload
+                          will be terminated, specified as the JSON representation
+                          for [Duration](https://protobuf.dev/programming-guides/proto3/#json).
+                          When the workload exceeds this duration, it will be unconditionally
+                          terminated without waiting for ongoing work to finish. If
+                          `ttl` is not specified for a batch workload, the workload
+                          will be allowed to run until it exits naturally (or run
+                          forever without exiting). If `ttl` is not specified for
+                          an interactive session, it defaults to 24 hours. If `ttl`
+                          is not specified for a batch that uses 2.1+ runtime version,
+                          it defaults to 4 hours. Minimum value is 10 minutes; maximum
+                          value is 14 days. If both `ttl` and `idle_ttl` are specified
+                          (for an interactive session), the conditions are treated
+                          as `OR` conditions: the workload will be terminated when
+                          it has been idle for `idle_ttl` or when `ttl` has been exceeded,
+                          whichever occurs first.'
+                        type: string
+                    type: object
+                  peripheralsConfig:
+                    description: Optional. Peripherals configuration that workload
+                      has access to.
+                    properties:
+                      metastoreService:
+                        description: |-
+                          Optional. Resource name of an existing Dataproc Metastore service.
+
+                           Example:
+
+                           * `projects/[project_id]/locations/[region]/services/[service_id]`
+                        type: string
+                      sparkHistoryServerConfig:
+                        description: Optional. The Spark History Server configuration
+                          for the workload.
+                        properties:
+                          dataprocCluster:
+                            description: |-
+                              Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+                               History Server for the workload.
+
+                               Example:
+
+                               * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+                            type: string
+                        type: object
+                    type: object
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. The labels to associate with this batch. Label
+                  **keys** must contain 1 to 63 characters, and must conform to [RFC
+                  1035](https://www.ietf.org/rfc/rfc1035.txt). Label **values** may
+                  be empty, but, if present, must contain 1 to 63 characters, and
+                  must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
+                  No more than 32 labels can be associated with a batch.
+                type: object
+              location:
+                description: Required.
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pysparkBatch:
+                description: Optional. PySpark batch config.
+                properties:
+                  archiveUris:
+                    description: 'Optional. HCFS URIs of archives to be extracted
+                      into the working directory of each executor. Supported file
+                      types: `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.'
+                    items:
+                      type: string
+                    type: array
+                  args:
+                    description: Optional. The arguments to pass to the driver. Do
+                      not include arguments that can be set as batch properties, such
+                      as `--conf`, since a collision can occur that causes an incorrect
+                      batch submission.
+                    items:
+                      type: string
+                    type: array
+                  fileUris:
+                    description: Optional. HCFS URIs of files to be placed in the
+                      working directory of each executor.
+                    items:
+                      type: string
+                    type: array
+                  jarFileUris:
+                    description: Optional. HCFS URIs of jar files to add to the classpath
+                      of the Spark driver and tasks.
+                    items:
+                      type: string
+                    type: array
+                  mainPythonFileURI:
+                    description: Required. The HCFS URI of the main Python file to
+                      use as the Spark driver. Must be a .py file.
+                    type: string
+                  pythonFileUris:
+                    description: 'Optional. HCFS file URIs of Python files to pass
+                      to the PySpark framework. Supported file types: `.py`, `.egg`,
+                      and `.zip`.'
+                    items:
+                      type: string
+                    type: array
+                type: object
+              resourceID:
+                description: The GCP resource identifier. If not given, the metadata.name
+                  will be used.
+                type: string
+              runtimeConfig:
+                description: Optional. Runtime configuration for the batch execution.
+                properties:
+                  autotuningConfig:
+                    description: Optional. Autotuning configuration of the workload.
+                    properties:
+                      scenarios:
+                        description: Optional. Scenarios for which tunings are applied.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  cohort:
+                    description: Optional. Cohort identifier. Identifies families
+                      of the workloads having the same shape, e.g. daily ETL jobs.
+                    type: string
+                  containerImage:
+                    description: Optional. Optional custom container image for the
+                      job runtime environment. If not specified, a default container
+                      image will be used.
+                    type: string
+                  properties:
+                    additionalProperties:
+                      type: string
+                    description: Optional. A mapping of property names to values,
+                      which are used to configure workload execution.
+                    type: object
+                  repositoryConfig:
+                    description: Optional. Dependency repository configuration.
+                    properties:
+                      pypiRepositoryConfig:
+                        description: Optional. Configuration for PyPi repository.
+                        properties:
+                          pypiRepository:
+                            description: Optional. PyPi repository address
+                            type: string
+                        type: object
+                    type: object
+                  version:
+                    description: Optional. Version of the batch runtime.
+                    type: string
+                type: object
+              sparkBatch:
+                description: Optional. Spark batch config.
+                properties:
+                  archiveUris:
+                    description: 'Optional. HCFS URIs of archives to be extracted
+                      into the working directory of each executor. Supported file
+                      types: `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.'
+                    items:
+                      type: string
+                    type: array
+                  args:
+                    description: Optional. The arguments to pass to the driver. Do
+                      not include arguments that can be set as batch properties, such
+                      as `--conf`, since a collision can occur that causes an incorrect
+                      batch submission.
+                    items:
+                      type: string
+                    type: array
+                  fileUris:
+                    description: Optional. HCFS URIs of files to be placed in the
+                      working directory of each executor.
+                    items:
+                      type: string
+                    type: array
+                  jarFileUris:
+                    description: Optional. HCFS URIs of jar files to add to the classpath
+                      of the Spark driver and tasks.
+                    items:
+                      type: string
+                    type: array
+                  mainClass:
+                    description: Optional. The name of the driver main class. The
+                      jar file that contains the class must be in the classpath or
+                      specified in `jar_file_uris`.
+                    type: string
+                  mainJarFileURI:
+                    description: Optional. The HCFS URI of the jar file that contains
+                      the main class.
+                    type: string
+                type: object
+              sparkRBatch:
+                description: Optional. SparkR batch config.
+                properties:
+                  archiveUris:
+                    description: 'Optional. HCFS URIs of archives to be extracted
+                      into the working directory of each executor. Supported file
+                      types: `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.'
+                    items:
+                      type: string
+                    type: array
+                  args:
+                    description: Optional. The arguments to pass to the Spark driver.
+                      Do not include arguments that can be set as batch properties,
+                      such as `--conf`, since a collision can occur that causes an
+                      incorrect batch submission.
+                    items:
+                      type: string
+                    type: array
+                  fileUris:
+                    description: Optional. HCFS URIs of files to be placed in the
+                      working directory of each executor.
+                    items:
+                      type: string
+                    type: array
+                  mainRFileURI:
+                    description: Required. The HCFS URI of the main R file to use
+                      as the driver. Must be a `.R` or `.r` file.
+                    type: string
+                type: object
+              sparkSQLBatch:
+                description: Optional. SparkSql batch config.
+                properties:
+                  jarFileUris:
+                    description: Optional. HCFS URIs of jar files to be added to the
+                      Spark CLASSPATH.
+                    items:
+                      type: string
+                    type: array
+                  queryFileURI:
+                    description: Required. The HCFS URI of the script that contains
+                      Spark SQL queries to execute.
+                    type: string
+                  queryVariables:
+                    additionalProperties:
+                      type: string
+                    description: 'Optional. Mapping of query variable names to values
+                      (equivalent to the Spark SQL command: `SET name="value";`).'
+                    type: object
+                type: object
+            required:
+            - projectRef
+            type: object
+          status:
+            description: DataprocBatchStatus defines the config connector machine
+              state of DataprocBatch
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataprocBatch resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time when the batch was created.
+                    type: string
+                  creator:
+                    description: Output only. The email address of the user who created
+                      the batch.
+                    type: string
+                  operation:
+                    description: Output only. The resource name of the operation associated
+                      with this batch.
+                    type: string
+                  runtimeInfo:
+                    description: Output only. Runtime information about batch execution.
+                    type: object
+                  state:
+                    description: Output only. The state of the batch.
+                    type: string
+                  stateHistory:
+                    description: Output only. Historical state information for the
+                      batch.
+                    items:
+                      type: object
+                    type: array
+                  stateMessage:
+                    description: Output only. Batch state details, such as a failure
+                      description if the state is `FAILED`.
+                    type: string
+                  stateTime:
+                    description: Output only. The time when the batch entered a current
+                      state.
+                    type: string
+                  uuid:
+                    description: Output only. A batch UUID (Unique Universal Identifier).
+                      The service generates this value when it creates the batch.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
