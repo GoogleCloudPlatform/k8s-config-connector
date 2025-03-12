@@ -61,8 +61,9 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdBuildProto          = 15
 	cmdRunMockTests        = 16
 	cmdGenerateTypes       = 20
-	cmdGenerateCRD         = 21
-	cmdGenerateFuzzer      = 22
+	cmdAdjustTypes         = 21
+	cmdGenerateCRD         = 22
+	cmdGenerateFuzzer      = 23
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
@@ -337,9 +338,11 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, branches.Branches, runMockgcpTests, "Mock Tests", "Run mock tests")
 	case cmdGenerateTypes: // 20
 		processBranches(ctx, opts, branches.Branches, generateTypesAndMapper, "Types and Mapper", "Add generated types and mapper")
-	case cmdGenerateCRD: // 21
+	case cmdAdjustTypes: // 21
+		processBranches(ctx, opts, branches.Branches, adjustTypes, "Adjusting types", "Adjust generated types to match proto structure")
+	case cmdGenerateCRD: // 22
 		processBranches(ctx, opts, branches.Branches, generateCRD, "CRD", "Add generated CRD")
-	case cmdGenerateFuzzer: // 22
+	case cmdGenerateFuzzer: // 23
 		processBranches(ctx, opts, branches.Branches, generateFuzzer, "Fuzzer", "Add generated fuzzer")
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
@@ -619,7 +622,7 @@ Only include APIs that are directly needed by this command.
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 
-	output, _, err := executeCommand(opts, cfg)
+	output, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Printf("Failed to get APIs for %s: %v", branch.Name, err)
 		return branch
@@ -627,7 +630,7 @@ Only include APIs that are directly needed by this command.
 
 	// Parse the codebot output to get API list
 	var filteredLines []string
-	for _, line := range strings.Split(strings.TrimSpace(output), "\n") {
+	for _, line := range strings.Split(strings.TrimSpace(output.Stdout), "\n") {
 		line = strings.TrimSpace(line)
 		if strings.HasPrefix(line, "api-required:") {
 			filteredLines = append(filteredLines, line)
@@ -709,7 +712,7 @@ func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 		WorkDir:    workDir,
 		MaxRetries: 2,
 	}
-	output, errOutput, err := executeCommand(opts, cfg)
+	output, err := executeCommand(opts, cfg)
 	if err != nil {
 		var exitError *exec.ExitError
 		if errors.As(err, &exitError) {
@@ -732,10 +735,10 @@ func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 				WorkDir:    workDir,
 				MaxRetries: 2,
 			}
-			output, errOutput, err = executeCommand(opts, cfg)
+			output, err = executeCommand(opts, cfg)
 			if err != nil {
 				log.Printf("Working in directory %s", workDir)
-				log.Printf("Got response2 %v", errOutput)
+				log.Printf("Got response2 %v", output.Stderr)
 				log.Printf("Find proto file error: %q\n", err)
 				return ""
 			}
@@ -746,9 +749,9 @@ func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 		}
 	}
 
-	vals := strings.Split(output, ":")
+	vals := strings.Split(output.Stdout, ":")
 	if len(vals) <= 1 {
-		log.Printf("ERROR: something wrong with grep response: %q\n", output)
+		log.Printf("ERROR: something wrong with grep response: %q\n", output.Stdout)
 		return ""
 	}
 	return vals[0]
@@ -822,12 +825,12 @@ func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string)
 		WorkDir:    workDir,
 		MaxRetries: 1,
 	}
-	_, errOutput, _ := executeCommand(opts, cfg)
+	op, _ := executeCommand(opts, cfg)
 	// todo: shall we keep when gcloud xxx --help returns error?
 	// Just keep everything for now
 	// todo: Do we need to include 'patch'? I thought 'gcloud' primarily uses 'update' for these operations.
 	var operationRegex = regexp.MustCompile(`(create|update|delete)`)
-	if !operationRegex.MatchString(errOutput) {
+	if !operationRegex.MatchString(op.Stderr) {
 		branch.Skip = true
 		branch.Notes = append(branch.Notes, "gcloud command does not contain any of create/update/delete")
 	}
@@ -854,15 +857,15 @@ func diffLastNCommits(opts *RunnerOptions, branch Branch) {
 		WorkDir:    workDir,
 		MaxRetries: 1,
 	}
-	output, _, err := executeCommand(opts, cfg)
+	output, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Printf("Git diff error for branch %s: %v", branch.Name, err)
 		return
 	}
 
 	// Print the diff output
-	log.Printf("Diff for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output)
-	fmt.Printf("Diff for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output)
+	log.Printf("Diff for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output.Stdout)
+	fmt.Printf("Diff for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output.Stdout)
 }
 
 func revertLastNCommits(opts *RunnerOptions, branch Branch) {
@@ -884,7 +887,7 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 		WorkDir:    workDir,
 		MaxRetries: 1,
 	}
-	output, _, err := executeCommand(opts, cfg)
+	output, err := executeCommand(opts, cfg)
 	if err != nil {
 		log.Printf("Git log error for branch %s: %v", branch.Name, err)
 		return
@@ -892,7 +895,7 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 
 	// Print the last N commits
 	mergeCommit := false
-	lines := strings.Split(strings.TrimSpace(output), "\n")
+	lines := strings.Split(strings.TrimSpace(output.Stdout), "\n")
 	if len(lines) > 0 {
 		log.Printf("Last %d commits in branch %s:", opts.numCommits, branch.Name)
 		for _, line := range lines {
@@ -904,7 +907,7 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 	}
 	if mergeCommit {
 		log.Printf("ERROR: Found merge commits in the last %d commits for branch %s:", opts.numCommits, branch.Name)
-		fmt.Printf("\nERROR: Found merge commits in the last %d commits that would be reverted:\n%s\n", opts.numCommits, output)
+		fmt.Printf("\nERROR: Found merge commits in the last %d commits that would be reverted:\n%s\n", opts.numCommits, output.Stdout)
 		return
 	}
 
@@ -935,12 +938,12 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 		WorkDir:    workDir,
 		MaxRetries: 1,
 	}
-	output, _, err = executeCommand(opts, cfg)
+	output, err = executeCommand(opts, cfg)
 	if err != nil {
 		log.Printf("Git reset error for branch %s: %v", branch.Name, err)
 		return
 	}
 
 	// Print the reset output
-	log.Printf("Reset output for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output)
+	log.Printf("Reset output for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output.Stdout)
 }
