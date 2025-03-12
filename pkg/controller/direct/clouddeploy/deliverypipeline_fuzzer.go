@@ -33,7 +33,10 @@ func deployDeliveryPipelineFuzzer() fuzztesting.KRMFuzzer {
 		DeployDeliveryPipelineObservedState_FromProto, DeployDeliveryPipelineObservedState_ToProto,
 	)
 
+	f.UnimplementedFields.Insert(".labels")
+
 	f.SpecFields.Insert(".description")
+	f.SpecFields.Insert(".name")
 	f.SpecFields.Insert(".annotations")
 	// f.SpecFields.Insert(".labels") // NOTYET
 	f.SpecFields.Insert(".serial_pipeline")

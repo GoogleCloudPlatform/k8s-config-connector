@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package deploy
+package clouddeploy
 
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
@@ -130,49 +130,49 @@ func CustomCanaryDeployment_PhaseConfig_ToProto(mapCtx *direct.MapContext, in *k
 	out.Postdeploy = Postdeploy_ToProto(mapCtx, in.Postdeploy)
 	return out
 }
-func DeliveryPipeline_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeliveryPipeline {
+func DeployDeliveryPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeployDeliveryPipelineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeliveryPipeline{}
+	out := &krm.DeployDeliveryPipelineSpec{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Uid
+	// ObservedState: Uid
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Annotations = in.Annotations
-	out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	//out.Labels = in.Labels // Not yet
+	// ObservedState: CreateTime
+	// ObservedState: UpdateTime
 	out.SerialPipeline = SerialPipeline_FromProto(mapCtx, in.GetSerialPipeline())
-	// MISSING: Condition
+	// ObservedState: Condition
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Suspended = direct.LazyPtr(in.GetSuspended())
 	return out
 }
-func DeliveryPipeline_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPipeline) *pb.DeliveryPipeline {
+func DeployDeliveryPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeployDeliveryPipelineSpec) *pb.DeliveryPipeline {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DeliveryPipeline{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Uid
+	// ObservedState: Uid
 	out.Description = direct.ValueOf(in.Description)
 	out.Annotations = in.Annotations
-	out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	//out.Labels = in.Labels // Not yet
+	// ObservedState: CreateTime
+	// ObservedState: UpdateTime
 	if oneof := SerialPipeline_ToProto(mapCtx, in.SerialPipeline); oneof != nil {
 		out.Pipeline = &pb.DeliveryPipeline_SerialPipeline{SerialPipeline: oneof}
 	}
-	// MISSING: Condition
+	// ObservedState: Condition
 	out.Etag = direct.ValueOf(in.Etag)
 	out.Suspended = direct.ValueOf(in.Suspended)
 	return out
 }
-func DeliveryPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeliveryPipelineObservedState {
+func DeployDeliveryPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeployDeliveryPipelineObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeliveryPipelineObservedState{}
+	out := &krm.DeployDeliveryPipelineObservedState{}
 	// MISSING: Name
 	out.Uid = direct.LazyPtr(in.GetUid())
 	// MISSING: Description
@@ -186,7 +186,7 @@ func DeliveryPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: Suspended
 	return out
 }
-func DeliveryPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPipelineObservedState) *pb.DeliveryPipeline {
+func DeployDeliveryPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployDeliveryPipelineObservedState) *pb.DeliveryPipeline {
 	if in == nil {
 		return nil
 	}
@@ -204,78 +204,7 @@ func DeliveryPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.De
 	// MISSING: Suspended
 	return out
 }
-func DeployDeliveryPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeployDeliveryPipelineObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployDeliveryPipelineObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: SerialPipeline
-	// MISSING: Condition
-	// MISSING: Etag
-	// MISSING: Suspended
-	return out
-}
-func DeployDeliveryPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployDeliveryPipelineObservedState) *pb.DeliveryPipeline {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DeliveryPipeline{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: SerialPipeline
-	// MISSING: Condition
-	// MISSING: Etag
-	// MISSING: Suspended
-	return out
-}
-func DeployDeliveryPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeployDeliveryPipelineSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployDeliveryPipelineSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: SerialPipeline
-	// MISSING: Condition
-	// MISSING: Etag
-	// MISSING: Suspended
-	return out
-}
-func DeployDeliveryPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeployDeliveryPipelineSpec) *pb.DeliveryPipeline {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DeliveryPipeline{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: SerialPipeline
-	// MISSING: Condition
-	// MISSING: Etag
-	// MISSING: Suspended
-	return out
-}
+
 func DeployParameters_FromProto(mapCtx *direct.MapContext, in *pb.DeployParameters) *krm.DeployParameters {
 	if in == nil {
 		return nil
