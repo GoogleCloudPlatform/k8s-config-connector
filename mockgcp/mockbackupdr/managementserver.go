@@ -45,7 +45,7 @@ func (s *BackupDRServerV1) GetManagementServer(ctx context.Context, req *pb.GetM
 	obj := &pb.ManagementServer{}
 	if err := s.MockService.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "ManagementServer %s does not exist", req.Name)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", req.Name)
 		}
 		return nil, err
 	}
@@ -174,5 +174,4 @@ func handleGeneratedFields(name *ManagementServerName, obj *pb.ManagementServer)
 		WebUi: fmt.Sprintf("https://bmc-%d-3aclcdbj-dot-%s.backupdr.googleusercontent.com", name.Project.Number, name.Location),
 	}
 	obj.Oauth2ClientId = uuid.New().String()
-	obj.SatisfiesPzi = true
 }
