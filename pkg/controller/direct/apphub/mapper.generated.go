@@ -156,11 +156,131 @@ func WorkloadPropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Zone = direct.LazyPtr(in.GetZone())
 	return out
 }
+func AppHubDiscoveredServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.AppHubDiscoveredServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppHubDiscoveredServiceObservedState{}
+	// MISSING: Name
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func AppHubDiscoveredServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubDiscoveredServiceObservedState) *pb.DiscoveredService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredService{}
+	// MISSING: Name
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func AppHubDiscoveredServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.AppHubDiscoveredServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppHubDiscoveredServiceSpec{}
+	// MISSING: Name
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func AppHubDiscoveredServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubDiscoveredServiceSpec) *pb.DiscoveredService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredService{}
+	// MISSING: Name
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func DiscoveredService_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.DiscoveredService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveredService{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func DiscoveredService_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredService) *pb.DiscoveredService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredService{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: ServiceReference
+	// MISSING: ServiceProperties
+	return out
+}
+func DiscoveredServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredService) *krm.DiscoveredServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveredServiceObservedState{}
+	// MISSING: Name
+	out.ServiceReference = ServiceReference_FromProto(mapCtx, in.GetServiceReference())
+	out.ServiceProperties = ServiceProperties_FromProto(mapCtx, in.GetServiceProperties())
+	return out
+}
+func DiscoveredServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredServiceObservedState) *pb.DiscoveredService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveredService{}
+	// MISSING: Name
+	out.ServiceReference = ServiceReference_ToProto(mapCtx, in.ServiceReference)
+	out.ServiceProperties = ServiceProperties_ToProto(mapCtx, in.ServiceProperties)
+	return out
+}
+func ServiceProperties_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krm.ServiceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceProperties{}
+	// MISSING: GcpProject
+	// MISSING: Location
+	// MISSING: Zone
+	return out
+}
+func ServiceProperties_ToProto(mapCtx *direct.MapContext, in *krm.ServiceProperties) *pb.ServiceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceProperties{}
+	// MISSING: GcpProject
+	// MISSING: Location
+	// MISSING: Zone
+	return out
+}
+func ServicePropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceProperties) *krm.ServicePropertiesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServicePropertiesObservedState{}
+	out.GcpProject = direct.LazyPtr(in.GetGcpProject())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	return out
+}
 func WorkloadPropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadPropertiesObservedState) *pb.WorkloadProperties {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WorkloadProperties{}
+	out.GcpProject = direct.ValueOf(in.GcpProject)
+	out.Location = direct.ValueOf(in.Location)
+	out.Zone = direct.ValueOf(in.Zone)
+	return out
+}
+func ServicePropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServicePropertiesObservedState) *pb.ServiceProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceProperties{}
 	out.GcpProject = direct.ValueOf(in.GcpProject)
 	out.Location = direct.ValueOf(in.Location)
 	out.Zone = direct.ValueOf(in.Zone)
@@ -195,6 +315,38 @@ func WorkloadReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 		return nil
 	}
 	out := &pb.WorkloadReference{}
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func ServiceReference_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krm.ServiceReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceReference{}
+	// MISSING: URI
+	return out
+}
+func ServiceReference_ToProto(mapCtx *direct.MapContext, in *krm.ServiceReference) *pb.ServiceReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceReference{}
+	// MISSING: URI
+	return out
+}
+func ServiceReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceReference) *krm.ServiceReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceReferenceObservedState{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func ServiceReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceReferenceObservedState) *pb.ServiceReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceReference{}
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
