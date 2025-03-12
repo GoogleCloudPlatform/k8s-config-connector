@@ -22,6 +22,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
@@ -229,36 +230,64 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
-	if !reflect.DeepEqual(resource.AutoscalingConfig, a.actual.AutoscalingConfig) {
+	autoscaling_path, err := common.CompareProtoMessage(resource.AutoscalingConfig, a.actual.AutoscalingConfig, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	if len(autoscaling_path) > 0 {
 		updateMask.Paths = append(updateMask.Paths, "autoscaling_config")
 	}
 
+	var editionDowngrade = false
 	// If edition field is removed, the field become unmanaged.
 	if desired.Spec.Edition != nil && !reflect.DeepEqual(resource.Edition, a.actual.Edition) {
-		if resource.Edition < a.actual.Edition {
-			log.V(2).Info("Downgrading Spanner Instance edition is not supported")
-			return nil
-		} else {
+		// Upgrading Edition to higher tier can be done along with other fields.
+		if resource.Edition > a.actual.Edition {
 			updateMask.Paths = append(updateMask.Paths, "edition")
+		} else {
+			editionDowngrade = true
 		}
 	}
 
-	if len(updateMask.Paths) == 0 {
+	if len(updateMask.Paths) == 0 && !editionDowngrade {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
 
-	req := &spannerpb.UpdateInstanceRequest{
-		FieldMask: updateMask,
-		Instance:  resource,
+	var updated *spannerpb.Instance
+	if len(updateMask.Paths) > 0 {
+		req := &spannerpb.UpdateInstanceRequest{
+			FieldMask: updateMask,
+			Instance:  resource,
+		}
+		op, err := a.gcpClient.UpdateInstance(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Instance %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("Instance %s waiting update: %w", a.id, err)
+		}
 	}
-	op, err := a.gcpClient.UpdateInstance(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating Instance %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Instance %s waiting update: %w", a.id, err)
+
+	// Downgrading Edition separately.
+	// This will fail if higher tier's features are not disabled.
+	if editionDowngrade {
+		log.V(2).Info("Upgrading Edition to lower tier", "name", a.id)
+		req := &spannerpb.UpdateInstanceRequest{
+			Instance: resource,
+		}
+		req.FieldMask = &fieldmaskpb.FieldMask{
+			Paths: []string{"edition"},
+		}
+		op, err := a.gcpClient.UpdateInstance(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Instance %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("Instance %s waiting update: %w", a.id, err)
+		}
 	}
 	log.V(2).Info("successfully updated Instance", "name", a.id)
 

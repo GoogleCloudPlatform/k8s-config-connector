@@ -1,0 +1,32 @@
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+  name: spannerinstance-sample-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  config: regional-us-west1
+  displayName: New Instance Sample
+  edition: STANDARD
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/instances/spannerinstance-sample-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    numNodes: 1
+    processingUnits: 1000
+  state: READY
