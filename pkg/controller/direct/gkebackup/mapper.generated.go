@@ -16,107 +16,11 @@ package gkebackup
 
 import (
 	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
+	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BackupPlan_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupPlan {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BackupPlan{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Cluster = direct.LazyPtr(in.GetCluster())
-	out.RetentionPolicy = BackupPlan_RetentionPolicy_FromProto(mapCtx, in.GetRetentionPolicy())
-	out.Labels = in.Labels
-	out.BackupSchedule = BackupPlan_Schedule_FromProto(mapCtx, in.GetBackupSchedule())
-	// MISSING: Etag
-	out.Deactivated = direct.LazyPtr(in.GetDeactivated())
-	out.BackupConfig = BackupPlan_BackupConfig_FromProto(mapCtx, in.GetBackupConfig())
-	// MISSING: ProtectedPodCount
-	// MISSING: State
-	// MISSING: StateReason
-	// MISSING: RpoRiskLevel
-	// MISSING: RpoRiskReason
-	return out
-}
-func BackupPlan_ToProto(mapCtx *direct.MapContext, in *krm.BackupPlan) *pb.BackupPlan {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupPlan{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Description = direct.ValueOf(in.Description)
-	out.Cluster = direct.ValueOf(in.Cluster)
-	out.RetentionPolicy = BackupPlan_RetentionPolicy_ToProto(mapCtx, in.RetentionPolicy)
-	out.Labels = in.Labels
-	out.BackupSchedule = BackupPlan_Schedule_ToProto(mapCtx, in.BackupSchedule)
-	// MISSING: Etag
-	out.Deactivated = direct.ValueOf(in.Deactivated)
-	out.BackupConfig = BackupPlan_BackupConfig_ToProto(mapCtx, in.BackupConfig)
-	// MISSING: ProtectedPodCount
-	// MISSING: State
-	// MISSING: StateReason
-	// MISSING: RpoRiskLevel
-	// MISSING: RpoRiskReason
-	return out
-}
-func BackupPlanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupPlanObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BackupPlanObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Description
-	// MISSING: Cluster
-	// MISSING: RetentionPolicy
-	// MISSING: Labels
-	out.BackupSchedule = BackupPlan_ScheduleObservedState_FromProto(mapCtx, in.GetBackupSchedule())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	// MISSING: Deactivated
-	// MISSING: BackupConfig
-	out.ProtectedPodCount = direct.LazyPtr(in.GetProtectedPodCount())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StateReason = direct.LazyPtr(in.GetStateReason())
-	out.RpoRiskLevel = direct.LazyPtr(in.GetRpoRiskLevel())
-	out.RpoRiskReason = direct.LazyPtr(in.GetRpoRiskReason())
-	return out
-}
-func BackupPlanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupPlanObservedState) *pb.BackupPlan {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupPlan{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Uid = direct.ValueOf(in.Uid)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Description
-	// MISSING: Cluster
-	// MISSING: RetentionPolicy
-	// MISSING: Labels
-	out.BackupSchedule = BackupPlan_ScheduleObservedState_ToProto(mapCtx, in.BackupSchedule)
-	out.Etag = direct.ValueOf(in.Etag)
-	// MISSING: Deactivated
-	// MISSING: BackupConfig
-	out.ProtectedPodCount = direct.ValueOf(in.ProtectedPodCount)
-	out.State = direct.Enum_ToProto[pb.BackupPlan_State](mapCtx, in.State)
-	out.StateReason = direct.ValueOf(in.StateReason)
-	out.RpoRiskLevel = direct.ValueOf(in.RpoRiskLevel)
-	out.RpoRiskReason = direct.ValueOf(in.RpoRiskReason)
-	return out
-}
 func BackupPlan_BackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan_BackupConfig) *krm.BackupPlan_BackupConfig {
 	if in == nil {
 		return nil
@@ -171,28 +75,7 @@ func BackupPlan_RetentionPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Backu
 	out.Locked = direct.ValueOf(in.Locked)
 	return out
 }
-func BackupPlan_Schedule_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan_Schedule) *krm.BackupPlan_Schedule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BackupPlan_Schedule{}
-	out.CronSchedule = direct.LazyPtr(in.GetCronSchedule())
-	out.Paused = direct.LazyPtr(in.GetPaused())
-	out.RpoConfig = RpoConfig_FromProto(mapCtx, in.GetRpoConfig())
-	// MISSING: NextScheduledBackupTime
-	return out
-}
-func BackupPlan_Schedule_ToProto(mapCtx *direct.MapContext, in *krm.BackupPlan_Schedule) *pb.BackupPlan_Schedule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupPlan_Schedule{}
-	out.CronSchedule = direct.ValueOf(in.CronSchedule)
-	out.Paused = direct.ValueOf(in.Paused)
-	out.RpoConfig = RpoConfig_ToProto(mapCtx, in.RpoConfig)
-	// MISSING: NextScheduledBackupTime
-	return out
-}
+
 func BackupPlan_ScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan_Schedule) *krm.BackupPlan_ScheduleObservedState {
 	if in == nil {
 		return nil
@@ -213,22 +96,6 @@ func BackupPlan_ScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Paused
 	// MISSING: RpoConfig
 	out.NextScheduledBackupTime = direct.StringTimestamp_ToProto(mapCtx, in.NextScheduledBackupTime)
-	return out
-}
-func EncryptionKey_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionKey) *krm.EncryptionKey {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionKey{}
-	out.GcpKMSEncryptionKey = direct.LazyPtr(in.GetGcpKmsEncryptionKey())
-	return out
-}
-func EncryptionKey_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionKey) *pb.EncryptionKey {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionKey{}
-	out.GcpKmsEncryptionKey = direct.ValueOf(in.GcpKMSEncryptionKey)
 	return out
 }
 func ExclusionWindow_FromProto(mapCtx *direct.MapContext, in *pb.ExclusionWindow) *krm.ExclusionWindow {
@@ -269,62 +136,6 @@ func ExclusionWindow_DayOfWeekList_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
 	return out
 }
-func ExclusionWindow_DayOfWeekList_ToProto(mapCtx *direct.MapContext, in *krm.ExclusionWindow_DayOfWeekList) *pb.ExclusionWindow_DayOfWeekList {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExclusionWindow_DayOfWeekList{}
-	out.DaysOfWeek = direct.EnumSlice_ToProto[pb.DayOfWeek](mapCtx, in.DaysOfWeek)
-	return out
-}
-func GKEBackupBackupPlanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.GKEBackupBackupPlanObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupPlanObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Cluster
-	// MISSING: RetentionPolicy
-	// MISSING: Labels
-	// MISSING: BackupSchedule
-	// MISSING: Etag
-	// MISSING: Deactivated
-	// MISSING: BackupConfig
-	// MISSING: ProtectedPodCount
-	// MISSING: State
-	// MISSING: StateReason
-	// MISSING: RpoRiskLevel
-	// MISSING: RpoRiskReason
-	return out
-}
-func GKEBackupBackupPlanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBackupPlanObservedState) *pb.BackupPlan {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupPlan{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Cluster
-	// MISSING: RetentionPolicy
-	// MISSING: Labels
-	// MISSING: BackupSchedule
-	// MISSING: Etag
-	// MISSING: Deactivated
-	// MISSING: BackupConfig
-	// MISSING: ProtectedPodCount
-	// MISSING: State
-	// MISSING: StateReason
-	// MISSING: RpoRiskLevel
-	// MISSING: RpoRiskReason
-	return out
-}
 func GKEBackupBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.GKEBackupBackupPlanSpec {
 	if in == nil {
 		return nil
@@ -332,19 +143,15 @@ func GKEBackupBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupP
 	out := &krm.GKEBackupBackupPlanSpec{}
 	// MISSING: Name
 	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Cluster
-	// MISSING: RetentionPolicy
-	// MISSING: Labels
-	// MISSING: BackupSchedule
-	// MISSING: Etag
-	// MISSING: Deactivated
-	// MISSING: BackupConfig
-	// MISSING: ProtectedPodCount
-	// MISSING: State
-	// MISSING: StateReason
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if in.GetCluster() != "" {
+		out.ClusterRef = &container.ContainerClusterRef{External: in.GetCluster()}
+	}
+	out.RetentionPolicy = BackupPlan_RetentionPolicy_FromProto(mapCtx, in.GetRetentionPolicy())
+	out.Labels = in.Labels
+	out.BackupSchedule = BackupPlan_Schedule_FromProto(mapCtx, in.GetBackupSchedule())
+	out.Deactivated = direct.LazyPtr(in.GetDeactivated())
+	out.BackupConfig = BackupPlan_BackupConfig_FromProto(mapCtx, in.GetBackupConfig())
 	// MISSING: RpoRiskLevel
 	// MISSING: RpoRiskReason
 	return out
@@ -356,19 +163,15 @@ func GKEBackupBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBacku
 	out := &pb.BackupPlan{}
 	// MISSING: Name
 	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: Cluster
-	// MISSING: RetentionPolicy
-	// MISSING: Labels
-	// MISSING: BackupSchedule
-	// MISSING: Etag
-	// MISSING: Deactivated
-	// MISSING: BackupConfig
-	// MISSING: ProtectedPodCount
-	// MISSING: State
-	// MISSING: StateReason
+	out.Description = direct.ValueOf(in.Description)
+	if in.ClusterRef != nil {
+		out.Cluster = in.ClusterRef.External
+	}
+	out.RetentionPolicy = BackupPlan_RetentionPolicy_ToProto(mapCtx, in.RetentionPolicy)
+	out.Labels = in.Labels
+	out.BackupSchedule = BackupPlan_Schedule_ToProto(mapCtx, in.BackupSchedule)
+	out.Deactivated = direct.ValueOf(in.Deactivated)
+	out.BackupConfig = BackupPlan_BackupConfig_ToProto(mapCtx, in.BackupConfig)
 	// MISSING: RpoRiskLevel
 	// MISSING: RpoRiskReason
 	return out
@@ -421,23 +224,5 @@ func Namespaces_ToProto(mapCtx *direct.MapContext, in *krm.Namespaces) *pb.Names
 	}
 	out := &pb.Namespaces{}
 	out.Namespaces = in.Namespaces
-	return out
-}
-func RpoConfig_FromProto(mapCtx *direct.MapContext, in *pb.RpoConfig) *krm.RpoConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RpoConfig{}
-	out.TargetRpoMinutes = direct.LazyPtr(in.GetTargetRpoMinutes())
-	out.ExclusionWindows = direct.Slice_FromProto(mapCtx, in.ExclusionWindows, ExclusionWindow_FromProto)
-	return out
-}
-func RpoConfig_ToProto(mapCtx *direct.MapContext, in *krm.RpoConfig) *pb.RpoConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RpoConfig{}
-	out.TargetRpoMinutes = direct.ValueOf(in.TargetRpoMinutes)
-	out.ExclusionWindows = direct.Slice_ToProto(mapCtx, in.ExclusionWindows, ExclusionWindow_ToProto)
 	return out
 }
