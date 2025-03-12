@@ -16,7 +16,7 @@
 // proto.message: google.cloud.aiplatform.v1.Model
 // api.group: aiplatform.cnrm.cloud.google.com
 
-package vertexai
+package aiplatform
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
@@ -33,10 +33,10 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 		AIPlatformModelObservedState_FromProto, AIPlatformModelObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")                   // special field
-	f.UnimplementedFields.Insert(".original_model_info")    // NOTYET
-	f.UnimplementedFields.Insert(".satisfies_pzi")          // NOTYET
-	f.UnimplementedFields.Insert(".satisfies_pzs")          // NOTYET
+	f.UnimplementedFields.Insert(".name")                     // special field
+	f.UnimplementedFields.Insert(".original_model_info")      // NOTYET
+	f.UnimplementedFields.Insert(".satisfies_pzi")            // NOTYET
+	f.UnimplementedFields.Insert(".satisfies_pzs")            // NOTYET
 	f.UnimplementedFields.Insert(".supported_export_formats") // NOTYET
 
 	f.SpecFields.Insert(".version_aliases")
@@ -71,5 +71,3 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 
 	return f
 }
-
-

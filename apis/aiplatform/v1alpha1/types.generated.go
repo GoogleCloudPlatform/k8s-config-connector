@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.aiplatform.v1.BlurBaselineConfig
 type BlurBaselineConfig struct {
 	// The standard deviation of the blur kernel for the blurred baseline. The
@@ -104,9 +103,7 @@ type ExplanationMetadata struct {
 
 	// TODO: unsupported map type with key string and value message
 
-
 	// TODO: unsupported map type with key string and value message
-
 
 	// Points to a YAML file stored on Google Cloud Storage describing the format
 	//  of the [feature
