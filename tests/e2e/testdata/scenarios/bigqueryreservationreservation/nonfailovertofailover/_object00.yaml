@@ -1,20 +1,18 @@
 apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
 kind: BigQueryReservationReservation
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
-  labels:
-    cnrm-test: "true"
+  generation: 1
   name: bigqueryreservationreservation-${uniqueId}
-  namespace: ${uniqueId}
+  namespace: ${projectId}
 spec:
-  autoscale:
-    maxSlots: 100
   concurrency: 0
   edition: ENTERPRISE_PLUS
-  ignoreIdleSlots: true
+  ignoreIdleSlots: false
   location: us-west2
   projectRef:
     external: ${projectId}
@@ -28,5 +26,5 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 1
   observedState: {}

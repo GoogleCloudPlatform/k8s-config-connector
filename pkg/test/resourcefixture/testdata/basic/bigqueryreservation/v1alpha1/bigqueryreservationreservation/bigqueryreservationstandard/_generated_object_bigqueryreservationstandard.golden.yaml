@@ -1,9 +1,6 @@
 apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
 kind: BigQueryReservationReservation
 metadata:
-  annotations:
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -30,4 +27,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}
   observedGeneration: 2
+  observedState: {}
