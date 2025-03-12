@@ -706,6 +706,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "bigtable.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BigtableAuthorizedView",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "bigtable.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "BigtableGCPolicy",
 	}: {
@@ -2179,6 +2189,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc":  "true",
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
+		},
+	},
+	{
+		Group:   "dataplex.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DataplexEnvironment",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
