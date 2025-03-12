@@ -32,7 +32,7 @@ type BackupPlanIdentity struct {
 }
 
 func (i *BackupPlanIdentity) String() string {
-	return i.parent.String() + "/backupplans/" + i.id
+	return i.parent.String() + "/backupPlans/" + i.id
 }
 
 func (i *BackupPlanIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewBackupPlanIdentity(ctx context.Context, reader client.Reader, obj *GKEBa
 
 func ParseBackupPlanExternal(external string) (parent *BackupPlanParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupplans" {
-		return nil, "", fmt.Errorf("format of GKEBackupBackupPlan external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupplans/{{backupplanID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupPlans" {
+		return nil, "", fmt.Errorf("format of GKEBackupBackupPlan external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupPlans/{{backupplanID}})", external)
 	}
 	parent = &BackupPlanParent{
 		ProjectID: tokens[1],

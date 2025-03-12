@@ -14,50 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan
-type BackupPlan struct {
-
-	// Optional. User specified descriptive string for this BackupPlan.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. Immutable. The source cluster from which Backups will be created
-	//  via this BackupPlan. Valid formats:
-	//
-	//  - `projects/*/locations/*/clusters/*`
-	//  - `projects/*/zones/*/clusters/*`
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.cluster
-	Cluster *string `json:"cluster,omitempty"`
-
-	// Optional. RetentionPolicy governs lifecycle of Backups created under this
-	//  plan.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.retention_policy
-	RetentionPolicy *BackupPlan_RetentionPolicy `json:"retentionPolicy,omitempty"`
-
-	// Optional. A set of custom labels supplied by user.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. Defines a schedule for automatic Backup creation via this
-	//  BackupPlan.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.backup_schedule
-	BackupSchedule *BackupPlan_Schedule `json:"backupSchedule,omitempty"`
-
-	// Optional. This flag indicates whether this BackupPlan has been deactivated.
-	//  Setting this field to True locks the BackupPlan such that no further
-	//  updates will be allowed (except deletes), including the deactivated field
-	//  itself. It also prevents any new Backups from being created via this
-	//  BackupPlan (including scheduled Backups).
-	//
-	//  Default: False
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.deactivated
-	Deactivated *bool `json:"deactivated,omitempty"`
-
-	// Optional. Defines the configuration of Backups created via this BackupPlan.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.backup_config
-	BackupConfig *BackupPlan_BackupConfig `json:"backupConfig,omitempty"`
-}
-
 // +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.BackupConfig
 type BackupPlan_BackupConfig struct {
 	// If True, include all namespaced resources
@@ -320,72 +276,6 @@ type TimeOfDay struct {
 	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
-}
-
-// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan
-type BackupPlanObservedState struct {
-	// Output only. The full name of the BackupPlan resource.
-	//  Format: `projects/*/locations/*/backupPlans/*`
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Server generated global unique identifier of
-	//  [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) format.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. The timestamp when this BackupPlan resource was created.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The timestamp when this BackupPlan resource was last
-	//  updated.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Optional. Defines a schedule for automatic Backup creation via this
-	//  BackupPlan.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.backup_schedule
-	BackupSchedule *BackupPlan_ScheduleObservedState `json:"backupSchedule,omitempty"`
-
-	// Output only. `etag` is used for optimistic concurrency control as a way to
-	//  help prevent simultaneous updates of a backup plan from overwriting each
-	//  other. It is strongly suggested that systems make use of the 'etag' in the
-	//  read-modify-write cycle to perform BackupPlan updates in order to avoid
-	//  race conditions: An `etag` is returned in the response to `GetBackupPlan`,
-	//  and systems are expected to put that etag in the request to
-	//  `UpdateBackupPlan` or `DeleteBackupPlan` to ensure that their change
-	//  will be applied to the same version of the resource.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Output only. The number of Kubernetes Pods backed up in the
-	//  last successful Backup created via this BackupPlan.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.protected_pod_count
-	ProtectedPodCount *int32 `json:"protectedPodCount,omitempty"`
-
-	// Output only. State of the BackupPlan. This State field reflects the
-	//  various stages a BackupPlan can be in
-	//  during the Create operation. It will be set to "DEACTIVATED"
-	//  if the BackupPlan is deactivated on an Update
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Human-readable description of why BackupPlan is in the current
-	//  `state`
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.state_reason
-	StateReason *string `json:"stateReason,omitempty"`
-
-	// Output only. A number that represents the current risk level of this
-	//  BackupPlan from RPO perspective with 1 being no risk and 5 being highest
-	//  risk.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.rpo_risk_level
-	RpoRiskLevel *int32 `json:"rpoRiskLevel,omitempty"`
-
-	// Output only. Human-readable description of why the BackupPlan is in the
-	//  current rpo_risk_level and action items if any.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.rpo_risk_reason
-	RpoRiskReason *string `json:"rpoRiskReason,omitempty"`
 }
 
 // +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
