@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type EnvironmentIdentity struct {
 	parent *EnvironmentParent
-	id string
+	id     string
 }
 
 func (i *EnvironmentIdentity) String() string {
-	return  i.parent.String() + "/environments/" + i.id
+	return i.parent.String() + "/environments/" + i.id
 }
 
 func (i *EnvironmentIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *EnvironmentIdentity) ID() string {
 }
 
 func (i *EnvironmentIdentity) Parent() *EnvironmentParent {
-	return  i.parent
+	return i.parent
 }
 
 type EnvironmentParent struct {
@@ -51,7 +51,6 @@ type EnvironmentParent struct {
 func (p *EnvironmentParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a EnvironmentIdentity from the Config Connector Environment object.
 func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *DataplexEnvironment) (*EnvironmentIdentity, error) {
@@ -98,7 +97,6 @@ func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *Data
 	return &EnvironmentIdentity{
 		parent: &EnvironmentParent{
 			ProjectID: projectID,
-			Location:  location,
 		},
 		id: resourceID,
 	}, nil
@@ -106,13 +104,12 @@ func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *Data
 
 func ParseEnvironmentExternal(external string) (parent *EnvironmentParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "environments" {
-		return nil, "", fmt.Errorf("format of DataplexEnvironment external=%q was not known (use projects/{{projectID}}/locations/{{location}}/environments/{{environmentID}})", external)
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "environments" {
+		return nil, "", fmt.Errorf("format of DataplexEnvironment external=%q was not known (use projects/{{projectID}}/environments/{{environmentID}})", external)
 	}
 	parent = &EnvironmentParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
