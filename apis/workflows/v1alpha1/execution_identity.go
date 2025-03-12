@@ -24,36 +24,37 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// WorkflowsWorkflowIdentity defines the resource reference to WorkflowsWorkflow, which "External" field
+// ExecutionIdentity defines the resource reference to WorkflowsExecution, which "External" field
 // holds the GCP identifier for the KRM object.
-type WorkflowsWorkflowIdentity struct {
-	parent *WorkflowsWorkflowParent
-	id     string
+type ExecutionIdentity struct {
+	parent *ExecutionParent
+	id string
 }
 
-func (i *WorkflowsWorkflowIdentity) String() string {
-	return i.parent.String() + "/workflows/" + i.id
+func (i *ExecutionIdentity) String() string {
+	return  i.parent.String() + "/executions/" + i.id
 }
 
-func (i *WorkflowsWorkflowIdentity) ID() string {
+func (i *ExecutionIdentity) ID() string {
 	return i.id
 }
 
-func (i *WorkflowsWorkflowIdentity) Parent() *WorkflowsWorkflowParent {
-	return i.parent
+func (i *ExecutionIdentity) Parent() *ExecutionParent {
+	return  i.parent
 }
 
-type WorkflowsWorkflowParent struct {
+type ExecutionParent struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *WorkflowsWorkflowParent) String() string {
+func (p *ExecutionParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a WorkflowsWorkflowIdentity from the Config Connector WorkflowsWorkflow object.
-func NewWorkflowsWorkflowIdentity(ctx context.Context, reader client.Reader, obj *WorkflowsWorkflow) (*WorkflowsWorkflowIdentity, error) {
+
+// New builds a ExecutionIdentity from the Config Connector Execution object.
+func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *WorkflowsExecution) (*ExecutionIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -79,7 +80,7 @@ func NewWorkflowsWorkflowIdentity(ctx context.Context, reader client.Reader, obj
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseWorkflowsWorkflowExternal(externalRef)
+		actualParent, actualResourceID, err := ParseExecutionExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -94,8 +95,8 @@ func NewWorkflowsWorkflowIdentity(ctx context.Context, reader client.Reader, obj
 				resourceID, actualResourceID)
 		}
 	}
-	return &WorkflowsWorkflowIdentity{
-		parent: &WorkflowsWorkflowParent{
+	return &ExecutionIdentity{
+		parent: &ExecutionParent{
 			ProjectID: projectID,
 			Location:  location,
 		},
@@ -103,12 +104,12 @@ func NewWorkflowsWorkflowIdentity(ctx context.Context, reader client.Reader, obj
 	}, nil
 }
 
-func ParseWorkflowsWorkflowExternal(external string) (parent *WorkflowsWorkflowParent, resourceID string, err error) {
+func ParseExecutionExternal(external string) (parent *ExecutionParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workflows" {
-		return nil, "", fmt.Errorf("format of WorkflowsWorkflow external=%q was not known (use projects/{{projectID}}/locations/{{location}}/workflows/{{workflowID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "executions" {
+		return nil, "", fmt.Errorf("format of WorkflowsExecution external=%q was not known (use projects/{{projectID}}/locations/{{location}}/executions/{{executionID}})", external)
 	}
-	parent = &WorkflowsWorkflowParent{
+	parent = &ExecutionParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}

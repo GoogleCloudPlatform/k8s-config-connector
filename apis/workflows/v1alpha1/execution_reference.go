@@ -26,32 +26,32 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &WorkflowsWorkflowRef{}
+var _ refsv1beta1.ExternalNormalizer = &ExecutionRef{}
 
-// WorkflowsWorkflowRef defines the resource reference to WorkflowsWorkflow, which "External" field
+// ExecutionRef defines the resource reference to WorkflowsExecution, which "External" field
 // holds the GCP identifier for the KRM object.
-type WorkflowsWorkflowRef struct {
-	// A reference to an externally managed WorkflowsWorkflow resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/workflows/{{workflowID}}".
+type ExecutionRef struct {
+	// A reference to an externally managed WorkflowsExecution resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/executions/{{executionID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a WorkflowsWorkflow resource.
+	// The name of a WorkflowsExecution resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a WorkflowsWorkflow resource.
+	// The namespace of a WorkflowsExecution resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on WorkflowsWorkflow.
-// If the "External" is given in the other resource's spec.WorkflowsWorkflowRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual WorkflowsWorkflow object from the cluster.
-func (r *WorkflowsWorkflowRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for other resource that depends on WorkflowsExecution.
+// If the "External" is given in the other resource's spec.WorkflowsExecutionRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual WorkflowsExecution object from the cluster.
+func (r *ExecutionRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", WorkflowsWorkflowGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", WorkflowsExecutionGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseWorkflowsWorkflowExternal(r.External); err != nil {
+		if _, _, err := ParseExecutionExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -63,12 +63,12 @@ func (r *WorkflowsWorkflowRef) NormalizedExternal(ctx context.Context, reader cl
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(WorkflowsWorkflowGVK)
+	u.SetGroupVersionKind(WorkflowsExecutionGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", WorkflowsWorkflowGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", WorkflowsExecutionGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
