@@ -64,7 +64,7 @@ type BackupDRBackupPlanSpec struct {
 	//  location for backups. Format:
 	//  projects/{project}/locations/{location}/backupVaults/{backupvault}
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_vault
-	BackupVault *string `json:"backupVault,omitempty"`
+	BackupVault *string `json:"backupVault,omitempty"` // TODO: add BackupDRBackupVault and make this field a reference field.
 }
 
 // BackupDRBackupPlanStatus defines the config connector machine state of BackupDRBackupPlan
