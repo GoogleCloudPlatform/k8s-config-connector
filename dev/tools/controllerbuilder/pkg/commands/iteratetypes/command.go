@@ -64,7 +64,7 @@ func (o *Options) InitDefaults() error {
 		return err
 	}
 	if o.ProtoDir == "" {
-		o.ProtoDir = root + "/.build/third_party/googleapis/google"
+		o.ProtoDir = filepath.Join(root, ".build/third_party/googleapis/google")
 	}
 	if o.OutputFile == "" {
 		o.OutputFile = root + "/all-proto.yaml"
