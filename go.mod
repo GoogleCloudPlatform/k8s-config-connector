@@ -12,6 +12,7 @@ require (
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/apphub v0.2.3
 	cloud.google.com/go/backupdr v1.3.0
+	cloud.google.com/go/batch v1.11.5
 	cloud.google.com/go/bigquery v1.66.0
 	cloud.google.com/go/certificatemanager v1.9.3
 	cloud.google.com/go/cloudbuild v1.20.0

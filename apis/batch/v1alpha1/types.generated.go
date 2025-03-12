@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.batch.v1.AllocationPolicy
 type AllocationPolicy struct {
 	// Location where compute resources should be allocated for the Job.
@@ -493,7 +492,6 @@ type JobStatus struct {
 	StatusEvents []StatusEvent `json:"statusEvents,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
-
 
 	// The duration of time that the Job spent in status RUNNING.
 	// +kcc:proto:field=google.cloud.batch.v1.JobStatus.run_duration
