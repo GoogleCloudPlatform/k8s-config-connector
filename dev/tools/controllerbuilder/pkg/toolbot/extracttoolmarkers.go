@@ -39,14 +39,14 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 	br := bufio.NewReader(r)
 
 	for {
-		line, err := br.ReadString('\n')
+		rawLine, err := br.ReadString('\n')
 		if err != nil {
 			if err == io.EOF {
 				break
 			}
 			return nil, fmt.Errorf("scanning code: %w", err)
 		}
-		line = strings.TrimSpace(line)
+		line := strings.TrimSpace(rawLine)
 		if strings.HasPrefix(line, "//") {
 			comment := strings.TrimPrefix(line, "//")
 			comment = strings.TrimSpace(comment)
@@ -119,6 +119,72 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 					s := strings.TrimSpace(line)
 					if strings.HasPrefix(s, "}") {
 						break
+					}
+				}
+				dataPoint.Output = bb.String()
+
+				shouldAdd := true
+				for _, filter := range filters {
+					if !filter(dataPoint) {
+						shouldAdd = false
+					}
+				}
+				if shouldAdd {
+					dataPoints = append(dataPoints, dataPoint)
+				}
+			}
+
+			if strings.HasPrefix(comment, "+function-gen:special-mapper") {
+				klog.V(2).Infof("found tool line %q", comment)
+				toolName := "+function-gen:special-mapper"
+				dataPoint := &DataPoint{
+					Description: description,
+					Type:        toolName,
+				}
+
+				var bb bytes.Buffer
+
+				// Include the tool directive
+				bb.WriteString(rawLine)
+
+				inHeader := true
+				openBrackets := 0
+				for {
+					rawLine, err := br.ReadString('\n')
+					if err != nil {
+						if err == io.EOF {
+							break
+						}
+						return nil, fmt.Errorf("scanning code: %w", err)
+					}
+
+					if inHeader {
+						line := strings.TrimSpace(rawLine)
+						if strings.HasPrefix(line, "//") {
+							toolLine := strings.TrimPrefix(line, "//")
+							toolLine = strings.TrimPrefix(toolLine, " ")
+							tokens := strings.SplitN(toolLine, ":", 2)
+							if len(tokens) == 2 {
+								dataPoint.SetInput(tokens[0], strings.TrimSpace(tokens[1]))
+							} else {
+								return nil, fmt.Errorf("cannot parse tool line %q", toolLine)
+							}
+						} else {
+							inHeader = false
+						}
+					}
+
+					bb.WriteString(rawLine)
+
+					if strings.HasSuffix(line, "{") {
+						openBrackets++
+					}
+
+					if strings.HasPrefix(line, "}") {
+						openBrackets--
+						if openBrackets == 0 {
+							break
+						}
 					}
 				}
 				dataPoint.Output = bb.String()
