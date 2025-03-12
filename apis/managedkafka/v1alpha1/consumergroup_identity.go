@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,36 +24,38 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ClusterIdentity defines the resource reference to ManagedKafkaCluster, which "External" field
+// ConsumerGroupIdentity defines the resource reference to ManagedKafkaConsumerGroup, which "External" field
 // holds the GCP identifier for the KRM object.
-type ClusterIdentity struct {
-	parent *ClusterParent
-	id     string
+type ConsumerGroupIdentity struct {
+	parent *ConsumerGroupParent
+	id string
 }
 
-func (i *ClusterIdentity) String() string {
-	return i.parent.String() + "/clusters/" + i.id
+func (i *ConsumerGroupIdentity) String() string {
+	return  i.parent.String() + "/consumergroups/" + i.id
 }
 
-func (i *ClusterIdentity) ID() string {
+func (i *ConsumerGroupIdentity) ID() string {
 	return i.id
 }
 
-func (i *ClusterIdentity) Parent() *ClusterParent {
-	return i.parent
+func (i *ConsumerGroupIdentity) Parent() *ConsumerGroupParent {
+	return  i.parent
 }
 
-type ClusterParent struct {
+type ConsumerGroupParent struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *ClusterParent) String() string {
+func (p *ConsumerGroupParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a ClusterIdentity from the Config Connector Cluster object.
-func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *ManagedKafkaCluster) (*ClusterIdentity, error) {
+
+// New builds a ConsumerGroupIdentity from the Config Connector ConsumerGroup object.
+func NewConsumerGroupIdentity(ctx context.Context, reader client.Reader, obj *ManagedKafkaConsumerGroup) (*ConsumerGroupIdentity, error) {
+
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
@@ -78,7 +80,7 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *ManagedK
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseClusterExternal(externalRef)
+		actualParent, actualResourceID, err := ParseConsumerGroupExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -93,8 +95,8 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *ManagedK
 				resourceID, actualResourceID)
 		}
 	}
-	return &ClusterIdentity{
-		parent: &ClusterParent{
+	return &ConsumerGroupIdentity{
+		parent: &ConsumerGroupParent{
 			ProjectID: projectID,
 			Location:  location,
 		},
@@ -102,12 +104,12 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *ManagedK
 	}, nil
 }
 
-func ParseClusterExternal(external string) (parent *ClusterParent, resourceID string, err error) {
+func ParseConsumerGroupExternal(external string) (parent *ConsumerGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "clusters" {
-		return nil, "", fmt.Errorf("format of ManagedKafkaCluster external=%q was not known (use projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "consumergroups" {
+		return nil, "", fmt.Errorf("format of ManagedKafkaConsumerGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/consumergroups/{{consumergroupID}})", external)
 	}
-	parent = &ClusterParent{
+	parent = &ConsumerGroupParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}
