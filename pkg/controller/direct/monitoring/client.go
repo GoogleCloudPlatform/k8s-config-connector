@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:controller-client
+// proto.service: google.monitoring.dashboard.v1.DashboardsService
+
 package monitoring
 
 import (
