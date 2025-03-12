@@ -6267,7 +6267,7 @@ branches:
       package: google.cloud.discoveryengine.v1beta
       proto: ServingConfig
       proto-path: google/cloud/discoveryengine/v1beta/serving_config_service.proto
-      proto-service: ""
+      proto-service: google.cloud.discoveryengine.v1beta.ServingConfigSevrice
       proto-msg: google.cloud.discoveryengine.v1beta.ServingConfig
       host-name: ""
       notes:
