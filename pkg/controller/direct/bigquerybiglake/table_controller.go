@@ -167,12 +167,10 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	}
 
 	paths := make(sets.Set[string])
-	{
-		var err error
-		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-		if err != nil {
-			return err
-		}
+	var err error
+	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
 	if len(paths) == 0 {
