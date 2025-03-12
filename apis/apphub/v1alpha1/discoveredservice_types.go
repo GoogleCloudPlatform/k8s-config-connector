@@ -24,6 +24,7 @@ var AppHubDiscoveredServiceGVK = GroupVersion.WithKind("AppHubDiscoveredService"
 // AppHubDiscoveredServiceSpec defines the desired state of AppHubDiscoveredService
 // +kcc:proto=google.cloud.apphub.v1.DiscoveredService
 type AppHubDiscoveredServiceSpec struct {
+
 	// The AppHubDiscoveredService name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -47,6 +48,20 @@ type AppHubDiscoveredServiceStatus struct {
 // AppHubDiscoveredServiceObservedState is the state of the AppHubDiscoveredService resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.apphub.v1.DiscoveredService
 type AppHubDiscoveredServiceObservedState struct {
+	// Output only. The service project identifier that the underlying cloud
+	//  resource resides in.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.gcp_project
+	GcpProject *string `json:"gcpProject,omitempty"`
+
+	// Output only. The location that the underlying resource resides in, for
+	//  example, us-west1.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.location
+	Location *string `json:"location,omitempty"`
+
+	// Output only. The location that the underlying resource resides in if it is
+	//  zonal, for example, us-west1-a).
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.zone
+	Zone *string `json:"zone,omitempty"`
 }
 
 // +genclient

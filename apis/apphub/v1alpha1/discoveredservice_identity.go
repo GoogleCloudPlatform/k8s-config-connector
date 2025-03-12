@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type DiscoveredServiceIdentity struct {
 	parent *DiscoveredServiceParent
-	id string
+	id     string
 }
 
 func (i *DiscoveredServiceIdentity) String() string {
-	return  i.parent.String() + "/discoveredservices/" + i.id
+	return i.parent.String() + "/discoveredservices/" + i.id
 }
 
 func (i *DiscoveredServiceIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *DiscoveredServiceIdentity) ID() string {
 }
 
 func (i *DiscoveredServiceIdentity) Parent() *DiscoveredServiceParent {
-	return  i.parent
+	return i.parent
 }
 
 type DiscoveredServiceParent struct {
@@ -52,12 +52,11 @@ func (p *DiscoveredServiceParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-
 // New builds a DiscoveredServiceIdentity from the Config Connector DiscoveredService object.
 func NewDiscoveredServiceIdentity(ctx context.Context, reader client.Reader, obj *AppHubDiscoveredService) (*DiscoveredServiceIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +64,7 @@ func NewDiscoveredServiceIdentity(ctx context.Context, reader client.Reader, obj
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := obj.Spec.Parent.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
