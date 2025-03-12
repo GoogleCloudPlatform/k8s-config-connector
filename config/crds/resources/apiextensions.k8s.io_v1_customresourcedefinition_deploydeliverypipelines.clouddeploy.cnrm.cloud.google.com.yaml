@@ -374,7 +374,7 @@ spec:
                                                     The Service will always be deployed
                                                     to the Target cluster even if
                                                     the HTTPRoute is not. This option
-                                                    may be used to facilitiate successful
+                                                    may be used to facilitate successful
                                                     DNS lookup in the route destination
                                                     clusters. Can only be set to true
                                                     if destinations are specified.

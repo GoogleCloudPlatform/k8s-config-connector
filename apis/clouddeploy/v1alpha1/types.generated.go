@@ -253,7 +253,7 @@ type KubernetesConfig_GatewayServiceMesh_RouteDestinations struct {
 	// Optional. Whether to propagate the Kubernetes Service to the route
 	//  destination clusters. The Service will always be deployed to the Target
 	//  cluster even if the HTTPRoute is not. This option may be used to
-	//  facilitiate successful DNS lookup in the route destination clusters.
+	//  facilitate successful DNS lookup in the route destination clusters.
 	//  Can only be set to true if destinations are specified.
 	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.RouteDestinations.propagate_service
 	PropagateService *bool `json:"propagateService,omitempty"`
