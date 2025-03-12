@@ -20,83 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataplexEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DataplexEnvironmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexEnvironmentObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: InfrastructureSpec
-	// MISSING: SessionSpec
-	// MISSING: SessionStatus
-	// MISSING: Endpoints
-	return out
-}
-func DataplexEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEnvironmentObservedState) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: InfrastructureSpec
-	// MISSING: SessionSpec
-	// MISSING: SessionStatus
-	// MISSING: Endpoints
-	return out
-}
-func DataplexEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DataplexEnvironmentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexEnvironmentSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: InfrastructureSpec
-	// MISSING: SessionSpec
-	// MISSING: SessionStatus
-	// MISSING: Endpoints
-	return out
-}
-func DataplexEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEnvironmentSpec) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: InfrastructureSpec
-	// MISSING: SessionSpec
-	// MISSING: SessionStatus
-	// MISSING: Endpoints
-	return out
-}
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
+func DataplexEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
 	if in == nil {
 		return nil
 	}
@@ -115,7 +39,7 @@ func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.E
 	// MISSING: Endpoints
 	return out
 }
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
+func DataplexEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
 	if in == nil {
 		return nil
 	}
@@ -134,7 +58,7 @@ func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Env
 	// MISSING: Endpoints
 	return out
 }
-func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
+func DataplexEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
 	if in == nil {
 		return nil
 	}
@@ -153,7 +77,7 @@ func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Enviro
 	out.Endpoints = Environment_Endpoints_FromProto(mapCtx, in.GetEndpoints())
 	return out
 }
-func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
+func DataplexEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
 	if in == nil {
 		return nil
 	}
