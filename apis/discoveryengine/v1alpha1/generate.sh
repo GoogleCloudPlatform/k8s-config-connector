@@ -27,7 +27,7 @@ go run . generate-types --service google.cloud.discoveryengine.v1 --api-version 
   --resource DiscoveryEngineEngine:Engine \
   --resource DiscoveryEngineTargetSite:TargetSite
 
-go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
+go run . generate-mapper --service google.cloud.discoveryengine --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
 
 
 cd ${REPO_ROOT}

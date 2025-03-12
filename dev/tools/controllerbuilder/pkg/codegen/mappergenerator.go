@@ -39,6 +39,9 @@ type MapperGenerator struct {
 	precomputedMappings map[protoreflect.FullName]map[string]*gocode.GoStruct
 
 	importAliases map[string]string
+
+	// Don't visit protos twice
+	visitedProto map[protoreflect.FullName]bool
 }
 
 func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string) *MapperGenerator {
@@ -46,6 +49,7 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string) *Mapp
 		goPathForMessage:    goPathForMessage,
 		precomputedMappings: make(map[protoreflect.FullName]map[string]*gocode.GoStruct),
 		importAliases:       make(map[string]string),
+		visitedProto:        make(map[protoreflect.FullName]bool),
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -117,6 +121,11 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	if _, visit := v.goPathForMessage(msg); !visit {
 		return
 	}
+	if v.visitedProto[msg.FullName()] {
+		return
+	}
+	v.visitedProto[msg.FullName()] = true
+
 	goTypes := v.findKRMStructsForProto(msg)
 
 	if goTypes == nil || len(goTypes) == 0 {
@@ -150,6 +159,17 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 
 	for _, msg := range sortIntoMessageSlice(msg.Messages()) {
 		v.visitMessage(msg)
+	}
+
+	{
+		// Visit any fields that might be referenced
+		fields := msg.Fields()
+		for i := 0; i < fields.Len(); i++ {
+			field := fields.Get(i)
+			if field.Message() != nil {
+				v.visitMessage(field.Message())
+			}
+		}
 	}
 }
 
