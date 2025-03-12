@@ -106,7 +106,12 @@ func (p *DataPoint) ToGenAIFormat() string {
 			}
 		}
 
-		fmt.Fprintf(&part, "%s: %s\n", column, v)
+		if strings.Contains(v, "\n") {
+			fmt.Fprintf(&part, "<%s>\n%s\n</%s>\n", column, v, column)
+
+		} else {
+			fmt.Fprintf(&part, "<%s>%s</%s>\n", column, v, column)
+		}
 	}
 
 	return part.String()
