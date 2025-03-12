@@ -108,3 +108,69 @@ type LakeObservedState struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.metastore_status
 	MetastoreStatus *Lake_MetastoreStatus `json:"metastoreStatus,omitempty"`
 }
+
+// +kcc:proto=google.cloud.dataplex.v1.Content
+type Content struct {
+
+	// Required. The path for the Content file, represented as directory
+	//  structure. Unique within a lake. Limited to alphanumerics, hyphens,
+	//  underscores, dots and slashes.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.path
+	Path *string `json:"path,omitempty"`
+
+	// Optional. User defined labels for the content.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Description of the content.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Content data in string format.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.data_text
+	DataText *string `json:"dataText,omitempty"`
+
+	// Sql Script related configurations.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.sql_script
+	SQLScript *Content_SQLScript `json:"sqlScript,omitempty"`
+
+	// Notebook related configurations.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.notebook
+	Notebook *Content_Notebook `json:"notebook,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Content.Notebook
+type Content_Notebook struct {
+	// Required. Kernel Type of the notebook.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.Notebook.kernel_type
+	KernelType *string `json:"kernelType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Content.SqlScript
+type Content_SQLScript struct {
+	// Required. Query Engine to be used for the Sql Query.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.SqlScript.engine
+	Engine *string `json:"engine,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Content
+type ContentObservedState struct {
+	// Output only. The relative resource name of the content, of the form:
+	//  projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. System generated globally unique ID for the content. This ID
+	//  will be different if the content is deleted and re-created with the same
+	//  name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Content creation time.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the content was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
