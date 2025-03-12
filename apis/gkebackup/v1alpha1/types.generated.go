@@ -105,41 +105,6 @@ type BackupPlan_RetentionPolicy struct {
 	Locked *bool `json:"locked,omitempty"`
 }
 
-// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
-type BackupPlan_Schedule struct {
-	// Optional. A standard [cron](https://wikipedia.com/wiki/cron) string that
-	//  defines a repeating schedule for creating Backups via this BackupPlan.
-	//  This is mutually exclusive with the
-	//  [rpo_config][google.cloud.gkebackup.v1.BackupPlan.Schedule.rpo_config]
-	//  field since at most one schedule can be defined for a BackupPlan. If this
-	//  is defined, then
-	//  [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
-	//  must also be defined.
-	//
-	//  Default (empty): no automatic backup creation will occur.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.cron_schedule
-	CronSchedule *string `json:"cronSchedule,omitempty"`
-
-	// Optional. This flag denotes whether automatic Backup creation is paused
-	//  for this BackupPlan.
-	//
-	//  Default: False
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.paused
-	Paused *bool `json:"paused,omitempty"`
-
-	// Optional. Defines the RPO schedule configuration for this BackupPlan.
-	//  This is mutually exclusive with the
-	//  [cron_schedule][google.cloud.gkebackup.v1.BackupPlan.Schedule.cron_schedule]
-	//  field since at most one schedule can be defined for a BackupPLan. If this
-	//  is defined, then
-	//  [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
-	//  must also be defined.
-	//
-	//  Default (empty): no automatic backup creation will occur.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.rpo_config
-	RpoConfig *RpoConfig `json:"rpoConfig,omitempty"`
-}
-
 // +kcc:proto=google.cloud.gkebackup.v1.EncryptionKey
 type EncryptionKey struct {
 	// Optional. Google Cloud KMS encryption key. Format:
@@ -213,29 +178,6 @@ type Namespaces struct {
 	// Optional. A list of Kubernetes Namespaces
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Namespaces.namespaces
 	Namespaces []string `json:"namespaces,omitempty"`
-}
-
-// +kcc:proto=google.cloud.gkebackup.v1.RpoConfig
-type RpoConfig struct {
-	// Required. Defines the target RPO for the BackupPlan in minutes, which means
-	//  the target maximum data loss in time that is acceptable for this
-	//  BackupPlan. This must be at least 60, i.e., 1 hour, and at most 86400,
-	//  i.e., 60 days.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.RpoConfig.target_rpo_minutes
-	TargetRpoMinutes *int32 `json:"targetRpoMinutes,omitempty"`
-
-	// Optional. User specified time windows during which backup can NOT happen
-	//  for this BackupPlan - backups should start and finish outside of any given
-	//  exclusion window. Note: backup jobs will be scheduled to start and
-	//  finish outside the duration of the window as much as possible, but
-	//  running jobs will not get canceled when it runs into the window.
-	//  All the time and date values in exclusion_windows entry in the API are in
-	//  UTC.
-	//  We only allow <=1 recurrence (daily or weekly) exclusion window for a
-	//  BackupPlan while no restriction on number of single occurrence
-	//  windows.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.RpoConfig.exclusion_windows
-	ExclusionWindows []ExclusionWindow `json:"exclusionWindows,omitempty"`
 }
 
 // +kcc:proto=google.type.Date

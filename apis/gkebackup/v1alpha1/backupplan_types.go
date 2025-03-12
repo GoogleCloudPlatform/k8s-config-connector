@@ -15,14 +15,72 @@
 package v1alpha1
 
 import (
+	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	container "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var GKEBackupBackupPlanGVK = GroupVersion.WithKind("GKEBackupBackupPlan")
+
+// +kcc:proto=google.cloud.gkebackup.v1.RpoConfig
+type RPOConfig struct {
+	// Required. Defines the target RPO for the BackupPlan in minutes, which means
+	//  the target maximum data loss in time that is acceptable for this
+	//  BackupPlan. This must be at least 60, i.e., 1 hour, and at most 86400,
+	//  i.e., 60 days.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RpoConfig.target_rpo_minutes
+	TargetRPOMinutes *int32 `json:"targetRPOMinutes,omitempty"`
+
+	// Optional. User specified time windows during which backup can NOT happen
+	//  for this BackupPlan - backups should start and finish outside of any given
+	//  exclusion window. Note: backup jobs will be scheduled to start and
+	//  finish outside the duration of the window as much as possible, but
+	//  running jobs will not get canceled when it runs into the window.
+	//  All the time and date values in exclusion_windows entry in the API are in
+	//  UTC.
+	//  We only allow <=1 recurrence (daily or weekly) exclusion window for a
+	//  BackupPlan while no restriction on number of single occurrence
+	//  windows.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RpoConfig.exclusion_windows
+	ExclusionWindows []ExclusionWindow `json:"exclusionWindows,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
+type BackupPlan_Schedule struct {
+	// Optional. A standard [cron](https://wikipedia.com/wiki/cron) string that
+	//  defines a repeating schedule for creating Backups via this BackupPlan.
+	//  This is mutually exclusive with the
+	//  [rpo_config][google.cloud.gkebackup.v1.BackupPlan.Schedule.rpo_config]
+	//  field since at most one schedule can be defined for a BackupPlan. If this
+	//  is defined, then
+	//  [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
+	//  must also be defined.
+	//
+	//  Default (empty): no automatic backup creation will occur.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.cron_schedule
+	CronSchedule *string `json:"cronSchedule,omitempty"`
+
+	// Optional. This flag denotes whether automatic Backup creation is paused
+	//  for this BackupPlan.
+	//
+	//  Default: False
+	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.paused
+	Paused *bool `json:"paused,omitempty"`
+
+	// Optional. Defines the RPO schedule configuration for this BackupPlan.
+	//  This is mutually exclusive with the
+	//  [cron_schedule][google.cloud.gkebackup.v1.BackupPlan.Schedule.cron_schedule]
+	//  field since at most one schedule can be defined for a BackupPLan. If this
+	//  is defined, then
+	//  [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
+	//  must also be defined.
+	//
+	//  Default (empty): no automatic backup creation will occur.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.rpo_config
+	RPOConfig *RPOConfig `json:"rpoConfig,omitempty"`
+}
 
 type Parent struct {
 	// +required
@@ -160,12 +218,12 @@ type GKEBackupBackupPlanObservedState struct {
 	//  BackupPlan from RPO perspective with 1 being no risk and 5 being highest
 	//  risk.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.rpo_risk_level
-	RpoRiskLevel *int32 `json:"rpoRiskLevel,omitempty"`
+	RPORiskLevel *int32 `json:"rpoRiskLevel,omitempty"`
 
 	// Output only. Human-readable description of why the BackupPlan is in the
 	//  current rpo_risk_level and action items if any.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.rpo_risk_reason
-	RpoRiskReason *string `json:"rpoRiskReason,omitempty"`
+	RPORiskReason *string `json:"rpoRiskReason,omitempty"`
 }
 
 // +genclient
