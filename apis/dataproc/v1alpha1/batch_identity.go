@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type BatchIdentity struct {
 	parent *BatchParent
-	id string
+	id     string
 }
 
 func (i *BatchIdentity) String() string {
-	return  i.parent.String() + "/batchs/" + i.id
+	return i.parent.String() + "/batchs/" + i.id
 }
 
 func (i *BatchIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *BatchIdentity) ID() string {
 }
 
 func (i *BatchIdentity) Parent() *BatchParent {
-	return  i.parent
+	return i.parent
 }
 
 type BatchParent struct {
@@ -51,7 +51,6 @@ type BatchParent struct {
 func (p *BatchParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a BatchIdentity from the Config Connector Batch object.
 func NewBatchIdentity(ctx context.Context, reader client.Reader, obj *DataprocBatch) (*BatchIdentity, error) {
