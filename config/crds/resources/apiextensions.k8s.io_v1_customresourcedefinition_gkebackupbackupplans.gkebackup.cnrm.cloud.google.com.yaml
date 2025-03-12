@@ -6,7 +6,9 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: gkebackupbackupplans.gkebackup.cnrm.cloud.google.com
 spec:
   group: gkebackup.cnrm.cloud.google.com
