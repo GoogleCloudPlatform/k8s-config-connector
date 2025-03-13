@@ -26,13 +26,10 @@ func EdgeContainerMachineObservedState_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krm.EdgeContainerMachineObservedState{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: HostedNode
-	// MISSING: Zone
-	// MISSING: Version
-	// MISSING: Disabled
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
 }
 func EdgeContainerMachineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EdgeContainerMachineObservedState) *pb.Machine {
@@ -41,13 +38,10 @@ func EdgeContainerMachineObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.Machine{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: HostedNode
-	// MISSING: Zone
-	// MISSING: Version
-	// MISSING: Disabled
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Version = direct.ValueOf(in.Version)
+	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
 func EdgeContainerMachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Machine) *krm.EdgeContainerMachineSpec {
@@ -56,13 +50,9 @@ func EdgeContainerMachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Machin
 	}
 	out := &krm.EdgeContainerMachineSpec{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: HostedNode
-	// MISSING: Zone
-	// MISSING: Version
-	// MISSING: Disabled
+	out.Labels = in.Labels
+	out.HostedNode = direct.LazyPtr(in.GetHostedNode())
+	out.Zone = direct.LazyPtr(in.GetZone())
 	return out
 }
 func EdgeContainerMachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.EdgeContainerMachineSpec) *pb.Machine {
@@ -71,72 +61,8 @@ func EdgeContainerMachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCon
 	}
 	out := &pb.Machine{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: HostedNode
-	// MISSING: Zone
-	// MISSING: Version
-	// MISSING: Disabled
-	return out
-}
-func Machine_FromProto(mapCtx *direct.MapContext, in *pb.Machine) *krm.Machine {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Machine{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.HostedNode = direct.LazyPtr(in.GetHostedNode())
-	out.Zone = direct.LazyPtr(in.GetZone())
-	// MISSING: Version
-	// MISSING: Disabled
-	return out
-}
-func Machine_ToProto(mapCtx *direct.MapContext, in *krm.Machine) *pb.Machine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Machine{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	out.HostedNode = direct.ValueOf(in.HostedNode)
 	out.Zone = direct.ValueOf(in.Zone)
-	// MISSING: Version
-	// MISSING: Disabled
-	return out
-}
-func MachineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Machine) *krm.MachineObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MachineObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: HostedNode
-	// MISSING: Zone
-	out.Version = direct.LazyPtr(in.GetVersion())
-	out.Disabled = direct.LazyPtr(in.GetDisabled())
-	return out
-}
-func MachineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MachineObservedState) *pb.Machine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Machine{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: HostedNode
-	// MISSING: Zone
-	out.Version = direct.ValueOf(in.Version)
-	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
