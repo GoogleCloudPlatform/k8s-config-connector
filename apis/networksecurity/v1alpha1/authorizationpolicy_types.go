@@ -15,17 +15,56 @@
 package v1alpha1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var NetworkSecurityAuthorizationPolicyGVK = GroupVersion.WithKind("NetworkSecurityAuthorizationPolicy")
 
+type Parent struct {
+	// +required
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable.
+	// +required
+	Location string `json:"location"`
+}
+
 // NetworkSecurityAuthorizationPolicySpec defines the desired state of NetworkSecurityAuthorizationPolicy
 // +kcc:proto=google.cloud.networksecurity.v1.AuthorizationPolicy
 type NetworkSecurityAuthorizationPolicySpec struct {
 	// The NetworkSecurityAuthorizationPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	Parent `json:",inline"`
+
+	// Required. Name of the AuthorizationPolicy resource. It matches pattern
+	//  `projects/{project}/locations/{location}/authorizationPolicies/<authorization_policy>`.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AuthorizationPolicy.name
+	// NOTYET: this field serves the same purpose as identity
+	// Name *string `json:"name,omitempty"`
+
+	// Optional. Free-text description of the resource.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AuthorizationPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Set of label tags associated with the AuthorizationPolicy resource.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AuthorizationPolicy.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. The action to take when a rule match is found. Possible values
+	//  are "ALLOW" or "DENY".
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AuthorizationPolicy.action
+	Action *string `json:"action,omitempty"`
+
+	// Optional. List of rules to match. Note that at least one of the rules must match in
+	//  order for the action specified in the 'action' field to be taken. A rule is
+	//  a match if there is a matching source and destination. If left blank, the
+	//  action specified in the `action` field will be applied on every request.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AuthorizationPolicy.rules
+	Rules []AuthorizationPolicy_Rule `json:"rules,omitempty"`
 }
 
 // NetworkSecurityAuthorizationPolicyStatus defines the config connector machine state of NetworkSecurityAuthorizationPolicy
@@ -47,12 +86,18 @@ type NetworkSecurityAuthorizationPolicyStatus struct {
 // NetworkSecurityAuthorizationPolicyObservedState is the state of the NetworkSecurityAuthorizationPolicy resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.networksecurity.v1.AuthorizationPolicy
 type NetworkSecurityAuthorizationPolicyObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AuthorizationPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was updated.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.AuthorizationPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
-// +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecurityauthorizationpolicy;gcpnetworksecurityauthorizationpolicys
+// +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecurityauthorizationpolicy;gcpnetworksecurityauthorizationpolicies
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"

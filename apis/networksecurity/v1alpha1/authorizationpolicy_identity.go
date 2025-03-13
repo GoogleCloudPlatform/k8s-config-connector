@@ -32,7 +32,7 @@ type AuthorizationPolicyIdentity struct {
 }
 
 func (i *AuthorizationPolicyIdentity) String() string {
-	return i.parent.String() + "/authorizationpolicys/" + i.id
+	return i.parent.String() + "/authorizationPolicies/" + i.id
 }
 
 func (i *AuthorizationPolicyIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewAuthorizationPolicyIdentity(ctx context.Context, reader client.Reader, o
 
 func ParseAuthorizationPolicyExternal(external string) (parent *AuthorizationPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "authorizationpolicys" {
-		return nil, "", fmt.Errorf("format of NetworkSecurityAuthorizationPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/authorizationpolicys/{{authorizationpolicyID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "authorizationPolicies" {
+		return nil, "", fmt.Errorf("format of NetworkSecurityAuthorizationPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/authorizationPolicies/{{authorizationpolicyID}})", external)
 	}
 	parent = &AuthorizationPolicyParent{
 		ProjectID: tokens[1],

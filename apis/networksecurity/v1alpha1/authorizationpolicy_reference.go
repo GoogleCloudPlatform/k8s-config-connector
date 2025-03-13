@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &AuthorizationPolicyRef{}
 // holds the GCP identifier for the KRM object.
 type AuthorizationPolicyRef struct {
 	// A reference to an externally managed NetworkSecurityAuthorizationPolicy resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/authorizationpolicys/{{authorizationpolicyID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/authorizationPolicies/{{authorizationpolicyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a NetworkSecurityAuthorizationPolicy resource.
