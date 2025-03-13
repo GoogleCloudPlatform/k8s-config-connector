@@ -90,14 +90,18 @@ type TasksQueueSpec struct {
 	// +kcc:proto:field=google.cloud.tasks.v2.Queue.stackdriver_logging_config
 	StackdriverLoggingConfig *StackdriverLoggingConfig `json:"stackdriverLoggingConfig,omitempty"`
 
-	// Required. The location of the queue.
-	Location string `json:"location,omitempty"`
-
-	// Required. The host project of the queue.
-	ProjectRef v1beta1.ProjectRef `json:"projectRef,omitempty"`
+	*Parent `json:",inline"`
 
 	// The TasksQueue name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type Parent struct {
+	// Required. The host project of the queue.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Required. The location of the queue.
+	Location string `json:"location,omitempty"`
 }
 
 // TasksQueueStatus defines the config connector machine state of TasksQueue
