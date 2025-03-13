@@ -25,6 +25,7 @@ func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krm.NetworkServicesServiceBindingObservedState{}
+	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
@@ -34,6 +35,7 @@ func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &pb.ServiceBinding{}
+	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
@@ -43,7 +45,7 @@ func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.NetworkServicesServiceBindingSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Service = direct.LazyPtr(in.GetService())
 	out.Labels = in.Labels
@@ -54,7 +56,7 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.ServiceBinding{}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	out.Service = direct.ValueOf(in.Service)
 	out.Labels = in.Labels

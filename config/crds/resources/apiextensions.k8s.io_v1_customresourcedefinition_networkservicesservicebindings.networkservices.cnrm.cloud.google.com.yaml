@@ -74,10 +74,6 @@ spec:
               location:
                 description: Required. The location of the application.
                 type: string
-              name:
-                description: Required. Name of the ServiceBinding resource. It matches
-                  pattern `projects/*/locations/global/serviceBindings/service_binding_name`.
-                type: string
               projectRef:
                 description: Required. The host project of the application.
                 oneOf:
