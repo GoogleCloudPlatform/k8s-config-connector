@@ -32,7 +32,7 @@ type PrivateConnectionIdentity struct {
 }
 
 func (i *PrivateConnectionIdentity) String() string {
-	return i.parent.String() + "/privateconnections/" + i.id
+	return i.parent.String() + "/privateConnections/" + i.id
 }
 
 func (i *PrivateConnectionIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewPrivateConnectionIdentity(ctx context.Context, reader client.Reader, obj
 
 func ParsePrivateConnectionExternal(external string) (parent *PrivateConnectionParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "privateconnections" {
-		return nil, "", fmt.Errorf("format of DatastreamPrivateConnection external=%q was not known (use projects/{{projectID}}/locations/{{location}}/privateconnections/{{privateconnectionID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "privateConnections" {
+		return nil, "", fmt.Errorf("format of DatastreamPrivateConnection external=%q was not known (use projects/{{projectID}}/locations/{{location}}/privateConnections/{{privateconnectionID}})", external)
 	}
 	parent = &PrivateConnectionParent{
 		ProjectID: tokens[1],
