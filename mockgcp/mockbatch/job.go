@@ -71,6 +71,15 @@ func (s *BatchV1) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*pb.
 		return nil, err
 	}
 
+	// create a task within the job
+	taskObj := &pb.Task{}
+	taskObjName := fqn + "/taskGroups/group0/tasks/0"
+	taskObj.Name = taskObjName
+	taskObj.Status = &pb.TaskStatus{}
+	if err := s.storage.Create(ctx, taskObjName, taskObj); err != nil {
+		return nil, err
+	}
+
 	return obj, nil
 }
 
@@ -87,6 +96,14 @@ func (s *BatchV1) DeleteJob(ctx context.Context, req *pb.DeleteJobRequest) (*lon
 		return nil, err
 	}
 
+	taskObj := &pb.Task{}
+	taskObjName := fqn + "/taskGroups/group0/tasks/0"
+	taskObj.Name = taskObjName
+	taskObj.Status = &pb.TaskStatus{}
+	if err := s.storage.Delete(ctx, taskObjName, taskObj); err != nil {
+		return nil, err
+	}
+
 	return s.operations.DoneLRO(ctx, fqn, &pb.OperationMetadata{}, nil)
 }
 
@@ -99,14 +116,6 @@ func (s *BatchV1) ListJobs(ctx context.Context, req *pb.ListJobsRequest) (*pb.Li
 	// TODO: Support List
 
 	return &pb.ListJobsResponse{}, nil
-}
-
-func (s *BatchV1) GetTask(ctx context.Context, req *pb.GetTaskRequest) (*pb.Task, error) {
-	return &pb.Task{}, status.Errorf(codes.Unimplemented, "method not implemented")
-}
-
-func (s *BatchV1) ListTasks(ctx context.Context, req *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
-	return &pb.ListTasksResponse{}, status.Errorf(codes.Unimplemented, "method not implemented")
 }
 
 type jobName struct {
