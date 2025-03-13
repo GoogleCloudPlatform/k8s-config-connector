@@ -172,8 +172,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/netapp/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/dataplex/v1/*.proto
-		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto
+		./third_party/googleapis/mockgcp/cloud/dataplex/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/kms/v1/resources.proto
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
