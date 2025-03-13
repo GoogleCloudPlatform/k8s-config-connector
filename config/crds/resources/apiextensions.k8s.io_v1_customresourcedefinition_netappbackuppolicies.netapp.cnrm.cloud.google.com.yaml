@@ -59,7 +59,30 @@ spec:
           spec:
             description: NetAppBackupPolicySpec defines the desired state of NetAppBackupPolicy
             properties:
+              dailyBackupLimit:
+                description: Number of daily backups to keep. Note that the minimum
+                  daily backup limit is 2.
+                format: int32
+                type: integer
+              description:
+                description: Description of the backup policy.
+                type: string
+              enabled:
+                description: If enabled, make backups automatically according to the
+                  schedules. This will be applied to all volumes that have this policy
+                  attached and enforced on volume level. If not specified, default
+                  is true.
+                type: boolean
               location:
+                type: string
+              monthlyBackupLimit:
+                description: Number of monthly backups to keep. Note that the sum
+                  of daily, weekly and monthly backups should be greater than 1.
+                format: int32
+                type: integer
+              name:
+                description: 'Identifier. The resource name of the backup policy.
+                  Format: `projects/{project_id}/locations/{location}/backupPolicies/{backup_policy_id}`.'
                 type: string
               projectRef:
                 description: The Project that this resource belongs to.
@@ -97,6 +120,11 @@ spec:
                 description: The GCP resource identifier. If not given, the metadata.name
                   will be used.
                 type: string
+              weeklyBackupLimit:
+                description: Number of weekly backups to keep. Note that the sum of
+                  daily, weekly and monthly backups should be greater than 1.
+                format: int32
+                type: integer
             required:
             - location
             - projectRef
@@ -146,6 +174,19 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  assignedVolumeCount:
+                    description: Output only. The total number of volumes assigned
+                      by this backup policy.
+                    format: int32
+                    type: integer
+                  createTime:
+                    description: Output only. The time when the backup policy was
+                      created.
+                    type: string
+                  state:
+                    description: Output only. The backup policy state.
+                    type: string
                 type: object
             type: object
         required:
