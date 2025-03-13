@@ -184,7 +184,7 @@ func generateTypesAndMapper(ctx context.Context, opts *RunnerOptions, branch Bra
 			WorkDir:    filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
 			MaxRetries: 1,
 		}
-		_, _, err := executeCommand(opts, cfg)
+		_, err := executeCommand(opts, cfg)
 		if err != nil {
 			return affectedPaths, fmt.Errorf("failed to generate types: %w", err)
 		}
@@ -210,7 +210,7 @@ func generateTypesAndMapper(ctx context.Context, opts *RunnerOptions, branch Bra
 			WorkDir:    filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
 			MaxRetries: 2,
 		}
-		_, _, err := executeCommand(opts, cfg)
+		_, err := executeCommand(opts, cfg)
 		if err != nil {
 			return affectedPaths, fmt.Errorf("failed to generate mapper: %w", err)
 		}
@@ -240,7 +240,7 @@ func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch) ([]str
 		MaxRetries: 1,
 	}
 
-	_, _, err := executeCommand(opts, cfg)
+	_, err := executeCommand(opts, cfg)
 	return affectedPaths, err
 }
 
@@ -266,7 +266,7 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) ([]string, error) {
 		Stdin:        strings.NewReader(stdinInput),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, _, err := executeCommand(opts, cfg)
+	_, err := executeCommand(opts, cfg)
 	//commitMsg := fmt.Sprintf("Generated spec and status for %s", branch.Kind)
 	return affectedPaths, err
 }
@@ -294,12 +294,12 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 		Stdin:        strings.NewReader(stdinInput),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	output, _, err := executeCommand(opts, cfg)
+	output, err := executeCommand(opts, cfg)
 	if err != nil {
 		return affectedPaths, fmt.Errorf("failed to generate fuzzer: %w", err)
 	}
 
-	if err := os.WriteFile(fuzzerPath, []byte(output), 0644); err != nil {
+	if err := os.WriteFile(fuzzerPath, []byte(output.Stdout), 0644); err != nil {
 		return affectedPaths, fmt.Errorf("failed to write fuzzer file: %w", err)
 	}
 
@@ -318,7 +318,7 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 		Stdin:        strings.NewReader(stdinInput),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, _, err = executeCommand(opts, cfg)
+	_, err = executeCommand(opts, cfg)
 	if err != nil {
 		return affectedPaths, fmt.Errorf("failed to add import: %w", err)
 	}
@@ -326,4 +326,174 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 	affectedPaths = append(affectedPaths, registerPath)
 
 	return affectedPaths, nil
+}
+
+const ADJUST_TYPES string = `I need to set the Spec and Status fields in the generated KRM type ${KIND} to match the proto ${PROTO_RESOURCE} definition.
+
+Given:
+- Generated types file: ${GENERATED_TYPES_FILE}
+- resource types files: ${RESOURCE_TYPES_FILES}
+- Proto resource: ${PROTO_RESOURCE}
+- Proto files: 
+    ${PROTO_FILES}
+
+Main Objectives:
+1. Copy only the Fields from the ${PROTO_RESOURCE} struct in ${GENERATED_TYPES_FILE} to the ${KIND}Spec struct in ${RESOURCE_TYPES_FILES}.
+2. if ${PROTO_RESOURCE}ObservedState struct exists, copy the Fields from the ${PROTO_RESOURCE}ObservedState to the ${KIND}ObservedState struct in ${RESOURCE_TYPES_FILES}.
+3. if ${PROTO_RESOURCE}ObservedState struct does not exist, remove the ${KIND}ObservedState struct from ${RESOURCE_TYPES_FILES}.
+4. Dont copy any structs from ${GENERATED_TYPES_FILE} to ${RESOURCE_TYPES_FILES}.
+5. Ensure that the ${KIND}Spec struct has the following fields:
+- Parent <TICK>json:",inline"<TICK>
+- ResourceID *string <TICK>json:"resourceID,omitempty"<TICK>
+6. We need to add a new Parent struct in ${RESOURCE_TYPES_FILES}.
+7. Please do not modify the ${GENERATED_TYPES_FILE} file.
+
+Rules for generating the Parent struct:
+1.  An example Parent struct is provided below:
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef <TICK>json:"projectRef"<TICK>
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable.
+	// +required
+	Location string <TICK>json:"location"<TICK>
+}
+2. Another example Parent struct is provided below:
+type Parent struct {
+	// +required
+	OrganizationRef *refv1beta1.OrganizationRef <TICK>json:"organizationRef"<TICK>
+}
+3. Inspect the ${PROTO_FILES} to determine the fields for the Parent struct. 
+4. Look for the "parent" field in the Get${PROTO_RESOURCE}, List${PROTO_RESOURCE}, and Post${PROTO_RESOURCE} rpc to determine the parent fields
+5. For example, the parent fields in the Get${PROTO_RESOURCE} rpc is:
+      get: "/v1beta/{parent=projects/*/locations/*}/quotaPreferences"
+      additional_bindings {
+        get: "/v1beta/{parent=folders/*/locations/*}/quotaPreferences"
+      }
+      additional_bindings {
+        get: "/v1beta/{parent=organizations/*/locations/*}/quotaPreferences"
+      }
+	would result in the following Parent struct:
+type Parent struct {
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef <TICK>json:"projectRef"<TICK>
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable.
+	// +required
+	Location string <TICK>json:"location"<TICK>
+	// +optional
+	OrganizationRef *refv1beta1.OrganizationRef <TICK>json:"organizationRef"<TICK>
+	// +optional
+	FolderRef *refv1beta1.FolderRef <TICK>json:"folderRef"<TICK>
+}
+6. refv1beta1 package comes from "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+7. Please make sure there is only one import block in the ${RESOURCE_TYPES_FILES} file and it appears at the beginning of the file.
+
+Additional things to check:
+1. Field names and types align with the proto definitions
+2. Required fields are properly marked with the required KRM field tag
+3. Nested types are correctly represented
+4. Comments and documentation are accurate
+
+Please update the ${RESOURCE_TYPES_FILES} file with the adjusted types.
+
+Contents of ${GENERATED_TYPES_FILE}:
+${GENERATED_TYPES_FILE_CONTENTS}
+
+Contents of ${RESOURCE_TYPES_FILES}:
+${RESOURCE_TYPES_FILES_CONTENTS}
+
+Contents of ${PROTO_FILES}:
+${PROTO_FILES_CONTENTS}
+`
+
+// TODO
+// ProjectRef in spec
+// Location in spec
+// Prevent LLM from removing	ResourceID *string `json:"resourceID,omitempty"`
+
+func adjustTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+	affectedPaths := []string{}
+	// Get paths to relevant files
+	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
+	// Read all proto files in the directory
+	protoDirRelative := filepath.Dir(filepath.Join(".build", "third_party", "googleapis", branch.ProtoPath))
+
+	protoFiles, err := os.ReadDir(filepath.Join(opts.branchRepoDir, protoDirRelative))
+	if err != nil {
+		return nil, fmt.Errorf("failed to read proto directory: %w", err)
+	}
+	var protoContents strings.Builder
+	protoFileRelativePaths := []string{}
+	for _, file := range protoFiles {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), ".proto") {
+			filePathRelative := filepath.Join(protoDirRelative, file.Name())
+			protoFileRelativePaths = append(protoFileRelativePaths, filePathRelative)
+			content, err := os.ReadFile(filepath.Join(opts.branchRepoDir, filePathRelative))
+			if err != nil {
+				return nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
+			}
+			protoContents.WriteString("------- " + filePathRelative + " -------\n")
+			protoContents.Write(content)
+			protoContents.WriteString("\n-------- end ------------------\n")
+		}
+	}
+
+	generatedTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, generatedTypesPath))
+	if err != nil {
+		return nil, fmt.Errorf("failed to read generated types file: %w", err)
+	}
+
+	resourceTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, resourceTypesPath))
+	if err != nil {
+		return nil, fmt.Errorf("failed to read resource types file: %w", err)
+	}
+
+	// Create prompt with file contents
+	prompt := strings.ReplaceAll(ADJUST_TYPES, "${GENERATED_TYPES_FILE}", string(generatedTypesPath))
+	prompt = strings.ReplaceAll(prompt, "${RESOURCE_TYPES_FILES}", string(resourceTypesPath))
+	prompt = strings.ReplaceAll(prompt, "${PROTO_FILES}", strings.Join(protoFileRelativePaths, "\n"))
+
+	prompt = strings.ReplaceAll(prompt, "${RESOURCE_TYPES_FILES_CONTENTS}", string(resourceTypesContent))
+	prompt = strings.ReplaceAll(prompt, "${GENERATED_TYPES_FILE_CONTENTS}", string(generatedTypesContent))
+	prompt = strings.ReplaceAll(prompt, "${PROTO_FILES_CONTENTS}", protoContents.String())
+
+	prompt = strings.ReplaceAll(prompt, "${KIND}", branch.Kind)
+	prompt = strings.ReplaceAll(prompt, "${PROTO_RESOURCE}", branch.Proto)
+
+	// Run codebot to adjust types
+	cfg := CommandConfig{
+		Name:         "Adjust types",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(prompt),
+		WorkDir:      opts.branchRepoDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+
+	_, err = executeCommand(opts, cfg)
+	affectedPaths = append(affectedPaths, resourceTypesPath)
+	if err != nil {
+		return affectedPaths, fmt.Errorf("failed to adjust types: %w", err)
+	}
+
+	// Regenerate types
+	cfg = CommandConfig{
+		Name: "Generate types",
+		Cmd:  "go",
+		Args: []string{
+			"run", ".",
+			"generate-types",
+			"--service", branch.Package,
+			"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
+			"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
+		},
+		WorkDir:    filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
+		MaxRetries: 1,
+	}
+	affectedPaths = append(affectedPaths, generatedTypesPath)
+	_, err = executeCommand(opts, cfg)
+	return affectedPaths, err
 }

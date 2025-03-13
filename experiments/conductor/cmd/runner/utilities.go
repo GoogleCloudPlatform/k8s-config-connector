@@ -44,6 +44,7 @@ var commandMap = map[int64]string{
 	cmdGenerateCRD:         "generatecrd",
 	cmdGenerateFuzzer:      "generatefuzzer",
 	cmdBuildProto:          "buildproto",
+	cmdAdjustTypes:         "adjusttypes",
 }
 
 type exitBash func()
@@ -335,7 +336,7 @@ type CommandConfig struct {
 }
 
 // Helper function to execute a command with timing and logging
-func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, error) {
+func executeCommand(opts *RunnerOptions, cfg CommandConfig) (ExecResults, error) {
 	if cfg.Timeout == 0 {
 		if opts != nil && opts.timeout != 0 {
 			cfg.Timeout = opts.timeout
@@ -356,6 +357,7 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 
 	var lastErr error
 	var output, errOutput string
+	var exitCode int
 	retryCount := 1
 
 	for {
@@ -380,8 +382,10 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 		cmd.Stdout = &outBuf
 		cmd.Stderr = &errBuf
 
-		cmd.Stdout = io.MultiWriter(os.Stdout, cmd.Stdout)
-		cmd.Stderr = io.MultiWriter(os.Stderr, cmd.Stderr)
+		if opts.verbose {
+			cmd.Stdout = io.MultiWriter(os.Stdout, cmd.Stdout)
+			cmd.Stderr = io.MultiWriter(os.Stderr, cmd.Stderr)
+		}
 
 		if cfg.Stdin != nil {
 			cmd.Stdin = cfg.Stdin
@@ -403,6 +407,7 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 
 		output = outBuf.String()
 		errOutput = errBuf.String()
+		exitCode := cmd.ProcessState.ExitCode()
 
 		if err == nil {
 			log.Printf("[%s] SUCCESS (%v)", cfg.Name, diff)
@@ -411,7 +416,7 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 				log.Printf("[%s] stderr output:", cfg.Name)
 				printCommandOutput(errOutput)
 			}
-			return output, errOutput, nil
+			return ExecResults{Stdout: output, Stderr: errOutput, ExitCode: exitCode}, nil
 		}
 
 		lastErr = err
@@ -432,7 +437,7 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (string, string, err
 		time.Sleep(cfg.RetryBackoff)
 	}
 
-	return output, errOutput, fmt.Errorf("command failed after %d attempts: %w", maxRetries, lastErr)
+	return ExecResults{Stdout: output, Stderr: errOutput, ExitCode: exitCode}, fmt.Errorf("command failed after %d attempts: %w", maxRetries, lastErr)
 }
 
 func runLinters(opts *RunnerOptions) error {
@@ -445,8 +450,12 @@ func runLinters(opts *RunnerOptions) error {
 		WorkDir:    opts.branchRepoDir,
 		MaxRetries: 1,
 	}
-	if _, _, err := executeCommand(opts, cfg); err != nil {
-		return fmt.Errorf("make lint failed: %w", err)
+	op, err := executeCommand(opts, cfg)
+	if err != nil {
+		return fmt.Errorf("Error running go fmt: %w", err)
+	}
+	if op.ExitCode != 0 {
+		return fmt.Errorf("linting failed with exit code %d", op.ExitCode)
 	}
 
 	return nil
@@ -463,7 +472,7 @@ func checkMakeReadyPR(opts *RunnerOptions) error {
 		MaxRetries: 1,
 	}
 
-	if _, _, err := executeCommand(opts, cfg); err != nil {
+	if _, err := executeCommand(opts, cfg); err != nil {
 		return fmt.Errorf("make ready-pr failed: %w", err)
 	}
 
@@ -508,7 +517,7 @@ func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, comm
 		if err := gitAdd(ctx, opts.branchRepoDir, "."); err != nil {
 			return fmt.Errorf("failed to stage extra files: %w", err)
 		}
-		if err := gitCommit(ctx, opts.branchRepoDir, fmt.Sprintf("%s. WARN: extra files found, committing them", commitMsg)); err != nil {
+		if err := gitCommit(ctx, opts.branchRepoDir, fmt.Sprintf("%s. WARN: extra files found, committing them. ", commitMsg)); err != nil {
 			return fmt.Errorf("failed to commit extra files: %w", err)
 		}
 		log.Printf("WARNING: Committed unexpected changes")
@@ -543,9 +552,10 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, proc
 	}
 
 	// Run basic linting
+	lintFailure := false
 	if err := runLinters(opts); err != nil {
 		log.Printf("linting failed for branch %s: %v", branch.Name, err)
-		// Continue despite linting errors
+		lintFailure = true
 	}
 
 	//if err := checkMakeReadyPR(opts); err != nil {
@@ -553,6 +563,9 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, proc
 	//}
 
 	// Stage and commit changes
+	if lintFailure {
+		commitMsg = fmt.Sprintf("%s. WARN: linting failed.", commitMsg)
+	}
 	if err := stageChanges(ctx, opts, affectedPaths, commitMsg); err != nil {
 		return fmt.Errorf("failed to commit changes for branch %s: %w", branch.Name, err)
 	}

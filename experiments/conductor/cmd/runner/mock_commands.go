@@ -144,7 +144,7 @@ func createScriptYaml(ctx context.Context, opts *RunnerOptions, branch Branch) (
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, _, err := executeCommand(opts, cfg)
+	_, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, scriptFileRelativePath)
 	return affectedPaths, err
 }
@@ -168,7 +168,7 @@ func enableAPIs(opts *RunnerOptions, branch Branch) {
 			MaxRetries:   3,
 			RetryBackoff: 10 * time.Second,
 		}
-		_, _, err := executeCommand(opts, cfg)
+		_, err := executeCommand(opts, cfg)
 		if err != nil {
 			log.Printf("[Enable APIs] Failed to enable API %s: %v", api, err)
 		}
@@ -436,7 +436,7 @@ func captureHttpLog(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
 		MaxRetries: 1,
 	}
-	_, _, err := executeCommand(opts, cfg)
+	_, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, logFileRelativePath)
 	return affectedPaths, err
 }
@@ -506,15 +506,15 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 			WorkDir:      opts.branchRepoDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
-		output, _, err := executeCommand(opts, cfg)
+		output, err := executeCommand(opts, cfg)
 		if err != nil {
 			return affectedPaths, fmt.Errorf("MOCK SERVICE GENERATE error: %w\n", err)
 		} else {
-			if err := os.WriteFile(serviceFile, []byte(output), 0755); err != nil {
+			if err := os.WriteFile(serviceFile, []byte(output.Stdout), 0755); err != nil {
 				return affectedPaths, fmt.Errorf("WRITE MOCK SERVICE %s error: %w\n", serviceFile, err)
 			}
 			affectedPaths = append(affectedPaths, serviceFileRelativePath)
-			log.Printf("MOCK SERVICE GENERATE: %q\n", formatCommandOutput(output))
+			log.Printf("MOCK SERVICE GENERATE: %q\n", formatCommandOutput(output.Stdout))
 		}
 	} else {
 		log.Printf("SKIPPING generating service mock go, %s already exists", serviceFile)
@@ -544,15 +544,15 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 			WorkDir:      workDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
-		output, _, err := executeCommand(opts, cfg)
+		output, err := executeCommand(opts, cfg)
 		if err != nil {
 			return affectedPaths, fmt.Errorf("MOCK RESOURCE GENERATE error: %w\n", err)
 		} else {
-			if err := os.WriteFile(resourceFile, []byte(output), 0755); err != nil {
+			if err := os.WriteFile(resourceFile, []byte(output.Stdout), 0755); err != nil {
 				return affectedPaths, fmt.Errorf("WRITE MOCK RESOURCE %s error: %w\n", resourceFile, err)
 			}
 			affectedPaths = append(affectedPaths, resourceFileRelativePath)
-			log.Printf("MOCK RESOURCE GENERATE: %q\n", formatCommandOutput(output))
+			log.Printf("MOCK RESOURCE GENERATE: %q\n", formatCommandOutput(output.Stdout))
 		}
 	} else {
 		log.Printf("SKIPPING generating resource mock go, %s already exists", resourceFile)
@@ -620,7 +620,7 @@ func addServiceToRoundTrip(ctx context.Context, opts *RunnerOptions, branch Bran
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, _, err := executeCommand(opts, cfg)
+	_, err := executeCommand(opts, cfg)
 
 	affectedPaths = append(affectedPaths, filepath.Join("mockgcp", "mock_http_roundtrip.go"))
 
@@ -674,7 +674,7 @@ func addProtoToMakefile(ctx context.Context, opts *RunnerOptions, branch Branch)
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, _, err := executeCommand(opts, cfg)
+	_, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, filepath.Join("mockgcp", "Makefile"))
 	return affectedPaths, err
 }
@@ -701,7 +701,7 @@ func runMockgcpTests(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
 		MaxRetries: 1,
 	}
-	_, _, err := executeCommand(opts, cfg)
+	_, err := executeCommand(opts, cfg)
 	return affectedPaths, err
 }
 
@@ -717,7 +717,7 @@ func buildProtoFiles(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 		MaxRetries: 1,
 	}
 
-	_, _, err := executeCommand(opts, cfg)
+	_, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, filepath.Join("mockgcp", "generated"))
 	if err != nil {
 		return affectedPaths, fmt.Errorf("Proto generation error: %w", err)
