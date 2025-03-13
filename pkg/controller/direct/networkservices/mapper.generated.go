@@ -25,12 +25,8 @@ func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krm.NetworkServicesServiceBindingObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Service
-	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
 func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
@@ -38,12 +34,8 @@ func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &pb.ServiceBinding{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Service
-	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingSpec {
@@ -51,12 +43,10 @@ func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.NetworkServicesServiceBindingSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Service
-	// MISSING: Labels
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Service = direct.LazyPtr(in.GetService())
+	out.Labels = in.Labels
 	return out
 }
 func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
@@ -64,63 +54,9 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.ServiceBinding{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Service
-	// MISSING: Labels
-	return out
-}
-func ServiceBinding_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.ServiceBinding {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServiceBinding{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Service = direct.LazyPtr(in.GetService())
-	out.Labels = in.Labels
-	return out
-}
-func ServiceBinding_ToProto(mapCtx *direct.MapContext, in *krm.ServiceBinding) *pb.ServiceBinding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceBinding{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.Service = direct.ValueOf(in.Service)
 	out.Labels = in.Labels
-	return out
-}
-func ServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.ServiceBindingObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ServiceBindingObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Service
-	// MISSING: Labels
-	return out
-}
-func ServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceBindingObservedState) *pb.ServiceBinding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceBinding{}
-	// MISSING: Name
-	// MISSING: Description
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Service
-	// MISSING: Labels
 	return out
 }

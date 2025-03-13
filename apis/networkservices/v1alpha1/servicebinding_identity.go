@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ServiceBindingIdentity struct {
 	parent *ServiceBindingParent
-	id string
+	id     string
 }
 
 func (i *ServiceBindingIdentity) String() string {
-	return  i.parent.String() + "/servicebindings/" + i.id
+	return i.parent.String() + "/servicebindings/" + i.id
 }
 
 func (i *ServiceBindingIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ServiceBindingIdentity) ID() string {
 }
 
 func (i *ServiceBindingIdentity) Parent() *ServiceBindingParent {
-	return  i.parent
+	return i.parent
 }
 
 type ServiceBindingParent struct {
@@ -51,7 +51,6 @@ type ServiceBindingParent struct {
 func (p *ServiceBindingParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ServiceBindingIdentity from the Config Connector ServiceBinding object.
 func NewServiceBindingIdentity(ctx context.Context, reader client.Reader, obj *NetworkServicesServiceBinding) (*ServiceBindingIdentity, error) {
