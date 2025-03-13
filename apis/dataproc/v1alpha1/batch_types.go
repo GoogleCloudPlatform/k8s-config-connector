@@ -95,7 +95,7 @@ type DataprocBatchObservedState struct {
 
 	// Output only. Runtime information about batch execution.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.runtime_info
-	RuntimeInfo *RuntimeInfo `json:"runtimeInfo,omitempty"`
+	RuntimeInfo *RuntimeInfoObservedState `json:"runtimeInfo,omitempty"`
 
 	// Output only. The state of the batch.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state
@@ -120,7 +120,7 @@ type DataprocBatchObservedState struct {
 
 	// Output only. Historical state information for the batch.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.state_history
-	StateHistory []Batch_StateHistory `json:"stateHistory,omitempty"`
+	StateHistory []Batch_StateHistoryObservedState `json:"stateHistory,omitempty"`
 }
 
 // +genclient
