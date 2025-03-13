@@ -20,34 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy) *krm.AllocationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AllocationPolicy{}
-	out.Location = AllocationPolicy_LocationPolicy_FromProto(mapCtx, in.GetLocation())
-	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_FromProto)
-	out.ServiceAccount = ServiceAccount_FromProto(mapCtx, in.GetServiceAccount())
-	out.Labels = in.Labels
-	out.Network = AllocationPolicy_NetworkPolicy_FromProto(mapCtx, in.GetNetwork())
-	out.Placement = AllocationPolicy_PlacementPolicy_FromProto(mapCtx, in.GetPlacement())
-	out.Tags = in.Tags
-	return out
-}
-func AllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy) *pb.AllocationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationPolicy{}
-	out.Location = AllocationPolicy_LocationPolicy_ToProto(mapCtx, in.Location)
-	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_ToProto)
-	out.ServiceAccount = ServiceAccount_ToProto(mapCtx, in.ServiceAccount)
-	out.Labels = in.Labels
-	out.Network = AllocationPolicy_NetworkPolicy_ToProto(mapCtx, in.Network)
-	out.Placement = AllocationPolicy_PlacementPolicy_ToProto(mapCtx, in.Placement)
-	out.Tags = in.Tags
-	return out
-}
 func AllocationPolicy_Accelerator_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_Accelerator) *krm.AllocationPolicy_Accelerator {
 	if in == nil {
 		return nil
@@ -248,26 +220,6 @@ func AllocationPolicy_PlacementPolicy_ToProto(mapCtx *direct.MapContext, in *krm
 	out.MaxDistance = direct.ValueOf(in.MaxDistance)
 	return out
 }
-func ComputeResource_FromProto(mapCtx *direct.MapContext, in *pb.ComputeResource) *krm.ComputeResource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeResource{}
-	out.CPUMilli = direct.LazyPtr(in.GetCpuMilli())
-	out.MemoryMib = direct.LazyPtr(in.GetMemoryMib())
-	out.BootDiskMib = direct.LazyPtr(in.GetBootDiskMib())
-	return out
-}
-func ComputeResource_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResource) *pb.ComputeResource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ComputeResource{}
-	out.CpuMilli = direct.ValueOf(in.CPUMilli)
-	out.MemoryMib = direct.ValueOf(in.MemoryMib)
-	out.BootDiskMib = direct.ValueOf(in.BootDiskMib)
-	return out
-}
 func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
 	if in == nil {
 		return nil
@@ -288,33 +240,15 @@ func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Env
 	out.EncryptedVariables = Environment_KMSEnvMap_ToProto(mapCtx, in.EncryptedVariables)
 	return out
 }
-func Environment_KMSEnvMap_FromProto(mapCtx *direct.MapContext, in *pb.Environment_KMSEnvMap) *krm.Environment_KMSEnvMap {
+func GCS_FromProto(mapCtx *direct.MapContext, in *pb.GCS) *krm.GCS {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Environment_KMSEnvMap{}
-	out.KeyName = direct.LazyPtr(in.GetKeyName())
-	out.CipherText = direct.LazyPtr(in.GetCipherText())
-	return out
-}
-func Environment_KMSEnvMap_ToProto(mapCtx *direct.MapContext, in *krm.Environment_KMSEnvMap) *pb.Environment_KMSEnvMap {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment_KMSEnvMap{}
-	out.KeyName = direct.ValueOf(in.KeyName)
-	out.CipherText = direct.ValueOf(in.CipherText)
-	return out
-}
-func Gcs_FromProto(mapCtx *direct.MapContext, in *pb.GCS) *krm.Gcs {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Gcs{}
+	out := &krm.GCS{}
 	out.RemotePath = direct.LazyPtr(in.GetRemotePath())
 	return out
 }
-func Gcs_ToProto(mapCtx *direct.MapContext, in *krm.Gcs) *pb.GCS {
+func GCS_ToProto(mapCtx *direct.MapContext, in *krm.GCS) *pb.GCS {
 	if in == nil {
 		return nil
 	}
@@ -322,21 +256,14 @@ func Gcs_ToProto(mapCtx *direct.MapContext, in *krm.Gcs) *pb.GCS {
 	out.RemotePath = direct.ValueOf(in.RemotePath)
 	return out
 }
-func JobNotification_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification) *krm.JobNotification {
-	if in == nil {
-		return nil
-	}
-	out := &krm.JobNotification{}
-	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
-	out.Message = JobNotification_Message_FromProto(mapCtx, in.GetMessage())
-	return out
-}
 func JobNotification_ToProto(mapCtx *direct.MapContext, in *krm.JobNotification) *pb.JobNotification {
 	if in == nil {
 		return nil
 	}
 	out := &pb.JobNotification{}
-	out.PubsubTopic = direct.ValueOf(in.PubsubTopic)
+	if in.PubsubTopicRef != nil {
+		out.PubsubTopic = in.PubsubTopicRef.External
+	}
 	out.Message = JobNotification_Message_ToProto(mapCtx, in.Message)
 	return out
 }
@@ -782,7 +709,7 @@ func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
 	}
 	out := &krm.Volume{}
 	out.Nfs = Nfs_FromProto(mapCtx, in.GetNfs())
-	out.Gcs = Gcs_FromProto(mapCtx, in.GetGcs())
+	out.GCS = GCS_FromProto(mapCtx, in.GetGcs())
 	out.DeviceName = direct.LazyPtr(in.GetDeviceName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
 	out.MountOptions = in.MountOptions
@@ -796,7 +723,7 @@ func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
 	if oneof := Nfs_ToProto(mapCtx, in.Nfs); oneof != nil {
 		out.Source = &pb.Volume_Nfs{Nfs: oneof}
 	}
-	if oneof := Gcs_ToProto(mapCtx, in.Gcs); oneof != nil {
+	if oneof := GCS_ToProto(mapCtx, in.GCS); oneof != nil {
 		out.Source = &pb.Volume_Gcs{Gcs: oneof}
 	}
 	if oneof := Volume_DeviceName_ToProto(mapCtx, in.DeviceName); oneof != nil {

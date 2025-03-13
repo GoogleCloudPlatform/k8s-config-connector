@@ -439,16 +439,30 @@ spec:
                         Compute Engine service account is used.
                         * scopes: Additional OAuth scopes to grant the service account, beyond the
                         default cloud-platform scope. (list of strings)
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
                     properties:
-                      email:
-                        description: Email address of the service account.
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
                         type: string
-                      scopes:
-                        description: List of scopes to be enabled for this service
-                          account.
-                        items:
-                          type: string
-                        type: array
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
                     type: object
                   tags:
                     description: |-
@@ -478,6 +492,10 @@ spec:
                    [Organize resources using
                    labels](https://cloud.google.com/batch/docs/organize-resources-using-labels).
                 type: object
+              location:
+                description: Immutable. The location where the alloydb cluster should
+                  reside.
+                type: string
               logsPolicy:
                 description: Log preservation policy for the Job.
                 properties:
@@ -529,7 +547,7 @@ spec:
                           description: The message type.
                           type: string
                       type: object
-                    pubsubTopic:
+                    pubsubTopicRef:
                       description: |-
                         The Pub/Sub topic where notifications for the job, like state
                          changes, will be published. If undefined, no Pub/Sub notifications
@@ -544,56 +562,35 @@ spec:
                          For more information about configuring Pub/Sub notifications for
                          a job, see
                          https://cloud.google.com/batch/docs/enable-notifications.
-                      type: string
-                  type: object
-                type: array
-              parent:
-                description: 'Required. The parent resource name where the Job will
-                  be created. Pattern: "projects/{project}/locations/{location}"'
-                properties:
-                  location:
-                    description: Immutable. The location where the alloydb cluster
-                      should reside.
-                    type: string
-                  projectRef:
-                    description: The project that this resource belongs to.
-                    oneOf:
-                    - not:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
                         required:
                         - external
-                      required:
-                      - name
-                      - kind
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                        - required:
-                          - kind
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The `projectID` field of a project, when not
-                          managed by Config Connector.
-                        type: string
-                      kind:
-                        description: The kind of the Project resource; optional but
-                          must be `Project` if provided.
-                        type: string
-                      name:
-                        description: The `name` field of a `Project` resource.
-                        type: string
-                      namespace:
-                        description: The `namespace` field of a `Project` resource.
-                        type: string
-                    type: object
-                required:
-                - location
-                - projectRef
-                type: object
+                      properties:
+                        external:
+                          description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                          type: string
+                        name:
+                          description: The `metadata.name` field of a `PubSubTopic`
+                            resource.
+                          type: string
+                        namespace:
+                          description: The `metadata.namespace` field of a `PubSubTopic`
+                            resource.
+                          type: string
+                      type: object
+                  type: object
+                type: array
               priority:
                 description: Priority of the Job. The valid value range is [0, 100).
                   Default value is 0. Higher value indicates higher priority. A job
@@ -601,6 +598,38 @@ spec:
                   other requirements are satisfied.
                 format: int64
                 type: integer
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The BatchJob name. If not given, the metadata.name will
                   be used.
@@ -671,10 +700,36 @@ spec:
                                 description: The value of the cipherText response
                                   from the `encrypt` method.
                                 type: string
-                              keyName:
+                              kmsKeyRef:
                                 description: The name of the KMS key that will be
                                   used to decrypt the cipher text.
-                                type: string
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                                    type: string
+                                  name:
+                                    description: The `name` of a `KMSCryptoKey` resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` of a `KMSCryptoKey`
+                                      resource.
+                                    type: string
+                                type: object
                             type: object
                           secretVariables:
                             additionalProperties:
@@ -757,10 +812,37 @@ spec:
                                   description: The value of the cipherText response
                                     from the `encrypt` method.
                                   type: string
-                                keyName:
+                                kmsKeyRef:
                                   description: The name of the KMS key that will be
                                     used to decrypt the cipher text.
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: A reference to an externally managed
+                                        KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                                      type: string
+                                    name:
+                                      description: The `name` of a `KMSCryptoKey`
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The `namespace` of a `KMSCryptoKey`
+                                        resource.
+                                      type: string
+                                  type: object
                               type: object
                             secretVariables:
                               additionalProperties:
@@ -1014,10 +1096,38 @@ spec:
                                         description: The value of the cipherText response
                                           from the `encrypt` method.
                                         type: string
-                                      keyName:
+                                      kmsKeyRef:
                                         description: The name of the KMS key that
                                           will be used to decrypt the cipher text.
-                                        type: string
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed KMSCryptoKey. Should be in the
+                                              format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                                            type: string
+                                          name:
+                                            description: The `name` of a `KMSCryptoKey`
+                                              resource.
+                                            type: string
+                                          namespace:
+                                            description: The `namespace` of a `KMSCryptoKey`
+                                              resource.
+                                            type: string
+                                        type: object
                                     type: object
                                   secretVariables:
                                     additionalProperties:
@@ -1137,6 +1247,9 @@ spec:
                       type: object
                   type: object
                 type: array
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: BatchJobStatus defines the config connector machine state
