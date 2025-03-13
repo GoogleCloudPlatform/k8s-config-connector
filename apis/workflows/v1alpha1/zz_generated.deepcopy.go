@@ -288,7 +288,7 @@ func (in *WorkflowExecutionParent) DeepCopyInto(out *WorkflowExecutionParent) {
 	}
 	if in.WorkflowRef != nil {
 		in, out := &in.WorkflowRef, &out.WorkflowRef
-		*out = new(v1beta1.WorkflowRef)
+		*out = new(WorkflowsWorkflowRef)
 		**out = **in
 	}
 }

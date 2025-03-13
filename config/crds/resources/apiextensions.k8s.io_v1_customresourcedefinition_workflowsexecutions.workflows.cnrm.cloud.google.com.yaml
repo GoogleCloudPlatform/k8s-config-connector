@@ -142,14 +142,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The StorageBucket selfLink, when not managed
-                          by Config Connector.
+                        description: A reference to an externally managed WorkflowsWorkflow
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/workflows/{{workflowID}}".
                         type: string
                       name:
-                        description: The `name` field of a `StorageBucket` resource.
+                        description: The name of a WorkflowsWorkflow resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `StorageBucket` resource.
+                        description: The namespace of a WorkflowsWorkflow resource.
                         type: string
                     type: object
                 type: object

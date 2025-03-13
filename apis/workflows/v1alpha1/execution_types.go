@@ -66,7 +66,7 @@ type WorkflowExecutionParent struct {
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Required.
-	WorkflowRef *v1beta1.WorkflowRef `json:"workflowRef,omitempty"`
+	WorkflowRef *WorkflowsWorkflowRef `json:"workflowRef,omitempty"`
 }
 
 // WorkflowsExecutionStatus defines the config connector machine state of WorkflowsExecution
