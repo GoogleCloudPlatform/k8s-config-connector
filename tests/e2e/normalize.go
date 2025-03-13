@@ -773,6 +773,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".response.etag"] = "abcdef0123A="
 	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.uniqueId"] = "12345678"
+	visitor.replacePaths[".response.startTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.endTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Misc Operations
 	visitor.replacePaths[".insertTime"] = "2024-04-01T12:34:56.123456Z"
