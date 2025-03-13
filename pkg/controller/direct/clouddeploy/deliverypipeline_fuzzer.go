@@ -24,21 +24,20 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(deployDeliveryPipelineFuzzer())
+	fuzztesting.RegisterKRMFuzzer(cloudDeployDeliveryPipelineFuzzer())
 }
 
-func deployDeliveryPipelineFuzzer() fuzztesting.KRMFuzzer {
+func cloudDeployDeliveryPipelineFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.DeliveryPipeline{},
-		DeployDeliveryPipelineSpec_FromProto, DeployDeliveryPipelineSpec_ToProto,
-		DeployDeliveryPipelineObservedState_FromProto, DeployDeliveryPipelineObservedState_ToProto,
+		DeliveryPipelineSpec_FromProto, DeliveryPipelineSpec_ToProto,
+		DeliveryPipelineObservedState_FromProto, DeliveryPipelineObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".labels")
+	f.UnimplementedFields.Insert(".name")
 
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".name")
 	f.SpecFields.Insert(".annotations")
-	// f.SpecFields.Insert(".labels") // NOTYET
 	f.SpecFields.Insert(".serial_pipeline")
 	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".suspended")

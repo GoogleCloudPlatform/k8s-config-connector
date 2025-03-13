@@ -53,7 +53,7 @@ func (p *DeliveryPipelineParent) String() string {
 }
 
 // New builds a DeliveryPipelineIdentity from the Config Connector DeliveryPipeline object.
-func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj *DeployDeliveryPipeline) (*DeliveryPipelineIdentity, error) {
+func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployDeliveryPipeline) (*DeliveryPipelineIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)

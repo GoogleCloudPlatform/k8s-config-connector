@@ -20,23 +20,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var DeployDeliveryPipelineGVK = GroupVersion.WithKind("DeployDeliveryPipeline")
+var CloudDeployDeliveryPipelineGVK = GroupVersion.WithKind("CloudDeployDeliveryPipeline")
 
-// DeployDeliveryPipelineSpec defines the desired state of DeployDeliveryPipeline
+// DeliveryPipelineSpec defines the desired state of DeployDeliveryPipeline
 // +kcc:proto=google.cloud.deploy.v1.DeliveryPipeline
-type DeployDeliveryPipelineSpec struct {
+type DeliveryPipelineSpec struct {
 	commonv1alpha1.CommonSpec `json:",inline"`
 
 	// Immutable. The location where the DeliveryPipeline should reside.
 	// +required
 	Location *string `json:"location,omitempty"`
-
-	// Optional. Name of the `DeliveryPipeline`. Format is
-	//  `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}`.
-	//  The `deliveryPipeline` component must match
-	//  `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
-	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.name
-	Name *string `json:"name,omitempty"`
 
 	// Description of the `DeliveryPipeline`. Max length is 255 characters.
 	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.description
@@ -79,8 +72,8 @@ type DeployDeliveryPipelineSpec struct {
 	Suspended *bool `json:"suspended,omitempty"`
 }
 
-// DeployDeliveryPipelineStatus defines the config connector machine state of DeployDeliveryPipeline
-type DeployDeliveryPipelineStatus struct {
+// DeliveryPipelineStatus defines the config connector machine state of DeployDeliveryPipeline
+type DeliveryPipelineStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -92,12 +85,12 @@ type DeployDeliveryPipelineStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DeployDeliveryPipelineObservedState `json:"observedState,omitempty"`
+	ObservedState *DeliveryPipelineObservedState `json:"observedState,omitempty"`
 }
 
-// DeployDeliveryPipelineObservedState is the state of the DeployDeliveryPipeline resource as most recently observed in GCP.
+// DeliveryPipelineObservedState is the state of the DeployDeliveryPipeline resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.deploy.v1.DeliveryPipeline
-type DeployDeliveryPipelineObservedState struct {
+type DeliveryPipelineObservedState struct {
 	// Output only. Unique identifier of the `DeliveryPipeline`.
 	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.uid
 	Uid *string `json:"uid,omitempty"`
@@ -117,7 +110,6 @@ type DeployDeliveryPipelineObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpdeploydeliverypipeline;gcpdeploydeliverypipelines
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
@@ -126,25 +118,25 @@ type DeployDeliveryPipelineObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DeployDeliveryPipeline is the Schema for the DeployDeliveryPipeline API
+// CloudDeployDeliveryPipeline is the Schema for the CloudDeployDeliveryPipeline API
 // +k8s:openapi-gen=true
-type DeployDeliveryPipeline struct {
+type CloudDeployDeliveryPipeline struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   DeployDeliveryPipelineSpec   `json:"spec,omitempty"`
-	Status DeployDeliveryPipelineStatus `json:"status,omitempty"`
+	Spec   DeliveryPipelineSpec   `json:"spec,omitempty"`
+	Status DeliveryPipelineStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// DeployDeliveryPipelineList contains a list of DeployDeliveryPipeline
-type DeployDeliveryPipelineList struct {
+// CloudDeployDeliveryPipelineList contains a list of DeployDeliveryPipeline
+type CloudDeployDeliveryPipelineList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DeployDeliveryPipeline `json:"items"`
+	Items           []CloudDeployDeliveryPipeline `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DeployDeliveryPipeline{}, &DeployDeliveryPipelineList{})
+	SchemeBuilder.Register(&CloudDeployDeliveryPipeline{}, &CloudDeployDeliveryPipelineList{})
 }

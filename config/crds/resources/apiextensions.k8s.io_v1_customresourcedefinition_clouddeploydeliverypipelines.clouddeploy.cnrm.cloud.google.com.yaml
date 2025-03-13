@@ -7,19 +7,19 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: deploydeliverypipelines.clouddeploy.cnrm.cloud.google.com
+  name: clouddeploydeliverypipelines.clouddeploy.cnrm.cloud.google.com
 spec:
   group: clouddeploy.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: DeployDeliveryPipeline
-    listKind: DeployDeliveryPipelineList
-    plural: deploydeliverypipelines
+    kind: CloudDeployDeliveryPipeline
+    listKind: CloudDeployDeliveryPipelineList
+    plural: clouddeploydeliverypipelines
     shortNames:
     - gcpdeploydeliverypipeline
     - gcpdeploydeliverypipelines
-    singular: deploydeliverypipeline
+    singular: clouddeploydeliverypipeline
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -42,7 +42,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DeployDeliveryPipeline is the Schema for the DeployDeliveryPipeline
+        description: CloudDeployDeliveryPipeline is the Schema for the CloudDeployDeliveryPipeline
           API
         properties:
           apiVersion:
@@ -58,7 +58,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: DeployDeliveryPipelineSpec defines the desired state of DeployDeliveryPipeline
+            description: DeliveryPipelineSpec defines the desired state of DeployDeliveryPipeline
             properties:
               annotations:
                 additionalProperties:
@@ -78,10 +78,6 @@ spec:
               location:
                 description: Immutable. The location where the DeliveryPipeline should
                   reside.
-                type: string
-              name:
-                description: Optional. Name of the `DeliveryPipeline`. Format is `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}`.
-                  The `deliveryPipeline` component must match `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
                 type: string
               projectRef:
                 description: The Project that this resource belongs to.
@@ -489,8 +485,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: DeployDeliveryPipelineStatus defines the config connector
-              machine state of DeployDeliveryPipeline
+            description: DeliveryPipelineStatus defines the config connector machine
+              state of DeployDeliveryPipeline
             properties:
               conditions:
                 description: Conditions represent the latest available observations
