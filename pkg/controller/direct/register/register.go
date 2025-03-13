@@ -52,6 +52,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/secretmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securesourcemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/spanner"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/speech"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/sql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tpu"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"

@@ -1160,6 +1160,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - speech.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - sql.cnrm.cloud.google.com
   resources:
   - '*'
