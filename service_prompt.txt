@@ -1,0 +1,3 @@
+// +tool:mockgcp-service
+// http.host: aiplatform.googleapis.com
+// proto.service: google.cloud.aiplatform.v1.ScheduleService
