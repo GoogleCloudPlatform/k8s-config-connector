@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:controller-client
+// proto.service: google.dataflow.v1beta3.TemplatesService
+// proto.service: google.dataflow.v1beta3.JobsV1Beta3
+
 package dataflow
 
 import (
