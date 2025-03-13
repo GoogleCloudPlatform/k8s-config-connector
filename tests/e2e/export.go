@@ -143,7 +143,7 @@ func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructu
 	if s == "" {
 		return nil
 	}
-	// TODO: Why are we outputing this prefix?
+	// TODO: Why are we outputting this prefix?
 	s = strings.TrimPrefix(s, "----")
 	u := &unstructured.Unstructured{}
 	if err := yaml.Unmarshal([]byte(s), &u); err != nil {

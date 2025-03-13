@@ -140,7 +140,7 @@ func removeSystemLabels(u *unstructured.Unstructured) {
 }
 
 // CausedByUnreadyOrNonexistentResourceRefs checks to see if the input error
-// is related to an unready or non-existent resource reference. Note that
+// is related to an unready or nonexistent resource reference. Note that
 // KeyInSecretNotFoundError is not included in this list.
 func CausedByUnreadyOrNonexistentResourceRefs(err error) (refGVK schema.GroupVersionKind, refNN types.NamespacedName, ok bool) {
 	if unwrappedErr, ok := k8s.AsReferenceNotReadyError(err); ok {

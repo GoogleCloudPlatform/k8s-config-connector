@@ -281,15 +281,15 @@ func main() {
 	}
 }
 
-func dropStalePackages(pacakgesPath string) error {
-	dirEntries, _ := os.ReadDir(pacakgesPath)
+func dropStalePackages(packagesPath string) error {
+	dirEntries, _ := os.ReadDir(packagesPath)
 
 	totalReleases := Releases{}
 	for _, entry := range dirEntries {
 		if entry.IsDir() {
 			totalReleases = append(totalReleases, entry.Name())
 		} else {
-			log.Printf("found unknown file %s under %s\n", entry.Name(), pacakgesPath)
+			log.Printf("found unknown file %s under %s\n", entry.Name(), packagesPath)
 		}
 	}
 
@@ -308,7 +308,7 @@ func dropStalePackages(pacakgesPath string) error {
 		if shouldKeep {
 			continue
 		}
-		staleManifestDir := path.Join(pacakgesPath, r)
+		staleManifestDir := path.Join(packagesPath, r)
 		log.Printf("removing stale manifest %v", staleManifestDir)
 		if err := os.RemoveAll(staleManifestDir); err != nil {
 			log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))

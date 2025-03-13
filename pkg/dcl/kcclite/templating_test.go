@@ -303,7 +303,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			expectedCanonName: "projects/project_id/names/name",
 		},
 		{
-			name:     "template requires parent of single-parent resource with project reference to non-existent Project",
+			name:     "template requires parent of single-parent resource with project reference to nonexistent Project",
 			template: "projects/{{project}}/names/{{name}}",
 			refResource: &k8s.Resource{
 				TypeMeta: metav1.TypeMeta{
@@ -574,7 +574,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			expectedCanonName: "folders/folder_id/names/name",
 		},
 		{
-			name:     "template requires parent of multi-parent resource with folder reference to non-existent Folder",
+			name:     "template requires parent of multi-parent resource with folder reference to nonexistent Folder",
 			template: "{{parent}}/names/{{name}}",
 			refResource: &k8s.Resource{
 				TypeMeta: metav1.TypeMeta{
@@ -997,7 +997,7 @@ func TestCanonicalizeReferencedResourceNameForTFBasedResource(t *testing.T) {
 			expectedCanonName: "projects/project_id/names/name",
 		},
 		{
-			name:     "template requires parent of single-parent resource with project reference to non-existent Project",
+			name:     "template requires parent of single-parent resource with project reference to nonexistent Project",
 			template: "projects/{{project}}/names/{{name}}",
 			refResource: &k8s.Resource{
 				TypeMeta: metav1.TypeMeta{
@@ -1216,7 +1216,7 @@ func TestCanonicalizeReferencedResourceNameForTFBasedResource(t *testing.T) {
 			expectedCanonName: "folders/folder_id/names/name",
 		},
 		{
-			name:     "template requires parent of multi-parent resource with folder reference to non-existent Folder",
+			name:     "template requires parent of multi-parent resource with folder reference to nonexistent Folder",
 			template: "{{parent}}/names/{{name}}",
 			refResource: &k8s.Resource{
 				TypeMeta: metav1.TypeMeta{

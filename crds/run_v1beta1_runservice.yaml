@@ -1026,7 +1026,7 @@ spec:
                 type: string
               expireTime:
                 description: For a deleted resource, the time after which it will
-                  be permamently deleted.
+                  be permanently deleted.
                 type: string
               lastModifier:
                 description: Email address of the last authenticated modifier.

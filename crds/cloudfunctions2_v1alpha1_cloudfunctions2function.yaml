@@ -318,7 +318,7 @@ spec:
                           description: Name of the environment variable.
                           type: string
                         projectId:
-                          description: Project identifier (preferrably project number
+                          description: Project identifier (preferably project number
                             but can also be the project ID) of the project that contains
                             the secret. If not set, it will be populated with the
                             function's project assuming that the secret exists in
@@ -354,7 +354,7 @@ spec:
                             mount path: /etc/secrets.'
                           type: string
                         projectId:
-                          description: Project identifier (preferrably project number
+                          description: Project identifier (preferably project number
                             but can also be the project ID) of the project that contains
                             the secret. If not set, it will be populated with the
                             function's project assuming that the secret exists in

@@ -20,7 +20,7 @@ metadata:
     oncall-treatment: stay-aware
   name: monitoringalertpolicy-sample-networkconnectivity
 spec:
-  displayName: Sample Website Aetwork Connectivity Alert Policy
+  displayName: Sample Website Network Connectivity Alert Policy
   enabled: true
   notificationChannels:
     - name: monitoringalertpolicy-dep1-networkconnectivity
