@@ -310,58 +310,24 @@ gke-addon-poststart:
 operator-manager-bin:
 	go build -o bin/operator-manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
 
-# Build kcc manifests for both standard and autopilot clusters
-.PHONY: all-manifests
-all-manifests: crd-manifests rbac-manifests build-operator-manifests
-	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/standard/crds.yaml
-	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/standard/rbac.yaml
-	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
-	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/autopilot/crds.yaml
-	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/autopilot/rbac.yaml
-	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
-
-
 # Build kcc manifests for standard GKE clusters
 .PHONY: config-connector-manifests-standard
-config-connector-manifests-standard: build-crd-manifests build-rbac-manifests build-operator-manifests
-	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/standard/crds.yaml
-	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/standard/rbac.yaml
-	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
+config-connector-manifests-standard: build-operator-manifests
+	kustomize build config/installbundle/release-manifests/standard
 
 # Build kcc manifests for autopilot clusters
 .PHONY: config-connector-manifests-autopilot
-config-connector-manifests-autopilot: build-crd-manifests build-rbac-manifests build-operator-manifests
-	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/autopilot/crds.yaml
-	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/autopilot/rbac.yaml
-	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
-
-.PHONY: build-crd-manifests
-build-crd-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
-	kustomize build operator/config/crd -o config/installbundle/release-manifests/crds.yaml
-
-.PHONY: build-rbac-manifests
-build-rbac-manifests:
-	kustomize build operator/config/rbac -o config/installbundle/release-manifests/rbac.yaml
+config-connector-manifests-autopilot: build-operator-manifests
+	kustomize build config/installbundle/release-manifests/autopilot
 
 .PHONY: build-operator-manifests
 build-operator-manifests:
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
 	make -C operator docker-build
-	kustomize build operator/config/autopilot-manager -o config/installbundle/release-manifests/autopilot/manager.yaml
-	kustomize build operator/config/manager -o config/installbundle/release-manifests/standard/manager.yaml
 
 .PHONY: push-operator-manifest
 push-operator-manifest:
 	make -C operator docker-push
-
-.PHONY: clean-operator-manifests
-clean-release-manifests:
-	rm config/installbundle/release-manifests/crds.yaml
-	rm config/installbundle/release-manifests/rbac.yaml
-	rm config/installbundle/release-manifests/standard/manager.yaml
-	rm config/installbundle/release-manifests/autopilot/manager.yaml
-	rm config/installbundle/release-manifests/standard/manifests.yaml
-	rm config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: deploy-kcc-standard
 deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest 
