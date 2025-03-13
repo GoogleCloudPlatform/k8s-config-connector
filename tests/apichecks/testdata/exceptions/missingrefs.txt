@@ -24,7 +24,6 @@
 [refs] crd=datacatalogtags.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.template" should be a reference
 [refs] crd=datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.fields[].name" should be a reference
 [refs] crd=datastreamconnectionprofiles.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.privateConnectivity.privateConnection" should be a reference
-[refs] crd=datastreamprivateconnections.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcPeeringConfig.vpc" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.singleTargetDataset.datasetId" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.sourceHierarchyDatasets.datasetTemplate.kmsKeyName" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.destinationConnectionProfile" should be a reference
