@@ -5,7 +5,9 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: networksecurityauthorizationpolicies.networksecurity.cnrm.cloud.google.com
 spec:
@@ -39,7 +41,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: NetworkSecurityAuthorizationPolicy is the Schema for the NetworkSecurityAuthorizationPolicy
@@ -167,6 +169,9 @@ spec:
                                   Host and a regular expression that satisfies the
                                   RFC2616 Host header''s port specifier.'
                                 type: string
+                            required:
+                            - headerName
+                            - regexMatch
                             type: object
                           methods:
                             description: Optional. A list of HTTP methods to match.
@@ -182,6 +187,9 @@ spec:
                               format: int32
                               type: integer
                             type: array
+                        required:
+                        - hosts
+                        - ports
                         type: object
                       type: array
                     sources:
@@ -218,6 +226,7 @@ spec:
                   type: object
                 type: array
             required:
+            - action
             - location
             - projectRef
             type: object
@@ -251,6 +260,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              createTime:
+                description: Output only. The timestamp when the resource was created.
+                format: date-time
+                type: string
               externalRef:
                 description: A unique specifier for the NetworkSecurityAuthorizationPolicy
                   resource in GCP.
@@ -263,19 +276,10 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                properties:
-                  createTime:
-                    description: Output only. The timestamp when the resource was
-                      created.
-                    type: string
-                  updateTime:
-                    description: Output only. The timestamp when the resource was
-                      updated.
-                    type: string
-                type: object
+              updateTime:
+                description: Output only. The timestamp when the resource was updated.
+                format: date-time
+                type: string
             type: object
         required:
         - spec

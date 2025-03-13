@@ -3648,12 +3648,14 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "networksecurity.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "NetworkSecurityAuthorizationPolicy",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc": "true",
-			"cnrm.cloud.google.com/system":         "true",
+			"cnrm.cloud.google.com/dcl2crd":         "true",
+			"cnrm.cloud.google.com/managed-by-kcc":  "true",
+			"cnrm.cloud.google.com/stability-level": "stable",
+			"cnrm.cloud.google.com/system":          "true",
 		},
 	},
 	{

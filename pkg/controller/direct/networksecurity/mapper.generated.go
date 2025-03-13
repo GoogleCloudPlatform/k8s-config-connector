@@ -16,7 +16,7 @@ package networksecurity
 
 import (
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -98,26 +98,6 @@ func AuthorizationPolicy_Rule_Source_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.IpBlocks = in.IPBlocks
 	return out
 }
-func NetworkSecurityAuthorizationPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkSecurityAuthorizationPolicyObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func NetworkSecurityAuthorizationPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityAuthorizationPolicyObservedState) *pb.AuthorizationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizationPolicy{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
 func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicySpec {
 	if in == nil {
 		return nil
@@ -125,6 +105,8 @@ func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext,
 	out := &krm.NetworkSecurityAuthorizationPolicySpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
 	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_FromProto)
@@ -137,8 +119,38 @@ func NetworkSecurityAuthorizationPolicySpec_ToProto(mapCtx *direct.MapContext, i
 	out := &pb.AuthorizationPolicy{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	out.Action = direct.Enum_ToProto[pb.AuthorizationPolicy_Action](mapCtx, in.Action)
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_ToProto)
+	return out
+}
+func NetworkSecurityAuthorizationPolicyStatus_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkSecurityAuthorizationPolicyStatus{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Action
+	// MISSING: Rules
+	return out
+}
+func NetworkSecurityAuthorizationPolicyStatus_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityAuthorizationPolicyStatus) *pb.AuthorizationPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthorizationPolicy{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Action
+	// MISSING: Rules
 	return out
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 // +kcc:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule
 type AuthorizationPolicy_Rule struct {
@@ -30,54 +30,6 @@ type AuthorizationPolicy_Rule struct {
 	//  checks for the destination.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.destinations
 	Destinations []AuthorizationPolicy_Rule_Destination `json:"destinations,omitempty"`
-}
-
-// +kcc:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Destination
-type AuthorizationPolicy_Rule_Destination struct {
-	// Required. List of host names to match. Matched against the ":authority"
-	//  header in http requests. At least one host should match. Each host can
-	//  be an exact match, or a prefix match (example "mydomain.*") or a suffix
-	//  match (example "*.myorg.com") or a presence (any) match "*".
-	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Destination.hosts
-	Hosts []string `json:"hosts,omitempty"`
-
-	// Required. List of destination ports to match. At least one port should
-	//  match.
-	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Destination.ports
-	Ports []uint32 `json:"ports,omitempty"`
-
-	// Optional. A list of HTTP methods to match. At least one method should
-	//  match. Should not be set for gRPC services.
-	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Destination.methods
-	Methods []string `json:"methods,omitempty"`
-
-	// Optional. Match against key:value pair in http header. Provides a
-	//  flexible match based on HTTP headers, for potentially advanced use
-	//  cases. At least one header should match. Avoid using header matches to
-	//  make authorization decisions unless there is a strong guarantee that
-	//  requests arrive through a trusted client or proxy.
-	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Destination.http_header_match
-	HTTPHeaderMatch *AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch `json:"httpHeaderMatch,omitempty"`
-}
-
-// +kcc:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Destination.HttpHeaderMatch
-type AuthorizationPolicy_Rule_Destination_HTTPHeaderMatch struct {
-	// Required. The value of the header must match the regular expression
-	//  specified in regexMatch. For regular expression grammar,
-	//  please see: en.cppreference.com/w/cpp/regex/ecmascript
-	//  For matching against a port specified in the HTTP
-	//  request, use a headerMatch with headerName set to Host
-	//  and a regular expression that satisfies the RFC2616 Host
-	//  header's port specifier.
-	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Destination.HttpHeaderMatch.regex_match
-	RegexMatch *string `json:"regexMatch,omitempty"`
-
-	// Required. The name of the HTTP header to match. For matching
-	//  against the HTTP request's authority, use a headerMatch
-	//  with the header name ":authority". For matching a
-	//  request's method, use the headerName ":method".
-	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Destination.HttpHeaderMatch.header_name
-	HeaderName *string `json:"headerName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule.Source

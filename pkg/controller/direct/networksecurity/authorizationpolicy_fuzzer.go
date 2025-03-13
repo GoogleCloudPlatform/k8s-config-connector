@@ -30,7 +30,7 @@ func init() {
 func authorizationPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.AuthorizationPolicy{},
 		NetworkSecurityAuthorizationPolicySpec_FromProto, NetworkSecurityAuthorizationPolicySpec_ToProto,
-		NetworkSecurityAuthorizationPolicyObservedState_FromProto, NetworkSecurityAuthorizationPolicyObservedState_ToProto,
+		NetworkSecurityAuthorizationPolicyStatus_FromProto, NetworkSecurityAuthorizationPolicyStatus_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")
