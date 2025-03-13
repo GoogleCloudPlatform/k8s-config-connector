@@ -150,10 +150,29 @@ spec:
                   workloadProperties:
                     description: Output only. Properties of an underlying compute
                       resource represented by the Workload. These are immutable.
+                    properties:
+                      gcpProject:
+                        description: Output only. The service project identifier that
+                          the underlying cloud resource resides in. Empty for non
+                          cloud resources.
+                        type: string
+                      location:
+                        description: Output only. The location that the underlying
+                          compute resource resides in (e.g us-west1).
+                        type: string
+                      zone:
+                        description: Output only. The location that the underlying
+                          compute resource resides in if it is zonal (e.g us-west1-a).
+                        type: string
                     type: object
                   workloadReference:
                     description: Output only. Reference of an underlying compute resource
                       represented by the Workload. These are immutable.
+                    properties:
+                      uri:
+                        description: Output only. The underlying compute resource
+                          uri.
+                        type: string
                     type: object
                 type: object
             type: object

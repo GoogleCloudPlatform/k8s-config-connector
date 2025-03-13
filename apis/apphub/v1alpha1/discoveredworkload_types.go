@@ -53,12 +53,12 @@ type AppHubDiscoveredWorkloadObservedState struct {
 	// Output only. Reference of an underlying compute resource represented by the
 	//  Workload. These are immutable.
 	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.workload_reference
-	WorkloadReference *WorkloadReference `json:"workloadReference,omitempty"`
+	WorkloadReference *WorkloadReferenceObservedState `json:"workloadReference,omitempty"`
 
 	// Output only. Properties of an underlying compute resource represented by
 	//  the Workload. These are immutable.
 	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.workload_properties
-	WorkloadProperties *WorkloadProperties `json:"workloadProperties,omitempty"`
+	WorkloadProperties *WorkloadPropertiesObservedState `json:"workloadProperties,omitempty"`
 }
 
 // +genclient

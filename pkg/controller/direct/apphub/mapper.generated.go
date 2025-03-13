@@ -26,8 +26,8 @@ func AppHubDiscoveredWorkloadObservedState_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krm.AppHubDiscoveredWorkloadObservedState{}
 	// MISSING: Name
-	out.WorkloadReference = WorkloadReference_FromProto(mapCtx, in.GetWorkloadReference())
-	out.WorkloadProperties = WorkloadProperties_FromProto(mapCtx, in.GetWorkloadProperties())
+	out.WorkloadReference = WorkloadReferenceObservedState_FromProto(mapCtx, in.GetWorkloadReference())
+	out.WorkloadProperties = WorkloadPropertiesObservedState_FromProto(mapCtx, in.GetWorkloadProperties())
 	return out
 }
 func AppHubDiscoveredWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppHubDiscoveredWorkloadObservedState) *pb.DiscoveredWorkload {
@@ -36,8 +36,8 @@ func AppHubDiscoveredWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.DiscoveredWorkload{}
 	// MISSING: Name
-	out.WorkloadReference = WorkloadReference_ToProto(mapCtx, in.WorkloadReference)
-	out.WorkloadProperties = WorkloadProperties_ToProto(mapCtx, in.WorkloadProperties)
+	out.WorkloadReference = WorkloadReferenceObservedState_ToProto(mapCtx, in.WorkloadReference)
+	out.WorkloadProperties = WorkloadPropertiesObservedState_ToProto(mapCtx, in.WorkloadProperties)
 	return out
 }
 func AppHubDiscoveredWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.AppHubDiscoveredWorkloadSpec {
@@ -114,26 +114,6 @@ func Criticality_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Cri
 	out.Type = direct.Enum_ToProto[pb.Criticality_Type](mapCtx, in.Type)
 	return out
 }
-func DiscoveredWorkload_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveredWorkload) *krm.DiscoveredWorkload {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiscoveredWorkload{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: WorkloadReference
-	// MISSING: WorkloadProperties
-	return out
-}
-func DiscoveredWorkload_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveredWorkload) *pb.DiscoveredWorkload {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DiscoveredWorkload{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: WorkloadReference
-	// MISSING: WorkloadProperties
-	return out
-}
 func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
 	if in == nil {
 		return nil
@@ -164,26 +144,6 @@ func Scope_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
 	}
 	out := &pb.Scope{}
 	out.Type = direct.Enum_ToProto[pb.Scope_Type](mapCtx, in.Type)
-	return out
-}
-func WorkloadProperties_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadProperties {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkloadProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
-	return out
-}
-func WorkloadProperties_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadProperties) *pb.WorkloadProperties {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkloadProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
 	return out
 }
 func WorkloadPropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadPropertiesObservedState {
