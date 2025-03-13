@@ -21,6 +21,7 @@ package backupdr
 import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -90,5 +91,16 @@ func BackupDRManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Oauth2ClientId = direct.ValueOf(in.OAuth2ClientID)
 	out.WorkforceIdentityBasedOauth2ClientId = WorkforceIdentityBasedOAuth2ClientIDObservedState_ToProto(mapCtx, in.WorkforceIdentityBasedOAuth2ClientID)
 	out.BaProxyUri = in.BAProxyURIs
+	return out
+}
+func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConfig{}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.PeeringMode = direct.Enum_FromProto(mapCtx, in.GetPeeringMode())
 	return out
 }

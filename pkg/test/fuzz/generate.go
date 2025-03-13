@@ -94,6 +94,9 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					listVal.Append(protoreflect.ValueOf(val.Number()))
 				}
 
+			case protoreflect.Int32Kind:
+				// TODO: handle []int32
+
 			default:
 				t.Fatalf("unhandled field kind %v: %v", field.Kind(), field)
 			}
