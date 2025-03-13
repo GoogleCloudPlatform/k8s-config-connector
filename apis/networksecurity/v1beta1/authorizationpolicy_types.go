@@ -53,7 +53,8 @@ type NetworkSecurityAuthorizationPolicySpec struct {
 	// Optional. Set of label tags associated with the AuthorizationPolicy
 	//  resource.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// NOTEYET: this field is not in the DCL-based beta resource
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The action to take when a rule match is found. Possible values
 	//  are "ALLOW" or "DENY".

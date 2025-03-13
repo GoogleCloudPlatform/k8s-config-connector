@@ -107,7 +107,7 @@ func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext,
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
 	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_FromProto)
 	return out
@@ -121,7 +121,7 @@ func NetworkSecurityAuthorizationPolicySpec_ToProto(mapCtx *direct.MapContext, i
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Action = direct.Enum_ToProto[pb.AuthorizationPolicy_Action](mapCtx, in.Action)
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_ToProto)
 	return out

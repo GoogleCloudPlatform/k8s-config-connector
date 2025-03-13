@@ -70,12 +70,6 @@ spec:
               description:
                 description: Optional. Free-text description of the resource.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Set of label tags associated with the AuthorizationPolicy
-                  resource.
-                type: object
               location:
                 description: Immutable.
                 type: string

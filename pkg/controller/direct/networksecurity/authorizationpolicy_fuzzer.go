@@ -34,7 +34,6 @@ func authorizationPolicyFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".action")
 	f.SpecFields.Insert(".rules")
 
@@ -42,6 +41,7 @@ func authorizationPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".update_time")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".labels")
 
 	return f
 }

@@ -87,8 +87,6 @@
 ```yaml
 action: string
 description: string
-labels:
-  string: string
 location: string
 projectRef:
   external: string
@@ -139,16 +137,6 @@ rules:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. Free-text description of the resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>labels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. Set of label tags associated with the AuthorizationPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
