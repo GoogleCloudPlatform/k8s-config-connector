@@ -431,22 +431,3 @@ type TargetsTypeCondition struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.TargetsTypeCondition.error_details
 	ErrorDetails *string `json:"errorDetails,omitempty"`
 }
-
-// +kcc:proto=google.cloud.deploy.v1.DeliveryPipeline
-type DeliveryPipelineObservedState struct {
-	// Output only. Unique identifier of the `DeliveryPipeline`.
-	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Time at which the pipeline was created.
-	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Most recent time at which the pipeline was updated.
-	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Information around the state of the Delivery Pipeline.
-	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.condition
-	Condition *PipelineCondition `json:"condition,omitempty"`
-}

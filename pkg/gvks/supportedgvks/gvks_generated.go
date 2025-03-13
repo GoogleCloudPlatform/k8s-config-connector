@@ -997,6 +997,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "clouddeploy.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudDeployDeliveryPipeline",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "cloudfunctions2.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "CloudFunctions2Function",
@@ -2317,16 +2327,6 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/stability-level": "alpha",
 			"cnrm.cloud.google.com/system":          "true",
 			"cnrm.cloud.google.com/tf2crd":          "true",
-		},
-	},
-	{
-		Group:   "clouddeploy.cnrm.cloud.google.com",
-		Version: "v1alpha1",
-		Kind:    "DeployDeliveryPipeline",
-	}: {
-		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc": "true",
-			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{

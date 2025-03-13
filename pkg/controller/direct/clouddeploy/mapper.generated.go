@@ -130,12 +130,11 @@ func CustomCanaryDeployment_PhaseConfig_ToProto(mapCtx *direct.MapContext, in *k
 	out.Postdeploy = Postdeploy_ToProto(mapCtx, in.Postdeploy)
 	return out
 }
-func DeployDeliveryPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeployDeliveryPipelineSpec {
+func DeliveryPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeliveryPipelineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeployDeliveryPipelineSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.DeliveryPipelineSpec{}
 	// ObservedState: Uid
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Annotations = in.Annotations
@@ -148,12 +147,11 @@ func DeployDeliveryPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deli
 	out.Suspended = direct.LazyPtr(in.GetSuspended())
 	return out
 }
-func DeployDeliveryPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeployDeliveryPipelineSpec) *pb.DeliveryPipeline {
+func DeliveryPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPipelineSpec) *pb.DeliveryPipeline {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DeliveryPipeline{}
-	out.Name = direct.ValueOf(in.Name)
 	// ObservedState: Uid
 	out.Description = direct.ValueOf(in.Description)
 	out.Annotations = in.Annotations
@@ -168,11 +166,11 @@ func DeployDeliveryPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Deplo
 	out.Suspended = direct.ValueOf(in.Suspended)
 	return out
 }
-func DeployDeliveryPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeployDeliveryPipelineObservedState {
+func DeliveryPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeliveryPipelineObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeployDeliveryPipelineObservedState{}
+	out := &krm.DeliveryPipelineObservedState{}
 	// MISSING: Name
 	out.Uid = direct.LazyPtr(in.GetUid())
 	// MISSING: Description
@@ -186,7 +184,7 @@ func DeployDeliveryPipelineObservedState_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Suspended
 	return out
 }
-func DeployDeliveryPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployDeliveryPipelineObservedState) *pb.DeliveryPipeline {
+func DeliveryPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPipelineObservedState) *pb.DeliveryPipeline {
 	if in == nil {
 		return nil
 	}
