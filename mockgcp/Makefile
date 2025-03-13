@@ -167,7 +167,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/datacatalog/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/eventarc/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto
+		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1/notebook_runtime.proto
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
