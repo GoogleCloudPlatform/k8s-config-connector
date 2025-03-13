@@ -575,6 +575,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - netapp.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - networkconnectivity.cnrm.cloud.google.com
   resources:
   - '*'

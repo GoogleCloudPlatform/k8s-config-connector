@@ -248,11 +248,6 @@ func (in *NetAppBackupPolicyObservedState) DeepCopy() *NetAppBackupPolicyObserve
 func (in *NetAppBackupPolicySpec) DeepCopyInto(out *NetAppBackupPolicySpec) {
 	*out = *in
 	in.CommonSpec.DeepCopyInto(&out.CommonSpec)
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
 	if in.DailyBackupLimit != nil {
 		in, out := &in.DailyBackupLimit, &out.DailyBackupLimit
 		*out = new(int32)

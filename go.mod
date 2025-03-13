@@ -25,6 +25,7 @@ require (
 	cloud.google.com/go/kms v1.20.5
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.23.0
+	cloud.google.com/go/netapp v1.7.0
 	cloud.google.com/go/notebooks v1.12.3
 	cloud.google.com/go/orchestration v1.11.4
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
@@ -99,7 +100,6 @@ require (
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.3 // indirect
 	cloud.google.com/go/dataproc/v2 v2.10.1 // indirect
-	cloud.google.com/go/netapp v1.7.0 // indirect
 	cloud.google.com/go/orgpolicy v1.14.2 // indirect
 	cloud.google.com/go/osconfig v1.14.3 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect

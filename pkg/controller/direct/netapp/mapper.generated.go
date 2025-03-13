@@ -25,7 +25,6 @@ func NetAppBackupPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPo
 		return nil
 	}
 	out := &krm.NetAppBackupPolicySpec{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.DailyBackupLimit = in.DailyBackupLimit
 	out.WeeklyBackupLimit = in.WeeklyBackupLimit
 	out.MonthlyBackupLimit = in.MonthlyBackupLimit
@@ -41,7 +40,6 @@ func NetAppBackupPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBac
 		return nil
 	}
 	out := &pb.BackupPolicy{}
-	out.Name = direct.ValueOf(in.Name)
 	out.DailyBackupLimit = in.DailyBackupLimit
 	out.WeeklyBackupLimit = in.WeeklyBackupLimit
 	out.MonthlyBackupLimit = in.MonthlyBackupLimit

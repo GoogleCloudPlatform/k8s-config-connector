@@ -30,12 +30,6 @@ type NetAppBackupPolicySpec struct {
 	// +required
 	Location string `json:"location"`
 
-	// Identifier. The resource name of the backup policy.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupPolicies/{backup_policy_id}`.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.name
-	Name *string `json:"name,omitempty"`
-
 	// Number of daily backups to keep. Note that the minimum daily backup limit
 	//  is 2.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.daily_backup_limit

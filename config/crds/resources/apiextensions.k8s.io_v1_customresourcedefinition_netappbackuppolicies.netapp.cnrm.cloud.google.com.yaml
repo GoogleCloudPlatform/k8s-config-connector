@@ -80,10 +80,6 @@ spec:
                   of daily, weekly and monthly backups should be greater than 1.
                 format: int32
                 type: integer
-              name:
-                description: 'Identifier. The resource name of the backup policy.
-                  Format: `projects/{project_id}/locations/{location}/backupPolicies/{backup_policy_id}`.'
-                type: string
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
