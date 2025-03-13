@@ -50,5 +50,3 @@ func dataplexLakeFuzzer() fuzztesting.KRMFuzzer {
 
 	return f
 }
-
-
