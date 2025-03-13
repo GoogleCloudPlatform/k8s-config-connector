@@ -476,6 +476,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - dataplex.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - dataproc.cnrm.cloud.google.com
   resources:
   - '*'

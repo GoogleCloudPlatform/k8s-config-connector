@@ -15,17 +15,43 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DataplexLakeGVK = GroupVersion.WithKind("DataplexLake")
 
+type Parent struct {
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	Location string `json:"location"`
+}
+
 // DataplexLakeSpec defines the desired state of DataplexLake
 // +kcc:proto=google.cloud.dataplex.v1.Lake
 type DataplexLakeSpec struct {
 	// The DataplexLake name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	Parent `json:",inline"`
+
+	// Optional. User friendly display name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User-defined labels for the lake.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Description of the lake.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Settings to manage lake and Dataproc Metastore service instance
+	//  association.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.metastore
+	Metastore *Lake_Metastore `json:"metastore,omitempty"`
 }
 
 // DataplexLakeStatus defines the config connector machine state of DataplexLake
@@ -47,11 +73,40 @@ type DataplexLakeStatus struct {
 // DataplexLakeObservedState is the state of the DataplexLake resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.dataplex.v1.Lake
 type DataplexLakeObservedState struct {
+	// Output only. System generated globally unique ID for the lake. This ID will
+	//  be different if the lake is deleted and re-created with the same name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the lake was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the lake was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Current state of the lake.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Service account associated with this lake. This service
+	//  account must be authorized to access or operate on resources managed by the
+	//  lake.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Output only. Aggregated status of the underlying assets of the lake.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.asset_status
+	AssetStatus *AssetStatus `json:"assetStatus,omitempty"`
+
+	// Output only. Metastore status of the lake.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.metastore_status
+	MetastoreStatus *Lake_MetastoreStatus `json:"metastoreStatus,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplexlake;gcpdataplexlakes
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

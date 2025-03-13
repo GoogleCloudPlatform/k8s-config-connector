@@ -19,6 +19,7 @@ require (
 	cloud.google.com/go/compute v1.31.1
 	cloud.google.com/go/dataflow v0.10.3
 	cloud.google.com/go/dataform v0.10.3
+	cloud.google.com/go/dataplex v1.21.0
 	cloud.google.com/go/dataproc/v2 v2.10.1
 	cloud.google.com/go/datastream v1.13.1
 	cloud.google.com/go/discoveryengine v1.15.0

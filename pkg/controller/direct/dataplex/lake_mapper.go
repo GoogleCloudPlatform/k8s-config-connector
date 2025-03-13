@@ -40,83 +40,7 @@ func AssetStatus_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatus) *pb.Ass
 	out.SecurityPolicyApplyingAssets = direct.ValueOf(in.SecurityPolicyApplyingAssets)
 	return out
 }
-func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexLakeObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: ServiceAccount
-	// MISSING: Metastore
-	// MISSING: AssetStatus
-	// MISSING: MetastoreStatus
-	return out
-}
-func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeObservedState) *pb.Lake {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Lake{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: ServiceAccount
-	// MISSING: Metastore
-	// MISSING: AssetStatus
-	// MISSING: MetastoreStatus
-	return out
-}
-func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexLakeSpec{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: ServiceAccount
-	// MISSING: Metastore
-	// MISSING: AssetStatus
-	// MISSING: MetastoreStatus
-	return out
-}
-func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeSpec) *pb.Lake {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Lake{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: State
-	// MISSING: ServiceAccount
-	// MISSING: Metastore
-	// MISSING: AssetStatus
-	// MISSING: MetastoreStatus
-	return out
-}
-func Lake_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.Lake {
+func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.Lake {
 	if in == nil {
 		return nil
 	}
@@ -135,7 +59,7 @@ func Lake_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.Lake {
 	// MISSING: MetastoreStatus
 	return out
 }
-func Lake_ToProto(mapCtx *direct.MapContext, in *krm.Lake) *pb.Lake {
+func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Lake) *pb.Lake {
 	if in == nil {
 		return nil
 	}
@@ -154,7 +78,7 @@ func Lake_ToProto(mapCtx *direct.MapContext, in *krm.Lake) *pb.Lake {
 	// MISSING: MetastoreStatus
 	return out
 }
-func LakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.LakeObservedState {
+func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.LakeObservedState {
 	if in == nil {
 		return nil
 	}
@@ -173,7 +97,7 @@ func LakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.La
 	out.MetastoreStatus = Lake_MetastoreStatus_FromProto(mapCtx, in.GetMetastoreStatus())
 	return out
 }
-func LakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LakeObservedState) *pb.Lake {
+func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LakeObservedState) *pb.Lake {
 	if in == nil {
 		return nil
 	}

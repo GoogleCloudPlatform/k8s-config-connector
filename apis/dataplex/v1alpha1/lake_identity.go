@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type LakeIdentity struct {
 	parent *LakeParent
-	id string
+	id     string
 }
 
 func (i *LakeIdentity) String() string {
-	return  i.parent.String() + "/lakes/" + i.id
+	return i.parent.String() + "/lakes/" + i.id
 }
 
 func (i *LakeIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *LakeIdentity) ID() string {
 }
 
 func (i *LakeIdentity) Parent() *LakeParent {
-	return  i.parent
+	return i.parent
 }
 
 type LakeParent struct {
@@ -51,7 +51,6 @@ type LakeParent struct {
 func (p *LakeParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a LakeIdentity from the Config Connector Lake object.
 func NewLakeIdentity(ctx context.Context, reader client.Reader, obj *DataplexLake) (*LakeIdentity, error) {
