@@ -55,6 +55,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - apphub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - artifactregistry.cnrm.cloud.google.com
   resources:
   - '*'
