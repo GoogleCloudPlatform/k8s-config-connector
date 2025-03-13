@@ -202,7 +202,7 @@ spec:
               pysparkBatch:
                 description: Optional. PySpark batch config.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. HCFS URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.'
@@ -217,13 +217,13 @@ spec:
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. HCFS URIs of files to be placed in the
                       working directory of each executor.
                     items:
                       type: string
                     type: array
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to add to the classpath
                       of the Spark driver and tasks.
                     items:
@@ -233,7 +233,7 @@ spec:
                     description: Required. The HCFS URI of the main Python file to
                       use as the Spark driver. Must be a .py file.
                     type: string
-                  pythonFileUris:
+                  pythonFileURIs:
                     description: 'Optional. HCFS file URIs of Python files to pass
                       to the PySpark framework. Supported file types: `.py`, `.egg`,
                       and `.zip`.'
@@ -290,7 +290,7 @@ spec:
               sparkBatch:
                 description: Optional. Spark batch config.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. HCFS URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.'
@@ -305,13 +305,13 @@ spec:
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. HCFS URIs of files to be placed in the
                       working directory of each executor.
                     items:
                       type: string
                     type: array
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to add to the classpath
                       of the Spark driver and tasks.
                     items:
@@ -330,7 +330,7 @@ spec:
               sparkRBatch:
                 description: Optional. SparkR batch config.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. HCFS URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.'
@@ -345,7 +345,7 @@ spec:
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. HCFS URIs of files to be placed in the
                       working directory of each executor.
                     items:
@@ -359,7 +359,7 @@ spec:
               sparkSQLBatch:
                 description: Optional. SparkSql batch config.
                 properties:
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to be added to the
                       Spark CLASSPATH.
                     items:
