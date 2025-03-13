@@ -105,10 +105,10 @@ type DataprocJobSpec struct {
 type DataprocJobParent struct {
 
 	// Required. The ID of the Google Cloud Platform project that the job belongs to.
-	projectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Required. The Dataproc region in which to handle the request.
-	region string `json:"region,omitempty"`
+	Region string `json:"region,omitempty"`
 }
 
 // DataprocJobStatus defines the config connector machine state of DataprocJob
