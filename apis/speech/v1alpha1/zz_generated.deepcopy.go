@@ -81,8 +81,8 @@ func (in *CustomClassObservedState) DeepCopyInto(out *CustomClassObservedState) 
 		*out = new(string)
 		**out = **in
 	}
-	if in.Uid != nil {
-		in, out := &in.Uid, &out.Uid
+	if in.UID != nil {
+		in, out := &in.UID, &out.UID
 		*out = new(string)
 		**out = **in
 	}
@@ -260,8 +260,8 @@ func (in *PhraseSetObservedState) DeepCopyInto(out *PhraseSetObservedState) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Uid != nil {
-		in, out := &in.Uid, &out.Uid
+	if in.UID != nil {
+		in, out := &in.UID, &out.UID
 		*out = new(string)
 		**out = **in
 	}
