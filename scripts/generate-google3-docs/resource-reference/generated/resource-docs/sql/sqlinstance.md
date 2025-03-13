@@ -353,7 +353,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}KMSCryptoKeyRef defines the resource reference to KMSCryptoKey, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -363,7 +363,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

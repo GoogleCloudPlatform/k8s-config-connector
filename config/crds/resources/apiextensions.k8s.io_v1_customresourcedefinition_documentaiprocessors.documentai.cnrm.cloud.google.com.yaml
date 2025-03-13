@@ -83,7 +83,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed KMSCryptoKey.
-                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                      Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
                     type: string
                   name:
                     description: The `name` of a `KMSCryptoKey` resource.

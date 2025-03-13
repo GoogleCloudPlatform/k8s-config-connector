@@ -73,11 +73,12 @@ func (a *WorkflowsWorkflowAdapter) normalizeReference(ctx context.Context) error
 		}
 	}
 	if obj.Spec.KMSCryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.KMSCryptoKeyRef)
+		kmsKeyRef := obj.Spec.KMSCryptoKeyRef
+		normalizedExternal, err := kmsKeyRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 		if err != nil {
 			return err
 		}
-		obj.Spec.KMSCryptoKeyRef = kmsKeyRef
+		obj.Spec.KMSCryptoKeyRef.External = normalizedExternal
 	}
 	return nil
 }
