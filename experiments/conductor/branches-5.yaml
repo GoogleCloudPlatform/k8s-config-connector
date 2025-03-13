@@ -383,6 +383,8 @@ branches:
         - "networksecurity.googleapis.com"
       notes:
         - long running operation
+        - DCL resource
+      skip: true
     - name: networksecurity-clienttlspolicy
       local: resource-networksecurity-clienttlspolicy
       remote: resource-networksecurity-clienttlspolicy
@@ -401,6 +403,8 @@ branches:
         - "networksecurity.googleapis.com"
       notes:
         - long running operation
+        - DCL resource
+      skip: true
     - name: networksecurity-servertlspolicy
       local: resource-networksecurity-servertlspolicy
       remote: resource-networksecurity-servertlspolicy
@@ -419,6 +423,8 @@ branches:
         - "networksecurity.googleapis.com"
       notes:
         - long running operation
+        - DCL resource
+      skip: true
     - name: privilegedaccessmanager-grant
       local: resource-privilegedaccessmanager-grant
       remote: resource-privilegedaccessmanager-grant
