@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AspectType_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.AspectType {
+func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.AspectType {
 	if in == nil {
 		return nil
 	}
@@ -38,7 +38,7 @@ func AspectType_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.Asp
 	// MISSING: TransferStatus
 	return out
 }
-func AspectType_ToProto(mapCtx *direct.MapContext, in *krm.AspectType) *pb.AspectType {
+func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.AspectType) *pb.AspectType {
 	if in == nil {
 		return nil
 	}
@@ -56,7 +56,7 @@ func AspectType_ToProto(mapCtx *direct.MapContext, in *krm.AspectType) *pb.Aspec
 	// MISSING: TransferStatus
 	return out
 }
-func AspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.AspectTypeObservedState {
+func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.AspectTypeObservedState {
 	if in == nil {
 		return nil
 	}
@@ -74,7 +74,7 @@ func AspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AspectT
 	out.TransferStatus = direct.Enum_FromProto(mapCtx, in.GetTransferStatus())
 	return out
 }
-func AspectTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AspectTypeObservedState) *pb.AspectType {
+func DataplexAspectTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AspectTypeObservedState) *pb.AspectType {
 	if in == nil {
 		return nil
 	}
@@ -204,77 +204,5 @@ func AspectType_MetadataTemplate_EnumValue_ToProto(mapCtx *direct.MapContext, in
 	out.Index = direct.ValueOf(in.Index)
 	out.Name = direct.ValueOf(in.Name)
 	out.Deprecated = direct.ValueOf(in.Deprecated)
-	return out
-}
-func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.DataplexAspectTypeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexAspectTypeObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: Authorization
-	// MISSING: MetadataTemplate
-	// MISSING: TransferStatus
-	return out
-}
-func DataplexAspectTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAspectTypeObservedState) *pb.AspectType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AspectType{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: Authorization
-	// MISSING: MetadataTemplate
-	// MISSING: TransferStatus
-	return out
-}
-func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.DataplexAspectTypeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexAspectTypeSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: Authorization
-	// MISSING: MetadataTemplate
-	// MISSING: TransferStatus
-	return out
-}
-func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAspectTypeSpec) *pb.AspectType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AspectType{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: Authorization
-	// MISSING: MetadataTemplate
-	// MISSING: TransferStatus
 	return out
 }
