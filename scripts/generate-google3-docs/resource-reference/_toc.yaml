@@ -549,6 +549,12 @@ toc:
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecret.md
   - title: "SecretManagerSecretVersion"
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md
+- title: "SecureSourceManager"
+  section:
+  - title: "SecureSourceManagerInstance"
+    path: /config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerinstance.md
+  - title: "SecureSourceManagerRepository"
+    path: /config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerrepository.md
 - title: "Service Directory"
   section:
   - title: "ServiceDirectoryEndpoint"

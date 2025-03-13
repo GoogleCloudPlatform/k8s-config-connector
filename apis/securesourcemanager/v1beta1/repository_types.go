@@ -40,7 +40,7 @@ type SecureSourceManagerRepositorySpec struct {
 	InitialConfig *Repository_InitialConfig `json:"initialConfig,omitempty"`
 
 	// Optional. Description of the repository, which cannot exceed 500 characters.
-	// Temporarily omitted for now.
+	// From the Secure Source Manager team: We are temporarily omitting this for now.
 	// Description *string `json:"description,omitempty"`
 }
 
