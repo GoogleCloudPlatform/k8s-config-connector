@@ -85,6 +85,8 @@ cloud.google.com/go/managedkafka v0.4.0 h1:/snDok/h6TZKw0ubmfj/LYIwSn16mWBoBI2OE
 cloud.google.com/go/managedkafka v0.4.0/go.mod h1:AUCV9FeT5IbuIf4ctH6TsnovE/KuIPE6Mp/YowkTyx0=
 cloud.google.com/go/monitoring v1.23.0 h1:M3nXww2gn9oZ/qWN2bZ35CjolnVHM3qnSbu6srCPgjk=
 cloud.google.com/go/monitoring v1.23.0/go.mod h1:034NnlQPDzrQ64G2Gavhl0LUHZs9H3rRmhtnp7jiJgg=
+cloud.google.com/go/netapp v1.7.0 h1:go1/+KlHagFTea6yG7qzPeEvwUi6dVh16UPo2t4LmtM=
+cloud.google.com/go/netapp v1.7.0/go.mod h1:oNr0SvlU0vTA8gClrNM22cZa0YPk1FzJ9MIsl/zkxF4=
 cloud.google.com/go/notebooks v1.12.3 h1:+9DrGJcZhCu6B2t0JJorekjIUBvg/KvBmXJYGmfvVvA=
 cloud.google.com/go/notebooks v1.12.3/go.mod h1:I0pMxZct+8Rega2LYrXL8jGAGZgLchSmh8Ksc+0xNyA=
 cloud.google.com/go/orchestration v1.11.4 h1:SFAsKyqvtS8VFcsq+JgXAeRkrksB9UH+AH7iFamkmlc=
