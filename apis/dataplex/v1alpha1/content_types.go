@@ -15,17 +15,52 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DataplexContentGVK = GroupVersion.WithKind("DataplexContent")
 
+type Parent struct {
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	Location string `json:"location"`
+}
+
 // DataplexContentSpec defines the desired state of DataplexContent
 // +kcc:proto=google.cloud.dataplex.v1.Content
 type DataplexContentSpec struct {
 	// The DataplexContent name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	Parent `json:",inline"`
+
+	// Required. The path for the Content file, represented as directory
+	//  structure. Unique within a lake. Limited to alphanumerics, hyphens,
+	//  underscores, dots and slashes.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.path
+	Path *string `json:"path,omitempty"`
+
+	// Optional. User defined labels for the content.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Description of the content.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Content data in string format.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.data_text
+	DataText *string `json:"dataText,omitempty"`
+
+	// Sql Script related configurations.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.sql_script
+	SQLScript *Content_SQLScript `json:"sqlScript,omitempty"`
+
+	// Notebook related configurations.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.notebook
+	Notebook *Content_Notebook `json:"notebook,omitempty"`
 }
 
 // DataplexContentStatus defines the config connector machine state of DataplexContent
@@ -47,11 +82,23 @@ type DataplexContentStatus struct {
 // DataplexContentObservedState is the state of the DataplexContent resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.dataplex.v1.Content
 type DataplexContentObservedState struct {
+	// Output only. System generated globally unique ID for the content. This ID
+	//  will be different if the content is deleted and re-created with the same
+	//  name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Content creation time.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the content was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplexcontent;gcpdataplexcontents
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
