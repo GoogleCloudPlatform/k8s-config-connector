@@ -37,7 +37,7 @@ func DataplexContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Content) *k
 	out.Notebook = Content_Notebook_FromProto(mapCtx, in.GetNotebook())
 	return out
 }
-func DataplexContentSpecToProto(mapCtx *direct.MapContext, in *krm.Content) *pb.Content {
+func DataplexContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Content) *pb.Content {
 	if in == nil {
 		return nil
 	}

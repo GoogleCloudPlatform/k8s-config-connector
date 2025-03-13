@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ContentIdentity struct {
 	parent *ContentParent
-	id string
+	id     string
 }
 
 func (i *ContentIdentity) String() string {
-	return  i.parent.String() + "/contents/" + i.id
+	return i.parent.String() + "/contents/" + i.id
 }
 
 func (i *ContentIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ContentIdentity) ID() string {
 }
 
 func (i *ContentIdentity) Parent() *ContentParent {
-	return  i.parent
+	return i.parent
 }
 
 type ContentParent struct {
@@ -51,7 +51,6 @@ type ContentParent struct {
 func (p *ContentParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ContentIdentity from the Config Connector Content object.
 func NewContentIdentity(ctx context.Context, reader client.Reader, obj *DataplexContent) (*ContentIdentity, error) {

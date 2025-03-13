@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.dataplex.v1.Content
 type Content struct {
 
