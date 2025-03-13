@@ -13,37 +13,3 @@
 // limitations under the License.
 
 package v1alpha1
-
-
-// +kcc:proto=google.cloud.networkservices.v1.ServiceBinding
-type ServiceBinding struct {
-	// Required. Name of the ServiceBinding resource. It matches pattern
-	//  `projects/*/locations/global/serviceBindings/service_binding_name`.
-	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. A free-text description of the resource. Max length 1024
-	//  characters.
-	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. The full service directory service name of the format
-	//  /projects/*/locations/*/namespaces/*/services/*
-	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.service
-	Service *string `json:"service,omitempty"`
-
-	// Optional. Set of label tags associated with the ServiceBinding resource.
-	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.labels
-	Labels map[string]string `json:"labels,omitempty"`
-}
-
-// +kcc:proto=google.cloud.networkservices.v1.ServiceBinding
-type ServiceBindingObservedState struct {
-	// Output only. The timestamp when the resource was created.
-	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The timestamp when the resource was updated.
-	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
