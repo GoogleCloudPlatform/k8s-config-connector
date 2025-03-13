@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &AspectTypeRef{}
 // holds the GCP identifier for the KRM object.
 type AspectTypeRef struct {
 	// A reference to an externally managed DataplexAspectType resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/aspecttypes/{{aspecttypeID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataplexAspectType resource.

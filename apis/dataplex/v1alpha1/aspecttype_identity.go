@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type AspectTypeIdentity struct {
 	parent *AspectTypeParent
-	id string
+	id     string
 }
 
 func (i *AspectTypeIdentity) String() string {
-	return  i.parent.String() + "/aspecttypes/" + i.id
+	return i.parent.String() + "/aspectTypes/" + i.id
 }
 
 func (i *AspectTypeIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *AspectTypeIdentity) ID() string {
 }
 
 func (i *AspectTypeIdentity) Parent() *AspectTypeParent {
-	return  i.parent
+	return i.parent
 }
 
 type AspectTypeParent struct {
@@ -51,7 +51,6 @@ type AspectTypeParent struct {
 func (p *AspectTypeParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a AspectTypeIdentity from the Config Connector AspectType object.
 func NewAspectTypeIdentity(ctx context.Context, reader client.Reader, obj *DataplexAspectType) (*AspectTypeIdentity, error) {
@@ -106,8 +105,8 @@ func NewAspectTypeIdentity(ctx context.Context, reader client.Reader, obj *Datap
 
 func ParseAspectTypeExternal(external string) (parent *AspectTypeParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "aspecttypes" {
-		return nil, "", fmt.Errorf("format of DataplexAspectType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/aspecttypes/{{aspecttypeID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "aspectTypes" {
+		return nil, "", fmt.Errorf("format of DataplexAspectType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}})", external)
 	}
 	parent = &AspectTypeParent{
 		ProjectID: tokens[1],
