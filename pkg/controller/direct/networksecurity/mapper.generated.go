@@ -15,68 +15,11 @@
 package networksecurity
 
 import (
-	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
+	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AuthorizationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.AuthorizationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthorizationPolicy{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
-	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_FromProto)
-	return out
-}
-func AuthorizationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicy) *pb.AuthorizationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizationPolicy{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.Action = direct.Enum_ToProto[pb.AuthorizationPolicy_Action](mapCtx, in.Action)
-	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_ToProto)
-	return out
-}
-func AuthorizationPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.AuthorizationPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthorizationPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
-	return out
-}
-func AuthorizationPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizationPolicyObservedState) *pb.AuthorizationPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizationPolicy{}
-	// MISSING: Name
-	// MISSING: Description
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
-	return out
-}
 func AuthorizationPolicy_Rule_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy_Rule) *krm.AuthorizationPolicy_Rule {
 	if in == nil {
 		return nil
@@ -161,12 +104,8 @@ func NetworkSecurityAuthorizationPolicyObservedState_FromProto(mapCtx *direct.Ma
 	}
 	out := &krm.NetworkSecurityAuthorizationPolicyObservedState{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
 func NetworkSecurityAuthorizationPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityAuthorizationPolicyObservedState) *pb.AuthorizationPolicy {
@@ -175,12 +114,8 @@ func NetworkSecurityAuthorizationPolicyObservedState_ToProto(mapCtx *direct.MapC
 	}
 	out := &pb.AuthorizationPolicy{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizationPolicy) *krm.NetworkSecurityAuthorizationPolicySpec {
@@ -189,12 +124,10 @@ func NetworkSecurityAuthorizationPolicySpec_FromProto(mapCtx *direct.MapContext,
 	}
 	out := &krm.NetworkSecurityAuthorizationPolicySpec{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_FromProto)
 	return out
 }
 func NetworkSecurityAuthorizationPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecurityAuthorizationPolicySpec) *pb.AuthorizationPolicy {
@@ -203,11 +136,9 @@ func NetworkSecurityAuthorizationPolicySpec_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.AuthorizationPolicy{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: Action
-	// MISSING: Rules
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Action = direct.Enum_ToProto[pb.AuthorizationPolicy_Action](mapCtx, in.Action)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, AuthorizationPolicy_Rule_ToProto)
 	return out
 }
