@@ -16,7 +16,6 @@ package lint
 
 import (
 	"fmt"
-	"slices"
 	"sort"
 	"strings"
 	"testing"
@@ -113,6 +112,7 @@ func TestMissingRefs(t *testing.T) {
 
 					}
 				}
+
 			})
 		}
 	}
@@ -212,45 +212,48 @@ func TestCRDsAcronyms(t *testing.T) {
 				fieldPath := field.FieldPath
 				tokens := splitCamelCase(fieldPath)
 
-				// Special cases for common acronyms
 				for i, token := range tokens {
-					isAcronym := false
-					if slices.Contains(codegen.Acronyms, strings.ToUpper(token)) {
-						isAcronym = true
+					var singular, pluralSuffix string
+
+					if strings.HasSuffix(token, "ies") {
+						singular = token[:len(token)-3] + "y"
+						pluralSuffix = "ies"
+					} else if strings.HasSuffix(token, "es") {
+						singular = token[:len(token)-2]
+						pluralSuffix = "es"
+					} else if strings.HasSuffix(token, "s") {
+						singular = token   // or token[:len(token)-1]
+						pluralSuffix = "s" // maybe
+					} else {
+						singular = token
+						pluralSuffix = ""
 					}
 
-					// TODO: Src / Dest
-
-					if isAcronym {
-						if i == 0 {
-							tokens[i] = strings.ToLower(token)
+					for _, acronym := range codegen.Acronyms {
+						if pluralSuffix == "s" {
+							if strings.EqualFold(acronym, singular) {
+								pluralSuffix = ""
+							} else if !strings.EqualFold(acronym, singular[:len(singular)-1]) {
+								continue
+							}
 						} else {
-							tokens[i] = strings.ToUpper(token)
+							if !strings.EqualFold(acronym, singular) {
+								continue
+							}
+						}
+
+						switch pluralSuffix {
+						case "ies": // y
+							tokens[i] = acronym[:len(acronym)-1] + "ies"
+						case "es":
+							tokens[i] = acronym + "es"
+						case "s":
+							tokens[i] = acronym + "s"
+						case "":
+							tokens[i] = acronym
 						}
 					}
 				}
-
-				// Check for plural acronyms like externalIps, which should be externalIPs
-				for i, token := range tokens {
-					if !strings.HasSuffix(token, "s") {
-						continue
-					}
-
-					withoutS := token[:len(token)-1]
-					isAcronym := false
-					if slices.Contains(codegen.Acronyms, strings.ToUpper(withoutS)) {
-						isAcronym = true
-					}
-
-					if isAcronym {
-						if i == 0 {
-							tokens[i] = strings.ToLower(withoutS) + "s"
-						} else {
-							tokens[i] = strings.ToUpper(withoutS) + "s"
-						}
-					}
-				}
-
 				corrected := strings.Join(tokens, "")
 
 				if corrected != fieldPath {
