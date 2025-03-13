@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -93,6 +94,13 @@ func ResolveSQLInstanceRef(ctx context.Context, reader client.Reader, obj client
 			return nil, fmt.Errorf("referenced SQLInstance %v not found", key)
 		}
 		return nil, fmt.Errorf("error reading referenced SQLInstance %v: %w", key, err)
+	}
+	resource, err := k8s.NewResource(sqlinstance)
+	if err != nil {
+		return nil, fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return nil, k8s.NewReferenceNotReadyError(sqlinstance.GroupVersionKind(), key)
 	}
 
 	resourceID, _, err := unstructured.NestedString(sqlinstance.Object, "spec", "resourceID")
