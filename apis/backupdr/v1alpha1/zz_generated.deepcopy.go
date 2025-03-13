@@ -156,9 +156,9 @@ func (in *BackupDRBackupPlanSpec) DeepCopyInto(out *BackupDRBackupPlanSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.BackupVault != nil {
-		in, out := &in.BackupVault, &out.BackupVault
-		*out = new(string)
+	if in.BackupVaultRef != nil {
+		in, out := &in.BackupVaultRef, &out.BackupVaultRef
+		*out = new(BackupVaultRef)
 		**out = **in
 	}
 }

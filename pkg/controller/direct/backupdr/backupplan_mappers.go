@@ -51,3 +51,37 @@ func WeekDayOfMonth_ToProto(mapCtx *direct.MapContext, in *krm.WeekDayOfMonth) *
 	out.DayOfWeek = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.DayOfWeek)
 	return out
 }
+func BackupDRBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupDRBackupPlanSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.BackupRules = direct.Slice_FromProto(mapCtx, in.BackupRules, BackupRule_FromProto)
+	out.ResourceType = direct.LazyPtr(in.GetResourceType())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	if in.GetBackupVault() != "" {
+		out.BackupVaultRef = &krm.BackupVaultRef{
+			External: in.GetBackupVault(),
+		}
+	}
+	return out
+}
+func BackupDRBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupPlan{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.BackupRules = direct.Slice_ToProto(mapCtx, in.BackupRules, BackupRule_ToProto)
+	out.ResourceType = direct.ValueOf(in.ResourceType)
+	out.Etag = direct.ValueOf(in.Etag)
+	if in.BackupVaultRef != nil {
+		out.BackupVault = in.BackupVaultRef.External
+	}
+	return out
+}
