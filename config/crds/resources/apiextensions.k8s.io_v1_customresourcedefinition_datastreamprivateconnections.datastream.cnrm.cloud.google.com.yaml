@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: datastreamprivateconnections.datastream.cnrm.cloud.google.com
 spec:
   group: datastream.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: DatastreamPrivateConnection
+    listKind: DatastreamPrivateConnectionList
     plural: datastreamprivateconnections
     shortNames:
     - gcpdatastreamprivateconnection
@@ -43,30 +42,41 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: DatastreamPrivateConnection is the Schema for the DatastreamPrivateConnection
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DatastreamPrivateConnectionSpec defines the desired state
+              of DatastreamPrivateConnection
             properties:
               displayName:
-                description: Immutable. Display name.
+                description: Required. Display name.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels.
+                type: object
               location:
-                description: Immutable. The name of the location this private connection
-                  is located in.
+                description: Immutable.
                 type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -83,48 +93,71 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The privateConnectionId of the resource.
-                  Used for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The DatastreamPrivateConnection name. If not given, the
+                  metadata.name will be used.
                 type: string
               vpcPeeringConfig:
-                description: |-
-                  Immutable. The VPC Peering configuration is used to create VPC peering
-                  between Datastream and the consumer's VPC.
+                description: VPC Peering Config.
                 properties:
+                  networkRef:
+                    description: 'Required. Fully qualified name of the VPC that Datastream
+                      will peer to. Format: `projects/{project}/global/{networks}/{name}`'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
                   subnet:
-                    description: Immutable. A free subnet for peering. (CIDR of /29).
+                    description: Required. A free subnet for peering. (CIDR of /29)
                     type: string
-                  vpc:
-                    description: |-
-                      Immutable. Fully qualified name of the VPC that Datastream will peer to.
-                      Format: projects/{project}/global/{networks}/{name}.
-                    type: string
-                required:
-                - subnet
-                - vpc
                 type: object
             required:
-            - displayName
             - location
             - projectRef
-            - vpcPeeringConfig
             type: object
           status:
+            description: DatastreamPrivateConnectionStatus defines the config connector
+              machine state of DatastreamPrivateConnection
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -148,23 +181,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              error:
-                description: The PrivateConnection error in case of failure.
-                items:
-                  properties:
-                    details:
-                      additionalProperties:
-                        type: string
-                      description: A list of messages that carry the error details.
-                      type: object
-                    message:
-                      description: A message containing more information about the
-                        error that occurred.
-                      type: string
-                  type: object
-                type: array
-              name:
-                description: The resource's name.
+              externalRef:
+                description: A unique specifier for the DatastreamPrivateConnection
+                  resource in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -172,10 +191,47 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              state:
-                description: State of the PrivateConnection.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The create time of the resource.
+                    type: string
+                  error:
+                    description: Output only. In case of error, the details of the
+                      error in a user-friendly format.
+                    properties:
+                      details:
+                        additionalProperties:
+                          type: string
+                        description: Additional information about the error.
+                        type: object
+                      errorTime:
+                        description: The time when the error occurred.
+                        type: string
+                      errorUUID:
+                        description: A unique identifier for this specific error,
+                          allowing it to be traced throughout the system in logs and
+                          API responses.
+                        type: string
+                      message:
+                        description: A message containing more information about the
+                          error that occurred.
+                        type: string
+                      reason:
+                        description: A title that explains the reason for the error.
+                        type: string
+                    type: object
+                  state:
+                    description: Output only. The state of the Private Connection.
+                    type: string
+                  updateTime:
+                    description: Output only. The update time of the resource.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -184,9 +240,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
