@@ -1220,6 +1220,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - tasks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - tpu.cnrm.cloud.google.com
   resources:
   - '*'

@@ -52,6 +52,8 @@ cloud.google.com/go/certificatemanager v1.9.3 h1:2UP31fg7b+y3F0OmNbPHOKPEJ+6LOMf
 cloud.google.com/go/certificatemanager v1.9.3/go.mod h1:O5T4Lg/dHbDHLFFooV2Mh/VsT3Mj2CzPEWRo4qw5prc=
 cloud.google.com/go/cloudbuild v1.20.0 h1:0BRKyrCnWMHlnkwtNKdEwcvpgPm3OA3NqQhzDS5c7ek=
 cloud.google.com/go/cloudbuild v1.20.0/go.mod h1:TgSGCsKojPj2JZuYNw5Ur6Pw7oCJ9iK60PuMnaUps7s=
+cloud.google.com/go/cloudtasks v1.13.3 h1:rXdznKjCa7WpzmvR2plrn2KJ+RZC1oYxPiRWNQjjf3k=
+cloud.google.com/go/cloudtasks v1.13.3/go.mod h1:f9XRvmuFTm3VhIKzkzLCPyINSU3rjjvFUsFVGR5wi24=
 cloud.google.com/go/compute v1.31.1 h1:SObuy8Fs6woazArpXp1fsHCw+ZH4iJ/8dGGTxUhHZQA=
 cloud.google.com/go/compute v1.31.1/go.mod h1:hyOponWhXviDptJCJSoEh89XO1cfv616wbwbkde1/+8=
 cloud.google.com/go/compute/metadata v0.6.0 h1:A6hENjEsCDtC1k8byVsgwvVcioamEHvZ4j01OwKxG9I=
