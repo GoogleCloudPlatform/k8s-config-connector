@@ -36,6 +36,7 @@ require (
 	cloud.google.com/go/securesourcemanager v1.1.1
 	cloud.google.com/go/security v1.18.3
 	cloud.google.com/go/spanner v1.73.0
+	cloud.google.com/go/speech v1.26.0
 	cloud.google.com/go/workflows v1.13.3
 	cloud.google.com/go/workstations v1.1.1
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0

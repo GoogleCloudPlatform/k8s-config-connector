@@ -16,7 +16,6 @@ package speech
 
 import (
 	pb "cloud.google.com/go/speech/apiv2/speechpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -75,48 +74,6 @@ func CustomClass_ToProto(mapCtx *direct.MapContext, in *krm.CustomClass) *pb.Cus
 	// MISSING: Reconciling
 	// MISSING: KMSKeyName
 	// MISSING: KMSKeyVersionName
-	return out
-}
-func CustomClassObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.CustomClassObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomClassObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: DisplayName
-	// MISSING: Items
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	// MISSING: Annotations
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
-	return out
-}
-func CustomClassObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomClassObservedState) *pb.CustomClass {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomClass{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: DisplayName
-	// MISSING: Items
-	out.State = direct.Enum_ToProto[pb.CustomClass_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	// MISSING: Annotations
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
 func CustomClass_ClassItem_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass_ClassItem) *krm.CustomClass_ClassItem {
@@ -197,50 +154,6 @@ func PhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSet) *pb.PhraseS
 	// MISSING: Reconciling
 	// MISSING: KMSKeyName
 	// MISSING: KMSKeyVersionName
-	return out
-}
-func PhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.PhraseSetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PhraseSetObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: Phrases
-	// MISSING: Boost
-	// MISSING: DisplayName
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	// MISSING: Annotations
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
-	return out
-}
-func PhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSetObservedState) *pb.PhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PhraseSet{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: Phrases
-	// MISSING: Boost
-	// MISSING: DisplayName
-	out.State = direct.Enum_ToProto[pb.PhraseSet_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	// MISSING: Annotations
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
 func PhraseSet_Phrase_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet_Phrase) *krm.PhraseSet_Phrase {
@@ -357,98 +270,6 @@ func RecognitionFeatures_ToProto(mapCtx *direct.MapContext, in *krm.RecognitionF
 	out.MaxAlternatives = direct.ValueOf(in.MaxAlternatives)
 	return out
 }
-func Recognizer_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.Recognizer {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Recognizer{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Model = direct.LazyPtr(in.GetModel())
-	out.LanguageCodes = in.LanguageCodes
-	out.DefaultRecognitionConfig = RecognitionConfig_FromProto(mapCtx, in.GetDefaultRecognitionConfig())
-	out.Annotations = in.Annotations
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
-func Recognizer_ToProto(mapCtx *direct.MapContext, in *krm.Recognizer) *pb.Recognizer {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Recognizer{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Model = direct.ValueOf(in.Model)
-	out.LanguageCodes = in.LanguageCodes
-	out.DefaultRecognitionConfig = RecognitionConfig_ToProto(mapCtx, in.DefaultRecognitionConfig)
-	out.Annotations = in.Annotations
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
-func RecognizerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.RecognizerObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RecognizerObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: DisplayName
-	// MISSING: Model
-	// MISSING: LanguageCodes
-	out.DefaultRecognitionConfig = RecognitionConfigObservedState_FromProto(mapCtx, in.GetDefaultRecognitionConfig())
-	// MISSING: Annotations
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
-	return out
-}
-func RecognizerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RecognizerObservedState) *pb.Recognizer {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Recognizer{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: DisplayName
-	// MISSING: Model
-	// MISSING: LanguageCodes
-	out.DefaultRecognitionConfig = RecognitionConfigObservedState_ToProto(mapCtx, in.DefaultRecognitionConfig)
-	// MISSING: Annotations
-	out.State = direct.Enum_ToProto[pb.Recognizer_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
-	return out
-}
 func SpeakerDiarizationConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeakerDiarizationConfig) *krm.SpeakerDiarizationConfig {
 	if in == nil {
 		return nil
@@ -545,52 +366,6 @@ func SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto(mapCtx *direct.Ma
 	}
 	return out
 }
-func SpeechRecognizerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.SpeechRecognizerObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechRecognizerObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: DisplayName
-	// MISSING: Model
-	// MISSING: LanguageCodes
-	// MISSING: DefaultRecognitionConfig
-	// MISSING: Annotations
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
-func SpeechRecognizerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechRecognizerObservedState) *pb.Recognizer {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Recognizer{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: DisplayName
-	// MISSING: Model
-	// MISSING: LanguageCodes
-	// MISSING: DefaultRecognitionConfig
-	// MISSING: Annotations
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
 func SpeechRecognizerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.SpeechRecognizerSpec {
 	if in == nil {
 		return nil
@@ -598,20 +373,11 @@ func SpeechRecognizerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer
 	out := &krm.SpeechRecognizerSpec{}
 	// MISSING: Name
 	// MISSING: Uid
-	// MISSING: DisplayName
-	// MISSING: Model
-	// MISSING: LanguageCodes
-	// MISSING: DefaultRecognitionConfig
-	// MISSING: Annotations
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.LanguageCodes = in.LanguageCodes
+	out.DefaultRecognitionConfig = RecognitionConfig_FromProto(mapCtx, in.GetDefaultRecognitionConfig())
+	out.Annotations = in.Annotations
 	return out
 }
 func SpeechRecognizerSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechRecognizerSpec) *pb.Recognizer {
@@ -621,20 +387,11 @@ func SpeechRecognizerSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechRecog
 	out := &pb.Recognizer{}
 	// MISSING: Name
 	// MISSING: Uid
-	// MISSING: DisplayName
-	// MISSING: Model
-	// MISSING: LanguageCodes
-	// MISSING: DefaultRecognitionConfig
-	// MISSING: Annotations
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Model = direct.ValueOf(in.Model)
+	out.LanguageCodes = in.LanguageCodes
+	out.DefaultRecognitionConfig = RecognitionConfig_ToProto(mapCtx, in.DefaultRecognitionConfig)
+	out.Annotations = in.Annotations
 	return out
 }
 func TranscriptNormalization_FromProto(mapCtx *direct.MapContext, in *pb.TranscriptNormalization) *krm.TranscriptNormalization {
