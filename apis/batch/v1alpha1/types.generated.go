@@ -14,66 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.batch.v1.AllocationPolicy
-type AllocationPolicy struct {
-	// Location where compute resources should be allocated for the Job.
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.location
-	Location *AllocationPolicy_LocationPolicy `json:"location,omitempty"`
-
-	// Describe instances that can be created by this AllocationPolicy.
-	//  Only instances[0] is supported now.
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.instances
-	Instances []AllocationPolicy_InstancePolicyOrTemplate `json:"instances,omitempty"`
-
-	// Defines the service account for Batch-created VMs. If omitted, the [default
-	//  Compute Engine service
-	//  account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
-	//  is used. Must match the service account specified in any used instance
-	//  template configured in the Batch job.
-	//
-	//  Includes the following fields:
-	//   * email: The service account's email address. If not set, the default
-	//   Compute Engine service account is used.
-	//   * scopes: Additional OAuth scopes to grant the service account, beyond the
-	//   default cloud-platform scope. (list of strings)
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.service_account
-	ServiceAccount *ServiceAccount `json:"serviceAccount,omitempty"`
-
-	// Custom labels to apply to the job and all the Compute Engine resources
-	//  that both are created by this allocation policy and support labels.
-	//
-	//  Use labels to group and describe the resources they are applied to. Batch
-	//  automatically applies predefined labels and supports multiple `labels`
-	//  fields for each job, which each let you apply custom labels to various
-	//  resources. Label names that start with "goog-" or "google-" are
-	//  reserved for predefined labels. For more information about labels with
-	//  Batch, see
-	//  [Organize resources using
-	//  labels](https://cloud.google.com/batch/docs/organize-resources-using-labels).
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// The network policy.
-	//
-	//  If you define an instance template in the `InstancePolicyOrTemplate` field,
-	//  Batch will use the network settings in the instance template instead of
-	//  this field.
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.network
-	Network *AllocationPolicy_NetworkPolicy `json:"network,omitempty"`
-
-	// The placement policy.
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.placement
-	Placement *AllocationPolicy_PlacementPolicy `json:"placement,omitempty"`
-
-	// Optional. Tags applied to the VM instances.
-	//
-	//  The tags identify valid sources or targets for network firewalls.
-	//  Each tag must be 1-63 characters long, and comply with
-	//  [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.tags
-	Tags []string `json:"tags,omitempty"`
-}
-
 // +kcc:proto=google.cloud.batch.v1.AllocationPolicy.Accelerator
 type AllocationPolicy_Accelerator struct {
 	// The accelerator type. For example, "nvidia-tesla-t4".
@@ -358,53 +298,6 @@ type AllocationPolicy_PlacementPolicy struct {
 	MaxDistance *int64 `json:"maxDistance,omitempty"`
 }
 
-// +kcc:proto=google.cloud.batch.v1.ComputeResource
-type ComputeResource struct {
-	// The milliCPU count.
-	//
-	//  `cpuMilli` defines the amount of CPU resources per task in milliCPU units.
-	//  For example, `1000` corresponds to 1 vCPU per task. If undefined, the
-	//  default value is `2000`.
-	//
-	//  If you also define the VM's machine type using the `machineType` in
-	//  [InstancePolicy](https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicy)
-	//  field or inside the `instanceTemplate` in the
-	//  [InstancePolicyOrTemplate](https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicyortemplate)
-	//  field, make sure the CPU resources for both fields are compatible with each
-	//  other and with how many tasks you want to allow to run on the same VM at
-	//  the same time.
-	//
-	//  For example, if you specify the `n2-standard-2` machine type, which has 2
-	//  vCPUs each, you are recommended to set `cpuMilli` no more than `2000`, or
-	//  you are recommended to run two tasks on the same VM if you set `cpuMilli`
-	//  to `1000` or less.
-	// +kcc:proto:field=google.cloud.batch.v1.ComputeResource.cpu_milli
-	CPUMilli *int64 `json:"cpuMilli,omitempty"`
-
-	// Memory in MiB.
-	//
-	//  `memoryMib` defines the amount of memory per task in MiB units.
-	//  If undefined, the default value is `2000`.
-	//  If you also define the VM's machine type using the `machineType` in
-	//  [InstancePolicy](https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicy)
-	//  field or inside the `instanceTemplate` in the
-	//  [InstancePolicyOrTemplate](https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicyortemplate)
-	//  field, make sure the memory resources for both fields are compatible with
-	//  each other and with how many tasks you want to allow to run on the same VM
-	//  at the same time.
-	//
-	//  For example, if you specify the `n2-standard-2` machine type, which has 8
-	//  GiB each, you are recommended to set `memoryMib` to no more than `8192`,
-	//  or you are recommended to run two tasks on the same VM if you set
-	//  `memoryMib` to `4096` or less.
-	// +kcc:proto:field=google.cloud.batch.v1.ComputeResource.memory_mib
-	MemoryMib *int64 `json:"memoryMib,omitempty"`
-
-	// Extra boot disk size in MiB for each task.
-	// +kcc:proto:field=google.cloud.batch.v1.ComputeResource.boot_disk_mib
-	BootDiskMib *int64 `json:"bootDiskMib,omitempty"`
-}
-
 // +kcc:proto=google.cloud.batch.v1.Environment
 type Environment struct {
 	// A map of environment variable names to values.
@@ -423,47 +316,12 @@ type Environment struct {
 	EncryptedVariables *Environment_KMSEnvMap `json:"encryptedVariables,omitempty"`
 }
 
-// +kcc:proto=google.cloud.batch.v1.Environment.KMSEnvMap
-type Environment_KMSEnvMap struct {
-	// The name of the KMS key that will be used to decrypt the cipher text.
-	// +kcc:proto:field=google.cloud.batch.v1.Environment.KMSEnvMap.key_name
-	KeyName *string `json:"keyName,omitempty"`
-
-	// The value of the cipherText response from the `encrypt` method.
-	// +kcc:proto:field=google.cloud.batch.v1.Environment.KMSEnvMap.cipher_text
-	CipherText *string `json:"cipherText,omitempty"`
-}
-
 // +kcc:proto=google.cloud.batch.v1.GCS
-type Gcs struct {
+type GCS struct {
 	// Remote path, either a bucket name or a subdirectory of a bucket, e.g.:
 	//  bucket_name, bucket_name/subdirectory/
 	// +kcc:proto:field=google.cloud.batch.v1.GCS.remote_path
 	RemotePath *string `json:"remotePath,omitempty"`
-}
-
-// +kcc:proto=google.cloud.batch.v1.JobNotification
-type JobNotification struct {
-	// The Pub/Sub topic where notifications for the job, like state
-	//  changes, will be published. If undefined, no Pub/Sub notifications
-	//  are sent for this job.
-	//
-	//  Specify the topic using the following format:
-	//  `projects/{project}/topics/{topic}`.
-	//  Notably, if you want to specify a Pub/Sub topic that is in a
-	//  different project than the job, your administrator must grant your
-	//  project's Batch service agent permission to publish to that topic.
-	//
-	//  For more information about configuring Pub/Sub notifications for
-	//  a job, see
-	//  https://cloud.google.com/batch/docs/enable-notifications.
-	// +kcc:proto:field=google.cloud.batch.v1.JobNotification.pubsub_topic
-	PubsubTopic *string `json:"pubsubTopic,omitempty"`
-
-	// The attribute requirements of messages to be sent to this Pub/Sub topic.
-	//  Without this field, no message will be sent.
-	// +kcc:proto:field=google.cloud.batch.v1.JobNotification.message
-	Message *JobNotification_Message `json:"message,omitempty"`
 }
 
 // +kcc:proto=google.cloud.batch.v1.JobNotification.Message
@@ -995,7 +853,7 @@ type Volume struct {
 
 	// A Google Cloud Storage (GCS) volume.
 	// +kcc:proto:field=google.cloud.batch.v1.Volume.gcs
-	Gcs *Gcs `json:"gcs,omitempty"`
+	GCS *GCS `json:"gcs,omitempty"`
 
 	// Device name of an attached disk volume, which should align with a
 	//  device_name specified by

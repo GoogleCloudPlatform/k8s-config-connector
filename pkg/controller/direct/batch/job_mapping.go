@@ -17,6 +17,7 @@ package batch
 import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -86,6 +87,91 @@ func BatchJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobSpec) *pb.J
 	out.Labels = in.Labels
 	out.LogsPolicy = LogsPolicy_ToProto(mapCtx, in.LogsPolicy)
 	out.Notifications = direct.Slice_ToProto(mapCtx, in.Notifications, JobNotification_ToProto)
+	return out
+}
+func AllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy) *krm.AllocationPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy{}
+	out.Location = AllocationPolicy_LocationPolicy_FromProto(mapCtx, in.GetLocation())
+	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_FromProto)
+	out.ServiceAccount = &v1beta1.IAMServiceAccountRef{
+		External: in.GetServiceAccount().String(),
+	}
+	out.Labels = in.Labels
+	out.Network = AllocationPolicy_NetworkPolicy_FromProto(mapCtx, in.GetNetwork())
+	out.Placement = AllocationPolicy_PlacementPolicy_FromProto(mapCtx, in.GetPlacement())
+	out.Tags = in.Tags
+	return out
+}
+func AllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy) *pb.AllocationPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy{}
+	out.Location = AllocationPolicy_LocationPolicy_ToProto(mapCtx, in.Location)
+	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_ToProto)
+	out.ServiceAccount = &pb.ServiceAccount{
+		Email: in.ServiceAccount.External,
+	}
+	out.Labels = in.Labels
+	out.Network = AllocationPolicy_NetworkPolicy_ToProto(mapCtx, in.Network)
+	out.Placement = AllocationPolicy_PlacementPolicy_ToProto(mapCtx, in.Placement)
+	out.Tags = in.Tags
+	return out
+}
+func Environment_KMSEnvMap_FromProto(mapCtx *direct.MapContext, in *pb.Environment_KMSEnvMap) *krm.Environment_KMSEnvMap {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_KMSEnvMap{}
+	out.KMSKeyRef = &v1beta1.KMSCryptoKeyRef{
+		External: in.KeyName,
+	}
+	out.CipherText = direct.LazyPtr(in.GetCipherText())
+	return out
+}
+func Environment_KMSEnvMap_ToProto(mapCtx *direct.MapContext, in *krm.Environment_KMSEnvMap) *pb.Environment_KMSEnvMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_KMSEnvMap{}
+	if in.KMSKeyRef != nil {
+		out.KeyName = in.KMSKeyRef.External
+	}
+	out.CipherText = direct.ValueOf(in.CipherText)
+	return out
+}
+func ComputeResource_FromProto(mapCtx *direct.MapContext, in *pb.ComputeResource) *krm.ComputeResource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeResource{}
+	out.CPUMilli = direct.LazyPtr(in.GetCpuMilli())
+	out.BootDiskMiB = direct.LazyPtr(in.GetBootDiskMib())
+	out.MemoryMiB = direct.LazyPtr(in.GetMemoryMib())
+	return out
+}
+func ComputeResource_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResource) *pb.ComputeResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ComputeResource{}
+	out.CpuMilli = direct.ValueOf(in.CPUMilli)
+	out.MemoryMib = direct.ValueOf(in.MemoryMiB)
+	out.BootDiskMib = direct.ValueOf(in.BootDiskMiB)
+	return out
+}
+func JobNotification_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification) *krm.JobNotification {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobNotification{}
+	if in.GetPubsubTopic() != "" {
+		out.PubsubTopicRef = &v1beta1.PubSubTopicRef{External: in.GetPubsubTopic()}
+	}
+	out.Message = JobNotification_Message_FromProto(mapCtx, in.GetMessage())
 	return out
 }
 func Runnable_Script_Path_ToProto(mapCtx *direct.MapContext, in *string) *pb.Runnable_Script_Path {
