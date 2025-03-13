@@ -308,8 +308,8 @@ func (in *DataprocBatchObservedState) DeepCopyInto(out *DataprocBatchObservedSta
 	}
 	if in.RuntimeInfo != nil {
 		in, out := &in.RuntimeInfo, &out.RuntimeInfo
-		*out = new(RuntimeInfo)
-		**out = **in
+		*out = new(RuntimeInfoObservedState)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.State != nil {
 		in, out := &in.State, &out.State
@@ -338,8 +338,10 @@ func (in *DataprocBatchObservedState) DeepCopyInto(out *DataprocBatchObservedSta
 	}
 	if in.StateHistory != nil {
 		in, out := &in.StateHistory, &out.StateHistory
-		*out = make([]Batch_StateHistory, len(*in))
-		copy(*out, *in)
+		*out = make([]Batch_StateHistoryObservedState, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 

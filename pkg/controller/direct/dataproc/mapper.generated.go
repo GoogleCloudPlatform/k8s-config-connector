@@ -84,13 +84,13 @@ func DataprocBatchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Batc
 	// MISSING: Name
 	out.Uuid = direct.LazyPtr(in.GetUuid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.RuntimeInfo = RuntimeInfo_FromProto(mapCtx, in.GetRuntimeInfo())
+	out.RuntimeInfo = RuntimeInfoObservedState_FromProto(mapCtx, in.GetRuntimeInfo())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
 	out.StateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateTime())
 	out.Creator = direct.LazyPtr(in.GetCreator())
 	out.Operation = direct.LazyPtr(in.GetOperation())
-	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Batch_StateHistory_FromProto)
+	out.StateHistory = direct.Slice_FromProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_FromProto)
 	return out
 }
 func DataprocBatchObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataprocBatchObservedState) *pb.Batch {
@@ -101,13 +101,13 @@ func DataprocBatchObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datap
 	// MISSING: Name
 	out.Uuid = direct.ValueOf(in.Uuid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.RuntimeInfo = RuntimeInfo_ToProto(mapCtx, in.RuntimeInfo)
+	out.RuntimeInfo = RuntimeInfoObservedState_ToProto(mapCtx, in.RuntimeInfo)
 	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
 	out.StateTime = direct.StringTimestamp_ToProto(mapCtx, in.StateTime)
 	out.Creator = direct.ValueOf(in.Creator)
 	out.Operation = direct.ValueOf(in.Operation)
-	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Batch_StateHistory_ToProto)
+	out.StateHistory = direct.Slice_ToProto(mapCtx, in.StateHistory, Batch_StateHistoryObservedState_ToProto)
 	return out
 }
 func DataprocBatchSpec_FromProto(mapCtx *direct.MapContext, in *pb.Batch) *krm.DataprocBatchSpec {
