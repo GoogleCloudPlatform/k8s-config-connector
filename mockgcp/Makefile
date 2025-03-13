@@ -163,8 +163,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/service_networking.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/ui_pipeline_spec.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_failure_policy.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1/schedule.proto
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:

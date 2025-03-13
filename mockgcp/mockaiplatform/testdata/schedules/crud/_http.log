@@ -1,0 +1,266 @@
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "allowQueueing": false,
+  "createNotebookExecutionJobRequest": {
+    "notebookExecutionJob": {
+      "displayName": "test-exec-${uniqueId}",
+      "executionTimeout": "86400s",
+      "gcsNotebookSource": {
+        "uri": "gs://test-${uniqueId}/test.ipynb"
+      },
+      "gcsOutputUri": "gs://test-${uniqueId}",
+      "notebookRuntimeTemplateResourceName": "projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+      "serviceAccount": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "parent": "projects/${projectId}/locations/us-central1"
+  },
+  "cron": "* * * * *",
+  "displayName": "test-${uniqueId}",
+  "maxConcurrentRunCount": "1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createNotebookExecutionJobRequest": {
+    "notebookExecutionJob": {
+      "displayName": "test-exec-${uniqueId}",
+      "executionTimeout": "86400s",
+      "gcsNotebookSource": {
+        "uri": "gs://test-${uniqueId}/test.ipynb"
+      },
+      "gcsOutputUri": "gs://test-${uniqueId}",
+      "notebookRuntimeTemplateResourceName": "projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+      "serviceAccount": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "parent": "projects/${projectId}/locations/us-central1"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cron": "* * * * *",
+  "displayName": "test-${uniqueId}",
+  "maxConcurrentRunCount": "1",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+  "nextRunTime": "2025-01-04T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules?alt=json&filter=create_notebook_execution_job_request%3A%2A
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "schedules": [
+    {
+      "createNotebookExecutionJobRequest": {
+        "notebookExecutionJob": {
+          "displayName": "test-exec-${uniqueId}",
+          "executionTimeout": "86400s",
+          "gcsNotebookSource": {
+            "uri": "gs://test-${uniqueId}/test.ipynb"
+          },
+          "gcsOutputUri": "gs://test-${uniqueId}",
+          "notebookRuntimeTemplateResourceName": "projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+          "serviceAccount": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        },
+        "parent": "projects/${projectId}/locations/us-central1"
+      },
+      "createTime": "2025-01-01T12:34:56.123456Z",
+      "cron": "* * * * *",
+      "displayName": "test-${uniqueId}",
+      "maxConcurrentRunCount": "1",
+      "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+      "nextRunTime": "2025-01-04T12:34:56.123456Z",
+      "startTime": "2025-01-03T12:34:56.123456Z",
+      "state": "ACTIVE"
+    }
+  ]
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createNotebookExecutionJobRequest": {
+    "notebookExecutionJob": {
+      "displayName": "test-exec-${uniqueId}",
+      "executionTimeout": "86400s",
+      "gcsNotebookSource": {
+        "uri": "gs://test-${uniqueId}/test.ipynb"
+      },
+      "gcsOutputUri": "gs://test-${uniqueId}",
+      "notebookRuntimeTemplateResourceName": "projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+      "serviceAccount": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "parent": "projects/${projectId}/locations/us-central1"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cron": "* * * * *",
+  "displayName": "test-${uniqueId}",
+  "maxConcurrentRunCount": "1",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+  "nextRunTime": "2025-01-04T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules?alt=json&filter=create_notebook_execution_job_request%3A%2A
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "schedules": [
+    {
+      "createNotebookExecutionJobRequest": {
+        "notebookExecutionJob": {
+          "displayName": "test-exec-${uniqueId}",
+          "executionTimeout": "86400s",
+          "gcsNotebookSource": {
+            "uri": "gs://test-${uniqueId}/test.ipynb"
+          },
+          "gcsOutputUri": "gs://test-${uniqueId}",
+          "notebookRuntimeTemplateResourceName": "projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+          "serviceAccount": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        },
+        "parent": "projects/${projectId}/locations/us-central1"
+      },
+      "createTime": "2025-01-01T12:34:56.123456Z",
+      "cron": "* * * * *",
+      "displayName": "test-${uniqueId}",
+      "maxConcurrentRunCount": "1",
+      "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+      "nextRunTime": "2025-01-04T12:34:56.123456Z",
+      "startTime": "2025-01-03T12:34:56.123456Z",
+      "state": "ACTIVE"
+    }
+  ]
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createNotebookExecutionJobRequest": {
+    "notebookExecutionJob": {
+      "displayName": "test-exec-${uniqueId}",
+      "executionTimeout": "86400s",
+      "gcsNotebookSource": {
+        "uri": "gs://test-${uniqueId}/test.ipynb"
+      },
+      "gcsOutputUri": "gs://test-${uniqueId}",
+      "notebookRuntimeTemplateResourceName": "projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+      "serviceAccount": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "parent": "projects/${projectId}/locations/us-central1"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cron": "* * * * *",
+  "displayName": "test-${uniqueId}",
+  "maxConcurrentRunCount": "1",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+  "nextRunTime": "2025-01-04T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
