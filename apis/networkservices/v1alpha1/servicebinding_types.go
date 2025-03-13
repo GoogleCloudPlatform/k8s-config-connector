@@ -25,10 +25,6 @@ var NetworkServicesServiceBindingGVK = GroupVersion.WithKind("NetworkServicesSer
 // NetworkServicesServiceBindingSpec defines the desired state of NetworkServicesServiceBinding
 // +kcc:proto=google.cloud.networkservices.v1.ServiceBinding
 type NetworkServicesServiceBindingSpec struct {
-	// Required. Name of the ServiceBinding resource. It matches pattern
-	//  `projects/*/locations/global/serviceBindings/service_binding_name`.
-	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.name
-	Name *string `json:"name,omitempty"`
 
 	// Optional. A free-text description of the resource. Max length 1024
 	//  characters.
