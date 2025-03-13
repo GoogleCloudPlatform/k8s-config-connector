@@ -83,7 +83,7 @@ spec:
                     items:
                       type: string
                     type: array
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to add to the CLASSPATHs
                       of the Flink driver and tasks.
                     items:
@@ -118,7 +118,7 @@ spec:
               hadoopJob:
                 description: Optional. Job is a Hadoop job.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. HCFS URIs of archives to be extracted
                       in the working directory of Hadoop drivers and tasks. Supported
                       file types: .jar, .tar, .tar.gz, .tgz, or .zip.'
@@ -133,14 +133,14 @@ spec:
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. HCFS (Hadoop Compatible Filesystem) URIs
                       of files to be copied to the working directory of Hadoop drivers
                       and distributed tasks. Useful for naively parallel tasks.
                     items:
                       type: string
                     type: array
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. Jar file URIs to add to the CLASSPATHs
                       of the Hadoop driver and tasks.
                     items:
@@ -176,7 +176,7 @@ spec:
                       a query fails. The default value is `false`. Setting to `true`
                       can be useful when executing independent parallel queries.
                     type: boolean
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to add to the CLASSPATH
                       of the Hive server and Hadoop MapReduce (MR) tasks. Can contain
                       Hive SerDes and UDFs.
@@ -287,7 +287,7 @@ spec:
                       a query fails. The default value is `false`. Setting to `true`
                       can be useful when executing independent parallel queries.
                     type: boolean
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to add to the CLASSPATH
                       of the Pig Client and Hadoop MapReduce (MR) tasks. Can contain
                       Pig UDFs.
@@ -413,7 +413,7 @@ spec:
               pysparkJob:
                 description: Optional. Job is a PySpark job.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. HCFS URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: .jar, .tar, .tar.gz, .tgz, and .zip.'
@@ -428,14 +428,14 @@ spec:
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. HCFS URIs of files to be placed in the
                       working directory of each executor. Useful for naively parallel
                       tasks.
                     items:
                       type: string
                     type: array
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to add to the CLASSPATHs
                       of the Python driver and tasks.
                     items:
@@ -457,7 +457,7 @@ spec:
                       set in /etc/spark/conf/spark-defaults.conf and classes in user
                       code.
                     type: object
-                  pythonFileUris:
+                  pythonFileURIs:
                     description: 'Optional. HCFS file URIs of Python files to pass
                       to the PySpark framework. Supported file types: .py, .egg, and
                       .zip.'
@@ -527,7 +527,7 @@ spec:
               sparkJob:
                 description: Optional. Job is a Spark job.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. HCFS URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: .jar, .tar, .tar.gz, .tgz, and .zip.'
@@ -542,14 +542,14 @@ spec:
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. HCFS URIs of files to be placed in the
                       working directory of each executor. Useful for naively parallel
                       tasks.
                     items:
                       type: string
                     type: array
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to add to the CLASSPATHs
                       of the Spark driver and tasks.
                     items:
@@ -580,7 +580,7 @@ spec:
               sparkRJob:
                 description: Optional. Job is a SparkR job.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. HCFS URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: .jar, .tar, .tar.gz, .tgz, and .zip.'
@@ -595,7 +595,7 @@ spec:
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. HCFS URIs of files to be placed in the
                       working directory of each executor. Useful for naively parallel
                       tasks.
@@ -622,7 +622,7 @@ spec:
               sparkSQLJob:
                 description: Optional. Job is a SparkSql job.
                 properties:
-                  jarFileUris:
+                  jarFileURIs:
                     description: Optional. HCFS URIs of jar files to be added to the
                       Spark CLASSPATH.
                     items:
@@ -788,7 +788,7 @@ spec:
                     description: Output only. A URI pointing to the location of the
                       stdout of the job's driver program.
                     type: string
-                  jobUuid:
+                  jobUUid:
                     description: Output only. A UUID that uniquely identifies a job
                       within the project over time. This is in contrast to a user-settable
                       reference.job_id that might be reused over time.

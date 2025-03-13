@@ -118,8 +118,8 @@ func (in *DataprocJobObservedState) DeepCopyInto(out *DataprocJobObservedState) 
 		*out = new(string)
 		**out = **in
 	}
-	if in.JobUuid != nil {
-		in, out := &in.JobUuid, &out.JobUuid
+	if in.JobUUid != nil {
+		in, out := &in.JobUUid, &out.JobUUid
 		*out = new(string)
 		**out = **in
 	}
@@ -240,8 +240,8 @@ func (in *DataprocJobSpec) DeepCopyInto(out *DataprocJobSpec) {
 		*out = new(DriverSchedulingConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Parent != nil {
-		in, out := &in.Parent, &out.Parent
+	if in.DataprocJobParent != nil {
+		in, out := &in.DataprocJobParent, &out.DataprocJobParent
 		*out = new(DataprocJobParent)
 		(*in).DeepCopyInto(*out)
 	}
@@ -340,8 +340,8 @@ func (in *FlinkJob) DeepCopyInto(out *FlinkJob) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -392,18 +392,18 @@ func (in *HadoopJob) DeepCopyInto(out *HadoopJob) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.FileUris != nil {
-		in, out := &in.FileUris, &out.FileUris
+	if in.FileURIs != nil {
+		in, out := &in.FileURIs, &out.FileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ArchiveUris != nil {
-		in, out := &in.ArchiveUris, &out.ArchiveUris
+	if in.ArchiveURIs != nil {
+		in, out := &in.ArchiveURIs, &out.ArchiveURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -463,8 +463,8 @@ func (in *HiveJob) DeepCopyInto(out *HiveJob) {
 			(*out)[key] = val
 		}
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -724,8 +724,8 @@ func (in *PigJob) DeepCopyInto(out *PigJob) {
 			(*out)[key] = val
 		}
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -811,23 +811,23 @@ func (in *PySparkJob) DeepCopyInto(out *PySparkJob) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.PythonFileUris != nil {
-		in, out := &in.PythonFileUris, &out.PythonFileUris
+	if in.PythonFileURIs != nil {
+		in, out := &in.PythonFileURIs, &out.PythonFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.FileUris != nil {
-		in, out := &in.FileUris, &out.FileUris
+	if in.FileURIs != nil {
+		in, out := &in.FileURIs, &out.FileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ArchiveUris != nil {
-		in, out := &in.ArchiveUris, &out.ArchiveUris
+	if in.ArchiveURIs != nil {
+		in, out := &in.ArchiveURIs, &out.ArchiveURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -893,18 +893,18 @@ func (in *SparkJob) DeepCopyInto(out *SparkJob) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.FileUris != nil {
-		in, out := &in.FileUris, &out.FileUris
+	if in.FileURIs != nil {
+		in, out := &in.FileURIs, &out.FileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ArchiveUris != nil {
-		in, out := &in.ArchiveUris, &out.ArchiveUris
+	if in.ArchiveURIs != nil {
+		in, out := &in.ArchiveURIs, &out.ArchiveURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -945,13 +945,13 @@ func (in *SparkRJob) DeepCopyInto(out *SparkRJob) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.FileUris != nil {
-		in, out := &in.FileUris, &out.FileUris
+	if in.FileURIs != nil {
+		in, out := &in.FileURIs, &out.FileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ArchiveUris != nil {
-		in, out := &in.ArchiveUris, &out.ArchiveUris
+	if in.ArchiveURIs != nil {
+		in, out := &in.ArchiveURIs, &out.ArchiveURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -1006,8 +1006,8 @@ func (in *SparkSQLJob) DeepCopyInto(out *SparkSQLJob) {
 			(*out)[key] = val
 		}
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}

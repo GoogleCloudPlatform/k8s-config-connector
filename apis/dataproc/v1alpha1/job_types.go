@@ -96,7 +96,7 @@ type DataprocJobSpec struct {
 	DriverSchedulingConfig *DriverSchedulingConfig `json:"driverSchedulingConfig,omitempty"`
 
 	// Required.
-	Parent *DataprocJobParent `json:"parent,omitempty"`
+	*DataprocJobParent `json:"parent,omitempty"`
 
 	// The DataprocJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -109,6 +109,328 @@ type DataprocJobParent struct {
 
 	// Required. The Dataproc region in which to handle the request.
 	Region string `json:"region,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.FlinkJob
+type FlinkJob struct {
+	// The HCFS URI of the jar file that contains the main class.
+	// +kcc:proto:field=google.cloud.dataproc.v1.FlinkJob.main_jar_file_uri
+	MainJarFileURI *string `json:"mainJarFileURI,omitempty"`
+
+	// The name of the driver's main class. The jar file that contains the class
+	//  must be in the default CLASSPATH or specified in
+	//  [jarFileUris][google.cloud.dataproc.v1.FlinkJob.jar_file_uris].
+	// +kcc:proto:field=google.cloud.dataproc.v1.FlinkJob.main_class
+	MainClass *string `json:"mainClass,omitempty"`
+
+	// Optional. The arguments to pass to the driver. Do not include arguments,
+	//  such as `--conf`, that can be set as job properties, since a collision
+	//  might occur that causes an incorrect job submission.
+	// +kcc:proto:field=google.cloud.dataproc.v1.FlinkJob.args
+	Args []string `json:"args,omitempty"`
+
+	// Optional. HCFS URIs of jar files to add to the CLASSPATHs of the
+	//  Flink driver and tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.FlinkJob.jar_file_uris
+	JarFileURIs []string `json:"jarFileURIs,omitempty"`
+
+	// Optional. HCFS URI of the savepoint, which contains the last saved progress
+	//  for starting the current job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.FlinkJob.savepoint_uri
+	SavepointURI *string `json:"savepointURI,omitempty"`
+
+	// Optional. A mapping of property names to values, used to configure Flink.
+	//  Properties that conflict with values set by the Dataproc API might be
+	//  overwritten. Can include properties set in
+	//  `/etc/flink/conf/flink-defaults.conf` and classes in user code.
+	// +kcc:proto:field=google.cloud.dataproc.v1.FlinkJob.properties
+	Properties map[string]string `json:"properties,omitempty"`
+
+	// Optional. The runtime log config for job execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.FlinkJob.logging_config
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.HadoopJob
+type HadoopJob struct {
+	// The HCFS URI of the jar file containing the main class.
+	//  Examples:
+	//      'gs://foo-bucket/analytics-binaries/extract-useful-metrics-mr.jar'
+	//      'hdfs:/tmp/test-samples/custom-wordcount.jar'
+	//      'file:///home/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'
+	// +kcc:proto:field=google.cloud.dataproc.v1.HadoopJob.main_jar_file_uri
+	MainJarFileURI *string `json:"mainJarFileURI,omitempty"`
+
+	// The name of the driver's main class. The jar file containing the class
+	//  must be in the default CLASSPATH or specified in `jar_file_uris`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HadoopJob.main_class
+	MainClass *string `json:"mainClass,omitempty"`
+
+	// Optional. The arguments to pass to the driver. Do not
+	//  include arguments, such as `-libjars` or `-Dfoo=bar`, that can be set as
+	//  job properties, since a collision might occur that causes an incorrect job
+	//  submission.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HadoopJob.args
+	Args []string `json:"args,omitempty"`
+
+	// Optional. Jar file URIs to add to the CLASSPATHs of the
+	//  Hadoop driver and tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HadoopJob.jar_file_uris
+	JarFileURIs []string `json:"jarFileURIs,omitempty"`
+
+	// Optional. HCFS (Hadoop Compatible Filesystem) URIs of files to be copied
+	//  to the working directory of Hadoop drivers and distributed tasks. Useful
+	//  for naively parallel tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HadoopJob.file_uris
+	FileURIs []string `json:"fileURIs,omitempty"`
+
+	// Optional. HCFS URIs of archives to be extracted in the working directory of
+	//  Hadoop drivers and tasks. Supported file types:
+	//  .jar, .tar, .tar.gz, .tgz, or .zip.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HadoopJob.archive_uris
+	ArchiveURIs []string `json:"archiveURIs,omitempty"`
+
+	// Optional. A mapping of property names to values, used to configure Hadoop.
+	//  Properties that conflict with values set by the Dataproc API might be
+	//  overwritten. Can include properties set in `/etc/hadoop/conf/*-site` and
+	//  classes in user code.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HadoopJob.properties
+	Properties map[string]string `json:"properties,omitempty"`
+
+	// Optional. The runtime log config for job execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HadoopJob.logging_config
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.HiveJob
+type HiveJob struct {
+	// The HCFS URI of the script that contains Hive queries.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HiveJob.query_file_uri
+	QueryFileURI *string `json:"queryFileURI,omitempty"`
+
+	// A list of queries.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HiveJob.query_list
+	QueryList *QueryList `json:"queryList,omitempty"`
+
+	// Optional. Whether to continue executing queries if a query fails.
+	//  The default value is `false`. Setting to `true` can be useful when
+	//  executing independent parallel queries.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HiveJob.continue_on_failure
+	ContinueOnFailure *bool `json:"continueOnFailure,omitempty"`
+
+	// Optional. Mapping of query variable names to values (equivalent to the
+	//  Hive command: `SET name="value";`).
+	// +kcc:proto:field=google.cloud.dataproc.v1.HiveJob.script_variables
+	ScriptVariables map[string]string `json:"scriptVariables,omitempty"`
+
+	// Optional. A mapping of property names and values, used to configure Hive.
+	//  Properties that conflict with values set by the Dataproc API might be
+	//  overwritten. Can include properties set in `/etc/hadoop/conf/*-site.xml`,
+	//  /etc/hive/conf/hive-site.xml, and classes in user code.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HiveJob.properties
+	Properties map[string]string `json:"properties,omitempty"`
+
+	// Optional. HCFS URIs of jar files to add to the CLASSPATH of the
+	//  Hive server and Hadoop MapReduce (MR) tasks. Can contain Hive SerDes
+	//  and UDFs.
+	// +kcc:proto:field=google.cloud.dataproc.v1.HiveJob.jar_file_uris
+	JarFileURIs []string `json:"jarFileURIs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.PigJob
+type PigJob struct {
+	// The HCFS URI of the script that contains the Pig queries.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PigJob.query_file_uri
+	QueryFileURI *string `json:"queryFileURI,omitempty"`
+
+	// A list of queries.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PigJob.query_list
+	QueryList *QueryList `json:"queryList,omitempty"`
+
+	// Optional. Whether to continue executing queries if a query fails.
+	//  The default value is `false`. Setting to `true` can be useful when
+	//  executing independent parallel queries.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PigJob.continue_on_failure
+	ContinueOnFailure *bool `json:"continueOnFailure,omitempty"`
+
+	// Optional. Mapping of query variable names to values (equivalent to the Pig
+	//  command: `name=[value]`).
+	// +kcc:proto:field=google.cloud.dataproc.v1.PigJob.script_variables
+	ScriptVariables map[string]string `json:"scriptVariables,omitempty"`
+
+	// Optional. A mapping of property names to values, used to configure Pig.
+	//  Properties that conflict with values set by the Dataproc API might be
+	//  overwritten. Can include properties set in `/etc/hadoop/conf/*-site.xml`,
+	//  /etc/pig/conf/pig.properties, and classes in user code.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PigJob.properties
+	Properties map[string]string `json:"properties,omitempty"`
+
+	// Optional. HCFS URIs of jar files to add to the CLASSPATH of
+	//  the Pig Client and Hadoop MapReduce (MR) tasks. Can contain Pig UDFs.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PigJob.jar_file_uris
+	JarFileURIs []string `json:"jarFileURIs,omitempty"`
+
+	// Optional. The runtime log config for job execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PigJob.logging_config
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.PySparkJob
+type PySparkJob struct {
+	// Required. The HCFS URI of the main Python file to use as the driver. Must
+	//  be a .py file.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkJob.main_python_file_uri
+	MainPythonFileURI *string `json:"mainPythonFileURI,omitempty"`
+
+	// Optional. The arguments to pass to the driver.  Do not include arguments,
+	//  such as `--conf`, that can be set as job properties, since a collision may
+	//  occur that causes an incorrect job submission.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkJob.args
+	Args []string `json:"args,omitempty"`
+
+	// Optional. HCFS file URIs of Python files to pass to the PySpark
+	//  framework. Supported file types: .py, .egg, and .zip.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkJob.python_file_uris
+	PythonFileURIs []string `json:"pythonFileURIs,omitempty"`
+
+	// Optional. HCFS URIs of jar files to add to the CLASSPATHs of the
+	//  Python driver and tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkJob.jar_file_uris
+	JarFileURIs []string `json:"jarFileURIs,omitempty"`
+
+	// Optional. HCFS URIs of files to be placed in the working directory of
+	//  each executor. Useful for naively parallel tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkJob.file_uris
+	FileURIs []string `json:"fileURIs,omitempty"`
+
+	// Optional. HCFS URIs of archives to be extracted into the working directory
+	//  of each executor. Supported file types:
+	//  .jar, .tar, .tar.gz, .tgz, and .zip.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkJob.archive_uris
+	ArchiveURIs []string `json:"archiveURIs,omitempty"`
+
+	// Optional. A mapping of property names to values, used to configure PySpark.
+	//  Properties that conflict with values set by the Dataproc API might be
+	//  overwritten. Can include properties set in
+	//  /etc/spark/conf/spark-defaults.conf and classes in user code.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkJob.properties
+	Properties map[string]string `json:"properties,omitempty"`
+
+	// Optional. The runtime log config for job execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkJob.logging_config
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.SparkJob
+type SparkJob struct {
+	// The HCFS URI of the jar file that contains the main class.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkJob.main_jar_file_uri
+	MainJarFileURI *string `json:"mainJarFileURI,omitempty"`
+
+	// The name of the driver's main class. The jar file that contains the class
+	//  must be in the default CLASSPATH or specified in
+	//  SparkJob.jar_file_uris.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkJob.main_class
+	MainClass *string `json:"mainClass,omitempty"`
+
+	// Optional. The arguments to pass to the driver. Do not include arguments,
+	//  such as `--conf`, that can be set as job properties, since a collision may
+	//  occur that causes an incorrect job submission.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkJob.args
+	Args []string `json:"args,omitempty"`
+
+	// Optional. HCFS URIs of jar files to add to the CLASSPATHs of the
+	//  Spark driver and tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkJob.jar_file_uris
+	JarFileURIs []string `json:"jarFileURIs,omitempty"`
+
+	// Optional. HCFS URIs of files to be placed in the working directory of
+	//  each executor. Useful for naively parallel tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkJob.file_uris
+	FileURIs []string `json:"fileURIs,omitempty"`
+
+	// Optional. HCFS URIs of archives to be extracted into the working directory
+	//  of each executor. Supported file types:
+	//  .jar, .tar, .tar.gz, .tgz, and .zip.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkJob.archive_uris
+	ArchiveURIs []string `json:"archiveURIs,omitempty"`
+
+	// Optional. A mapping of property names to values, used to configure Spark.
+	//  Properties that conflict with values set by the Dataproc API might be
+	//  overwritten. Can include properties set in
+	//  /etc/spark/conf/spark-defaults.conf and classes in user code.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkJob.properties
+	Properties map[string]string `json:"properties,omitempty"`
+
+	// Optional. The runtime log config for job execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkJob.logging_config
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.SparkRJob
+type SparkRJob struct {
+	// Required. The HCFS URI of the main R file to use as the driver.
+	//  Must be a .R file.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRJob.main_r_file_uri
+	MainRFileURI *string `json:"mainRFileURI,omitempty"`
+
+	// Optional. The arguments to pass to the driver.  Do not include arguments,
+	//  such as `--conf`, that can be set as job properties, since a collision may
+	//  occur that causes an incorrect job submission.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRJob.args
+	Args []string `json:"args,omitempty"`
+
+	// Optional. HCFS URIs of files to be placed in the working directory of
+	//  each executor. Useful for naively parallel tasks.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRJob.file_uris
+	FileURIs []string `json:"fileURIs,omitempty"`
+
+	// Optional. HCFS URIs of archives to be extracted into the working directory
+	//  of each executor. Supported file types:
+	//  .jar, .tar, .tar.gz, .tgz, and .zip.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRJob.archive_uris
+	ArchiveURIs []string `json:"archiveURIs,omitempty"`
+
+	// Optional. A mapping of property names to values, used to configure SparkR.
+	//  Properties that conflict with values set by the Dataproc API might be
+	//  overwritten. Can include properties set in
+	//  /etc/spark/conf/spark-defaults.conf and classes in user code.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRJob.properties
+	Properties map[string]string `json:"properties,omitempty"`
+
+	// Optional. The runtime log config for job execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRJob.logging_config
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.SparkSqlJob
+type SparkSQLJob struct {
+	// The HCFS URI of the script that contains SQL queries.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlJob.query_file_uri
+	QueryFileURI *string `json:"queryFileURI,omitempty"`
+
+	// A list of queries.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlJob.query_list
+	QueryList *QueryList `json:"queryList,omitempty"`
+
+	// Optional. Mapping of query variable names to values (equivalent to the
+	//  Spark SQL command: SET `name="value";`).
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlJob.script_variables
+	ScriptVariables map[string]string `json:"scriptVariables,omitempty"`
+
+	// Optional. A mapping of property names to values, used to configure
+	//  Spark SQL's SparkConf. Properties that conflict with values set by the
+	//  Dataproc API might be overwritten.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlJob.properties
+	Properties map[string]string `json:"properties,omitempty"`
+
+	// Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlJob.jar_file_uris
+	JarFileURIs []string `json:"jarFileURIs,omitempty"`
+
+	// Optional. The runtime log config for job execution.
+	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlJob.logging_config
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
 }
 
 // DataprocJobStatus defines the config connector machine state of DataprocJob
@@ -167,7 +489,7 @@ type DataprocJobObservedState struct {
 	//  over time. This is in contrast to a user-settable reference.job_id that
 	//  might be reused over time.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.job_uuid
-	JobUuid *string `json:"jobUuid,omitempty"`
+	JobUUid *string `json:"jobUUid,omitempty"`
 
 	// Output only. Indicates whether the job is completed. If the value is
 	//  `false`, the job is still in progress. If `true`, the job is completed, and
