@@ -17,6 +17,7 @@ package edgecontainer
 import (
 	pb "cloud.google.com/go/edgecontainer/apiv1/edgecontainerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1alpha1"
+	nodeRef "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tpu/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -51,7 +52,9 @@ func EdgeContainerMachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Machin
 	out := &krm.EdgeContainerMachineSpec{}
 	// MISSING: Name
 	out.Labels = in.Labels
-	out.HostedNode = direct.LazyPtr(in.GetHostedNode())
+	if in.GetHostedNode() != "" {
+		out.HostedNodeRef = &nodeRef.NodeRef{External: in.GetHostedNode()}
+	}
 	out.Zone = direct.LazyPtr(in.GetZone())
 	return out
 }
@@ -62,7 +65,9 @@ func EdgeContainerMachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCon
 	out := &pb.Machine{}
 	// MISSING: Name
 	out.Labels = in.Labels
-	out.HostedNode = direct.ValueOf(in.HostedNode)
+	if in.HostedNodeRef != nil {
+		out.HostedNode = in.HostedNodeRef.External
+	}
 	out.Zone = direct.ValueOf(in.Zone)
 	return out
 }

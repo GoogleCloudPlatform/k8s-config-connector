@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	nodeRef "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tpu/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -38,7 +39,7 @@ type EdgeContainerMachineSpec struct {
 	//  the following format:
 	//    "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Machine.hosted_node
-	HostedNode *string `json:"hostedNode,omitempty"`
+	HostedNodeRef *nodeRef.NodeRef `json:"hostedNodeRef,omitempty"`
 
 	// The Google Distributed Cloud Edge zone of this machine.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Machine.zone

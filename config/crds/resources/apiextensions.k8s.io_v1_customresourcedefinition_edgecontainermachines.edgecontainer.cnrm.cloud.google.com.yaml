@@ -60,7 +60,7 @@ spec:
           spec:
             description: EdgeContainerMachineSpec defines the desired state of EdgeContainerMachine
             properties:
-              hostedNode:
+              hostedNodeRef:
                 description: |-
                   Canonical resource name of the node that this machine is responsible for
                    hosting e.g.
@@ -70,7 +70,32 @@ spec:
                    For control plane nodes hosted on edge machines, this will return
                    the following format:
                      "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed TPUVirtualMachine
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/nodes/{{nodeID}}".
+                    type: string
+                  name:
+                    description: The name of a TPUVirtualMachine resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a TPUVirtualMachine resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
