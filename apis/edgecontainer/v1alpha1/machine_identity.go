@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type MachineIdentity struct {
 	parent *MachineParent
-	id string
+	id     string
 }
 
 func (i *MachineIdentity) String() string {
-	return  i.parent.String() + "/machines/" + i.id
+	return i.parent.String() + "/machines/" + i.id
 }
 
 func (i *MachineIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *MachineIdentity) ID() string {
 }
 
 func (i *MachineIdentity) Parent() *MachineParent {
-	return  i.parent
+	return i.parent
 }
 
 type MachineParent struct {
@@ -52,12 +52,11 @@ func (p *MachineParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-
 // New builds a MachineIdentity from the Config Connector Machine object.
 func NewMachineIdentity(ctx context.Context, reader client.Reader, obj *EdgeContainerMachine) (*MachineIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +64,7 @@ func NewMachineIdentity(ctx context.Context, reader client.Reader, obj *EdgeCont
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := obj.Spec.Parent.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
