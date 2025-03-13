@@ -18,8 +18,9 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+set -x
 
-export WORKDIR=~/kccai/work1/
+export WORKDIR=~/kccai/k8s-config-connector/
 export BRANCH_NAME=controller_${SERVICE}_${CRD_KIND}
 export OLD_BRANCH_NAME=types_${SERVICE}_${CRD_KIND}
 export LOG_DIR=/tmp/conductor/${BRANCH_NAME}

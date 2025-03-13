@@ -36,10 +36,18 @@ cd ${WORKDIR}
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-git co ${BRANCH_NAME}
+git checkout ${BRANCH_NAME}
 
 controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF > apis/${SERVICE}/${CRD_VERSION,,}/${CRD_KIND,,}_identity.go
 // +tool:krm-identity
+// proto.service: ${PROTO_SERVICE}
+// proto.message: ${PROTO_MESSAGE}
+// crd.type: ${CRD_KIND}
+// crd.version: ${CRD_VERSION}
+EOF
+
+controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF > apis/${SERVICE}/${CRD_VERSION,,}/${CRD_KIND,,}_reference.go
+// +tool:krm-reference
 // proto.service: ${PROTO_SERVICE}
 // proto.message: ${PROTO_MESSAGE}
 // crd.type: ${CRD_KIND}

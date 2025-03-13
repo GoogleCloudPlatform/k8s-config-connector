@@ -41,8 +41,8 @@ cd ${WORKDIR}
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-git co ${OLD_BRANCH_NAME}
-git co -b ${BRANCH_NAME} || git co ${BRANCH_NAME}
+git checkout ${OLD_BRANCH_NAME}
+git checkout -b ${BRANCH_NAME} || git checkout ${BRANCH_NAME}
 
 controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF > pkg/controller/direct/${SERVICE}/client.go
 // +tool:controller-client

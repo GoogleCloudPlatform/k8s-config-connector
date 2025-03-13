@@ -6059,7 +6059,7 @@ branches:
       package: google.cloud.discoveryengine.v1
       proto: DataStore
       proto-path: google/cloud/discoveryengine/v1/data_store_service.proto
-      proto-service: ""
+      proto-service: google.cloud.discoveryengine.v1.DataStoreService
       proto-msg: google.cloud.discoveryengine.v1.DataStore
       host-name: ""
       notes:
@@ -6187,7 +6187,7 @@ branches:
       package: google.cloud.discoveryengine.v1
       proto: TargetSite
       proto-path: google/cloud/discoveryengine/v1/completion_service.proto
-      proto-service: ""
+      proto-service: google.cloud.discoveryengine.v1.SiteSearchEngineService
       proto-msg: google.cloud.discoveryengine.v1.TargetSite
       host-name: ""
       notes:

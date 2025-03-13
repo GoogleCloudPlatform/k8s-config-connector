@@ -36,8 +36,8 @@ cd ${WORKDIR}
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-git co master
-git co ${BRANCH_NAME}
+git checkout master
+git checkout ${BRANCH_NAME}
 
 TESTDIR=pkg/test/resourcefixture/testdata/basic/${SERVICE}/v1alpha1/${CRD_KIND,,}/${CRD_KIND,,}-minimal
 mkdir -p ${TESTDIR}
