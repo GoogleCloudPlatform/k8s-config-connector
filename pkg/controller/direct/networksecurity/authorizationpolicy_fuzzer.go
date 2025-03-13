@@ -19,7 +19,7 @@
 package networksecurity
 
 import (
-	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
+	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -29,8 +29,8 @@ func init() {
 
 func authorizationPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.AuthorizationPolicy{},
-		AuthorizationPolicySpec_FromProto, AuthorizationPolicySpec_ToProto,
-		AuthorizationPolicyObservedState_FromProto, AuthorizationPolicyObservedState_ToProto,
+		NetworkSecurityAuthorizationPolicySpec_FromProto, NetworkSecurityAuthorizationPolicySpec_ToProto,
+		NetworkSecurityAuthorizationPolicyObservedState_FromProto, NetworkSecurityAuthorizationPolicyObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")
