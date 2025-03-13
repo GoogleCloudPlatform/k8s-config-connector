@@ -305,12 +305,12 @@ type EnvironmentObservedState struct {
 
 	// Output only. Status of sessions created for this environment.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.session_status
-	SessionStatus *Environment_SessionStatus `json:"sessionStatus,omitempty"`
+	SessionStatus *Environment_SessionStatusObservedState `json:"sessionStatus,omitempty"`
 
 	// Output only. URI Endpoints to access sessions associated with the
 	//  Environment.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.endpoints
-	Endpoints *Environment_Endpoints `json:"endpoints,omitempty"`
+	Endpoints *Environment_EndpointsObservedState `json:"endpoints,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.Environment.Endpoints
