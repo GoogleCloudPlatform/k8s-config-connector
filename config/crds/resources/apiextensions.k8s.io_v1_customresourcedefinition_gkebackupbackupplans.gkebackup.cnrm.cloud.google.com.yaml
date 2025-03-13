@@ -302,10 +302,32 @@ spec:
 
                    - `projects/*/locations/*/clusters/*`
                    - `projects/*/zones/*/clusters/*`
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
                     description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
                       `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
+                    type: string
+                  name:
+                    description: 'Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      */'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                      */'
                     type: string
                 type: object
               deactivated:
