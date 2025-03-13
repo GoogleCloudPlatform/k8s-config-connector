@@ -1,0 +1,15 @@
+Please add the generation for `google/cloud/recaptchaenterprise/v1/recaptchaenterprise.proto` to the `gen-proto-no-fixup` target in `Makefile`.
+
+Hints:
+
+* Use the ReadFile command to read the contents of the file.
+
+* Use the EditFile command to insert the appropriate third_party directory into the list of paths.
+
+* The gen-proto-no-fixup command contains a long protoc command, split across multiple lines.  There should be a backslash character (\) on all lines but the last.  Make sure there is a space before the backslash.
+
+* The generation path being added  should begin with `./third_party/googleapis/mockgcp/firewallpolicy` and should not contain google after mockgcp.
+
+* This is not a correct path: `./third_party/googleapis/mockgcp/google/cloud/metastore/...`
+
+* This is the correct path: `./third_party/googleapis/mockgcp/cloud/metastore/...`
