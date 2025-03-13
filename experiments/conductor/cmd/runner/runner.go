@@ -63,7 +63,8 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdGenerateTypes       = 20
 	cmdAdjustTypes         = 21
 	cmdGenerateCRD         = 22
-	cmdGenerateFuzzer      = 23
+	cmdGenerateMapper      = 23
+	cmdGenerateFuzzer      = 24
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
@@ -323,27 +324,42 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 
 	case cmdCreateScriptYaml: // 10
-		processBranches(ctx, opts, branches.Branches, createScriptYaml, "Script YAML", "Create gcloud script.yaml")
+		processBranches(ctx, opts, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsg: "Create gcloud script.yaml"}})
 	case cmdCaptureHttpLog: // 11
-		processBranches(ctx, opts, branches.Branches, captureHttpLog, "HTTP Log", "Capture HTTP Log for mocks")
+		processBranches(ctx, opts, branches.Branches, "HTTP Log", []BranchProcessor{{Fn: captureHttpLog, CommitMsg: "Capture HTTP Log for mocks"}})
 	case cmdGenerateMockGo: // 12
-		processBranches(ctx, opts, branches.Branches, generateMockGo, "Mock Go Files", "Add generated mock files")
+		processBranches(ctx, opts, branches.Branches, "Mock Go Files", []BranchProcessor{{Fn: generateMockGo, CommitMsg: "Add generated mock files"}})
 	case cmdAddServiceRoundTrip: // 13
-		processBranches(ctx, opts, branches.Branches, addServiceToRoundTrip, "Service RoundTrip", "Add service to mock_http_roundtrip.go")
+		processBranches(ctx, opts, branches.Branches, "Service RoundTrip", []BranchProcessor{{Fn: addServiceToRoundTrip, CommitMsg: "Add service to mock_http_roundtrip.go"}})
 	case cmdAddProtoMakefile: // 14
-		processBranches(ctx, opts, branches.Branches, addProtoToMakefile, "Proto Makefile", "Add proto generation to makefile")
+		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsg: "Add proto generation to makefile"}})
 	case cmdBuildProto: // 15
-		processBranches(ctx, opts, branches.Branches, buildProtoFiles, "Build Proto", "Build and add generated proto files")
+		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsg: "Build and add generated proto files"}})
 	case cmdRunMockTests: // 16
-		processBranches(ctx, opts, branches.Branches, runMockgcpTests, "Mock Tests", "Run mock tests")
+		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: runMockgcpTests, CommitMsg: "Run mock tests"}})
 	case cmdGenerateTypes: // 20
-		processBranches(ctx, opts, branches.Branches, generateTypesAndMapper, "Types and Mapper", "Add generated types and mapper")
+		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsg: "Add generated types"}})
 	case cmdAdjustTypes: // 21
-		processBranches(ctx, opts, branches.Branches, adjustTypes, "Adjusting types", "Adjust generated types to match proto structure")
+		processors := []BranchProcessor{
+			{Fn: setTypeSpecStatus, CommitMsg: "Add spec and status to generated type"},
+			{Fn: setTypeParent, CommitMsg: "Add parent to generated type"},
+			{Fn: adjustIdentityParent, CommitMsg: "Adjust identity parent"},
+			// check capitalization of URL resource part:  pattern: "projects/{project}/locations/{location}/services/{service}/quotaInfos/{quota_info}"
+			{Fn: adjustIdentityParentNewFunction, CommitMsg: "Adjust identity parent NewIdentity method"},
+			{Fn: regenerateTypes, CommitMsg: "Regenerate types"},
+			// preferred manual: Add something for Capitalization of Abbreviations: any acronyms that are not all caps should be all caps
+			// manual: Add something to handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
+			// * https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4017/commits/cc726106aff55d41e6bc94272acc3612f2636397
+			// Manually add a kubebuilder required field label to the fields that are marked required in proto
+		}
+		processBranches(ctx, opts, branches.Branches, "Adjusting types", processors)
 	case cmdGenerateCRD: // 22
-		processBranches(ctx, opts, branches.Branches, generateCRD, "CRD", "Add generated CRD")
-	case cmdGenerateFuzzer: // 23
-		processBranches(ctx, opts, branches.Branches, generateFuzzer, "Fuzzer", "Add generated fuzzer")
+		processBranches(ctx, opts, branches.Branches, "CRD", []BranchProcessor{{Fn: generateCRD, CommitMsg: "Add generated CRD"}})
+	case cmdGenerateMapper: // 23
+		processBranches(ctx, opts, branches.Branches, "Mapper", []BranchProcessor{{Fn: generateMapper, CommitMsg: "Add generated mapper"}})
+		// handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
+	case cmdGenerateFuzzer: // 24
+		processBranches(ctx, opts, branches.Branches, "Fuzzer", []BranchProcessor{{Fn: generateFuzzer, CommitMsg: "Add generated fuzzer"}})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -369,10 +385,11 @@ func printHelp() {
 	log.Println("\t14 - [Mock] Add proto to makefile in each github branch")
 	log.Println("\t15 - [Proto] Build proto files in mockgcp directory")
 	log.Println("\t16 - [Mock] Run mockgcptests on generated mocks in each github branch")
-	log.Println("\t20 - [CRD] Generate Types and Mapper for each branch")
-	log.Println("\t21 - [CRD] Adjust types for each branch")
+	log.Println("\t20 - [CRD] Generate Types for each branch")
+	log.Println("\t21 - [CRD] Adjust the types for each branch")
 	log.Println("\t22 - [CRD] Generate CRD for each branch")
-	log.Println("\t23 - [Fuzzer] Generate fuzzer for each branch")
+	log.Println("\t23 - [CRD] Generate Mapper for each branch")
+	log.Println("\t24 - [CRD] Generate Fuzzer for each branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
@@ -898,13 +915,14 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 	mergeCommit := false
 	lines := strings.Split(strings.TrimSpace(output.Stdout), "\n")
 	if len(lines) > 0 {
-		log.Printf("Last %d commits in branch %s:", opts.numCommits, branch.Name)
 		for _, line := range lines {
 			if strings.Contains(line, "Merge pull request") {
 				mergeCommit = true
 			}
-			log.Printf("%s", line)
 		}
+	} else {
+		log.Printf("No commits found for branch %s", branch.Name)
+		return
 	}
 	if mergeCommit {
 		log.Printf("ERROR: Found merge commits in the last %d commits for branch %s:", opts.numCommits, branch.Name)
@@ -914,6 +932,10 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 
 	// Show the diff
 	diffLastNCommits(opts, branch)
+	log.Printf("Last %d commits in branch %s:", opts.numCommits, branch.Name)
+	for _, line := range lines {
+		log.Printf("%s\n", line)
+	}
 
 	// Ask for final confirmation
 	fmt.Printf("Are you sure you want to revert the last %d commits in branch %s? [y/N]: ", opts.numCommits, branch.Name)

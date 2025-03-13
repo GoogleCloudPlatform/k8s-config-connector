@@ -45,6 +45,7 @@ var commandMap = map[int64]string{
 	cmdGenerateFuzzer:      "generatefuzzer",
 	cmdBuildProto:          "buildproto",
 	cmdAdjustTypes:         "adjusttypes",
+	cmdGenerateMapper:      "generatemapper",
 }
 
 type exitBash func()
@@ -526,12 +527,15 @@ func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, comm
 	return nil
 }
 
-// Add this type definition
-type BranchProcessor func(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error)
+type BranchProcessorFn func(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error)
+type BranchProcessor struct {
+	CommitMsg string
+	Fn        BranchProcessorFn
+}
 
 // processBranch handles the processing of a single branch
-func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, processor BranchProcessor, description string, commitMsg string) error {
-	log.Printf("Processing branch %s: %s", branch.Name, description)
+func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor) error {
+	log.Printf("Processing branch %s: %s, processor: %s", branch.Name, description, processor.CommitMsg)
 
 	// Skip if branch should be skipped
 	if branch.Skip {
@@ -544,11 +548,42 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, proc
 
 	checkoutBranch(ctx, branch, opts.branchRepoDir)
 
-	// Process the branch
-	affectedPaths, err := processor(ctx, opts, branch)
-	if err != nil {
-		log.Printf("failed to process branch %s: %v", branch.Name, err)
-		// Continue despite errors
+	// Try running processor up to N times until we see changes in all affected paths
+	maxAttempts := 3
+	attempt := 0
+	var affectedPaths []string
+	for attempt < maxAttempts {
+		var err error
+		attempt++
+		// Process the branch
+		log.Printf("Processing branch %s: %s, processor: %s (attempt: %d/%d)", branch.Name, description, processor.CommitMsg, attempt, maxAttempts)
+		affectedPaths, err = processor.Fn(ctx, opts, branch)
+		if err != nil {
+			log.Printf("failed to process branch %s on attempt %d: %v", branch.Name, attempt, err)
+			break
+		}
+
+		// Check if any files changed
+		allChanged := true
+		for _, path := range affectedPaths {
+			changed, err := gitStatusCheck(opts.branchRepoDir, path)
+			if err != nil {
+				allChanged = false
+				log.Printf("failed to check status of %s: %v", path, err)
+				continue
+			}
+			if !changed {
+				allChanged = false
+				break
+			}
+		}
+
+		// Exit loop if we saw changes or hit max attempts
+		if allChanged || attempt >= maxAttempts {
+			break
+		}
+
+		log.Printf("No changes detected in attempt %d, retrying...", attempt)
 	}
 
 	// Run basic linting
@@ -563,6 +598,7 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, proc
 	//}
 
 	// Stage and commit changes
+	commitMsg := processor.CommitMsg
 	if lintFailure {
 		commitMsg = fmt.Sprintf("%s. WARN: linting failed.", commitMsg)
 	}
@@ -573,12 +609,14 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, proc
 	return nil
 }
 
-func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch, processor BranchProcessor, description string, commitMsg string) {
+func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch, description string, processors []BranchProcessor) {
 	for _, branch := range branches {
-		err := processBranch(ctx, opts, branch, processor, description, commitMsg)
-		if err != nil {
-			log.Printf("Error processing branch %s: %v", branch.Name, err)
-			// Continue with next branch despite errors
+		for _, processor := range processors {
+			err := processBranch(ctx, opts, branch, description, processor)
+			if err != nil {
+				log.Printf("Error processing branch %s: %v", branch.Name, err)
+				break
+			}
 		}
 	}
 }
