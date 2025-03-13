@@ -21,7 +21,6 @@ package mockaiplatform
 import (
 	"context"
 	"fmt"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"strings"
 	"time"
 
@@ -35,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 )
 
 type scheduleService struct {
