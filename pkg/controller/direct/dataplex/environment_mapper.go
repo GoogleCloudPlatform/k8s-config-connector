@@ -73,8 +73,8 @@ func DataplexEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: InfrastructureSpec
 	// MISSING: SessionSpec
-	out.SessionStatus = Environment_SessionStatus_FromProto(mapCtx, in.GetSessionStatus())
-	out.Endpoints = Environment_Endpoints_FromProto(mapCtx, in.GetEndpoints())
+	out.SessionStatus = Environment_SessionStatusObservedState_FromProto(mapCtx, in.GetSessionStatus())
+	out.Endpoints = Environment_EndpointsObservedState_FromProto(mapCtx, in.GetEndpoints())
 	return out
 }
 func DataplexEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
@@ -92,28 +92,11 @@ func DataplexEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
 	// MISSING: InfrastructureSpec
 	// MISSING: SessionSpec
-	out.SessionStatus = Environment_SessionStatus_ToProto(mapCtx, in.SessionStatus)
-	out.Endpoints = Environment_Endpoints_ToProto(mapCtx, in.Endpoints)
+	out.SessionStatus = Environment_SessionStatusObservedState_ToProto(mapCtx, in.SessionStatus)
+	out.Endpoints = Environment_EndpointsObservedState_ToProto(mapCtx, in.Endpoints)
 	return out
 }
-func Environment_Endpoints_FromProto(mapCtx *direct.MapContext, in *pb.Environment_Endpoints) *krm.Environment_Endpoints {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment_Endpoints{}
-	// MISSING: Notebooks
-	// MISSING: SQL
-	return out
-}
-func Environment_Endpoints_ToProto(mapCtx *direct.MapContext, in *krm.Environment_Endpoints) *pb.Environment_Endpoints {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment_Endpoints{}
-	// MISSING: Notebooks
-	// MISSING: SQL
-	return out
-}
+
 func Environment_EndpointsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment_Endpoints) *krm.Environment_EndpointsObservedState {
 	if in == nil {
 		return nil
@@ -214,22 +197,7 @@ func Environment_SessionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Environm
 	out.EnableFastStartup = direct.ValueOf(in.EnableFastStartup)
 	return out
 }
-func Environment_SessionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionStatus) *krm.Environment_SessionStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment_SessionStatus{}
-	// MISSING: Active
-	return out
-}
-func Environment_SessionStatus_ToProto(mapCtx *direct.MapContext, in *krm.Environment_SessionStatus) *pb.Environment_SessionStatus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment_SessionStatus{}
-	// MISSING: Active
-	return out
-}
+
 func Environment_SessionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionStatus) *krm.Environment_SessionStatusObservedState {
 	if in == nil {
 		return nil
