@@ -1,0 +1,10 @@
+{
+  "row_filter": "",
+  "rules": [
+    {
+      "column": "test_column",
+      "non_null_expectation": {},
+      "dimension": "VALIDITY"
+    }
+  ]
+}

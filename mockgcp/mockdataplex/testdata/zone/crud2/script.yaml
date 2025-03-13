@@ -1,0 +1,3 @@
+- exec: gcloud dataplex zones create test-${uniqueId} --lake=test-lake --location=us-central1 --resource-location-type=SINGLE_REGION --type=RAW --discovery-enabled
+- exec: gcloud dataplex zones describe test-${uniqueId} --lake=test-lake --location=us-central1
+- exec: gcloud dataplex zones delete test-${uniqueId} --lake=test-lake --location=us-central1 --async
