@@ -81,82 +81,73 @@ spec:
                   are allowed. By default, labels are inherited from the workflow
                   but are overridden by any labels associated with the execution.
                 type: object
-              parent:
-                description: 'Required. Name of the workflow for which an execution
-                  should be created. Format: projects/{project}/locations/{location}/workflows/{workflow}.
-                  The latest revision of the workflow will be used.'
+              location:
+                description: Required. The location of the application.
+                type: string
+              projectRef:
+                description: Required. The host project of the application.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
-                  location:
-                    description: Required. The location of the application.
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
                     type: string
-                  projectRef:
-                    description: Required. The host project of the application.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                      - kind
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                        - required:
-                          - kind
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The `projectID` field of a project, when not
-                          managed by Config Connector.
-                        type: string
-                      kind:
-                        description: The kind of the Project resource; optional but
-                          must be `Project` if provided.
-                        type: string
-                      name:
-                        description: The `name` field of a `Project` resource.
-                        type: string
-                      namespace:
-                        description: The `namespace` field of a `Project` resource.
-                        type: string
-                    type: object
-                  workflowRef:
-                    description: Required.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: A reference to an externally managed WorkflowsWorkflow
-                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/workflows/{{workflowID}}".
-                        type: string
-                      name:
-                        description: The name of a WorkflowsWorkflow resource.
-                        type: string
-                      namespace:
-                        description: The namespace of a WorkflowsWorkflow resource.
-                        type: string
-                    type: object
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
                 type: object
               resourceID:
                 description: The WorkflowsExecution name. If not given, the metadata.name
                   will be used.
                 type: string
+              workflowRef:
+                description: Required.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed WorkflowsWorkflow
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/workflows/{{workflowID}}".
+                    type: string
+                  name:
+                    description: The name of a WorkflowsWorkflow resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a WorkflowsWorkflow resource.
+                    type: string
+                type: object
             type: object
           status:
             description: WorkflowsExecutionStatus defines the config connector machine

@@ -57,7 +57,7 @@ func (p *ExecutionParent) String() string {
 func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *WorkflowsExecution) (*ExecutionIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.WorkflowExecutionParent.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *Workfl
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Parent.Location
+	location := obj.Spec.WorkflowExecutionParent.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

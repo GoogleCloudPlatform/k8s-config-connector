@@ -442,8 +442,8 @@ func (in *WorkflowsExecutionSpec) DeepCopyInto(out *WorkflowsExecutionSpec) {
 			(*out)[key] = val
 		}
 	}
-	if in.Parent != nil {
-		in, out := &in.Parent, &out.Parent
+	if in.WorkflowExecutionParent != nil {
+		in, out := &in.WorkflowExecutionParent, &out.WorkflowExecutionParent
 		*out = new(WorkflowExecutionParent)
 		(*in).DeepCopyInto(*out)
 	}
