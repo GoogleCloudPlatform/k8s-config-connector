@@ -219,3 +219,39 @@ func setFieldNonfailoverFailover(obj *pb.Reservation, location string) *pb.Reser
 	}
 	return obj
 }
+
+// Creates an assignment object which allows the given project to submit jobs
+// of a certain type using slots from the specified reservation.
+func CreateAssignment(ctx context.Context, in *pb.CreateAssignmentRequest) (*pb.Assignment, error) {
+	// TODO
+	return nil, nil
+}
+
+// Updates an existing assignment.
+func UpdateAssignment(ctx context.Context, in *pb.UpdateAssignmentRequest) (*pb.Assignment, error) {
+	// TODO
+	return nil, nil
+}
+
+// Lists assignments.
+// Only explicitly created assignments will be returned.
+func ListAssignments(ctx context.Context, in *pb.ListAssignmentsRequest) (*pb.ListAssignmentsResponse, error) {
+	// TODO
+	return nil, nil
+}
+
+// Moves an assignment under a new reservation.
+//
+// This differs from removing an existing assignment and recreating a new one
+// by providing a transactional change that ensures an assignee always has an
+// associated reservation.
+func MoveAssignment(ctx context.Context, in *pb.MoveAssignmentRequest) (*pb.Assignment, error) {
+	// TODO
+	return nil, nil
+}
+
+// Deletes a assignment. No expansion will happen.
+func DeleteAssignment(ctx context.Context, in *pb.DeleteAssignmentRequest) (*empty.Empty, error) {
+	// TODO
+	return nil, nil
+}

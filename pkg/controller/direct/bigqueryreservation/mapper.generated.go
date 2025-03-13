@@ -20,6 +20,50 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func Assignment_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Assignment{}
+	// MISSING: Name
+	out.Assignee = direct.LazyPtr(in.GetAssignee())
+	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
+	// MISSING: State
+	return out
+}
+func Assignment_ToProto(mapCtx *direct.MapContext, in *krm.Assignment) *pb.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assignment{}
+	// MISSING: Name
+	out.Assignee = direct.ValueOf(in.Assignee)
+	out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
+	// MISSING: State
+	return out
+}
+func AssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.AssignmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssignmentObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Assignee
+	// MISSING: JobType
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func AssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssignmentObservedState) *pb.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assignment{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Assignee
+	// MISSING: JobType
+	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
+	return out
+}
 func Reservation_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.Reservation {
 	if in == nil {
 		return nil
