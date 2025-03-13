@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type DiscoveredWorkloadIdentity struct {
 	parent *DiscoveredWorkloadParent
-	id string
+	id     string
 }
 
 func (i *DiscoveredWorkloadIdentity) String() string {
-	return  i.parent.String() + "/discoveredworkloads/" + i.id
+	return i.parent.String() + "/discoveredworkloads/" + i.id
 }
 
 func (i *DiscoveredWorkloadIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *DiscoveredWorkloadIdentity) ID() string {
 }
 
 func (i *DiscoveredWorkloadIdentity) Parent() *DiscoveredWorkloadParent {
-	return  i.parent
+	return i.parent
 }
 
 type DiscoveredWorkloadParent struct {
@@ -51,7 +51,6 @@ type DiscoveredWorkloadParent struct {
 func (p *DiscoveredWorkloadParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a DiscoveredWorkloadIdentity from the Config Connector DiscoveredWorkload object.
 func NewDiscoveredWorkloadIdentity(ctx context.Context, reader client.Reader, obj *AppHubDiscoveredWorkload) (*DiscoveredWorkloadIdentity, error) {

@@ -87,19 +87,6 @@ type WorkloadProperties struct {
 type WorkloadReference struct {
 }
 
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredWorkload
-type DiscoveredWorkloadObservedState struct {
-	// Output only. Reference of an underlying compute resource represented by the
-	//  Workload. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.workload_reference
-	WorkloadReference *WorkloadReference `json:"workloadReference,omitempty"`
-
-	// Output only. Properties of an underlying compute resource represented by
-	//  the Workload. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredWorkload.workload_properties
-	WorkloadProperties *WorkloadProperties `json:"workloadProperties,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apphub.v1.WorkloadProperties
 type WorkloadPropertiesObservedState struct {
 	// Output only. The service project identifier that the underlying cloud
