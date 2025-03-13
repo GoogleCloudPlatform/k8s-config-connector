@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type BackupVaultIdentity struct {
 	parent *BackupVaultParent
-	id string
+	id     string
 }
 
 func (i *BackupVaultIdentity) String() string {
-	return  i.parent.String() + "/backupvaults/" + i.id
+	return i.parent.String() + "/backupVaults/" + i.id
 }
 
 func (i *BackupVaultIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *BackupVaultIdentity) ID() string {
 }
 
 func (i *BackupVaultIdentity) Parent() *BackupVaultParent {
-	return  i.parent
+	return i.parent
 }
 
 type BackupVaultParent struct {
@@ -51,7 +51,6 @@ type BackupVaultParent struct {
 func (p *BackupVaultParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a BackupVaultIdentity from the Config Connector BackupVault object.
 func NewBackupVaultIdentity(ctx context.Context, reader client.Reader, obj *BackupDRBackupVault) (*BackupVaultIdentity, error) {
@@ -106,8 +105,8 @@ func NewBackupVaultIdentity(ctx context.Context, reader client.Reader, obj *Back
 
 func ParseBackupVaultExternal(external string) (parent *BackupVaultParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupvaults" {
-		return nil, "", fmt.Errorf("format of BackupDRBackupVault external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupvaults/{{backupvaultID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupVaults" {
+		return nil, "", fmt.Errorf("format of BackupDRBackupVault external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupVaults/{{backupvaultID}})", external)
 	}
 	parent = &BackupVaultParent{
 		ProjectID: tokens[1],

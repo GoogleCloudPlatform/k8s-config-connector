@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &BackupVaultRef{}
 // holds the GCP identifier for the KRM object.
 type BackupVaultRef struct {
 	// A reference to an externally managed BackupDRBackupVault resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupvaults/{{backupvaultID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupVaults/{{backupvaultID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BackupDRBackupVault resource.
