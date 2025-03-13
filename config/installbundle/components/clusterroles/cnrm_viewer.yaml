@@ -327,6 +327,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - dataplex.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - dataproc.cnrm.cloud.google.com
   resources:
   - '*'
