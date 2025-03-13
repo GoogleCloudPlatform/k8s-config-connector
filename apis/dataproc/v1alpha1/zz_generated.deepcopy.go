@@ -485,23 +485,23 @@ func (in *PySparkBatch) DeepCopyInto(out *PySparkBatch) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.PythonFileUris != nil {
-		in, out := &in.PythonFileUris, &out.PythonFileUris
+	if in.PythonFileURIs != nil {
+		in, out := &in.PythonFileURIs, &out.PythonFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.FileUris != nil {
-		in, out := &in.FileUris, &out.FileUris
+	if in.FileURIs != nil {
+		in, out := &in.FileURIs, &out.FileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ArchiveUris != nil {
-		in, out := &in.ArchiveUris, &out.ArchiveUris
+	if in.ArchiveURIs != nil {
+		in, out := &in.ArchiveURIs, &out.ArchiveURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -659,18 +659,18 @@ func (in *SparkBatch) DeepCopyInto(out *SparkBatch) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.FileUris != nil {
-		in, out := &in.FileUris, &out.FileUris
+	if in.FileURIs != nil {
+		in, out := &in.FileURIs, &out.FileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ArchiveUris != nil {
-		in, out := &in.ArchiveUris, &out.ArchiveUris
+	if in.ArchiveURIs != nil {
+		in, out := &in.ArchiveURIs, &out.ArchiveURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -719,13 +719,13 @@ func (in *SparkRBatch) DeepCopyInto(out *SparkRBatch) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.FileUris != nil {
-		in, out := &in.FileUris, &out.FileUris
+	if in.FileURIs != nil {
+		in, out := &in.FileURIs, &out.FileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ArchiveUris != nil {
-		in, out := &in.ArchiveUris, &out.ArchiveUris
+	if in.ArchiveURIs != nil {
+		in, out := &in.ArchiveURIs, &out.ArchiveURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
@@ -756,8 +756,8 @@ func (in *SparkSQLBatch) DeepCopyInto(out *SparkSQLBatch) {
 			(*out)[key] = val
 		}
 	}
-	if in.JarFileUris != nil {
-		in, out := &in.JarFileUris, &out.JarFileUris
+	if in.JarFileURIs != nil {
+		in, out := &in.JarFileURIs, &out.JarFileURIs
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}

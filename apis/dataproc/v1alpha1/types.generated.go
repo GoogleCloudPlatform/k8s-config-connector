@@ -122,41 +122,6 @@ type PyPiRepositoryConfig struct {
 	PypiRepository *string `json:"pypiRepository,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.PySparkBatch
-type PySparkBatch struct {
-	// Required. The HCFS URI of the main Python file to use as the Spark driver.
-	//  Must be a .py file.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.main_python_file_uri
-	MainPythonFileURI *string `json:"mainPythonFileURI,omitempty"`
-
-	// Optional. The arguments to pass to the driver. Do not include arguments
-	//  that can be set as batch properties, such as `--conf`, since a collision
-	//  can occur that causes an incorrect batch submission.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.args
-	Args []string `json:"args,omitempty"`
-
-	// Optional. HCFS file URIs of Python files to pass to the PySpark
-	//  framework. Supported file types: `.py`, `.egg`, and `.zip`.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.python_file_uris
-	PythonFileUris []string `json:"pythonFileUris,omitempty"`
-
-	// Optional. HCFS URIs of jar files to add to the classpath of the
-	//  Spark driver and tasks.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.jar_file_uris
-	JarFileUris []string `json:"jarFileUris,omitempty"`
-
-	// Optional. HCFS URIs of files to be placed in the working directory of
-	//  each executor.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.file_uris
-	FileUris []string `json:"fileUris,omitempty"`
-
-	// Optional. HCFS URIs of archives to be extracted into the working directory
-	//  of each executor. Supported file types:
-	//  `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.
-	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkBatch.archive_uris
-	ArchiveUris []string `json:"archiveUris,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dataproc.v1.RepositoryConfig
 type RepositoryConfig struct {
 	// Optional. Configuration for PyPi repository.
@@ -198,40 +163,6 @@ type RuntimeConfig struct {
 type RuntimeInfo struct {
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.SparkBatch
-type SparkBatch struct {
-	// Optional. The HCFS URI of the jar file that contains the main class.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.main_jar_file_uri
-	MainJarFileURI *string `json:"mainJarFileURI,omitempty"`
-
-	// Optional. The name of the driver main class. The jar file that contains
-	//  the class must be in the classpath or specified in `jar_file_uris`.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.main_class
-	MainClass *string `json:"mainClass,omitempty"`
-
-	// Optional. The arguments to pass to the driver. Do not include arguments
-	//  that can be set as batch properties, such as `--conf`, since a collision
-	//  can occur that causes an incorrect batch submission.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.args
-	Args []string `json:"args,omitempty"`
-
-	// Optional. HCFS URIs of jar files to add to the classpath of the
-	//  Spark driver and tasks.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.jar_file_uris
-	JarFileUris []string `json:"jarFileUris,omitempty"`
-
-	// Optional. HCFS URIs of files to be placed in the working directory of
-	//  each executor.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.file_uris
-	FileUris []string `json:"fileUris,omitempty"`
-
-	// Optional. HCFS URIs of archives to be extracted into the working directory
-	//  of each executor. Supported file types:
-	//  `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkBatch.archive_uris
-	ArchiveUris []string `json:"archiveUris,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dataproc.v1.SparkHistoryServerConfig
 type SparkHistoryServerConfig struct {
 	// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
@@ -242,48 +173,6 @@ type SparkHistoryServerConfig struct {
 	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
 	// +kcc:proto:field=google.cloud.dataproc.v1.SparkHistoryServerConfig.dataproc_cluster
 	DataprocCluster *string `json:"dataprocCluster,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataproc.v1.SparkRBatch
-type SparkRBatch struct {
-	// Required. The HCFS URI of the main R file to use as the driver.
-	//  Must be a `.R` or `.r` file.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRBatch.main_r_file_uri
-	MainRFileURI *string `json:"mainRFileURI,omitempty"`
-
-	// Optional. The arguments to pass to the Spark driver. Do not include
-	//  arguments that can be set as batch properties, such as `--conf`, since a
-	//  collision can occur that causes an incorrect batch submission.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRBatch.args
-	Args []string `json:"args,omitempty"`
-
-	// Optional. HCFS URIs of files to be placed in the working directory of
-	//  each executor.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRBatch.file_uris
-	FileUris []string `json:"fileUris,omitempty"`
-
-	// Optional. HCFS URIs of archives to be extracted into the working directory
-	//  of each executor. Supported file types:
-	//  `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkRBatch.archive_uris
-	ArchiveUris []string `json:"archiveUris,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dataproc.v1.SparkSqlBatch
-type SparkSQLBatch struct {
-	// Required. The HCFS URI of the script that contains Spark SQL queries to
-	//  execute.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlBatch.query_file_uri
-	QueryFileURI *string `json:"queryFileURI,omitempty"`
-
-	// Optional. Mapping of query variable names to values (equivalent to the
-	//  Spark SQL command: `SET name="value";`).
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlBatch.query_variables
-	QueryVariables map[string]string `json:"queryVariables,omitempty"`
-
-	// Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.
-	// +kcc:proto:field=google.cloud.dataproc.v1.SparkSqlBatch.jar_file_uris
-	JarFileUris []string `json:"jarFileUris,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.UsageMetrics

@@ -234,32 +234,6 @@ func PyPiRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.PyPiReposit
 	out.PypiRepository = direct.ValueOf(in.PypiRepository)
 	return out
 }
-func PySparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.PySparkBatch) *krm.PySparkBatch {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PySparkBatch{}
-	out.MainPythonFileURI = direct.LazyPtr(in.GetMainPythonFileUri())
-	out.Args = in.Args
-	out.PythonFileUris = in.PythonFileUris
-	out.JarFileUris = in.JarFileUris
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
-	return out
-}
-func PySparkBatch_ToProto(mapCtx *direct.MapContext, in *krm.PySparkBatch) *pb.PySparkBatch {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PySparkBatch{}
-	out.MainPythonFileUri = direct.ValueOf(in.MainPythonFileURI)
-	out.Args = in.Args
-	out.PythonFileUris = in.PythonFileUris
-	out.JarFileUris = in.JarFileUris
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
-	return out
-}
 func RepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RepositoryConfig) *krm.RepositoryConfig {
 	if in == nil {
 		return nil
@@ -350,36 +324,6 @@ func RuntimeInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Runtime
 	out.CurrentUsage = UsageSnapshot_ToProto(mapCtx, in.CurrentUsage)
 	return out
 }
-func SparkBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkBatch) *krm.SparkBatch {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SparkBatch{}
-	out.MainJarFileURI = direct.LazyPtr(in.GetMainJarFileUri())
-	out.MainClass = direct.LazyPtr(in.GetMainClass())
-	out.Args = in.Args
-	out.JarFileUris = in.JarFileUris
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
-	return out
-}
-func SparkBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkBatch) *pb.SparkBatch {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SparkBatch{}
-	if oneof := SparkBatch_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
-		out.Driver = oneof
-	}
-	if oneof := SparkBatch_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
-		out.Driver = oneof
-	}
-	out.Args = in.Args
-	out.JarFileUris = in.JarFileUris
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
-	return out
-}
 func SparkHistoryServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.SparkHistoryServerConfig) *krm.SparkHistoryServerConfig {
 	if in == nil {
 		return nil
@@ -394,48 +338,6 @@ func SparkHistoryServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.SparkHi
 	}
 	out := &pb.SparkHistoryServerConfig{}
 	out.DataprocCluster = direct.ValueOf(in.DataprocCluster)
-	return out
-}
-func SparkRBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkRBatch) *krm.SparkRBatch {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SparkRBatch{}
-	out.MainRFileURI = direct.LazyPtr(in.GetMainRFileUri())
-	out.Args = in.Args
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
-	return out
-}
-func SparkRBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkRBatch) *pb.SparkRBatch {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SparkRBatch{}
-	out.MainRFileUri = direct.ValueOf(in.MainRFileURI)
-	out.Args = in.Args
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
-	return out
-}
-func SparkSQLBatch_FromProto(mapCtx *direct.MapContext, in *pb.SparkSqlBatch) *krm.SparkSQLBatch {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SparkSQLBatch{}
-	out.QueryFileURI = direct.LazyPtr(in.GetQueryFileUri())
-	out.QueryVariables = in.QueryVariables
-	out.JarFileUris = in.JarFileUris
-	return out
-}
-func SparkSQLBatch_ToProto(mapCtx *direct.MapContext, in *krm.SparkSQLBatch) *pb.SparkSqlBatch {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SparkSqlBatch{}
-	out.QueryFileUri = direct.ValueOf(in.QueryFileURI)
-	out.QueryVariables = in.QueryVariables
-	out.JarFileUris = in.JarFileUris
 	return out
 }
 func UsageMetrics_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetrics) *krm.UsageMetrics {
