@@ -438,6 +438,96 @@ spec:
                     type: string
                   runtimeInfo:
                     description: Output only. Runtime information about batch execution.
+                    properties:
+                      approximateUsage:
+                        description: |-
+                          Output only. Approximate workload resource usage, calculated when
+                           the workload completes (see [Dataproc Serverless pricing]
+                           (https://cloud.google.com/dataproc-serverless/pricing)).
+
+                           **Note:** This metric calculation may change in the future, for
+                           example, to capture cumulative workload resource
+                           consumption during workload execution (see the
+                           [Dataproc Serverless release notes]
+                           (https://cloud.google.com/dataproc-serverless/docs/release-notes)
+                           for announcements, changes, fixes
+                           and other Dataproc developments).
+                        properties:
+                          acceleratorType:
+                            description: Optional. Accelerator type being used, if
+                              any
+                            type: string
+                          milliAcceleratorSeconds:
+                            description: Optional. Accelerator usage in (`milliAccelerator`
+                              x `seconds`) (see [Dataproc Serverless pricing] (https://cloud.google.com/dataproc-serverless/pricing)).
+                            format: int64
+                            type: integer
+                          milliDcuSeconds:
+                            description: Optional. DCU (Dataproc Compute Units) usage
+                              in (`milliDCU` x `seconds`) (see [Dataproc Serverless
+                              pricing] (https://cloud.google.com/dataproc-serverless/pricing)).
+                            format: int64
+                            type: integer
+                          shuffleStorageGBSeconds:
+                            description: Optional. Shuffle storage usage in (`GB`
+                              x `seconds`) (see [Dataproc Serverless pricing] (https://cloud.google.com/dataproc-serverless/pricing)).
+                            format: int64
+                            type: integer
+                        type: object
+                      currentUsage:
+                        description: Output only. Snapshot of current workload resource
+                          usage.
+                        properties:
+                          acceleratorType:
+                            description: Optional. Accelerator type being used, if
+                              any
+                            type: string
+                          milliAccelerator:
+                            description: Optional. Milli (one-thousandth) accelerator.
+                              (see [Dataproc Serverless pricing] (https://cloud.google.com/dataproc-serverless/pricing))
+                            format: int64
+                            type: integer
+                          milliDcu:
+                            description: Optional. Milli (one-thousandth) Dataproc
+                              Compute Units (DCUs) (see [Dataproc Serverless pricing]
+                              (https://cloud.google.com/dataproc-serverless/pricing)).
+                            format: int64
+                            type: integer
+                          milliDcuPremium:
+                            description: Optional. Milli (one-thousandth) Dataproc
+                              Compute Units (DCUs) charged at premium tier (see [Dataproc
+                              Serverless pricing] (https://cloud.google.com/dataproc-serverless/pricing)).
+                            format: int64
+                            type: integer
+                          shuffleStorageGB:
+                            description: Optional. Shuffle Storage in gigabytes (GB).
+                              (see [Dataproc Serverless pricing] (https://cloud.google.com/dataproc-serverless/pricing))
+                            format: int64
+                            type: integer
+                          shuffleStorageGBPremium:
+                            description: Optional. Shuffle Storage in gigabytes (GB)
+                              charged at premium tier. (see [Dataproc Serverless pricing]
+                              (https://cloud.google.com/dataproc-serverless/pricing))
+                            format: int64
+                            type: integer
+                          snapshotTime:
+                            description: Optional. The timestamp of the usage snapshot.
+                            type: string
+                        type: object
+                      diagnosticOutputURI:
+                        description: Output only. A URI pointing to the location of
+                          the diagnostics tarball.
+                        type: string
+                      endpoints:
+                        additionalProperties:
+                          type: string
+                        description: Output only. Map of remote access endpoints (such
+                          as web interfaces and APIs) to their URIs.
+                        type: object
+                      outputURI:
+                        description: Output only. A URI pointing to the location of
+                          the stdout and stderr of the workload.
+                        type: string
                     type: object
                   state:
                     description: Output only. The state of the batch.
@@ -446,6 +536,19 @@ spec:
                     description: Output only. Historical state information for the
                       batch.
                     items:
+                      properties:
+                        state:
+                          description: Output only. The state of the batch at this
+                            point in history.
+                          type: string
+                        stateMessage:
+                          description: Output only. Details about the state at this
+                            point in history.
+                          type: string
+                        stateStartTime:
+                          description: Output only. The time when the batch entered
+                            the historical state.
+                          type: string
                       type: object
                     type: array
                   stateMessage:
