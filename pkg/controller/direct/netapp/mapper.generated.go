@@ -20,24 +20,23 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BackupPolicy_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.BackupPolicy {
+func NetAppBackupPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupPolicy{}
+	out := &krm.NetAppBackupPolicySpec{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.DailyBackupLimit = in.DailyBackupLimit
 	out.WeeklyBackupLimit = in.WeeklyBackupLimit
 	out.MonthlyBackupLimit = in.MonthlyBackupLimit
 	out.Description = in.Description
 	out.Enabled = in.Enabled
-	// MISSING: AssignedVolumeCount
-	// MISSING: CreateTime
-	out.Labels = in.Labels
-	// MISSING: State
+
+	// out.Labels = in.Labels // NOT YET
+
 	return out
 }
-func BackupPolicy_ToProto(mapCtx *direct.MapContext, in *krm.BackupPolicy) *pb.BackupPolicy {
+func NetAppBackupPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupPolicySpec) *pb.BackupPolicy {
 	if in == nil {
 		return nil
 	}
@@ -48,44 +47,7 @@ func BackupPolicy_ToProto(mapCtx *direct.MapContext, in *krm.BackupPolicy) *pb.B
 	out.MonthlyBackupLimit = in.MonthlyBackupLimit
 	out.Description = in.Description
 	out.Enabled = in.Enabled
-	// MISSING: AssignedVolumeCount
-	// MISSING: CreateTime
-	out.Labels = in.Labels
-	// MISSING: State
-	return out
-}
-func BackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.BackupPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BackupPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: DailyBackupLimit
-	// MISSING: WeeklyBackupLimit
-	// MISSING: MonthlyBackupLimit
-	// MISSING: Description
-	// MISSING: Enabled
-	out.AssignedVolumeCount = in.AssignedVolumeCount
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: Labels
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	return out
-}
-func BackupPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupPolicyObservedState) *pb.BackupPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupPolicy{}
-	// MISSING: Name
-	// MISSING: DailyBackupLimit
-	// MISSING: WeeklyBackupLimit
-	// MISSING: MonthlyBackupLimit
-	// MISSING: Description
-	// MISSING: Enabled
-	out.AssignedVolumeCount = in.AssignedVolumeCount
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: Labels
-	out.State = direct.Enum_ToProto[pb.BackupPolicy_State](mapCtx, in.State)
+	// out.Labels = in.Labels // NOT YET
 	return out
 }
 func NetAppBackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicyObservedState {
@@ -93,16 +55,10 @@ func NetAppBackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.NetAppBackupPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: DailyBackupLimit
-	// MISSING: WeeklyBackupLimit
-	// MISSING: MonthlyBackupLimit
-	// MISSING: Description
-	// MISSING: Enabled
-	// MISSING: AssignedVolumeCount
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: State
+
+	out.AssignedVolumeCount = in.AssignedVolumeCount
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
 func NetAppBackupPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupPolicyObservedState) *pb.BackupPolicy {
@@ -110,49 +66,9 @@ func NetAppBackupPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.BackupPolicy{}
-	// MISSING: Name
-	// MISSING: DailyBackupLimit
-	// MISSING: WeeklyBackupLimit
-	// MISSING: MonthlyBackupLimit
-	// MISSING: Description
-	// MISSING: Enabled
-	// MISSING: AssignedVolumeCount
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: State
-	return out
-}
-func NetAppBackupPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetAppBackupPolicySpec{}
-	// MISSING: Name
-	// MISSING: DailyBackupLimit
-	// MISSING: WeeklyBackupLimit
-	// MISSING: MonthlyBackupLimit
-	// MISSING: Description
-	// MISSING: Enabled
-	// MISSING: AssignedVolumeCount
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: State
-	return out
-}
-func NetAppBackupPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupPolicySpec) *pb.BackupPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupPolicy{}
-	// MISSING: Name
-	// MISSING: DailyBackupLimit
-	// MISSING: WeeklyBackupLimit
-	// MISSING: MonthlyBackupLimit
-	// MISSING: Description
-	// MISSING: Enabled
-	// MISSING: AssignedVolumeCount
-	// MISSING: CreateTime
-	// MISSING: Labels
-	// MISSING: State
+
+	out.AssignedVolumeCount = in.AssignedVolumeCount
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.State = direct.Enum_ToProto[pb.BackupPolicy_State](mapCtx, in.State)
 	return out
 }

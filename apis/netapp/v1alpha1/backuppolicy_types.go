@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,8 +25,46 @@ var NetAppBackupPolicyGVK = GroupVersion.WithKind("NetAppBackupPolicy")
 // NetAppBackupPolicySpec defines the desired state of NetAppBackupPolicy
 // +kcc:proto=google.cloud.netapp.v1.BackupPolicy
 type NetAppBackupPolicySpec struct {
-	// The NetAppBackupPolicy name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+	commonv1alpha1.CommonSpec `json:",inline"`
+
+	// +required
+	Location string `json:"location"`
+
+	// Identifier. The resource name of the backup policy.
+	//  Format:
+	//  `projects/{project_id}/locations/{location}/backupPolicies/{backup_policy_id}`.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Number of daily backups to keep. Note that the minimum daily backup limit
+	//  is 2.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.daily_backup_limit
+	DailyBackupLimit *int32 `json:"dailyBackupLimit,omitempty"`
+
+	// Number of weekly backups to keep. Note that the sum of daily, weekly and
+	//  monthly backups should be greater than 1.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.weekly_backup_limit
+	WeeklyBackupLimit *int32 `json:"weeklyBackupLimit,omitempty"`
+
+	// Number of monthly backups to keep. Note that the sum of daily, weekly and
+	//  monthly backups should be greater than 1.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.monthly_backup_limit
+	MonthlyBackupLimit *int32 `json:"monthlyBackupLimit,omitempty"`
+
+	// Description of the backup policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// If enabled, make backups automatically according to the schedules.
+	//  This will be applied to all volumes that have this policy attached and
+	//  enforced on volume level. If not specified, default is true.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// NOT YET
+	// // Resource labels to represent user provided metadata.
+	// // +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.labels
+	// Labels map[string]string `json:"labels,omitempty"`
 }
 
 // NetAppBackupPolicyStatus defines the config connector machine state of NetAppBackupPolicy
@@ -47,12 +86,22 @@ type NetAppBackupPolicyStatus struct {
 // NetAppBackupPolicyObservedState is the state of the NetAppBackupPolicy resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.netapp.v1.BackupPolicy
 type NetAppBackupPolicyObservedState struct {
+	// Output only. The total number of volumes assigned by this backup policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.assigned_volume_count
+	AssignedVolumeCount *int32 `json:"assignedVolumeCount,omitempty"`
+
+	// Output only. The time when the backup policy was created.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The backup policy state.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.state
+	State *string `json:"state,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
-// +kubebuilder:resource:categories=gcp,shortName=gcpnetappbackuppolicy;gcpnetappbackuppolicys
+// +kubebuilder:resource:categories=gcp,shortName=gcpnetappbackuppolicy;gcpnetappbackuppolicies
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"

@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.netapp.v1.BackupPolicy
 type BackupPolicy struct {
 	// Identifier. The resource name of the backup policy.

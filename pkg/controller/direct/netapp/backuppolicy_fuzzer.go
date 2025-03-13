@@ -38,15 +38,13 @@ func netAppBackupPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".monthly_backup_limit")
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".enabled")
-	f.SpecFields.Insert(".labels")
 
 	f.StatusFields.Insert(".assigned_volume_count")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".labels")
 
 	return f
 }
-
-

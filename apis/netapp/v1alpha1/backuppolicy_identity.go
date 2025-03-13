@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type BackupPolicyIdentity struct {
 	parent *BackupPolicyParent
-	id string
+	id     string
 }
 
 func (i *BackupPolicyIdentity) String() string {
-	return  i.parent.String() + "/backuppolicys/" + i.id
+	return i.parent.String() + "/backuppolicys/" + i.id
 }
 
 func (i *BackupPolicyIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *BackupPolicyIdentity) ID() string {
 }
 
 func (i *BackupPolicyIdentity) Parent() *BackupPolicyParent {
-	return  i.parent
+	return i.parent
 }
 
 type BackupPolicyParent struct {
@@ -51,7 +51,6 @@ type BackupPolicyParent struct {
 func (p *BackupPolicyParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a BackupPolicyIdentity from the Config Connector BackupPolicy object.
 func NewBackupPolicyIdentity(ctx context.Context, reader client.Reader, obj *NetAppBackupPolicy) (*BackupPolicyIdentity, error) {

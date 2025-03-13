@@ -41,6 +41,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/managedkafka"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/netapp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkconnectivity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/notebooks"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/privateca"
@@ -55,5 +56,4 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflows"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workstations"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/netapp"
 )
