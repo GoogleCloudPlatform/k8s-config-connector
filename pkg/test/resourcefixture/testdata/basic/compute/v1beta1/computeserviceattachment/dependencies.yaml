@@ -101,8 +101,8 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computeforwardingrule-${uniqueId}
 spec:
   location: "us-west1"
