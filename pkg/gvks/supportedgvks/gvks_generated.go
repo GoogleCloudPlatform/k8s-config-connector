@@ -4280,6 +4280,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "speech.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "SpeechRecognizer",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "sql.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "SQLDatabase",
