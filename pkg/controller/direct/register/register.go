@@ -57,6 +57,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/sql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tpu"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmwareengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflows"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workstations"
 )
