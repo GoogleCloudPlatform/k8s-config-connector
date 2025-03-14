@@ -1256,6 +1256,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - vmwareengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - vpcaccess.cnrm.cloud.google.com
   resources:
   - '*'

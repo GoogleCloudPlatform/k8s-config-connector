@@ -4661,6 +4661,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "vmwareengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VMwareEngineNetwork",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "vpcaccess.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "VPCAccessConnector",

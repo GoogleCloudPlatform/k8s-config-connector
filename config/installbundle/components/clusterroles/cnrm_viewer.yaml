@@ -839,6 +839,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - vmwareengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vpcaccess.cnrm.cloud.google.com
   resources:
   - '*'
