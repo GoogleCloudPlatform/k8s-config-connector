@@ -568,15 +568,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of a AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of a AlloyDBCluster resource.
                         type: string
                     type: object
                   pointInTime:
@@ -610,15 +609,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of a AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of a AlloyDBCluster resource.
                         type: string
                     type: object
                 required:
@@ -724,6 +722,10 @@ spec:
                       type: array
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the AlloyDBCluster resource in
+                  GCP.
+                type: string
               migrationSource:
                 description: Output only. Cluster created via DMS migration.
                 items:
@@ -1162,10 +1164,10 @@ spec:
                       is intended to be consistent with Cloud SQL.'
                     type: string
                   networkRef:
-                    description: 'Optional. The resource link for the VPC network
-                      in which cluster resources are created and from which they are
-                      accessible via Private IP. The network must belong to the same
-                      project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`.
+                    description: 'The resource link for the VPC network in which cluster
+                      resources are created and from which they are accessible via
+                      Private IP. The network must belong to the same project as the
+                      cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`.
                       This is required to create a cluster.'
                     oneOf:
                     - not:
@@ -1195,10 +1197,10 @@ spec:
                     type: object
                 type: object
               networkRef:
-                description: 'Required. The resource link for the VPC network in which
-                  cluster resources are created and from which they are accessible
-                  via Private IP. The network must belong to the same project as the
-                  cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`.
+                description: 'The resource link for the VPC network in which cluster
+                  resources are created and from which they are accessible via Private
+                  IP. The network must belong to the same project as the cluster.
+                  It is specified in the form: `projects/{project}/global/networks/{network_id}`.
                   This is required to create a cluster. Deprecated, use network_config.network
                   instead.'
                 oneOf:
@@ -1324,15 +1326,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of a AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of a AlloyDBCluster resource.
                         type: string
                     type: object
                   pointInTime:
@@ -1366,15 +1367,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of a AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of a AlloyDBCluster resource.
                         type: string
                     type: object
                 required:
@@ -1480,6 +1480,10 @@ spec:
                       type: array
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the AlloyDBCluster resource in
+                  GCP.
+                type: string
               migrationSource:
                 description: Output only. Cluster created via DMS migration.
                 items:

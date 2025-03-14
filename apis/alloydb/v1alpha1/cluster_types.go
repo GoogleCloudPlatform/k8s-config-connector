@@ -204,8 +204,6 @@ type UserPassword struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.UserPassword.user
 	User *string `json:"user,omitempty"`
 
-	// TODO: Verify if "// +required" marker is needed for Password after using direct controller.
-
 	// The initial password for the user.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.UserPassword.password
 	// +required
@@ -286,7 +284,7 @@ type BackupSource struct {
 type RestoreContinuousBackupSource struct {
 	// (Required) The name of the source cluster that this cluster is restored from.
 	// +required
-	ClusterRef *refs.AlloyDBClusterRef `json:"clusterRef,omitempty"`
+	ClusterRef *ClusterRef `json:"clusterRef,omitempty"`
 
 	// Immutable. The point in time that this cluster is restored to, in RFC 3339 format.
 	// +required
@@ -301,10 +299,11 @@ type Cluster_SecondaryConfig struct {
 	//  * projects/{project}/locations/{region}/clusters/{cluster_id}
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.SecondaryConfig.primary_cluster_name
 	// +required
-	PrimaryClusterNameRef *refs.AlloyDBClusterRef `json:"primaryClusterNameRef,omitempty"`
+	PrimaryClusterNameRef *ClusterRef `json:"primaryClusterNameRef,omitempty"`
 }
 
 // AlloyDBClusterStatus defines the config connector machine state of AlloyDBCluster
+// +kcc:proto=google.cloud.alloydb.v1beta.Cluster
 type AlloyDBClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
@@ -313,10 +312,8 @@ type AlloyDBClusterStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/*
-		// A unique specifier for the AlloyDBCluster resource in GCP.
-		ExternalRef *string `json:"externalRef,omitempty"`
-	*/
+	// A unique specifier for the AlloyDBCluster resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Output only. Cluster created from backup.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.backup_source
@@ -483,7 +480,6 @@ type ClusterObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpalloydbcluster;gcpalloydbclusters
 // +kubebuilder:subresource:status// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
