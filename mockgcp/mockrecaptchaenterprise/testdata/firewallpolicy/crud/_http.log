@@ -17,7 +17,7 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -33,7 +33,7 @@ X-Xss-Protection: 0
   ],
   "condition": "true",
   "description": "test policy ${uniqueId}",
-  "name": "projects/${projectNumber}/firewallpolicies/200",
+  "name": "projects/${projectNumber}/firewallpolicies/100",
   "path": "/testpath/*"
 }
 
@@ -46,7 +46,7 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -63,35 +63,23 @@ X-Xss-Protection: 0
         }
       ],
       "condition": "true",
-      "description": "test policy 182c2e7b8cb0d979",
+      "description": "test policy ${uniqueId}",
       "name": "projects/${projectId}/firewallpolicies/100",
       "path": "/testpath/*"
-    },
-    {
-      "actions": [
-        {
-          "allow": {}
-        }
-      ],
-      "condition": "true",
-      "description": "test policy ${uniqueId}",
-      "name": "projects/${projectId}/firewallpolicies/200",
-      "path": "/testpath/*"
     }
-  ],
-  "nextPageToken": ""
+  ]
 }
 
 ---
 
-GET https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/200?alt=json
+GET https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/100?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -107,7 +95,7 @@ X-Xss-Protection: 0
   ],
   "condition": "true",
   "description": "test policy ${uniqueId}",
-  "name": "projects/${projectId}/firewallpolicies/200",
+  "name": "projects/${projectId}/firewallpolicies/100",
   "path": "/testpath/*"
 }
 
@@ -120,7 +108,7 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -137,35 +125,23 @@ X-Xss-Protection: 0
         }
       ],
       "condition": "true",
-      "description": "test policy 182c2e7b8cb0d979",
+      "description": "test policy ${uniqueId}",
       "name": "projects/${projectId}/firewallpolicies/100",
       "path": "/testpath/*"
-    },
-    {
-      "actions": [
-        {
-          "allow": {}
-        }
-      ],
-      "condition": "true",
-      "description": "test policy ${uniqueId}",
-      "name": "projects/${projectId}/firewallpolicies/200",
-      "path": "/testpath/*"
     }
-  ],
-  "nextPageToken": ""
+  ]
 }
 
 ---
 
-DELETE https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/200?alt=json
+DELETE https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/100?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer

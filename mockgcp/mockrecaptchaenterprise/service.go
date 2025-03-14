@@ -28,7 +28,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/recaptchaenterprise/v1"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -38,13 +37,6 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
-
-	v1 *RecaptchaEnterpriseV1
-}
-
-type RecaptchaEnterpriseV1 struct {
-	*MockService
-	pb.UnimplementedRecaptchaEnterpriseServiceServer
 }
 
 // New creates a MockService.
@@ -54,16 +46,15 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &RecaptchaEnterpriseV1{MockService: s}
 	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"recaptchaenterprise.googleapis.com"}
+	return []string{"public-preview-recaptchaenterprise.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterRecaptchaEnterpriseServiceServer(grpcServer, s.v1)
+	pb.RegisterRecaptchaEnterpriseServiceServer(grpcServer, &recaptchaEnterpriseService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -76,5 +67,3 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	return mux, nil
 }
-
-
