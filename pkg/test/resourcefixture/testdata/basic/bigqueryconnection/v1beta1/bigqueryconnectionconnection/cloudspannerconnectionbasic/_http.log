@@ -31,7 +31,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "Spanner Database Dependency",
-    "edition": 1,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"

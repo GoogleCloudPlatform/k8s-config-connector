@@ -239,7 +239,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The `Edition` of the current instance. Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS If edition is unspecified, the default value is STANDARD.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The `Edition` of the current instance. Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. If edition is unspecified, it has automatically upgraded to the lowest edition that matches your usage pattern.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
