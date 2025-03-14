@@ -57,6 +57,12 @@ func StorageFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fold
 		return nil
 	}
 	out := &krm.StorageFolderObservedState{}
+}
+func StorageManagedFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagedFolder) *krm.StorageManagedFolderObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageManagedFolderObservedState{}
 	// MISSING: Name
 	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -69,6 +75,13 @@ func StorageFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Stora
 		return nil
 	}
 	out := &pb.Folder{}
+	return out
+}
+func StorageManagedFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageManagedFolderObservedState) *pb.ManagedFolder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagedFolder{}
 	// MISSING: Name
 	out.Metageneration = direct.ValueOf(in.Metageneration)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -89,6 +102,21 @@ func StorageFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageFolderS
 		return nil
 	}
 	out := &pb.Folder{}
+	return out
+}
+func StorageManagedFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagedFolder) *krm.StorageManagedFolderSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageManagedFolderSpec{}
+	// MISSING: Name
+	return out
+}
+func StorageManagedFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageManagedFolderSpec) *pb.ManagedFolder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagedFolder{}
 	// MISSING: Name
 	return out
 }
