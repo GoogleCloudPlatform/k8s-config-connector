@@ -1,13 +1,13 @@
 - pre: |
-    rm -f /tmp/query.yaml
-    echo "IamPolicyAnalysisQuery:" > /tmp/query.yaml
-    echo "  scope: projects/${projectId}" >> /tmp/query.yaml
-    echo "  accessSelector:" >> /tmp/query.yaml
-    echo "    roles:" >> /tmp/query.yaml
-    echo "      - roles/viewer" >> /tmp/query.yaml
-- exec: gcloud asset saved-queries create test-${uniqueId} --project=${projectId} --query-file-path=/tmp/query.yaml --description="Test query" --labels=test=test
+    rm -f /tmp/assetsavedquery.yaml
+    echo "IamPolicyAnalysisQuery:" > /tmp/assetsavedquery.yaml
+    echo "  scope: projects/${projectId}" >> /tmp/assetsavedquery.yaml
+    echo "  accessSelector:" >> /tmp/assetsavedquery.yaml
+    echo "    roles:" >> /tmp/assetsavedquery.yaml
+    echo "      - roles/viewer" >> /tmp/assetsavedquery.yaml
+- exec: gcloud asset saved-queries create test-${uniqueId} --project=${projectId} --query-file-path=/tmp/assetsavedquery.yaml --description="Test query" --labels=test=test
 - exec: gcloud asset saved-queries describe test-${uniqueId} --project=${projectId}
-- pre: echo "      - roles/iam.serviceAccountUser" >> /tmp/query.yaml
-- exec: gcloud asset saved-queries update test-${uniqueId} --project=${projectId} --query-file-path=/tmp/query.yaml --description="Test query updated"
+- pre: echo "      - roles/iam.serviceAccountUser" >> /tmp/assetsavedquery.yaml
+- exec: gcloud asset saved-queries update test-${uniqueId} --project=${projectId} --query-file-path=/tmp/assetsavedquery.yaml --description="Test query updated"
 - exec: gcloud asset saved-queries delete test-${uniqueId} --project=${projectId}
-- post: rm -f /tmp/query.yaml
+- post: rm -f /tmp/assetsavedquery.yaml
