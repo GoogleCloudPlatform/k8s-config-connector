@@ -31,16 +31,9 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/asset/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-
-type SavedQueryService struct {
-	pb.UnimplementedSavedQueryServiceServer
-	storage storage.Storage
-}
-
-func (s *SavedQueryService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
+func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
 	name, err := parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
@@ -59,7 +52,7 @@ func (s *SavedQueryService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQ
 	return obj, nil
 }
 
-func (s *SavedQueryService) CreateSavedQuery(ctx context.Context, req *pb.CreateSavedQueryRequest) (*pb.SavedQuery, error) {
+func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSavedQueryRequest) (*pb.SavedQuery, error) {
 	reqName := fmt.Sprintf("%s/savedQueries/%s", req.GetParent(), req.GetSavedQueryId())
 	name, err := parseSavedQueryName(reqName)
 	if err != nil {
@@ -85,7 +78,7 @@ func (s *SavedQueryService) CreateSavedQuery(ctx context.Context, req *pb.Create
 	return obj, nil
 }
 
-func (s *SavedQueryService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSavedQueryRequest) (*pb.SavedQuery, error) {
+func (s *AssetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSavedQueryRequest) (*pb.SavedQuery, error) {
 	name, err := parseSavedQueryName(req.GetSavedQuery().GetName())
 	if err != nil {
 		return nil, err
@@ -111,7 +104,7 @@ func (s *SavedQueryService) UpdateSavedQuery(ctx context.Context, req *pb.Update
 	return obj, nil
 }
 
-func (s *SavedQueryService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSavedQueryRequest) (*emptypb.Empty, error) {
+func (s *AssetService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSavedQueryRequest) (*emptypb.Empty, error) {
 	name, err := parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
