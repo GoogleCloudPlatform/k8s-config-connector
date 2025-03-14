@@ -77,6 +77,8 @@ cloud.google.com/go/documentai v1.35.1/go.mod h1:WJjwUAQfwQPJORW8fjz7RODprMULDzE
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
 cloud.google.com/go/firestore v1.18.0 h1:cuydCaLS7Vl2SatAeivXyhbhDEIR8BDmtn4egDhIn2s=
 cloud.google.com/go/firestore v1.18.0/go.mod h1:5ye0v48PhseZBdcl0qbl3uttu7FIEwEYVaWm0UIEOEU=
+cloud.google.com/go/gkebackup v1.6.3 h1:djdExe/QgoKdp1gnIO1G5BoO1o/yGQOQJJEZ4QKTEXQ=
+cloud.google.com/go/gkebackup v1.6.3/go.mod h1:JJzGsA8/suXpTDtqI7n9RZW97PXa2CIp+n8aRC/y57k=
 cloud.google.com/go/gkemulticloud v1.5.1 h1:JWe6PDNpNU88ZYvQkTd7w28fgeIs/gg6i0hcjUkgZ3M=
 cloud.google.com/go/gkemulticloud v1.5.1/go.mod h1:OdmhfSPXuJ0Kn9dQ2I3Ou7XZ3QK8caV4XVOJZwrIa3s=
 cloud.google.com/go/iam v1.4.1 h1:cFC25Nv+u5BkTR/BT1tXdoF2daiVbZ1RLx2eqfQ9RMM=

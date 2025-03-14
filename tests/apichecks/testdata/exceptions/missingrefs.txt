@@ -62,7 +62,6 @@
 [refs] crd=dnsmanagedzones.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryConfig.namespace.namespaceUrl" should be a reference
 [refs] crd=dnsresponsepolicies.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].networkUrl" should be a reference
 [refs] crd=essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
-[refs] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.encryptionKey.gcpKmsEncryptionKey" should be a reference
 [refs] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
 [refs] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
 [refs] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference

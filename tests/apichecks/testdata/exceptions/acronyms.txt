@@ -519,7 +519,6 @@
 [acronyms] crd=firebasewebapps.firebase.cnrm.cloud.google.com version=v1alpha1: field ".status.appId" should be ".status.appID"
 [acronyms] crd=firebasewebapps.firebase.cnrm.cloud.google.com version=v1alpha1: field ".status.appUrls" should be ".status.appURLs"
 [acronyms] crd=folders.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".status.folderId" should be ".status.folderID"
-[acronyms] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.encryptionKey.gcpKmsEncryptionKey" should be ".spec.backupConfig.encryptionKey.gcpKMSEncryptionKey"
 [acronyms] crd=gkehubmemberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.externalId" should be ".spec.externalID"
 [acronyms] crd=gkehubmemberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".status.endpoint.kubernetesMetadata.kubernetesApiServerVersion" should be ".status.endpoint.kubernetesMetadata.kubernetesAPIServerVersion"
 [acronyms] crd=gkehubmemberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".status.endpoint.kubernetesMetadata.nodeProviderId" should be ".status.endpoint.kubernetesMetadata.nodeProviderID"

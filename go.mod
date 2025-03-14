@@ -22,6 +22,7 @@ require (
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/documentai v1.35.1
 	cloud.google.com/go/firestore v1.18.0
+	cloud.google.com/go/gkebackup v1.6.3
 	cloud.google.com/go/gkemulticloud v1.5.1
 	cloud.google.com/go/iam v1.4.1
 	cloud.google.com/go/iap v1.10.3
