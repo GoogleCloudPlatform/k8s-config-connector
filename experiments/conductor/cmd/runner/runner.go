@@ -370,8 +370,9 @@ func printHelp() {
 	log.Println("\t15 - [Proto] Build proto files in mockgcp directory")
 	log.Println("\t16 - [Mock] Run mockgcptests on generated mocks in each github branch")
 	log.Println("\t20 - [CRD] Generate Types and Mapper for each branch")
-	log.Println("\t21 - [CRD] Generate CRD for each branch")
-	log.Println("\t22 - [Fuzzer] Generate fuzzer for each branch")
+	log.Println("\t21 - [CRD] Adjust Types for each branch")
+	log.Println("\t22 - [CRD] Generate CRD for each branch")
+	log.Println("\t23 - [Fuzzer] Generate fuzzer for each branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
