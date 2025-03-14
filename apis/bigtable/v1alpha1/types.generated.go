@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.bigtable.admin.v2.AuthorizedView
 type AuthorizedView struct {
 	// Identifier. The name of this AuthorizedView.
