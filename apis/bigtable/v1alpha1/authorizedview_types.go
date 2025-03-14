@@ -15,17 +15,49 @@
 package v1alpha1
 
 import (
+	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var BigtableAuthorizedViewGVK = GroupVersion.WithKind("BigtableAuthorizedView")
 
+type BigtableAuthorizedViewParent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+
+	// +required
+	InstanceRef bigtablev1beta1.InstanceRef `json:"instanceRef"`
+
+	// +required
+	TableRef bigtablev1beta1.TableRef `json:"tableRef"`
+}
+
 // BigtableAuthorizedViewSpec defines the desired state of BigtableAuthorizedView
 // +kcc:proto=google.bigtable.admin.v2.AuthorizedView
 type BigtableAuthorizedViewSpec struct {
 	// The BigtableAuthorizedView name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// +required
+	BigtableAuthorizedViewParent `json:",inline"`
+
+	// An AuthorizedView permitting access to an explicit subset of a Table.
+	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.subset_view
+	SubsetView *AuthorizedView_SubsetView `json:"subsetView,omitempty"`
+
+	// The etag for this AuthorizedView.
+	//  If this is provided on update, it must match the server's etag. The server
+	//  returns ABORTED error on a mismatched etag.
+	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Set to true to make the AuthorizedView protected against deletion.
+	//  The parent Table and containing Instance cannot be deleted if an
+	//  AuthorizedView has this bit set.
+	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.deletion_protection
+	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 }
 
 // BigtableAuthorizedViewStatus defines the config connector machine state of BigtableAuthorizedView
@@ -51,7 +83,6 @@ type BigtableAuthorizedViewObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableauthorizedview;gcpbigtableauthorizedviews
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

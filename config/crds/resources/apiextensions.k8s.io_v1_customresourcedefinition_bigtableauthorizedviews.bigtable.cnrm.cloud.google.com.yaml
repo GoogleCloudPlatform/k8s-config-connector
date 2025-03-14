@@ -99,8 +99,6 @@ spec:
                     description: The namespace of a BigtableInstance resource.
                     type: string
                 type: object
-              location:
-                type: string
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -182,7 +180,6 @@ spec:
             required:
             - ""
             - instanceRef
-            - location
             - projectRef
             - tableRef
             type: object

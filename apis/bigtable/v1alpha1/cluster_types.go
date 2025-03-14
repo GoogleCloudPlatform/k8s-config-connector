@@ -25,7 +25,7 @@ import (
 
 var BigtableClusterGVK = GroupVersion.WithKind("BigtableCluster")
 
-type Parent struct {
+type BigtableClusterParent struct {
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 	// +required
@@ -35,7 +35,7 @@ type Parent struct {
 // BigtableClusterSpec defines the desired state of BigtableCluster
 // +kcc:proto=google.bigtable.admin.v2.Cluster
 type BigtableClusterSpec struct {
-	Parent `json:",inline"`
+	BigtableClusterParent `json:",inline"`
 
 	// The BigtableCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

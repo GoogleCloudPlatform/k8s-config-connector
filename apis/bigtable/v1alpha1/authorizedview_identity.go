@@ -19,53 +19,40 @@ import (
 	"fmt"
 	"strings"
 
+	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // AuthorizedViewIdentity defines the resource reference to BigtableAuthorizedView, which "External" field
 // holds the GCP identifier for the KRM object.
 type AuthorizedViewIdentity struct {
-	parent *AuthorizedViewParent
-	id string
+	parent *bigtablev1beta1.TableIdentity
+	id     string
 }
 
 func (i *AuthorizedViewIdentity) String() string {
-	return  i.parent.String() + "/authorizedviews/" + i.id
+	return i.parent.String() + "/authorizedViews/" + i.id
 }
 
 func (i *AuthorizedViewIdentity) ID() string {
 	return i.id
 }
 
-func (i *AuthorizedViewIdentity) Parent() *AuthorizedViewParent {
-	return  i.parent
-}
-
-type AuthorizedViewParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *AuthorizedViewParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-
 // New builds a AuthorizedViewIdentity from the Config Connector AuthorizedView object.
 func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *BigtableAuthorizedView) (*AuthorizedViewIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	tableExternal, err := obj.Spec.TableRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	instanceIdentity, tableID, err := bigtablev1beta1.ParseTableExternal(tableExternal)
+	if err != nil {
+		return nil, err
 	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -84,11 +71,8 @@ func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *B
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Id != tableID {
+			return nil, fmt.Errorf("spec.groupRef changed, expect %s, got %s", actualParent.Id, tableID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,23 +80,28 @@ func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *B
 		}
 	}
 	return &AuthorizedViewIdentity{
-		parent: &AuthorizedViewParent{
-			ProjectID: projectID,
-			Location:  location,
+		parent: &bigtablev1beta1.TableIdentity{
+			Parent: instanceIdentity,
+			Id:     tableID,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseAuthorizedViewExternal(external string) (parent *AuthorizedViewParent, resourceID string, err error) {
+func ParseAuthorizedViewExternal(external string) (*bigtablev1beta1.TableIdentity, string, error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "authorizedviews" {
-		return nil, "", fmt.Errorf("format of BigtableAuthorizedView external=%q was not known (use projects/{{projectID}}/locations/{{location}}/authorizedviews/{{authorizedviewID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "tables" || tokens[6] != "authorizedViews" {
+		return nil, "", fmt.Errorf("format of BigtableAuthorizedView external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/tables/{{tableID}}/authorizedViews/{{authorizedViewID}})", external)
 	}
-	parent = &AuthorizedViewParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+	p := &bigtablev1beta1.TableIdentity{
+		Parent: &bigtablev1beta1.InstanceIdentity{
+			Parent: &parent.ProjectParent{
+				ProjectID: tokens[1],
+			},
+			Id: tokens[3],
+		},
+		Id: tokens[5],
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	resourceID := tokens[7]
+	return p, resourceID, nil
 }
