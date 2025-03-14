@@ -24,8 +24,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AssignmentIdentity defines the resource reference to BigqueryReservation, which "External" field
-// holds the GCP identifier for the KRM object.
+// AssignmentIdentity defines the resource reference to BigQueryReservationAssignment,
+// which "External" field holds the GCP identifier for the KRM object.
 type AssignmentIdentity struct {
 	parent *AssignmentParent
 	id     string
@@ -53,7 +53,7 @@ func (p *AssignmentParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/reservations/" + p.ReservationName
 }
 
-// New builds a AssignmentIdentity from the Config Connector Assignment object.
+// New builds a AssignmentIdentity from the Config Connector BigQueryReservationAssignment object.
 func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQueryReservationAssignment) (*AssignmentIdentity, error) {
 
 	// Get Parent
@@ -91,10 +91,12 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 		if actualParent.ReservationName != reservation {
 			return nil, fmt.Errorf("spec.reservation changed, expect %s, got %s", actualParent.ReservationName, reservation)
 		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
+		// For BigQueryReservationAssignment, the GCP resourceID is output only.
+		/* 	if actualResourceID != resourceID {
+				return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+					resourceID, actualResourceID)
+		} */
+		resourceID = actualResourceID
 	}
 	return &AssignmentIdentity{
 		parent: &AssignmentParent{

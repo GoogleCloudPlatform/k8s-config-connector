@@ -28,23 +28,23 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &AssignmentRef{}
 
-// AssignmentRef defines the resource reference to BigqueryReservation, which "External" field
-// holds the GCP identifier for the KRM object.
+// AssignmentRef defines the resource reference to BigqueryReservationAssignment,
+// which "External" field holds the GCP identifier for the KRM object.
 type AssignmentRef struct {
-	// A reference to an externally managed BigqueryReservation resource.
+	// A reference to an externally managed BigqueryReservationAssignment resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/assignments/{{assignmentID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a BigqueryReservation resource.
+	// The name of a BigqueryReservationAssignment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a BigqueryReservation resource.
+	// The namespace of a BigqueryReservationAssignment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on BigqueryReservation.
-// If the "External" is given in the other resource's spec.BigqueryReservationRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual BigqueryReservation object from the cluster.
+// NormalizedExternal provision the "External" value for other resource that depends on BigqueryReservationAssignment.
+// If the "External" is given in the other resource's spec.BigqueryReservationAssignmentRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual BigqueryReservationAssignment object from the cluster.
 func (r *AssignmentRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigQueryReservationAssignmentGVK.Kind)

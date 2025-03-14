@@ -157,7 +157,9 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	// update the externalRef in the KRM resoruce
+	status.ExternalRef = direct.LazyPtr(created.Name)
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
