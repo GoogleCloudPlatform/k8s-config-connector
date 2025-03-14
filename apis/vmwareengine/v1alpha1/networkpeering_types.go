@@ -85,12 +85,9 @@ type VMwareEngineNetworkPeeringSpec struct {
 	PeerNetworkType *string `json:"peerNetworkType,omitempty"`
 
 	// Required. The relative resource name of the VMware Engine network.
-	//  Specify the name in the following form:
-	//  `projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
-	//  where `{project}` can either be a project number or a project ID.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPeering.vmware_engine_network
 	// +required
-	VmwareEngineNetwork *string `json:"vmwareEngineNetwork,omitempty"`
+	VmwareEngineNetworkRef *VmwareEngineNetworkRef `json:"vmwareEngineNetworkRef,omitempty"`
 
 	// Optional. User-provided description for this network peering.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPeering.description
