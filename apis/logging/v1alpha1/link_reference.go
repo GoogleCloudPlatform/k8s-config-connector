@@ -45,6 +45,10 @@ type LoggingLinkRef struct {
 	parent *LoggingLinkParent
 }
 
+func (l *LoggingLinkRef) String() string {
+	return l.External
+}
+
 // NormalizedExternal provision the "External" value for other resource that depends on LoggingLink.
 // If the "External" is given in the other resource's spec.LoggingLinkRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual LoggingLink object from the cluster.
