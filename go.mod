@@ -10,24 +10,25 @@ require (
 	cloud.google.com/go/aiplatform v1.74.0
 	cloud.google.com/go/alloydb v1.14.0
 	cloud.google.com/go/apikeys v1.1.12
-	cloud.google.com/go/bigquery v1.65.0
-	cloud.google.com/go/certificatemanager v1.9.2
-	cloud.google.com/go/cloudbuild v1.19.0
-	cloud.google.com/go/compute v1.29.0
-	cloud.google.com/go/dataflow v0.10.2
-	cloud.google.com/go/dataform v0.10.2
+	cloud.google.com/go/apphub v0.2.4
+	cloud.google.com/go/backupdr v1.3.1
+	cloud.google.com/go/bigquery v1.66.2
+	cloud.google.com/go/certificatemanager v1.9.3
+	cloud.google.com/go/cloudbuild v1.22.0
+	cloud.google.com/go/cloudtasks v1.13.3
+	cloud.google.com/go/compute v1.34.0
+	cloud.google.com/go/dataflow v0.10.3
+	cloud.google.com/go/dataform v0.10.3
 	cloud.google.com/go/discoveryengine v1.15.0
-	cloud.google.com/go/firestore v1.17.0
-	cloud.google.com/go/gkemulticloud v1.4.1
-	cloud.google.com/go/iam v1.2.2
-	cloud.google.com/go/iap v1.10.2
-	cloud.google.com/go/kms v1.20.1
+	cloud.google.com/go/documentai v1.35.2
+	cloud.google.com/go/firestore v1.18.0
+	cloud.google.com/go/gkemulticloud v1.5.1
+	cloud.google.com/go/iam v1.4.1
+	cloud.google.com/go/iap v1.10.3
+	cloud.google.com/go/kms v1.21.0
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.24.0
-	cloud.google.com/go/netapp v1.7.0
-	cloud.google.com/go/networksecurity v0.10.3
-	cloud.google.com/go/networkservices v0.2.4
 	cloud.google.com/go/notebooks v1.12.3
 	cloud.google.com/go/orchestration v1.11.4
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
@@ -84,7 +85,7 @@ require (
 	google.golang.org/api v0.224.0
 	google.golang.org/genproto v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250227231956-55c901821b1e
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.5
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
@@ -104,6 +105,7 @@ require (
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.3 // indirect
+	cloud.google.com/go/dataproc/v2 v2.11.0 // indirect
 	cloud.google.com/go/orgpolicy v1.14.2 // indirect
 	cloud.google.com/go/osconfig v1.14.3 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
@@ -113,11 +115,11 @@ require (
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
-	cel.dev/expr v0.16.0 // indirect
-	cloud.google.com/go v0.117.0 // indirect
-	cloud.google.com/go/auth v0.13.0 // indirect
-	cloud.google.com/go/auth/oauth2adapt v0.2.6 // indirect
-	cloud.google.com/go/bigtable v1.33.0 // indirect
+	cel.dev/expr v0.19.2 // indirect
+	cloud.google.com/go v0.118.3 // indirect
+	cloud.google.com/go/auth v0.15.0 // indirect
+	cloud.google.com/go/auth/oauth2adapt v0.2.7 // indirect
+	cloud.google.com/go/bigtable v1.35.0 // indirect
 	cloud.google.com/go/compute/metadata v0.6.0 // indirect
 	cloud.google.com/go/longrunning v0.6.5
 	dario.cat/mergo v1.0.0 // indirect
@@ -250,13 +252,13 @@ require (
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
 	go.starlark.net v0.0.0-20200306205701-8dd3e2ee1dd5 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	golang.org/x/crypto v0.32.0 // indirect
-	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
+	golang.org/x/crypto v0.36.0 // indirect
+	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
 	golang.org/x/mod v0.22.0 // indirect
-	golang.org/x/net v0.34.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
-	golang.org/x/term v0.28.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/term v0.30.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/tools v0.29.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gomodules.xyz/jsonpatch/v2 v2.3.0 // indirect

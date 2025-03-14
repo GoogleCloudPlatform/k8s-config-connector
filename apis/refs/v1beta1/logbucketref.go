@@ -81,7 +81,7 @@ func ResolveLoggingLogBucketRef(ctx context.Context, reader client.Reader, obj c
 	exchange := &unstructured.Unstructured{}
 	exchange.SetGroupVersionKind(schema.GroupVersionKind{
 		Group:   "logging.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "LoggingLogBucket",
 	})
 	if err := reader.Get(ctx, key, exchange); err != nil {
