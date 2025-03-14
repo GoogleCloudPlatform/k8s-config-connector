@@ -21,11 +21,13 @@ package mockdatacatalog
 import (
 	"context"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-        "google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datacatalog/v1"
 )
@@ -41,7 +43,7 @@ func (s *DataCatalogV1) GetEntryGroup(ctx context.Context, req *pb.GetEntryGroup
 	obj := &pb.EntryGroup{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "EntryGroup %%q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "EntryGroup %%q not found: %s", fqn)
 		}
 		return nil, err
 	}
@@ -74,13 +76,15 @@ func (s *DataCatalogV1) UpdateEntryGroup(ctx context.Context, req *pb.UpdateEntr
 			switch path {
 			case "description":
 				obj.Description = req.EntryGroup.Description
-			// Add other updatable fields here.
+				// Add other updatable fields here.
 			}
 		}
 	} else {
-	       //If no field mask is provided update all fields.
-	       proto.Merge(obj,req.EntryGroup)
-        }
+		proto.Merge(obj, req.EntryGroup)
+	}
+
+	// Update the update timestamp
+	obj.DataCatalogTimestamps.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -118,6 +122,13 @@ func (s *DataCatalogV1) CreateEntryGroup(ctx context.Context, req *pb.CreateEntr
 
 	obj := proto.Clone(req.EntryGroup).(*pb.EntryGroup)
 	obj.Name = fqn
+
+	// Add timestamps for creation
+	now := timestamppb.New(time.Now())
+	obj.DataCatalogTimestamps = &pb.SystemTimestamps{
+		CreateTime: now,
+		UpdateTime: now,
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

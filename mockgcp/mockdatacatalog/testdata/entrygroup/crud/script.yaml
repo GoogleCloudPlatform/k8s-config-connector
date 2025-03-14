@@ -1,5 +1,4 @@
 - exec: gcloud data-catalog entry-groups create testentrygroup${uniqueId} --location=us-central1 --project=${projectId}
-- pre: gcloud data-catalog list entry-groups create testentrygroup${uniqueId} --location=us-central1 --project=${projectId}
 - exec: gcloud data-catalog entry-groups describe testentrygroup${uniqueId} --location=us-central1 --project=${projectId}
 - exec: gcloud data-catalog entry-groups update testentrygroup${uniqueId} --location=us-central1 --project=${projectId} --description="Updated description."
 - exec: gcloud data-catalog entry-groups delete testentrygroup${uniqueId} --location=us-central1 --project=${projectId} --quiet
