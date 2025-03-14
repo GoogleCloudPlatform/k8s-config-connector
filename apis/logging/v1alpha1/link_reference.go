@@ -89,62 +89,6 @@ func (r *LoggingLinkRef) NormalizedExternal(ctx context.Context, reader client.R
 	return r.External, nil
 }
 
-// New builds a LoggingLinkRef from the Config Connector LoggingLink object.
-func NewLoggingLinkRef(ctx context.Context, reader client.Reader, obj *LoggingLink) (*LoggingLinkRef, error) {
-	id := &LoggingLinkRef{}
-
-	// Get Parent
-	loggingBucketRef, err := refsv1beta1.ResolveLoggingLogBucketRef(ctx, reader, obj, obj.Spec.LoggingLogBucketRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := loggingBucketRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := loggingBucketRef.Location
-	bucketID := loggingBucketRef.LoggingLogBucketID
-	id.parent = &LoggingLinkParent{ProjectID: projectID, Location: location, LogBucket: bucketID}
-
-	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id.External = asLoggingLinkExternal(id.parent, resourceID)
-		return id, nil
-	}
-
-	// Validate desired with actual
-	actualParent, actualResourceID, err := parseLoggingLinkExternal(externalRef)
-	if err != nil {
-		return nil, err
-	}
-	if actualParent.ProjectID != projectID {
-		return nil, fmt.Errorf("loggingBucketRef.projectID changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	}
-	if actualParent.Location != location {
-		return nil, fmt.Errorf("loggingBucketRef.location changed, expect %s, got %s", actualParent.Location, location)
-	}
-	if actualParent.LogBucket != bucketID {
-		return nil, fmt.Errorf("loggingBucketRef.LoggingLogBucketID changed, expect %s, got %s", actualParent.Location, bucketID)
-	}
-	if actualResourceID != resourceID {
-		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-			resourceID, actualResourceID)
-	}
-	id.External = externalRef
-	id.parent = &LoggingLinkParent{ProjectID: projectID, Location: location, LogBucket: bucketID}
-	return id, nil
-}
-
 func (r *LoggingLinkRef) Parent() (*LoggingLinkParent, error) {
 	if r.parent != nil {
 		return r.parent, nil
