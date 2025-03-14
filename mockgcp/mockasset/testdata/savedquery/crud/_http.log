@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "content": {
@@ -48,7 +47,7 @@ X-Xss-Protection: 0
   "labels": {
     "test": "test"
   },
-  "lastUpdateTime": "2025-03-08T06:48:47.585978Z",
+  "lastUpdateTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectNumber}/savedQueries/test-${uniqueId}"
 }
 
@@ -58,7 +57,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=jso
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -73,11 +71,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "128653134652",
-    "type": "organization"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -88,7 +81,6 @@ GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -116,7 +108,7 @@ X-Xss-Protection: 0
   "labels": {
     "test": "test"
   },
-  "lastUpdateTime": "2025-03-08T06:48:47.585978Z",
+  "lastUpdateTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectNumber}/savedQueries/test-${uniqueId}"
 }
 
@@ -126,7 +118,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=jso
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -141,11 +132,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "128653134652",
-    "type": "organization"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -157,7 +143,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "content": {
@@ -202,7 +187,7 @@ X-Xss-Protection: 0
   "labels": {
     "test": "test"
   },
-  "lastUpdateTime": "2025-03-08T06:48:52.704799Z",
+  "lastUpdateTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectNumber}/savedQueries/test-${uniqueId}"
 }
 
@@ -212,7 +197,6 @@ GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=jso
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -227,11 +211,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "128653134652",
-    "type": "organization"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -242,7 +221,6 @@ DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueri
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

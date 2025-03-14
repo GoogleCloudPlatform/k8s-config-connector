@@ -34,15 +34,13 @@ import (
 )
 
 func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
-	name, err := parseSavedQueryName(req.Name)
+	_, err := parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	fqn := name.String()
-
 	obj := &pb.SavedQuery{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.storage.Get(ctx, req.Name, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "saved query with name %q not found", req.GetName())
 		}
@@ -53,25 +51,30 @@ func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryR
 }
 
 func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSavedQueryRequest) (*pb.SavedQuery, error) {
-	reqName := fmt.Sprintf("%s/savedQueries/%s", req.GetParent(), req.GetSavedQueryId())
-	name, err := parseSavedQueryName(reqName)
+	// Convert project ID to number like in feed.go
+	_, projectNumber, err := s.parseParent(req.GetParent())
 	if err != nil {
 		return nil, err
 	}
 
-	fqn := name.String()
+	// Use project number in the name
+	reqName := fmt.Sprintf("projects/%s/savedQueries/%s", projectNumber, req.GetSavedQueryId())
+	_, err = parseSavedQueryName(reqName)
+	if err != nil {
+		return nil, err
+	}
 
 	now := time.Now()
 
 	obj := proto.Clone(req.GetSavedQuery()).(*pb.SavedQuery)
-	obj.Name = fqn
+	obj.Name = reqName
 	obj.CreateTime = timestamppb.New(now)
 	obj.LastUpdateTime = timestamppb.New(now)
+	// Remove creator and lastUpdater as they're not expected in test output
+	//obj.Creator = "test-only@example.com"
+	//obj.LastUpdater = "test-only@example.com"
 
-	obj.Creator = "test-only@example.com"     //TODO: to populate a valid value if necessary
-	obj.LastUpdater = "test-only@example.com" //TODO: to populate a valid value if necessary
-
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	if err := s.storage.Create(ctx, reqName, obj); err != nil {
 		return nil, err
 	}
 
@@ -79,23 +82,33 @@ func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 }
 
 func (s *AssetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSavedQueryRequest) (*pb.SavedQuery, error) {
-	name, err := parseSavedQueryName(req.GetSavedQuery().GetName())
+	_, err := parseSavedQueryName(req.GetSavedQuery().GetName())
 	if err != nil {
 		return nil, err
 	}
 
-	fqn := name.String()
+	fqn := req.GetSavedQuery().GetName()
 	obj := &pb.SavedQuery{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	req.GetSavedQuery().CreateTime = obj.CreateTime
-
-	proto.Merge(obj, req.GetSavedQuery())
-
+	if req.UpdateMask != nil {
+		for _, path := range req.UpdateMask.Paths {
+			switch path {
+			case "content":
+				obj.Content = req.GetSavedQuery().Content
+			case "description":
+				obj.Description = req.GetSavedQuery().Description
+			case "labels":
+				obj.Labels = req.GetSavedQuery().Labels
+			default:
+				return nil, fmt.Errorf("unexpected field mask path: %q", path)
+			}
+		}
+	}
 	obj.LastUpdateTime = timestamppb.New(time.Now())
-	obj.LastUpdater = "test-only@example.com" //TODO: to populate a valid value if necessary
+	//obj.LastUpdater = "test-only@example.com"
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -105,15 +118,16 @@ func (s *AssetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSaved
 }
 
 func (s *AssetService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSavedQueryRequest) (*emptypb.Empty, error) {
-	name, err := parseSavedQueryName(req.Name)
+	_, err := parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	fqn := name.String()
-
 	deleted := &pb.SavedQuery{}
-	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+	if err := s.storage.Delete(ctx, req.Name, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "savedQuery %q not found", req.Name)
+		}
 		return nil, err
 	}
 
