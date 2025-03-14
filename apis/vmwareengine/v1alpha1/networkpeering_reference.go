@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &NetworkPeeringRef{}
 // holds the GCP identifier for the KRM object.
 type NetworkPeeringRef struct {
 	// A reference to an externally managed VMwareEngineNetworkPeering resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/networkpeerings/{{networkpeeringID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/networkPeerings/{{networkpeeringID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a VMwareEngineNetworkPeering resource.

@@ -32,7 +32,7 @@ type NetworkPeeringIdentity struct {
 }
 
 func (i *NetworkPeeringIdentity) String() string {
-	return i.parent.String() + "/networkpeerings/" + i.id
+	return i.parent.String() + "/networkPeerings/" + i.id
 }
 
 func (i *NetworkPeeringIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewNetworkPeeringIdentity(ctx context.Context, reader client.Reader, obj *V
 
 func ParseNetworkPeeringExternal(external string) (parent *NetworkPeeringParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "networkpeerings" {
-		return nil, "", fmt.Errorf("format of VMwareEngineNetworkPeering external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkpeerings/{{networkpeeringID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "networkPeerings" {
+		return nil, "", fmt.Errorf("format of VMwareEngineNetworkPeering external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkPeerings/{{networkpeeringID}})", external)
 	}
 	parent = &NetworkPeeringParent{
 		ProjectID: tokens[1],
