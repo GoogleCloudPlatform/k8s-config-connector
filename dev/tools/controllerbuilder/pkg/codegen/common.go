@@ -37,7 +37,12 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Struct":      "map[string]string",
 }
 
+// This acronym list contains both acronym (including initialism) and abbreviation.
+// - acronyms use all-cap case as Kubernetes API convention suggested. https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#naming-conventions
+// - abbreviations use its most known form with upper letters reflecting how it is pronounced.
+// - Plural form of acronym should avoid using upper "S" unless it is a const.
 var Acronyms = []string{
+
 	"API",
 	"BGP", "BYOID",
 	"CA", "CDN", "CIDR", "CPU",
@@ -45,7 +50,7 @@ var Acronyms = []string{
 	"FS",
 	"GCE", "GB", "GCS",
 	"HTML", "HTTP", "HTTPS",
-	"IAM", "IAP", "ID", "IP", "IPv4", "IPv6",
+	"IAM", "IAP", "ID", "IP", "IPV4", "IPV6",
 	"KMS",
 	"MiB",
 	"NAT",
@@ -54,7 +59,7 @@ var Acronyms = []string{
 	"SQL", "SSH", "SSL", "SSO",
 	"TCP", "TLS", "TTL",
 	"UDP", "URI", "URL",
-	"vTPM",
+	"VTPM",
 	"X509",
 }
 
