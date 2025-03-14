@@ -146,7 +146,24 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
-		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto
+		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule_service.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_service.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_service.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_execution_job.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/network_spec.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_idle_shutdown_config.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_euc_config.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime_template_ref.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/training_pipeline.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_job.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_state.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/service_networking.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/ui_pipeline_spec.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_failure_policy.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:

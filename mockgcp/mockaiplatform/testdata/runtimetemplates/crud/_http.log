@@ -1,0 +1,129 @@
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/notebookRuntimeTemplates?alt=json&notebookRuntimeTemplateId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "dataPersistentDiskSpec": {
+    "diskSizeGb": "100",
+    "diskType": "pd-standard"
+  },
+  "displayName": "test-${uniqueId}",
+  "eucConfig": {
+    "eucDisabled": false
+  },
+  "machineSpec": {
+    "machineType": "e2-standard-4"
+  },
+  "name": "test-${uniqueId}",
+  "networkSpec": {
+    "enableInternetAccess": true
+  },
+  "shieldedVmConfig": {
+    "enableSecureBoot": false
+  },
+  "softwareConfig": {
+    "postStartupScriptConfig": {}
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateNotebookRuntimeTemplateOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate",
+    "name": "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataPersistentDiskSpec": {
+    "diskSizeGb": "100",
+    "diskType": "pd-standard"
+  },
+  "displayName": "test-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "eucConfig": {},
+  "idleShutdownConfig": {
+    "idleTimeout": "10800s"
+  },
+  "machineSpec": {
+    "machineType": "e2-standard-4"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+  "networkSpec": {
+    "enableInternetAccess": true,
+    "network": "projects/${projectNumber}/global/networks/default"
+  },
+  "notebookRuntimeType": "USER_DEFINED",
+  "shieldedVmConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
