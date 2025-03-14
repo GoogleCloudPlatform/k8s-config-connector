@@ -110,15 +110,15 @@ var _ directbase.Adapter = &LoggingLinkAdapter{}
 
 func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting LoggingLink", "name", a.id.External)
+	log.V(2).Info("getting LoggingLink", "name", a.id)
 
-	req := &loggingpb.GetLinkRequest{Name: a.id.External}
+	req := &loggingpb.GetLinkRequest{Name: a.id.String()}
 	linkpb, err := a.gcpClient.GetLink(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting LoggingLink %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting LoggingLink %q: %w", a.id, err)
 	}
 
 	a.actual = linkpb
@@ -162,20 +162,20 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 	op, err := a.gcpClient.CreateLink(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Link %s: %w\n", a.id.External, err)
+		return fmt.Errorf("creating Link %s: %w\n", a.id, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Link %s waiting creation: %w", a.id.External, err)
+		return fmt.Errorf("Link %s waiting creation: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created Link", "name", a.id.External)
+	log.V(2).Info("successfully created Link", "name", a.id)
 
 	status := &krm.LoggingLinkStatus{}
 	status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -246,18 +246,18 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 // Delete implements the Adapter interface.
 func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Link", "name", a.id.External)
+	log.V(2).Info("deleting Link", "name", a.id)
 
-	req := &loggingpb.DeleteLinkRequest{Name: a.id.External}
+	req := &loggingpb.DeleteLinkRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteLink(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting Link %s: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting Link %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Link", "name", a.id.External)
+	log.V(2).Info("successfully deleted Link", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete Link %s: %w", a.id.External, err)
+		return false, fmt.Errorf("waiting delete Link %s: %w", a.id, err)
 	}
 	return true, nil
 }
