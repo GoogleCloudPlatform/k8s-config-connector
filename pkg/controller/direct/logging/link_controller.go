@@ -23,6 +23,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -179,8 +180,32 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 }
 
 func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("update operation not supported for resource %v %v",
-		a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
+
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating Logging Link", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	desiredPb := LoggingLinkSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		status := &krm.LoggingLinkStatus{}
+		status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
+	} else {
+		return fmt.Errorf("update operation not supported for resource %v %v",
+			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
+	}
 }
 
 func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
