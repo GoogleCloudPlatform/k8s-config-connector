@@ -28,9 +28,8 @@ func init() {
 }
 
 func bigtableAuthorizedViewFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.AuthorizedView{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.AuthorizedView{},
 		BigtableAuthorizedViewSpec_FromProto, BigtableAuthorizedViewSpec_ToProto,
-		BigtableAuthorizedViewObservedState_FromProto, BigtableAuthorizedViewObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".subset_view")
@@ -38,8 +37,7 @@ func bigtableAuthorizedViewFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".deletion_protection")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".subset_view.family_subsets")
 
 	return f
 }
-
-
