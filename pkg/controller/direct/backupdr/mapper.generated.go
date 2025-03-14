@@ -72,6 +72,22 @@ func BackupDRBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRB
 	out.BackupVault = direct.ValueOf(in.BackupVault)
 	return out
 }
+func BackupDRBackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupDRBackupVaultSpec{}
+	// MISSING: Name
+	out.Description = in.Description
+	out.Labels = in.Labels
+	out.BackupMinimumEnforcedRetentionDuration = direct.StringDuration_FromProto(mapCtx, in.GetBackupMinimumEnforcedRetentionDuration())
+	out.Etag = in.Etag
+	out.EffectiveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEffectiveTime())
+	// MISSING: Uid
+	out.Annotations = in.Annotations
+	out.AccessRestriction = direct.Enum_FromProto(mapCtx, in.GetAccessRestriction())
+	return out
+}
 func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.BackupDRManagementServerSpec {
 	if in == nil {
 		return nil
