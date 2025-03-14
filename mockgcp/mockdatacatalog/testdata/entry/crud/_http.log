@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "gcsFilesetSpec": {
@@ -20,6 +19,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -32,8 +32,8 @@ X-Xss-Protection: 0
   "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
   "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
   "sourceSystemTimestamps": {
-    "createTime": "2025-03-08T06:49:11.790Z",
-    "updateTime": "2025-03-08T06:49:11.790Z"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "type": "FILESET"
 }
@@ -44,7 +44,6 @@ GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-cen
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -52,6 +51,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -64,8 +64,8 @@ X-Xss-Protection: 0
   "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
   "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
   "sourceSystemTimestamps": {
-    "createTime": "2025-03-08T06:49:11.790Z",
-    "updateTime": "2025-03-08T06:49:11.790Z"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "type": "FILESET"
 }
@@ -77,7 +77,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "displayName": "New Display Name"
@@ -89,6 +88,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -102,8 +102,8 @@ X-Xss-Protection: 0
   "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
   "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
   "sourceSystemTimestamps": {
-    "createTime": "2025-03-08T06:49:11.790Z",
-    "updateTime": "2025-03-08T06:49:17.414Z"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "type": "FILESET"
 }
@@ -114,7 +114,6 @@ DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -122,6 +121,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 

@@ -22,11 +22,13 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/datacatalog/v1"
 )
@@ -66,6 +68,18 @@ func (s *DataCatalogV1) CreateEntry(ctx context.Context, req *pb.CreateEntryRequ
 
 	obj := proto.Clone(req.GetEntry()).(*pb.Entry)
 	obj.Name = fqn
+	obj.LinkedResource = fmt.Sprintf("//datacatalog.googleapis.com/%s", fqn)
+	now := time.Now().UTC()
+	obj.SourceSystemTimestamps = &pb.SystemTimestamps{
+		CreateTime: &timestamppb.Timestamp{
+			Seconds: now.Unix(),
+			Nanos:   int32(now.Nanosecond()),
+		},
+		UpdateTime: &timestamppb.Timestamp{
+			Seconds: now.Unix(),
+			Nanos:   int32(now.Nanosecond()),
+		},
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -94,6 +108,13 @@ func (s *DataCatalogV1) UpdateEntry(ctx context.Context, req *pb.UpdateEntryRequ
 	// TODO: support update mask
 
 	proto.Merge(obj, req.GetEntry())
+
+	if obj.SourceSystemTimestamps != nil {
+		obj.SourceSystemTimestamps.UpdateTime = &timestamppb.Timestamp{
+			Seconds: time.Now().UTC().Unix(),
+			Nanos:   int32(time.Now().UTC().Nanosecond()),
+		}
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
