@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 
 	kccio "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/io"
@@ -46,9 +47,12 @@ type PromptOptions struct {
 }
 
 func (o *PromptOptions) InitDefaults() error {
-	root := os.Getenv("REPO_ROOT")
+	root, err := options.RepoRoot()
+	if err != nil {
+		return err
+	}
 	o.SrcDir = root
-	o.ProtoDir = root + "/.build/third_party/googleapis/"
+	o.ProtoDir = filepath.Join(root, ".build/third_party/googleapis/google")
 	return nil
 }
 
