@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "dataPersistentDiskSpec": {
@@ -61,7 +60,6 @@ GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -95,9 +93,6 @@ X-Xss-Protection: 0
   },
   "notebookRuntimeType": "USER_DEFINED",
   "shieldedVmConfig": {},
-  "softwareConfig": {
-    "postStartupScriptConfig": {}
-  },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -107,7 +102,6 @@ DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectI
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

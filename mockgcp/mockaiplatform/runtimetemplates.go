@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.cloud.aiplatform.v1.NotebookService
-// proto.message: google.cloud.aiplatform.v1.NotebookRuntimeTemplate
+// proto.service: google.cloud.aiplatform.v1beta1.NotebookService
+// proto.message: google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
 
 package mockaiplatform
 
@@ -27,13 +27,19 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
+
+type notebookService struct {
+	*MockService
+	pb.UnimplementedNotebookServiceServer
+}
 
 func (s *notebookService) GetNotebookRuntimeTemplate(ctx context.Context, req *pb.GetNotebookRuntimeTemplateRequest) (*pb.NotebookRuntimeTemplate, error) {
 	name, err := s.parseNotebookRuntimeTemplateName(req.Name)
@@ -50,6 +56,7 @@ func (s *notebookService) GetNotebookRuntimeTemplate(ctx context.Context, req *p
 		}
 		return nil, err
 	}
+	obj.Name = strings.ReplaceAll(obj.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number))
 
 	return obj, nil
 }
@@ -69,24 +76,33 @@ func (s *notebookService) CreateNotebookRuntimeTemplate(ctx context.Context, req
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
+	obj.Etag = "abcdef0123A="
+	idleTimeoutParsed, err := time.ParseDuration("10800s")
+	if err != nil {
+		return nil, err
+	}
+	obj.IdleShutdownConfig = &pb.NotebookIdleShutdownConfig{
+		IdleTimeout: durationpb.New(idleTimeoutParsed),
+	}
+	obj.NotebookRuntimeType = pb.NotebookRuntimeType_USER_DEFINED
+	obj.NetworkSpec.Network = fmt.Sprintf("projects/%v/global/networks/default", name.Project.Number)
 	obj.Name = fqn
-	obj.IsDefault = true
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	// By default, immediately finish the LRO with success.
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroPrefix := strings.ReplaceAll(obj.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number))
 	lroMetadata := &pb.CreateNotebookRuntimeTemplateOperationMetadata{}
 	lroMetadata.GenericMetadata = &pb.GenericOperationMetadata{
 		CreateTime: timestamppb.New(now),
 		UpdateTime: timestamppb.New(now),
 	}
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		lroMetadata.GenericMetadata.EndTime = timestamppb.Now()
-		return obj, nil
-	})
+	objInOp := &pb.NotebookRuntimeTemplate{
+		Name: strings.ReplaceAll(obj.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number)),
+	}
+	return s.operations.DoneLRO(ctx, lroPrefix, lroMetadata, objInOp)
 }
 
 func (s *notebookService) DeleteNotebookRuntimeTemplate(ctx context.Context, req *pb.DeleteNotebookRuntimeTemplateRequest) (*longrunningpb.Operation, error) {
@@ -109,7 +125,7 @@ func (s *notebookService) DeleteNotebookRuntimeTemplate(ctx context.Context, req
 		CreateTime: timestamppb.New(now),
 		UpdateTime: timestamppb.New(now),
 	}
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", fmt.Sprintf("%v", name.Project.Number), name.Location)
 	return s.operations.DoneLRO(ctx, lroPrefix, op, &emptypb.Empty{})
 }
 
@@ -144,5 +160,3 @@ func (s *MockService) parseNotebookRuntimeTemplateName(name string) (*notebookRu
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-
