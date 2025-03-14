@@ -32,7 +32,7 @@ type VmwareEngineNetworkIdentity struct {
 }
 
 func (i *VmwareEngineNetworkIdentity) String() string {
-	return i.parent.String() + "/vmwareenginenetworks/" + i.id
+	return i.parent.String() + "/vmwareEngineNetworks/" + i.id
 }
 
 func (i *VmwareEngineNetworkIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewVmwareEngineNetworkIdentity(ctx context.Context, reader client.Reader, o
 
 func ParseVmwareEngineNetworkExternal(external string) (parent *VmwareEngineNetworkParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "vmwareenginenetworks" {
-		return nil, "", fmt.Errorf("format of VMwareEngineNetwork external=%q was not known (use projects/{{projectID}}/locations/{{location}}/vmwareenginenetworks/{{vmwareenginenetworkID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "vmwareEngineNetworks" {
+		return nil, "", fmt.Errorf("format of VMwareEngineNetwork external=%q was not known (use projects/{{projectID}}/locations/{{location}}/vmwareEngineNetworks/{{vmwareenginenetworkID}})", external)
 	}
 	parent = &VmwareEngineNetworkParent{
 		ProjectID: tokens[1],

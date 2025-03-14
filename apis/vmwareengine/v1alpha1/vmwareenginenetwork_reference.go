@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &VmwareEngineNetworkRef{}
 // holds the GCP identifier for the KRM object.
 type VmwareEngineNetworkRef struct {
 	// A reference to an externally managed VMwareEngineNetwork resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/vmwareenginenetworks/{{vmwareenginenetworkID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/vmwareEngineNetworks/{{vmwareenginenetworkID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a VMwareEngineNetwork resource.

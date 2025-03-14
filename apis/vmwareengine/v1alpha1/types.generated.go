@@ -14,60 +14,8 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork
-type VmwareEngineNetwork struct {
-
-	// User-provided description for this VMware Engine network.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. VMware Engine network type.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.type
-	Type *string `json:"type,omitempty"`
-
-	// Checksum that may be sent on update and delete requests to ensure that the
-	//  user-provided value is up to date before the server processes a request.
-	//  The server computes checksums based on the value of other fields in the
-	//  request.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.etag
-	Etag *string `json:"etag,omitempty"`
-}
-
 // +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork
 type VmwareEngineNetwork_VpcNetwork struct {
-}
-
-// +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork
-type VmwareEngineNetworkObservedState struct {
-	// Output only. The resource name of the VMware Engine network.
-	//  Resource names are schemeless URIs that follow the conventions in
-	//  https://cloud.google.com/apis/design/resource_names.
-	//  For example:
-	//  `projects/my-project/locations/global/vmwareEngineNetworks/my-network`
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Creation time of this resource.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Last update time of this resource.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. VMware Engine service VPC networks that provide connectivity
-	//  from a private cloud to customer projects, the internet, and other Google
-	//  Cloud services.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.vpc_networks
-	VpcNetworks []VmwareEngineNetwork_VpcNetwork `json:"vpcNetworks,omitempty"`
-
-	// Output only. State of the VMware Engine network.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. System-generated unique identifier for the resource.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.uid
-	Uid *string `json:"uid,omitempty"`
 }
 
 // +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork
