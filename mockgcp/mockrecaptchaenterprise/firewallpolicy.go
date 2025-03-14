@@ -22,14 +22,15 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/recaptchaenterprise/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type recaptchaEnterpriseService struct {
@@ -54,7 +55,7 @@ func (s *recaptchaEnterpriseService) GetFirewallPolicy(ctx context.Context, req 
 }
 
 func (s *recaptchaEnterpriseService) CreateFirewallPolicy(ctx context.Context, req *pb.CreateFirewallPolicyRequest) (*pb.FirewallPolicy, error) {
-	reqName := fmt.Sprintf("%s/firewallpolicies/%d", req.GetParent(), time.Now().UnixNano())
+	reqName := fmt.Sprintf("%s/firewallpolicies/%d", req.GetParent(), 100)
 	name, err := s.parseFirewallPolicyName(reqName)
 	if err != nil {
 		return nil, err
@@ -68,6 +69,7 @@ func (s *recaptchaEnterpriseService) CreateFirewallPolicy(ctx context.Context, r
 		return nil, err
 	}
 
+	obj.Name = strings.ReplaceAll(obj.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number))
 	return obj, nil
 }
 
@@ -173,5 +175,3 @@ func (s *recaptchaEnterpriseService) ListFirewallPolicies(ctx context.Context, r
 	}
 	return response, nil
 }
-
-
