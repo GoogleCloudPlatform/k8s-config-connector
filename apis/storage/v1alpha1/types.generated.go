@@ -14,41 +14,8 @@
 
 package v1alpha1
 
-
-// +kcc:proto=google.storage.control.v2.Folder
-type Folder struct {
-	// Identifier. The name of this folder.
-	//  Format: `projects/{project}/buckets/{bucket}/folders/{folder}`
-	// +kcc:proto:field=google.storage.control.v2.Folder.name
-	Name *string `json:"name,omitempty"`
-}
-
 // +kcc:proto=google.storage.control.v2.PendingRenameInfo
 type PendingRenameInfo struct {
-}
-
-// +kcc:proto=google.storage.control.v2.Folder
-type FolderObservedState struct {
-	// Output only. The version of the metadata for this folder. Used for
-	//  preconditions and for detecting changes in metadata.
-	// +kcc:proto:field=google.storage.control.v2.Folder.metageneration
-	Metageneration *int64 `json:"metageneration,omitempty"`
-
-	// Output only. The creation time of the folder.
-	// +kcc:proto:field=google.storage.control.v2.Folder.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The modification time of the folder.
-	// +kcc:proto:field=google.storage.control.v2.Folder.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Only present if the folder is part of an ongoing RenameFolder
-	//  operation. Contains information which can be used to query the operation
-	//  status. The presence of this field also indicates all write operations are
-	//  blocked for this folder, including folder, managed folder, and object
-	//  operations.
-	// +kcc:proto:field=google.storage.control.v2.Folder.pending_rename_info
-	PendingRenameInfo *PendingRenameInfo `json:"pendingRenameInfo,omitempty"`
 }
 
 // +kcc:proto=google.storage.control.v2.PendingRenameInfo

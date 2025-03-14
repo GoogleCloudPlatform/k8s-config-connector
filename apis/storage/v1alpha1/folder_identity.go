@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type FolderIdentity struct {
 	parent *FolderParent
-	id string
+	id     string
 }
 
 func (i *FolderIdentity) String() string {
-	return  i.parent.String() + "/folders/" + i.id
+	return i.parent.String() + "/folders/" + i.id
 }
 
 func (i *FolderIdentity) ID() string {
@@ -40,18 +40,17 @@ func (i *FolderIdentity) ID() string {
 }
 
 func (i *FolderIdentity) Parent() *FolderParent {
-	return  i.parent
+	return i.parent
 }
 
 type FolderParent struct {
-	ProjectID string
-	Location  string
+	ProjectID  string
+	BucketName string
 }
 
 func (p *FolderParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/buckets/" + p.BucketName
 }
-
 
 // New builds a FolderIdentity from the Config Connector Folder object.
 func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFolder) (*FolderIdentity, error) {
@@ -65,7 +64,7 @@ func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFo
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	bucketName := obj.Spec.StorageBucketRef.Name
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -87,8 +86,8 @@ func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFo
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.BucketName != bucketName {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.BucketName, bucketName)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -97,8 +96,8 @@ func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFo
 	}
 	return &FolderIdentity{
 		parent: &FolderParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:  projectID,
+			BucketName: bucketName,
 		},
 		id: resourceID,
 	}, nil
@@ -106,12 +105,12 @@ func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFo
 
 func ParseFolderExternal(external string) (parent *FolderParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "folders" {
-		return nil, "", fmt.Errorf("format of StorageFolder external=%q was not known (use projects/{{projectID}}/locations/{{location}}/folders/{{folderID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "buckets" || tokens[4] != "folders" {
+		return nil, "", fmt.Errorf("format of StorageFolder external=%q was not known (use projects/{{projectID}}/buckets/{{bucket}}/folders/{{folderID}})", external)
 	}
 	parent = &FolderParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:  tokens[1],
+		BucketName: tokens[3],
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil

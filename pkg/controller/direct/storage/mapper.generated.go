@@ -15,59 +15,11 @@
 package storage
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-func Folder_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.Folder {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Folder{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Metageneration
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: PendingRenameInfo
-	return out
-}
-func Folder_ToProto(mapCtx *direct.MapContext, in *krm.Folder) *pb.Folder {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Folder{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Metageneration
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: PendingRenameInfo
-	return out
-}
-func FolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.FolderObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FolderObservedState{}
-	// MISSING: Name
-	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.PendingRenameInfo = PendingRenameInfo_FromProto(mapCtx, in.GetPendingRenameInfo())
-	return out
-}
-func FolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FolderObservedState) *pb.Folder {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Folder{}
-	// MISSING: Name
-	out.Metageneration = direct.ValueOf(in.Metageneration)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.PendingRenameInfo = PendingRenameInfo_ToProto(mapCtx, in.PendingRenameInfo)
-	return out
-}
+
 func PendingRenameInfo_FromProto(mapCtx *direct.MapContext, in *pb.PendingRenameInfo) *krm.PendingRenameInfo {
 	if in == nil {
 		return nil
@@ -106,10 +58,10 @@ func StorageFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fold
 	}
 	out := &krm.StorageFolderObservedState{}
 	// MISSING: Name
-	// MISSING: Metageneration
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: PendingRenameInfo
+	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.PendingRenameInfo = PendingRenameInfoObservedState_FromProto(mapCtx, in.GetPendingRenameInfo())
 	return out
 }
 func StorageFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageFolderObservedState) *pb.Folder {
@@ -118,10 +70,10 @@ func StorageFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Stora
 	}
 	out := &pb.Folder{}
 	// MISSING: Name
-	// MISSING: Metageneration
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: PendingRenameInfo
+	out.Metageneration = direct.ValueOf(in.Metageneration)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.PendingRenameInfo = PendingRenameInfoObservedState_ToProto(mapCtx, in.PendingRenameInfo)
 	return out
 }
 func StorageFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.StorageFolderSpec {
@@ -130,10 +82,6 @@ func StorageFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krm.
 	}
 	out := &krm.StorageFolderSpec{}
 	// MISSING: Name
-	// MISSING: Metageneration
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: PendingRenameInfo
 	return out
 }
 func StorageFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageFolderSpec) *pb.Folder {
@@ -142,9 +90,5 @@ func StorageFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageFolderS
 	}
 	out := &pb.Folder{}
 	// MISSING: Name
-	// MISSING: Metageneration
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: PendingRenameInfo
 	return out
 }

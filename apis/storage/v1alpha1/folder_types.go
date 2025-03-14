@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,8 +25,18 @@ var StorageFolderGVK = GroupVersion.WithKind("StorageFolder")
 // StorageFolderSpec defines the desired state of StorageFolder
 // +kcc:proto=google.storage.control.v2.Folder
 type StorageFolderSpec struct {
+	*StorageFolderParent `json:",inline"`
+
 	// The StorageFolder name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type StorageFolderParent struct {
+	// Required. The host project of the application.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Required. The storage bucket where the folder will be created in.
+	StorageBucketRef *v1beta1.StorageBucketRef `json:"storagebucketRef,omitempty"`
 }
 
 // StorageFolderStatus defines the config connector machine state of StorageFolder
@@ -47,6 +58,26 @@ type StorageFolderStatus struct {
 // StorageFolderObservedState is the state of the StorageFolder resource as most recently observed in GCP.
 // +kcc:proto=google.storage.control.v2.Folder
 type StorageFolderObservedState struct {
+	// Output only. The version of the metadata for this folder. Used for
+	//  preconditions and for detecting changes in metadata.
+	// +kcc:proto:field=google.storage.control.v2.Folder.metageneration
+	Metageneration *int64 `json:"metageneration,omitempty"`
+
+	// Output only. The creation time of the folder.
+	// +kcc:proto:field=google.storage.control.v2.Folder.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The modification time of the folder.
+	// +kcc:proto:field=google.storage.control.v2.Folder.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Only present if the folder is part of an ongoing RenameFolder
+	//  operation. Contains information which can be used to query the operation
+	//  status. The presence of this field also indicates all write operations are
+	//  blocked for this folder, including folder, managed folder, and object
+	//  operations.
+	// +kcc:proto:field=google.storage.control.v2.Folder.pending_rename_info
+	PendingRenameInfo *PendingRenameInfoObservedState `json:"pendingRenameInfo,omitempty"`
 }
 
 // +genclient
