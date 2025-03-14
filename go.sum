@@ -128,6 +128,8 @@ cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RX
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 cloud.google.com/go/storage v1.50.0 h1:3TbVkzTooBvnZsk7WaAQfOsNrdoM8QHusXA1cpk6QJs=
 cloud.google.com/go/storage v1.50.0/go.mod h1:l7XeiD//vx5lfqE3RavfmU9yvk5Pp0Zhcv482poyafY=
+cloud.google.com/go/vmwareengine v1.3.3 h1:TfuQr5j7qriINulUMotaC/+27SQaW2thIkF3Gb6VJ38=
+cloud.google.com/go/vmwareengine v1.3.3/go.mod h1:G7vz05KGijha0c0dj1INRKyDAaQW8TRMZt/FrfOZVXc=
 cloud.google.com/go/workflows v1.13.3 h1:lNFDMranJymDEB7cTI7DI9czbc1WU0RWY9KCEv9zuDY=
 cloud.google.com/go/workflows v1.13.3/go.mod h1:Xi7wggEt/ljoEcyk+CB/Oa1AHBCk0T1f5UH/exBB5CE=
 cloud.google.com/go/workstations v1.1.1 h1:wIA5Pk4Z9xwdmltGQoAVP4vr441MGhOu9sGv0Sk4lnI=
