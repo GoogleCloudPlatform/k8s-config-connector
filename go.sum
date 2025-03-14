@@ -81,6 +81,8 @@ cloud.google.com/go/documentai v1.35.2/go.mod h1:oh/0YXosgEq3hVhyH4ZQ7VNXPaveRO4
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
 cloud.google.com/go/firestore v1.18.0 h1:cuydCaLS7Vl2SatAeivXyhbhDEIR8BDmtn4egDhIn2s=
 cloud.google.com/go/firestore v1.18.0/go.mod h1:5ye0v48PhseZBdcl0qbl3uttu7FIEwEYVaWm0UIEOEU=
+cloud.google.com/go/gkebackup v1.6.3 h1:djdExe/QgoKdp1gnIO1G5BoO1o/yGQOQJJEZ4QKTEXQ=
+cloud.google.com/go/gkebackup v1.6.3/go.mod h1:JJzGsA8/suXpTDtqI7n9RZW97PXa2CIp+n8aRC/y57k=
 cloud.google.com/go/gkemulticloud v1.5.1 h1:JWe6PDNpNU88ZYvQkTd7w28fgeIs/gg6i0hcjUkgZ3M=
 cloud.google.com/go/gkemulticloud v1.5.1/go.mod h1:OdmhfSPXuJ0Kn9dQ2I3Ou7XZ3QK8caV4XVOJZwrIa3s=
 cloud.google.com/go/iam v1.4.1 h1:cFC25Nv+u5BkTR/BT1tXdoF2daiVbZ1RLx2eqfQ9RMM=
@@ -97,6 +99,8 @@ cloud.google.com/go/managedkafka v0.4.0 h1:/snDok/h6TZKw0ubmfj/LYIwSn16mWBoBI2OE
 cloud.google.com/go/managedkafka v0.4.0/go.mod h1:AUCV9FeT5IbuIf4ctH6TsnovE/KuIPE6Mp/YowkTyx0=
 cloud.google.com/go/monitoring v1.24.0 h1:csSKiCJ+WVRgNkRzzz3BPoGjFhjPY23ZTcaenToJxMM=
 cloud.google.com/go/monitoring v1.24.0/go.mod h1:Bd1PRK5bmQBQNnuGwHBfUamAV1ys9049oEPHnn4pcsc=
+cloud.google.com/go/netapp v1.7.1 h1:3MxBolN91fsXtzIQRsp8UZfLF0zTrCUpl+DnYC7/qBU=
+cloud.google.com/go/netapp v1.7.1/go.mod h1:8l21nS/sQ+7wtFYR6hNcJWk5ksc8gNJ2o4/dVkeg3Vg=
 cloud.google.com/go/notebooks v1.12.3 h1:+9DrGJcZhCu6B2t0JJorekjIUBvg/KvBmXJYGmfvVvA=
 cloud.google.com/go/notebooks v1.12.3/go.mod h1:I0pMxZct+8Rega2LYrXL8jGAGZgLchSmh8Ksc+0xNyA=
 cloud.google.com/go/orchestration v1.11.4 h1:SFAsKyqvtS8VFcsq+JgXAeRkrksB9UH+AH7iFamkmlc=

@@ -19,9 +19,11 @@ require (
 	cloud.google.com/go/compute v1.34.0
 	cloud.google.com/go/dataflow v0.10.3
 	cloud.google.com/go/dataform v0.10.3
+	cloud.google.com/go/dataproc/v2 v2.11.0
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/documentai v1.35.2
 	cloud.google.com/go/firestore v1.18.0
+	cloud.google.com/go/gkebackup v1.6.3
 	cloud.google.com/go/gkemulticloud v1.5.1
 	cloud.google.com/go/iam v1.4.1
 	cloud.google.com/go/iap v1.10.3
@@ -29,6 +31,7 @@ require (
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.24.0
+	cloud.google.com/go/netapp v1.7.1
 	cloud.google.com/go/notebooks v1.12.3
 	cloud.google.com/go/orchestration v1.11.4
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
@@ -105,7 +108,6 @@ require (
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.3 // indirect
-	cloud.google.com/go/dataproc/v2 v2.11.0 // indirect
 	cloud.google.com/go/orgpolicy v1.14.2 // indirect
 	cloud.google.com/go/osconfig v1.14.3 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
