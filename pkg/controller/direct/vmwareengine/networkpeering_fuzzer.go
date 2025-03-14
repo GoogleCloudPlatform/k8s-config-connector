@@ -33,7 +33,6 @@ func vmwareEngineNetworkPeeringFuzzer() fuzztesting.KRMFuzzer {
 		VMwareEngineNetworkPeeringObservedState_FromProto, VMwareEngineNetworkPeeringObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".peer_network")
 	f.SpecFields.Insert(".export_custom_routes")
 	f.SpecFields.Insert(".import_custom_routes")
 	f.SpecFields.Insert(".exchange_subnet_routes")
@@ -51,6 +50,10 @@ func vmwareEngineNetworkPeeringFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 
 	f.UnimplementedFields.Insert(".name") // special field
+
+	// Not support by fuzzer.
+	// STANDARD and VMWARE_ENGINE_NETWORK are the only valid peer network types, whereas the proto defined other types.
+	f.UnimplementedFields.Insert(".peer_network")
 
 	return f
 }
