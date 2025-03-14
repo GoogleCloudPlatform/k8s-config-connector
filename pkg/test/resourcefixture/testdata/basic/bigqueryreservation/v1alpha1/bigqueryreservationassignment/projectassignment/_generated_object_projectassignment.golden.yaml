@@ -23,8 +23,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/bqassignment-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/10672749579203387950
   observedGeneration: 1
   observedState:
-    name: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/17072493319468982390
+    name: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/10672749579203387950
     state: ACTIVE
