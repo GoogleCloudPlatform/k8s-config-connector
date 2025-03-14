@@ -37,12 +37,19 @@ type MapperGenerator struct {
 
 	typePairs           []typePair
 	precomputedMappings map[protoreflect.FullName]map[string]*gocode.GoStruct
+
+	importAliases map[string]string
+
+	// Don't visit protos twice
+	visitedProto map[protoreflect.FullName]bool
 }
 
 func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string) *MapperGenerator {
 	g := &MapperGenerator{
 		goPathForMessage:    goPathForMessage,
 		precomputedMappings: make(map[protoreflect.FullName]map[string]*gocode.GoStruct),
+		importAliases:       make(map[string]string),
+		visitedProto:        make(map[protoreflect.FullName]bool),
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -114,6 +121,11 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	if _, visit := v.goPathForMessage(msg); !visit {
 		return
 	}
+	if v.visitedProto[msg.FullName()] {
+		return
+	}
+	v.visitedProto[msg.FullName()] = true
+
 	goTypes := v.findKRMStructsForProto(msg)
 
 	if goTypes == nil || len(goTypes) == 0 {
@@ -147,6 +159,17 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 
 	for _, msg := range sortIntoMessageSlice(msg.Messages()) {
 		v.visitMessage(msg)
+	}
+
+	{
+		// Visit any fields that might be referenced
+		fields := msg.Fields()
+		for i := 0; i < fields.Len(); i++ {
+			field := fields.Get(i)
+			if field.Message() != nil {
+				v.visitMessage(field.Message())
+			}
+		}
 	}
 }
 
@@ -194,6 +217,10 @@ func (v *MapperGenerator) GenerateMappers() error {
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
+		for packageName, alias := range v.importAliases {
+			out.addImport(alias, packageName)
+		}
+
 		v.writeMapFunctionsForPair(&out.body, out.OutputDir(), &pair)
 	}
 
@@ -204,6 +231,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
+	pbTypeNameWithImport := v.protoImportAliasForType(msg) + "." + pbTypeName
 
 	goType := pair.KRMType
 	goTypeName := goType.Name
@@ -214,7 +242,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	}
 
 	if v.findFuncDeclaration(goTypeName+"_FromProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *pb.%s) *krm.%s {\n", goTypeName, pbTypeName, goTypeName)
+		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *%s) *krm.%s {\n", goTypeName, pbTypeNameWithImport, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -390,11 +418,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	}
 
 	if v.findFuncDeclaration(goTypeName+"_ToProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *krm.%s) *pb.%s {\n", goTypeName, goTypeName, pbTypeName)
+		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *krm.%s) *%s {\n", goTypeName, goTypeName, pbTypeNameWithImport)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
-		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
+		fmt.Fprintf(out, "\tout := &%s{}\n", pbTypeNameWithImport)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
 			protoFieldName := protoNameForField(protoField)
@@ -445,7 +473,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
-					protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+					protoTypeName := v.protoImportAliasForType(protoField.Enum()) + "." + protoNameForEnum(protoField.Enum())
 					useCustomMethod = fmt.Sprintf("direct.EnumSlice_ToProto[%s]", protoTypeName)
 
 				case protoreflect.FloatKind,
@@ -524,8 +552,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 					oneofTypeName := protoNameForOneOf(protoField)
 
-					fmt.Fprintf(out, "\t\tout.%s = &pb.%s{%s: oneof}\n",
+					fmt.Fprintf(out, "\t\tout.%s = &%s.%s{%s: oneof}\n",
 						oneofFieldName,
+						v.protoImportAliasForType(protoField),
 						oneofTypeName,
 						protoFieldName)
 					fmt.Fprintf(out, "\t}\n")
@@ -537,7 +566,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmFieldName,
 				)
 			case protoreflect.EnumKind:
-				protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+				protoTypeName := v.protoImportAliasForType(protoField.Enum()) + "." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
 				if protoIsPointerInGo(protoField) {
 					functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
@@ -634,6 +663,36 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
 	}
 
+}
+
+func (v *MapperGenerator) protoImportAliasForType(msg protoreflect.Descriptor) string {
+	var parentFile protoreflect.FileDescriptor
+	for {
+		parent := msg.Parent()
+		fd, ok := parent.(protoreflect.FileDescriptor)
+		if ok {
+			parentFile = fd
+			break
+		}
+		msg = parent.(protoreflect.MessageDescriptor)
+	}
+
+	fullName := string(parentFile.FullName())
+	lastDot := strings.LastIndex(fullName, ".")
+	if lastDot == -1 {
+		return ""
+	}
+	s := fullName[lastDot+1:]
+	importAlias := "pb_" + s
+
+	fileOptions := parentFile.Options().(*descriptorpb.FileOptions)
+	protoGoPackage := fileOptions.GetGoPackage()
+	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
+		protoGoPackage = protoGoPackage[:ix]
+	}
+
+	v.importAliases[protoGoPackage] = importAlias
+	return importAlias
 }
 
 func protoNameForType(msg protoreflect.MessageDescriptor) string {

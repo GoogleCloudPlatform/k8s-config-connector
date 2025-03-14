@@ -16,6 +16,7 @@ package discoveryengine
 
 import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	pb_v1beta "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -95,4 +96,26 @@ func DiscoveryEngineEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discov
 	}
 
 	return out
+}
+
+// +function-gen:special-mapper
+// proto.field_definition: float content_watched_percentage_threshold = 2;
+// krm.field: ContentWatchedPercentageThreshold *float32 `json:"contentWatchedPercentageThreshold,omitempty"`
+// proto.field: google.cloud.discoveryengine.v1beta.ServingConfig.MediaConfig.content_watched_percentage_threshold
+func ServingConfig_MediaConfig_ContentWatchedPercentageThreshold_ToProto(mapCtx *direct.MapContext, in *float32) *pb_v1beta.ServingConfig_MediaConfig_ContentWatchedPercentageThreshold {
+	if in == nil {
+		return nil
+	}
+	return &pb_v1beta.ServingConfig_MediaConfig_ContentWatchedPercentageThreshold{ContentWatchedPercentageThreshold: *in}
+}
+
+// +function-gen:special-mapper
+// proto.field_definition: float content_watched_seconds_threshold = 5;
+// krm.field: ContentWatchedSecondsThreshold *float32 `json:"contentWatchedSecondsThreshold,omitempty"`
+// proto.field: google.cloud.discoveryengine.v1beta.ServingConfig.MediaConfig.content_watched_seconds_threshold
+func ServingConfig_MediaConfig_ContentWatchedSecondsThreshold_ToProto(mapCtx *direct.MapContext, in *float32) *pb_v1beta.ServingConfig_MediaConfig_ContentWatchedSecondsThreshold {
+	if in == nil {
+		return nil
+	}
+	return &pb_v1beta.ServingConfig_MediaConfig_ContentWatchedSecondsThreshold{ContentWatchedSecondsThreshold: *in}
 }
