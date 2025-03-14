@@ -22,6 +22,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -47,6 +48,9 @@ func (s *clusterControllerServer) GetCluster(ctx context.Context, req *pb.GetClu
 
 	obj := &pb.Cluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: Cluster %s", fqn)
+		}
 		return nil, err
 	}
 
@@ -101,7 +105,6 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 
 	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)
 	lroMetadata := &pb.ClusterOperationMetadata{
-		// ProjectId:   name.Project.ID,
 		ClusterName:   name.ClusterName,
 		ClusterUuid:   obj.ClusterUuid,
 		OperationType: "CREATE",
@@ -136,7 +139,9 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 			s.setStatus(obj, pb.ClusterStatus_RUNNING)
 
 			obj.Config.EndpointConfig = &pb.EndpointConfig{}
-			obj.Config.GceClusterConfig.InternalIpOnly = PtrTo(true)
+			if obj.Config.GceClusterConfig.InternalIpOnly == nil {
+				obj.Config.GceClusterConfig.InternalIpOnly = PtrTo(true)
+			}
 			obj.Config.GceClusterConfig.NetworkUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/global/networks/default"
 			obj.Config.GceClusterConfig.ServiceAccountScopes = []string{"https://www.googleapis.com/auth/cloud-platform"}
 			obj.Config.MasterConfig.DiskConfig.BootDiskSizeGb = 1000
@@ -150,13 +155,9 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 
 			obj.Config.GceClusterConfig.ZoneUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/us-central1-c"
 
-			obj.Labels = map[string]string{
-				"goog-dataproc-autozone":     "enabled",
-				"goog-dataproc-cluster-name": name.ClusterName,
-				"goog-dataproc-cluster-uuid": obj.ClusterUuid,
-				"goog-dataproc-location":     name.Region,
-				"goog-drz-dataproc-uuid":     "cluster-" + obj.ClusterUuid,
-			}
+			s.populateLabels(obj, name)
+			obj.Labels["goog-drz-dataproc-uuid"] = "cluster-" + obj.ClusterUuid
+
 			return nil
 		})
 		if err != nil {
@@ -173,6 +174,81 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 	})
 }
 
+func populateMachineType(name *clusterName, machineType string, defaultMachineType string) string {
+	if machineType == "" {
+		machineType = "n2-standard-4"
+	}
+
+	// Ensure fully qualified
+	zone := name.Region + "-c"
+	tokens := strings.Split(machineType, "/")
+	if len(tokens) == 1 {
+		machineType = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/" + machineType
+	}
+	return machineType
+}
+
+func (s *clusterControllerServer) populateLabels(obj *pb.Cluster, name *clusterName) {
+	if obj.Labels == nil {
+		obj.Labels = make(map[string]string)
+	}
+	obj.Labels["goog-dataproc-autozone"] = "enabled"
+	obj.Labels["goog-dataproc-cluster-name"] = name.ClusterName
+	obj.Labels["goog-dataproc-cluster-uuid"] = obj.ClusterUuid
+	obj.Labels["goog-dataproc-location"] = name.Region
+}
+
+func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.InstanceGroupConfig, name *clusterName, isMaster bool) *pb.InstanceGroupConfig {
+	if config == nil {
+		config = &pb.InstanceGroupConfig{}
+	}
+	if config.DiskConfig == nil {
+		config.DiskConfig = &pb.DiskConfig{}
+	}
+
+	if isMaster {
+		if config.NumInstances == 0 {
+			config.NumInstances = 1
+		}
+
+	} else {
+		if config.NumInstances == 0 {
+			config.NumInstances = 2
+		}
+		if config.DiskConfig.BootDiskSizeGb == 0 {
+			config.DiskConfig.BootDiskSizeGb = 1000
+		}
+	}
+
+	if config.DiskConfig.BootDiskType == "" {
+		config.DiskConfig.BootDiskType = "pd-standard"
+	}
+	if config.ImageUri == "" {
+		config.ImageUri = "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01"
+	}
+
+	config.MachineTypeUri = populateMachineType(name, config.MachineTypeUri, "n2-standard-4")
+
+	if config.MinCpuPlatform == "" {
+		config.MinCpuPlatform = "AUTOMATIC"
+	}
+	if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+		config.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
+	}
+
+	if isMaster {
+		config.InstanceNames = []string{name.ClusterName + "-m"}
+	} else {
+		instanceNames := []string{}
+		for i := int32(0); i < config.NumInstances; i++ {
+			s := fmt.Sprintf("%s-w-%d", name.ClusterName, i)
+			instanceNames = append(instanceNames, s)
+		}
+		config.InstanceNames = instanceNames
+	}
+	return config
+}
+
 func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, name *clusterName) {
 	if obj.ClusterUuid == "" {
 		obj.ClusterUuid = fmt.Sprintf("%x", time.Now().UnixNano())
@@ -180,20 +256,6 @@ func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, na
 	if obj.Config == nil {
 		obj.Config = &pb.ClusterConfig{}
 	}
-	if obj.Config.MasterConfig == nil {
-		obj.Config.MasterConfig = &pb.InstanceGroupConfig{}
-	}
-	obj.Config.MasterConfig.DiskConfig.BootDiskType = "pd-standard"
-	obj.Config.MasterConfig.ImageUri = "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01"
-	obj.Config.MasterConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/us-central1-c/machineTypes/n2-standard-4"
-	obj.Config.MasterConfig.MinCpuPlatform = "AUTOMATIC"
-	if obj.Config.MasterConfig.NumInstances == 0 {
-		obj.Config.MasterConfig.NumInstances = 1
-	}
-	obj.Config.MasterConfig.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
-	obj.Config.MasterConfig.InstanceNames = []string{name.ClusterName + "-m"}
-
-	s.populateSoftwareConfig(obj)
 
 	if obj.Config.TempBucket == "" {
 		obj.Config.TempBucket = fmt.Sprintf("dataproc-temp-%s-%d-xxxxxxxx", name.Region, name.Project.Number)
@@ -201,25 +263,12 @@ func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, na
 	if obj.Config.ConfigBucket == "" {
 		obj.Config.ConfigBucket = fmt.Sprintf("dataproc-staging-%s-%d-xxxxxxxx", name.Region, name.Project.Number)
 	}
-	if obj.Config.WorkerConfig == nil {
-		obj.Config.WorkerConfig = &pb.InstanceGroupConfig{}
-	}
-	obj.Config.WorkerConfig.DiskConfig.BootDiskSizeGb = 1000
-	obj.Config.WorkerConfig.DiskConfig.BootDiskType = "pd-standard"
-	obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/us-central1-c/machineTypes/n2-standard-4"
-	if obj.Config.WorkerConfig.NumInstances == 0 {
-		obj.Config.WorkerConfig.NumInstances = 2
-	}
-	obj.Config.WorkerConfig.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
-	obj.Config.WorkerConfig.MinCpuPlatform = "AUTOMATIC"
-	obj.Config.WorkerConfig.ImageUri = "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01"
 
-	instanceNames := []string{}
-	for i := int32(0); i < obj.Config.WorkerConfig.NumInstances; i++ {
-		s := fmt.Sprintf("%s-w-%d", name.ClusterName, i)
-		instanceNames = append(instanceNames, s)
-	}
-	obj.Config.WorkerConfig.InstanceNames = instanceNames
+	obj.Config.MasterConfig = s.populateInstanceGroupConfig(obj.Config.MasterConfig, name, true)
+
+	obj.Config.WorkerConfig = s.populateInstanceGroupConfig(obj.Config.WorkerConfig, name, false)
+
+	s.populateSoftwareConfig(obj)
 }
 
 func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*longrunningpb.Operation, error) {
@@ -237,11 +286,17 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
+	description := ""
+
 	updated := proto.Clone(obj).(*pb.Cluster)
 	for _, field := range req.GetUpdateMask().GetPaths() {
 		switch field {
 		case "config.worker_config.num_instances":
+			description = "Add 1 workers."
 			updated.Config.WorkerConfig.NumInstances = req.GetCluster().GetConfig().GetWorkerConfig().GetNumInstances()
+		case "labels":
+			updated.Labels = req.GetCluster().GetLabels()
+			s.populateLabels(updated, name)
 		default:
 			return nil, fmt.Errorf("updateMask %q not supported by mockgcp", field)
 		}
@@ -255,10 +310,9 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 
 	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)
 	lroMetadata := &pb.ClusterOperationMetadata{
-		// ProjectId:   name.Project.ID,
 		ClusterName:   name.ClusterName,
 		ClusterUuid:   string(obj.ClusterUuid),
-		Description:   "Add 1 workers.",
+		Description:   description,
 		OperationType: "UPDATE",
 		Status: &pb.ClusterOperationStatus{
 			InnerState:     "PENDING",
@@ -278,6 +332,9 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 		updated, err := mutateObject(ctx, s.storage, fqn, func(obj *pb.Cluster) error {
 			s.setStatus(obj, pb.ClusterStatus_RUNNING)
 
+			// Metrics are pretty delayed; simulate this by only populating them here
+			s.populateMetrics(obj)
+
 			s.populateDefaultsForCluster(obj, name)
 
 			return nil
@@ -292,6 +349,7 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 		ret.StatusHistory = nil
 		ret.Config.WorkerConfig.InstanceNames = nil
 		ret.Config.MasterConfig.InstanceNames = nil
+		ret.Metrics = nil
 		return ret, nil
 	})
 }
@@ -306,10 +364,6 @@ func (s *clusterControllerServer) setStatus(obj *pb.Cluster, state pb.ClusterSta
 		StateStartTime: timestamppb.New(now),
 	}
 
-	switch obj.Status.State {
-	case pb.ClusterStatus_RUNNING:
-		s.populateMetrics(obj)
-	}
 }
 
 func (s *clusterControllerServer) setOperationStatus(obj *pb.ClusterOperationMetadata, state pb.ClusterOperationStatus_State) {
@@ -340,7 +394,9 @@ func (s *clusterControllerServer) populateMetrics(obj *pb.Cluster) {
 		"dfs-capacity-remaining":                1995884523520,
 		"dfs-capacity-total":                    2113237753856,
 		"dfs-capacity-used":                     49152,
-		"dfs-nodes-running":                     2,
+		"dfs-nodes-decommissioned":              0,
+		"dfs-nodes-decommissioning":             0,
+		"dfs-nodes-running":                     int64(obj.GetConfig().GetWorkerConfig().GetNumInstances()),
 	}
 
 	obj.Metrics.YarnMetrics = map[string]int64{
@@ -384,6 +440,23 @@ func (s *clusterControllerServer) populateSoftwareConfig(obj *pb.Cluster) {
 	}
 
 	if obj.Config.SoftwareConfig.Properties == nil {
+		// Match some of the properties
+
+		// Would be better to look this up in a list of GCE machine types, but we don't have it yet
+		masterMemory := 4 * 1024
+		if strings.HasSuffix(obj.GetConfig().GetMasterConfig().GetMachineTypeUri(), "n2-standard-2") {
+			masterMemory = 8 * 1024
+		}
+		if strings.HasSuffix(obj.GetConfig().GetMasterConfig().GetMachineTypeUri(), "n2-standard-4") {
+			masterMemory = 16 * 1024
+		}
+		hadoopJobHistoryHeapSize := min(4000, masterMemory/4)
+		sparkDaemonMemory := min(4000, masterMemory/4)
+		yarnResourceManagerHeapSize := min(4000, masterMemory/4)
+		yarmTimelineserverHeapSize := min(4000, masterMemory/4)
+		sparkDriverMemory := masterMemory / 4
+		sparkDriverMaxResultSize := masterMemory / 8
+
 		obj.Config.SoftwareConfig.Properties = map[string]string{
 			"capacity-scheduler:yarn.scheduler.capacity.resource-calculator":          "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
 			"capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -402,12 +475,12 @@ func (s *clusterControllerServer) populateSoftwareConfig(obj *pb.Cluster) {
 			"hdfs:dfs.namenode.handler.count":                                    "20",
 			"hdfs:dfs.namenode.http-address":                                     "0.0.0.0:9870",
 			"hdfs:dfs.namenode.https-address":                                    "0.0.0.0:9871",
-			"hdfs:dfs.namenode.lifeline.rpc-address":                             "test-${uniqueId}-m:8050",
+			"hdfs:dfs.namenode.lifeline.rpc-address":                             obj.ClusterName + "-m:8050",
 			"hdfs:dfs.namenode.secondary.http-address":                           "0.0.0.0:9868",
 			"hdfs:dfs.namenode.secondary.https-address":                          "0.0.0.0:9869",
 			"hdfs:dfs.namenode.service.handler.count":                            "10",
-			"hdfs:dfs.namenode.servicerpc-address":                               "test-${uniqueId}-m:8051",
-			"mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE":                       "4000",
+			"hdfs:dfs.namenode.servicerpc-address":                               obj.ClusterName + "-m:8051",
+			"mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE":                       strconv.Itoa(hadoopJobHistoryHeapSize),
 			"mapred:mapreduce.job.maps":                                          "21",
 			"mapred:mapreduce.job.reduce.slowstart.completedmaps":                "0.95",
 			"mapred:mapreduce.job.reduces":                                       "7",
@@ -422,9 +495,9 @@ func (s *clusterControllerServer) populateSoftwareConfig(obj *pb.Cluster) {
 			"mapred:yarn.app.mapreduce.am.command-opts":                          "-Xmx2708m",
 			"mapred:yarn.app.mapreduce.am.resource.cpu-vcores":                   "1",
 			"mapred:yarn.app.mapreduce.am.resource.mb":                           "3386",
-			"spark-env:SPARK_DAEMON_MEMORY":                                      "4000m",
-			"spark:spark.driver.maxResultSize":                                   "2048m",
-			"spark:spark.driver.memory":                                          "4096m",
+			"spark-env:SPARK_DAEMON_MEMORY":                                      strconv.Itoa(sparkDaemonMemory) + "m",
+			"spark:spark.driver.maxResultSize":                                   strconv.Itoa(sparkDriverMaxResultSize) + "m",
+			"spark:spark.driver.memory":                                          strconv.Itoa(sparkDriverMemory) + "m",
 			"spark:spark.executor.cores":                                         "2",
 			"spark:spark.executor.instances":                                     "2",
 			"spark:spark.executor.memory":                                        "6157m",
@@ -436,8 +509,8 @@ func (s *clusterControllerServer) populateSoftwareConfig(obj *pb.Cluster) {
 			"spark:spark.ui.port":                                                "0",
 			"spark:spark.yarn.am.memory":                                         "640m",
 			"yarn-env:YARN_NODEMANAGER_HEAPSIZE":                                 "1638",
-			"yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE":                             "4000",
-			"yarn-env:YARN_TIMELINESERVER_HEAPSIZE":                              "4000",
+			"yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE":                             strconv.Itoa(yarnResourceManagerHeapSize),
+			"yarn-env:YARN_TIMELINESERVER_HEAPSIZE":                              strconv.Itoa(yarmTimelineserverHeapSize),
 			"yarn:yarn.nodemanager.address":                                      "0.0.0.0:8026",
 			"yarn:yarn.nodemanager.resource.cpu-vcores":                          "4",
 			"yarn:yarn.nodemanager.resource.memory-mb":                           "13544",
@@ -466,7 +539,6 @@ func (s *clusterControllerServer) DeleteCluster(ctx context.Context, req *pb.Del
 
 	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)
 	lroMetadata := &pb.ClusterOperationMetadata{
-		// ProjectId:   name.Project.ID,
 		ClusterName:   name.ClusterName,
 		ClusterUuid:   string(deleted.ClusterUuid),
 		Description:   "Delete cluster",
