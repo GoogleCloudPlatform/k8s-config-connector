@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type TrustConfigIdentity struct {
 	parent *TrustConfigParent
-	id string
+	id     string
 }
 
 func (i *TrustConfigIdentity) String() string {
-	return  i.parent.String() + "/trustconfigs/" + i.id
+	return i.parent.String() + "/trustconfigs/" + i.id
 }
 
 func (i *TrustConfigIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *TrustConfigIdentity) ID() string {
 }
 
 func (i *TrustConfigIdentity) Parent() *TrustConfigParent {
-	return  i.parent
+	return i.parent
 }
 
 type TrustConfigParent struct {
@@ -51,7 +51,6 @@ type TrustConfigParent struct {
 func (p *TrustConfigParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a TrustConfigIdentity from the Config Connector TrustConfig object.
 func NewTrustConfigIdentity(ctx context.Context, reader client.Reader, obj *CertificateManagerTrustConfig) (*TrustConfigIdentity, error) {

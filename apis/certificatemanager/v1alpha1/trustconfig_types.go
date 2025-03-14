@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,13 +24,39 @@ var CertificateManagerTrustConfigGVK = GroupVersion.WithKind("CertificateManager
 
 // CertificateManagerTrustConfigSpec defines the desired state of CertificateManagerTrustConfig
 // +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig
-type CertificateManagerTrustConfigSpec struct {
-	// The CertificateManagerTrustConfig name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+type TrustConfigSpec struct {
+	commonv1alpha1.CommonSpec `json:",inline"`
+
+	// +required
+	Location string `json:"location,omitempty"`
+
+	// NOT YET
+	// // Set of labels associated with a TrustConfig.
+	// // +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.labels
+	// Labels map[string]string `json:"labels,omitempty"`
+
+	// One or more paragraphs of text description of a TrustConfig.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.description
+	Description *string `json:"description,omitempty"`
+
+	// This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Set of trust stores to perform validation against.
+	//
+	//  This field is supported when TrustConfig is configured with Load Balancers,
+	//  currently not supported for SPIFFE certificate validation.
+	//
+	//  Only one TrustStore specified is currently allowed.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.trust_stores
+	TrustStores []TrustConfig_TrustStore `json:"trustStores,omitempty"`
 }
 
 // CertificateManagerTrustConfigStatus defines the config connector machine state of CertificateManagerTrustConfig
-type CertificateManagerTrustConfigStatus struct {
+type TrustConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -41,17 +68,23 @@ type CertificateManagerTrustConfigStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *CertificateManagerTrustConfigObservedState `json:"observedState,omitempty"`
+	ObservedState *TrustConfigObservedState `json:"observedState,omitempty"`
 }
 
-// CertificateManagerTrustConfigObservedState is the state of the CertificateManagerTrustConfig resource as most recently observed in GCP.
+// TrustConfigObservedState is the state of the CertificateManagerTrustConfig resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig
-type CertificateManagerTrustConfigObservedState struct {
+type TrustConfigObservedState struct {
+	// Output only. The creation timestamp of a TrustConfig.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last update timestamp of a TrustConfig.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpcertificatemanagertrustconfig;gcpcertificatemanagertrustconfigs
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
@@ -67,8 +100,8 @@ type CertificateManagerTrustConfig struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   CertificateManagerTrustConfigSpec   `json:"spec,omitempty"`
-	Status CertificateManagerTrustConfigStatus `json:"status,omitempty"`
+	Spec   TrustConfigSpec   `json:"spec,omitempty"`
+	Status TrustConfigStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

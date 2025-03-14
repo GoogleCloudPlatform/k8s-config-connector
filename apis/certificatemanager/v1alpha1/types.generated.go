@@ -14,39 +14,6 @@
 
 package v1alpha1
 
-
-// +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig
-type TrustConfig struct {
-	// A user-defined name of the trust config. TrustConfig names must be
-	//  unique globally and match pattern
-	//  `projects/*/locations/*/trustConfigs/*`.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// Set of labels associated with a TrustConfig.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// One or more paragraphs of text description of a TrustConfig.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.description
-	Description *string `json:"description,omitempty"`
-
-	// This checksum is computed by the server based on the value of other
-	//  fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Set of trust stores to perform validation against.
-	//
-	//  This field is supported when TrustConfig is configured with Load Balancers,
-	//  currently not supported for SPIFFE certificate validation.
-	//
-	//  Only one TrustStore specified is currently allowed.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.trust_stores
-	TrustStores []TrustConfig_TrustStore `json:"trustStores,omitempty"`
-}
-
 // +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig.IntermediateCA
 type TrustConfig_IntermediateCA struct {
 	// PEM intermediate certificate used for building up paths
@@ -79,16 +46,19 @@ type TrustConfig_TrustStore struct {
 	//  The field is currently not supported if TrustConfig is used for the
 	//  workload certificate feature.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.TrustStore.intermediate_cas
-	IntermediateCas []TrustConfig_IntermediateCA `json:"intermediateCas,omitempty"`
+	IntermediateCas []TrustConfig_IntermediateCA `json:"intermediateCAs,omitempty"`
 }
 
-// +kcc:proto=google.cloud.certificatemanager.v1.TrustConfig
-type TrustConfigObservedState struct {
-	// Output only. The creation timestamp of a TrustConfig.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.create_time
-	CreateTime *string `json:"createTime,omitempty"`
+// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
+type DnsAuthorization_DnsResourceRecord struct {
+	// Output only. Fully qualified name of the DNS Resource Record.
+	//  e.g. `_acme-challenge.example.com`
+	Name *string `json:"name,omitempty"`
 
-	// Output only. The last update timestamp of a TrustConfig.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
+	// Output only. Type of the DNS Resource Record.
+	//  Currently always set to "CNAME".
+	Type *string `json:"type,omitempty"`
+
+	// Output only. Data of the DNS Resource Record.
+	Data *string `json:"data,omitempty"`
 }

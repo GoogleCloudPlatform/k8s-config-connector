@@ -29,11 +29,10 @@ func init() {
 
 func certificateManagerTrustConfigFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.TrustConfig{},
-		CertificateManagerTrustConfigSpec_FromProto, CertificateManagerTrustConfigSpec_ToProto,
-		CertificateManagerTrustConfigObservedState_FromProto, CertificateManagerTrustConfigObservedState_ToProto,
+		TrustConfigSpec_FromProto, TrustConfig_ToProto,
+		TrustConfigObservedState_FromProto, TrustConfigObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".trust_stores")
 	f.SpecFields.Insert(".etag")
@@ -41,9 +40,8 @@ func certificateManagerTrustConfigFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 
+	f.UnimplementedFields.Insert(".labels")
 	f.UnimplementedFields.Insert(".name")
 
 	return f
 }
-
-
