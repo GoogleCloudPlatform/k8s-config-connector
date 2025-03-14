@@ -72,7 +72,7 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewLoggingLinkRef(ctx, reader, obj)
+	linkIdentity, err := krm.NewLinkIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 		return nil, err
 	}
 	return &LoggingLinkAdapter{
-		id:        id,
+		id:        linkIdentity,
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -100,7 +100,7 @@ func (m *modelLoggingLink) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type LoggingLinkAdapter struct {
-	id        *krm.LoggingLinkRef
+	id        *krm.LinkIdentity
 	gcpClient *gcp.ConfigClient
 	desired   *krm.LoggingLink
 	actual    *loggingpb.Link
@@ -141,10 +141,7 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
 	// TODO(): 400 error needs to come through on the error
 	// TODO(): there is an implicit dependency on the bucket being active, do we need that here?
-	parent, err := a.id.Parent()
-	if err != nil {
-		return err
-	}
+	parent := a.id.Parent()
 
 	resourceID := direct.ValueOf(desired.Spec.ResourceID)
 	if resourceID == "" {
