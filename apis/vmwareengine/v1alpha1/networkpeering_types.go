@@ -15,11 +15,23 @@
 package v1alpha1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var VMwareEngineNetworkPeeringGVK = GroupVersion.WithKind("VMwareEngineNetworkPeering")
+
+type PeerNetwork struct {
+	// Reference to a VmwareEngineNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified.
+	// +optional
+	VMwareEngineNetworkRef *VmwareEngineNetworkRef `json:"vmwareEngineNetworkRef,omitempty"`
+
+	// Reference to a ComputeNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified.
+	// +optional
+	ComputeNetworkRef *refsv1beta1.ComputeNetworkRef `json:"computeNetworkRef,omitempty"`
+}
 
 // VMwareEngineNetworkPeeringSpec defines the desired state of VMwareEngineNetworkPeering
 // +kcc:proto=google.cloud.vmwareengine.v1.NetworkPeering
@@ -29,17 +41,17 @@ type VMwareEngineNetworkPeeringSpec struct {
 
 	Parent `json:",inline"`
 
-	// Required. The relative resource name of the network to peer with
-	//  a standard VMware Engine network. The provided network can be a
-	//  consumer VPC network or another standard VMware Engine network. If the
-	//  `peer_network_type` is VMWARE_ENGINE_NETWORK, specify the name in the form:
-	//  `projects/{project}/locations/global/vmwareEngineNetworks/{vmware_engine_network_id}`.
-	//  Otherwise specify the name in the form:
-	//  `projects/{project}/global/networks/{network_id}`, where
-	//  `{project}` can either be a project number or a project ID.
+	// +kubebuilder:validation:XValidation:rule="self != null && has(self.vmwareEngineNetworkRef) != has(self.computeNetworkRef)",message="Exactly one of vmwareEngineNetworkRef or computeNetworkRef must be specified"
+	// Required. The name of the network to peer with a standard VMware Engine network.
+	// The provided network can be a consumer VPC network or another standard VMware Engine network.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPeering.peer_network
 	// +required
-	PeerNetwork *string `json:"peerNetwork,omitempty"`
+	PeerNetwork *PeerNetwork `json:"peerNetwork,omitempty"`
+
+	// Required. The type of the network to peer with the VMware Engine network.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPeering.peer_network_type
+	// +required
+	PeerNetworkType *string `json:"peerNetworkType,omitempty"`
 
 	// Optional. True if custom routes are exported to the peered network;
 	//  false otherwise. The default value is true.
@@ -79,15 +91,10 @@ type VMwareEngineNetworkPeeringSpec struct {
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPeering.peer_mtu
 	PeerMTU *int32 `json:"peerMTU,omitempty"`
 
-	// Required. The type of the network to peer with the VMware Engine network.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPeering.peer_network_type
-	// +required
-	PeerNetworkType *string `json:"peerNetworkType,omitempty"`
-
 	// Required. The relative resource name of the VMware Engine network.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPeering.vmware_engine_network
 	// +required
-	VmwareEngineNetworkRef *VmwareEngineNetworkRef `json:"vmwareEngineNetworkRef,omitempty"`
+	VMwareEngineNetworkRef *VmwareEngineNetworkRef `json:"vmwareEngineNetworkRef,omitempty"`
 
 	// Optional. User-provided description for this network peering.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPeering.description
