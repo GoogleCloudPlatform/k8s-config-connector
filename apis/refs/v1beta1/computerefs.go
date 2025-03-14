@@ -413,23 +413,14 @@ func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src
 		return nil, fmt.Errorf("error reading referenced ComputeFirewallPolicy %v: %w", key, err)
 	}
 
-	resourceID, err := GetResourceID(computeFirewallPolicy)
-	if err != nil {
-		return nil, err
+	// Read status.selfLink to parse external reference ID. This will need to be updated once we migrate this resource
+	// to direct controller, which uses status.externalRef.
+	selfLink, _, _ := unstructured.NestedString(computeFirewallPolicy.Object, "status", "selfLink")
+	if selfLink == "" {
+		return nil, k8s.NewReferenceNotFoundError(computeFirewallPolicy.GroupVersionKind(), key)
 	}
 
-	// Usually the server generated resourceID(GCP resource's name) and user specified resourceID(used to acquire GCP resource)
-	// should have the same format.
-	// This is a special handling for backward compatibility, when server generated resourceID is ${firewallPolicyID},
-	// but user specified resourceID is firewallPolicies/${firewallPolicyID}. DCL controller accepts both format.
-	// That caused resource identifier was constructed incorrectly, resulted in an error when parsing the resource name
-	// and validation the format. See b/398901413 for the detail of the customer issue.
-	// DCL has the similar format conversion: https://github.com/GoogleCloudPlatform/declarative-resource-client-library/blob/main/services/google/compute/alpha/firewall_policy_internal.go#L610
-	// todo: handle discrepancy between user specified resourceID and server generated resourceID during firewall policy direct controller migration.
-	tokens := strings.Split(resourceID, "/")
-	if len(tokens) == 2 && tokens[0] == "firewallPolicies" {
-		resourceID = tokens[1]
-	}
+	resourceID := strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/")
 
 	return &ComputeFirewallPolicyRef{
 		External: fmt.Sprintf("%s", resourceID)}, nil
