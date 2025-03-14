@@ -61,6 +61,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/spanner"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/speech"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/sql"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/storage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tpu"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmwareengine"
