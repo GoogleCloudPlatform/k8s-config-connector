@@ -97,6 +97,11 @@ func TestMissingRefs(t *testing.T) {
 					isRef = true
 				}
 
+				if strings.HasSuffix(fieldPath, "erviceAccount") {
+					isRef = true
+				}
+				// TODO: how to detect KMS Key
+
 				if isRef {
 					// We don't require refs for zones or regions, nor for instanceTypes
 					switch {
