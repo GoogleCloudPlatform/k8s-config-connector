@@ -44,12 +44,14 @@ func (i *TableIdentity) Parent() *TableParent {
 }
 
 type TableParent struct {
-	ProjectID string
-	Location  string
+	ProjectID  string
+	Location   string
+	CatalogID  string
+	DatabaseID string
 }
 
 func (p *TableParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/catalogs/" + p.CatalogID + "/databases/" + p.DatabaseID
 }
 
 // New builds a TableIdentity from the Config Connector Table object.
@@ -67,6 +69,38 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigLakeTab
 	location := common.ValueOf(obj.Spec.Location)
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	catalogRef := obj.Spec.CatalogRef
+	if catalogRef == nil {
+		return nil, fmt.Errorf("cannot resolve catalog")
+	}
+	catalogExternal, err := catalogRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, fmt.Errorf("cannot normalize catalog ref: %w", err)
+	}
+	if catalogExternal == "" {
+		return nil, fmt.Errorf("could not resolve external catalog")
+	}
+	_, catalogID, err := ParseCatalogExternal(catalogExternal)
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse catalog external: %w", err)
+	}
+
+	databaseRef := obj.Spec.DatabaseRef
+	if databaseRef == nil {
+		return nil, fmt.Errorf("cannot resolve database")
+	}
+	databaseExternal, err := databaseRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, fmt.Errorf("cannot normalize database ref: %w", err)
+	}
+	if databaseExternal == "" {
+		return nil, fmt.Errorf("could not resolve external database")
+	}
+	_, databaseID, err := ParseDatabaseExternal(databaseExternal)
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse database external: %w", err)
 	}
 
 	// Get desired ID
@@ -92,6 +126,12 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigLakeTab
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
+		if actualParent.CatalogID != catalogID {
+			return nil, fmt.Errorf("spec.catalogRef changed, expect %s, got %s", actualParent.CatalogID, catalogID)
+		}
+		if actualParent.DatabaseID != databaseID {
+			return nil, fmt.Errorf("spec.databaseRef changed, expect %s, got %s", actualParent.DatabaseID, databaseID)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -99,8 +139,10 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigLakeTab
 	}
 	return &TableIdentity{
 		parent: &TableParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:  projectID,
+			Location:   location,
+			CatalogID:  catalogID,
+			DatabaseID: databaseID,
 		},
 		id: resourceID,
 	}, nil
@@ -108,13 +150,20 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigLakeTab
 
 func ParseTableExternal(external string) (parent *TableParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "tables" {
-		return nil, "", fmt.Errorf("format of BigLakeTable external=%q was not known (use projects/{{projectID}}/locations/{{location}}/tables/{{tableID}})", external)
+	if len(tokens) != 10 ||
+		tokens[0] != "projects" ||
+		tokens[2] != "locations" ||
+		tokens[4] != "catalogs" ||
+		tokens[6] != "databases" ||
+		tokens[8] != "tables" {
+		return nil, "", fmt.Errorf("format of BigLakeTable external=%q was not known (use projects/{{projectID}}/locations/{{location}}/catalogs/{{catalog}}/databases/{{database}}/tables/{{tableID}})", external)
 	}
 	parent = &TableParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:  tokens[1],
+		Location:   tokens[3],
+		CatalogID:  tokens[5],
+		DatabaseID: tokens[7],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[9]
 	return parent, resourceID, nil
 }
