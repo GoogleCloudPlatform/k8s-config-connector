@@ -34,16 +34,17 @@ import (
 // MockService represents a mocked cloudquotas service.
 type MockService struct {
 	*common.MockEnvironment
-	storage storage.Storage
-
+	storage    storage.Storage
 	operations *operations.Operations
-
-	v1 *CloudQuotasV1
 }
 
 type CloudQuotasV1 struct {
 	*MockService
 	pb.UnimplementedCloudQuotasServer
+}
+type QuotaAdjusterSettingsManagerV1Beta struct {
+	*MockService
+	pb.UnimplementedQuotaAdjusterSettingsManagerServer
 }
 
 // New creates a MockService.
@@ -53,7 +54,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &CloudQuotasV1{MockService: s}
 	return s
 }
 
@@ -62,12 +62,14 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterCloudQuotasServer(grpcServer, s.v1)
+	pb.RegisterCloudQuotasServer(grpcServer, &CloudQuotasV1{MockService: s})
+	pb.RegisterQuotaAdjusterSettingsManagerServer(grpcServer, &QuotaAdjusterSettingsManagerV1Beta{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterCloudQuotasHandler,
+		pb.RegisterQuotaAdjusterSettingsManagerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 
 	if err != nil {
