@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,7 +24,17 @@ var DataCatalogTagGVK = GroupVersion.WithKind("DataCatalogTag")
 
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
+// DataCatalogTagSpec defines the desired state of DataCatalogTag
+// +kcc:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagSpec struct {
+	Parent Parent `json:",inline"`
 	// The DataCatalogTag name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The resource name of the tag template this tag uses. Example:
