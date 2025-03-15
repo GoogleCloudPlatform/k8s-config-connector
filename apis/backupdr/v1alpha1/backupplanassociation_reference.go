@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &BackupPlanAssociationRef{}
 // holds the GCP identifier for the KRM object.
 type BackupPlanAssociationRef struct {
 	// A reference to an externally managed BackupDRBackupPlanAssociation resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupplanassociations/{{backupplanassociationID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupPlanAssociations/{{backupplanassociationID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BackupDRBackupPlanAssociation resource.
