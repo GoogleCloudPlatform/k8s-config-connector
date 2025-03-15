@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 var MetastoreServiceGVK = GroupVersion.WithKind("MetastoreService")
@@ -26,6 +27,71 @@ var MetastoreServiceGVK = GroupVersion.WithKind("MetastoreService")
 type MetastoreServiceSpec struct {
 	// The MetastoreService name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+	// Configuration information specific to running Hive metastore
+	//  software as the metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.hive_metastore_config
+	HiveMetastoreConfig *HiveMetastoreConfig `json:"hiveMetastoreConfig,omitempty"`
+
+	// Immutable. The relative resource name of the metastore service, in the
+	//  following format:
+	//
+	//  `projects/{project_number}/locations/{location_id}/services/{service_id}`.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.name
+	Name *string `json:"name,omitempty"`
+
+	// User-defined labels for the metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Immutable. The relative resource name of the VPC network on which the
+	//  instance can be accessed. It is specified in the following form:
+	//
+	//  `projects/{project_number}/global/networks/{network_id}`.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.network
+	Network *string `json:"network,omitempty"`
+
+	// The TCP port at which the metastore service is reached. Default: 9083.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.port
+	Port *int32 `json:"port,omitempty"`
+
+	// The tier of the service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.tier
+	Tier *string `json:"tier,omitempty"`
+
+	// The one hour maintenance window of the metastore service. This specifies
+	//  when the service can be restarted for maintenance purposes in UTC time.
+	//  Maintenance window is not needed for services with the SPANNER
+	//  database type.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.maintenance_window
+	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
+	// Immutable. The release channel of the service.
+	//  If unspecified, defaults to `STABLE`.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.release_channel
+	ReleaseChannel *string `json:"releaseChannel,omitempty"`
+
+	// Immutable. Information used to configure the Dataproc Metastore service to
+	//  encrypt customer data at rest. Cannot be updated.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.encryption_config
+	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
+
+	// The configuration specifying the network settings for the
+	//  Dataproc Metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.network_config
+	NetworkConfig *NetworkConfig `json:"networkConfig,omitempty"`
+
+	// Immutable. The database type that the Metastore service stores its data.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.database_type
+	DatabaseType *string `json:"databaseType,omitempty"`
+
+	// The configuration specifying telemetry settings for the Dataproc Metastore
+	//  service. If unspecified defaults to `JSON`.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.telemetry_config
+	TelemetryConfig *TelemetryConfig `json:"telemetryConfig,omitempty"`
+
+	// Scaling configuration of the metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.scaling_config
+	ScalingConfig *ScalingConfig `json:"scalingConfig,omitempty"`
 }
 
 // MetastoreServiceStatus defines the config connector machine state of MetastoreService
@@ -47,6 +113,45 @@ type MetastoreServiceStatus struct {
 // MetastoreServiceObservedState is the state of the MetastoreService resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.metastore.v1.Service
 type MetastoreServiceObservedState struct {
+	// Output only. The time when the metastore service was created.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the metastore service was last updated.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The URI of the endpoint used to access the metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.endpoint_uri
+	EndpointURI *string `json:"endpointURI,omitempty"`
+
+	// Output only. The current state of the metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Additional information about the current state of the
+	//  metastore service, if available.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.state_message
+	StateMessage *string `json:"stateMessage,omitempty"`
+
+	// Output only. A Cloud Storage URI (starting with `gs://`) that specifies
+	//  where artifacts related to the metastore service are stored.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.artifact_gcs_uri
+	ArtifactGCSURI *string `json:"artifactGCSURI,omitempty"`
+
+	// Output only. The globally unique resource identifier of the metastore
+	//  service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The metadata management activities of the metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.metadata_management_activity
+	MetadataManagementActivity *MetadataManagementActivity `json:"metadataManagementActivity,omitempty"`
+
+	// The configuration specifying the network settings for the
+	//  Dataproc Metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.Service.network_config
+	NetworkConfig *NetworkConfigObservedState `json:"networkConfig,omitempty"`
 }
 
 // +genclient
@@ -69,6 +174,16 @@ type MetastoreService struct {
 	// +required
 	Spec   MetastoreServiceSpec   `json:"spec,omitempty"`
 	Status MetastoreServiceStatus `json:"status,omitempty"`
+}
+
+// DeepCopyObject implements the ObjectKind interface.
+func (in *MetastoreService) DeepCopyObject() runtime.Object {
+	return in.DeepCopy()
+}
+
+// DeepCopyObject implements the ObjectKind interface.
+func (in *MetastoreServiceList) DeepCopyObject() runtime.Object {
+	return in.DeepCopy()
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
