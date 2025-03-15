@@ -41,12 +41,11 @@ type BackupDRBackupPlanAssociationSpec struct {
 	// +required
 	Resource *string `json:"resource,omitempty"`
 
-	// Required. Resource name of backup plan which needs to be applied on
-	//  workload. Format:
-	//  projects/{project}/locations/{location}/backupPlans/{backupPlanId}
+	// Required. The backup plan which needs to be applied on
+	//  workload.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.backup_plan
 	// +required
-	BackupPlan *string `json:"backupPlan,omitempty"`
+	BackupPlanRef *BackupPlanRef `json:"backupPlanRef,omitempty"`
 }
 
 // BackupDRBackupPlanAssociationStatus defines the config connector machine state of BackupDRBackupPlanAssociation
