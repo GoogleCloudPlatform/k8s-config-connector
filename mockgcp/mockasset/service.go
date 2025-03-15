@@ -23,6 +23,7 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -37,6 +38,11 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
+}
+
+type AssetService struct {
+	*MockService
+	pb.UnimplementedAssetServiceServer
 }
 
 // New creates a MockService.
@@ -65,5 +71,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+		response.Header().Del("Cache-Control")
+	}
 	return mux, nil
 }

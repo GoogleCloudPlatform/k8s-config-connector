@@ -187,6 +187,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	}
 
 	services = append(services, mockaiplatform.New(env, storage))
+	services = append(services, mockasset.New(env, storage))
 	services = append(services, mockapikeys.New(env, storage))
 	services = append(services, mockbigquery.New(env, storage))
 	services = append(services, mockbigtable.New(env, storage))
@@ -239,7 +240,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockdocumentai.New(env, storage))
 	services = append(services, mockapphub.New(env, storage))
 	services = append(services, mockcloudquota.New(env, storage))
-	services = append(services, mockasset.New(env, storage))
 	services = append(services, mocktasks.New(env, storage))
 	services = append(services, mockbackupdr.New(env, storage))
 	services = append(services, mockbatch.New(env, storage))
