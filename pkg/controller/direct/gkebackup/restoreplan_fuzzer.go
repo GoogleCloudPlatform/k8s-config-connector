@@ -47,5 +47,9 @@ func GKEBackupRestorePlanFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name")
 
+	// The default value of `.restore_config.volume_data_restore_policy_bindings.volume_type` is
+	// VolumeTypeEnum_VOLUME_TYPE_UNSPECIFIED, which does not roundtrip due to our Enum_FromProto implementation.
+	f.UnimplementedFields.Insert(".restore_config.volume_data_restore_policy_bindings")
+
 	return f
 }
