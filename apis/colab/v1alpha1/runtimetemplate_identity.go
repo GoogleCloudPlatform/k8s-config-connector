@@ -65,17 +65,36 @@ func (p *NotebookRuntimeTemplateParent) String() string {
 
 // New builds a NotebookRuntimeTemplateIdentity from the Config Connector NotebookRuntimeTemplate object.
 func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reader, obj *ColabRuntimeTemplate) (*NotebookRuntimeTemplateIdentity, error) {
+	var parent NotebookRuntimeTemplateParent
 
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
+	// Resolve Folder ID.
+	if obj.Spec.Parent.FolderRef != nil {
+		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, *obj.Spec.Parent.FolderRef)
+		if err != nil {
+			return nil, fmt.Errorf("could not resolve folder reference: %w", err)
+		}
+		parent.FolderID = folderRef.FolderID
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	// Resolve Organization ID.
+	if obj.Spec.Parent.OrganizationRef != nil {
+		orgRef, err := refsv1beta1.ResolveOrganization(ctx, reader, *obj.Spec.Parent.OrganizationRef)
+		if err != nil {
+			return nil, fmt.Errorf("could not resolve organization reference: %w", err)
+		}
+		parent.OrganizationID = orgRef.OrganizationID
 	}
+	// Resolve Project ID.
+	if obj.Spec.Parent.ProjectRef != nil {
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), *obj.Spec.Parent.ProjectRef)
+		if err != nil {
+			return nil, fmt.Errorf("could not resolve project reference: %w", err)
+		}
+		parent.ProjectID = projectRef.ProjectID
+	}
+
+	// Location is required.
 	location := obj.Spec.Location
+	parent.Location = location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -94,11 +113,17 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualParent.ProjectID != parent.ProjectID && actualParent.ProjectID != "" {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, parent.ProjectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Location != parent.Location && actualParent.Location != "" {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, parent.Location)
+		}
+		if actualParent.OrganizationID != parent.OrganizationID && actualParent.OrganizationID != "" {
+			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, parent.OrganizationID)
+		}
+		if actualParent.FolderID != parent.FolderID && actualParent.FolderID != "" {
+			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, parent.FolderID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -106,11 +131,8 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 		}
 	}
 	return &NotebookRuntimeTemplateIdentity{
-		parent: &NotebookRuntimeTemplateParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
+		parent: &parent,
+		id:     resourceID,
 	}, nil
 }
 
