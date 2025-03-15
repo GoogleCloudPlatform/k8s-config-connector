@@ -21,9 +21,18 @@ import (
 
 var DataCatalogTagTemplateGVK = GroupVersion.WithKind("DataCatalogTagTemplate")
 
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // DataCatalogTagTemplateSpec defines the desired state of DataCatalogTagTemplate
 // +kcc:proto=google.cloud.datacatalog.v1.TagTemplate
 type DataCatalogTagTemplateSpec struct {
+	Parent `json:",inline"`
+
 	// The DataCatalogTagTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
