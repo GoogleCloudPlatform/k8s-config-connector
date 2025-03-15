@@ -4135,7 +4135,6 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc":  "true",
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
 		},
 	},
 	{
@@ -4147,7 +4146,6 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc":  "true",
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
 		},
 	},
 	{

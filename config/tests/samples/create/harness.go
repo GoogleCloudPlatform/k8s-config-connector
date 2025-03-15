@@ -973,7 +973,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "androidrecaptchaenterprisekey":
 		case "redisinstance":
 		case "runservicebasic":
-		case "secretmanagersecretversion":
 		case "servicedirectorynamespace":
 		case "servicenetworkingconnection":
 		case "sourcereporepository":
