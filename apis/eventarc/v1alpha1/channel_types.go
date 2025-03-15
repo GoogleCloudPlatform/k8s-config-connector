@@ -15,22 +15,26 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var EventarcChannelGVK = GroupVersion.WithKind("EventarcChannel")
 
+type Parent struct {
+	// +required
+	Location string `json:"location"`
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
 // EventarcChannelSpec defines the desired state of EventarcChannel
 // +kcc:proto=google.cloud.eventarc.v1.Channel
 type EventarcChannelSpec struct {
+	Parent `json:",inline"`
 	// The EventarcChannel name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Required. The resource name of the channel. Must be unique within the
-	// location on the project and must be in
-	// `projects/{project}/locations/{location}/channels/{channel_id}` format.
-	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.name
-	Name *string `json:"name,omitempty"`
 
 	// The name of the event provider (e.g. Eventarc SaaS partner) associated
 	// with the channel. This provider will be granted permissions to publish
