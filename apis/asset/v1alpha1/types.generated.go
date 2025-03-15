@@ -209,32 +209,6 @@ type IAMPolicyAnalysisQuery_ResourceSelector struct {
 	FullResourceName *string `json:"fullResourceName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.asset.v1.SavedQuery
-type SavedQuery struct {
-	// The resource name of the saved query. The format must be:
-	//
-	//  * projects/project_number/savedQueries/saved_query_id
-	//  * folders/folder_number/savedQueries/saved_query_id
-	//  * organizations/organization_number/savedQueries/saved_query_id
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.name
-	Name *string `json:"name,omitempty"`
-
-	// The description of this saved query. This value should be fewer than 255
-	//  characters.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.description
-	Description *string `json:"description,omitempty"`
-
-	// Labels applied on the resource.
-	//  This value should not contain more than 10 entries. The key and value of
-	//  each entry must be non-empty and fewer than 64 characters.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// The query content.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.content
-	Content *SavedQuery_QueryContent `json:"content,omitempty"`
-}
-
 // +kcc:proto=google.cloud.asset.v1.SavedQuery.QueryContent
 type SavedQuery_QueryContent struct {
 	// An IAM Policy Analysis query, which could be used in
@@ -245,24 +219,4 @@ type SavedQuery_QueryContent struct {
 	//  RPC.
 	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.QueryContent.iam_policy_analysis_query
 	IAMPolicyAnalysisQuery *IAMPolicyAnalysisQuery `json:"iamPolicyAnalysisQuery,omitempty"`
-}
-
-// +kcc:proto=google.cloud.asset.v1.SavedQuery
-type SavedQueryObservedState struct {
-	// Output only. The create time of this saved query.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The account's email address who has created this saved query.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.creator
-	Creator *string `json:"creator,omitempty"`
-
-	// Output only. The last update time of this saved query.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.last_update_time
-	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
-
-	// Output only. The account's email address who has updated this saved query
-	//  most recently.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.last_updater
-	LastUpdater *string `json:"lastUpdater,omitempty"`
 }
