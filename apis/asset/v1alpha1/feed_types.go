@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,7 +24,18 @@ var AssetFeedGVK = GroupVersion.WithKind("AssetFeed")
 
 // AssetFeedSpec defines the desired state of AssetFeed
 // +kcc:proto=google.cloud.asset.v1.Feed
+
+type Parent struct {
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+	// +optional
+	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
+	// +optional
+	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+}
+
 type AssetFeedSpec struct {
+	Parent Parent `json:",inline"`
 	// The AssetFeed name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// A list of the full names of the assets to receive updates. You must specify
