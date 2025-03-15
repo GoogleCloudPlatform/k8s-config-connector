@@ -86,6 +86,10 @@ func TestScripts(t *testing.T) {
 				stepCmd := ""
 				stepType := ""
 				captureEvents := true
+				if h.MockGCP != nil && (step.Pre != "" || step.Post != "") {
+					// Pre and post steps shouldn't be needed when running against mock.
+					continue
+				}
 				if step.Pre != "" {
 					stepCmd = step.Pre
 					stepType = "pre"

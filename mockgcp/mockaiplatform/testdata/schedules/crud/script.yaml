@@ -1,0 +1,8 @@
+- pre: gcloud iam service-accounts create test-${uniqueId}
+- pre: gcloud colab runtime-templates create --display-name=test-${uniqueId} --runtime-template-id=test-${uniqueId} --region=us-central1
+- exec: gcloud colab schedules create --region=us-central1 --display-name="test-${uniqueId}" --cron-schedule="* * * * *" --gcs-output-uri="gs://test-${uniqueId}" --gcs-notebook-uri="gs://test-${uniqueId}/test.ipynb"  --execution-display-name="test-exec-${uniqueId}" --service-account="test-${uniqueId}@${projectId}.iam.gserviceaccount.com" --notebook-runtime-template="test-${uniqueId}"
+# - pre: export SCHEDULE_ID=$(gcloud colab schedules list --region=us-central1 --filter="DISPLAY_NAME=test-${uniqueId} --format="value(ID)")
+- exec: gcloud colab schedules describe $(gcloud colab schedules list --region=us-central1 --filter="DISPLAY_NAME=test-${uniqueId}" --format="value(ID)") --region=us-central1
+- exec: gcloud colab schedules delete $(gcloud colab schedules list --region=us-central1 --filter="DISPLAY_NAME=test-${uniqueId}" --format="value(ID)") --region=us-central1
+- post: gcloud iam service-accounts delete test-${uniqueId}@${projectId}.iam.gserviceaccount.com --quiet
+- post: gcloud colab runtime-templates delete test-${uniqueId} --region=us-central1
