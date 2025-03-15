@@ -43,6 +43,7 @@ func (i *TagIdentity) Parent() *TagParent {
 	return i.parent
 }
 
+// No changes were needed to the TagParent struct.
 type TagParent struct {
 	ProjectID string
 	Location  string
