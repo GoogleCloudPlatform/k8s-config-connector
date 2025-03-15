@@ -211,11 +211,3 @@ type TimeOfDay struct {
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
-
-// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
-type BackupPlan_ScheduleObservedState struct {
-	// Output only. Start time of next scheduled backup under this BackupPlan by
-	//  either cron_schedule or rpo config.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.next_scheduled_backup_time
-	NextScheduledBackupTime *string `json:"nextScheduledBackupTime,omitempty"`
-}

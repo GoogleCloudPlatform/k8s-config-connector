@@ -31,6 +31,14 @@ type EncryptionKey struct {
 	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
+type BackupPlan_ScheduleObservedState struct {
+	// Output only. Start time of next scheduled backup under this BackupPlan by
+	//  either cron_schedule or rpo config.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.next_scheduled_backup_time
+	NextScheduledBackupTime *string `json:"nextScheduledBackupTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.gkebackup.v1.RpoConfig
 type RPOConfig struct {
 	// Required. Defines the target RPO for the BackupPlan in minutes, which means
