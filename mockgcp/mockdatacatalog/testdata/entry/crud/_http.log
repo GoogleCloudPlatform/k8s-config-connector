@@ -1,0 +1,128 @@
+POST https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries?alt=json&entryId=testentry${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "gcsFilesetSpec": {
+    "filePatterns": [
+      "gs://bucket/file"
+    ]
+  },
+  "type": "FILESET"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "gcsFilesetSpec": {
+    "filePatterns": [
+      "gs://bucket/file"
+    ]
+  },
+  "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
+  "sourceSystemTimestamps": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "type": "FILESET"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "gcsFilesetSpec": {
+    "filePatterns": [
+      "gs://bucket/file"
+    ]
+  },
+  "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
+  "sourceSystemTimestamps": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "type": "FILESET"
+}
+
+---
+
+PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}?alt=json&updateMask=displayName
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "displayName": "New Display Name"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "New Display Name",
+  "gcsFilesetSpec": {
+    "filePatterns": [
+      "gs://bucket/file"
+    ]
+  },
+  "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}",
+  "sourceSystemTimestamps": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "type": "FILESET"
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
