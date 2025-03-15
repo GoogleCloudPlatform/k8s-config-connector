@@ -19,6 +19,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func BackupPlan_BackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.BackupPlan_BackupConfig) *pb.BackupPlan_BackupConfig {
 	if in == nil {
 		return nil
@@ -119,26 +120,7 @@ func ExclusionWindow_DayOfWeekList_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
 	return out
 }
-func GKEBackupBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.GKEBackupBackupPlanSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupPlanSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Description = direct.LazyPtr(in.GetDescription())
-	if in.GetCluster() != "" {
-		out.ClusterRef = &refs.*container.ContainerClusterRef{External: in.GetCluster()}
-	}
-	out.RetentionPolicy = BackupPlan_RetentionPolicy_FromProto(mapCtx, in.GetRetentionPolicy())
-	out.Labels = in.Labels
-	out.BackupSchedule = BackupPlan_Schedule_FromProto(mapCtx, in.GetBackupSchedule())
-	out.Deactivated = direct.LazyPtr(in.GetDeactivated())
-	out.BackupConfig = BackupPlan_BackupConfig_FromProto(mapCtx, in.GetBackupConfig())
-	// MISSING: RpoRiskLevel
-	// MISSING: RpoRiskReason
-	return out
-}
+
 func GKEBackupBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBackupPlanSpec) *pb.BackupPlan {
 	if in == nil {
 		return nil
@@ -157,54 +139,6 @@ func GKEBackupBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBacku
 	out.BackupConfig = BackupPlan_BackupConfig_ToProto(mapCtx, in.BackupConfig)
 	// MISSING: RpoRiskLevel
 	// MISSING: RpoRiskReason
-	return out
-}
-func GKEBackupRestorePlanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RestorePlan) *krm.GKEBackupRestorePlanObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupRestorePlanObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StateReason = direct.LazyPtr(in.GetStateReason())
-	return out
-}
-func GKEBackupRestorePlanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestorePlanObservedState) *pb.RestorePlan {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RestorePlan{}
-	// MISSING: Name
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.State = direct.Enum_ToProto[pb.RestorePlan_State](mapCtx, in.State)
-	out.StateReason = direct.ValueOf(in.StateReason)
-	return out
-}
-func GKEBackupRestorePlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.RestorePlan) *krm.GKEBackupRestorePlanSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupRestorePlanSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Description = direct.LazyPtr(in.GetDescription())
-	if in.GetBackupPlan() != "" {
-		out.BackupPlanRef = &refs.*BackupPlanRef{External: in.GetBackupPlan()}
-	}
-	if in.GetCluster() != "" {
-		out.ClusterRef = &refs.*container.ContainerClusterRef{External: in.GetCluster()}
-	}
-	out.RestoreConfig = RestoreConfig_FromProto(mapCtx, in.GetRestoreConfig())
-	out.Labels = in.Labels
 	return out
 }
 func GKEBackupRestorePlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestorePlanSpec) *pb.RestorePlan {
@@ -273,26 +207,6 @@ func Namespaces_ToProto(mapCtx *direct.MapContext, in *krm.Namespaces) *pb.Names
 	}
 	out := &pb.Namespaces{}
 	out.Namespaces = in.Namespaces
-	return out
-}
-func RestoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig) *krm.RestoreConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RestoreConfig{}
-	out.VolumeDataRestorePolicy = direct.Enum_FromProto(mapCtx, in.GetVolumeDataRestorePolicy())
-	out.ClusterResourceConflictPolicy = direct.Enum_FromProto(mapCtx, in.GetClusterResourceConflictPolicy())
-	out.NamespacedResourceRestoreMode = direct.Enum_FromProto(mapCtx, in.GetNamespacedResourceRestoreMode())
-	out.ClusterResourceRestoreScope = RestoreConfig_ClusterResourceRestoreScope_FromProto(mapCtx, in.GetClusterResourceRestoreScope())
-	out.AllNamespaces = direct.LazyPtr(in.GetAllNamespaces())
-	out.SelectedNamespaces = Namespaces_FromProto(mapCtx, in.GetSelectedNamespaces())
-	out.SelectedApplications = NamespacedNames_FromProto(mapCtx, in.GetSelectedApplications())
-	out.NoNamespaces = direct.LazyPtr(in.GetNoNamespaces())
-	out.ExcludedNamespaces = Namespaces_FromProto(mapCtx, in.GetExcludedNamespaces())
-	out.SubstitutionRules = direct.Slice_FromProto(mapCtx, in.SubstitutionRules, RestoreConfig_SubstitutionRule_FromProto)
-	out.TransformationRules = direct.Slice_FromProto(mapCtx, in.TransformationRules, RestoreConfig_TransformationRule_FromProto)
-	out.VolumeDataRestorePolicyBindings = direct.Slice_FromProto(mapCtx, in.VolumeDataRestorePolicyBindings, RestoreConfig_VolumeDataRestorePolicyBinding_FromProto)
-	out.RestoreOrder = RestoreConfig_RestoreOrder_FromProto(mapCtx, in.GetRestoreOrder())
 	return out
 }
 func RestoreConfig_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig) *pb.RestoreConfig {
@@ -365,28 +279,6 @@ func RestoreConfig_GroupKind_ToProto(mapCtx *direct.MapContext, in *krm.RestoreC
 	out.ResourceKind = direct.ValueOf(in.ResourceKind)
 	return out
 }
-func RestoreConfig_ResourceFilter_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_ResourceFilter) *krm.RestoreConfig_ResourceFilter {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RestoreConfig_ResourceFilter{}
-	out.Namespaces = in.Namespaces
-	out.GroupKinds = direct.Slice_FromProto(mapCtx, in.GroupKinds, RestoreConfig_GroupKind_FromProto)
-	// MISSING: JsonPath
-	// (near miss): "JsonPath" vs "JSONPath"
-	return out
-}
-func RestoreConfig_ResourceFilter_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_ResourceFilter) *pb.RestoreConfig_ResourceFilter {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RestoreConfig_ResourceFilter{}
-	out.Namespaces = in.Namespaces
-	out.GroupKinds = direct.Slice_ToProto(mapCtx, in.GroupKinds, RestoreConfig_GroupKind_ToProto)
-	// MISSING: JsonPath
-	// (near miss): "JsonPath" vs "JSONPath"
-	return out
-}
 func RestoreConfig_RestoreOrder_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_RestoreOrder) *krm.RestoreConfig_RestoreOrder {
 	if in == nil {
 		return nil
@@ -421,32 +313,7 @@ func RestoreConfig_RestoreOrder_GroupKindDependency_ToProto(mapCtx *direct.MapCo
 	out.Requiring = RestoreConfig_GroupKind_ToProto(mapCtx, in.Requiring)
 	return out
 }
-func RestoreConfig_SubstitutionRule_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_SubstitutionRule) *krm.RestoreConfig_SubstitutionRule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RestoreConfig_SubstitutionRule{}
-	out.TargetNamespaces = in.TargetNamespaces
-	out.TargetGroupKinds = direct.Slice_FromProto(mapCtx, in.TargetGroupKinds, RestoreConfig_GroupKind_FromProto)
-	// MISSING: TargetJsonPath
-	// (near miss): "TargetJsonPath" vs "TargetJSONPath"
-	out.OriginalValuePattern = direct.LazyPtr(in.GetOriginalValuePattern())
-	out.NewValue = direct.LazyPtr(in.GetNewValue())
-	return out
-}
-func RestoreConfig_SubstitutionRule_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_SubstitutionRule) *pb.RestoreConfig_SubstitutionRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RestoreConfig_SubstitutionRule{}
-	out.TargetNamespaces = in.TargetNamespaces
-	out.TargetGroupKinds = direct.Slice_ToProto(mapCtx, in.TargetGroupKinds, RestoreConfig_GroupKind_ToProto)
-	// MISSING: TargetJsonPath
-	// (near miss): "TargetJsonPath" vs "TargetJSONPath"
-	out.OriginalValuePattern = direct.ValueOf(in.OriginalValuePattern)
-	out.NewValue = direct.ValueOf(in.NewValue)
-	return out
-}
+
 func RestoreConfig_TransformationRule_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_TransformationRule) *krm.RestoreConfig_TransformationRule {
 	if in == nil {
 		return nil
@@ -487,15 +354,6 @@ func RestoreConfig_TransformationRuleAction_ToProto(mapCtx *direct.MapContext, i
 	out.FromPath = direct.ValueOf(in.FromPath)
 	out.Path = direct.ValueOf(in.Path)
 	out.Value = direct.ValueOf(in.Value)
-	return out
-}
-func RestoreConfig_VolumeDataRestorePolicyBinding_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_VolumeDataRestorePolicyBinding) *krm.RestoreConfig_VolumeDataRestorePolicyBinding {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RestoreConfig_VolumeDataRestorePolicyBinding{}
-	out.Policy = direct.Enum_FromProto(mapCtx, in.GetPolicy())
-	out.VolumeType = direct.Enum_FromProto(mapCtx, in.GetVolumeType())
 	return out
 }
 func RestoreConfig_VolumeDataRestorePolicyBinding_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_VolumeDataRestorePolicyBinding) *pb.RestoreConfig_VolumeDataRestorePolicyBinding {

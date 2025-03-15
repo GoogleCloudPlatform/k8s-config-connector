@@ -20,6 +20,7 @@ import (
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
 
+	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -208,5 +209,25 @@ func BackupPlan_BackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.BackupP
 	out.IncludeSecrets = direct.LazyPtr(in.GetIncludeSecrets())
 	out.EncryptionKey = EncryptionKey_FromProto(mapCtx, in.GetEncryptionKey())
 	out.PermissiveMode = direct.LazyPtr(in.GetPermissiveMode())
+	return out
+}
+func GKEBackupBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.GKEBackupBackupPlanSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEBackupBackupPlanSpec{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if in.GetCluster() != "" {
+		out.ClusterRef = &container.ContainerClusterRef{External: in.GetCluster()}
+	}
+	out.RetentionPolicy = BackupPlan_RetentionPolicy_FromProto(mapCtx, in.GetRetentionPolicy())
+	out.Labels = in.Labels
+	out.BackupSchedule = BackupPlan_Schedule_FromProto(mapCtx, in.GetBackupSchedule())
+	out.Deactivated = direct.LazyPtr(in.GetDeactivated())
+	out.BackupConfig = BackupPlan_BackupConfig_FromProto(mapCtx, in.GetBackupConfig())
+	// MISSING: RpoRiskLevel
+	// MISSING: RpoRiskReason
 	return out
 }
