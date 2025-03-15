@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &RestorePlanRef{}
 // holds the GCP identifier for the KRM object.
 type RestorePlanRef struct {
 	// A reference to an externally managed GKEBackupRestorePlan resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/restoreplans/{{restoreplanID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/restorePlans/{{restoreplanID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a GKEBackupRestorePlan resource.
