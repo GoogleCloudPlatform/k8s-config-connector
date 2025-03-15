@@ -23,10 +23,9 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
-    "google.golang.org/protobuf/proto"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/essentialcontacts/v1"
-    
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -39,31 +38,12 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
-
-	v1 *EssentialContactsV1
 }
 
 type EssentialContactsV1 struct {
 	*MockService
 	pb.UnimplementedEssentialContactsServiceServer
 }
-
-func (s *EssentialContactsV1) CreateContact(ctx context.Context, req *pb.CreateContactRequest) (*pb.Contact, error) {
-	name, err := common.NewResourceID(req.Parent, "", "")
-	if err != nil {
-		return nil, err
-	}
-
-        contact := proto.Clone(req.GetContact()).(*pb.Contact)
-	contact.Name = name
-
-	if err := s.storage.Create(ctx, name, contact); err != nil {
-		return nil, err
-	}
-
-	return contact, nil
-}
-
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
@@ -72,7 +52,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &EssentialContactsV1{MockService: s}
 	return s
 }
 
@@ -81,7 +60,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterEssentialContactsServiceServer(grpcServer, s.v1)
+	pb.RegisterEssentialContactsServiceServer(grpcServer, &EssentialContactsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -91,22 +70,4 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	return mux, nil
-}
-
-func (s *MockService) Do(req *http.Request) (*http.Response, error) {
-	switch req.URL.Path {
-	case "/v1/projects/mock-project/contacts":
-		if req.Method == http.MethodPost {
-			var createReq pb.CreateContactRequest
-			if err := httpmux.ReadProtoRequest(req, &createReq); err != nil {
-				return nil, err
-			}
-			contact, err := s.v1.CreateContact(req.Context(), &createReq)
-			if err != nil {
-				return nil, err
-			}
-			return httpmux.RespondJSON(req, contact)
-		}
-	}
-	return nil, common.NotFound(req.URL.Path)
 }
