@@ -44,27 +44,56 @@ func (i *FeedIdentity) Parent() *FeedParent {
 }
 
 type FeedParent struct {
-	ProjectID string
-	Location  string
+	ProjectID      string
+	FolderID       string
+	OrganizationID string
 }
 
 func (p *FeedParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	if p.ProjectID != "" {
+		return "projects/" + p.ProjectID
+	}
+	if p.FolderID != "" {
+		return "folders/" + p.FolderID
+	}
+	return "organizations/" + p.OrganizationID
 }
 
 // New builds a FeedIdentity from the Config Connector Feed object.
 func NewFeedIdentity(ctx context.Context, reader client.Reader, obj *AssetFeed) (*FeedIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
+	var projectID, folderID, organizationID string
+	if obj.Spec.Parent.ProjectRef != nil {
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), *obj.Spec.Parent.ProjectRef)
+		if err != nil {
+			return nil, err
+		}
+		projectID = projectRef.ProjectID
+		if projectID == "" {
+			return nil, fmt.Errorf("cannot resolve project")
+		}
+	} else if obj.Spec.Parent.FolderRef != nil {
+		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj.GetNamespace(), *obj.Spec.Parent.FolderRef)
+		if err != nil {
+			return nil, err
+		}
+		folderID = folderRef.FolderID
+		if folderID == "" {
+			return nil, fmt.Errorf("cannot resolve folder")
+		}
+	} else if obj.Spec.Parent.OrganizationRef != nil {
+		organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj.GetNamespace(), *obj.Spec.Parent.OrganizationRef)
+		if err != nil {
+			return nil, err
+		}
+		organizationID = organizationRef.OrganizationID
+		if organizationID == "" {
+			return nil, fmt.Errorf("cannot resolve organization")
+		}
+	} else {
+		return nil, fmt.Errorf("one of spec.parent.projectRef, spec.parent.folderRef, or spec.parent.organizationRef must be set")
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -86,18 +115,23 @@ func NewFeedIdentity(ctx context.Context, reader client.Reader, obj *AssetFeed) 
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.FolderID != folderID {
+			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, folderID)
+		}
+		if actualParent.OrganizationID != organizationID {
+			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, organizationID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
 	}
+
 	return &FeedIdentity{
 		parent: &FeedParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:      projectID,
+			FolderID:       folderID,
+			OrganizationID: organizationID,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +139,20 @@ func NewFeedIdentity(ctx context.Context, reader client.Reader, obj *AssetFeed) 
 
 func ParseFeedExternal(external string) (parent *FeedParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "feeds" {
-		return nil, "", fmt.Errorf("format of AssetFeed external=%q was not known (use projects/{{projectID}}/locations/{{location}}/feeds/{{feedID}})", external)
+	if len(tokens) == 4 && tokens[2] == "feeds" {
+		parent = &FeedParent{}
+		switch tokens[0] {
+		case "projects":
+			parent.ProjectID = tokens[1]
+		case "folders":
+			parent.FolderID = tokens[1]
+		case "organizations":
+			parent.OrganizationID = tokens[1]
+		default:
+			return nil, "", fmt.Errorf("format of AssetFeed external=%q was not known (use projects/{{projectID}}/feeds/{{feedID}} or folders/{{folderID}}/feeds/{{feedID}} or organizations/{{organizationID}}/feeds/{{feedID}})", external)
+		}
+		resourceID = tokens[3]
+		return parent, resourceID, nil
 	}
-	parent = &FeedParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return nil, "", fmt.Errorf("format of AssetFeed external=%q was not known (use projects/{{projectID}}/feeds/{{feedID}} or folders/{{folderID}}/feeds/{{feedID}} or organizations/{{organizationID}}/feeds/{{feedID}})", external)
 }
