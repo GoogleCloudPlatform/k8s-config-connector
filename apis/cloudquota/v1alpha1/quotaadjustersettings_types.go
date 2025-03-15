@@ -26,6 +26,22 @@ var APIQuotaAdjusterSettingsGVK = GroupVersion.WithKind("APIQuotaAdjusterSetting
 type APIQuotaAdjusterSettingsSpec struct {
 	// The APIQuotaAdjusterSettings name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+	// Identifier. Name of the config would be of the format:
+	//    projects/12345/locations/global/quotaAdjusterSettings
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The configured value of the enablement at the given resource.
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.enablement
+	Enablement *string `json:"enablement,omitempty"`
+
+	// Optional. The current etag of the QuotaAdjusterSettings. If an etag is
+	//  provided on update and does not match the current server's etag of the
+	//  QuotaAdjusterSettings, the request will be blocked and an ABORTED error
+	//  will be returned. See https://google.aip.dev/134#etags for more details on
+	//  etags.
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // APIQuotaAdjusterSettingsStatus defines the config connector machine state of APIQuotaAdjusterSettings
@@ -47,6 +63,9 @@ type APIQuotaAdjusterSettingsStatus struct {
 // APIQuotaAdjusterSettingsObservedState is the state of the APIQuotaAdjusterSettings resource as most recently observed in GCP.
 // +kcc:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 type APIQuotaAdjusterSettingsObservedState struct {
+	// Output only. The timestamp when the QuotaAdjusterSettings was last updated.
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
