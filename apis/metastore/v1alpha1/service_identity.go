@@ -43,11 +43,13 @@ func (i *ServiceIdentity) Parent() *ServiceParent {
 	return i.parent
 }
 
+// ServiceParent defines the parent for Metastore Service.
 type ServiceParent struct {
 	ProjectID string
 	Location  string
 }
 
+// String returns the fully-qualified parent, and implements the ComponentParent interface.
 func (p *ServiceParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
