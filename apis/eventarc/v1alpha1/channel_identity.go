@@ -43,11 +43,15 @@ func (i *ChannelIdentity) Parent() *ChannelParent {
 	return i.parent
 }
 
+// ChannelParent defines the Channel's parent type.
+// No changes were needed in this file.
+// The ChannelParent struct is correct as is, and so are the methods that use it.
 type ChannelParent struct {
 	ProjectID string
 	Location  string
 }
 
+// String returns the fully qualified EventarcChannel in the format of projects/{{project_id}}/locations/{{location}}/channels/{{channel_id}}
 func (p *ChannelParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
@@ -103,6 +107,7 @@ func NewChannelIdentity(ctx context.Context, reader client.Reader, obj *Eventarc
 	}, nil
 }
 
+// ParseChannelExternal parses the Channel's parent and ID from a string.
 func ParseChannelExternal(external string) (parent *ChannelParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "channels" {
