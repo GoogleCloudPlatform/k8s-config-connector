@@ -15,15 +15,26 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var EssentialContactsContactGVK = GroupVersion.WithKind("EssentialContactsContact")
 
+type Parent struct {
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+	// +optional
+	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
+	// +optional
+	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+}
+
 // EssentialContactsContactSpec defines the desired state of EssentialContactsContact
 // +kcc:proto=google.cloud.essentialcontacts.v1.Contact
 type EssentialContactsContactSpec struct {
+	Parent `json:",inline"`
 	// The EssentialContactsContact name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The email address to send notifications to. The email address
