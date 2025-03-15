@@ -29,7 +29,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -144,7 +143,7 @@ X-Xss-Protection: 0
           ]
         }
       ],
-      "verifyTime": "2025-03-11T06:54:04.139013489Z"
+      "verifyTime": "2025-01-01T12:34:56.123456Z"
     },
     "source": {
       "ipAddress": "10.0.0.1",
@@ -246,7 +245,7 @@ X-Xss-Protection: 0
         ]
       }
     ],
-    "verifyTime": "2025-03-11T06:54:04.139013489Z"
+    "verifyTime": "2025-01-01T12:34:56.123456Z"
   },
   "source": {
     "ipAddress": "10.0.0.1",
@@ -347,7 +346,7 @@ X-Xss-Protection: 0
         ]
       }
     ],
-    "verifyTime": "2025-03-11T06:54:04.139013489Z"
+    "verifyTime": "2025-01-01T12:34:56.123456Z"
   },
   "source": {
     "ipAddress": "10.0.0.1",
@@ -448,7 +447,7 @@ X-Xss-Protection: 0
         ]
       }
     ],
-    "verifyTime": "2025-03-11T06:54:04.139013489Z"
+    "verifyTime": "2025-01-01T12:34:56.123456Z"
   },
   "source": {
     "ipAddress": "10.0.0.1",
@@ -541,7 +540,7 @@ Content-Type: application/json
         ]
       }
     ],
-    "verifyTime": "2025-03-11T06:54:04.139013489Z"
+    "verifyTime": "2025-01-01T12:34:56.123456Z"
   },
   "roundTrip": false,
   "source": {
@@ -562,7 +561,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -620,7 +618,7 @@ X-Xss-Protection: 0
             "protocol": "TCP",
             "sourceIp": "10.0.0.1",
             "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-            "sourcePort": 56101
+            "sourcePort": 55896
           },
           "forwardTraceId": 1,
           "steps": [
@@ -677,7 +675,7 @@ X-Xss-Protection: 0
           ]
         }
       ],
-      "verifyTime": "2025-03-11T06:54:08.622386944Z"
+      "verifyTime": "2025-01-01T12:34:56.123456Z"
     },
     "source": {
       "ipAddress": "10.0.0.1",
@@ -722,7 +720,7 @@ X-Xss-Protection: 0
           "protocol": "TCP",
           "sourceIp": "10.0.0.1",
           "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-          "sourcePort": 56101
+          "sourcePort": 55896
         },
         "forwardTraceId": 1,
         "steps": [
@@ -779,7 +777,7 @@ X-Xss-Protection: 0
         ]
       }
     ],
-    "verifyTime": "2025-03-11T06:54:08.622386944Z"
+    "verifyTime": "2025-01-01T12:34:56.123456Z"
   },
   "source": {
     "ipAddress": "10.0.0.1",
@@ -806,7 +804,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
     "apiVersion": "v1",
