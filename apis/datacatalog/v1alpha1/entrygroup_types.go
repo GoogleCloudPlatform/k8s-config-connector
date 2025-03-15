@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -22,8 +23,17 @@ import (
 var DataCatalogEntryGroupGVK = GroupVersion.WithKind("DataCatalogEntryGroup")
 
 // DataCatalogEntryGroupSpec defines the desired state of DataCatalogEntryGroup
+
+type Parent struct {
+	// +required
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
 type DataCatalogEntryGroupSpec struct {
+	Parent `json:",inline"`
 	// The DataCatalogEntryGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
