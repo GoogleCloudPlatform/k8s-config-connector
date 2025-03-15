@@ -49,7 +49,7 @@ type TagTemplateParent struct {
 }
 
 func (p *TagTemplateParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/tagTemplates"
 }
 
 // New builds a TagTemplateIdentity from the Config Connector TagTemplate object.
@@ -105,8 +105,8 @@ func NewTagTemplateIdentity(ctx context.Context, reader client.Reader, obj *Data
 
 func ParseTagTemplateExternal(external string) (parent *TagTemplateParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "tagtemplates" {
-		return nil, "", fmt.Errorf("format of DataCatalogTagTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/tagtemplates/{{tagtemplateID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "tagTemplates" {
+		return nil, "", fmt.Errorf("format of DataCatalogTagTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/tagTemplates/{{tagTemplateID}})", external)
 	}
 	parent = &TagTemplateParent{
 		ProjectID: tokens[1],
