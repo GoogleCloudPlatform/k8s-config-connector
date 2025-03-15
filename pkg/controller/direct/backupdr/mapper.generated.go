@@ -46,19 +46,6 @@ func BackupDRBackupPlanAssociationObservedState_ToProto(mapCtx *direct.MapContex
 	out.DataSource = direct.ValueOf(in.DataSource)
 	return out
 }
-func BackupDRBackupPlanAssociationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanAssociationSpec) *pb.BackupPlanAssociation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupPlanAssociation{}
-	// MISSING: Name
-	out.ResourceType = direct.ValueOf(in.ResourceType)
-	out.Resource = direct.ValueOf(in.Resource)
-	if in.BackupPlanRef != nil {
-		out.BackupPlan = in.BackupPlanRef.External
-	}
-	return out
-}
 func BackupDRBackupPlanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanObservedState {
 	if in == nil {
 		return nil

@@ -131,7 +131,38 @@ spec:
               resource:
                 description: Required. Immutable. Resource name of workload on which
                   backupplan is applied
-                type: string
+                properties:
+                  computeInstanceRef:
+                    description: InstanceRef defines the resource reference to ComputeInstance,
+                      which "External" field holds the GCP identifier for the KRM
+                      object.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeInstance
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeInstance resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeInstance resource.
+                        type: string
+                    type: object
+                type: object
               resourceID:
                 description: The BackupDRBackupPlanAssociation name. If not given,
                   the metadata.name will be used.

@@ -45,5 +45,8 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name")
 
+	// the conversion of `spec.resource` relies on correctly setting `.spec.resourceType` to a magic string "compute.googleapis.com/Instance"
+	f.UnimplementedFields.Insert(".resource")
+
 	return f
 }

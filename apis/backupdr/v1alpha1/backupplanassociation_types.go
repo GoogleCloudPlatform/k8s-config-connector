@@ -15,11 +15,22 @@
 package v1alpha1
 
 import (
+	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var BackupDRBackupPlanAssociationGVK = GroupVersion.WithKind("BackupDRBackupPlanAssociation")
+
+const (
+	ResourceType_ComputeInstance = "compute.googleapis.com/Instance"
+)
+
+type Resource struct {
+	ComputeInstanceRef *compute.InstanceRef `json:"computeInstanceRef,omitempty"`
+	// TODO: add other resource types
+}
 
 // BackupDRBackupPlanAssociationSpec defines the desired state of BackupDRBackupPlanAssociation
 // +kcc:proto=google.cloud.backupdr.v1.BackupPlanAssociation
@@ -39,7 +50,7 @@ type BackupDRBackupPlanAssociationSpec struct {
 	//  applied
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.resource
 	// +required
-	Resource *string `json:"resource,omitempty"`
+	Resource *Resource `json:"resource,omitempty"`
 
 	// Required. The backup plan which needs to be applied on
 	//  workload.

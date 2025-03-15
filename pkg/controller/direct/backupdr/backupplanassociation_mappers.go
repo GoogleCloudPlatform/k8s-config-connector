@@ -20,9 +20,29 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func BackupDRBackupPlanAssociationSpec_Resource_FromProto(mapCtx *direct.MapContext, resource string, resourceType string) *krm.Resource {
+	if resource == "" {
+		return nil
+	}
+	out := &krm.Resource{}
+	if resourceType == krm.ResourceType_ComputeInstance {
+		out.ComputeInstanceRef = &compute.InstanceRef{External: resource}
+	}
+	return out
+}
+func BackupDRBackupPlanAssociationSpec_Resource_ToProto(mapCtx *direct.MapContext, in *krm.Resource) string {
+	if in == nil {
+		return ""
+	}
+	if in.ComputeInstanceRef != nil {
+		return in.ComputeInstanceRef.External
+	}
+	return ""
+}
 func BackupDRBackupPlanAssociationSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationSpec {
 	if in == nil {
 		return nil
@@ -30,9 +50,22 @@ func BackupDRBackupPlanAssociationSpec_FromProto(mapCtx *direct.MapContext, in *
 	out := &krm.BackupDRBackupPlanAssociationSpec{}
 	// MISSING: Name
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.Resource = direct.LazyPtr(in.GetResource())
+	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_FromProto(mapCtx, in.GetResource(), in.GetResourceType())
 	if in.GetBackupPlan() != "" {
 		out.BackupPlanRef = &krm.BackupPlanRef{External: in.GetBackupPlan()}
+	}
+	return out
+}
+func BackupDRBackupPlanAssociationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanAssociationSpec) *pb.BackupPlanAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupPlanAssociation{}
+	// MISSING: Name
+	out.ResourceType = direct.ValueOf(in.ResourceType)
+	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_ToProto(mapCtx, in.Resource)
+	if in.BackupPlanRef != nil {
+		out.BackupPlan = in.BackupPlanRef.External
 	}
 	return out
 }
