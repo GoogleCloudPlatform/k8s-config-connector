@@ -45,11 +45,10 @@ func (i *FirewallPolicyIdentity) Parent() *FirewallPolicyParent {
 
 type FirewallPolicyParent struct {
 	ProjectID string
-	Location  string
 }
 
 func (p *FirewallPolicyParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID
 }
 
 // New builds a FirewallPolicyIdentity from the Config Connector FirewallPolicy object.
@@ -86,9 +85,12 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
+		// TODO: Remove when Location is supported.
+		/*
+			if actualParent.Location != location {
+				return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+			}
+		*/
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -97,7 +99,8 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 	return &FirewallPolicyIdentity{
 		parent: &FirewallPolicyParent{
 			ProjectID: projectID,
-			Location:  location,
+			// TODO: Remove when Location is supported
+			// Location:  location,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +108,12 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 
 func ParseFirewallPolicyExternal(external string) (parent *FirewallPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "firewallpolicys" {
-		return nil, "", fmt.Errorf("format of ReCAPTCHAEnterpriseFirewallPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/firewallpolicys/{{firewallpolicyID}})", external)
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "firewallpolicys" {
+		return nil, "", fmt.Errorf("format of ReCAPTCHAEnterpriseFirewallPolicy external=%q was not known (use projects/{{projectID}}/firewallpolicys/{{firewallpolicyID}})", external)
 	}
 	parent = &FirewallPolicyParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
