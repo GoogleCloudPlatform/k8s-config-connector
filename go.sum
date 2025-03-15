@@ -70,6 +70,8 @@ cloud.google.com/go/dataproc/v2 v2.10.1 h1:2vOv471LrcSn91VNzijcH+OkDRLa3kdyymOfK
 cloud.google.com/go/dataproc/v2 v2.10.1/go.mod h1:fq+LSN/HYUaaV2EnUPFVPxfe1XpzGVqFnL0TTXs8juk=
 cloud.google.com/go/datastore v1.0.0/go.mod h1:LXYbyblFSglQ5pkeyhO+Qmw7ukd3C+pD7TKLgZqpHYE=
 cloud.google.com/go/datastore v1.1.0/go.mod h1:umbIZjpQpHh4hmRpGhH4tLFup+FVzqBi1b3c64qFpCk=
+cloud.google.com/go/datastream v1.13.1 h1:tPSMLwsVrL158TPv+GSmelMRG5+tMEwDwuwgj1d/tzo=
+cloud.google.com/go/datastream v1.13.1/go.mod h1:v+5wd1WdAfAmQ1PJ8U+QuaPdsoF5LvvKvRpPbm79FqQ=
 cloud.google.com/go/discoveryengine v1.15.0 h1:CHUN1mbs5iTqWJRuU6rZCvcuV5iVMr/rW8Kr1ivn7p4=
 cloud.google.com/go/discoveryengine v1.15.0/go.mod h1:WIstQLougDQ6D8cza4icHFfGGzXsI4QNwTEWdNfRJ8g=
 cloud.google.com/go/documentai v1.35.1 h1:52RfiUsoblXcE57CfKJGnITWLxRM30BcqNk/BKZl2LI=
