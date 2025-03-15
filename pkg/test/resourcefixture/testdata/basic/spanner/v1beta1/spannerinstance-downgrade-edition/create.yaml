@@ -18,16 +18,7 @@ metadata:
   labels:
     label-one: "value-one"
   name: spannerinstance-sample-${uniqueId}
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
   displayName: Instance Sample
-  autoscalingConfig:
-    autoscalingLimits:
-      maxNodes: 4
-      minNodes: 2
-    autoscalingTargets:
-      highPriorityCpuUtilizationPercent: 50
-      storageUtilizationPercent: 50
   edition: ENTERPRISE

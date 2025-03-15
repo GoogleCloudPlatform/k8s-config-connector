@@ -20,6 +20,7 @@ package mockspanner
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -74,6 +75,9 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	s.populateDefaultsForSpannerInstance(obj, obj)
 	obj.State = pb.Instance_READY
 	obj.DefaultBackupScheduleType = pb.Instance_AUTOMATIC
+	if len(obj.DisplayName) < 4 || len(obj.DisplayName) > 30 {
+		return nil, fmt.Errorf("Display name must be between 4-30 characters long")
+	}
 	if obj.Edition == pb.Instance_EDITION_UNSPECIFIED {
 		obj.Edition = pb.Instance_STANDARD
 	}
@@ -148,11 +152,24 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 	now := timestamppb.Now()
 	obj.UpdateTime = now
 	updated := req.Instance
-	for _, path := range req.GetFieldMask().GetPaths() {
+	paths := req.GetFieldMask().GetPaths()
+	for _, path := range paths {
 		switch path {
 		case "display_name":
+			if len(updated.DisplayName) < 4 || len(updated.DisplayName) > 30 {
+				return nil, fmt.Errorf("Display name must be between 4-30 characters long")
+			}
 			obj.DisplayName = updated.DisplayName
 		case "edition":
+			if obj.Edition > updated.Edition && len(paths) > 1 {
+				return nil, fmt.Errorf(
+					"Cannot downgrade %s from %s to %s in the same request as other updates. The field mask contains the following paths: %s. Please send a separate request for Edition downgrade",
+					fqn,
+					obj.Edition.String(),
+					updated.Edition.String(),
+					strings.Join(req.GetFieldMask().GetPaths(), ","),
+				)
+			}
 			obj.Edition = updated.Edition
 		case "labels":
 			obj.Labels = updated.Labels

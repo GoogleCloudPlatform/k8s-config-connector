@@ -53,7 +53,8 @@ type SpannerInstanceSpec struct {
 	AutoscalingConfig *AutoscalingConfig `json:"autoscalingConfig,omitempty"`
 
 	// Optional. The `Edition` of the current instance.
-	// Currently accepted values are EDITION_UNSPECIFIED, STANDARD, ENTERPRISE, ENTERPRISE_PLUS
+	// Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS.
+	// If edition is unspecified, it has automatically upgraded to the lowest edition that matches your usage pattern.
 	// +optional
 	Edition *string `json:"edition,omitempty"`
 

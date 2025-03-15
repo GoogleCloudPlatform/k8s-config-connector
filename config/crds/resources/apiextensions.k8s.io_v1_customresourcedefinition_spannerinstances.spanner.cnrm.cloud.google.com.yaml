@@ -130,7 +130,9 @@ spec:
                 type: string
               edition:
                 description: Optional. The `Edition` of the current instance. Currently
-                  accepted values are EDITION_UNSPECIFIED, STANDARD, ENTERPRISE, ENTERPRISE_PLUS
+                  accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. If edition
+                  is unspecified, it has automatically upgraded to the lowest edition
+                  that matches your usage pattern.
                 type: string
               numNodes:
                 format: int32
