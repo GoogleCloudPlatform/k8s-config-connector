@@ -22,23 +22,18 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/essentialcontacts/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/essentialcontacts/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-type essentialContactsService struct {
-	*MockService
-	pb.UnimplementedEssentialContactsServiceServer
-}
-
-func (s *essentialContactsService) GetContact(ctx context.Context, req *pb.GetContactRequest) (*pb.Contact, error) {
+func (s *EssentialContactsV1) GetContact(ctx context.Context, req *pb.GetContactRequest) (*pb.Contact, error) {
 	name, err := s.parseContactName(req.Name)
 	if err != nil {
 		return nil, err
@@ -54,8 +49,10 @@ func (s *essentialContactsService) GetContact(ctx context.Context, req *pb.GetCo
 	return obj, nil
 }
 
-func (s *essentialContactsService) CreateContact(ctx context.Context, req *pb.CreateContactRequest) (*pb.Contact, error) {
-	reqName := fmt.Sprintf("%s/contacts/%d", req.GetParent(), time.Now().UnixNano())
+func (s *EssentialContactsV1) CreateContact(ctx context.Context, req *pb.CreateContactRequest) (*pb.Contact, error) {
+	//name, err := common.NewResourceID(req.Parent, "", "")
+	contactId := 7 // to match mock logs. server generates this id.
+	reqName := fmt.Sprintf("%s/contacts/%d", req.GetParent(), contactId)
 	name, err := s.parseContactName(reqName)
 	if err != nil {
 		return nil, err
@@ -64,7 +61,9 @@ func (s *essentialContactsService) CreateContact(ctx context.Context, req *pb.Cr
 	fqn := name.String()
 
 	obj := proto.Clone(req.GetContact()).(*pb.Contact)
-	obj.Name = fqn
+	obj.Name = name.GetName()
+	obj.ValidateTime = timestamppb.Now()
+	obj.ValidationState = pb.ValidationState_VALID
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -73,7 +72,7 @@ func (s *essentialContactsService) CreateContact(ctx context.Context, req *pb.Cr
 	return obj, nil
 }
 
-func (s *essentialContactsService) UpdateContact(ctx context.Context, req *pb.UpdateContactRequest) (*pb.Contact, error) {
+func (s *EssentialContactsV1) UpdateContact(ctx context.Context, req *pb.UpdateContactRequest) (*pb.Contact, error) {
 	name, err := s.parseContactName(req.GetContact().GetName())
 	if err != nil {
 		return nil, err
@@ -93,9 +92,9 @@ func (s *essentialContactsService) UpdateContact(ctx context.Context, req *pb.Up
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
-		case "notificationCategorySubscriptions":
+		case "notification_category_subscriptions", "notificationCategorySubscriptions":
 			obj.NotificationCategorySubscriptions = req.GetContact().GetNotificationCategorySubscriptions()
-		case "languageTag":
+		case "language_tag", "languageTag":
 			obj.LanguageTag = req.GetContact().GetLanguageTag()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
@@ -108,7 +107,7 @@ func (s *essentialContactsService) UpdateContact(ctx context.Context, req *pb.Up
 	return obj, nil
 }
 
-func (s *essentialContactsService) DeleteContact(ctx context.Context, req *pb.DeleteContactRequest) (*emptypb.Empty, error) {
+func (s *EssentialContactsV1) DeleteContact(ctx context.Context, req *pb.DeleteContactRequest) (*emptypb.Empty, error) {
 	name, err := s.parseContactName(req.Name)
 	if err != nil {
 		return nil, err
@@ -123,9 +122,37 @@ func (s *essentialContactsService) DeleteContact(ctx context.Context, req *pb.De
 	return &emptypb.Empty{}, nil
 }
 
+// ListContacts implements the List method for Essential Contacts
+func (s *EssentialContactsV1) ListContacts(ctx context.Context, req *pb.ListContactsRequest) (*pb.ListContactsResponse, error) {
+	parent := req.GetParent()
+	if parent == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent must be specified")
+	}
+
+	var contacts []*pb.Contact
+	if err := s.storage.List(ctx, (&pb.Contact{}).ProtoReflect().Descriptor(), storage.ListOptions{
+		Prefix: parent + "/contacts/",
+	}, func(obj proto.Message) error {
+		contact := obj.(*pb.Contact)
+		contacts = append(contacts, contact)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListContactsResponse{
+		Contacts: contacts,
+	}, nil
+}
+
 type contactName struct {
 	Project *projects.ProjectData
 	Contact string
+}
+
+// GetName returns the name using the project number instead of ID
+func (n *contactName) GetName() string {
+	return fmt.Sprintf("projects/%d/contacts/%s", n.Project.Number, n.Contact)
 }
 
 func (n *contactName) String() string {

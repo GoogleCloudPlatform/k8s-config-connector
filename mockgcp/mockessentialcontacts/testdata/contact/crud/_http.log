@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "email": "test-${uniqueId}@example.com",
@@ -32,7 +31,7 @@ X-Xss-Protection: 0
     "TECHNICAL",
     "BILLING"
   ],
-  "validateTime": "2025-03-08T06:51:02.417557Z",
+  "validateTime": "2024-04-01T12:34:56.123456Z",
   "validationState": "VALID"
 }
 
@@ -42,7 +41,6 @@ GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -62,7 +60,7 @@ X-Xss-Protection: 0
     "TECHNICAL",
     "BILLING"
   ],
-  "validateTime": "2025-03-08T06:51:02.417557Z",
+  "validateTime": "2024-04-01T12:34:56.123456Z",
   "validationState": "VALID"
 }
 
@@ -73,7 +71,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "notificationCategorySubscriptions": [
@@ -98,7 +95,7 @@ X-Xss-Protection: 0
   "notificationCategorySubscriptions": [
     "SECURITY"
   ],
-  "validateTime": "2025-03-08T06:51:02.417557Z",
+  "validateTime": "2024-04-01T12:34:56.123456Z",
   "validationState": "VALID"
 }
 
@@ -108,7 +105,6 @@ GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -127,7 +123,7 @@ X-Xss-Protection: 0
   "notificationCategorySubscriptions": [
     "SECURITY"
   ],
-  "validateTime": "2025-03-08T06:51:02.417557Z",
+  "validateTime": "2024-04-01T12:34:56.123456Z",
   "validationState": "VALID"
 }
 
@@ -137,7 +133,6 @@ DELETE https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contact
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
