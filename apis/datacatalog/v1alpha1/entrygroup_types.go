@@ -26,6 +26,25 @@ var DataCatalogEntryGroupGVK = GroupVersion.WithKind("DataCatalogEntryGroup")
 type DataCatalogEntryGroupSpec struct {
 	// The DataCatalogEntryGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// A short name to identify the entry group, for example,
+	//  "analytics data - jan 2011". Default value is an empty string.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Entry group description. Can consist of several sentences or
+	//  paragraphs that describe the entry group contents.
+	//  Default value is an empty string.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. When set to [true], it means DataCatalog EntryGroup was
+	//  transferred to Dataplex Catalog Service. It makes EntryGroup and its
+	//  Entries to be read-only in DataCatalog. However, new Tags on EntryGroup and
+	//  its Entries can be created. After setting the flag to [true] it cannot be
+	//  unset.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.transferred_to_dataplex
+	TransferredToDataplex *bool `json:"transferredToDataplex,omitempty"`
 }
 
 // DataCatalogEntryGroupStatus defines the config connector machine state of DataCatalogEntryGroup
@@ -47,6 +66,9 @@ type DataCatalogEntryGroupStatus struct {
 // DataCatalogEntryGroupObservedState is the state of the DataCatalogEntryGroup resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
 type DataCatalogEntryGroupObservedState struct {
+	// Output only. Timestamps of the entry group. Default value is empty.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.data_catalog_timestamps
+	DataCatalogTimestamps *SystemTimestamps `json:"dataCatalogTimestamps,omitempty"`
 }
 
 // +genclient
