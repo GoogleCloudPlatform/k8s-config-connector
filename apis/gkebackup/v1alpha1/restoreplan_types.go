@@ -187,11 +187,10 @@ type GKEBackupRestorePlanSpec struct {
 
 	// Required. Immutable. A reference to the
 	//  [BackupPlan][google.cloud.gkebackup.v1.BackupPlan] from which Backups may
-	//  be used as the source for Restores created via this RestorePlan. Format:
-	//  `projects/*/locations/*/backupPlans/*`.
+	//  be used as the source for Restores created via this RestorePlan.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.RestorePlan.backup_plan
 	// +required
-	BackupPlan *string `json:"backupPlan,omitempty"`
+	BackupPlanRef *BackupPlanRef `json:"backupPlanRef,omitempty"`
 
 	// Required. Immutable. The target cluster into which Restores created via
 	//  this RestorePlan will restore data. NOTE: the cluster's region must be the
