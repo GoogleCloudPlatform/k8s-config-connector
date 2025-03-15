@@ -104,90 +104,6 @@ type NotebookIdleShutdownConfig struct {
 	IdleShutdownDisabled *bool `json:"idleShutdownDisabled,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookRuntimeTemplate
-type NotebookRuntimeTemplate struct {
-	// The resource name of the NotebookRuntimeTemplate.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The display name of the NotebookRuntimeTemplate.
-	//  The name can be up to 128 characters long and can consist of any UTF-8
-	//  characters.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The description of the NotebookRuntimeTemplate.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. Immutable. The specification of a single machine for the
-	//  template.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.machine_spec
-	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
-
-	// Optional. The specification of [persistent
-	//  disk][https://cloud.google.com/compute/docs/disks/persistent-disks]
-	//  attached to the runtime as data disk storage.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.data_persistent_disk_spec
-	DataPersistentDiskSpec *PersistentDiskSpec `json:"dataPersistentDiskSpec,omitempty"`
-
-	// Optional. Network spec.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.network_spec
-	NetworkSpec *NetworkSpec `json:"networkSpec,omitempty"`
-
-	// The service account that the runtime workload runs as.
-	//  You can use any service account within the same project, but you
-	//  must have the service account user permission to use the instance.
-	//
-	//  If not specified, the [Compute Engine default service
-	//  account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
-	//  is used.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
-
-	// Used to perform consistent read-modify-write updates. If not set, a blind
-	//  "overwrite" update happens.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// The labels with user-defined metadata to organize the
-	//  NotebookRuntimeTemplates.
-	//
-	//  Label keys and values can be no longer than 64 characters
-	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores and dashes. International characters are allowed.
-	//
-	//  See https://goo.gl/xmQnxf for more information and examples of labels.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// The idle shutdown configuration of NotebookRuntimeTemplate. This config
-	//  will only be set when idle shutdown is enabled.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.idle_shutdown_config
-	IdleShutdownConfig *NotebookIdleShutdownConfig `json:"idleShutdownConfig,omitempty"`
-
-	// EUC configuration of the NotebookRuntimeTemplate.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.euc_config
-	EucConfig *NotebookEucConfig `json:"eucConfig,omitempty"`
-
-	// Optional. Immutable. The type of the notebook runtime template.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.notebook_runtime_type
-	NotebookRuntimeType *string `json:"notebookRuntimeType,omitempty"`
-
-	// Optional. Immutable. Runtime Shielded VM spec.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.shielded_vm_config
-	ShieldedVmConfig *ShieldedVmConfig `json:"shieldedVmConfig,omitempty"`
-
-	// Optional. The Compute Engine tags to add to runtime (see [Tagging
-	//  instances](https://cloud.google.com/vpc/docs/add-remove-network-tags)).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.network_tags
-	NetworkTags []string `json:"networkTags,omitempty"`
-
-	// Customer-managed encryption key spec for the notebook runtime.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.encryption_spec
-	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.PersistentDiskSpec
 type PersistentDiskSpec struct {
 	// Type of the disk (default is "pd-standard").
@@ -246,24 +162,4 @@ type NotebookEucConfigObservedState struct {
 	//  no longer use default Compute Engine SA, but a P4SA.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookEucConfig.bypass_actas_check
 	BypassActasCheck *bool `json:"bypassActasCheck,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookRuntimeTemplate
-type NotebookRuntimeTemplateObservedState struct {
-	// Output only. The default template to use if not specified.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.is_default
-	IsDefault *bool `json:"isDefault,omitempty"`
-
-	// EUC configuration of the NotebookRuntimeTemplate.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.euc_config
-	EucConfig *NotebookEucConfigObservedState `json:"eucConfig,omitempty"`
-
-	// Output only. Timestamp when this NotebookRuntimeTemplate was created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Timestamp when this NotebookRuntimeTemplate was most recently
-	//  updated.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookRuntimeTemplate.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
