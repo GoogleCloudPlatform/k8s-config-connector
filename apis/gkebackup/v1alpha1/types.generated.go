@@ -105,41 +105,6 @@ type BackupPlan_RetentionPolicy struct {
 	Locked *bool `json:"locked,omitempty"`
 }
 
-// +kcc:proto=google.cloud.gkebackup.v1.ExclusionWindow
-type ExclusionWindow struct {
-	// Required. Specifies the start time of the window using time of the day in
-	//  UTC.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.start_time
-	StartTime *TimeOfDay `json:"startTime,omitempty"`
-
-	// Required. Specifies duration of the window.
-	//  Duration must be >= 5 minutes and < (target RPO - 20 minutes).
-	//  Additional restrictions based on the recurrence type to allow some time for
-	//  backup to happen:
-	//  - single_occurrence_date:  no restriction, but UI may warn about this when
-	//  duration >= target RPO
-	//  - daily window: duration < 24 hours
-	//  - weekly window:
-	//    - days of week includes all seven days of a week: duration < 24 hours
-	//    - all other weekly window: duration < 168 hours (i.e., 24 * 7 hours)
-	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.duration
-	Duration *string `json:"duration,omitempty"`
-
-	// No recurrence. The exclusion window occurs only once and on this
-	//  date in UTC.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.single_occurrence_date
-	SingleOccurrenceDate *Date `json:"singleOccurrenceDate,omitempty"`
-
-	// The exclusion window occurs every day if set to "True".
-	//  Specifying this field to "False" is an error.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.daily
-	Daily *bool `json:"daily,omitempty"`
-
-	// The exclusion window occurs on these days of each week in UTC.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.days_of_week
-	DaysOfWeek *ExclusionWindow_DayOfWeekList `json:"daysOfWeek,omitempty"`
-}
-
 // +kcc:proto=google.cloud.gkebackup.v1.ExclusionWindow.DayOfWeekList
 type ExclusionWindow_DayOfWeekList struct {
 	// Optional. A list of days of week.
@@ -170,6 +135,139 @@ type Namespaces struct {
 	// Optional. A list of Kubernetes Namespaces
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Namespaces.namespaces
 	Namespaces []string `json:"namespaces,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.RestoreConfig
+type RestoreConfig struct {
+	// Optional. Specifies the mechanism to be used to restore volume data.
+	//  Default: VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED (will be treated as
+	//  NO_VOLUME_DATA_RESTORATION).
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.volume_data_restore_policy
+	VolumeDataRestorePolicy *string `json:"volumeDataRestorePolicy,omitempty"`
+
+	// Optional. Defines the behavior for handling the situation where
+	//  cluster-scoped resources being restored already exist in the target
+	//  cluster. This MUST be set to a value other than
+	//  CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED if
+	//  [cluster_resource_restore_scope][google.cloud.gkebackup.v1.RestoreConfig.cluster_resource_restore_scope]
+	//  is not empty.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.cluster_resource_conflict_policy
+	ClusterResourceConflictPolicy *string `json:"clusterResourceConflictPolicy,omitempty"`
+
+	// Optional. Defines the behavior for handling the situation where sets of
+	//  namespaced resources being restored already exist in the target cluster.
+	//  This MUST be set to a value other than
+	//  NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.namespaced_resource_restore_mode
+	NamespacedResourceRestoreMode *string `json:"namespacedResourceRestoreMode,omitempty"`
+
+	// Optional. Identifies the cluster-scoped resources to restore from the
+	//  Backup. Not specifying it means NO cluster resource will be restored.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.cluster_resource_restore_scope
+	ClusterResourceRestoreScope *RestoreConfig_ClusterResourceRestoreScope `json:"clusterResourceRestoreScope,omitempty"`
+
+	// Restore all namespaced resources in the Backup if set to "True".
+	//  Specifying this field to "False" is an error.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.all_namespaces
+	AllNamespaces *bool `json:"allNamespaces,omitempty"`
+
+	// A list of selected Namespaces to restore from the Backup. The listed
+	//  Namespaces and all resources contained in them will be restored.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.selected_namespaces
+	SelectedNamespaces *Namespaces `json:"selectedNamespaces,omitempty"`
+
+	// A list of selected ProtectedApplications to restore. The listed
+	//  ProtectedApplications and all the resources to which they refer will be
+	//  restored.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.selected_applications
+	SelectedApplications *NamespacedNames `json:"selectedApplications,omitempty"`
+
+	// Do not restore any namespaced resources if set to "True".
+	//  Specifying this field to "False" is not allowed.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.no_namespaces
+	NoNamespaces *bool `json:"noNamespaces,omitempty"`
+
+	// A list of selected namespaces excluded from restoration. All
+	//  namespaces except those in this list will be restored.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.excluded_namespaces
+	ExcludedNamespaces *Namespaces `json:"excludedNamespaces,omitempty"`
+
+	// Optional. A list of transformation rules to be applied against Kubernetes
+	//  resources as they are selected for restoration from a Backup. Rules are
+	//  executed in order defined - this order matters, as changes made by a rule
+	//  may impact the filtering logic of subsequent rules. An empty list means no
+	//  substitution will occur.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.substitution_rules
+	SubstitutionRules []RestoreConfig_SubstitutionRule `json:"substitutionRules,omitempty"`
+
+	// Optional. A list of transformation rules to be applied against Kubernetes
+	//  resources as they are selected for restoration from a Backup. Rules are
+	//  executed in order defined - this order matters, as changes made by a rule
+	//  may impact the filtering logic of subsequent rules. An empty list means no
+	//  transformation will occur.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.transformation_rules
+	TransformationRules []RestoreConfig_TransformationRule `json:"transformationRules,omitempty"`
+
+	// Optional. A table that binds volumes by their scope to a restore policy.
+	//  Bindings must have a unique scope. Any volumes not scoped in the bindings
+	//  are subject to the policy defined in volume_data_restore_policy.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.volume_data_restore_policy_bindings
+	VolumeDataRestorePolicyBindings []RestoreConfig_VolumeDataRestorePolicyBinding `json:"volumeDataRestorePolicyBindings,omitempty"`
+
+	// Optional. RestoreOrder contains custom ordering to use on a Restore.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.restore_order
+	RestoreOrder *RestoreConfig_RestoreOrder `json:"restoreOrder,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.RestoreConfig.ClusterResourceRestoreScope
+type RestoreConfig_ClusterResourceRestoreScope struct {
+	// Optional. A list of cluster-scoped resource group kinds to restore from
+	//  the backup. If specified, only the selected resources will be restored.
+	//  Mutually exclusive to any other field in the message.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.ClusterResourceRestoreScope.selected_group_kinds
+	SelectedGroupKinds []RestoreConfig_GroupKind `json:"selectedGroupKinds,omitempty"`
+
+	// Optional. A list of cluster-scoped resource group kinds to NOT restore
+	//  from the backup. If specified, all valid cluster-scoped resources will be
+	//  restored except for those specified in the list.
+	//  Mutually exclusive to any other field in the message.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.ClusterResourceRestoreScope.excluded_group_kinds
+	ExcludedGroupKinds []RestoreConfig_GroupKind `json:"excludedGroupKinds,omitempty"`
+
+	// Optional. If True, all valid cluster-scoped resources will be restored.
+	//  Mutually exclusive to any other field in the message.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.ClusterResourceRestoreScope.all_group_kinds
+	AllGroupKinds *bool `json:"allGroupKinds,omitempty"`
+
+	// Optional. If True, no cluster-scoped resources will be restored.
+	//  This has the same restore scope as if the message is not defined.
+	//  Mutually exclusive to any other field in the message.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.ClusterResourceRestoreScope.no_group_kinds
+	NoGroupKinds *bool `json:"noGroupKinds,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.RestoreConfig.GroupKind
+type RestoreConfig_GroupKind struct {
+	// Optional. API group string of a Kubernetes resource, e.g.
+	//  "apiextensions.k8s.io", "storage.k8s.io", etc.
+	//  Note: use empty string for core API group
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.GroupKind.resource_group
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+
+	// Optional. Kind of a Kubernetes resource, must be in UpperCamelCase
+	//  (PascalCase) and singular form. E.g. "CustomResourceDefinition",
+	//  "StorageClass", etc.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.GroupKind.resource_kind
+	ResourceKind *string `json:"resourceKind,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.RestoreConfig.RestoreOrder
+type RestoreConfig_RestoreOrder struct {
+	// Optional. Contains a list of group kind dependency pairs provided
+	//  by the customer, that is used by Backup for GKE to
+	//  generate a group kind restore order.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.RestoreOrder.group_kind_dependencies
+	GroupKindDependencies []RestoreConfig_RestoreOrder_GroupKindDependency `json:"groupKindDependencies,omitempty"`
 }
 
 // +kcc:proto=google.type.Date
@@ -210,12 +308,4 @@ type TimeOfDay struct {
 	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
-}
-
-// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
-type BackupPlan_ScheduleObservedState struct {
-	// Output only. Start time of next scheduled backup under this BackupPlan by
-	//  either cron_schedule or rpo config.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.next_scheduled_backup_time
-	NextScheduledBackupTime *string `json:"nextScheduledBackupTime,omitempty"`
 }

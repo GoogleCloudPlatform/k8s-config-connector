@@ -16,7 +16,6 @@ package gkebackup
 
 import (
 	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
-	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -61,7 +60,6 @@ func BackupPlan_RetentionPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Backu
 	out.Locked = direct.ValueOf(in.Locked)
 	return out
 }
-
 func BackupPlan_ScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan_Schedule) *krm.BackupPlan_ScheduleObservedState {
 	if in == nil {
 		return nil
@@ -122,26 +120,7 @@ func ExclusionWindow_DayOfWeekList_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
 	return out
 }
-func GKEBackupBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.GKEBackupBackupPlanSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupPlanSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Description = direct.LazyPtr(in.GetDescription())
-	if in.GetCluster() != "" {
-		out.ClusterRef = &container.ContainerClusterRef{External: in.GetCluster()}
-	}
-	out.RetentionPolicy = BackupPlan_RetentionPolicy_FromProto(mapCtx, in.GetRetentionPolicy())
-	out.Labels = in.Labels
-	out.BackupSchedule = BackupPlan_Schedule_FromProto(mapCtx, in.GetBackupSchedule())
-	out.Deactivated = direct.LazyPtr(in.GetDeactivated())
-	out.BackupConfig = BackupPlan_BackupConfig_FromProto(mapCtx, in.GetBackupConfig())
-	// MISSING: RpoRiskLevel
-	// MISSING: RpoRiskReason
-	return out
-}
+
 func GKEBackupBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBackupPlanSpec) *pb.BackupPlan {
 	if in == nil {
 		return nil
@@ -160,6 +139,24 @@ func GKEBackupBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBacku
 	out.BackupConfig = BackupPlan_BackupConfig_ToProto(mapCtx, in.BackupConfig)
 	// MISSING: RpoRiskLevel
 	// MISSING: RpoRiskReason
+	return out
+}
+func GKEBackupRestorePlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestorePlanSpec) *pb.RestorePlan {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestorePlan{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Description = direct.ValueOf(in.Description)
+	if in.BackupPlanRef != nil {
+		out.BackupPlan = in.BackupPlanRef.External
+	}
+	if in.ClusterRef != nil {
+		out.Cluster = in.ClusterRef.External
+	}
+	out.RestoreConfig = RestoreConfig_ToProto(mapCtx, in.RestoreConfig)
+	out.Labels = in.Labels
 	return out
 }
 func NamespacedName_FromProto(mapCtx *direct.MapContext, in *pb.NamespacedName) *krm.NamespacedName {
@@ -210,5 +207,163 @@ func Namespaces_ToProto(mapCtx *direct.MapContext, in *krm.Namespaces) *pb.Names
 	}
 	out := &pb.Namespaces{}
 	out.Namespaces = in.Namespaces
+	return out
+}
+func RestoreConfig_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig) *pb.RestoreConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreConfig{}
+	out.VolumeDataRestorePolicy = direct.Enum_ToProto[pb.RestoreConfig_VolumeDataRestorePolicy](mapCtx, in.VolumeDataRestorePolicy)
+	out.ClusterResourceConflictPolicy = direct.Enum_ToProto[pb.RestoreConfig_ClusterResourceConflictPolicy](mapCtx, in.ClusterResourceConflictPolicy)
+	out.NamespacedResourceRestoreMode = direct.Enum_ToProto[pb.RestoreConfig_NamespacedResourceRestoreMode](mapCtx, in.NamespacedResourceRestoreMode)
+	out.ClusterResourceRestoreScope = RestoreConfig_ClusterResourceRestoreScope_ToProto(mapCtx, in.ClusterResourceRestoreScope)
+	if oneof := RestoreConfig_AllNamespaces_ToProto(mapCtx, in.AllNamespaces); oneof != nil {
+		out.NamespacedResourceRestoreScope = oneof
+	}
+	if oneof := Namespaces_ToProto(mapCtx, in.SelectedNamespaces); oneof != nil {
+		out.NamespacedResourceRestoreScope = &pb.RestoreConfig_SelectedNamespaces{SelectedNamespaces: oneof}
+	}
+	if oneof := NamespacedNames_ToProto(mapCtx, in.SelectedApplications); oneof != nil {
+		out.NamespacedResourceRestoreScope = &pb.RestoreConfig_SelectedApplications{SelectedApplications: oneof}
+	}
+	if oneof := RestoreConfig_NoNamespaces_ToProto(mapCtx, in.NoNamespaces); oneof != nil {
+		out.NamespacedResourceRestoreScope = oneof
+	}
+	if oneof := Namespaces_ToProto(mapCtx, in.ExcludedNamespaces); oneof != nil {
+		out.NamespacedResourceRestoreScope = &pb.RestoreConfig_ExcludedNamespaces{ExcludedNamespaces: oneof}
+	}
+	out.SubstitutionRules = direct.Slice_ToProto(mapCtx, in.SubstitutionRules, RestoreConfig_SubstitutionRule_ToProto)
+	out.TransformationRules = direct.Slice_ToProto(mapCtx, in.TransformationRules, RestoreConfig_TransformationRule_ToProto)
+	out.VolumeDataRestorePolicyBindings = direct.Slice_ToProto(mapCtx, in.VolumeDataRestorePolicyBindings, RestoreConfig_VolumeDataRestorePolicyBinding_ToProto)
+	out.RestoreOrder = RestoreConfig_RestoreOrder_ToProto(mapCtx, in.RestoreOrder)
+	return out
+}
+func RestoreConfig_ClusterResourceRestoreScope_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_ClusterResourceRestoreScope) *krm.RestoreConfig_ClusterResourceRestoreScope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreConfig_ClusterResourceRestoreScope{}
+	out.SelectedGroupKinds = direct.Slice_FromProto(mapCtx, in.SelectedGroupKinds, RestoreConfig_GroupKind_FromProto)
+	out.ExcludedGroupKinds = direct.Slice_FromProto(mapCtx, in.ExcludedGroupKinds, RestoreConfig_GroupKind_FromProto)
+	out.AllGroupKinds = direct.LazyPtr(in.GetAllGroupKinds())
+	out.NoGroupKinds = direct.LazyPtr(in.GetNoGroupKinds())
+	return out
+}
+func RestoreConfig_ClusterResourceRestoreScope_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_ClusterResourceRestoreScope) *pb.RestoreConfig_ClusterResourceRestoreScope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreConfig_ClusterResourceRestoreScope{}
+	out.SelectedGroupKinds = direct.Slice_ToProto(mapCtx, in.SelectedGroupKinds, RestoreConfig_GroupKind_ToProto)
+	out.ExcludedGroupKinds = direct.Slice_ToProto(mapCtx, in.ExcludedGroupKinds, RestoreConfig_GroupKind_ToProto)
+	out.AllGroupKinds = direct.ValueOf(in.AllGroupKinds)
+	out.NoGroupKinds = direct.ValueOf(in.NoGroupKinds)
+	return out
+}
+func RestoreConfig_GroupKind_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_GroupKind) *krm.RestoreConfig_GroupKind {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreConfig_GroupKind{}
+	out.ResourceGroup = direct.LazyPtr(in.GetResourceGroup())
+	out.ResourceKind = direct.LazyPtr(in.GetResourceKind())
+	return out
+}
+func RestoreConfig_GroupKind_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_GroupKind) *pb.RestoreConfig_GroupKind {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreConfig_GroupKind{}
+	out.ResourceGroup = direct.ValueOf(in.ResourceGroup)
+	out.ResourceKind = direct.ValueOf(in.ResourceKind)
+	return out
+}
+func RestoreConfig_RestoreOrder_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_RestoreOrder) *krm.RestoreConfig_RestoreOrder {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreConfig_RestoreOrder{}
+	out.GroupKindDependencies = direct.Slice_FromProto(mapCtx, in.GroupKindDependencies, RestoreConfig_RestoreOrder_GroupKindDependency_FromProto)
+	return out
+}
+func RestoreConfig_RestoreOrder_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_RestoreOrder) *pb.RestoreConfig_RestoreOrder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreConfig_RestoreOrder{}
+	out.GroupKindDependencies = direct.Slice_ToProto(mapCtx, in.GroupKindDependencies, RestoreConfig_RestoreOrder_GroupKindDependency_ToProto)
+	return out
+}
+func RestoreConfig_RestoreOrder_GroupKindDependency_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_RestoreOrder_GroupKindDependency) *krm.RestoreConfig_RestoreOrder_GroupKindDependency {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreConfig_RestoreOrder_GroupKindDependency{}
+	out.Satisfying = RestoreConfig_GroupKind_FromProto(mapCtx, in.GetSatisfying())
+	out.Requiring = RestoreConfig_GroupKind_FromProto(mapCtx, in.GetRequiring())
+	return out
+}
+func RestoreConfig_RestoreOrder_GroupKindDependency_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_RestoreOrder_GroupKindDependency) *pb.RestoreConfig_RestoreOrder_GroupKindDependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreConfig_RestoreOrder_GroupKindDependency{}
+	out.Satisfying = RestoreConfig_GroupKind_ToProto(mapCtx, in.Satisfying)
+	out.Requiring = RestoreConfig_GroupKind_ToProto(mapCtx, in.Requiring)
+	return out
+}
+
+func RestoreConfig_TransformationRule_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_TransformationRule) *krm.RestoreConfig_TransformationRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreConfig_TransformationRule{}
+	out.FieldActions = direct.Slice_FromProto(mapCtx, in.FieldActions, RestoreConfig_TransformationRuleAction_FromProto)
+	out.ResourceFilter = RestoreConfig_ResourceFilter_FromProto(mapCtx, in.GetResourceFilter())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func RestoreConfig_TransformationRule_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_TransformationRule) *pb.RestoreConfig_TransformationRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreConfig_TransformationRule{}
+	out.FieldActions = direct.Slice_ToProto(mapCtx, in.FieldActions, RestoreConfig_TransformationRuleAction_ToProto)
+	out.ResourceFilter = RestoreConfig_ResourceFilter_ToProto(mapCtx, in.ResourceFilter)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func RestoreConfig_TransformationRuleAction_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_TransformationRuleAction) *krm.RestoreConfig_TransformationRuleAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreConfig_TransformationRuleAction{}
+	out.Op = direct.Enum_FromProto(mapCtx, in.GetOp())
+	out.FromPath = direct.LazyPtr(in.GetFromPath())
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func RestoreConfig_TransformationRuleAction_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_TransformationRuleAction) *pb.RestoreConfig_TransformationRuleAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreConfig_TransformationRuleAction{}
+	out.Op = direct.Enum_ToProto[pb.RestoreConfig_TransformationRuleAction_Op](mapCtx, in.Op)
+	out.FromPath = direct.ValueOf(in.FromPath)
+	out.Path = direct.ValueOf(in.Path)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func RestoreConfig_VolumeDataRestorePolicyBinding_ToProto(mapCtx *direct.MapContext, in *krm.RestoreConfig_VolumeDataRestorePolicyBinding) *pb.RestoreConfig_VolumeDataRestorePolicyBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreConfig_VolumeDataRestorePolicyBinding{}
+	out.Policy = direct.Enum_ToProto[pb.RestoreConfig_VolumeDataRestorePolicy](mapCtx, in.Policy)
+	if oneof := RestoreConfig_VolumeDataRestorePolicyBinding_VolumeType_ToProto(mapCtx, in.VolumeType); oneof != nil {
+		out.Scope = oneof
+	}
 	return out
 }

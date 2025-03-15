@@ -31,6 +31,14 @@ type EncryptionKey struct {
 	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
+type BackupPlan_ScheduleObservedState struct {
+	// Output only. Start time of next scheduled backup under this BackupPlan by
+	//  either cron_schedule or rpo config.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.Schedule.next_scheduled_backup_time
+	NextScheduledBackupTime *string `json:"nextScheduledBackupTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.gkebackup.v1.RpoConfig
 type RPOConfig struct {
 	// Required. Defines the target RPO for the BackupPlan in minutes, which means
@@ -52,6 +60,43 @@ type RPOConfig struct {
 	//  windows.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.RpoConfig.exclusion_windows
 	ExclusionWindows []ExclusionWindow `json:"exclusionWindows,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.ExclusionWindow
+type ExclusionWindow struct {
+	// Required. Specifies the start time of the window using time of the day in
+	//  UTC.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.start_time
+	// +required
+	StartTime *TimeOfDay `json:"startTime,omitempty"`
+
+	// Required. Specifies duration of the window.
+	//  Duration must be >= 5 minutes and < (target RPO - 20 minutes).
+	//  Additional restrictions based on the recurrence type to allow some time for
+	//  backup to happen:
+	//  - single_occurrence_date:  no restriction, but UI may warn about this when
+	//  duration >= target RPO
+	//  - daily window: duration < 24 hours
+	//  - weekly window:
+	//    - days of week includes all seven days of a week: duration < 24 hours
+	//    - all other weekly window: duration < 168 hours (i.e., 24 * 7 hours)
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.duration
+	// +required
+	Duration *string `json:"duration,omitempty"`
+
+	// No recurrence. The exclusion window occurs only once and on this
+	//  date in UTC.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.single_occurrence_date
+	SingleOccurrenceDate *Date `json:"singleOccurrenceDate,omitempty"`
+
+	// The exclusion window occurs every day if set to "True".
+	//  Specifying this field to "False" is an error.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.daily
+	Daily *bool `json:"daily,omitempty"`
+
+	// The exclusion window occurs on these days of each week in UTC.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ExclusionWindow.days_of_week
+	DaysOfWeek *ExclusionWindow_DayOfWeekList `json:"daysOfWeek,omitempty"`
 }
 
 // +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
@@ -112,10 +157,7 @@ type GKEBackupBackupPlanSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// Required. Immutable. The source cluster from which Backups will be created
-	//  via this BackupPlan. Valid formats:
-	//
-	//  - `projects/*/locations/*/clusters/*`
-	//  - `projects/*/zones/*/clusters/*`
+	//  via this BackupPlan.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.cluster
 	// +required
 	ClusterRef *container.ContainerClusterRef `json:"clusterRef,omitempty"`

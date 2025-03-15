@@ -284,6 +284,9 @@ spec:
                                   format: int32
                                   type: integer
                               type: object
+                          required:
+                          - duration
+                          - startTime
                           type: object
                         type: array
                       targetRPOMinutes:
@@ -296,12 +299,8 @@ spec:
                     type: object
                 type: object
               clusterRef:
-                description: |-
-                  Required. Immutable. The source cluster from which Backups will be created
-                   via this BackupPlan. Valid formats:
-
-                   - `projects/*/locations/*/clusters/*`
-                   - `projects/*/zones/*/clusters/*`
+                description: Required. Immutable. The source cluster from which Backups
+                  will be created via this BackupPlan.
                 oneOf:
                 - not:
                     required:
