@@ -14,35 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
-type EntryGroup struct {
-	// Identifier. The resource name of the entry group in URL format.
-	//
-	//  Note: The entry group itself and its child resources might not be
-	//  stored in the location specified in its name.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.name
-	Name *string `json:"name,omitempty"`
-
-	// A short name to identify the entry group, for example,
-	//  "analytics data - jan 2011". Default value is an empty string.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Entry group description. Can consist of several sentences or
-	//  paragraphs that describe the entry group contents.
-	//  Default value is an empty string.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. When set to [true], it means DataCatalog EntryGroup was
-	//  transferred to Dataplex Catalog Service. It makes EntryGroup and its
-	//  Entries to be read-only in DataCatalog. However, new Tags on EntryGroup and
-	//  its Entries can be created. After setting the flag to [true] it cannot be
-	//  unset.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.transferred_to_dataplex
-	TransferredToDataplex *bool `json:"transferredToDataplex,omitempty"`
-}
-
 // +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
 type SystemTimestamps struct {
 	// Creation timestamp of the resource within the given system.
@@ -58,13 +29,6 @@ type SystemTimestamps struct {
 	//  or permission changes.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
-type EntryGroupObservedState struct {
-	// Output only. Timestamps of the entry group. Default value is empty.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.data_catalog_timestamps
-	DataCatalogTimestamps *SystemTimestamps `json:"dataCatalogTimestamps,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
