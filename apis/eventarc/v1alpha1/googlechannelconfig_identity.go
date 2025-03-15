@@ -52,7 +52,7 @@ func (p *GoogleChannelConfigParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a GoogleChannelConfigIdentity from the Config Connector GoogleChannelConfig object.
+// NewGoogleChannelConfigIdentity builds a GoogleChannelConfigIdentity from the Config Connector GoogleChannelConfig object.
 func NewGoogleChannelConfigIdentity(ctx context.Context, reader client.Reader, obj *EventarcGoogleChannelConfig) (*GoogleChannelConfigIdentity, error) {
 
 	// Get Parent
@@ -105,8 +105,8 @@ func NewGoogleChannelConfigIdentity(ctx context.Context, reader client.Reader, o
 
 func ParseGoogleChannelConfigExternal(external string) (parent *GoogleChannelConfigParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "googlechannelconfigs" {
-		return nil, "", fmt.Errorf("format of EventarcGoogleChannelConfig external=%q was not known (use projects/{{projectID}}/locations/{{location}}/googlechannelconfigs/{{googlechannelconfigID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "googleChannelConfig" {
+		return nil, "", fmt.Errorf("format of EventarcGoogleChannelConfig external=%q was not known (use projects/{{projectID}}/locations/{{location}}/googleChannelConfig/{{googlechannelconfigID}})", external)
 	}
 	parent = &GoogleChannelConfigParent{
 		ProjectID: tokens[1],
