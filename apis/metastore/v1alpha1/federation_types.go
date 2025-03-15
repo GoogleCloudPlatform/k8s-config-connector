@@ -15,15 +15,25 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var MetastoreFederationGVK = GroupVersion.WithKind("MetastoreFederation")
 
+type Parent struct {
+	// +required
+	Location string `json:"location"`
+
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
 // MetastoreFederationSpec defines the desired state of MetastoreFederation
 // +kcc:proto=google.cloud.metastore.v1.Federation
 type MetastoreFederationSpec struct {
+	Parent Parent `json:",inline"`
 	// The MetastoreFederation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Immutable. The relative resource name of the federation, of the
