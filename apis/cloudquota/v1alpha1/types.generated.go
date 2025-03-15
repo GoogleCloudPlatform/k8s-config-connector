@@ -50,3 +50,30 @@ type QuotaConfigObservedState struct {
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaConfig.request_origin
 	RequestOrigin *string `json:"requestOrigin,omitempty"`
 }
+
+// +kcc:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
+type QuotaAdjusterSettings struct {
+	// Identifier. Name of the config would be of the format:
+	//    projects/12345/locations/global/quotaAdjusterSettings
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The configured value of the enablement at the given resource.
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.enablement
+	Enablement *string `json:"enablement,omitempty"`
+
+	// Optional. The current etag of the QuotaAdjusterSettings. If an etag is
+	//  provided on update and does not match the current server's etag of the
+	//  QuotaAdjusterSettings, the request will be blocked and an ABORTED error
+	//  will be returned. See https://google.aip.dev/134#etags for more details on
+	//  etags.
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.etag
+	Etag *string `json:"etag,omitempty"`
+}
+
+// +kcc:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
+type QuotaAdjusterSettingsObservedState struct {
+	// Output only. The timestamp when the QuotaAdjusterSettings was last updated.
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
