@@ -32,7 +32,7 @@ type SavedQueryIdentity struct {
 }
 
 func (i *SavedQueryIdentity) String() string {
-	return i.parent.String() + "/savedquerys/" + i.id
+	return i.parent.String() + "/savedQueries/" + i.id
 }
 
 func (i *SavedQueryIdentity) ID() string {
@@ -43,6 +43,7 @@ func (i *SavedQueryIdentity) Parent() *SavedQueryParent {
 	return i.parent
 }
 
+// No changes were needed.
 type SavedQueryParent struct {
 	ProjectID string
 	Location  string
@@ -105,8 +106,8 @@ func NewSavedQueryIdentity(ctx context.Context, reader client.Reader, obj *Asset
 
 func ParseSavedQueryExternal(external string) (parent *SavedQueryParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "savedquerys" {
-		return nil, "", fmt.Errorf("format of AssetSavedQuery external=%q was not known (use projects/{{projectID}}/locations/{{location}}/savedquerys/{{savedqueryID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "savedQueries" {
+		return nil, "", fmt.Errorf("format of AssetSavedQuery external=%q was not known (use projects/{{projectID}}/locations/{{location}}/savedQueries/{{savedqueryID}})", external)
 	}
 	parent = &SavedQueryParent{
 		ProjectID: tokens[1],
