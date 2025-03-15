@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.cloud.aiplatform.v1.ScheduleService
-// proto.message: google.cloud.aiplatform.v1.Schedule
+// proto.service: google.cloud.aiplatform.v1beta1.ScheduleService
+// proto.message: google.cloud.aiplatform.v1beta1.Schedule
 
 package mockaiplatform
 

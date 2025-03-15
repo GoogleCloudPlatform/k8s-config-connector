@@ -8,7 +8,7 @@ Content-Type: application/json
   "notebookRuntime": {
     "displayName": "Runtime ${uniqueId}",
     "name": "test-${uniqueId}",
-    "runtimeUser": "maqiuyu@google.com"
+    "runtimeUser": "${user}"
   },
   "notebookRuntimeId": "test-${uniqueId}",
   "notebookRuntimeTemplate": "projects/${projectId}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}"
@@ -88,37 +88,24 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPersistentDiskSpec": {
-    "diskSizeGb": "100",
-    "diskType": "pd-standard"
-  },
   "displayName": "Runtime ${uniqueId}",
-  "eucConfig": {},
-  "expirationTime": "2025-09-08T01:17:15.080563Z",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
   "healthState": "HEALTHY",
   "idleShutdownConfig": {
     "idleTimeout": "10800s"
   },
   "labels": {
     "aiplatform.googleapis.com/colab_enterprise_pool": "false",
-    "aiplatform.googleapis.com/notebook_runtime_gce_instance_id": "8057486992620740255"
-  },
-  "machineSpec": {
-    "machineType": "e2-standard-4"
+    "aiplatform.googleapis.com/notebook_runtime_gce_instance_id": "1234567890"
   },
   "name": "projects/${projectNumber}/locations/us-central1/notebookRuntimes/test-${uniqueId}",
-  "networkSpec": {
-    "enableInternetAccess": true,
-    "network": "projects/${projectNumber}/global/networks/default"
-  },
   "notebookRuntimeTemplateRef": {
     "notebookRuntimeTemplate": "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}"
   },
   "notebookRuntimeType": "USER_DEFINED",
-  "proxyUri": "xx7bsvegfycks-dot-us-central1.aiplatform-notebook.googleusercontent.com",
+  "proxyUri": "test-${projectNumber}-dot-notebooks.googleusercontent.com",
   "runtimeState": "RUNNING",
-  "runtimeUser": "maqiuyu@google.com",
-  "shieldedVmConfig": {},
+  "runtimeUser": "${user}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "colab-on-gcp-20250226-1800-rc0-cos"
 }
