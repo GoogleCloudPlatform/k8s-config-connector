@@ -1,0 +1,4 @@
+- pre: gcloud kms keyrings create test-keyring-${uniqueId} --location=us-central1
+- exec: gcloud kms import-jobs create test-${uniqueId} --location=us-central1 --keyring=test-keyring-${uniqueId} --import-method=rsa-oaep-3072-sha1-aes-256 --protection-level=hsm
+- exec: gcloud kms import-jobs describe test-${uniqueId} --location=us-central1 --keyring=test-keyring-${uniqueId}
+- exec: gcloud kms import-jobs list --location=us-central1 --keyring=test-keyring-${uniqueId}
