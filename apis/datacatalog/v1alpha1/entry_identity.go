@@ -44,12 +44,13 @@ func (i *EntryIdentity) Parent() *EntryParent {
 }
 
 type EntryParent struct {
-	ProjectID string
-	Location  string
+	ProjectID    string
+	Location     string
+	EntryGroupID string
 }
 
 func (p *EntryParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/entryGroups/" + p.EntryGroupID
 }
 
 // New builds a EntryIdentity from the Config Connector Entry object.
@@ -65,6 +66,7 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
+	entryGroupID := obj.Spec.EntryGroupRef.Name
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -89,6 +91,9 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
+		if actualParent.EntryGroupID != entryGroupID {
+			return nil, fmt.Errorf("spec.entryGroupRef changed, expect %s, got %s", actualParent.EntryGroupID, entryGroupID)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -96,8 +101,9 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 	}
 	return &EntryIdentity{
 		parent: &EntryParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:    projectID,
+			Location:     location,
+			EntryGroupID: entryGroupID,
 		},
 		id: resourceID,
 	}, nil
