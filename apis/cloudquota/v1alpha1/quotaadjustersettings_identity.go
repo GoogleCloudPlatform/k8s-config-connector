@@ -32,7 +32,7 @@ type QuotaAdjusterSettingsIdentity struct {
 }
 
 func (i *QuotaAdjusterSettingsIdentity) String() string {
-	return i.parent.String() + "/quotaadjustersettingss/" + i.id
+	return i.parent.String() + "/quotaAdjusterSettings/" + i.id
 }
 
 func (i *QuotaAdjusterSettingsIdentity) ID() string {
@@ -43,6 +43,7 @@ func (i *QuotaAdjusterSettingsIdentity) Parent() *QuotaAdjusterSettingsParent {
 	return i.parent
 }
 
+// QuotaAdjusterSettingsParent defines the GCP project, location for the given QuotaAdjusterSettings resource.
 type QuotaAdjusterSettingsParent struct {
 	ProjectID string
 	Location  string
@@ -105,8 +106,8 @@ func NewQuotaAdjusterSettingsIdentity(ctx context.Context, reader client.Reader,
 
 func ParseQuotaAdjusterSettingsExternal(external string) (parent *QuotaAdjusterSettingsParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "quotaadjustersettingss" {
-		return nil, "", fmt.Errorf("format of APIQuotaAdjusterSettings external=%q was not known (use projects/{{projectID}}/locations/{{location}}/quotaadjustersettingss/{{quotaadjustersettingsID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "quotaAdjusterSettings" {
+		return nil, "", fmt.Errorf("format of APIQuotaAdjusterSettings external=%q was not known (use projects/{{projectID}}/locations/{{location}}/quotaAdjusterSettings/{{quotaAdjusterSettingsID}})", external)
 	}
 	parent = &QuotaAdjusterSettingsParent{
 		ProjectID: tokens[1],
