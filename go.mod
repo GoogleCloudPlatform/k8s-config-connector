@@ -23,6 +23,7 @@ require (
 	cloud.google.com/go/datastream v1.13.1
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/documentai v1.35.1
+	cloud.google.com/go/edgecontainer v1.4.1
 	cloud.google.com/go/firestore v1.18.0
 	cloud.google.com/go/gkebackup v1.6.3
 	cloud.google.com/go/gkemulticloud v1.5.1

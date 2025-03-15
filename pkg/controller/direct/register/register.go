@@ -37,6 +37,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datastream"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/documentai"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/edgecontainer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkebackup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
