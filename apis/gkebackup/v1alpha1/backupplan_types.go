@@ -157,10 +157,7 @@ type GKEBackupBackupPlanSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// Required. Immutable. The source cluster from which Backups will be created
-	//  via this BackupPlan. Valid formats:
-	//
-	//  - `projects/*/locations/*/clusters/*`
-	//  - `projects/*/zones/*/clusters/*`
+	//  via this BackupPlan.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.BackupPlan.cluster
 	// +required
 	ClusterRef *container.ContainerClusterRef `json:"clusterRef,omitempty"`

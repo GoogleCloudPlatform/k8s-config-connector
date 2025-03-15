@@ -15,7 +15,9 @@
 package v1alpha1
 
 import (
+	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -194,13 +196,10 @@ type GKEBackupRestorePlanSpec struct {
 
 	// Required. Immutable. The target cluster into which Restores created via
 	//  this RestorePlan will restore data. NOTE: the cluster's region must be the
-	//  same as the RestorePlan. Valid formats:
-	//
-	//    - `projects/*/locations/*/clusters/*`
-	//    - `projects/*/zones/*/clusters/*`
+	//  same as the RestorePlan.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.RestorePlan.cluster
 	// +required
-	Cluster *string `json:"cluster,omitempty"`
+	ClusterRef *container.ContainerClusterRef `json:"clusterRef,omitempty"`
 
 	// Required. Configuration of Restores created via this RestorePlan.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.RestorePlan.restore_config
