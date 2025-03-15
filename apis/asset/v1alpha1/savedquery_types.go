@@ -15,15 +15,26 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var AssetSavedQueryGVK = GroupVersion.WithKind("AssetSavedQuery")
 
+type Parent struct {
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+	// +optional
+	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
+	// +optional
+	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+}
+
 // AssetSavedQuerySpec defines the desired state of AssetSavedQuery
 // +kcc:proto=google.cloud.asset.v1.SavedQuery
 type AssetSavedQuerySpec struct {
+	Parent Parent `json:",inline"`
 	// The AssetSavedQuery name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// The resource name of the saved query. The format must be:
@@ -48,6 +59,8 @@ type AssetSavedQuerySpec struct {
 	// The query content.
 	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.content
 	Content *SavedQuery_QueryContent `json:"content,omitempty"`
+
+	// சேர்த்த பிறகு, spec-ஐ சரிபார்க்கவும்.
 }
 
 // AssetSavedQueryStatus defines the config connector machine state of AssetSavedQuery
