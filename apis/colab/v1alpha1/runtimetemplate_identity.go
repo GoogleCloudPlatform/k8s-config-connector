@@ -44,12 +44,23 @@ func (i *NotebookRuntimeTemplateIdentity) Parent() *NotebookRuntimeTemplateParen
 }
 
 type NotebookRuntimeTemplateParent struct {
-	ProjectID string
-	Location  string
+	ProjectID      string
+	OrganizationID string
+	FolderID       string
+	Location       string
 }
 
 func (p *NotebookRuntimeTemplateParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	if p.ProjectID != "" {
+		return "projects/" + p.ProjectID + "/locations/" + p.Location
+	}
+	if p.OrganizationID != "" {
+		return "organizations/" + p.OrganizationID + "/locations/" + p.Location
+	}
+	if p.FolderID != "" {
+		return "folders/" + p.FolderID + "/locations/" + p.Location
+	}
+	return ""
 }
 
 // New builds a NotebookRuntimeTemplateIdentity from the Config Connector NotebookRuntimeTemplate object.
@@ -105,13 +116,29 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 
 func ParseNotebookRuntimeTemplateExternal(external string) (parent *NotebookRuntimeTemplateParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "notebookruntimetemplates" {
-		return nil, "", fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookruntimetemplates/{{notebookruntimetemplateID}})", external)
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "notebookruntimetemplates" {
+		parent = &NotebookRuntimeTemplateParent{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		}
+		resourceID = tokens[5]
+		return parent, resourceID, nil
 	}
-	parent = &NotebookRuntimeTemplateParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+	if len(tokens) == 6 && tokens[0] == "organizations" && tokens[2] == "locations" && tokens[4] == "notebookruntimetemplates" {
+		parent = &NotebookRuntimeTemplateParent{
+			OrganizationID: tokens[1],
+			Location:       tokens[3],
+		}
+		resourceID = tokens[5]
+		return parent, resourceID, nil
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	if len(tokens) == 6 && tokens[0] == "folders" && tokens[2] == "locations" && tokens[4] == "notebookruntimetemplates" {
+		parent = &NotebookRuntimeTemplateParent{
+			FolderID: tokens[1],
+			Location: tokens[3],
+		}
+		resourceID = tokens[5]
+		return parent, resourceID, nil
+	}
+	return nil, "", fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookruntimetemplates/{{notebookruntimetemplateID}})", external)
 }
