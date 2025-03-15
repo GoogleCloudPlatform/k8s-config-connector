@@ -14,7 +14,7 @@
 
 // +tool:mockgcp-support
 // proto.service: google.cloud.kms.v1.KeyManagementService
-// proto.message: google.cloud.kms.v1.KeyRing
+// proto.message: google.cloud.kms.v1.ImportJob
 
 package mockkms
 
@@ -29,22 +29,22 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-func (r *kmsServer) GetKeyRing(ctx context.Context, req *pb.GetKeyRingRequest) (*pb.KeyRing, error) {
-	name, err := r.parseKeyRingName(req.Name)
+func (s *kmsServer) GetImportJob(ctx context.Context, req *pb.GetImportJobRequest) (*pb.ImportJob, error) {
+	name, err := s.parseImportJobName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.KeyRing{}
-	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+	obj := &pb.ImportJob{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "KeyRing %s not found.", fqn)
+			return nil, status.Errorf(codes.NotFound, "ImportJob %s not found.", fqn)
 		}
 		return nil, err
 	}
@@ -52,9 +52,29 @@ func (r *kmsServer) GetKeyRing(ctx context.Context, req *pb.GetKeyRingRequest) (
 	return obj, nil
 }
 
-func (r *kmsServer) CreateKeyRing(ctx context.Context, req *pb.CreateKeyRingRequest) (*pb.KeyRing, error) {
-	reqName := fmt.Sprintf("%s/keyRings/%s", req.GetParent(), req.GetKeyRingId())
-	name, err := r.parseKeyRingName(reqName)
+func (s *kmsServer) ListImportJobs(ctx context.Context, req *pb.ListImportJobsRequest) (*pb.ListImportJobsResponse, error) {
+	var importJobs []*pb.ImportJob
+
+	importJobKind := (&pb.ImportJob{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, importJobKind, storage.ListOptions{}, func(obj proto.Message) error {
+		importJob := obj.(*pb.ImportJob)
+		if strings.HasPrefix(importJob.GetName(), req.Parent) {
+			importJobs = append(importJobs, importJob)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListImportJobsResponse{
+		ImportJobs: importJobs,
+		TotalSize:  int32(len(importJobs)),
+	}, nil
+}
+
+func (s *kmsServer) CreateImportJob(ctx context.Context, req *pb.CreateImportJobRequest) (*pb.ImportJob, error) {
+	reqName := fmt.Sprintf("%s/importJobs/%s", req.GetParent(), req.GetImportJobId())
+	name, err := s.parseImportJobName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -63,48 +83,67 @@ func (r *kmsServer) CreateKeyRing(ctx context.Context, req *pb.CreateKeyRingRequ
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetKeyRing()).(*pb.KeyRing)
+	obj := proto.Clone(req.GetImportJob()).(*pb.ImportJob)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
+	obj.ExpireTime = timestamppb.New(now)
+	obj.ImportMethod = pb.ImportJob_RSA_OAEP_3072_SHA1_AES_256
+	obj.State = pb.ImportJob_PENDING_GENERATION
 
-	r.populateDefaultsForKeyRing(name, obj)
+	result := proto.Clone(obj).(*pb.ImportJob)
 
-	if err := r.storage.Create(ctx, fqn, obj); err != nil {
+	obj.GenerateTime = timestamppb.New(now)
+	obj.State = pb.ImportJob_ACTIVE
+	obj.Attestation = &pb.KeyOperationAttestation{
+		CertChains: &pb.KeyOperationAttestation_CertificateChains{
+			CaviumCerts: []string{
+				"-----BEGIN CERTIFICATE-----\ncertificate 1\n-----END CERTIFICATE-----\n",
+				"-----BEGIN CERTIFICATE-----\ncertificate 2\n-----END CERTIFICATE-----\n",
+			},
+			GoogleCardCerts: []string{
+				"-----BEGIN CERTIFICATE-----\ncertificate 3\n-----END CERTIFICATE-----\n",
+			},
+			GooglePartitionCerts: []string{
+				"-----BEGIN CERTIFICATE-----\ncertificate 4\n-----END CERTIFICATE-----\n",
+			},
+		},
+		Content: []byte("content"),
+		Format:  pb.KeyOperationAttestation_CAVIUM_V2_COMPRESSED,
+	}
+	obj.PublicKey = &pb.ImportJob_WrappingPublicKey{
+		Pem: "-----BEGIN PUBLIC KEY-----\npublic key\n-----END PUBLIC KEY-----\n",
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
+	return result, nil
 }
 
-func (r *kmsServer) populateDefaultsForKeyRing(name *KeyRingName, obj *pb.KeyRing) {
-
+type importJobName struct {
+	KeyRingName
+	ImportJobID string
 }
 
-type KeyRingName struct {
-	Project   *projects.ProjectData
-	Location  string
-	KeyRingID string
+func (n *importJobName) String() string {
+	return n.KeyRingName.String() + "/importJobs/" + n.ImportJobID
 }
 
-func (n *KeyRingName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/keyRings/" + n.KeyRingID
-}
-
-// parseKeyRingName parses a string into an KeyRingName.
-// The expected form is `projects/*/locations/*/keyRings/*`.
-func (r *kmsServer) parseKeyRingName(name string) (*KeyRingName, error) {
+// parseImportJobName parses a string into an ImportJobName.
+// The expected form is `projects/*/locations/*/keyRings/*/importJobs/*`.
+func (s *kmsServer) parseImportJobName(name string) (*importJobName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" {
-		project, err := r.Projects.GetProjectByID(tokens[1])
+	if len(tokens) == 8 && tokens[6] == "importJobs" {
+		keyRingName, err := s.parseKeyRingName(strings.Join(tokens[0:6], "/"))
 		if err != nil {
 			return nil, err
 		}
 
-		name := &KeyRingName{
-			Project:   project,
-			Location:  tokens[3],
-			KeyRingID: tokens[5],
+		name := &importJobName{
+			KeyRingName: *keyRingName,
+			ImportJobID: tokens[7],
 		}
 
 		return name, nil
@@ -112,4 +151,3 @@ func (r *kmsServer) parseKeyRingName(name string) (*KeyRingName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-

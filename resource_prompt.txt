@@ -1,3 +1,0 @@
-// +tool:mockgcp-support
-// proto.service: google.cloud.aiplatform.v1.ScheduleService
-// proto.message: google.cloud.aiplatform.v1.Schedule

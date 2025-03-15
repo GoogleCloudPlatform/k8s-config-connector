@@ -937,6 +937,16 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".metadata.commonMetadata.updateTime", "2025-01-02T12:34:56.123456Z")
 	}
 
+	// KMS
+	{
+		visitor.ReplacePath(".createTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".expireTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".generateTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".importJobs[].createTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".importJobs[].expireTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".importJobs[].generateTime", "2024-04-01T12:34:56.123456Z")
+	}
+
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		// Deprecated: try to move these into mockgcp normalizers
