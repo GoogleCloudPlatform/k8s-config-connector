@@ -43,6 +43,7 @@ func (i *EntryGroupIdentity) Parent() *EntryGroupParent {
 	return i.parent
 }
 
+// EntryGroupParent defines the parent of DataCatalogEntryGroup.
 type EntryGroupParent struct {
 	ProjectID string
 	Location  string
@@ -105,8 +106,8 @@ func NewEntryGroupIdentity(ctx context.Context, reader client.Reader, obj *DataC
 
 func ParseEntryGroupExternal(external string) (parent *EntryGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entrygroups" {
-		return nil, "", fmt.Errorf("format of DataCatalogEntryGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entrygroups/{{entrygroupID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryGroups" {
+		return nil, "", fmt.Errorf("format of DataCatalogEntryGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entryGroups/{{entryGroupID}})", external)
 	}
 	parent = &EntryGroupParent{
 		ProjectID: tokens[1],
