@@ -49,7 +49,7 @@ type FederationParent struct {
 }
 
 func (p *FederationParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/federations"
 }
 
 // New builds a FederationIdentity from the Config Connector Federation object.
