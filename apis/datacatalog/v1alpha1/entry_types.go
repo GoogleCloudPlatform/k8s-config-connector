@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -24,7 +25,18 @@ var DataCatalogEntryGVK = GroupVersion.WithKind("DataCatalogEntry")
 
 // DataCatalogEntrySpec defines the desired state of DataCatalogEntry
 // +kcc:proto=google.cloud.datacatalog.v1.Entry
+
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+	// +required
+	EntryGroupRef *refv1beta1.Reference `json:"entryGroupRef"`
+}
+
 type DataCatalogEntrySpec struct {
+	Parent `json:",inline"`
 	// The DataCatalogEntry name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// The resource this metadata entry refers to.
