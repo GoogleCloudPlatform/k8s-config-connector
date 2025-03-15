@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -108,8 +108,8 @@ func DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx *direct.Ma
 	}
 	out := &krm.DiscoveryEngineDataStoreTargetSiteObservedState{}
 	// MISSING: Name
-	out.GeneratedUriPattern = direct.LazyPtr(in.GetGeneratedUriPattern())
-	out.RootDomainUri = direct.LazyPtr(in.GetRootDomainUri())
+	out.GeneratedURIPattern = direct.LazyPtr(in.GetGeneratedUriPattern())
+	out.RootDomainURI = direct.LazyPtr(in.GetRootDomainUri())
 	out.SiteVerificationInfo = SiteVerificationInfo_FromProto(mapCtx, in.GetSiteVerificationInfo())
 	out.IndexingStatus = direct.Enum_FromProto(mapCtx, in.GetIndexingStatus())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -122,8 +122,8 @@ func DiscoveryEngineDataStoreTargetSiteObservedState_ToProto(mapCtx *direct.MapC
 	}
 	out := &pb.TargetSite{}
 	// MISSING: Name
-	out.GeneratedUriPattern = direct.ValueOf(in.GeneratedUriPattern)
-	out.RootDomainUri = direct.ValueOf(in.RootDomainUri)
+	out.GeneratedUriPattern = direct.ValueOf(in.GeneratedURIPattern)
+	out.RootDomainUri = direct.ValueOf(in.RootDomainURI)
 	out.SiteVerificationInfo = SiteVerificationInfo_ToProto(mapCtx, in.SiteVerificationInfo)
 	out.IndexingStatus = direct.Enum_ToProto[pb.TargetSite_IndexingStatus](mapCtx, in.IndexingStatus)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -136,7 +136,7 @@ func DiscoveryEngineDataStoreTargetSiteSpec_FromProto(mapCtx *direct.MapContext,
 	}
 	out := &krm.DiscoveryEngineDataStoreTargetSiteSpec{}
 	// MISSING: Name
-	out.ProvidedUriPattern = direct.LazyPtr(in.GetProvidedUriPattern())
+	out.ProvidedURIPattern = direct.LazyPtr(in.GetProvidedUriPattern())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
 	return out
@@ -147,7 +147,7 @@ func DiscoveryEngineDataStoreTargetSiteSpec_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.TargetSite{}
 	// MISSING: Name
-	out.ProvidedUriPattern = direct.ValueOf(in.ProvidedUriPattern)
+	out.ProvidedUriPattern = direct.ValueOf(in.ProvidedURIPattern)
 	out.Type = direct.Enum_ToProto[pb.TargetSite_Type](mapCtx, in.Type)
 	out.ExactMatch = direct.ValueOf(in.ExactMatch)
 	return out

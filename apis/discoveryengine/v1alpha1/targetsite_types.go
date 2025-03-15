@@ -31,7 +31,7 @@ type DiscoveryEngineDataStoreTargetSiteSpec struct {
 
 	// Required. Input only. The user provided URI pattern from which the
 	// `generated_uri_pattern` is generated.
-	ProvidedUriPattern *string `json:"providedURIPattern,omitempty"`
+	ProvidedURIPattern *string `json:"providedURIPattern,omitempty"`
 
 	// The type of the target site, e.g., whether the site is to be included or
 	// excluded.
@@ -66,10 +66,10 @@ type DiscoveryEngineDataStoreTargetSiteStatus struct {
 // +kcc:proto=google.cloud.discoveryengine.v1.TargetSite
 type DiscoveryEngineDataStoreTargetSiteObservedState struct {
 	// Output only. This is system-generated based on the provided_uri.
-	GeneratedUriPattern *string `json:"generatedURIPattern,omitempty"`
+	GeneratedURIPattern *string `json:"generatedURIPattern,omitempty"`
 
 	// Output only. Root domain of the provided_uri.
-	RootDomainUri *string `json:"rootDomainURI,omitempty"`
+	RootDomainURI *string `json:"rootDomainURI,omitempty"`
 
 	// Output only. Site ownership and validity verification status.
 	SiteVerificationInfo *SiteVerificationInfo `json:"siteVerificationInfo,omitempty"`
