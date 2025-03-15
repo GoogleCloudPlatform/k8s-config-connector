@@ -1,0 +1,4 @@
+
+- exec: gcloud api-gateway apis create test-${uniqueId}
+- exec: gcloud api-gateway apis describe test-${uniqueId}
+- exec: gcloud api-gateway apis delete test-${uniqueId} --quiet
