@@ -125,13 +125,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
-        "reason": "invalid"
-      }
-    ],
     "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
   }
 }
@@ -454,13 +447,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
-        "reason": "invalid"
-      }
-    ],
     "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
   }
 }

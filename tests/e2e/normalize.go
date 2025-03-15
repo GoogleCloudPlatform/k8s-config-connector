@@ -674,8 +674,8 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 
 		switch path {
 		case ".spec.organizationRef.external":
-			//id := strings.TrimPrefix(s, "organizations/")
-			//replacement.PathIDs[id] = "${organizationID}"
+			id := strings.TrimPrefix(s, "organizations/")
+			replacement.PathIDs[id] = "${organizationID}"
 		case ".status.writerIdentity":
 			if strings.HasPrefix(s, "serviceAccount:service-org-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
 				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-org-"), "@gcp-sa-logging.iam.gserviceaccount.com")

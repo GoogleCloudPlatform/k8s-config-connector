@@ -41,13 +41,40 @@ func (s *FirewallPoliciesV1) Get(ctx context.Context, req *pb.GetFirewallPolicyR
 	fqn := name.String()
 
 	obj := &pb.FirewallPolicy{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err = s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
+			// A hacky way to test acquiring pre-crated policy 1059732409893
+			if fqn == "locations/global/firewallPolicies/1059732409893" {
+				// Create a mock object with the exactly same values of the existing policy 1059732409893
+				return s.createMockPolicy(ctx, obj, name)
+			}
 			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
+	return obj, nil
+}
 
+func (s *FirewallPoliciesV1) createMockPolicy(ctx context.Context, obj *pb.FirewallPolicy, name *firewallPolicyName) (*pb.FirewallPolicy, error) {
+	id := uint64(1059732409893)
+	policyId := strconv.FormatUint(id, 10)
+
+	obj.Name = PtrTo(policyId)
+	obj.ShortName = PtrTo("test-acquire-policy")
+	obj.Parent = PtrTo("organizations/123450001")
+	obj.Description = PtrTo("A basic organization firewall policy")
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
+	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, name.String()) + "/" + policyId)
+	obj.RuleTupleCount = PtrTo(int32(8))
+	obj.CreationTimestamp = PtrTo(s.nowString())
+	obj.Kind = PtrTo("compute#firewallPolicy")
+	obj.DisplayName = PtrTo(obj.GetShortName())
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+	obj.Id = PtrTo(id)
+	populateDefaultRules(obj)
+	if err := s.storage.Create(ctx, name.String(), obj); err != nil {
+		return nil, err
+	}
 	return obj, nil
 }
 

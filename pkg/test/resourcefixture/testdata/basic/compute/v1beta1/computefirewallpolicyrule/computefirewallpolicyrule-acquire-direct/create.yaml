@@ -15,8 +15,6 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewallPolicyRule
 metadata:
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: firewallpolicyrule-${uniqueId}
 spec:
   action: "deny"
