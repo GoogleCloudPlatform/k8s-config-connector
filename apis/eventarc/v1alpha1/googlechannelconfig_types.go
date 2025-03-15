@@ -15,15 +15,25 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var EventarcGoogleChannelConfigGVK = GroupVersion.WithKind("EventarcGoogleChannelConfig")
 
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // EventarcGoogleChannelConfigSpec defines the desired state of EventarcGoogleChannelConfig
 // +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type EventarcGoogleChannelConfigSpec struct {
+	Parent `json:",inline"`
+
 	// The EventarcGoogleChannelConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The resource name of the config. Must be in the format of,
