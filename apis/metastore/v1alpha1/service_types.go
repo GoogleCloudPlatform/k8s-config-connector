@@ -15,16 +15,26 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
 var MetastoreServiceGVK = GroupVersion.WithKind("MetastoreService")
 
+// Parent defines the parent object for the Metastore service.
+type Parent struct {
+	// +required
+	Location string `json:"location"`
+	// +optional
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
 // MetastoreServiceSpec defines the desired state of MetastoreService
 // +kcc:proto=google.cloud.metastore.v1.Service
 type MetastoreServiceSpec struct {
+	// Parent represents the parent object of the metastore service.
+	Parent `json:",inline"`
 	// The MetastoreService name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Configuration information specific to running Hive metastore
