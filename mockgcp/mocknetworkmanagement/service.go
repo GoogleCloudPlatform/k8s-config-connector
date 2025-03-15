@@ -37,8 +37,6 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
-
-	v1 *reachabilityService
 }
 
 // New creates a MockService.
@@ -48,7 +46,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &reachabilityService{MockService: s}
 	return s
 }
 
@@ -57,7 +54,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterReachabilityServiceServer(grpcServer, s.v1)
+	pb.RegisterReachabilityServiceServer(grpcServer, &reachabilityService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -71,5 +68,3 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	return mux, nil
 }
-
-

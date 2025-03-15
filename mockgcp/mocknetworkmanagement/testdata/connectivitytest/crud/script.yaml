@@ -1,4 +1,3 @@
-
 - exec: gcloud network-management connectivity-tests create test-${uniqueId} --source-ip-address=10.0.0.1 --destination-ip-address=10.0.0.2 --description="Test connectivity test" --protocol=TCP
 - exec: gcloud network-management connectivity-tests describe test-${uniqueId}
 - exec: gcloud network-management connectivity-tests update test-${uniqueId} --description="Updated description"
