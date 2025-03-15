@@ -32,7 +32,7 @@ type BackupPlanAssociationIdentity struct {
 }
 
 func (i *BackupPlanAssociationIdentity) String() string {
-	return i.parent.String() + "/backupplanassociations/" + i.id
+	return i.parent.String() + "/backupPlanAssociations/" + i.id
 }
 
 func (i *BackupPlanAssociationIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewBackupPlanAssociationIdentity(ctx context.Context, reader client.Reader,
 
 func ParseBackupPlanAssociationExternal(external string) (parent *BackupPlanAssociationParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupplanassociations" {
-		return nil, "", fmt.Errorf("format of BackupDRBackupPlanAssociation external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupplanassociations/{{backupplanassociationID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupPlanAssociations" {
+		return nil, "", fmt.Errorf("format of BackupDRBackupPlanAssociation external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupPlanAssociations/{{backupplanassociationID}})", external)
 	}
 	parent = &BackupPlanAssociationParent{
 		ProjectID: tokens[1],

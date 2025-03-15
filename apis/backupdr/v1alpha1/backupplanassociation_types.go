@@ -26,6 +26,27 @@ var BackupDRBackupPlanAssociationGVK = GroupVersion.WithKind("BackupDRBackupPlan
 type BackupDRBackupPlanAssociationSpec struct {
 	// The BackupDRBackupPlanAssociation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	Parent `json:",inline"`
+
+	// Required. Immutable. Resource type of workload on which backupplan is
+	//  applied
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.resource_type
+	// +required
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Required. Immutable. Resource name of workload on which backupplan is
+	//  applied
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.resource
+	// +required
+	Resource *string `json:"resource,omitempty"`
+
+	// Required. Resource name of backup plan which needs to be applied on
+	//  workload. Format:
+	//  projects/{project}/locations/{location}/backupPlans/{backupPlanId}
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.backup_plan
+	// +required
+	BackupPlan *string `json:"backupPlan,omitempty"`
 }
 
 // BackupDRBackupPlanAssociationStatus defines the config connector machine state of BackupDRBackupPlanAssociation
@@ -47,11 +68,38 @@ type BackupDRBackupPlanAssociationStatus struct {
 // BackupDRBackupPlanAssociationObservedState is the state of the BackupDRBackupPlanAssociation resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.backupdr.v1.BackupPlanAssociation
 type BackupDRBackupPlanAssociationObservedState struct {
+	// Output only. Identifier. The resource name of BackupPlanAssociation in
+	//  below format Format :
+	//  projects/{project}/locations/{location}/backupPlanAssociations/{backupPlanAssociationId}
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.name
+	// NOTYET: this field serves the same purpose as externalRef
+	// Name *string `json:"name,omitempty"`
+
+	// Output only. The time when the instance was created.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the instance was updated.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The BackupPlanAssociation resource state.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The config info related to backup rules.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.rules_config_info
+	RulesConfigInfo []RuleConfigInfoObservedState `json:"rulesConfigInfo,omitempty"`
+
+	// Output only. Resource name of data source which will be used as storage
+	//  location for backups taken. Format :
+	//  projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.data_source
+	DataSource *string `json:"dataSource,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpbackupdrbackupplanassociation;gcpbackupdrbackupplanassociations
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

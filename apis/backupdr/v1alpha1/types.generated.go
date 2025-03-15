@@ -14,26 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.backupdr.v1.BackupPlanAssociation
-type BackupPlanAssociation struct {
-
-	// Required. Immutable. Resource type of workload on which backupplan is
-	//  applied
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.resource_type
-	ResourceType *string `json:"resourceType,omitempty"`
-
-	// Required. Immutable. Resource name of workload on which backupplan is
-	//  applied
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.resource
-	Resource *string `json:"resource,omitempty"`
-
-	// Required. Resource name of backup plan which needs to be applied on
-	//  workload. Format:
-	//  projects/{project}/locations/{location}/backupPlans/{backupPlanId}
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.backup_plan
-	BackupPlan *string `json:"backupPlan,omitempty"`
-}
-
 // +kcc:proto=google.cloud.backupdr.v1.BackupRule
 type BackupRule struct {
 	// Required. Immutable. The unique id of this `BackupRule`. The `rule_id` is
@@ -227,37 +207,6 @@ type Status struct {
 	//  message types for APIs to use.
 	// +kcc:proto:field=google.rpc.Status.details
 	Details []Any `json:"details,omitempty"`
-}
-
-// +kcc:proto=google.cloud.backupdr.v1.BackupPlanAssociation
-type BackupPlanAssociationObservedState struct {
-	// Output only. Identifier. The resource name of BackupPlanAssociation in
-	//  below format Format :
-	//  projects/{project}/locations/{location}/backupPlanAssociations/{backupPlanAssociationId}
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The time when the instance was created.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time when the instance was updated.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. The BackupPlanAssociation resource state.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. The config info related to backup rules.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.rules_config_info
-	RulesConfigInfo []RuleConfigInfo `json:"rulesConfigInfo,omitempty"`
-
-	// Output only. Resource name of data source which will be used as storage
-	//  location for backups taken. Format :
-	//  projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.data_source
-	DataSource *string `json:"dataSource,omitempty"`
 }
 
 // +kcc:proto=google.cloud.backupdr.v1.RuleConfigInfo
