@@ -44,34 +44,6 @@ func BackupDRBackupPlanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.BackupVaultServiceAccount = direct.ValueOf(in.BackupVaultServiceAccount)
 	return out
 }
-func BackupDRBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BackupDRBackupPlanSpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.BackupRules = direct.Slice_FromProto(mapCtx, in.BackupRules, BackupRule_FromProto)
-	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.BackupVault = direct.LazyPtr(in.GetBackupVault())
-	return out
-}
-func BackupDRBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupPlan{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.BackupRules = direct.Slice_ToProto(mapCtx, in.BackupRules, BackupRule_ToProto)
-	out.ResourceType = direct.ValueOf(in.ResourceType)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.BackupVault = direct.ValueOf(in.BackupVault)
-	return out
-}
 func BackupDRBackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultSpec {
 	if in == nil {
 		return nil
