@@ -13,17 +13,16 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeFirewallPolicyRule
+kind: ComputeFirewallPolicy
 metadata:
-  name: firewallpolicyrule-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: firewallpolicy-${uniqueId}
 spec:
-  action: "deny"
-  direction: "INGRESS"
-  firewallPolicyRef:
-    name: firewallpolicy-${uniqueId}
-  match:
-    layer4Configs:
-    - ipProtocol: "tcp"
-    srcIPRanges:
-    - "10.100.0.1/32"
-  priority: 9000
+  organizationRef:
+    # The organization ID is hard-coded to the ID of the "deployment-manager.net" org
+    external: "organizations/${TEST_ORG_ID}"
+  # a pre-created policy
+  resourceID: firewallPolicies/1059732409893
+  shortName: test-acquire-policy
+  description: "An updated basic organization firewall policy"
