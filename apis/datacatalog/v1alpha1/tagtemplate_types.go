@@ -26,6 +26,70 @@ var DataCatalogTagTemplateGVK = GroupVersion.WithKind("DataCatalogTagTemplate")
 type DataCatalogTagTemplateSpec struct {
 	// The DataCatalogTagTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Identifier. The resource name of the tag template in URL format.
+	//
+	//  Note: The tag template itself and its child resources might not be
+	//  stored in the location specified in its name.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Display name for this template. Defaults to an empty string.
+	//
+	//  The name must contain only Unicode letters, numbers (0-9), underscores (_),
+	//  dashes (-), spaces ( ), and can't start or end with spaces.
+	//  The maximum length is 200 characters.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Indicates whether tags created with this template are public. Public tags
+	//  do not require tag template access to appear in
+	//  [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags] API response.
+	//
+	//  Additionally, you can search for a public tag by value with a
+	//  simple search query in addition to using a ``tag:`` predicate.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.is_publicly_readable
+	IsPubliclyReadable *bool `json:"isPubliclyReadable,omitempty"`
+
+	// Fields used to create a Tag
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.fields
+	Fields map[string]DataCatalogTagTemplateField `json:"fields,omitempty"`
+
+	// Optional. Transfer status of the TagTemplate
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.dataplex_transfer_status
+	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
+}
+
+// DataCatalogTagTemplateField defines the desired state of DataCatalogTagTemplateField
+type DataCatalogTagTemplateField struct {
+	// The display name for this field. Defaults to an empty string.
+	//
+	//  The name must contain only Unicode letters, numbers (0-9), underscores (_),
+	//  dashes (-), spaces ( ), and can't start or end with spaces.
+	//  The maximum length is 200 characters.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The type of value this tag field can contain.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.type
+	Type *FieldType `json:"type,omitempty"`
+
+	// If true, this field is required. Defaults to false.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// The description for this field. Defaults to an empty string.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.description
+	Description *string `json:"description,omitempty"`
+
+	// The order of this field with respect to other fields in this tag
+	//  template.
+	//
+	//  For example, a higher value can indicate a more important field.
+	//  The value can be negative. Multiple fields can have the same order and
+	//  field orders within a tag don't have to be sequential.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.order
+	Order *int32 `json:"order,omitempty"`
 }
 
 // DataCatalogTagTemplateStatus defines the config connector machine state of DataCatalogTagTemplate
@@ -39,14 +103,6 @@ type DataCatalogTagTemplateStatus struct {
 
 	// A unique specifier for the DataCatalogTagTemplate resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DataCatalogTagTemplateObservedState `json:"observedState,omitempty"`
-}
-
-// DataCatalogTagTemplateObservedState is the state of the DataCatalogTagTemplate resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.datacatalog.v1.TagTemplate
-type DataCatalogTagTemplateObservedState struct {
 }
 
 // +genclient
