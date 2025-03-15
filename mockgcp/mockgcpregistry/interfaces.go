@@ -68,6 +68,9 @@ type Event interface {
 	// URL returns the URL of the request
 	URL() string
 
+	// Method returns the HTTP Method of the request
+	Method() string
+
 	// VisitRequestStringValues calls the callback for each string-typed value found in the request object (if any)
 	VisitRequestStringValues(callback func(path string, value string))
 

@@ -526,11 +526,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}\" not found",
+        "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}\" not found"
+    "message": "targetHttpsProxy \"projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}\" not found"
   }
 }
 
@@ -543,7 +543,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 {
   "certificateMap": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}",
   "description": "test description",
-  "name": "computetargethttpsproxy-${uniqueId}",
+  "name": "${targetHttpsProxyID}",
   "quicOverride": "DISABLE",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
@@ -569,7 +569,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetHttpsProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
 }
 
@@ -600,7 +600,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetHttpsProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
 }
 
@@ -627,9 +627,9 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetHttpsProxy",
-  "name": "computetargethttpsproxy-${uniqueId}",
+  "name": "${targetHttpsProxyID}",
   "quicOverride": "DISABLE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
@@ -664,7 +664,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetHttpsProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
 }
 
@@ -695,7 +695,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetHttpsProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
 }
 
@@ -730,7 +730,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetHttpsProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
 }
 
@@ -761,7 +761,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetHttpsProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
 }
 
@@ -788,9 +788,9 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetHttpsProxy",
-  "name": "computetargethttpsproxy-${uniqueId}",
+  "name": "${targetHttpsProxyID}",
   "quicOverride": "ENABLE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
 }
 
@@ -821,7 +821,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetHttpsProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
 }
 
@@ -852,7 +852,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetHttpsProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "user": "user@example.com"
 }
 

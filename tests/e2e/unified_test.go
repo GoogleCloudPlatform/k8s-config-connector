@@ -377,8 +377,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
 
-					networkIDs := map[string]bool{}
-
 					r := NewReplacements()
 
 					// Find "easy" operations and resources by looking for fully-qualified methods
@@ -970,9 +968,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 					for k := range r.OperationIDs {
 						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
-					}
-					for k := range networkIDs {
-						normalizers = append(normalizers, ReplaceString(k, "${networkID}"))
 					}
 
 					if testPause {
