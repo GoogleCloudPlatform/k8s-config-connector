@@ -33,5 +33,11 @@ func StorageFolderFuzzer() fuzztesting.KRMFuzzer {
 		StorageFolderObservedState_FromProto, StorageFolderObservedState_ToProto,
 	)
 	f.UnimplementedFields.Insert(".name")
+
+	f.StatusFields.Insert(".metageneration")
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".pending_rename_info")
+
 	return f
 }

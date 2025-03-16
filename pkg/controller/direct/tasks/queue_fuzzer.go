@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:fuzz-no
+// +tool:fuzz-gen
 // proto.message: google.cloud.tasks.v2.Queue
 // api.group: tasks.cnrm.cloud.google.com
 
