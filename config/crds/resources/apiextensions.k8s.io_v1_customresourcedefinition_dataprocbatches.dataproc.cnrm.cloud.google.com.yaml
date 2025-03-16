@@ -65,7 +65,7 @@ spec:
                   executionConfig:
                     description: Optional. Execution configuration for a workload.
                     properties:
-                      idleTtl:
+                      idleTTL:
                         description: 'Optional. Applies to sessions only. The duration
                           to keep the session alive while it''s idling. Exceeding
                           this threshold causes the session to terminate. This field
@@ -168,7 +168,7 @@ spec:
                 description: Required.
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Required.
                 oneOf:
                 - not:
                     required:
@@ -242,7 +242,7 @@ spec:
                     type: array
                 type: object
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
+                description: The DataprocBatch name. If not given, the metadata.name
                   will be used.
                 type: string
               runtimeConfig:
@@ -376,8 +376,6 @@ spec:
                       (equivalent to the Spark SQL command: `SET name="value";`).'
                     type: object
                 type: object
-            required:
-            - projectRef
             type: object
           status:
             description: DataprocBatchStatus defines the config connector machine
