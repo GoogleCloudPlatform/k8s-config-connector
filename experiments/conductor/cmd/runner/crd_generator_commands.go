@@ -338,26 +338,26 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 
 const SET_TYPE_SPEC_STATUS string = `I need to set the Spec and Status fields in the generated KRM type ${KIND} to match the proto ${PROTO_RESOURCE} definition.
 
-Given:
-- Generated types file: ${GENERATED_TYPES_FILE}
-- resource types files: ${RESOURCE_TYPES_FILES}
-- Proto resource: ${PROTO_RESOURCE}
-
 Main Objectives:
-1. Copy only the Fields from the ${PROTO_RESOURCE} struct in ${GENERATED_TYPES_FILE} to the ${KIND}Spec struct in ${RESOURCE_TYPES_FILES}.
-2. if ${PROTO_RESOURCE}ObservedState struct exists, copy the Fields from the ${PROTO_RESOURCE}ObservedState to the ${KIND}ObservedState struct in ${RESOURCE_TYPES_FILES}.
+1. Copy all the Fields from the ${PROTO_RESOURCE} struct in ${GENERATED_TYPES_FILE} to the ${KIND}Spec struct in ${RESOURCE_TYPES_FILES}.
+2. if ${PROTO_RESOURCE}ObservedState struct exists, copy all the Fields from the ${PROTO_RESOURCE}ObservedState to the ${KIND}ObservedState struct in ${RESOURCE_TYPES_FILES}.
 3. if ${PROTO_RESOURCE}ObservedState struct does not exist, remove the ${KIND}ObservedState struct from ${RESOURCE_TYPES_FILES}.
-4. Dont copy any structs from ${GENERATED_TYPES_FILE} to ${RESOURCE_TYPES_FILES}.
-5. Ensure that the ${KIND}Spec struct has the following fields:
-- ResourceID *string <TICK>json:"resourceID,omitempty"<TICK>
-6. Please do not modify the ${GENERATED_TYPES_FILE} file.
-7. Please do not modify the ${IDENTITY_FILE} file.
+4. Dont remove the existing ResourceID field from the ${KIND}Spec struct in ${RESOURCE_TYPES_FILES}.
+5. Please do not modify the ${GENERATED_TYPES_FILE} file.
+6. Please do not modify the ${IDENTITY_FILE} file.
+7. Make sure to copy all the fields from the ${PROTO_RESOURCE} struct in ${GENERATED_TYPES_FILE} to the ${KIND}Spec struct in ${RESOURCE_TYPES_FILES}.
+
+
+If you generate the whole file, use CreateFile tool with overwrite set to true to write back the contents of the ${IDENTITY_FILE} file.
+Alternatively use EditFile tool to change the contents of the ${IDENTITY_FILE}.
+Please do not modify the ${RESOURCE_TYPES_FILES} file.
+Please ignore the compilation errors due to missing DeepCopy methods
+Please update the ${RESOURCE_TYPES_FILES} file with the adjusted types.
 
 Please ignore the compilation errors and dont verify or try to fix:
 1. compilation error due to missing DeepCopy methods
 2. Errors in the ${IDENTITY_FILE} file
 
-Please update the ${RESOURCE_TYPES_FILES} file with the adjusted types.
 
 Contents of ${GENERATED_TYPES_FILE}:
 ${GENERATED_TYPES_FILE_CONTENTS}
@@ -502,6 +502,10 @@ type Parent struct {
 
 6. Please make sure there is only one import block in the ${RESOURCE_TYPES_FILES} file and it appears at the beginning of the file.
 
+If you generate the whole file, use CreateFile tool with overwrite set to true to write back the contents of the ${IDENTITY_FILE} file.
+Alternatively use EditFile tool to change the contents of the ${IDENTITY_FILE}.
+Please do not modify the ${RESOURCE_TYPES_FILES} file.
+Please ignore the compilation errors due to missing DeepCopy methods
 Please update the ${RESOURCE_TYPES_FILES} file with the adjusted types.
 
 Contents of ${GENERATED_TYPES_FILE}:
@@ -601,35 +605,8 @@ func regenerateTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 
 const ADJUST_IDENTITY_PARENT string = `I want you to update the ${PROTO_RESOURCE}Parent struct in the ${IDENTITY_FILE} file along with the String() method and the Parse${PROTO_RESOURCE}External method.
 
-Main Objectives:
-1. Modify the ${PROTO_RESOURCE}Parent struct in ${IDENTITY_FILE}.
-2. Modify the ${PROTO_RESOURCE}Parent's String() method in ${IDENTITY_FILE}.
-3. Modify the Parse${PROTO_RESOURCE}External method in ${IDENTITY_FILE}.
-4. Please do not modify the ${RESOURCE_TYPES_FILES} file.
-5. Please ignore the compilation errors due to missing DeepCopy methods
-6. If no changes are needed, please add a comment in the ${IDENTITY_FILE} file before the ${PROTO_RESOURCE}Parent struct stating that no changes were needed.
-
-Rules for modifying the ${PROTO_RESOURCE}Parent struct:
-1.  example ${PROTO_RESOURCE}Parent structs are:
-
-type ${PROTO_RESOURCE}Parent struct {
-	ProjectID string
-	Location  string
-}
-
-type ${PROTO_RESOURCE}Parent struct {
-	OrganizationID string
-	ProjectID      string
-	Location       string
-}
-
-type ${PROTO_RESOURCE}Parent struct {
-	OrganizationID string
-	FolderID       string
-	ProjectID      string
-}
-
-2. Inspect the Parent structs in the ${RESOURCE_TYPES_FILES} file to determine the fields for the ${PROTO_RESOURCE}Parent struct.
+Step 1: Changing the ${PROTO_RESOURCE}Parent struct:
+Inspect the Parent structs in the ${RESOURCE_TYPES_FILES} file to determine the fields for the ${PROTO_RESOURCE}Parent struct.
    For example, if the ${RESOURCE_TYPES_FILES} file has the following Parent structs:
 type Parent struct {
 	Location string <TICK>json:"location"<TICK>
@@ -648,19 +625,45 @@ type ${PROTO_RESOURCE}Parent struct {
 	Location       string
 }
 
-Please update the ${PROTO_RESOURCE}Parent's String() method to return the correct string.
-Example String() method returns are:
- - "projects/{{project}}/locations/{{location}}"
- - "folders/{{folder}}/locations/{{location}}"
- - "organizations/{{organization}}"
- - "projects/{{project}}"
-There may be other patterns, please inspect the ${PROTO_RESOURCE}Parent and the <TICK>message ${PROTO_RESOURCE}<TICK> to determine the correct pattern.
+If the ${RESOURCE_TYPES_FILES} file has the following Parent struct:
+type Parent struct {
+	// +required
+	Location string <TICK>json:"location"<TICK>
+	// +required
+	ProjectRef *refv1beta1.ProjectRef <TICK>json:"projectRef,omitempty"<TICK>
+	// +required
+	SomeGroup *refv1beta1.SomeGroup <TICK>json:"someGroupRef,omitempty"<TICK>
+}
+   we need to generate the following ${PROTO_RESOURCE}Parent struct:
+type ${PROTO_RESOURCE}Parent struct {
+	ProjectID      string
+	Location       string
+	SomeGroupID    string
+}
 
+Step 2: Changing the ${PROTO_RESOURCE}Parent's String() method:
+Please update the ${PROTO_RESOURCE}Parent's String() method to return the correct string.
+Please inspect the <TICK>message ${PROTO_RESOURCE}<TICK>'s pattern fields to determine the correct pattern.
+
+Step 3: Changing the Parse${PROTO_RESOURCE}External method:
 Please update the Parse${PROTO_RESOURCE}External method to parse the ${PROTO_RESOURCE}Parent from a string.
 
-Please update the ${IDENTITY_FILE} file with all the changes.
-If no changes are needed, please add a comment in the ${IDENTITY_FILE} file before the ${PROTO_RESOURCE}Parent struct stating that no changes were needed.
+Step 4: Updating the New${PROTO_RESOURCE}Identity method:
+Please update the New${PROTO_RESOURCE}Identity method to use the new ${PROTO_RESOURCE}Parent struct.
 
+Step 5: Update the resource camelCase name in URLs:
+Please update the resource camelCase name in URLs.
+Refer to the <TICK>message ${PROTO_RESOURCE}<TICK>'s pattern fields to determine the correct camelCase name.
+
+If you generate the whole file, use CreateFile tool with overwrite set to true to write back the contents of the ${IDENTITY_FILE} file.
+Alternatively use EditFile tool to change the contents of the ${IDENTITY_FILE}.
+If no changes are needed, please add a comment in the ${IDENTITY_FILE} file before the ${PROTO_RESOURCE}Parent struct stating that no changes were needed.
+Please do not modify the ${RESOURCE_TYPES_FILES} file.
+Please ignore the compilation errors due to missing DeepCopy methods
+
+Make sure to use either CreateFile or EditFile tool.
+
+Once the file is updated, please ReadFile the ${IDENTITY_FILE} file to verify all the changes have been made.
 
 Contents of ${IDENTITY_FILE}:
 ${IDENTITY_FILE_CONTENTS}

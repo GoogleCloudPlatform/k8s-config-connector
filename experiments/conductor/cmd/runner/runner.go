@@ -53,6 +53,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdWriteFiles              = 6
 	cmdDiff                    = 7
 	cmdRevert                  = 8
+	cmdPushBranch              = 9 // New command for force pushing branches
 	cmdCreateScriptYaml        = 10
 	cmdCaptureHttpLog          = 11
 	cmdGenerateMockGo          = 12
@@ -327,7 +328,12 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Reverting last %d commits in branch %s: %d name: %s, branch: %s\r\n", opts.numCommits, branch.Name, idx, branch.Name, branch.Local)
 			revertLastNCommits(opts, branch)
 		}
-
+	case cmdPushBranch: // 9
+		// TODO add make ready-pr here
+		for idx, branch := range branches.Branches {
+			log.Printf("Force pushing branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			pushBranch(opts, branch)
+		}
 	case cmdCreateScriptYaml: // 10
 		processBranches(ctx, opts, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsg: "Create gcloud script.yaml"}})
 	case cmdCaptureHttpLog: // 11
@@ -349,8 +355,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			{Fn: setTypeSpecStatus, CommitMsg: "Add spec and status to generated type"},
 			{Fn: setTypeParent, CommitMsg: "Add parent to generated type"},
 			{Fn: adjustIdentityParent, CommitMsg: "Adjust identity parent"},
-			// check capitalization of URL resource part:  pattern: "projects/{project}/locations/{location}/services/{service}/quotaInfos/{quota_info}"
-			{Fn: adjustIdentityParentNewFunction, CommitMsg: "Adjust identity parent NewIdentity method"},
+			//{Fn: adjustIdentityParentNewFunction, CommitMsg: "Adjust identity parent NewIdentity method"},
 			{Fn: regenerateTypes, CommitMsg: "Regenerate types"},
 			// preferred manual: Add something for Capitalization of Abbreviations: any acronyms that are not all caps should be all caps
 			// manual: Add something to handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
@@ -401,6 +406,7 @@ func printHelp() {
 	log.Println("\t6 - [Generated] Write the specific type of files from all_scripts.yaml to each github branch")
 	log.Println("\t7 - [Git] Show diff of last N commits in each branch (use -n to specify N)")
 	log.Println("\t8 - [Git] Revert last N commits in each branch (use -n to specify N)")
+	log.Println("\t9 - [Git] Force push each branch to origin")
 	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
 	log.Println("\t11 - [Mock] Create _http.log for mock gcp generation in each github branch")
 	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")
@@ -997,4 +1003,35 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 
 	// Print the reset output
 	log.Printf("Reset output for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output.Stdout)
+}
+
+func pushBranch(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := opts.branchRepoDir
+	ctx := context.TODO()
+
+	// First checkout the branch
+	checkoutBranch(ctx, branch, workDir)
+
+	// Run git push command with force flag
+	cfg := CommandConfig{
+		Name: "Git push",
+		Cmd:  "git",
+		Args: []string{
+			"push",
+			"origin",
+			branch.Local,
+			"--force",
+		},
+		WorkDir:    workDir,
+		MaxRetries: 1,
+	}
+	output, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Git push error for branch %s: %v", branch.Name, err)
+		return
+	}
+
+	log.Printf("Push output for branch %s:\n%s", branch.Name, output.Stdout)
 }
