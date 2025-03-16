@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,16 +24,22 @@ var DataCatalogTagGVK = GroupVersion.WithKind("DataCatalogTag")
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
 type Parent struct {
+	//pattern: "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}"
 	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-	// +required
-	Location string `json:"location"`
+	EntryRef *EntryRef `json:"entryRef"`
 }
 
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagSpec struct {
 	Parent Parent `json:",inline"`
+	// Identifier. The resource name of the tag in URL format where tag ID is a
+	//  system-generated identifier.
+	//
+	//  Note: The tag itself might not be stored in the location specified in its
+	//  name.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.name
+	Name *string `json:"name,omitempty"`
 	// The DataCatalogTag name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The resource name of the tag template this tag uses. Example:

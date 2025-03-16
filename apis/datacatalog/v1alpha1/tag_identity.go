@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -45,27 +44,24 @@ func (i *TagIdentity) Parent() *TagParent {
 
 // No changes were needed to the TagParent struct.
 type TagParent struct {
-	ProjectID string
-	Location  string
+	ProjectID    string
+	Location     string
+	EntryGroupID string
+	EntryID      string
 }
 
 func (p *TagParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/entryGroups/" + p.EntryGroupID + "/entries/" + p.EntryID
 }
 
 // New builds a TagIdentity from the Config Connector Tag object.
 func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogTag) (*TagIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	tagParent, err := ParseEntryExternal(obj.Spec.Parent.EntryRef.External)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -84,11 +80,17 @@ func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogT
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualParent.ProjectID != tagParent.ProjectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, tagParent.ProjectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Location != tagParent.Location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, tagParent.Location)
+		}
+		if actualParent.EntryGroupID != tagParent.EntryGroupID {
+			return nil, fmt.Errorf("spec.parent.entryGroupRef changed, expect %s, got %s", actualParent.EntryGroupID, tagParent.EntryGroupID)
+		}
+		if actualParent.EntryID != tagParent.EntryID {
+			return nil, fmt.Errorf("spec.parent.entryRef changed, expect %s, got %s", actualParent.EntryID, tagParent.EntryID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,23 +98,37 @@ func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogT
 		}
 	}
 	return &TagIdentity{
-		parent: &TagParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
+		parent: tagParent,
+		id:     resourceID,
 	}, nil
 }
 
 func ParseTagExternal(external string) (parent *TagParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "tags" {
-		return nil, "", fmt.Errorf("format of DataCatalogTag external=%q was not known (use projects/{{projectID}}/locations/{{location}}/tags/{{tagID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryGroups" || tokens[6] != "entries" || tokens[8] != "tags" {
+		return nil, "", fmt.Errorf("format of DataCatalogTag external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entryGroups/{{entryGroupID}}/entries/{{entryID}}/tags/{{tagID}})", external)
 	}
 	parent = &TagParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:    tokens[1],
+		Location:     tokens[3],
+		EntryGroupID: tokens[5],
+		EntryID:      tokens[7],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[9]
 	return parent, resourceID, nil
+}
+
+// ParseEntryExternal parses the external reference to a DataCatalogEntry.
+func ParseEntryExternal(external string) (parent *TagParent, err error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryGroups" || tokens[6] != "entries" {
+		return nil, fmt.Errorf("format of DataCatalogEntry external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entryGroups/{{entryGroupID}}/entries/{{entryID}})", external)
+	}
+	parent = &TagParent{
+		ProjectID:    tokens[1],
+		Location:     tokens[3],
+		EntryGroupID: tokens[5],
+		EntryID:      tokens[7],
+	}
+	return parent, nil
 }
