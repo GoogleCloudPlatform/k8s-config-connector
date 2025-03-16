@@ -45,27 +45,55 @@ func (i *SavedQueryIdentity) Parent() *SavedQueryParent {
 
 // No changes were needed.
 type SavedQueryParent struct {
-	ProjectID string
-	Location  string
+	ProjectID      string
+	FolderID       string
+	OrganizationID string
 }
 
 func (p *SavedQueryParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	if p.ProjectID != "" {
+		return "projects/" + p.ProjectID
+	}
+	if p.FolderID != "" {
+		return "folders/" + p.FolderID
+	}
+	return "organizations/" + p.OrganizationID
 }
 
 // New builds a SavedQueryIdentity from the Config Connector SavedQuery object.
 func NewSavedQueryIdentity(ctx context.Context, reader client.Reader, obj *AssetSavedQuery) (*SavedQueryIdentity, error) {
-
+	var projectID, folderID, organizationID string
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
+	if obj.Spec.Parent.ProjectRef != nil {
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
+		if err != nil {
+			return nil, err
+		}
+		projectID = projectRef.ProjectID
+		if projectID == "" {
+			return nil, fmt.Errorf("cannot resolve project")
+		}
+	} else if obj.Spec.Parent.FolderRef != nil {
+		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.Parent.FolderRef)
+		if err != nil {
+			return nil, err
+		}
+		folderID = folderRef.FolderID
+		if folderID == "" {
+			return nil, fmt.Errorf("cannot resolve folder")
+		}
+	} else if obj.Spec.Parent.OrganizationRef != nil {
+		organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.Parent.OrganizationRef)
+		if err != nil {
+			return nil, err
+		}
+		organizationID = organizationRef.OrganizationID
+		if organizationID == "" {
+			return nil, fmt.Errorf("cannot resolve organization")
+		}
+	} else {
+		return nil, fmt.Errorf("one of spec.parent.projectRef, spec.parent.folderRef, or spec.parent.organizationRef must be set")
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -87,8 +115,11 @@ func NewSavedQueryIdentity(ctx context.Context, reader client.Reader, obj *Asset
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.FolderID != folderID {
+			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, folderID)
+		}
+		if actualParent.OrganizationID != organizationID {
+			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, organizationID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -97,8 +128,9 @@ func NewSavedQueryIdentity(ctx context.Context, reader client.Reader, obj *Asset
 	}
 	return &SavedQueryIdentity{
 		parent: &SavedQueryParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:      projectID,
+			FolderID:       folderID,
+			OrganizationID: organizationID,
 		},
 		id: resourceID,
 	}, nil
@@ -106,13 +138,20 @@ func NewSavedQueryIdentity(ctx context.Context, reader client.Reader, obj *Asset
 
 func ParseSavedQueryExternal(external string) (parent *SavedQueryParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "savedQueries" {
-		return nil, "", fmt.Errorf("format of AssetSavedQuery external=%q was not known (use projects/{{projectID}}/locations/{{location}}/savedQueries/{{savedqueryID}})", external)
+	if len(tokens) == 4 && tokens[2] == "savedQueries" {
+		parent = &SavedQueryParent{}
+		switch tokens[0] {
+		case "projects":
+			parent.ProjectID = tokens[1]
+		case "folders":
+			parent.FolderID = tokens[1]
+		case "organizations":
+			parent.OrganizationID = tokens[1]
+		default:
+			return nil, "", fmt.Errorf("format of AssetSavedQuery external=%q was not known (use projects/{{projectID}}/savedQueries/{{savedqueryID}})", external)
+		}
+		resourceID = tokens[3]
+		return parent, resourceID, nil
 	}
-	parent = &SavedQueryParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return nil, "", fmt.Errorf("format of AssetSavedQuery external=%q was not known (use projects/{{projectID}}/savedQueries/{{savedqueryID}})", external)
 }
