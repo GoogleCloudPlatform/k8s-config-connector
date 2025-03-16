@@ -60,34 +60,6 @@ type AssetSavedQuerySpec struct {
 	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.content
 	Content *SavedQuery_QueryContent `json:"content,omitempty"`
 
-	// The location of the resource.
-	Location string `json:"location"`
-	Parent   Parent `json:",inline"`
-	// The AssetSavedQuery name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
-	// The resource name of the saved query. The format must be:
-	//
-	//  * projects/project_number/savedQueries/saved_query_id
-	//  * folders/folder_number/savedQueries/saved_query_id
-	//  * organizations/organization_number/savedQueries/saved_query_id
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.name
-	Name *string `json:"name,omitempty"`
-
-	// The description of this saved query. This value should be fewer than 255
-	//  characters.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.description
-	Description *string `json:"description,omitempty"`
-
-	// Labels applied on the resource.
-	//  This value should not contain more than 10 entries. The key and value of
-	//  each entry must be non-empty and fewer than 64 characters.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// The query content.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.content
-	Content *SavedQuery_QueryContent `json:"content,omitempty"`
-
 	// சேர்த்த பிறகு, spec-ஐ சரிபார்க்கவும்.
 }
 
