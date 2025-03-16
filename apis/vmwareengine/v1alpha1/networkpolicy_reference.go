@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &NetworkPolicyRef{}
 // holds the GCP identifier for the KRM object.
 type NetworkPolicyRef struct {
 	// A reference to an externally managed VMwareEngineNetworkPolicy resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/networkpolicys/{{networkpolicyID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/networkPolicies/{{networkpolicyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a VMwareEngineNetworkPolicy resource.

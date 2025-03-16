@@ -26,6 +26,37 @@ var VMwareEngineNetworkPolicyGVK = GroupVersion.WithKind("VMwareEngineNetworkPol
 type VMwareEngineNetworkPolicySpec struct {
 	// The VMwareEngineNetworkPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	Parent `json:",inline"`
+
+	// Network service that allows VMware workloads to access the internet.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.internet_access
+	InternetAccess *NetworkPolicy_NetworkService `json:"internetAccess,omitempty"`
+
+	// Network service that allows External IP addresses to be assigned to VMware
+	//  workloads. This service can only be enabled when `internet_access` is also
+	//  enabled.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.external_ip
+	ExternalIP *NetworkPolicy_NetworkService `json:"externalIP,omitempty"`
+
+	// Required. IP address range in CIDR notation used to create internet access
+	//  and external IP access. An RFC 1918 CIDR block, with a "/26" prefix, is
+	//  required. The range cannot overlap with any prefixes either in the consumer
+	//  VPC network or in use by the private clouds attached to that VPC network.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.edge_services_cidr
+	// +required
+	EdgeServicesCIDR *string `json:"edgeServicesCIDR,omitempty"`
+
+	// Optional. The relative resource name of the VMware Engine network.
+	//  Specify the name in the following form:
+	//  `projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
+	//  where `{project}` can either be a project number or a project ID.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.vmware_engine_network
+	VMwareEngineNetwork *string `json:"vmwareEngineNetwork,omitempty"`
+
+	// Optional. User-provided description for this network policy.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.description
+	Description *string `json:"description,omitempty"`
 }
 
 // VMwareEngineNetworkPolicyStatus defines the config connector machine state of VMwareEngineNetworkPolicy
@@ -47,11 +78,46 @@ type VMwareEngineNetworkPolicyStatus struct {
 // VMwareEngineNetworkPolicyObservedState is the state of the VMwareEngineNetworkPolicy resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy
 type VMwareEngineNetworkPolicyObservedState struct {
+	// Output only. The resource name of this network policy.
+	//  Resource names are schemeless URIs that follow the conventions in
+	//  https://cloud.google.com/apis/design/resource_names.
+	//  For example:
+	//  `projects/my-project/locations/us-central1/networkPolicies/my-network-policy`
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.name
+	// NOTYET: this field serves the same purpose as externalRef
+	// Name *string `json:"name,omitempty"`
+
+	// Output only. Creation time of this resource.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Last update time of this resource.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Network service that allows VMware workloads to access the internet.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.internet_access
+	InternetAccess *NetworkPolicy_NetworkServiceObservedState `json:"internetAccess,omitempty"`
+
+	// Network service that allows External IP addresses to be assigned to VMware
+	//  workloads. This service can only be enabled when `internet_access` is also
+	//  enabled.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.external_ip
+	ExternalIP *NetworkPolicy_NetworkServiceObservedState `json:"externalIP,omitempty"`
+
+	// Output only. System-generated unique identifier for the resource.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.uid
+	UID *string `json:"uid,omitempty"`
+
+	// Output only. The canonical name of the VMware Engine network in the form:
+	//  `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.vmware_engine_network_canonical
+	VMwareEngineNetworkCanonical *string `json:"vmwareEngineNetworkCanonical,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvmwareenginenetworkpolicy;gcpvmwareenginenetworkpolicys
+// +kubebuilder:resource:categories=gcp,shortName=gcpvmwareenginenetworkpolicy;gcpvmwareenginenetworkpolicies
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"

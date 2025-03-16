@@ -32,7 +32,7 @@ type NetworkPolicyIdentity struct {
 }
 
 func (i *NetworkPolicyIdentity) String() string {
-	return i.parent.String() + "/networkpolicys/" + i.id
+	return i.parent.String() + "/networkPolicies/" + i.id
 }
 
 func (i *NetworkPolicyIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewNetworkPolicyIdentity(ctx context.Context, reader client.Reader, obj *VM
 
 func ParseNetworkPolicyExternal(external string) (parent *NetworkPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "networkpolicys" {
-		return nil, "", fmt.Errorf("format of VMwareEngineNetworkPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkpolicys/{{networkpolicyID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "networkPolicies" {
+		return nil, "", fmt.Errorf("format of VMwareEngineNetworkPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkPolicies/{{networkpolicyID}})", external)
 	}
 	parent = &NetworkPolicyParent{
 		ProjectID: tokens[1],
