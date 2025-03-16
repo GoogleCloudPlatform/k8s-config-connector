@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}\" not found",
+        "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/${sslCertificateID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}\" not found"
+    "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/${sslCertificateID}\" not found"
   }
 }
 
@@ -38,7 +38,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "sslcert.fixture.club."
     ]
   },
-  "name": "computemanagedsslcertificate-${uniqueId}",
+  "name": "${sslCertificateID}",
   "type": "MANAGED"
 }
 
@@ -63,7 +63,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${sslCertificateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "user": "user@example.com"
 }
 
@@ -94,7 +94,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${sslCertificateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "user": "user@example.com"
 }
 
@@ -123,8 +123,8 @@ X-Xss-Protection: 0
       "sslcert.fixture.club."
     ]
   },
-  "name": "computemanagedsslcertificate-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
+  "name": "${sslCertificateID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "type": "MANAGED"
 }
 
@@ -155,7 +155,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${sslCertificateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "user": "user@example.com"
 }
 
@@ -186,6 +186,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${sslCertificateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "user": "user@example.com"
 }

@@ -642,11 +642,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-02/regions/us-west2/subnetworks/computesubnetwork-${uniqueId}' was not found",
+        "message": "The resource 'projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-02/regions/us-west2/subnetworks/computesubnetwork-${uniqueId}' was not found"
+    "message": "The resource 'projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}' was not found"
   }
 }
 
@@ -661,7 +661,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
+  "name": "${subnetworkID}",
   "network": "projects/example-project-02/global/networks/${networkID}",
   "region": "projects/example-project-02/global/regions/us-west2"
 }
@@ -688,7 +688,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -720,7 +720,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -751,13 +751,13 @@ X-Xss-Protection: 0
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
+  "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/example-project-02/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/computesubnetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY"
 }
 
@@ -798,7 +798,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "minInstances": 2,
   "minThroughput": 200,
   "subnet": {
-    "name": "computesubnetwork-${uniqueId}",
+    "name": "${subnetworkID}",
     "projectId": "example-project-02"
   }
 }
@@ -859,7 +859,7 @@ X-Xss-Protection: 0
     "name": "projects/example-project-02/locations/us-west2/connectors/vpcac${uniqueId}",
     "state": "READY",
     "subnet": {
-      "name": "computesubnetwork-${uniqueId}",
+      "name": "${subnetworkID}",
       "projectId": "example-project-02"
     }
   }
@@ -890,7 +890,7 @@ X-Xss-Protection: 0
   "name": "projects/example-project-02/locations/us-west2/connectors/vpcac${uniqueId}",
   "state": "READY",
   "subnet": {
-    "name": "computesubnetwork-${uniqueId}",
+    "name": "${subnetworkID}",
     "projectId": "example-project-02"
   }
 }
@@ -979,13 +979,13 @@ X-Xss-Protection: 0
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
+  "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/example-project-02/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/computesubnetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY"
 }
 
@@ -1017,7 +1017,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -1049,7 +1049,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-02/regions/us-west2/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
