@@ -37,6 +37,39 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "contacts": [
+    {
+      "email": "test-${uniqueId}@example.com",
+      "languageTag": "en",
+      "name": "projects/${projectNumber}/contacts/7",
+      "notificationCategorySubscriptions": [
+        "TECHNICAL",
+        "BILLING"
+      ],
+      "validateTime": "2024-04-01T12:34:56.123456Z",
+      "validationState": "VALID"
+    }
+  ]
+}
+
+---
+
 GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?alt=json
 Accept: application/json
 Authorization: (removed)
