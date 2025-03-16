@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -33,7 +32,7 @@ type QuotaPreferenceIdentity struct {
 }
 
 func (i *QuotaPreferenceIdentity) String() string {
-	return i.parent.String() + "/quotapreferences/" + i.id
+	return i.parent.String() + "/quotaPreferences/" + i.id
 }
 
 func (i *QuotaPreferenceIdentity) ID() string {
@@ -97,10 +96,9 @@ func ParseQuotaPreferenceExternal(external string) (*QuotaPreferenceParent, stri
 // New builds a QuotaPreferenceIdentity from the Config Connector QuotaPreference object.
 func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *APIQuotaPreference) (*QuotaPreferenceIdentity, error) {
 	var projectID, organizationID, folderID string
-	var err error
 	// Get Parent
-	if obj.Spec.ProjectRef != nil {
-		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), *obj.Spec.ProjectRef)
+	if obj.Spec.Parent.ProjectRef != nil {
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 		if err != nil {
 			return nil, err
 		}
@@ -108,20 +106,28 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 		if projectID == "" {
 			return nil, fmt.Errorf("cannot resolve project")
 		}
-	} else if obj.Spec.OrganizationRef != nil {
-		organizationID, err = ResolveOrganizationID(ctx, reader, *obj.Spec.OrganizationRef)
+	} else if obj.Spec.Parent.OrganizationRef != nil {
+		organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.Parent.OrganizationRef)
 		if err != nil {
 			return nil, err
 		}
-	} else if obj.Spec.FolderRef != nil {
-		folderID, err = ResolveFolderID(ctx, reader, *obj.Spec.FolderRef)
+		organizationID = organizationRef.OrganizationID
+		if organizationID == "" {
+			return nil, fmt.Errorf("cannot resolve organization")
+		}
+	} else if obj.Spec.Parent.FolderRef != nil {
+		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.Parent.FolderRef)
 		if err != nil {
 			return nil, err
+		}
+		folderID = folderRef.FolderID
+		if folderID == "" {
+			return nil, fmt.Errorf("cannot resolve folder")
 		}
 	} else {
 		return nil, fmt.Errorf("one of spec.projectRef, spec.organizationRef, or spec.folderRef must be set")
 	}
-	location := obj.Spec.Location
+	location := obj.Spec.Parent.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -140,19 +146,18 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			if actualParent.ProjectID != "" && actualParent.ProjectID != projectID {
-				return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-			}
-			if actualParent.OrganizationID != "" && actualParent.OrganizationID != organizationID {
-				return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, organizationID)
-			}
-			if actualParent.FolderID != "" && actualParent.FolderID != folderID {
-				return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, folderID)
-			}
-			if actualParent.Location != location {
-				return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-			}
+		if actualParent.ProjectID != "" && actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		}
+		if actualParent.OrganizationID != "" && actualParent.OrganizationID != organizationID {
+			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, organizationID)
+		}
+		if actualParent.FolderID != "" && actualParent.FolderID != folderID {
+			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, folderID)
+		}
+		if actualParent.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -167,90 +172,4 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 		},
 		id: resourceID,
 	}, nil
-}
-
-func ResolveFolderID(ctx context.Context, reader client.Reader, ref refsv1beta1.FolderRef) (string, error) {
-	if ref.External == "" {
-		return "", fmt.Errorf("cannot use the empty external value for FolderRef")
-	}
-	obj := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       "Folder",
-			"apiVersion": "resourcemanager.cnrm.cloud.google.com/v1beta1",
-			"metadata": map[string]interface{}{
-				"namespace": ref.Namespace,
-				"name":      ref.Name,
-			},
-		},
-	}
-	key := client.ObjectKey{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if err := reader.Get(ctx, key, obj); err != nil {
-		return "", fmt.Errorf("error reading folder '%v': %w", key, err)
-	}
-	folderID, found, err := unstructured.NestedString(obj.Object, "status", "folderId")
-	if !found || err != nil || folderID == "" {
-		return "", fmt.Errorf("cannot resolve to folderId for folder '%v': %w", key, err)
-	}
-	return folderID, nil
-}
-
-func ResolveOrganizationID(ctx context.Context, reader client.Reader, ref refsv1beta1.OrganizationRef) (string, error) {
-	if ref.External == "" {
-		return "", fmt.Errorf("cannot use the empty external value for OrganizationRef")
-	}
-	obj := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       "Organization",
-			"apiVersion": "resourcemanager.cnrm.cloud.google.com/v1beta1",
-			"metadata": map[string]interface{}{
-				"namespace": ref.Namespace,
-				"name":      ref.Name,
-			},
-		},
-	}
-	key := client.ObjectKey{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if err := reader.Get(ctx, key, obj); err != nil {
-		return "", fmt.Errorf("error reading organization '%v': %w", key, err)
-	}
-	orgID, found, err := unstructured.NestedString(obj.Object, "status", "orgId")
-	if !found || err != nil || orgID == "" {
-		return "", fmt.Errorf("cannot resolve to orgId for organization '%v': %w", key, err)
-	}
-	return orgID, nil
-}
-
-
-func ParseQuotaPreferenceExternal(external string) (parent *QuotaPreferenceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "quotapreferences" {
-		parent = &QuotaPreferenceParent{
-			ProjectID: tokens[1],
-			Location:  tokens[3],
-		}
-		resourceID = tokens[5]
-		return parent, resourceID, nil
-	}
-	if len(tokens) == 6 && tokens[0] == "organizations" && tokens[2] == "locations" && tokens[4] == "quotapreferences" {
-		parent = &QuotaPreferenceParent{
-			OrganizationID: tokens[1],
-			Location:       tokens[3],
-		}
-		resourceID = tokens[5]
-		return parent, resourceID, nil
-	}
-	if len(tokens) == 6 && tokens[0] == "folders" && tokens[2] == "locations" && tokens[4] == "quotapreferences" {
-		parent = &QuotaPreferenceParent{
-			FolderID:  tokens[1],
-			Location: tokens[3],
-		}
-		resourceID = tokens[5]
-		return parent, resourceID, nil
-	}
-	return nil, "", fmt.Errorf("format of APIQuotaPreference external=%q was not known (use projects/{{projectID}}/locations/{{location}}/quotapreferences/{{quotapreferenceID}} or organizations/{{organizationID}}/locations/{{location}}/quotapreferences/{{quotapreferenceID}} or folders/{{folderID}}/locations/{{location}}/quotapreferences/{{quotapreferenceID}})", external)
 }
