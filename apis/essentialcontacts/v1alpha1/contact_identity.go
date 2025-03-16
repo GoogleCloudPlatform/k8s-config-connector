@@ -48,16 +48,15 @@ type ContactParent struct {
 	ProjectID      string
 	OrganizationID string
 	FolderID       string
-	Location       string
 }
 
 func (p *ContactParent) String() string {
 	if p.ProjectID != "" {
-		return "projects/" + p.ProjectID + "/locations/" + p.Location
+		return "projects/" + p.ProjectID
 	} else if p.OrganizationID != "" {
-		return "organizations/" + p.OrganizationID + "/locations/" + p.Location
+		return "organizations/" + p.OrganizationID
 	} else if p.FolderID != "" {
-		return "folders/" + p.FolderID + "/locations/" + p.Location
+		return "folders/" + p.FolderID
 	}
 	return ""
 }
@@ -67,10 +66,9 @@ func NewContactIdentity(ctx context.Context, reader client.Reader, obj *Essentia
 
 	// Get Parent
 	var projectID, organizationID, folderID string
-	location := obj.Spec.Location
 
 	if obj.Spec.ProjectRef != nil {
-		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), *obj.Spec.ProjectRef)
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 		if err != nil {
 			return nil, err
 		}
@@ -79,24 +77,26 @@ func NewContactIdentity(ctx context.Context, reader client.Reader, obj *Essentia
 			return nil, fmt.Errorf("cannot resolve project")
 		}
 	} else if obj.Spec.OrganizationRef != nil {
-		organization, err := refsv1beta1.GetOrganization(ctx, obj.Spec.OrganizationRef.Name, obj.Spec.OrganizationRef.Namespace, reader)
+		organization, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.Parent.OrganizationRef)
 		if err != nil {
 			return nil, fmt.Errorf("error getting organization: %w", err)
 		}
-		organizationID = organization
+		organizationID = organization.OrganizationID
 	} else if obj.Spec.FolderRef != nil {
 		if obj.Spec.FolderRef.External != "" {
 			folderID = obj.Spec.FolderRef.External
 		} else {
-			folder, err := refsv1beta1.GetFolderID(ctx, reader, obj.Spec.FolderRef.Name, obj.Namespace)
+			folder, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.Parent.FolderRef)
 			if err != nil {
 				return nil, err
 			}
-			folderID = folder
+			folderID = folder.FolderID
 		}
 		if folderID == "" {
 			return nil, fmt.Errorf("cannot resolve folder")
 		}
+	} else {
+		return nil, fmt.Errorf("cannot resolve parent for contact")
 	}
 
 	// Get desired ID
@@ -125,9 +125,6 @@ func NewContactIdentity(ctx context.Context, reader client.Reader, obj *Essentia
 				return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, folderID)
 			}
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -138,7 +135,6 @@ func NewContactIdentity(ctx context.Context, reader client.Reader, obj *Essentia
 			ProjectID:      projectID,
 			OrganizationID: organizationID,
 			FolderID:       folderID,
-			Location:       location,
 		},
 		id: resourceID,
 	}, nil
@@ -146,30 +142,27 @@ func NewContactIdentity(ctx context.Context, reader client.Reader, obj *Essentia
 
 func ParseContactExternal(external string) (parent *ContactParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) == 6 && tokens[2] == "locations" && tokens[4] == "contacts" {
+	if len(tokens) == 4 && tokens[2] == "contacts" {
 		switch tokens[0] {
 		case "projects":
 			parent = &ContactParent{
 				ProjectID: tokens[1],
-				Location:  tokens[3],
 			}
-			resourceID = tokens[5]
-			return parent, resourceID, nil
+			resourceID = tokens[3]
 		case "organizations":
 			parent = &ContactParent{
 				OrganizationID: tokens[1],
-				Location:       tokens[3],
 			}
-			resourceID = tokens[5]
-			return parent, resourceID, nil
+			resourceID = tokens[3]
 		case "folders":
 			parent = &ContactParent{
 				FolderID: tokens[1],
-				Location: tokens[3],
 			}
-			resourceID = tokens[5]
-			return parent, resourceID, nil
+			resourceID = tokens[3]
+		default:
+			return nil, "", fmt.Errorf("format of EssentialContactsContact external=%q was not known (use projects/{{projectID}}/contacts/{{contactID}} or organizations/{{organizationID}}/contacts/{{contactID}} or folders/{{folderID}}/contacts/{{contactID}})", external)
 		}
+		return parent, resourceID, nil
 	}
-	return nil, "", fmt.Errorf("format of EssentialContactsContact external=%q was not known (use projects/{{projectID}}/locations/{{location}}/contacts/{{contactID}} or organizations/{{organizationID}}/locations/{{location}}/contacts/{{contactID}} or folders/{{folderID}}/locations/{{location}}/contacts/{{contactID}})", external)
+	return nil, "", fmt.Errorf("format of EssentialContactsContact external=%q was not known (use projects/{{projectID}}/contacts/{{contactID}} or organizations/{{organizationID}}/contacts/{{contactID}} or folders/{{folderID}}/contacts/{{contactID}})", external)
 }
