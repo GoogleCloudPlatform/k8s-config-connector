@@ -49,14 +49,14 @@ type FederationParent struct {
 }
 
 func (p *FederationParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/federations"
+	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
 // New builds a FederationIdentity from the Config Connector Federation object.
 func NewFederationIdentity(ctx context.Context, reader client.Reader, obj *MetastoreFederation) (*FederationIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func NewFederationIdentity(ctx context.Context, reader client.Reader, obj *Metas
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := obj.Spec.Parent.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
