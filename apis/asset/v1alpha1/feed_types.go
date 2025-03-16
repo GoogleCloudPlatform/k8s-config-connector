@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -111,12 +111,6 @@ type AssetFeedSpec struct {
 	//  project/folder/organization.
 	// +kcc:proto:field=google.cloud.asset.v1.Feed.name
 	Name *string `json:"name,omitempty"`
-
-	// The project that this resource belongs to.
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
-
-	// The location of this resource.
-	Location *string `json:"location,omitempty"`
 }
 
 // AssetFeedStatus defines the config connector machine state of AssetFeed

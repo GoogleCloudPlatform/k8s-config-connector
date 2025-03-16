@@ -65,7 +65,7 @@ func NewFeedIdentity(ctx context.Context, reader client.Reader, obj *AssetFeed) 
 	// Get Parent
 	var projectID, folderID, organizationID string
 	if obj.Spec.Parent.ProjectRef != nil {
-		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), *obj.Spec.Parent.ProjectRef)
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +74,7 @@ func NewFeedIdentity(ctx context.Context, reader client.Reader, obj *AssetFeed) 
 			return nil, fmt.Errorf("cannot resolve project")
 		}
 	} else if obj.Spec.Parent.FolderRef != nil {
-		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj.GetNamespace(), *obj.Spec.Parent.FolderRef)
+		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.Parent.FolderRef)
 		if err != nil {
 			return nil, err
 		}
@@ -83,7 +83,7 @@ func NewFeedIdentity(ctx context.Context, reader client.Reader, obj *AssetFeed) 
 			return nil, fmt.Errorf("cannot resolve folder")
 		}
 	} else if obj.Spec.Parent.OrganizationRef != nil {
-		organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj.GetNamespace(), *obj.Spec.Parent.OrganizationRef)
+		organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.Parent.OrganizationRef)
 		if err != nil {
 			return nil, err
 		}
