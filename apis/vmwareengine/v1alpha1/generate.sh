@@ -25,7 +25,8 @@ go run . generate-types \
     --service google.cloud.vmwareengine.v1 \
     --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1  \
     --resource VMwareEngineNetwork:VmwareEngineNetwork \
-    --resource VMwareEngineNetworkPeering:NetworkPeering
+    --resource VMwareEngineNetworkPeering:NetworkPeering \
+    --resource VMwareEngineNetworkPolicy:NetworkPolicy
 
 go run . generate-mapper \
     --service google.cloud.vmwareengine.v1 \
