@@ -111,13 +111,14 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 
 func ParseEntryExternal(external string) (parent *EntryParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entrys" {
-		return nil, "", fmt.Errorf("format of DataCatalogEntry external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entrys/{{entryID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryGroups" || tokens[6] != "entrys" {
+		return nil, "", fmt.Errorf("format of DataCatalogEntry external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entryGroups/{{entryGroupID}}/entrys/{{entryID}})", external)
 	}
 	parent = &EntryParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:    tokens[1],
+		Location:     tokens[3],
+		EntryGroupID: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }

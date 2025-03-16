@@ -28,6 +28,15 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &EntryRef{}
 
+type EntryGroupRef struct {
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `Project` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `Project` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
 // EntryRef defines the resource reference to DataCatalogEntry, which "External" field
 // holds the GCP identifier for the KRM object.
 type EntryRef struct {
