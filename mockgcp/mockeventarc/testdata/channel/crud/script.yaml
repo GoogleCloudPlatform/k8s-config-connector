@@ -1,4 +1,5 @@
 - exec: gcloud eventarc channels create test-${uniqueId} --location=us-central1 --project=${projectId}
 - exec: gcloud eventarc channels describe test-${uniqueId} --location=us-central1 --project=${projectId}
-- exec: gcloud eventarc channels update test-${uniqueId} --location=us-central1 --project=${projectId} --update-labels=test=label
+#- exec: gcloud eventarc channels update test-${uniqueId} --location=us-central1 --project=${projectId} --update-labels=test=label
+- exec: gcloud eventarc channels update test-${uniqueId} --location=us-central1 --project=${projectId} --crypto-key=projects/${projectId}/locations/us-central1/keyRings/test-${uniqueId}/cryptoKeys/test-${uniqueId}
 - exec: gcloud eventarc channels delete test-${uniqueId} --location=us-central1 --project=${projectId} --quiet
