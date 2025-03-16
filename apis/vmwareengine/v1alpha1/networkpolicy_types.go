@@ -48,11 +48,8 @@ type VMwareEngineNetworkPolicySpec struct {
 	EdgeServicesCIDR *string `json:"edgeServicesCIDR,omitempty"`
 
 	// Optional. The relative resource name of the VMware Engine network.
-	//  Specify the name in the following form:
-	//  `projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
-	//  where `{project}` can either be a project number or a project ID.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.vmware_engine_network
-	VMwareEngineNetwork *string `json:"vmwareEngineNetwork,omitempty"`
+	VMwareEngineNetworkRef *VmwareEngineNetworkRef `json:"vmwareEngineNetworkRef,omitempty"`
 
 	// Optional. User-provided description for this network policy.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.description
