@@ -17,6 +17,8 @@ package batch
 import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -71,27 +73,13 @@ func AllocationPolicy_Disk_FromProto(mapCtx *direct.MapContext, in *pb.Allocatio
 		return nil
 	}
 	out := &krm.AllocationPolicy_Disk{}
-	out.Image = direct.LazyPtr(in.GetImage())
+	if in.GetImage() != "" {
+		out.ImageRef = &v1alpha1.ResourceRef{External: in.GetImage()}
+	}
 	out.Snapshot = direct.LazyPtr(in.GetSnapshot())
 	out.Type = direct.LazyPtr(in.GetType())
 	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
 	out.DiskInterface = direct.LazyPtr(in.GetDiskInterface())
-	return out
-}
-func AllocationPolicy_Disk_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Disk) *pb.AllocationPolicy_Disk {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationPolicy_Disk{}
-	if oneof := AllocationPolicy_Disk_Image_ToProto(mapCtx, in.Image); oneof != nil {
-		out.DataSource = oneof
-	}
-	if oneof := AllocationPolicy_Disk_Snapshot_ToProto(mapCtx, in.Snapshot); oneof != nil {
-		out.DataSource = oneof
-	}
-	out.Type = direct.ValueOf(in.Type)
-	out.SizeGb = direct.ValueOf(in.SizeGB)
-	out.DiskInterface = direct.ValueOf(in.DiskInterface)
 	return out
 }
 func AllocationPolicy_InstancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicy) *krm.AllocationPolicy_InstancePolicy {
@@ -171,8 +159,12 @@ func AllocationPolicy_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.AllocationPolicy_NetworkInterface{}
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.Subnetwork = direct.LazyPtr(in.GetSubnetwork())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &v1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &v1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
 	out.NoExternalIPAddress = direct.LazyPtr(in.GetNoExternalIpAddress())
 	return out
 }
@@ -181,8 +173,12 @@ func AllocationPolicy_NetworkInterface_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.AllocationPolicy_NetworkInterface{}
-	out.Network = direct.ValueOf(in.Network)
-	out.Subnetwork = direct.ValueOf(in.Subnetwork)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = in.SubnetworkRef.External
+	}
 	out.NoExternalIpAddress = direct.ValueOf(in.NoExternalIPAddress)
 	return out
 }
@@ -505,7 +501,7 @@ func Runnable_Container_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Con
 	out.Options = direct.LazyPtr(in.GetOptions())
 	out.BlockExternalNetwork = direct.LazyPtr(in.GetBlockExternalNetwork())
 	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: Password
 	out.EnableImageStreaming = direct.LazyPtr(in.GetEnableImageStreaming())
 	return out
 }
@@ -521,7 +517,7 @@ func Runnable_Container_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Cont
 	out.Options = direct.ValueOf(in.Options)
 	out.BlockExternalNetwork = direct.ValueOf(in.BlockExternalNetwork)
 	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
+	// MISSING: Password
 	out.EnableImageStreaming = direct.ValueOf(in.EnableImageStreaming)
 	return out
 }

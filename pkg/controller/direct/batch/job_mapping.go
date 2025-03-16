@@ -96,7 +96,7 @@ func AllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPoli
 	out := &krm.AllocationPolicy{}
 	out.Location = AllocationPolicy_LocationPolicy_FromProto(mapCtx, in.GetLocation())
 	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_FromProto)
-	out.ServiceAccount = &v1beta1.IAMServiceAccountRef{
+	out.ServiceAccountRef = &v1beta1.IAMServiceAccountRef{
 		External: in.GetServiceAccount().String(),
 	}
 	out.Labels = in.Labels
@@ -113,7 +113,7 @@ func AllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolic
 	out.Location = AllocationPolicy_LocationPolicy_ToProto(mapCtx, in.Location)
 	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_ToProto)
 	out.ServiceAccount = &pb.ServiceAccount{
-		Email: in.ServiceAccount.External,
+		Email: in.ServiceAccountRef.External,
 	}
 	out.Labels = in.Labels
 	out.Network = AllocationPolicy_NetworkPolicy_ToProto(mapCtx, in.Network)
@@ -237,5 +237,24 @@ func AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx *
 			MachineType: direct.ValueOf(in),
 		},
 	}
+	return out
+}
+
+func AllocationPolicy_Disk_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Disk) *pb.AllocationPolicy_Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_Disk{}
+	if in.ImageRef != nil {
+		out.DataSource = &pb.AllocationPolicy_Disk_Image{
+			Image: in.ImageRef.External,
+		}
+	}
+	if oneof := AllocationPolicy_Disk_Snapshot_ToProto(mapCtx, in.Snapshot); oneof != nil {
+		out.DataSource = oneof
+	}
+	out.Type = direct.ValueOf(in.Type)
+	out.SizeGb = direct.ValueOf(in.SizeGB)
+	out.DiskInterface = direct.ValueOf(in.DiskInterface)
 	return out
 }

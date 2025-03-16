@@ -159,7 +159,7 @@ spec:
                                     This field is ignored for persistent disks as
                                     the interface is chosen automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
                                   type: string
-                                image:
+                                imageRef:
                                   description: |-
                                     URL for a VM image to use as the data source for this disk.
                                      For example, the following are all valid URLs:
@@ -175,7 +175,40 @@ spec:
                                      * `batch-debian`: use Batch Debian images.
                                      * `batch-cos`: use Batch Container-Optimized images.
                                      * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                    - kind
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                      - required:
+                                        - kind
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: The external name of the referenced
+                                        resource
+                                      type: string
+                                    kind:
+                                      description: Kind of the referent.
+                                      type: string
+                                    name:
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                      type: string
+                                    namespace:
+                                      description: 'Namespace of the referent. More
+                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                      type: string
+                                  type: object
                                 sizeGB:
                                   description: |-
                                     Disk size in GB.
@@ -244,7 +277,7 @@ spec:
                                           persistent disks as the interface is chosen
                                           automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
                                         type: string
-                                      image:
+                                      imageRef:
                                         description: |-
                                           URL for a VM image to use as the data source for this disk.
                                            For example, the following are all valid URLs:
@@ -260,7 +293,40 @@ spec:
                                            * `batch-debian`: use Batch Debian images.
                                            * `batch-cos`: use Batch Container-Optimized images.
                                            * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
-                                        type: string
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                          - kind
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                            - required:
+                                              - kind
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: The external name of the
+                                              referenced resource
+                                            type: string
+                                          kind:
+                                            description: Kind of the referent.
+                                            type: string
+                                          name:
+                                            description: 'Name of the referent. More
+                                              info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                            type: string
+                                          namespace:
+                                            description: 'Namespace of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                            type: string
+                                        type: object
                                       sizeGB:
                                         description: |-
                                           Disk size in GB.
@@ -373,7 +439,7 @@ spec:
                         description: Network configurations.
                         items:
                           properties:
-                            network:
+                            networkRef:
                               description: |-
                                 The URL of an existing network resource.
                                  You can specify the network as a full or partial URL.
@@ -383,7 +449,35 @@ spec:
                                  * https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}
                                  * projects/{project}/global/networks/{network}
                                  * global/networks/{network}
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    Compute Network resource. Should be in the format
+                                    `projects/{{projectID}}/global/networks/{{network}}`.
+                                  type: string
+                                name:
+                                  description: The `name` field of a `ComputeNetwork`
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The `namespace` field of a `ComputeNetwork`
+                                    resource.
+                                  type: string
+                              type: object
                             noExternalIPAddress:
                               description: Default is false (with an external IP address).
                                 Required if no external public IP address is attached
@@ -393,7 +487,7 @@ spec:
                                 and https://cloud.google.com/nat/docs/gce-example#create-nat
                                 for more information.
                               type: boolean
-                            subnetwork:
+                            subnetworkRef:
                               description: |-
                                 The URL of an existing subnetwork resource in the network.
                                  You can specify the subnetwork as a full or partial URL.
@@ -403,7 +497,35 @@ spec:
                                  * https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}
                                  * projects/{project}/regions/{region}/subnetworks/{subnetwork}
                                  * regions/{region}/subnetworks/{subnetwork}
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: The ComputeSubnetwork selflink of form
+                                    "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
+                                    when not managed by Config Connector.
+                                  type: string
+                                name:
+                                  description: The `name` field of a `ComputeSubnetwork`
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The `namespace` field of a `ComputeSubnetwork`
+                                    resource.
+                                  type: string
+                              type: object
                           type: object
                         type: array
                     type: object
@@ -752,7 +874,7 @@ spec:
                         computeResource:
                           description: ComputeResource requirements.
                           properties:
-                            bootDiskMib:
+                            bootDiskMiB:
                               description: Extra boot disk size in MiB for each task.
                               format: int64
                               type: integer
@@ -778,7 +900,7 @@ spec:
                                  to `1000` or less.
                               format: int64
                               type: integer
-                            memoryMib:
+                            memoryMiB:
                               description: |-
                                 Memory in MiB.
 
@@ -1020,24 +1142,6 @@ spec:
                                       `docker run` command when running this container&mdash;for
                                       example, `--network host`. For the `--volume`
                                       option, use the `volumes` field for the container.
-                                    type: string
-                                  password:
-                                    description: |-
-                                      Required if the container image is from a private Docker registry. The
-                                       password to login to the Docker registry that contains the image.
-
-                                       For security, it is strongly recommended to specify an
-                                       encrypted password by using a Secret Manager secret:
-                                       `projects/*/secrets/*/versions/*`.
-
-                                       Warning: If you specify the password using plain text, you risk the
-                                       password being exposed to any users who can view the job or its logs.
-                                       To avoid this risk, specify a secret that contains the password instead.
-
-                                       Learn more about [Secret
-                                       Manager](https://cloud.google.com/secret-manager/docs/) and [using
-                                       Secret Manager with
-                                       Batch](https://cloud.google.com/batch/docs/create-run-job-secret-manager).
                                     type: string
                                   username:
                                     description: |-

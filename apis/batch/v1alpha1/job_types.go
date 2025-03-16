@@ -16,7 +16,8 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -105,7 +106,7 @@ type AllocationPolicy struct {
 	//   * scopes: Additional OAuth scopes to grant the service account, beyond the
 	//   default cloud-platform scope. (list of strings)
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.service_account
-	ServiceAccount *v1beta1.IAMServiceAccountRef `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *v1beta1.IAMServiceAccountRef `json:"serviceAccount,omitempty"`
 
 	// Custom labels to apply to the job and all the Compute Engine resources
 	//  that both are created by this allocation policy and support labels.
@@ -140,6 +141,105 @@ type AllocationPolicy struct {
 	//  [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.tags
 	Tags []string `json:"tags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.batch.v1.AllocationPolicy.Disk
+type AllocationPolicy_Disk struct {
+	// URL for a VM image to use as the data source for this disk.
+	//  For example, the following are all valid URLs:
+	//
+	//  * Specify the image by its family name:
+	//  projects/{project}/global/images/family/{image_family}
+	//  * Specify the image version:
+	//  projects/{project}/global/images/{image_version}
+	//
+	//  You can also use Batch customized image in short names.
+	//  The following image values are supported for a boot disk:
+	//
+	//  * `batch-debian`: use Batch Debian images.
+	//  * `batch-cos`: use Batch Container-Optimized images.
+	//  * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.image
+	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+
+	// Name of a snapshot used as the data source.
+	//  Snapshot is not supported as boot disk now.
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.snapshot
+	Snapshot *string `json:"snapshot,omitempty"`
+
+	// Disk type as shown in `gcloud compute disk-types list`.
+	//  For example, local SSD uses type "local-ssd".
+	//  Persistent disks and boot disks use "pd-balanced", "pd-extreme", "pd-ssd"
+	//  or "pd-standard". If not specified, "pd-standard" will be used as the
+	//  default type for non-boot disks, "pd-balanced" will be used as the
+	//  default type for boot disks.
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.type
+	Type *string `json:"type,omitempty"`
+
+	// Disk size in GB.
+	//
+	//  **Non-Boot Disk**:
+	//  If the `type` specifies a persistent disk, this field
+	//  is ignored if `data_source` is set as `image` or `snapshot`.
+	//  If the `type` specifies a local SSD, this field should be a multiple of
+	//  375 GB, otherwise, the final size will be the next greater multiple of
+	//  375 GB.
+	//
+	//  **Boot Disk**:
+	//  Batch will calculate the boot disk size based on source
+	//  image and task requirements if you do not speicify the size.
+	//  If both this field and the `boot_disk_mib` field in task spec's
+	//  `compute_resource` are defined, Batch will only honor this field.
+	//  Also, this field should be no smaller than the source disk's
+	//  size when the `data_source` is set as `snapshot` or `image`.
+	//  For example, if you set an image as the `data_source` field and the
+	//  image's default disk size 30 GB, you can only use this field to make the
+	//  disk larger or equal to 30 GB.
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.size_gb
+	SizeGB *int64 `json:"sizeGB,omitempty"`
+
+	// Local SSDs are available through both "SCSI" and "NVMe" interfaces.
+	//  If not indicated, "NVMe" will be the default one for local ssds.
+	//  This field is ignored for persistent disks as the interface is chosen
+	//  automatically. See
+	//  https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.disk_interface
+	DiskInterface *string `json:"diskInterface,omitempty"`
+}
+
+// +kcc:proto=google.cloud.batch.v1.AllocationPolicy.NetworkInterface
+type AllocationPolicy_NetworkInterface struct {
+	// The URL of an existing network resource.
+	//  You can specify the network as a full or partial URL.
+	//
+	//  For example, the following are all valid URLs:
+	//
+	//  * https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}
+	//  * projects/{project}/global/networks/{network}
+	//  * global/networks/{network}
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.network
+	NetworkRef *v1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+
+	// The URL of an existing subnetwork resource in the network.
+	//  You can specify the subnetwork as a full or partial URL.
+	//
+	//  For example, the following are all valid URLs:
+	//
+	//  * https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}
+	//  * projects/{project}/regions/{region}/subnetworks/{subnetwork}
+	//  * regions/{region}/subnetworks/{subnetwork}
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.subnetwork
+	SubnetworkRef *v1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+
+	// Default is false (with an external IP address). Required if
+	//  no external public IP address is attached to the VM. If no external
+	//  public IP address, additional configuration is required to allow the VM
+	//  to access Google Services. See
+	//  https://cloud.google.com/vpc/docs/configure-private-google-access and
+	//  https://cloud.google.com/nat/docs/gce-example#create-nat for more
+	//  information.
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.no_external_ip_address
+	NoExternalIPAddress *bool `json:"noExternalIPAddress,omitempty"`
 }
 
 // +kcc:proto=google.cloud.batch.v1.ComputeResource
@@ -182,11 +282,118 @@ type ComputeResource struct {
 	//  or you are recommended to run two tasks on the same VM if you set
 	//  `memoryMib` to `4096` or less.
 	// +kcc:proto:field=google.cloud.batch.v1.ComputeResource.memory_mib
-	MemoryMiB *int64 `json:"memoryMib,omitempty"`
+	MemoryMiB *int64 `json:"memoryMiB,omitempty"`
 
 	// Extra boot disk size in MiB for each task.
 	// +kcc:proto:field=google.cloud.batch.v1.ComputeResource.boot_disk_mib
-	BootDiskMiB *int64 `json:"bootDiskMib,omitempty"`
+	BootDiskMiB *int64 `json:"bootDiskMiB,omitempty"`
+}
+
+// +kcc:proto=google.cloud.batch.v1.Runnable.Container
+type Runnable_Container struct {
+	// Required. The URI to pull the container image from.
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// Required for some container images. Overrides the `CMD` specified in the
+	//  container. If there is an `ENTRYPOINT` (either in the container image or
+	//  with the `entrypoint` field below) then these commands are appended as
+	//  arguments to the `ENTRYPOINT`.
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.commands
+	Commands []string `json:"commands,omitempty"`
+
+	// Required for some container images. Overrides the `ENTRYPOINT` specified
+	//  in the container.
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.entrypoint
+	Entrypoint *string `json:"entrypoint,omitempty"`
+
+	// Volumes to mount (bind mount) from the host machine files or directories
+	//  into the container, formatted to match `--volume` option for the
+	//  `docker run` command&mdash;for example, `/foo:/bar` or `/foo:/bar:ro`.
+	//
+	//  If the `TaskSpec.Volumes` field is specified but this field is not, Batch
+	//  will mount each volume from the host machine to the container with the
+	//  same mount path by default. In this case, the default mount option for
+	//  containers will be read-only (`ro`) for existing persistent disks and
+	//  read-write (`rw`) for other volume types, regardless of the original
+	//  mount options specified in `TaskSpec.Volumes`. If you need different
+	//  mount settings, you can explicitly configure them in this field.
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.volumes
+	Volumes []string `json:"volumes,omitempty"`
+
+	// Required for some container images. Arbitrary additional options to
+	//  include in the `docker run` command when running this container&mdash;for
+	//  example, `--network host`. For the `--volume` option, use the `volumes`
+	//  field for the container.
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.options
+	Options *string `json:"options,omitempty"`
+
+	// If set to true, external network access to and from container will be
+	//  blocked, containers that are with block_external_network as true can
+	//  still communicate with each other, network cannot be specified in the
+	//  `container.options` field.
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.block_external_network
+	BlockExternalNetwork *bool `json:"blockExternalNetwork,omitempty"`
+
+	// Required if the container image is from a private Docker registry. The
+	//  username to login to the Docker registry that contains the image.
+	//
+	//  You can either specify the username directly by using plain text or
+	//  specify an encrypted username by using a Secret Manager secret:
+	//  `projects/*/secrets/*/versions/*`. However, using a secret is
+	//  recommended for enhanced security.
+	//
+	//  Caution: If you specify the username using plain text, you risk the
+	//  username being exposed to any users who can view the job or its logs.
+	//  To avoid this risk, specify a secret that contains the username instead.
+	//
+	//  Learn more about [Secret
+	//  Manager](https://cloud.google.com/secret-manager/docs/) and [using
+	//  Secret Manager with
+	//  Batch](https://cloud.google.com/batch/docs/create-run-job-secret-manager).
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.username
+	Username *string `json:"username,omitempty"`
+
+	// Required if the container image is from a private Docker registry. The
+	//  password to login to the Docker registry that contains the image.
+	//
+	//  For security, it is strongly recommended to specify an
+	//  encrypted password by using a Secret Manager secret:
+	//  `projects/*/secrets/*/versions/*`.
+	//
+	//  Warning: If you specify the password using plain text, you risk the
+	//  password being exposed to any users who can view the job or its logs.
+	//  To avoid this risk, specify a secret that contains the password instead.
+	//
+	//  Learn more about [Secret
+	//  Manager](https://cloud.google.com/secret-manager/docs/) and [using
+	//  Secret Manager with
+	//  Batch](https://cloud.google.com/batch/docs/create-run-job-secret-manager).
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.password
+
+	//	TODO: comment out the password for now and add it back when secreteManager
+	//  and k8s secret is ready before promoting to beta.
+	// SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
+
+	// Optional. If set to true, this container runnable uses Image streaming.
+	//
+	//  Use Image streaming to allow the runnable to initialize without
+	//  waiting for the entire container image to download, which can
+	//  significantly reduce startup time for large container images.
+	//
+	//  When `enableImageStreaming` is set to true, the container
+	//  runtime is [containerd](https://containerd.io/) instead of Docker.
+	//  Additionally, this container runnable only supports the following
+	//  `container` subfields: `imageUri`,
+	//  `commands[]`, `entrypoint`, and
+	//  `volumes[]`; any other `container` subfields are ignored.
+	//
+	//  For more information about the requirements and limitations for using
+	//  Image streaming with Batch, see the [`image-streaming`
+	//  sample on
+	//  GitHub](https://github.com/GoogleCloudPlatform/batch-samples/tree/main/api-samples/image-streaming).
+	// +kcc:proto:field=google.cloud.batch.v1.Runnable.Container.enable_image_streaming
+	EnableImageStreaming *bool `json:"enableImageStreaming,omitempty"`
 }
 
 // +kcc:proto=google.cloud.batch.v1.Environment.KMSEnvMap

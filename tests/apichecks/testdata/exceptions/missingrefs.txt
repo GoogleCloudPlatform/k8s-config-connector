@@ -6,14 +6,6 @@
 [refs] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyName" should be a reference
 [refs] crd=apigatewaygateways.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiConfig" should be a reference
 [refs] crd=apigeenataddresses.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceId" should be a reference
-<<<<<<< HEAD
-=======
-[refs] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupVault" should be a reference
-[refs] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.bootDisk.image" should be a reference
-[refs] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].newDisk.image" should be a reference
-[refs] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.network.networkInterfaces[].network" should be a reference
-[refs] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.network.networkInterfaces[].subnetwork" should be a reference
->>>>>>> cc5802e75 (address review comments)
 [refs] crd=beyondcorpappconnections.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.gateway.appGateway" should be a reference
 [refs] crd=bigquerydatapolicydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyTag" should be a reference
 [refs] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.connectionId" should be a reference
