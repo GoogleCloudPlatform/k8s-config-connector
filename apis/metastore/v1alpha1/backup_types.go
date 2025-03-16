@@ -26,6 +26,34 @@ var MetastoreBackupGVK = GroupVersion.WithKind("MetastoreBackup")
 type MetastoreBackupSpec struct {
 	// The MetastoreBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+	// Immutable. The relative resource name of the backup, in the following form:
+	//
+	//  `projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}`
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.name
+	Name *string `json:"name,omitempty"`
+
+	// The description of the backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.description
+	Description *string `json:"description,omitempty"`
+	// Output only. The time when the backup was started.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the backup finished creating.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. The current state of the backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The revision of the service at the time of backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.service_revision
+	ServiceRevision *Service `json:"serviceRevision,omitempty"`
+
+	// Output only. Services that are restoring from the backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.restoring_services
+	RestoringServices []string `json:"restoringServices,omitempty"`
 }
 
 // MetastoreBackupStatus defines the config connector machine state of MetastoreBackup
