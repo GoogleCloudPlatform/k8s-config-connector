@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -62,43 +63,11 @@ type DataCatalogTagTemplateSpec struct {
 
 	// Fields used to create a Tag
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.fields
-	Fields map[string]DataCatalogTagTemplateField `json:"fields,omitempty"`
+	Fields map[string]TagTemplateField `json:"fields,omitempty"`
 
 	// Optional. Transfer status of the TagTemplate
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.dataplex_transfer_status
 	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
-}
-
-// DataCatalogTagTemplateField defines the desired state of DataCatalogTagTemplateField
-type DataCatalogTagTemplateField struct {
-	// The display name for this field. Defaults to an empty string.
-	//
-	//  The name must contain only Unicode letters, numbers (0-9), underscores (_),
-	//  dashes (-), spaces ( ), and can't start or end with spaces.
-	//  The maximum length is 200 characters.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Required. The type of value this tag field can contain.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.type
-	Type *FieldType `json:"type,omitempty"`
-
-	// If true, this field is required. Defaults to false.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.is_required
-	IsRequired *bool `json:"isRequired,omitempty"`
-
-	// The description for this field. Defaults to an empty string.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.description
-	Description *string `json:"description,omitempty"`
-
-	// The order of this field with respect to other fields in this tag
-	//  template.
-	//
-	//  For example, a higher value can indicate a more important field.
-	//  The value can be negative. Multiple fields can have the same order and
-	//  field orders within a tag don't have to be sequential.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.order
-	Order *int32 `json:"order,omitempty"`
 }
 
 // DataCatalogTagTemplateStatus defines the config connector machine state of DataCatalogTagTemplate
