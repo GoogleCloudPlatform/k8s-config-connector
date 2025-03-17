@@ -29,11 +29,17 @@ import (
 type ExtractToolMarkers struct {
 }
 
-var _ Extractor = &ExtractToolMarkers{}
+type FileAnnotation struct {
+	Key        string
+	Attributes map[string][]string
+}
 
-// Extract extracts tool markers from source code.
-func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, src []byte, filters ...Filter) ([]*DataPoint, error) {
-	var dataPoints []*DataPoint
+// FindFileAnnotations finds annotation blocks that are file-scoped.
+// prefixes is a list of prefixes we are looking for.
+// For example, if prefixes is "+tool:" we will recognize a block starting with `// +tool:foo`,
+// Key will contain "+tool:foo", Attributes will contain the attributes defined immediately under the `// +tool:foo` line
+func FindFileAnnotations(src []byte, prefixes []string) ([]FileAnnotation, error) {
+	var out []FileAnnotation
 
 	r := bytes.NewReader(src)
 	br := bufio.NewReader(r)
@@ -51,12 +57,9 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 			comment := strings.TrimPrefix(line, "//")
 			comment = strings.TrimSpace(comment)
 			if strings.HasPrefix(comment, "+tool:") {
-				klog.V(2).Infof("found tool line %q", comment)
-				toolName := strings.TrimPrefix(comment, "+tool:")
-				dataPoint := &DataPoint{
-					Description: description,
-					Type:        toolName,
-					Output:      string(src),
+				annotation := FileAnnotation{
+					Key:        comment,
+					Attributes: make(map[string][]string),
 				}
 
 				for {
@@ -76,22 +79,72 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 
 					tokens := strings.SplitN(toolLine, ":", 2)
 					if len(tokens) == 2 {
-						dataPoint.SetInput(tokens[0], strings.TrimSpace(tokens[1]))
+						annotation.Attributes[tokens[0]] = append(annotation.Attributes[tokens[0]], tokens[1])
 					} else {
 						return nil, fmt.Errorf("cannot parse tool line %q", toolLine)
 					}
 				}
 
-				shouldAdd := true
-				for _, filter := range filters {
-					if !filter(dataPoint) {
-						shouldAdd = false
-					}
-				}
-				if shouldAdd {
-					dataPoints = append(dataPoints, dataPoint)
+				out = append(out, annotation)
+			}
+		}
+	}
+	return out, nil
+}
+
+var _ Extractor = &ExtractToolMarkers{}
+
+// Extract extracts tool markers from source code.
+func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, src []byte, filters ...Filter) ([]*DataPoint, error) {
+	var dataPoints []*DataPoint
+
+	// Find file-scoped DataPoints
+	{
+		markers := []string{"+tool:"}
+		annotations, err := FindFileAnnotations(src, markers)
+		if err != nil {
+			return nil, err
+		}
+		for _, annotation := range annotations {
+			toolName := strings.TrimPrefix(annotation.Key, "+tool:")
+			dataPoint := &DataPoint{
+				Description: description,
+				Type:        toolName,
+				Output:      string(src),
+			}
+
+			for k, values := range annotation.Attributes {
+				for _, v := range values {
+					dataPoint.SetInput(k, v)
 				}
 			}
+			shouldAdd := true
+			for _, filter := range filters {
+				if !filter(dataPoint) {
+					shouldAdd = false
+				}
+			}
+			if shouldAdd {
+				dataPoints = append(dataPoints, dataPoint)
+			}
+		}
+	}
+
+	r := bytes.NewReader(src)
+	br := bufio.NewReader(r)
+
+	for {
+		rawLine, err := br.ReadString('\n')
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return nil, fmt.Errorf("scanning code: %w", err)
+		}
+		line := strings.TrimSpace(rawLine)
+		if strings.HasPrefix(line, "//") {
+			comment := strings.TrimPrefix(line, "//")
+			comment = strings.TrimSpace(comment)
 
 			if strings.HasPrefix(comment, "+kcc:proto=") {
 				klog.V(2).Infof("found tool line %q", comment)
