@@ -14,8 +14,23 @@
 
 package v1alpha1
 
+// +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
+type NetworkPolicy_NetworkService struct {
+	// True if the service is enabled; false otherwise.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork
 type VmwareEngineNetwork_VpcNetwork struct {
+}
+
+// +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
+type NetworkPolicy_NetworkServiceObservedState struct {
+	// Output only. State of the service. New values may be added to this enum
+	//  when appropriate.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService.state
+	State *string `json:"state,omitempty"`
 }
 
 // +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork

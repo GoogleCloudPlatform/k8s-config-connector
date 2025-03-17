@@ -20,6 +20,42 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func NetworkPolicy_NetworkService_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPolicy_NetworkService) *krm.NetworkPolicy_NetworkService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPolicy_NetworkService{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	// MISSING: State
+	return out
+}
+func NetworkPolicy_NetworkService_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPolicy_NetworkService) *pb.NetworkPolicy_NetworkService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPolicy_NetworkService{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	// MISSING: State
+	return out
+}
+func NetworkPolicy_NetworkServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPolicy_NetworkService) *krm.NetworkPolicy_NetworkServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPolicy_NetworkServiceObservedState{}
+	// MISSING: Enabled
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func NetworkPolicy_NetworkServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPolicy_NetworkServiceObservedState) *pb.NetworkPolicy_NetworkService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPolicy_NetworkService{}
+	// MISSING: Enabled
+	out.State = direct.Enum_ToProto[pb.NetworkPolicy_NetworkService_State](mapCtx, in.State)
+	return out
+}
 func VMwareEngineNetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork) *krm.VMwareEngineNetworkSpec {
 	if in == nil {
 		return nil
