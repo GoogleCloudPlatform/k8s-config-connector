@@ -21,6 +21,23 @@ import (
 
 var VMwareEngineExternalAccessRuleGVK = GroupVersion.WithKind("VMwareEngineExternalAccessRule")
 
+// +kcc:proto=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange
+type ExternalAccessRule_IPRange struct {
+	// A single IP address. For example: `10.0.0.5`.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// An IP address range in the CIDR format. For example: `10.0.0.0/24`.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange.ip_address_range
+	IPAddressRange *string `json:"ipAddressRange,omitempty"`
+
+	// The name of an `ExternalAddress` resource. The external address must
+	//  have been reserved in the scope of this external access rule's parent
+	//  network policy.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange.external_address
+	ExternalAddressRef *ExternalAddressRef `json:"externalAddressRef,omitempty"`
+}
+
 // VMwareEngineExternalAccessRuleSpec defines the desired state of VMwareEngineExternalAccessRule
 // +kcc:proto=google.cloud.vmwareengine.v1.ExternalAccessRule
 type VMwareEngineExternalAccessRuleSpec struct {

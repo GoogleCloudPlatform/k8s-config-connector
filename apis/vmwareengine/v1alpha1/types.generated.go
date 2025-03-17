@@ -14,26 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange
-type ExternalAccessRule_IPRange struct {
-	// A single IP address. For example: `10.0.0.5`.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange.ip_address
-	IPAddress *string `json:"ipAddress,omitempty"`
-
-	// An IP address range in the CIDR format. For example: `10.0.0.0/24`.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange.ip_address_range
-	IPAddressRange *string `json:"ipAddressRange,omitempty"`
-
-	// The name of an `ExternalAddress` resource. The external address must
-	//  have been reserved in the scope of this external access rule's parent
-	//  network policy.  Provide the external address name in the form of
-	//  `projects/{project}/locations/{location}/privateClouds/{private_cloud}/externalAddresses/{external_address}`.
-	//  For example:
-	//  `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/externalAddresses/my-address`.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange.external_address
-	ExternalAddress *string `json:"externalAddress,omitempty"`
-}
-
 // +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
 type NetworkPolicy_NetworkService struct {
 	// True if the service is enabled; false otherwise.
