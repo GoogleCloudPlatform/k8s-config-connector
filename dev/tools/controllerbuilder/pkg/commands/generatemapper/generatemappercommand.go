@@ -20,6 +20,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
@@ -120,7 +121,17 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 
 		return goPackage, true
 	}
-	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory)
+
+	generatedFileAnnotation := &annotations.FileAnnotation{
+		Key: "+generated:mapper",
+		Attributes: map[string][]string{
+			"proto.service": {o.ServiceName},
+			"krm.group":     {gv.Group},
+			"krm.version":   {gv.Version},
+		},
+	}
+
+	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation)
 
 	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory); err != nil {
 		return err
