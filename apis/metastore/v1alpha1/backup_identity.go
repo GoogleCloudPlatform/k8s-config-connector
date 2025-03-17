@@ -46,10 +46,11 @@ func (i *BackupIdentity) Parent() *BackupParent {
 type BackupParent struct {
 	ProjectID string
 	Location  string
+	ServiceID string
 }
 
 func (p *BackupParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/services/" + p.ServiceID
 }
 
 // New builds a BackupIdentity from the Config Connector Backup object.
@@ -59,6 +60,13 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
+	}
+	serviceRef := obj.Spec.ServiceRef.Value
+	if serviceRef == "" {
+		if obj.Spec.ServiceRef.External == "" {
+			return nil, fmt.Errorf("cannot resolve serviceRef")
+		}
+		serviceRef = obj.Spec.ServiceRef.External
 	}
 	projectID := projectRef.ProjectID
 	if projectID == "" {
@@ -89,6 +97,9 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
+		if actualParent.ServiceID != serviceRef {
+			return nil, fmt.Errorf("spec.serviceRef changed, expect %s, got %s", actualParent.ServiceID, serviceRef)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -98,6 +109,7 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 		parent: &BackupParent{
 			ProjectID: projectID,
 			Location:  location,
+			ServiceID: serviceRef,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +117,14 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 
 func ParseBackupExternal(external string) (parent *BackupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backups" {
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "services" || tokens[6] != "backups" {
 		return nil, "", fmt.Errorf("format of MetastoreBackup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backups/{{backupID}})", external)
 	}
 	parent = &BackupParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
+		ServiceID: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
