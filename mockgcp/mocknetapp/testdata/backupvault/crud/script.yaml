@@ -1,0 +1,4 @@
+
+- exec: gcloud beta netapp backup-vaults create test-${uniqueId} --location=us-central1
+- exec: gcloud beta netapp backup-vaults describe test-${uniqueId} --location=us-central1
+- exec: gcloud beta netapp backup-vaults delete test-${uniqueId} --location=us-central1
