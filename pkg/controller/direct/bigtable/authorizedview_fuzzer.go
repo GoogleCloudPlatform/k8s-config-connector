@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(bigtableAuthorizedViewFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(bigtableAuthorizedViewFuzzer())
 }
 
 func bigtableAuthorizedViewFuzzer() fuzztesting.KRMFuzzer {

@@ -100,6 +100,13 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 			case protoreflect.Uint32Kind:
 				// TODO: handle []uint32
 
+			case protoreflect.BytesKind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					b := randomBytes(randStream)
+					listVal.Append(protoreflect.ValueOf(b))
+				}
+
 			default:
 				t.Fatalf("unhandled field kind %v: %v", field.Kind(), field)
 			}
@@ -304,6 +311,15 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 				}
 
 			case protoreflect.EnumKind:
+				for j := 0; j < count; j++ {
+					el := listVal.Get(j)
+					setter := func(v protoreflect.Value) {
+						listVal.Set(j, v)
+					}
+					visitor.VisitPrimitive(path+"[]", el, setter)
+				}
+
+			case protoreflect.BytesKind:
 				for j := 0; j < count; j++ {
 					el := listVal.Get(j)
 					setter := func(v protoreflect.Value) {
