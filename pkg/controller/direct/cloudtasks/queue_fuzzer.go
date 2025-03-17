@@ -16,7 +16,7 @@
 // proto.message: google.cloud.tasks.v2.Queue
 // api.group: tasks.cnrm.cloud.google.com
 
-package tasks
+package cloudtasks
 
 import (
 	pb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
