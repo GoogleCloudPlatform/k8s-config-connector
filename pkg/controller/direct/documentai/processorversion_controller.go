@@ -124,7 +124,7 @@ func (a *ProcessorVersionAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ProcessorVersionAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ProcessorVersion", "name", a.id.ID())
+	log.V(2).Info("creating ProcessorVersion", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -148,10 +148,21 @@ func (a *ProcessorVersionAdapter) Create(ctx context.Context, createOp *directba
 		return fmt.Errorf("waiting create Version %s: %w", a.id, err)
 	}
 
+	created := &documentaipb.ProcessorVersion{}
 	getReq := &documentaipb.GetProcessorVersionRequest{Name: metadata.GetCommonMetadata().GetResource()}
-	created, err := a.gcpClient.GetProcessorVersion(ctx, getReq)
-	if err != nil {
-		return fmt.Errorf("getting created version %q: %w", a.id, err)
+
+	// if state is creating, keep retrieving until creation failed
+	// todo: currently we expect resource state to be FAILED after creation as there's no training data
+	// handle other successful state, i.e. undeployed after creation
+	done := false
+	for !done {
+		created, err = a.gcpClient.GetProcessorVersion(ctx, getReq)
+		if err != nil {
+			return fmt.Errorf("getting created version %q: %w", a.id, err)
+		}
+		if created.State == documentaipb.ProcessorVersion_FAILED {
+			done = true
+		}
 	}
 
 	log.V(2).Info("successfully created ProcessorVersion", "name", a.id)
