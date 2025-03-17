@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/reservation/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -220,24 +221,103 @@ func setFieldNonfailoverFailover(obj *pb.Reservation, location string) *pb.Reser
 	return obj
 }
 
+type assignmentName struct {
+	Reservation *reservationName
+	ResourceID  string
+}
+
+// parseAssignmentName parses a string into a assignmentName.
+// The expected form is projects/<projectId>/locations/<location>/reservations/<reservationID>/assignments/<assignmentID>
+func (s *MockService) parseAssignmentName(name string) (*assignmentName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "reservations" && tokens[6] == "assignments" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &assignmentName{
+			Reservation: &reservationName{
+				Project:    project,
+				Location:   tokens[3],
+				ResourceID: tokens[5],
+			},
+			ResourceID: tokens[7],
+		}
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func (n *assignmentName) String() string {
+	return "projects/" + n.Reservation.Project.ID + "/locations/" + n.Reservation.Location + "/reservations/" + n.Reservation.ResourceID + "/assignments/" + n.ResourceID
+}
+
 // Creates an assignment object which allows the given project to submit jobs
 // of a certain type using slots from the specified reservation.
-func CreateAssignment(ctx context.Context, in *pb.CreateAssignmentRequest) (*pb.Assignment, error) {
-	// TODO
-	return nil, nil
+func (s *ReservationV1) CreateAssignment(ctx context.Context, req *pb.CreateAssignmentRequest) (*pb.Assignment, error) {
+	var reqName string
+	if req.AssignmentId != "" {
+		reqName = req.Parent + "/assignments/" + req.AssignmentId
+	} else {
+		// reqName = req.Parent + "/assignments/" + uuid.New().String()
+		// Using fixed UUID to test "acquire" in spec.resourceID. This also fix the dynamic uuid value in the `x-goog-request-params` header.
+		reqName = req.Parent + "/assignments/" + "87687860-6689-5789-1dfzymot3v66w7f"
+	}
+
+	name, err := s.parseAssignmentName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.Assignment).(*pb.Assignment)
+	obj.Name = fqn
+	obj.State = pb.Assignment_ACTIVE
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
 }
 
 // Updates an existing assignment.
-func UpdateAssignment(ctx context.Context, in *pb.UpdateAssignmentRequest) (*pb.Assignment, error) {
+func (s *ReservationV1) UpdateAssignment(ctx context.Context, req *pb.UpdateAssignmentRequest) (*pb.Assignment, error) {
 	// TODO
 	return nil, nil
 }
 
 // Lists assignments.
 // Only explicitly created assignments will be returned.
-func ListAssignments(ctx context.Context, in *pb.ListAssignmentsRequest) (*pb.ListAssignmentsResponse, error) {
-	// TODO
-	return nil, nil
+func (s *ReservationV1) ListAssignments(ctx context.Context, req *pb.ListAssignmentsRequest) (*pb.ListAssignmentsResponse, error) {
+	parent, err := s.parseReservationName(req.GetParent())
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.ListAssignmentsResponse{}
+
+	assignmentKind := (&pb.Assignment{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, assignmentKind, storage.ListOptions{}, func(obj proto.Message) error {
+		assignment := obj.(*pb.Assignment)
+		var name *assignmentName
+		name, err = s.parseAssignmentName(assignment.Name)
+		if err != nil {
+			return err
+		}
+		if name.Reservation.String() == parent.String() {
+			response.Assignments = append(response.Assignments, assignment)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 // Moves an assignment under a new reservation.
@@ -245,13 +325,23 @@ func ListAssignments(ctx context.Context, in *pb.ListAssignmentsRequest) (*pb.Li
 // This differs from removing an existing assignment and recreating a new one
 // by providing a transactional change that ensures an assignee always has an
 // associated reservation.
-func MoveAssignment(ctx context.Context, in *pb.MoveAssignmentRequest) (*pb.Assignment, error) {
+func MoveAssignment(ctx context.Context, req *pb.MoveAssignmentRequest) (*pb.Assignment, error) {
 	// TODO
 	return nil, nil
 }
 
 // Deletes a assignment. No expansion will happen.
-func DeleteAssignment(ctx context.Context, in *pb.DeleteAssignmentRequest) (*empty.Empty, error) {
-	// TODO
-	return nil, nil
+func (s *ReservationV1) DeleteAssignment(ctx context.Context, req *pb.DeleteAssignmentRequest) (*empty.Empty, error) {
+	name, err := s.parseAssignmentName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	oldObj := &pb.Assignment{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
