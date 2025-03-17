@@ -545,6 +545,25 @@ branches:
         - "vmwareengine.googleapis.com"
       notes:
         - long running operation
+    - name: vmwareengine-externaladdress
+      local: resource-vmwareengine-externaladdress
+      remote: resource-vmwareengine-externaladdress
+      command: gcloud vmware private-clouds external-addresses
+      group: vmwareengine
+      resource: externaladdress
+      controller: Unknown
+      kind: VMwareEngineExternalAddress
+      package: google.cloud.vmwareengine.v1
+      proto: ExternalAddress
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.ExternalAddress
+      host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
+      notes:
+        - long running operation
+        - subresource of privatecloud
     - name: vmwareengine-nodetype
       local: resource-vmwareengine-nodetype
       remote: resource-vmwareengine-nodetype
