@@ -1,0 +1,4 @@
+
+- exec: gcloud compute external-vpn-gateways create test-${uniqueId} --interfaces 0=192.0.2.0 --project=${projectId}
+- exec: gcloud compute external-vpn-gateways describe test-${uniqueId} --project=${projectId}
+- exec: gcloud compute external-vpn-gateways delete test-${uniqueId} --project=${projectId} --quiet
