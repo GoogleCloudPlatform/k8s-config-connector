@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type BackupVaultIdentity struct {
 	parent *BackupVaultParent
-	id string
+	id     string
 }
 
 func (i *BackupVaultIdentity) String() string {
-	return  i.parent.String() + "/backupvaults/" + i.id
+	return i.parent.String() + "/backupvaults/" + i.id
 }
 
 func (i *BackupVaultIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *BackupVaultIdentity) ID() string {
 }
 
 func (i *BackupVaultIdentity) Parent() *BackupVaultParent {
-	return  i.parent
+	return i.parent
 }
 
 type BackupVaultParent struct {
@@ -51,7 +51,6 @@ type BackupVaultParent struct {
 func (p *BackupVaultParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a BackupVaultIdentity from the Config Connector BackupVault object.
 func NewBackupVaultIdentity(ctx context.Context, reader client.Reader, obj *NetAppBackupVault) (*BackupVaultIdentity, error) {
