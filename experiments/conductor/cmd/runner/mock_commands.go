@@ -165,7 +165,7 @@ func enableAPIs(opts *RunnerOptions, branch Branch) {
 			Cmd:          "gcloud",
 			Args:         []string{"services", "enable", api},
 			WorkDir:      workDir,
-			MaxRetries:   3,
+			MaxAttempts:  3,
 			RetryBackoff: 10 * time.Second,
 		}
 		_, err := executeCommand(opts, cfg)
@@ -432,9 +432,9 @@ func captureHttpLog(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
 			"-timeout", fmt.Sprintf("%s", opts.timeout),
 		},
-		WorkDir:    filepath.Join(opts.branchRepoDir, "mockgcp"),
-		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
-		MaxRetries: 1,
+		WorkDir:     filepath.Join(opts.branchRepoDir, "mockgcp"),
+		Env:         map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
+		MaxAttempts: 1,
 	}
 	_, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, logFileRelativePath)
@@ -680,6 +680,10 @@ func addProtoToMakefile(ctx context.Context, opts *RunnerOptions, branch Branch)
 }
 
 func runMockgcpTests(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+	if opts.defaultRetries > 0 {
+		log.Printf("Command does not support retries")
+	}
+
 	var affectedPaths []string
 
 	mockfolder := fmt.Sprintf("mock%s", branch.Group)
@@ -697,9 +701,9 @@ func runMockgcpTests(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
 			"-timeout", fmt.Sprintf("%s", opts.timeout),
 		},
-		WorkDir:    filepath.Join(opts.branchRepoDir, "mockgcp"),
-		Env:        map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
-		MaxRetries: 1,
+		WorkDir:     filepath.Join(opts.branchRepoDir, "mockgcp"),
+		Env:         map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
+		MaxAttempts: 1,
 	}
 	_, err := executeCommand(opts, cfg)
 	return affectedPaths, err
@@ -710,11 +714,11 @@ func buildProtoFiles(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 
 	// Run make gen-proto command
 	cfg := CommandConfig{
-		Name:       "Generate proto files",
-		Cmd:        "make",
-		Args:       []string{"gen-proto"},
-		WorkDir:    filepath.Join(opts.branchRepoDir, "mockgcp"),
-		MaxRetries: 1,
+		Name:        "Generate proto files",
+		Cmd:         "make",
+		Args:        []string{"gen-proto"},
+		WorkDir:     filepath.Join(opts.branchRepoDir, "mockgcp"),
+		MaxAttempts: 1,
 	}
 
 	_, err := executeCommand(opts, cfg)

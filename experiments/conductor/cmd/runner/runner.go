@@ -752,11 +752,11 @@ func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 	}
 
 	cfg := CommandConfig{
-		Name:       "Search for service",
-		Cmd:        "egrep",
-		Args:       args,
-		WorkDir:    workDir,
-		MaxRetries: 2,
+		Name:        "Search for service",
+		Cmd:         "egrep",
+		Args:        args,
+		WorkDir:     workDir,
+		MaxAttempts: 2,
 	}
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -775,11 +775,11 @@ func inferProtoPath(opts *RunnerOptions, branch Branch, workDir string) string {
 			}
 
 			cfg = CommandConfig{
-				Name:       "Search for any service",
-				Cmd:        "egrep",
-				Args:       args,
-				WorkDir:    workDir,
-				MaxRetries: 2,
+				Name:        "Search for any service",
+				Cmd:         "egrep",
+				Args:        args,
+				WorkDir:     workDir,
+				MaxAttempts: 2,
 			}
 			output, err = executeCommand(opts, cfg)
 			if err != nil {
@@ -865,11 +865,11 @@ func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string)
 	// Keep if any of CRUD is supported
 	// args = append(args, "--help")
 	cfg := CommandConfig{
-		Name:       "Check CRUD Support",
-		Cmd:        "gcloud",
-		Args:       args,
-		WorkDir:    workDir,
-		MaxRetries: 1,
+		Name:        "Check CRUD Support",
+		Cmd:         "gcloud",
+		Args:        args,
+		WorkDir:     workDir,
+		MaxAttempts: 1,
 	}
 	op, _ := executeCommand(opts, cfg)
 	// todo: shall we keep when gcloud xxx --help returns error?
@@ -900,8 +900,8 @@ func diffLastNCommits(opts *RunnerOptions, branch Branch) {
 			"-r",
 			fmt.Sprintf("HEAD~%d", opts.numCommits),
 		},
-		WorkDir:    workDir,
-		MaxRetries: 1,
+		WorkDir:     workDir,
+		MaxAttempts: 1,
 	}
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -930,8 +930,8 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 			fmt.Sprintf("-n%d", opts.numCommits),
 			"--oneline",
 		},
-		WorkDir:    workDir,
-		MaxRetries: 1,
+		WorkDir:     workDir,
+		MaxAttempts: 1,
 	}
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -986,8 +986,8 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 			"--hard",
 			fmt.Sprintf("HEAD~%d", opts.numCommits),
 		},
-		WorkDir:    workDir,
-		MaxRetries: 1,
+		WorkDir:     workDir,
+		MaxAttempts: 1,
 	}
 	output, err = executeCommand(opts, cfg)
 	if err != nil {

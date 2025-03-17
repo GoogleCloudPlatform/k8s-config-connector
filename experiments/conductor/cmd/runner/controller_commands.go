@@ -412,11 +412,11 @@ func captureGoldenTestOutput(ctx context.Context, opts *RunnerOptions, branch Br
 	fixtureArg := fmt.Sprintf("fixtures/%s-minimal", strings.ToLower(branch.Kind))
 
 	cfg := CommandConfig{
-		Name:       "Compare Mock",
-		Cmd:        "hack/compare-mock",
-		Args:       []string{fixtureArg},
-		WorkDir:    opts.branchRepoDir,
-		MaxRetries: 1,
+		Name:        "Compare Mock",
+		Cmd:         "hack/compare-mock",
+		Args:        []string{fixtureArg},
+		WorkDir:     opts.branchRepoDir,
+		MaxAttempts: 1,
 	}
 
 	// We don't care about the error here, as the script might return non-zero
