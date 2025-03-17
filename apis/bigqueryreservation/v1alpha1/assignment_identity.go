@@ -74,7 +74,7 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 	reservationName := *obj.Spec.ReservationName
 
 	// Get desired ID
-	// Only works for resource aquisition
+	// Only works for resource acquisition
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	// Use approved External

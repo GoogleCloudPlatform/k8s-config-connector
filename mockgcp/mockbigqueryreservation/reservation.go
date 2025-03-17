@@ -258,14 +258,10 @@ func (n *assignmentName) String() string {
 // Creates an assignment object which allows the given project to submit jobs
 // of a certain type using slots from the specified reservation.
 func (s *ReservationV1) CreateAssignment(ctx context.Context, req *pb.CreateAssignmentRequest) (*pb.Assignment, error) {
-	var reqName string
-	if req.AssignmentId != "" {
-		reqName = req.Parent + "/assignments/" + req.AssignmentId
-	} else {
-		// reqName = req.Parent + "/assignments/" + uuid.New().String()
-		// Using fixed UUID to test "acquire" in spec.resourceID. This also fix the dynamic uuid value in the `x-goog-request-params` header.
-		reqName = req.Parent + "/assignments/" + "87687860-6689-5789-1dfzymot3v66w7f"
-	}
+
+	// reqName = req.Parent + "/assignments/" + uuid.New().String()
+	// Using fixed UUID to test "acquire" in spec.resourceID. This also fix the dynamic uuid value in the `x-goog-request-params` header.
+	reqName := req.Parent + "/assignments/" + "87687860-6689-5789-1dfzymot3v66w7f"
 
 	name, err := s.parseAssignmentName(reqName)
 	if err != nil {
@@ -325,9 +321,30 @@ func (s *ReservationV1) ListAssignments(ctx context.Context, req *pb.ListAssignm
 // This differs from removing an existing assignment and recreating a new one
 // by providing a transactional change that ensures an assignee always has an
 // associated reservation.
-func MoveAssignment(ctx context.Context, req *pb.MoveAssignmentRequest) (*pb.Assignment, error) {
-	// TODO
-	return nil, nil
+func (s *ReservationV1) MoveAssignment(ctx context.Context, req *pb.MoveAssignmentRequest) (*pb.Assignment, error) {
+	name, err := s.parseAssignmentName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Assignment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// Rebuild name for the Assignment
+	obj.Name = req.DestinationId + "/assignments/" + "27687860-6459-5709-1dfzymot3v66w8h"
+	// Delete and recreate
+	if err := s.storage.Delete(ctx, fqn, &pb.Assignment{}); err != nil {
+		return nil, err
+	}
+	if err := s.storage.Create(ctx, obj.Name, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
 }
 
 // Deletes a assignment. No expansion will happen.
