@@ -9,6 +9,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -40,6 +41,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -66,6 +68,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -97,6 +100,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -122,6 +126,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -145,13 +150,14 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
   "assignee": "projects/${projectId}",
   "jobType": 2,
-  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/2735937084936120626",
+  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f",
   "state": 2
 }
 
@@ -167,6 +173,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -175,7 +182,7 @@ X-Xss-Protection: 0
     {
       "assignee": "projects/${projectId}",
       "jobType": 2,
-      "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/2735937084936120626",
+      "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f",
       "state": 2
     }
   ]
@@ -183,14 +190,14 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/2735937084936120626:move?%24alt=json%3Benum-encoding%3Dint
+POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f:move?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}%2Fassignments%2F2735937084936120626
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}%2Fassignments%2F87687860-6689-5789-1dfzymot3v66w7f
 
 {
   "destinationId": "projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}",
-  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/2735937084936120626"
+  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f"
 }
 
 200 OK
@@ -199,13 +206,14 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
   "assignee": "projects/${projectId}",
   "jobType": 2,
-  "name": "projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/6571969870110491394",
+  "name": "projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/27687860-6459-5709-1dfzymot3v66w8h",
   "state": 2
 }
 
@@ -221,6 +229,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -229,7 +238,7 @@ X-Xss-Protection: 0
     {
       "assignee": "projects/${projectId}",
       "jobType": 2,
-      "name": "projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/6571969870110491394",
+      "name": "projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/27687860-6459-5709-1dfzymot3v66w8h",
       "state": 2
     }
   ]
@@ -237,10 +246,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/6571969870110491394?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/27687860-6459-5709-1dfzymot3v66w8h?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbqreservation2${uniqueId}%2Fassignments%2F6571969870110491394
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbqreservation2${uniqueId}%2Fassignments%2F27687860-6459-5709-1dfzymot3v66w8h
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -248,6 +257,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -266,6 +276,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -292,6 +303,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -310,6 +322,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -336,6 +349,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
