@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -32,7 +31,7 @@ type ExternalAccessRuleIdentity struct {
 }
 
 func (i *ExternalAccessRuleIdentity) String() string {
-	return i.parent.String() + "/externalaccessrules/" + i.id
+	return i.parent.String() + "/externalAccessRules/" + i.id
 }
 
 func (i *ExternalAccessRuleIdentity) ID() string {
@@ -44,27 +43,21 @@ func (i *ExternalAccessRuleIdentity) Parent() *ExternalAccessRuleParent {
 }
 
 type ExternalAccessRuleParent struct {
-	ProjectID string
-	Location  string
+	NetworkPolicy string
 }
 
 func (p *ExternalAccessRuleParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return p.NetworkPolicy
 }
 
 // New builds a ExternalAccessRuleIdentity from the Config Connector ExternalAccessRule object.
 func NewExternalAccessRuleIdentity(ctx context.Context, reader client.Reader, obj *VMwareEngineExternalAccessRule) (*ExternalAccessRuleIdentity, error) {
-
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	networkPolicyRef := obj.Spec.NetworkPolicyRef
+	networkPolicy, err := networkPolicyRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +76,8 @@ func NewExternalAccessRuleIdentity(ctx context.Context, reader client.Reader, ob
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.NetworkPolicy != networkPolicy {
+			return nil, fmt.Errorf("spec.networkPolicy changed, expect %s, got %s", actualParent.NetworkPolicy, networkPolicy)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,8 +86,7 @@ func NewExternalAccessRuleIdentity(ctx context.Context, reader client.Reader, ob
 	}
 	return &ExternalAccessRuleIdentity{
 		parent: &ExternalAccessRuleParent{
-			ProjectID: projectID,
-			Location:  location,
+			NetworkPolicy: networkPolicy,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +94,13 @@ func NewExternalAccessRuleIdentity(ctx context.Context, reader client.Reader, ob
 
 func ParseExternalAccessRuleExternal(external string) (parent *ExternalAccessRuleParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "externalaccessrules" {
-		return nil, "", fmt.Errorf("format of VMwareEngineExternalAccessRule external=%q was not known (use projects/{{projectID}}/locations/{{location}}/externalaccessrules/{{externalaccessruleID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "networkPolicies" || tokens[6] != "externalAccessRules" {
+		return nil, "", fmt.Errorf("format of VMwareEngineExternalAccessRule external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkPolicies/{{networkpolicyID}}/externalAccessRules/{{externalaccessruleID}})", external)
 	}
+	networkPolicy := strings.Join(tokens[:len(tokens)-2], "/")
 	parent = &ExternalAccessRuleParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		NetworkPolicy: networkPolicy,
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }

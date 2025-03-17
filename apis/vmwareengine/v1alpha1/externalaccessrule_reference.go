@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &ExternalAccessRuleRef{}
 // holds the GCP identifier for the KRM object.
 type ExternalAccessRuleRef struct {
 	// A reference to an externally managed VMwareEngineExternalAccessRule resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/externalaccessrules/{{externalaccessruleID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/externalAccessRules/{{externalaccessruleID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a VMwareEngineExternalAccessRule resource.
