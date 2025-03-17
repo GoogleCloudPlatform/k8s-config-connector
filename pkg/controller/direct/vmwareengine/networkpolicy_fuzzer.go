@@ -33,19 +33,20 @@ func vmwareEngineNetworkPolicyFuzzer() fuzztesting.KRMFuzzer {
 		VMwareEngineNetworkPolicyObservedState_FromProto, VMwareEngineNetworkPolicyObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".internet_access")
-	f.SpecFields.Insert(".external_ip")
+	f.SpecFields.Insert(".internet_access.enabled")
+	f.SpecFields.Insert(".external_ip.enabled")
 	f.SpecFields.Insert(".edge_services_cidr")
 	f.SpecFields.Insert(".vmware_engine_network")
 	f.SpecFields.Insert(".description")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".internet_access")
-	f.StatusFields.Insert(".external_ip")
+	f.StatusFields.Insert(".internet_access.state")
+	f.StatusFields.Insert(".external_ip.state")
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".vmware_engine_network_canonical")
 
 	f.UnimplementedFields.Insert(".name") // special field
+
 	return f
 }
