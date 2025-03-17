@@ -211,6 +211,11 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 		}
 	})
 
+	// Add Essential Contacts specific normalizations
+	addReplacement("validateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.validateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".contacts[].validateTime", "2024-04-01T12:34:56.123456Z")
+
 	events.PrettifyJSON(jsonMutators...)
 
 	// Remove headers that just aren't very relevant to testing
