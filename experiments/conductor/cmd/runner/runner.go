@@ -415,7 +415,7 @@ func printHelp() {
 	log.Println("\t24 - [CRD] Generate Fuzzer for each branch")
 	log.Println("\t40 - [Controller] Generate controller client for each branch")
 	log.Println("\t41 - [Controller] Generate controller for each branch")
-	log.Println("\t43 - [Controller] Create identity and reference files for each branch")
+	log.Println("\t43 - [Controller] [optional, simialr to 20, 21] Create identity and reference files for each branch")
 	log.Println("\t44 - [Controller] Create minimal test files for each branch")
 	log.Println("\t45 - [Controller] Capture golden test output for each branch")
 }

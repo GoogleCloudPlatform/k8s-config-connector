@@ -43,6 +43,7 @@ func generateControllerClient(ctx context.Context, opts *RunnerOptions, branch B
 
 	// Create the controller client
 	outputPath := filepath.Join("pkg", "controller", "direct", branch.Group, "client.go")
+	protoDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 
 	// Create the prompt for controllerbuilder
 	prompt := fmt.Sprintf("// +tool:controller-client\n// proto.service: %s\n", branch.ProtoSvc)
@@ -57,7 +58,7 @@ func generateControllerClient(ctx context.Context, opts *RunnerOptions, branch B
 	cfg := CommandConfig{
 		Name:    "Controller Builder",
 		Cmd:     "controllerbuilder",
-		Args:    []string{"prompt", "--src-dir", "~/kcc/k8s-config-connector", "--proto-dir", "~/kcc/k8s-config-connector/.build/third_party/googleapis/"},
+		Args:    []string{"prompt", "--src-dir", opts.branchRepoDir, "--proto-dir", protoDir},
 		WorkDir: opts.branchRepoDir,
 		Stdin:   strings.NewReader(prompt),
 	}
@@ -112,6 +113,7 @@ func generateController(ctx context.Context, opts *RunnerOptions, branch Branch)
 
 	// Ensure the directory exists
 	controllerDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group)
+	protoDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 	if err := os.MkdirAll(controllerDir, 0755); err != nil {
 		return nil, fmt.Errorf("failed to create directory %s: %w", controllerDir, err)
 	}
@@ -120,7 +122,7 @@ func generateController(ctx context.Context, opts *RunnerOptions, branch Branch)
 	cfg := CommandConfig{
 		Name:    "Controller Builder",
 		Cmd:     "controllerbuilder",
-		Args:    []string{"prompt", "--src-dir", "~/kcc/k8s-config-connector", "--proto-dir", "~/kcc/k8s-config-connector/.build/third_party/googleapis/"},
+		Args:    []string{"prompt", "--src-dir", opts.branchRepoDir, "--proto-dir", protoDir},
 		WorkDir: opts.branchRepoDir,
 		Stdin:   strings.NewReader(prompt),
 	}
@@ -171,6 +173,7 @@ func generateControllerIdentity(ctx context.Context, opts *RunnerOptions, branch
 	// Create the identity file
 	identityFileName := strings.ToLower(branch.Kind) + "_identity.go"
 	outputPath := filepath.Join("apis", branch.Group, strings.ToLower(crdVersion), identityFileName)
+	protoDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 
 	// Create the prompt for controllerbuilder
 	prompt := fmt.Sprintf("// +tool:krm-identity\n// proto.service: %s\n// proto.message: %s\n// crd.type: %s\n// crd.version: %s\n",
@@ -186,7 +189,7 @@ func generateControllerIdentity(ctx context.Context, opts *RunnerOptions, branch
 	cfg := CommandConfig{
 		Name:    "Controller Builder Identity",
 		Cmd:     "controllerbuilder",
-		Args:    []string{"prompt", "--src-dir", "~/kcc/k8s-config-connector", "--proto-dir", "~/kcc/k8s-config-connector/.build/third_party/googleapis/"},
+		Args:    []string{"prompt", "--src-dir", opts.branchRepoDir, "--proto-dir", protoDir},
 		WorkDir: opts.branchRepoDir,
 		Stdin:   strings.NewReader(prompt),
 	}
@@ -241,6 +244,7 @@ func generateControllerReference(ctx context.Context, opts *RunnerOptions, branc
 	// Create the prompt for controllerbuilder
 	prompt := fmt.Sprintf("// +tool:krm-reference\n// proto.service: %s\n// proto.message: %s\n// crd.type: %s\n// crd.version: %s\n",
 		branch.ProtoSvc, branch.ProtoMsg, branch.Kind, crdVersion)
+	protoDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 
 	// Ensure the directory exists
 	referenceDir := filepath.Join(opts.branchRepoDir, "apis", branch.Group, strings.ToLower(crdVersion))
@@ -252,7 +256,7 @@ func generateControllerReference(ctx context.Context, opts *RunnerOptions, branc
 	cfg := CommandConfig{
 		Name:    "Controller Builder Reference",
 		Cmd:     "controllerbuilder",
-		Args:    []string{"prompt", "--src-dir", "~/kcc/k8s-config-connector", "--proto-dir", "~/kcc/k8s-config-connector/.build/third_party/googleapis/"},
+		Args:    []string{"prompt", "--src-dir", opts.branchRepoDir, "--proto-dir", protoDir},
 		WorkDir: opts.branchRepoDir,
 		Stdin:   strings.NewReader(prompt),
 	}
