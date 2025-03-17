@@ -430,7 +430,7 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (ExecResults, error)
 
 		output = outBuf.String()
 		errOutput = errBuf.String()
-		exitCode := cmd.ProcessState.ExitCode()
+		exitCode = cmd.ProcessState.ExitCode()
 
 		if err == nil {
 			log.Printf("[%s] SUCCESS (%v)", cfg.Name, diff)
@@ -549,29 +549,26 @@ func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, comm
 	return nil
 }
 
-type BranchProcessorFn func(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error)
+type BranchProcessorFn func(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error)
 type BranchProcessor struct {
-	CommitMsg string
-	Fn        BranchProcessorFn
+	CommitMsg          string
+	Fn                 BranchProcessorFn
+	AttemptsOnNoChange int
+	VerifyFn           BranchProcessorFn
+	VerifyAttempts     int
 }
 
-// processBranch handles the processing of a single branch
-func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor) error {
-	log.Printf("Processing branch %s: %s, processor: %s", branch.Name, description, processor.CommitMsg)
-
-	// Skip if branch should be skipped
-	if branch.Skip {
-		log.Printf("Skipping branch %s: marked as Skip", branch.Name)
-		return nil
-	}
-
-	close := setLoggingWriter(opts, branch)
-	defer close()
-
-	checkoutBranch(ctx, branch, opts.branchRepoDir)
-
+// runBranchFnWithRetries runs the processor multiple times until changes are detected and commits them
+func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor, commitMsg string, inExecResults *ExecResults) (*ExecResults, error) {
 	// Try running processor up to N times until we see changes in all affected paths
-	maxAttempts := 3
+	var execResults *ExecResults
+	if commitMsg == "" {
+		commitMsg = processor.CommitMsg
+	}
+	maxAttempts := processor.AttemptsOnNoChange
+	if maxAttempts == 0 {
+		maxAttempts = 3
+	}
 	attempt := 0
 	var affectedPaths []string
 	lintFailure := false
@@ -580,8 +577,8 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 		var err error
 		attempt++
 		// Process the branch
-		log.Printf("Processing branch %s: %s, processor: %s (attempt: %d/%d)", branch.Name, description, processor.CommitMsg, attempt, maxAttempts)
-		affectedPaths, err = processor.Fn(ctx, opts, branch)
+		log.Printf("Running BranchFn for branch %s: %s, processor: %s (attempt: %d/%d)", branch.Name, description, commitMsg, attempt, maxAttempts)
+		affectedPaths, execResults, err = processor.Fn(ctx, opts, branch, inExecResults)
 		if err != nil {
 			log.Printf("failed to process branch %s on attempt %d: %v", branch.Name, attempt, err)
 			break
@@ -628,7 +625,6 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 	//}
 
 	// Stage and commit changes
-	commitMsg := processor.CommitMsg
 	if lintFailure {
 		commitMsg = fmt.Sprintf("%s. WARN: linting failed.", commitMsg)
 	}
@@ -636,7 +632,65 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 		commitMsg = fmt.Sprintf("%s. WARN: go cmds failed.", commitMsg)
 	}
 	if err := stageChanges(ctx, opts, affectedPaths, commitMsg); err != nil {
-		return fmt.Errorf("failed to commit changes for branch %s: %w", branch.Name, err)
+		return execResults, fmt.Errorf("failed to commit changes for branch %s: %w", branch.Name, err)
+	}
+
+	return execResults, nil
+}
+
+// processBranch handles the processing of a single branch
+func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor) error {
+	log.Printf("Processing branch %s: %s, processor: %s", branch.Name, description, processor.CommitMsg)
+
+	// Skip if branch should be skipped
+	if branch.Skip {
+		log.Printf("Skipping branch %s: marked as Skip", branch.Name)
+		return nil
+	}
+
+	close := setLoggingWriter(opts, branch)
+	defer close()
+
+	checkoutBranch(ctx, branch, opts.branchRepoDir)
+
+	if processor.VerifyFn == nil || processor.VerifyAttempts == 0 {
+		_, err := runBranchFnWithRetriesAndCommit(ctx, opts, branch, description, processor, "", nil)
+		return err
+	}
+
+	// If processor has a VerifyFn and max attempts, run verification loop
+	for i := 0; i < processor.VerifyAttempts; i++ {
+		var err error
+		paths, execResults, err := processor.VerifyFn(ctx, opts, branch, nil)
+		if execResults == nil {
+			log.Printf("execResults is nil for branch %s, commit message: %s", branch.Name, processor.CommitMsg)
+			continue
+		}
+		if execResults.ExitCode == 0 {
+			log.Printf("Verification attempt %d succeeded for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg)
+			break
+		}
+		if err != nil {
+			log.Printf("Verification attempt %d Error: %v for branch %s, commit message: %s", i+1, err, branch.Name, processor.CommitMsg)
+		} else {
+			log.Printf("Verification attempt %d failed for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg)
+		}
+		if len(paths) != 0 {
+			// Revert the changes for the failed verification
+			for _, path := range paths {
+				if err := gitRevert(ctx, opts.branchRepoDir, path); err != nil {
+					log.Printf("Failed to revert changes for branch %s: %v", branch.Name, err)
+					continue
+				}
+			}
+		}
+		log.Printf("Verification attempt %d failed for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg)
+		commitMsg := fmt.Sprintf("Autofix attempt %d. %s", i+1, processor.CommitMsg)
+		_, err = runBranchFnWithRetriesAndCommit(ctx, opts, branch, description, processor, commitMsg, execResults)
+		if err != nil {
+			log.Printf("Failed to run branch %s: %v", branch.Name, err)
+			continue
+		}
 	}
 
 	return nil

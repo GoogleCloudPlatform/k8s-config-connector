@@ -192,6 +192,14 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	if opts.loggingDir == "" {
 		return fmt.Errorf("logging-dir is required")
 	}
+	// If loggingDir is a relative path, make it absolute by prepending the current working directory
+	if !filepath.IsAbs(opts.loggingDir) {
+		cwd, err := os.Getwd()
+		if err != nil {
+			return fmt.Errorf("getting current working directory: %w", err)
+		}
+		opts.loggingDir = filepath.Join(cwd, opts.loggingDir)
+	}
 
 	if err := opts.validateFlags(); err != nil {
 		return err
@@ -343,11 +351,11 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	case cmdAddServiceRoundTrip: // 13
 		processBranches(ctx, opts, branches.Branches, "Service RoundTrip", []BranchProcessor{{Fn: addServiceToRoundTrip, CommitMsg: "Add service to mock_http_roundtrip.go"}})
 	case cmdAddProtoMakefile: // 14
-		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsg: "Add proto generation to makefile"}})
+		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsg: "Add proto generation to makefile", AttemptsOnNoChange: 1}})
 	case cmdBuildProto: // 15
 		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsg: "Build and add generated proto files"}})
 	case cmdRunMockTests: // 16
-		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: runMockgcpTests, CommitMsg: "Run mock tests"}})
+		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsg: "Verify and Fix mock tests", VerifyFn: runMockgcpTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	case cmdGenerateTypes: // 20
 		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsg: "Add generated types"}})
 	case cmdAdjustTypes: // 21
@@ -385,9 +393,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			{Fn: updateTestHarness, CommitMsg: "Support for testing with mockgcp"},
 		})
 	case cmdCaptureGoldenTestOutput: // 45
-		processBranches(ctx, opts, branches.Branches, "Golden Test Output", []BranchProcessor{
-			{Fn: captureGoldenTestOutput, CommitMsg: "Capture golden output"},
-		})
+		processBranches(ctx, opts, branches.Branches, "Golden Test Output", []BranchProcessor{{Fn: captureGoldenTestOutput, CommitMsg: "Capture golden output"}})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -1024,8 +1030,8 @@ func pushBranch(opts *RunnerOptions, branch Branch) {
 			branch.Local,
 			"--force",
 		},
-		WorkDir:    workDir,
-		MaxRetries: 1,
+		WorkDir:     workDir,
+		MaxAttempts: 1,
 	}
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
