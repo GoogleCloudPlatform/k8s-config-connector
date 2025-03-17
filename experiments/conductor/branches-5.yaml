@@ -562,6 +562,24 @@ branches:
       notes:
         - No CREATE, UPDATE and DELETE
       skip: true
+    - name: vmwareengine-network
+      local: resource-vmwareengine-network
+      remote: resource-vmwareengine-network
+      command: gcloud vmware networks
+      group: vmwareengine
+      resource: vmwareenginenetwork
+      controller: Unknown
+      kind: VMwareEngineNetwork
+      package: google.cloud.vmwareengine.v1
+      proto: VmwareEngineNetwork
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine_resources.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.VmwareEngineNetwork
+      host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
+      notes:
+        - long running operation
     - name: vmwareengine-networkpeering
       local: resource-vmwareengine-networkpeering
       remote: resource-vmwareengine-networkpeering
@@ -598,6 +616,25 @@ branches:
         - "vmwareengine.googleapis.com"
       notes:
         - long running operation
+    - name: vmwareengine-externalaccessrule
+      local: resource-vmwareengine-externalaccessrule
+      remote: resource-vmwareengine-externalaccessrule
+      command: gcloud vmware network-policies external-access-rules
+      group: vmwareengine
+      resource: externalaccessrule
+      controller: Unknown
+      kind: VMwareEngineExternalAccessRule
+      package: google.cloud.vmwareengine.v1
+      proto: ExternalAccessRule
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine_resources.proto
+      proto-service: ""
+      proto-msg: google.cloud.vmwareengine.v1.ExternalAccessRule
+      host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
+      notes:
+        - long running operation
+        - subresource of networkpolicy
     - name: vmwareengine-privateconnection
       local: resource-vmwareengine-privateconnection
       remote: resource-vmwareengine-privateconnection
