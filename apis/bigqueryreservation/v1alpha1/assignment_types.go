@@ -25,14 +25,15 @@ var BigQueryReservationAssignmentGVK = GroupVersion.WithKind("BigQueryReservatio
 // BigQueryReservationAssignmentSpec defines the desired state of BigQueryReservationAssignment
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
 type BigQueryReservationAssignmentSpec struct {
+	// Note: changing this field will move the assignment from one reservation to another reservation.
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 
-	// Can be changed when moving the assignment from one reservation to another reservation.
+	// Note: changing this field will move the assignment from one reservation to another reservation.
 	// +required
 	Location *string `json:"location"`
 
-	// Can be changed when moving the assignment from one reservation to another reservation.
+	// Note: changing this field will move the assignment from one reservation to another reservation.
 	// +required
 	ReservationName *string `json:"reservationName"`
 
@@ -53,7 +54,7 @@ type BigQueryReservationAssignmentSpec struct {
 
 	// Immutable. Optional.
 	// The BigQueryReservationAssignment ID used for resource creation or acquisition.
-	// Service-generated, can only be specified for resource acquisition.
+	// Service-generated.Can be set only if resource acquisition .
 	// For acquisition: This field must be provided to identify the Reservation resource to acquire.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
