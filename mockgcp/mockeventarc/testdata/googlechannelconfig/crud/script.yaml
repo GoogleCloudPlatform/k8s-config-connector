@@ -1,0 +1,3 @@
+
+- exec: gcloud eventarc google-channels describe --location=${location} --project=${projectId}
+- exec: gcloud eventarc google-channels update --location=${location} --crypto-key=projects/${projectId}/locations/${location}/keyRings/test-ring-${uniqueId}/cryptoKeys/test-key-${uniqueId} --project=${projectId}
