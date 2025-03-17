@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,20 +24,23 @@ import (
 	"strings"
 	"time"
 
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/netapp/v1"
 )
 
-type BackupVaultsService struct {
+type backupVaultsService struct {
+	*MockService
 	pb.UnimplementedNetAppServer
-	projectStore *projects.ProjectStore
 }
 
-func (s *BackupVaultsService) GetBackupVault(ctx context.Context, req *pb.GetBackupVaultRequest) (*pb.BackupVault, error) {
+func (s *backupVaultsService) GetBackupVault(ctx context.Context, req *pb.GetBackupVaultRequest) (*pb.BackupVault, error) {
 	name, err := s.parseBackupVaultName(req.Name)
 	if err != nil {
 		return nil, err
@@ -53,7 +56,7 @@ func (s *BackupVaultsService) GetBackupVault(ctx context.Context, req *pb.GetBac
 	return obj, nil
 }
 
-func (s *BackupVaultsService) CreateBackupVault(ctx context.Context, req *pb.CreateBackupVaultRequest) (*pb.BackupVault, error) {
+func (s *backupVaultsService) CreateBackupVault(ctx context.Context, req *pb.CreateBackupVaultRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/backupVaults/" + req.BackupVaultId
 	name, err := s.parseBackupVaultName(reqName)
 	if err != nil {
@@ -61,12 +64,10 @@ func (s *BackupVaultsService) CreateBackupVault(ctx context.Context, req *pb.Cre
 	}
 
 	fqn := name.String()
-
 	now := time.Now()
 
-	obj := req.BackupVault
+	obj := proto.Clone(req.GetBackupVault()).(*pb.BackupVault)
 	obj.Name = fqn
-
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.BackupVault_READY
 
@@ -74,12 +75,58 @@ func (s *BackupVaultsService) CreateBackupVault(ctx context.Context, req *pb.Cre
 		return nil, err
 	}
 
-	return obj, nil
+	metadata := &pb.OperationMetadata{}
+	return s.operations.StartLRO(ctx, req.GetParent(), metadata, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *backupVaultsService) UpdateBackupVault(ctx context.Context, req *pb.UpdateBackupVaultRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseBackupVaultName(req.BackupVault.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	obj := &pb.BackupVault{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
+		return nil, err
+	}
+	if err := fields.UpdateByFieldMask(obj, req.BackupVault, req.UpdateMask.Paths); err != nil {
+		return nil, err
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	metadata := &pb.OperationMetadata{}
+	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+func (s *backupVaultsService) DeleteBackupVault(ctx context.Context, req *pb.DeleteBackupVaultRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseBackupVaultName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	existing := &pb.BackupVault{}
+	err = s.storage.Delete(ctx, fqn, existing)
+	if err != nil {
+		return &longrunningpb.Operation{}, err
+	}
+	metadata := &pb.OperationMetadata{}
+	return s.operations.DoneLRO(ctx, name.String(), metadata, &pb.BackupVault{})
 }
 
 type backupVaultName struct {
-	Project        *projects.ProjectData
-	Location       string
+	Project       *projects.ProjectData
+	Location      string
 	BackupVaultId string
 }
 
@@ -89,17 +136,17 @@ func (n *backupVaultName) String() string {
 
 // parseBackupVaultName parses a string into a backupVaultName.
 // The expected form is `projects/*/locations/*/backupVaults/*`.
-func (s *BackupVaultsService) parseBackupVaultName(name string) (*backupVaultName, error) {
+func (s *backupVaultsService) parseBackupVaultName(name string) (*backupVaultName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "backupVaults" {
-		project, err := s.projectStore.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
 		name := &backupVaultName{
-			Project:        project,
-			Location:       tokens[3],
+			Project:       project,
+			Location:      tokens[3],
 			BackupVaultId: tokens[5],
 		}
 
@@ -108,8 +155,3 @@ func (s *BackupVaultsService) parseBackupVaultName(name string) (*backupVaultNam
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-```
-</out>
-
-
