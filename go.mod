@@ -12,20 +12,20 @@ require (
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/apphub v0.2.3
 	cloud.google.com/go/backupdr v1.3.0
-	cloud.google.com/go/batch v1.11.5
-	cloud.google.com/go/bigquery v1.66.0
+	cloud.google.com/go/batch v1.12.0
+	cloud.google.com/go/bigquery v1.66.2
 	cloud.google.com/go/certificatemanager v1.9.3
 	cloud.google.com/go/cloudbuild v1.22.0
 	cloud.google.com/go/cloudtasks v1.13.3
 	cloud.google.com/go/compute v1.34.0
 	cloud.google.com/go/dataflow v0.10.3
 	cloud.google.com/go/dataform v0.10.3
-	cloud.google.com/go/dataplex v1.21.0
-	cloud.google.com/go/dataproc/v2 v2.10.1
+	cloud.google.com/go/dataplex v1.22.0
+	cloud.google.com/go/dataproc/v2 v2.11.0
 	cloud.google.com/go/datastream v1.13.1
 	cloud.google.com/go/deploy v1.26.2
 	cloud.google.com/go/discoveryengine v1.15.0
-	cloud.google.com/go/documentai v1.35.1
+	cloud.google.com/go/documentai v1.35.2
 	cloud.google.com/go/edgecontainer v1.4.1
 	cloud.google.com/go/firestore v1.18.0
 	cloud.google.com/go/gkebackup v1.6.3

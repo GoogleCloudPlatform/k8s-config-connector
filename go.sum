@@ -40,8 +40,8 @@ cloud.google.com/go/auth/oauth2adapt v0.2.7 h1:/Lc7xODdqcEw8IrZ9SvwnlLX6j9FHQM74
 cloud.google.com/go/auth/oauth2adapt v0.2.7/go.mod h1:NTbTTzfvPl1Y3V1nPpOgl2w6d/FjO7NNUQaWSox6ZMc=
 cloud.google.com/go/backupdr v1.3.0 h1:t15Td/dan4UN19sLLd7GZwufDTr6UhV0bPOU1KgxYTw=
 cloud.google.com/go/backupdr v1.3.0/go.mod h1:S2AyryY9u/EaQmjBLsebEud50tfvdGlzkJy6GtHxuz4=
-cloud.google.com/go/batch v1.11.5 h1:TLfFZJXu+89CGbDK2mMql8f6HHFXarr8uUsaQ6wKatU=
-cloud.google.com/go/batch v1.11.5/go.mod h1:HUxnmZqnkG7zIZuF3NYCfUIrOMU3+SPArR5XA6NGu5s=
+cloud.google.com/go/batch v1.12.0 h1:lXuTaELvU0P0ARbTFxxdpOC/dFnZZeGglSw06BtO//8=
+cloud.google.com/go/batch v1.12.0/go.mod h1:CATSBh/JglNv+tEU/x21Z47zNatLQ/gpGnpyKOzbbcM=
 cloud.google.com/go/bigquery v1.0.1/go.mod h1:i/xbL2UlR5RvWAURpBYZTtm/cXjCha9lbfbpx4poX+o=
 cloud.google.com/go/bigquery v1.3.0/go.mod h1:PjpwJnslEMmckchkHFfq+HTD2DmtT67aNFKH1/VBDHE=
 cloud.google.com/go/bigquery v1.4.0/go.mod h1:S8dzgnTigyfTmLBfrtrhyYhwRxG72rYxvftPBK2Dvzc=
@@ -68,10 +68,10 @@ cloud.google.com/go/dataflow v0.10.3 h1:+7IfIXzYWSybIIDGK9FN2uqBsP/5b/Y0pBYzNhcm
 cloud.google.com/go/dataflow v0.10.3/go.mod h1:5EuVGDh5Tg4mDePWXMMGAG6QYAQhLNyzxdNQ0A1FfW4=
 cloud.google.com/go/dataform v0.10.3 h1:ZpGkZV8OyhUhvN/tfLffU2ki5ERTtqOunkIaiVAhmw0=
 cloud.google.com/go/dataform v0.10.3/go.mod h1:8SruzxHYCxtvG53gXqDZvZCx12BlsUchuV/JQFtyTCw=
-cloud.google.com/go/dataplex v1.21.0 h1:oswf105Cr2EwHrW2n7wk3nRZQf7hCe3apE/GqJ8yjvY=
-cloud.google.com/go/dataplex v1.21.0/go.mod h1:KXALVHwHdMBhz90IJAUSKh2gK0fEKB6CRjs4f6MrbMU=
-cloud.google.com/go/dataproc/v2 v2.10.1 h1:2vOv471LrcSn91VNzijcH+OkDRLa3kdyymOfKqbwZ4c=
-cloud.google.com/go/dataproc/v2 v2.10.1/go.mod h1:fq+LSN/HYUaaV2EnUPFVPxfe1XpzGVqFnL0TTXs8juk=
+cloud.google.com/go/dataplex v1.22.0 h1:j4hD6opb+gq9CJNPFIlIggoW8Kjymg8Wmy2mdHmQoiw=
+cloud.google.com/go/dataplex v1.22.0/go.mod h1:g166QMCGHvwc3qlTG4p34n+lHwu7JFfaNpMfI2uO7b8=
+cloud.google.com/go/dataproc/v2 v2.11.0 h1:6aRpyoRfNOP+r2+pGb7HeHtF+SYQID8kzztfHuK0plk=
+cloud.google.com/go/dataproc/v2 v2.11.0/go.mod h1:9vgGrn57ra7KBqz+B2KD+ltzEXvnHAUClFgq/ryU99g=
 cloud.google.com/go/datastore v1.0.0/go.mod h1:LXYbyblFSglQ5pkeyhO+Qmw7ukd3C+pD7TKLgZqpHYE=
 cloud.google.com/go/datastore v1.1.0/go.mod h1:umbIZjpQpHh4hmRpGhH4tLFup+FVzqBi1b3c64qFpCk=
 cloud.google.com/go/datastream v1.13.1 h1:tPSMLwsVrL158TPv+GSmelMRG5+tMEwDwuwgj1d/tzo=
@@ -80,8 +80,8 @@ cloud.google.com/go/deploy v1.26.2 h1:1c2Cd3jdb0mrKHHfyzSQ5DRmxgYd07tIZZzuMNrwDx
 cloud.google.com/go/deploy v1.26.2/go.mod h1:XpS3sG/ivkXCfzbzJXY9DXTeCJ5r68gIyeOgVGxGNEs=
 cloud.google.com/go/discoveryengine v1.15.0 h1:CHUN1mbs5iTqWJRuU6rZCvcuV5iVMr/rW8Kr1ivn7p4=
 cloud.google.com/go/discoveryengine v1.15.0/go.mod h1:WIstQLougDQ6D8cza4icHFfGGzXsI4QNwTEWdNfRJ8g=
-cloud.google.com/go/documentai v1.35.1 h1:52RfiUsoblXcE57CfKJGnITWLxRM30BcqNk/BKZl2LI=
-cloud.google.com/go/documentai v1.35.1/go.mod h1:WJjwUAQfwQPJORW8fjz7RODprMULDzEGLA2E6WxenFw=
+cloud.google.com/go/documentai v1.35.2 h1:hswVobCWUTXtmn+4QqUIVkai7sDOe0QS2KB3IpqLkik=
+cloud.google.com/go/documentai v1.35.2/go.mod h1:oh/0YXosgEq3hVhyH4ZQ7VNXPaveRO4eLVM3tBSZOsI=
 cloud.google.com/go/edgecontainer v1.4.1 h1:SwQuHQiheVfL7b5ar/AXDberiaqr/yiue8X55AdWnZU=
 cloud.google.com/go/edgecontainer v1.4.1/go.mod h1:ubMQvXSxsvtEjJLyqcPFrdWrHfvjQxdoyt+SUrAi5ek=
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
