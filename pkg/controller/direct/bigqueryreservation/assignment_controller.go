@@ -17,7 +17,6 @@ package bigqueryreservation
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -30,7 +29,6 @@ import (
 
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -159,58 +157,78 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 
 	// update the externalRef in the KRM resoruce
-	status.ExternalRef = direct.LazyPtr(created.Name)
+	status.ExternalRef = direct.LazyPtr(created.GetName())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Assignment", "name", a.id.String())
+	log.V(2).Info("updating or moving the Assignment", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
-
-	desiredPb := BigqueryReservationAssignmentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	paths := []string{}
+	desiredSpec := &a.desired.DeepCopy().Spec
+	l, r := desiredSpec.Location, desiredSpec.ReservationName
 
-	if a.desired.Spec.Assignee != nil && !reflect.DeepEqual(*a.desired.Spec.Assignee, a.actual.Assignee) {
-		paths = append(paths, "assignee")
-	}
-	if a.desired.Spec.JobType != nil && !reflect.DeepEqual(*a.desired.Spec.JobType, a.actual.JobType) {
-		paths = append(paths, "job_type")
-	}
-
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.String())
-		status := &krm.BigQueryReservationAssignmentStatus{}
-		status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		return updateOp.UpdateStatus(ctx, status, nil)
-	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: paths}
-
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &pb.UpdateAssignmentRequest{
-		UpdateMask: updateMask,
-		Assignment: desiredPb,
-	}
-	updated, err := a.gcpClient.UpdateAssignment(ctx, req)
+	currentReservation, _, err := krm.ParseAssignmentExternal(a.actual.GetName())
 	if err != nil {
-		return fmt.Errorf("updating Assignment %s: %w", a.id.String(), err)
+		return err
 	}
-	log.V(2).Info("successfully updated Assignment", "name", a.id.String())
 
+	var updated *pb.Assignment
 	status := &krm.BigQueryReservationAssignmentStatus{}
+	// Case1: Move the assignment to another reservation
+	if currentReservation.ProjectID != a.id.GetProjetID() || currentReservation.Location != direct.ValueOf(l) || currentReservation.ReservationName != direct.ValueOf(r) {
+		log.V(2).Info("moving assignment to another reservation", "current", a.id.String())
+		destination := "projects/" + a.id.GetProjetID() + "/locations/" + direct.ValueOf(l) + "/reservations/" + direct.ValueOf(r)
+		req := &pb.MoveAssignmentRequest{
+			Name:          a.actual.GetName(),
+			DestinationId: destination,
+		}
+		// if user wants to retain the assignmentID
+		if desiredSpec.ResourceID != nil {
+			req.AssignmentId = direct.ValueOf(desiredSpec.ResourceID)
+		}
+		updated, err = a.gcpClient.MoveAssignment(ctx, req)
+		if err != nil {
+			return fmt.Errorf("moving Assignment %s: %w", a.id.String(), err)
+		}
+
+		// Rebuild the externalRef
+		status.ExternalRef = direct.LazyPtr(updated.GetName())
+	}
+
+	/* 	if len(paths) == 0 {
+	   		log.V(2).Info("no field needs update", "name", a.id.String())
+	   		status := &krm.BigQueryReservationAssignmentStatus{}
+	   		status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
+	   		if mapCtx.Err() != nil {
+	   			return mapCtx.Err()
+	   		}
+	   		return updateOp.UpdateStatus(ctx, status, nil)
+	   	}
+	   	updateMask := &fieldmaskpb.FieldMask{
+	   		Paths: paths}
+
+	   	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
+	   	req := &pb.UpdateAssignmentRequest{
+	   		UpdateMask: updateMask,
+	   		Assignment: desiredPb,
+	   	}
+	   	updated, err := a.gcpClient.UpdateAssignment(ctx, req)
+	   	if err != nil {
+	   		return fmt.Errorf("updating Assignment %s: %w", a.id.String(), err)
+	   	}
+	   	log.V(2).Info("successfully updated Assignment", "name", a.id.String()) */
+
 	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

@@ -62,18 +62,22 @@ spec:
               of BigQueryReservationAssignment
             properties:
               assignee:
-                description: The resource which will use the reservation. E.g. `projects/myproject`,
-                  `folders/123`, or `organizations/456`.
-                type: string
-              jobType:
-                description: Which type of jobs will use the reservation.
-                type: string
-              location:
-                description: Immutable.
+                description: Immutable. The resource which will use the reservation.
+                  E.g. `projects/myproject`, `folders/123`, or `organizations/456`.
                 type: string
                 x-kubernetes-validations:
-                - message: Location field is immutable
+                - message: assignee field is immutable
                   rule: self == oldSelf
+              jobType:
+                description: Immutable. Which type of jobs will use the reservation.
+                type: string
+                x-kubernetes-validations:
+                - message: jobType field is immutable
+                  rule: self == oldSelf
+              location:
+                description: Can be changed when moving the assignment from one reservation
+                  to another reservation.
+                type: string
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -107,11 +111,16 @@ spec:
                     type: string
                 type: object
               reservationName:
-                description: Immutable.
+                description: Can be changed when moving the assignment from one reservation
+                  to another reservation.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
+              resourceID:
+                description: 'Immutable. Optional. The BigQueryReservationAssignment
+                  ID used for resource creation or acquisition. Service-generated,
+                  can only be specified for resource acquisition. For acquisition:
+                  This field must be provided to identify the Reservation resource
+                  to acquire.'
+                type: string
             required:
             - assignee
             - jobType

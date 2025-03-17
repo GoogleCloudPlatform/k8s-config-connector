@@ -28,26 +28,34 @@ type BigQueryReservationAssignmentSpec struct {
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable.
+	// Can be changed when moving the assignment from one reservation to another reservation.
 	// +required
 	Location *string `json:"location"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable.
+	// Can be changed when moving the assignment from one reservation to another reservation.
 	// +required
 	ReservationName *string `json:"reservationName"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="assignee field is immutable"
+	// Immutable.
 	// The resource which will use the reservation. E.g.
 	//  `projects/myproject`, `folders/123`, or `organizations/456`.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.assignee
 	// +required
 	Assignee *string `json:"assignee,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="jobType field is immutable"
+	// Immutable.
 	// Which type of jobs will use the reservation.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.job_type
 	// +required
 	JobType *string `json:"jobType,omitempty"`
+
+	// Immutable. Optional.
+	// The BigQueryReservationAssignment ID used for resource creation or acquisition.
+	// Service-generated, can only be specified for resource acquisition.
+	// For acquisition: This field must be provided to identify the Reservation resource to acquire.
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 // BigQueryReservationAssignmentStatus defines the config connector machine state of BigQueryReservationAssignment
