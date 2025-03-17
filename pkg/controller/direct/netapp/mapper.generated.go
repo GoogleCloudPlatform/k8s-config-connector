@@ -68,30 +68,28 @@ func NetAppBackupPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.AssignedVolumeCount = in.AssignedVolumeCount
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.State = direct.Enum_ToProto[pb.BackupPolicy_State](mapCtx, in.State)
-	return out 
+	return out
 }
-func BackupVault_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVault {
+func BackupVault_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVaultSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupVault{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: State
-	// MISSING: CreateTime
+	out := &krm.BackupVaultSpec{}
+	// observed state: State
+	// observed state: CreateTime
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	return out
 }
-func BackupVault_ToProto(mapCtx *direct.MapContext, in *krm.BackupVault) *pb.BackupVault {
+func BackupVault_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BackupVault{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: State
-	// MISSING: CreateTime
+	// observed state: State
+	// observed state: CreateTime
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
+
 	return out
 }
 func BackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVaultObservedState {
@@ -114,54 +112,6 @@ func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupV
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.BackupVault_State](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: Description
-	// MISSING: Labels
-	return out
-}
-func NetAppBackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.NetAppBackupVaultObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetAppBackupVaultObservedState{}
-	// MISSING: Name
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Description
-	// MISSING: Labels
-	return out
-}
-func NetAppBackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupVaultObservedState) *pb.BackupVault {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupVault{}
-	// MISSING: Name
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Description
-	// MISSING: Labels
-	return out
-}
-func NetAppBackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.NetAppBackupVaultSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetAppBackupVaultSpec{}
-	// MISSING: Name
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: Description
-	// MISSING: Labels
-	return out
-}
-func NetAppBackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupVaultSpec) *pb.BackupVault {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupVault{}
-	// MISSING: Name
-	// MISSING: State
-	// MISSING: CreateTime
 	// MISSING: Description
 	// MISSING: Labels
 	return out

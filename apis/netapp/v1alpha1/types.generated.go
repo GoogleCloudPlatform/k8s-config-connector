@@ -83,14 +83,3 @@ type BackupVault struct {
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
-
-// +kcc:proto=google.cloud.netapp.v1.BackupVault
-type BackupVaultObservedState struct {
-	// Output only. The backup vault state.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Create time of the backup vault.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-}

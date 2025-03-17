@@ -57,16 +57,56 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetAppBackupVaultSpec defines the desired state of NetAppBackupVault
+            description: BackupVaultSpec defines the desired state of NetAppBackupVault
             properties:
+              description:
+                description: Description of the backup vault.
+                type: string
+              location:
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
-                description: The NetAppBackupVault name. If not given, the metadata.name
+                description: The GCP resource identifier. If not given, the metadata.name
                   will be used.
                 type: string
+            required:
+            - location
+            - projectRef
             type: object
           status:
-            description: NetAppBackupVaultStatus defines the config connector machine
-              state of NetAppBackupVault
+            description: BackupVaultStatus defines the config connector machine state
+              of NetAppBackupVault
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -109,6 +149,13 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Create time of the backup vault.
+                    type: string
+                  state:
+                    description: Output only. The backup vault state.
+                    type: string
                 type: object
             type: object
         required:

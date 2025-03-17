@@ -15,21 +15,33 @@
 package v1alpha1
 
 import (
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var NetAppBackupVaultGVK = GroupVersion.WithKind("NetAppBackupVault")
 
-// NetAppBackupVaultSpec defines the desired state of NetAppBackupVault
+// BackupVaultSpec defines the desired state of NetAppBackupVault
 // +kcc:proto=google.cloud.netapp.v1.BackupVault
-type NetAppBackupVaultSpec struct {
-	// The NetAppBackupVault name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+type BackupVaultSpec struct {
+	commonv1alpha1.CommonSpec `json:",inline"`
+
+	// +required
+	Location string `json:"location"`
+
+	// Description of the backup vault.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.description
+	Description *string `json:"description,omitempty"`
+
+	// NOT YET
+	// // Resource labels to represent user provided metadata.
+	// // +kcc:proto:field=google.cloud.netapp.v1.BackupVault.labels
+	// Labels map[string]string `json:"labels,omitempty"`
 }
 
-// NetAppBackupVaultStatus defines the config connector machine state of NetAppBackupVault
-type NetAppBackupVaultStatus struct {
+// BackupVaultStatus defines the config connector machine state of NetAppBackupVault
+type BackupVaultStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -41,17 +53,23 @@ type NetAppBackupVaultStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *NetAppBackupVaultObservedState `json:"observedState,omitempty"`
+	ObservedState *BackupVaultObservedState `json:"observedState,omitempty"`
 }
 
 // NetAppBackupVaultObservedState is the state of the NetAppBackupVault resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.netapp.v1.BackupVault
-type NetAppBackupVaultObservedState struct {
+// +kcc:proto=google.cloud.netapp.v1.BackupVault// +kcc:proto=google.cloud.netapp.v1.BackupVault
+type BackupVaultObservedState struct {
+	// Output only. The backup vault state.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Create time of the backup vault.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetappbackupvault;gcpnetappbackupvaults
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
@@ -67,8 +85,8 @@ type NetAppBackupVault struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   NetAppBackupVaultSpec   `json:"spec,omitempty"`
-	Status NetAppBackupVaultStatus `json:"status,omitempty"`
+	Spec   BackupVaultSpec   `json:"spec,omitempty"`
+	Status BackupVaultStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

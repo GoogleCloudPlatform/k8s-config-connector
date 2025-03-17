@@ -29,57 +29,17 @@ func init() {
 
 func netAppBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.BackupVault{},
-		netAppBackupVaultSpecFromProto, netAppBackupVaultSpecToProto,
-		netAppBackupVaultObservedStateFromProto, netAppBackupVaultObservedStateToProto,
+		BackupVault_FromProto, BackupVault_ToProto,
+		BackupVaultObservedState_FromProto, BackupVaultObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".labels")
 
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".create_time")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".labels")
 
 	return f
-}
-
-func netAppBackupVaultSpecFromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.NetAppBackupVaultSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetAppBackupVaultSpec{}
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	return out
-}
-
-func netAppBackupVaultSpecToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupVaultSpec) *pb.BackupVault {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupVault{}
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	return out
-}
-
-func netAppBackupVaultObservedStateFromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.NetAppBackupVaultObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetAppBackupVaultObservedState{}
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	return out
-}
-
-func netAppBackupVaultObservedStateToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupVaultObservedState) *pb.BackupVault {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BackupVault{}
-	out.State = direct.Enum_ToProto[pb.BackupVault_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	return out
 }
