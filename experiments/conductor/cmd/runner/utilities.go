@@ -33,19 +33,24 @@ const (
 )
 
 var commandMap = map[int64]string{
-	cmdEnableGCPAPIs:       "enablegcpapis",
-	cmdCreateScriptYaml:    "createscriptyaml",
-	cmdCaptureHttpLog:      "capturehttplog",
-	cmdGenerateMockGo:      "generatemockgo",
-	cmdAddServiceRoundTrip: "addserviceroundtrip",
-	cmdAddProtoMakefile:    "addprotomakefile",
-	cmdRunMockTests:        "runmocktests",
-	cmdGenerateTypes:       "generatetypes",
-	cmdGenerateCRD:         "generatecrd",
-	cmdGenerateFuzzer:      "generatefuzzer",
-	cmdBuildProto:          "buildproto",
-	cmdAdjustTypes:         "adjusttypes",
-	cmdGenerateMapper:      "generatemapper",
+	cmdEnableGCPAPIs:           "enablegcpapis",
+	cmdCreateScriptYaml:        "createscriptyaml",
+	cmdCaptureHttpLog:          "capturehttplog",
+	cmdGenerateMockGo:          "generatemockgo",
+	cmdAddServiceRoundTrip:     "addserviceroundtrip",
+	cmdAddProtoMakefile:        "addprotomakefile",
+	cmdRunMockTests:            "runmocktests",
+	cmdGenerateTypes:           "generatetypes",
+	cmdGenerateCRD:             "generatecrd",
+	cmdGenerateFuzzer:          "generatefuzzer",
+	cmdBuildProto:              "buildproto",
+	cmdAdjustTypes:             "adjusttypes",
+	cmdGenerateMapper:          "generatemapper",
+	cmdControllerClient:        "controllerclient",
+	cmdGenerateController:      "generatecontroller",
+	cmdCreateIdentity:          "createidentity",
+	cmdControllerCreateTest:    "controllercreatetest",
+	cmdCaptureGoldenTestOutput: "capturegoldentestoutput",
 }
 
 type exitBash func()
@@ -593,6 +598,13 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 		lintFailure = true
 	}
 
+	// Run go mod tidy
+	goCmdsFailure := false
+	if err := runGoCmds(opts); err != nil {
+		log.Printf("go cmds failed for branch %s: %v", branch.Name, err)
+		goCmdsFailure = true
+	}
+
 	//if err := checkMakeReadyPR(opts); err != nil {
 	//	log.Printf("verification failed for branch %s: %v", branch.Name, err)
 	//}
@@ -601,6 +613,9 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 	commitMsg := processor.CommitMsg
 	if lintFailure {
 		commitMsg = fmt.Sprintf("%s. WARN: linting failed.", commitMsg)
+	}
+	if goCmdsFailure {
+		commitMsg = fmt.Sprintf("%s. WARN: go cmds failed.", commitMsg)
 	}
 	if err := stageChanges(ctx, opts, affectedPaths, commitMsg); err != nil {
 		return fmt.Errorf("failed to commit changes for branch %s: %w", branch.Name, err)
@@ -619,4 +634,25 @@ func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch
 			}
 		}
 	}
+}
+
+func runGoCmds(opts *RunnerOptions) error {
+	log.Printf("Running go mod tidy")
+
+	cfg := CommandConfig{
+		Name:       "Go Mod Tidy",
+		Cmd:        "go",
+		Args:       []string{"mod", "tidy"},
+		WorkDir:    opts.branchRepoDir,
+		MaxRetries: 1,
+	}
+	op, err := executeCommand(opts, cfg)
+	if err != nil {
+		return fmt.Errorf("Error running go mod tidy: %w", err)
+	}
+	if op.ExitCode != 0 {
+		return fmt.Errorf("go mod tidy failed with exit code %d", op.ExitCode)
+	}
+
+	return nil
 }
