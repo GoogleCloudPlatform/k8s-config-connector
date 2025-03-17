@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -23,44 +23,34 @@ var MetastoreBackupGVK = GroupVersion.WithKind("MetastoreBackup")
 
 // MetastoreBackupSpec defines the desired state of MetastoreBackup
 // +kcc:proto=google.cloud.metastore.v1.Backup
+
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+
+	// +required
+	Location string `json:"location"`
+
+	// +required
+	ServiceRef refv1beta1.Reference `json:"serviceRef"`
+}
+
 type MetastoreBackupSpec struct {
+	Parent `json:",inline"`
+
 	// The MetastoreBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Immutable. The relative resource name of the backup, in the following form:
-	//
-	//  `projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}`
-	// +kcc:proto:field=google.cloud.metastore.v1.Backup.name
-	Name *string `json:"name,omitempty"`
 
 	// The description of the backup.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.description
 	Description *string `json:"description,omitempty"`
-	// Output only. The time when the backup was started.
-	// +kcc:proto:field=google.cloud.metastore.v1.Backup.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time when the backup finished creating.
-	// +kcc:proto:field=google.cloud.metastore.v1.Backup.end_time
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Output only. The current state of the backup.
-	// +kcc:proto:field=google.cloud.metastore.v1.Backup.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. The revision of the service at the time of backup.
-	// +kcc:proto:field=google.cloud.metastore.v1.Backup.service_revision
-	ServiceRevision *Service `json:"serviceRevision,omitempty"`
-
-	// Output only. Services that are restoring from the backup.
-	// +kcc:proto:field=google.cloud.metastore.v1.Backup.restoring_services
-	RestoringServices []string `json:"restoringServices,omitempty"`
 }
 
 // MetastoreBackupStatus defines the config connector machine state of MetastoreBackup
 type MetastoreBackupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -75,6 +65,25 @@ type MetastoreBackupStatus struct {
 // MetastoreBackupObservedState is the state of the MetastoreBackup resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.metastore.v1.Backup
 type MetastoreBackupObservedState struct {
+	// Output only. The time when the backup was started.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the backup finished creating.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. The current state of the backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The revision of the service at the time of backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.service_revision
+	ServiceRevision *BackupServiceRevision `json:"serviceRevision,omitempty"`
+
+	// Output only. Services that are restoring from the backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.restoring_services
+	RestoringServices []string `json:"restoringServices,omitempty"`
 }
 
 // +genclient
@@ -105,6 +114,19 @@ type MetastoreBackupList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MetastoreBackup `json:"items"`
+}
+
+type BackupServiceRevision struct {
+	// Immutable. The relative resource name of the metastore service, in the
+	// following format:
+	//
+	//	`projects/{project_number}/locations/{location_id}/services/{service_id}`.
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	// User-defined labels for the metastore service.
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func init() {
