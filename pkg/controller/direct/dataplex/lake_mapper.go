@@ -17,6 +17,7 @@ package dataplex
 import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
+	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -121,7 +122,9 @@ func Lake_Metastore_FromProto(mapCtx *direct.MapContext, in *pb.Lake_Metastore) 
 		return nil
 	}
 	out := &krm.Lake_Metastore{}
-	out.Service = direct.LazyPtr(in.GetService())
+	if in.GetService() != "" {
+		out.ServiceRef = &dataprocv1alpha1.ServiceRef{External: in.GetService()}
+	}
 	return out
 }
 func Lake_Metastore_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metastore) *pb.Lake_Metastore {
@@ -129,7 +132,9 @@ func Lake_Metastore_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metastore) *
 		return nil
 	}
 	out := &pb.Lake_Metastore{}
-	out.Service = direct.ValueOf(in.Service)
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
 	return out
 }
 func Lake_MetastoreStatus_FromProto(mapCtx *direct.MapContext, in *pb.Lake_MetastoreStatus) *krm.Lake_MetastoreStatus {

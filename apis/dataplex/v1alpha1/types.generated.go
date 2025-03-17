@@ -51,16 +51,6 @@ type Lake struct {
 	Metastore *Lake_Metastore `json:"metastore,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataplex.v1.Lake.Metastore
-type Lake_Metastore struct {
-	// Optional. A relative reference to the Dataproc Metastore
-	//  (https://cloud.google.com/dataproc-metastore/docs) service associated
-	//  with the lake:
-	//  `projects/{project_id}/locations/{location_id}/services/{service_id}`
-	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.Metastore.service
-	Service *string `json:"service,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dataplex.v1.Lake.MetastoreStatus
 type Lake_MetastoreStatus struct {
 	// Current state of association.

@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -52,6 +53,16 @@ type DataplexLakeSpec struct {
 	//  association.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.metastore
 	Metastore *Lake_Metastore `json:"metastore,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Lake.Metastore
+type Lake_Metastore struct {
+	// Optional. A relative reference to the Dataproc Metastore
+	//  (https://cloud.google.com/dataproc-metastore/docs) service associated
+	//  with the lake:
+	//  `projects/{project_id}/locations/{location_id}/services/{service_id}`
+	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.Metastore.service
+	ServiceRef *dataprocv1alpha1.ServiceRef `json:"serviceRef,omitempty"`
 }
 
 // DataplexLakeStatus defines the config connector machine state of DataplexLake

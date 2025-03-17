@@ -76,11 +76,16 @@ spec:
                 description: Optional. Settings to manage lake and Dataproc Metastore
                   service instance association.
                 properties:
-                  service:
+                  serviceRef:
                     description: 'Optional. A relative reference to the Dataproc Metastore
                       (https://cloud.google.com/dataproc-metastore/docs) service associated
                       with the lake: `projects/{project_id}/locations/{location_id}/services/{service_id}`'
-                    type: string
+                    properties:
+                      external:
+                        description: A reference to an externally managed DataprocJob
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
+                        type: string
+                    type: object
                 type: object
               projectRef:
                 description: The Project that this resource belongs to.
