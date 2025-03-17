@@ -179,8 +179,8 @@ func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([]s
 				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
 				"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
 			},
-			WorkDir:    filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
-			MaxRetries: 1,
+			WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
+			MaxAttempts: 1,
 		}
 		_, err := executeCommand(opts, cfg)
 		if err != nil {
@@ -221,8 +221,8 @@ func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 				"--service", branch.Package,
 				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
 			},
-			WorkDir:    filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
-			MaxRetries: 2,
+			WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
+			MaxAttempts: 2,
 		}
 		_, err := executeCommand(opts, cfg)
 		if err != nil {
@@ -242,10 +242,10 @@ func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch) ([]str
 
 	// Generate CRDs
 	cfg := CommandConfig{
-		Name:       "Generate CRDs",
-		Cmd:        filepath.Join(opts.branchRepoDir, "dev", "tasks", "generate-crds"),
-		WorkDir:    opts.branchRepoDir,
-		MaxRetries: 1,
+		Name:        "Generate CRDs",
+		Cmd:         filepath.Join(opts.branchRepoDir, "dev", "tasks", "generate-crds"),
+		WorkDir:     opts.branchRepoDir,
+		MaxAttempts: 1,
 	}
 
 	_, err := executeCommand(opts, cfg)
@@ -592,8 +592,8 @@ func regenerateTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 			"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
 			"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
 		},
-		WorkDir:    filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
-		MaxRetries: 1,
+		WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
+		MaxAttempts: 1,
 	}
 	_, err := executeCommand(opts, cfg)
 	return []string{resourceTypesPath, generatedTypesPath}, err

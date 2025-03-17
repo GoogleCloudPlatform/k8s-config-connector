@@ -337,7 +337,7 @@ type CommandConfig struct {
 	Stdin        io.Reader         // Optional stdin
 	Env          map[string]string // Optional environment variables
 	Timeout      time.Duration     // Timeout duration (default 5m)
-	MaxRetries   int               // Maximum number of retries allowed for this command
+	MaxAttempts  int               // Maximum number of attempts allowed for this command to run
 	RetryBackoff time.Duration     // Time to wait between retries (default 1s)
 }
 
@@ -357,8 +357,8 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (ExecResults, error)
 
 	maxRetries := opts.defaultRetries
 	// If MaxRetries is set in config, cap it at that
-	if cfg.MaxRetries > 0 && cfg.MaxRetries < maxRetries {
-		maxRetries = cfg.MaxRetries
+	if cfg.MaxAttempts > 0 && cfg.MaxAttempts < maxRetries {
+		maxRetries = cfg.MaxAttempts
 	}
 
 	var lastErr error
@@ -450,11 +450,11 @@ func runLinters(opts *RunnerOptions) error {
 	log.Printf("Running linters")
 
 	cfg := CommandConfig{
-		Name:       "Go Fmt",
-		Cmd:        "go",
-		Args:       []string{"fmt", "./..."},
-		WorkDir:    opts.branchRepoDir,
-		MaxRetries: 1,
+		Name:        "Go Fmt",
+		Cmd:         "go",
+		Args:        []string{"fmt", "./..."},
+		WorkDir:     opts.branchRepoDir,
+		MaxAttempts: 1,
 	}
 	op, err := executeCommand(opts, cfg)
 	if err != nil {
@@ -471,11 +471,11 @@ func checkMakeReadyPR(opts *RunnerOptions) error {
 	log.Printf("Running make ready-pr verification")
 
 	cfg := CommandConfig{
-		Name:       "Make Ready-PR",
-		Cmd:        "make",
-		Args:       []string{"ready-pr"},
-		WorkDir:    opts.branchRepoDir,
-		MaxRetries: 1,
+		Name:        "Make Ready-PR",
+		Cmd:         "make",
+		Args:        []string{"ready-pr"},
+		WorkDir:     opts.branchRepoDir,
+		MaxAttempts: 1,
 	}
 
 	if _, err := executeCommand(opts, cfg); err != nil {
@@ -640,11 +640,11 @@ func runGoCmds(opts *RunnerOptions) error {
 	log.Printf("Running go mod tidy")
 
 	cfg := CommandConfig{
-		Name:       "Go Mod Tidy",
-		Cmd:        "go",
-		Args:       []string{"mod", "tidy"},
-		WorkDir:    opts.branchRepoDir,
-		MaxRetries: 1,
+		Name:        "Go Mod Tidy",
+		Cmd:         "go",
+		Args:        []string{"mod", "tidy"},
+		WorkDir:     opts.branchRepoDir,
+		MaxAttempts: 1,
 	}
 	op, err := executeCommand(opts, cfg)
 	if err != nil {
