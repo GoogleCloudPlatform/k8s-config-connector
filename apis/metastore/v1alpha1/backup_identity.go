@@ -61,7 +61,7 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 	if err != nil {
 		return nil, err
 	}
-	serviceRef := obj.Spec.ServiceRef.Value
+	serviceRef := obj.Spec.ServiceRef.Name
 	if serviceRef == "" {
 		if obj.Spec.ServiceRef.External == "" {
 			return nil, fmt.Errorf("cannot resolve serviceRef")

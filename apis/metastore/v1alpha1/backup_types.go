@@ -32,7 +32,7 @@ type Parent struct {
 	Location string `json:"location"`
 
 	// +required
-	ServiceRef refv1beta1.Reference `json:"serviceRef"`
+	ServiceRef *ServiceRef `json:"serviceRef"`
 }
 
 type MetastoreBackupSpec struct {

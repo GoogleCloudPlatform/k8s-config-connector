@@ -42,6 +42,18 @@ type BackupRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+type ServiceRef struct {
+	// A reference to an externally managed MetastoreBackup resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
+	External string `json:"external,omitempty"`
+
+	// The name of a MetastoreBackup resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a MetastoreBackup resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
 // NormalizedExternal provision the "External" value for other resource that depends on MetastoreBackup.
 // If the "External" is given in the other resource's spec.MetastoreBackupRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual MetastoreBackup object from the cluster.
