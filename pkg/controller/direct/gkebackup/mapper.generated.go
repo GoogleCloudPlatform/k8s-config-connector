@@ -120,7 +120,6 @@ func ExclusionWindow_DayOfWeekList_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
 	return out
 }
-
 func GKEBackupBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBackupPlanSpec) *pb.BackupPlan {
 	if in == nil {
 		return nil
@@ -313,7 +312,6 @@ func RestoreConfig_RestoreOrder_GroupKindDependency_ToProto(mapCtx *direct.MapCo
 	out.Requiring = RestoreConfig_GroupKind_ToProto(mapCtx, in.Requiring)
 	return out
 }
-
 func RestoreConfig_TransformationRule_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_TransformationRule) *krm.RestoreConfig_TransformationRule {
 	if in == nil {
 		return nil
