@@ -600,3 +600,94 @@ func ToUnstruct(t *testing.T, bytes []byte) *unstructured.Unstructured {
 
 	return &unstructured.Unstructured{Object: obj}
 }
+
+// TestCRDShortNamePluralization checks for obviously incorrect pluralization in shortNames
+func TestCRDShortNamePluralization(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		// Only check CRDs with exactly 2 shortNames (likely singular and plural forms)
+		if len(crd.Spec.Names.ShortNames) != 2 {
+			continue
+		}
+
+		// Get all CRD versions
+		var versions []string
+		for _, v := range crd.Spec.Versions {
+			versions = append(versions, v.Name)
+		}
+		versionStr := strings.Join(versions, ",")
+		if versionStr == "" {
+			versionStr = "unknown"
+		}
+
+		// Sort shortNames by length to identify singular (shorter) and plural (longer)
+		shortNames := make([]string, len(crd.Spec.Names.ShortNames))
+		copy(shortNames, crd.Spec.Names.ShortNames)
+		sort.Slice(shortNames, func(i, j int) bool {
+			return len(shortNames[i]) < len(shortNames[j])
+		})
+
+		singular := shortNames[0]
+		plural := shortNames[1]
+
+		// Check if the plural form is valid according to English pluralization rules
+		if !isValidPlural(singular, plural) {
+			errs = append(errs, fmt.Sprintf("[shortname_plural] crd=%s version=%s: plural shortName %q appears to have incorrect pluralization of %q", crd.Name, versionStr, plural, singular))
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/shortname_pluralization.txt", want)
+}
+
+// isValidPlural checks if a string is a valid pluralization of another string
+func isValidPlural(singular, plural string) bool {
+	// Special cases for words that are already plural or don't follow standard rules
+	alreadyPluralWords := []string{"settings", "metrics", "series", "data"}
+	for _, word := range alreadyPluralWords {
+		if strings.HasSuffix(singular, word) {
+			return plural == singular // Already plural words should stay the same
+		}
+	}
+
+	// Rule 1: If singular ends with 's', 'x', 'z', 'ch', 'sh', add 'es'
+	if strings.HasSuffix(singular, "s") ||
+		strings.HasSuffix(singular, "x") ||
+		strings.HasSuffix(singular, "z") ||
+		strings.HasSuffix(singular, "ch") ||
+		strings.HasSuffix(singular, "sh") {
+		return plural == singular+"es"
+	}
+
+	// Rule 2: If singular ends with 'y' preceded by a consonant, change 'y' to 'ies'
+	if strings.HasSuffix(singular, "y") && len(singular) > 1 {
+		// Check if the character before 'y' is a consonant
+		r := rune(singular[len(singular)-2])
+		if !isVowel(r) {
+			return plural == singular[:len(singular)-1]+"ies"
+		}
+	}
+
+	// Rule 3: If singular ends with 'f' or 'fe', change to 'ves'
+	if strings.HasSuffix(singular, "f") {
+		return plural == singular[:len(singular)-1]+"ves"
+	}
+	if strings.HasSuffix(singular, "fe") {
+		return plural == singular[:len(singular)-2]+"ves"
+	}
+
+	// Rule 4: Default case - just add 's'
+	return plural == singular+"s"
+}
+
+// Helper function to check if a rune is a vowel
+func isVowel(r rune) bool {
+	r = unicode.ToLower(r)
+	return r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u'
+}
