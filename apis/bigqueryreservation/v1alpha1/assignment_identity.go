@@ -27,8 +27,9 @@ import (
 // AssignmentIdentity defines the resource reference to BigQueryReservationAssignment,
 // which "External" field holds the GCP identifier for the KRM object.
 type AssignmentIdentity struct {
-	parent *AssignmentParent
-	id     string
+	parent    *AssignmentParent
+	projectID string
+	id        string
 }
 
 func (i *AssignmentIdentity) String() string {
@@ -41,6 +42,10 @@ func (i *AssignmentIdentity) ID() string {
 
 func (i *AssignmentIdentity) Parent() *AssignmentParent {
 	return i.parent
+}
+
+func (i *AssignmentIdentity) GetProjetID() string {
+	return i.projectID
 }
 
 type AssignmentParent struct {
@@ -66,13 +71,11 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := *obj.Spec.Location
-	reservation := *obj.Spec.ReservationName
+	reservationName := *obj.Spec.ReservationName
 
 	// Get desired ID
-	resourceID := obj.GetName()
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// Only works for resource aquisition
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -82,29 +85,34 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 		if err != nil {
 			return nil, err
 		}
+		// Moving an Assignment from one reservation to another reservation
+		//  can override these values
 		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+			projectID = actualParent.ProjectID
 		}
 		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+			location = actualParent.Location
 		}
-		if actualParent.ReservationName != reservation {
-			return nil, fmt.Errorf("spec.reservation changed, expect %s, got %s", actualParent.ReservationName, reservation)
+		if actualParent.ReservationName != reservationName {
+			reservationName = actualParent.ReservationName
 		}
 		// For BigQueryReservationAssignment, the GCP resourceID is output only.
-		/* 	if actualResourceID != resourceID {
-				return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-					resourceID, actualResourceID)
-		} */
-		resourceID = actualResourceID
+		if resourceID == "" {
+			resourceID = actualResourceID
+		} else if resourceID != actualResourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualResourceID)
+		}
 	}
+
 	return &AssignmentIdentity{
 		parent: &AssignmentParent{
 			ProjectID:       projectID,
 			Location:        location,
-			ReservationName: reservation,
+			ReservationName: reservationName,
 		},
-		id: resourceID,
+		projectID: projectID,
+		id:        resourceID,
 	}, nil
 }
 
