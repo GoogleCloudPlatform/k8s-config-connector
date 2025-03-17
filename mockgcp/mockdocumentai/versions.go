@@ -16,7 +16,11 @@ package mockdocumentai
 
 import (
 	"context"
+	"strconv"
 	"strings"
+	"time"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 
@@ -28,7 +32,8 @@ import (
 )
 
 func (s *DocumentProcessorV1) GetProcessorVersion(ctx context.Context, req *pb.GetProcessorVersionRequest) (*pb.ProcessorVersion, error) {
-	name, err := s.parseProcessorVersionName(req.GetName())
+	reqName := req.GetName()
+	name, err := s.parseProcessorVersionName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +42,9 @@ func (s *DocumentProcessorV1) GetProcessorVersion(ctx context.Context, req *pb.G
 
 	obj := &pb.ProcessorVersion{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 	}
 
 	return obj, nil
@@ -60,11 +67,18 @@ func (s *DocumentProcessorV1) DeleteProcessorVersion(ctx context.Context, req *p
 }
 
 func (s *DocumentProcessorV1) TrainProcessorVersion(ctx context.Context, req *pb.TrainProcessorVersionRequest) (*longrunning.Operation, error) {
-	name, err := s.parseProcessorVersionName(req.GetProcessorVersion().GetName())
+	versionID := req.GetProcessorVersion().GetName()
+	id := uint64(time.Now().UnixNano())
+	if versionID == "" {
+		versionID = strconv.FormatUint(id, 10)
+	}
+	reqName := req.Parent + "/processorVersions/" + versionID
+	versionName, err := s.parseProcessorVersionName(reqName)
 	if err != nil {
 		return nil, err
 	}
-	fqn := name.String()
+
+	fqn := versionName.String()
 
 	processorVersion := proto.Clone(req.GetProcessorVersion()).(*pb.ProcessorVersion)
 	processorVersion.Name = fqn
@@ -73,7 +87,18 @@ func (s *DocumentProcessorV1) TrainProcessorVersion(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	op := &pb.TrainProcessorVersionMetadata{}
+	op.CommonMetadata = &pb.CommonOperationMetadata{
+		CreateTime: timestamppb.New(time.Now()),
+		UpdateTime: timestamppb.New(time.Now()),
+		Resource:   fqn,
+	}
+	op.TrainingDatasetValidation = &pb.TrainProcessorVersionMetadata_DatasetValidation{}
+	op.TestDatasetValidation = &pb.TrainProcessorVersionMetadata_DatasetValidation{}
+
+	return s.operations.StartLRO(ctx, req.Parent, op, func() (proto.Message, error) {
+		return processorVersion, nil
+	})
 }
 
 type processorVersionName struct {
