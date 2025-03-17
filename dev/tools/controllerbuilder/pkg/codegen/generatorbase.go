@@ -22,6 +22,7 @@ import (
 	"strings"
 	"time"
 
+	"golang.org/x/tools/imports"
 	"k8s.io/klog/v2"
 )
 
@@ -112,11 +113,23 @@ func (f *generatedFile) Write(addCopyright bool) error {
 		}
 		w.WriteString(")\n")
 	}
+
 	f.body.WriteTo(&w)
 
 	p := filepath.Join(dir, f.key.FileName)
 	klog.Infof("writing file %v", p)
-	if err := os.WriteFile(p, w.Bytes(), 0644); err != nil {
+
+	// Fix imports, remove unused, adjust which imports can be chosen (from the package path influence).
+	importOps := &imports.Options{
+		Comments:  true,
+		AllErrors: true,
+		Fragment:  true}
+	formattedOut, err := imports.Process(p, w.Bytes(), importOps)
+	if err != nil {
+		return fmt.Errorf("formatting import %q: %w", p, err)
+	}
+
+	if err := os.WriteFile(p, formattedOut, 0644); err != nil {
 		return fmt.Errorf("writing %q: %w", p, err)
 	}
 
