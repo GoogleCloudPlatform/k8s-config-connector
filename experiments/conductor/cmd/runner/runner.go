@@ -44,27 +44,32 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	readFileTypeFlag        = "file-type"
 
 	// Command values
-	cmdHelp                = 0
-	cmdCheckRepo           = 1
-	cmdCreateGitBranch     = 2
-	cmdDeleteGitBranch     = 3
-	cmdEnableGCPAPIs       = 4
-	cmdReadFiles           = 5
-	cmdWriteFiles          = 6
-	cmdDiff                = 7
-	cmdRevert              = 8
-	cmdCreateScriptYaml    = 10
-	cmdCaptureHttpLog      = 11
-	cmdGenerateMockGo      = 12
-	cmdAddServiceRoundTrip = 13
-	cmdAddProtoMakefile    = 14
-	cmdBuildProto          = 15
-	cmdRunMockTests        = 16
-	cmdGenerateTypes       = 20
-	cmdAdjustTypes         = 21
-	cmdGenerateCRD         = 22
-	cmdGenerateMapper      = 23
-	cmdGenerateFuzzer      = 24
+	cmdHelp                    = 0
+	cmdCheckRepo               = 1
+	cmdCreateGitBranch         = 2
+	cmdDeleteGitBranch         = 3
+	cmdEnableGCPAPIs           = 4
+	cmdReadFiles               = 5
+	cmdWriteFiles              = 6
+	cmdDiff                    = 7
+	cmdRevert                  = 8
+	cmdCreateScriptYaml        = 10
+	cmdCaptureHttpLog          = 11
+	cmdGenerateMockGo          = 12
+	cmdAddServiceRoundTrip     = 13
+	cmdAddProtoMakefile        = 14
+	cmdBuildProto              = 15
+	cmdRunMockTests            = 16
+	cmdGenerateTypes           = 20
+	cmdAdjustTypes             = 21
+	cmdGenerateCRD             = 22
+	cmdGenerateMapper          = 23
+	cmdGenerateFuzzer          = 24
+	cmdControllerClient        = 40
+	cmdGenerateController      = 41
+	cmdCreateIdentity          = 43
+	cmdControllerCreateTest    = 44
+	cmdCaptureGoldenTestOutput = 45
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
@@ -360,6 +365,24 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		// handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
 	case cmdGenerateFuzzer: // 24
 		processBranches(ctx, opts, branches.Branches, "Fuzzer", []BranchProcessor{{Fn: generateFuzzer, CommitMsg: "Add generated fuzzer"}})
+	case cmdControllerClient: // 40
+		processBranches(ctx, opts, branches.Branches, "Controller Client", []BranchProcessor{{Fn: generateControllerClient, CommitMsg: "Add controller client"}})
+	case cmdGenerateController: // 41
+		processBranches(ctx, opts, branches.Branches, "Controller", []BranchProcessor{{Fn: generateController, CommitMsg: "Add controller"}})
+	case cmdCreateIdentity: // 43
+		processBranches(ctx, opts, branches.Branches, "Identity and Reference", []BranchProcessor{
+			{Fn: generateControllerIdentity, CommitMsg: "Add controller identity"},
+			{Fn: generateControllerReference, CommitMsg: "Add controller reference"},
+		})
+	case cmdControllerCreateTest: // 44
+		processBranches(ctx, opts, branches.Branches, "Controller Test", []BranchProcessor{
+			{Fn: createControllerTest, CommitMsg: "Create minimal test"},
+			{Fn: updateTestHarness, CommitMsg: "Support for testing with mockgcp"},
+		})
+	case cmdCaptureGoldenTestOutput: // 45
+		processBranches(ctx, opts, branches.Branches, "Golden Test Output", []BranchProcessor{
+			{Fn: captureGoldenTestOutput, CommitMsg: "Capture golden output"},
+		})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -390,6 +413,11 @@ func printHelp() {
 	log.Println("\t22 - [CRD] Generate CRD for each branch")
 	log.Println("\t23 - [CRD] Generate Mapper for each branch")
 	log.Println("\t24 - [CRD] Generate Fuzzer for each branch")
+	log.Println("\t40 - [Controller] Generate controller client for each branch")
+	log.Println("\t41 - [Controller] Generate controller for each branch")
+	log.Println("\t43 - [Controller] [optional, simialr to 20, 21] Create identity and reference files for each branch")
+	log.Println("\t44 - [Controller] Create minimal test files for each branch")
+	log.Println("\t45 - [Controller] Capture golden test output for each branch")
 }
 
 func checkRepoDir(opts *RunnerOptions, branches Branches) {
