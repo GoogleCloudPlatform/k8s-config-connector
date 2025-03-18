@@ -32,7 +32,7 @@ type EntryGroupIdentity struct {
 }
 
 func (i *EntryGroupIdentity) String() string {
-	return i.parent.String() + "/entrygroups/" + i.id
+	return i.parent.String() + "/entryGroups/" + i.id
 }
 
 func (i *EntryGroupIdentity) ID() string {
