@@ -26,18 +26,6 @@ var BigtableBackupGVK = GroupVersion.WithKind("BigtableBackup")
 type BigtableBackupSpec struct {
 	// The BigtableBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// A globally unique identifier for the backup which cannot be
-	//  changed. Values are of the form
-	//  `projects/{project}/instances/{instance}/clusters/{cluster}/
-	//     backups/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`
-	//  The final segment of the name must be between 1 and 50 characters
-	//  in length.
-	//
-	//  The backup is stored in the cluster identified by the prefix of the backup
-	//  name of the form
-	//  `projects/{project}/instances/{instance}/clusters/{cluster}`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.name
-	Name *string `json:"name,omitempty"`
 
 	// Required. Immutable. Name of the table from which this backup was created.
 	//  This needs to be in the same instance as the backup. Values are of the form

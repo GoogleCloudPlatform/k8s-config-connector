@@ -240,41 +240,6 @@ type Status struct {
 	Details []Any `json:"details,omitempty"`
 }
 
-// +kcc:proto=google.bigtable.admin.v2.Backup
-type BackupObservedState struct {
-	// Output only. Name of the backup from which this backup was copied. If a
-	//  backup is not created by copying a backup, this field will be empty. Values
-	//  are of the form:
-	//  projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.source_backup
-	SourceBackup *string `json:"sourceBackup,omitempty"`
-
-	// Output only. `start_time` is the time that the backup was started
-	//  (i.e. approximately the time the
-	//  [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup]
-	//  request is received).  The row data in this backup will be no older than
-	//  this timestamp.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// Output only. `end_time` is the time that the backup was finished. The row
-	//  data in the backup will be no newer than this timestamp.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.end_time
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Output only. Size of the backup in bytes.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.size_bytes
-	SizeBytes *int64 `json:"sizeBytes,omitempty"`
-
-	// Output only. The current state of the backup.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. The encryption information for the backup.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.encryption_info
-	EncryptionInfo *EncryptionInfo `json:"encryptionInfo,omitempty"`
-}
-
 // +kcc:proto=google.bigtable.admin.v2.EncryptionInfo
 type EncryptionInfoObservedState struct {
 	// Output only. The type of encryption used to protect this resource.
