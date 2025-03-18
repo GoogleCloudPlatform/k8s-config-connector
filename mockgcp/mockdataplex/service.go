@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockaccesscontextmanager
+package mockdataplex
 
 // +tool:mockgcp-service
 // http.host: accesscontextmanager.googleapis.com
@@ -76,5 +76,3 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	return mux, nil
 }
-
-
