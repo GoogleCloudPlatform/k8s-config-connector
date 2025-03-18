@@ -47,6 +47,11 @@ type TagKeys struct {
 	pb_v3.UnimplementedTagKeysServer
 }
 
+type TagValues struct {
+	*MockService
+	pb_v3.UnimplementedTagValuesServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
