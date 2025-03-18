@@ -65,8 +65,14 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	instance := obj.Spec.Instance
-	cluster := obj.Spec.Cluster
+	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, err
+	}
+	clusterRef, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, err
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -88,11 +94,11 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Instance != instance {
-			return nil, fmt.Errorf("spec.instance changed, expect %s, got %s", actualParent.Instance, instance)
+		if actualParent.InstanceRef != instanceRef {
+			return nil, fmt.Errorf("spec.instance changed, expect %s, got %s", actualParent.Instance, instanceRef)
 		}
-		if actualParent.Cluster != cluster {
-			return nil, fmt.Errorf("spec.cluster changed, expect %s, got %s", actualParent.Cluster, cluster)
+		if actualParent.ClusterRef != clusterRef {
+			return nil, fmt.Errorf("spec.cluster changed, expect %s, got %s", actualParent.Cluster, clusterRef)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -102,8 +108,8 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 	return &BackupIdentity{
 		parent: &BackupParent{
 			ProjectID: projectID,
-			Instance:  instance,
-			Cluster:   cluster,
+			Instance:  instanceRef,
+			Cluster:   clusterRef,
 		},
 		id: resourceID,
 	}, nil

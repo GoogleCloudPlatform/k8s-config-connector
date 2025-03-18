@@ -15,15 +15,27 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var BigtableBackupGVK = GroupVersion.WithKind("BigtableBackup")
 
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	InstanceRef bigtablev1beta1.InstanceRef `json:"instanceRef"`
+	// + required
+	ClusterRef bigtablev1beta1.ClusterRef `json:"clusterRef"`
+}
+
 // BigtableBackupSpec defines the desired state of BigtableBackup
 // +kcc:proto=google.bigtable.admin.v2.Backup
 type BigtableBackupSpec struct {
+	Parent `json:",inline"`
+
 	// The BigtableBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
