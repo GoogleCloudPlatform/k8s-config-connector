@@ -1,14 +1,345 @@
-POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/internalRanges?alt=json&internalRangeId=test-${uniqueId}
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
 
 {
-  "network": "test-network",
+  "autoCreateSubnetworks": true,
+  "name": "${networkID}",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}/wait?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": true,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
+  ]
+}
+
+---
+
+POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges?alt=json&internalRangeId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "network": "${networkID}",
   "peering": "FOR_SELF",
   "prefixLength": 24,
   "usage": "FOR_VPC"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "ipCidrRange": "10.120.140.0/24",
+    "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+    "peering": "FOR_SELF",
+    "prefixLength": 24,
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "usage": "FOR_VPC"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "ipCidrRange": "10.120.140.0/24",
+  "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "peering": "FOR_SELF",
+  "prefixLength": 24,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "usage": "FOR_VPC"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "ipCidrRange": "10.120.140.0/24",
+  "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "peering": "FOR_SELF",
+  "prefixLength": 24,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "usage": "FOR_VPC"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "internalRanges": [
+    {
+      "createTime": "2025-03-18T23:10:42.406094444Z",
+      "ipCidrRange": "10.120.140.0/24",
+      "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "peering": "FOR_SELF",
+      "prefixLength": 24,
+      "updateTime": "2025-03-18T23:10:42.897679758Z",
+      "usage": "FOR_VPC"
+    },
+    {
+      "createTime": "2024-12-18T22:35:22.168760738Z",
+      "description": "Reserved range for GKE resource \"pods\" for cluster with short hash \"ab4f7c9d\"",
+      "ipCidrRange": "10.80.0.0/14",
+      "name": "projects/${projectId}/locations/global/internalRanges/gke-cnrm-dev-pods-ab4f7c9d",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+      "peering": "FOR_SELF",
+      "prefixLength": 14,
+      "targetCidrRange": [
+        "10.0.0.0/9"
+      ],
+      "updateTime": "2024-12-18T22:35:22.859939444Z",
+      "usage": "FOR_VPC",
+      "users": [
+        "//compute.googleapis.com/projects/${projectNumber}/locations/us-west1/subnetworks/default/secondaryRanges/gke-cnrm-dev-pods-ab4f7c9d"
+      ]
+    }
+  ]
+}
+
+---
+
+PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/test-${uniqueId}?alt=json&updateMask=prefixLength
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "prefixLength": 28
 }
 
 400 Bad Request
@@ -27,87 +358,35 @@ X-Xss-Protection: 0
     "details": [
       {
         "@type": "type.googleapis.com/google.rpc.DebugInfo",
-        "detail": "generic::failed_precondition: InternalRanges not enabled for this location: failed precondition",
+        "detail": "generic::invalid_argument: Cannot shrink from /24 to /28: invalid argument",
         "stackEntries": [
-          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc1280fa960, 0x5f})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x555728e1af40?, 0xc18226e180?})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1066 +0x2f4 google3/cloud/control2/shared/userfriendly/userfriendly.FromExternalUserFriendlyStatus({0x555728f76a88, 0xc13e0ccea0}, {0x55571bde49f5, 0xd}, 0xc18226e180, 0x0, 0x0)",
-          "cloud/control2/frontend/clhprotocol/clh_client.go:192 +0x614 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.callBackendMethod({0x5557280c0980?}, {0x555728f76a88, 0xc13e0ccea0}, {0xc1a5c1206f, 0xb}, 0x6a163d1696, {0x555728f66e28, 0xc0b5620230}, {0x555728e1a9f8, 0xc0bbd23cc0}, ...)",
-          "cloud/control2/frontend/clhprotocol/clh_client.go:56 +0x78 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.CallPreprocess({0xc0fac245f0?}, {0x555728f76a88, 0xc13e0ccea0}, 0x0, {0xc1a5c1206f?, 0xc0050a4a00?}, 0xc0b5620140?, 0x555728e21960?, {0x555728e1a9f8, 0xc0bbd23cc0}, ...)",
-          "cloud/control2/frontend/handler/mutate.go:508 +0x2fe5 google3/cloud/control2/frontend/handler/handler.Handler.handleResourceMutation({{{0x555728f808f0, 0xc0064b2700}, {0x0, 0x0}}, {{0xc00c474d10, 0x1, 0x1}, 0xc00c454d68, 0xc00c474d00, {0x555728f92d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:375 +0xbbb google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x555728f808f0, 0xc0064b2700}, {0x0, 0x0}}, {{0xc00c474d10, 0x1, 0x1}, 0xc00c454d68, 0xc00c474d00, {0x555728f92d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x555728f808f0, 0xc0064b2700}, {0x0, 0x0}}, {{0xc00c474d10, 0x1, 0x1}, 0xc00c454d68, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x555728f808f0, 0xc0064b2700}, {0x0, 0x0}}, {{0xc00c474d10, 0x1, 0x1}, 0xc00c454d68, 0xc00c474d00, {0x555728f92d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc0053c98c0, {0x555728f76a88, 0xc13e0ccba0}, 0xc19ea32f00, 0xc13e3fdb48, 0xc19fee1b18, {0xc140d08600?, 0x55571ecc73e7?})",
-          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc0053c98c0, {0x555728f76a88, 0xc13e0ccba0}, 0xc13e3fdb48, 0xc19fee1b18)",
-          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc0fac25308?, {0x555728f76a88, 0xc13e0ccba0}, 0x555726c140c0?, 0xc09f7cd301?)",
-          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc009baaa50, {0x555728f76a88, 0xc13e0ccba0}, 0xc13e3fdb48)",
-          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x555728f76a88?, 0xc13e0ccba0?}, 0xc13e3fdb48?, {0x0?, 0x0?}, {0x555728f8c120, 0xc0b56200a0})",
-          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x555728f76a88?, 0xc1381b1410?}, 0xc0fac258d0)",
-          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc07742e080, {0x555728f77098, 0xc1488bc660}, 0xc1460ae680)"
+          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc1d349a640, 0x4a})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x558a3ce1af40?, 0xc1d686c340?})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1066 +0x2f4 google3/cloud/control2/shared/userfriendly/userfriendly.FromExternalUserFriendlyStatus({0x558a3cf76a88, 0xc17ef56cc0}, {0x558a2fde49f5, 0xd}, 0xc1d686c340, 0x0, 0x0)",
+          "cloud/control2/frontend/clhprotocol/clh_client.go:192 +0x614 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.callBackendMethod({0x558a3c0c0980?}, {0x558a3cf76a88, 0xc17ef56cc0}, {0xc173eaeba0, 0x6}, 0x6a163d1696, {0x558a3cf66e28, 0xc1b66cd6d0}, {0x558a3ce1a9f8, 0xc037599980}, ...)",
+          "cloud/control2/frontend/clhprotocol/clh_client.go:56 +0x78 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.CallPreprocess({0xc176a265f0?}, {0x558a3cf76a88, 0xc17ef56cc0}, 0x0, {0xc173eaeba0?, 0xc005038c80?}, 0xc1b66cd5e0?, 0x558a3ce21960?, {0x558a3ce1a9f8, 0xc037599980}, ...)",
+          "cloud/control2/frontend/handler/mutate.go:508 +0x2fe5 google3/cloud/control2/frontend/handler/handler.Handler.handleResourceMutation({{{0x558a3cf808f0, 0xc00612bc40}, {0x0, 0x0}}, {{0xc00b9cc330, 0x1, 0x1}, 0xc00e2cd800, 0xc00b9cc320, {0x558a3cf92d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:375 +0xbbb google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x558a3cf808f0, 0xc00612bc40}, {0x0, 0x0}}, {{0xc00b9cc330, 0x1, 0x1}, 0xc00e2cd800, 0xc00b9cc320, {0x558a3cf92d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x558a3cf808f0, 0xc00612bc40}, {0x0, 0x0}}, {{0xc00b9cc330, 0x1, 0x1}, 0xc00e2cd800, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x558a3cf808f0, 0xc00612bc40}, {0x0, 0x0}}, {{0xc00b9cc330, 0x1, 0x1}, 0xc00e2cd800, 0xc00b9cc320, {0x558a3cf92d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc008e0d320, {0x558a3cf76a88, 0xc17ef56a50}, 0xc179c6d440, 0xc1d69d6780, 0xc1cf1f1b00, {0xc1f7715ea0?, 0x64232cc7300?})",
+          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc008e0d320, {0x558a3cf76a88, 0xc17ef56a50}, 0xc1d69d6780, 0xc1cf1f1b00)",
+          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc176a27308?, {0x558a3cf76a88, 0xc17ef56a50}, 0x558a3ac140c0?, 0xc051031701?)",
+          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc006c5b650, {0x558a3cf76a88, 0xc17ef56a50}, 0xc1d69d6780)",
+          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x558a3cf76a88?, 0xc17ef56a50?}, 0xc1d69d6780?, {0x0?, 0x0?}, {0x558a3cf8c120, 0xc1b66cd540})",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x558a3cf76a88?, 0xc139668ab0?}, 0xc176a278d0)",
+          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc03c2be060, {0x558a3cf77098, 0xc12f18bb60}, 0xc172cbf100)"
         ]
       }
     ],
-    "message": "InternalRanges not enabled for this location: failed precondition",
-    "status": "FAILED_PRECONDITION"
+    "message": "Cannot shrink from /24 to /28: invalid argument",
+    "status": "INVALID_ARGUMENT"
   }
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/internalRanges/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.DebugInfo",
-        "detail": "not found: resource not found",
-        "stackEntries": [
-          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc001d16f00, 0x1d})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x55f6be61a738?, 0xc005256e40?})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:556 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x55f6be776a88, 0xc0d3663b00}, {0x55f6b15f52cf, 0x10}, {0xc14e7b4e10, 0x4f}, {0x55f6be61a738, 0xc005256e40})",
-          "cloud/control2/frontend/userfriendly/userfriendly_store.go:89 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x55f6be776a88, 0xc0d3663b00}, 0xc19efd3100, {0x55f6be61a738, 0xc005256e40})",
-          "cloud/control2/frontend/handler/readonly.go:291 +0x1668 google3/cloud/control2/frontend/handler/handler.Handler.handleGet({{{0x55f6be7808f0, 0xc006372f00}, {0x0, 0x0}}, {{0xc00b4e6cc0, 0x1, 0x1}, 0xc00d71fe90, 0xc00b4e6cb0, {0x55f6be792d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:393 +0xf1b google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x55f6be7808f0, 0xc006372f00}, {0x0, 0x0}}, {{0xc00b4e6cc0, 0x1, 0x1}, 0xc00d71fe90, 0xc00b4e6cb0, {0x55f6be792d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x55f6be7808f0, 0xc006372f00}, {0x0, 0x0}}, {{0xc00b4e6cc0, 0x1, 0x1}, 0xc00d71fe90, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x55f6be7808f0, 0xc006372f00}, {0x0, 0x0}}, {{0xc00b4e6cc0, 0x1, 0x1}, 0xc00d71fe90, 0xc00b4e6cb0, {0x55f6be792d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00a6ab320, {0x55f6be776a88, 0xc154055d40}, 0xc07036fe80, 0xc1d0391ef0, 0xc1e0137860, {0xc163b2d0e0?, 0x55f6b44c73e7?})",
-          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00a6ab320, {0x55f6be776a88, 0xc154055d40}, 0xc1d0391ef0, 0xc1e0137860)",
-          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc061eab308?, {0x55f6be776a88, 0xc154055d40}, 0x55f6bc4140c0?, 0xc0c228d201?)",
-          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc00a15f770, {0x55f6be776a88, 0xc154055d40}, 0xc1d0391ef0)",
-          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x55f6be776a88?, 0xc154055d40?}, 0xc1d0391ef0?, {0x0?, 0x0?}, {0x55f6be78c120, 0xc0a1428230})",
-          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x55f6be776a88?, 0xc1ab3c1d10?}, 0xc061eab8d0)",
-          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc0a021be40, {0x55f6be777098, 0xc1c48024e0}, 0xc1afbcdb80)"
-        ]
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
-        "resourceName": "projects/${projectId}/locations/us-central1/internalRanges/test-${uniqueId}"
-      }
-    ],
-    "message": "Resource 'projects/${projectId}/locations/us-central1/internalRanges/test-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/internalRanges?alt=json
+DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -122,21 +401,27 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
 
 ---
 
-PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/internalRanges/test-${uniqueId}?alt=json&updateMask=prefixLength
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Type: application/json
 
-{
-  "prefixLength": 28
-}
-
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -147,37 +432,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.DebugInfo",
-        "detail": "not found: resource not found",
-        "stackEntries": [
-          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc001d16f00, 0x1d})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x55f6be61a738?, 0xc005256e40?})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:556 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x55f6be776a88, 0xc1d05d98c0}, {0x55f6b15f52cf, 0x10}, {0xc3476885f0, 0x4f}, {0x55f6be61a738, 0xc005256e40})",
-          "cloud/control2/frontend/userfriendly/userfriendly_store.go:89 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x55f6be776a88, 0xc1d05d98c0}, 0xc1bb310700, {0x55f6be61a738, 0xc005256e40})",
-          "cloud/control2/frontend/handler/mutate.go:125 +0x30e google3/cloud/control2/frontend/handler/handler.(*handlerContext).getExistingResourceDetails(0xc1b858edc8, {0x55f6be776a88, 0xc1d05d98c0}, {0x55f6be61aa38, 0xc0f77935c0})",
-          "cloud/control2/frontend/handler/mutate.go:320 +0xc58 google3/cloud/control2/frontend/handler/handler.Handler.handleResourceMutation({{{0x55f6be7808f0, 0xc006372f00}, {0x0, 0x0}}, {{0xc00b4e6cc0, 0x1, 0x1}, 0xc00d71fe90, 0xc00b4e6cb0, {0x55f6be792d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:375 +0xbbb google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x55f6be7808f0, 0xc006372f00}, {0x0, 0x0}}, {{0xc00b4e6cc0, 0x1, 0x1}, 0xc00d71fe90, 0xc00b4e6cb0, {0x55f6be792d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x55f6be7808f0, 0xc006372f00}, {0x0, 0x0}}, {{0xc00b4e6cc0, 0x1, 0x1}, 0xc00d71fe90, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x55f6be7808f0, 0xc006372f00}, {0x0, 0x0}}, {{0xc00b4e6cc0, 0x1, 0x1}, 0xc00d71fe90, 0xc00b4e6cb0, {0x55f6be792d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00a6ab320, {0x55f6be776a88, 0xc1d05d96e0}, 0xc102e76ec0, 0xc09bcb35d8, 0xc09bcb3a10, {0xc0695927e0?, 0x55f6b44c73e7?})",
-          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00a6ab320, {0x55f6be776a88, 0xc1d05d96e0}, 0xc09bcb35d8, 0xc09bcb3a10)",
-          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc08c6f9308?, {0x55f6be776a88, 0xc1d05d96e0}, 0x55f6bc4140c0?, 0xc0c1188e01?)",
-          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc00a15f770, {0x55f6be776a88, 0xc1d05d96e0}, 0xc09bcb35d8)",
-          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x55f6be776a88?, 0xc1d05d96e0?}, 0xc09bcb35d8?, {0x0?, 0x0?}, {0x55f6be78c120, 0xc134737e00})",
-          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x55f6be776a88?, 0xc2ac896630?}, 0xc14d9f18d0)",
-          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc0a021be40, {0x55f6be777098, 0xc149cd7740}, 0xc04c47cd00)"
-        ]
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
-        "resourceName": "projects/${projectId}/locations/us-central1/internalRanges/test-${uniqueId}"
-      }
-    ],
-    "message": "Resource 'projects/${projectId}/locations/us-central1/internalRanges/test-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
