@@ -18,8 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudtasks/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tasks/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -190,7 +190,7 @@ func (a *QueueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	// return fmt.Errorf("update queue request %+v", req)
 	updated, err := a.gcpClient.UpdateQueue(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating Queue %+v: %s", a.id, err)
+		return fmt.Errorf("updating Queue %+v: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated Queue", "name", a.id)
 

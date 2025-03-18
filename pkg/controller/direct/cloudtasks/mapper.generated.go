@@ -16,7 +16,7 @@ package cloudtasks
 
 import (
 	pb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tasks/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudtasks/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 

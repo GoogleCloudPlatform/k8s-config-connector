@@ -7,9 +7,9 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: tasksqueues.tasks.cnrm.cloud.google.com
+  name: tasksqueues.cloudtasks.cnrm.cloud.google.com
 spec:
-  group: tasks.cnrm.cloud.google.com
+  group: cloudtasks.cnrm.cloud.google.com
   names:
     categories:
     - gcp

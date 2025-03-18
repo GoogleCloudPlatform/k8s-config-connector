@@ -14,7 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.tasks.v2.Queue
-// api.group: tasks.cnrm.cloud.google.com
+// api.group: cloudtasks.cnrm.cloud.google.com
 
 package cloudtasks
 

@@ -16,7 +16,7 @@
 // proto.service: google.cloud.tasks.v2
 // proto.message: google.cloud.tasks.v2.Queue
 
-package mocktasks
+package mockcloudtasks
 
 import (
 	"context"
