@@ -16,7 +16,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "application \"projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "application \"projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -47,12 +54,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.apphub.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}",
     "verb": "create"
   },
@@ -83,7 +88,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}",
     "verb": "create"
   },
@@ -157,12 +161,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.apphub.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "statusMessage": "Updating application",
     "target": "projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}",
     "verb": "update"
   },
@@ -193,7 +197,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
+    "statusMessage": "Updating application",
     "target": "projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}",
     "verb": "update"
   },
@@ -259,12 +263,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.apphub.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}",
     "verb": "delete"
   },
@@ -295,7 +297,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/applications/apphubapplication-minimal-${uniqueId}",
     "verb": "delete"
   },
