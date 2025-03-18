@@ -25,20 +25,20 @@ import (
 
 // generateControllerClient creates a controller client for the branch
 // This implements the logic from 01-create-controller-client.sh
-func generateControllerClient(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateControllerClient(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Generating controller client for branch %s", branch.Name)
 
 	// Check if we have the required fields
 	if branch.ProtoSvc == "" {
-		return nil, fmt.Errorf("branch %s is missing ProtoSvc field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing ProtoSvc field", branch.Name)
 	}
 
 	if branch.Group == "" {
-		return nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
 	}
 
 	if branch.Kind == "" {
-		return nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
 	}
 
 	// Create the controller client
@@ -51,7 +51,7 @@ func generateControllerClient(ctx context.Context, opts *RunnerOptions, branch B
 	// Ensure the directory exists
 	clientDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group)
 	if err := os.MkdirAll(clientDir, 0755); err != nil {
-		return nil, fmt.Errorf("failed to create directory %s: %w", clientDir, err)
+		return nil, nil, fmt.Errorf("failed to create directory %s: %w", clientDir, err)
 	}
 
 	// Run controllerbuilder command
@@ -65,7 +65,7 @@ func generateControllerClient(ctx context.Context, opts *RunnerOptions, branch B
 
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("failed to run controllerbuilder: %w", err)
+		return nil, nil, fmt.Errorf("failed to run controllerbuilder: %w", err)
 	}
 
 	// Write the output to the client.go file
@@ -73,34 +73,34 @@ func generateControllerClient(ctx context.Context, opts *RunnerOptions, branch B
 
 	// Write the client.go file
 	if err := os.WriteFile(clientFile, []byte(output.Stdout), 0644); err != nil {
-		return nil, fmt.Errorf("failed to write client.go: %w", err)
+		return nil, nil, fmt.Errorf("failed to write client.go: %w", err)
 	}
 
 	log.Printf("Successfully generated controller client for %s at %s", branch.Name, clientFile)
 
-	return []string{outputPath}, nil
+	return []string{outputPath}, &output, nil
 }
 
 // generateController creates a controller for the branch
 // This implements the logic from 02-create-controller.sh
-func generateController(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateController(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Generating controller for branch %s", branch.Name)
 
 	// Check if we have the required fields
 	if branch.ProtoSvc == "" {
-		return nil, fmt.Errorf("branch %s is missing ProtoSvc field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing ProtoSvc field", branch.Name)
 	}
 
 	if branch.ProtoMsg == "" {
-		return nil, fmt.Errorf("branch %s is missing ProtoMsg field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing ProtoMsg field", branch.Name)
 	}
 
 	if branch.Group == "" {
-		return nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
 	}
 
 	if branch.Kind == "" {
-		return nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
 	}
 
 	// Create the controller
@@ -115,7 +115,7 @@ func generateController(ctx context.Context, opts *RunnerOptions, branch Branch)
 	controllerDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group)
 	protoDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 	if err := os.MkdirAll(controllerDir, 0755); err != nil {
-		return nil, fmt.Errorf("failed to create directory %s: %w", controllerDir, err)
+		return nil, nil, fmt.Errorf("failed to create directory %s: %w", controllerDir, err)
 	}
 
 	// Run controllerbuilder command
@@ -129,7 +129,7 @@ func generateController(ctx context.Context, opts *RunnerOptions, branch Branch)
 
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("failed to run controllerbuilder: %w", err)
+		return nil, nil, fmt.Errorf("failed to run controllerbuilder: %w", err)
 	}
 
 	// Write the output to the controller file
@@ -137,34 +137,34 @@ func generateController(ctx context.Context, opts *RunnerOptions, branch Branch)
 
 	// Write the controller file
 	if err := os.WriteFile(controllerFile, []byte(output.Stdout), 0644); err != nil {
-		return nil, fmt.Errorf("failed to write controller file: %w", err)
+		return nil, nil, fmt.Errorf("failed to write controller file: %w", err)
 	}
 
 	log.Printf("Successfully generated controller for %s at %s", branch.Name, controllerFile)
 
-	return []string{outputPath}, nil
+	return []string{outputPath}, &output, nil
 }
 
 // generateControllerIdentity creates an identity file for the branch
 // This implements the first part of 03-create-identity.sh
-func generateControllerIdentity(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateControllerIdentity(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Generating controller identity for branch %s", branch.Name)
 
 	// Check if we have the required fields
 	if branch.ProtoSvc == "" {
-		return nil, fmt.Errorf("branch %s is missing ProtoSvc field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing ProtoSvc field", branch.Name)
 	}
 
 	if branch.ProtoMsg == "" {
-		return nil, fmt.Errorf("branch %s is missing ProtoMsg field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing ProtoMsg field", branch.Name)
 	}
 
 	if branch.Group == "" {
-		return nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
 	}
 
 	if branch.Kind == "" {
-		return nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
 	}
 
 	// Default CRD version
@@ -182,7 +182,7 @@ func generateControllerIdentity(ctx context.Context, opts *RunnerOptions, branch
 	// Ensure the directory exists
 	identityDir := filepath.Join(opts.branchRepoDir, "apis", branch.Group, strings.ToLower(crdVersion))
 	if err := os.MkdirAll(identityDir, 0755); err != nil {
-		return nil, fmt.Errorf("failed to create directory %s: %w", identityDir, err)
+		return nil, nil, fmt.Errorf("failed to create directory %s: %w", identityDir, err)
 	}
 
 	// Run controllerbuilder command
@@ -196,7 +196,7 @@ func generateControllerIdentity(ctx context.Context, opts *RunnerOptions, branch
 
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("failed to run controllerbuilder for identity: %w", err)
+		return nil, nil, fmt.Errorf("failed to run controllerbuilder for identity: %w", err)
 	}
 
 	// Write the output to the identity file
@@ -204,34 +204,34 @@ func generateControllerIdentity(ctx context.Context, opts *RunnerOptions, branch
 
 	// Write the identity file
 	if err := os.WriteFile(identityFile, []byte(output.Stdout), 0644); err != nil {
-		return nil, fmt.Errorf("failed to write identity file: %w", err)
+		return nil, nil, fmt.Errorf("failed to write identity file: %w", err)
 	}
 
 	log.Printf("Successfully generated controller identity for %s at %s", branch.Name, identityFile)
 
-	return []string{outputPath}, nil
+	return []string{outputPath}, &output, nil
 }
 
 // generateControllerReference creates a reference file for the branch
 // This implements the second part of 03-create-identity.sh
-func generateControllerReference(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateControllerReference(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Generating controller reference for branch %s", branch.Name)
 
 	// Check if we have the required fields
 	if branch.ProtoSvc == "" {
-		return nil, fmt.Errorf("branch %s is missing ProtoSvc field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing ProtoSvc field", branch.Name)
 	}
 
 	if branch.ProtoMsg == "" {
-		return nil, fmt.Errorf("branch %s is missing ProtoMsg field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing ProtoMsg field", branch.Name)
 	}
 
 	if branch.Group == "" {
-		return nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
 	}
 
 	if branch.Kind == "" {
-		return nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
 	}
 
 	// Default CRD version
@@ -249,7 +249,7 @@ func generateControllerReference(ctx context.Context, opts *RunnerOptions, branc
 	// Ensure the directory exists
 	referenceDir := filepath.Join(opts.branchRepoDir, "apis", branch.Group, strings.ToLower(crdVersion))
 	if err := os.MkdirAll(referenceDir, 0755); err != nil {
-		return nil, fmt.Errorf("failed to create directory %s: %w", referenceDir, err)
+		return nil, nil, fmt.Errorf("failed to create directory %s: %w", referenceDir, err)
 	}
 
 	// Run controllerbuilder command
@@ -263,7 +263,7 @@ func generateControllerReference(ctx context.Context, opts *RunnerOptions, branc
 
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("failed to run controllerbuilder for reference: %w", err)
+		return nil, nil, fmt.Errorf("failed to run controllerbuilder for reference: %w", err)
 	}
 
 	// Write the output to the reference file
@@ -271,26 +271,26 @@ func generateControllerReference(ctx context.Context, opts *RunnerOptions, branc
 
 	// Write the reference file
 	if err := os.WriteFile(referenceFile, []byte(output.Stdout), 0644); err != nil {
-		return nil, fmt.Errorf("failed to write reference file: %w", err)
+		return nil, nil, fmt.Errorf("failed to write reference file: %w", err)
 	}
 
 	log.Printf("Successfully generated controller reference for %s at %s", branch.Name, referenceFile)
 
-	return []string{outputPath}, nil
+	return []string{outputPath}, &output, nil
 }
 
 // createControllerTest creates test files for the branch
 // This implements the first part of 04-create-test.sh
-func createControllerTest(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func createControllerTest(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Creating controller test for branch %s", branch.Name)
 
 	// Check if we have the required fields
 	if branch.Group == "" {
-		return nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
 	}
 
 	if branch.Kind == "" {
-		return nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
 	}
 
 	// Default CRD version and group
@@ -307,7 +307,7 @@ func createControllerTest(ctx context.Context, opts *RunnerOptions, branch Branc
 
 	fullTestDir := filepath.Join(opts.branchRepoDir, testDir)
 	if err := os.MkdirAll(fullTestDir, 0755); err != nil {
-		return nil, fmt.Errorf("failed to create test directory %s: %w", fullTestDir, err)
+		return nil, nil, fmt.Errorf("failed to create test directory %s: %w", fullTestDir, err)
 	}
 
 	// Create create.yaml
@@ -324,7 +324,7 @@ spec:
 
 	createYamlPath := filepath.Join(fullTestDir, "create.yaml")
 	if err := os.WriteFile(createYamlPath, []byte(createYaml), 0644); err != nil {
-		return nil, fmt.Errorf("failed to write create.yaml: %w", err)
+		return nil, nil, fmt.Errorf("failed to write create.yaml: %w", err)
 	}
 
 	// Create update.yaml
@@ -341,7 +341,7 @@ spec:
 
 	updateYamlPath := filepath.Join(fullTestDir, "update.yaml")
 	if err := os.WriteFile(updateYamlPath, []byte(updateYaml), 0644); err != nil {
-		return nil, fmt.Errorf("failed to write update.yaml: %w", err)
+		return nil, nil, fmt.Errorf("failed to write update.yaml: %w", err)
 	}
 
 	log.Printf("Successfully created test files for %s in %s", branch.Name, testDir)
@@ -349,21 +349,21 @@ spec:
 	return []string{
 		filepath.Join(testDir, "create.yaml"),
 		filepath.Join(testDir, "update.yaml"),
-	}, nil
+	}, nil, nil
 }
 
 // updateTestHarness updates the test harness to support the new resource
 // This implements the second part of 04-create-test.sh
-func updateTestHarness(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func updateTestHarness(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Updating test harness for branch %s", branch.Name)
 
 	// Check if we have the required fields
 	if branch.Group == "" {
-		return nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
 	}
 
 	if branch.Kind == "" {
-		return nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
 	}
 
 	// Default CRD group
@@ -388,24 +388,24 @@ in the file config/tests/samples/create/harness.go
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 
-	_, err := executeCommand(opts, cfg)
+	output, err := executeCommand(opts, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("failed to run codebot to update test harness: %w", err)
+		return nil, nil, fmt.Errorf("failed to run codebot to update test harness: %w", err)
 	}
 
 	log.Printf("Successfully updated test harness for %s", branch.Name)
 
-	return []string{"config/tests/samples/create/harness.go"}, nil
+	return []string{"config/tests/samples/create/harness.go"}, &output, nil
 }
 
 // captureGoldenTestOutput captures golden test output for the branch
 // This implements 05-capture-golden-test-output.sh
-func captureGoldenTestOutput(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func captureGoldenTestOutput(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Capturing golden test output for branch %s", branch.Name)
 
 	// Check if we have the required fields
 	if branch.Kind == "" {
-		return nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
 	}
 
 	// Run the compare-mock script
@@ -434,5 +434,5 @@ func captureGoldenTestOutput(ctx context.Context, opts *RunnerOptions, branch Br
 
 	log.Printf("Successfully captured golden test output for %s", branch.Name)
 
-	return []string{fixturesPath}, nil
+	return []string{fixturesPath}, &output, nil
 }

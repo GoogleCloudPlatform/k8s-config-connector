@@ -105,11 +105,11 @@ type ScriptData struct {
 	Branches []BranchScript `yaml:"branches"`
 }
 
-func createScriptYaml(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func createScriptYaml(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	var affectedPaths []string
 
 	if branch.Command == "" {
-		return affectedPaths, fmt.Errorf("no gcloud command")
+		return affectedPaths, nil, fmt.Errorf("no gcloud command")
 	}
 
 	// Check to see if the script file already exists
@@ -120,16 +120,16 @@ func createScriptYaml(ctx context.Context, opts *RunnerOptions, branch Branch) (
 	if _, err := os.Stat(scriptFilePath); err != nil {
 		if !errors.Is(err, os.ErrNotExist) {
 			log.Printf("ERROR checking file %s: %v", scriptFilePath, err)
-			return affectedPaths, err
+			return affectedPaths, nil, err
 		}
 	} else if opts.force {
 		if err := os.Remove(scriptFilePath); err != nil {
 			log.Printf("ERROR deleting existing file %s: %v", scriptFilePath, err)
-			return affectedPaths, err
+			return affectedPaths, nil, err
 		}
 	} else {
 		log.Printf("SKIPPING %s, %s already exists", branch.Name, scriptFilePath)
-		return affectedPaths, nil
+		return affectedPaths, nil, nil
 	}
 
 	// Delete then write the prompt file.
@@ -144,9 +144,9 @@ func createScriptYaml(ctx context.Context, opts *RunnerOptions, branch Branch) (
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, err := executeCommand(opts, cfg)
+	results, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, scriptFileRelativePath)
-	return affectedPaths, err
+	return affectedPaths, &results, err
 }
 
 func enableAPIs(opts *RunnerOptions, branch Branch) {
@@ -405,20 +405,20 @@ If you have problems, please output a JSON result like this:
 
 { "status": "failure", "reason": "Fill in any information on why you could not complete the task" }`
 
-func captureHttpLog(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func captureHttpLog(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	var affectedPaths []string
 
 	// Check to see if the script file exists
 	scriptFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", fmt.Sprintf("mock%s", branch.Group), "testdata", branch.Resource, "crud", "script.yaml")
 	if _, err := os.Stat(scriptFullPath); errors.Is(err, os.ErrNotExist) {
-		return affectedPaths, fmt.Errorf("missing script %s", scriptFullPath)
+		return affectedPaths, nil, fmt.Errorf("missing script %s", scriptFullPath)
 	}
 
 	// Check to see if the http log file already exists
 	logFileRelativePath := filepath.Join("mockgcp", fmt.Sprintf("mock%s", branch.Group), "testdata", branch.Resource, "crud", "_http.log")
 	logFilePath := filepath.Join(opts.branchRepoDir, logFileRelativePath)
 	if _, err := os.Stat(logFilePath); !errors.Is(err, os.ErrNotExist) && !opts.force {
-		return affectedPaths, fmt.Errorf("http log %s already exists", logFilePath)
+		return affectedPaths, nil, fmt.Errorf("http log %s already exists", logFilePath)
 	}
 
 	// Current HTTP Log generation is determenistic not ML generated.
@@ -436,9 +436,9 @@ func captureHttpLog(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 		Env:         map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "real"},
 		MaxAttempts: 1,
 	}
-	_, err := executeCommand(opts, cfg)
+	results, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, logFileRelativePath)
-	return affectedPaths, err
+	return affectedPaths, &results, err
 }
 
 func readHttpLog(opts *RunnerOptions, branch Branch) {
@@ -475,7 +475,7 @@ const MOCK_RESOURCE_GO_GEN string = `// +tool:mockgcp-support
 // proto.message: <PROTO_MESSAGE>
 `
 
-func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	var affectedPaths []string
 	workDir := opts.branchRepoDir
 
@@ -485,7 +485,7 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 	// TODO: Why is this check needed?
 	logFileFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", mockfolder, "testdata", branch.Resource, "crud", "_http.log")
 	if _, err := os.Stat(logFileFullPath); errors.Is(err, os.ErrNotExist) {
-		return affectedPaths, fmt.Errorf("missing http log %s", logFileFullPath)
+		return affectedPaths, nil, fmt.Errorf("missing http log %s", logFileFullPath)
 	}
 
 	// Run the controller builder to generate the service go file.
@@ -493,7 +493,8 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 	serviceFile := filepath.Join(opts.branchRepoDir, serviceFileRelativePath)
 	if _, err := os.Stat(serviceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		// Delete then write the service go prompt file.
-		writeTemplateToFile(branch, filepath.Join(opts.branchRepoDir, "mockgcp", "service_prompt.txt"), MOCK_SERVICE_GO_GEN)
+		promptPath := filepath.Join(opts.loggingDir, branch.Name, "generate-mocks-service-prompt.txt")
+		writeTemplateToFile(branch, promptPath, MOCK_SERVICE_GO_GEN)
 		cfg := CommandConfig{
 			Name: "Generate service mock",
 			Cmd:  "controllerbuilder",
@@ -501,17 +502,17 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 				"prompt",
 				"--src-dir", "./mockgcp",
 				"--proto-dir", fmt.Sprintf(".build/third_party/googleapis/"),
-				"--input-file", "service_prompt.txt",
+				"--input-file", promptPath,
 			},
 			WorkDir:      opts.branchRepoDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
 		output, err := executeCommand(opts, cfg)
 		if err != nil {
-			return affectedPaths, fmt.Errorf("MOCK SERVICE GENERATE error: %w\n", err)
+			return affectedPaths, nil, fmt.Errorf("MOCK SERVICE GENERATE error: %w\n", err)
 		} else {
 			if err := os.WriteFile(serviceFile, []byte(output.Stdout), 0755); err != nil {
-				return affectedPaths, fmt.Errorf("WRITE MOCK SERVICE %s error: %w\n", serviceFile, err)
+				return affectedPaths, nil, fmt.Errorf("WRITE MOCK SERVICE %s error: %w\n", serviceFile, err)
 			}
 			affectedPaths = append(affectedPaths, serviceFileRelativePath)
 			log.Printf("MOCK SERVICE GENERATE: %q\n", formatCommandOutput(output.Stdout))
@@ -531,7 +532,8 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 	resourceFile := filepath.Join(opts.branchRepoDir, resourceFileRelativePath)
 	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) || opts.force {
 		// Delete then write the resource go prompt file.
-		writeTemplateToFile(branch, filepath.Join(opts.branchRepoDir, "resource_prompt.txt"), MOCK_RESOURCE_GO_GEN)
+		promptPath := filepath.Join(opts.loggingDir, branch.Name, "generate-mocks-resource-prompt.txt")
+		writeTemplateToFile(branch, promptPath, MOCK_RESOURCE_GO_GEN)
 		cfg := CommandConfig{
 			Name: "Generate resource mock",
 			Cmd:  "controllerbuilder",
@@ -539,17 +541,17 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 				"prompt",
 				"--src-dir", "./mockgcp",
 				"--proto-dir", ".build/third_party/googleapis/",
-				"--input-file", "resource_prompt.txt",
+				"--input-file", promptPath,
 			},
 			WorkDir:      workDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
 		output, err := executeCommand(opts, cfg)
 		if err != nil {
-			return affectedPaths, fmt.Errorf("MOCK RESOURCE GENERATE error: %w\n", err)
+			return affectedPaths, nil, fmt.Errorf("MOCK RESOURCE GENERATE error: %w\n", err)
 		} else {
 			if err := os.WriteFile(resourceFile, []byte(output.Stdout), 0755); err != nil {
-				return affectedPaths, fmt.Errorf("WRITE MOCK RESOURCE %s error: %w\n", resourceFile, err)
+				return affectedPaths, nil, fmt.Errorf("WRITE MOCK RESOURCE %s error: %w\n", resourceFile, err)
 			}
 			affectedPaths = append(affectedPaths, resourceFileRelativePath)
 			log.Printf("MOCK RESOURCE GENERATE: %q\n", formatCommandOutput(output.Stdout))
@@ -558,7 +560,7 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 		log.Printf("SKIPPING generating resource mock go, %s already exists", resourceFile)
 	}
 
-	return affectedPaths, nil
+	return affectedPaths, nil, nil
 }
 
 func readMockGo(opts *RunnerOptions, branch Branch) {
@@ -600,31 +602,32 @@ const ADD_SERVICE_TO_ROUNDTRIP string = `Please add the services in <TICK>mock<S
 * Please keep the list of services in alphabetical order.
 * Don't forget to import the package!`
 
-func addServiceToRoundTrip(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func addServiceToRoundTrip(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	var affectedPaths []string
 
 	mockfolder := fmt.Sprintf("mock%s", branch.Group)
 	serviceFilePath := filepath.Join(opts.branchRepoDir, "mockgcp", mockfolder, "service.go")
 	if _, err := os.Stat(serviceFilePath); errors.Is(err, os.ErrNotExist) {
-		return affectedPaths, fmt.Errorf("missing %s", serviceFilePath)
+		return affectedPaths, nil, fmt.Errorf("missing %s", serviceFilePath)
 	}
 
 	// Delete then write the add service to roundtrip prompt file.
-	writeTemplateToFile(branch, filepath.Join(opts.branchRepoDir, "mockgcp", "roundtrip_prompt.txt"), ADD_SERVICE_TO_ROUNDTRIP)
+	promptPath := filepath.Join(opts.loggingDir, branch.Name, "add-service-to-roundtrip-prompt.txt")
+	writeTemplateToFile(branch, promptPath, ADD_SERVICE_TO_ROUNDTRIP)
 
 	// Run the LLM to add the service to roundtrip file.
 	cfg := CommandConfig{
 		Name:         "Add service to roundtrip",
 		Cmd:          "codebot",
-		Args:         []string{"--ui-type=prompt", "--prompt=roundtrip_prompt.txt"},
+		Args:         []string{"--ui-type=prompt", fmt.Sprintf("--prompt=%s", promptPath)},
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, err := executeCommand(opts, cfg)
+	results, err := executeCommand(opts, cfg)
 
 	affectedPaths = append(affectedPaths, filepath.Join("mockgcp", "mock_http_roundtrip.go"))
 
-	return affectedPaths, err
+	return affectedPaths, &results, err
 }
 
 const ADD_PROTO_TO_MAKEFILE string = `Please add the generation for <TICK><PROTO_PACKAGE><TICK> to the <TICK>gen-proto-no-fixup<TICK> target in <TICK>Makefile<TICK>.
@@ -644,52 +647,53 @@ Hints:
 * This is the correct path: <TICK>./third_party/googleapis/mockgcp/cloud/metastore/...<TICK>
 `
 
-func addProtoToMakefile(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func addProtoToMakefile(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	var affectedPaths []string
 
 	// TODO: why should we check this?
 	mockfolder := fmt.Sprintf("mock%s", branch.Group)
 	serviceFilePath := filepath.Join(opts.branchRepoDir, "mockgcp", mockfolder, "service.go")
 	if _, err := os.Stat(serviceFilePath); errors.Is(err, os.ErrNotExist) {
-		return affectedPaths, fmt.Errorf("missing %s", serviceFilePath)
+		return affectedPaths, nil, fmt.Errorf("missing %s", serviceFilePath)
 	}
 
 	// TODO: Populate the ProtoPath in branches-all.yaml.
 	// Maybe populate it with the actual filepath?
 	protoFile := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis", branch.ProtoPath)
 	if _, err := os.Stat(protoFile); errors.Is(err, os.ErrNotExist) {
-		return affectedPaths, fmt.Errorf("missing %s", protoFile)
+		return affectedPaths, nil, fmt.Errorf("missing %s", protoFile)
 	}
 
 	// Delete then write the add service to roundtrip prompt file.
 	// TODO: review later. PROTO_PACKAGE = branch.ProtoPath or branch.ProtoPackage?
 	template := strings.ReplaceAll(ADD_PROTO_TO_MAKEFILE, "<PROTO_PACKAGE>", branch.ProtoPath)
-	writeTemplateToFile(branch, filepath.Join(opts.branchRepoDir, "mockgcp", "makefile_prompt.txt"), template)
+	promptPath := filepath.Join(opts.loggingDir, branch.Name, "add-proto-to-makefile-prompt.txt")
+	writeTemplateToFile(branch, promptPath, template)
 
 	// Run the LLM to add the service to roundtrip file.
 	cfg := CommandConfig{
 		Name:         "Add proto to makefile",
 		Cmd:          "codebot",
-		Args:         []string{"--ui-type=prompt", "--prompt=makefile_prompt.txt"},
+		Args:         []string{"--ui-type=prompt", fmt.Sprintf("--prompt=%s", promptPath)},
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, err := executeCommand(opts, cfg)
+	results, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, filepath.Join("mockgcp", "Makefile"))
-	return affectedPaths, err
+	return affectedPaths, &results, err
 }
 
-func runMockgcpTests(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
-	if opts.defaultRetries > 0 {
-		log.Printf("Command does not support retries")
-	}
+func runMockgcpTests(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 
 	var affectedPaths []string
 
 	mockfolder := fmt.Sprintf("mock%s", branch.Group)
+
+	// Running the tests will affect the http log file. We need to revert it. So return the path.
 	logFileFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", mockfolder, "testdata", branch.Resource, "crud", "_http.log")
+	affectedPaths = append(affectedPaths, logFileFullPath)
 	if _, err := os.Stat(logFileFullPath); errors.Is(err, os.ErrNotExist) {
-		return affectedPaths, fmt.Errorf("missing http log %s", logFileFullPath)
+		return affectedPaths, nil, fmt.Errorf("missing http log %s", logFileFullPath)
 	}
 
 	// Run the test against the generated mocks to determine quality
@@ -705,11 +709,80 @@ func runMockgcpTests(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 		Env:         map[string]string{"WRITE_GOLDEN_OUTPUT": "1", "E2E_GCP_TARGET": "mock"},
 		MaxAttempts: 1,
 	}
-	_, err := executeCommand(opts, cfg)
-	return affectedPaths, err
+	results, err := executeCommand(opts, cfg)
+	return affectedPaths, &results, err
 }
 
-func buildProtoFiles(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+const FIX_MOCKGCP_FAILURES string = `Please fix the mock resource file: ${MOCK_RESOURCE_FILE}  based on the failures seen in the mock test run.
+
+The mock resource file implements the http endpoints for the resource.
+The test output contains the diff in the expected and the actual http responses.
+Use that to determine what changes need to be made to the mock resource file.
+Make sure that all changes are applied.
+
+Once the changes are applied, use the RunShellCommand command to run the mock test to make sure the changes are valid.
+Use the output of the command to determine if the code changes are valid.
+
+RunShellCommand:
+E2E_GCP_TARGET=mock go test ./mockgcptests -run TestScripts/mock${GROUP}/testdata/${RESOURCE}/crud
+
+Hints:
+
+* Use the ReadFile command to read the contents of the file.
+* Use the EditFile command to edit the file.
+* Use the WriteFile command to write the file.	
+* Use the RunShellCommand command to run the mock test after making the changes.
+
+The results of the mock test run are:
+
+EXITCODE: ${TEST_OUTPUT_EXITCODE}
+
+STDERR:
+${TEST_OUTPUT_STDERR}
+
+STDOUT:
+${TEST_OUTPUT_STDOUT}
+`
+
+func fixMockgcpFailures(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	var affectedPaths []string
+
+	mockfolder := fmt.Sprintf("mock%s", branch.Group)
+	resourceName := strings.ToLower(branch.Resource)
+	if resourceName == "service" {
+		// Special case for service, it's actually a resource.
+		log.Printf("WARNING: Special case for resource with names 'service', setting file name to 'resourceservice.go'")
+		resourceName = "resourceservice"
+	}
+	resourceFileRelativePath := filepath.Join(mockfolder, fmt.Sprintf("%s.go", resourceName))
+	resourceFile := filepath.Join(opts.branchRepoDir, "mockgcp", resourceFileRelativePath)
+	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
+		return affectedPaths, nil, fmt.Errorf("missing resource file %s", resourceFile)
+	}
+	affectedPaths = append(affectedPaths, resourceFileRelativePath)
+
+	// Create prompt with file contents
+	prompt := strings.ReplaceAll(FIX_MOCKGCP_FAILURES, "${MOCK_RESOURCE_FILE}", resourceFileRelativePath)
+	prompt = strings.ReplaceAll(prompt, "${TEST_OUTPUT_EXITCODE}", fmt.Sprintf("%d", execResults.ExitCode))
+	prompt = strings.ReplaceAll(prompt, "${TEST_OUTPUT_STDERR}", execResults.Stderr)
+	prompt = strings.ReplaceAll(prompt, "${TEST_OUTPUT_STDOUT}", execResults.Stdout)
+	prompt = strings.ReplaceAll(prompt, "${GROUP}", branch.Group)
+	prompt = strings.ReplaceAll(prompt, "${RESOURCE}", resourceName)
+
+	// Run the LLM to generate the file.
+	cfg := CommandConfig{
+		Name:         "Fix mockgcp failures",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(prompt),
+		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+	results, err := executeCommand(opts, cfg)
+	return affectedPaths, &results, err
+}
+
+func buildProtoFiles(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	var affectedPaths []string
 
 	// Run make gen-proto command
@@ -721,11 +794,11 @@ func buildProtoFiles(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 		MaxAttempts: 1,
 	}
 
-	_, err := executeCommand(opts, cfg)
+	results, err := executeCommand(opts, cfg)
 	affectedPaths = append(affectedPaths, filepath.Join("mockgcp", "generated"))
 	if err != nil {
-		return affectedPaths, fmt.Errorf("Proto generation error: %w", err)
+		return affectedPaths, nil, fmt.Errorf("Proto generation error: %w", err)
 	}
 
-	return affectedPaths, err
+	return affectedPaths, &results, err
 }

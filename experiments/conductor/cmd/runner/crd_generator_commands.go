@@ -150,7 +150,7 @@ func generateCRDFromScripts(opts *RunnerOptions, branch Branch) {
 }
 */
 
-func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	// Check parameters
 	if branch.Kind == "" || branch.Proto == "" || branch.Group == "" {
 		if branch.Kind == "" {
@@ -162,7 +162,7 @@ func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([]s
 		if branch.Group == "" {
 			log.Printf("SKIPPING %s, missing Group", branch.Name)
 		}
-		return nil, fmt.Errorf("missing required parameters")
+		return nil, nil, fmt.Errorf("missing required parameters")
 	}
 
 	// Generate types
@@ -182,18 +182,18 @@ func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([]s
 			WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
 			MaxAttempts: 1,
 		}
-		_, err := executeCommand(opts, cfg)
+		results, err := executeCommand(opts, cfg)
 		if err != nil {
-			return nil, fmt.Errorf("failed to generate types: %w", err)
+			return nil, nil, fmt.Errorf("failed to generate types: %w", err)
 		}
-		return []string{apiDirPathRelative}, nil
+		return []string{apiDirPathRelative}, &results, nil
 	}
 
 	log.Printf("SKIPPING generating apis, %s already exists", apiDirPathRelative)
-	return nil, nil
+	return nil, nil, nil
 }
 
-func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	// Check parameters
 	if branch.Kind == "" || branch.Proto == "" || branch.Group == "" {
 		if branch.Kind == "" {
@@ -205,7 +205,7 @@ func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 		if branch.Group == "" {
 			log.Printf("SKIPPING %s, missing Group", branch.Name)
 		}
-		return nil, fmt.Errorf("missing required parameters")
+		return nil, nil, fmt.Errorf("missing required parameters")
 	}
 
 	// Generate mapper
@@ -224,19 +224,19 @@ func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 			WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
 			MaxAttempts: 2,
 		}
-		_, err := executeCommand(opts, cfg)
+		results, err := executeCommand(opts, cfg)
 		if err != nil {
-			return nil, fmt.Errorf("failed to generate mapper: %w", err)
+			return nil, nil, fmt.Errorf("failed to generate mapper: %w", err)
 		}
 
-		return []string{mapperDirPathRelative}, nil
+		return []string{mapperDirPathRelative}, &results, nil
 	}
 
 	log.Printf("SKIPPING generating mappers, %s already exists", mapperDirPathRelative)
-	return nil, nil
+	return nil, nil, nil
 }
 
-func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	apiDirPathRelative := filepath.Join("apis", branch.Group, "v1alpha1", string(filepath.Separator))
 	affectedPaths := []string{"config/crds/resources/", apiDirPathRelative}
 
@@ -248,11 +248,11 @@ func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch) ([]str
 		MaxAttempts: 1,
 	}
 
-	_, err := executeCommand(opts, cfg)
-	return affectedPaths, err
+	results, err := executeCommand(opts, cfg)
+	return affectedPaths, &results, err
 }
 
-func generateSpecStatus(opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateSpecStatus(opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	affectedPaths := []string{
 		filepath.Join("apis", branch.Group, "v1alpha1",
 			fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource))),
@@ -274,19 +274,19 @@ func generateSpecStatus(opts *RunnerOptions, branch Branch) ([]string, error) {
 		Stdin:        strings.NewReader(stdinInput),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-	_, err := executeCommand(opts, cfg)
+	results, err := executeCommand(opts, cfg)
 	//commitMsg := fmt.Sprintf("Generated spec and status for %s", branch.Kind)
-	return affectedPaths, err
+	return affectedPaths, &results, err
 }
 
-func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	workDir := opts.branchRepoDir
 	affectedPaths := []string{}
 
 	// Generate fuzzer file
 	fuzzerDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group)
 	if err := os.MkdirAll(fuzzerDir, 0755); err != nil {
-		return affectedPaths, fmt.Errorf("failed to create fuzzer directory: %w", err)
+		return affectedPaths, nil, fmt.Errorf("failed to create fuzzer directory: %w", err)
 	}
 
 	fuzzerPath := filepath.Join(fuzzerDir, fmt.Sprintf("%s_fuzzer.go", strings.ToLower(branch.Resource)))
@@ -304,11 +304,11 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 	}
 	output, err := executeCommand(opts, cfg)
 	if err != nil {
-		return affectedPaths, fmt.Errorf("failed to generate fuzzer: %w", err)
+		return affectedPaths, nil, fmt.Errorf("failed to generate fuzzer: %w", err)
 	}
 
 	if err := os.WriteFile(fuzzerPath, []byte(output.Stdout), 0644); err != nil {
-		return affectedPaths, fmt.Errorf("failed to write fuzzer file: %w", err)
+		return affectedPaths, nil, fmt.Errorf("failed to write fuzzer file: %w", err)
 	}
 
 	affectedPaths = append(affectedPaths, fuzzerPath)
@@ -328,12 +328,12 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch) ([]
 	}
 	_, err = executeCommand(opts, cfg)
 	if err != nil {
-		return affectedPaths, fmt.Errorf("failed to add import: %w", err)
+		return affectedPaths, nil, fmt.Errorf("failed to add import: %w", err)
 	}
 
 	affectedPaths = append(affectedPaths, registerPath)
 
-	return affectedPaths, nil
+	return affectedPaths, &output, nil
 }
 
 const SET_TYPE_SPEC_STATUS string = `I need to set the Spec and Status fields in the generated KRM type ${KIND} to match the proto ${PROTO_RESOURCE} definition.
@@ -367,7 +367,7 @@ ${RESOURCE_TYPES_FILES_CONTENTS}
 
 `
 
-func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
 	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
 	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
@@ -376,7 +376,7 @@ func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch) 
 
 	protoFiles, err := os.ReadDir(filepath.Join(opts.branchRepoDir, protoDirRelative))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read proto directory: %w", err)
+		return nil, nil, fmt.Errorf("failed to read proto directory: %w", err)
 	}
 	var protoContents strings.Builder
 	protoFileRelativePaths := []string{}
@@ -386,7 +386,7 @@ func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch) 
 			protoFileRelativePaths = append(protoFileRelativePaths, filePathRelative)
 			content, err := os.ReadFile(filepath.Join(opts.branchRepoDir, filePathRelative))
 			if err != nil {
-				return nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
+				return nil, nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
 			}
 			protoContents.WriteString("------- " + filePathRelative + " -------\n")
 			protoContents.Write(content)
@@ -396,12 +396,12 @@ func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch) 
 
 	generatedTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, generatedTypesPath))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read generated types file: %w", err)
+		return nil, nil, fmt.Errorf("failed to read generated types file: %w", err)
 	}
 
 	resourceTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, resourceTypesPath))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read resource types file: %w", err)
+		return nil, nil, fmt.Errorf("failed to read resource types file: %w", err)
 	}
 
 	// Create prompt with file contents
@@ -427,8 +427,8 @@ func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch) 
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 
-	_, err = executeCommand(opts, cfg)
-	return []string{resourceTypesPath}, err
+	results, err := executeCommand(opts, cfg)
+	return []string{resourceTypesPath}, &results, err
 }
 
 const SET_TYPE_PARENT string = `I need to add a Parent struct in the generated ${KIND}Spec struct.
@@ -518,7 +518,7 @@ Contents of ${PROTO_FILES}:
 ${PROTO_FILES_CONTENTS}
 `
 
-func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
 	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
 	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
@@ -527,7 +527,7 @@ func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch) ([]s
 
 	protoFiles, err := os.ReadDir(filepath.Join(opts.branchRepoDir, protoDirRelative))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read proto directory: %w", err)
+		return nil, nil, fmt.Errorf("failed to read proto directory: %w", err)
 	}
 	var protoContents strings.Builder
 	protoFileRelativePaths := []string{}
@@ -537,7 +537,7 @@ func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch) ([]s
 			protoFileRelativePaths = append(protoFileRelativePaths, filePathRelative)
 			content, err := os.ReadFile(filepath.Join(opts.branchRepoDir, filePathRelative))
 			if err != nil {
-				return nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
+				return nil, nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
 			}
 			protoContents.WriteString("------- " + filePathRelative + " -------\n")
 			protoContents.Write(content)
@@ -547,12 +547,12 @@ func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch) ([]s
 
 	generatedTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, generatedTypesPath))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read generated types file: %w", err)
+		return nil, nil, fmt.Errorf("failed to read generated types file: %w", err)
 	}
 
 	resourceTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, resourceTypesPath))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read resource types file: %w", err)
+		return nil, nil, fmt.Errorf("failed to read resource types file: %w", err)
 	}
 
 	// Create prompt with file contents
@@ -578,11 +578,11 @@ func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch) ([]s
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 
-	_, err = executeCommand(opts, cfg)
-	return []string{resourceTypesPath}, err
+	results, err := executeCommand(opts, cfg)
+	return []string{resourceTypesPath}, &results, err
 }
 
-func regenerateTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func regenerateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
 	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
 	// Regenerate types
@@ -599,8 +599,8 @@ func regenerateTypes(ctx context.Context, opts *RunnerOptions, branch Branch) ([
 		WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
 		MaxAttempts: 1,
 	}
-	_, err := executeCommand(opts, cfg)
-	return []string{resourceTypesPath, generatedTypesPath}, err
+	results, err := executeCommand(opts, cfg)
+	return []string{resourceTypesPath, generatedTypesPath}, &results, err
 }
 
 const ADJUST_IDENTITY_PARENT string = `I want you to update the ${PROTO_RESOURCE}Parent struct in the ${IDENTITY_FILE} file along with the String() method and the Parse${PROTO_RESOURCE}External method.
@@ -675,7 +675,7 @@ Contents of ${PROTO_FILES}:
 ${PROTO_FILES_CONTENTS}
 `
 
-func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
 	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
 	// Read all proto files in the directory
@@ -683,7 +683,7 @@ func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branc
 
 	protoFiles, err := os.ReadDir(filepath.Join(opts.branchRepoDir, protoDirRelative))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read proto directory: %w", err)
+		return nil, nil, fmt.Errorf("failed to read proto directory: %w", err)
 	}
 	var protoContents strings.Builder
 	protoFileRelativePaths := []string{}
@@ -693,7 +693,7 @@ func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branc
 			protoFileRelativePaths = append(protoFileRelativePaths, filePathRelative)
 			content, err := os.ReadFile(filepath.Join(opts.branchRepoDir, filePathRelative))
 			if err != nil {
-				return nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
+				return nil, nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
 			}
 			protoContents.WriteString("------- " + filePathRelative + " -------\n")
 			protoContents.Write(content)
@@ -703,12 +703,12 @@ func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branc
 
 	identityContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, identityPath))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read identity file: %w", err)
+		return nil, nil, fmt.Errorf("failed to read identity file: %w", err)
 	}
 
 	resourceTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, resourceTypesPath))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read resource types file: %w", err)
+		return nil, nil, fmt.Errorf("failed to read resource types file: %w", err)
 	}
 
 	// Create prompt with file contents
@@ -733,8 +733,8 @@ func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branc
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 
-	_, err = executeCommand(opts, cfg)
-	return []string{identityPath}, err
+	results, err := executeCommand(opts, cfg)
+	return []string{identityPath}, &results, err
 }
 
 const ADJUST_IDENTITY_PARENT_NEW_FUNCTION string = `I want you to update the New${PROTO_RESOURCE}Identity method in the ${IDENTITY_FILE} file.
@@ -768,7 +768,7 @@ ${RESOURCE_TYPES_FILES_CONTENTS}
 
 `
 
-func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, branch Branch) ([]string, error) {
+func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
 	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
 	// Read all proto files in the directory
@@ -776,7 +776,7 @@ func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, b
 
 	protoFiles, err := os.ReadDir(filepath.Join(opts.branchRepoDir, protoDirRelative))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read proto directory: %w", err)
+		return nil, nil, fmt.Errorf("failed to read proto directory: %w", err)
 	}
 	var protoContents strings.Builder
 	protoFileRelativePaths := []string{}
@@ -786,7 +786,7 @@ func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, b
 			protoFileRelativePaths = append(protoFileRelativePaths, filePathRelative)
 			content, err := os.ReadFile(filepath.Join(opts.branchRepoDir, filePathRelative))
 			if err != nil {
-				return nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
+				return nil, nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
 			}
 			protoContents.WriteString("------- " + filePathRelative + " -------\n")
 			protoContents.Write(content)
@@ -796,12 +796,12 @@ func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, b
 
 	identityContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, identityPath))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read identity file: %w", err)
+		return nil, nil, fmt.Errorf("failed to read identity file: %w", err)
 	}
 
 	resourceTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, resourceTypesPath))
 	if err != nil {
-		return nil, fmt.Errorf("failed to read resource types file: %w", err)
+		return nil, nil, fmt.Errorf("failed to read resource types file: %w", err)
 	}
 
 	// Create prompt with file contents
@@ -826,6 +826,6 @@ func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, b
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
 
-	_, err = executeCommand(opts, cfg)
-	return []string{identityPath}, err
+	results, err := executeCommand(opts, cfg)
+	return []string{identityPath}, &results, err
 }
