@@ -54,6 +54,16 @@ func (p *ClusterParent) String() string {
 
 // New builds a ClusterIdentity from the Config Connector Cluster object.
 func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *BigtableCluster) (*ClusterIdentity, error) {
+	// Resolve the ClusterParent fields from the Parent fields.
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+	instanceRef := obj.Spec.InstanceRef
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -73,6 +83,11 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	parent := &ClusterParent{
+		ProjectID:   projectID,
+		InstanceRef: instanceRef,
 	}
 
 	// Use approved External
