@@ -22,7 +22,6 @@ package apigateway
 import (
 	pb "cloud.google.com/go/apigateway/apiv1/apigatewaypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
