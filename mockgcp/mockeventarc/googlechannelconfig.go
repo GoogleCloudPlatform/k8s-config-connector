@@ -63,24 +63,16 @@ func (s *EventarcV1) UpdateGoogleChannelConfig(ctx context.Context, req *pb.Upda
 	fqn := name.String()
 
 	existing := &pb.GoogleChannelConfig{}
-	if err := s.storage.Get(ctx, fqn, existing); err != nil {
-		if status.Code(err) == codes.NotFound {
-			updated := &pb.GoogleChannelConfig{}
-			updated.Name = reqName
-                        if req.GetGoogleChannelConfig().GetCryptoKeyName() != "" {
-                                updated.CryptoKeyName = req.GetGoogleChannelConfig().GetCryptoKeyName()
-                        }
-			updated.UpdateTime = timestamppb.New(time.Now())
-			if err := s.storage.Create(ctx, fqn, updated); err != nil {
-				return nil, err
-			}
-			return updated, nil
-		} else {
-			return nil, err
-		}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil && status.Code(err) != codes.NotFound {
+		return nil, err
 	}
 
-        updated := proto.Clone(existing).(*pb.GoogleChannelConfig)
+	updated := &pb.GoogleChannelConfig{}
+        if existing.Name == ""{
+		updated.Name = reqName
+        } else {
+                updated = proto.Clone(existing).(*pb.GoogleChannelConfig)
+        }
 
         if req.GetUpdateMask() == nil || len(req.GetUpdateMask().GetPaths()) == 0 {
                 return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
@@ -95,11 +87,15 @@ func (s *EventarcV1) UpdateGoogleChannelConfig(ctx context.Context, req *pb.Upda
                 }
         }
         updated.UpdateTime = timestamppb.New(time.Now())
-
-	if err := s.storage.Update(ctx, fqn, updated); err != nil {
-		return nil, err
-	}
-	return updated, nil
+        if existing.Name == ""{
+                if err := s.storage.Create(ctx, fqn, updated); err != nil {
+			return nil, err
+		}
+        }else{
+		if err := s.storage.Update(ctx, fqn, updated); err != nil {
+			return nil, err
+		}
+        }
 }
 
 func applyUpdateMask(mask *fieldmaskpb.FieldMask, src *pb.GoogleChannelConfig, dest *pb.GoogleChannelConfig) error {
@@ -125,7 +121,7 @@ func (n *googleChannelConfigName) String() string {
 
 // parseGoogleChannelConfigName parses a string into an googleChannelConfigName.
 // The expected form is `projects/*/locations/*/googleChannelConfig`.
-func (s *MockService) parseGoogleChannelConfigName(name string) (*googleChannelConfigName, error) {
+func (s *EventarcV1) parseGoogleChannelConfigName(name string) (*googleChannelConfigName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "googleChannelConfig" {
