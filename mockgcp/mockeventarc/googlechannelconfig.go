@@ -44,14 +44,14 @@ func (s *EventarcV1) GetGoogleChannelConfig(ctx context.Context, req *pb.GetGoog
 	if err := s.storage.Get(ctx, reqName, existing); err != nil && status.Code(err) != codes.NotFound {
 		return nil, err
 	}
-        if existing.Name != "" {
-            return existing, nil
-        }
+	if existing.Name != "" {
+		return existing, nil
+	}
 
-        minimalConfig := &pb.GoogleChannelConfig{
-                Name: reqName,
-                UpdateTime: timestamppb.New(time.Now()),
-        }
+	minimalConfig := &pb.GoogleChannelConfig{
+		Name:       reqName,
+		UpdateTime: timestamppb.New(time.Now()),
+	}
 
 	return minimalConfig, nil
 }
