@@ -1,6 +1,0 @@
-- pre: gcloud deploy apply --file=target.yaml --region=us-central1 --project=${projectId}
-- exec: gcloud deploy apply --file=delivery-pipeline.yaml --region=us-central1 --project=${projectId}
-- exec: gcloud alpha deploy delivery-pipelines describe test-${uniqueId} --region=us-central1 --project=${projectId}
-- exec: gcloud alpha deploy delivery-pipelines list --region=us-central1 --project=${projectId} --filter="name=test-${uniqueId}"
-- exec: gcloud alpha deploy delivery-pipelines delete test-${uniqueId} --region=us-central1 --project=${projectId} --force --async
-- post: gcloud deploy apply --file=target.yaml --region=us-central1 --project=${projectId} --delete
