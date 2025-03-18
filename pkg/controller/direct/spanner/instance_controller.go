@@ -55,7 +55,7 @@ type InstanceReconcileGate struct {
 var _ kccpredicate.ReconcileGate = &InstanceReconcileGate{}
 
 func (r *InstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	return r.optIn.ShouldReconcile(o)
+	return true
 }
 
 func NewSpannerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
