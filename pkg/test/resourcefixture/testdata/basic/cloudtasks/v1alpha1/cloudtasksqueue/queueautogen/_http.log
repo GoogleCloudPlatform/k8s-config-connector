@@ -1,0 +1,186 @@
+GET https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fqueues%2Fcloudtasksqueue${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Queue does not exist. If you just created the queue, wait at least a minute for the queue to initialize.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}",
+  "rateLimits": {
+    "maxBurstSize": 100,
+    "maxConcurrentDispatches": 1000,
+    "maxDispatchesPerSecond": 500
+  },
+  "retryConfig": {
+    "maxAttempts": 100,
+    "maxBackoff": "3600s",
+    "maxDoublings": 16,
+    "minBackoff": "0.100s"
+  },
+  "state": 1
+}
+
+---
+
+GET https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fqueues%2Fcloudtasksqueue${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}",
+  "rateLimits": {
+    "maxBurstSize": 100,
+    "maxConcurrentDispatches": 1000,
+    "maxDispatchesPerSecond": 500
+  },
+  "retryConfig": {
+    "maxAttempts": 100,
+    "maxBackoff": "3600s",
+    "maxDoublings": 16,
+    "minBackoff": "0.100s"
+  },
+  "state": 1
+}
+
+---
+
+PATCH https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=rateLimits.maxConcurrentDispatches%2CretryConfig.maxAttempts%2CretryConfig.maxBackoff%2CretryConfig.maxDoublings%2CretryConfig.minBackoff%2Cstate
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: queue.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fqueues%2Fcloudtasksqueue${uniqueId}
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}",
+  "rateLimits": {
+    "maxBurstSize": 100,
+    "maxConcurrentDispatches": 500,
+    "maxDispatchesPerSecond": 500
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}",
+  "rateLimits": {
+    "maxBurstSize": 100,
+    "maxConcurrentDispatches": 500,
+    "maxDispatchesPerSecond": 500
+  },
+  "retryConfig": {
+    "maxAttempts": 100,
+    "maxBackoff": "3600s",
+    "maxDoublings": 16,
+    "minBackoff": "0.100s"
+  },
+  "state": 1
+}
+
+---
+
+GET https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fqueues%2Fcloudtasksqueue${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}",
+  "rateLimits": {
+    "maxBurstSize": 100,
+    "maxConcurrentDispatches": 500,
+    "maxDispatchesPerSecond": 500
+  },
+  "retryConfig": {
+    "maxAttempts": 100,
+    "maxBackoff": "3600s",
+    "maxDoublings": 16,
+    "minBackoff": "0.100s"
+  },
+  "state": 1
+}
+
+---
+
+DELETE https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fqueues%2Fcloudtasksqueue${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
