@@ -27,31 +27,33 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-        "google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/eventarc/v1"
 )
 
 func (s *EventarcV1) GetGoogleChannelConfig(ctx context.Context, req *pb.GetGoogleChannelConfigRequest) (*pb.GoogleChannelConfig, error) {
-        reqName := req.GetName()
-	name, err := s.parseGoogleChannelConfigName(reqName)
+	reqName := req.GetName()
+	_, err := s.parseGoogleChannelConfigName(reqName)
 	if err != nil {
 		return nil, err
 	}
-
-	fqn := name.String()
-
-	obj := &pb.GoogleChannelConfig{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "GoogleChannelConfig %q not found", name)
-		}
+	existing := &pb.GoogleChannelConfig{}
+	if err := s.storage.Get(ctx, reqName, existing); err != nil && status.Code(err) != codes.NotFound {
 		return nil, err
 	}
+        if existing.Name != "" {
+            return existing, nil
+        }
 
-	return obj, nil
+        minimalConfig := &pb.GoogleChannelConfig{
+                Name: reqName,
+                UpdateTime: timestamppb.New(time.Now()),
+        }
+
+	return minimalConfig, nil
 }
 
 func (s *EventarcV1) UpdateGoogleChannelConfig(ctx context.Context, req *pb.UpdateGoogleChannelConfigRequest) (*pb.GoogleChannelConfig, error) {
@@ -68,34 +70,35 @@ func (s *EventarcV1) UpdateGoogleChannelConfig(ctx context.Context, req *pb.Upda
 	}
 
 	updated := &pb.GoogleChannelConfig{}
-        if existing.Name == ""{
+	if existing.Name == "" {
 		updated.Name = reqName
-        } else {
-                updated = proto.Clone(existing).(*pb.GoogleChannelConfig)
-        }
+	} else {
+		updated = proto.Clone(existing).(*pb.GoogleChannelConfig)
+	}
 
-        if req.GetUpdateMask() == nil || len(req.GetUpdateMask().GetPaths()) == 0 {
-                return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
-        }
+	if req.GetUpdateMask() == nil || len(req.GetUpdateMask().GetPaths()) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+	}
 
-        for _, path := range req.GetUpdateMask().GetPaths() {
-                switch path {
-                case "cryptoKeyName":
-                        updated.CryptoKeyName = req.GetGoogleChannelConfig().GetCryptoKeyName()
-                default:
-                        return nil, status.Errorf(codes.InvalidArgument, "field mask path %q not supported", path)
-                }
-        }
-        updated.UpdateTime = timestamppb.New(time.Now())
-        if existing.Name == ""{
-                if err := s.storage.Create(ctx, fqn, updated); err != nil {
+	for _, path := range req.GetUpdateMask().GetPaths() {
+		switch path {
+		case "cryptoKeyName":
+			updated.CryptoKeyName = req.GetGoogleChannelConfig().GetCryptoKeyName()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "field mask path %q not supported", path)
+		}
+	}
+	updated.UpdateTime = timestamppb.New(time.Now())
+	if existing.Name == "" {
+		if err := s.storage.Create(ctx, fqn, updated); err != nil {
 			return nil, err
 		}
-        }else{
+	} else {
 		if err := s.storage.Update(ctx, fqn, updated); err != nil {
 			return nil, err
 		}
-        }
+	}
+	return updated, nil
 }
 
 func applyUpdateMask(mask *fieldmaskpb.FieldMask, src *pb.GoogleChannelConfig, dest *pb.GoogleChannelConfig) error {
