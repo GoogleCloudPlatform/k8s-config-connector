@@ -28,6 +28,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
+        "google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/eventarc/v1"
@@ -79,34 +80,38 @@ func (s *EventarcV1) UpdateGoogleChannelConfig(ctx context.Context, req *pb.Upda
 		}
 	}
 
-	updated := proto.Clone(existing).(*pb.GoogleChannelConfig)
+        updated := proto.Clone(existing).(*pb.GoogleChannelConfig)
 
-	paths := req.GetUpdateMask().GetPaths()
-	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
-	}
+        if req.GetUpdateMask() == nil || len(req.GetUpdateMask().GetPaths()) == 0 {
+                return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+        }
 
-	for _, path := range paths {
-		switch path {
-		case "cryptoKeyName":
-			updated.CryptoKeyName = req.GetGoogleChannelConfig().GetCryptoKeyName()
-                case "updateTime":
-                        // This should not be updatable.
-		default:
-                        // Handle updates to other fields generically.
-                        // Note: This is a simplified approach and might not cover all cases, especially nested fields.
-                        //       A more robust approach would involve reflection and field-by-field updates.
-                        if err := req.GetUpdateMask().Apply(req.GetGoogleChannelConfig(), updated); err != nil {
-                                return nil, status.Errorf(codes.InvalidArgument, "error applying update mask: %v", err)
-                        }
-		}
-	}
-	updated.UpdateTime = timestamppb.New(time.Now())
+        for _, path := range req.GetUpdateMask().GetPaths() {
+                switch path {
+                case "cryptoKeyName":
+                        updated.CryptoKeyName = req.GetGoogleChannelConfig().GetCryptoKeyName()
+                default:
+                        return nil, status.Errorf(codes.InvalidArgument, "field mask path %q not supported", path)
+                }
+        }
+        updated.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 	return updated, nil
+}
+
+func applyUpdateMask(mask *fieldmaskpb.FieldMask, src *pb.GoogleChannelConfig, dest *pb.GoogleChannelConfig) error {
+	for _, path := range mask.GetPaths() {
+		switch path {
+		case "cryptoKeyName":
+			dest.CryptoKeyName = src.CryptoKeyName
+		default:
+			return fmt.Errorf("unexpected field path: %s", path)
+		}
+	}
+	return nil
 }
 
 type googleChannelConfigName struct {
