@@ -79,19 +79,19 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseNotebookRuntimeTemplateExternal(externalRef)
+		actualID, err := ParseNotebookRuntimeTemplateExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualID.Parent().ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualID.Parent().ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualID.Parent().Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualID.Parent().Location, location)
 		}
-		if actualResourceID != resourceID {
+		if actualID.ID() != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, actualID.ID())
 		}
 	}
 	return &NotebookRuntimeTemplateIdentity{
@@ -103,15 +103,19 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 	}, nil
 }
 
-func ParseNotebookRuntimeTemplateExternal(external string) (parent *NotebookRuntimeTemplateParent, resourceID string, err error) {
+func ParseNotebookRuntimeTemplateExternal(external string) (*NotebookRuntimeTemplateIdentity, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "notebookruntimetemplates" {
-		return nil, "", fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookruntimetemplates/{{notebookruntimetemplateID}})", external)
+		return nil, fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookruntimetemplates/{{notebookruntimetemplateID}})", external)
 	}
-	parent = &NotebookRuntimeTemplateParent{
+	parent := &NotebookRuntimeTemplateParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	resourceID := tokens[5]
+
+	return &NotebookRuntimeTemplateIdentity{
+		parent: parent,
+		id:     resourceID,
+	}, nil
 }

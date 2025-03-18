@@ -18,12 +18,13 @@
 // crd.type: ColabRuntimeTemplate
 // crd.version: v1alpha1
 
-package aiplatformcolabruntimetemplate
+package colab
 
 import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
@@ -34,7 +35,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/colab/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -87,7 +88,7 @@ func (m *runtimeTemplateModel) AdapterForObject(ctx context.Context, reader clie
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewColabRuntimeTemplateIDFromObject(ctx, reader, obj)
+	id, err := krm.NewNotebookRuntimeTemplateIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +99,7 @@ func (m *runtimeTemplateModel) AdapterForObject(ctx context.Context, reader clie
 		return nil, mapCtx.Err()
 	}
 
-	gcpClient, err := m.client(ctx, id.ProjectID)
+	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -113,11 +114,11 @@ func (m *runtimeTemplateModel) AdapterForObject(ctx context.Context, reader clie
 func (m *runtimeTemplateModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	log := klog.FromContext(ctx)
 	if strings.HasPrefix(url, "//aiplatform.googleapis.com/") {
-		id, err := krm.ParseColabRuntimeTemplateExternal(url)
+		id, err := krm.ParseNotebookRuntimeTemplateExternal(url)
 		if err != nil {
 			log.V(2).Error(err, "url did not match ColabRuntimeTemplate format", "url", url)
 		} else {
-			gcpClient, err := m.client(ctx, id.ProjectID)
+			gcpClient, err := m.client(ctx, id.Parent().ProjectID)
 			if err != nil {
 				return nil, err
 			}
@@ -132,7 +133,7 @@ func (m *runtimeTemplateModel) AdapterForURL(ctx context.Context, url string) (d
 
 type runtimeTemplateAdapter struct {
 	gcpClient *gcp.NotebookClient
-	id        *krm.ColabRuntimeTemplateID
+	id        *krm.NotebookRuntimeTemplateIdentity
 	desired   *pb.NotebookRuntimeTemplate
 	actual    *pb.NotebookRuntimeTemplate
 }
@@ -164,9 +165,9 @@ func (a *runtimeTemplateAdapter) Create(ctx context.Context, createOp *directbas
 	desired.Name = a.id.String()
 
 	req := &pb.CreateNotebookRuntimeTemplateRequest{
-		Parent:                  a.id.Parent.String(),
-		NotebookRuntimeTemplate: desired,
-		NotebookRuntimeTemplateId: a.id.NotebookRuntimeTemplate,
+		Parent:                    a.id.Parent().String(),
+		NotebookRuntimeTemplate:   desired,
+		NotebookRuntimeTemplateId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateNotebookRuntimeTemplate(ctx, req)
 	if err != nil {
@@ -246,15 +247,15 @@ func (a *runtimeTemplateAdapter) Export(ctx context.Context) (*unstructured.Unst
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u := &unstructured.Unstructured{Object: uObj}
-	u.SetName(a.id.NotebookRuntimeTemplate)
+	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.ColabRuntimeTemplateGVK)
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
@@ -281,4 +282,3 @@ func (a *runtimeTemplateAdapter) Delete(ctx context.Context, deleteOp *directbas
 	}
 	return true, nil
 }
-
