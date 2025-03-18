@@ -45,11 +45,12 @@ func (i *BackupIdentity) Parent() *BackupParent {
 
 type BackupParent struct {
 	ProjectID string
-	Location  string
+	Instance  string
+	Cluster   string
 }
 
 func (p *BackupParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/instances/" + p.Instance + "/clusters/" + p.Cluster
 }
 
 // New builds a BackupIdentity from the Config Connector Backup object.
@@ -64,7 +65,8 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	instance := obj.Spec.Instance
+	cluster := obj.Spec.Cluster
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -86,8 +88,11 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Instance != instance {
+			return nil, fmt.Errorf("spec.instance changed, expect %s, got %s", actualParent.Instance, instance)
+		}
+		if actualParent.Cluster != cluster {
+			return nil, fmt.Errorf("spec.cluster changed, expect %s, got %s", actualParent.Cluster, cluster)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -97,7 +102,8 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 	return &BackupIdentity{
 		parent: &BackupParent{
 			ProjectID: projectID,
-			Location:  location,
+			Instance:  instance,
+			Cluster:   cluster,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +111,14 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 
 func ParseBackupExternal(external string) (parent *BackupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backups" {
-		return nil, "", fmt.Errorf("format of BigtableBackup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backups/{{backupID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "clusters" || tokens[6] != "backups" {
+		return nil, "", fmt.Errorf("format of BigtableBackup external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/clusters/{{clusterID}}/backups/{{backupID}})", external)
 	}
 	parent = &BackupParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
+		Instance:  tokens[3],
+		Cluster:   tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
