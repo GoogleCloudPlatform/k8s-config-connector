@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: managedkafka.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.managedkafka.v1
+
 package managedkafka
 
 import (
