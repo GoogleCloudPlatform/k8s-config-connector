@@ -30,6 +30,8 @@ cloud.google.com/go/aiplatform v1.74.0 h1:rE2P5H7FOAFISAZilmdkapbk4CVgwfVs6FDWlh
 cloud.google.com/go/aiplatform v1.74.0/go.mod h1:hVEw30CetNut5FrblYd1AJUWRVSIjoyIvp0EVUh51HA=
 cloud.google.com/go/alloydb v1.14.0 h1:aEmmIHmiHDs46wTr/YqXuumuUGNc5QKYA7317nEFj2Y=
 cloud.google.com/go/alloydb v1.14.0/go.mod h1:OTBY1HoL0Z8PsHoMMVhkaUPKyY8oP7hzIAe/Dna6UHk=
+cloud.google.com/go/apigateway v1.7.3 h1:Mn7cC5iWJz+cSMS/Hb+N2410CpZ6c8XpJKaexBl0Gxs=
+cloud.google.com/go/apigateway v1.7.3/go.mod h1:uK0iRHdl2rdTe79bHW/bTsKhhXPcFihjUdb7RzhTPf4=
 cloud.google.com/go/apikeys v1.1.12 h1:ZTFWJ1ibGjiIrIhhtdWOm7AGJd+y9R17dVujlgU//6E=
 cloud.google.com/go/apikeys v1.1.12/go.mod h1:3tqZUj8CmCJm0maQyLufgyO5Ghf3AZQ6hcSkIqsSIm4=
 cloud.google.com/go/apphub v0.2.4 h1:lhsd/6+16NUshw8c52T+DfMaAz04SX6ItMr8caGbtgY=
