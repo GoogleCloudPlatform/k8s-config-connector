@@ -482,8 +482,8 @@ func (in *DataplexAspectTypeSpec) DeepCopyInto(out *DataplexAspectTypeSpec) {
 	}
 	if in.MetadataTemplate != nil {
 		in, out := &in.MetadataTemplate, &out.MetadataTemplate
-		*out = new(AspectType_MetadataTemplate)
-		(*in).DeepCopyInto(*out)
+		*out = new(string)
+		**out = **in
 	}
 }
 

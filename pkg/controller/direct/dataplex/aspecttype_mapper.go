@@ -16,15 +16,17 @@ package dataplex
 
 import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	"encoding/json"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"log"
 )
 
-func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.AspectType {
+func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.DataplexAspectTypeSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AspectType{}
+	out := &krm.DataplexAspectTypeSpec{}
 	// MISSING: Name
 	// MISSING: Uid
 	// MISSING: CreateTime
@@ -34,11 +36,11 @@ func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectTy
 	out.Labels = in.Labels
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Authorization = AspectType_Authorization_FromProto(mapCtx, in.GetAuthorization())
-	out.MetadataTemplate = AspectType_MetadataTemplate_FromProto(mapCtx, in.GetMetadataTemplate())
+	out.MetadataTemplate = direct.LazyPtr(in.String())
 	// MISSING: TransferStatus
 	return out
 }
-func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.AspectType) *pb.AspectType {
+func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAspectTypeSpec) *pb.AspectType {
 	if in == nil {
 		return nil
 	}
@@ -56,12 +58,11 @@ func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.AspectTyp
 	// MISSING: TransferStatus
 	return out
 }
-func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.AspectTypeObservedState {
+func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.DataplexAspectTypeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AspectTypeObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.DataplexAspectTypeObservedState{}
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -74,12 +75,11 @@ func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.TransferStatus = direct.Enum_FromProto(mapCtx, in.GetTransferStatus())
 	return out
 }
-func DataplexAspectTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AspectTypeObservedState) *pb.AspectType {
+func DataplexAspectTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAspectTypeObservedState) *pb.AspectType {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AspectType{}
-	out.Name = direct.ValueOf(in.Name)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -108,40 +108,16 @@ func AspectType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.AspectT
 	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
 	return out
 }
-func AspectType_MetadataTemplate_FromProto(mapCtx *direct.MapContext, in *pb.AspectType_MetadataTemplate) *krm.AspectType_MetadataTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AspectType_MetadataTemplate{}
-	out.Index = direct.LazyPtr(in.GetIndex())
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Type = direct.LazyPtr(in.GetType())
-	out.RecordFields = direct.Slice_FromProto(mapCtx, in.RecordFields, AspectType_MetadataTemplate_FromProto)
-	out.EnumValues = direct.Slice_FromProto(mapCtx, in.EnumValues, AspectType_MetadataTemplate_EnumValue_FromProto)
-	out.MapItems = AspectType_MetadataTemplate_FromProto(mapCtx, in.GetMapItems())
-	out.ArrayItems = AspectType_MetadataTemplate_FromProto(mapCtx, in.GetArrayItems())
-	out.TypeID = direct.LazyPtr(in.GetTypeId())
-	out.TypeRef = direct.LazyPtr(in.GetTypeRef())
-	out.Constraints = AspectType_MetadataTemplate_Constraints_FromProto(mapCtx, in.GetConstraints())
-	out.Annotations = AspectType_MetadataTemplate_Annotations_FromProto(mapCtx, in.GetAnnotations())
-	return out
-}
-func AspectType_MetadataTemplate_ToProto(mapCtx *direct.MapContext, in *krm.AspectType_MetadataTemplate) *pb.AspectType_MetadataTemplate {
+func AspectType_MetadataTemplate_ToProto(mapCtx *direct.MapContext, in *string) *pb.AspectType_MetadataTemplate {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AspectType_MetadataTemplate{}
-	out.Index = direct.ValueOf(in.Index)
-	out.Name = direct.ValueOf(in.Name)
-	out.Type = direct.ValueOf(in.Type)
-	out.RecordFields = direct.Slice_ToProto(mapCtx, in.RecordFields, AspectType_MetadataTemplate_ToProto)
-	out.EnumValues = direct.Slice_ToProto(mapCtx, in.EnumValues, AspectType_MetadataTemplate_EnumValue_ToProto)
-	out.MapItems = AspectType_MetadataTemplate_ToProto(mapCtx, in.MapItems)
-	out.ArrayItems = AspectType_MetadataTemplate_ToProto(mapCtx, in.ArrayItems)
-	out.TypeId = direct.ValueOf(in.TypeID)
-	out.TypeRef = direct.ValueOf(in.TypeRef)
-	out.Constraints = AspectType_MetadataTemplate_Constraints_ToProto(mapCtx, in.Constraints)
-	out.Annotations = AspectType_MetadataTemplate_Annotations_ToProto(mapCtx, in.Annotations)
+
+	err := json.Unmarshal([]byte(direct.ValueOf(in)), &out)
+	if err != nil {
+		log.Fatalf("Error unmarshaling JSON: %v", err)
+	}
 	return out
 }
 func AspectType_MetadataTemplate_Annotations_FromProto(mapCtx *direct.MapContext, in *pb.AspectType_MetadataTemplate_Annotations) *krm.AspectType_MetadataTemplate_Annotations {

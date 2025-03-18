@@ -59,7 +59,7 @@ type DataplexAspectTypeSpec struct {
 
 	// Required. MetadataTemplate of the aspect.
 	// +kcc:proto:field=google.cloud.dataplex.v1.AspectType.metadata_template
-	MetadataTemplate *AspectType_MetadataTemplate `json:"metadataTemplate,omitempty"`
+	MetadataTemplate *string `json:"metadataTemplate,omitempty"`
 }
 
 // DataplexAspectTypeStatus defines the config connector machine state of DataplexAspectType
