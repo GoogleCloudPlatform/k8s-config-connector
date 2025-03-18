@@ -112,7 +112,7 @@ spec:
                 description: Immutable. The encryption configuration for CMEK-protected
                   clusters.
                 properties:
-                  kmsKeyName:
+                  kmsKeyRef:
                     description: 'Describes the Cloud KMS encryption key that will
                       be used to protect the destination Bigtable cluster. The requirements
                       for this key are: 1) The Cloud Bigtable service account associated
@@ -122,7 +122,32 @@ spec:
                       CMEK key must match the region of the cluster. 3) All clusters
                       within an instance must use the same CMEK key. Values are of
                       the form `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
                 type: object
               instanceRef:
                 description: InstanceRef defines the resource reference to BigtableInstance,
@@ -158,10 +183,6 @@ spec:
                   storage reside. For best performance, clients should be located
                   as close as possible to this cluster. Currently only zones are supported,
                   so values should be of the form `projects/{project}/locations/{zone}`.
-                type: string
-              name:
-                description: The unique name of the cluster. Values are of the form
-                  `projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*`.
                 type: string
               nodeScalingFactor:
                 description: Immutable. The node scaling factor of this cluster.

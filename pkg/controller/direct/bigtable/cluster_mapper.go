@@ -17,6 +17,7 @@ package bigtable
 import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -41,7 +42,6 @@ func BigtableClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *k
 		return nil
 	}
 	out := &krm.BigtableClusterSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.Location = direct.LazyPtr(in.GetLocation())
 	out.ServeNodes = direct.LazyPtr(in.GetServeNodes())
 	out.NodeScalingFactor = direct.Enum_FromProto(mapCtx, in.GetNodeScalingFactor())
@@ -55,7 +55,6 @@ func BigtableClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableClus
 		return nil
 	}
 	out := &pb.Cluster{}
-	out.Name = direct.ValueOf(in.Name)
 	out.Location = direct.ValueOf(in.Location)
 	out.ServeNodes = direct.ValueOf(in.ServeNodes)
 	out.NodeScalingFactor = direct.Enum_ToProto[pb.Cluster_NodeScalingFactor](mapCtx, in.NodeScalingFactor)
@@ -89,7 +88,9 @@ func Cluster_EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluste
 		return nil
 	}
 	out := &krm.Cluster_EncryptionConfig{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	if in.GetKmsKeyName() != "" {
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
 	return out
 }
 func Cluster_EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_EncryptionConfig) *pb.Cluster_EncryptionConfig {
@@ -97,7 +98,9 @@ func Cluster_EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster
 		return nil
 	}
 	out := &pb.Cluster_EncryptionConfig{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
 	return out
 }
 

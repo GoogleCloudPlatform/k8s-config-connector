@@ -14,6 +14,10 @@
 
 package v1alpha1
 
+import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+)
+
 // +kcc:proto=google.bigtable.admin.v2.AutoscalingLimits
 type AutoscalingLimits struct {
 	// Required. Minimum number of nodes to scale down to.
@@ -75,5 +79,5 @@ type Cluster_EncryptionConfig struct {
 	//  Values are of the form
 	//  `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}`
 	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.EncryptionConfig.kms_key_name
-	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }

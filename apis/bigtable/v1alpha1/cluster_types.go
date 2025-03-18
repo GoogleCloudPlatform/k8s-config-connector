@@ -36,12 +36,9 @@ type Parent struct {
 // +kcc:proto=google.bigtable.admin.v2.Cluster
 type BigtableClusterSpec struct {
 	Parent `json:",inline"`
+
 	// The BigtableCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// The unique name of the cluster. Values are of the form
-	//  `projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.name
-	Name *string `json:"name,omitempty"`
 
 	// Immutable. The location where this cluster's nodes and storage reside. For
 	//  best performance, clients should be located as close as possible to this
