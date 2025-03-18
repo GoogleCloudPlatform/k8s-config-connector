@@ -26,6 +26,39 @@ var BigtableClusterGVK = GroupVersion.WithKind("BigtableCluster")
 type BigtableClusterSpec struct {
 	// The BigtableCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+	// The unique name of the cluster. Values are of the form
+	//  `projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*`.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.name
+	Name *string `json:"name,omitempty"`
+
+	// Immutable. The location where this cluster's nodes and storage reside. For
+	//  best performance, clients should be located as close as possible to this
+	//  cluster. Currently only zones are supported, so values should be of the
+	//  form `projects/{project}/locations/{zone}`.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.location
+	Location *string `json:"location,omitempty"`
+
+	// The number of nodes allocated to this cluster. More nodes enable higher
+	//  throughput and more consistent performance.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.serve_nodes
+	ServeNodes *int32 `json:"serveNodes,omitempty"`
+
+	// Immutable. The node scaling factor of this cluster.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.node_scaling_factor
+	NodeScalingFactor *string `json:"nodeScalingFactor,omitempty"`
+
+	// Configuration for this cluster.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.cluster_config
+	ClusterConfig *Cluster_ClusterConfig `json:"clusterConfig,omitempty"`
+
+	// Immutable. The type of storage used by this cluster to serve its
+	//  parent instance's tables, unless explicitly overridden.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.default_storage_type
+	DefaultStorageType *string `json:"defaultStorageType,omitempty"`
+
+	// Immutable. The encryption configuration for CMEK-protected clusters.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.encryption_config
+	EncryptionConfig *Cluster_EncryptionConfig `json:"encryptionConfig,omitempty"`
 }
 
 // BigtableClusterStatus defines the config connector machine state of BigtableCluster
@@ -47,6 +80,9 @@ type BigtableClusterStatus struct {
 // BigtableClusterObservedState is the state of the BigtableCluster resource as most recently observed in GCP.
 // +kcc:proto=google.bigtable.admin.v2.Cluster
 type BigtableClusterObservedState struct {
+	// Output only. The current state of the cluster.
+	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.state
+	State *string `json:"state,omitempty"`
 }
 
 // +genclient
