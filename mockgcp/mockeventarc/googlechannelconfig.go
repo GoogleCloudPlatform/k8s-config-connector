@@ -34,7 +34,8 @@ import (
 )
 
 func (s *EventarcV1) GetGoogleChannelConfig(ctx context.Context, req *pb.GetGoogleChannelConfigRequest) (*pb.GoogleChannelConfig, error) {
-	name, err := s.parseGoogleChannelConfigName(req.Name)
+        reqName := req.GetName()
+	name, err := s.parseGoogleChannelConfigName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +63,20 @@ func (s *EventarcV1) UpdateGoogleChannelConfig(ctx context.Context, req *pb.Upda
 
 	existing := &pb.GoogleChannelConfig{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			updated := &pb.GoogleChannelConfig{}
+			updated.Name = reqName
+                        if req.GetGoogleChannelConfig().GetCryptoKeyName() != "" {
+                                updated.CryptoKeyName = req.GetGoogleChannelConfig().GetCryptoKeyName()
+                        }
+			updated.UpdateTime = timestamppb.New(time.Now())
+			if err := s.storage.Create(ctx, fqn, updated); err != nil {
+				return nil, err
+			}
+			return updated, nil
+		} else {
+			return nil, err
+		}
 	}
 
 	updated := proto.Clone(existing).(*pb.GoogleChannelConfig)
