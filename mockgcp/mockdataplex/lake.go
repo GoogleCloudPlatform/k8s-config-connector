@@ -24,6 +24,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -66,6 +68,9 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.Uid = "lake-" + name.LakeID // TODO: maybe a proper random value?
 	obj.State = pb.State_ACTIVE
+	obj.AssetStatus = &pb.AssetStatus{}
+	obj.MetastoreStatus = &pb.Lake_MetastoreStatus{State: pb.Lake_MetastoreStatus_NONE, UpdateTime: timestamppb.New(time.Now())}
+	obj.ServiceAccount = fmt.Sprintf("service-%d@gcp-sa-dataplex.iam.gserviceaccount.com", name.Project.Number)
 	s.populateDefaultsForLake(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -80,6 +85,7 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 		CreateTime: timestamppb.New(time.Now()),
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.RequestedCancellation = false
 		lroMetadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
@@ -116,6 +122,22 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 		lroMetadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
+}
+
+func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*pb.ListLakesResponse, error) {
+	response := &pb.ListLakesResponse{}
+
+	AutoscalingPolicyKind := (&pb.Lake{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, AutoscalingPolicyKind, storage.ListOptions{}, func(obj proto.Message) error {
+		autoScalingPolicy := obj.(*pb.Lake)
+		if strings.HasPrefix(autoScalingPolicy.GetName(), req.Parent) {
+			response.Lakes = append(response.Lakes, autoScalingPolicy)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
 }
 
 func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunningpb.Operation, error) {
@@ -181,5 +203,3 @@ func (s *MockService) parseLakeName(name string) (*lakeName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-

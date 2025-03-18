@@ -64,6 +64,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatacatalog"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataflow"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataplex"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataproc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"

@@ -1,3 +1,0 @@
-// +tool:mockgcp-support
-// proto.service: google.cloud.dataplex.v1.DataplexService
-// proto.message: google.cloud.dataplex.v1.Lake

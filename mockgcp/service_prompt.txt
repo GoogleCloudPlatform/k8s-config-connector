@@ -1,3 +1,0 @@
-// +tool:mockgcp-service
-// http.host: dataplex.googleapis.com
-// proto.service: google.cloud.dataplex.v1.DataplexService
