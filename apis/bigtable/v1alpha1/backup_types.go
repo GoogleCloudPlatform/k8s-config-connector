@@ -26,6 +26,49 @@ var BigtableBackupGVK = GroupVersion.WithKind("BigtableBackup")
 type BigtableBackupSpec struct {
 	// The BigtableBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+	// A globally unique identifier for the backup which cannot be
+	//  changed. Values are of the form
+	//  `projects/{project}/instances/{instance}/clusters/{cluster}/
+	//     backups/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`
+	//  The final segment of the name must be between 1 and 50 characters
+	//  in length.
+	//
+	//  The backup is stored in the cluster identified by the prefix of the backup
+	//  name of the form
+	//  `projects/{project}/instances/{instance}/clusters/{cluster}`.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. Name of the table from which this backup was created.
+	//  This needs to be in the same instance as the backup. Values are of the form
+	//  `projects/{project}/instances/{instance}/tables/{source_table}`.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.source_table
+	SourceTable *string `json:"sourceTable,omitempty"`
+
+	// Required. The expiration time of the backup.
+	//  When creating a backup or updating its `expire_time`, the value must be
+	//  greater than the backup creation time by:
+	//  - At least 6 hours
+	//  - At most 90 days
+	//
+	//  Once the `expire_time` has passed, Cloud Bigtable will delete the backup.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Indicates the backup type of the backup.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.backup_type
+	BackupType *string `json:"backupType,omitempty"`
+
+	// The time at which the hot backup will be converted to a standard backup.
+	//  Once the `hot_to_standard_time` has passed, Cloud Bigtable will convert the
+	//  hot backup to a standard backup. This value must be greater than the backup
+	//  creation time by:
+	//  - At least 24 hours
+	//
+	//  This field only applies for hot backups. When creating or updating a
+	//  standard backup, attempting to set this field will fail the request.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.hot_to_standard_time
+	HotToStandardTime *string `json:"hotToStandardTime,omitempty"`
 }
 
 // BigtableBackupStatus defines the config connector machine state of BigtableBackup
@@ -47,6 +90,37 @@ type BigtableBackupStatus struct {
 // BigtableBackupObservedState is the state of the BigtableBackup resource as most recently observed in GCP.
 // +kcc:proto=google.bigtable.admin.v2.Backup
 type BigtableBackupObservedState struct {
+	// Output only. Name of the backup from which this backup was copied. If a
+	//  backup is not created by copying a backup, this field will be empty. Values
+	//  are of the form:
+	//  projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.source_backup
+	SourceBackup *string `json:"sourceBackup,omitempty"`
+
+	// Output only. `start_time` is the time that the backup was started
+	//  (i.e. approximately the time the
+	//  [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup]
+	//  request is received).  The row data in this backup will be no older than
+	//  this timestamp.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. `end_time` is the time that the backup was finished. The row
+	//  data in the backup will be no newer than this timestamp.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. Size of the backup in bytes.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.size_bytes
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
+
+	// Output only. The current state of the backup.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The encryption information for the backup.
+	// +kcc:proto:field=google.bigtable.admin.v2.Backup.encryption_info
+	EncryptionInfo *EncryptionInfo `json:"encryptionInfo,omitempty"`
 }
 
 // +genclient
