@@ -134,7 +134,7 @@ func (a *ApplicationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
+	resource.Name = a.id.ID()
 	req := &apphubpb.CreateApplicationRequest{
 		Parent:        a.id.Parent().String(),
 		ApplicationId: a.id.ID(),
@@ -146,7 +146,7 @@ func (a *ApplicationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Application %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("application %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Application", "name", a.id)
 
@@ -181,12 +181,12 @@ func (a *ApplicationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+	// remove name from update paths
+	paths = paths.Delete("name")
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}
 	desiredPb.Name = a.id.String()
-
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
 	req := &apphubpb.UpdateApplicationRequest{
 		UpdateMask:  updateMask,
 		Application: desiredPb,
