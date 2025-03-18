@@ -44,12 +44,12 @@ func (i *ClusterIdentity) Parent() *ClusterParent {
 }
 
 type ClusterParent struct {
-	ProjectID string
-	Location  string
+	ProjectID   string
+	InstanceRef refsv1beta1.InstanceRef
 }
 
 func (p *ClusterParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/instances/" + p.InstanceRef.Name
 }
 
 // New builds a ClusterIdentity from the Config Connector Cluster object.
@@ -64,7 +64,7 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	instanceRef := obj.Spec.InstanceRef
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -86,8 +86,8 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.InstanceRef.Name != instanceRef.Name {
+			return nil, fmt.Errorf("spec.instanceRef changed, expect %s, got %s", actualParent.InstanceRef.Name, instanceRef.Name)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,8 +96,8 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 	}
 	return &ClusterIdentity{
 		parent: &ClusterParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:   projectID,
+			InstanceRef: instanceRef,
 		},
 		id: resourceID,
 	}, nil
@@ -105,12 +105,14 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 
 func ParseClusterExternal(external string) (parent *ClusterParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "clusters" {
-		return nil, "", fmt.Errorf("format of BigtableCluster external=%q was not known (use projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "clusters" {
+		return nil, "", fmt.Errorf("format of BigtableCluster external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/clusters/{{clusterID}})", external)
 	}
 	parent = &ClusterParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
+		InstanceRef: refsv1beta1.InstanceRef{
+			Name: tokens[3],
+		},
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil
