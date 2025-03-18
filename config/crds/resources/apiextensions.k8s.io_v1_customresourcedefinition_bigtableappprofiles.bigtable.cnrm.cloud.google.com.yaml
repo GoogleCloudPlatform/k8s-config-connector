@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: bigtableappprofiles.bigtable.cnrm.cloud.google.com
 spec:
   group: bigtable.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: BigtableAppProfile
+    listKind: BigtableAppProfileList
     plural: bigtableappprofiles
     shortNames:
     - gcpbigtableappprofile
@@ -40,29 +39,41 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: BigtableAppProfile is the Schema for the BigtableAppProfile API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: BigtableAppProfileSpec defines the desired state of BigtableAppProfile
             properties:
+              dataBoostIsolationReadOnly:
+                description: Specifies that this app profile is intended for read-only
+                  usage via the Data Boost feature.
+                properties:
+                  computeBillingOwner:
+                    description: The Compute Billing Owner for this Data Boost App
+                      Profile.
+                    type: string
+                type: object
               description:
-                description: Long form description of the use case for this app profile.
+                description: Long form description of the use case for this AppProfile.
                 type: string
               instanceRef:
-                description: The instance to create the app profile within.
+                description: InstanceRef defines the resource reference to BigtableInstance,
+                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -79,66 +90,111 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `BigtableInstance`
-                      resource.'
+                    description: A reference to an externally managed BigtableInstance
+                      resource.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a BigtableInstance resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a BigtableInstance resource.
                     type: string
                 type: object
-              multiClusterRoutingClusterIds:
-                description: The set of clusters to route to. The order is ignored;
-                  clusters will be tried in order of distance. If left empty, all
-                  clusters are eligible.
-                items:
-                  type: string
-                type: array
+              location:
+                type: string
               multiClusterRoutingUseAny:
+                description: Use a multi-cluster routing policy.
+                properties:
+                  clusterIds:
+                    description: The set of clusters to route to. The order is ignored;
+                      clusters will be tried in order of distance. If left empty,
+                      all clusters are eligible.
+                    items:
+                      type: string
+                    type: array
+                  rowAffinity:
+                    description: Row affinity sticky routing based on the row key
+                      of the request. Requests that span multiple rows are routed
+                      non-deterministically.
+                    type: object
+                type: object
+              priority:
                 description: |-
-                  If true, read/write requests are routed to the nearest cluster in the instance, and will fail over to the nearest cluster that is available
-                  in the event of transient errors or delays. Clusters in a region are considered equidistant. Choosing this option sacrifices read-your-writes
-                  consistency to improve availability.
-                type: boolean
+                  This field has been deprecated in favor of `standard_isolation.priority`.
+                   If you set this field, `standard_isolation.priority` will be set instead.
+
+                   The priority of requests sent using this app profile.
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
-                description: Immutable. Optional. The appProfileId of the resource.
-                  Used for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The BigtableAppProfile name. If not given, the metadata.name
+                  will be used.
                 type: string
               singleClusterRouting:
                 description: Use a single-cluster routing policy.
                 properties:
                   allowTransactionalWrites:
-                    description: |-
-                      If true, CheckAndMutateRow and ReadModifyWriteRow requests are allowed by this app profile.
-                      It is unsafe to send these requests to the same table/row/column in multiple clusters.
+                    description: Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow`
+                      requests are allowed by this app profile. It is unsafe to send
+                      these requests to the same table/row/column in multiple clusters.
                     type: boolean
-                  clusterId:
+                  clusterID:
                     description: The cluster to which read/write requests should be
                       routed.
                     type: string
-                required:
-                - clusterId
                 type: object
               standardIsolation:
                 description: The standard options used for isolating this app profile's
                   traffic from other use cases.
                 properties:
                   priority:
-                    description: 'The priority of requests sent using this app profile.
-                      Possible values: ["PRIORITY_LOW", "PRIORITY_MEDIUM", "PRIORITY_HIGH"].'
+                    description: The priority of requests sent using this app profile.
                     type: string
-                required:
-                - priority
                 type: object
+            required:
+            - ""
+            - instanceRef
+            - location
+            - projectRef
             type: object
           status:
+            description: BigtableAppProfileStatus defines the config connector machine
+              state of BigtableAppProfile
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -162,9 +218,22 @@ spec:
                       type: string
                   type: object
                 type: array
+              etag:
+                description: Strongly validated etag for optimistic concurrency control.
+                  Preserve the value returned from `GetAppProfile` when calling `UpdateAppProfile`
+                  to fail the request if there has been a modification in the mean
+                  time. The `update_mask` of the request need not include `etag` for
+                  this protection to apply. See [Wikipedia](https://en.wikipedia.org/wiki/HTTP_ETag)
+                  and [RFC 7232](https://tools.ietf.org/html/rfc7232#section-2.3)
+                  for more details.
+                type: string
+              externalRef:
+                description: A unique specifier for the BigtableAppProfile resource
+                  in GCP.
+                type: string
               name:
-                description: The unique name of the requested app profile. Values
-                  are of the form 'projects/<project>/instances/<instance>/appProfiles/<appProfileId>'.
+                description: The unique name of the app profile. Values are of the
+                  form `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -172,16 +241,13 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

@@ -19,8 +19,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -44,24 +45,30 @@ func (i *AppProfileIdentity) Parent() *AppProfileParent {
 }
 
 type AppProfileParent struct {
+	ProjectID   string
 	InstanceRef string
 }
 
 func (p *AppProfileParent) String() string {
-	return "instances/" + p.InstanceRef
+	return "projects/" + p.ProjectID + "/instances/" + p.InstanceRef
 }
 
 // New builds a AppProfileIdentity from the Config Connector AppProfile object.
 // No changes were needed as the existing logic already resolves the only field in AppProfileParent (InstanceRef).
 func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *BigtableAppProfile) (*AppProfileIdentity, error) {
 	// Get Parent
-	instanceRef := obj.Spec.Parent.InstanceRef.Name
-	if instanceRef == "" {
-		instanceVal, err := refsv1beta1.GetReference(ctx, reader, obj.Spec.Parent.InstanceRef, obj.GetNamespace())
-		if err != nil {
-			return nil, fmt.Errorf("error retrieving InstanceRef: %w", err)
-		}
-		instanceRef = instanceVal
+	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, err
+	}
+
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
 	}
 
 	// Get desired ID
@@ -84,6 +91,9 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		if actualParent.InstanceRef != instanceRef {
 			return nil, fmt.Errorf("spec.instanceRef changed, expect %s, got %s", actualParent.InstanceRef, instanceRef)
 		}
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRefRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -91,6 +101,7 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 	}
 	return &AppProfileIdentity{
 		parent: &AppProfileParent{
+			ProjectID:   projectID,
 			InstanceRef: instanceRef,
 		},
 		id: resourceID,
@@ -99,12 +110,13 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 
 func ParseAppProfileExternal(external string) (parent *AppProfileParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "instances" || tokens[2] != "appProfiles" {
-		return nil, "", fmt.Errorf("format of BigtableAppProfile external=%q was not known (use instances/{{instance}}/appProfiles/{{appProfileId}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "appProfiles" {
+		return nil, "", fmt.Errorf("format of BigtableAppProfile external=%q was not known (use projects/{{projectID}}/instances/{{instance}}/appProfiles/{{appProfileId}})", external)
 	}
 	parent = &AppProfileParent{
-		InstanceRef: tokens[1],
+		ProjectID:   tokens[1],
+		InstanceRef: tokens[3],
 	}
-	resourceID = tokens[3]
+	resourceID = tokens[5]
 	return parent, resourceID, nil
 }

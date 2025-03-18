@@ -15,10 +15,11 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 )
 
 var BigtableAppProfileGVK = GroupVersion.WithKind("BigtableAppProfile")
@@ -27,14 +28,20 @@ var BigtableAppProfileGVK = GroupVersion.WithKind("BigtableAppProfile")
 // +kcc:proto=google.bigtable.admin.v2.AppProfile
 type Parent struct {
 	// +required
-	InstanceRef refv1beta1.ResourceRef `json:"instanceRef"`
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+
+	// +required
+	Location string `json:"location"`
+
+	// +required
+	InstanceRef bigtablev1beta1.InstanceRef `json:"instanceRef"`
 }
 
 // BigtableAppProfileSpec defines the desired state of BigtableAppProfile
 // +kcc:proto=google.bigtable.admin.v2.AppProfile
 type BigtableAppProfileSpec struct {
 	// +required
-	Parent Parent `json:",inline"`
+	Parent `json:",inline"`
 	// The BigtableAppProfile name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Long form description of the use case for this AppProfile.
