@@ -1,0 +1,6 @@
+
+- exec: gcloud compute network-attachments create test-${uniqueId} --region=us-central1 --subnets=default
+- exec: gcloud compute network-attachments describe test-${uniqueId} --region=us-central1
+- exec: gcloud compute network-attachments update test-${uniqueId} --region=us-central1 --description="updated description"
+- exec: gcloud compute network-attachments list --filter="name~test.*" --region=us-central1
+- exec: gcloud compute network-attachments delete test-${uniqueId} --region=us-central1
