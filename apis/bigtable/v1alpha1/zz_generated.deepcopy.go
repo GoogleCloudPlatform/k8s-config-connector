@@ -57,8 +57,8 @@ func (in *AutoscalingTargets) DeepCopyInto(out *AutoscalingTargets) {
 		*out = new(int32)
 		**out = **in
 	}
-	if in.StorageUtilizationGibPerNode != nil {
-		in, out := &in.StorageUtilizationGibPerNode, &out.StorageUtilizationGibPerNode
+	if in.StorageUtilizationGiBPerNode != nil {
+		in, out := &in.StorageUtilizationGiBPerNode, &out.StorageUtilizationGiBPerNode
 		*out = new(int32)
 		**out = **in
 	}

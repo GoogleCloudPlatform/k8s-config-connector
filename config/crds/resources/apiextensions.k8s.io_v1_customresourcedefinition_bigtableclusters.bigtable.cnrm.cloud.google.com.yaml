@@ -90,7 +90,7 @@ spec:
                               INVALID_ARGUMENT error.
                             format: int32
                             type: integer
-                          storageUtilizationGibPerNode:
+                          storageUtilizationGiBPerNode:
                             description: 'The storage utilization that the Autoscaler
                               should be trying to achieve. This number is limited
                               between 2560 (2.5TiB) and 5120 (5TiB) for a SSD cluster

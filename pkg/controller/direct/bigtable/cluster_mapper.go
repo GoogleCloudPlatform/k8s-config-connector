@@ -147,7 +147,7 @@ func AutoscalingTargets_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingT
 	}
 	out := &krm.AutoscalingTargets{}
 	out.CPUUtilizationPercent = direct.LazyPtr(in.GetCpuUtilizationPercent())
-	out.StorageUtilizationGibPerNode = direct.LazyPtr(in.GetStorageUtilizationGibPerNode())
+	out.StorageUtilizationGiBPerNode = direct.LazyPtr(in.GetStorageUtilizationGibPerNode())
 	return out
 }
 func AutoscalingTargets_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingTargets) *pb.AutoscalingTargets {
@@ -156,6 +156,6 @@ func AutoscalingTargets_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingTa
 	}
 	out := &pb.AutoscalingTargets{}
 	out.CpuUtilizationPercent = direct.ValueOf(in.CPUUtilizationPercent)
-	out.StorageUtilizationGibPerNode = direct.ValueOf(in.StorageUtilizationGibPerNode)
+	out.StorageUtilizationGibPerNode = direct.ValueOf(in.StorageUtilizationGiBPerNode)
 	return out
 }

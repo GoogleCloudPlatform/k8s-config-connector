@@ -45,7 +45,7 @@ type AutoscalingTargets struct {
 	//  it will be treated as if it were set to the default value: 2560 for SSD,
 	//  8192 for HDD.
 	// +kcc:proto:field=google.bigtable.admin.v2.AutoscalingTargets.storage_utilization_gib_per_node
-	StorageUtilizationGibPerNode *int32 `json:"storageUtilizationGibPerNode,omitempty"`
+	StorageUtilizationGiBPerNode *int32 `json:"storageUtilizationGiBPerNode,omitempty"`
 }
 
 // +kcc:proto=google.bigtable.admin.v2.Cluster.ClusterAutoscalingConfig
