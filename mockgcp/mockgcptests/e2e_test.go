@@ -38,6 +38,7 @@ type Placeholders struct {
 	ProjectNumber    int64
 	UniqueID         string
 	BillingAccountID string
+	FolderID         string
 }
 
 func TestScripts(t *testing.T) {
@@ -69,12 +70,16 @@ func TestScripts(t *testing.T) {
 			h.Init()
 
 			project := h.Project
+			folderID := h.FolderID()
+			organizationID := testgcp.TestOrgID.Get()
+
 			testDir := filepath.Join(baseDir, scriptPath)
 			placeholders := Placeholders{
 				ProjectID:        project.ProjectID,
 				ProjectNumber:    project.ProjectNumber,
 				UniqueID:         uniqueID,
 				BillingAccountID: testgcp.TestBillingAccountID.Get(),
+				FolderID:         folderID,
 			}
 			script := loadScript(t, testDir, placeholders)
 
@@ -149,9 +154,6 @@ func TestScripts(t *testing.T) {
 					httpEvent.Response.RemoveHeader("Content-Length")
 				}
 
-				folderID := ""
-				organizationID := ""
-
 				e2e.NormalizeHTTPLog(t, httpEvents, h.RegisteredServices(), testgcp.GCPProject{ProjectID: h.Project.ProjectID, ProjectNumber: h.Project.ProjectNumber}, uniqueID, folderID, organizationID)
 
 				x := e2e.NewNormalizer(uniqueID, testgcp.GCPProject{ProjectID: h.Project.ProjectID, ProjectNumber: h.Project.ProjectNumber})
@@ -225,5 +227,6 @@ func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s = strings.Replace(s, "${projectId}", placeholders.ProjectID, -1)
 	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
 	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
+	s = strings.Replace(s, "${folderId}", placeholders.FolderID, -1)
 	return []byte(s)
 }

@@ -80,12 +80,20 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 
 	prefix := ""
 	metadata := &emptypb.Empty{}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+	lro, err := s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		response := &pb.EnableServiceResponse{
 			Service: service,
 		}
 		return response, nil
 	})
+	if err != nil {
+		return nil, err
+	}
+
+	// We actually only return the lro name from this operation
+	return &longrunning.Operation{
+		Name: lro.Name,
+	}, nil
 }
 
 func (s *ServiceUsageV1) DisableService(ctx context.Context, req *pb.DisableServiceRequest) (*longrunning.Operation, error) {
