@@ -22,11 +22,13 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -46,7 +48,7 @@ func (s *BatchV1) GetJob(ctx context.Context, req *pb.GetJobRequest) (*pb.Job, e
 		return nil, err
 	}
 
-	obj.Status.State = pb.JobStatus_SUCCEEDED
+	obj.Status.State = pb.JobStatus_QUEUED
 	return obj, nil
 }
 
@@ -64,8 +66,45 @@ func (s *BatchV1) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*pb.
 	obj.Uid = "b9a676df-c595-4c81-9963-f44b8e44e50c"
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = timestamppb.Now()
+	allocationPolicyLabels := make(map[string]string)
+	allocationPolicyLabels["batch-job-id"] = req.JobId
+	obj.AllocationPolicy = &pb.AllocationPolicy{
+		Labels: allocationPolicyLabels,
+		Location: &pb.AllocationPolicy_LocationPolicy{
+			AllowedLocations: []string{fmt.Sprintf("regions/%s", name.Location), fmt.Sprintf("zones/%s-a", name.Location), fmt.Sprintf("zones/%s-b", name.Location), fmt.Sprintf("zones/%s-c", name.Location)},
+		},
+		ServiceAccount: &pb.ServiceAccount{
+			Email: "${projectNumber}-compute@developer.gserviceaccount.com",
+		},
+	}
+	if obj.TaskGroups != nil {
+		if obj.TaskGroups[0] != nil {
+			obj.TaskGroups[0].Name = fmt.Sprintf("%s/taskGroups/group0", fqn)
+			obj.TaskGroups[0].Parallelism = 1
+			obj.TaskGroups[0].TaskCount = 1
+			if obj.TaskGroups[0].TaskSpec != nil && obj.TaskGroups[0].TaskSpec.ComputeResource == nil {
+				obj.TaskGroups[0].TaskSpec.ComputeResource = &pb.ComputeResource{
+					CpuMilli:  2000,
+					MemoryMib: 2000,
+				}
+			}
+		} else {
+			obj.TaskGroups[0] = &pb.TaskGroup{
+				Name:        fmt.Sprintf("%s/taskGroups/group0", fqn),
+				Parallelism: 1,
+				TaskCount:   1,
+				TaskSpec: &pb.TaskSpec{
+					ComputeResource: &pb.ComputeResource{
+						CpuMilli:  2000,
+						MemoryMib: 2000,
+					},
+				},
+			}
+		}
+	}
 	obj.Status = &pb.JobStatus{
-		State: pb.JobStatus_QUEUED,
+		State:       pb.JobStatus_QUEUED,
+		RunDuration: durationpb.New(0 * time.Second),
 	}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -90,6 +129,7 @@ func (s *BatchV1) DeleteJob(ctx context.Context, req *pb.DeleteJobRequest) (*lon
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
 	deleted := &pb.Job{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
@@ -103,8 +143,15 @@ func (s *BatchV1) DeleteJob(ctx context.Context, req *pb.DeleteJobRequest) (*lon
 	if err := s.storage.Delete(ctx, taskObjName, taskObj); err != nil {
 		return nil, err
 	}
-
-	return s.operations.DoneLRO(ctx, fqn, &pb.OperationMetadata{}, nil)
+	operationMetadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
+		EndTime:               timestamppb.New(now),
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		Verb:                  "delete",
+		Target:                fqn,
+	}
+	return s.operations.DoneLRO(ctx, fqn, operationMetadata, nil)
 }
 
 func (s *BatchV1) ListJobs(ctx context.Context, req *pb.ListJobsRequest) (*pb.ListJobsResponse, error) {
