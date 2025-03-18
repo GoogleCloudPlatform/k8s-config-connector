@@ -239,6 +239,8 @@
 [acronyms] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.drainNatIps[].external" should be ".spec.drainNATIps[].external"
 [acronyms] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.drainNatIps[].name" should be ".spec.drainNATIps[].name"
 [acronyms] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.drainNatIps[].namespace" should be ".spec.drainNATIps[].namespace"
+[acronyms] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.maxPortsPerVm" should be ".spec.maxPortsPerVM"
+[acronyms] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.minPortsPerVm" should be ".spec.minPortsPerVM"
 [acronyms] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natIpAllocateOption" should be ".spec.natIPAllocateOption"
 [acronyms] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natIps" should be ".spec.natIPs"
 [acronyms] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].action.sourceNatActiveIpsRefs" should be ".spec.rules[].action.sourceNATActiveIPsRefs"
