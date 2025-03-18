@@ -52,8 +52,8 @@ func (p *AppProfileParent) String() string {
 }
 
 // New builds a AppProfileIdentity from the Config Connector AppProfile object.
+// No changes were needed as the existing logic already resolves the only field in AppProfileParent (InstanceRef).
 func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *BigtableAppProfile) (*AppProfileIdentity, error) {
-
 	// Get Parent
 	instanceRef := obj.Spec.Parent.InstanceRef.Name
 	if instanceRef == "" {
