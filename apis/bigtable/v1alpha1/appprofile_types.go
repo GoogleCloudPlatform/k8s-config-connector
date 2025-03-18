@@ -26,6 +26,34 @@ var BigtableAppProfileGVK = GroupVersion.WithKind("BigtableAppProfile")
 type BigtableAppProfileSpec struct {
 	// The BigtableAppProfile name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+	// Long form description of the use case for this AppProfile.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.description
+	Description *string `json:"description,omitempty"`
+
+	// Use a multi-cluster routing policy.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.multi_cluster_routing_use_any
+	MultiClusterRoutingUseAny *AppProfile_MultiClusterRoutingUseAny `json:"multiClusterRoutingUseAny,omitempty"`
+
+	// Use a single-cluster routing policy.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.single_cluster_routing
+	SingleClusterRouting *AppProfile_SingleClusterRouting `json:"singleClusterRouting,omitempty"`
+
+	// This field has been deprecated in favor of `standard_isolation.priority`.
+	//  If you set this field, `standard_isolation.priority` will be set instead.
+	//
+	//  The priority of requests sent using this app profile.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.priority
+	Priority *string `json:"priority,omitempty"`
+
+	// The standard options used for isolating this app profile's traffic from
+	//  other use cases.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.standard_isolation
+	StandardIsolation *AppProfile_StandardIsolation `json:"standardIsolation,omitempty"`
+
+	// Specifies that this app profile is intended for read-only usage via the
+	//  Data Boost feature.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.data_boost_isolation_read_only
+	DataBoostIsolationReadOnly *AppProfile_DataBoostIsolationReadOnly `json:"dataBoostIsolationReadOnly,omitempty"`
 }
 
 // BigtableAppProfileStatus defines the config connector machine state of BigtableAppProfile
@@ -40,13 +68,21 @@ type BigtableAppProfileStatus struct {
 	// A unique specifier for the BigtableAppProfile resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigtableAppProfileObservedState `json:"observedState,omitempty"`
-}
+	// The unique name of the app profile. Values are of the form
+	//  `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.name
+	Name *string `json:"name,omitempty"`
 
-// BigtableAppProfileObservedState is the state of the BigtableAppProfile resource as most recently observed in GCP.
-// +kcc:proto=google.bigtable.admin.v2.AppProfile
-type BigtableAppProfileObservedState struct {
+	// Strongly validated etag for optimistic concurrency control. Preserve the
+	//  value returned from `GetAppProfile` when calling `UpdateAppProfile` to
+	//  fail the request if there has been a modification in the mean time. The
+	//  `update_mask` of the request need not include `etag` for this protection
+	//  to apply.
+	//  See [Wikipedia](https://en.wikipedia.org/wiki/HTTP_ETag) and
+	//  [RFC 7232](https://tools.ietf.org/html/rfc7232#section-2.3) for more
+	//  details.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient
