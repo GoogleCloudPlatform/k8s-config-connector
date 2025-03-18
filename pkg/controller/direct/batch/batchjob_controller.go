@@ -18,7 +18,7 @@
 // crd.type: BatchJob
 // crd.version: v1alpha1
 
-package v1alpha1
+package batch
 
 import (
 	"context"
@@ -35,16 +35,26 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
+
+func init() {
+	registry.RegisterModel(krm.BatchJobGVK, NewJobModel)
+}
+
+func NewJobModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &jobModel{config: *config}, nil
+}
+
+var _ directbase.Model = &jobModel{}
 
 type jobModel struct {
 	config config.ControllerConfig
 }
-
-var _ directbase.Model = &jobModel{}
 
 func (m *jobModel) Client(ctx context.Context, projectID string) (*batch.Client, error) {
 	var opts []option.ClientOption
@@ -82,8 +92,8 @@ func (m *jobModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, err
 	}
 
-	mapCtx := &directbase.MapContext{}
-	desired := BatchJobSpecToProto(mapCtx, &obj.Spec)
+	mapCtx := &direct.MapContext{}
+	desired := BatchJobSpec_ToProto(mapCtx, &obj.Spec)
 	if err := mapCtx.Err(); err != nil {
 		return nil, err
 	}
@@ -98,6 +108,11 @@ func (m *jobModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		id:        id,
 		desired:   desired,
 	}, nil
+}
+
+func (m *jobModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// TODO: Support URLs
+	return nil, nil
 }
 
 type jobAdapter struct {
@@ -116,7 +131,7 @@ func (a *jobAdapter) Find(ctx context.Context) (bool, error) {
 	req := &batchpb.GetJobRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetJob(ctx, req)
 	if err != nil {
-		if directbase.IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting batch job %q from gcp: %w", a.id.String(), err)
@@ -141,14 +156,10 @@ func (a *jobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	}
 	log.Info("successfully created batch job in gcp", "name", a.id)
 
-	// TODO: Support observed state
-	// observed := &v1alpha1.BatchJob{}
-	// mapObj := BatchJobObservedState_ToMap(create, make(map[string]any))
-	// observed.Status.ObservedState = make(map[string]any)
-	// observed.Status.ObservedState = mapObj
-
 	status := &krm.BatchJobStatus{}
-	status.ExternalRef = refs.PtrTo(a.id.String())
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = BatchJobObservedState_FromProto(mapCtx, created)
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -180,3 +191,29 @@ func (a *jobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 	return true, nil
 }
 
+// Export maps the GCP object to a Config Connector resource `spec`.
+func (a *jobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.BatchJob{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(BatchJobSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u.SetName(a.id.ID())
+	u.SetGroupVersionKind(krm.BatchJobGVK)
+
+	u.Object = uObj
+	return u, nil
+}
