@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import (
 	"strings"
 	"time"
 
-	"cloud.google.com/go/longrunning"
+	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -60,7 +60,7 @@ func (s *cloudDeploy) GetDeliveryPipeline(ctx context.Context, req *pb.GetDelive
 	return obj, nil
 }
 
-func (s *cloudDeploy) CreateDeliveryPipeline(ctx context.Context, req *pb.CreateDeliveryPipelineRequest) (*longrunning.Operation, error) {
+func (s *cloudDeploy) CreateDeliveryPipeline(ctx context.Context, req *pb.CreateDeliveryPipelineRequest) (*longrunningpb.Operation, error) {
 	reqName := fmt.Sprintf("%s/deliveryPipelines/%s", req.Parent, req.DeliveryPipelineId)
 	name, err := s.parseDeliveryPipelineName(reqName)
 	if err != nil {
@@ -99,7 +99,7 @@ func (s *cloudDeploy) CreateDeliveryPipeline(ctx context.Context, req *pb.Create
 	})
 }
 
-func (s *cloudDeploy) UpdateDeliveryPipeline(ctx context.Context, req *pb.UpdateDeliveryPipelineRequest) (*longrunning.Operation, error) {
+func (s *cloudDeploy) UpdateDeliveryPipeline(ctx context.Context, req *pb.UpdateDeliveryPipelineRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseDeliveryPipelineName(req.DeliveryPipeline.Name)
 	if err != nil {
 		return nil, err
@@ -155,7 +155,7 @@ func (s *cloudDeploy) UpdateDeliveryPipeline(ctx context.Context, req *pb.Update
 	})
 }
 
-func (s *cloudDeploy) DeleteDeliveryPipeline(ctx context.Context, req *pb.DeleteDeliveryPipelineRequest) (*longrunning.Operation, error) {
+func (s *cloudDeploy) DeleteDeliveryPipeline(ctx context.Context, req *pb.DeleteDeliveryPipelineRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseDeliveryPipelineName(req.Name)
 	if err != nil {
 		return nil, err

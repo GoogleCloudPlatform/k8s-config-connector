@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockclouddeploy
 
 // +tool:mockgcp-service
 // http.host: clouddeploy.googleapis.com
 // proto.service: google.cloud.deploy.v1.CloudDeploy
+
+package mockclouddeploy
 
 import (
 	"context"
@@ -35,10 +36,7 @@ import (
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
-
 	operations *operations.Operations
-
-	v1 *cloudDeployV1
 }
 
 type cloudDeployV1 struct {
@@ -53,7 +51,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &cloudDeployV1{MockService: s}
+
 	return s
 }
 
@@ -62,7 +60,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterCloudDeployServer(grpcServer, s.v1)
+	pb.RegisterCloudDeployServer(grpcServer, &cloudDeploy{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -76,5 +74,3 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	return mux, nil
 }
-
-
