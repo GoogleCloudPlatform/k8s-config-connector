@@ -252,6 +252,23 @@ func gitFileHasChange(workDir string, filePath string) bool {
 	return len(strings.TrimSpace(out.String())) > 0
 }
 
+func gitRevert(ctx context.Context, workDir string, filePath string) error {
+	log.Printf("COMMAND: git checkout -- %s", filePath)
+	args := []string{"checkout", "--", filePath}
+	gitcheckout := exec.CommandContext(ctx, "git", args...)
+	gitcheckout.Dir = workDir
+
+	results, err := execCommand(gitcheckout)
+	if err != nil {
+		log.Printf("Git checkout on file %s/%s error: %v", workDir, filePath, err)
+		return err
+	}
+	if results.Stdout != "" {
+		log.Printf("Git checkout output: %s", formatCommandOutput(results.Stdout))
+	}
+	return nil
+}
+
 type closer func()
 
 func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
@@ -557,6 +574,8 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 	maxAttempts := 3
 	attempt := 0
 	var affectedPaths []string
+	lintFailure := false
+	goCmdsFailure := false
 	for attempt < maxAttempts {
 		var err error
 		attempt++
@@ -583,26 +602,25 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 			}
 		}
 
+		// Run basic linting
+		if err := runLinters(opts); err != nil {
+			log.Printf("linting failed for branch %s: %v", branch.Name, err)
+			lintFailure = true
+			continue
+		}
+		// Run go mod tidy
+		if err := runGoCmds(opts); err != nil {
+			log.Printf("go cmds failed for branch %s: %v", branch.Name, err)
+			goCmdsFailure = true
+		}
+		lintFailure = false
+		goCmdsFailure = false
 		// Exit loop if we saw changes or hit max attempts
 		if allChanged || attempt >= maxAttempts {
 			break
 		}
 
 		log.Printf("No changes detected in attempt %d, retrying...", attempt)
-	}
-
-	// Run basic linting
-	lintFailure := false
-	if err := runLinters(opts); err != nil {
-		log.Printf("linting failed for branch %s: %v", branch.Name, err)
-		lintFailure = true
-	}
-
-	// Run go mod tidy
-	goCmdsFailure := false
-	if err := runGoCmds(opts); err != nil {
-		log.Printf("go cmds failed for branch %s: %v", branch.Name, err)
-		goCmdsFailure = true
 	}
 
 	//if err := checkMakeReadyPR(opts); err != nil {

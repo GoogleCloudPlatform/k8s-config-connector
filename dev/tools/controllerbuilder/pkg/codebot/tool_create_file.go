@@ -30,8 +30,9 @@ func init() {
 }
 
 type CreateFile struct {
-	Contents string `json:"contents"`
-	Filename string `json:"filename"`
+	Contents  string `json:"contents"`
+	Filename  string `json:"filename"`
+	Overwrite bool   `json:"overwrite"`
 }
 
 type CreateFileResults struct {
@@ -54,13 +55,14 @@ func (t *CreateFile) Run(ctx context.Context, c *Chat, args map[string]any) (any
 	klog.V(2).Infof("CreateFile: %+v", t)
 
 	p := filepath.Join(c.baseDir, t.Filename)
-	if _, err := os.Stat(p); err == nil {
-		return nil, fmt.Errorf("file %q already exists", t.Filename)
-	} else {
-		err = os.MkdirAll(filepath.Dir(p), 0755)
-		if err != nil {
-			return nil, fmt.Errorf("creating dir %s: %w", filepath.Dir(p), err)
+	if !t.Overwrite {
+		if _, err := os.Stat(p); err == nil {
+			return nil, fmt.Errorf("file %q already exists", t.Filename)
 		}
+	}
+	err = os.MkdirAll(filepath.Dir(p), 0755)
+	if err != nil {
+		return nil, fmt.Errorf("creating dir %s: %w", filepath.Dir(p), err)
 	}
 	f, err := os.Create(p)
 	if err != nil {
@@ -94,6 +96,10 @@ func (t *CreateFile) BuildFunctionDefinition() *llm.FunctionDefinition {
 				"filename": {
 					Type:        llm.TypeString,
 					Description: "The path to the file you want to create",
+				},
+				"overwrite": {
+					Type:        llm.TypeBoolean,
+					Description: "Whether to overwrite the file if it already exists",
 				},
 			},
 		},
