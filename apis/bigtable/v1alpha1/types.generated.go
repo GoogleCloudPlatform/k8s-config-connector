@@ -44,43 +44,6 @@ type AutoscalingTargets struct {
 	StorageUtilizationGibPerNode *int32 `json:"storageUtilizationGibPerNode,omitempty"`
 }
 
-// +kcc:proto=google.bigtable.admin.v2.Cluster
-type Cluster struct {
-	// The unique name of the cluster. Values are of the form
-	//  `projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.name
-	Name *string `json:"name,omitempty"`
-
-	// Immutable. The location where this cluster's nodes and storage reside. For
-	//  best performance, clients should be located as close as possible to this
-	//  cluster. Currently only zones are supported, so values should be of the
-	//  form `projects/{project}/locations/{zone}`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.location
-	Location *string `json:"location,omitempty"`
-
-	// The number of nodes allocated to this cluster. More nodes enable higher
-	//  throughput and more consistent performance.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.serve_nodes
-	ServeNodes *int32 `json:"serveNodes,omitempty"`
-
-	// Immutable. The node scaling factor of this cluster.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.node_scaling_factor
-	NodeScalingFactor *string `json:"nodeScalingFactor,omitempty"`
-
-	// Configuration for this cluster.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.cluster_config
-	ClusterConfig *Cluster_ClusterConfig `json:"clusterConfig,omitempty"`
-
-	// Immutable. The type of storage used by this cluster to serve its
-	//  parent instance's tables, unless explicitly overridden.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.default_storage_type
-	DefaultStorageType *string `json:"defaultStorageType,omitempty"`
-
-	// Immutable. The encryption configuration for CMEK-protected clusters.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.encryption_config
-	EncryptionConfig *Cluster_EncryptionConfig `json:"encryptionConfig,omitempty"`
-}
-
 // +kcc:proto=google.bigtable.admin.v2.Cluster.ClusterAutoscalingConfig
 type Cluster_ClusterAutoscalingConfig struct {
 	// Required. Autoscaling limits for this cluster.
@@ -113,11 +76,4 @@ type Cluster_EncryptionConfig struct {
 	//  `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}`
 	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.EncryptionConfig.kms_key_name
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Cluster
-type ClusterObservedState struct {
-	// Output only. The current state of the cluster.
-	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.state
-	State *string `json:"state,omitempty"`
 }
