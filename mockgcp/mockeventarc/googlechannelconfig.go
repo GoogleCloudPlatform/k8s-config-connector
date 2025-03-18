@@ -117,7 +117,3 @@ func (s *MockService) parseGoogleChannelConfigName(name string) (*googleChannelC
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-```
-
-
-
