@@ -22,7 +22,7 @@ package bigtable
 import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -37,7 +37,7 @@ func BigtableBackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Bac
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.EncryptionInfo = EncryptionInfo_FromProto(mapCtx, in.GetEncryptionInfo())
+	out.EncryptionInfo = EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
 	return out
 }
 func BigtableBackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigtableBackupObservedState) *pb.Backup {
@@ -51,7 +51,7 @@ func BigtableBackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Bigt
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.SizeBytes = direct.ValueOf(in.SizeBytes)
 	out.State = direct.Enum_ToProto[pb.Backup_State](mapCtx, in.State)
-	out.EncryptionInfo = EncryptionInfo_ToProto(mapCtx, in.EncryptionInfo)
+	out.EncryptionInfo = EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo)
 	return out
 }
 func BigtableBackupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.BigtableBackupSpec {
@@ -60,7 +60,9 @@ func BigtableBackupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm
 	}
 	out := &krm.BigtableBackupSpec{}
 	// MISSING: Name
-	out.SourceTable = direct.LazyPtr(in.GetSourceTable())
+	if in.GetSourceTable() != "" {
+		out.SourceTableRef = &bigtablev1beta1.TableRef{External: in.GetSourceTable()}
+	}
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
 	out.HotToStandardTime = direct.StringTimestamp_FromProto(mapCtx, in.GetHotToStandardTime())
@@ -72,29 +74,31 @@ func BigtableBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableBacku
 	}
 	out := &pb.Backup{}
 	// MISSING: Name
-	out.SourceTable = direct.ValueOf(in.SourceTable)
+	if in.SourceTableRef != nil {
+		out.SourceTable = in.SourceTableRef.External
+	}
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	out.BackupType = direct.Enum_ToProto[pb.Backup_BackupType](mapCtx, in.BackupType)
 	out.HotToStandardTime = direct.StringTimestamp_ToProto(mapCtx, in.HotToStandardTime)
 	return out
 }
-func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmv1beta1.EncryptionInfo {
+func EncryptionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.EncryptionInfo{}
+	out := &krm.EncryptionInfoObservedState{}
 	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
 	// MISSING: EncryptionStatus
-	out.KmsKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
+	out.KMSKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
 	return out
 }
-func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.EncryptionInfo) *pb.EncryptionInfo {
+func EncryptionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfoObservedState) *pb.EncryptionInfo {
 	if in == nil {
 		return nil
 	}
 	out := &pb.EncryptionInfo{}
 	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_EncryptionType](mapCtx, in.EncryptionType)
 	// MISSING: EncryptionStatus
-	out.KmsKeyVersion = direct.ValueOf(in.KmsKeyVersion)
+	out.KmsKeyVersion = direct.ValueOf(in.KMSKeyVersion)
 	return out
 }

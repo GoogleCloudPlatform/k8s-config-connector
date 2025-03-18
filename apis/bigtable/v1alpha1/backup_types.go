@@ -44,7 +44,7 @@ type BigtableBackupSpec struct {
 	//  This needs to be in the same instance as the backup. Values are of the form
 	//  `projects/{project}/instances/{instance}/tables/{source_table}`.
 	// +kcc:proto:field=google.bigtable.admin.v2.Backup.source_table
-	SourceTable *string `json:"sourceTable,omitempty"`
+	SourceTableRef *bigtablev1beta1.TableRef `json:"sourceTableRef,omitempty"`
 
 	// Required. The expiration time of the backup.
 	//  When creating a backup or updating its `expire_time`, the value must be
@@ -121,12 +121,11 @@ type BigtableBackupObservedState struct {
 
 	// Output only. The encryption information for the backup.
 	// +kcc:proto:field=google.bigtable.admin.v2.Backup.encryption_info
-	EncryptionInfo *EncryptionInfo `json:"encryptionInfo,omitempty"`
+	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtablebackup;gcpbigtablebackups
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

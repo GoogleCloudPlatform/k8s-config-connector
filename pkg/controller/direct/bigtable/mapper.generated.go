@@ -712,3 +712,24 @@ func Type_String_Encoding_Utf8Raw_ToProto(mapCtx *direct.MapContext, in *krm.Typ
 	out := &pb.Type_String_Encoding_Utf8Raw{}
 	return out
 }
+
+func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	// MISSING: EncryptionStatus
+	out.KmsKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
+	return out
+}
+func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfo) *pb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_EncryptionType](mapCtx, in.EncryptionType)
+	// MISSING: EncryptionStatus
+	out.KmsKeyVersion = direct.ValueOf(in.KmsKeyVersion)
+	return out
+}

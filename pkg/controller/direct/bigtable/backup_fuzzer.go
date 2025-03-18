@@ -19,7 +19,7 @@
 package bigtable
 
 import (
-	pb "cloud.google.com/go/bigtable/admin/apiv2/bigtablepb"
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -46,5 +46,6 @@ func bigtableBackupFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".encryption_info")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".encryption_info.encryption_status") // unimplemented
 	return f
 }
