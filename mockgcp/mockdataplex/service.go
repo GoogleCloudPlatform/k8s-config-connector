@@ -15,8 +15,8 @@
 package mockdataplex
 
 // +tool:mockgcp-service
-// http.host: accesscontextmanager.googleapis.com
-// proto.service: google.identity.accesscontextmanager.v1.AccessContextManager
+// http.host: dataplex.googleapis.com
+// proto.service: google.cloud.dataplex.v1.DataplexService
 
 import (
 	"context"
@@ -27,23 +27,23 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/identity/accesscontextmanager/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-// MockService represents a mocked Access Context Manager service.
+// MockService represents a mocked dataplex service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
 	operations *operations.Operations
 
-	v1 *AccessContextManagerV1
+	v1 *DataplexV1
 }
 
-type AccessContextManagerV1 struct {
+type DataplexV1 struct {
 	*MockService
-	pb.UnimplementedAccessContextManagerServer
+	pb.UnimplementedDataplexServiceServer
 }
 
 // New creates a MockService.
@@ -53,21 +53,21 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &AccessContextManagerV1{MockService: s}
+	s.v1 = &DataplexV1{MockService: s}
 	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"accesscontextmanager.googleapis.com"}
+	return []string{"dataplex.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterAccessContextManagerServer(grpcServer, s.v1)
+	pb.RegisterDataplexServiceServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterAccessContextManagerHandler,
+		pb.RegisterDataplexServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 
 	if err != nil {
@@ -76,3 +76,5 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	return mux, nil
 }
+
+

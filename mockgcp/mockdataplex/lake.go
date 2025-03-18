@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -34,12 +35,7 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-type dataplexService struct {
-	*MockService
-	pb.UnimplementedDataplexServiceServer
-}
-
-func (s *dataplexService) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
+func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
 	name, err := s.parseLakeName(req.Name)
 	if err != nil {
 		return nil, err
@@ -55,39 +51,74 @@ func (s *dataplexService) GetLake(ctx context.Context, req *pb.GetLakeRequest) (
 	return obj, nil
 }
 
-func (s *dataplexService) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunningpb.Operation, error) {
-	reqName := fmt.Sprintf("%s/lakes/%s", req.GetParent(), req.GetLakeId())
+func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunningpb.Operation, error) {
+	reqName := req.Parent + "/lakes/" + req.LakeId
 	name, err := s.parseLakeName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.GetLake()).(*pb.Lake)
+
+	obj := proto.Clone(req.Lake).(*pb.Lake)
 	obj.Name = fqn
-	now := time.Now()
-	obj.CreateTime = timestamppb.New(now)
-	obj.UpdateTime = timestamppb.New(now)
-	obj.Uid = name.LakeID
+	obj.CreateTime = timestamppb.New(time.Now())
+	obj.UpdateTime = timestamppb.New(time.Now())
+	obj.Uid = "lake-" + name.LakeID // TODO: maybe a proper random value?
 	obj.State = pb.State_ACTIVE
+	s.populateDefaultsForLake(obj)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "create",
 		ApiVersion: "v1",
+		CreateTime: timestamppb.New(time.Now()),
 	}
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
 }
 
-func (s *dataplexService) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunningpb.Operation, error) {
+func (s *DataplexV1) populateDefaultsForLake(obj *pb.Lake) {
+}
+
+func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseLakeName(req.GetLake().GetName())
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	obj := &pb.Lake{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	obj.UpdateTime = timestamppb.New(time.Now())
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.Now(),
+		Target:     name.String(),
+		Verb:       "update",
+		EndTime:    timestamppb.Now(),
+	}
+	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		return obj, nil
+	})
+}
+
+func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseLakeName(req.Name)
 	if err != nil {
 		return nil, err
@@ -100,27 +131,32 @@ func (s *dataplexService) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequ
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.Now(),
 		Target:     name.String(),
 		Verb:       "delete",
 		ApiVersion: "v1",
+		CreateTime: timestamppb.New(time.Now()),
 	}
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
 }
 
 type lakeName struct {
-	Project  *projects.ProjectData
-	Location string
-	LakeID   string
+	Project    *projects.ProjectData
+	Location   string
+	LakeID     string
+	ResourceID string // Needed for nested resources
 }
 
 func (n *lakeName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/lakes/%s", n.Project.ID, n.Location, n.LakeID)
+	base := fmt.Sprintf("projects/%s/locations/%s/lakes/%s", n.Project.ID, n.Location, n.LakeID)
+	if n.ResourceID != "" {
+		return base + "/" + n.ResourceID
+	}
+	return base
 }
 
 // parseLakeName parses a string into a lakeName.
@@ -145,3 +181,5 @@ func (s *MockService) parseLakeName(name string) (*lakeName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
+
+
