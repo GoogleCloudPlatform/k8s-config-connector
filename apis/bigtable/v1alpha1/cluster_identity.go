@@ -45,11 +45,11 @@ func (i *ClusterIdentity) Parent() *ClusterParent {
 
 type ClusterParent struct {
 	ProjectID   string
-	InstanceRef refsv1beta1.InstanceRef
+	InstanceRef string
 }
 
 func (p *ClusterParent) String() string {
-	return "projects/" + p.ProjectID + "/instances/" + p.InstanceRef.Name
+	return "projects/" + p.ProjectID + "/instances/" + p.InstanceRef
 }
 
 // New builds a ClusterIdentity from the Config Connector Cluster object.
@@ -63,18 +63,10 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	instanceRef := obj.Spec.InstanceRef
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	instanceRef := obj.Spec.InstanceRef
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +75,6 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	parent := &ClusterParent{
-		ProjectID:   projectID,
-		InstanceRef: instanceRef,
 	}
 
 	// Use approved External
@@ -101,8 +88,8 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.InstanceRef.Name != instanceRef.Name {
-			return nil, fmt.Errorf("spec.instanceRef changed, expect %s, got %s", actualParent.InstanceRef.Name, instanceRef.Name)
+		if actualParent.InstanceRef != instanceRef {
+			return nil, fmt.Errorf("spec.instanceRef changed, expect %s, got %s", actualParent.InstanceRef, instanceRef)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -124,10 +111,8 @@ func ParseClusterExternal(external string) (parent *ClusterParent, resourceID st
 		return nil, "", fmt.Errorf("format of BigtableCluster external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/clusters/{{clusterID}})", external)
 	}
 	parent = &ClusterParent{
-		ProjectID: tokens[1],
-		InstanceRef: refsv1beta1.InstanceRef{
-			Name: tokens[3],
-		},
+		ProjectID:   tokens[1],
+		InstanceRef: tokens[3],
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil
