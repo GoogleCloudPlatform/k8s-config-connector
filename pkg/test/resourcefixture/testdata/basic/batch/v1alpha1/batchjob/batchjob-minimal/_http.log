@@ -1,0 +1,235 @@
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fjobs%2F${jobID}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/jobs?%24alt=json%3Benum-encoding%3Dint&jobId=${jobID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
+X-Goog-User-Project: ${projectId}
+
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "script": {
+              "text": "echo hello"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allocationPolicy": {
+    "labels": {
+      "batch-job-id": "batchjob-${uniqueId}"
+    },
+    "location": {
+      "allowedLocations": [
+        "regions/us-west2",
+        "zones/us-west2-a",
+        "zones/us-west2-b",
+        "zones/us-west2-c"
+      ]
+    },
+    "serviceAccount": {
+      "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
+  "status": {
+    "runDuration": "0s",
+    "state": 1
+  },
+  "taskGroups": [
+    {
+      "name": "projects/${projectNumber}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0",
+      "parallelism": "1",
+      "taskCount": "1",
+      "taskSpec": {
+        "computeResource": {
+          "cpuMilli": "2000",
+          "memoryMib": "2000"
+        },
+        "runnables": [
+          {
+            "script": {
+              "text": "echo hello"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fjobs%2F${jobID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allocationPolicy": {
+    "labels": {
+      "batch-job-id": "batchjob-${uniqueId}"
+    },
+    "location": {
+      "allowedLocations": [
+        "regions/us-west2",
+        "zones/us-west2-a",
+        "zones/us-west2-b",
+        "zones/us-west2-c"
+      ]
+    },
+    "serviceAccount": {
+      "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
+  "status": {
+    "runDuration": "0s",
+    "state": 1
+  },
+  "taskGroups": [
+    {
+      "name": "projects/${projectNumber}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0",
+      "parallelism": "1",
+      "taskCount": "1",
+      "taskSpec": {
+        "computeResource": {
+          "cpuMilli": "2000",
+          "memoryMib": "2000"
+        },
+        "runnables": [
+          {
+            "script": {
+              "text": "echo hello"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fjobs%2F${jobID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.batch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.batch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

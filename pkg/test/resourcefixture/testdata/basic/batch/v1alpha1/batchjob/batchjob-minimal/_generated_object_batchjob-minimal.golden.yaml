@@ -1,0 +1,39 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: BatchJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: batchjob-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-west2
+  projectRef:
+    external: ${projectId}
+  taskGroups:
+  - taskSpec:
+      runnables:
+      - script:
+          text: echo hello
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}
+    status:
+      runDuration: 0s
+      state: QUEUED
+    taskGroups:
+    - name: projects/${projectNumber}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
