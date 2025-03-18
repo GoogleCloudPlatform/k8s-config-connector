@@ -14,111 +14,46 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
-// api.group: vertexai.cnrm.cloud.google.com
+// api.group: colab.cnrm.cloud.google.com
 
-package vertexai
+package colab
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
-func VertexAINotebookRuntimeTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.VertexAINotebookRuntimeTemplateSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAINotebookRuntimeTemplateSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
-	out.DataPersistentDiskSpec = PersistentDiskSpec_FromProto(mapCtx, in.GetDataPersistentDiskSpec())
-	out.NetworkSpec = NetworkSpec_FromProto(mapCtx, in.GetNetworkSpec())
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &krm.ServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	out.Labels = in.Labels
-	out.IdleShutdownConfig = NotebookIdleShutdownConfig_FromProto(mapCtx, in.GetIdleShutdownConfig())
-	out.EUCConfig = NotebookEUCConfig_FromProto(mapCtx, in.GetEucConfig())
-	out.NotebookRuntimeType = direct.LazyPtr(in.GetNotebookRuntimeType())
-	out.ShieldedVMConfig = ShieldedVMConfig_FromProto(mapCtx, in.GetShieldedVmConfig())
-	out.NetworkTags = in.NetworkTags
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	return out
-}
-func VertexAINotebookRuntimeTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAINotebookRuntimeTemplateSpec) *pb.NotebookRuntimeTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookRuntimeTemplate{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
-	out.DataPersistentDiskSpec = PersistentDiskSpec_ToProto(mapCtx, in.DataPersistentDiskSpec)
-	out.NetworkSpec = NetworkSpec_ToProto(mapCtx, in.NetworkSpec)
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	out.Labels = in.Labels
-	out.IdleShutdownConfig = NotebookIdleShutdownConfig_ToProto(mapCtx, in.IdleShutdownConfig)
-	out.EucConfig = NotebookEUCConfig_ToProto(mapCtx, in.EUCConfig)
-	out.NotebookRuntimeType = direct.ValueOf(in.NotebookRuntimeType)
-	out.ShieldedVmConfig = ShieldedVMConfig_ToProto(mapCtx, in.ShieldedVMConfig)
-	out.NetworkTags = in.NetworkTags
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	return out
-}
-func VertexAINotebookRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.VertexAINotebookRuntimeTemplateObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAINotebookRuntimeTemplateObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: IsDefault
-	// MISSING: MachineSpec
-	// MISSING: DataPersistentDiskSpec
-	// MISSING: NetworkSpec
-	// MISSING: ServiceAccount
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	// MISSING: Labels
-	// MISSING: IdleShutdownConfig
-	out.EUCConfig = NotebookEUCConfigObservedState_FromProto(mapCtx, in.GetEucConfig())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: NotebookRuntimeType
-	// MISSING: ShieldedVMConfig
-	// MISSING: NetworkTags
-	// MISSING: EncryptionSpec
-	return out
-}
-func VertexAINotebookRuntimeTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAINotebookRuntimeTemplateObservedState) *pb.NotebookRuntimeTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookRuntimeTemplate{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: Description
-	// MISSING: IsDefault
-	// MISSING: MachineSpec
-	// MISSING: DataPersistentDiskSpec
-	// MISSING: NetworkSpec
-	// MISSING: ServiceAccount
-	out.Etag = direct.ValueOf(in.Etag)
-	// MISSING: Labels
-	// MISSING: IdleShutdownConfig
-	out.EucConfig = NotebookEUCConfigObservedState_ToProto(mapCtx, in.EUCConfig)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: NotebookRuntimeType
-	// MISSING: ShieldedVMConfig
-	// MISSING: NetworkTags
-	// MISSING: EncryptionSpec
-	return out
+func init() {
+	fuzztesting.RegisterKRMFuzzer(colabRuntimeTemplateFuzzer())
 }
 
+func colabRuntimeTemplateFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.NotebookRuntimeTemplate{},
+		ColabRuntimeTemplateSpec_FromProto, ColabRuntimeTemplateSpec_ToProto,
+		ColabRuntimeTemplateObservedState_FromProto, ColabRuntimeTemplateObservedState_ToProto,
+	)
 
+	f.UnimplementedFields.Insert(".name")       // special field
+	f.UnimplementedFields.Insert(".is_default") // deprecated field
+
+	f.SpecFields.Insert(".display_name")
+	f.SpecFields.Insert(".description")
+	f.SpecFields.Insert(".encryption_spec")
+	f.SpecFields.Insert(".machine_spec")
+	f.SpecFields.Insert(".data_persistent_disk_spec")
+	f.SpecFields.Insert(".network_spec")
+	f.SpecFields.Insert(".service_account")
+	f.SpecFields.Insert(".labels")
+	f.SpecFields.Insert(".idle_shutdown_config")
+	f.SpecFields.Insert(".euc_config")
+	f.SpecFields.Insert(".notebook_runtime_type")
+	f.SpecFields.Insert(".shielded_vm_config")
+	f.SpecFields.Insert(".network_tags")
+
+	f.StatusFields.Insert(".etag")
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".euc_config")
+
+	return f
+}
