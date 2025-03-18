@@ -70,10 +70,10 @@ func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, re
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.ConnectionProfile_READY
-  if obj.GetMysql().GetPassword() != "" {
-    obj.GetMysql().Password = ""
-    obj.GetMysql().PasswordSet = true
-  }
+	if obj.GetMysql().GetPassword() != "" {
+		obj.GetMysql().Password = ""
+		obj.GetMysql().PasswordSet = true
+	}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

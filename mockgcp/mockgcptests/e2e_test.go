@@ -135,7 +135,7 @@ func TestScripts(t *testing.T) {
 					// gcloud includes a UUID in the user-agent, along with a lot of other client info (e.g. kernel version, python version)
 					// Just remove it from the golden output.
 					httpEvent.Request.RemoveHeader("user-agent")
-					
+
 					httpEvent.Request.RemoveHeader("X-Goog-User-Project")
 
 					// The X-Goog-User-Project header is (always) set by gcloud if a quota project is set,
