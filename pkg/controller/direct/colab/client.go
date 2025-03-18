@@ -15,7 +15,7 @@
 // +tool:controller-client
 // proto.service: google.cloud.aiplatform.v1beta1.NotebookService
 
-package aiplatform
+package colab
 
 import (
 	"context"
@@ -47,9 +47,3 @@ func (m *gcpClient) newNotebookClient(ctx context.Context) (*api.NotebookClient,
 	}
 	return client, err
 }
-
-
-
-
-
-

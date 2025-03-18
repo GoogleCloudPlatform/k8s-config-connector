@@ -51,7 +51,7 @@ func (r *NotebookRuntimeTemplateRef) NormalizedExternal(ctx context.Context, rea
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseNotebookRuntimeTemplateExternal(r.External); err != nil {
+		if _, err := ParseNotebookRuntimeTemplateExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
