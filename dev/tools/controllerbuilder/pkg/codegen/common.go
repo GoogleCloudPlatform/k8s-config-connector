@@ -47,6 +47,7 @@ var Acronyms = []string{
 	"BGP", "BYOID",
 	"CA", "CDN", "CIDR", "CPU",
 	"DNS",
+	"EUC",
 	"FS",
 	"GCE", "GB", "GCS",
 	"HTML", "HTTP", "HTTPS",
@@ -59,7 +60,7 @@ var Acronyms = []string{
 	"SQL", "SSH", "SSL", "SSO",
 	"TCP", "TLS", "TTL",
 	"UDP", "URI", "URL",
-	"VTPM",
+	"VTPM", "VM",
 	"X509",
 }
 

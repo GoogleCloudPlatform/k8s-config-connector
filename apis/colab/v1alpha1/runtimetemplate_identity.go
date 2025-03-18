@@ -44,57 +44,27 @@ func (i *NotebookRuntimeTemplateIdentity) Parent() *NotebookRuntimeTemplateParen
 }
 
 type NotebookRuntimeTemplateParent struct {
-	ProjectID      string
-	OrganizationID string
-	FolderID       string
-	Location       string
+	ProjectID string
+	Location  string
 }
 
 func (p *NotebookRuntimeTemplateParent) String() string {
-	if p.ProjectID != "" {
-		return "projects/" + p.ProjectID + "/locations/" + p.Location
-	}
-	if p.OrganizationID != "" {
-		return "organizations/" + p.OrganizationID + "/locations/" + p.Location
-	}
-	if p.FolderID != "" {
-		return "folders/" + p.FolderID + "/locations/" + p.Location
-	}
-	return ""
+	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
 // New builds a NotebookRuntimeTemplateIdentity from the Config Connector NotebookRuntimeTemplate object.
 func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reader, obj *ColabRuntimeTemplate) (*NotebookRuntimeTemplateIdentity, error) {
-	var parent NotebookRuntimeTemplateParent
 
-	// Resolve Folder ID.
-	if obj.Spec.Parent.FolderRef != nil {
-		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, *obj.Spec.Parent.FolderRef)
-		if err != nil {
-			return nil, fmt.Errorf("could not resolve folder reference: %w", err)
-		}
-		parent.FolderID = folderRef.FolderID
+	// Get Parent
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
 	}
-	// Resolve Organization ID.
-	if obj.Spec.Parent.OrganizationRef != nil {
-		orgRef, err := refsv1beta1.ResolveOrganization(ctx, reader, *obj.Spec.Parent.OrganizationRef)
-		if err != nil {
-			return nil, fmt.Errorf("could not resolve organization reference: %w", err)
-		}
-		parent.OrganizationID = orgRef.OrganizationID
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
 	}
-	// Resolve Project ID.
-	if obj.Spec.Parent.ProjectRef != nil {
-		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), *obj.Spec.Parent.ProjectRef)
-		if err != nil {
-			return nil, fmt.Errorf("could not resolve project reference: %w", err)
-		}
-		parent.ProjectID = projectRef.ProjectID
-	}
-
-	// Location is required.
 	location := obj.Spec.Location
-	parent.Location = location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -113,17 +83,11 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != parent.ProjectID && actualParent.ProjectID != "" {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, parent.ProjectID)
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != parent.Location && actualParent.Location != "" {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, parent.Location)
-		}
-		if actualParent.OrganizationID != parent.OrganizationID && actualParent.OrganizationID != "" {
-			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, parent.OrganizationID)
-		}
-		if actualParent.FolderID != parent.FolderID && actualParent.FolderID != "" {
-			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, parent.FolderID)
+		if actualParent.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -131,36 +95,23 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 		}
 	}
 	return &NotebookRuntimeTemplateIdentity{
-		parent: &parent,
-		id:     resourceID,
+		parent: &NotebookRuntimeTemplateParent{
+			ProjectID: projectID,
+			Location:  location,
+		},
+		id: resourceID,
 	}, nil
 }
 
 func ParseNotebookRuntimeTemplateExternal(external string) (parent *NotebookRuntimeTemplateParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "notebookruntimetemplates" {
-		parent = &NotebookRuntimeTemplateParent{
-			ProjectID: tokens[1],
-			Location:  tokens[3],
-		}
-		resourceID = tokens[5]
-		return parent, resourceID, nil
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "notebookruntimetemplates" {
+		return nil, "", fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookruntimetemplates/{{notebookruntimetemplateID}})", external)
 	}
-	if len(tokens) == 6 && tokens[0] == "organizations" && tokens[2] == "locations" && tokens[4] == "notebookruntimetemplates" {
-		parent = &NotebookRuntimeTemplateParent{
-			OrganizationID: tokens[1],
-			Location:       tokens[3],
-		}
-		resourceID = tokens[5]
-		return parent, resourceID, nil
+	parent = &NotebookRuntimeTemplateParent{
+		ProjectID: tokens[1],
+		Location:  tokens[3],
 	}
-	if len(tokens) == 6 && tokens[0] == "folders" && tokens[2] == "locations" && tokens[4] == "notebookruntimetemplates" {
-		parent = &NotebookRuntimeTemplateParent{
-			FolderID: tokens[1],
-			Location: tokens[3],
-		}
-		resourceID = tokens[5]
-		return parent, resourceID, nil
-	}
-	return nil, "", fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookruntimetemplates/{{notebookruntimetemplateID}})", external)
+	resourceID = tokens[5]
+	return parent, resourceID, nil
 }
