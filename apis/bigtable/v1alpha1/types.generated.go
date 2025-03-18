@@ -239,21 +239,3 @@ type Status struct {
 	// +kcc:proto:field=google.rpc.Status.details
 	Details []Any `json:"details,omitempty"`
 }
-
-// +kcc:proto=google.bigtable.admin.v2.EncryptionInfo
-type EncryptionInfoObservedState struct {
-	// Output only. The type of encryption used to protect this resource.
-	// +kcc:proto:field=google.bigtable.admin.v2.EncryptionInfo.encryption_type
-	EncryptionType *string `json:"encryptionType,omitempty"`
-
-	// Output only. The status of encrypt/decrypt calls on underlying data for
-	//  this resource. Regardless of status, the existing data is always encrypted
-	//  at rest.
-	// +kcc:proto:field=google.bigtable.admin.v2.EncryptionInfo.encryption_status
-	EncryptionStatus *Status `json:"encryptionStatus,omitempty"`
-
-	// Output only. The version of the Cloud KMS key specified in the parent
-	//  cluster that is in use for the data underlying this table.
-	// +kcc:proto:field=google.bigtable.admin.v2.EncryptionInfo.kms_key_version
-	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
-}
