@@ -19,7 +19,7 @@
 package bigtable
 
 import (
-	pb "cloud.google.com/go/bigtable/admin/apiv2/bigtablepb"
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
