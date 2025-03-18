@@ -27,5 +27,4 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}
   observedGeneration: 2
-  observedState:
-    state: RUNNING
+  observedState: {}

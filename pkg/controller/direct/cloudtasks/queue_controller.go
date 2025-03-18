@@ -175,8 +175,12 @@ func (a *QueueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+	// remove output only fields
+	paths = paths.Delete("name")
+	paths = paths.Delete("state")
+
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths.Delete("name")),
+		Paths: sets.List(paths),
 	}
 	desiredPb.Name = a.id.String()
 	req := &cloudtaskspb.UpdateQueueRequest{

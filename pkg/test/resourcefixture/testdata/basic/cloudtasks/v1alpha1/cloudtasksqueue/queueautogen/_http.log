@@ -16,7 +16,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Queue does not exist. If you just created the queue, wait at least a minute for the queue to initialize.",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "queue \"projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "queue \"projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -54,8 +61,7 @@ X-Xss-Protection: 0
     "maxBackoff": "3600s",
     "maxDoublings": 16,
     "minBackoff": "0.100s"
-  },
-  "state": 1
+  }
 }
 
 ---
@@ -93,7 +99,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=rateLimits.maxConcurrentDispatches%2CretryConfig.maxAttempts%2CretryConfig.maxBackoff%2CretryConfig.maxDoublings%2CretryConfig.minBackoff%2Cstate
+PATCH https://cloudtasks.googleapis.com/v2/projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=rateLimits.maxConcurrentDispatches%2CretryConfig.maxAttempts%2CretryConfig.maxBackoff%2CretryConfig.maxDoublings%2CretryConfig.minBackoff
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: queue.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fqueues%2Fcloudtasksqueue${uniqueId}
@@ -129,8 +135,7 @@ X-Xss-Protection: 0
     "maxBackoff": "3600s",
     "maxDoublings": 16,
     "minBackoff": "0.100s"
-  },
-  "state": 1
+  }
 }
 
 ---

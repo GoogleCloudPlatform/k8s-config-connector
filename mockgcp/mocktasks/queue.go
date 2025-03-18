@@ -48,6 +48,7 @@ func (s *cloudTasks) GetQueue(ctx context.Context, req *pb.GetQueueRequest) (*pb
 	fqn := name.String()
 
 	obj := &pb.Queue{}
+	obj.State = pb.Queue_RUNNING
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "queue %q not found", fqn)
@@ -72,14 +73,72 @@ func (s *cloudTasks) UpdateQueue(ctx context.Context, req *pb.UpdateQueueRequest
 
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
-
-	// TODO: Some sort of helper for fieldmask?
+	// log.Fatalf("paths: %+v", paths)
 	for _, path := range paths {
 		switch path {
-		case "rateLimits":
-			obj.RateLimits = req.GetQueue().GetRateLimits()
-		case "retryConfig":
-			obj.RetryConfig = req.GetQueue().GetRetryConfig()
+		case "rateLimits.maxDispatchesPerSecond":
+			if obj.RateLimits == nil {
+				obj.RateLimits = &pb.RateLimits{}
+			}
+			if req.GetQueue().GetRateLimits().GetMaxDispatchesPerSecond() == 0 {
+				obj.RateLimits.MaxDispatchesPerSecond = 500
+			} else {
+				obj.RateLimits.MaxDispatchesPerSecond = req.GetQueue().GetRateLimits().GetMaxDispatchesPerSecond()
+			}
+		case "rateLimits.maxBurstSize":
+			if obj.RateLimits == nil {
+				obj.RateLimits = &pb.RateLimits{}
+			}
+			if req.GetQueue().GetRateLimits().GetMaxBurstSize() == 0 {
+				obj.RateLimits.MaxBurstSize = 100
+			} else {
+				obj.RateLimits.MaxBurstSize = req.GetQueue().GetRateLimits().GetMaxBurstSize()
+			}
+		case "rateLimits.maxConcurrentDispatches":
+			if obj.RateLimits == nil {
+				obj.RateLimits = &pb.RateLimits{}
+			}
+			if req.GetQueue().GetRateLimits().GetMaxConcurrentDispatches() == 0 {
+				obj.RateLimits.MaxConcurrentDispatches = 1000
+			} else {
+				obj.RateLimits.MaxConcurrentDispatches = req.GetQueue().GetRateLimits().GetMaxConcurrentDispatches()
+			}
+		case "retryConfig.maxAttempts":
+			if obj.RetryConfig == nil {
+				obj.RetryConfig = &pb.RetryConfig{}
+			}
+			if req.GetQueue().GetRetryConfig().GetMaxAttempts() == 0 {
+				obj.RetryConfig.MaxAttempts = 100
+			} else {
+				obj.RetryConfig.MaxAttempts = req.GetQueue().GetRetryConfig().GetMaxAttempts()
+			}
+		case "retryConfig.minBackoff":
+			if obj.RetryConfig == nil {
+				obj.RetryConfig = &pb.RetryConfig{}
+			}
+			if req.GetQueue().GetRetryConfig().GetMinBackoff() == nil {
+				obj.RetryConfig.MinBackoff = durationpb.New(time.Second / 10)
+			} else {
+				obj.RetryConfig.MinBackoff = req.GetQueue().GetRetryConfig().GetMinBackoff()
+			}
+		case "retryConfig.maxBackoff":
+			if obj.RetryConfig == nil {
+				obj.RetryConfig = &pb.RetryConfig{}
+			}
+			if req.GetQueue().GetRetryConfig().GetMaxBackoff() == nil {
+				obj.RetryConfig.MaxBackoff = durationpb.New(3600 * time.Second)
+			} else {
+				obj.RetryConfig.MaxBackoff = req.GetQueue().GetRetryConfig().GetMaxBackoff()
+			}
+		case "retryConfig.maxDoublings":
+			if obj.RetryConfig == nil {
+				obj.RetryConfig = &pb.RetryConfig{}
+			}
+			if req.GetQueue().GetRetryConfig().GetMaxDoublings() == 0 {
+				obj.RetryConfig.MaxDoublings = 16
+			} else {
+				obj.RetryConfig.MaxDoublings = req.GetQueue().GetRetryConfig().GetMaxDoublings()
+			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
