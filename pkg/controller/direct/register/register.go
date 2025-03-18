@@ -21,6 +21,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apphub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/backupdr"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryanalyticshub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryconnection"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydataset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydatatransfer"
