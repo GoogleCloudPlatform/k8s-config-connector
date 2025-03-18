@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &ApiRef{}
 // holds the GCP identifier for the KRM object.
 type ApiRef struct {
 	// A reference to an externally managed APIGatewayAPI resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/apis/{{apiID}}".
+	// Should be in the format "projects/{{projectID}}/locations/global/apis/{{apiID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a APIGatewayAPI resource.

@@ -64,7 +64,7 @@ func NewApiIdentity(ctx context.Context, reader client.Reader, obj *APIGatewayAP
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := "global"
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -105,8 +105,8 @@ func NewApiIdentity(ctx context.Context, reader client.Reader, obj *APIGatewayAP
 
 func ParseApiExternal(external string) (parent *ApiParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "apis" {
-		return nil, "", fmt.Errorf("format of APIGatewayAPI external=%q was not known (use projects/{{projectID}}/locations/{{location}}/apis/{{apiID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "apis" || tokens[3] == "global" {
+		return nil, "", fmt.Errorf("format of APIGatewayAPI external=%q was not known (use projects/{{projectID}}/locations/global/apis/{{apiID}})", external)
 	}
 	parent = &ApiParent{
 		ProjectID: tokens[1],
