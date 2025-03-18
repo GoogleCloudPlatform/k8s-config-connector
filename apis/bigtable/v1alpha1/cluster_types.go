@@ -15,15 +15,24 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var BigtableClusterGVK = GroupVersion.WithKind("BigtableCluster")
 
+type Parent struct {
+	// +required
+	ProjectRef refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	InstanceRef refv1beta1.InstanceRef `json:"instanceRef"`
+}
+
 // BigtableClusterSpec defines the desired state of BigtableCluster
 // +kcc:proto=google.bigtable.admin.v2.Cluster
 type BigtableClusterSpec struct {
+	Parent `json:",inline"`
 	// The BigtableCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// The unique name of the cluster. Values are of the form
