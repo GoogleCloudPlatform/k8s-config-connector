@@ -356,6 +356,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - colab.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - composer.cnrm.cloud.google.com
   resources:
   - '*'

@@ -139,7 +139,7 @@ type NetworkSpec struct {
 	//  Format:
 	//  `projects/{project_id_or_number}/regions/{region}/subnetworks/{subnetwork_id}`
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NetworkSpec.subnetwork
-	SubnetworkRef refs.ComputeSubnetworkRef `json:"subnetworkRef"`
+	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef"`
 }
 
 // ColabRuntimeTemplateStatus defines the config connector machine state of ColabRuntimeTemplate
