@@ -86,11 +86,13 @@ type BigtableAppProfileStatus struct {
 	// A unique specifier for the BigtableAppProfile resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// The unique name of the app profile. Values are of the form
-	//  `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
-	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.name
-	Name *string `json:"name,omitempty"`
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *BigtableAppProfileObservedState `json:"observedState,omitempty"`
+}
 
+// BigtableAppProfileObservedState defines the desired state of BigtableAppProfile
+// +kcc:proto=google.bigtable.admin.v2.AppProfile
+type BigtableAppProfileObservedState struct {
 	// Strongly validated etag for optimistic concurrency control. Preserve the
 	//  value returned from `GetAppProfile` when calling `UpdateAppProfile` to
 	//  fail the request if there has been a modification in the mean time. The
