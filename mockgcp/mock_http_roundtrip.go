@@ -255,6 +255,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockbatch.New(env, storage))
 	services = append(services, mockapigateway.New(env, storage))
 	services = append(services, mocknetapp.New(env, storage))
+	services = append(services, mockdataplex.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
