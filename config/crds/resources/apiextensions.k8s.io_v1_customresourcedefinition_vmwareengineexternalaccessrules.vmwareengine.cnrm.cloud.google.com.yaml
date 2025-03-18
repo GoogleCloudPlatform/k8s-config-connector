@@ -1,0 +1,264 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com
+spec:
+  group: vmwareengine.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VMwareEngineExternalAccessRule
+    listKind: VMwareEngineExternalAccessRuleList
+    plural: vmwareengineexternalaccessrules
+    shortNames:
+    - gcpvmwareengineexternalaccessrule
+    - gcpvmwareengineexternalaccessrules
+    singular: vmwareengineexternalaccessrule
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VMwareEngineExternalAccessRule is the Schema for the VMwareEngineExternalAccessRule
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VMwareEngineExternalAccessRuleSpec defines the desired state
+              of VMwareEngineExternalAccessRule
+            properties:
+              action:
+                description: The action that the external access rule performs.
+                type: string
+              description:
+                description: User-provided description for this external access rule.
+                type: string
+              destinationIPRanges:
+                description: If destination ranges are specified, the external access
+                  rule applies only to the traffic that has a destination IP address
+                  in these ranges. The specified IP addresses must have reserved external
+                  IP addresses in the scope of the parent network policy. To match
+                  all external IP addresses in the scope of the parent network policy,
+                  specify `0.0.0.0/0`. To match a specific external IP address, specify
+                  it using the `IpRange.external_address` property.
+                items:
+                  properties:
+                    externalAddressRef:
+                      description: The name of an `ExternalAddress` resource. The
+                        external address must have been reserved in the scope of this
+                        external access rule's parent network policy.
+                      properties:
+                        external:
+                          description: A reference to an externally managed VMwareEngineExternalAddress
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}/externalAddresses/{{externaladdressID}}".
+                          type: string
+                      type: object
+                    ipAddress:
+                      description: 'A single IP address. For example: `10.0.0.5`.'
+                      type: string
+                    ipAddressRange:
+                      description: 'An IP address range in the CIDR format. For example:
+                        `10.0.0.0/24`.'
+                      type: string
+                  type: object
+                type: array
+              destinationPorts:
+                description: 'A list of destination ports to which the external access
+                  rule applies. This field is only applicable for the UDP or TCP protocol.
+                  Each entry must be either an integer or a range. For example: `["22"]`,
+                  `["80","443"]`, or `["12345-12349"]`. To match all destination ports,
+                  specify `["0-65535"]`.'
+                items:
+                  type: string
+                type: array
+              ipProtocol:
+                description: 'The IP protocol to which the external access rule applies.
+                  This value can be one of the following three protocol strings (not
+                  case-sensitive): `tcp`, `udp`, or `icmp`.'
+                type: string
+              networkPolicyRef:
+                description: Required. The resource name of the network policy to
+                  create a new external access firewall rule in.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed VMwareEngineNetworkPolicy
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/networkPolicies/{{networkpolicyID}}".
+                    type: string
+                  name:
+                    description: The name of a VMwareEngineNetworkPolicy resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a VMwareEngineNetworkPolicy resource.
+                    type: string
+                type: object
+              priority:
+                description: External access rule priority, which determines the external
+                  access rule to use when multiple rules apply. If multiple rules
+                  have the same priority, their ordering is non-deterministic. If
+                  specific ordering is required, assign unique priorities to enforce
+                  such ordering. The external access rule priority is an integer from
+                  100 to 4096, both inclusive. Lower integers indicate higher precedence.
+                  For example, a rule with priority `100` has higher precedence than
+                  a rule with priority `101`.
+                format: int32
+                type: integer
+              resourceID:
+                description: The VMwareEngineExternalAccessRule name. If not given,
+                  the metadata.name will be used.
+                type: string
+              sourceIPRanges:
+                description: If source ranges are specified, the external access rule
+                  applies only to traffic that has a source IP address in these ranges.
+                  These ranges can either be expressed in the CIDR format or as an
+                  IP address. As only inbound rules are supported, `ExternalAddress`
+                  resources cannot be the source IP addresses of an external access
+                  rule. To match all source addresses, specify `0.0.0.0/0`.
+                items:
+                  properties:
+                    externalAddressRef:
+                      description: The name of an `ExternalAddress` resource. The
+                        external address must have been reserved in the scope of this
+                        external access rule's parent network policy.
+                      properties:
+                        external:
+                          description: A reference to an externally managed VMwareEngineExternalAddress
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}/externalAddresses/{{externaladdressID}}".
+                          type: string
+                      type: object
+                    ipAddress:
+                      description: 'A single IP address. For example: `10.0.0.5`.'
+                      type: string
+                    ipAddressRange:
+                      description: 'An IP address range in the CIDR format. For example:
+                        `10.0.0.0/24`.'
+                      type: string
+                  type: object
+                type: array
+              sourcePorts:
+                description: 'A list of source ports to which the external access
+                  rule applies. This field is only applicable for the UDP or TCP protocol.
+                  Each entry must be either an integer or a range. For example: `["22"]`,
+                  `["80","443"]`, or `["12345-12349"]`. To match all source ports,
+                  specify `["0-65535"]`.'
+                items:
+                  type: string
+                type: array
+            required:
+            - networkPolicyRef
+            type: object
+          status:
+            description: VMwareEngineExternalAccessRuleStatus defines the config connector
+              machine state of VMwareEngineExternalAccessRule
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VMwareEngineExternalAccessRule
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation time of this resource.
+                    type: string
+                  state:
+                    description: Output only. The state of the resource.
+                    type: string
+                  uid:
+                    description: Output only. System-generated unique identifier for
+                      the resource.
+                    type: string
+                  updateTime:
+                    description: Output only. Last update time of this resource.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

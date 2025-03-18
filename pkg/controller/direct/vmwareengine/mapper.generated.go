@@ -56,6 +56,23 @@ func NetworkPolicy_NetworkServiceObservedState_ToProto(mapCtx *direct.MapContext
 	out.State = direct.Enum_ToProto[pb.NetworkPolicy_NetworkService_State](mapCtx, in.State)
 	return out
 }
+func VMwareEngineExternalAccessRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineExternalAccessRuleSpec) *pb.ExternalAccessRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalAccessRule{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Priority = direct.ValueOf(in.Priority)
+	out.Action = direct.Enum_ToProto[pb.ExternalAccessRule_Action](mapCtx, in.Action)
+	out.IpProtocol = direct.ValueOf(in.IPProtocol)
+	out.SourceIpRanges = direct.Slice_ToProto(mapCtx, in.SourceIPRanges, ExternalAccessRule_IPRange_ToProto)
+	out.SourcePorts = in.SourcePorts
+	out.DestinationIpRanges = direct.Slice_ToProto(mapCtx, in.DestinationIPRanges, ExternalAccessRule_IPRange_ToProto)
+	out.DestinationPorts = in.DestinationPorts
+	// MISSING: Uid
+	return out
+}
 func VMwareEngineNetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork) *krm.VMwareEngineNetworkSpec {
 	if in == nil {
 		return nil
