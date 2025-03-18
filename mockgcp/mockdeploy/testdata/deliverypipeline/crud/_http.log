@@ -1,0 +1,139 @@
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/test-$%7BuniqueId%7D?alt=json&allowMissing=True&updateMask=%2A%2Clabels
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "test delivery pipeline",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/test-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "targetId": "test-target"
+      }
+    ]
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "resource ID is not valid RFC 3986: test-${uniqueId}",
+        "stackEntries": [
+          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc1b4bcbcc0, 0x33})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x564bd781add8?, 0xc163a17320?})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:847 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.MalformedName({0x564bd7976a88, 0xc163a16e40}, {0xc0080b6829, 0x10}, {0x564bca85c5e6, 0x1f}, {0x564bd781add8, 0xc163a17320})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1115 +0x135 google3/cloud/control2/shared/userfriendly/userfriendly.FromInputError({0x564bd7976a88?, 0xc163a16e40?}, {0x564bd781add8?, 0xc163a17320?})",
+          "cloud/control2/shared/resourcename/qualifiedname.go:131 +0x4bb google3/cloud/control2/shared/resourcename/nameresolver.(*NameResolver).FromResourcePath(0xc11663bcc0, {0x564bd7976a88, 0xc163a16e40}, {0xc0080b67e0, 0x59}, 0x0)",
+          "cloud/control2/shared/resourcename/qualifiedname.go:110 +0x17f google3/cloud/control2/shared/resourcename/nameresolver.(*NameResolver).FromRequest(0xc11663bcc0, {0x564bd7976a88, 0xc163a16e40}, {0xc014fabb48, 0x18}, 0xc11663ba00, 0x0)",
+          "cloud/control2/frontend/handler/handler.go:364 +0x9f9 google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x564bd79808f0, 0xc00324dbc0}, {0x0, 0x0}}, {{0xc00ad67b30, 0x1, 0x1}, 0xc00ad78fc0, 0xc00ad67b20, {0x564bd7992d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x564bd79808f0, 0xc00324dbc0}, {0x0, 0x0}}, {{0xc00ad67b30, 0x1, 0x1}, 0xc00ad78fc0, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x564bd79808f0, 0xc00324dbc0}, {0x0, 0x0}}, {{0xc00ad67b30, 0x1, 0x1}, 0xc00ad78fc0, 0xc00ad67b20, {0x564bd7992d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00c32c5a0, {0x564bd7976a88, 0xc163a16bd0}, 0xc11663b380, 0xc152c1d740, 0xc152c1db00, {0xc03822b1f0?, 0x564bcd6c73e7?})",
+          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00c32c5a0, {0x564bd7976a88, 0xc163a16bd0}, 0xc152c1d740, 0xc152c1db00)",
+          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc008fdf308?, {0x564bd7976a88, 0xc163a16bd0}, 0x564bd56140c0?, 0xc0d3e90c01?)",
+          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc0090a55c0, {0x564bd7976a88, 0xc163a16bd0}, 0xc152c1d740)",
+          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x564bd7976a88?, 0xc163a16bd0?}, 0xc152c1d740?, {0x0?, 0x0?}, {0x564bd798c120, 0xc13cb15900})",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x564bd7976a88?, 0xc0d3612b40?}, 0xc008fdf8d0)",
+          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc0c751f100, {0x564bd7977098, 0xc17d038420}, 0xc108c46600)"
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.BadRequest",
+        "fieldViolations": [
+          {
+            "description": "Resource name violates RFC 3986",
+            "field": "test-${uniqueId}"
+          }
+        ]
+      }
+    ],
+    "message": "Malformed name: 'test-${uniqueId}'",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "not found: resource not found",
+        "stackEntries": [
+          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc005a04f00, 0x1d})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x564bd781a738?, 0xc005a76480?})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:556 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x564bd7976a88, 0xc139651500}, {0x564bca7f52cf, 0x10}, {0xc0e898c360, 0x5e}, {0x564bd781a738, 0xc005a76480})",
+          "cloud/control2/frontend/userfriendly/userfriendly_store.go:89 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x564bd7976a88, 0xc139651500}, 0xc0f611af80, {0x564bd781a738, 0xc005a76480})",
+          "cloud/control2/frontend/handler/readonly.go:291 +0x1668 google3/cloud/control2/frontend/handler/handler.Handler.handleGet({{{0x564bd79808f0, 0xc00324dbc0}, {0x0, 0x0}}, {{0xc00ad67b30, 0x1, 0x1}, 0xc00ad78fc0, 0xc00ad67b20, {0x564bd7992d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:393 +0xf1b google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x564bd79808f0, 0xc00324dbc0}, {0x0, 0x0}}, {{0xc00ad67b30, 0x1, 0x1}, 0xc00ad78fc0, 0xc00ad67b20, {0x564bd7992d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x564bd79808f0, 0xc00324dbc0}, {0x0, 0x0}}, {{0xc00ad67b30, 0x1, 0x1}, 0xc00ad78fc0, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x564bd79808f0, 0xc00324dbc0}, {0x0, 0x0}}, {{0xc00ad67b30, 0x1, 0x1}, 0xc00ad78fc0, 0xc00ad67b20, {0x564bd7992d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00c32c5a0, {0x564bd7976a88, 0xc115439200}, 0xc11981b340, 0xc197970f60, 0xc1979712a8, {0xc169ca43f0?, 0x564bcd6c73e7?})",
+          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00c32c5a0, {0x564bd7976a88, 0xc115439200}, 0xc197970f60, 0xc1979712a8)",
+          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc00834d308?, {0x564bd7976a88, 0xc115439200}, 0x564bd56140c0?, 0xc0d4f95b01?)",
+          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc0090a55c0, {0x564bd7976a88, 0xc115439200}, 0xc197970f60)",
+          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x564bd7976a88?, 0xc115439200?}, 0xc197970f60?, {0x0?, 0x0?}, {0x564bd798c120, 0xc0ea0bb4a0})",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x564bd7976a88?, 0xc12e53af30?}, 0xc112b558d0)",
+          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc0c751f100, {0x564bd7977098, 0xc179d6df20}, 0xc0f611a380)"
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/deliveryPipelines/test-${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/deliveryPipelines/test-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
