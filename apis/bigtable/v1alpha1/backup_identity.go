@@ -94,10 +94,10 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.InstanceRef != instanceRef {
+		if actualParent.Instance != instanceRef {
 			return nil, fmt.Errorf("spec.instance changed, expect %s, got %s", actualParent.Instance, instanceRef)
 		}
-		if actualParent.ClusterRef != clusterRef {
+		if actualParent.Cluster != clusterRef {
 			return nil, fmt.Errorf("spec.cluster changed, expect %s, got %s", actualParent.Cluster, clusterRef)
 		}
 		if actualResourceID != resourceID {
