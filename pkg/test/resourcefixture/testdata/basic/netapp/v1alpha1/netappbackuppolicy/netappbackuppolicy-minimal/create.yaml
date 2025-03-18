@@ -1,0 +1,9 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppBackupPolicy
+metadata:
+  name: netappbackuppolicy-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  locationID: us-west2
+  description: "Initial description"
