@@ -82,6 +82,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
@@ -206,6 +207,8 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockkms.New(env, storage))
 	services = append(services, mocklogging.New(env, storage))
+	services = append(services, mockmanagedkafka.New(env, storage))
+	services = append(services, mocknetworkmanagement.New(env, storage))
 	services = append(services, mocksecretmanager.New(env, storage))
 	services = append(services, mockspanner.New(env, storage))
 	services = append(services, mockprivateca.New(env, storage))
@@ -238,7 +241,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockvpcaccess.New(env, storage))
 	services = append(services, mockapigee.New(env, storage))
 	services = append(services, mockbigqueryreservation.New(env, storage))
-	services = append(services, mockmanagedkafka.New(env, storage))
 	services = append(services, mockworkflows.New(env, storage))
 	services = append(services, mockcomposer.New(env, storage))
 	services = append(services, mockdocumentai.New(env, storage))

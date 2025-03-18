@@ -947,6 +947,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".schedules[].startTime", "2024-01-03T12:34:56.123456Z")
 	}
 
+	// Network Management
+	{
+		visitor.ReplacePath(".reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
+		visitor.ReplacePath(".response.reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
+	}
+
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		// Deprecated: try to move these into mockgcp normalizers
