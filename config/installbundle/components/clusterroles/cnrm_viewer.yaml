@@ -79,6 +79,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - batch.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - beyondcorp.cnrm.cloud.google.com
   resources:
   - '*'
