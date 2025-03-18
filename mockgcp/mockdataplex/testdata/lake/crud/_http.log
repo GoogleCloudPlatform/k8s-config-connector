@@ -19,12 +19,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "verb": "create"
   },
@@ -55,24 +53,17 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.Lake",
-    "assetStatus": {},
     "createTime": "2024-04-01T12:34:56.123456Z",
     "metastore": {},
-    "metastoreStatus": {
-      "state": "NONE",
-      "updateTime": "2025-03-18T21:29:20.312751Z"
-    },
     "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
-    "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
     "state": "ACTIVE",
-    "uid": "630025bf-004e-411d-bbc0-9085072b06e5",
+    "uid": "lake-test-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -95,19 +86,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "assetStatus": {
-    "updateTime": "2025-03-18T21:30:58.554090Z"
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metastore": {},
-  "metastoreStatus": {
-    "state": "NONE",
-    "updateTime": "2025-03-18T21:29:20.312751Z"
-  },
   "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
-  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
   "state": "ACTIVE",
-  "uid": "630025bf-004e-411d-bbc0-9085072b06e5",
+  "uid": "lake-test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -129,19 +112,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "assetStatus": {
-    "updateTime": "2025-03-18T21:30:58.554090Z"
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metastore": {},
-  "metastoreStatus": {
-    "state": "NONE",
-    "updateTime": "2025-03-18T21:29:20.312751Z"
-  },
   "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
-  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
   "state": "ACTIVE",
-  "uid": "630025bf-004e-411d-bbc0-9085072b06e5",
+  "uid": "lake-test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -152,7 +127,7 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
-200 OK
+501 Not Implemented
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -163,108 +138,106 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "lakes": [
-    {
-      "assetStatus": {
-        "updateTime": "2025-03-18T21:30:16.228313Z"
-      },
-      "createTime": "2025-03-07T21:26:09.345035434Z",
-      "displayName": "updated-name",
-      "metastore": {},
-      "metastoreStatus": {
-        "state": "NONE",
-        "updateTime": "2025-03-07T21:26:10.573414Z"
-      },
-      "name": "projects/${projectId}/locations/us-central1/lakes/test-182aa2669681d042",
-      "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
-      "state": "ACTIVE",
-      "uid": "b2f66035-34d8-44be-8503-c3bafffd7fce",
-      "updateTime": "2025-03-07T21:28:13.233460761Z"
-    },
-    {
-      "assetStatus": {
-        "updateTime": "2025-03-18T21:26:34.295432Z"
-      },
-      "createTime": "2025-03-07T21:21:30.089536790Z",
-      "displayName": "updated-name",
-      "metastore": {},
-      "metastoreStatus": {
-        "state": "NONE",
-        "updateTime": "2025-03-07T21:21:31.195511Z"
-      },
-      "name": "projects/${projectId}/locations/us-central1/lakes/test-182aa22592278491",
-      "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
-      "state": "ACTIVE",
-      "uid": "c52f690e-6027-4340-bd01-df6cc24441ed",
-      "updateTime": "2025-03-07T21:23:34.315301679Z"
-    },
-    {
-      "assetStatus": {
-        "updateTime": "2025-03-18T21:26:24.478151Z"
-      },
-      "createTime": "2025-03-05T00:20:16.081582151Z",
-      "metastore": {},
-      "metastoreStatus": {
-        "state": "NONE",
-        "updateTime": "2025-03-05T00:20:17.277802Z"
-      },
-      "name": "projects/${projectId}/locations/us-central1/lakes/testlake-1829c0293524a944",
-      "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
-      "state": "ACTIVE",
-      "uid": "157418b7-6ee4-4346-a516-2939665a0a03",
-      "updateTime": "2025-03-05T00:25:16.350040055Z"
-    },
-    {
-      "assetStatus": {
-        "updateTime": "2025-03-18T21:26:10.733277Z"
-      },
-      "createTime": "2025-03-07T21:23:50.052195116Z",
-      "displayName": "updated-name",
-      "metastore": {},
-      "metastoreStatus": {
-        "state": "NONE",
-        "updateTime": "2025-03-07T21:23:51.394035Z"
-      },
-      "name": "projects/${projectId}/locations/us-central1/lakes/test-182aa2462c6a1c15",
-      "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
-      "state": "ACTIVE",
-      "uid": "2b3c7ee1-ece7-4c56-a7e7-3b88b3300086",
-      "updateTime": "2025-03-07T21:25:54.025374038Z"
-    },
-    {
-      "assetStatus": {
-        "updateTime": "2025-03-18T21:27:39.211094Z"
-      },
-      "createTime": "2025-03-05T00:15:16.175496855Z",
-      "description": "Updated Test Lake",
-      "metastore": {},
-      "metastoreStatus": {
-        "state": "NONE",
-        "updateTime": "2025-03-05T00:15:17.521943Z"
-      },
-      "name": "projects/${projectId}/locations/us-central1/lakes/test-1829bfe36572e275",
-      "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
-      "state": "ACTIVE",
-      "uid": "6f3a4b18-b6d4-42ee-a740-db685c9a2ce0",
-      "updateTime": "2025-03-05T00:20:07.302810939Z"
-    },
-    {
-      "assetStatus": {
-        "updateTime": "2025-03-18T21:30:58.554090Z"
-      },
-      "createTime": "2025-03-18T21:29:19.076052129Z",
-      "metastore": {},
-      "metastoreStatus": {
-        "state": "NONE",
-        "updateTime": "2025-03-18T21:29:20.312751Z"
-      },
-      "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
-      "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
-      "state": "ACTIVE",
-      "uid": "630025bf-004e-411d-bbc0-9085072b06e5",
-      "updateTime": "2025-03-18T21:30:58.536948507Z"
-    }
-  ]
+  "error": {
+    "code": 501,
+    "message": "method ListLakes not implemented"
+  }
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method ListLakes not implemented"
+  }
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method ListLakes not implemented"
+  }
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method ListLakes not implemented"
+  }
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/lakes?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method ListLakes not implemented"
+  }
 }
 
 ---
@@ -291,12 +264,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "verb": "update"
   },
@@ -327,27 +299,17 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.Lake",
-    "assetStatus": {
-      "updateTime": "2025-03-18T21:30:58.554090Z"
-    },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "New description",
     "metastore": {},
-    "metastoreStatus": {
-      "state": "NONE",
-      "updateTime": "2025-03-18T21:29:20.312751Z"
-    },
     "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
-    "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
     "state": "ACTIVE",
-    "uid": "630025bf-004e-411d-bbc0-9085072b06e5",
+    "uid": "lake-test-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -370,19 +332,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "assetStatus": {
-    "updateTime": "2025-03-18T21:30:58.554090Z"
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "New description",
   "metastore": {},
-  "metastoreStatus": {
-    "state": "NONE",
-    "updateTime": "2025-03-18T21:29:20.312751Z"
-  },
   "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
-  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
   "state": "ACTIVE",
-  "uid": "630025bf-004e-411d-bbc0-9085072b06e5",
+  "uid": "lake-test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
