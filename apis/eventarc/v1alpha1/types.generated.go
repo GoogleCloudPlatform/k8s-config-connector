@@ -20,6 +20,30 @@ type Channel struct {
 	//  location on the project and must be in
 	//  `projects/{project}/locations/{location}/channels/{channel_id}` format.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.name
+	//+required
+	Name *string `json:"name,omitempty"`
+
+	// The name of the event provider (e.g. Eventarc SaaS partner) associated
+	//  with the channel. This provider will be granted permissions to publish
+	//  events to the channel. Format:
+	//  `projects/{project}/locations/{location}/providers/{provider_id}`.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.provider
+	Provider *string `json:"provider,omitempty"`
+
+	// Resource name of a KMS crypto key (managed by the user) used to
+	//  encrypt/decrypt their event data.
+	//
+	//  It must match the pattern
+	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.crypto_key_name
+	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
+}
+
+	// Required. The resource name of the channel. Must be unique within the
+	//  location on the project and must be in
+	//  `projects/{project}/locations/{location}/channels/{channel_id}` format.
+	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.name
+	//+required
 	Name *string `json:"name,omitempty"`
 
 	// The name of the event provider (e.g. Eventarc SaaS partner) associated
