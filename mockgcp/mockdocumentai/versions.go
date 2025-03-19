@@ -45,6 +45,7 @@ func (s *DocumentProcessorV1) GetProcessorVersion(ctx context.Context, req *pb.G
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -63,15 +64,19 @@ func (s *DocumentProcessorV1) DeleteProcessorVersion(ctx context.Context, req *p
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	op := &pb.DeleteProcessorVersionMetadata{}
+	op.CommonMetadata = &pb.CommonOperationMetadata{
+		CreateTime: timestamppb.New(time.Now()),
+		UpdateTime: timestamppb.New(time.Now()),
+		State:      pb.CommonOperationMetadata_RUNNING,
+	}
+
+	return s.operations.DoneLRO(ctx, name.String(), op, deletedObj)
 }
 
 func (s *DocumentProcessorV1) TrainProcessorVersion(ctx context.Context, req *pb.TrainProcessorVersionRequest) (*longrunning.Operation, error) {
-	versionID := req.GetProcessorVersion().GetName()
 	id := uint64(time.Now().UnixNano())
-	if versionID == "" {
-		versionID = strconv.FormatUint(id, 10)
-	}
+	versionID := strconv.FormatUint(id, 10)
 	reqName := req.Parent + "/processorVersions/" + versionID
 	versionName, err := s.parseProcessorVersionName(reqName)
 	if err != nil {
@@ -82,6 +87,10 @@ func (s *DocumentProcessorV1) TrainProcessorVersion(ctx context.Context, req *pb
 
 	processorVersion := proto.Clone(req.GetProcessorVersion()).(*pb.ProcessorVersion)
 	processorVersion.Name = fqn
+	processorVersion.State = pb.ProcessorVersion_FAILED
+	processorVersion.CreateTime = timestamppb.New(time.Now())
+	processorVersion.LatestEvaluation = &pb.EvaluationReference{}
+	processorVersion.ModelType = pb.ProcessorVersion_MODEL_TYPE_CUSTOM
 
 	if err := s.storage.Create(ctx, fqn, processorVersion); err != nil {
 		return nil, err
@@ -91,6 +100,7 @@ func (s *DocumentProcessorV1) TrainProcessorVersion(ctx context.Context, req *pb
 	op.CommonMetadata = &pb.CommonOperationMetadata{
 		CreateTime: timestamppb.New(time.Now()),
 		UpdateTime: timestamppb.New(time.Now()),
+		State:      pb.CommonOperationMetadata_RUNNING,
 		Resource:   fqn,
 	}
 	op.TrainingDatasetValidation = &pb.TrainProcessorVersionMetadata_DatasetValidation{}
