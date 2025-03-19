@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}
+cd "${REPO_ROOT}"
 
-export ONLY_TEST_APIGROUPS=kms.cnrm.cloud.google.com
+export ONLY_TEST_APIGROUPS=oslogin.cnrm.cloud.google.com
 
 dev/ci/periodics/_create_project_and_run_e2e
