@@ -30,9 +30,9 @@ status:
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
     vpcNetworks:
-    - network: projects/b3e854f0b4bedfea6-tp/global/networks/internet-c2697696609f8a98c11e8370d03733dd
+    - network: projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}
       type: INTERNET
-    - network: projects/b3e854f0b4bedfea6-tp/global/networks/intranet-c2697696609f8a98c11e8370d03733dd
+    - network: projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}
       type: INTRANET
-    - network: projects/b3e854f0b4bedfea6-tp/global/networks/gcp-c2697696609f8a98c11e8370d03733dd
+    - network: projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}
       type: GOOGLE_CLOUD

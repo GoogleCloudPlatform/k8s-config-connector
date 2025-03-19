@@ -44,12 +44,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
     "verb": "create"
   },
@@ -80,7 +78,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
     "verb": "create"
   },
@@ -97,15 +94,15 @@ X-Xss-Protection: 0
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "vpcNetworks": [
       {
-        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/internet-c2697696609f8a98c11e8370d03733dd",
+        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
         "type": "INTERNET"
       },
       {
-        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/intranet-c2697696609f8a98c11e8370d03733dd",
+        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
         "type": "INTRANET"
       },
       {
-        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/gcp-c2697696609f8a98c11e8370d03733dd",
+        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
         "type": "GOOGLE_CLOUD"
       }
     ]
@@ -140,15 +137,15 @@ X-Xss-Protection: 0
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vpcNetworks": [
     {
-      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/internet-c2697696609f8a98c11e8370d03733dd",
+      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
       "type": 2
     },
     {
-      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/intranet-c2697696609f8a98c11e8370d03733dd",
+      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
       "type": 1
     },
     {
-      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/gcp-c2697696609f8a98c11e8370d03733dd",
+      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
       "type": 3
     }
   ]
@@ -178,12 +175,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
     "verb": "update"
   },
@@ -214,7 +209,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
     "verb": "update"
   },
@@ -231,15 +225,15 @@ X-Xss-Protection: 0
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "vpcNetworks": [
       {
-        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/internet-c2697696609f8a98c11e8370d03733dd",
+        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
         "type": "INTERNET"
       },
       {
-        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/intranet-c2697696609f8a98c11e8370d03733dd",
+        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
         "type": "INTRANET"
       },
       {
-        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/gcp-c2697696609f8a98c11e8370d03733dd",
+        "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
         "type": "GOOGLE_CLOUD"
       }
     ]
@@ -274,15 +268,15 @@ X-Xss-Protection: 0
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vpcNetworks": [
     {
-      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/internet-c2697696609f8a98c11e8370d03733dd",
+      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
       "type": 2
     },
     {
-      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/intranet-c2697696609f8a98c11e8370d03733dd",
+      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
       "type": 1
     },
     {
-      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/gcp-c2697696609f8a98c11e8370d03733dd",
+      "network": "projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}",
       "type": 3
     }
   ]
@@ -306,12 +300,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
     "verb": "delete"
   },
@@ -342,7 +334,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
     "verb": "delete"
   },
