@@ -44,6 +44,9 @@ type MetastoreBackupSpec struct {
 
 	Parent `json:",inline"`
 
+	// The MetastoreBackup name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+
 	// The description of the backup.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.description
 	Description *string `json:"description,omitempty"`
