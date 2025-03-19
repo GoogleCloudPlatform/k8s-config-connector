@@ -19,7 +19,6 @@ type GoogleChannelConfig struct {
 	// Required. The resource name of the config. Must be in the format of,
 	//  `projects/{project}/locations/{location}/googleChannelConfig`.
 	//+required
-	//+required
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.name
 	Name *string `json:"name,omitempty"`
 

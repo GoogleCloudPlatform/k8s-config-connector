@@ -36,6 +36,7 @@ type EventarcGoogleChannelConfigSpec struct {
 	Parent `json:",inline"`
 
 	// The EventarcGoogleChannelConfig name. If not given, the metadata.name will be used.
+	//+required
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. Resource name of a KMS crypto key (managed by the user) used to
