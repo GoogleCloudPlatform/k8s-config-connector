@@ -17,6 +17,7 @@ package workflowexecutions
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflowexecutions/v1alpha1"
@@ -67,7 +68,7 @@ func (m *modelExecution) AdapterForObject(ctx context.Context, reader client.Rea
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-	id, err := krm.NewExecutionIdentity(ctx, reader, obj)
+	id, err := krm.NewExecutionRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +91,7 @@ func (m *modelExecution) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type ExecutionAdapter struct {
-	id        *krm.ExecutionIdentity
+	id        *krm.ExecutionRef
 	gcpClient *gcp.Client
 	desired   *krm.WorkflowsExecution
 	actual    *executionpb.Execution
@@ -106,7 +107,15 @@ func (a *ExecutionAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Execution", "name", a.id)
 
-	req := &executionpb.GetExecutionRequest{Name: a.id.String()}
+	_, idIsSet, err := a.id.ExecutionID()
+	if err != nil {
+		return false, err
+	}
+	if !idIsSet { // resource is not yet created
+		return false, nil
+	}
+
+	req := &executionpb.GetExecutionRequest{Name: a.id.External}
 	executionpb, err := a.gcpClient.GetExecution(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -135,10 +144,13 @@ func (a *ExecutionAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		resource.Labels[k] = v
 	}
 	resource.Labels["managed-by-cnrm"] = "true"
-	resource.Name = a.id.String()
-
+	resource.Name = a.id.External
+	parent, err := a.id.Parent()
+	if err != nil {
+		return err
+	}
 	req := &executionpb.CreateExecutionRequest{
-		Parent:    a.id.Parent().String(),
+		Parent:    parent,
 		Execution: resource,
 	}
 	created, err := a.gcpClient.CreateExecution(ctx, req)
@@ -152,7 +164,10 @@ func (a *ExecutionAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	tokens := strings.Split(created.Name, "/")
+	externalRef := parent + "/executions/" + tokens[7]
+	status.ExternalRef = direct.LazyPtr(externalRef)
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -176,27 +191,46 @@ func (a *ExecutionAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	parent, err := a.id.Parent()
+	if err != nil {
+		return nil, err
+	}
+	if parent != "" {
+		tokens := strings.Split(parent, "/")
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "workflows" {
+			obj.Spec.ProjectRef = &refs.ProjectRef{Name: tokens[1]}
+			obj.Spec.Location = tokens[3]
+		}
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.String())
+	u.SetName(a.id.External)
 	u.SetGroupVersionKind(krm.WorkflowsExecutionGVK)
 
 	u.Object = uObj
 	return u, nil
 }
 
-// Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
+// Cancel the execution resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *ExecutionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("cancelling Execution", "name", a.id)
 
-	req := &executionpb.CancelExecutionRequest{Name: a.id.String()}
-	_, err := a.gcpClient.CancelExecution(ctx, req)
+	// Check the state of the execution.
+	// If the execution is in SUCCEED state, abort cancel.
+	getReq := &executionpb.GetExecutionRequest{Name: a.id.External}
+	obj, err := a.gcpClient.GetExecution(ctx, getReq)
+	if obj.State == executionpb.Execution_SUCCEEDED {
+		// Return success if not found (assume it was already deleted).
+		log.V(2).Info("skipping cancel for SUCCEEDED Execution", "name", a.id)
+		return false, nil
+	}
+
+	req := &executionpb.CancelExecutionRequest{Name: a.id.External}
+	_, err = a.gcpClient.CancelExecution(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
