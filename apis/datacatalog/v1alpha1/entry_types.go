@@ -36,8 +36,7 @@ type Parent struct {
 
 type DataCatalogEntrySpec struct {
 	Parent `json:",inline"`
-	// The DataCatalogEntry name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+
 	// The resource this metadata entry refers to.
 	//
 	//  For Google Cloud Platform resources, `linked_resource` is the
