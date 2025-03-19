@@ -37,13 +37,6 @@ type AssetSavedQuerySpec struct {
 	Parent Parent `json:",inline"`
 	// The AssetSavedQuery name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// The resource name of the saved query. The format must be:
-	//
-	//  * projects/project_number/savedQueries/saved_query_id
-	//  * folders/folder_number/savedQueries/saved_query_id
-	//  * organizations/organization_number/savedQueries/saved_query_id
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.name
-	Name *string `json:"name,omitempty"`
 
 	// The description of this saved query. This value should be fewer than 255
 	//  characters.
