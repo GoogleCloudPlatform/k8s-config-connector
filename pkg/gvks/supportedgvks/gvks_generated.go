@@ -4499,6 +4499,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "storage.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "StorageFolder",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "storage.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "StorageHMACKey",
 	}: {
 		Labels: map[string]string{
