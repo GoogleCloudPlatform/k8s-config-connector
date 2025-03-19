@@ -599,19 +599,18 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 			}
 		}
 
+		lintFailure = false
+		goCmdsFailure = false
+		// Run go mod tidy
+		if err := runGoCmds(opts, affectedPaths); err != nil {
+			log.Printf("go cmds failed for branch %s: %v", branch.Name, err)
+			goCmdsFailure = true
+		}
 		// Run basic linting
 		if err := runLinters(opts); err != nil {
 			log.Printf("linting failed for branch %s: %v", branch.Name, err)
 			lintFailure = true
-			continue
 		}
-		// Run go mod tidy
-		if err := runGoCmds(opts); err != nil {
-			log.Printf("go cmds failed for branch %s: %v", branch.Name, err)
-			goCmdsFailure = true
-		}
-		lintFailure = false
-		goCmdsFailure = false
 		// Exit loop if we saw changes or hit max attempts
 		if allChanged || attempt >= maxAttempts {
 			break
@@ -708,8 +707,26 @@ func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch
 	}
 }
 
-func runGoCmds(opts *RunnerOptions) error {
+func runGoCmds(opts *RunnerOptions, affectedPaths []string) error {
 	log.Printf("Running go mod tidy")
+	errStrings := []string{}
+
+	for _, path := range affectedPaths {
+		cfg := CommandConfig{
+			Name:        "Go Imports",
+			Cmd:         "goimports",
+			Args:        []string{"-w", path},
+			WorkDir:     opts.branchRepoDir,
+			MaxAttempts: 1,
+		}
+		op, err := executeCommand(opts, cfg)
+		if err != nil {
+			errStrings = append(errStrings, fmt.Sprintf("Error running goimports for %s: %v", path, err))
+		}
+		if op.ExitCode != 0 {
+			errStrings = append(errStrings, fmt.Sprintf("goimports failed with exit code %d for %s", op.ExitCode, path))
+		}
+	}
 
 	cfg := CommandConfig{
 		Name:        "Go Mod Tidy",
@@ -720,10 +737,15 @@ func runGoCmds(opts *RunnerOptions) error {
 	}
 	op, err := executeCommand(opts, cfg)
 	if err != nil {
-		return fmt.Errorf("Error running go mod tidy: %w", err)
+		errStrings = append(errStrings, fmt.Sprintf("Error running go mod tidy: %v", err))
 	}
 	if op.ExitCode != 0 {
-		return fmt.Errorf("go mod tidy failed with exit code %d", op.ExitCode)
+		errStrings = append(errStrings, fmt.Sprintf("go mod tidy failed with exit code %d", op.ExitCode))
+	}
+
+	if len(errStrings) > 0 {
+		log.Printf("Error running go cmds: %s", strings.Join(errStrings, "\n"))
+		return fmt.Errorf("Error running go cmds: %s", strings.Join(errStrings, "\n"))
 	}
 
 	return nil
