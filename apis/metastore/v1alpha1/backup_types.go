@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -25,12 +24,6 @@ var MetastoreBackupGVK = GroupVersion.WithKind("MetastoreBackup")
 // +kcc:proto=google.cloud.metastore.v1.Backup
 
 type Parent struct {
-	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-
-	// +required
-	Location string `json:"location"`
-
 	// +required
 	ServiceRef *ServiceRef `json:"serviceRef"`
 }
@@ -79,7 +72,7 @@ type MetastoreBackupObservedState struct {
 
 	// Output only. The revision of the service at the time of backup.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.service_revision
-	ServiceRevision *BackupServiceRevision `json:"serviceRevision,omitempty"`
+	ServiceRevision *Service `json:"serviceRevision,omitempty"`
 
 	// Output only. Services that are restoring from the backup.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.restoring_services
@@ -114,19 +107,6 @@ type MetastoreBackupList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MetastoreBackup `json:"items"`
-}
-
-type BackupServiceRevision struct {
-	// Immutable. The relative resource name of the metastore service, in the
-	// following format:
-	//
-	//	`projects/{project_number}/locations/{location_id}/services/{service_id}`.
-	// +optional
-	Name *string `json:"name,omitempty"`
-
-	// User-defined labels for the metastore service.
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func init() {

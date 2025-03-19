@@ -43,14 +43,14 @@ type BackupRef struct {
 }
 
 type ServiceRef struct {
-	// A reference to an externally managed MetastoreBackup resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backups/{{backupID}}".
+	// A reference to an externally managed MetastoreService resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a MetastoreBackup resource.
+	// The name of a MetastoreService resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a MetastoreBackup resource.
+	// The namespace of a MetastoreService resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
