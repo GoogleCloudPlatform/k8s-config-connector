@@ -99,7 +99,7 @@ branches:
       package: google.cloud.backupdr.v1
       proto: BackupPlan
       proto-path: google/cloud/backupdr/v1/backupdr.proto
-      proto-service: ""
+      proto-service: "google.cloud.backupdr.v1.BackupDR"
       proto-msg: google.cloud.backupdr.v1.BackupPlan
       host-name: ""
       apis-enabled:
@@ -135,7 +135,7 @@ branches:
       package: google.cloud.backupdr.v1
       proto: BackupVault
       proto-path: google/cloud/backupdr/v1/backupdr.proto
-      proto-service: ""
+      proto-service: "google.cloud.backupdr.v1.BackupDR"
       proto-msg: google.cloud.backupdr.v1.BackupVault
       host-name: ""
       apis-enabled:
@@ -215,6 +215,7 @@ branches:
       notes:
         - long running operation
         - subresource of privateconnection
+      skip: true # NOTYET
     - name: datastream-connectionprofile
       local: resource-datastream-connectionprofile
       remote: resource-datastream-connectionprofile
@@ -233,6 +234,7 @@ branches:
         - "datastream.googleapis.com"
       notes:
         - long running operation
+      skip: true # NOTYET
     - name: datastream-stream
       local: resource-datastream-stream
       remote: resource-datastream-stream
@@ -251,6 +253,7 @@ branches:
         - "datastream.googleapis.com"
       notes:
         - long running operation
+      skip: true # NOTYET
     - name: gkebackup-backup
       local: resource-gkebackup-backup
       remote: resource-gkebackup-backup
@@ -271,6 +274,7 @@ branches:
       notes:
         - long running operation
         - subresource of backupplan
+      skip: true # NOTYET
     - name: gkebackup-backupplan
       local: resource-gkebackup-backupplan
       remote: resource-gkebackup-backupplan
@@ -310,6 +314,7 @@ branches:
       notes:
         - long running operation
         - subresource of restoreplan
+      skip: true # NOTYET
     - name: gkebackup-restoreplan
       local: resource-gkebackup-restoreplan
       remote: resource-gkebackup-restoreplan
@@ -401,6 +406,7 @@ branches:
         - "networksecurity.googleapis.com"
       notes:
         - long running operation
+      skip: true # NOTYET
     - name: networksecurity-servertlspolicy
       local: resource-networksecurity-servertlspolicy
       remote: resource-networksecurity-servertlspolicy
@@ -419,6 +425,7 @@ branches:
         - "networksecurity.googleapis.com"
       notes:
         - long running operation
+      skip: true # NOTYET
     - name: privilegedaccessmanager-grant
       local: resource-privilegedaccessmanager-grant
       remote: resource-privilegedaccessmanager-grant
@@ -492,6 +499,7 @@ branches:
       notes:
         - No CREATE
         - subresource of service
+      skip: true # NOTYET
     - name: run-service
       local: resource-run-service
       remote: resource-run-service
@@ -545,6 +553,7 @@ branches:
         - "vmwareengine.googleapis.com"
       notes:
         - long running operation
+      skip: true # NOTYET
     - name: vmwareengine-externaladdress
       local: resource-vmwareengine-externaladdress
       remote: resource-vmwareengine-externaladdress
@@ -564,6 +573,7 @@ branches:
       notes:
         - long running operation
         - subresource of privatecloud
+      skip: true # NOTYET
     - name: vmwareengine-nodetype
       local: resource-vmwareengine-nodetype
       remote: resource-vmwareengine-nodetype
@@ -672,6 +682,7 @@ branches:
         - "vmwareengine.googleapis.com"
       notes:
         - long running operation
+      skip: true # NOTYET
     - name: vmwareengine-dnsbindpermission
       local: resource-vmwareengine-dnsbindpermission
       remote: resource-vmwareengine-dnsbindpermission
