@@ -41,7 +41,7 @@ func (m *gcpClient) newDataplexClient(ctx context.Context) (*api.Client, error) 
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewRESTClient(ctx, opts...)
+	client, err := api.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building dataplex client: %w", err)
 	}
