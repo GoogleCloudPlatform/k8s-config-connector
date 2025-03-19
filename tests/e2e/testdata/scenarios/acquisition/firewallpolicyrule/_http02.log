@@ -107,9 +107,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 400 Bad Request
 Content-Type: application/json; charset=UTF-8
@@ -246,36 +247,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
-        "reason": "invalid"
-      }
-    ],
-    "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
-  }
-}
-
----
-
 GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
@@ -385,44 +356,14 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/addRule
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000.",
-        "reason": "invalid"
-      }
-    ],
-    "message": "Invalid value for field 'priority': '9000'. The firewall policy does not contain a rule at priority 9000."
-  }
-}
-
----
-
-POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/addRule?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 {
   "action": "deny",
   "direction": "INGRESS",
-  "firewallPolicy": "locations/global/firewallPolicies/${firewallPolicyID}",
   "match": {
     "layer4Configs": [
       {
@@ -463,9 +404,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -495,44 +437,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
+GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "action": "deny",
-  "description": "",
-  "direction": "INGRESS",
-  "kind": "compute#firewallPolicyRule",
-  "match": {
-    "layer4Configs": [
-      {
-        "ipProtocol": "tcp"
-      }
-    ],
-    "srcIpRanges": [
-      "10.100.0.1/32"
-    ]
-  },
-  "priority": 9000,
-  "ruleTupleCount": 2
-}
-
----
-
-GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=9000
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
