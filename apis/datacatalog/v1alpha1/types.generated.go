@@ -122,6 +122,7 @@ type ColumnSchema struct {
 	//  Must be a UTF-8 string without dots (.).
 	//  The maximum size is 64 bytes.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.column
+	//+required
 	Column *string `json:"column,omitempty"`
 
 	// Required. Type of the column.

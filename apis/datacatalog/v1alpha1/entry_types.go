@@ -28,10 +28,13 @@ var DataCatalogEntryGVK = GroupVersion.WithKind("DataCatalogEntry")
 type Parent struct {
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	//+required
 	// +required
 	Location string `json:"location"`
+	//+required
 	// +required
 	EntryGroupRef *EntryGroupRef `json:"entryGroupRef"`
+	//+required
 }
 
 type DataCatalogEntrySpec struct {
@@ -301,7 +304,6 @@ type DataCatalogEntry struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// +required
 	Spec   DataCatalogEntrySpec   `json:"spec,omitempty"`
 	Status DataCatalogEntryStatus `json:"status,omitempty"`
 }
