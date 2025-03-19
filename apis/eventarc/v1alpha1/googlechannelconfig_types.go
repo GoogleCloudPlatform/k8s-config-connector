@@ -32,6 +32,7 @@ type Parent struct {
 // EventarcGoogleChannelConfigSpec defines the desired state of EventarcGoogleChannelConfig
 // +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type EventarcGoogleChannelConfigSpec struct {
+	//+required
 	Parent `json:",inline"`
 
 	// The EventarcGoogleChannelConfig name. If not given, the metadata.name will be used.
