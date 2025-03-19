@@ -546,7 +546,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: PrivateCloud
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.PrivateCloud
       host-name: ""
       apis-enabled:
@@ -565,7 +565,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: ExternalAddress
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.ExternalAddress
       host-name: ""
       apis-enabled:
@@ -585,7 +585,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: NodeType
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.NodeType
       host-name: ""
       notes:
@@ -602,7 +602,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: VmwareEngineNetwork
       proto-path: google/cloud/vmwareengine/v1/vmwareengine_resources.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.VmwareEngineNetwork
       host-name: ""
       apis-enabled:
@@ -620,7 +620,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: NetworkPeering
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.NetworkPeering
       host-name: ""
       apis-enabled:
@@ -638,7 +638,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: NetworkPolicy
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.NetworkPolicy
       host-name: ""
       apis-enabled:
@@ -656,7 +656,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: ExternalAccessRule
       proto-path: google/cloud/vmwareengine/v1/vmwareengine_resources.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.ExternalAccessRule
       host-name: ""
       apis-enabled:
@@ -675,7 +675,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: PrivateConnection
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.PrivateConnection
       host-name: ""
       apis-enabled:
@@ -694,7 +694,7 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: DnsBindPermission
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.DnsBindPermission
       host-name: ""
       notes:
@@ -1149,57 +1149,6 @@ branches:
       remote: resource-speech-operations
       command: gcloud ml speech operations
       group: speech
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: vmwareengine-locations
-      local: resource-vmwareengine-locations
-      remote: resource-vmwareengine-locations
-      command: gcloud vmware locations
-      group: vmwareengine
-      resource: locations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: vmwareengine-networks
-      local: resource-vmwareengine-networks
-      remote: resource-vmwareengine-networks
-      command: gcloud vmware networks
-      group: vmwareengine
-      resource: networks
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: vmwareengine-operations
-      local: resource-vmwareengine-operations
-      remote: resource-vmwareengine-operations
-      command: gcloud vmware operations
-      group: vmwareengine
       resource: operations
       controller: Unknown
       kind: ""
