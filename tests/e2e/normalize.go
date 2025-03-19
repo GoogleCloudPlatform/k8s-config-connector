@@ -376,11 +376,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${monitoringGroupID}")
 				})
-			case schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}:
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, resourceID, "${firewallPolicyID}")
-
-				})
 
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -391,6 +386,22 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${membershipID}")
 				})
+			}
+		}
+
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			switch u.GroupVersionKind() {
+			case schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}:
+				// https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/1059732409893
+				selfLink = strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/v1/locations/global/")
+				tokens := strings.Split(selfLink, "/")
+				n := len(tokens)
+				if n >= 2 {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, tokens[len(tokens)-1], "${firewallPolicyID}")
+					})
+				}
 			}
 		}
 	}
