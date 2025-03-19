@@ -18,7 +18,7 @@ spec:
     plural: dataprocbatches
     shortNames:
     - gcpdataprocbatch
-    - gcpdataprocbatchs
+    - gcpdataprocbatches
     singular: dataprocbatch
   preserveUnknownFields: false
   scope: Namespaced
