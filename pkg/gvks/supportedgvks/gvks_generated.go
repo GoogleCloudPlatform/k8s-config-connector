@@ -4593,7 +4593,7 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
-		Group:   "tasks.cnrm.cloud.google.com",
+		Group:   "cloudtasks.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "TasksQueue",
 	}: {

@@ -255,6 +255,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudtasks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - colab.cnrm.cloud.google.com
   resources:
   - '*'
@@ -848,14 +856,6 @@ rules:
   - watch
 - apiGroups:
   - tags.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - tasks.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

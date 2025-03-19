@@ -62,7 +62,8 @@ X-Xss-Protection: 0
     "maxBackoff": "3600s",
     "maxDoublings": 16,
     "minBackoff": "0.100s"
-  }
+  },
+  "state": "RUNNING"
 }
 
 ---

@@ -380,6 +380,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudtasks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - colab.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1269,18 +1281,6 @@ rules:
   - delete
 - apiGroups:
   - tags.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - tasks.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
