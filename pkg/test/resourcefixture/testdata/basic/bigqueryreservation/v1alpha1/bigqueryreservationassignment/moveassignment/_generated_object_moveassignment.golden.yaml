@@ -24,5 +24,4 @@ status:
   externalRef: projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/27687860-6459-5709-1dfzymot3v66w8h
   observedGeneration: 2
   observedState:
-    name: projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/27687860-6459-5709-1dfzymot3v66w8h
     state: ACTIVE

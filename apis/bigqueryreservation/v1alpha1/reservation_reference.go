@@ -57,6 +57,13 @@ func (r *ReservationRef) NormalizedExternal(ctx context.Context, reader client.R
 		return r.External, nil
 	}
 
+	// reservation name can not be "none".
+	// Otherwise, assign a project to none won't work
+	// see https://cloud.google.com/bigquery/docs/reservations-assignments#assign-project-to-none
+	if r.Name == "none" {
+		return "", fmt.Errorf("reservation name can not be 'none'. use 'External' instead")
+	}
+
 	// From the Config Connector object
 	if r.Namespace == "" {
 		r.Namespace = otherNamespace

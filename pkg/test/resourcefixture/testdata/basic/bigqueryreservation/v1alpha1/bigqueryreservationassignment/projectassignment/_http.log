@@ -81,7 +81,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 {
-  "assignee": "organizations/${organizationID}",
+  "assignee": "projects/${projectId}",
   "jobType": 2
 }
 
@@ -96,7 +96,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "assignee": "organizations/${organizationID}",
+  "assignee": "projects/${projectId}",
   "jobType": 2,
   "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f",
   "state": 2
@@ -121,7 +121,7 @@ X-Xss-Protection: 0
 {
   "assignments": [
     {
-      "assignee": "organizations/${organizationID}",
+      "assignee": "projects/${projectId}",
       "jobType": 2,
       "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f",
       "state": 2
