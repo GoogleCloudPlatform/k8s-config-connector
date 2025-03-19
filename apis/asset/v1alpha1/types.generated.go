@@ -28,7 +28,20 @@ type IAMPolicyAnalysisQuery struct {
 	//
 	//  To know how to get folder or project ID, visit [here
 	//  ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
+	// Required. The relative name of the root asset. Only resources and IAM
+	//  policies within the scope will be analyzed.
+	//
+	//  This can only be an organization number (such as "organizations/123"), a
+	//  folder number (such as "folders/123"), a project ID (such as
+	//  "projects/my-project-id"), or a project number (such as "projects/12345").
+	//
+	//  To know how to get organization ID, visit [here
+	//  ](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
+	//
+	//  To know how to get folder or project ID, visit [here
+	//  ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
 	// +kcc:proto:field=google.cloud.asset.v1.IamPolicyAnalysisQuery.scope
+	//+required
 	Scope *string `json:"scope,omitempty"`
 
 	// Optional. Specifies a resource for analysis.
@@ -86,7 +99,20 @@ type IAMPolicyAnalysisQuery_IdentitySelector struct {
 	//
 	//  Notice that wildcard characters (such as * and ?) are not supported.
 	//  You must give a specific identity.
+	// Required. The identity appear in the form of principals in
+	//  [IAM policy
+	//  binding](https://cloud.google.com/iam/reference/rest/v1/Binding).
+	//
+	//  The examples of supported forms are:
+	//  "user:mike@example.com",
+	//  "group:admins@example.com",
+	//  "domain:google.com",
+	//  "serviceAccount:my-project-id@appspot.gserviceaccount.com".
+	//
+	//  Notice that wildcard characters (such as * and ?) are not supported.
+	//  You must give a specific identity.
 	// +kcc:proto:field=google.cloud.asset.v1.IamPolicyAnalysisQuery.IdentitySelector.identity
+	//+required
 	Identity *string `json:"identity,omitempty"`
 }
 
@@ -205,7 +231,12 @@ type IAMPolicyAnalysisQuery_ResourceSelector struct {
 	//  (https://cloud.google.com/asset-inventory/docs/resource-name-format)
 	//  of a resource of [supported resource
 	//  types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types).
+	// Required. The [full resource name]
+	//  (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+	//  of a resource of [supported resource
+	//  types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types).
 	// +kcc:proto:field=google.cloud.asset.v1.IamPolicyAnalysisQuery.ResourceSelector.full_resource_name
+	//+required
 	FullResourceName *string `json:"fullResourceName,omitempty"`
 }
 
