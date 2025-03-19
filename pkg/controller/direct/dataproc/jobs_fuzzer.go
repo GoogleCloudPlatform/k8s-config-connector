@@ -58,5 +58,7 @@ func dataprocJobFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".job_uuid")
 	f.StatusFields.Insert(".done")
 
+	f.UnimplementedFields.Insert(".status")
+
 	return f
 }
