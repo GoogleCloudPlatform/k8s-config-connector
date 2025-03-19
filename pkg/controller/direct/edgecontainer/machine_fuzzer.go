@@ -34,13 +34,13 @@ func edgeContainerMachineFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".labels")
-	f.SpecFields.Insert(".hosted_node")
 	f.SpecFields.Insert(".zone")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".version")
 	f.StatusFields.Insert(".disabled")
+	f.StatusFields.Insert(".hosted_node")
 
 	f.UnimplementedFields.Insert(".name")
 
