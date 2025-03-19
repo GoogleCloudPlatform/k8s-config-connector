@@ -482,12 +482,6 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 	// Check to see if the http log file already exists
 	mockfolder := fmt.Sprintf("mock%s", branch.Group)
 
-	// TODO: Why is this check needed?
-	logFileFullPath := filepath.Join(opts.branchRepoDir, "mockgcp", mockfolder, "testdata", branch.Resource, "crud", "_http.log")
-	if _, err := os.Stat(logFileFullPath); errors.Is(err, os.ErrNotExist) {
-		return affectedPaths, nil, fmt.Errorf("missing http log %s", logFileFullPath)
-	}
-
 	// Run the controller builder to generate the service go file.
 	serviceFileRelativePath := filepath.Join("mockgcp", mockfolder, "service.go")
 	serviceFile := filepath.Join(opts.branchRepoDir, serviceFileRelativePath)
