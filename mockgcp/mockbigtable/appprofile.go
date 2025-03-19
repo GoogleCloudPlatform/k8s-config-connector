@@ -24,10 +24,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"k8s.io/apimachinery/pkg/util/sets"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -48,7 +48,7 @@ func (s *instanceAdminServer) GetAppProfile(ctx context.Context, req *pb.GetAppP
 	obj := &pb.AppProfile{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "appProfile %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "%v not found", name)
 		}
 		return nil, err
 	}
@@ -65,10 +65,15 @@ func (s *instanceAdminServer) CreateAppProfile(ctx context.Context, req *pb.Crea
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.AppProfile).(*pb.AppProfile)
+	obj := ProtoClone(req.AppProfile)
 	obj.Name = fqn
-	obj.Isolation =
-		&pb.AppProfile_StandardIsolation_{StandardIsolation: &pb.AppProfile_StandardIsolation{Priority: pb.AppProfile_PRIORITY_HIGH}}
+	if obj.Isolation == nil {
+		obj.Isolation = &pb.AppProfile_StandardIsolation_{
+			StandardIsolation: &pb.AppProfile_StandardIsolation{
+				Priority: pb.AppProfile_PRIORITY_HIGH,
+			},
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -89,7 +94,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.AppProfile)
+	updated := ProtoClone(existing)
 
 	// Required. The set of fields to update.
 	paths := req.GetUpdateMask().GetPaths()
@@ -119,15 +124,25 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 		}
 	}
 
+	// proto.Merge(updated, updates)
+
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
+	// updates.Name = updated.Name
+
 	metadata := &pb.UpdateAppProfileMetadata{}
-	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), "us-east1-c")
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		return updated, nil
-	})
+	zone := "us-central1-a" // TODO
+	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
+
+	// Don't return isolation in LRO, unless we updated standardIsolation
+	lroRet := ProtoClone(updated)
+	updatePaths := sets.New(req.GetUpdateMask().GetPaths()...)
+	if !updatePaths.Has("standardIsolation") {
+		lroRet.Isolation = nil
+	}
+	return s.operations.DoneLRO(ctx, prefix, metadata, lroRet)
 }
 
 func (s *instanceAdminServer) ListAppProfiles(ctx context.Context, req *pb.ListAppProfilesRequest) (*pb.ListAppProfilesResponse, error) {
@@ -189,13 +204,12 @@ func (s *instanceAdminServer) DeleteAppProfile(ctx context.Context, req *pb.Dele
 }
 
 type appProfileName struct {
-	Project    *projects.ProjectData
-	Instance   string
+	instanceName
 	AppProfile string
 }
 
 func (n *appProfileName) String() string {
-	return fmt.Sprintf("projects/%s/instances/%s/appProfiles/%s", n.Project.ID, n.Instance, n.AppProfile)
+	return fmt.Sprintf("projects/%s/instances/%s/appProfiles/%s", n.Project.ID, n.InstanceName, n.AppProfile)
 }
 
 // parseAppProfileName parses a string into a appProfileName.
@@ -204,15 +218,14 @@ func (s *instanceAdminServer) parseAppProfileName(name string) (*appProfileName,
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "instances" && tokens[4] == "appProfiles" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		instanceName, err := s.parseInstanceName(strings.Join(tokens[0:4], "/"))
 		if err != nil {
 			return nil, err
 		}
 
 		name := &appProfileName{
-			Project:    project,
-			Instance:   tokens[3],
-			AppProfile: tokens[5],
+			instanceName: *instanceName,
+			AppProfile:   tokens[5],
 		}
 
 		return name, nil
