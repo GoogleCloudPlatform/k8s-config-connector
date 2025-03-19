@@ -24,11 +24,9 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"strings"
 
 	gcp "cloud.google.com/go/vmwareengine/apiv1"
 	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -57,84 +55,42 @@ type networkModel struct {
 	config config.ControllerConfig
 }
 
-func (m *networkModel) client(ctx context.Context, projectID string) (*gcp.Client, error) {
-	var opts []option.ClientOption
-
-	config := m.config
-
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
-		config.BillingProject = projectID
-	}
-
-	opts, err := config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	gcpClient, err := gcp.NewClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building vmwareengine network client: %w", err)
-	}
-
-	return gcpClient, err
-}
-
 func (m *networkModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.VMwareEngineNetwork{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewVMwareEngineNetworkIDFromObject(ctx, reader, obj)
+	id, err := krm.NewVmwareEngineNetworkIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := VMwareEngineNetworkSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
-	gcpClient, err := m.client(ctx, id.ProjectID)
+	// Get VMwareEngine GCP client
+	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
 		return nil, err
 	}
-
+	client, err := gcpClient.newClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &networkAdapter{
-		gcpClient: gcpClient,
+		gcpClient: client,
 		id:        id,
-		desired:   desired,
+		desired:   obj,
 	}, nil
 }
 
 func (m *networkModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	log := klog.FromContext(ctx)
-	if strings.HasPrefix(url, "//vmwareengine.googleapis.com/") {
-		id, err := krm.ParseVMwareEngineNetworkExternal(url)
-		if err != nil {
-			log.V(2).Error(err, "url did not match VMwareEngineNetwork format", "url", url)
-		} else {
-			gcpClient, err := m.client(ctx, id.ProjectID)
-			if err != nil {
-				return nil, err
-			}
-			return &networkAdapter{
-				gcpClient: gcpClient,
-				id:        id,
-			}, nil
-		}
-	}
+	// TODO: Support URLs
 	return nil, nil
 }
 
 type networkAdapter struct {
 	gcpClient *gcp.Client
-	id        *krm.VMwareEngineNetworkID
-	desired   *pb.VmwareEngineNetwork
+	id        *krm.VmwareEngineNetworkIdentity
+	desired   *krm.VMwareEngineNetwork
 	actual    *pb.VmwareEngineNetwork
 }
 
@@ -160,14 +116,18 @@ func (a *networkAdapter) Find(ctx context.Context) (bool, error) {
 func (a *networkAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating vmwareengine network", "name", a.id)
+	mapCtx := &direct.MapContext{}
 
-	desired := direct.ProtoClone(a.desired)
-	desired.Name = a.id.String()
+	desired := a.desired.DeepCopy()
+	resource := VMwareEngineNetworkSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 
 	req := &pb.CreateVmwareEngineNetworkRequest{
-		Parent:                a.id.ProjectLocationLink.String(),
-		VmwareEngineNetwork:   desired,
-		VmwareEngineNetworkId: a.id.VMwareEngineNetwork,
+		Parent:                a.id.Parent().String(),
+		VmwareEngineNetworkId: a.id.ID(),
+		VmwareEngineNetwork:   resource,
 	}
 	op, err := a.gcpClient.CreateVmwareEngineNetwork(ctx, req)
 	if err != nil {
@@ -180,35 +140,43 @@ func (a *networkAdapter) Create(ctx context.Context, createOp *directbase.Create
 	log.V(2).Info("successfully created vmwareengine network in gcp", "name", a.id)
 
 	status := &krm.VMwareEngineNetworkStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = VMwareEngineNetworkObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.PtrTo(a.id.String())
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *networkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating vmwareengine network", "name", a.id)
+	mapCtx := &direct.MapContext{}
 
-	desired := direct.ProtoClone(a.desired)
-	desired.Name = a.id.String()
-
-	// TODO(user): Update the field if applicable.
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
-		updateMask.Paths = append(updateMask.Paths, "description")
+	desired := a.desired.DeepCopy()
+	resource := VMwareEngineNetworkSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
 
-	if len(updateMask.Paths) == 0 {
+	paths := []string{}
+	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		paths = append(paths, "description")
+	}
+	if desired.Spec.Type != nil && !reflect.DeepEqual(resource.Type, a.actual.Type) {
+		paths = append(paths, "type")
+	}
+	// TODO: etag
+
+	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 	req := &pb.UpdateVmwareEngineNetworkRequest{
-		UpdateMask:          updateMask,
-		VmwareEngineNetwork: desired,
+		VmwareEngineNetwork: resource,
+		UpdateMask:          &fieldmaskpb.FieldMask{Paths: paths},
 	}
 	op, err := a.gcpClient.UpdateVmwareEngineNetwork(ctx, req)
 	if err != nil {
@@ -221,7 +189,6 @@ func (a *networkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log.V(2).Info("successfully updated vmwareengine network", "name", a.id)
 
 	status := &krm.VMwareEngineNetworkStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = VMwareEngineNetworkObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -230,11 +197,10 @@ func (a *networkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 }
 
 func (a *networkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	log := klog.FromContext(ctx)
-
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
+	u := &unstructured.Unstructured{}
 
 	obj := &krm.VMwareEngineNetwork{}
 	mapCtx := &direct.MapContext{}
@@ -242,18 +208,16 @@ func (a *networkAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u := &unstructured.Unstructured{Object: uObj}
-	u.SetName(a.id.VMwareEngineNetwork)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.VMwareEngineNetworkGVK)
-
-	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
+	u.Object = uObj
 	return u, nil
 }
 
@@ -265,15 +229,17 @@ func (a *networkAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	req := &pb.DeleteVmwareEngineNetworkRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteVmwareEngineNetwork(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			log.V(2).Info("skipping delete for non-existent BackupVault, assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting vmwareengine network %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted vmwareengine network", "name", a.id)
 
-	if !op.Done() {
-		err = op.Wait(ctx)
-		if err != nil {
-			return false, fmt.Errorf("waiting for deletion of vmwareengine network %s: %w", a.id.String(), err)
-		}
+	err = op.Wait(ctx)
+	if err != nil {
+		return false, fmt.Errorf("waiting delete BackupVault %s: %w", a.id, err)
 	}
 	return true, nil
 }
