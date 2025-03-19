@@ -13,11 +13,11 @@
 # limitations under the License.
 
 apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
-kind: BackupDRBackupPlan
+kind: BackupDRBackupVault
 metadata:
-  name: backupdrbackupplan-minimal-${uniqueId}
+  name: backupdrbackupvault-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  description: "Updated description"
+  backupMinimumEnforcedRetentionDuration: "100000s"

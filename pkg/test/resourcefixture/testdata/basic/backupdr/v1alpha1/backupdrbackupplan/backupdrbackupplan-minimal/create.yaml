@@ -21,3 +21,16 @@ spec:
     external: ${projectId}
   location: us-central1
   description: "Initial description"
+  resourceType: "compute.googleapis.com/Instance"
+  backupVaultRef:
+    name: backupdrbackupvault-minimal-${uniqueId}
+  backupRules:
+    - ruleID: rule-1
+      backupRetentionDays: 5
+      standardSchedule:
+        recurrenceType: HOURLY
+        hourlyFrequency: 6
+        timeZone: UTC
+        backupWindow:
+          startHourOfDay: 1
+          endHourOfDay: 23
