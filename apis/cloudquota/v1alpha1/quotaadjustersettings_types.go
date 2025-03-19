@@ -40,13 +40,6 @@ type APIQuotaAdjusterSettingsSpec struct {
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.enablement
 	//+required
 	Enablement *string `json:"enablement,omitempty"`
-
-	// Optional. The current etag of the QuotaAdjusterSettings. If an etag is
-	//  provided on update and does not match the current server's etag of the
-	//  QuotaAdjusterSettings, the request will be blocked and an ABORTED error
-	//  will be returned. See https://google.aip.dev/134#etags for more details on
-	//  etags.
-	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.etag
 }
 
 // APIQuotaAdjusterSettingsStatus defines the config connector machine state of APIQuotaAdjusterSettings
