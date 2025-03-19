@@ -101,16 +101,6 @@ type AssetFeedSpec struct {
 	//  for all supported asset types and relationship types.
 	// +kcc:proto:field=google.cloud.asset.v1.Feed.relationship_types
 	RelationshipTypes []string `json:"relationshipTypes,omitempty"`
-
-	// Required. The format will be
-	//  projects/{project_number}/feeds/{client-assigned_feed_identifier} or
-	//  folders/{folder_number}/feeds/{client-assigned_feed_identifier} or
-	//  organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
-	//
-	//  The client-assigned feed identifier must be unique within the parent
-	//  project/folder/organization.
-	// +kcc:proto:field=google.cloud.asset.v1.Feed.name
-	Name *string `json:"name,omitempty"`
 }
 
 // AssetFeedStatus defines the config connector machine state of AssetFeed
