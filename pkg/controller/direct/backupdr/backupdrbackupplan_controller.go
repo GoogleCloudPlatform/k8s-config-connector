@@ -33,7 +33,6 @@ import (
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -66,7 +65,7 @@ func (m *modelBackupPlan) AdapterForObject(ctx context.Context, reader client.Re
 	}
 
 	if obj.Spec.BackupVaultRef != nil {
-		if err := obj.Spec.BackupVaultRef.Normalize(ctx, reader, obj); err != nil {
+		if _, err := obj.Spec.BackupVaultRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
 		}
 	}
@@ -185,25 +184,19 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	if desired.Spec.ResourceType != nil && !reflect.DeepEqual(resource.ResourceType, a.actual.ResourceType) {
 		paths = append(paths, "resource_type")
 	}
-	// TODO: etag
 
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+	if len(paths) != 0 {
+		return fmt.Errorf("updating BackupPlan is not supported, fields: %v", paths)
 	}
 
-	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-	req := &pb.UpdateBackupPlanRequest{
-		BackupPlan: resource,
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+	// still need to update status (in the event of acquiring an existing resource)
+	status := &krm.BackupDRBackupPlanStatus{}
+	status.ObservedState = BackupDRBackupPlanObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
-	_, err := a.gcpClient.UpdateBackupPlan(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating BackupPlan %s: %w", a.id, err)
-	}
-
-	log.V(2).Info("successfully updated BackupPlan", "name", a.id)
-	return nil
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -219,7 +212,7 @@ func (a *BackupPlanAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = direct.LazyPtr(a.id.Parent().ProjectID)
+	obj.Spec.BackupVaultRef = &krm.BackupVaultRef{External: a.actual.BackupVault}
 	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
