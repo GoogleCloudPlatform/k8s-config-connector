@@ -60,42 +60,6 @@ spec:
           spec:
             description: EdgeContainerMachineSpec defines the desired state of EdgeContainerMachine
             properties:
-              hostedNodeRef:
-                description: |-
-                  Canonical resource name of the node that this machine is responsible for
-                   hosting e.g.
-                   projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
-                   Or empty if the machine is not assigned to assume the role of a node.
-
-                   For control plane nodes hosted on edge machines, this will return
-                   the following format:
-                     "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed TPUVirtualMachine
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/nodes/{{nodeID}}".
-                    type: string
-                  name:
-                    description: The name of a TPUVirtualMachine resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a TPUVirtualMachine resource.
-                    type: string
-                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -197,6 +161,17 @@ spec:
                     description: Output only. Whether the machine is disabled. If
                       disabled, the machine is unable to enter service.
                     type: boolean
+                  hostedNode:
+                    description: |-
+                      Canonical resource name of the node that this machine is responsible for
+                       hosting e.g.
+                       projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
+                       Or empty if the machine is not assigned to assume the role of a node.
+
+                       For control plane nodes hosted on edge machines, this will return
+                       the following format:
+                         "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
+                    type: string
                   updateTime:
                     description: Output only. The time when the node pool was last
                       updated.
