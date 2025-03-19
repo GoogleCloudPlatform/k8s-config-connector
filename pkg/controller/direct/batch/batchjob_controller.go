@@ -38,8 +38,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/golang/protobuf/proto"
 )
 
 func init() {
@@ -164,10 +166,22 @@ func (a *jobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 }
 
 // BatchJob does not support update.
-func (a *jobAdapter) Update(ctx context.Context, createOp *directbase.UpdateOperation) error {
+func (a *jobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.Info("updating batch job", "name", a.id)
-	return nil
+
+	desiredpb := proto.Clone(a.desired).(*batchpb.Job)
+	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	if len(paths) != 0 {
+		log.V(2).Info("This resource does not support update", "name", a.id.String())
+		return nil
+	}
+
+	status := &krm.BatchJobStatus{}
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *jobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
