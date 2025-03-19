@@ -24,6 +24,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -105,6 +106,14 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 			updated.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{
 				MultiClusterRoutingUseAny: req.GetAppProfile().GetMultiClusterRoutingUseAny(),
 			}
+		case "singleClusterRouting":
+			updated.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{
+				SingleClusterRouting: req.GetAppProfile().GetSingleClusterRouting(),
+			}
+		case "standardIsolation":
+			updated.Isolation = &pb.AppProfile_StandardIsolation_{
+				StandardIsolation: req.GetAppProfile().GetStandardIsolation(),
+			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -180,13 +189,13 @@ func (s *instanceAdminServer) DeleteAppProfile(ctx context.Context, req *pb.Dele
 }
 
 type appProfileName struct {
-	Project    string
-	InstanceID string
+	Project    *projects.ProjectData
+	Instance   string
 	AppProfile string
 }
 
 func (n *appProfileName) String() string {
-	return fmt.Sprintf("projects/%s/instances/%s/appProfiles/%s", n.Project, n.InstanceID, n.AppProfile)
+	return fmt.Sprintf("projects/%s/instances/%s/appProfiles/%s", n.Project.ID, n.Instance, n.AppProfile)
 }
 
 // parseAppProfileName parses a string into a appProfileName.
@@ -195,9 +204,14 @@ func (s *instanceAdminServer) parseAppProfileName(name string) (*appProfileName,
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "instances" && tokens[4] == "appProfiles" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
 		name := &appProfileName{
-			Project:    tokens[1],
-			InstanceID: tokens[3],
+			Project:    project,
+			Instance:   tokens[3],
 			AppProfile: tokens[5],
 		}
 

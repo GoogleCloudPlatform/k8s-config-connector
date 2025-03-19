@@ -22,9 +22,12 @@ spec:
   description: Automatically routes requests to the nearest available cluster in an instance.
   instanceRef:
     name: profiledep${uniqueId}
-  multiClusterRoutingUseAny: true
-  multiClusterRoutingClusterIds:
-    - cluster1-${uniqueId}
-    - cluster2-${uniqueId}
+  # multiClusterRoutingUseAny: true
+  # multiClusterRoutingClusterIds:
+  #   - cluster1-${uniqueId}
+  #   - cluster2-${uniqueId}
   standardIsolation:
     priority: PRIORITY_LOW
+  singleClusterRouting:
+    allowTransactionalWrites: true
+    clusterId: cluster1-${uniqueId}
