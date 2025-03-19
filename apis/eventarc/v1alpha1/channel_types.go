@@ -36,12 +36,6 @@ type EventarcChannelSpec struct {
 	// The EventarcChannel name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Required. The resource name of the channel. Must be unique within the
-	//  location on the project and must be in
-	//  `projects/{project}/locations/{location}/channels/{channel_id}` format.
-	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.name
-	Name *string `json:"name,omitempty"`
-
 	// The name of the event provider (e.g. Eventarc SaaS partner) associated
 	// with the channel. This provider will be granted permissions to publish
 	// events to the channel. Format:
