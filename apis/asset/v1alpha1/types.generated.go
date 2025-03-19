@@ -26,6 +26,7 @@ type PubsubDestination struct {
 	// The name of the Pub/Sub topic to publish to.
 	//  Example: `projects/PROJECT_ID/topics/TOPIC_ID`.
 	// +kcc:proto:field=google.cloud.asset.v1.PubsubDestination.topic
+	//+required
 	Topic *string `json:"topic,omitempty"`
 }
 

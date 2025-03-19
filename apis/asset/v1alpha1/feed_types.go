@@ -35,6 +35,7 @@ type Parent struct {
 }
 
 type AssetFeedSpec struct {
+	// +required
 	Parent Parent `json:",inline"`
 	// The AssetFeed name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -65,7 +66,10 @@ type AssetFeedSpec struct {
 
 	// Required. Feed output configuration defining where the asset updates are
 	//  published to.
+	// Required. Feed output configuration defining where the asset updates are
+	//  published to.
 	// +kcc:proto:field=google.cloud.asset.v1.Feed.feed_output_config
+	//+required
 	FeedOutputConfig *FeedOutputConfig `json:"feedOutputConfig,omitempty"`
 
 	// A condition which determines whether an asset update should be published.
