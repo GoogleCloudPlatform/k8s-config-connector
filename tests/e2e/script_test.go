@@ -73,6 +73,7 @@ func TestE2EScript(t *testing.T) {
 
 			t.Run(scenarioPath, func(t *testing.T) {
 				uniqueID := testvariable.NewUniqueID()
+				folderID := ""
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
@@ -285,7 +286,7 @@ func TestE2EScript(t *testing.T) {
 							t.Logf("ignoring failure to export resource of gvk %v", exportResource.GroupVersionKind())
 							// t.Errorf("failed to export resource of gvk %v", exportResource.GroupVersionKind())
 						} else {
-							if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
@@ -308,7 +309,7 @@ func TestE2EScript(t *testing.T) {
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get kube object: %v", err)
 						} else {
-							if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
