@@ -175,7 +175,8 @@ func (a *ExecutionAdapter) Create(ctx context.Context, createOp *directbase.Crea
 func (a *ExecutionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Execution", "name", a.id)
-	return nil
+	status := &krm.WorkflowsExecutionStatus{}
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
