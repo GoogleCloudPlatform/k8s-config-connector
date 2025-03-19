@@ -23,10 +23,14 @@ var DataCatalogTagGVK = GroupVersion.WithKind("DataCatalogTag")
 
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
+
+// +kcc:proto=google.cloud.datacatalog.v1.Tag
+// +k8s:openapi-gen=true
 type Parent struct {
 	//pattern: "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}"
 	// +required
 	EntryRef *EntryRef `json:"entryRef"`
+	//+required
 }
 
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
@@ -41,7 +45,9 @@ type DataCatalogTagSpec struct {
 	//
 	//  This field cannot be modified after creation.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.template
+	//+required
 	Template *string `json:"template,omitempty"`
+	//+required
 
 	// Resources like entry can have schemas associated with them. This scope
 	//  allows you to attach tags to an individual column based on that schema.
@@ -100,7 +106,8 @@ type DataCatalogTag struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   DataCatalogTagSpec   `json:"spec,omitempty"`
+	Spec DataCatalogTagSpec `json:"spec,omitempty"`
+	//+required
 	Status DataCatalogTagStatus `json:"status,omitempty"`
 }
 
