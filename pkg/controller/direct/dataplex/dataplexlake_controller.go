@@ -21,18 +21,16 @@
 package dataplex
 
 import (
-	"context"
-	"fmt"
-	"reflect"
-	"strings"
-
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	"context"
+	"fmt"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"reflect"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
@@ -74,7 +72,7 @@ func (m *lakeModel) client(ctx context.Context, projectID string) (*gcp.Client, 
 		return nil, err
 	}
 
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building dataplex lake client: %w", err)
 	}
@@ -88,7 +86,7 @@ func (m *lakeModel) AdapterForObject(ctx context.Context, reader client.Reader, 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewDataplexLakeIDFromObject(ctx, reader, obj)
+	id, err := krm.NewLakeIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +97,7 @@ func (m *lakeModel) AdapterForObject(ctx context.Context, reader client.Reader, 
 		return nil, mapCtx.Err()
 	}
 
-	gcpClient, err := m.client(ctx, id.ProjectID)
+	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -112,28 +110,13 @@ func (m *lakeModel) AdapterForObject(ctx context.Context, reader client.Reader, 
 }
 
 func (m *lakeModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	log := klog.FromContext(ctx)
-	if strings.HasPrefix(url, "//dataplex.googleapis.com/") {
-		id, err := krm.ParseDataplexLakeExternal(url)
-		if err != nil {
-			log.V(2).Error(err, "url did not match DataplexLake format", "url", url)
-		} else {
-			gcpClient, err := m.client(ctx, id.ProjectID)
-			if err != nil {
-				return nil, err
-			}
-			return &lakeAdapter{
-				gcpClient: gcpClient,
-				id:        id,
-			}, nil
-		}
-	}
+	// TODO: Support URLs
 	return nil, nil
 }
 
 type lakeAdapter struct {
 	gcpClient *gcp.Client
-	id        *krm.DataplexLakeID
+	id        *krm.LakeIdentity
 	desired   *pb.Lake
 	actual    *pb.Lake
 }
@@ -165,9 +148,9 @@ func (a *lakeAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	desired.Name = a.id.String()
 
 	req := &pb.CreateLakeRequest{
-		Parent: a.id.LocationLink.String(),
+		Parent: a.id.Parent().String(),
 		Lake:   desired,
-		LakeId: a.id.Lake,
+		LakeId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateLake(ctx, req)
 	if err != nil {
@@ -251,15 +234,15 @@ func (a *lakeAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u := &unstructured.Unstructured{Object: uObj}
-	u.SetName(a.id.Lake)
+	u.SetName(a.id.String())
 	u.SetGroupVersionKind(krm.DataplexLakeGVK)
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
