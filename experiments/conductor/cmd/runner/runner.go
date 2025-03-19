@@ -44,10 +44,10 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	readFileTypeFlag        = "file-type"
 
 	// Command values
+	cmdDeleteGitBranch         = -5
 	cmdHelp                    = 0
 	cmdCheckRepo               = 1
 	cmdCreateGitBranch         = 2
-	cmdDeleteGitBranch         = 3
 	cmdEnableGCPAPIs           = 4
 	cmdReadFiles               = 5
 	cmdWriteFiles              = 6
@@ -114,6 +114,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"n", 0, "Number of commits to diff/revert (default: 0)")
 	cmd.Flags().BoolVarP(&opts.verbose, "verbose",
 		"v", false, "Enable verbose output logging")
+	cmd.Flags().StringVarP(&opts.branchSuffix, "branch-suffix",
+		"", "", "Suffix to append to remote branch names when pushing")
 
 	return cmd
 }
@@ -131,9 +133,10 @@ type RunnerOptions struct {
 	// forResourcesRegex filters branches, only branches that match the regex are processed
 	forResourcesRegex string
 
-	force      bool // Force flag to override file existence checks
-	numCommits int  // Number of commits to diff (default: 1)
-	verbose    bool // Verbose output flag
+	force        bool   // Force flag to override file existence checks
+	numCommits   int    // Number of commits to diff (default: 1)
+	verbose      bool   // Verbose output flag
+	branchSuffix string // Suffix to append to remote branch names when pushing
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -262,6 +265,11 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	}
 
 	switch opts.command {
+	case cmdDeleteGitBranch: // -5
+		for idx, branch := range branches.Branches {
+			log.Printf("Delete GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
+			deleteGithubBranch(opts, branch)
+		}
 	case -4:
 		fixMetadata(opts, branches, "Skip(with reason)", setSkipOnBranchModifier)
 	case -3:
@@ -284,11 +292,6 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			*/
 			log.Printf("Create GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createGithubBranch(opts, branch)
-		}
-	case cmdDeleteGitBranch: // 3
-		for idx, branch := range branches.Branches {
-			log.Printf("Delete GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			deleteGithubBranch(opts, branch)
 		}
 	case cmdEnableGCPAPIs: // 4
 		for idx, branch := range branches.Branches {
@@ -337,11 +340,11 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			revertLastNCommits(opts, branch)
 		}
 	case cmdPushBranch: // 9
-		// TODO add make ready-pr here
-		for idx, branch := range branches.Branches {
-			log.Printf("Force pushing branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
-			pushBranch(opts, branch)
+		processors := []BranchProcessor{
+			{Fn: makeReadyPR, CommitMsg: "make ready-pr"},
+			{Fn: pushBranch, CommitMsg: "push branch"},
 		}
+		processBranches(ctx, opts, branches.Branches, "Pushing Branch", processors)
 	case cmdCreateScriptYaml: // 10
 		processBranches(ctx, opts, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsg: "Create gcloud script.yaml"}})
 	case cmdCaptureHttpLog: // 11
@@ -406,20 +409,20 @@ func printHelp() {
 	log.Println("\t0 - Print help")
 	log.Println("\t1 - [Validate] Repo directory and metadata")
 	log.Println("\t2 - [Branch] Create the local github branches from the metadata")
-	log.Println("\t3 - [Branch] Delete the local github branches from the metadata")
+	log.Println("\t3 - [Branch] Moved to -5. Delete the local github branches from the metadata")
 	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
 	log.Println("\t5 - [Generated] Read the specific type of generated files in each github branch")
 	log.Println("\t6 - [Generated] Write the specific type of files from all_scripts.yaml to each github branch")
 	log.Println("\t7 - [Git] Show diff of last N commits in each branch (use -n to specify N)")
 	log.Println("\t8 - [Git] Revert last N commits in each branch (use -n to specify N)")
-	log.Println("\t9 - [Git] Force push each branch to origin")
+	log.Println("\t9 - [Git] Make ready-pr and push each branch to origin. Use --branch-suffix to specify a suffix for the remote branch if needed")
 	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
 	log.Println("\t11 - [Mock] Create _http.log for mock gcp generation in each github branch")
 	log.Println("\t12 - [Mock] Generate mock Service and Resource go files in each github branch")
 	log.Println("\t13 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
 	log.Println("\t14 - [Mock] Add proto to makefile in each github branch")
 	log.Println("\t15 - [Proto] Build proto files in mockgcp directory")
-	log.Println("\t16 - [Mock] Run mockgcptests on generated mocks in each github branch")
+	log.Println("\t16 - [Mock] Run and Fix mockgcp tests in each github branch")
 	log.Println("\t20 - [CRD] Generate Types for each branch")
 	log.Println("\t21 - [CRD] Adjust the types for each branch")
 	log.Println("\t22 - [CRD] Generate CRD for each branch")
@@ -1009,35 +1012,4 @@ func revertLastNCommits(opts *RunnerOptions, branch Branch) {
 
 	// Print the reset output
 	log.Printf("Reset output for branch %s (last %d commits):\n%s", branch.Name, opts.numCommits, output.Stdout)
-}
-
-func pushBranch(opts *RunnerOptions, branch Branch) {
-	close := setLoggingWriter(opts, branch)
-	defer close()
-	workDir := opts.branchRepoDir
-	ctx := context.TODO()
-
-	// First checkout the branch
-	checkoutBranch(ctx, branch, workDir)
-
-	// Run git push command with force flag
-	cfg := CommandConfig{
-		Name: "Git push",
-		Cmd:  "git",
-		Args: []string{
-			"push",
-			"origin",
-			branch.Local,
-			"--force",
-		},
-		WorkDir:     workDir,
-		MaxAttempts: 1,
-	}
-	output, err := executeCommand(opts, cfg)
-	if err != nil {
-		log.Printf("Git push error for branch %s: %v", branch.Name, err)
-		return
-	}
-
-	log.Printf("Push output for branch %s:\n%s", branch.Name, output.Stdout)
 }
