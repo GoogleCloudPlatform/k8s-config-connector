@@ -32,11 +32,9 @@ type Parent struct {
 // EventarcGoogleChannelConfigSpec defines the desired state of EventarcGoogleChannelConfig
 // +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type EventarcGoogleChannelConfigSpec struct {
-	//+required
 	Parent `json:",inline"`
 
 	// The EventarcGoogleChannelConfig name. If not given, the metadata.name will be used.
-	//+required
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. Resource name of a KMS crypto key (managed by the user) used to
@@ -45,7 +43,7 @@ type EventarcGoogleChannelConfigSpec struct {
 	//  It must match the pattern
 	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.crypto_key_name
-	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
+	CryptoKeyRef *refv1beta1.KMSCryptoKeyRef `json:"cryptoKeyRef,omitempty"`
 }
 
 // EventarcGoogleChannelConfigStatus defines the config connector machine state of EventarcGoogleChannelConfig
