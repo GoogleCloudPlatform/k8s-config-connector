@@ -4838,7 +4838,7 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
-		Group:   "workflows.cnrm.cloud.google.com",
+		Group:   "workflowexecutions.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "WorkflowsExecution",
 	}: {
