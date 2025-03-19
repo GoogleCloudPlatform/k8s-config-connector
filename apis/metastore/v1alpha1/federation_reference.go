@@ -42,6 +42,19 @@ type FederationRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+// TODO Syncup with MetastoreService
+type ServiceRef struct {
+	// A reference to an externally managed MetastoreService resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
+	External string `json:"external,omitempty"`
+
+	// The name of a MetastoreService resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a MetastoreService resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
 // NormalizedExternal provision the "External" value for other resource that depends on MetastoreFederation.
 // If the "External" is given in the other resource's spec.MetastoreFederationRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual MetastoreFederation object from the cluster.

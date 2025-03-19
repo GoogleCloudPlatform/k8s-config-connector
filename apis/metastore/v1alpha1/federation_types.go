@@ -30,6 +30,25 @@ type Parent struct {
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.metastore.v1.BackendMetastore
+type BackendMetastore struct {
+	// The relative resource name of the metastore that is being federated.
+	//  The formats of the relative resource names for the currently supported
+	//  metastores are listed below:
+	//
+	//  * BigQuery
+	//      * `projects/{project_id}`
+	//  * Dataproc Metastore
+	//      * `projects/{project_id}/locations/{location}/services/{service_id}`
+	// +kcc:proto:field=google.cloud.metastore.v1.BackendMetastore.name
+	ServiceRef *ServiceRef `json:"serviceRef,omitempty"`
+
+	// The type of the backend metastore.
+	// +kcc:proto:field=google.cloud.metastore.v1.BackendMetastore.metastore_type
+	// +kubebuilder:validation:Enum=metastore;bigquery
+	MetastoreType *string `json:"metastoreType,omitempty"`
+}
+
 // MetastoreFederationSpec defines the desired state of MetastoreFederation
 // +kcc:proto=google.cloud.metastore.v1.Federation
 type MetastoreFederationSpec struct {
@@ -47,6 +66,8 @@ type MetastoreFederationSpec struct {
 	Version *string `json:"version,omitempty"`
 
 	// TODO: unsupported map type with key int32 and value message
+	// +kcc:proto:field=google.cloud.metastore.v1.Federation.backend_metastores
+	BackendMetastores map[string]BackendMetastore `json:"backendMetastores,omitempty"`
 }
 
 // MetastoreFederationStatus defines the config connector machine state of MetastoreFederation
