@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: storage.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.storage.control.v2
+
 package storage
 
 import (
@@ -57,12 +62,6 @@ func StorageFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fold
 		return nil
 	}
 	out := &krm.StorageFolderObservedState{}
-}
-func StorageManagedFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagedFolder) *krm.StorageManagedFolderObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StorageManagedFolderObservedState{}
 	// MISSING: Name
 	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -75,13 +74,6 @@ func StorageFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Stora
 		return nil
 	}
 	out := &pb.Folder{}
-	return out
-}
-func StorageManagedFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageManagedFolderObservedState) *pb.ManagedFolder {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ManagedFolder{}
 	// MISSING: Name
 	out.Metageneration = direct.ValueOf(in.Metageneration)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -102,6 +94,29 @@ func StorageFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageFolderS
 		return nil
 	}
 	out := &pb.Folder{}
+	// MISSING: Name
+	return out
+}
+func StorageManagedFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagedFolder) *krm.StorageManagedFolderObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageManagedFolderObservedState{}
+	// MISSING: Name
+	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func StorageManagedFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageManagedFolderObservedState) *pb.ManagedFolder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagedFolder{}
+	// MISSING: Name
+	out.Metageneration = direct.ValueOf(in.Metageneration)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func StorageManagedFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagedFolder) *krm.StorageManagedFolderSpec {

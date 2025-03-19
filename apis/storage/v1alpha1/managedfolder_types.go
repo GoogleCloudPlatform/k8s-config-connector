@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -29,14 +28,6 @@ type StorageManagedFolderSpec struct {
 
 	// The StorageManagedFolder name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type StorageFolderParent struct {
-	// Required. The host project of the application.
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
-
-	// Required. The storage bucket where the folder is created in.
-	StorageBucketRef *v1beta1.StorageBucketRef `json:"storagebucketRef,omitempty"`
 }
 
 // StorageManagedFolderStatus defines the config connector machine state of StorageManagedFolder

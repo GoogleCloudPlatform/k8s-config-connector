@@ -97,8 +97,8 @@ spec:
                   will be used.
                 type: string
               storagebucketRef:
-                description: Required. The storage bucket where the folder is created
-                  in.
+                description: Required. The storage bucket where the folder will be
+                  created in.
                 oneOf:
                 - not:
                     required:
