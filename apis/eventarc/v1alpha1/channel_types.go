@@ -49,7 +49,7 @@ type EventarcChannelSpec struct {
 	// It must match the pattern
 	// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.crypto_key_name
-	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
+	KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // EventarcChannelStatus defines the config connector machine state of EventarcChannel
