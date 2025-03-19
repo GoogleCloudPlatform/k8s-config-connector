@@ -33,13 +33,6 @@ type Parent struct {
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagSpec struct {
 	Parent Parent `json:",inline"`
-	// Identifier. The resource name of the tag in URL format where tag ID is a
-	//  system-generated identifier.
-	//
-	//  Note: The tag itself might not be stored in the location specified in its
-	//  name.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.name
-	Name *string `json:"name,omitempty"`
 	// The DataCatalogTag name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The resource name of the tag template this tag uses. Example:
