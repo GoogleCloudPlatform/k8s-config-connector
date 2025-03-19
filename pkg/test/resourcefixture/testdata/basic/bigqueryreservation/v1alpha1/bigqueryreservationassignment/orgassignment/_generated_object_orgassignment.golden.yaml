@@ -12,10 +12,8 @@ metadata:
 spec:
   assignee: organizations/${organizationID}
   jobType: QUERY
-  location: us-west2
-  projectRef:
-    external: ${projectId}
-  reservationName: bigqueryreservationreservation${uniqueId}
+  reservationRef:
+    name: bigqueryreservationreservation-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -23,8 +21,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/11430316530491652573
+  externalRef: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f
   observedGeneration: 1
   observedState:
-    name: projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/11430316530491652573
     state: ACTIVE

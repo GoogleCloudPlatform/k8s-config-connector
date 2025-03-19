@@ -45,7 +45,6 @@ func BigqueryReservationAssignmentObservedState_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krm.BigQueryReservationAssignmentObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
@@ -55,7 +54,6 @@ func BigqueryReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Assignment{}
-	out.Name = direct.ValueOf(in.Name)
 	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	return out
 }

@@ -160,11 +160,6 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  name:
-                    description: 'Name of the resource. E.g.: `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
-                      The assignment_id must only contain lower case alphanumeric
-                      characters or dashes and the max length is 64 characters.'
-                    type: string
                   state:
                     description: State of the assignment.
                     type: string

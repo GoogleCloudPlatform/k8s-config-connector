@@ -18,8 +18,6 @@ metadata:
   name: bqassignment-${uniqueId}
 spec:
   assignee: projects/${projectId}
-  projectRef:
-    external: ${projectId}
-  location: us-west2
-  reservationName: none
+  reservationRef:
+    external: "projects/${projectId}/locations/us-west2/reservations/none"
   jobType: QUERY

@@ -70,13 +70,6 @@ type BigQueryReservationAssignmentStatus struct {
 // BigQueryReservationAssignmentObservedState is the state of the BigQueryReservationAssignment resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
 type BigQueryReservationAssignmentObservedState struct {
-	// Name of the resource. E.g.:
-	//  `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
-	//  The assignment_id must only contain lower case alphanumeric characters or
-	//  dashes and the max length is 64 characters.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.name
-	Name *string `json:"name,omitempty"`
-
 	// State of the assignment.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.state
 	State *string `json:"state,omitempty"`
@@ -84,7 +77,6 @@ type BigQueryReservationAssignmentObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryreservationassignment;gcpbigqueryreservationassignments
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

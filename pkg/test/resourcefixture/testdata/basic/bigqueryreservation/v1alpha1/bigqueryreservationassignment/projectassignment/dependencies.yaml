@@ -13,11 +13,18 @@
 # limitations under the License.
 
 apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
-kind: BigQueryReservationAssignment
+kind: BigQueryReservationReservation
 metadata:
-  name: bqassignment-${uniqueId}
+  name: bigqueryreservationreservation-${uniqueId}
 spec:
-  assignee: organizations/${TEST_ORG_ID}
-  reservationRef:
-    name: bigqueryreservationreservation-${uniqueId}
-  jobType: QUERY
+  autoscale:
+    maxSlots: 50
+  concurrency: 0
+  edition: ENTERPRISE_PLUS
+  ignoreIdleSlots: false
+  location: us-west2
+  secondaryLocation: us-east1
+  projectRef:
+    external: ${projectId}
+  resourceID: bigqueryreservationreservation${uniqueId}
+  slotCapacity: 0

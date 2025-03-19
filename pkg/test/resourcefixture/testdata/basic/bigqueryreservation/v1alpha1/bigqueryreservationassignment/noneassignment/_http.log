@@ -8,6 +8,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -31,13 +32,14 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
   "assignee": "projects/${projectId}",
   "jobType": 2,
-  "name": "projects/${projectId}/locations/us-west2/reservations/none/assignments/3408657122498908254",
+  "name": "projects/${projectId}/locations/us-west2/reservations/none/assignments/87687860-6689-5789-1dfzymot3v66w7f",
   "state": 2
 }
 
@@ -53,6 +55,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -61,7 +64,7 @@ X-Xss-Protection: 0
     {
       "assignee": "projects/${projectId}",
       "jobType": 2,
-      "name": "projects/${projectId}/locations/us-west2/reservations/none/assignments/3408657122498908254",
+      "name": "projects/${projectId}/locations/us-west2/reservations/none/assignments/87687860-6689-5789-1dfzymot3v66w7f",
       "state": 2
     }
   ]
@@ -69,10 +72,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/none/assignments/3408657122498908254?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/none/assignments/87687860-6689-5789-1dfzymot3v66w7f?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fnone%2Fassignments%2F3408657122498908254
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fnone%2Fassignments%2F87687860-6689-5789-1dfzymot3v66w7f
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -80,6 +83,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
