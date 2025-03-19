@@ -36,11 +36,6 @@ type MetastoreFederationSpec struct {
 	Parent Parent `json:",inline"`
 	// The MetastoreFederation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Immutable. The relative resource name of the federation, of the
-	//  form:
-	//  projects/{project_number}/locations/{location_id}/federations/{federation_id}`.
-	// +kcc:proto:field=google.cloud.metastore.v1.Federation.name
-	Name *string `json:"name,omitempty"`
 
 	// User-defined labels for the metastore federation.
 	// +kcc:proto:field=google.cloud.metastore.v1.Federation.labels
