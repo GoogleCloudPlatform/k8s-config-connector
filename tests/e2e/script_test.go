@@ -274,6 +274,27 @@ func TestE2EScript(t *testing.T) {
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects[k] = obj
 
+					case "ABANDON-AND-REACQUIRE-WITH-GENERATED-ID":
+						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
+						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
+						if resourceID == "" {
+							h.Fatalf("object did not have spec.resource: %v", existing)
+						}
+						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
+						deleteObj := obj.DeepCopy()
+						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
+						configuredID, _, _ := unstructured.NestedString(obj.Object, "spec", "resourceID")
+						if configuredID == "" {
+							h.Fatalf("object does not have resourceID configured: %v", obj)
+						}
+						err := unstructured.SetNestedField(obj.Object, strings.ReplaceAll(configuredID, "${TEST_GENERATED_ID}", resourceID), "spec", "resourceID")
+						if err != nil {
+							h.Fatalf("error setting spec.resourceID: %v", err)
+						}
+						applyObject(h, obj)
+						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
+						appliedObjects[k] = obj
+
 					default:
 						t.Errorf("unknown TEST command %q", testCommand)
 						continue
