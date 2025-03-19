@@ -22,15 +22,12 @@ import (
 var DataCatalogTagGVK = GroupVersion.WithKind("DataCatalogTag")
 
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
-// +kcc:proto=google.cloud.datacatalog.v1.Tag
 
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
-// +k8s:openapi-gen=true
 type Parent struct {
 	//pattern: "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}"
 	// +required
 	EntryRef *EntryRef `json:"entryRef"`
-	//+required
 }
 
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
@@ -47,7 +44,6 @@ type DataCatalogTagSpec struct {
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.template
 	//+required
 	Template *string `json:"template,omitempty"`
-	//+required
 
 	// Resources like entry can have schemas associated with them. This scope
 	//  allows you to attach tags to an individual column based on that schema.
@@ -57,7 +53,11 @@ type DataCatalogTagSpec struct {
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.column
 	Column *string `json:"column,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// The map must contain at least 1 entry and at most 500 entries.
+	// +kubebuilder:validation:MinProperties=1
+	// +kubebuilder:validation:MaxProperties=500
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.fields
+	Fields map[string]TagField `json:"fields,omitempty"`
 }
 
 // DataCatalogTagStatus defines the config connector machine state of DataCatalogTag
@@ -86,6 +86,10 @@ type DataCatalogTagObservedState struct {
 	// Output only. Denotes the transfer status of the Tag Template.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.dataplex_transfer_status
 	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
+
+	// Output only. The map of tag field values, where the key is the tag field ID.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.fields
+	Fields map[string]TagFieldObservedState `json:"fields,omitempty"`
 }
 
 // +genclient
@@ -106,8 +110,7 @@ type DataCatalogTag struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec DataCatalogTagSpec `json:"spec,omitempty"`
-	//+required
+	Spec   DataCatalogTagSpec   `json:"spec,omitempty"`
 	Status DataCatalogTagStatus `json:"status,omitempty"`
 }
 
