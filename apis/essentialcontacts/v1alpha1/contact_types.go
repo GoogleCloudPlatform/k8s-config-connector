@@ -40,11 +40,13 @@ type EssentialContactsContactSpec struct {
 	// Required. The email address to send notifications to. The email address
 	//  does not need to be a Google Account.
 	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.email
+	//+required
 	Email *string `json:"email,omitempty"`
 
 	// Required. The categories of notifications that the contact will receive
 	//  communications for.
 	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.notification_category_subscriptions
+	//+required
 	NotificationCategorySubscriptions []string `json:"notificationCategorySubscriptions,omitempty"`
 
 	// Required. The preferred language for notifications, as a ISO 639-1 language
@@ -52,6 +54,7 @@ type EssentialContactsContactSpec struct {
 	//  languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages)
 	//  for a list of supported languages.
 	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.language_tag
+	//+required
 	LanguageTag *string `json:"languageTag,omitempty"`
 
 	// The last time the validation_state was updated, either manually or
