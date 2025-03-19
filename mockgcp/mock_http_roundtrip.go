@@ -82,6 +82,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetapp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
@@ -255,6 +256,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockbackupdr.New(env, storage))
 	services = append(services, mockbatch.New(env, storage))
 	services = append(services, mockapigateway.New(env, storage))
+	services = append(services, mocknetapp.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
