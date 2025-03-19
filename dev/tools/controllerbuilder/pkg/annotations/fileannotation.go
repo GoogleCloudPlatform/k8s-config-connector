@@ -76,7 +76,13 @@ func FindFileAnnotations(src []byte, prefixes []string) ([]FileAnnotation, error
 		if strings.HasPrefix(line, "//") {
 			comment := strings.TrimPrefix(line, "//")
 			comment = strings.TrimSpace(comment)
-			if strings.HasPrefix(comment, "+tool:") {
+			match := false
+			for _, prefix := range prefixes {
+				if strings.HasPrefix(comment, prefix) {
+					match = true
+				}
+			}
+			if match {
 				annotation := FileAnnotation{
 					Key:        comment,
 					Attributes: make(map[string][]string),
