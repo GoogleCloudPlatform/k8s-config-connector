@@ -15,10 +15,10 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
 )
 
 var MetastoreServiceGVK = GroupVersion.WithKind("MetastoreService")
@@ -28,7 +28,36 @@ type Parent struct {
 	// +required
 	Location string `json:"location"`
 	// +optional
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.metastore.v1.Secret
+type Secret struct {
+	// The relative resource name of a Secret Manager secret version, in the
+	//  following form:
+	//
+	//  `projects/{project_number}/secrets/{secret_id}/versions/{version_id}`.
+	// +kcc:proto:field=google.cloud.metastore.v1.Secret.cloud_secret
+	CloudSecret *secretmanagerv1beta1.SecretRef `json:"cloudSecret,omitempty"`
+}
+
+// +kcc:proto=google.cloud.metastore.v1.NetworkConfig.Consumer
+type NetworkConfig_Consumer struct {
+	// Immutable. The subnetwork of the customer project from which an IP
+	//  address is reserved and used as the Dataproc Metastore service's
+	//  endpoint. It is accessible to hosts in the subnet and to all
+	//  hosts in a subnet in the same region and same network. There must
+	//  be at least one IP address available in the subnet's primary range.
+	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.subnetwork
+	Subnetwork *refsv1beta1.ComputeSubnetworkRef `json:"subnetwork,omitempty"`
+}
+
+// +kcc:proto=google.cloud.metastore.v1.EncryptionConfig
+type EncryptionConfig struct {
+	// The fully qualified customer provided Cloud KMS key name to use for
+	//  customer data encryption
+	// +kcc:proto:field=google.cloud.metastore.v1.EncryptionConfig.kms_key
+	KMSKey *refsv1beta1.KMSCryptoKeyRef `json:"kmsKey,omitempty"`
 }
 
 // MetastoreServiceSpec defines the desired state of MetastoreService
@@ -47,11 +76,9 @@ type MetastoreServiceSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Immutable. The relative resource name of the VPC network on which the
-	//  instance can be accessed. It is specified in the following form:
-	//
-	//  `projects/{project_number}/global/networks/{network_id}`.
+	//  instance can be accessed.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.network
-	Network *string `json:"network,omitempty"`
+	Network *refsv1beta1.ComputeNetworkRef `json:"network,omitempty"`
 
 	// The TCP port at which the metastore service is reached. Default: 9083.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.port
@@ -59,6 +86,7 @@ type MetastoreServiceSpec struct {
 
 	// The tier of the service.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.tier
+	// +kubebuilder:validation:Enum=DEVELOPER;ENTERPRISE
 	Tier *string `json:"tier,omitempty"`
 
 	// The one hour maintenance window of the metastore service. This specifies
@@ -71,6 +99,7 @@ type MetastoreServiceSpec struct {
 	// Immutable. The release channel of the service.
 	//  If unspecified, defaults to `STABLE`.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.release_channel
+	// +kubebuilder:validation:Enum=STABLE;CANARY
 	ReleaseChannel *string `json:"releaseChannel,omitempty"`
 
 	// Immutable. Information used to configure the Dataproc Metastore service to
@@ -85,6 +114,7 @@ type MetastoreServiceSpec struct {
 
 	// Immutable. The database type that the Metastore service stores its data.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.database_type
+	// +kubebuilder:validation:Enum=MYSQL;SPANNER
 	DatabaseType *string `json:"databaseType,omitempty"`
 
 	// The configuration specifying telemetry settings for the Dataproc Metastore
@@ -177,16 +207,6 @@ type MetastoreService struct {
 	// +required
 	Spec   MetastoreServiceSpec   `json:"spec,omitempty"`
 	Status MetastoreServiceStatus `json:"status,omitempty"`
-}
-
-// DeepCopyObject implements the ObjectKind interface.
-func (in *MetastoreService) DeepCopyObject() runtime.Object {
-	return in.DeepCopy()
-}
-
-// DeepCopyObject implements the ObjectKind interface.
-func (in *MetastoreServiceList) DeepCopyObject() runtime.Object {
-	return in.DeepCopy()
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
