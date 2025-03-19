@@ -36,10 +36,6 @@ type EventarcGoogleChannelConfigSpec struct {
 
 	// The EventarcGoogleChannelConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Required. The resource name of the config. Must be in the format of,
-	//  `projects/{project}/locations/{location}/googleChannelConfig`.
-	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.name
-	Name *string `json:"name,omitempty"`
 
 	// Optional. Resource name of a KMS crypto key (managed by the user) used to
 	//  encrypt/decrypt their event data.
