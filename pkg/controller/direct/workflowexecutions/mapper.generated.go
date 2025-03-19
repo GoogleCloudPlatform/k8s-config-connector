@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package workflows
+package workflowexecutions
 
 import (
 	pb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflowexecutions/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
