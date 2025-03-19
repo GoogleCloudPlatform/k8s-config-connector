@@ -42,14 +42,6 @@ type MetastoreServiceSpec struct {
 	//  software as the metastore service.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.hive_metastore_config
 	HiveMetastoreConfig *HiveMetastoreConfig `json:"hiveMetastoreConfig,omitempty"`
-
-	// Immutable. The relative resource name of the metastore service, in the
-	//  following format:
-	//
-	//  `projects/{project_number}/locations/{location_id}/services/{service_id}`.
-	// +kcc:proto:field=google.cloud.metastore.v1.Service.name
-	Name *string `json:"name,omitempty"`
-
 	// User-defined labels for the metastore service.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.labels
 	Labels map[string]string `json:"labels,omitempty"`
