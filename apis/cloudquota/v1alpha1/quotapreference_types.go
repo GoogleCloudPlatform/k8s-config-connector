@@ -62,6 +62,7 @@ type APIQuotaPreferenceSpec struct {
 
 	// Required. Preferred quota configuration.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaPreference.quota_config
+	//+required
 	QuotaConfig *QuotaConfig `json:"quotaConfig,omitempty"`
 
 	// Optional. The current etag of the quota preference. If an etag is provided
@@ -72,11 +73,13 @@ type APIQuotaPreferenceSpec struct {
 
 	// Required. The name of the service to which the quota preference is applied.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaPreference.service
+	//+required
 	Service *string `json:"service,omitempty"`
 
 	// Required. The id of the quota to which the quota preference is applied. A
 	//  quota name is unique in the service. Example: `CpusPerProjectPerRegion`
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaPreference.quota_id
+	//+required
 	QuotaID *string `json:"quotaID,omitempty"`
 
 	// The reason / justification for this quota preference.
