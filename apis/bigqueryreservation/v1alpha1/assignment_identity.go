@@ -20,16 +20,16 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// AssignmentIdentity defines the resource reference to BigQueryReservationAssignment,
-// which "External" field holds the GCP identifier for the KRM object.
+// AssignmentIdentity defines the resource identity to BigQueryReservationAssignment,
+// which is to be used in the controller.
 type AssignmentIdentity struct {
-	parent    *AssignmentParent
-	projectID string
-	id        string
+	// The reservation to which the assignment is currently attached
+	parent *BQReservation
+	// The assignment resourceID
+	id string
 }
 
 func (i *AssignmentIdentity) String() string {
@@ -40,61 +40,73 @@ func (i *AssignmentIdentity) ID() string {
 	return i.id
 }
 
-func (i *AssignmentIdentity) Parent() *AssignmentParent {
+func (i *AssignmentIdentity) Parent() *BQReservation {
 	return i.parent
 }
 
 func (i *AssignmentIdentity) GetProjetID() string {
-	return i.projectID
+	return i.parent.ProjectID
 }
 
-type AssignmentParent struct {
+type BQReservation struct {
 	ProjectID       string
 	Location        string
 	ReservationName string
 }
 
-func (p *AssignmentParent) String() string {
+func (p *BQReservation) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/reservations/" + p.ReservationName
 }
 
 // New builds a AssignmentIdentity from the Config Connector BigQueryReservationAssignment object.
 func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQueryReservationAssignment) (*AssignmentIdentity, error) {
 
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	// Get the reservation to move the assignment to.
+	// Uses the "spec.ReservationRef"
+	var name string
+	var err error
+	if obj.Spec.ReservationRef.External != "" {
+		name = obj.Spec.ReservationRef.External
+	} else {
+		name, err = obj.Spec.ReservationRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	reservationParent, reservationID, err := ParseReservationExternal(name)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := *obj.Spec.Location
-	reservationName := *obj.Spec.ReservationName
 
-	// Get desired ID
+	parent := &BQReservation{
+		ProjectID:       reservationParent.ProjectID,
+		Location:        reservationParent.Location,
+		ReservationName: reservationID,
+	}
+
+	// Get desired assignment resourceID
 	// Only works for resource acquisition
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
+		// The assignment is already existing
 		actualParent, actualResourceID, err := ParseAssignmentExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		// Moving an Assignment from one reservation to another reservation
-		//  can override these values
-		if actualParent.ProjectID != projectID {
-			projectID = actualParent.ProjectID
+		// Need to reset the parent to the actual parent
+		//  when moving the assignment from one reservation to another.
+		if actualParent.ProjectID != parent.ProjectID {
+			parent.ProjectID = actualParent.ProjectID
 		}
-		if actualParent.Location != location {
-			location = actualParent.Location
+		if actualParent.Location != parent.Location {
+			parent.Location = actualParent.Location
 		}
-		if actualParent.ReservationName != reservationName {
-			reservationName = actualParent.ReservationName
+		if actualParent.ReservationName != parent.ReservationName {
+			parent.ReservationName = actualParent.ReservationName
 		}
 		// For BigQueryReservationAssignment, the GCP resourceID is output only.
 		if resourceID == "" {
@@ -106,22 +118,17 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 	}
 
 	return &AssignmentIdentity{
-		parent: &AssignmentParent{
-			ProjectID:       projectID,
-			Location:        location,
-			ReservationName: reservationName,
-		},
-		projectID: projectID,
-		id:        resourceID,
+		parent: parent,
+		id:     resourceID,
 	}, nil
 }
 
-func ParseAssignmentExternal(external string) (parent *AssignmentParent, resourceID string, err error) {
+func ParseAssignmentExternal(external string) (parent *BQReservation, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "reservations" || tokens[6] != "assignments" {
 		return nil, "", fmt.Errorf("format of BigqueryReservation external=%q was not known (use projects/{{projectID}}/locations/{{location}}/reservations/{{reservationName}}/assignments/{{assignmentID}})", external)
 	}
-	parent = &AssignmentParent{
+	parent = &BQReservation{
 		ProjectID:       tokens[1],
 		Location:        tokens[3],
 		ReservationName: tokens[5],

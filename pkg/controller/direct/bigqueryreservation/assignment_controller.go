@@ -17,9 +17,9 @@ package bigqueryreservation
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -79,10 +79,30 @@ func (m *modelAssignment) AdapterForObject(ctx context.Context, reader client.Re
 	if err != nil {
 		return nil, err
 	}
+
+	var reservationName string
+	// Get the reservation name to move the assignment to
+	if obj.Spec.ReservationRef.External != "" {
+		reservationName = obj.Spec.ReservationRef.External
+	} else {
+		reservationName, err = obj.Spec.ReservationRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	p, name, err := krm.ParseReservationExternal(reservationName)
+	destinationId := &krm.BQReservation{
+		ProjectID:       p.ProjectID,
+		Location:        p.Location,
+		ReservationName: name,
+	}
+
 	return &AssignmentAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:            id,
+		gcpClient:     gcpClient,
+		desired:       obj,
+		destinationId: destinationId,
 	}, nil
 }
 
@@ -96,6 +116,8 @@ type AssignmentAdapter struct {
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryReservationAssignment
 	actual    *pb.Assignment
+	// The reservation to move the assignment to
+	destinationId *krm.BQReservation
 }
 
 var _ directbase.Adapter = &AssignmentAdapter{}
@@ -171,8 +193,8 @@ func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	desiredSpec := &a.desired.DeepCopy().Spec
-	l, r := desiredSpec.Location, desiredSpec.ReservationName
 
+	// Get the reservation to move the assignment from
 	currentReservation, _, err := krm.ParseAssignmentExternal(a.actual.GetName())
 	if err != nil {
 		return err
@@ -181,12 +203,11 @@ func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	var updated *pb.Assignment
 	status := &krm.BigQueryReservationAssignmentStatus{}
 	// Case1: Move the assignment to another reservation
-	if currentReservation.ProjectID != a.id.GetProjetID() || currentReservation.Location != direct.ValueOf(l) || currentReservation.ReservationName != direct.ValueOf(r) {
+	if !reflect.DeepEqual(currentReservation, a.destinationId) {
 		log.V(2).Info("moving assignment to another reservation", "current", a.id.String())
-		destination := "projects/" + a.id.GetProjetID() + "/locations/" + direct.ValueOf(l) + "/reservations/" + direct.ValueOf(r)
 		req := &pb.MoveAssignmentRequest{
 			Name:          a.actual.GetName(),
-			DestinationId: destination,
+			DestinationId: a.destinationId.String(),
 		}
 		// if user wants to retain the assignmentID
 		if desiredSpec.ResourceID != nil {
@@ -245,8 +266,7 @@ func (a *AssignmentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
+	obj.Spec.ReservationRef = &krm.ReservationRef{External: a.destinationId.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

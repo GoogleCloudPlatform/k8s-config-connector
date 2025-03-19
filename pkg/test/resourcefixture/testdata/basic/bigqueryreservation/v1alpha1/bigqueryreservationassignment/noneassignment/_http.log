@@ -1,0 +1,86 @@
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/none/assignments?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/none/assignments?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fnone
+
+{
+  "assignee": "projects/${projectId}",
+  "jobType": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assignee": "projects/${projectId}",
+  "jobType": 2,
+  "name": "projects/${projectId}/locations/us-west2/reservations/none/assignments/3408657122498908254",
+  "state": 2
+}
+
+---
+
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/none/assignments?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assignments": [
+    {
+      "assignee": "projects/${projectId}",
+      "jobType": 2,
+      "name": "projects/${projectId}/locations/us-west2/reservations/none/assignments/3408657122498908254",
+      "state": 2
+    }
+  ]
+}
+
+---
+
+DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/none/assignments/3408657122498908254?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fnone%2Fassignments%2F3408657122498908254
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

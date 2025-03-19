@@ -21,5 +21,5 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-west2
-  reservationName: bigqueryreservationreservation${uniqueId}
+  reservationName: none
   jobType: QUERY

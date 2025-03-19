@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,17 +24,10 @@ var BigQueryReservationAssignmentGVK = GroupVersion.WithKind("BigQueryReservatio
 // BigQueryReservationAssignmentSpec defines the desired state of BigQueryReservationAssignment
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
 type BigQueryReservationAssignmentSpec struct {
-	// Note: changing this field will move the assignment from one reservation to another reservation.
+	// The name of reservation to create a new assignment in,
+	//  or to move the assignment to.
 	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-
-	// Note: changing this field will move the assignment from one reservation to another reservation.
-	// +required
-	Location *string `json:"location"`
-
-	// Note: changing this field will move the assignment from one reservation to another reservation.
-	// +required
-	ReservationName *string `json:"reservationName"`
+	ReservationRef *ReservationRef `json:"reservationRef,omitempty"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="assignee field is immutable"
 	// Immutable.

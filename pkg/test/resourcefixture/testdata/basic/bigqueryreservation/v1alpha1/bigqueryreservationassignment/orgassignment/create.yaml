@@ -17,9 +17,9 @@ kind: BigQueryReservationAssignment
 metadata:
   name: bqassignment-${uniqueId}
 spec:
-  assignee: projects/${projectId}
-  projectRef:
-    external: ${projectId}
+  assignee: organizations/${TEST_ORG_ID}
+  reservationRef:
+    name: bigqueryreservationreservation${uniqueId}
   location: us-west2
-  reservationName: bqreservation2${uniqueId}
+  reservationName: bigqueryreservationreservation${uniqueId}
   jobType: QUERY

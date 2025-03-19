@@ -74,13 +74,9 @@ spec:
                 x-kubernetes-validations:
                 - message: jobType field is immutable
                   rule: self == oldSelf
-              location:
-                description: 'Note: changing this field will move the assignment from
-                  one reservation to another reservation.'
-                type: string
-              projectRef:
-                description: 'Note: changing this field will move the assignment from
-                  one reservation to another reservation.'
+              reservationRef:
+                description: The name of reservation to create a new assignment in,
+                  or to move the assignment to.
                 oneOf:
                 - not:
                     required:
@@ -97,24 +93,16 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed BigqueryReservation
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/reservations/{{reservationID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a BigqueryReservation resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a BigqueryReservation resource.
                     type: string
                 type: object
-              reservationName:
-                description: 'Note: changing this field will move the assignment from
-                  one reservation to another reservation.'
-                type: string
               resourceID:
                 description: 'Immutable. Optional. The BigQueryReservationAssignment
                   ID used for resource creation or acquisition. Service-generated.Can
@@ -124,9 +112,7 @@ spec:
             required:
             - assignee
             - jobType
-            - location
-            - projectRef
-            - reservationName
+            - reservationRef
             type: object
           status:
             description: BigQueryReservationAssignmentStatus defines the config connector
