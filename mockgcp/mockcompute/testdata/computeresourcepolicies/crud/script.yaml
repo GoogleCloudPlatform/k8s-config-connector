@@ -1,0 +1,4 @@
+
+- exec: gcloud compute resource-policies create snapshot-schedule test-policy-${uniqueId} --region=us-central1 --max-retention-days=1 --start-time=13:00 --daily-schedule --project=${projectId}
+- exec: gcloud compute resource-policies describe test-policy-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud compute resource-policies delete test-policy-${uniqueId} --region=us-central1 --project=${projectId} --quiet
