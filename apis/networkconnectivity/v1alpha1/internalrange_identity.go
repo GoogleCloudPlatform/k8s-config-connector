@@ -32,7 +32,7 @@ type InternalRangeIdentity struct {
 }
 
 func (i *InternalRangeIdentity) String() string {
-	return i.parent.String() + "/internalranges/" + i.id
+	return i.parent.String() + "/internalRanges/" + i.id
 }
 
 func (i *InternalRangeIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewInternalRangeIdentity(ctx context.Context, reader client.Reader, obj *Ne
 
 func ParseInternalRangeExternal(external string) (parent *InternalRangeParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "internalranges" {
-		return nil, "", fmt.Errorf("format of NetworkConnectivityInternalRange external=%q was not known (use projects/{{projectID}}/locations/{{location}}/internalranges/{{internalrangeID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "internalRanges" {
+		return nil, "", fmt.Errorf("format of NetworkConnectivityInternalRange external=%q was not known (use projects/{{projectID}}/locations/{{location}}/internalRanges/{{internalrangeID}})", external)
 	}
 	parent = &InternalRangeParent{
 		ProjectID: tokens[1],
