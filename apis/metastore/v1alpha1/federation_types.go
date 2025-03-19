@@ -39,6 +39,7 @@ type MetastoreFederationSpec struct {
 
 	// User-defined labels for the metastore federation.
 	// +kcc:proto:field=google.cloud.metastore.v1.Federation.labels
+	//+required
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Immutable. The Apache Hive metastore version of the federation. All backend
