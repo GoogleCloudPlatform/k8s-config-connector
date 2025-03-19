@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 // +tool:mockgcp-service
 // http.host: clouddeploy.googleapis.com
 // proto.service: google.cloud.deploy.v1.CloudDeploy
@@ -35,7 +34,7 @@ import (
 // MockService represents a mocked clouddeploy service.
 type MockService struct {
 	*common.MockEnvironment
-	storage storage.Storage
+	storage    storage.Storage
 	operations *operations.Operations
 }
 
