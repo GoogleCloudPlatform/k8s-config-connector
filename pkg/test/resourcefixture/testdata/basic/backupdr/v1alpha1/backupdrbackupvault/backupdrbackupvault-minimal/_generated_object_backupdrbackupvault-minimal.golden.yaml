@@ -27,7 +27,7 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     deletable: true
-    serviceAccount: vault-${projectNumber}-63492@gcp-sa-backupdr-pr.iam.gserviceaccount.com
+    serviceAccount: vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
