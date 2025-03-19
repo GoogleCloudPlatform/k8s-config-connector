@@ -32,6 +32,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/backupdr/v1"
 )
@@ -47,7 +48,7 @@ func (s *BackupDRV1) GetBackupVault(ctx context.Context, req *pb.GetBackupVaultR
 	obj := &pb.BackupVault{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "backupVault %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -69,6 +70,9 @@ func (s *BackupDRV1) CreateBackupVault(ctx context.Context, req *pb.CreateBackup
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.State = pb.BackupVault_CREATING
+	obj.Etag = proto.String(fields.ComputeWeakEtag(obj))
+	obj.Deletable = proto.Bool(true) // default to true
+	s.setDefaultServiceAccount(obj, name)
 
 	s.populateDefaultsForBackupVault(obj)
 
@@ -78,16 +82,14 @@ func (s *BackupDRV1) CreateBackupVault(ctx context.Context, req *pb.CreateBackup
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		ApiVersion:    "v1",
-		CreateTime:    timestamppb.Now(),
-		Target:        name.String(),
-		Verb:          "create",
-		EndTime:       timestamppb.Now(),
-		StatusMessage: "Creating backup vault",
+		ApiVersion: "v1",
+		CreateTime: timestamppb.Now(),
+		Target:     name.String(),
+		Verb:       "create",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		obj.State = pb.BackupVault_ACTIVE
-
+		lroMetadata.EndTime = timestamppb.Now()
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
 		}
@@ -106,16 +108,26 @@ func (s *BackupDRV1) UpdateBackupVault(ctx context.Context, req *pb.UpdateBackup
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
 		case "description":
-			obj.Description = req.GetBackupVault().GetDescription()
+			obj.Description = proto.String(req.GetBackupVault().GetDescription())
+		case "labels":
+			obj.Labels = req.GetBackupVault().GetLabels()
+		case "annotations":
+			obj.Annotations = req.GetBackupVault().GetAnnotations()
+		case "backupMinimumEnforcedRetentionDuration":
+			obj.BackupMinimumEnforcedRetentionDuration = req.GetBackupVault().GetBackupMinimumEnforcedRetentionDuration()
+		case "effectiveTime":
+			obj.EffectiveTime = req.GetBackupVault().GetEffectiveTime()
+		case "accessRestriction":
+			obj.AccessRestriction = req.GetBackupVault().GetAccessRestriction()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -123,19 +135,20 @@ func (s *BackupDRV1) UpdateBackupVault(ctx context.Context, req *pb.UpdateBackup
 
 	obj.UpdateTime = timestamppb.New(time.Now())
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		ApiVersion: "v1",
 		CreateTime: timestamppb.Now(),
 		Target:     name.String(),
 		Verb:       "update",
-		EndTime:    timestamppb.Now(),
 	}
-	return s.operations.DoneLRO(ctx, lroPrefix, lroMetadata, obj)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
+		return obj, nil
+	})
 }
 
 func (s *BackupDRV1) DeleteBackupVault(ctx context.Context, req *pb.DeleteBackupVaultRequest) (*longrunningpb.Operation, error) {
@@ -146,19 +159,22 @@ func (s *BackupDRV1) DeleteBackupVault(ctx context.Context, req *pb.DeleteBackup
 
 	fqn := name.String()
 
-	now := time.Now()
-
 	deleted := &pb.BackupVault{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
 
-	op := &pb.OperationMetadata{}
-	op.CreateTime = timestamppb.New(now)
-	op.Target = name.String()
-	op.Verb = "delete"
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.Now(),
+		Target:     name.String(),
+		Verb:       "delete",
+	}
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.DoneLRO(ctx, lroPrefix, op, &emptypb.Empty{})
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+		return &emptypb.Empty{}, nil
+	})
 }
 
 func (s *BackupDRV1) populateDefaultsForBackupVault(obj *pb.BackupVault) {
@@ -205,6 +221,8 @@ func (s *BackupDRV1) parseBackupVaultName(name string) (*backupVaultName, error)
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
-</out>
-
-
+func (s *BackupDRV1) setDefaultServiceAccount(obj *pb.BackupVault, name *backupVaultName) {
+	if obj.ServiceAccount == "" {
+		obj.ServiceAccount = fmt.Sprintf("vault-%d-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com", name.Project.Number)
+	}
+}
