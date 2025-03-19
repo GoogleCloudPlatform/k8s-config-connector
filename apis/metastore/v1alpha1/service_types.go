@@ -18,7 +18,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
 )
 
 var MetastoreServiceGVK = GroupVersion.WithKind("MetastoreService")
@@ -59,6 +58,7 @@ type MetastoreServiceSpec struct {
 
 	// The tier of the service.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.tier
+	// +kubebuilder:validation:Enum=DEVELOPER;ENTERPRISE
 	Tier *string `json:"tier,omitempty"`
 
 	// The one hour maintenance window of the metastore service. This specifies
@@ -71,6 +71,7 @@ type MetastoreServiceSpec struct {
 	// Immutable. The release channel of the service.
 	//  If unspecified, defaults to `STABLE`.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.release_channel
+	// +kubebuilder:validation:Enum=STABLE;CANARY
 	ReleaseChannel *string `json:"releaseChannel,omitempty"`
 
 	// Immutable. Information used to configure the Dataproc Metastore service to
@@ -85,6 +86,7 @@ type MetastoreServiceSpec struct {
 
 	// Immutable. The database type that the Metastore service stores its data.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.database_type
+	// +kubebuilder:validation:Enum=MYSQL;SPANNER
 	DatabaseType *string `json:"databaseType,omitempty"`
 
 	// The configuration specifying telemetry settings for the Dataproc Metastore
@@ -177,16 +179,6 @@ type MetastoreService struct {
 	// +required
 	Spec   MetastoreServiceSpec   `json:"spec,omitempty"`
 	Status MetastoreServiceStatus `json:"status,omitempty"`
-}
-
-// DeepCopyObject implements the ObjectKind interface.
-func (in *MetastoreService) DeepCopyObject() runtime.Object {
-	return in.DeepCopy()
-}
-
-// DeepCopyObject implements the ObjectKind interface.
-func (in *MetastoreServiceList) DeepCopyObject() runtime.Object {
-	return in.DeepCopy()
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
