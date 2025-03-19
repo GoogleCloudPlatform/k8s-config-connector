@@ -26,6 +26,7 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -34,7 +35,6 @@ import (
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -160,47 +160,43 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BackupVault", "name", a.id)
 	mapCtx := &direct.MapContext{}
-	// TODO(b/254417234): Consider allowing immutable fields to be updated.
-	// It is currently not supported by UpdateMask.
-	desired := a.desired.DeepCopy()
-	desired.Name = a.id.String()
 
+	desired := a.desired.DeepCopy()
 	resource := BackupDRBackupVaultSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	// Compute update mask based on differences between the actual and desired states.
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		updateMask.Paths = append(updateMask.Paths, "description")
+	paths := []string{}
+	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		paths = append(paths, "description")
 	}
-	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
-		updateMask.Paths = append(updateMask.Paths, "labels")
+	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		paths = append(paths, "labels")
 	}
-	if !reflect.DeepEqual(resource.BackupMinimumEnforcedRetentionDuration, a.actual.BackupMinimumEnforcedRetentionDuration) {
-		updateMask.Paths = append(updateMask.Paths, "backup_minimum_enforced_retention_duration")
+	if desired.Spec.BackupMinimumEnforcedRetentionDuration != nil && !reflect.DeepEqual(resource.BackupMinimumEnforcedRetentionDuration, a.actual.BackupMinimumEnforcedRetentionDuration) {
+		paths = append(paths, "backup_minimum_enforced_retention_duration")
 	}
-	if !reflect.DeepEqual(resource.Etag, a.actual.Etag) {
-		updateMask.Paths = append(updateMask.Paths, "etag")
+	// TODO: etag
+	if desired.Spec.EffectiveTime != nil && !reflect.DeepEqual(resource.EffectiveTime, a.actual.EffectiveTime) {
+		paths = append(paths, "effective_time")
 	}
-	if !reflect.DeepEqual(resource.EffectiveTime, a.actual.EffectiveTime) {
-		updateMask.Paths = append(updateMask.Paths, "effective_time")
+	if desired.Spec.Annotations != nil && !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
+		paths = append(paths, "annotations")
 	}
-	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
-		updateMask.Paths = append(updateMask.Paths, "annotations")
-	}
-	if !reflect.DeepEqual(resource.AccessRestriction, a.actual.AccessRestriction) {
-		updateMask.Paths = append(updateMask.Paths, "access_restriction")
+	if desired.Spec.AccessRestriction != nil && !reflect.DeepEqual(resource.AccessRestriction, a.actual.AccessRestriction) {
+		paths = append(paths, "access_restriction")
 	}
 
-	if len(updateMask.Paths) == 0 {
+	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 	req := &pb.UpdateBackupVaultRequest{
 		BackupVault: resource,
-		UpdateMask:  updateMask,
+		UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
 	}
 	op, err := a.gcpClient.UpdateBackupVault(ctx, req)
 	if err != nil {
@@ -234,7 +230,7 @@ func (a *BackupVaultAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = direct.PtrTo(a.id.Parent().ProjectID)
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
