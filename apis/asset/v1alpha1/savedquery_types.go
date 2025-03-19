@@ -34,6 +34,7 @@ type Parent struct {
 // AssetSavedQuerySpec defines the desired state of AssetSavedQuery
 // +kcc:proto=google.cloud.asset.v1.SavedQuery
 type AssetSavedQuerySpec struct {
+	// +required
 	Parent Parent `json:",inline"`
 	// The AssetSavedQuery name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
