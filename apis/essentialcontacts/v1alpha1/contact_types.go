@@ -85,6 +85,12 @@ type EssentialContactsContactObservedState struct {
 	//  it is the correct recipient for notifications for a particular resource.
 	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.validation_state
 	ValidationState *string `json:"validationState,omitempty"`
+
+	// Immutable. The etag of the contact.
+	// A specific version of a resource defined by the user.
+	// +kcc:immutable
+	// +optional
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient
