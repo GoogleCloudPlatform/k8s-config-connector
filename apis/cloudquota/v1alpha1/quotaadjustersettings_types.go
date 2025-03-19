@@ -38,6 +38,7 @@ type APIQuotaAdjusterSettingsSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The configured value of the enablement at the given resource.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.enablement
+	//+required
 	Enablement *string `json:"enablement,omitempty"`
 
 	// Optional. The current etag of the QuotaAdjusterSettings. If an etag is
