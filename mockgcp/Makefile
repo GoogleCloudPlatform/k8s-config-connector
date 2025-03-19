@@ -111,6 +111,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkemulticloud/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/kms/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/managedkafka/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/deploy/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
@@ -169,6 +170,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/netapp/v1/*.proto
 
 .PHONY: generate-grpc-for-google-protos
