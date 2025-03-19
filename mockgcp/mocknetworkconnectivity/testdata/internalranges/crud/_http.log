@@ -93,9 +93,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
@@ -115,7 +113,6 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
@@ -171,12 +168,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
     "verb": "create"
   },
@@ -207,7 +202,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
     "verb": "create"
   },
@@ -215,9 +209,8 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "ipCidrRange": "10.120.140.0/24",
     "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
-    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+    "network": "${networkID}",
     "peering": "FOR_SELF",
     "prefixLength": 24,
     "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -244,9 +237,8 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "ipCidrRange": "10.120.140.0/24",
   "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "${networkID}",
   "peering": "FOR_SELF",
   "prefixLength": 24,
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -272,9 +264,8 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "ipCidrRange": "10.120.140.0/24",
   "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "${networkID}",
   "peering": "FOR_SELF",
   "prefixLength": 24,
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -283,7 +274,40 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges?alt=json
+PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/test-${uniqueId}?alt=json&updateMask=prefixLength
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "prefixLength": 28
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -299,50 +323,36 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "internalRanges": [
-    {
-      "createTime": "2025-03-18T23:10:42.406094444Z",
-      "ipCidrRange": "10.120.140.0/24",
-      "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
-      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-      "peering": "FOR_SELF",
-      "prefixLength": 24,
-      "updateTime": "2025-03-18T23:10:42.897679758Z",
-      "usage": "FOR_VPC"
-    },
-    {
-      "createTime": "2024-12-18T22:35:22.168760738Z",
-      "description": "Reserved range for GKE resource \"pods\" for cluster with short hash \"ab4f7c9d\"",
-      "ipCidrRange": "10.80.0.0/14",
-      "name": "projects/${projectId}/locations/global/internalRanges/gke-cnrm-dev-pods-ab4f7c9d",
-      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
-      "peering": "FOR_SELF",
-      "prefixLength": 14,
-      "targetCidrRange": [
-        "10.0.0.0/9"
-      ],
-      "updateTime": "2024-12-18T22:35:22.859939444Z",
-      "usage": "FOR_VPC",
-      "users": [
-        "//compute.googleapis.com/projects/${projectNumber}/locations/us-west1/subnetworks/default/secondaryRanges/gke-cnrm-dev-pods-ab4f7c9d"
-      ]
-    }
-  ]
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+    "network": "${networkID}",
+    "peering": "FOR_SELF",
+    "prefixLength": 28,
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "usage": "FOR_VPC"
+  }
 }
 
 ---
 
-PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/test-${uniqueId}?alt=json&updateMask=prefixLength
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Type: application/json
 
-{
-  "prefixLength": 28
-}
-
-400 Bad Request
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -353,35 +363,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 400,
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.DebugInfo",
-        "detail": "generic::invalid_argument: Cannot shrink from /24 to /28: invalid argument",
-        "stackEntries": [
-          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc1d349a640, 0x4a})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x558a3ce1af40?, 0xc1d686c340?})",
-          "cloud/control2/shared/userfriendly/userfriendly.go:1066 +0x2f4 google3/cloud/control2/shared/userfriendly/userfriendly.FromExternalUserFriendlyStatus({0x558a3cf76a88, 0xc17ef56cc0}, {0x558a2fde49f5, 0xd}, 0xc1d686c340, 0x0, 0x0)",
-          "cloud/control2/frontend/clhprotocol/clh_client.go:192 +0x614 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.callBackendMethod({0x558a3c0c0980?}, {0x558a3cf76a88, 0xc17ef56cc0}, {0xc173eaeba0, 0x6}, 0x6a163d1696, {0x558a3cf66e28, 0xc1b66cd6d0}, {0x558a3ce1a9f8, 0xc037599980}, ...)",
-          "cloud/control2/frontend/clhprotocol/clh_client.go:56 +0x78 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.CallPreprocess({0xc176a265f0?}, {0x558a3cf76a88, 0xc17ef56cc0}, 0x0, {0xc173eaeba0?, 0xc005038c80?}, 0xc1b66cd5e0?, 0x558a3ce21960?, {0x558a3ce1a9f8, 0xc037599980}, ...)",
-          "cloud/control2/frontend/handler/mutate.go:508 +0x2fe5 google3/cloud/control2/frontend/handler/handler.Handler.handleResourceMutation({{{0x558a3cf808f0, 0xc00612bc40}, {0x0, 0x0}}, {{0xc00b9cc330, 0x1, 0x1}, 0xc00e2cd800, 0xc00b9cc320, {0x558a3cf92d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:375 +0xbbb google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x558a3cf808f0, 0xc00612bc40}, {0x0, 0x0}}, {{0xc00b9cc330, 0x1, 0x1}, 0xc00e2cd800, 0xc00b9cc320, {0x558a3cf92d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x558a3cf808f0, 0xc00612bc40}, {0x0, 0x0}}, {{0xc00b9cc330, 0x1, 0x1}, 0xc00e2cd800, ...}, ...}, ...)",
-          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x558a3cf808f0, 0xc00612bc40}, {0x0, 0x0}}, {{0xc00b9cc330, 0x1, 0x1}, 0xc00e2cd800, 0xc00b9cc320, {0x558a3cf92d60, ...}, ...}, ...}, ...)",
-          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc008e0d320, {0x558a3cf76a88, 0xc17ef56a50}, 0xc179c6d440, 0xc1d69d6780, 0xc1cf1f1b00, {0xc1f7715ea0?, 0x64232cc7300?})",
-          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc008e0d320, {0x558a3cf76a88, 0xc17ef56a50}, 0xc1d69d6780, 0xc1cf1f1b00)",
-          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc176a27308?, {0x558a3cf76a88, 0xc17ef56a50}, 0x558a3ac140c0?, 0xc051031701?)",
-          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc006c5b650, {0x558a3cf76a88, 0xc17ef56a50}, 0xc1d69d6780)",
-          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x558a3cf76a88?, 0xc17ef56a50?}, 0xc1d69d6780?, {0x0?, 0x0?}, {0x558a3cf8c120, 0xc1b66cd540})",
-          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x558a3cf76a88?, 0xc139668ab0?}, 0xc176a278d0)",
-          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc03c2be060, {0x558a3cf77098, 0xc12f18bb60}, 0xc172cbf100)"
-        ]
-      }
-    ],
-    "message": "Cannot shrink from /24 to /28: invalid argument",
-    "status": "INVALID_ARGUMENT"
-  }
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
+  "network": "${networkID}",
+  "peering": "FOR_SELF",
+  "prefixLength": 28,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "usage": "FOR_VPC"
 }
 
 ---
@@ -402,12 +390,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
     "verb": "delete"
   },
@@ -438,7 +424,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
     "verb": "delete"
   },
@@ -446,4 +431,69 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}/wait?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
 }
