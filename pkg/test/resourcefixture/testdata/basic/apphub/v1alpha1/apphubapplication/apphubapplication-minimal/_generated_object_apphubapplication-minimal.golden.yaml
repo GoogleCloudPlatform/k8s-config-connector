@@ -11,10 +11,9 @@ metadata:
   namespace: ${uniqueId}
 spec:
   description: Updated description
-  parent:
-    location: us-west2
-    projectRef:
-      external: ${projectId}
+  location: us-west2
+  projectRef:
+    external: ${projectId}
   scope:
     type: REGIONAL
 status:

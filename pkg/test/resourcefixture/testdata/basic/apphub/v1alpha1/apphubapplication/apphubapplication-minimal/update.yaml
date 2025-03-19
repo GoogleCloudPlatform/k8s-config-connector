@@ -3,10 +3,9 @@ kind: AppHubApplication
 metadata:
   name: apphubapplication-minimal-${uniqueId}
 spec:
-  parent:
-    projectRef:
-      external: ${projectId}
-    location: us-west2
+  projectRef:
+    external: ${projectId}
+  location: us-west2
   description: "Updated description"
   scope:
     type: REGIONAL
