@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.cloud.backupdr.v1.BackupDR
+// proto.message: google.cloud.backupdr.v1.ManagementServer
+
 package mockbackupdr
 
 import (
