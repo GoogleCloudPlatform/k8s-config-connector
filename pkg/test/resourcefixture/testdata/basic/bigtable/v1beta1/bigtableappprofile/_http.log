@@ -257,14 +257,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "appProfile \"projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "appProfile \"projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}\" not found",
+    "message": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found",
     "status": "NOT_FOUND"
   }
 }
@@ -304,70 +297,8 @@ X-Xss-Protection: 0
     "clusterId": "cluster1-${uniqueId}"
   },
   "standardIsolation": {
-    "priority": "PRIORITY_HIGH"
-  }
-}
-
----
-
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "description": "Automagically routs requests to the neatest viable nest in an instance.",
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-  "singleClusterRouting": {
-    "allowTransactionalWrites": true,
-    "clusterId": "cluster1-${uniqueId}"
-  },
-  "standardIsolation": {
-    "priority": "PRIORITY_HIGH"
-  }
-}
-
----
-
-PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true&updateMask=standardIsolation
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "description": "Automagically routs requests to the neatest viable nest in an instance.",
-  "singleClusterRouting": {
-    "allowTransactionalWrites": true,
-    "clusterId": "cluster1-${uniqueId}"
-  },
-  "standardIsolation": {
     "priority": "PRIORITY_MEDIUM"
   }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-east1-c/operations/${operationID}"
 }
 
 ---
@@ -426,10 +357,23 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
+    "description": "Automatically routes requests to the nearest available cluster in an instance.",
+    "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
+    "singleClusterRouting": {
+      "allowTransactionalWrites": true,
+      "clusterId": "cluster1-${uniqueId}"
+    },
+    "standardIsolation": {
+      "priority": "PRIORITY_LOW"
+    }
+  }
 }
 
 ---
