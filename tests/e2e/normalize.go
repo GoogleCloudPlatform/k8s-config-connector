@@ -954,6 +954,13 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".response.reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
 	}
 
+	// Dataplex
+	visitor.replacePaths[".response.metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".lakes[].updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".lakes[].createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".lakes[].metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		// Deprecated: try to move these into mockgcp normalizers
