@@ -82,8 +82,8 @@ require (
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
-	github.com/tmccombs/hcl2json v0.6.5
-	github.com/zclconf/go-cty v1.15.1
+	github.com/tmccombs/hcl2json v0.6.6
+	github.com/zclconf/go-cty v1.16.2
 	go.opencensus.io v0.24.0
 	go.uber.org/zap v1.26.0
 	golang.org/x/oauth2 v0.26.0
